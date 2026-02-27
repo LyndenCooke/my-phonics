@@ -1,0 +1,398 @@
+{
+  "level_1": {
+    "name": "Starting Stories",
+    "template_type": "ditty",
+    "words_per_book": "40-80",
+    "sentences_per_page": 1,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk"],
+    "available_tricky_words": ["the","to","I","no","go","into"],
+    "sound_coverage_plan": "Across 5 books: Books 1-2 focus on Set 1 singles (groups 1-4), Books 3-4 introduce remaining consonants + doubles, Book 5 focuses on digraphs (sh/th/ch/ng/nk/qu). All books use all available sounds in incidental words.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "Mud on the Mat",
+        "template": "The Family Day",
+        "focus_sounds": ["s","a","t","p","i","n","m","d"],
+        "theme": "Child comes inside with muddy boots. Mud on the mat! Mum is not happy. Child gets a mop and a pan. Tips the mud into the bin. Pat the mat. Mum grins. All tidy!",
+        "target_words": ["mud","mat","mop","pan","man","map","mad","tip","tin","tap","nip","nap","dip","dim","din","sit","sat","sip","sad","pit","pin","pad","pat"],
+        "tricky_words_used": ["the","I","no"],
+        "writing_practice_graphemes": ["s","a","t","p"],
+        "activity_words": ["mat","mud","mop","pan","sat","tip"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Duck Egg",
+        "template": "The Discovery",
+        "focus_sounds": ["g","o","c","k","ck","e","u","b"],
+        "theme": "Child finds an egg by the pond. It is big! Picks it up. A crack! A duck pops out. It quacks and bobs. The duck hops into the pond. Off it goes!",
+        "target_words": ["egg","duck","peck","beck","deck","dock","rock","sock","lock","cock","cot","cog","cob","cod","cup","cub","cut","gut","gum","gun","bun","bud","bug","bus","bob","bog","get","got"],
+        "tricky_words_used": ["the","I","into"],
+        "writing_practice_graphemes": ["g","o","c","k","ck"],
+        "activity_words": ["duck","egg","rock","sock","cup","bus"]
+      },
+      {
+        "book_number": 3,
+        "title": "The Big Hill",
+        "template": "The Weather Day",
+        "focus_sounds": ["h","r","f","ff","l","ll","ss","e","u"],
+        "theme": "A hot sun. Child huffs up a big hill. Red legs! Gets to the top and rests on the grass. Feels the chill. Rolls and rolls all the way back. Fun!",
+        "target_words": ["hill","huff","puff","fell","bell","dull","full","hull","fill","fuss","miss","hiss","loss","less","mess","red","run","rub","rug","rip","rib","rob","rod","hot","hit","hen","hem","hug","hum","hut"],
+        "tricky_words_used": ["the","I","to"],
+        "writing_practice_graphemes": ["h","r","f","ff","ll","ss"],
+        "activity_words": ["hill","huff","bell","miss","red","run"]
+      },
+      {
+        "book_number": 4,
+        "title": "Vet Visit",
+        "template": "The Pet Story",
+        "focus_sounds": ["j","v","w","x","y","z","zz"],
+        "theme": "Child takes a pet to the vet. The dog yelps! The vet checks its leg. A jab and a pill. The dog wags. The vet is the best. Back in the van. Zip!",
+        "target_words": ["vet","van","vat","jab","jig","jam","jog","jet","jug","jot","yap","yell","yes","yet","wag","wig","web","win","wet","well","wish","with","zip","zap","zag","fuzz","buzz","fizz","six","fox","box","fix","mix","wax"],
+        "tricky_words_used": ["the","I","to","no"],
+        "writing_practice_graphemes": ["j","v","w","x","y","z","zz"],
+        "activity_words": ["vet","van","jab","yell","wag","zip","fox"]
+      },
+      {
+        "book_number": 5,
+        "title": "The Shell Shop",
+        "template": "The Adventure",
+        "focus_sounds": ["ch","sh","th","ng","nk","qu"],
+        "theme": "Child goes to a shop by the sea. Shells on the shelf! Picks a thin shell and a thick one. The shop man rings them up. Quick! Puts them in a bag. A song on the way back. What a thing!",
+        "target_words": ["shop","shell","shelf","shin","ship","shut","shed","shock","chat","chin","chop","chip","check","chum","chunk","thin","thick","them","then","this","that","with","math","ring","sing","king","song","long","thing","hang","bang","think","sank","dunk","junk","bunk","ink","wink","pink","drink","quick","quit","quack","quiz"],
+        "tricky_words_used": ["the","I","to","go"],
+        "writing_practice_graphemes": ["ch","sh","th","ng","nk","qu"],
+        "activity_words": ["shop","shell","chin","thin","ring","song","quick"]
+      }
+    ]
+  },
+  "level_2": {
+    "name": "Longer Sounds",
+    "template_type": "standard",
+    "words_per_book": "80-130",
+    "sentences_per_page": 2,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk","ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy"],
+    "available_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put"],
+    "sound_coverage_plan": "Book 1: ay, ee, igh. Book 2: ow, oo (both). Book 3: ar, or. Book 4: air, ir. Book 5: ou, oy + review all Set 2.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "Night at the Beach",
+        "template": "The Adventure",
+        "focus_sounds": ["ay","ee","igh"],
+        "theme": "Child stays up late for a trip to the beach. The moon shines bright. The sea gleams in the night. They play on the sand. Feet in the cool rock pools. Stars high in the sky. A perfect night by the sea. Time to sleep on the way back.",
+        "target_words": ["day","say","play","way","may","stay","lay","pay","see","bee","fee","tree","teeth","deep","keep","feel","peel","week","seed","feet","cheek","night","light","bright","high","right","sight","might","fight","tight"],
+        "tricky_words_used": ["the","I","said","she","my","you","are"],
+        "writing_practice_graphemes": ["ay","ee","igh"],
+        "activity_words": ["day","play","see","tree","night","light"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Toy Zoo",
+        "template": "The Big Day",
+        "focus_sounds": ["oo","ow"],
+        "theme": "Child sets up a toy zoo in the room. Lines up the animals in a row. The cow goes moo! The owl sits high. A goose and a rooster too. The room looks cool. A show for Mum. She claps. The best zoo in town!",
+        "target_words": ["zoo","moon","room","cool","food","pool","boot","hoot","tooth","spoon","too","boom","mood","roof","soon","look","book","cook","good","foot","took","hook","wood","stood","wool","low","bow","show","row","slow","grow","blow","flow","know","glow","snow"],
+        "tricky_words_used": ["the","I","she","said","my","you","her","put"],
+        "writing_practice_graphemes": ["oo","ow"],
+        "activity_words": ["zoo","moon","cool","book","good","show","slow"]
+      },
+      {
+        "book_number": 3,
+        "title": "The Dark Park",
+        "template": "The Family Day",
+        "focus_sounds": ["ar","or"],
+        "theme": "Child and Dad go to the park as it gets dark. Stars pop up. They sit on a bench under a big arch. An owl hoots from the tall fork in the tree. A torch lights the path. They march back to the car. A short but fun trip!",
+        "target_words": ["dark","park","car","jar","far","bar","star","art","cart","card","hard","barn","harm","charm","shark","sharp","for","or","torn","born","corn","fork","cork","cord","sort","short","north","torch","sport","fort","form","horn","storm","porch","morning"],
+        "tricky_words_used": ["the","I","said","he","your","are","put"],
+        "writing_practice_graphemes": ["ar","or"],
+        "activity_words": ["dark","park","car","star","fork","short","torch"]
+      },
+      {
+        "book_number": 4,
+        "title": "The Bird Fair",
+        "template": "The Discovery",
+        "focus_sounds": ["air","ir"],
+        "theme": "At the fair, a bird show! A girl holds a big bird on her arm. It has shiny wings. The bird stirs and flaps. It soars up high — then lands on a chair! Fair play, little bird. Child gets a pair of bird cards to keep.",
+        "target_words": ["fair","hair","chair","pair","air","stair","lair","bird","girl","stir","sir","first","third","dirt","firm","whirl","twirl","skirt","shirt","chirp","fir"],
+        "tricky_words_used": ["the","I","said","she","he","her","my","you","are"],
+        "writing_practice_graphemes": ["air","ir"],
+        "activity_words": ["fair","hair","chair","bird","girl","first","stir"]
+      },
+      {
+        "book_number": 5,
+        "title": "The Noisy Crowd",
+        "template": "The Sport/Game",
+        "focus_sounds": ["ou","oy","review all Set 2"],
+        "theme": "A big football match at the ground. The crowd is loud! A boy kicks the ball — it soars high. Shouts and cheers ring out. The ball bounces round the goal. Joy! The crowd roars. What a day! They march out singing all the way home.",
+        "target_words": ["loud","out","shout","round","found","sound","ground","mouth","south","cloud","about","our","house","mouse","count","boy","toy","joy","enjoy","royal","coin","soil","oil"],
+        "tricky_words_used": ["the","I","said","he","she","we","you","are","your","my"],
+        "writing_practice_graphemes": ["ou","oy"],
+        "activity_words": ["loud","shout","round","ground","boy","joy","enjoy"]
+      }
+    ]
+  },
+  "level_3": {
+    "name": "New Spellings",
+    "template_type": "standard",
+    "words_per_book": "130-200",
+    "sentences_per_page": 2,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk","ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy","ea","a-e","i-e","o-e","u-e","oi","aw","ai","oa","ie"],
+    "available_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing"],
+    "sound_coverage_plan": "Book 1: a-e, i-e focus. Book 2: o-e, u-e focus. Book 3: ea, ie focus. Book 4: oi, aw focus. Book 5: ai, oa + clusters + review all L3.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "The Bike Race",
+        "template": "The Sport/Game",
+        "focus_sounds": ["a-e","i-e","consonant clusters"],
+        "theme": "Child enters a bike race at the lake. Lines up at the gate with nine other riders. The whistle blows — off they ride! Past the wide lake, over the bridge, round the pine trees. One rider slides on gravel but gets up with a brave smile. Child crosses the line in time. A prize — a shiny plate with their name on it!",
+        "target_words": ["bike","ride","wide","side","line","nine","time","fine","pine","slide","smile","bride","prize","shine","stripe","cake","lake","gate","name","race","came","late","brave","make","take","blade","flame","grade","place","plate","shake","skate","state","crane","frame","space","trace"],
+        "tricky_words_used": ["the","I","said","was","they","all","some","like"],
+        "writing_practice_graphemes": ["a-e","i-e"],
+        "activity_words": ["bike","ride","lake","name","race","smile","prize","gate"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Stone Flute",
+        "template": "The Discovery",
+        "focus_sounds": ["o-e","u-e","consonant clusters"],
+        "theme": "Child finds an old stone in the woods. It has a strange shape — like a flute! Blows into it. A sweet tune fills the air. A frog hops close. A mole pops from its hole. Even the birds stop to listen. The stone flute makes the whole forest come alive. Child takes it home to share with the family.",
+        "target_words": ["stone","home","bone","hole","mole","pole","those","close","spoke","broke","woke","froze","chose","smoke","slope","globe","code","nose","note","rope","rode","rose","tone","zone","cute","flute","tune","rule","huge","fuse","cube","rude","prune","plume","crude","brute","fume"],
+        "tricky_words_used": ["the","I","was","said","some","old","do","what","like"],
+        "writing_practice_graphemes": ["o-e","u-e"],
+        "activity_words": ["stone","home","hole","note","flute","tune","huge"]
+      },
+      {
+        "book_number": 3,
+        "title": "A Treat by the Stream",
+        "template": "The Family Day",
+        "focus_sounds": ["ea","ie","consonant clusters"],
+        "theme": "Mum packs a bag with treats — bread, cream, peaches, and a meat pie. They walk to the stream and spread a blanket. A feast! Swans glide past. After eating, child dries the plates while Mum reads. The breeze blows softly. A clean, peaceful afternoon by the stream. Even the dog sleeps in the heat.",
+        "target_words": ["treat","stream","bread","cream","peach","reach","beach","teach","clean","dream","bean","lean","feast","heat","leaf","meat","read","seat","speak","steal","team","weak","pie","tie","lie","die","dried","cried","tried","fried"],
+        "tricky_words_used": ["the","I","said","was","they","all","some","do","what"],
+        "writing_practice_graphemes": ["ea","ie"],
+        "activity_words": ["treat","stream","cream","dream","clean","pie","tie","dried"]
+      },
+      {
+        "book_number": 4,
+        "title": "The Broken Toy",
+        "template": "The Helper",
+        "focus_sounds": ["oi","aw","consonant clusters"],
+        "theme": "A friend's favourite toy is broken — a coin-shaped spinner. The spring has come loose! Child offers to fix it. Gets a cloth and some oil. Joins the parts back together. Draws a new pattern on top. The toy spins again! Friend claps with joy. Sometimes a small fix can bring the biggest grins.",
+        "target_words": ["oil","coil","soil","boil","join","point","coin","noise","moist","foil","spoil","toil","joint","avoid","choice","voice","draw","claw","straw","crawl","jaw","raw","paw","lawn","yawn","dawn","fawn","shawl","thaw","brawl"],
+        "tricky_words_used": ["the","I","said","was","they","some","what","do","all"],
+        "writing_practice_graphemes": ["oi","aw"],
+        "activity_words": ["oil","coin","join","point","draw","claw","straw","crawl"]
+      },
+      {
+        "book_number": 5,
+        "title": "The Slow Boat",
+        "template": "The Adventure",
+        "focus_sounds": ["ai","oa","clusters review","all L3 review"],
+        "theme": "Rain drips on the coat as child and Grandad load the boat. They float down the stream past fields of grain. A snail sits on a stone by the bank. The boat drifts past a goat on the road. Grandad steers past a chain of rocks. The rain stops and a rainbow arcs across the sky. They moan that the trip must end — but what a grand sail it was!",
+        "target_words": ["rain","train","brain","chain","grain","plain","paint","faint","main","drain","stain","snail","trail","nail","tail","wait","bait","boat","coat","float","goat","road","load","moan","oak","toast","foam","groan","coal","roast","soap","toad","roam","soak"],
+        "tricky_words_used": ["the","I","said","was","they","all","some","what","old","so"],
+        "writing_practice_graphemes": ["ai","oa"],
+        "activity_words": ["rain","train","chain","snail","boat","coat","float","road"]
+      }
+    ]
+  },
+  "level_4": {
+    "name": "Building Fluency",
+    "template_type": "standard",
+    "words_per_book": "200-280",
+    "sentences_per_page": 3,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk","ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy","ea","a-e","i-e","o-e","u-e","oi","aw","ai","oa","ie","are","ur","er","ew","ue","ow"],
+    "available_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing","saw","watch","their","school","where","were","small","who","tall","brother","any","fall"],
+    "sound_coverage_plan": "Book 1: ur, er focus. Book 2: are, ow(cow) focus. Book 3: ew, ue focus. Book 4: mixed alternatives practice. Book 5: full review + fluency.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "The Nurse and the Herd",
+        "template": "The Helper",
+        "focus_sounds": ["ur","er"],
+        "theme": "A nurse visits a farm where the herd is poorly. A calf has hurt its leg. The nurse kneels in the dirt and bandages the wound with care. The farmer offers her supper — a burger and chips by the barn. The sunset turns the sky purple. She returns to her car. Even a small act of kindness matters. The herd will recover, thanks to her.",
+        "target_words": ["nurse","hurt","turn","burn","church","purse","burst","curl","surf","curse","fur","blur","spur","curd","curve","urge","surge","her","fern","term","herd","perch","jerk","stern","verb","kernel","serve","nerve","swerve","perfect","certain","person","perhaps","under","summer","winter","letter","better","butter","dinner","sister","after","water","river","never","number","finger","thunder","flower","tower","power","shower","cover"],
+        "tricky_words_used": ["the","I","said","was","they","where","were","their","who","any"],
+        "writing_practice_graphemes": ["ur","er"],
+        "activity_words": ["nurse","hurt","turn","church","her","herd","letter","summer"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Town Square",
+        "template": "The Adventure",
+        "focus_sounds": ["are","ow(cow)"],
+        "theme": "Child and friend explore the town square on market day. Stalls everywhere! A man dares them to share a huge cake. They stare at it — enormous! They cut a fair square each. A crowd gathers and a clown does tricks. Brown paper bags blow in the wind. The town buzzes with life. They vow to come back and share the fun with everyone.",
+        "target_words": ["share","stare","care","rare","hare","dare","spare","square","compare","prepare","aware","declare","bare","scare","fare","cow","how","now","brown","town","down","crown","frown","growl","howl","prowl","owl","crowd","brow","gown","drown","plough","powder","flower","tower","power","shower"],
+        "tricky_words_used": ["the","I","said","was","they","where","were","their","who","any","saw"],
+        "writing_practice_graphemes": ["are","ow"],
+        "activity_words": ["share","square","care","dare","cow","town","crowd","brown"]
+      },
+      {
+        "book_number": 3,
+        "title": "The Rescue Crew",
+        "template": "The Big Day",
+        "focus_sounds": ["ew","ue"],
+        "theme": "A storm blows through the village. A tree has fallen on the lane! A crew of helpers gathers. They chew through problems one by one. Drew up a plan and got to work. A few strong arms lift the trunk. Clues on the ground show where the roots grew. By evening, the lane is clear and a blue sky peeks through. The rescue crew is true heroes!",
+        "target_words": ["new","few","drew","grew","knew","blew","flew","threw","stew","chew","brew","crew","dew","jewel","news","view","screw","true","blue","glue","clue","argue","rescue","value","continue","due","sue","cue","hue","tissue","statue","venue","issue","tongue","league"],
+        "tricky_words_used": ["the","I","said","was","they","where","were","their","who","any","school"],
+        "writing_practice_graphemes": ["ew","ue"],
+        "activity_words": ["new","drew","crew","flew","true","blue","glue","rescue"]
+      },
+      {
+        "book_number": 4,
+        "title": "The Owl Tower",
+        "template": "The Discovery",
+        "focus_sounds": ["mixed alternatives: ir/ur/er, air/are, ow(cow)/ou"],
+        "theme": "On a school trip, the class climbs a tall tower in the countryside. At the top, an owl perches on a wooden beam. Its feathers shimmer in the fading light. The owl stirs, turns its head, then swoops down over the fields below. The children stare in wonder. A shower of rain arrives but clears fast. The view from the tower stretches for miles — church spires, brown rooftops, a silver river curving through green farms.",
+        "target_words": ["tower","shower","power","flower","stir","turn","perch","fern","fur","stare","share","care","owl","brown","crowd","down","sir","burn","her","term","dare","rare","cow","how","gown","church","nurse","nerve","square","aware"],
+        "tricky_words_used": ["the","I","said","was","they","where","were","their","who","school","watch","any"],
+        "writing_practice_graphemes": ["ur","er","are","ow"],
+        "activity_words": ["tower","owl","stir","stare","church","brown","shower"]
+      },
+      {
+        "book_number": 5,
+        "title": "The Winter Market",
+        "template": "The Family Day",
+        "focus_sounds": ["all L4 review + fluency"],
+        "theme": "The winter market glows with lanterns. Stalls sell everything — cakes with blue icing, new scarves, carved wooden toys. The air is sharp and cold. Mum shares a hot stew from a paper cup. Brother dares child to try the spicy sauce — it burns! A singer performs a slow tune while snowflakes flutter down. They argue about the best stall, then agree the fudge was the winner. A true treat on a December afternoon.",
+        "target_words": ["winter","market","lantern","singer","flutter","letter","silver","never","number","under","fudge","true","blue","new","stew","share","dare","care","burn","turn","nurse","brown","town","down","tower","flower","power","shower","argue","rescue","value","nerve","serve","curve"],
+        "tricky_words_used": ["the","I","said","was","they","where","were","their","who","brother","any","fall","school"],
+        "writing_practice_graphemes": ["ew","ue","ur","are"],
+        "activity_words": ["winter","market","stew","share","brown","true","silver","never"]
+      }
+    ]
+  },
+  "level_5": {
+    "name": "Reading Together",
+    "template_type": "standard",
+    "words_per_book": "280-380",
+    "sentences_per_page": 4,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk","ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy","ea","a-e","i-e","o-e","u-e","oi","aw","ai","oa","ie","are","ur","er","ew","ue","ow","ore","oor","ire","ear","ure","tion"],
+    "available_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing","saw","watch","their","school","where","were","small","who","tall","brother","any","fall","does","could","would","anyone","over","through","once","whole","people","water"],
+    "sound_coverage_plan": "Book 1: ire, ore focus. Book 2: ear, oor focus. Book 3: ure, tion focus. Book 4: mixed final Set 3. Book 5: full review + comprehension.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "The Campfire Shore",
+        "template": "The Adventure",
+        "focus_sounds": ["ire","ore"],
+        "theme": "Child and Dad hike along the rocky shore to find the perfect campfire spot. They gather wire-thin sticks and dry bark. The fire crackles, sending sparks into the sky. They explore the shore, finding shells and smooth stones. A lighthouse stands tall — its light sweeps the dark sea. They admire the sunset, the sky a blaze of orange before night falls. The whole trip inspires a promise to return.",
+        "target_words": ["fire","wire","tire","hire","admire","inspire","entire","desire","campfire","bonfire","spire","more","store","shore","core","bore","score","explore","before","ignore","restore","adore","shore","snore","wore","tore","swore","sore","pore","lore"],
+        "tricky_words_used": ["the","I","said","was","they","could","would","through","once","people","water"],
+        "writing_practice_graphemes": ["ire","ore"],
+        "activity_words": ["fire","wire","admire","inspire","shore","explore","before","store"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Deer Near the Door",
+        "template": "The Discovery",
+        "focus_sounds": ["ear","oor"],
+        "theme": "Early one morning, child hears a rustling near the back door. A young deer stands on the doorstep! Its ears twitch. Child stays still, barely breathing. The deer steps onto the floor of the porch, sniffing at a bowl of apples. For a clear moment, their eyes meet. Then it leaps over the garden wall and vanishes. Child tells the whole story at breakfast — nobody can quite believe it. A year later, the same deer appears again.",
+        "target_words": ["near","hear","dear","clear","fear","appear","disappear","year","gear","shear","ear","rear","tear","smear","spear","beard","dreary","weary","nearly","clearly","door","floor","poor","moor","indoor","outdoor","doorstep","doorway","mooring"],
+        "tricky_words_used": ["the","I","said","was","they","could","would","once","whole","people","anyone"],
+        "writing_practice_graphemes": ["ear","oor"],
+        "activity_words": ["near","hear","clear","fear","appear","year","door","floor","poor"]
+      },
+      {
+        "book_number": 3,
+        "title": "The Nature Station",
+        "template": "The Family Day",
+        "focus_sounds": ["ure","tion"],
+        "theme": "The class visits a nature station deep in the forest. The guide explains the different sections — the insect collection, the bird observation platform, and the adventure trail. A miniature creature sits on a leaf — pure magic! They follow instructions and take part in an exploration game. Each question leads to a new direction. By the end, the children have completed every section. What an education! The whole adventure feels like stepping into a picture book.",
+        "target_words": ["sure","pure","nature","creature","picture","adventure","capture","future","mixture","moisture","furniture","structure","temperature","miniature","pasture","puncture","station","direction","caution","action","fiction","section","mention","question","collection","education","instruction","observation","exploration","information","celebration","invitation"],
+        "tricky_words_used": ["the","I","said","was","they","could","would","through","once","whole","people","water"],
+        "writing_practice_graphemes": ["ure","tion"],
+        "activity_words": ["nature","creature","picture","adventure","station","direction","question","action"]
+      },
+      {
+        "book_number": 4,
+        "title": "The Lighthouse Keeper",
+        "template": "The New Friend",
+        "focus_sounds": ["mixed: ire, ore, ear, ure, tion"],
+        "theme": "Child meets an old lighthouse keeper who shares stories of the shore. He has spent his entire life near the sea. He points out the direction of each ship. The lantern requires care — he checks the structure and the wire connections. Through the clear glass, they watch a boat appear on the horizon. The keeper shares his collection of maps and charts. The inspection is careful and sure. By the fire, he tells of a daring rescue years before. A true friendship begins through shared admiration for the sea.",
+        "target_words": ["fire","wire","entire","admire","inspire","shore","more","before","explore","store","near","hear","clear","appear","year","sure","pure","nature","creature","picture","future","structure","station","direction","collection","inspection","connection","admiration"],
+        "tricky_words_used": ["the","I","said","was","they","could","would","through","once","whole","people","water","over","anyone"],
+        "writing_practice_graphemes": ["ire","ear","ure","tion"],
+        "activity_words": ["fire","shore","near","clear","sure","nature","direction","collection"]
+      },
+      {
+        "book_number": 5,
+        "title": "The School Celebration",
+        "template": "The Big Day",
+        "focus_sounds": ["all L5 review + comprehension"],
+        "theme": "End of year at school. The hall is decorated for a grand celebration. Each section of the school contributes — a nature display, art on the floor, and a performance by the choir. Child reads out a description of their adventure project. The structure of the speech is clear and confident. Before the final song, the head teacher shares a picture of the whole year on screen. Cheers near and far! Parents admire the work. Through the open door, the summer breeze flows in. A perfect end to an incredible year.",
+        "target_words": ["fire","inspire","admire","store","more","before","explore","near","hear","clear","appear","year","dear","door","floor","poor","sure","pure","nature","creature","picture","adventure","future","station","direction","celebration","collection","education","description","performance"],
+        "tricky_words_used": ["the","I","said","was","they","could","would","through","once","whole","people","water","over","does","anyone"],
+        "writing_practice_graphemes": ["ore","oor","ire","ear","ure","tion"],
+        "activity_words": ["celebrate","nature","adventure","explore","performance","direction","inspire","clear"]
+      }
+    ]
+  },
+  "level_6": {
+    "name": "Reading Champion",
+    "template_type": "standard",
+    "words_per_book": "380-500",
+    "sentences_per_page": 5,
+    "available_graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk","ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy","ea","a-e","i-e","o-e","u-e","oi","aw","ai","oa","ie","are","ur","er","ew","ue","ow","ore","oor","ire","ear","ure","tion","ous","cious","tious","able","ible"],
+    "available_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing","saw","watch","their","school","where","were","small","who","tall","brother","any","fall","does","could","would","anyone","over","through","once","whole","people","water","should","many","above","father","son","mother","buy","bought","great","caught","worse","love","wear","thought","everyone","walk","talk"],
+    "sound_coverage_plan": "Book 1: ous focus. Book 2: able/ible focus. Book 3: cious/tious focus. Book 4: mixed suffix patterns. Book 5: full review + independent reading.",
+    "stories": [
+      {
+        "book_number": 1,
+        "title": "The Famous Garden",
+        "template": "The Discovery",
+        "focus_sounds": ["ous"],
+        "theme": "Child visits a famous garden with Grandmother. The flowers are gorgeous — enormous roses, curious climbing plants, and a marvellous old oak tree. A nervous robin hops along the path. They discover a mysterious fountain hidden behind the hedges. The garden is enormous, and every corner holds something wondrous. Grandmother tells stories of when the garden was dangerous and wild. Now it is glorious. They take photographs and promise to return. A generous day of wonder and discovery.",
+        "target_words": ["famous","enormous","gorgeous","curious","serious","nervous","marvellous","wondrous","glorious","generous","dangerous","mysterious","adventurous","glamorous","humorous","joyous","previous","various","obvious","tremendous","ridiculous","fabulous","jealous","continuous","tremendous"],
+        "tricky_words_used": ["the","I","said","was","they","should","many","father","mother","great","love","bought","thought","everyone","walk","talk"],
+        "writing_practice_graphemes": ["ous"],
+        "activity_words": ["famous","enormous","curious","nervous","marvellous","dangerous","glorious","generous"]
+      },
+      {
+        "book_number": 2,
+        "title": "The Incredible Bake-Off",
+        "template": "The Big Day",
+        "focus_sounds": ["able","ible"],
+        "theme": "The school bake-off is in full swing. Every entry must be edible and presentable! Child makes an incredible chocolate cake — it looks remarkable but is barely holdable because it is so enormous. The sensible plan is to carry it on a tray. The judge says it is the most enjoyable cake — comfortable to eat and made with notable skill. An honourable mention goes to a friend whose biscuits are fashionable little stars. A memorable afternoon for everyone. The whole event is remarkable and unforgettable.",
+        "target_words": ["capable","possible","incredible","comfortable","sensible","terrible","horrible","suitable","available","honourable","fashionable","enjoyable","reasonable","valuable","remarkable","probable","notable","lovable","adorable","admirable","invisible","flexible","edible","responsible","presentable","memorable","unforgettable","holdable","washable","breakable"],
+        "tricky_words_used": ["the","I","said","was","they","should","many","great","love","everyone","thought","bought"],
+        "writing_practice_graphemes": ["able","ible"],
+        "activity_words": ["incredible","possible","comfortable","sensible","enjoyable","honourable","remarkable","memorable"]
+      },
+      {
+        "book_number": 3,
+        "title": "The Cautious Explorer",
+        "template": "The Adventure",
+        "focus_sounds": ["cious","tious"],
+        "theme": "A child with a reputation for being cautious joins a school trip to a nature reserve. At first, everything feels suspicious — the rustling leaves, the shadowy paths. But a precious discovery changes everything: a nest of rare birds! The guide says this is an ambitious find. The child takes conscious care not to disturb them. Being cautious turns out to be the most gracious quality of all. Sometimes the most precious things in life are found by those who take their time.",
+        "target_words": ["precious","conscious","suspicious","spacious","gracious","vicious","delicious","malicious","ambitious","cautious","infectious","nutritious","superstitious","repetitious","scrumptious","contentious"],
+        "tricky_words_used": ["the","I","said","was","they","should","many","great","love","everyone","thought","bought","caught"],
+        "writing_practice_graphemes": ["cious","tious"],
+        "activity_words": ["precious","cautious","suspicious","gracious","delicious","conscious","ambitious","spacious"]
+      },
+      {
+        "book_number": 4,
+        "title": "The Marvellous Machine",
+        "template": "The Helper",
+        "focus_sounds": ["mixed: ous, able/ible, cious/tious, tion"],
+        "theme": "Father has a curious machine in the garage — it has been broken for years. Child decides to fix it. The instruction manual is barely readable, but the diagrams are sensible enough to follow. After a cautious inspection, the problem becomes obvious: a precious gear is missing. They search through an incredible collection of parts. At last — the right one! The machine hums to life. It is a marvellous contraption that sorts nuts and bolts into sections. Father is speechless. A tremendous, honourable achievement for such a young inventor.",
+        "target_words": ["curious","marvellous","precious","cautious","obvious","tremendous","sensible","incredible","readable","honourable","instruction","inspection","collection","section","contraption","invention","direction","action","station","celebration"],
+        "tricky_words_used": ["the","I","said","was","they","should","many","father","great","love","everyone","thought","bought","caught","worse"],
+        "writing_practice_graphemes": ["ous","able","tion"],
+        "activity_words": ["marvellous","precious","cautious","incredible","sensible","instruction","collection","invention"]
+      },
+      {
+        "book_number": 5,
+        "title": "The Whole Story",
+        "template": "The New Friend",
+        "focus_sounds": ["all L6 review + independent reading"],
+        "theme": "On the last day of school, the teacher asks everyone to write their whole story of the year. Child reflects: the famous garden visit, the incredible bake-off, the cautious nature trip, and the marvellous machine. Each adventure was remarkable in its own way. Through it all, friendships grew stronger. A generous friend shared their lunch on a difficult day. A curious classmate helped solve an impossible problem. The teacher reads the stories aloud — each one precious and unique. It has been an adventurous, enjoyable, unforgettable year. Everyone should be proud.",
+        "target_words": ["famous","enormous","curious","nervous","marvellous","generous","dangerous","glorious","incredible","comfortable","sensible","enjoyable","remarkable","memorable","unforgettable","precious","cautious","gracious","delicious","ambitious","station","direction","celebration","education","collection","instruction","adventure","nature","creature","future","picture"],
+        "tricky_words_used": ["the","I","said","was","they","should","many","above","father","mother","son","great","love","everyone","thought","bought","caught","worse","walk","talk","wear"],
+        "writing_practice_graphemes": ["ous","able","ible","cious","tious","tion"],
+        "activity_words": ["famous","incredible","precious","cautious","enjoyable","remarkable","adventure","celebration"]
+      }
+    ]
+  }
+}

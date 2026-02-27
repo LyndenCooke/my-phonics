@@ -1,0 +1,94 @@
+{
+  "template_id": "pet_story",
+  "template_name": "The Pet Story",
+  "core_arc": "Child and their pet share an experience together.",
+  "emotional_beat": "Care and companionship",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "PET_NAME": "Pet's name",
+    "PET_TYPE": "Type of pet — dog, cat, rabbit, hamster",
+    "ACTIVITY": "What they do together",
+    "LOCATION": "Where the story happens"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] had a pet called [PET_NAME]. [PET_NAME] was a [PET_TYPE]. They were best friends.",
+      "illustration_brief": "[NAME] with [PET_NAME] the [PET_TYPE], affectionate pose. Happy expressions.",
+      "emotional_tone": "love, companionship"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "Today they would go to [LOCATION] together. [PET_NAME] wagged their tail.",
+      "illustration_brief": "[NAME] getting ready to go out, [PET_NAME] excited and eager.",
+      "emotional_tone": "anticipation, excitement"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "At [LOCATION], [NAME] and [PET_NAME] began to [ACTIVITY]. It was so much fun!",
+      "illustration_brief": "[NAME] and [PET_NAME] engaged in [ACTIVITY], joyful scene.",
+      "emotional_tone": "joy, fun"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[PET_NAME] ran and played. [NAME] laughed. [PET_NAME] was so silly sometimes!",
+      "illustration_brief": "[PET_NAME] being playful and silly, [NAME] laughing.",
+      "emotional_tone": "playfulness, humour"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "Then [PET_NAME] got tired. [NAME] sat down. [PET_NAME] came and sat with [NAME].",
+      "illustration_brief": "[NAME] sitting, [PET_NAME] coming to rest beside them, peaceful moment.",
+      "emotional_tone": "rest, closeness"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "[NAME] patted [PET_NAME]. 'Good [PET_TYPE],' said [NAME]. [PET_NAME] looked up happily.",
+      "illustration_brief": "[NAME] stroking [PET_NAME], tender moment, both content.",
+      "emotional_tone": "affection, bond"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "It was time to go home. [NAME] and [PET_NAME] walked back together.",
+      "illustration_brief": "[NAME] and [PET_NAME] walking home, side by side.",
+      "emotional_tone": "companionship, contentment"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "At home, [PET_NAME] fell asleep. [NAME] smiled. [PET_NAME] was the best pet ever.",
+      "illustration_brief": "[PET_NAME] sleeping, [NAME] watching fondly.",
+      "emotional_tone": "love, gratitude"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What is [PET_NAME]?",
+    "inference": "How do you think [NAME] feels about [PET_NAME]?",
+    "vocabulary": "What does the word 'companion' mean?",
+    "prediction": "What will [NAME] and [PET_NAME] do tomorrow?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: p, t, d, g. Copy the word: pet.",
+    "level_3_4": "Write these words from the story: pet, friend, happy. Write about a pet you know.",
+    "level_5_6": "Write 2 sentences about [NAME] and [PET_NAME]. Why are pets good friends?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"PET_TYPE": "dog", "ACTIVITY": "dig in the sand like dinosaurs", "LOCATION": "the beach"},
+    "space": {"PET_TYPE": "cat", "ACTIVITY": "chase a ball like a shooting star", "LOCATION": "the garden"},
+    "unicorns": {"PET_TYPE": "rabbit", "ACTIVITY": "hop through the flowers", "LOCATION": "the meadow"},
+    "football": {"PET_TYPE": "dog", "ACTIVITY": "chase and fetch the ball", "LOCATION": "the park"},
+    "animals": {"PET_TYPE": "hamster", "ACTIVITY": "explore the garden", "LOCATION": "outside"},
+    "baking": {"PET_TYPE": "dog", "ACTIVITY": "watch while treats were made", "LOCATION": "the kitchen"},
+    "nature": {"PET_TYPE": "rabbit", "ACTIVITY": "munch on grass and clover", "LOCATION": "the garden"},
+    "vehicles": {"PET_TYPE": "dog", "ACTIVITY": "ride in the car", "LOCATION": "the countryside"},
+    "music": {"PET_TYPE": "cat", "ACTIVITY": "listen while [NAME] sang", "LOCATION": "home"},
+    "art": {"PET_TYPE": "dog", "ACTIVITY": "sit while [NAME] drew pictures", "LOCATION": "the garden"}
+  }
+}

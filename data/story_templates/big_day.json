@@ -1,0 +1,94 @@
+{
+  "template_id": "big_day",
+  "template_name": "The Big Day",
+  "core_arc": "Child experiences a special day — birthday, first day, or celebration.",
+  "emotional_beat": "Excitement and anticipation",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Friend or family member",
+    "EVENT": "The special event — birthday, first day of school, party",
+    "INTEREST": "Theme of the celebration",
+    "SPECIAL_THING": "Special element related to interest"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] woke up. Today was the big day! It was [EVENT]!",
+      "illustration_brief": "[NAME] waking up excitedly, perhaps jumping out of bed. Bright morning light.",
+      "emotional_tone": "excitement, anticipation"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] got ready. 'I can't wait!' said [NAME]. Everything felt special today.",
+      "illustration_brief": "[NAME] getting dressed or ready, looking happy and excited.",
+      "emotional_tone": "anticipation, joy"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "[FRIEND] came to see [NAME]. 'Happy [EVENT]!' said [FRIEND]. [NAME] smiled.",
+      "illustration_brief": "[FRIEND] arriving, perhaps with a card or small gift. Both smiling.",
+      "emotional_tone": "friendship, celebration"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "There was a [SPECIAL_THING]! [NAME] could not believe it. 'Wow!' said [NAME].",
+      "illustration_brief": "[NAME] seeing the [SPECIAL_THING], amazed expression. [FRIEND] watching happily.",
+      "emotional_tone": "surprise, delight"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[NAME] and [FRIEND] had so much fun. They played and laughed all day.",
+      "illustration_brief": "[NAME] and [FRIEND] playing together, celebration atmosphere.",
+      "emotional_tone": "joy, fun"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "There was cake to eat. It was yummy. [NAME] shared it with everyone.",
+      "illustration_brief": "[NAME] with a cake, sharing with [FRIEND] and perhaps others.",
+      "emotional_tone": "sharing, togetherness"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "The day was almost over. 'This was the best day ever,' said [NAME].",
+      "illustration_brief": "[NAME] looking content, perhaps sitting with [FRIEND], day ending.",
+      "emotional_tone": "satisfaction, gratitude"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] went to bed tired but happy. It had been a perfect day.",
+      "illustration_brief": "[NAME] in bed, sleepy smile, perhaps holding a memento from the day.",
+      "emotional_tone": "contentment, happiness"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What was [NAME] celebrating?",
+    "inference": "How do you think [NAME] felt when they saw the [SPECIAL_THING]?",
+    "vocabulary": "What does the word 'celebrate' mean?",
+    "prediction": "What special day would you like to have?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: b, d, y. Copy the word: day.",
+    "level_3_4": "Write these words from the story: special, happy, celebrate. Write about your best day.",
+    "level_5_6": "Write 2 sentences about [NAME]'s special day. What makes a day special?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"SPECIAL_THING": "dinosaur cake", "flavour_detail": "The cake had a big dinosaur on top."},
+    "space": {"SPECIAL_THING": "rocket-shaped balloon", "flavour_detail": "The balloon looked like it could fly to space."},
+    "unicorns": {"SPECIAL_THING": "sparkly unicorn piñata", "flavour_detail": "The piñata was full of sweets."},
+    "football": {"SPECIAL_THING": "new football", "flavour_detail": "The ball was shiny and new."},
+    "animals": {"SPECIAL_THING": "animal face painting", "flavour_detail": "[NAME] was painted like a tiger."},
+    "baking": {"SPECIAL_THING": "baking set", "flavour_detail": "The set had everything to make cakes."},
+    "nature": {"SPECIAL_THING": "bug hunting kit", "flavour_detail": "The kit had a net and a jar."},
+    "vehicles": {"SPECIAL_THING": "toy train set", "flavour_detail": "The train went around a track."},
+    "music": {"SPECIAL_THING": "musical instruments", "flavour_detail": "Everyone played and sang."},
+    "art": {"SPECIAL_THING": "art supplies", "flavour_detail": "There were paints and brushes and paper."}
+  }
+}

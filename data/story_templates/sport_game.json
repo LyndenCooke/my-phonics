@@ -1,0 +1,94 @@
+{
+  "template_id": "sport_game",
+  "template_name": "The Sport/Game",
+  "core_arc": "Child participates in a competition or team activity and learns about teamwork.",
+  "emotional_beat": "Perseverance and teamwork",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Teammate or friend",
+    "SPORT": "The sport or game",
+    "LOCATION": "Where they play — the field, the gym, the playground",
+    "TEAM_NAME": "Optional team name"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "Today was the big [SPORT] game. [NAME] was excited but also a bit nervous.",
+      "illustration_brief": "[NAME] getting ready for the game, mix of excitement and nerves visible.",
+      "emotional_tone": "anticipation, nerves"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] went to [LOCATION]. [FRIEND] was there. 'We can do this!' said [FRIEND].",
+      "illustration_brief": "[NAME] arriving at [LOCATION], [FRIEND] greeting them with encouragement.",
+      "emotional_tone": "friendship, encouragement"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "The game began. [NAME] tried hard. It was not easy but [NAME] kept going.",
+      "illustration_brief": "[NAME] playing [SPORT], focused and determined.",
+      "emotional_tone": "effort, determination"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[NAME] made a mistake. 'Oh no,' thought [NAME]. But [FRIEND] said, 'It's okay! Keep trying!'",
+      "illustration_brief": "[NAME] looking disappointed, [FRIEND] offering encouragement and support.",
+      "emotional_tone": "setback, support"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[NAME] took a deep breath and tried again. This time it worked! '[NAME] did it!' shouted [FRIEND].",
+      "illustration_brief": "[NAME] succeeding at a play, [FRIEND] celebrating, triumph moment.",
+      "emotional_tone": "success, joy"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "The team worked together. Everyone helped. That was what made them strong.",
+      "illustration_brief": "Team moment, all players working together, sense of unity.",
+      "emotional_tone": "teamwork, unity"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "The game ended. Win or lose, [NAME] felt happy. They had done their best.",
+      "illustration_brief": "End of game, [NAME] looking satisfied regardless of outcome.",
+      "emotional_tone": "satisfaction, pride"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "'Good game,' said [FRIEND]. [NAME] smiled. The best part was playing together.",
+      "illustration_brief": "[NAME] and [FRIEND] together after the game, happy and connected.",
+      "emotional_tone": "friendship, reflection"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What game did [NAME] play?",
+    "inference": "How do you think [NAME] felt when they made a mistake?",
+    "vocabulary": "What does the word 'team' mean?",
+    "prediction": "What will [NAME] do differently next game?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: g, m, r, n. Copy the word: game.",
+    "level_3_4": "Write these words from the story: team, tried, together. Write about a game you like.",
+    "level_5_6": "Write 2 sentences about teamwork. Why is it good to be part of a team?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"SPORT": "running race", "LOCATION": "the park", "flavour_detail": "[NAME] ran like a fast dinosaur."},
+    "space": {"SPORT": "rocket ball", "LOCATION": "the playground", "flavour_detail": "The ball flew like a rocket."},
+    "unicorns": {"SPORT": "hopping race", "LOCATION": "the field", "flavour_detail": "They hopped like magic creatures."},
+    "football": {"SPORT": "football match", "LOCATION": "the pitch", "flavour_detail": "The ball zoomed across the grass."},
+    "animals": {"SPORT": "egg and spoon race", "LOCATION": "the garden", "flavour_detail": "They had to balance like careful animals."},
+    "baking": {"SPORT": "relay race", "LOCATION": "the park", "flavour_detail": "They passed the baton like passing a spoon."},
+    "nature": {"SPORT": "obstacle course", "LOCATION": "the woods", "flavour_detail": "They jumped over logs and ducked under branches."},
+    "vehicles": {"SPORT": "go-kart race", "LOCATION": "the track", "flavour_detail": "The karts zoomed around the corners."},
+    "music": {"SPORT": "musical statues", "LOCATION": "the hall", "flavour_detail": "When the music stopped, they had to freeze."},
+    "art": {"SPORT": "treasure hunt", "LOCATION": "the school", "flavour_detail": "They had to find hidden pictures."}
+  }
+}

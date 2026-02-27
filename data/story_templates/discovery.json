@@ -1,0 +1,94 @@
+{
+  "template_id": "discovery",
+  "template_name": "The Discovery",
+  "core_arc": "Child finds a secret or hidden place and explores it.",
+  "emotional_beat": "Wonder and imagination",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Friend or sibling who joins the discovery",
+    "LOCATION": "Where the discovery is — the garden, the woods, behind the shed",
+    "SECRET_PLACE": "The secret thing discovered",
+    "WONDER": "What makes it special"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] was playing in [LOCATION]. [NAME] went to a part that was never explored before.",
+      "illustration_brief": "[NAME] in [LOCATION], venturing into an unexplored area. Curious expression.",
+      "emotional_tone": "curiosity, exploration"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] pushed back some leaves. There was something behind them! What could it be?",
+      "illustration_brief": "[NAME] pushing aside foliage, glimpse of something hidden behind.",
+      "emotional_tone": "anticipation, mystery"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "It was a [SECRET_PLACE]! [NAME] could not believe it. 'Wow!' said [NAME].",
+      "illustration_brief": "[NAME] discovering [SECRET_PLACE], amazed expression, wonder in their eyes.",
+      "emotional_tone": "wonder, amazement"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[NAME] went to get [FRIEND]. '[FRIEND], come and see!' said [NAME]. They ran back together.",
+      "illustration_brief": "[NAME] excitedly leading [FRIEND] to the discovery.",
+      "emotional_tone": "excitement, sharing"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[FRIEND] saw the [SECRET_PLACE]. 'This is amazing!' said [FRIEND]. [WONDER].",
+      "illustration_brief": "[NAME] and [FRIEND] looking at [SECRET_PLACE] together, both amazed.",
+      "emotional_tone": "shared wonder, bonding"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "They explored the [SECRET_PLACE] together. They found so many interesting things.",
+      "illustration_brief": "[NAME] and [FRIEND] exploring, examining details, engaged and happy.",
+      "emotional_tone": "exploration, curiosity"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "'This can be our secret place,' said [NAME]. [FRIEND] nodded. 'Just for us.'",
+      "illustration_brief": "[NAME] and [FRIEND] making a pact, perhaps a pinky promise or handshake.",
+      "emotional_tone": "friendship, belonging"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] smiled. Having a secret discovery was the best. [NAME] could not wait to come back.",
+      "illustration_brief": "[NAME] leaving but looking back at the [SECRET_PLACE], contented smile.",
+      "emotional_tone": "contentment, anticipation"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What did [NAME] discover in [LOCATION]?",
+    "inference": "Why did [NAME] want to share the discovery with [FRIEND]?",
+    "vocabulary": "What does the word 'discover' mean?",
+    "prediction": "What do you think [NAME] and [FRIEND] will do at their secret place?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: d, s, c. Copy the word: discover.",
+    "level_3_4": "Write these words from the story: secret, hidden, explore. What would you like to discover?",
+    "level_5_6": "Write 2 sentences about the [SECRET_PLACE]. Where would you like to explore?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"SECRET_PLACE": "cave with fossil prints", "WONDER": "There were footprints in the rock from long ago."},
+    "space": {"SECRET_PLACE": "clearing where you can see all the stars", "WONDER": "At night you could see every star in the sky."},
+    "unicorns": {"SECRET_PLACE": "sparkly hidden grotto", "WONDER": "Everything sparkled like magic."},
+    "football": {"SECRET_PLACE": "perfect hidden pitch", "WONDER": "The grass was flat and perfect for playing."},
+    "animals": {"SECRET_PLACE": "hidden pond with frogs", "WONDER": "Frogs jumped and fish swam."},
+    "baking": {"SECRET_PLACE": "wild berry patch", "WONDER": "There were enough berries to make a pie."},
+    "nature": {"SECRET_PLACE": "tiny waterfall", "WONDER": "The water made a lovely sound."},
+    "vehicles": {"SECRET_PLACE": "old hidden path", "WONDER": "It was like a secret road."},
+    "music": {"SECRET_PLACE": "hollow tree that echoed", "WONDER": "When you sang, the tree sang back."},
+    "art": {"SECRET_PLACE": "wall covered in moss patterns", "WONDER": "The patterns looked like pictures."}
+  }
+}

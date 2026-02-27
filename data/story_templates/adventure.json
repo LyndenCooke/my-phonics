@@ -1,0 +1,94 @@
+{
+  "template_id": "adventure",
+  "template_name": "The Adventure",
+  "core_arc": "Child goes somewhere new and discovers something exciting along the way.",
+  "emotional_beat": "Courage and curiosity",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Friend or sibling name",
+    "LOCATION": "Setting — the woods, the hills, the beach",
+    "INTEREST": "Used to flavour what they discover",
+    "DISCOVERY": "What they find — derived from interest"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] woke up. It was a [WEATHER] day. 'I want to go on an adventure,' said [NAME].",
+      "illustration_brief": "[NAME] looking out of a window at a bright day, excited expression. Establish character appearance.",
+      "emotional_tone": "excitement, anticipation"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] put on a coat and went outside. [FRIEND] was there. 'Can I come too?' said [FRIEND].",
+      "illustration_brief": "[NAME] outside their home, [FRIEND] approaching. Both characters visible, friendly interaction.",
+      "emotional_tone": "friendship, companionship"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "'Yes!' said [NAME]. They walked to [LOCATION]. The path was long but they did not stop.",
+      "illustration_brief": "[NAME] and [FRIEND] walking along a path toward [LOCATION]. Determined expressions.",
+      "emotional_tone": "determination, journey"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "At [LOCATION], [NAME] saw something. 'Look!' said [NAME]. It was a [DISCOVERY].",
+      "illustration_brief": "[NAME] pointing at [DISCOVERY] with [FRIEND] looking on. Wonder on their faces.",
+      "emotional_tone": "discovery, wonder"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[NAME] went closer. 'Wow,' said [FRIEND]. 'This is amazing.' They looked at it for a long time.",
+      "illustration_brief": "Close-up of [NAME] and [FRIEND] examining [DISCOVERY]. Amazed expressions.",
+      "emotional_tone": "awe, curiosity"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "The sun began to set. 'We should go back,' said [NAME]. [FRIEND] nodded.",
+      "illustration_brief": "Sunset scene at [LOCATION]. [NAME] and [FRIEND] looking at the sky, peaceful mood.",
+      "emotional_tone": "contentment, transition"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "They walked home. [NAME] said, 'That was the best adventure.' [FRIEND] agreed.",
+      "illustration_brief": "[NAME] and [FRIEND] walking home together as the sun sets behind them.",
+      "emotional_tone": "satisfaction, friendship"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] went to bed happy. Tomorrow there would be more adventures to have.",
+      "illustration_brief": "[NAME] in bed, smiling, looking peaceful. A window shows the night sky.",
+      "emotional_tone": "contentment, anticipation for future"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "Where did [NAME] and [FRIEND] go on their adventure?",
+    "inference": "How do you think [NAME] felt when they found the [DISCOVERY]?",
+    "vocabulary": "What does the word 'adventure' mean?",
+    "prediction": "What adventure do you think [NAME] will go on next?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: a, d, v. Copy the word: adventure.",
+    "level_3_4": "Write these words from the story: adventure, walked, discovered. Write a sentence about [NAME].",
+    "level_5_6": "Write 2 sentences about the adventure. Use the word 'discovered' in a sentence."
+  },
+  "interest_mappings": {
+    "dinosaurs": {"DISCOVERY": "big dinosaur fossil", "flavour_detail": "The fossil was stuck in the rock."},
+    "space": {"DISCOVERY": "shiny meteor rock", "flavour_detail": "The rock came from space."},
+    "unicorns": {"DISCOVERY": "sparkly crystal cave", "flavour_detail": "The crystals shone in the light."},
+    "football": {"DISCOVERY": "hidden sports field", "flavour_detail": "The grass was soft and green."},
+    "animals": {"DISCOVERY": "fox den with cubs", "flavour_detail": "The cubs were soft and small."},
+    "baking": {"DISCOVERY": "wild berry bush", "flavour_detail": "The berries were ripe and red."},
+    "nature": {"DISCOVERY": "hidden waterfall", "flavour_detail": "The water fell from high up."},
+    "vehicles": {"DISCOVERY": "old train track", "flavour_detail": "The track went into a tunnel."},
+    "music": {"DISCOVERY": "birds singing together", "flavour_detail": "The birds sang a pretty song."},
+    "art": {"DISCOVERY": "rocks with painted shapes", "flavour_detail": "Someone had painted the rocks long ago."}
+  }
+}

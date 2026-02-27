@@ -1,0 +1,147 @@
+{
+  "_description": "Read Write Inc (RWI) sound progression reference. Used for level mapping only — MyPhonicsBooks uses its own terminology and level system.",
+  "_source": "Reverse-engineered from RWI assessment sheets and published sound progressions",
+  "_note": "We do NOT copy RWI. We use 'decodable words' (not 'green words'), 'tricky words' (not 'red words'), 'nonsense words' (not 'alien words'). Our levels are numbered 1-6, not colour-banded.",
+
+  "set_1_single_sounds": {
+    "description": "Speed Sounds — taught in this exact order",
+    "groups": [
+      {"group": 1, "sounds": ["m", "a", "s", "d", "t"]},
+      {"group": 2, "sounds": ["i", "n", "p", "g", "o"]},
+      {"group": 3, "sounds": ["c", "k", "u", "b"]},
+      {"group": 4, "sounds": ["f", "e", "l", "h"]},
+      {"group": 5, "sounds": ["r", "j", "v", "y", "w"]},
+      {"group": 6, "sounds": ["z", "x"]}
+    ],
+    "all_sounds": ["m", "a", "s", "d", "t", "i", "n", "p", "g", "o", "c", "k", "u", "b", "f", "e", "l", "h", "r", "j", "v", "y", "w", "z", "x"]
+  },
+
+  "set_1_special_friends": {
+    "description": "Digraphs taught as 'special friends'",
+    "digraphs": ["sh", "th", "ch", "qu", "ng", "nk"],
+    "best_friends": ["ff", "ll", "ss", "zz", "ck"]
+  },
+
+  "set_2_sounds": {
+    "description": "Long vowel sounds — 12 total",
+    "sounds": [
+      {"grapheme": "ay", "example": "day"},
+      {"grapheme": "ee", "example": "tree"},
+      {"grapheme": "igh", "example": "high"},
+      {"grapheme": "ow", "example": "blow"},
+      {"grapheme": "oo", "example": "zoo"},
+      {"grapheme": "oo", "example": "look", "note": "short oo"},
+      {"grapheme": "ar", "example": "car"},
+      {"grapheme": "or", "example": "for"},
+      {"grapheme": "air", "example": "fair"},
+      {"grapheme": "ir", "example": "bird"},
+      {"grapheme": "ou", "example": "shout"},
+      {"grapheme": "oy", "example": "boy"}
+    ]
+  },
+
+  "set_3_sounds": {
+    "description": "Alternative spellings — 19 total",
+    "sounds": [
+      {"grapheme": "ea", "example": "tea"},
+      {"grapheme": "oi", "example": "coin"},
+      {"grapheme": "a-e", "example": "cake"},
+      {"grapheme": "i-e", "example": "kite"},
+      {"grapheme": "o-e", "example": "home"},
+      {"grapheme": "u-e", "example": "cute"},
+      {"grapheme": "aw", "example": "saw"},
+      {"grapheme": "are", "example": "share"},
+      {"grapheme": "ur", "example": "nurse"},
+      {"grapheme": "er", "example": "her"},
+      {"grapheme": "ow", "example": "cow", "note": "alternative pronunciation"},
+      {"grapheme": "ai", "example": "rain"},
+      {"grapheme": "oa", "example": "boat"},
+      {"grapheme": "ew", "example": "new"},
+      {"grapheme": "ire", "example": "fire"},
+      {"grapheme": "ear", "example": "hear"},
+      {"grapheme": "ure", "example": "sure"},
+      {"grapheme": "tion", "example": "station"},
+      {"grapheme": "cious_tious", "example": "precious"}
+    ]
+  },
+
+  "rwi_word_types": {
+    "green_words": "Fully decodable using taught graphemes (we call these 'decodable words')",
+    "red_words": "Exception/tricky words (we call these 'tricky words')",
+    "alien_words": "Pseudo-words for pure decoding assessment (we call these 'nonsense words')"
+  },
+
+  "rwi_book_levels": {
+    "description": "RWI colour-banded book progression",
+    "levels": [
+      {"band": "Ditty", "focus": "CVC words only (Set 1 sounds)"},
+      {"band": "Red", "focus": "Set 1 sounds + Special Friends"},
+      {"band": "Green", "focus": "Set 2 sounds introduced"},
+      {"band": "Purple", "focus": "Set 3 sounds introduced"},
+      {"band": "Pink", "focus": "Set 3 sounds continued"},
+      {"band": "Orange", "focus": "Fluency building"},
+      {"band": "Yellow", "focus": "Fluency building"},
+      {"band": "Blue", "focus": "Comprehension focus"},
+      {"band": "Grey", "focus": "Independent reading"}
+    ]
+  },
+
+  "rwi_assessment_decision_tree": {
+    "description": "How RWI determines a child's reading level",
+    "steps": [
+      {"test": "Can read Set 1 single sounds?", "no": "Ditty level", "yes": "next"},
+      {"test": "Can read Set 1 Special Friends?", "no": "Red book level", "yes": "next"},
+      {"test": "Can read Set 2 sounds?", "no": "Green book level", "yes": "next"},
+      {"test": "Can read Set 3 sounds?", "no": "Purple/Pink book level", "yes": "next"},
+      {"test": "Fluency check", "result": "Orange/Yellow/Blue/Grey levels"}
+    ]
+  },
+
+  "our_level_mapping": {
+    "description": "How MyPhonicsBooks levels map to RWI and Letters & Sounds",
+    "levels": [
+      {
+        "our_level": 1,
+        "our_name": "Starting Stories",
+        "letters_and_sounds": "Phase 2 + Phase 3 consonants",
+        "rwi_equivalent": "Red (All Set 1: singles + special friends + best friends)",
+        "focus": "CVC words + consonant digraphs, all Set 1 complete"
+      },
+      {
+        "our_level": 2,
+        "our_name": "Longer Sounds",
+        "letters_and_sounds": "Phase 3 (vowel digraphs)",
+        "rwi_equivalent": "Green + Purple (Set 2 sounds)",
+        "focus": "Long vowel sounds (ay, ee, igh, ow, oo, ar, or, air, ir, ou, oy)"
+      },
+      {
+        "our_level": 3,
+        "our_name": "New Spellings",
+        "letters_and_sounds": "Phase 4 + Phase 5a",
+        "rwi_equivalent": "Pink + Orange (Early Set 3 + clusters)",
+        "focus": "Split digraphs, first alternative spellings, consonant clusters unlocked"
+      },
+      {
+        "our_level": 4,
+        "our_name": "Building Fluency",
+        "letters_and_sounds": "Phase 5b",
+        "rwi_equivalent": "Yellow (Later Set 3 + fluency)",
+        "focus": "More alternatives (are, ur, er, ew, ue, ow-cow), fluency building"
+      },
+      {
+        "our_level": 5,
+        "our_name": "Reading Together",
+        "letters_and_sounds": "Phase 5c",
+        "rwi_equivalent": "Blue (Final Set 3 + comprehension)",
+        "focus": "Final Set 3 (ore, oor, ire, ear, ure, tion), comprehension focus"
+      },
+      {
+        "our_level": 6,
+        "our_name": "Reading Champion",
+        "letters_and_sounds": "Phase 6",
+        "rwi_equivalent": "Grey (Suffix patterns + independent reading)",
+        "focus": "Suffix patterns (ous, cious/tious, able/ible), independent reading"
+      }
+    ]
+  }
+}

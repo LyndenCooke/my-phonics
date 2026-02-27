@@ -1,0 +1,30 @@
+{
+  "template_id": "lost_thing",
+  "level": 1,
+  "personalisation": {
+    "NAME": "Sam",
+    "FRIEND": "Jess",
+    "LOCATION": "the park",
+    "WEATHER": "hot",
+    "LOST_ITEM": "red cap",
+    "OWNER": "Tom",
+    "PLACE_1": "the bin",
+    "PLACE_2": "the log"
+  },
+  "pages": [
+    "Sam was at the park. It was a hot sun.",
+    "Sam sat on the log. Sam got up. Sam ran.",
+    "Sam did not run on. Sam had to stop. 'What is that?' said Sam.",
+    "It was a red cap. Sam got the cap. 'This is not my cap,' said Sam.",
+    "Sam ran to Jess. 'Is this cap for you?' said Sam. 'No,' said Jess. 'It is not my cap.'",
+    "Sam ran on. Sam ran to the log. Tom was at the log. Tom was sad.",
+    "'Is this cap for you?' said Sam. 'Yes!' said Tom. 'My cap! I am so happy!'",
+    "Sam ran back to Jess. Sam was happy. It is good to help."
+  ],
+  "validation": {
+    "valid": true,
+    "total_words": 145,
+    "failed_words": []
+  },
+  "notes": "This is a known-good Level 1 story for testing purposes. All words are either CVC decodable or Level 1 tricky words."
+}

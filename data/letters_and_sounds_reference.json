@@ -1,0 +1,86 @@
+{
+  "_description": "Letters and Sounds (DfE 2007) phonics progression. Our primary curriculum reference (public domain).",
+
+  "phase_1": {
+    "focus": "Environmental sounds, rhythm, rhyme, alliteration (pre-reading)",
+    "graphemes": [],
+    "tricky_words": [],
+    "note": "No reading/writing — oral and listening skills only"
+  },
+
+  "phase_2": {
+    "focus": "First letter sounds, CVC blending",
+    "duration": "Reception, first 6 weeks",
+    "teaching_order": [
+      {"week": 1, "sounds": ["s", "a", "t", "p"]},
+      {"week": 2, "sounds": ["i", "n", "m", "d"]},
+      {"week": 3, "sounds": ["g", "o", "c", "k"]},
+      {"week": 4, "sounds": ["ck", "e", "u", "r"]},
+      {"week": 5, "sounds": ["h", "b", "f", "ff", "l", "ll", "ss"]},
+      {"week": 6, "sounds": ["consolidation"]}
+    ],
+    "all_graphemes": ["s", "a", "t", "p", "i", "n", "m", "d", "g", "o", "c", "k", "ck", "e", "u", "r", "h", "b", "f", "ff", "l", "ll", "ss"],
+    "tricky_words": ["the", "to", "I", "no", "go", "into"],
+    "word_structure": "CVC only"
+  },
+
+  "phase_3": {
+    "focus": "Remaining single letters, digraphs, vowel digraphs",
+    "duration": "Reception, 12 weeks",
+    "new_consonants": ["j", "v", "w", "x", "y", "z", "zz", "qu"],
+    "consonant_digraphs": ["ch", "sh", "th", "ng"],
+    "vowel_digraphs": ["ai", "ee", "igh", "oa", "oo", "ar", "or", "ur", "ow", "oi", "ear", "air", "ure", "er"],
+    "tricky_words": ["he", "she", "we", "me", "be", "was", "you", "they", "all", "are", "my", "her"],
+    "word_structure": "CVC + words with digraphs"
+  },
+
+  "phase_4": {
+    "focus": "Consonant clusters — NO new graphemes",
+    "duration": "Reception-Y1, 4-6 weeks",
+    "new_graphemes": [],
+    "examples": ["frog", "blog", "stop", "clap", "tent", "damp", "toast", "bench"],
+    "tricky_words": ["said", "have", "like", "so", "do", "some", "come", "were", "there", "little", "one", "when", "out", "what"],
+    "word_structure": "CCVC, CVCC, CCVCC"
+  },
+
+  "phase_5": {
+    "focus": "Alternative spellings and pronunciations",
+    "duration": "Year 1, full year",
+    "alternative_spellings": ["ay", "ou", "ie", "ea", "oy", "ir", "ue", "aw", "wh", "ph", "ew", "oe", "au", "ey", "a-e", "e-e", "i-e", "o-e", "u-e"],
+    "alternative_pronunciations": [
+      {"grapheme": "i", "examples": ["fin", "find"]},
+      {"grapheme": "o", "examples": ["hot", "cold"]},
+      {"grapheme": "c", "examples": ["cat", "city"]},
+      {"grapheme": "g", "examples": ["got", "giant"]},
+      {"grapheme": "u", "examples": ["but", "put"]},
+      {"grapheme": "ow", "examples": ["cow", "blow"]},
+      {"grapheme": "ie", "examples": ["tie", "field"]},
+      {"grapheme": "ea", "examples": ["eat", "bread"]},
+      {"grapheme": "er", "examples": ["her", "farmer"]},
+      {"grapheme": "a", "examples": ["hat", "what", "acorn"]},
+      {"grapheme": "y", "examples": ["yes", "by", "very"]},
+      {"grapheme": "ch", "examples": ["chin", "school", "chef"]},
+      {"grapheme": "ou", "examples": ["out", "shoulder", "could", "you"]}
+    ],
+    "tricky_words": ["oh", "their", "people", "Mr", "Mrs", "looked", "called", "asked", "could"]
+  },
+
+  "phase_6": {
+    "focus": "Spelling rules, suffixes, prefixes",
+    "duration": "Year 2, full year",
+    "suffixes": ["-s", "-es", "-ing", "-ed", "-er", "-est", "-ly", "-ment", "-ness", "-ful", "-less"],
+    "prefixes": ["un-", "dis-", "re-", "pre-"],
+    "focus_areas": ["syllable division", "past tense patterns", "spelling rules"]
+  },
+
+  "phonics_screening_check": {
+    "when": "End of Year 1 (age 5-6), statutory since 2012",
+    "format": "40 words — 20 real + 20 pseudo-words",
+    "sections": [
+      {"section": 1, "focus": "Simpler GPCs from Phase 2-3"},
+      {"section": 2, "focus": "More complex GPCs from Phase 3-5"}
+    ],
+    "pass_mark": "32/40 (varies slightly by year)",
+    "recheck": "Children who don't meet threshold retake in Year 2"
+  }
+}

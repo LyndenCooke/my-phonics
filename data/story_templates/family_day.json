@@ -1,0 +1,94 @@
+{
+  "template_id": "family_day",
+  "template_name": "The Family Day",
+  "core_arc": "Child goes on a trip or outing with family members.",
+  "emotional_beat": "Belonging and togetherness",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FAMILY_MEMBER": "Mum, Dad, Grandma, Grandad, sibling",
+    "DESTINATION": "Where they go — the beach, the zoo, the farm, the park",
+    "ACTIVITY": "What they do there",
+    "MEMORY": "Special moment they remember"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "'Today we are going to [DESTINATION]!' said [FAMILY_MEMBER]. [NAME] was so excited.",
+      "illustration_brief": "[FAMILY_MEMBER] announcing the trip, [NAME] looking thrilled.",
+      "emotional_tone": "excitement, anticipation"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] got ready quickly. They packed a bag. They could not wait to go!",
+      "illustration_brief": "[NAME] getting ready, packing a bag, eager to leave.",
+      "emotional_tone": "anticipation, eagerness"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "They arrived at [DESTINATION]. It was amazing! [NAME] looked all around.",
+      "illustration_brief": "[NAME] and family arriving at [DESTINATION], taking it all in.",
+      "emotional_tone": "wonder, arrival"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "First, they did [ACTIVITY]. [NAME] loved it. [FAMILY_MEMBER] smiled at [NAME].",
+      "illustration_brief": "[NAME] engaged in [ACTIVITY] with [FAMILY_MEMBER], both happy.",
+      "emotional_tone": "joy, connection"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "Then they had a picnic. They sat on a blanket and ate sandwiches. It was yummy.",
+      "illustration_brief": "Family picnic scene, food on a blanket, everyone eating happily.",
+      "emotional_tone": "togetherness, nourishment"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "[MEMORY]. [NAME] would never forget this moment.",
+      "illustration_brief": "The special memory moment, highlighted and warm.",
+      "emotional_tone": "special moment, memory"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "It was time to go home. [NAME] was tired but happy. What a wonderful day!",
+      "illustration_brief": "Family leaving [DESTINATION], [NAME] looking tired but content.",
+      "emotional_tone": "contentment, tiredness"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "On the way home, [NAME] fell asleep thinking of the day. Family days were the best.",
+      "illustration_brief": "[NAME] asleep in the car/on the journey, peaceful expression.",
+      "emotional_tone": "peace, belonging"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "Where did [NAME] and their family go?",
+    "inference": "Why do you think [NAME] will remember this day?",
+    "vocabulary": "What does the word 'family' mean?",
+    "prediction": "Where would you like to go with your family?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: f, m, l, y. Copy the word: family.",
+    "level_3_4": "Write these words from the story: family, together, happy. Write about a day out you had.",
+    "level_5_6": "Write 2 sentences about [NAME]'s family day. What makes time with family special?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"DESTINATION": "the natural history museum", "ACTIVITY": "looked at dinosaur bones", "MEMORY": "[FAMILY_MEMBER] lifted [NAME] up to see the big dinosaur"},
+    "space": {"DESTINATION": "the science centre", "ACTIVITY": "saw the planetarium show", "MEMORY": "They saw a shooting star in the sky"},
+    "unicorns": {"DESTINATION": "the horse farm", "ACTIVITY": "fed the ponies", "MEMORY": "[NAME] got to brush a white pony's mane"},
+    "football": {"DESTINATION": "the big stadium", "ACTIVITY": "watched a football match", "MEMORY": "[NAME] caught a ball that came into the crowd"},
+    "animals": {"DESTINATION": "the zoo", "ACTIVITY": "saw the elephants", "MEMORY": "An elephant splashed water near them"},
+    "baking": {"DESTINATION": "the bakery", "ACTIVITY": "decorated their own biscuit", "MEMORY": "[NAME] made a biscuit that looked like a star"},
+    "nature": {"DESTINATION": "the country park", "ACTIVITY": "walked through the woods", "MEMORY": "They saw a deer hiding in the trees"},
+    "vehicles": {"DESTINATION": "the train museum", "ACTIVITY": "sat in an old train", "MEMORY": "[FAMILY_MEMBER] let [NAME] blow the train whistle"},
+    "music": {"DESTINATION": "the outdoor concert", "ACTIVITY": "danced to the music", "MEMORY": "[NAME] and [FAMILY_MEMBER] danced together"},
+    "art": {"DESTINATION": "the art gallery", "ACTIVITY": "looked at the paintings", "MEMORY": "[NAME] found a painting they loved"}
+  }
+}

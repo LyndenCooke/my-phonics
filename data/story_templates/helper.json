@@ -1,0 +1,94 @@
+{
+  "template_id": "helper",
+  "template_name": "The Helper",
+  "core_arc": "Child sees someone with a problem and helps them solve it.",
+  "emotional_beat": "Empathy and resourcefulness",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "PERSON": "Person who needs help — neighbour, friend, family member",
+    "LOCATION": "Where it happens — the garden, the street, home",
+    "PROBLEM": "The problem to solve",
+    "SOLUTION": "How they help"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] was at [LOCATION]. [NAME] saw [PERSON]. [PERSON] looked sad.",
+      "illustration_brief": "[NAME] at [LOCATION], noticing [PERSON] who looks upset or frustrated.",
+      "emotional_tone": "noticing, concern"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "'What is wrong?' asked [NAME]. [PERSON] said, '[PROBLEM].'",
+      "illustration_brief": "[NAME] approaching [PERSON], concerned expression. [PERSON] explaining the problem.",
+      "emotional_tone": "empathy, listening"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "[NAME] thought hard. 'I can help!' said [NAME]. 'I have an idea.'",
+      "illustration_brief": "[NAME] thinking, perhaps finger to chin. Light bulb moment expression.",
+      "emotional_tone": "thinking, problem-solving"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[NAME] began to [SOLUTION]. It was hard work but [NAME] did not give up.",
+      "illustration_brief": "[NAME] actively helping, engaged in [SOLUTION]. Determined expression.",
+      "emotional_tone": "determination, effort"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[NAME] kept going. Soon the job was done. [PERSON] looked at [NAME].",
+      "illustration_brief": "[NAME] finishing the task, [PERSON] watching with growing happiness.",
+      "emotional_tone": "accomplishment, perseverance"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "'You did it!' said [PERSON]. 'Thank you so much, [NAME]!' [PERSON] was so happy.",
+      "illustration_brief": "[PERSON] thanking [NAME], perhaps a hug or handshake. Big smiles.",
+      "emotional_tone": "gratitude, joy"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "[NAME] felt proud. Helping others felt good. It was the best feeling.",
+      "illustration_brief": "[NAME] looking proud and happy, [PERSON] in background still smiling.",
+      "emotional_tone": "pride, satisfaction"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] went home. 'I helped someone today,' said [NAME]. That made the day special.",
+      "illustration_brief": "[NAME] at home, telling someone about their day, happy expression.",
+      "emotional_tone": "fulfilment, sharing"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What problem did [PERSON] have?",
+    "inference": "How do you think [NAME] felt when [PERSON] said thank you?",
+    "vocabulary": "What does the word 'help' mean?",
+    "prediction": "How could you help someone today?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: h, l, p. Copy the word: help.",
+    "level_3_4": "Write these words from the story: helped, kind, happy. Write about a time you helped someone.",
+    "level_5_6": "Write 2 sentences about how [NAME] helped [PERSON]. Why is it good to help others?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"PROBLEM": "I cannot reach my toy dinosaur", "SOLUTION": "climb up carefully and get the dinosaur down"},
+    "space": {"PROBLEM": "I cannot find my rocket book", "SOLUTION": "look everywhere and find the book"},
+    "unicorns": {"PROBLEM": "My unicorn toy is stuck", "SOLUTION": "gently pull the toy free"},
+    "football": {"PROBLEM": "My ball went over the fence", "SOLUTION": "find a way to get the ball back"},
+    "animals": {"PROBLEM": "My cat is stuck in a tree", "SOLUTION": "coax the cat down with food"},
+    "baking": {"PROBLEM": "I cannot reach the mixing bowl", "SOLUTION": "get a stool and pass down the bowl"},
+    "nature": {"PROBLEM": "My plant is drooping", "SOLUTION": "water the plant and give it light"},
+    "vehicles": {"PROBLEM": "My toy car is broken", "SOLUTION": "fix the wheel back on the car"},
+    "music": {"PROBLEM": "I cannot tune my guitar", "SOLUTION": "help turn the pegs until it sounds right"},
+    "art": {"PROBLEM": "I spilled my paint", "SOLUTION": "help clean up and get more paint"}
+  }
+}

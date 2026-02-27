@@ -1,0 +1,94 @@
+{
+  "template_id": "new_friend",
+  "template_name": "The New Friend",
+  "core_arc": "Child meets someone different and forms a friendship through shared activity.",
+  "emotional_beat": "Acceptance and friendship",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "NEW_FRIEND": "Name of the new friend they meet",
+    "LOCATION": "Where they meet — school, the park, the playground",
+    "INTEREST": "Shared interest that brings them together",
+    "ACTIVITY": "What they do together — derived from interest"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] was at [LOCATION]. [NAME] saw someone new. They were sitting alone.",
+      "illustration_brief": "[NAME] at [LOCATION], noticing a new child ([NEW_FRIEND]) sitting alone. Curious expression.",
+      "emotional_tone": "curiosity, noticing"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] walked over. 'Hello,' said [NAME]. 'My name is [NAME]. What is your name?'",
+      "illustration_brief": "[NAME] approaching [NEW_FRIEND], friendly wave or smile. Open body language.",
+      "emotional_tone": "openness, kindness"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "'I am [NEW_FRIEND],' they said. 'I am new here.' [NAME] smiled. 'Do you want to play?'",
+      "illustration_brief": "[NEW_FRIEND] looking up at [NAME], starting to smile. [NAME] gesturing invitingly.",
+      "emotional_tone": "connection, invitation"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[NEW_FRIEND] nodded. 'Yes, please!' They went to [ACTIVITY] together.",
+      "illustration_brief": "Both children standing together, ready to play. Happy expressions.",
+      "emotional_tone": "joy, acceptance"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "They had so much fun. [NAME] and [NEW_FRIEND] laughed and played.",
+      "illustration_brief": "[NAME] and [NEW_FRIEND] engaged in [ACTIVITY], laughing, having fun.",
+      "emotional_tone": "joy, connection"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "'This is fun,' said [NEW_FRIEND]. 'I like [ACTIVITY].' 'Me too!' said [NAME].",
+      "illustration_brief": "Both children smiling at each other, bonding moment. Shared enjoyment visible.",
+      "emotional_tone": "bonding, shared interests"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "It was time to go. 'Can we play again?' asked [NEW_FRIEND]. 'Yes!' said [NAME]. 'We are friends now.'",
+      "illustration_brief": "[NAME] and [NEW_FRIEND] saying goodbye but looking happy. Perhaps a wave or handshake.",
+      "emotional_tone": "friendship confirmed, warmth"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] went home happy. [NAME] had made a new friend today. That was the best feeling.",
+      "illustration_brief": "[NAME] walking home with a big smile, thinking about their new friend.",
+      "emotional_tone": "happiness, fulfilment"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "Where did [NAME] meet [NEW_FRIEND]?",
+    "inference": "How do you think [NEW_FRIEND] felt when [NAME] asked them to play?",
+    "vocabulary": "What does the word 'friend' mean?",
+    "prediction": "What do you think [NAME] and [NEW_FRIEND] will do next time they meet?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: f, r, n, d. Copy the word: friend.",
+    "level_3_4": "Write these words from the story: friend, played, happy. Write a sentence about making friends.",
+    "level_5_6": "Write 2 sentences about [NAME] and [NEW_FRIEND]. What makes a good friend?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"ACTIVITY": "dig for toy dinosaurs in the sand", "flavour_detail": "They found lots of dinosaurs."},
+    "space": {"ACTIVITY": "pretend to be astronauts", "flavour_detail": "They flew to the moon together."},
+    "unicorns": {"ACTIVITY": "draw unicorns", "flavour_detail": "Their unicorns had rainbow manes."},
+    "football": {"ACTIVITY": "kick a ball around", "flavour_detail": "They scored lots of goals."},
+    "animals": {"ACTIVITY": "look for bugs", "flavour_detail": "They found a ladybird."},
+    "baking": {"ACTIVITY": "make mud pies", "flavour_detail": "The mud pies looked like cakes."},
+    "nature": {"ACTIVITY": "collect leaves", "flavour_detail": "The leaves were red and gold."},
+    "vehicles": {"ACTIVITY": "play with toy cars", "flavour_detail": "The cars raced around the track."},
+    "music": {"ACTIVITY": "sing songs together", "flavour_detail": "They made up silly songs."},
+    "art": {"ACTIVITY": "draw pictures", "flavour_detail": "Their pictures were colourful."}
+  }
+}

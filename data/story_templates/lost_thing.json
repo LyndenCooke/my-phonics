@@ -1,0 +1,95 @@
+{
+  "template_id": "lost_thing",
+  "template_name": "The Lost Thing",
+  "core_arc": "Child finds something that does not belong to them and goes on a short journey to return it to its owner.",
+  "emotional_beat": "Responsibility and kindness",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Friend or sibling name (optional — defaults to a generic name if blank)",
+    "LOCATION": "Setting — park, school, street, garden (mapped from parent's input)",
+    "INTEREST": "Used to flavour the lost item and setting details",
+    "LOST_ITEM": "Derived from interest — e.g., dinosaurs → toy dinosaur, football → shiny football boot",
+    "OWNER": "The person who lost the item — generated name appropriate to setting"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] is at [LOCATION]. It is a [WEATHER] day. [NAME] is happy.",
+      "illustration_brief": "[NAME] standing in [LOCATION], smiling, looking around. Bright, friendly setting. Establish the character's appearance for consistency across all pages.",
+      "emotional_tone": "contentment, normal day"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "[NAME] sees something on the ground. It is a [LOST_ITEM]. [NAME] picks it up.",
+      "illustration_brief": "[NAME] bending down to look at [LOST_ITEM] on the ground. Curious expression. Same character design as Scene 1.",
+      "emotional_tone": "curiosity, discovery"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "[NAME] looks at the [LOST_ITEM]. 'This is not mine,' says [NAME]. 'I must find who it belongs to.'",
+      "illustration_brief": "[NAME] holding [LOST_ITEM], looking thoughtful. Speech bubble or text below showing dialogue.",
+      "emotional_tone": "responsibility, decision"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "[NAME] asks [FRIEND]. 'Is this yours?' 'No,' says [FRIEND]. 'But I will help you look.'",
+      "illustration_brief": "[NAME] showing [LOST_ITEM] to [FRIEND]. Both characters visible. [FRIEND] shaking head but smiling.",
+      "emotional_tone": "friendship, teamwork"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "[NAME] and [FRIEND] go to [PLACE_1] to look. They ask [PERSON_1]. 'Not mine,' says [PERSON_1].",
+      "illustration_brief": "[NAME] and [FRIEND] at a new location (e.g., a shop, a bench, a gate). Talking to another character.",
+      "emotional_tone": "persistence, searching"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "They go to [PLACE_2]. Then [NAME] hears a sound. Someone is looking for something.",
+      "illustration_brief": "[NAME] and [FRIEND] at second location, [NAME] turning head as if hearing something. Hint of another character in the background.",
+      "emotional_tone": "anticipation, turning point"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "It is [OWNER]. '[LOST_ITEM]!' says [OWNER]. 'Thank you so much, [NAME]! I have been looking for it all day.'",
+      "illustration_brief": "[OWNER] reunited with [LOST_ITEM], looking delighted. [NAME] handing it over proudly. [FRIEND] in background smiling.",
+      "emotional_tone": "joy, gratitude, resolution"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "[NAME] and [FRIEND] walk home. [NAME] feels happy. It is good to help.",
+      "illustration_brief": "[NAME] and [FRIEND] walking together, smiling, warm light. Peaceful, satisfied feeling. Same setting as Scene 1 in background.",
+      "emotional_tone": "satisfaction, warmth, closure"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What did [NAME] find at [LOCATION]?",
+    "inference": "How do you think [OWNER] felt when [NAME] gave back the [LOST_ITEM]?",
+    "vocabulary": "What does the word '[VOCAB_WORD]' mean in the story?",
+    "prediction": "What do you think [NAME] would do if they found something again?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: [TARGET_GRAPHEMES]. Copy the word: [SIMPLE_WORD].",
+    "level_3_4": "Write these words from the story: [WORD_LIST]. Write a sentence about [NAME].",
+    "level_5_6": "Write 2 sentences about what happened in the story. Use the word '[VOCAB_WORD]' in a sentence."
+  },
+  "interest_mappings": {
+    "dinosaurs": {"LOST_ITEM": "toy dinosaur", "flavour_detail": "The dinosaur had a long tail and big teeth."},
+    "space": {"LOST_ITEM": "shiny rocket toy", "flavour_detail": "The rocket had stars on the side."},
+    "unicorns": {"LOST_ITEM": "soft unicorn toy", "flavour_detail": "The unicorn was pink with a silver horn."},
+    "football": {"LOST_ITEM": "red football boot", "flavour_detail": "The boot was red with white stripes."},
+    "animals": {"LOST_ITEM": "small stuffed rabbit", "flavour_detail": "The rabbit had long floppy ears."},
+    "baking": {"LOST_ITEM": "little baking book", "flavour_detail": "The book had a cake on the front."},
+    "nature": {"LOST_ITEM": "bug jar with a lid", "flavour_detail": "The jar had holes in the lid for air."},
+    "vehicles": {"LOST_ITEM": "blue toy car", "flavour_detail": "The car had four black wheels."},
+    "music": {"LOST_ITEM": "small drum", "flavour_detail": "The drum had a red top and a stick."},
+    "art": {"LOST_ITEM": "set of crayons", "flavour_detail": "The crayons were all the colours of the rainbow."}
+  }
+}

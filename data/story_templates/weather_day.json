@@ -1,0 +1,94 @@
+{
+  "template_id": "weather_day",
+  "template_name": "The Weather Day",
+  "core_arc": "Rain, snow, or sunshine changes the day's plans and leads to unexpected fun.",
+  "emotional_beat": "Adaptability and fun",
+  "personalisation_slots": {
+    "NAME": "Child's first name",
+    "FRIEND": "Friend or sibling",
+    "WEATHER_TYPE": "Type of weather — rain, snow, wind, sunshine",
+    "ORIGINAL_PLAN": "What they planned to do",
+    "NEW_ACTIVITY": "What they end up doing instead"
+  },
+  "scenes": [
+    {
+      "page": 3,
+      "scene_number": 1,
+      "outline": "[NAME] woke up and looked outside. [NAME] wanted to [ORIGINAL_PLAN] today.",
+      "illustration_brief": "[NAME] looking out the window in the morning, hopeful expression.",
+      "emotional_tone": "anticipation, hope"
+    },
+    {
+      "page": 4,
+      "scene_number": 2,
+      "outline": "But then the [WEATHER_TYPE] came! 'Oh no,' said [NAME]. 'Now we cannot [ORIGINAL_PLAN].'",
+      "illustration_brief": "[NAME] looking at the [WEATHER_TYPE] through the window, disappointed.",
+      "emotional_tone": "disappointment, change"
+    },
+    {
+      "page": 5,
+      "scene_number": 3,
+      "outline": "[FRIEND] came over. 'The [WEATHER_TYPE] has ruined our plans!' said [NAME]. [FRIEND] thought for a moment.",
+      "illustration_brief": "[NAME] and [FRIEND] together, [FRIEND] thinking of ideas.",
+      "emotional_tone": "problem, thinking"
+    },
+    {
+      "page": 6,
+      "scene_number": 4,
+      "outline": "'I have an idea!' said [FRIEND]. 'We can [NEW_ACTIVITY] instead!' [NAME] smiled.",
+      "illustration_brief": "[FRIEND] having an idea, [NAME] looking interested and hopeful.",
+      "emotional_tone": "idea, hope"
+    },
+    {
+      "page": 7,
+      "scene_number": 5,
+      "outline": "So they did [NEW_ACTIVITY]. It was actually really fun! [NAME] and [FRIEND] laughed.",
+      "illustration_brief": "[NAME] and [FRIEND] engaged in [NEW_ACTIVITY], having fun despite the weather.",
+      "emotional_tone": "fun, adaptability"
+    },
+    {
+      "page": 8,
+      "scene_number": 6,
+      "outline": "The [WEATHER_TYPE] was not so bad after all. In fact, it made things special.",
+      "illustration_brief": "[NAME] and [FRIEND] enjoying the [WEATHER_TYPE], embracing it.",
+      "emotional_tone": "appreciation, positivity"
+    },
+    {
+      "page": 9,
+      "scene_number": 7,
+      "outline": "'This is even better than our original plan!' said [NAME]. [FRIEND] agreed.",
+      "illustration_brief": "[NAME] and [FRIEND] looking happy, perhaps hugging or high-fiving.",
+      "emotional_tone": "joy, gratitude"
+    },
+    {
+      "page": 10,
+      "scene_number": 8,
+      "outline": "That night, [NAME] thought about the day. Sometimes the best days are the ones you don't plan.",
+      "illustration_brief": "[NAME] in bed, smiling, thinking about the fun day.",
+      "emotional_tone": "reflection, contentment"
+    }
+  ],
+  "comprehension_questions": {
+    "retrieval": "What weather came?",
+    "inference": "How did [NAME] feel when they couldn't do the original plan?",
+    "vocabulary": "What does the word 'adapt' mean?",
+    "prediction": "What might [NAME] do next time there is unexpected weather?"
+  },
+  "writing_worksheet": {
+    "level_1_2": "Trace and write: r, a, i, n. Copy the word: rain.",
+    "level_3_4": "Write these words from the story: weather, changed, fun. Write about your favourite weather.",
+    "level_5_6": "Write 2 sentences about a time plans changed. How can you make the best of changes?"
+  },
+  "interest_mappings": {
+    "dinosaurs": {"WEATHER_TYPE": "rain", "ORIGINAL_PLAN": "go to the dinosaur museum", "NEW_ACTIVITY": "build a dinosaur den indoors"},
+    "space": {"WEATHER_TYPE": "clouds", "ORIGINAL_PLAN": "watch the stars", "NEW_ACTIVITY": "make a model solar system inside"},
+    "unicorns": {"WEATHER_TYPE": "rain", "ORIGINAL_PLAN": "have a picnic", "NEW_ACTIVITY": "have a magical indoor tea party"},
+    "football": {"WEATHER_TYPE": "rain", "ORIGINAL_PLAN": "play football outside", "NEW_ACTIVITY": "play table football instead"},
+    "animals": {"WEATHER_TYPE": "storm", "ORIGINAL_PLAN": "visit the farm", "NEW_ACTIVITY": "make animal masks at home"},
+    "baking": {"WEATHER_TYPE": "snow", "ORIGINAL_PLAN": "go to the shops", "NEW_ACTIVITY": "bake cakes with what was at home"},
+    "nature": {"WEATHER_TYPE": "wind", "ORIGINAL_PLAN": "go for a nature walk", "NEW_ACTIVITY": "fly kites in the wind"},
+    "vehicles": {"WEATHER_TYPE": "fog", "ORIGINAL_PLAN": "watch the trains", "NEW_ACTIVITY": "build a train track inside"},
+    "music": {"WEATHER_TYPE": "thunder", "ORIGINAL_PLAN": "go to the concert", "NEW_ACTIVITY": "have a concert at home"},
+    "art": {"WEATHER_TYPE": "rain", "ORIGINAL_PLAN": "paint outside", "NEW_ACTIVITY": "paint the rain on the window"}
+  }
+}
