@@ -1,6 +1,27 @@
 # MyPhonicsBooks
 
-Personalised, phonics-structured reading books for children aged 4–8. Parents enter their child's name, interests, and reading level — the system generates a print-ready A5 PDF. Print on A4, fold, staple — real book.
+**Decodable phonics books for children aged 4–8. Every book is an open window to a different contemporary culture.**
+
+*Print at home. Fold. Staple. Read the world.*
+
+> **Last Updated:** 7 March 2026
+
+---
+
+## 🌍 The Open Window
+
+MyPhonicsBooks does two things at once:
+
+1. **Teaches children to read** using scientifically structured, decodable phonics books where every word is matched to exactly what they can decode
+2. **Opens a window to the world** by setting every book in a different contemporary culture — showing children that kids around the globe have families, pets, parks, and bedtimes just like them
+
+A child in Birmingham reads about a child in Nairobi. A child in London reads about a child in Yokohama. And in every book, every single word is one they can actually sound out.
+
+**No other product does both.** Decodable readers are typically generic. Diverse children's books are not phonics-structured. We are the intersection.
+
+> Read the full vision: [`docs/VISION.md`](docs/VISION.md)
+
+---
 
 ## The Core Promise
 
@@ -10,30 +31,49 @@ Personalised, phonics-structured reading books for children aged 4–8. Parents 
 
 No exceptions. This is the entire educational value.
 
+---
+
 ## How It Works
 
 ```
-Parent Input → Level Selection → Story Personalisation → Phonics Validation → PDF Assembly
+Level + Focus Sounds → Cultural Research → Story Writing → Phonics Validation → Image Generation → PDF Assembly
 ```
 
-A parent picks a reading level, chooses a story template, and enters their child's name and interests. The system generates a fully personalised, phonics-constrained story, validates every word against the taught grapheme set, and produces a print-ready A5 booklet.
+Each book goes through a mandatory **9-step production pipeline** with quality checkpoints at every stage. Cultural research (Step 0) happens BEFORE anything else — ensuring every setting is authentic, contemporary, and dignified.
+
+Characters are **universal** (the girl, the boy, Mum) — not personalised with specific names. This means every book works for every child who picks it up.
+
+---
 
 ## Reading Levels
 
-Six levels aligned to the Read Write Inc (RWI) colour-band progression:
+Six levels aligned to the Letters and Sounds progression:
 
-| Level | Name | RWI Band | What's Taught |
-|-------|------|----------|---------------|
-| 1 | Starting Stories | Red | All Set 1 sounds — single letters, digraphs (sh, th, ch, ng, nk, qu) |
-| 2 | Longer Sounds | Green + Purple | Set 2 long vowels — ay, ee, igh, ow, oo, ar, or, air, ir, ou, oy |
-| 3 | New Spellings | Pink + Orange | Early Set 3 — split digraphs (a-e, i-e, o-e, u-e) + consonant clusters |
-| 4 | Building Fluency | Yellow | Later Set 3 — are, ur, er, ew, ue, ow (as in cow) |
-| 5 | Reading Together | Blue | Final Set 3 — ore, oor, ire, ear, ure, tion |
-| 6 | Reading Champion | Grey | Suffix patterns — ous, cious/tious, able/ible |
+| Level | Name | Colour | What's Taught | Books |
+|-------|------|--------|---------------|-------|
+| 1 | Starting Stories | 🩷 Pink | All Set 1 sounds — letters + digraphs (sh, th, ch, ng, nk, qu) | 10 ✅ |
+| 2 | Longer Sounds | 🟡 Amber | Set 2 long vowels — ay, ee, igh, ow, oo, ar, or, air, ir, ou, oy | 4 of 5 |
+| 3 | New Spellings | 🟢 Green | Split digraphs (a-e, i-e, o-e, u-e) + consonant clusters | 1 of 5 |
+| 4 | Building Fluency | 🔵 Blue | Later Set 3 — are, ur, er, ew, ue, ow (cow) | 0 of 4 |
+| 5 | Reading Together | 🟣 Purple | Final Set 3 — ore, oor, ire, ear, ure, tion | 0 of 4 |
+| 6 | Reading Champion | 🩵 Teal | Suffix patterns — ous, cious/tious, able/ible | 0 of 4 |
 
-5 stories per level = **30 unique books**.
+**32 books total** across 6 levels — each set in a different contemporary culture from around the world.
 
-> **Note:** MyPhonicsBooks is an independent product. We are not associated with Read Write Inc or Ruth Miskin Training. Our phonics progression is based on Letters and Sounds (public domain) and aligned to the RWI colour-band sequence for familiarity.
+> **Note:** MyPhonicsBooks is an independent product based on Letters and Sounds (public domain). We are not associated with Read Write Inc or any commercial phonics programme.
+
+---
+
+## Production Status
+
+| Level | Status | Completed Books |
+|-------|--------|-----------------|
+| **L1** | ✅ COMPLETE | 10/10 — Tap! Tap! Tap!, The Mud on the Dog, The Fish in the Tank, The Red Socks, Run Pup Run!, Fox Fell Off!, The Jam Jug, The Yak and the Box, Chop Chop Chop!, Buzz and Sing! |
+| **L2** | 🔄 In Progress | 4/5 — The Night Light, Moo at the Zoo, The Shadow Show, The Fair in the Air |
+| **L3** | 🔄 In Progress | 1/5 — The Big Bike Race |
+| **L4–L6** | 🔲 Not Started | 0/12 |
+
+---
 
 ## Book Format
 
@@ -42,153 +82,84 @@ Six levels aligned to the Read Write Inc (RWI) colour-band progression:
 - **Levels 2–6:** 16 pages (4 sheets of A4) — story text + illustrations, activity pages, writing practice, nonsense word challenge, reading certificate
 - **Font:** [Andika](https://software.sil.org/andika/) (SIL International) — designed for literacy with single-storey 'a' and 'g'
 
+---
+
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.10+
-- Node.js 18+ (for frontend)
+- Python 3.12+
 - [Playwright](https://playwright.dev/) (for PDF rendering)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/LyndenCooke/my-phonics.git
-cd my-phonics
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Install Playwright browser
-playwright install chromium
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your API keys
-```
 
 ### Generate a Book
 
 ```bash
-python generate_book.py          # Generates PDF in output/books/
-python preview_pages.py          # Generates page previews in output/previews/
+cd myphonicsbooks
+
+# Generate images (hero + all scenes)
+py -3.12 scripts/generate_gemini_images.py L1
+
+# Generate PDF
+py -3.12 scripts/generate_pilot_books.py L1
 ```
 
-### Run the Frontend (development)
+---
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Tech Stack
 
-### Run the Backend
+- **Story generation:** Claude (Anthropic) with phonics-constrained prompting
+- **Image generation:** Gemini Imagen / Flux Kontext Pro via fal.ai — hero injection pipeline
+- **PDF rendering:** Jinja2 + Playwright (HTML/CSS → A5 PDF)
+- **Font:** Andika (SIL Open Font Licence)
+- **Python:** 3.12
 
-```bash
-# FastAPI (main API)
-uvicorn main:app --reload
-
-# Express (Stripe payments)
-cd backend
-npm install
-node server.js
-```
+---
 
 ## Project Structure
 
 ```
 myphonicsbooks/
-├── data/                          # Phonics knowledge base
-│   ├── graphemes_by_level.json    # Taught graphemes per level (cumulative)
-│   ├── tricky_words_by_level.json # Exception words per level
-│   ├── story_summaries.json       # 30 story outlines with sound coverage
-│   ├── story_templates/           # 10 story arc templates (JSON)
-│   ├── word_banks/                # Permitted decodable words per level
-│   ├── rwi_reference.json         # RWI sound progression reference
-│   └── assessment_structure.json  # Assessment design
-│
-├── book_templates/                # Jinja2 HTML/CSS page templates
-│   ├── book.html                  # Standard 16-page template (L2–L6)
-│   └── base.html                  # Base HTML template
-│
-├── execution/                     # AI generation pipeline
-│   ├── generate_story_text.py     # Claude API story generation
-│   ├── generate_questions.py      # Comprehension questions
-│   ├── generate_worksheet.py      # Writing worksheet content
-│   ├── validate_word_bank.py      # Phonics quality gate
-│   ├── process_order.py           # Order orchestration
-│   └── utils/                     # Level config, word banks, API clients
-│
-├── frontend/                      # React + Vite + Tailwind
-├── backend/                       # Express.js (Stripe checkout)
-├── assets/fonts/                  # Andika font files (SIL licence)
-├── tests/                         # Pytest suite
-│
-├── generate_book.py               # PDF generation entry point
-├── validate_words.py              # Grapheme decomposition + validation
-├── rebuild_word_banks.py          # Rebuild word banks from grapheme data
-├── main.py                        # FastAPI server
-└── requirements.txt               # Python dependencies
+├── CLAUDE.md                      ← Master system guide
+├── docs/
+│   ├── VISION.md                  ← The Open Window vision & philosophy
+│   ├── MYPHONICSBOOKS_COMPLETE_GUIDE.md
+│   └── brand-guidelines.md
+├── PRODUCTION_CHECKLIST.md        ← Tracks completed books
+├── data/                          ← Phonics knowledge base
+│   ├── graphemes_by_level.json    ← Taught graphemes per level
+│   ├── tricky_words_by_level.json ← Exception words per level
+│   └── *_story_*.py               ← Story data files
+├── .claude/skills/                ← 12 specialist production skills
+│   ├── workflow-orchestrator/     ← Master 9-step pipeline
+│   ├── cultural-researcher/       ← Pre-production cultural research
+│   ├── phonics-story-writer/      ← Story writing with engagement hooks
+│   ├── art-generator/             ← Hero injection image pipeline
+│   ├── illustration-director/     ← Image prompts and QA
+│   ├── book-assessor/             ← Quality gatekeeper
+│   └── ...                        ← 6 more specialist skills
+├── scripts/                       ← Generation scripts
+├── templates/                     ← Jinja2 HTML/CSS templates
+├── output/
+│   ├── images/                    ← Generated illustrations
+│   └── books/                     ← Production PDFs by level
+└── assets/fonts/                  ← Andika font files
 ```
 
-## 10 Story Templates
+---
 
-| # | Template | Story Arc | Emotional Theme |
-|---|----------|-----------|-----------------|
-| 1 | The Adventure | Goes somewhere new | Courage |
-| 2 | The Lost Thing | Finds and returns something | Kindness |
-| 3 | The New Friend | Meets someone different | Friendship |
-| 4 | The Big Day | Special event | Excitement |
-| 5 | The Helper | Solves a problem | Empathy |
-| 6 | The Discovery | Finds a secret place | Wonder |
-| 7 | The Pet Story | Animal companion | Care |
-| 8 | The Sport/Game | Competition or team activity | Perseverance |
-| 9 | The Weather Day | Weather changes the day | Adaptability |
-| 10 | The Family Day | Outing with family | Belonging |
+## Cultural Diversity
 
-Each template defines 8 scenes with placeholders for the child's name, friend, location, and interests.
+Each book is set in a different contemporary culture. Across the full series, children encounter the world:
 
-## Environment Variables
+**Represented so far:** UK (multiple regions), Middle East, Himalayan/Central Asia, South Asia, Caribbean, East Asia (Japan)
 
-Copy `.env.example` to `.env` and configure:
+**Planned:** East Africa, West Africa, Southeast Asia, South America, North Africa, Northern Europe, Eastern Europe, Pacific Islands, and more.
 
-| Variable | Purpose |
-|----------|---------|
-| `ANTHROPIC_API_KEY` | Claude — story generation and phonics validation |
-| `OPENAI_API_KEY` | DALL-E 3 — illustration generation |
-| `STRIPE_SECRET_KEY` | Payment processing |
-| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Database and storage (production) |
-| `RESEND_API_KEY` | Transactional email delivery |
+Every culture is shown **contemporary-first** — how people actually live today, not through heritage stereotypes. Tradition appears as living texture within modern life, not as the entire picture.
 
-See `.env.example` for the full list including feature flags.
+> Read the full cultural approach: [`docs/VISION.md`](docs/VISION.md)
 
-## Tech Stack
-
-- **Story generation:** Claude (Anthropic) with phonics-constrained prompting
-- **PDF rendering:** Jinja2 + Playwright (HTML/CSS → A5 PDF)
-- **Frontend:** React + Vite + Tailwind CSS
-- **Backend:** FastAPI (API) + Express.js (Stripe)
-- **Database:** SQLite (MVP) / Supabase (production)
-- **Payments:** Stripe Checkout
-- **Email:** Resend
-- **Font:** Andika (SIL Open Font Licence)
-
-## Development Status
-
-- [x] PDF generation pipeline (Jinja2 + Playwright)
-- [x] Phonics data structure (6 levels, graphemes, tricky words)
-- [x] 30 story summaries with sound coverage plans
-- [x] 10 story template definitions
-- [x] Book template (16-page HTML/CSS)
-- [x] Phonics validation engine
-- [x] RWI-aligned level mapping
-- [ ] Word bank rebuild (match new level mapping)
-- [ ] Story text generation (Claude API pipeline)
-- [ ] Image generation (illustration placeholders only)
-- [ ] Frontend completion
-- [ ] Payment integration
-- [ ] Assessment funnel
+---
 
 ## Language
 
