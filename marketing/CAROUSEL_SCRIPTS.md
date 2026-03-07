@@ -1,12 +1,12 @@
 # MyPhonicsBooks — Carousel Scripts (Minimal, Fear-Unlocking, Islamic-Compliant)
 
-## Design Rule: ONE MESSAGE PER SLIDE. No clutter. No faces.
+## Design Rule: ONE MESSAGE PER SLIDE. No clutter. Book illustrations allowed (minimal/slit eyes). No realistic photos.
 
 ---
 
 ## CAROUSEL 1: "The Cost of Wrong Books" (5 Slides)
 
-**Visual Style:** Bold typography, level colours (pink/amber/green), no faces, book flat lays only
+**Visual Style:** Bold typography, level colours (pink/amber/green), book illustrations (minimal eyes), flat lays
 
 ### SLIDE 1: The Fear
 ```
@@ -210,14 +210,14 @@ Free assessment →"
 - Text: Dark slate #0f172a
 
 ### Imagery Rules
-- ✅ Books only (covers, flat lays, open pages)
+- ✅ Book illustrations (Islamic-compliant: minimal/slit eyes)
+- ✅ Book covers, flat lays, open pages
 - ✅ Abstract shapes and patterns
 - ✅ Typography as design element
 - ✅ Level colour coding
-- ❌ No faces
-- ❌ No characters with eyes
-- ❌ No parent/child photos
-- ❌ No realistic human illustrations
+- ❌ Realistic photos of people
+- ❌ Detailed illustrations (full eyes)
+- ❌ Parent/child photos
 
 ### Layout
 - One message per slide maximum

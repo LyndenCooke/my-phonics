@@ -1,11 +1,12 @@
 # MyPhonicsBooks — Video Scripts (Minimal, Fear-Unlocking, No Faces)
 
 ## Production Rules
-- **NO FACES** anywhere in video
+- **NO REALISTIC FACES** (photos or detailed illustrations with full eyes)
 - **NO MUSIC** - voiceover only, natural sounds, or silence
 - **ONE MESSAGE** per 3-second segment
 - **Bold typography** over simple backgrounds
-- **Book flat lays** and product shots only
+- **Book illustrations** (Islamic-compliant: minimal/slit eyes) ✅ ALLOWED
+- **Book flat lays** and product shots
 - **15 seconds maximum** for hooks
 
 ---
@@ -152,18 +153,17 @@ VO: "Find their level in three minutes. Free."
 ## VISUAL STYLE GUIDE
 
 ### Approved Visuals
-- ✅ Book covers (no face visible)
+- ✅ Book illustrations (Islamic-compliant: minimal/slit eyes)
+- ✅ Book covers and story pages
 - ✅ Flat lays on surfaces
 - ✅ Typography animations
 - ✅ Abstract shapes/icons
 - ✅ Silhouettes (NO facial features)
-- ✅ Hands holding books (no face in frame)
 - ✅ Open books showing text/pages
 
 ### Forbidden Visuals
-- ❌ Human faces (children, adults, characters)
-- ❌ Characters with eyes
-- ❌ Realistic human illustrations
+- ❌ Realistic human faces (photos)
+- ❌ Detailed illustrations (full eyes, realistic features)
 - ❌ Parent/child photos
 - ❌ Any imagery that could be used for inappropriate gaze
 
@@ -214,7 +214,8 @@ VO: "Find their level in three minutes. Free."
 
 ## SHOOTING CHECKLIST
 
-- [ ] No faces in any shot
+- [ ] No realistic faces (photos or detailed illustrations)
+- [ ] Book illustrations OK (minimal/slit eyes only)
 - [ ] Silhouettes only (no facial features)
 - [ ] Book flat lays clean and styled
 - [ ] Typography large and readable on mobile

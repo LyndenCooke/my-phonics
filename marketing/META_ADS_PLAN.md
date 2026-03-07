@@ -3,17 +3,17 @@
 ## Critical: Marketing Visual Guidelines
 
 ### ❌ NEVER SHOW IN MARKETING
-- Human faces (children, parents, characters)
-- Detailed character illustrations with eyes
+- Realistic human faces (photos of children, parents, people)
+- Detailed character illustrations with full eyes
 - Any imagery that could be used for idolatry or inappropriate gaze
 - Music in any video content
 
 ### ✅ USE INSTEAD
-- Book covers only (no face visible, or back/side angle)
+- Book illustrations (Islamic-compliant: minimal/slit eyes only)
+- Book covers and open pages showing story scenes
 - Flat lays of printed books on surfaces
 - Typography-first designs
 - Abstract shapes, level colours, patterns
-- Hands holding books (if needed) — no faces
 - Open books showing pages/text only
 
 ---
@@ -112,13 +112,13 @@ Paid books in community or email upsell
 
 | Element | Rule |
 |---------|------|
-| Book covers | ✅ Allowed (no face visible) |
+| Book illustrations | ✅ Allowed (Islamic-compliant: minimal/slit eyes) |
+| Book covers | ✅ Allowed |
 | Flat lays | ✅ Allowed (books on table) |
 | Typography | ✅ Primary design element |
-| Hands holding books | ✅ Allowed (no face) |
-| Character faces | ❌ Never |
+| Realistic photos (people) | ❌ Never |
 | Parent/child photos | ❌ Never |
-| Illustrations with eyes | ❌ Never |
+| Detailed illustrations (full eyes) | ❌ Never |
 
 ---
 

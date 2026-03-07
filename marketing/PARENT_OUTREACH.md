@@ -314,16 +314,16 @@ Link in bio
 ## VISUAL GUIDELINES
 
 ### Always
-- Book flat lays
+- Book illustrations (Islamic-compliant: minimal/slit eyes)
+- Book covers and story pages
 - Typography designs
 - Level colours
 - Clean backgrounds
 
 ### Never
-- Faces
-- Characters with eyes
+- Realistic photos of people
+- Detailed illustrations (full eyes)
 - Parent/child photos
-- Realistic human illustrations
 
 ---
 

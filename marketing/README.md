@@ -26,11 +26,11 @@
 ## Key Principles
 
 ### Islamic Compliance
-- **NO FACES** in any marketing creative
-- **NO CHARACTERS WITH EYES**
+- **NO REALISTIC HUMAN FACES** (photos or detailed illustrations)
 - **NO PARENT/CHILD PHOTOS**
 - **NO MUSIC** in any video (voiceover only, natural sounds, or silence)
-- Books, typography, flat lays only
+- ✅ Book illustrations (minimal/slit eyes, Islamic-compliant) are ALLOWED
+- Books, typography, flat lays, stylised characters only
 
 ### Copy Style
 - **One message per slide/scene**
@@ -47,7 +47,7 @@
 ## Visual Rules
 
 ✅ **USE**
-- Book covers (no face visible)
+- Book covers and illustrations (Islamic-compliant: minimal/slit eyes)
 - Flat lays on surfaces
 - Bold typography
 - Abstract shapes
@@ -55,9 +55,8 @@
 - Silhouettes (NO facial features)
 
 ❌ **NEVER**
-- Human faces
-- Characters with eyes
-- Realistic illustrations
+- Realistic human faces (photos)
+- Detailed character illustrations (with full eyes)
 - Parent/child photos
 - Busy/complex designs
 
