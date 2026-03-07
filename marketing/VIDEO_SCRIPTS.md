@@ -1,219 +1,223 @@
-# MyPhonicsBooks — Video Ad Scripts
+# MyPhonicsBooks — Video Scripts (Minimal, Fear-Unlocking, No Faces)
 
-## Meta-Safe Language Notes
-- Use "they/their" or specific names (Emma, Noah) — never "your child"
-- No urgency/pressure — "The best time to start is now"
-- Focus on free value, not selling
-
----
-
-## HOOK VARIANT 1: "The Book Search Problem" (15s)
-
-**Platform:** Instagram Reels, Stories, Facebook Feed
-**Ratio:** 9:16 or 4:5
-**Tone:** Empathetic, relatable
-
-**SCRIPT:**
-
-```
-[0-3s] VISUAL: Parent scrolling through books, frustrated
-TEXT: "Still searching for books at the right level?"
-
-[3-8s] VISUAL: MyPhonicsBooks covers appearing
-VO: "We made books matched to exactly what they can decode."
-
-[8-12s] VISUAL: Child reading confidently, smiling
-VO: "Stories in their name. Every word they can actually read."
-
-[12-15s] VISUAL: 5 books fanning out, "FREE" badge
-TEXT: "5 free books. Get started →"
-CTA BUTTON: "Find Their Level"
-```
-
-**Hook:** Problem relatable to every parent
-**CTA:** Low commitment (free, assessment)
+## Production Rules
+- **NO FACES** anywhere in video
+- **ONE MESSAGE** per 3-second segment
+- **Bold typography** over simple backgrounds
+- **Book flat lays** and product shots only
+- **15 seconds maximum** for hooks
 
 ---
 
-## HOOK VARIANT 2: "The Window" (15s)
+## HOOK 1: "Wrong Books" (15s)
 
-**Platform:** Instagram Reels, Facebook Feed
-**Ratio:** 4:5
-**Tone:** Warm, aspirational
-
-**SCRIPT:**
+**Visuals:** Typography only + book flat lays. No faces.
 
 ```
-[0-3s] VISUAL: Child looking out window, curious
-TEXT: "Every child deserves a window to the world"
+[0-3s] 
+SCREEN: Messy pile of random books (blurred)
+TEXT: "Wrong books kill confidence"
 
-[3-7s] VISUAL: Book pages turning — different cultures
-VO: "Phonics books that open doors. Nairobi. Tokyo. Kingston."
+[3-7s]
+SCREEN: Clean MyPhonicsBooks stack
+TEXT: "Matched to exactly what they can decode"
 
-[7-11s] VISUAL: Book with child's name on cover
-VO: "Personalised stories in their name. Matched to their reading level."
+[7-11s]
+SCREEN: Open book showing name + story
+TEXT: "Their name. Their level. Their book."
 
-[11-15s] VISUAL: 5 books on table
-TEXT: "5 free personalised books"
-CTA BUTTON: "Start Free Assessment"
-```
-
-**Hook:** Emotional/aspirational
-**CTA:** Assessment (not purchase)
-
----
-
-## HOOK VARIANT 3: "3 Minutes" (15s)
-
-**Platform:** All placements
-**Ratio:** 4:5
-**Tone:** Quick, gamified
-
-**SCRIPT:**
-
-```
-[0-3s] VISUAL: Stopwatch, playful music
-TEXT: "Find their reading level in 3 minutes"
-
-[3-7s] VISUAL: Assessment UI — sounds, words, celebration
-VO: "A quick, fun game. No pressure. Just sounds and smiles."
-
-[7-12s] VISUAL: Results page showing level
-VO: "Instant results. 5 free books matched to their level."
-
-[12-15s] VISUAL: Books downloading, child reading
-TEXT: "Free. Instant. Try it →"
-CTA BUTTON: "Start Now"
-```
-
-**Hook:** Time-boxed, easy
-**CTA:** Immediate start
-
----
-
-## LONG-FORM: "How It Works" (60s)
-
-**Platform:** Facebook Feed, Instagram Feed
-**Ratio:** 4:5 or 1:1
-**Tone:** Teacher-like, warm, trustworthy
-
-**SCRIPT:**
-
-```
-[0-5s] OPENING HOOK
-VISUAL: Split screen — confused parent vs. happy reader
-TEXT: "Finding books at the right level shouldn't be this hard."
-VO: "Most books are either too easy... or so difficult they give up."
-
-[5-15s] THE PROBLEM
-VISUAL: Parent browsing bookshelf, overwhelmed
-VO: "And when you do find decodable books? They're all the same. Generic stories. Forgettable characters."
-
-[15-25s] THE SOLUTION
-VISUAL: MyPhonicsBooks UI, assessment flow
-VO: "MyPhonicsBooks does two things. First — we find their exact reading level in three minutes. Every word matched to what they can actually decode."
-
-[25-40s] THE MAGIC
-VISUAL: Personalised books with names, diverse cultures
-VO: "Second — every book is personalised with their name. Emma meets a child in Nairobi. Noah visits Tokyo. Every story opens a window to a different culture."
-
-[40-50s] PROOF
-VISUAL: Parent testimonials, 5-star reviews
-VO: "Used by thousands of parents across the UK. Aligned with the curriculum they use in school."
-
-[50-60s] CTA
-VISUAL: 5 books appearing, "FREE" badge strong
-VO: "Start with five free books. No credit card. Just their name and their level."
-TEXT: "5 free books — Get started →"
-CTA BUTTON: "Free Assessment"
-```
-
-**Hook:** Relatable frustration
-**CTA:** Free offer removes friction
-
----
-
-## CAROUSEL VIDEO: "5 Signs They're Ready to Level Up" (30s)
-
-**Platform:** Instagram Carousel (auto-play video on first slide)
-**Ratio:** 4:5
-**Tone:** Educational, helpful
-
-**SLIDE 1 (Video): Hook**
-```
-VISUAL: Child looking at harder book with interest
-TEXT: "5 signs they're ready to level up"
-VO: "Is it time for trickier books? Here are five signs..."
-```
-
-**SLIDES 2-6 (Static/Video loops):**
-```
-SLIDE 2: "They're reading Level 1 books confidently"
-SLIDE 3: "They know sounds like sh, ch, th"
-SLIDE 4: "They're asking 'what does this say?'"
-SLIDE 5: "They want longer stories"
-SLIDE 6: "Find out for sure — free assessment →"
+[11-15s]
+SCREEN: 5 books flat lay
+TEXT: "5 free. Get started →"
 ```
 
 ---
 
-## TESTIMONIAL VIDEO: "Sarah's Story" (30s)
-
-**Platform:** Facebook Feed, Instagram Reels
-**Ratio:** 4:5
-**Tone:** Authentic, parent-to-parent
-
-**SCRIPT:**
+## HOOK 2: "3 Minutes" (15s)
 
 ```
-[0-5s] HOOK
-VISUAL: Parent (Sarah) on camera, natural setting
-SARAH: "I was spending a fortune on books that were either too hard or too easy..."
+[0-3s]
+SCREEN: Large "3" appearing
+TEXT: "3 minutes"
 
-[5-20s] STORY
-VISUAL: Cut to books, assessment on phone
-SARAH: "Then I found this. Three minutes to find her level. Five free books in her name. And every word is actually decodable."
+[3-6s]
+SCREEN: Question mark
+TEXT: "Find their exact reading level"
 
-[20-30s] RESULT
-VISUAL: Child reading happily
-SARAH: "She's asking to read now. That's never happened before."
-TEXT: MyPhonicsBooks — 5 free books
-CTA: "Try it free →"
+[6-10s]
+SCREEN: Checklist animating in
+TEXT: "✓ Sounds they know
+✓ Sounds to practise
+✓ Books matched"
+
+[10-15s]
+SCREEN: Book cover + CTA
+TEXT: "Free. No card needed.
+Try it →"
 ```
 
 ---
 
-## PRODUCTION NOTES
+## HOOK 3: "The Gap" (15s)
 
-### Visual Style
-- Bright, natural lighting
-- Diverse families (reflect Open Window values)
-- Books shown in real hands, real homes
-- Level colour bands clearly visible (pink, amber, green, etc.)
+```
+[0-4s]
+SCREEN: Split screen - boring book vs. hard book
+TEXT: "Boring books they CAN read
+Great books they CAN'T"
+
+[4-8s]
+SCREEN: Empty gap between them
+TEXT: "Why not both?"
+
+[8-12s]
+SCREEN: MyPhonicsBooks appearing
+TEXT: "Phonics-perfect.
+Globally-minded."
+
+[12-15s]
+SCREEN: 5 books + CTA
+TEXT: "5 free books →"
+```
+
+---
+
+## HOOK 4: "Still Guessing?" (15s)
+
+```
+[0-3s]
+SCREEN: Parent silhouette (NO FACE) at bookshelf
+TEXT: "Still guessing?"
+
+[3-7s]
+SCREEN: Child silhouette (NO FACE) struggling with book
+TEXT: "Wrong level = frustration"
+
+[7-12s]
+SCREEN: Clean assessment UI animation
+TEXT: "3-minute assessment
+Exact level matched"
+
+[12-15s]
+SCREEN: Happy child silhouette (NO FACE) with book
+TEXT: "5 free books →"
+```
+
+---
+
+## LONG-FORM: "From Confusion to Confidence" (60s)
+
+**For Facebook/Instagram feed. Still no faces.**
+
+```
+[0-5s] THE PROBLEM
+SCREEN: Bookshelf with mismatched books
+TEXT: "Buying books is confusing"
+VO: "Too easy, they get bored. Too hard, they give up."
+
+[5-12s] THE FEAR
+SCREEN: Child silhouette (NO FACE) closing book
+TEXT: "Wrong books kill confidence"
+VO: "The wrong book doesn't just waste money—it teaches them reading is hard."
+
+[12-20s] THE UNLOCK
+SCREEN: Simple assessment animation
+TEXT: "3 minutes. Exact level."
+VO: "MyPhonicsBooks finds their exact level in three minutes. Every word matched to what they can actually decode."
+
+[20-30s] THE PASSION
+SCREEN: Book opening, name appearing, story text
+TEXT: "Their name. Their level. Their world."
+VO: "Books with their name in every story. Set in real places—Nairobi, Tokyo, Kingston—shown as they really are today."
+
+[30-40s] THE PROOF
+SCREEN: "Letters and Sounds" + UK curriculum text
+TEXT: "Based on UK phonics curriculum"
+VO: "Aligned with Letters and Sounds. The same progression they use in school."
+
+[40-50s] THE OFFER
+SCREEN: 5 books fanning out
+TEXT: "5 free books. Zero risk."
+VO: "Start with five free books. No credit card. Just their name, their level, and stories that open windows to the world."
+
+[50-60s] THE CTA
+SCREEN: CTA button animation
+TEXT: "Find their level →"
+VO: "Find their level in three minutes. Free."
+```
+
+---
+
+## VISUAL STYLE GUIDE
+
+### Approved Visuals
+- ✅ Book covers (no face visible)
+- ✅ Flat lays on surfaces
+- ✅ Typography animations
+- ✅ Abstract shapes/icons
+- ✅ Silhouettes (NO facial features)
+- ✅ Hands holding books (no face in frame)
+- ✅ Open books showing text/pages
+
+### Forbidden Visuals
+- ❌ Human faces (children, adults, characters)
+- ❌ Characters with eyes
+- ❌ Realistic human illustrations
+- ❌ Parent/child photos
+- ❌ Any imagery that could be used for inappropriate gaze
 
 ### Typography
-- Large, readable text on mobile
-- British English: colour, favourite, mum
-- Child names as examples: "Emma," "Noah," "Aisha," "Leo"
+- Headlines: 60-80pt, bold
+- Body: 32-40pt
+- CTA: 48pt with arrow
+- Max 5 words per line
+- One message per 3-second block
 
-### Audio
-- Clear voiceover (warm, teacher-like)
-- Optional captions (80% watch without sound)
-- Upbeat but not childish background music
+### Colour
+- Background: White or soft gradient
+- Text: Dark slate #0f172a
+- Accent: Level colours (pink, amber, green, blue, purple, teal)
+- CTA: Gradient indigo-violet
 
-### Safe Phrases (Copy-Paste Ready)
-- "Their reading level" ✓
-- "Help [Name] read with confidence" ✓
-- "Matched to exactly what they can decode" ✓
-- "Based on Letters and Sounds" ✓
-- "Aligned with the UK phonics curriculum" ✓
-- "The best time to start is now" ✓
-- "Free to try" ✓
+### Transitions
+- Simple cuts only
+- No fancy effects
+- 3 seconds per scene minimum
+- Text appears with simple fade
 
-### Banned Phrases (Never Use)
-- "Your child" ✗
-- "Limited time" ✗
-- "Act now" ✗
-- "Don't miss out" ✗
-- "Struggling" ✗
-- "Behind" ✗
+---
+
+## COPY PRINCIPLES
+
+### Fear (Ethical)
+✅ "Wrong books kill confidence"
+✅ "Still guessing?"
+✅ "Too hard = frustration"
+
+❌ "Your child is failing"
+❌ "Don't let them fall behind"
+❌ "Last chance"
+
+### Passion
+✅ "Matched to exactly what they can decode"
+✅ "Their name. Their level."
+✅ "Read with confidence"
+
+### Clarity
+- One idea per scene
+- Active verbs
+- No jargon
+- Short words
+
+---
+
+## SHOOTING CHECKLIST
+
+- [ ] No faces in any shot
+- [ ] Silhouettes only (no facial features)
+- [ ] Book flat lays clean and styled
+- [ ] Typography large and readable on mobile
+- [ ] One message per 3-second block
+- [ ] CTA clear on final shot
+- [ ] Level colours visible
+- [ ] Islamic principles maintained throughout

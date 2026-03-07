@@ -1,487 +1,334 @@
-# MyPhonicsBooks — Parent Outreach Strategy
+# MyPhonicsBooks — Parent Outreach (Minimal, Fear-Unlocking)
 
-## Overview
-Multi-channel approach combining organic content, community building, and targeted paid ads to reach UK parents of early readers (4-8 years).
-
-**Key Principle:** Lead with value (free assessment + 5 books). Build trust before asking for anything.
-
----
-
-## CHANNEL 1: META ADS (Paid)
-
-### Budget Split
-- 60% Facebook/Instagram Feed (primary awareness)
-- 25% Instagram Reels (video views, younger parents)
-- 15% Facebook Stories/Explore (retargeting)
-
-### Campaign Rhythm
-**Week 1-2: Testing**
-- 3 video hooks
-- 2 carousel concepts
-- 2 audience segments
-- Daily budget: £20-30
-
-**Week 3-4: Optimising**
-- Kill underperformers (<1.5% CTR)
-- Scale winners
-- Test new creative variations
-
-**Month 2+: Scaling**
-- 3-5x winning budgets
-- Introduce lookalikes
-- Retargeting sequences active
-
-### Meta-Safe Targeting
-- Interests: Phonics, Early years education, KS1, Letters and Sounds, Reading Eggs, Oxford Reading Tree (competitor, careful not to claim affiliation)
-- Behaviours: Engaged shoppers, Online course purchasers
-- Exclude: Read Write Inc employees/groups (avoid confusion)
-- Locations: UK only (England, Wales, Scotland)
+## Principles
+- One message per email
+- Fear (ethical) → Solution → Action
+- No faces in any creative
+- Islamic values throughout
 
 ---
 
-## CHANNEL 2: ORGANIC SOCIAL (Free)
+## EMAIL 0: Delivery (Immediate)
 
-### Instagram
-**Content Pillars:**
+**Subject:** [Name]'s books are ready
 
-**Pillar 1: Tips & Education (40%)**
-- "3 signs they're ready for Level 2"
-- "What to do when they get stuck on a word"
-- "Nonsense words: why they matter for the phonics check"
-- Carousel format, saved-shares encouraged
+```
+Hi [Parent Name],
 
-**Pillar 2: Behind the Scenes (20%)**
-- Book creation process
-- Cultural research deep dives
-- "Meet the team" (if applicable)
-- Stories: day-in-the-life
+[Name]'s 5 free books are ready.
 
-**Pillar 3: User Content (30%)**
-- Repost parent photos (with permission)
-- Child reading moments
-- Unboxing/printing videos
-- Testimonial quotes
+[DOWNLOAD BUTTON]
 
-**Pillar 4: Product/CTA (10%)**
-- Free assessment link
-- New book releases
-- Level completion celebrations
-- "Link in bio" reminders
+Every word matched to Level [X].
+Every story opens a window to the world.
 
-**Posting Schedule:**
-- Feed: 4x per week
-- Stories: Daily
-- Reels: 2x per week
+Print. Fold. Staple. Read.
 
-**Hashtags (Mix of sizes):**
-- Large: #phonics #learntoread #earlyyears #eyfs
-- Medium: #phonicsbooks #year1phonics #letterssounds #readingathome
-- Small/Niche: #decodablebooks #phonicsactivities #readingjourney #parentsofinstagram
+MyPhonicsBooks
 
-### Facebook
-**Focus:** Community building + parent groups
-
-**Tactics:**
-1. **Own Page:** Longer educational posts, video embeds, event announcements
-2. **Facebook Groups:** 
-   - Join 10-15 primary parent groups
-   - Provide genuine value (answer questions)
-   - Soft mention only when relevant: "We made something that helped with this..."
-   - Never spam or direct sell
-
-**Groups to Target:**
-- "Year 1 Parents UK"
-- "Phonics Support for Parents"
-- "Home Education UK"
-- Local area parenting groups ("Mums in Manchester", etc.)
-
-### Pinterest
-**Opportunity:** High intent, search-driven, perfect for parent research phase
-
-**Boards:**
-- Phonics Activities for Kids
-- Free Reading Resources
-- Year 1 Phonics Check Prep
-- Print at Home Books
-- Reading Milestones by Age
-
-**Pins:**
-- Carousel previews → landing page
-- Infographics: "6 levels of phonics explained"
-- Book mockups with text overlay
-- Direct links to free assessment
+---
+P.S. Use 120gsm paper for best results.
+```
 
 ---
 
-## CHANNEL 3: EMAIL OUTREACH (Nurture)
+## EMAIL 1: The Fear (Day 2)
 
-### Lead Magnet → Email Capture
-**On Results Page:**
+**Subject:** The real cost of wrong books
+
 ```
-"Get 5 FREE personalised phonics books for [Name]
-
-[Email input]
-[✓] Yes, send me reading tips and new book releases
-
-[Get Free Books →]
-
-No spam. Unsubscribe anytime."
-```
-
-### Welcome Sequence (8 emails)
-
-**Email 0: Immediate — Book Delivery**
-```
-Subject: [Name]'s 5 free books are ready 📚
-
-Body:
 Hi [Parent Name],
 
-Great news! [Name]'s free books are ready to download.
+Wrong books don't just waste money.
 
-[5 Book Covers inline/download buttons]
+They teach children that reading is hard.
+That they're not good at it.
+That books are boring.
 
-WHAT'S INSIDE:
-• 5 complete stories at Level [X]
-• Each one personalised with [Name]'s name
-• Print-ready A5 PDFs (fold and staple)
-• Activities, writing practice, and a certificate
+The right book?
+It builds confidence.
+Page by page.
 
-[Download Now →]
+[Name]'s free books are matched to exactly what they can decode today.
 
-Happy reading,
-Team MyPhonicsBooks
+No guessing.
+No frustration.
+Just progress.
 
-P.S. Print on 120gsm paper for best results!
+[Download [Name]'s Books →]
+
+MyPhonicsBooks
 ```
 
-**Email 1: Day 2 — Quick Win Tip**
-```
-Subject: One trick that helps [Name] sound out words
+---
 
-Body:
+## EMAIL 2: The Window (Day 5)
+
+**Subject:** Nairobi. Tokyo. Kingston.
+
+```
 Hi [Parent Name],
 
-Quick tip for reading time with [Name]:
+Every MyPhonicsBooks story opens a window.
 
-When they get stuck on a word, try the "Sound Buttons" method:
+A child in Birmingham reads about a child in Nairobi.
+A child in London reads about a child in Tokyo.
 
-1. Point under each sound as they say it
-2. Run your finger underneath as they blend
-3. If they get it → celebrate!
-4. If not → just tell them and move on
+Different places.
+Same humanity.
 
-Example: s-a-t = "sat" (finger sweeps underneath)
+Families. Pets. Parks. Bedtimes.
 
-No pressure. Just practise.
+[Name]'s books show the world as it really is—diverse, contemporary, full of warmth.
 
-How did their first book go? Hit reply and let us know.
+One story at a time.
 
-[Browse More Free Tips →]
+[Read [Name]'s Next Book →]
+
+MyPhonicsBooks
 ```
 
-**Email 2: Day 5 — The Cultural Window**
-```
-Subject: The story behind [Name]'s books 🌍
+---
 
-Body:
+## EMAIL 3: Social Proof (Day 8)
+
+**Subject:** "She actually asked to read"
+
+```
 Hi [Parent Name],
 
-[Name]'s books aren't just phonics practice—each one opens a window to a different culture.
+Real parent:
 
-Book 1: Set in [Location]
-[Short paragraph about the setting]
+"I spent £15/month on books that were either too easy or way too hard.
 
-Book 2: Set in [Location]
-[Short paragraph about the setting]
+These are exactly at her level.
+And she loves seeing her name.
 
-...
+Last night she actually asked to read."
+— Sarah M., Manchester
 
-We believe children should see the world as it really is: diverse, contemporary, and full of warmth.
+The difference?
 
-Questions? Just reply.
-
-[See How We Choose Locations →]
-```
-
-**Email 3: Day 8 — Social Proof**
-```
-Subject: "She actually ASKED to read tonight" — Sarah, Manchester
-
-Body:
-Hi [Parent Name],
-
-Real parent, real quote:
-
-"I was spending £15/month on books that were either too easy or way too hard. These are exactly at her level—and she loves seeing her name. Last night she actually ASKED to read. That's never happened before."
-— Sarah M., mum to Emily (Level 2)
-
-We're hearing this more and more.
-
-Parents tell us the combination works:
-• Phonics-matched (confidence)
-• Personalised (ownership)
-• Diverse stories (curiosity)
+Matched level + personal name + engaging story.
 
 [Name] might be next.
 
-Have you tried all 5 books yet?
+[Get [Name]'s Books →]
 
-[Download [Name]'s Books →]
+MyPhonicsBooks
 ```
 
-**Email 4: Day 12 — Soft Upsell**
-```
-Subject: Ready for something special for [Name]?
+---
 
-Body:
+## EMAIL 4: Soft Upsell (Day 12)
+
+**Subject:** Ready for something special?
+
+```
 Hi [Parent Name],
 
-[Name] has read all 5 Level [X] books—fantastic!
+[Name] has read all 5 Level [X] books.
+
+Fantastic.
 
 Ready for the next level?
 
-While the free books use our pre-written stories, you can also create custom stories:
+Free books = template stories (still great)
+Custom books = [Name] as main character, their interests, their adventure
 
-• [Name] as the main character
-• Their interests woven in (dinosaurs? baking? football?)
-• Choose the adventure theme
-• AI-generated illustrations
-• New books anytime
-
-First custom book is free with any subscription.
+First custom book free with any subscription.
 
 [Create [Name]'s Custom Story →]
 
-Or if now's not the right time—no worries. The free books will always be there.
+Or keep enjoying the free books.
+They're yours forever.
 
-[Keep Reading Free Books →]
+MyPhonicsBooks
 ```
 
-**Email 5: Day 18 — Educational Value**
-```
-Subject: How to know when [Name] is ready for Level [X+1]
+---
 
-Body:
+## EMAIL 5: The Signs (Day 18)
+
+**Subject:** 3 signs [Name] is ready for more
+
+```
 Hi [Parent Name],
 
-Three signs [Name] might be ready for trickier books:
+Three signs:
 
-1️⃣ They read Level [X] books without sounding out
-2️⃣ They're asking about new sounds ("what does 'igh' say?")
-3️⃣ They want longer, more exciting stories
+1. They read Level [X] books easily
+2. They ask about new sounds
+3. They want longer stories
 
-Not there yet? That's perfectly fine. Every child moves at their own pace.
+See all three?
+Time to reassess.
 
-Early? Take our reassessment anytime:
 [Take Free Re-Assessment →]
 
-Remember: confidence > speed.
+Not there yet?
+That's fine.
 
-[Browse All Levels →]
+Every child moves at their own pace.
+
+Confidence > speed.
+
+MyPhonicsBooks
 ```
 
-**Email 6: Day 25 — FOMO/Value**
-```
-Subject: New books just for Level [X+1] readers
+---
 
-Body:
+## EMAIL 6: New Release (Day 25)
+
+**Subject:** New books for Level [X+1]
+
+```
 Hi [Parent Name],
 
-We just released new books for Level [X+1]:
+New books just released:
 
-📚 [Book Title 1] — set in [Location]
-📚 [Book Title 2] — set in [Location]
-📚 [Book Title 3] — set in [Location]
+Level [X+1]
 
-All available for immediate download.
+Set in [Location]
+Matched to new sounds
+Ready to print
 
-Subscribers get unlimited access to every book, every level, forever.
+Subscribers get unlimited access.
 
-[Unlock Everything for [Name] →]
+[Unlock Everything →]
 
-Not ready? The free books aren't going anywhere.
+Or keep reading the free books.
+
+MyPhonicsBooks
 ```
 
-**Email 7: Day 35 — Re-engagement (if no opens)**
-```
-Subject: Did [Name] enjoy the books?
+---
 
-Body:
+## EMAIL 7: Check-in (Day 35)
+
+**Subject:** How is [Name] enjoying the books?
+
+```
 Hi [Parent Name],
 
-Just checking in—how is [Name] enjoying their free books?
+Quick check-in.
 
-We'd love to hear:
-• Which story was their favourite?
-• Have they earned their Reading Star certificate yet?
-• Any feedback for us?
+How is [Name] enjoying the books?
 
-Hit reply—real human here.
+Favorite story so far?
+Earned the Reading Star certificate yet?
 
-If you need anything else (more books, reading tips, phonics questions), just ask.
+Hit reply—I read every message.
 
-[Browse More Resources →]
+[Browse More Books →]
+
+MyPhonicsBooks
 ```
 
 ---
 
-## CHANNEL 4: PARTNERSHIPS & OUTREACH
+## ORGANIC SOCIAL (One Message Per Post)
 
-### Teacher Ambassadors
-**Target:** Primary teachers, teaching assistants, phonics leads
+### Post Type 1: Fear/Problem
+```
+Wrong books kill confidence.
 
-**Offer:**
-- Free subscription for classroom use
-- Shareable discount code for parents
-- Affiliate commission (if GDPR compliant)
+Too hard = frustration.
+Too easy = boredom.
 
-**Approach:**
-1. Identify teachers on Instagram/Twitter
-2. Send genuine, personalised DM
-3. Offer value first (free classroom set)
-4. Ask for feedback, not promotion
-5. If they love it → natural word of mouth
+The right level = progress.
 
-### Parent Bloggers / Micro-Influencers
-**Target:** UK parenting accounts (1k-50k followers)
+Find their exact level in 3 minutes.
 
-**Offer:**
-- Free books for their children
-- Commission on referred subscriptions
-- Exclusive early access to new releases
+Link in bio →
+```
 
-**Criteria:**
-- Authentic voice
-- Engaged audience (not just followers)
-- Focus on education/parenting (not just lifestyle)
+### Post Type 2: Solution
+```
+5 free books.
 
-### School Partnerships (B2B2C)
-**Target:** Multi-academy trusts, phonics leads
+Matched to exactly what they can decode.
+Their name in every story.
+Based on UK phonics curriculum.
 
-**Offer:**
-- Whole-school assessment tool
-- Parent communication template
-- Free books for every child
-- £X per student commission to school
+Zero risk.
 
-**Pitch:**
-"Help parents support reading at home—aligned with your curriculum, zero cost to families, optional revenue share for school."
+Link in bio →
+```
 
----
+### Post Type 3: Proof
+```
+"She actually asked to read."
+— Sarah M., Manchester
 
-## CHANNEL 5: CONTENT MARKETING (SEO)
+The right book changes everything.
 
-### Blog / Resources Hub
-**Target Keywords:**
-- "free phonics books" (high volume, transactional)
-- "phonics level test" (medium volume, high intent)
-- "year 1 phonics check practice" (seasonal, high intent)
-- "letters and sounds books" (medium volume)
-- "print at home phonics books" (low volume, high intent)
-- "phonics books for [age]" (long tail)
+5 free books → Link in bio
+```
 
-**Content Types:**
-1. **Tools:** Free assessment (main conversion point)
-2. **Guides:** "The Complete Guide to UK Phonics Levels"
-3. **Checklists:** "Year 1 Phonics Check: What to Expect"
-4. **Lists:** "10 Signs Your Child is Ready to Level Up"
-5. **Stories:** Parent success stories, cultural spotlights
+### Post Type 4: Passion
+```
+Every story opens a window.
 
-### YouTube (Long-term)
-**Content:**
-- Story reading videos (full books, embedded player)
-- Phonics tips for parents
-- Behind-the-scenes book creation
-- Teacher testimonials
+Nairobi. Tokyo. Kingston.
 
-**SEO:**
-- "Phonics books for 5 year olds"
-- "How to teach phonics at home"
-- "Year 1 reading practice"
+Same families. Same pets. Same bedtimes.
+Different places. Same humanity.
+
+Read the world.
+
+Link in bio →
+```
+
+### Post Type 5: CTA
+```
+3 minutes.
+Exact level.
+5 free books.
+
+Find their reading level →
+
+Link in bio
+```
 
 ---
 
-## CHANNEL 6: REFERRAL PROGRAM
+## HASHTAGS (Use 3-5)
 
-### Structure
-"Give 5 free books, get 1 custom book free"
-
-**How it Works:**
-1. Existing user gets unique referral link
-2. Friend uses link → gets 5 free books
-3. Friend subscribes → referrer gets 1 free custom book credit
-
-**Promotion:**
-- Email to existing users
-- In-book QR code (Page 16)
-- Dashboard banner
+#phonics #learntoread #readingathome #letterssounds #phonicsbooks #year1 #eyfs
 
 ---
 
-## OUTREACH CALENDAR (90 Days)
+## VISUAL GUIDELINES
 
-### Month 1: Foundation
-- **Week 1:** Set up Meta ad campaigns (test phase)
-- **Week 2:** Launch organic social (daily posting)
-- **Week 3:** Begin email nurture sequence
-- **Week 4:** Outreach 20 teachers/parent bloggers
+### Always
+- Book flat lays
+- Typography designs
+- Level colours
+- Clean backgrounds
 
-### Month 2: Scale
-- **Week 5-6:** Scale winning ad creative (3-5x budget)
-- **Week 7:** Launch referral program
-- **Week 8:** First school partnership outreach
-
-### Month 3: Optimise
-- **Week 9-10:** Retargeting campaigns (assessment incompletes)
-- **Week 11:** Seasonal push (phonics check prep months)
-- **Week 12:** Review metrics, plan Q2
+### Never
+- Faces
+- Characters with eyes
+- Parent/child photos
+- Realistic human illustrations
 
 ---
 
-## KEY METRICS TO TRACK
+## POSTING SCHEDULE
 
-| Channel | Primary Metric | Target |
-|---------|---------------|--------|
-| Meta Ads | Email capture CPA | <£2 |
-| Meta Ads | Landing page CTR | >2% |
-| Organic Social | Follower growth | 10%/month |
-| Organic Social | Save/share rate | >3% |
-| Email | Open rate | >40% |
-| Email | Click rate | >10% |
-| Email | Free→Paid conversion | >5% |
-| SEO | Organic traffic | +20%/month |
-| Referral | Referral rate | >10% of users |
+- Feed: 3x per week (Mon/Wed/Fri)
+- Stories: Daily (behind the scenes, polls, tips)
+- Reels: 2x per week (short hooks)
 
 ---
 
-## META-SAFE CHECKLIST
+## KEY MESSAGES (Rotate)
 
-### ✅ ALWAYS
-- Use "they/their" or specific names (Emma, Noah)
-- Lead with value (free assessment, free books)
-- Focus on confidence and curiosity
-- Use curriculum-aligned trust signals
-- Keep it warm and teacher-like
+1. **Fear:** Wrong books kill confidence
+2. **Solution:** Matched to exactly what they can decode
+3. **Proof:** Based on UK curriculum
+4. **Passion:** Their name. Their level. Their world.
+5. **Action:** 5 free books →
 
-### ❌ NEVER
-- "Your child" / "your kid"
-- "Struggling" / "behind" / "catch up"
-- Urgency pressure ("last chance", "limited time")
-- Hard sell language ("buy now", "don't miss out")
-- Claims about other programmes being inferior
-
----
-
-## QUICK WIN ACTIONS (This Week)
-
-1. **Set up Meta Pixel** on landing page
-2. **Create 5 Instagram posts** from carousel scripts
-3. **Draft welcome email** sequence in email platform
-4. **Join 10 parent Facebook groups** (observe first, add value second)
-5. **Reach out to 5 teacher accounts** on Instagram
-6. **Schedule assessment retargeting ads** (incomplete assessments)
-
----
-
-*Strategy built for trust first, conversion second. Lead with generosity.*
+One per post. No more.

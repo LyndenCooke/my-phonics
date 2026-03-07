@@ -1,427 +1,248 @@
-# MyPhonicsBooks — Carousel Ad Scripts
+# MyPhonicsBooks — Carousel Scripts (Minimal, Fear-Unlocking, Islamic-Compliant)
 
-## Format: Instagram/Facebook Carousel (5-8 slides)
-## Note: All copy avoids "your child" — use "they/their" or example names
+## Design Rule: ONE MESSAGE PER SLIDE. No clutter. No faces.
 
 ---
 
-## CAROUSEL 1: "The Gap" (5 Slides)
+## CAROUSEL 1: "The Cost of Wrong Books" (5 Slides)
 
-**Objective:** Awareness — problem/education
-**CTA:** Swipe to see solution →
+**Visual Style:** Bold typography, level colours (pink/amber/green), no faces, book flat lays only
 
-### SLIDE 1: The Hook
+### SLIDE 1: The Fear
 ```
-IMAGE: Split visual — boring book vs. generic decodable
-TEXT: 
-"The problem with most phonics books...
-👇 Swipe to see why"
+VISUAL: Stack of random children's books (blurred/ crossed out)
+TEXT: "Wrong books kill confidence"
 
-CAPTION: Something's missing from early reading.
+Nothing else. One line.
 ```
 
-### SLIDE 2: Side A — Decodable Readers
+### SLIDE 2: The Problem
 ```
-IMAGE: Generic phonics book covers (bland)
-HEADLINE: "Decodable books work..."
-BODY:
-"They're phonics-perfect. Every word matched to what beginners can sound out.
+VISUAL: Simple graphic showing books scattered
+TEXT: "Too hard = frustration
+Too easy = boredom"
 
-But the stories? Forgettable. Generic characters. Same setting every time."
-
-FOOTER: There's another problem →
+Two lines. That's it.
 ```
 
-### SLIDE 3: Side B — Diverse Books
+### SLIDE 3: The Unlock
 ```
-IMAGE: Beautiful diverse picture books
-HEADLINE: "Diverse books inspire..."
-BODY:
-"Children see themselves. They learn about the world. They dream bigger.
+VISUAL: One clean MyPhonicsBooks cover (no face visible)
+TEXT: "Matched to exactly what they can decode"
 
-But they're not phonics-structured. Too hard for beginners."
-
-FOOTER: Here's the gap →
+One promise.
 ```
 
-### SLIDE 4: The Intersection
+### SLIDE 4: The Proof
 ```
-IMAGE: MyPhonicsBooks covers with level colours
-HEADLINE: "What if a book did BOTH?"
-BODY:
-"✓ Every word decodable at their level
-✓ Personalised with their name
-✓ Stories set across the world
-✓ Contemporary cultures, real children
+VISUAL: "Letters and Sounds" logo + UK flag
+TEXT: "Based on UK phonics curriculum"
 
-Nairobi. Tokyo. Kingston. Doha."
-
-FOOTER: See how it works →
+Trust signal.
 ```
 
-### SLIDE 5: CTA
+### SLIDE 5: The Action
 ```
-IMAGE: 5 free books spread, "FREE" badge
-HEADLINE: "Start with 5 free books"
-BODY:
-"• Free 3-minute assessment
-• 5 books matched to their level
-• Personalised with their name
-• Based on Letters and Sounds
+VISUAL: 5 books fanned out, flat lay
+TEXT: "5 free books
+Find their level →"
 
-The best time to start is now."
-
-CTA BUTTON: "Get Free Books →"
+CTA only.
 ```
 
 ---
 
-## CAROUSEL 2: "How It Works" (6 Slides)
+## CAROUSEL 2: "3 Minutes" (5 Slides)
 
-**Objective:** Consideration — explain the process
-**CTA:** Simple, low commitment
+### SLIDE 1: Time Hook
+```
+VISUAL: Large "3" in brand pink
+TEXT: "3 minutes"
+
+Just the number.
+```
+
+### SLIDE 2: The Fear
+```
+VISUAL: Question mark in amber
+TEXT: "Still guessing their reading level?"
+
+Call out the uncertainty.
+```
+
+### SLIDE 3: The Solution
+```
+VISUAL: Simple checklist graphic
+TEXT: "Quick assessment
+Exact sounds they know
+Level matched books"
+
+Three bullets. Clean.
+```
+
+### SLIDE 4: The Unlock
+```
+VISUAL: Book cover with name placeholder
+TEXT: "Books with their name in every story"
+
+Personalisation hook.
+```
+
+### SLIDE 5: The Action
+```
+VISUAL: CTA button graphic
+TEXT: "Free. No card required.
+Start now →"
+```
+
+---
+
+## CAROUSEL 3: "Confidence vs. Confusion" (4 Slides - Ultra Minimal)
+
+### SLIDE 1: Before
+```
+VISUAL: Messy stack of mismatched books
+TEXT: "Confusion"
+```
+
+### SLIDE 2: After
+```
+VISUAL: Neat row of level-coloured MyPhonicsBooks
+TEXT: "Confidence"
+```
+
+### SLIDE 3: How
+```
+VISUAL: Simple 3-step icons (no faces)
+TEXT: "1. Assessment
+2. Match level
+3. Read"
+```
+
+### SLIDE 4: CTA
+```
+VISUAL: Single book cover
+TEXT: "Try free →"
+```
+
+---
+
+## CAROUSEL 4: "The Gap" (5 Slides - Educational Fear)
+
+### SLIDE 1: Problem A
+```
+VISUAL: Boring phonics book
+TEXT: "Decodable books = boring stories"
+```
+
+### SLIDE 2: Problem B
+```
+VISUAL: Beautiful diverse book (too hard)
+TEXT: "Great stories = too hard to read"
+```
+
+### SLIDE 3: The Gap
+```
+VISUAL: Empty space between two books
+TEXT: "Why can't one book do both?"
+```
+
+### SLIDE 4: Solution
+```
+VISUAL: MyPhonicsBooks (clean, level colour)
+TEXT: "Phonics-perfect. Globally-minded."
+```
+
+### SLIDE 5: Proof + CTA
+```
+VISUAL: Flat lay of 5 books
+TEXT: "5 free. Matched to their level.
+Get started →"
+```
+
+---
+
+## CAROUSEL 5: "Signs" (5 Slides - Recognition)
 
 ### SLIDE 1: Hook
 ```
-IMAGE: Child looking curious at phone/tablet
-TEXT: "Find their reading level in 3 minutes"
-SUBTEXT: 👇 See how it works
-```
-
-### SLIDE 2: Step 1 — The Assessment
-```
-IMAGE: UI mockup of assessment (colourful, gamified)
-HEADLINE: "Step 1: Play the Sounds Game"
-BODY:
-"3 minutes. No pressure. Just fun.
-
-They'll hear sounds, say sounds, read simple words. Our friendly guide cheers them on."
-
-FOOTER: See what happens next →
-```
-
-### SLIDE 3: Step 2 — Instant Results
-```
-IMAGE: Results page mockup showing "Level 2 — New Sounds"
-HEADLINE: "Step 2: See Their Level"
-BODY:
-"Instant, personalised results.
-
-• What they can read confidently
-• Sounds to practise next
-• The right level to start
-
-No login required to start."
-
-FOOTER: Then this happens →
-```
-
-### SLIDE 4: Step 3 — 5 Free Books
-```
-IMAGE: 5 book covers with child's name
-HEADLINE: "Step 3: Get 5 Free Books"
-BODY:
-"All at their assessed level. All personalised.
-• 5 complete stories
-• Print-ready A5 PDFs
-• Activities and certificates included
-• Free, forever"
-
-FOOTER: What makes these different →
-```
-
-### SLIDE 5: The Books
-```
-IMAGE: Inside pages — story text + illustration
-HEADLINE: "Phonics-perfect. Globally-minded."
-BODY:
-"Every word is either:
-✓ Decodable at their level, OR
-✓ A listed tricky word
-
-Every story opens a window to a different culture — shown as it really is today."
-
-FOOTER: Ready to try? →
-```
-
-### SLIDE 6: CTA
-```
-IMAGE: Happy child reading
-HEADLINE: "Start free. No credit card needed."
-BODY:
-"• 3-minute assessment
-• Instant results
-• 5 free books
-• Aligned with UK curriculum
-
-The best time to start is now."
-
-CTA BUTTON: "Start Free Assessment →"
-```
-
----
-
-## CAROUSEL 3: "5 Signs They're Ready" (6 Slides)
-
-**Objective:** Educational, engagement
-**CTA:** Help them find out for sure
-
-### SLIDE 1: Hook
-```
-IMAGE: Child looking at bookshelf with interest
-TEXT: "5 signs they're ready to level up 👇"
-SUBTEXT: Is it time for trickier books?
+VISUAL: Parent looking at bookshelf (NO FACE - show back/side only, or use illustration without eyes)
+TEXT: "5 signs they're ready to level up"
 ```
 
 ### SLIDE 2: Sign 1
 ```
-IMAGE: Level 1 book with checkmark
-TEXT: 
-"1️⃣ They're reading Level 1 books confidently
-
-No sounding out needed. They just... read."
+VISUAL: Checkmark
+TEXT: "They read current books easily"
 ```
 
 ### SLIDE 3: Sign 2
 ```
-IMAGE: Sound cards: sh, ch, th
-TEXT:
-"2️⃣ They know sounds like sh, ch, th
-
-Digraphs are becoming familiar friends."
+VISUAL: Sound wave graphic
+TEXT: "They ask about new sounds"
 ```
 
 ### SLIDE 4: Sign 3
 ```
-IMAGE: Child pointing to book with curiosity
-TEXT:
-"3️⃣ They ask 'what does this say?'
-
-Curiosity about trickier words is a great sign."
-```
-
-### SLIDE 5: Sign 4 & 5
-```
-IMAGE: Child wanting more story
-TEXT:
-"4️⃣ They want longer, more exciting stories
-
-5️⃣ They sound out new words independently
-
-These show readiness!"
-```
-
-### SLIDE 6: CTA
-```
-IMAGE: Assessment UI with "FREE" badge
-TEXT:
-"Find out for sure in 3 minutes"
-
-Our free assessment gives you:
-• Their exact reading level
-• Sounds they know
-• Sounds to practise
-• 5 free books matched to them
-
-Based on Letters and Sounds."
-
-CTA BUTTON: "Take Free Assessment →"
-```
-
----
-
-## CAROUSEL 4: "The Open Window" (7 Slides)
-
-**Objective:** Brand story, emotional connection
-**CTA:** Be part of the journey
-
-### SLIDE 1: Hook
-```
-IMAGE: Child looking out a window
-TEXT: "Every child deserves a window to the world"
-SUBTEXT: Swipe to read our story 👇
-```
-
-### SLIDE 2: The Observation
-```
-IMAGE: Generic phonics book vs. diverse book side by side
-HEADLINE: "We noticed something..."
-BODY:
-"Phonics books that teach kids to read? Generic stories, forgettable settings.
-
-Beautiful diverse books? Too hard for beginners."
-
-FOOTER: So we asked... →
-```
-
-### SLIDE 3: The Question
-```
-IMAGE: Thoughtful illustration of children around the world
-HEADLINE: "Why can't a book do BOTH?"
-BODY:
-"• Teach reading scientifically
-• Open eyes to the world
-• Show contemporary cultures with dignity
-• Feel personal with their name on the cover"
-
-FOOTER: We built exactly that →
-```
-
-### SLIDE 4: The Result
-```
-IMAGE: MyPhonicsBooks grid showing level colours
-HEADLINE: "MyPhonicsBooks"
-BODY:
-"32 books. 6 reading levels. 
-Each one set in a different contemporary culture.
-
-Nairobi. Tokyo. Kingston. Doha. Bogotá. And 27 more."
-
-FOOTER: Here's how it looks →
-```
-
-### SLIDE 5: The Books
-```
-IMAGE: Inside spread showing story + illustration
-HEADLINE: "Every word matched to their level"
-BODY:
-"Decodable phonics that actually works.
-Every word they can sound out.
-Characters and settings from real places.
-
-A child in Birmingham reads about a child in Nairobi.
-A child in London reads about a child in Yokohama."
-
-FOOTER: Parents are saying... →
-```
-
-### SLIDE 6: Social Proof
-```
-IMAGE: Quote card with parent photo
-QUOTE: 
-"She's not just learning to read—she's learning the world is bigger than our street."
-— Sarah M., Manchester
-
-RATING: ⭐⭐⭐⭐⭐
-```
-
-### SLIDE 7: CTA
-```
-IMAGE: 5 books fanning out
-HEADLINE: "Start with 5 free books"
-BODY:
-"• Find their reading level in 3 minutes
-• 5 free personalised books
-• Based on UK phonics curriculum
-
-No credit card needed."
-
-CTA BUTTON: "Get Free Books →"
-```
-
----
-
-## CAROUSEL 5: "Trust & Curriculum" (5 Slides)
-
-**Objective:** Trust building for skeptical parents
-**CTA:** Reassurance
-
-### SLIDE 1: Hook
-```
-IMAGE: UK map with checkmarks
-TEXT: "Made for UK parents, by phonics specialists"
-SUBTEXT: Here's why teachers trust us 👇
-```
-
-### SLIDE 2: Curriculum Aligned
-```
-IMAGE: Letters and Sounds + phonics chart
-HEADLINE: "Based on Letters and Sounds"
-BODY:
-"The UK Department for Education's phonics programme.
-
-We follow the exact progression:
-• Set 1 sounds first
-• Then Set 2 long vowels
-• Then Set 3 alternatives
-• Finally suffix patterns"
-
-FOOTER: What this means →
-```
-
-### SLIDE 3: Accuracy Guaranteed
-```
-IMAGE: Word-checking process diagram
-HEADLINE: "Every word verified"
-BODY:
-"Our 9-step production pipeline includes:
-• Phonics decomposition of every word
-• Tricky word verification
-• 3 quality checkpoints
-• Engagement + narrative review
-
-No exceptions. No shortcuts."
-
-FOOTER: See inside a book →
-```
-
-### SLIDE 4: What You Get
-```
-IMAGE: 16-page book spread
-HEADLINE: "A complete reading experience"
-BODY:
-"Every 16-page book includes:
-✓ Parent guide (before/during/after tips)
-✓ Phonics chart + story words + tricky words
-✓ 6-8 page story (text + illustrations)
-✓ Comprehension questions
-✓ Writing practice
-✓ Nonsense words (phonic screening prep)
-✓ Reading star certificate
-
-Print at home. A5 size. Ready to fold and staple."
-
-FOOTER: Start free →
+VISUAL: Speech bubble
+TEXT: "They want longer stories"
 ```
 
 ### SLIDE 5: CTA
 ```
-IMAGE: Child reading proudly
-HEADLINE: "Help them read with confidence"
-BODY:
-"• Free 3-minute assessment
-• 5 free books matched to their level
-• No credit card needed
-• Cancel anytime (subscription)
-
-Thousands of UK parents already started."
-
-CTA BUTTON: "Start Free →"
-
-SMALL PRINT: Not affiliated with Read Write Inc or Oxford Reading Tree. Based on Letters and Sounds (public domain).
+VISUAL: Assessment UI mockup
+TEXT: "Know for sure in 3 minutes
+Free assessment →"
 ```
 
 ---
 
-## CAROUSEL AD CHECKLIST
+## Visual Design Principles
 
-### Slide 1 Must-Haves
-- ✅ Stop-scroll hook in first 2 words
-- ✅ Visual of the product/result
-- ✅ "Swipe" or finger indicator to continue
+### Typography
+- **Headlines:** 48-72pt, bold, single line
+- **Body:** 24-32pt, max 2 lines per slide
+- **CTA:** 32pt, action verb + arrow
 
-### Middle Slides
-- ✅ One idea per slide
-- ✅ Educational OR emotional value
-- ✅ Visual-forward (minimal text)
+### Colours
+- Use level colours as accent (pink #E84B8A, amber #F59E0B, etc.)
+- Background: White or soft gradient
+- Text: Dark slate #0f172a
 
-### Final Slide
-- ✅ Strong offer recap
-- ✅ Trust signal (curriculum, reviews)
-- ✅ Clear CTA button
+### Imagery Rules
+- ✅ Books only (covers, flat lays, open pages)
+- ✅ Abstract shapes and patterns
+- ✅ Typography as design element
+- ✅ Level colour coding
+- ❌ No faces
+- ❌ No characters with eyes
+- ❌ No parent/child photos
+- ❌ No realistic human illustrations
 
-### Overall
-- ✅ British English (colour, favourite)
-- ✅ No "your child" (use "they/their" or names)
-- ✅ No urgency/pressure language
-- ✅ Level colours visible (#E84B8A, #F59E0B, etc.)
+### Layout
+- One message per slide maximum
+- 60% negative space minimum
+- CTA only on final slide
+- No small text
+
+---
+
+## Copy Principles
+
+### Fear (Ethical, not exploitative)
+- "Wrong books kill confidence" ✅
+- "Still guessing their level?" ✅
+- "Too hard = frustration" ✅
+- ❌ "Your child is behind" ✗
+- ❌ "Don't let them fall behind" ✗
+
+### Passion
+- "Matched to exactly what they can decode" ✅
+- "Books with their name in every story" ✅
+- "Read with confidence" ✅
+
+### Clarity
+- One idea per slide
+- No jargon
+- Short sentences
+- Active verbs
