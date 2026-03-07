@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1E40AF">
+    <title>MyPhonics Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 100vh;
+            background: white;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1E40AF 0%, #06B6D4 100%);
+            color: white;
+            padding: 24px 20px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            flex: 1;
+            padding: 16px 8px;
+            border: none;
+            background: white;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn.active {
+            color: #1E40AF;
+            border-bottom: 3px solid #1E40AF;
+        }
+        
+        /* Screen visibility */
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: calc(100vh - 180px);
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Progress Section */
+        .progress-circle {
+            width: 140px;
+            height: 140px;
+            margin: 20px auto;
+            position: relative;
+        }
+        
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-circle-bg {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 10;
+        }
+        
+        .progress-circle-fill {
+            fill: none;
+            stroke: url(#progressGradient);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .progress-percent {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1E40AF;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        /* Current Level */
+        .current-level {
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            border: 2px solid #06B6D4;
+            text-align: center;
+            padding: 24px;
+        }
+        
+        .level-badge {
+            display: inline-block;
+            background: #1E40AF;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .level-books {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 8px;
+        }
+        
+        /* Book List */
+        .book-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .book-item:active {
+            transform: scale(0.98);
+        }
+        
+        .book-item.completed {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+        }
+        
+        .book-icon {
+            width: 48px;
+            height: 60px;
+            background: linear-gradient(135deg, #1E40AF, #06B6D4);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .book-item.completed .book-icon {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+        }
+        
+        .book-info {
+            flex: 1;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .book-status {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .book-item.completed .book-status {
+            color: #16a34a;
+        }
+        
+        .checkmark {
+            width: 28px;
+            height: 28px;
+            background: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        
+        /* Assessment Section */
+        .assessment-card {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            border: 2px solid #eab308;
+        }
+        
+        .assessment-due {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+        }
+        
+        .assessment-ready {
+            background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+            border: 2px solid #22c55e;
+        }
+        
+        .assessment-date {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 8px 0;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 16px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1E40AF, #06B6D4);
+            color: white;
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        /* Setup Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1E40AF;
+        }
+        
+        /* Level Selector */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .level-option {
+            padding: 20px 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .level-option.selected {
+            border-color: #1E40AF;
+            background: #eff6ff;
+        }
+        
+        .level-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E40AF;
+        }
+        
+        .level-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .stat-box {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1E40AF;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        
+        /* Reminder Settings */
+        .reminder-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .toggle {
+            width: 52px;
+            height: 28px;
+            background: #cbd5e1;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .toggle.active {
+            background: #1E40AF;
+        }
+        
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+        
+        .toggle.active::after {
+            transform: translateX(24px);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .empty-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .empty-text {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        /* Test Results */
+        .result-option {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        
+        .result-option:hover {
+            border-color: #1E40AF;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .result-desc {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        /* Hide scrollbar but keep functionality */
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg width="0" height="0">
+            <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#1E40AF;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 MyPhonics</h1>
+            <p>Track your child's reading journey</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav">
+            <button class="nav-btn active" data-screen="progress">Progress</button>
+            <button class="nav-btn" data-screen="books">Books</button>
+            <button class="nav-btn" data-screen="assess">Test</button>
+            <button class="nav-btn" data-screen="settings">Settings</button>
+        </div>
+
+        <!-- Progress Screen -->
+        <div id="progress" class="screen active">
+            <!-- Setup Required State -->
+            <div id="setup-required" class="empty-state">
+                <div class="empty-icon">👋</div>
+                <div class="empty-title">Welcome to MyPhonics</div>
+                <div class="empty-text">Set up your child's profile to start tracking their reading journey</div>
+                <button class="btn btn-primary" onclick="app.showScreen('settings')">Set Up Profile</button>
+            </div>
+
+            <!-- Main Progress View -->
+            <div id="progress-content" style="display:none;">
+                <!-- Overall Progress -->
+                <div class="card">
+                    <div class="card-title">📊 Overall Progress</div>
+                    <div class="progress-circle">
+                        <svg width="140" height="140">
+                            <circle class="progress-circle-bg" cx="70" cy="70" r="60"></circle>
+                            <circle id="progress-fill" class="progress-circle-fill" cx="70" cy="70" r="60" 
+                                    stroke-dasharray="377" stroke-dashoffset="377"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <div class="progress-percent" id="progress-percent">0%</div>
+                            <div class="progress-label">Complete</div>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value" id="books-completed">0</div>
+                            <div class="stat-label">Books Read</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="days-reading">0</div>
+                            <div class="stat-label">Days Reading</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Level -->
+                <div class="card current-level">
+                    <div class="level-badge" id="current-level-badge">Level 1</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Current Level</div>
+                    <div class="level-books" id="level-progress-text">0 of 5 books completed</div>
+                    <button class="btn btn-primary" style="margin-top: 16px;" onclick="app.showScreen('books')">Continue Reading</button>
+                </div>
+
+                <!-- Next Assessment -->
+                <div class="card" id="assessment-card">
+                    <div class="card-title">📝 Next Assessment</div>
+                    <div class="assessment-date" id="next-assessment-date">--</div>
+                    <div id="assessment-message">Complete 3 more books to unlock</div>
+                    <button class="btn" id="assessment-btn" disabled style="background:#e2e8f0; color:#94a3b8;">Take Test</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Screen -->
+        <div id="books" class="screen">
+            <div id="books-setup-required" class="empty-state">
+                <div class="empty-icon">📖</div>
+                <div class="empty-title">No Books Yet</div>
+                <div class="empty-text">Set up your profile to see your books</div>
+                <button class="btn btn-primary" onclick="app.showScreen('settings')">Set Up Profile</button>
+            </div>
+            
+            <div id="books-content" style="display:none;">
+                <div class="card">
+                    <div class="card-title">📚 Your Books</div>
+                    <div id="books-list">
+                        <!-- Books populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Screen -->
+        <div id="assess" class="screen">
+            <div id="assess-setup-required" class="empty-state">
+                <div class="empty-icon">📝</div>
+                <div class="empty-title">Assessments</div>
+                <div class="empty-text">Complete books to unlock level assessments</div>
+                <button class="btn btn-primary" onclick="app.showScreen('settings')">Set Up Profile</button>
+            </div>
+            
+            <div id="assess-content" style="display:none;">
+                <div class="card">
+                    <div class="card-title">📝 Level Assessment</div>
+                    <p style="color:#64748b; margin-bottom: 16px;">Test your child's phonics knowledge before moving to the next level</p>
+                    
+                    <div id="assessment-list">
+                        <!-- Assessments populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings" class="screen">
+            <div class="card">
+                <div class="card-title">👤 Child Profile</div>
+                
+                <div class="form-group">
+                    <label>Child's Name</label>
+                    <input type="text" id="child-name" placeholder="Enter name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Current Reading Level</label>
+                    <div class="level-grid">
+                        <div class="level-option" data-level="1">
+                            <div class="level-number">1</div>
+                            <div class="level-label">First Sounds</div>
+                        </div>
+                        <div class="level-option" data-level="2">
+                            <div class="level-number">2</div>
+                            <div class="level-label">Blending</div>
+                        </div>
+                        <div class="level-option" data-level="3">
+                            <div class="level-number">3</div>
+                            <div class="level-label">Digraphs</div>
+                        </div>
+                        <div class="level-option" data-level="4">
+                            <div class="level-number">4</div>
+                            <div class="level-label">Fluency</div>
+                        </div>
+                        <div class="level-option" data-level="5">
+                            <div class="level-number">5</div>
+                            <div class="level-label">Complex</div>
+                        </div>
+                        <div class="level-option" data-level="6">
+                            <div class="level-number">6</div>
+                            <div class="level-label">Independence</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="app.saveProfile()">Save Profile</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🔔 Reminders</div>
+                
+                <div class="reminder-option">
+                    <div>
+                        <div style="font-weight: 600;">Daily Reading Reminder</div>
+                        <div style="font-size: 13px; color: #64748b;">Remind me to read every day</div>
+                    </div>
+                    <div class="toggle active" id="daily-reminder" onclick="app.toggleReminder('daily')"></div>
+                </div>
+                
+                <div class="reminder-option">
+                    <div>
+                        <div style="font-weight: 600;">Assessment Due</div>
+                        <div style="font-size: 13px; color: #64748b;">Remind when test is ready</div>
+                    </div>
+                    <div class="toggle active" id="assessment-reminder" onclick="app.toggleReminder('assessment')"></div>
+                </div>
+                
+                <div class="reminder-option">
+                    <div>
+                        <div style="font-weight: 600;">Weekly Progress</div>
+                        <div style="font-size: 13px; color: #64748b;">Sunday summary of progress</div>
+                    </div>
+                    <div class="toggle" id="weekly-reminder" onclick="app.toggleReminder('weekly')"></div>
+                </div>
+            </div>
+
+            <div class="card" id="books-purchased-card" style="display:none;">
+                <div class="card-title">🛒 Books Purchased</div>
+                <p style="color:#64748b; margin-bottom: 16px;">Select which books you own:</p>
+                <div id="purchased-books-list">
+                    <!-- Populated by JS -->
+                </div>
+                <button class="btn btn-primary" onclick="app.savePurchasedBooks()" style="margin-top: 16px;">Update Books</button>
+            </div>
+
+            <button class="btn btn-secondary" onclick="app.resetData()" style="margin-top: 20px;">Reset All Data</button>
+        </div>
+    </div>
+
+    <!-- Assessment Modal -->
+    <div id="assessment-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">📝 Level <span id="modal-level">1</span> Assessment</div>
+            <p style="color:#64748b; margin-bottom: 16px;">How did your child perform?</p>
+            
+            <div class="result-option" onclick="app.submitAssessment('excellent')">
+                <div class="result-label">⭐⭐⭐ Excellent</div>
+                <div class="result-desc">Reads confidently, ready for next level</div>
+            </div>
+            
+            <div class="result-option" onclick="app.submitAssessment('good')">
+                <div class="result-label">⭐⭐ Good Progress</div>
+                <div class="result-desc">Reads well, continue practicing current level</div>
+            </div>
+            
+            <div class="result-option" onclick="app.submitAssessment('needs-work')">
+                <div class="result-label">⭐ Needs More Practice</div>
+                <div class="result-desc">Re-read current books before moving on</div>
+            </div>
+            
+            <button class="btn btn-secondary" onclick="app.closeModal()" style="margin-top: 16px;">Cancel</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

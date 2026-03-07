@@ -1,0 +1,17 @@
+{
+  "name": "MyPhonics Tracker",
+  "short_name": "MyPhonics",
+  "description": "Track your child's reading journey with MyPhonics",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1E40AF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231E40AF' width='192' height='192'/><text x='96' y='120' font-size='80' text-anchor='middle' fill='white'>📚</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
