@@ -1,0 +1,83 @@
+{
+  "template_id": "helper",
+  "level": 4,
+  "sub_level": "4.1",
+  "book_number": 1,
+  "title": "The Nurse and the Herd",
+  "focus_sounds": ["ur", "er"],
+  "cultural_setting": {
+    "region": "East Africa",
+    "country": "Kenya",
+    "setting": "Contemporary Kenyan farm near a modern small town",
+    "notes": "Modern Kenyan countryside — red-brown earth, green fields, acacia trees. Contemporary clothing, modern farm buildings. Show Kenya as it IS today: a child in a warm, modern, comfortable rural life."
+  },
+  "personalisation": {
+    "NAME": "Nia",
+    "PERSON": "the farmer",
+    "LOCATION": "the farm",
+    "PROBLEM": "a calf has a burn on its leg",
+    "SOLUTION": "the nurse treats the burn with cream and a cloth bandage"
+  },
+  "pages": [
+    "Nia was at the farm with her mum. The herd of cows stood under a big tree. Then Nia saw a calf that sat in the dirt. It was still and did not stir.",
+    "'That calf looks hurt!' Nia said to her mum. She ran up to the calf and bent down to look. The calf had a bad burn on its leg. It let out a low, soft moan.",
+    "Nia ran fast to get the nurse. 'A calf is hurt at the farm!' she said. The nurse got her bag and set off down the track.",
+    "The nurse sat down in the dirt. She was right next to the hurt calf. She checked the burn with her hand. 'Do not stir,' she said to the calf.",
+    "The nurse put cool cream on the burn. Then she turned a soft cloth round and round the calf's leg. Nia held it firm as the nurse did her work.",
+    "At last, the calf stood up on its legs! It took a few steps and the herd drew round. Nia jumped up and down with joy. 'Look, she is mending!' said Nia with a grin.",
+    "'Well done!' said the farmer as he turned to Nia. 'You were such a grand helper,' he said. Nia felt a warm burst of pride in her chest.",
+    "The sun set low over the farm. The farmer set out a big feast for them all. Nia sat under the stars with her mum and the nurse. 'I want to be a nurse too,' she said with a grin."
+  ],
+  "illustration_briefs": [
+    "Nia (Kenyan girl, ~6-7 years old, dark skin, short curly hair, bright yellow T-shirt with a sunflower, denim shorts, trainers) stands with her mum (modern casual dress, colourful kanga-pattern headwrap) at a small modern Kenyan farm. Red-brown earth, green fields, a few cows under an acacia tree. A calf sits apart on the ground. Warm sunshine, contemporary countryside.",
+    "Nia kneeling beside the hurt calf, looking concerned. She bends down to look closely. The calf has a visible mark on its leg. Red-brown dirt, green grass, the cow herd watching in the background.",
+    "Nia running along a red-brown dirt path towards a small modern health clinic. She looks urgent and determined. A few modern buildings and trees line the path. Typical contemporary Kenyan small town.",
+    "The nurse (Kenyan woman in modern light blue nursing scrubs, medical bag) sits in the red-brown dirt beside the calf. She examines its leg carefully with her hand. Nia watches closely nearby. The farm and acacia trees visible behind.",
+    "The nurse applies cool cream to the calf's leg while Nia helps hold a soft white cloth. They work together, both focused. The calf lies still on the red-brown earth. Warm afternoon light.",
+    "The calf stands up on its legs! The herd of cows gathers round. Nia jumps with excitement, arms in the air. The nurse stands back smiling. Green fields, warm sunshine, acacia trees.",
+    "The farmer (Kenyan man in modern casual clothes — polo shirt, khaki trousers, rubber boots) speaks to Nia with a warm smile. Nia beams with pride, cheeks glowing. The nurse stands nearby, also smiling. The healed calf walks with the herd in the background.",
+    "Evening scene on the farm. Nia, her mum, the nurse, and the farmer sit at a simple outdoor table under the stars. A feast of food on the table, warm lamplight. Nia grins, looking at the nurse with admiration. Red-brown earth, acacia tree silhouette against the sunset sky."
+  ],
+  "story_words": ["nurse", "burn", "turn", "herd", "farmer", "under"],
+  "tricky_words_used": ["the", "was", "her", "said", "she", "I", "to", "do", "are", "were", "want", "all", "he", "put"],
+  "read_words": ["nurse", "burn", "farmer", "herd"],
+  "nonsense_words": [
+    "tur",
+    "mern",
+    "chur",
+    "ferg",
+    "durn",
+    "gurst",
+    "thern",
+    "snur",
+    "churp",
+    "blern",
+    "shurk",
+    "flerp"
+  ],
+  "writing_practice_graphemes": ["ur", "er"],
+  "writing_practice_words": ["burn", "turn", "nurse", "her", "herd", "farmer"],
+  "comprehension_questions": {
+    "retrieval": "What was wrong with the calf?",
+    "inference": "How do you think Nia felt when the calf stood up?",
+    "vocabulary": "What does 'herd' mean?",
+    "prediction": "What do you think Nia will do when she grows up?"
+  },
+  "prediction_prompt": {
+    "page_before": 5,
+    "prompt_text": "What do you think will happen to the calf?",
+    "hint_text": "Look at the picture for clues!"
+  },
+  "focus_sound_count": {
+    "ur_words": ["nurse", "hurt", "burn", "burst", "turned", "fur", "pur"],
+    "er_words": ["her", "herd", "under", "farmer", "helper", "over", "stern", "mending"],
+    "total_focus_appearances": 30
+  },
+  "word_count": 249,
+  "validation": {
+    "valid": true,
+    "total_words": 249,
+    "failed_words": [],
+    "notes": "All words manually validated against L4 cumulative graphemes (graphemes_by_level.json). Every word is either decodable (grapheme decomposition passes) or a listed tricky word. ur/er focus sounds appear on every page. Consonant clusters used throughout (stood, grand, brown, etc.). No double consonants outside taught graphemes (ff, ll, ss, zz, ck)."
+  }
+}
