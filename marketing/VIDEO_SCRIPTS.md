@@ -2,6 +2,7 @@
 
 ## Production Rules
 - **NO FACES** anywhere in video
+- **NO MUSIC** - voiceover only, natural sounds, or silence
 - **ONE MESSAGE** per 3-second segment
 - **Bold typography** over simple backgrounds
 - **Book flat lays** and product shots only

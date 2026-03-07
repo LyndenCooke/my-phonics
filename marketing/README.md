@@ -15,6 +15,7 @@
 - **NO FACES** in any marketing creative
 - **NO CHARACTERS WITH EYES**
 - **NO PARENT/CHILD PHOTOS**
+- **NO MUSIC** in any video (voiceover only, natural sounds, or silence)
 - Books, typography, flat lays only
 
 ### Copy Style

@@ -6,6 +6,7 @@
 - Human faces (children, parents, characters)
 - Detailed character illustrations with eyes
 - Any imagery that could be used for idolatry or inappropriate gaze
+- Music in any video content
 
 ### ✅ USE INSTEAD
 - Book covers only (no face visible, or back/side angle)
