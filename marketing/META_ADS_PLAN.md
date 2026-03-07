@@ -19,7 +19,7 @@
 ---
 
 ## Campaign Objective
-Drive parent traffic to free phonics assessment → capture email → deliver 5 free books → convert to paid custom books/subscription.
+Drive parent traffic to free phonics assessment → capture email → deliver 3 free books + Skool community access → convert to paid books via community or email upsell.
 
 **Core Fear:** My child is behind / I don't know their level / I'm buying the wrong books.
 **Core Passion:** My child will read confidently / I'll be a good parent / They'll love learning.
@@ -44,11 +44,17 @@ HOOK (Fear/Problem)
 PROMISE (Solution)
 "Exact level in 3 minutes"
     ↓
-PROOF (Free books)
-"5 books, zero risk"
+PROOF (Free books + community)
+"3 books + free Skool community"
     ↓
 ACTION (Email gate)
 "Get [Name]'s free books →"
+    ↓
+DELIVERY
+Skool community access + email delivery
+    ↓
+CONVERSION
+Paid books in community or email upsell
 ```
 
 ---
@@ -58,7 +64,7 @@ ACTION (Email gate)
 ### Video Hook Formula (15s)
 **Slide 1:** Problem (3s) — "Wrong books kill confidence"
 **Slide 2:** Solution (5s) — "Exact level in 3 minutes"
-**Slide 3:** Offer (4s) — "5 free books"
+**Slide 3:** Offer (4s) — "3 free books + community"
 **Slide 4:** CTA (3s) — "Try it →"
 
 ### Carousel Formula (5 Slides Max)
@@ -66,7 +72,7 @@ ACTION (Email gate)
 2. **Pain** — "Wrong books = frustration"
 3. **Solution** — "Matched to exactly what they can decode"
 4. **Proof** — "Based on UK curriculum"
-5. **CTA** — "5 free books →"
+5. **CTA** — "3 free books + community →"
 
 ---
 

@@ -28,8 +28,8 @@ SCREEN: Open book showing name + story
 TEXT: "Their name. Their level. Their book."
 
 [11-15s]
-SCREEN: 5 books flat lay
-TEXT: "5 free. Get started →"
+SCREEN: 3 books flat lay
+TEXT: "3 free books + community →"
 ```
 
 ---
@@ -77,8 +77,8 @@ TEXT: "Phonics-perfect.
 Globally-minded."
 
 [12-15s]
-SCREEN: 5 books + CTA
-TEXT: "5 free books →"
+SCREEN: 3 books + CTA
+TEXT: "3 free books + community →"
 ```
 
 ---
@@ -101,7 +101,7 @@ Exact level matched"
 
 [12-15s]
 SCREEN: Happy child silhouette (NO FACE) with book
-TEXT: "5 free books →"
+TEXT: "3 free books + community →"
 ```
 
 ---
@@ -137,9 +137,9 @@ TEXT: "Based on UK phonics curriculum"
 VO: "Aligned with Letters and Sounds. The same progression they use in school."
 
 [40-50s] THE OFFER
-SCREEN: 5 books fanning out
-TEXT: "5 free books. Zero risk."
-VO: "Start with five free books. No credit card. Just their name, their level, and stories that open windows to the world."
+SCREEN: 3 books fanning out
+TEXT: "3 free books + Skool community. Zero risk."
+VO: "Start with three free books plus access to our free Skool community. No credit card. Just their name, their level, and stories that open windows to the world."
 
 [50-60s] THE CTA
 SCREEN: CTA button animation

@@ -43,8 +43,8 @@ Trust signal.
 
 ### SLIDE 5: The Action
 ```
-VISUAL: 5 books fanned out, flat lay
-TEXT: "5 free books
+VISUAL: 3 books fanned out, flat lay
+TEXT: "3 free books + community
 Find their level →"
 
 CTA only.
@@ -155,8 +155,8 @@ TEXT: "Phonics-perfect. Globally-minded."
 
 ### SLIDE 5: Proof + CTA
 ```
-VISUAL: Flat lay of 5 books
-TEXT: "5 free. Matched to their level.
+VISUAL: Flat lay of 3 books
+TEXT: "3 free + Skool community.
 Get started →"
 ```
 

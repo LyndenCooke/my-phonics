@@ -15,12 +15,18 @@
 ```
 Hi [Parent Name],
 
-[Name]'s 5 free books are ready.
+[Name]'s 3 free books + Skool community access are ready.
 
-[DOWNLOAD BUTTON]
+[ACCESS SKOOL COMMUNITY →]
 
 Every word matched to Level [X].
 Every story opens a window to the world.
+
+Plus: Join our free Skool community for:
+• Parent training videos
+• Reading tips
+• Support from other parents
+• Access to buy more books
 
 Print. Fold. Staple. Read.
 
@@ -122,23 +128,29 @@ MyPhonicsBooks
 
 ## EMAIL 4: Soft Upsell (Day 12)
 
-**Subject:** Ready for something special?
+**Subject:** Ready for more books?
 
 ```
 Hi [Parent Name],
 
-[Name] has read all 5 Level [X] books.
+[Name] has read all 3 free Level [X] books.
 
 Fantastic.
 
-Ready for the next level?
+Ready for more?
 
-Free books = template stories (still great)
-Custom books = [Name] as main character, their interests, their adventure
+Inside our free Skool community:
+• Buy individual books (£3-5 each)
+• Bundle deals (5 books for £12)
+• Monthly subscription (£8/month, unlimited)
+• All 32 books across 6 levels
 
-First custom book free with any subscription.
+Or get custom books:
+• [Name] as main character
+• Their interests woven in
+• AI-generated illustrations
 
-[Create [Name]'s Custom Story →]
+[Browse More Books in Skool →]
 
 Or keep enjoying the free books.
 They're yours forever.
@@ -245,11 +257,11 @@ Link in bio →
 
 ### Post Type 2: Solution
 ```
-5 free books.
+3 free books + community.
 
 Matched to exactly what they can decode.
 Their name in every story.
-Based on UK phonics curriculum.
+Free Skool community with training.
 
 Zero risk.
 
@@ -263,7 +275,7 @@ Link in bio →
 
 The right book changes everything.
 
-5 free books → Link in bio
+3 free books + community → Link in bio
 ```
 
 ### Post Type 4: Passion
@@ -284,7 +296,7 @@ Link in bio →
 ```
 3 minutes.
 Exact level.
-5 free books.
+3 free books + community.
 
 Find their reading level →
 
@@ -329,6 +341,6 @@ Link in bio
 2. **Solution:** Matched to exactly what they can decode
 3. **Proof:** Based on UK curriculum
 4. **Passion:** Their name. Their level. Their world.
-5. **Action:** 5 free books →
+5. **Action:** 3 free books + Skool community →
 
 One per post. No more.

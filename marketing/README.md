@@ -9,6 +9,20 @@
 | `CAROUSEL_SCRIPTS.md` | 5 carousel scripts, one message per slide, minimal design |
 | `PARENT_OUTREACH.md` | 7-email sequence, organic social, no faces |
 
+## The Offer
+
+### Free (Lead Magnet)
+- 3 books matched to their reading level
+- Free Skool community access
+- Parent training videos
+- Reading tips & peer support
+
+### Paid (In Skool Community)
+- Individual books: £3-5
+- Bundle (5 books): £12
+- Monthly subscription: £8/month (unlimited access)
+- Full library: 32 books across 6 levels
+
 ## Key Principles
 
 ### Islamic Compliance
