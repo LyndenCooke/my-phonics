@@ -128,11 +128,16 @@ These were created during development and should not be counted as production bo
 |------|-------|--------------|-----------|--------|----------|
 | L3.1 B1 | The Big Bike Race | a-e, i-e | Custom (light skin, blond, cycling gear) | ✅ COMPLETE | output/books/Level3/3_1 The Big Bike Race.pdf |
 
+### In Progress
+
+| Book | Title | Focus Sounds | Status | Notes |
+|------|-------|--------------|--------|-------|
+| L3.2 B1 | The Stone Flute | o-e, u-e | 🔄 Draft PDF generated | output/books/The_Stone_Flute_Level3.pdf |
+
 ### Planned / Not Started
 
 | Book | Focus Sounds | Status |
 |------|--------------|--------|
-| L3.2 B1 | o-e, u-e | 🔲 |
 | L3.3 B1 | ea, ie | 🔲 |
 | L3.4 B1 | oi, aw | 🔲 |
 | L3.5 B1 | ai, oa | 🔲 |
@@ -163,4 +168,4 @@ Claude will:
 ---
 
 ## Last Updated
-2026-03-07 — Updated with L2 and L3 completed books. L1 COMPLETE (10 books). L2 has 4 PDFs, L3 has 1 PDF.
+2026-03-07 — Built draft for L3.2 (The Stone Flute). L1 COMPLETE (10 books). L2 has 4 PDFs, L3 has 1 complete + 1 draft PDF.
