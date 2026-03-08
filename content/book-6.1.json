@@ -1,0 +1,88 @@
+{
+  "id": "l6b1",
+  "level": 6,
+  "book": 1,
+  "title": "Around the World",
+  "subtitle": "A Phonics Reading Adventure",
+  "levelName": "Independence",
+  "description": "Join Mia and her grandfather as they explore countries and cultures around the world through letters, postcards, and stories.",
+  "skills": [
+    "Multi-syllable words",
+    "Silent letters",
+    "Complex vowel patterns",
+    "Independent reading fluency"
+  ],
+  "vocabulary": [
+    "adventure", "journey", "passport", "continent", "explore",
+    "discover", "language", "culture", "mountain", "ocean",
+    "market", "temple", "village", "photograph", "souvenir"
+  ],
+  "pages": [
+    {
+      "number": 1,
+      "type": "title",
+      "heading": "Around the World",
+      "text": "Written for Level 6 Readers\nMyPhonics Independence Series"
+    },
+    {
+      "number": 2,
+      "type": "story",
+      "heading": "Chapter 1: The Letter",
+      "text": "Mia found a letter on the kitchen table. It was from her grandfather, who loved to travel. \"Dear Mia,\" it began. \"I have a surprise for you. Pack your bags — we are going on an adventure around the world!\"\n\nMia could not believe her eyes. She read the letter again and again. An adventure! A real journey to faraway places!\n\nShe rushed to her room and pulled out her bright red suitcase. What should she pack? Her favourite books, of course. A warm jumper for cold nights. And her camera to capture every moment.",
+      "highlight_words": ["adventure", "journey", "surprise", "favourite", "capture"]
+    },
+    {
+      "number": 3,
+      "type": "story",
+      "heading": "Chapter 2: First Stop — Paris",
+      "text": "Their first stop was Paris, the capital of France. Mia stared up at the Eiffel Tower. It was enormous — much taller than she had imagined.\n\n\"Grandfather, how do they build something so tall?\" she asked.\n\n\"With patience and knowledge,\" he replied with a smile. \"Just like learning to read. One piece at a time.\"\n\nThey walked through cobblestone streets, past bakeries that smelled of fresh croissants. Mia tried to read the French signs. Some words looked familiar — \"café\" and \"chocolat\" — but others were completely new.\n\n\"Every language has its own sounds and patterns,\" Grandfather explained. \"Just like the phonics you have been learning.\"",
+      "highlight_words": ["enormous", "imagined", "patience", "knowledge", "language"]
+    },
+    {
+      "number": 4,
+      "type": "story",
+      "heading": "Chapter 3: The Sahara Desert",
+      "text": "Next, they flew south to Morocco and drove to the edge of the Sahara Desert. The sand stretched out in every direction, golden and glowing under the bright sun.\n\n\"It is so quiet here,\" Mia whispered. Even her whisper seemed loud in the silence.\n\nThey rode camels across the dunes. Mia laughed as her camel swayed from side to side. That night, they camped under the stars. Mia had never seen so many stars in her life.\n\n\"Grandfather, do people in different countries see the same stars?\" she asked.\n\n\"Yes,\" he said. \"The stars connect us all, no matter where we are in the world.\"",
+      "highlight_words": ["stretched", "direction", "whispered", "silence", "connect"]
+    },
+    {
+      "number": 5,
+      "type": "story",
+      "heading": "Chapter 4: Mountains of Nepal",
+      "text": "From the desert, they travelled to the mountains of Nepal. The peaks were covered in white snow, reaching high into the clouds.\n\nMia met children in a small mountain village. They taught her words in Nepali, and she taught them words in English. They played games together and shared food.\n\n\"It does not matter that we speak different languages,\" Mia said. \"We can still be friends.\"\n\nShe wrote in her travel journal: \"Today I learned that a smile is the same in every language. And laughter sounds the same everywhere you go.\"",
+      "highlight_words": ["travelled", "mountain", "village", "languages", "journal"]
+    },
+    {
+      "number": 6,
+      "type": "story",
+      "heading": "Chapter 5: The Markets of Japan",
+      "text": "In Japan, Mia was amazed by the busy markets of Tokyo. There were stalls selling colourful fish, beautiful fabrics, and tiny electronic gadgets.\n\nShe discovered that Japanese writing uses three different scripts. \"Three!\" she exclaimed. \"I thought learning one alphabet was enough work!\"\n\nGrandfather laughed. \"People everywhere find ways to write down their thoughts and stories. That is what makes reading so powerful — it connects us across time and distance.\"\n\nMia bought a small wooden bookmark carved with Japanese characters. The shopkeeper wrote her name in Japanese on a slip of paper. Mia kept it safe in her journal.",
+      "highlight_words": ["colourful", "electronic", "discovered", "powerful", "characters"]
+    },
+    {
+      "number": 7,
+      "type": "story",
+      "heading": "Chapter 6: Coming Home",
+      "text": "After weeks of travelling, Mia and her grandfather returned home. Mia unpacked her suitcase, which was now full of souvenirs — postcards, photographs, a wooden bookmark, and a journal bursting with stories.\n\nShe sat down at her desk and began to write. She wrote about the tower in Paris, the silence of the desert, the mountains of Nepal, and the markets of Japan.\n\n\"Grandfather,\" she called. \"I want to turn our adventure into a book. A real book that other children can read.\"\n\nHe smiled proudly. \"That is the most wonderful idea, Mia. A reader who becomes a writer — that is the greatest adventure of all.\"\n\nAnd so, Mia began to write her very first book, using every word and every sound she had ever learned. Around the world and back again — one word at a time.",
+      "highlight_words": ["souvenirs", "photographs", "adventure", "wonderful", "greatest"]
+    },
+    {
+      "number": 8,
+      "type": "activity",
+      "heading": "Word Explorer Activity",
+      "text": "Can you find and read these multi-syllable words from the story?\n\n• ad-ven-ture (3 syllables)\n• pho-to-graphs (3 syllables)\n• e-lec-tron-ic (4 syllables)\n• ev-ery-where (3 syllables)\n• im-ag-ined (3 syllables)\n\nChallenge: Try clapping each syllable as you read the words aloud!\n\nDiscussion Questions:\n1. What was Mia's favourite place? What would yours be?\n2. How are languages around the world similar?\n3. Why did Mia want to write her own book?"
+    },
+    {
+      "number": 9,
+      "type": "activity",
+      "heading": "Silent Letters Practice",
+      "text": "Level 6 readers practise words with silent letters. Can you spot the silent letter in each word?\n\n• know (silent k)\n• write (silent w)\n• castle (silent t)\n• island (silent s)\n• climb (silent b)\n• honest (silent h)\n• knight (silent k)\n• listen (silent t)\n\nTry writing a sentence using three of these words!"
+    },
+    {
+      "number": 10,
+      "type": "certificate",
+      "heading": "Reading Certificate",
+      "text": "Congratulations!\n\nThis certifies that\n\n____________________\n\nhas successfully read\n\nAround the World\nBook 6.1 — Independence Level\n\nMyPhonics Reading Programme"
+    }
+  ]
+}
