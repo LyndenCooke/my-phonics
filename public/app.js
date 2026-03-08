@@ -49,6 +49,11 @@ const app = (() => {
         ]
     };
 
+    // Maps book IDs to their interactive reader URLs
+    const bookReaders = {
+        'l5b1': 'books/5-1-the-mystery-box.html'
+    };
+
     let state = {
         childName: '',
         currentLevel: 1,
@@ -185,10 +190,11 @@ const app = (() => {
     const renderBooks = () => {
         const container = document.getElementById('books-list');
         if (!container) return;
-        
+
         const books = booksData[state.currentLevel] || [];
         container.innerHTML = books.map(book => {
             const completed = state.booksCompleted[book.id];
+            const hasReader = bookReaders[book.id];
             return `
                 <div class="book-item ${completed ? 'completed' : ''}" onclick="app.toggleBook('${book.id}')">
                     <div class="book-icon">${completed ? '✓' : '📖'}</div>
@@ -196,6 +202,7 @@ const app = (() => {
                         <div class="book-title">${book.title}</div>
                         <div class="book-status">${completed ? 'Completed' : 'Not read yet'}</div>
                     </div>
+                    ${hasReader ? `<button class="read-btn" onclick="event.stopPropagation(); app.openBook('${book.id}')" aria-label="Read ${book.title}">Read</button>` : ''}
                     ${completed ? '<div class="checkmark">✓</div>' : ''}
                 </div>
             `;
@@ -322,6 +329,13 @@ const app = (() => {
         notify('🎓 Congratulations! All 6 levels completed!');
     };
 
+    const openBook = (bookId) => {
+        const url = bookReaders[bookId];
+        if (url) {
+            window.location.href = url;
+        }
+    };
+
     const resetData = () => {
         if (confirm('Reset all data? This cannot be undone.')) {
             localStorage.removeItem('myphonics-state');
@@ -350,6 +364,7 @@ const app = (() => {
     return {
         showScreen,
         toggleBook,
+        openBook,
         saveProfile,
         toggleReminder,
         openAssessmentModal,
