@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPhonicsBooks — Find Your Child's Reading Level</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #FFF9F0; min-height: 100vh; overflow-x: hidden; }
+  h1,h2,h3,h4,h5,h6 { font-family: 'Outfit', sans-serif; }
+
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pop { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes starBurst { 0% { transform: scale(0) rotate(0deg); opacity: 0; } 50% { transform: scale(1.3) rotate(180deg); opacity: 1; } 100% { transform: scale(1) rotate(360deg); opacity: 1; } }
+  @keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(400px) rotate(720deg); opacity: 0; } }
+  .animate-in { animation: slideUp 0.5s ease-out forwards; }
+  .animate-pop { animation: pop 0.4s ease-out forwards; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ─── BRAND & DATA ───
+const LEVELS = [
+  { num: 1, name: 'Starting Stories', colour: '#E84B8A', band: 'Red' },
+  { num: 2, name: 'Longer Sounds', colour: '#F59E0B', band: 'Green/Purple' },
+  { num: 3, name: 'New Spellings', colour: '#22C55E', band: 'Pink/Orange' },
+  { num: 4, name: 'Building Fluency', colour: '#3B82F6', band: 'Yellow' },
+  { num: 5, name: 'Reading Together', colour: '#8B5CF6', band: 'Blue' },
+  { num: 6, name: 'Reading Champion', colour: '#14B8A6', band: 'Grey' },
+];
+
+const SOUND_GROUPS = {
+  1: [
+    { sounds: ['s','a','t','p','i'], label: 'Group 1' },
+    { sounds: ['n','m','d','g','o'], label: 'Group 2' },
+    { sounds: ['c','k','ck','e','u'], label: 'Group 3' },
+    { sounds: ['r','h','b','f','l'], label: 'Group 4' },
+    { sounds: ['ff','ll','ss','j','v'], label: 'Group 5' },
+    { sounds: ['w','x','y','z','qu'], label: 'Group 6' },
+    { sounds: ['ch','sh','th','ng','nk'], label: 'Group 7' },
+  ],
+  2: [
+    { sounds: ['ay','ee','igh','ow','oo'], label: 'Set 2 Group 1' },
+    { sounds: ['ar','or','air','ir','ou','oy'], label: 'Set 2 Group 2' },
+  ],
+  3: [
+    { sounds: ['ea','a-e','i-e','o-e','u-e'], label: 'Set 3 Group 1' },
+    { sounds: ['oi','aw','ai','oa','ie'], label: 'Set 3 Group 2' },
+  ],
+  4: [
+    { sounds: ['are','ur','er','ew','ue'], label: 'Set 3 Group 3' },
+  ],
+  5: [
+    { sounds: ['ore','oor','ire','ear','ure'], label: 'Set 3 Group 4' },
+  ],
+  6: [
+    { sounds: ['tion','ous','cious','able','ible'], label: 'Suffixes' },
+  ],
+};
+
+const WORD_TESTS = {
+  1: ['sat','pin','dog','cup','hen','bell','kiss','frog','chip','thin'],
+  2: ['play','tree','night','moon','star','born','fair','bird','shout','joy'],
+  3: ['cake','time','bone','cute','train','boat','pie','draw','mean','coil'],
+  4: ['stare','burn','fern','chew','blue','clown','tower','flower','grew','true'],
+  5: ['store','floor','fire','clear','pure','station','explore','before','nearly','nature'],
+  6: ['famous','delicious','cautious','capable','possible','enormous','precious','flexible','adventurous','sensible'],
+};
+
+const NONSENSE_WORDS = {
+  1: ['teg','mip','fod','gub','hin','beff','nid','dass'],
+  2: ['chim','shog','thep','quab','deel','nigh','foom','bair'],
+  3: ['blape','frine','snoat','plue','traim','joal','crawn','soib'],
+  4: ['blare','churn','blew','snue','scrown'],
+  5: ['glore','spire','drear','blure','stion'],
+};
+
+// ─── CUTE GUIDE CHARACTER ───
+function GuideCharacter({ mood, message }) {
+  const faces = { happy: '😊', excited: '🌟', thinking: '🤔', celebrating: '🎉', encouraging: '💪', waving: '👋' };
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
+      <div style={{
+        width:56, height:56, borderRadius:'50%', background:'linear-gradient(135deg, #818CF8, #6366F1)',
+        display:'flex', alignItems:'center', justifyContent:'center', fontSize:28,
+        boxShadow:'0 4px 14px rgba(99,102,241,0.3)', animation:'float 3s ease-in-out infinite'
+      }}>
+        {faces[mood] || faces.happy}
+      </div>
+      <div style={{
+        background:'white', borderRadius:16, padding:'10px 16px', maxWidth:320,
+        boxShadow:'0 2px 8px rgba(0,0,0,0.06)', fontSize:15, color:'#334155',
+        fontWeight:500, position:'relative', lineHeight:1.4
+      }}>
+        <div style={{
+          position:'absolute', left:-8, top:18, width:0, height:0,
+          borderTop:'8px solid transparent', borderBottom:'8px solid transparent', borderRight:'8px solid white'
+        }}/>
+        {message}
+      </div>
+    </div>
+  );
+}
+
+// ─── PROGRESS BAR ───
+function ProgressBar({ current, total, colour }) {
+  const pct = Math.round((current / total) * 100);
+  return (
+    <div style={{ marginBottom:24 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6, fontSize:13, color:'#64748B', fontWeight:600 }}>
+        <span>Question {current} of {total}</span>
+        <span>{pct}%</span>
+      </div>
+      <div style={{ height:8, borderRadius:4, background:'#E2E8F0', overflow:'hidden' }}>
+        <div style={{
+          height:'100%', borderRadius:4, background:colour || '#6366F1',
+          width:`${pct}%`, transition:'width 0.5s ease'
+        }}/>
+      </div>
+    </div>
+  );
+}
+
+// ─── STAR REWARD ───
+function StarReward({ count }) {
+  return (
+    <div style={{ display:'flex', gap:4, marginBottom:8 }}>
+      {Array.from({length: count}).map((_, i) => (
+        <span key={i} style={{ fontSize:24, animation:`starBurst 0.5s ease-out ${i * 0.1}s both` }}>⭐</span>
+      ))}
+    </div>
+  );
+}
+
+// ─── SOUND CARD (tap to reveal) ───
+function SoundCard({ sound, onCorrect, onIncorrect, index }) {
+  const [revealed, setRevealed] = useState(false);
+  const [answered, setAnswered] = useState(null);
+
+  return (
+    <div className="animate-pop" style={{
+      background:'white', borderRadius:20, padding:32, textAlign:'center',
+      boxShadow:'0 4px 20px rgba(0,0,0,0.08)', marginBottom:16,
+      animationDelay: `${index * 0.1}s`
+    }}>
+      <div style={{
+        fontSize:64, fontFamily:'Outfit', fontWeight:800, color:'#1E293B',
+        background:'#F1F5F9', borderRadius:16, padding:'24px 40px', display:'inline-block',
+        marginBottom:20, letterSpacing:2, minWidth:120
+      }}>
+        {sound}
+      </div>
+      {!answered && (
+        <div>
+          <p style={{ fontSize:14, color:'#94A3B8', marginBottom:16 }}>Can your child say this sound?</p>
+          <div style={{ display:'flex', gap:12, justifyContent:'center' }}>
+            <button onClick={() => { setAnswered('yes'); onCorrect(); }} style={{
+              padding:'14px 32px', borderRadius:12, border:'none', cursor:'pointer',
+              background:'linear-gradient(135deg, #22C55E, #16A34A)', color:'white',
+              fontSize:16, fontWeight:700, fontFamily:'Outfit',
+              boxShadow:'0 4px 12px rgba(34,197,94,0.3)', transition:'transform 0.2s'
+            }} onMouseOver={e=>e.target.style.transform='scale(1.05)'} onMouseOut={e=>e.target.style.transform='scale(1)'}>
+              ✓ Yes
+            </button>
+            <button onClick={() => { setAnswered('no'); onIncorrect(); }} style={{
+              padding:'14px 32px', borderRadius:12, border:'2px solid #E2E8F0', cursor:'pointer',
+              background:'white', color:'#64748B', fontSize:16, fontWeight:600,
+              fontFamily:'Outfit', transition:'transform 0.2s'
+            }} onMouseOver={e=>e.target.style.transform='scale(1.05)'} onMouseOut={e=>e.target.style.transform='scale(1)'}>
+              Not yet
+            </button>
+          </div>
+        </div>
+      )}
+      {answered === 'yes' && <div style={{ color:'#22C55E', fontWeight:700, fontSize:18 }}>Brilliant! ⭐</div>}
+      {answered === 'no' && <div style={{ color:'#94A3B8', fontWeight:600, fontSize:16 }}>That's okay — we'll work on it!</div>}
+    </div>
+  );
+}
+
+// ─── WORD CARD ───
+function WordCard({ word, onCorrect, onIncorrect }) {
+  const [answered, setAnswered] = useState(null);
+  return (
+    <div className="animate-pop" style={{
+      background:'white', borderRadius:20, padding:32, textAlign:'center',
+      boxShadow:'0 4px 20px rgba(0,0,0,0.08)', marginBottom:16
+    }}>
+      <div style={{
+        fontSize:48, fontFamily:'Outfit', fontWeight:700, color:'#1E293B',
+        background:'#FFF7ED', borderRadius:16, padding:'20px 36px', display:'inline-block',
+        marginBottom:20, letterSpacing:1
+      }}>
+        {word}
+      </div>
+      {!answered && (
+        <div>
+          <p style={{ fontSize:14, color:'#94A3B8', marginBottom:16 }}>Can your child read this word?</p>
+          <div style={{ display:'flex', gap:12, justifyContent:'center' }}>
+            <button onClick={() => { setAnswered('yes'); onCorrect(); }} style={{
+              padding:'14px 32px', borderRadius:12, border:'none', cursor:'pointer',
+              background:'linear-gradient(135deg, #22C55E, #16A34A)', color:'white',
+              fontSize:16, fontWeight:700, fontFamily:'Outfit', boxShadow:'0 4px 12px rgba(34,197,94,0.3)'
+            }}>✓ Yes</button>
+            <button onClick={() => { setAnswered('no'); onIncorrect(); }} style={{
+              padding:'14px 32px', borderRadius:12, border:'2px solid #E2E8F0', cursor:'pointer',
+              background:'white', color:'#64748B', fontSize:16, fontWeight:600, fontFamily:'Outfit'
+            }}>Not yet</button>
+          </div>
+        </div>
+      )}
+      {answered === 'yes' && <div style={{ color:'#22C55E', fontWeight:700, fontSize:18 }}>Well done! ⭐</div>}
+      {answered === 'no' && <div style={{ color:'#94A3B8', fontWeight:600 }}>No worries — great try!</div>}
+    </div>
+  );
+}
+
+// ─── CONFETTI ───
+function Confetti() {
+  const colours = ['#E84B8A','#F59E0B','#22C55E','#3B82F6','#8B5CF6','#14B8A6'];
+  return (
+    <div style={{ position:'fixed', top:0, left:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:100 }}>
+      {Array.from({length:40}).map((_, i) => (
+        <div key={i} style={{
+          position:'absolute', top:-20, left:`${Math.random()*100}%`,
+          width:10, height:10, borderRadius: Math.random() > 0.5 ? '50%' : 2,
+          background:colours[Math.floor(Math.random()*colours.length)],
+          animation:`confetti ${2+Math.random()*2}s ease-in ${Math.random()*0.5}s forwards`
+        }}/>
+      ))}
+    </div>
+  );
+}
+
+// ─── SCREENS ───
+// 1. Welcome
+function WelcomeScreen({ onStart }) {
+  return (
+    <div className="animate-in" style={{ textAlign:'center', padding:'40px 20px' }}>
+      <div style={{ fontSize:56, marginBottom:16, animation:'float 3s ease-in-out infinite' }}>📚</div>
+      <h1 style={{ fontSize:32, color:'#1E293B', marginBottom:12, fontWeight:800 }}>
+        Find Your Child's Reading Level
+      </h1>
+      <p style={{ fontSize:17, color:'#64748B', maxWidth:480, margin:'0 auto 8px', lineHeight:1.6 }}>
+        A quick, friendly check to find exactly the right MyPhonicsBooks level for your child. Takes about 3 to 5 minutes.
+      </p>
+      <p style={{ fontSize:14, color:'#94A3B8', maxWidth:420, margin:'0 auto 32px', lineHeight:1.5 }}>
+        Sit with your child. Show them the sounds and words on screen, and tap whether they get them right. No pressure — every answer helps us find their perfect starting point.
+      </p>
+      <button onClick={onStart} style={{
+        padding:'18px 48px', borderRadius:16, border:'none', cursor:'pointer',
+        background:'linear-gradient(135deg, #E84B8A, #DB2777)', color:'white',
+        fontSize:18, fontWeight:700, fontFamily:'Outfit', letterSpacing:0.5,
+        boxShadow:'0 8px 24px rgba(232,75,138,0.35)', transition:'transform 0.2s, box-shadow 0.2s'
+      }} onMouseOver={e=>{e.target.style.transform='scale(1.05)';e.target.style.boxShadow='0 12px 32px rgba(232,75,138,0.45)'}}
+         onMouseOut={e=>{e.target.style.transform='scale(1)';e.target.style.boxShadow='0 8px 24px rgba(232,75,138,0.35)'}}>
+        Let's Get Started
+      </button>
+    </div>
+  );
+}
+
+// 2. Name Entry
+function NameScreen({ onSubmit }) {
+  const [name, setName] = useState('');
+  return (
+    <div className="animate-in" style={{ textAlign:'center', padding:'40px 20px' }}>
+      <GuideCharacter mood="waving" message="Hello! What's your child's name?" />
+      <div style={{ maxWidth:400, margin:'0 auto' }}>
+        <input
+          type="text" value={name} onChange={e => setName(e.target.value)}
+          placeholder="Enter first name..."
+          autoFocus
+          style={{
+            width:'100%', padding:'16px 20px', borderRadius:14, border:'2px solid #E2E8F0',
+            fontSize:18, fontFamily:'Plus Jakarta Sans', textAlign:'center', outline:'none',
+            transition:'border-color 0.3s'
+          }}
+          onFocus={e => e.target.style.borderColor='#E84B8A'}
+          onBlur={e => e.target.style.borderColor='#E2E8F0'}
+          onKeyDown={e => { if(e.key === 'Enter' && name.trim()) onSubmit(name.trim()); }}
+        />
+        <button
+          onClick={() => name.trim() && onSubmit(name.trim())}
+          disabled={!name.trim()}
+          style={{
+            marginTop:20, padding:'16px 40px', borderRadius:14, border:'none', cursor: name.trim() ? 'pointer' : 'default',
+            background: name.trim() ? 'linear-gradient(135deg, #E84B8A, #DB2777)' : '#E2E8F0',
+            color: name.trim() ? 'white' : '#94A3B8', fontSize:17, fontWeight:700, fontFamily:'Outfit',
+            boxShadow: name.trim() ? '0 6px 20px rgba(232,75,138,0.3)' : 'none', width:'100%',
+            transition:'all 0.3s'
+          }}>
+          Continue
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// 3. Sound Assessment
+function SoundAssessment({ childName, onComplete }) {
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const [currentSoundIdx, setCurrentSoundIdx] = useState(0);
+  const [correct, setCorrect] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [groupCorrect, setGroupCorrect] = useState(0);
+  const [groupTotal, setGroupTotal] = useState(0);
+  const [stars, setStars] = useState(0);
+  const [phase, setPhase] = useState('sounds'); // sounds, words, nonsense, done
+  const [wordIdx, setWordIdx] = useState(0);
+  const [wordCorrect, setWordCorrect] = useState(0);
+  const [wordTotal, setWordTotal] = useState(0);
+  const [nonsenseIdx, setNonsenseIdx] = useState(0);
+  const [nonsenseCorrect, setNonsenseCorrect] = useState(0);
+  const [nonsenseTotal, setNonsenseTotal] = useState(0);
+  const [ceilingLevel, setCeilingLevel] = useState(null);
+  const [showTransition, setShowTransition] = useState(false);
+  const [transMsg, setTransMsg] = useState('');
+
+  const groups = SOUND_GROUPS[currentLevel] || [];
+  const group = groups[currentGroup];
+  const sounds = group ? group.sounds : [];
+  const levelColour = LEVELS[currentLevel - 1]?.colour || '#6366F1';
+
+  const totalSounds = Object.values(SOUND_GROUPS).reduce((sum, gs) => sum + gs.reduce((s2, g) => s2 + g.sounds.length, 0), 0);
+
+  function nextSound(isCorrect) {
+    const newGC = groupCorrect + (isCorrect ? 1 : 0);
+    const newGT = groupTotal + 1;
+    setGroupCorrect(newGC);
+    setGroupTotal(newGT);
+    setTotal(t => t + 1);
+    if (isCorrect) { setCorrect(c => c + 1); setStars(s => s + 1); }
+
+    // Check if group finished (5 sounds tested)
+    if (newGT >= sounds.length) {
+      const pct = newGC / newGT;
+      if (pct >= 0.8) {
+        // Pass — move to next group or level
+        const nextG = currentGroup + 1;
+        if (nextG < groups.length) {
+          setCurrentGroup(nextG);
+          setCurrentSoundIdx(0);
+          setGroupCorrect(0);
+          setGroupTotal(0);
+        } else {
+          // Move to next level
+          const nextLv = currentLevel + 1;
+          if (nextLv <= 6 && SOUND_GROUPS[nextLv]) {
+            setTransMsg(`Great! ${childName} knows Level ${currentLevel} sounds. Let's try Level ${nextLv}!`);
+            setShowTransition(true);
+            setTimeout(() => {
+              setCurrentLevel(nextLv);
+              setCurrentGroup(0);
+              setCurrentSoundIdx(0);
+              setGroupCorrect(0);
+              setGroupTotal(0);
+              setShowTransition(false);
+            }, 2000);
+          } else {
+            // Reached the top
+            setCeilingLevel(6);
+            moveToWords(6);
+          }
+        }
+      } else {
+        // Ceiling found
+        setCeilingLevel(currentLevel);
+        moveToWords(currentLevel);
+      }
+    } else {
+      setCurrentSoundIdx(currentSoundIdx + 1);
+    }
+  }
+
+  function moveToWords(level) {
+    setTransMsg(`Now let's see ${childName} read some Level ${level} words!`);
+    setShowTransition(true);
+    setTimeout(() => {
+      setPhase('words');
+      setShowTransition(false);
+    }, 2000);
+  }
+
+  function nextWord(isCorrect) {
+    const newWC = wordCorrect + (isCorrect ? 1 : 0);
+    const newWT = wordTotal + 1;
+    setWordCorrect(newWC);
+    setWordTotal(newWT);
+    if (isCorrect) setStars(s => s + 1);
+
+    const words = WORD_TESTS[ceilingLevel || currentLevel] || [];
+    const testCount = Math.min(6, words.length);
+
+    if (newWT >= testCount) {
+      setTransMsg(`Nearly there! Just a few made-up words to check pure decoding.`);
+      setShowTransition(true);
+      setTimeout(() => {
+        setPhase('nonsense');
+        setShowTransition(false);
+      }, 2000);
+    } else {
+      setWordIdx(wordIdx + 1);
+    }
+  }
+
+  function nextNonsense(isCorrect) {
+    const newNC = nonsenseCorrect + (isCorrect ? 1 : 0);
+    const newNT = nonsenseTotal + 1;
+    setNonsenseCorrect(newNC);
+    setNonsenseTotal(newNT);
+    if (isCorrect) setStars(s => s + 1);
+
+    const nw = NONSENSE_WORDS[ceilingLevel || currentLevel] || NONSENSE_WORDS[1];
+    const testCount = Math.min(5, nw.length);
+
+    if (newNT >= testCount) {
+      // Calculate final level
+      const finalLevel = ceilingLevel || currentLevel;
+      const wordPct = wordCorrect / Math.max(wordTotal, 1);
+      const adjustedLevel = wordPct < 0.5 ? Math.max(1, finalLevel - 1) : finalLevel;
+      onComplete(adjustedLevel, stars + (isCorrect ? 1 : 0), {
+        soundsCorrect: correct + (phase === 'sounds' && isCorrect ? 1 : 0),
+        wordsCorrect: wordCorrect,
+        wordsTotal: wordTotal,
+        nonsenseCorrect: newNC,
+        nonsenseTotal: newNT
+      });
+    } else {
+      setNonsenseIdx(nonsenseIdx + 1);
+    }
+  }
+
+  if (showTransition) {
+    return (
+      <div className="animate-in" style={{ textAlign:'center', padding:'60px 20px' }}>
+        <GuideCharacter mood="excited" message={transMsg} />
+        <StarReward count={Math.min(stars, 10)} />
+      </div>
+    );
+  }
+
+  if (phase === 'sounds') {
+    if (!group) return null;
+    const sound = sounds[currentSoundIdx];
+    return (
+      <div className="animate-in" style={{ padding:'20px', maxWidth:500, margin:'0 auto' }}>
+        <ProgressBar current={total + 1} total={totalSounds} colour={levelColour} />
+        <div style={{
+          display:'inline-block', padding:'6px 14px', borderRadius:20, background:levelColour + '15',
+          color:levelColour, fontWeight:700, fontSize:13, marginBottom:12, fontFamily:'Outfit'
+        }}>
+          Level {currentLevel}: {LEVELS[currentLevel-1]?.name} — {group.label}
+        </div>
+        <GuideCharacter mood="thinking" message={`Show ${childName} this sound. Can they say it?`} />
+        <SoundCard key={`${currentLevel}-${currentGroup}-${currentSoundIdx}`}
+          sound={sound}
+          onCorrect={() => nextSound(true)}
+          onIncorrect={() => nextSound(false)}
+          index={0}
+        />
+        <div style={{ textAlign:'center', marginTop:8 }}>
+          <StarReward count={Math.min(stars, 8)} />
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'words') {
+    const words = WORD_TESTS[ceilingLevel || currentLevel] || [];
+    const testCount = Math.min(6, words.length);
+    const word = words[wordIdx];
+    return (
+      <div className="animate-in" style={{ padding:'20px', maxWidth:500, margin:'0 auto' }}>
+        <ProgressBar current={wordTotal + 1} total={testCount} colour="#F59E0B" />
+        <div style={{
+          display:'inline-block', padding:'6px 14px', borderRadius:20, background:'#FFF7ED',
+          color:'#D97706', fontWeight:700, fontSize:13, marginBottom:12, fontFamily:'Outfit'
+        }}>
+          Word Reading
+        </div>
+        <GuideCharacter mood="encouraging" message={`Can ${childName} read this word out loud?`} />
+        <WordCard key={`word-${wordIdx}`} word={word} onCorrect={() => nextWord(true)} onIncorrect={() => nextWord(false)} />
+        <div style={{ textAlign:'center' }}><StarReward count={Math.min(stars, 8)} /></div>
+      </div>
+    );
+  }
+
+  if (phase === 'nonsense') {
+    const nw = NONSENSE_WORDS[ceilingLevel || currentLevel] || NONSENSE_WORDS[1];
+    const testCount = Math.min(5, nw.length);
+    const word = nw[nonsenseIdx];
+    return (
+      <div className="animate-in" style={{ padding:'20px', maxWidth:500, margin:'0 auto' }}>
+        <ProgressBar current={nonsenseTotal + 1} total={testCount} colour="#8B5CF6" />
+        <div style={{
+          display:'inline-block', padding:'6px 14px', borderRadius:20, background:'#F3F0FF',
+          color:'#7C3AED', fontWeight:700, fontSize:13, marginBottom:12, fontFamily:'Outfit'
+        }}>
+          Nonsense Words (made-up words to check decoding)
+        </div>
+        <GuideCharacter mood="thinking" message="These are made-up words — can they sound them out?" />
+        <WordCard key={`nonsense-${nonsenseIdx}`} word={word} onCorrect={() => nextNonsense(true)} onIncorrect={() => nextNonsense(false)} />
+      </div>
+    );
+  }
+
+  return null;
+}
+
+// 4. Results
+function ResultScreen({ childName, level, stars, details, onGetBook, onRetry }) {
+  const [showConfetti, setShowConfetti] = useState(true);
+  const levelData = LEVELS[level - 1];
+  useEffect(() => { const t = setTimeout(() => setShowConfetti(false), 4000); return () => clearTimeout(t); }, []);
+
+  return (
+    <div className="animate-in" style={{ textAlign:'center', padding:'40px 20px', maxWidth:560, margin:'0 auto' }}>
+      {showConfetti && <Confetti />}
+      <GuideCharacter mood="celebrating" message={`Amazing work, ${childName}! You're a reading superstar!`} />
+      <StarReward count={Math.min(stars, 12)} />
+
+      <div style={{
+        background:'white', borderRadius:24, padding:32, marginTop:16,
+        boxShadow:'0 8px 32px rgba(0,0,0,0.08)', border:`3px solid ${levelData.colour}`
+      }}>
+        <div style={{
+          width:80, height:80, borderRadius:'50%', background:levelData.colour,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          margin:'0 auto 16px', fontSize:36, fontWeight:800, color:'white', fontFamily:'Outfit'
+        }}>
+          {level}
+        </div>
+        <h2 style={{ fontSize:28, color:'#1E293B', marginBottom:4 }}>{childName}'s Level</h2>
+        <h3 style={{ fontSize:22, color:levelData.colour, marginBottom:8, fontWeight:700 }}>
+          Level {level}: {levelData.name}
+        </h3>
+        <p style={{ color:'#64748B', fontSize:14, marginBottom:20 }}>
+          Aligned to RWI {levelData.band} band
+        </p>
+
+        <div style={{ background:'#F8FAFC', borderRadius:14, padding:20, textAlign:'left', marginBottom:24 }}>
+          <h4 style={{ fontSize:15, color:'#1E293B', marginBottom:10, fontFamily:'Outfit' }}>Assessment Summary</h4>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+            <div style={{ padding:10, background:'white', borderRadius:10 }}>
+              <div style={{ fontSize:12, color:'#94A3B8', marginBottom:2 }}>Words Read</div>
+              <div style={{ fontSize:18, fontWeight:700, color:'#1E293B' }}>
+                {details.wordsCorrect}/{details.wordsTotal}
+              </div>
+            </div>
+            <div style={{ padding:10, background:'white', borderRadius:10 }}>
+              <div style={{ fontSize:12, color:'#94A3B8', marginBottom:2 }}>Nonsense Words</div>
+              <div style={{ fontSize:18, fontWeight:700, color:'#1E293B' }}>
+                {details.nonsenseCorrect}/{details.nonsenseTotal}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style={{ fontSize:15, color:'#475569', lineHeight:1.6, marginBottom:24 }}>
+          {childName} is ready for <strong style={{ color:levelData.colour }}>Level {level}: {levelData.name}</strong> books.
+          Every word will be perfectly matched to the sounds {childName} knows — building confidence with every page.
+        </p>
+
+        <button onClick={onGetBook} style={{
+          width:'100%', padding:'18px', borderRadius:14, border:'none', cursor:'pointer',
+          background:`linear-gradient(135deg, ${levelData.colour}, ${levelData.colour}DD)`,
+          color:'white', fontSize:18, fontWeight:700, fontFamily:'Outfit',
+          boxShadow:`0 8px 24px ${levelData.colour}40`, marginBottom:12
+        }}>
+          Get {childName}'s First Book — Free
+        </button>
+        <button onClick={onRetry} style={{
+          width:'100%', padding:'14px', borderRadius:14, border:'2px solid #E2E8F0',
+          cursor:'pointer', background:'white', color:'#64748B', fontSize:15,
+          fontWeight:600, fontFamily:'Outfit'
+        }}>
+          Retake Assessment
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// 5. Lead Capture
+function LeadCapture({ childName, level, onSubmit }) {
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const levelData = LEVELS[level - 1];
+
+  if (submitted) {
+    return (
+      <div className="animate-in" style={{ textAlign:'center', padding:'60px 20px' }}>
+        <div style={{ fontSize:64, marginBottom:16 }}>🎉</div>
+        <h2 style={{ fontSize:28, color:'#1E293B', marginBottom:12 }}>You're All Set!</h2>
+        <p style={{ fontSize:17, color:'#64748B', maxWidth:440, margin:'0 auto', lineHeight:1.6 }}>
+          {childName}'s personalised <strong style={{ color:levelData.colour }}>Level {level}: {levelData.name}</strong> book is on its way to your inbox. Check your email shortly.
+        </p>
+        <div style={{
+          marginTop:32, padding:24, background:'white', borderRadius:16,
+          boxShadow:'0 4px 16px rgba(0,0,0,0.06)', maxWidth:400, margin:'32px auto 0'
+        }}>
+          <p style={{ fontSize:14, color:'#64748B', lineHeight:1.5 }}>
+            While you wait, why not explore the full range of MyPhonicsBooks levels? Each book is tailored to your child's exact reading ability.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-in" style={{ padding:'40px 20px', maxWidth:440, margin:'0 auto' }}>
+      <GuideCharacter mood="excited" message={`Let's get ${childName}'s free book sent to you!`} />
+      <div style={{ background:'white', borderRadius:20, padding:28, boxShadow:'0 4px 20px rgba(0,0,0,0.06)' }}>
+        <h3 style={{ fontSize:20, color:'#1E293B', marginBottom:4 }}>Get Your Free Book</h3>
+        <p style={{ fontSize:14, color:'#64748B', marginBottom:20 }}>
+          We'll send a personalised Level {level} book for {childName} straight to your inbox.
+        </p>
+        <input
+          type="email" value={email} onChange={e => setEmail(e.target.value)}
+          placeholder="Your email address"
+          style={{
+            width:'100%', padding:'14px 16px', borderRadius:12, border:'2px solid #E2E8F0',
+            fontSize:16, fontFamily:'Plus Jakarta Sans', outline:'none', marginBottom:16
+          }}
+          onFocus={e => e.target.style.borderColor='#E84B8A'}
+          onBlur={e => e.target.style.borderColor='#E2E8F0'}
+        />
+        <label style={{ display:'flex', gap:10, alignItems:'flex-start', marginBottom:20, cursor:'pointer' }}>
+          <input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)}
+            style={{ marginTop:3, width:18, height:18, accentColor:'#E84B8A' }} />
+          <span style={{ fontSize:13, color:'#64748B', lineHeight:1.4 }}>
+            I agree to receive {childName}'s free book and occasional updates from MyPhonicsBooks. You can unsubscribe at any time.
+          </span>
+        </label>
+        <button
+          onClick={() => { if (email && consent) { onSubmit(email); setSubmitted(true); } }}
+          disabled={!email || !consent}
+          style={{
+            width:'100%', padding:'16px', borderRadius:14, border:'none',
+            cursor: email && consent ? 'pointer' : 'default',
+            background: email && consent ? `linear-gradient(135deg, ${levelData.colour}, ${levelData.colour}DD)` : '#E2E8F0',
+            color: email && consent ? 'white' : '#94A3B8',
+            fontSize:17, fontWeight:700, fontFamily:'Outfit',
+            boxShadow: email && consent ? `0 6px 20px ${levelData.colour}30` : 'none'
+          }}>
+          Send My Free Book
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN APP ───
+function App() {
+  const [screen, setScreen] = useState('welcome'); // welcome, name, assess, result, lead
+  const [childName, setChildName] = useState('');
+  const [resultLevel, setResultLevel] = useState(null);
+  const [resultStars, setResultStars] = useState(0);
+  const [resultDetails, setResultDetails] = useState({});
+
+  return (
+    <div style={{ maxWidth:640, margin:'0 auto', minHeight:'100vh', position:'relative' }}>
+      {/* Header */}
+      <header style={{
+        padding:'16px 20px', display:'flex', alignItems:'center', gap:10,
+        borderBottom:'1px solid #F1F5F9'
+      }}>
+        <div style={{
+          width:36, height:36, borderRadius:10,
+          background:'linear-gradient(135deg, #E84B8A, #DB2777)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          color:'white', fontSize:18, fontWeight:800, fontFamily:'Outfit'
+        }}>M</div>
+        <span style={{ fontFamily:'Outfit', fontWeight:700, fontSize:17, color:'#1E293B' }}>
+          MyPhonicsBooks
+        </span>
+        {screen !== 'welcome' && (
+          <span style={{
+            marginLeft:'auto', fontSize:12, color:'#94A3B8', fontWeight:600,
+            padding:'4px 10px', background:'#F8FAFC', borderRadius:8
+          }}>Level Finder</span>
+        )}
+      </header>
+
+      {screen === 'welcome' && (
+        <WelcomeScreen onStart={() => setScreen('name')} />
+      )}
+      {screen === 'name' && (
+        <NameScreen onSubmit={(name) => { setChildName(name); setScreen('assess'); }} />
+      )}
+      {screen === 'assess' && (
+        <SoundAssessment
+          childName={childName}
+          onComplete={(level, stars, details) => {
+            setResultLevel(level);
+            setResultStars(stars);
+            setResultDetails(details);
+            setScreen('result');
+          }}
+        />
+      )}
+      {screen === 'result' && (
+        <ResultScreen
+          childName={childName}
+          level={resultLevel}
+          stars={resultStars}
+          details={resultDetails}
+          onGetBook={() => setScreen('lead')}
+          onRetry={() => {
+            setScreen('welcome');
+            setResultLevel(null);
+            setResultStars(0);
+            setResultDetails({});
+          }}
+        />
+      )}
+      {screen === 'lead' && (
+        <LeadCapture childName={childName} level={resultLevel} onSubmit={(email) => console.log('Lead:', { childName, level: resultLevel, email })} />
+      )}
+
+      {/* Footer */}
+      <footer style={{
+        padding:'20px', textAlign:'center', fontSize:12, color:'#CBD5E1',
+        borderTop:'1px solid #F1F5F9', marginTop:40
+      }}>
+        MyPhonicsBooks — Personalised phonics reading books for children aged 4 to 8
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>

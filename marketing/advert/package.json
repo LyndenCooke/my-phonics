@@ -1,0 +1,23 @@
+{
+  "name": "myphonicsbooks-advert",
+  "version": "1.0.0",
+  "description": "30-second video advertisement for MyPhonicsBooks",
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render MyPhonicsAdvert out/MyPhonicsAdvert.mp4",
+    "build:gif": "remotion render MyPhonicsAdvert out/MyPhonicsAdvert.gif",
+    "upgrade": "remotion upgrade"
+  },
+  "keywords": ["remotion", "video", "phonics", "education"],
+  "author": "MyPhonicsBooks",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.434",
+    "@remotion/player": "^4.0.434",
+    "@types/react": "^19.2.14",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.434",
+    "typescript": "^5.9.3"
+  }
+}

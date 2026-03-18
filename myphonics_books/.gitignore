@@ -1,0 +1,43 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Database
+db/
+*.sqlite
+*.sqlite3
+
+# Temporary files
+.tmp/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+.next/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+nul
+
+# Generated output
+output/
+
+# Backend
+backend/node_modules/

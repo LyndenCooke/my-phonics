@@ -1,0 +1,90 @@
+.absoluteFill {
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #f8b500;
+  left: var(--left);
+  top: var(--top);
+  width: var(--width);
+  height: var(--height);
+  opacity: var(--opacity);
+}
+
+.logoContainer {
+  text-align: center;
+  transform: var(--transform);
+}
+
+.iconRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 100px;
+}
+
+.separator {
+  width: 8px;
+  height: 80px;
+  background: #f8b500;
+  border-radius: 4px;
+}
+
+.title {
+  font-family: system-ui, sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #f8b500 0%, #ffd93d 50%, #f8b500 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 20px 0 0 0;
+  letter-spacing: -2px;
+}
+
+.tagline {
+  font-family: system-ui, sans-serif;
+  font-size: 36px;
+  color: white;
+  margin: 30px 0 0 0;
+  font-weight: 500;
+  opacity: var(--opacity);
+  transform: var(--transform);
+}
+
+.highlight {
+  color: #f8b500;
+  font-style: italic;
+}
+
+.websiteCta {
+  margin-top: 50px;
+  opacity: var(--opacity);
+  transform: var(--transform);
+}
+
+.ctaButton {
+  background: #f8b500;
+  padding: 18px 50px;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px rgba(248, 181, 0, 0.4);
+}
+
+.ctaText {
+  font-family: system-ui, sans-serif;
+  font-size: 28px;
+  color: #1a1a2e;
+  margin: 0;
+  font-weight: 700;
+}
