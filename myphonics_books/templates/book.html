@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ book_title }}</title>
+  {{ "<style>
+    :root {
+      --level-color: " ~ level_colour ~ ";
+      --cover-bg: url('" ~ cover_background_image ~ "');
+      --story-font-size: " ~ story_font_size ~ "pt;
+    }
+  </style>" | safe }}
+  <style>
+    /* ===== FONTS ===== */
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_regular }}') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_bold }}') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_italic }}') format('truetype');
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_bold_italic }}') format('truetype');
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ===== RESET & PAGE ===== */
+    @page {
+      size: 148mm 210mm;
+      margin: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      font-family: 'Andika', sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== PAGE CONTAINER ===== */
+    .page {
+      width: 148mm;
+      height: 210mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      page-break-inside: avoid;
+      background: #ffffff;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    .page-inner {
+      width: 100%;
+      height: 100%;
+      padding: 10mm 12mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== PAGE NUMBER BADGE ===== */
+    .page-num {
+      position: absolute;
+      bottom: 3mm;
+      width: 8mm;
+      height: 8mm;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5mm;
+    }
+
+    .page-num-left {
+      left: 3mm;
+    }
+
+    .page-num-right {
+      right: 3mm;
+    }
+
+
+    /* ================================================================
+       PAGE 1: FRONT COVER
+       ================================================================ */
+    .cover {
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .cover-level-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--level-color);
+      padding: 3mm 5mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .cover-level-badge {
+      color: #ffffff;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-brand {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    .cover-illustration {
+      position: absolute;
+      top: 12mm;
+      left: 0;
+      right: 0;
+      bottom: 40mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cover-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-illustration-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--level-color), #f5f5f5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-title-area {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 10mm 10mm 15mm;
+      background: var(--level-color);
+      border-top: 1mm solid rgba(255, 255, 255, 0.4);
+    }
+
+    .cover-title {
+      color: #ffffff;
+      font-size: 26pt;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .cover-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 11pt;
+      font-style: italic;
+      margin-top: 3mm;
+      font-weight: 700;
+    }
+
+
+    /* ================================================================
+       PAGE 2: GUIDE FOR GROWN-UPS
+       ================================================================ */
+    .guide-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 6mm;
+    }
+
+    .guide-intro {
+      font-size: 10pt;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 8mm;
+    }
+
+    .guide-section {
+      margin-bottom: 8mm;
+    }
+
+    .guide-section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3mm;
+      padding-bottom: 1.5mm;
+      border-bottom: 0.3mm solid #eee;
+    }
+
+    .guide-item {
+      font-size: 11pt;
+      color: #333;
+      line-height: 1.7;
+      padding-left: 6mm;
+      margin-bottom: 3mm;
+    }
+
+    .guide-item::before {
+      content: "\2014";
+      color: #999;
+      margin-left: -6mm;
+      margin-right: 2mm;
+    }
+
+    .guide-quote {
+      margin-top: auto;
+      padding: 5mm 6mm;
+      border-left: 1.2mm solid var(--level-color);
+      background: #f9f9f9;
+      font-size: 10pt;
+      font-style: italic;
+      color: #555;
+      line-height: 1.5;
+    }
+
+
+    /* ================================================================
+       PAGE 3: SOUNDS AND WORDS
+       ================================================================ */
+    .ref-section-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+
+    .ref-section-desc {
+      font-size: 9pt;
+      color: #666;
+      margin-bottom: 4mm;
+    }
+
+    .ref-phonics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2mm;
+      margin-bottom: 5mm;
+    }
+
+    .ref-sound {
+      height: 11mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13pt;
+      font-weight: 700;
+      border: 0.4mm solid #ccc;
+      border-radius: 50%;
+    }
+
+    .ref-sound-focus {
+      border-color: var(--level-color);
+      color: var(--level-color);
+    }
+
+    .ref-sound-other {
+      color: #555;
+    }
+
+    .ref-focus-note {
+      font-size: 8pt;
+      color: #888;
+      margin-bottom: 5mm;
+    }
+
+    .ref-focus-note .circle-icon {
+      display: inline-block;
+      width: 4mm;
+      height: 4mm;
+      border: 0.3mm solid var(--level-color);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 1.5mm;
+    }
+
+    /* Story Words box */
+    .ref-story-words-box {
+      border: 0.5mm solid #ddd;
+      border-radius: 3mm;
+      padding: 4mm 5mm;
+      margin-bottom: 5mm;
+    }
+
+    .ref-story-words-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2mm 5mm;
+      justify-content: flex-start;
+    }
+
+    .ref-story-word {
+      font-size: 16pt;
+      font-style: italic;
+      color: #1a1a1a;
+    }
+
+    /* Tricky Words grid */
+    .ref-tricky-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+
+    .ref-tricky-desc {
+      font-size: 9pt;
+      color: #666;
+      margin-bottom: 4mm;
+    }
+
+    .ref-tricky-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 0.5mm solid #ddd;
+      border-radius: 3mm;
+      overflow: hidden;
+    }
+
+    .ref-tricky-cell {
+      font-size: 16pt;
+      font-style: italic;
+      text-align: center;
+      padding: 4mm 3mm;
+      border-bottom: 0.3mm solid #eee;
+      border-right: 0.3mm solid #eee;
+      color: #1a1a1a;
+    }
+
+    .ref-tricky-cell:nth-child(3n) {
+      border-right: none;
+    }
+
+    .ref-tricky-cell:nth-last-child(-n+3) {
+      border-bottom: none;
+    }
+
+
+    /* ================================================================
+       PAGES 4-11: STORY PAGES (8 pages for standard template)
+       ================================================================ */
+    .story-page {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .story-text-area {
+      padding: 12mm 12mm 8mm 12mm;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .story-text {
+      font-size: var(--story-font-size);
+      line-height: 1.5;
+      color: #2b2b2b;
+      white-space: pre-wrap;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .story-illustration {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .story-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-illustration-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #bbb;
+      font-size: 11pt;
+      border-top: 0.3mm solid #e8e8e8;
+    }
+
+
+    /* ================================================================
+       PAGE 12: ACTIVITY PAGE (Read Words + Alien Words + Draw)
+       ================================================================ */
+    .activity-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 3mm;
+    }
+
+    .activity-subtitle {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 5mm;
+    }
+
+    /* Can You Read section */
+    .read-words-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm 10mm;
+      margin-bottom: 6mm;
+    }
+
+    .read-word-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 18mm;
+      background: #f8f8f8;
+      border: 1mm solid var(--level-color);
+      border-radius: 2mm;
+    }
+
+    .read-word-trace {
+      font-size: 24pt;
+      color: #1a1a1a;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Alien Words section */
+    .alien-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+      margin-top: 4mm;
+    }
+
+    .alien-subtitle {
+      font-size: 9pt;
+      color: #666;
+      margin-bottom: 4mm;
+    }
+
+    .alien-words-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3mm;
+      margin-bottom: 5mm;
+    }
+
+    .alien-word-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 12mm;
+      background: #fff;
+      border: 0.5mm dashed #aaa;
+      border-radius: 2mm;
+      font-size: 14pt;
+      font-style: italic;
+      color: #555;
+    }
+
+    /* Draw section */
+    .draw-section-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      margin-bottom: 3mm;
+    }
+
+    .draw-box {
+      flex: 1;
+      border: 0.5mm dashed #ccc;
+      border-radius: 3mm;
+      min-height: 35mm;
+    }
+
+
+    /* ================================================================
+       PAGE 13: TRICKY WORDS & WRITING PRACTICE
+       ================================================================ */
+    .writing-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+
+    .writing-instruction {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 8mm;
+    }
+
+    /* Simplified writing practice (single line) */
+    .writing-title-spaced {
+      margin-top: 8mm;
+    }
+
+    .hw-simple-row {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 8mm;
+      height: 12mm;
+    }
+
+    .hw-simple-letter {
+      width: 18mm;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-size: 28pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1;
+      padding-bottom: 0;
+    }
+
+    .hw-simple-line {
+      flex: 1;
+      border-bottom: 0.5mm solid #333;
+      height: 0;
+      margin-left: 3mm;
+      align-self: flex-end;
+    }
+
+
+    /* ================================================================
+       PAGE 14: BACK COVER
+       ================================================================ */
+    .back-cover {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .back-banner {
+      background: var(--level-color);
+      padding: 8mm 12mm;
+      color: #ffffff;
+    }
+
+    .back-brand-name {
+      font-size: 16pt;
+      font-weight: 700;
+    }
+
+    .back-level-text {
+      font-size: 9pt;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .back-body {
+      flex: 1;
+      padding: 6mm 12mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-age-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4mm;
+    }
+
+    .back-age-text {
+      font-size: 9pt;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .back-level-badge {
+      background: var(--level-color);
+      color: #ffffff;
+      font-size: 9pt;
+      font-weight: 700;
+      padding: 2mm 5mm;
+      border-radius: 3mm;
+    }
+
+    .back-description {
+      font-size: 10pt;
+      font-style: italic;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 5mm;
+    }
+
+    .back-illustration {
+      flex: 1;
+      max-height: 70mm;
+      overflow: hidden;
+      border-radius: 3mm;
+      margin-bottom: 4mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .back-illustration-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-size: 10pt;
+    }
+
+    /* Series level boxes */
+    .back-series-label {
+      font-size: 8pt;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3mm;
+    }
+
+    .back-series-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 2.5mm;
+      margin-bottom: 4mm;
+    }
+
+    .back-series-box {
+      text-align: center;
+      padding: 2.5mm 1.5mm;
+      border: 0.3mm solid #ddd;
+      border-radius: 2mm;
+    }
+
+    .back-series-box-active {
+      background: var(--level-color);
+      border-color: var(--level-color);
+      color: #ffffff;
+    }
+
+    .back-series-num {
+      font-size: 14pt;
+      font-weight: 700;
+    }
+
+    .back-series-name {
+      font-size: 5.5pt;
+      color: #888;
+      margin-top: 0.5mm;
+    }
+
+    .back-series-box-active .back-series-name {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .back-footer {
+      background: #f5f5f5;
+      padding: 5mm 12mm;
+      text-align: center;
+    }
+
+    .back-footer-brand {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #888;
+    }
+
+    .back-footer-url {
+      font-size: 8pt;
+      color: #aaa;
+      margin-top: 0.5mm;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       PAGE 1: FRONT COVER
+       ============================================================ -->
+  <div class="page cover">
+    <div class="cover-level-bar">
+      <span class="cover-level-badge">Level {{ level }} &middot; {{ level_name }}</span>
+      <span class="cover-brand">MyPhonicsBooks</span>
+    </div>
+    <div class="cover-illustration">
+      {% if cover_image %}
+      <img src="{{ cover_image }}" alt="Cover illustration">
+      {% else %}
+      <div class="cover-illustration-fallback"></div>
+      {% endif %}
+    </div>
+    <div class="cover-title-area">
+      <div class="cover-title">{{ book_title }}</div>
+      {% if child_name %}
+      <div class="cover-subtitle">A story for {{ child_name }}</div>
+      {% else %}
+      <div class="cover-subtitle">Level {{ level }} &middot; {{ level_name }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 2: GUIDE FOR GROWN-UPS
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="guide-title">Guide for Grown-Ups</div>
+      <div class="guide-intro">
+        This decodable book uses sounds your child has learnt. Every word can be
+        sounded out or is a sight word. Read it together and celebrate progress!
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">Before Reading</div>
+        <div class="guide-item">Look at the cover and read the title together.</div>
+        <div class="guide-item">Practise the sounds on page 3 before starting.</div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">During Reading</div>
+        <div class="guide-item">Point to each word as your child reads.</div>
+        <div class="guide-item">If stuck, help them sound out each letter.</div>
+        <div class="guide-item">Praise the effort, not just accuracy!</div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">After Reading</div>
+        <div class="guide-item">Talk about what happened in the story.</div>
+        <div class="guide-item">Read it again another day for confidence.</div>
+      </div>
+
+      <div class="guide-quote">
+        "I love how you kept trying!" matters more than "Well done."
+        Celebrate persistence and enjoy reading together.
+      </div>
+    </div>
+    <div class="page-num page-num-left">2</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 3: SOUNDS AND WORDS (NEW sounds for this level + Story Words)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="ref-section-title">New Sounds in This Book</div>
+      <div class="ref-section-desc">Say each sound clearly. These are the new sounds at this level.</div>
+
+      <div class="ref-phonics-grid">
+        {% for sound in all_graphemes %}
+        <div class="ref-sound {% if sound in focus_graphemes %}ref-sound-focus{% else %}ref-sound-other{% endif %}">
+          {{ sound }}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="ref-focus-note"><span class="circle-icon"></span> = focus sounds in this story</div>
+
+      <!-- Story Words -->
+      <div class="ref-section-title">Story Words</div>
+      <div class="ref-section-desc">Sound out each word before reading.</div>
+      <div class="ref-story-words-box">
+        <div class="ref-story-words-flow">
+          {% for word in story_words %}
+          <span class="ref-story-word">{{ word }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="page-num page-num-right">3</div>
+  </div>
+
+  <!-- ============================================================
+       PAGES 4-11: STORY PAGES (8 pages for standard template)
+       ============================================================ -->
+  {% for page in story_pages %}
+  <div class="page story-page">
+    <div class="story-text-area">
+      <div class="story-text">{{ page.text }}</div>
+    </div>
+    <div class="story-illustration">
+      {% if page.image %}
+      <img src="{{ page.image }}" alt="Illustration for page {{ loop.index }}">
+      {% else %}
+      <div class="story-illustration-placeholder">[ Scene {{ loop.index }} illustration ]</div>
+      {% endif %}
+    </div>
+    {% set pnum = loop.index + 3 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endfor %}
+
+  <!-- ============================================================
+       PAGE 12: ACTIVITY PAGE (Read Words + Alien Words + Draw)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="activity-title">Can You Read These Words?</div>
+      <div class="activity-subtitle">Read each word aloud.</div>
+
+      <div class="read-words-grid">
+        {% for word in read_words %}
+        <div class="read-word-cell">
+          <span class="read-word-trace">{{ word }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="alien-title">Alien Words</div>
+      <div class="alien-subtitle">These aren't real words! Can you sound them out?</div>
+      <div class="alien-words-grid">
+        {% for word in nonsense_words %}
+        <div class="alien-word-cell">{{ word }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="draw-section-title">Draw Your Favourite Part</div>
+      <div class="draw-box"></div>
+    </div>
+    <div class="page-num page-num-left">12</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 13: TRICKY WORDS & WRITING PRACTICE
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <!-- Tricky Words Section -->
+      <div class="ref-tricky-title">Tricky Words</div>
+      <div class="ref-tricky-desc">These cannot be sounded out. Learn them by heart.</div>
+      <div class="ref-tricky-grid">
+        {% for word in tricky_words %}
+        <div class="ref-tricky-cell">{{ word }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Writing Practice Section (single line) -->
+      <div class="writing-title writing-title-spaced">Writing Practice</div>
+      <div class="writing-instruction">Trace the sound, then write it on the line.</div>
+
+      {% for grapheme in writing_graphemes[:3] %}
+      <div class="hw-simple-row">
+        <div class="hw-simple-letter">{{ grapheme }}</div>
+        <div class="hw-simple-line"></div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="page-num page-num-right">13</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 14: BACK COVER
+       ============================================================ -->
+  <div class="page back-cover">
+    <div class="back-banner">
+      <div class="back-brand-name">MyPhonicsBooks</div>
+      <div class="back-level-text">Level {{ level }} &middot; {{ level_name }}</div>
+    </div>
+    <div class="back-body">
+      <div class="back-age-row">
+        <div class="back-age-text">Ages {{ age_range }} &middot; {{ year_group }}</div>
+        <div class="back-level-badge">Level {{ level }}</div>
+      </div>
+      <div class="back-description">
+        {% if child_name %}
+        {{ book_title }} &mdash; a personalised phonics story made just for {{ child_name }}.
+        {% else %}
+        {{ book_title }} &mdash; a decodable phonics story.
+        {% endif %}
+        Every word is decodable. Watch the confidence grow!
+      </div>
+      <div class="back-illustration">
+        {% if cover_image %}
+        <img src="{{ cover_image }}" alt="{{ book_title }}">
+        {% else %}
+        <div class="back-illustration-placeholder">[ cover illustration ]</div>
+        {% endif %}
+      </div>
+
+      <div class="back-series-label">The Series</div>
+      <div class="back-series-row">
+        {% for lvl in series_levels %}
+        <div class="back-series-box {% if lvl.num == level %}back-series-box-active{% endif %}">
+          <div class="back-series-num">{{ lvl.num }}</div>
+          <div class="back-series-name">{{ lvl.name }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="back-footer">
+      <div class="back-footer-brand">Personalised phonics books for your child</div>
+      <div class="back-footer-url">myphonicsbooks.com</div>
+    </div>
+  </div>
+
+</body>
+
+</html>

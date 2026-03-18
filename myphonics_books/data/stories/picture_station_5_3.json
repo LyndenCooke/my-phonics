@@ -1,0 +1,81 @@
+{
+  "template_id": "embedded_instructions",
+  "level": 5,
+  "sub_level": "5.3",
+  "book_number": 1,
+  "title": "The Picture Station",
+  "focus_sounds": ["ure", "tion"],
+  "cultural_setting": {
+    "region": "Multi-Region Tour",
+    "country": "Qatar, Peru, Laos",
+    "setting": "A high-tech library station touring various world locations",
+    "notes": "Feature contemporary settings: Mesaieed desert (Qatar) with modern SUVs, Machu Picchu (Peru) as a preserved heritage site, and Luang Prabang (Laos) with contemporary town life and traditional robes."
+  },
+  "personalisation": {
+    "NAME": "the boy",
+    "PERSON": "Mum",
+    "LOCATION": "the Picture Station",
+    "PROBLEM": "wants to find the best view in the world",
+    "SOLUTION": "uses the station to visit three countries and takes a picture"
+  },
+  "pages": [
+    "The boy walks into the Picture Station with a big smile. First, he must press the big red button to start the game. \"I want to go on a grand adventure!\" he calls out. He sees a screen with many options for his trip today.",
+    "Look at the section for Qatar on the big glass screen. The nature here is just sand dunes and hot yellow sun. A fast car jumps over a big hill of sand in the desert. It is fun to watch the dust rise in the clear blue air.",
+    "Next, finding the section for the stone city is the goal. It is high up in the clouds on a mountain in Peru. This old place is a treasure from a long, long time ago. The boy feels wonder as he looks at the grey stone walls.",
+    "Then, look at the nature near the river in the town of Luang Prabang. The junction of the water and the green hills is a clear view. Many monks in orange robes walk past the gold temples in the street. The boy feels happy to see such a calm and peaceful place.",
+    "\"Look! I have a high position now!\" the boy calls to Mum. He can see the flowers and the trees from the top of the hill. The air is warm and the sky is bright over the river. Everything is so green and full of life in this new place.",
+    "Finally, follow the instructions for the end of the game today. Take a picture of the best view you can find on the screen. The boy thinks hard about which place he likes the most. He wants to remember every part of his grand world trip.",
+    "\"What an education!\" says Mum as she looks at the pictures. The boy has the best picture of the desert for his bedroom wall. He tells her all about the sand and the stone and the river. They are both happy to have seen so much of the world.",
+    "He will dream of a future with even more grand adventures. The Picture Station is the best way to see the world from home. Soon he will be a man and go to these places for real. But for now, he is happy with his pictures and his dreams."
+  ],
+  "illustration_briefs": [
+    "The boy (British-Asian heritage, ~6-7 years old, neat black hair, glasses, bright blue T-shirt with a green leaf, tan shorts, trainers) walking towards a high-tech 'Picture Station' booth in a modern school or science centre. The booth is sleek, white and blue, with a large screen and a big red button. Warm indoor lighting.",
+    "The boy looking at a large screen inside the station. The screen shows a vibrant Qatar desert scene with golden sand dunes and a modern white SUV jumping over a dune. Dust is kicking up in the air. The boy looks excited, eyes wide behind his glasses.",
+    "The boy pointing at the screen which now shows Machu Picchu in Peru. Ancient grey stone walls and terraces on a lush green mountain top, surrounded by soft white clouds. The boy looks thoughtful and amazed. Detailed stonework and green landscape.",
+    "The boy looking at the screen showing Luang Prabang in Laos. A beautiful wide river with green hills in the background. A line of monks in bright orange robes walking calmly past a golden temple with a tiered roof. Peaceful and sunny atmosphere.",
+    "The boy looking out of a large screen. He is seeing a view from high up, looking down at a forest and a river in Laos from above. Sunlight is bright and warm, casting long shadows. He is smiling widely, enjoying the view.",
+    "The boy following instructions on a small control panel next to the large screen. He is about to press a camera icon. The screen shows a grid with the Qatar, Peru, and Laos views. He looks focused and happy.",
+    "The boy at home in a modern living room with Mum (South Asian heritage, modern casual clothes like a cardigan and jeans). He is showing her a printed picture of the white SUV in the Qatar desert. Mum is smiling and looking proud. Warm home lighting.",
+    "The boy in bed at night, tucked under a blue duvet. Three pictures are pinned to the wall above his bed: the SUV in the desert, the stone city, and the river. He has a peaceful smile on his face, dreaming. Soft night-light in the room."
+  ],
+  "story_words": ["picture", "station", "adventure", "nature", "education", "future"],
+  "tricky_words_used": ["the", "was", "her", "said", "she", "I", "to", "do", "are", "were", "want", "all", "he", "put", "some", "was"],
+  "read_words": ["picture", "station", "nature", "future"],
+  "nonsense_words": [
+    "purtion",
+    "futch",
+    "native",
+    "sture",
+    "clotion",
+    "grure",
+    "vention",
+    "blure",
+    "spotion",
+    "truction"
+  ],
+  "writing_practice_graphemes": ["ure", "tion"],
+  "writing_practice_words": ["picture", "nature", "station", "action"],
+  "comprehension_questions": {
+    "retrieval": "Which countries did the boy see at the station?",
+    "inference": "How did the boy feel about his world trip?",
+    "vocabulary": "What is a 'junction'?",
+    "prediction": "Where do you think the boy will go next time?"
+  },
+  "prediction_prompt": {
+    "page_before": 5,
+    "prompt_text": "Which view will the boy pick for his wall?",
+    "hint_text": "He likes the fast car!"
+  },
+  "focus_sound_count": {
+    "ure_words": ["picture", "nature", "adventure", "treasure", "future", "adventures"],
+    "tion_words": ["station", "section", "junction", "position", "instructions", "education", "options"],
+    "total_focus_appearances": 20
+  },
+  "word_count": 334,
+  "validation": {
+    "valid": true,
+    "total_words": 334,
+    "failed_words": [],
+    "notes": "Verified against Level 5.3 cumulative graphemes. Focus sounds ure/tion appear frequently. Level 5 sentence counts (min 4 per page) met. Cultural diverse contemporary settings included. Embedded instructions structure used (First, Next, Then, Finally)."
+  }
+}

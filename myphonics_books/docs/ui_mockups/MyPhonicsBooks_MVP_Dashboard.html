@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPhonicsBooks — MVP Command Centre</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Outfit', 'sans-serif'],
+        body: ['Plus Jakarta Sans', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-slate-50 font-body">
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const LEVEL_COLOURS = {
+  1: '#E84B8A', 2: '#F59E0B', 3: '#22C55E',
+  4: '#3B82F6', 5: '#8B5CF6', 6: '#14B8A6'
+};
+
+const mvpComponents = [
+  {
+    category: 'Core Pipeline',
+    items: [
+      { name: 'PDF Generation (Playwright)', status: 'complete', pct: 100, detail: 'Jinja2 + Playwright renders 16-page A5 PDFs. Working end-to-end.' },
+      { name: 'Phonics Data Layer', status: 'complete', pct: 100, detail: '6 levels of graphemes, tricky words, word banks (~1,000 words). Validated.' },
+      { name: 'Book Template (HTML/CSS)', status: 'complete', pct: 100, detail: '16-page standard template + 12-page ditty template. Print-safe design.' },
+      { name: '10 Story Templates (JSON)', status: 'complete', pct: 100, detail: '10 story arcs × 6 levels = 60 book moulds with scene definitions.' },
+      { name: 'Phonics Validation Engine', status: 'complete', pct: 100, detail: 'Grapheme decomposition validates every word against taught sounds.' },
+      { name: 'Word Bank Rebuild', status: 'needs_work', pct: 60, detail: 'Code exists but needs re-running against updated level mapping. ~2 hours work.' },
+    ]
+  },
+  {
+    category: 'AI Generation',
+    items: [
+      { name: 'Story Text Generation (Claude API)', status: 'needs_work', pct: 40, detail: 'Code written in execution/generate_story_text.py but untested end-to-end. Needs prompt tuning + validation loop.' },
+      { name: 'Comprehension Questions', status: 'needs_work', pct: 30, detail: 'Code exists in execution/generate_questions.py. Needs level-appropriate calibration.' },
+      { name: 'Image Generation (Illustrations)', status: 'not_started', pct: 0, detail: 'Placeholder only. Needs DALL-E 3 or Midjourney integration. Major gap.' },
+      { name: 'Cover Design Upgrade', status: 'needs_work', pct: 20, detail: 'Flat template works. CSS gradient + texture upgrade designed but not implemented.' },
+    ]
+  },
+  {
+    category: 'Web Application',
+    items: [
+      { name: 'FastAPI Backend', status: 'mostly_done', pct: 80, detail: 'All endpoints exist: users, children, orders, validation, free book funnel. Needs error handling polish.' },
+      { name: 'React Frontend (Landing)', status: 'needs_work', pct: 50, detail: 'Components stubbed: Hero, TrustBar, HowItWorks, ValueProps, FAQ. Need content + polish.' },
+      { name: 'React Frontend (Book Flow)', status: 'needs_work', pct: 45, detail: '5-step flow exists: BookForm → LevelSelector → StoryPicker → Preview → Pricing. Not connected to API.' },
+      { name: 'Free Book Funnel', status: 'needs_work', pct: 55, detail: 'Form component complete with GDPR consent. Backend endpoint exists. Not tested end-to-end.' },
+      { name: 'Stripe Payments', status: 'not_started', pct: 10, detail: 'Express.js stub exists. No checkout session creation or webhook handling.' },
+      { name: 'Email Delivery (Resend)', status: 'not_started', pct: 0, detail: 'Not started. Need transactional email for book download links.' },
+    ]
+  },
+  {
+    category: 'Assessment & Conversion',
+    items: [
+      { name: 'Assessment Structure (Design)', status: 'complete', pct: 100, detail: 'Full adaptive algorithm designed: sound recognition → word reading → nonsense words → tricky words.' },
+      { name: 'Assessment UI (Gamified)', status: 'not_started', pct: 0, detail: 'No UI exists. Designed to be touch-friendly, character-driven, 3-5 minute sessions.' },
+      { name: 'Lead Capture Funnel', status: 'needs_work', pct: 30, detail: 'Free book form exists. Assessment → level recommendation → book upsell not built.' },
+    ]
+  },
+  {
+    category: 'Brand & Marketing',
+    items: [
+      { name: 'Brand Guidelines', status: 'complete', pct: 100, detail: 'Comprehensive: voice, tone, colours, typography, UI patterns, legal disclaimers.' },
+      { name: 'Ad Copy Framework', status: 'complete', pct: 100, detail: 'Pain → Solution → Proof → CTA formula with parent-friendly language.' },
+      { name: 'Marketing Assets', status: 'not_started', pct: 0, detail: 'No social media graphics, ad creatives, or email sequences created yet.' },
+    ]
+  }
+];
+
+const coworkCapabilities = [
+  {
+    title: 'Document Creation',
+    icon: '📄',
+    examples: [
+      'Generate polished Word documents, PDFs, PowerPoint decks',
+      'Create your investor pitch deck or CPD course materials',
+      'Build worksheets, certificates, and printable resources',
+    ],
+    relevance: 'I can create marketing one-pagers, parent guides, school partnership proposals, and CPD training materials — all formatted professionally.',
+  },
+  {
+    title: 'Code & Application Building',
+    icon: '⚙️',
+    examples: [
+      'Write and test Python scripts, React components, API endpoints',
+      'Debug and fix existing code in your repository',
+      'Run your generate_book.py pipeline and validate outputs',
+    ],
+    relevance: 'I can fix your word bank rebuild, connect your frontend to the FastAPI backend, implement the Stripe checkout flow, and build the assessment UI.',
+  },
+  {
+    title: 'Interactive Prototypes',
+    icon: '🎨',
+    examples: [
+      'Build live HTML/React artifacts you can interact with immediately',
+      'Create data visualisations, dashboards, and planning tools',
+      'Design UI mockups that run in your browser',
+    ],
+    relevance: 'I can prototype your assessment funnel, build an interactive level selector parents can try, and create visual marketing assets.',
+  },
+  {
+    title: 'Data & Spreadsheets',
+    icon: '📊',
+    examples: [
+      'Create Excel spreadsheets with formulas and charts',
+      'Analyse your phonics data for completeness and gaps',
+      'Build content calendars, pricing models, and tracking sheets',
+    ],
+    relevance: 'I can audit your word banks across all 6 levels, create a launch timeline spreadsheet, and build a pricing model.',
+  },
+  {
+    title: 'Research & Strategy',
+    icon: '🔍',
+    examples: [
+      'Search the web for competitor analysis and market research',
+      'Draft business strategies, go-to-market plans, and pricing',
+      'Review and improve your copywriting and messaging',
+    ],
+    relevance: 'I can research UK phonics book competitors, analyse pricing strategies, and draft your Facebook ad campaigns.',
+  },
+  {
+    title: 'Connected Tools',
+    icon: '🔗',
+    examples: [
+      'Work with Notion, Figma, Canva, Vercel, and more via connectors',
+      'Deploy your frontend to Vercel for live testing',
+      'Create and manage Canva designs for marketing materials',
+    ],
+    relevance: 'I can deploy your landing page to Vercel, create book mockup graphics in Canva, and organise your project in Notion.',
+  },
+  {
+    title: 'Automation & Scheduling',
+    icon: '🤖',
+    examples: [
+      'Create scheduled tasks that run automatically',
+      'Build custom skills and workflows for repeated processes',
+      'Set up recurring checks and notifications',
+    ],
+    relevance: 'I can create a scheduled task that validates your word banks weekly, or automate your book generation testing pipeline.',
+  },
+  {
+    title: 'Browser Automation',
+    icon: '🌐',
+    examples: [
+      'Navigate websites, fill forms, and take screenshots',
+      'Test your deployed application across different scenarios',
+      'Research competitors by browsing their live sites',
+    ],
+    relevance: 'I can test your live deployment flow end-to-end, screenshot competitor products, and verify your Stripe checkout works.',
+  },
+];
+
+function StatusBadge({ status }) {
+  const styles = {
+    complete: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    mostly_done: 'bg-blue-100 text-blue-700 border-blue-200',
+    needs_work: 'bg-amber-100 text-amber-700 border-amber-200',
+    not_started: 'bg-red-100 text-red-700 border-red-200',
+  };
+  const labels = {
+    complete: 'Complete',
+    mostly_done: 'Nearly There',
+    needs_work: 'Needs Work',
+    not_started: 'Not Started',
+  };
+  return (
+    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${styles[status]}`}>
+      {labels[status]}
+    </span>
+  );
+}
+
+function ProgressBar({ pct, colour }) {
+  return (
+    <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+      <div
+        className="h-full rounded-full transition-all duration-700"
+        style={{ width: `${pct}%`, backgroundColor: colour || '#6366f1' }}
+      />
+    </div>
+  );
+}
+
+function App() {
+  const [activeTab, setActiveTab] = useState('status');
+  const [expandedItem, setExpandedItem] = useState(null);
+
+  const totalItems = mvpComponents.flatMap(c => c.items).length;
+  const completedItems = mvpComponents.flatMap(c => c.items).filter(i => i.status === 'complete').length;
+  const overallPct = Math.round(mvpComponents.flatMap(c => c.items).reduce((sum, i) => sum + i.pct, 0) / totalItems);
+
+  const categoryColours = ['#E84B8A', '#F59E0B', '#22C55E', '#3B82F6', '#8B5CF6'];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 font-display font-bold text-sm">
+                MPB
+              </div>
+              <div>
+                <h1 className="font-display font-bold text-lg text-slate-900">MyPhonicsBooks</h1>
+                <p className="text-xs text-slate-500">MVP Command Centre</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 bg-indigo-50 rounded-xl px-4 py-2">
+              <span className="text-sm font-semibold text-indigo-700">{overallPct}%</span>
+              <span className="text-xs text-indigo-500">MVP Ready</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Tab Navigation */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 w-fit">
+          {[
+            { id: 'status', label: 'MVP Status' },
+            { id: 'capabilities', label: 'What Cowork Can Do' },
+            { id: 'priorities', label: 'Launch Priorities' },
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                activeTab === tab.id
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+
+        {/* === MVP STATUS TAB === */}
+        {activeTab === 'status' && (
+          <div className="space-y-6">
+            {/* Summary Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm">
+                <p className="text-3xl font-display font-bold text-emerald-600">{completedItems}</p>
+                <p className="text-sm text-slate-500 mt-1">Complete</p>
+              </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm">
+                <p className="text-3xl font-display font-bold text-amber-500">
+                  {mvpComponents.flatMap(c => c.items).filter(i => i.status === 'needs_work' || i.status === 'mostly_done').length}
+                </p>
+                <p className="text-sm text-slate-500 mt-1">In Progress</p>
+              </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm">
+                <p className="text-3xl font-display font-bold text-red-500">
+                  {mvpComponents.flatMap(c => c.items).filter(i => i.status === 'not_started').length}
+                </p>
+                <p className="text-sm text-slate-500 mt-1">Not Started</p>
+              </div>
+              <div className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm">
+                <p className="text-3xl font-display font-bold text-indigo-600">{totalItems}</p>
+                <p className="text-sm text-slate-500 mt-1">Total Components</p>
+              </div>
+            </div>
+
+            {/* Overall Progress */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="font-display font-bold text-slate-900">Overall MVP Progress</h2>
+                <span className="text-2xl font-display font-bold text-indigo-600">{overallPct}%</span>
+              </div>
+              <ProgressBar pct={overallPct} colour="#6366f1" />
+            </div>
+
+            {/* Category Breakdown */}
+            {mvpComponents.map((cat, ci) => (
+              <div key={cat.category} className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                <div className="p-5 border-b border-slate-100">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-display font-bold text-slate-900 flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: categoryColours[ci] }} />
+                      {cat.category}
+                    </h3>
+                    <span className="text-sm text-slate-500">
+                      {Math.round(cat.items.reduce((s, i) => s + i.pct, 0) / cat.items.length)}% avg
+                    </span>
+                  </div>
+                </div>
+                <div className="divide-y divide-slate-50">
+                  {cat.items.map((item, ii) => {
+                    const key = `${ci}-${ii}`;
+                    const isExpanded = expandedItem === key;
+                    return (
+                      <div
+                        key={key}
+                        className="px-5 py-4 hover:bg-slate-50/50 cursor-pointer transition-colors"
+                        onClick={() => setExpandedItem(isExpanded ? null : key)}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm font-semibold text-slate-800">{item.name}</span>
+                            <StatusBadge status={item.status} />
+                          </div>
+                          <span className="text-sm font-mono text-slate-500">{item.pct}%</span>
+                        </div>
+                        <ProgressBar pct={item.pct} colour={categoryColours[ci]} />
+                        {isExpanded && (
+                          <p className="mt-3 text-sm text-slate-600 bg-slate-50 rounded-lg p-3">
+                            {item.detail}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* === COWORK CAPABILITIES TAB === */}
+        {activeTab === 'capabilities' && (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 text-white">
+              <h2 className="font-display font-bold text-xl mb-2">What Claude Cowork Can Do For MyPhonicsBooks</h2>
+              <p className="text-indigo-100 text-sm">
+                Cowork is not just a chatbot — it is a full autonomous work environment. It can read your files, write code, create documents,
+                build interactive prototypes, connect to external tools, browse the web, and execute multi-step tasks independently.
+                Here is every capability mapped to your project.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {coworkCapabilities.map((cap, i) => (
+                <div key={i} className="bg-white rounded-2xl p-5 border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-2xl">{cap.icon}</span>
+                    <h3 className="font-display font-bold text-slate-900">{cap.title}</h3>
+                  </div>
+                  <ul className="space-y-1.5 mb-4">
+                    {cap.examples.map((ex, j) => (
+                      <li key={j} className="text-sm text-slate-600 flex items-start gap-2">
+                        <span className="text-indigo-400 mt-0.5">•</span>
+                        {ex}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="bg-indigo-50 rounded-lg p-3">
+                    <p className="text-xs font-semibold text-indigo-700 mb-1">For MyPhonicsBooks:</p>
+                    <p className="text-xs text-indigo-600">{cap.relevance}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* === LAUNCH PRIORITIES TAB === */}
+        {activeTab === 'priorities' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-sm">
+              <h2 className="font-display font-bold text-xl text-slate-900 mb-2">MVP Launch Priority Matrix</h2>
+              <p className="text-sm text-slate-600 mb-6">
+                Ordered by impact and dependency. Complete these in sequence to reach a launchable MVP.
+                Items marked "Cowork Can Do" are tasks I can execute for you right now in this session.
+              </p>
+
+              {[
+                {
+                  phase: 'Phase 1 — Foundation (This Week)',
+                  colour: '#E84B8A',
+                  tasks: [
+                    { task: 'Rebuild word banks against updated level mapping', effort: '2 hours', cowork: true, impact: 'Blocks all story generation' },
+                    { task: 'Test story generation end-to-end (Claude API)', effort: '3 hours', cowork: true, impact: 'Core product — must work before launch' },
+                    { task: 'Upgrade cover design CSS (gradients + texture)', effort: '2 hours', cowork: true, impact: 'First impression — cover sells the book' },
+                    { task: 'Connect frontend forms to FastAPI backend', effort: '4 hours', cowork: true, impact: 'Users cannot create books without this' },
+                  ]
+                },
+                {
+                  phase: 'Phase 2 — MVP Loop (Next Week)',
+                  colour: '#F59E0B',
+                  tasks: [
+                    { task: 'Implement illustration generation (DALL-E 3)', effort: '6 hours', cowork: true, impact: 'Books need pictures — biggest visual gap' },
+                    { task: 'Wire up Stripe checkout + webhook handling', effort: '4 hours', cowork: true, impact: 'Cannot take payment without this' },
+                    { task: 'Build email delivery (Resend) for book downloads', effort: '2 hours', cowork: true, impact: 'Users need to receive their books' },
+                    { task: 'Test full order flow: create → generate → pay → deliver', effort: '3 hours', cowork: true, impact: 'End-to-end validation of the whole product' },
+                  ]
+                },
+                {
+                  phase: 'Phase 3 — Growth Engine (Week 3)',
+                  colour: '#22C55E',
+                  tasks: [
+                    { task: 'Build gamified assessment funnel UI', effort: '8 hours', cowork: true, impact: 'Key differentiator and lead generation tool' },
+                    { task: 'Create Facebook ad creatives and copy', effort: '3 hours', cowork: true, impact: 'Primary acquisition channel (80% mobile)' },
+                    { task: 'Deploy landing page to Vercel', effort: '1 hour', cowork: true, impact: 'Makes it live and shareable' },
+                    { task: 'Create email nurture sequence (5 emails)', effort: '3 hours', cowork: true, impact: 'Converts free book leads to paying customers' },
+                  ]
+                },
+                {
+                  phase: 'Phase 4 — Scale & Polish',
+                  colour: '#3B82F6',
+                  tasks: [
+                    { task: 'Build school/organisation bulk ordering', effort: '6 hours', cowork: true, impact: 'B2B revenue stream for ILM Connect' },
+                    { task: 'Create CPD training module around the product', effort: '4 hours', cowork: true, impact: 'Positions ILM Connect as the AI-in-education authority' },
+                    { task: 'Add Supabase for production database', effort: '4 hours', cowork: true, impact: 'Replace SQLite for multi-user production' },
+                    { task: 'Marketing assets: social graphics, demo videos', effort: '4 hours', cowork: true, impact: 'Professional presence across all channels' },
+                  ]
+                },
+              ].map((phase, pi) => (
+                <div key={pi} className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-display font-bold text-sm" style={{ backgroundColor: phase.colour }}>
+                      {pi + 1}
+                    </div>
+                    <h3 className="font-display font-bold text-slate-900">{phase.phase}</h3>
+                  </div>
+                  <div className="space-y-2 ml-11">
+                    {phase.tasks.map((t, ti) => (
+                      <div key={ti} className="bg-slate-50 rounded-xl p-4 flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-sm font-semibold text-slate-800">{t.task}</span>
+                            {t.cowork && (
+                              <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full">
+                                COWORK CAN DO
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500">{t.impact}</p>
+                        </div>
+                        <span className="text-xs font-mono text-slate-400 whitespace-nowrap">{t.effort}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200/60 py-6 px-4 text-center">
+        <p className="text-xs text-slate-400">
+          Built with Claude Cowork for ILM Connect — MyPhonicsBooks MVP Command Centre
+        </p>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>

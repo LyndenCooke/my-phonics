@@ -1,0 +1,237 @@
+{
+  "_note": "Master curriculum data and book planning. The workflow orchestrator reads this at pre-flight. Each planned book includes culture, theme, structure, and story idea so production can start immediately.",
+
+  "level_1": {
+    "name": "Starting Stories",
+    "status": "COMPLETE",
+    "template_type": "ditty",
+    "story_pages": 6,
+    "words_per_book": "40-80",
+    "sentences_per_page": 1,
+    "font_size": 26,
+    "colour": "#E84B8A",
+    "graphemes": ["s","a","t","p","i","n","m","d","g","o","c","k","ck","e","u","r","h","b","f","ff","l","ll","ss","j","v","w","x","y","z","zz","qu","ch","sh","th","ng","nk"],
+    "tricky_words": ["the","to","I","no","go","into"],
+    "total_books": 10,
+    "completed_books": [
+      {"sub_level": "1.1", "title": "Tap! Tap! Tap!", "focus_sounds": ["s","a","t","p","i","n"], "culture": "UK indoor", "theme": "Curiosity"},
+      {"sub_level": "1.2", "title": "The Mud on the Dog", "focus_sounds": ["m","d","g","o"], "culture": "UK outdoor", "theme": "Accepting mess / helping clean up"},
+      {"sub_level": "1.3", "title": "The Fish in the Tank", "focus_sounds": ["sh","nk"], "culture": "UK home", "theme": "Caring for a pet / empathy"},
+      {"sub_level": "1.4", "title": "The Red Socks", "focus_sounds": ["c","k","ck","e"], "culture": "UK home", "theme": "Persistence"},
+      {"sub_level": "1.5", "title": "Run, Pup, Run!", "focus_sounds": ["u","r","h","b"], "culture": "UK park", "theme": "Playfulness and affection"},
+      {"sub_level": "1.6", "title": "Fox Fell Off!", "focus_sounds": ["f","l","ff","ll"], "culture": "UK woodland", "theme": "Helping others / problem-solving"},
+      {"sub_level": "1.7", "title": "The Jam Jug", "focus_sounds": ["j","v","w"], "culture": "Middle Eastern market", "theme": "Responsibility / cleaning up your mess"},
+      {"sub_level": "1.8", "title": "The Yak and the Box", "focus_sounds": ["x","y","z"], "culture": "Himalayan village, Nepal", "theme": "Cleverness / sharing"},
+      {"sub_level": "1.9", "title": "Chop, Chop, Chop!", "focus_sounds": ["ch","th"], "culture": "South Asian kitchen, Pakistan", "theme": "Intergenerational bonding / helping family"},
+      {"sub_level": "1.10", "title": "Buzz and Sing!", "focus_sounds": ["ng","qu","ss","zz"], "culture": "Caribbean garden, Trinidad", "theme": "Agency / self-expression"}
+    ]
+  },
+
+  "level_2": {
+    "name": "Longer Sounds",
+    "status": "COMPLETE",
+    "template_type": "standard",
+    "story_pages": 8,
+    "words_per_book": "80-130",
+    "sentences_per_page": 2,
+    "font_size": 22,
+    "colour": "#F59E0B",
+    "graphemes": ["ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy"],
+    "tricky_words": ["he","she","we","me","be","my","you","her","said","your","are","put"],
+    "cumulative_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put"],
+    "word_structure": "CVC + all digraphs + vowel digraphs (NO consonant clusters)",
+    "total_books_needed": 5,
+    "completed_books": [
+      {"sub_level": "2.1", "title": "The Night Light", "focus_sounds": ["ay","ee","igh"], "culture": "Japanese garden", "theme": "Overcoming fear of the dark / wonder"},
+      {"sub_level": "2.2", "title": "Moo at the Zoo", "focus_sounds": ["ow","oo"], "culture": "Zoo (generic)", "theme": "Patience / persistence"},
+      {"sub_level": "2.3", "title": "Morning on the Farm", "focus_sounds": ["ar","or"], "culture": "Kenyan highlands farm", "theme": "Wonder at nature / aspiration"},
+      {"sub_level": "2.4", "title": "The Fair in the Air", "focus_sounds": ["air","ir"], "culture": "British village fair", "theme": "Asking for help / gratitude"},
+      {"sub_level": "2.5", "title": "Round and Round", "focus_sounds": ["ou","oy"], "culture": "Reykjavik, Iceland", "theme": "Teamwork / working together with a parent"}
+    ],
+    "planned_books": []
+  },
+
+  "level_3": {
+    "name": "New Spellings",
+    "status": "IN_PROGRESS",
+    "template_type": "standard",
+    "story_pages": 8,
+    "words_per_book": "130-200",
+    "sentences_per_page": 2,
+    "font_size": 20,
+    "colour": "#22C55E",
+    "graphemes": ["ea","a-e","i-e","o-e","u-e","oi","aw","ai","oa","ie"],
+    "tricky_words": ["all","like","want","call","some","what","they","do","old","was","so","washing"],
+    "cumulative_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing"],
+    "word_structure": "Split digraphs, alternative spellings, CONSONANT CLUSTERS NOW UNLOCKED",
+    "consonant_clusters": {
+      "initial": ["bl","br","cl","cr","dr","fl","fr","gl","gr","pl","pr","sc","sk","sl","sm","sn","sp","st","sw","tr","tw","scr","spl","spr","str"],
+      "final": ["ft","lk","lp","lt","mp","nd","nk","nt","pt","sk","sp","st"]
+    },
+    "total_books_needed": 5,
+    "completed_books": [
+      {"sub_level": "3.1", "title": "The Big Bike Race", "focus_sounds": ["a-e","i-e"], "culture": "European countryside, France", "theme": "Determination / sportsmanship"},
+      {"sub_level": "3.2", "title": "The Stone Flute", "focus_sounds": ["o-e","u-e"], "culture": "Moroccan home, Casablanca", "theme": "Patience with practice / family support"}
+    ],
+    "planned_books": [
+      {
+        "sub_level": "3.3",
+        "focus_sounds": ["ea","ie"],
+        "title": null,
+        "culture": "Accra, Ghana — modern painted concrete houses, kente cloth accents, lush tropical trees",
+        "theme": "FRIENDSHIP / making a new friend",
+        "structure": "Before/After Contrast (alone struggling > together succeeding)",
+        "story_idea": "Two children (boy + girl) who don't know each other. Boy tries to reach a treat in a high tree, can't do it. Girl has a stick but can't reach either. They team up, share the treat, become best friends.",
+        "notes": "FIRST story with TWO child peers as main characters. KEY THEME GAP: friendship."
+      },
+      {
+        "sub_level": "3.4",
+        "focus_sounds": ["oi","aw"],
+        "title": null,
+        "culture": "Seoul, South Korea — hanok courtyard, modern apartment block, autumn leaves",
+        "theme": "Dealing with criticism / bouncing back / saying sorry",
+        "structure": "Repetition with Variation (draw > rejection > draw again > acceptance)",
+        "story_idea": "Girl draws a picture at school. A boy points and says it's wrong. She feels raw. She draws again, even better. The boy says 'Wow, that IS good!' They draw together.",
+        "notes": "KEY THEME GAP: managing big feelings, saying sorry."
+      },
+      {
+        "sub_level": "3.5",
+        "focus_sounds": ["ai","oa"],
+        "title": null,
+        "culture": "Port of Spain, Trinidad — bright painted wooden houses, fishing boats, palm trees, warm rain",
+        "theme": "Patience / dealing with disappointment / joy of reunion",
+        "structure": "Mystery/Clue Trail (clues about who's on the boat)",
+        "story_idea": "Boy waits in the rain for a boat to come. He moans — it's so slow! Watches a snail. 'Even the snail is faster!' But the boat arrives and it's his Dad coming home. The wait was worth it.",
+        "notes": "KEY THEME GAP: patience, handling disappointment. UNUSED structure: Mystery/Clue Trail."
+      }
+    ]
+  },
+
+  "level_4": {
+    "name": "Building Fluency",
+    "status": "COMPLETE",
+    "template_type": "standard",
+    "story_pages": 8,
+    "words_per_book": "200-280",
+    "sentences_per_page": 3,
+    "font_size": 18,
+    "colour": "#3B82F6",
+    "graphemes": ["are","ur","er","ew","ue","ow"],
+    "note": "ow now has BOTH pronunciations: blow (L2) and cow (new at L4)",
+    "tricky_words": ["saw","watch","their","school","where","were","small","who","tall","brother","any","fall"],
+    "total_books_needed": 4,
+    "completed_books": [
+      {"sub_level": "4.1", "title": "The Purple Purse", "focus_sounds": ["ur","er"], "culture": "Istanbul, Turkey", "theme": "Perseverance / not giving up"},
+      {"sub_level": "4.2", "title": "The Brown Owl", "focus_sounds": ["are","ow"], "culture": "British woodland", "theme": "Respect for wildlife / mother-child bonding"},
+      {"sub_level": "4.3", "title": "The New Glue", "focus_sounds": ["ew","ue"], "culture": "Oaxacan home, Mexico", "theme": "Taking responsibility for accidents / cause and effect"},
+      {"sub_level": "4.4", "title": "How Now?", "focus_sounds": ["review all L4"], "culture": "Putrajaya, Malaysia", "theme": "Letting go / enjoying the moment"}
+    ],
+    "planned_books": []
+  },
+
+  "level_5": {
+    "name": "Reading Together",
+    "status": "IN_PROGRESS",
+    "template_type": "standard",
+    "story_pages": 8,
+    "words_per_book": "280-380",
+    "sentences_per_page": 4,
+    "font_size": 16,
+    "colour": "#8B5CF6",
+    "graphemes": ["ore","oor","ire","ear","ure","tion"],
+    "tricky_words": ["does","could","would","anyone","over","through","once","whole","people","water"],
+    "cumulative_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing","saw","watch","their","school","where","were","small","who","tall","brother","any","fall","does","could","would","anyone","over","through","once","whole","people","water"],
+    "word_structure": "Complex patterns, multi-syllable words, comprehension focus",
+    "total_books_needed": 4,
+    "completed_books": [
+      {"sub_level": "5.1", "title": "Before the Shore", "focus_sounds": ["ire","ore"], "culture": "North London Jewish community", "theme": "Memory / family connection / gift-giving"},
+      {"sub_level": "5.2", "title": "Near the Door", "focus_sounds": ["ear","oor"], "culture": "Stockholm, Sweden (winter)", "theme": "Kindness to animals / overcoming fear / trust"}
+    ],
+    "planned_books": [
+      {
+        "sub_level": "5.3",
+        "focus_sounds": ["ure","tion"],
+        "title": null,
+        "culture": "Jaipur, Rajasthan, India — pink city walls, modern streets, auto-rickshaws, kite festival",
+        "theme": "Managing frustration / following instructions / not giving up",
+        "structure": "Embedded Instructions (kite-making steps within the story)",
+        "story_idea": "Girl at a kite festival watches everyone's kites soar. Follows grandfather's instructions to make one. First attempt = failure. She feels cross. Grandad says 'Are you sure you want to stop?' She tries the next instruction. The kite flies! Pure joy!",
+        "notes": "KEY THEME GAP: managing big feelings. UNUSED structure: Embedded Instructions."
+      },
+      {
+        "sub_level": "5.4",
+        "focus_sounds": ["review all L5"],
+        "title": null,
+        "culture": "Salvador, Bahia, Brazil — colourful Pelourinho district, cobblestones, Afro-Brazilian culture, capoeira",
+        "theme": "Belonging / feeling different / welcoming strangers",
+        "structure": "Before/After Contrast (alone, scared > together, joyful)",
+        "story_idea": "A visiting girl feels lost and different at a big street party. A local boy notices and invites her to join. They don't speak the same language well but they dance, share food, and explore together. By the end, they don't want to say goodbye.",
+        "notes": "KEY THEME GAP: belonging, celebrating differences. Two child peers."
+      }
+    ]
+  },
+
+  "level_6": {
+    "name": "Reading Champion",
+    "status": "NOT_STARTED",
+    "template_type": "standard",
+    "story_pages": 8,
+    "words_per_book": "380-500",
+    "sentences_per_page": 5,
+    "font_size": 14,
+    "colour": "#14B8A6",
+    "graphemes": ["ous","cious","tious","able","ible"],
+    "tricky_words": ["should","many","above","father","son","mother","buy","bought","great","caught","worse","love","wear","thought","everyone","walk","talk"],
+    "cumulative_tricky_words": ["the","to","I","no","go","into","he","she","we","me","be","my","you","her","said","your","are","put","all","like","want","call","some","what","they","do","old","was","so","washing","saw","watch","their","school","where","were","small","who","tall","brother","any","fall","does","could","would","anyone","over","through","once","whole","people","water","should","many","above","father","son","mother","buy","bought","great","caught","worse","love","wear","thought","everyone","walk","talk"],
+    "word_structure": "Complex multi-syllable words, suffixes, all alternative spellings, independent reading",
+    "total_books_needed": 4,
+    "nonfiction_feature_note": "Each L6 book MUST include one non-fiction text feature (list, letter/note, labels/signs, or diary entry) — integral to plot, decodable, shown visually in illustrations.",
+    "completed_books": [],
+    "planned_books": [
+      {
+        "sub_level": "6.1",
+        "focus_sounds": ["ous"],
+        "title": null,
+        "culture": "Cairo, Egypt — modern Nile corniche, apartment buildings, local market, pyramids in distance",
+        "theme": "Celebrating your own world / seeing beauty in the familiar",
+        "structure": "Discovery/Observation",
+        "story_idea": "Boy thinks his neighbourhood is boring. A famous storyteller visits and tells marvellous tales about the enormous city. The boy looks again and sees his home differently — it IS marvellous.",
+        "nonfiction_feature": "Labels/signs (on neighbourhood landmarks)",
+        "notes": "KEY THEME GAP: celebrating differences."
+      },
+      {
+        "sub_level": "6.2",
+        "focus_sounds": ["able","ible"],
+        "title": null,
+        "culture": "Guilin, China — karst mountains, Li River, modern city, lanterns, tea houses",
+        "theme": "Kindness to strangers / taking initiative",
+        "structure": "Cumulative Chain (each step of helping leads to the next)",
+        "story_idea": "Girl finds a lost, miserable younger child at a festival. Everyone walks past. She decides she's capable of helping. She's gentle, responsible, sensible. She finds the child's family. The mum says 'You are remarkable.'",
+        "nonfiction_feature": "Letter/note (a 'lost child' note the girl writes to show people)",
+        "notes": "KEY THEME GAP: kindness to strangers."
+      },
+      {
+        "sub_level": "6.3",
+        "focus_sounds": ["cious","tious"],
+        "title": null,
+        "culture": "Amalfi Coast, Italy — colourful clifftop village, lemon groves, winding steps, family kitchen",
+        "theme": "Trying new things / overcoming pickiness / generosity",
+        "structure": "Repetition with Variation ('It looks suspicious... but it smells delicious!')",
+        "story_idea": "A cautious boy refuses to try new food — 'It looks suspicious!' Nonna is patient. She makes something delicious step by step. He watches, then tastes one tiny bit. It's gorgeous! He tries more. By the end, he's the one offering food to his little sister.",
+        "nonfiction_feature": "List (Nonna's recipe — decodable!)",
+        "notes": "KEY THEME GAP: trying new things."
+      },
+      {
+        "sub_level": "6.4",
+        "focus_sounds": ["review all L6"],
+        "title": null,
+        "culture": "Blue Mountains, Australia — eucalyptus bush, red earth, blue haze mountains, Aboriginal dot art in gallery",
+        "theme": "Siblings / humility / respecting different strengths",
+        "structure": "Story + Non-fiction feature",
+        "story_idea": "Two siblings on a bush walk. Older sister thinks she's more capable. Younger brother finds something incredible she missed. She has to admit she was wrong. They learn everyone sees different things.",
+        "nonfiction_feature": "Diary entry (brother's nature journal from the walk)",
+        "notes": "KEY THEME GAP: teamwork, humility. Two siblings as main characters."
+      }
+    ]
+  }
+}

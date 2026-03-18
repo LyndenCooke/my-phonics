@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ book_title }}</title>
+  {{ "<style>
+    :root {
+      --theme-color: " ~ theme_colour ~ ";
+      --accent-color: " ~ accent_colour ~ ";
+      --story-font-size: 16pt;
+    }
+  </style>" | safe }}
+  <style>
+    /* ===== FONTS ===== */
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_regular }}') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_bold }}') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_italic }}') format('truetype');
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    @font-face {
+      font-family: 'Andika';
+      src: url('{{ font_bold_italic }}') format('truetype');
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ===== RESET & PAGE ===== */
+    @page {
+      size: 148mm 210mm;
+      margin: 0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      font-family: 'Andika', sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== PAGE CONTAINER ===== */
+    .page {
+      width: 148mm;
+      height: 210mm;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      page-break-inside: avoid;
+      background: #ffffff;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    .page-inner {
+      width: 100%;
+      height: 100%;
+      padding: 10mm 12mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== PAGE NUMBER ===== */
+    .page-num {
+      position: absolute;
+      bottom: 3mm;
+      width: 8mm;
+      height: 8mm;
+      background: var(--theme-color);
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .page-num-left {
+      left: 3mm;
+    }
+
+    .page-num-right {
+      right: 3mm;
+    }
+
+    /* ===== DECORATIVE HEARTS ===== */
+    .heart-border-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2mm;
+      background: linear-gradient(90deg, var(--theme-color), var(--accent-color), var(--theme-color));
+    }
+
+    .heart-border-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2mm;
+      background: linear-gradient(90deg, var(--accent-color), var(--theme-color), var(--accent-color));
+    }
+
+
+    /* ================================================================
+       PAGE 1: FRONT COVER
+       ================================================================ */
+    .cover {
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .cover-level-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--theme-color);
+      padding: 3mm 5mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .cover-level-badge {
+      color: #ffffff;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-brand {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    .cover-illustration {
+      position: absolute;
+      top: 12mm;
+      left: 0;
+      right: 0;
+      bottom: 48mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cover-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-illustration-fallback {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #DDD6FE 0%, #F5D0FE 50%, #FBCFE8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48pt;
+    }
+
+    .cover-title-area {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 8mm 10mm 12mm;
+      background: linear-gradient(135deg, var(--theme-color), #9333EA);
+    }
+
+    .cover-title {
+      color: #ffffff;
+      font-size: 30pt;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .cover-subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 11pt;
+      font-style: italic;
+      margin-top: 3mm;
+      font-weight: 700;
+    }
+
+    .cover-hearts {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 10pt;
+      margin-top: 2mm;
+      letter-spacing: 3px;
+    }
+
+
+    /* ================================================================
+       PAGE 2: DEDICATION
+       ================================================================ */
+    .dedication-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20mm 15mm;
+    }
+
+    .dedication-heart {
+      font-size: 36pt;
+      color: var(--accent-color);
+      margin-bottom: 8mm;
+    }
+
+    .dedication-text {
+      font-size: 13pt;
+      color: #555;
+      line-height: 1.8;
+      font-style: italic;
+      max-width: 100mm;
+    }
+
+    .dedication-name {
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-top: 10mm;
+    }
+
+
+    /* ================================================================
+       PAGE 3: SPECIAL SOUNDS
+       ================================================================ */
+    .sounds-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-bottom: 2mm;
+      text-align: center;
+    }
+
+    .sounds-subtitle {
+      font-size: 10pt;
+      color: #888;
+      text-align: center;
+      margin-bottom: 6mm;
+      font-style: italic;
+    }
+
+    .sound-word-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5mm;
+      gap: 2mm;
+    }
+
+    .sound-bubble {
+      width: 14mm;
+      height: 14mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16pt;
+      font-weight: 700;
+      border: 0.5mm solid var(--theme-color);
+      border-radius: 50%;
+      color: var(--theme-color);
+    }
+
+    .sound-equals {
+      font-size: 14pt;
+      color: #999;
+      margin: 0 2mm;
+    }
+
+    .sound-result {
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .sound-note {
+      font-size: 10pt;
+      color: #888;
+      font-style: italic;
+      margin-left: 2mm;
+    }
+
+    .sounds-divider {
+      width: 60%;
+      margin: 4mm auto;
+      border: none;
+      border-top: 0.3mm solid #e8e8e8;
+    }
+
+    .story-words-section {
+      margin-top: 6mm;
+    }
+
+    .story-words-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 3mm;
+    }
+
+    .story-words-box {
+      border: 0.5mm solid #ddd;
+      border-radius: 3mm;
+      padding: 4mm 5mm;
+    }
+
+    .story-words-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2mm 6mm;
+      justify-content: center;
+    }
+
+    .story-word {
+      font-size: 16pt;
+      font-style: italic;
+      color: var(--theme-color);
+    }
+
+    /* Tricky Words */
+    .tricky-section {
+      margin-top: 5mm;
+    }
+
+    .tricky-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+
+    .tricky-desc {
+      font-size: 9pt;
+      color: #888;
+      margin-bottom: 3mm;
+      font-style: italic;
+    }
+
+    .tricky-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 0.5mm solid #ddd;
+      border-radius: 3mm;
+      overflow: hidden;
+    }
+
+    .tricky-cell {
+      font-size: 12pt;
+      font-style: italic;
+      text-align: center;
+      padding: 3mm 2mm;
+      border-bottom: 0.3mm solid #eee;
+      border-right: 0.3mm solid #eee;
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    .tricky-cell:nth-child(3n) {
+      border-right: none;
+    }
+
+    .tricky-cell:nth-last-child(-n+3) {
+      border-bottom: none;
+    }
+
+
+    /* ================================================================
+       STORY PAGES
+       ================================================================ */
+    .story-page {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .story-text-area {
+      padding: 10mm 12mm 6mm 12mm;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .story-text {
+      font-size: var(--story-font-size);
+      line-height: 1.55;
+      color: #2b2b2b;
+      white-space: pre-wrap;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .story-illustration {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .story-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-illustration-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #F5F3FF 0%, #FDF2F8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c4b5fd;
+      font-size: 11pt;
+      border-top: 0.3mm solid #e8e8e8;
+      font-style: italic;
+    }
+
+
+    /* ================================================================
+       LOVE LIST PAGE
+       ================================================================ */
+    .love-title {
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      text-align: center;
+      margin-bottom: 6mm;
+    }
+
+    .love-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .love-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 4mm;
+      font-size: 12pt;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .love-num {
+      width: 8mm;
+      height: 8mm;
+      min-width: 8mm;
+      background: var(--accent-color);
+      color: #ffffff;
+      font-size: 8pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 3mm;
+      margin-top: 1mm;
+    }
+
+    .love-text {
+      flex: 1;
+    }
+
+    .love-item:last-child .love-text {
+      font-weight: 700;
+      color: var(--theme-color);
+      font-style: italic;
+    }
+
+
+    /* ================================================================
+       WRITING PRACTICE PAGE
+       ================================================================ */
+    .writing-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-bottom: 2mm;
+    }
+
+    .writing-instruction {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 6mm;
+    }
+
+    .writing-word-label {
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-top: 6mm;
+      margin-bottom: 3mm;
+    }
+
+    .hw-trace-row {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 4mm;
+      height: 14mm;
+    }
+
+    .hw-trace-letters {
+      display: flex;
+      gap: 1mm;
+    }
+
+    .hw-trace-letter {
+      width: 14mm;
+      height: 14mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24pt;
+      font-weight: 700;
+      color: #ccc;
+      border-bottom: 0.5mm solid #ddd;
+    }
+
+    .hw-practice-line {
+      height: 14mm;
+      border-bottom: 0.5mm solid #ddd;
+      margin-bottom: 4mm;
+    }
+
+    .hw-practice-line-dotted {
+      height: 14mm;
+      border-bottom: 0.5mm dashed #e0e0e0;
+      margin-bottom: 4mm;
+    }
+
+    /* Draw box */
+    .draw-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-top: 6mm;
+      margin-bottom: 3mm;
+    }
+
+    .draw-box {
+      flex: 1;
+      border: 0.5mm dashed #c4b5fd;
+      border-radius: 3mm;
+      min-height: 40mm;
+    }
+
+
+    /* ================================================================
+       CERTIFICATE PAGE
+       ================================================================ */
+    .cert-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12mm 14mm;
+      background: linear-gradient(135deg, #FEFCE8 0%, #FFF7ED 50%, #FDF2F8 100%);
+    }
+
+    .cert-border {
+      border: 1mm solid var(--theme-color);
+      border-radius: 5mm;
+      padding: 10mm 8mm;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cert-border::before {
+      content: '';
+      position: absolute;
+      top: 2mm;
+      left: 2mm;
+      right: 2mm;
+      bottom: 2mm;
+      border: 0.3mm solid var(--accent-color);
+      border-radius: 4mm;
+    }
+
+    .cert-star {
+      font-size: 36pt;
+      margin-bottom: 4mm;
+    }
+
+    .cert-title {
+      font-size: 22pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-bottom: 5mm;
+    }
+
+    .cert-awarded {
+      font-size: 10pt;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2mm;
+    }
+
+    .cert-name {
+      font-size: 28pt;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 5mm;
+      font-style: italic;
+    }
+
+    .cert-text {
+      font-size: 11pt;
+      color: #555;
+      line-height: 1.6;
+      max-width: 95mm;
+      margin-bottom: 8mm;
+    }
+
+    .cert-date {
+      font-size: 10pt;
+      color: #888;
+      margin-bottom: 6mm;
+    }
+
+    .cert-signed-label {
+      font-size: 8pt;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-signed {
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      font-style: italic;
+      margin-top: 1mm;
+    }
+
+
+    /* ================================================================
+       LETTER PAGE
+       ================================================================ */
+    .letter-page {
+      display: flex;
+      flex-direction: column;
+      padding: 14mm 16mm;
+      background: #FFFBFE;
+    }
+
+    .letter-greeting {
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-bottom: 8mm;
+    }
+
+    .letter-body {
+      font-size: 12pt;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 5mm;
+    }
+
+    .letter-signoff {
+      font-size: 12pt;
+      color: #888;
+      font-style: italic;
+      margin-top: 10mm;
+    }
+
+    .letter-name {
+      font-size: 20pt;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-top: 3mm;
+    }
+
+    .letter-hadith {
+      margin-top: auto;
+      padding: 4mm 5mm;
+      border-left: 1mm solid var(--theme-color);
+      background: #F5F3FF;
+      font-size: 9pt;
+      font-style: italic;
+      color: #666;
+      line-height: 1.5;
+    }
+
+
+    /* ================================================================
+       BACK COVER
+       ================================================================ */
+    .back-cover {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .back-banner {
+      background: linear-gradient(135deg, var(--theme-color), #9333EA);
+      padding: 8mm 12mm;
+      color: #ffffff;
+    }
+
+    .back-brand-name {
+      font-size: 16pt;
+      font-weight: 700;
+    }
+
+    .back-subtitle {
+      font-size: 9pt;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 1mm;
+    }
+
+    .back-body {
+      flex: 1;
+      padding: 8mm 12mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .back-message {
+      font-size: 12pt;
+      font-style: italic;
+      color: #666;
+      line-height: 1.7;
+      max-width: 110mm;
+      margin-bottom: 8mm;
+    }
+
+    .back-illustration {
+      width: 60mm;
+      height: 60mm;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-bottom: 6mm;
+      border: 1mm solid var(--theme-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .back-illustration-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #F5F3FF, #FDF2F8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c4b5fd;
+      font-size: 9pt;
+    }
+
+    .back-names {
+      font-size: 11pt;
+      color: #888;
+      margin-bottom: 2mm;
+    }
+
+    .back-date {
+      font-size: 9pt;
+      color: #aaa;
+    }
+
+    .back-footer {
+      background: #F5F3FF;
+      padding: 5mm 12mm;
+      text-align: center;
+    }
+
+    .back-footer-text {
+      font-size: 9pt;
+      color: #888;
+    }
+
+    .back-footer-brand {
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--theme-color);
+      margin-top: 1mm;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       PAGE 1: FRONT COVER
+       ============================================================ -->
+  <div class="page cover">
+    <div class="cover-level-bar">
+      <span class="cover-level-badge">Mother's Day 2026</span>
+      <span class="cover-brand">MyPhonicsBooks</span>
+    </div>
+    <div class="cover-illustration">
+      {% if cover_image %}
+      <img src="{{ cover_image }}" alt="Cover illustration">
+      {% else %}
+      <div class="cover-illustration-fallback"></div>
+      {% endif %}
+    </div>
+    <div class="cover-title-area">
+      <div class="cover-title">{{ book_title }}</div>
+      <div class="cover-subtitle">{{ subtitle }}</div>
+      <div class="cover-hearts">&hearts; &hearts; &hearts;</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 2: DEDICATION
+       ============================================================ -->
+  <div class="page">
+    <div class="heart-border-top"></div>
+    <div class="dedication-page">
+      <div class="dedication-heart">&hearts;</div>
+      <div class="dedication-text">
+        For the most incredible mama in the world.<br><br>
+        Before you read this, know that every word comes from my heart &mdash;
+        even the ones I can&rsquo;t say yet.<br><br>
+        This is our story. Yours and mine.<br>
+        From the very beginning.
+      </div>
+      <div class="dedication-name">Love, {{ baby_name }} xxx</div>
+    </div>
+    <div class="heart-border-bottom"></div>
+    <div class="page-num page-num-left">2</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 3: SPECIAL SOUNDS
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="sounds-title">Special Sounds</div>
+      <div class="sounds-subtitle">The sounds in this book spell something special&hellip;</div>
+
+      {% for item in special_sounds %}
+      <div class="sound-word-row">
+        {% for s in item.sounds %}
+        <div class="sound-bubble">{{ s }}</div>
+        {% endfor %}
+        <span class="sound-equals">=</span>
+        <span class="sound-result">{{ item.word }}</span>
+        <span class="sound-note">{{ item.note }}</span>
+      </div>
+      {% endfor %}
+
+      <hr class="sounds-divider">
+
+      <div class="story-words-section">
+        <div class="story-words-title">Story Words</div>
+        <div class="story-words-box">
+          <div class="story-words-flow">
+            {% for word in story_words %}
+            <span class="story-word">{{ word }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="tricky-section">
+        <div class="tricky-title">Tricky Words</div>
+        <div class="tricky-desc">These are the trickiest things {{ baby_name }} has learned to say&hellip;</div>
+        <div class="tricky-grid">
+          {% for word in tricky_words_display %}
+          <div class="tricky-cell">{{ word }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="page-num page-num-right">3</div>
+  </div>
+
+  <!-- ============================================================
+       STORY PAGES (10 pages)
+       ============================================================ -->
+  {% for page in story_pages %}
+  <div class="page story-page">
+    <div class="heart-border-top"></div>
+    <div class="story-text-area">
+      <div class="story-text">{{ page.text }}</div>
+    </div>
+    <div class="story-illustration">
+      {% if page.image %}
+      <img src="{{ page.image }}" alt="Illustration for page {{ loop.index }}">
+      {% else %}
+      <div class="story-illustration-placeholder">[ {{ page.scene }} ]</div>
+      {% endif %}
+    </div>
+    {% set pnum = loop.index + 3 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endfor %}
+
+  <!-- ============================================================
+       LOVE LIST PAGE
+       ============================================================ -->
+  <div class="page">
+    <div class="heart-border-top"></div>
+    <div class="page-inner">
+      <div class="love-title">Ten Things I Love About Mama</div>
+      <ul class="love-list">
+        {% for item in love_list %}
+        <li class="love-item">
+          <span class="love-num">{{ loop.index }}</span>
+          <span class="love-text">{{ item }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="heart-border-bottom"></div>
+    <div class="page-num page-num-left">17</div>
+  </div>
+
+  <!-- ============================================================
+       WRITING PRACTICE PAGE
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="writing-title">Writing Practice</div>
+      <div class="writing-instruction">Trace the letters, then try writing them on your own!</div>
+
+      {% for word in writing_words %}
+      <div class="writing-word-label">Can you write {{ word }}?</div>
+      <div class="hw-trace-row">
+        <div class="hw-trace-letters">
+          {% for letter in word %}
+          <div class="hw-trace-letter">{{ letter }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="hw-practice-line"></div>
+      <div class="hw-practice-line-dotted"></div>
+      {% endfor %}
+
+      <div class="draw-title">Draw Your Favourite Thing About Mama</div>
+      <div class="draw-box"></div>
+    </div>
+    <div class="page-num page-num-right">18</div>
+  </div>
+
+  <!-- ============================================================
+       CERTIFICATE PAGE
+       ============================================================ -->
+  <div class="page cert-page">
+    <div class="cert-border">
+      <div class="cert-star">&starf;</div>
+      <div class="cert-title">{{ certificate.title }}</div>
+      <div class="cert-awarded">This award is presented to</div>
+      <div class="cert-name">{{ certificate.recipient }}</div>
+      <div class="cert-text">{{ certificate.text }}</div>
+      <div class="cert-date">{{ certificate.date }}</div>
+      <div class="cert-signed-label">Signed with love</div>
+      <div class="cert-signed">{{ certificate.signed }}</div>
+    </div>
+    <div class="page-num page-num-left">19</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 20: BACK COVER
+       ============================================================ -->
+  <div class="page back-cover">
+    <div class="back-banner">
+      <div class="back-brand-name">Mama and Me</div>
+      <div class="back-subtitle">A MyPhonicsBooks Special Edition</div>
+    </div>
+    <div class="back-body">
+      <div class="back-illustration">
+        {% if cover_image %}
+        <img src="{{ cover_image }}" alt="Mama and Safia">
+        {% else %}
+        <div class="back-illustration-placeholder">&hearts;</div>
+        {% endif %}
+      </div>
+      <div class="back-message">
+        This book was made with love by {{ baby_name }}<br>
+        (with a little help from Dad)<br><br>
+        For {{ mama_name }} &mdash; the best mama<br>
+        in the whole wide world.
+      </div>
+      <div class="back-names">{{ baby_name }}, Dad &amp; {{ mama_name }}</div>
+      <div class="back-date">Mother&rsquo;s Day &middot; March 2026 &middot; London</div>
+    </div>
+    <div class="back-footer">
+      <div class="back-footer-text">Made with &hearts; using</div>
+      <div class="back-footer-brand">MyPhonicsBooks</div>
+    </div>
+  </div>
+
+</body>
+
+</html>
