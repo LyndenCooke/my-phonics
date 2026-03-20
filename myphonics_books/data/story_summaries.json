@@ -53,7 +53,7 @@
 
   "level_3": {
     "name": "New Spellings",
-    "status": "IN_PROGRESS",
+    "status": "COMPLETE",
     "template_type": "standard",
     "story_pages": 8,
     "words_per_book": "130-200",
@@ -71,40 +71,12 @@
     "total_books_needed": 5,
     "completed_books": [
       {"sub_level": "3.1", "title": "The Big Bike Race", "focus_sounds": ["a-e","i-e"], "culture": "European countryside, France", "theme": "Determination / sportsmanship"},
-      {"sub_level": "3.2", "title": "The Stone Flute", "focus_sounds": ["o-e","u-e"], "culture": "Moroccan home, Casablanca", "theme": "Patience with practice / family support"}
+      {"sub_level": "3.2", "title": "The Stone Flute", "focus_sounds": ["o-e","u-e"], "culture": "Moroccan home, Casablanca", "theme": "Patience with practice / family support"},
+      {"sub_level": "3.3", "title": "Reach for the Treat!", "focus_sounds": ["ea","ie"], "culture": "Accra, Ghana", "theme": "Friendship / making a new friend"},
+      {"sub_level": "3.4", "title": "Draw It Again!", "focus_sounds": ["oi","aw"], "culture": "Seoul, South Korea", "theme": "Dealing with criticism / bouncing back / perseverance"},
+      {"sub_level": "3.5", "title": "The Boat with the Red Sail", "focus_sounds": ["ai","oa"], "culture": "Port of Spain, Trinidad", "theme": "Patience / dealing with disappointment / joy of reunion"}
     ],
-    "planned_books": [
-      {
-        "sub_level": "3.3",
-        "focus_sounds": ["ea","ie"],
-        "title": null,
-        "culture": "Accra, Ghana — modern painted concrete houses, kente cloth accents, lush tropical trees",
-        "theme": "FRIENDSHIP / making a new friend",
-        "structure": "Before/After Contrast (alone struggling > together succeeding)",
-        "story_idea": "Two children (boy + girl) who don't know each other. Boy tries to reach a treat in a high tree, can't do it. Girl has a stick but can't reach either. They team up, share the treat, become best friends.",
-        "notes": "FIRST story with TWO child peers as main characters. KEY THEME GAP: friendship."
-      },
-      {
-        "sub_level": "3.4",
-        "focus_sounds": ["oi","aw"],
-        "title": null,
-        "culture": "Seoul, South Korea — hanok courtyard, modern apartment block, autumn leaves",
-        "theme": "Dealing with criticism / bouncing back / saying sorry",
-        "structure": "Repetition with Variation (draw > rejection > draw again > acceptance)",
-        "story_idea": "Girl draws a picture at school. A boy points and says it's wrong. She feels raw. She draws again, even better. The boy says 'Wow, that IS good!' They draw together.",
-        "notes": "KEY THEME GAP: managing big feelings, saying sorry."
-      },
-      {
-        "sub_level": "3.5",
-        "focus_sounds": ["ai","oa"],
-        "title": null,
-        "culture": "Port of Spain, Trinidad — bright painted wooden houses, fishing boats, palm trees, warm rain",
-        "theme": "Patience / dealing with disappointment / joy of reunion",
-        "structure": "Mystery/Clue Trail (clues about who's on the boat)",
-        "story_idea": "Boy waits in the rain for a boat to come. He moans — it's so slow! Watches a snail. 'Even the snail is faster!' But the boat arrives and it's his Dad coming home. The wait was worth it.",
-        "notes": "KEY THEME GAP: patience, handling disappointment. UNUSED structure: Mystery/Clue Trail."
-      }
-    ]
+    "planned_books": []
   },
 
   "level_4": {

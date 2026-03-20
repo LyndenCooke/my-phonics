@@ -180,15 +180,14 @@ Each level introduces new sounds. Books at each level are numbered to ensure sys
 | L2.4 | air, ir | The Fair in the Air | British fair | ✅ |
 | L2.5 | ou, oy | Round and Round | Iceland (Reykjavik) | ✅ |
 
-### Level 3: New Spellings (5 books — 3 complete, 2 remaining)
+### Level 3: New Spellings (COMPLETE — 5 books)
 | Sub | Focus Sounds | Title | Culture | Status |
 |-----|--------------|-------|---------|--------|
 | L3.1 | a-e, i-e | The Big Bike Race | France | ✅ |
 | L3.2 | o-e, u-e | The Stone Flute | Morocco | ✅ |
 | L3.3 | ea, ie | Reach for the Treat! | Accra, Ghana | ✅ |
-| L3.4 | oi, aw | TBD | **Seoul, South Korea** | 🔲 |
-| L3.5 | ai, oa | TBD | **Port of Spain, Trinidad** | 🔲 |
-**Note:** Consonant clusters unlocked at L3
+| L3.4 | oi, aw | Draw It Again! | Seoul, South Korea | ✅ |
+| L3.5 | ai, oa | The Boat with the Red Sail | Port of Spain, Trinidad | ✅ |
 
 ### Level 4: Building Fluency (COMPLETE — 4 books)
 | Sub | Focus Sounds | Title | Culture | Status |

@@ -108,11 +108,11 @@ This file tracks which books have been completed AND contains the master plan fo
 | L3.3 B1 | Reach for the Treat! | ea, ie | Custom (Ghanaian boy + girl, dual heroes) | Accra, Ghana | Friendship / making a new friend | COMPLETE |
 | L3.5 B1 | The Boat with the Red Sail | ai, oa | Custom (Afro-Trinidadian boy Kai, orange t-shirt, 3/4 shorts, bare feet) | Port of Spain, Trinidad — Gulf of Paria waterfront, colourful wooden houses, pirogues, palm trees | Patience / dealing with disappointment / joy of reunion | COMPLETE |
 
-### Planned — MUST BUILD
+### Recently Completed
 
-| Book | Focus Sounds | Title | Culture | Theme | Structure | Story Idea | Notes |
-|------|--------------|-------|---------|-------|-----------|------------|-------|
-| L3.4 B1 | oi, aw | TBD (draw/spoil/raw themed) | Seoul, South Korea — hanok courtyard, modern apartment block, autumn leaves | Dealing with criticism / bouncing back / saying sorry | Repetition with Variation (draw > rejection > draw again > acceptance) | Girl draws a picture at school. A boy points and says it's wrong. She feels raw. She draws again, even better. The boy says "Wow, that IS good!" They draw together | KEY THEME GAP: managing big feelings, saying sorry |
+| Book | Focus Sounds | Title | Culture | Theme | Status |
+|------|--------------|-------|---------|-------|--------|
+| L3.4 B1 | oi, aw | Draw It Again! | Seoul, South Korea — modern school art class | Dealing with criticism / bouncing back / perseverance | ✅ Story data complete |
 
 ---
 
@@ -232,7 +232,7 @@ Ensures genuine global diversity with no repeats in new books.
 | Stockholm, Sweden | L5.2 | Europe |
 | Reykjavik, Iceland | L2.5 | Europe |
 | **Accra, Ghana** | **L3.3 (planned)** | **Africa** |
-| **Seoul, South Korea** | **L3.4 (planned)** | **Asia** |
+| Seoul, South Korea | L3.4 | Asia |
 | **Port of Spain, Trinidad** | **L3.5 (planned)** | **Americas** |
 | Jaipur, India | L5.3 | Asia |
 | **Salvador, Brazil** | **L5.4 (planned)** | **Americas** |
