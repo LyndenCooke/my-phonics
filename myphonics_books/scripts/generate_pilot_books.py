@@ -59,6 +59,7 @@ def get_pilot_stories() -> dict:
     from data.bike_race_story_l3_1_book1 import BIKE_RACE_STORY_BOOK1
     from data.stone_flute_story_l3_2_book1 import STONE_FLUTE_STORY_BOOK1
     from data.reach_treat_story_l3_3_book1 import REACH_TREAT_STORY_BOOK1
+    from data.draw_it_again_story_l3_4_book1 import DRAW_IT_AGAIN_STORY_BOOK1
     from data.red_sail_story_l3_5_book1 import RED_SAIL_STORY_BOOK1
     from data.purple_purse_story_l4_1_book1 import PURPLE_PURSE_STORY_BOOK1
     from data.brown_owl_story_l4_2_book1 import BROWN_OWL_STORY_BOOK1
@@ -92,6 +93,7 @@ def get_pilot_stories() -> dict:
     stories["L3_1_B1"] = BIKE_RACE_STORY_BOOK1["L3_1_B1"]
     stories["L3_2_B1"] = STONE_FLUTE_STORY_BOOK1["L3_2_B1"]
     stories["L3_3_B1"] = REACH_TREAT_STORY_BOOK1["L3_3_B1"]
+    stories["L3_4_B1"] = DRAW_IT_AGAIN_STORY_BOOK1["L3_4_B1"]
     stories["L3_5_B1"] = RED_SAIL_STORY_BOOK1["L3_5_B1"]
     stories["L4_1_B1"] = PURPLE_PURSE_STORY_BOOK1["L4_1_B1"]
     stories["L4_2_B1"] = BROWN_OWL_STORY_BOOK1["L4_2_B1"]
@@ -130,6 +132,7 @@ LEVEL_KEYS = {
     "3.1": "L3_1_B1",
     "3.2": "L3_2_B1",
     "3.3": "L3_3_B1",
+    "3.4": "L3_4_B1",
     "3.5": "L3_5_B1",
     4: "L4_B3",
     "4.1": "L4_1_B1",
