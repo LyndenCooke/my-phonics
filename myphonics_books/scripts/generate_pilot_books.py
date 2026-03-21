@@ -71,6 +71,8 @@ def get_pilot_stories() -> dict:
     from data.belonging_story_l5_4_book1 import BELONGING_STORY_BOOK1
     from data.marvellous_neighbourhood_story_l6_1_book1 import MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 as SECRET_GARDEN_STORY_BOOK1
     from data.remarkable_story_l6_2_book1 import REMARKABLE_STORY_BOOK1
+    from data.delicious_suspicious_story_l6_3_book1 import DELICIOUS_SUSPICIOUS_STORY_BOOK1
+    from data.bush_walk_story_l6_4_book1 import BUSH_WALK_STORY_BOOK1
 
     stories = PILOT_STORIES.copy()
     stories["L1_B1"] = FISH_STORY_BOOK1["L1_B1"]
@@ -105,6 +107,8 @@ def get_pilot_stories() -> dict:
     stories["L5_4_B1"] = BELONGING_STORY_BOOK1["L5_4_B1"]
     stories["L6_1_B1"] = SECRET_GARDEN_STORY_BOOK1["L6_1_B1"]
     stories["L6_2_B1"] = REMARKABLE_STORY_BOOK1["L6_2_B1"]
+    stories["L6_3_B1"] = DELICIOUS_SUSPICIOUS_STORY_BOOK1["L6_3_B1"]
+    stories["L6_4_B1"] = BUSH_WALK_STORY_BOOK1["L6_4_B1"]
 
     return stories
 
@@ -147,6 +151,8 @@ LEVEL_KEYS = {
     6: "L6_B1",
     "6.1": "L6_1_B1",
     "6.2": "L6_2_B1",
+    "6.3": "L6_3_B1",
+    "6.4": "L6_4_B1",
 }
 
 
