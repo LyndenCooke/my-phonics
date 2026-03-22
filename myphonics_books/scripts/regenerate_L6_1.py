@@ -231,7 +231,7 @@ async def generate_reference_image(
 ) -> Path | None:
     """Generate a text-to-image reference (side hero, bg plate, or object ref)."""
     full_prompt = f"{prompt} {BASE_STYLE}"
-    url = f"{BASE_URL}/models/gemini-2.5-flash-preview-05-20:generateContent?key={GEMINI_API_KEY}"
+    url = f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent?key={GEMINI_API_KEY}"
 
     payload = {
         "contents": [{"parts": [{"text": full_prompt}]}],
@@ -287,7 +287,7 @@ async def generate_scene_with_injection(
     """Generate a scene with multiple reference image injections."""
 
     full_prompt = f"{prompt} {BASE_STYLE}"
-    url = f"{BASE_URL}/models/gemini-2.5-flash-preview-05-20:generateContent?key={GEMINI_API_KEY}"
+    url = f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent?key={GEMINI_API_KEY}"
 
     # Build parts list with labelled references
     parts = []
@@ -482,7 +482,7 @@ async def main(mode: str = "all"):
         sys.exit(1)
 
     print(f"\n{'='*55}")
-    print("L6.1 — The Marvellous Neighbourhood")
+    print("L6.1 - The Marvellous Neighbourhood")
     print("Regenerating with FULL injection system")
     print(f"Mode: {mode}")
     print(f"Output: {BOOK_DIR}")
@@ -490,7 +490,7 @@ async def main(mode: str = "all"):
 
     async with aiohttp.ClientSession() as session:
         if mode in ("all", "refs"):
-            print("── Step 1: Generate Reference Images ──")
+            print("--- Step 1: Generate Reference Images ---")
             ref_paths = await generate_references(session)
             print(f"\nReferences ready: {len(ref_paths)}")
             for name, path in ref_paths.items():
@@ -517,7 +517,7 @@ async def main(mode: str = "all"):
                     else:
                         print(f"  WARNING: {filename} not found — run 'refs' first")
 
-            print(f"\n── Step 2: Generate Scene Images ({len(SCENES)} scenes) ──")
+            print(f"\n--- Step 2: Generate Scene Images ({len(SCENES)} scenes) ---")
             await generate_scenes(session, ref_paths)
 
 

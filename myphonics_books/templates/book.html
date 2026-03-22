@@ -577,7 +577,389 @@
 
 
     /* ================================================================
-       PAGE 14: BACK COVER
+       SOUND SPOTLIGHT PAGES
+       ================================================================ */
+    .spotlight-page {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spotlight-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 180pt;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.04);
+      z-index: 0;
+      pointer-events: none;
+      font-family: 'Andika', sans-serif;
+    }
+
+    .spotlight-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--level-color);
+      text-align: center;
+      margin-bottom: 2mm;
+      z-index: 1;
+      position: relative;
+    }
+
+    .spotlight-sound-display {
+      text-align: center;
+      margin-bottom: 5mm;
+      z-index: 1;
+      position: relative;
+    }
+
+    .spotlight-sound-letter {
+      font-size: 42pt;
+      font-weight: 700;
+      color: var(--level-color);
+      display: inline-block;
+    }
+
+    .spotlight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3mm;
+      flex: 1;
+      z-index: 1;
+      position: relative;
+      max-height: 145mm;
+      overflow: hidden;
+    }
+
+    .spotlight-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 0.4mm solid #e0e0e0;
+      border-radius: 3mm;
+      overflow: hidden;
+      background: #fafafa;
+    }
+
+    .spotlight-photo {
+      flex: 1;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50mm;
+    }
+
+    .spotlight-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .spotlight-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #bbb;
+      font-size: 9pt;
+    }
+
+    .spotlight-word {
+      padding: 3mm;
+      font-size: 20pt;
+      font-weight: 700;
+      text-align: center;
+      color: #1a1a1a;
+    }
+
+    .spotlight-word .sound-highlight {
+      color: #DC2626;
+    }
+
+
+    /* ================================================================
+       TALK ABOUT THE STORY PAGE
+       ================================================================ */
+    .talk-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 5mm;
+    }
+
+    .talk-question {
+      margin-bottom: 5mm;
+      padding: 4mm 5mm;
+      border-left: 1.2mm solid var(--level-color);
+      background: #f9f9f9;
+      border-radius: 0 3mm 3mm 0;
+    }
+
+    .talk-question-category {
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--level-color);
+      margin-bottom: 1mm;
+    }
+
+    .talk-question-text {
+      font-size: 12pt;
+      color: #333;
+      line-height: 1.5;
+    }
+
+
+    /* ================================================================
+       SENTENCE BUILDING PAGE
+       ================================================================ */
+    .sentence-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 3mm;
+    }
+
+    .sentence-instruction {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 6mm;
+      line-height: 1.5;
+    }
+
+    .sentence-line {
+      border-bottom: 0.5mm solid #333;
+      height: 14mm;
+      margin-bottom: 6mm;
+    }
+
+    .sentence-prompt {
+      font-size: 11pt;
+      color: #888;
+      font-style: italic;
+      margin-bottom: 3mm;
+    }
+
+
+    /* ================================================================
+       NOTES FOR GROWN-UPS PAGE
+       ================================================================ */
+    .notes-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 5mm;
+    }
+
+    .notes-item {
+      font-size: 11pt;
+      color: #333;
+      line-height: 1.7;
+      padding-left: 6mm;
+      margin-bottom: 5mm;
+    }
+
+    .notes-item::before {
+      content: "\2014";
+      color: #999;
+      margin-left: -6mm;
+      margin-right: 2mm;
+    }
+
+    .notes-next-book {
+      margin-top: auto;
+      padding: 5mm 6mm;
+      border: 0.5mm solid #ddd;
+      border-radius: 3mm;
+      background: #f9f9f9;
+    }
+
+    .notes-next-book-title {
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--level-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2mm;
+    }
+
+    .notes-next-book-text {
+      font-size: 10pt;
+      color: #555;
+      line-height: 1.5;
+    }
+
+
+    /* ================================================================
+       NONSENSE WORDS CHALLENGE PAGE
+       ================================================================ */
+    .nonsense-title {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+
+    .nonsense-subtitle {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 3mm;
+      line-height: 1.5;
+    }
+
+    .nonsense-intro {
+      font-size: 9pt;
+      color: #888;
+      margin-bottom: 6mm;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .nonsense-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin-bottom: 6mm;
+    }
+
+    .nonsense-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 16mm;
+      border: 0.5mm dashed var(--level-color);
+      border-radius: 3mm;
+      background: #fafafa;
+    }
+
+    .nonsense-card-word {
+      font-size: 18pt;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .nonsense-check-row {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      margin-bottom: 3mm;
+    }
+
+    .nonsense-check-box {
+      width: 6mm;
+      height: 6mm;
+      border: 0.4mm solid #ccc;
+      border-radius: 1mm;
+      flex-shrink: 0;
+    }
+
+    .nonsense-check-label {
+      font-size: 10pt;
+      color: #555;
+    }
+
+    .nonsense-tip {
+      margin-top: auto;
+      padding: 4mm 5mm;
+      background: #f5f5f5;
+      border-radius: 3mm;
+      font-size: 9pt;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .nonsense-tip strong {
+      color: #1a1a1a;
+    }
+
+
+    /* ================================================================
+       PAGE 15: READING STAR CERTIFICATE
+       ================================================================ */
+    .cert-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .cert-border {
+      width: 126mm;
+      border: 1.5mm solid var(--level-color);
+      border-radius: 5mm;
+      padding: 10mm 8mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cert-star {
+      font-size: 36pt;
+      margin-bottom: 4mm;
+    }
+
+    .cert-heading {
+      font-size: 22pt;
+      font-weight: 700;
+      color: var(--level-color);
+      margin-bottom: 3mm;
+    }
+
+    .cert-subheading {
+      font-size: 12pt;
+      color: #555;
+      margin-bottom: 8mm;
+      line-height: 1.5;
+    }
+
+    .cert-book-title {
+      font-size: 16pt;
+      font-weight: 700;
+      font-style: italic;
+      color: #1a1a1a;
+      margin-bottom: 8mm;
+    }
+
+    .cert-label {
+      font-size: 10pt;
+      color: #888;
+      margin-bottom: 2mm;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-line {
+      width: 80mm;
+      border-bottom: 0.5mm solid #333;
+      margin-bottom: 6mm;
+      height: 10mm;
+    }
+
+    .cert-date-line {
+      width: 50mm;
+      border-bottom: 0.5mm solid #333;
+      height: 10mm;
+      margin-bottom: 4mm;
+    }
+
+    .cert-footer {
+      font-size: 9pt;
+      color: #aaa;
+      font-style: italic;
+      margin-top: 4mm;
+    }
+
+
+    /* ================================================================
+       PAGE 16: BACK COVER
        ================================================================ */
     .back-cover {
       display: flex;
@@ -851,7 +1233,81 @@
   {% endfor %}
 
   <!-- ============================================================
-       PAGE 12: ACTIVITY PAGE (Read Words + Alien Words + Draw)
+       PAGE 12: TALK ABOUT THE STORY (Comprehension Questions)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="talk-title">Talk About the Story</div>
+      {% for q in comprehension_questions %}
+      <div class="talk-question">
+        <div class="talk-question-category">{{ q.category }}</div>
+        <div class="talk-question-text">{{ q.text }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="page-num page-num-left">12</div>
+  </div>
+
+  <!-- ============================================================
+       PAGES 13-15: SOUND SPOTLIGHT + FLEX ZONE
+       ============================================================ -->
+  {% for spotlight in sound_spotlight_pages[:3] %}
+  <div class="page spotlight-page">
+    <div class="page-inner">
+      <div class="spotlight-watermark">{{ spotlight.grapheme_display }}</div>
+      <div class="spotlight-title">Sound Spotlight</div>
+      <div class="spotlight-sound-display">
+        <span class="spotlight-sound-letter">{{ spotlight.grapheme_display }}</span>
+      </div>
+      <div class="spotlight-grid">
+        {% for entry in spotlight.words[:4] %}
+        <div class="spotlight-cell">
+          <div class="spotlight-photo">
+            {% if entry.photo %}
+            <img src="{{ entry.photo }}" alt="{{ entry.word }}">
+            {% else %}
+            <div class="spotlight-photo-placeholder">[ {{ entry.word }} ]</div>
+            {% endif %}
+          </div>
+          <div class="spotlight-word">{{ entry.word_html | safe }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% set pnum = loop.index + 12 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endfor %}
+
+  {# Fill remaining flex slots if fewer than 3 spotlights #}
+  {% set spotlight_count = sound_spotlight_pages | length %}
+  {% if spotlight_count < 3 %}
+  {% for i in range(3 - spotlight_count) %}
+  <div class="page">
+    <div class="page-inner">
+      <div class="sentence-title">Sentence Building</div>
+      <div class="sentence-instruction">
+        Use the sounds you have learnt to write your own sentences.
+        Try to use words from the story!
+      </div>
+      <div class="sentence-prompt">Can you write a sentence about the story?</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+      <div class="sentence-prompt">Write a sentence using one of the focus sounds.</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+      <div class="sentence-prompt">Make up your own sentence!</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+    </div>
+    {% set pnum = spotlight_count + i + 13 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- ============================================================
+       PAGE 16: CAN YOU READ THESE WORDS?
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
@@ -867,25 +1323,58 @@
       </div>
 
       <div class="alien-title">Alien Words</div>
-      <div class="alien-subtitle">These aren't real words! Can you sound them out?</div>
+      <div class="alien-subtitle">These aren&rsquo;t real words! Can you sound them out?</div>
       <div class="alien-words-grid">
         {% for word in nonsense_words %}
         <div class="alien-word-cell">{{ word }}</div>
         {% endfor %}
       </div>
-
-      <div class="draw-section-title">Draw Your Favourite Part</div>
-      <div class="draw-box"></div>
     </div>
-    <div class="page-num page-num-left">12</div>
+    <div class="page-num page-num-left">16</div>
   </div>
 
   <!-- ============================================================
-       PAGE 13: TRICKY WORDS & WRITING PRACTICE
+       PAGE 17: NONSENSE WORDS CHALLENGE
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
-      <!-- Tricky Words Section -->
+      <div class="nonsense-title">Nonsense Words Challenge</div>
+      <div class="nonsense-subtitle">Can you read these made-up words?</div>
+      <div class="nonsense-intro">
+        These are not real words! Use your phonics to sound them out.
+        This is just like the Year 1 Phonics Screening Check.
+      </div>
+
+      <div class="nonsense-grid">
+        {% for word in nonsense_words_challenge %}
+        <div class="nonsense-card">
+          <span class="nonsense-card-word">{{ word }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="nonsense-check-row">
+        <div class="nonsense-check-box"></div>
+        <span class="nonsense-check-label">I sounded out every word</span>
+      </div>
+      <div class="nonsense-check-row">
+        <div class="nonsense-check-box"></div>
+        <span class="nonsense-check-label">I read them without help</span>
+      </div>
+
+      <div class="nonsense-tip">
+        <strong>Grown-up tip:</strong> The UK Phonics Screening Check includes
+        pseudo-words. Practising these builds confidence and decoding skill.
+      </div>
+    </div>
+    <div class="page-num page-num-right">17</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 18: TRICKY WORDS
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
       <div class="ref-tricky-title">Tricky Words</div>
       <div class="ref-tricky-desc">These cannot be sounded out. Learn them by heart.</div>
       <div class="ref-tricky-grid">
@@ -893,23 +1382,106 @@
         <div class="ref-tricky-cell">{{ word }}</div>
         {% endfor %}
       </div>
+    </div>
+    <div class="page-num page-num-left">18</div>
+  </div>
 
-      <!-- Writing Practice Section (single line) -->
-      <div class="writing-title writing-title-spaced">Writing Practice</div>
+  <!-- ============================================================
+       PAGE 19: WRITING PRACTICE 1
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="writing-title">Writing Practice</div>
       <div class="writing-instruction">Trace the sound, then write it on the line.</div>
 
-      {% for grapheme in writing_graphemes[:3] %}
+      {% for grapheme in writing_graphemes[:5] %}
       <div class="hw-simple-row">
         <div class="hw-simple-letter">{{ grapheme }}</div>
         <div class="hw-simple-line"></div>
       </div>
       {% endfor %}
     </div>
-    <div class="page-num page-num-right">13</div>
+    <div class="page-num page-num-right">19</div>
   </div>
 
   <!-- ============================================================
-       PAGE 14: BACK COVER
+       PAGE 20: WRITING PRACTICE 2 / SENTENCE BUILDING
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="sentence-title">Write Your Own Sentences</div>
+      <div class="sentence-instruction">
+        Use the sounds you have learnt to write your own sentences.
+        Try to use words from the story!
+      </div>
+      <div class="sentence-prompt">Write a sentence about the story.</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+      <div class="sentence-prompt">Write a sentence using a focus sound.</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+      <div class="sentence-prompt">Make up your own sentence!</div>
+      <div class="sentence-line"></div>
+      <div class="sentence-line"></div>
+    </div>
+    <div class="page-num page-num-left">20</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 21: DRAW YOUR FAVOURITE PART
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="draw-section-title">Draw Your Favourite Part</div>
+      <div class="draw-box" style="flex: 1;"></div>
+    </div>
+    <div class="page-num page-num-right">21</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 22: READING STAR CERTIFICATE
+       ============================================================ -->
+  <div class="page cert-page">
+    <div class="cert-border">
+      <div class="cert-star">&#11088;</div>
+      <div class="cert-heading">I Read a Book!</div>
+      <div class="cert-subheading">Reading Star Certificate</div>
+      <div class="cert-book-title">{{ book_title }}</div>
+
+      <div class="cert-label">Name</div>
+      <div class="cert-line"></div>
+
+      <div class="cert-label">Date</div>
+      <div class="cert-date-line"></div>
+
+      <div class="cert-footer">MyPhonicsBooks &middot; Level {{ level }}</div>
+    </div>
+    <div class="page-num page-num-left">22</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 23: NOTES FOR GROWN-UPS
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="notes-title">Notes for Grown-Ups</div>
+      {% for note in notes_next_steps %}
+      <div class="notes-item">{{ note }}</div>
+      {% endfor %}
+
+      <div class="notes-next-book">
+        <div class="notes-next-book-title">What&rsquo;s Next?</div>
+        <div class="notes-next-book-text">
+          When your child reads this book confidently, try the next book
+          in Level {{ level }} or move to the next level in the series.
+        </div>
+      </div>
+    </div>
+    <div class="page-num page-num-right">23</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 24: BACK COVER
        ============================================================ -->
   <div class="page back-cover">
     <div class="back-banner">

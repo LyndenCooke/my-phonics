@@ -213,6 +213,126 @@ EXAMPLE_BOOK = {
 }
 
 
+PHOTOS_DIR = BASE_DIR / "assets" / "photos"
+SPOTLIGHT_WORDS_PATH = BASE_DIR / "data" / "spotlight_words.json"
+
+
+# ─── Sound Spotlight Helpers ─────────────────────────────────────
+
+def highlight_grapheme_in_word(word: str, grapheme: str) -> str:
+    """Return HTML with the grapheme wrapped in <span class='sound-highlight'>.
+
+    Example: highlight_grapheme_in_word("fish", "sh")
+    → 'fi<span class="sound-highlight">sh</span>'
+    """
+    # Handle split digraphs (a-e, i-e, etc.)
+    if "-" in grapheme:
+        vowel = grapheme[0]
+        # Find vowel...consonant(s)...e pattern
+        lower = word.lower()
+        for vi in range(len(lower) - 2):
+            if lower[vi] == vowel and lower[-1] == "e":
+                before = word[:vi]
+                after = word[vi:]
+                return (f'{before}<span class="sound-highlight">{after[0]}</span>'
+                        f'{after[1:-1]}<span class="sound-highlight">e</span>')
+        return word
+
+    idx = word.lower().find(grapheme.lower())
+    if idx == -1:
+        return word
+    before = word[:idx]
+    match = word[idx:idx + len(grapheme)]
+    after = word[idx + len(grapheme):]
+    return f'{before}<span class="sound-highlight">{match}</span>{after}'
+
+
+def load_spotlight_words_data():
+    """Load the spotlight words JSON."""
+    if not SPOTLIGHT_WORDS_PATH.exists():
+        return {}
+    with open(SPOTLIGHT_WORDS_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return {k: v for k, v in data.items() if not k.startswith("_")}
+
+
+def build_spotlight_pages(focus_graphemes: list, level: int,
+                          story_spotlight_words: dict = None) -> list:
+    """Build Sound Spotlight page data for each focus grapheme.
+
+    Returns a list of dicts, one per spotlight page:
+    [{
+        "grapheme": "sh",
+        "grapheme_display": "sh",
+        "words": [
+            {"word": "fish", "word_html": "fi<span>sh</span>", "photo": "data:..."},
+            ...
+        ]
+    }, ...]
+    """
+    spotlight_data = load_spotlight_words_data()
+    pages = []
+
+    for grapheme in focus_graphemes:
+        # Use story-specific words if provided, else fall back to JSON
+        if story_spotlight_words and grapheme in story_spotlight_words:
+            words = story_spotlight_words[grapheme][:4]
+        elif grapheme in spotlight_data:
+            available = spotlight_data[grapheme]["words"]
+            # Filter to words decodable at this level
+            decodable_level = spotlight_data[grapheme].get("decodable_at", 1)
+            if decodable_level <= level:
+                words = [w["word"] for w in available[:4]]
+            else:
+                words = [w["word"] for w in available[:4]]  # Use anyway, best effort
+        else:
+            continue  # Skip graphemes without spotlight data
+
+        word_entries = []
+        for word in words:
+            # Look for photo
+            safe_grapheme = grapheme.replace("-", "_")
+            photo_path = PHOTOS_DIR / safe_grapheme / f"{word}.jpg"
+            photo_uri = None
+            if photo_path.exists():
+                photo_uri = image_to_data_uri(photo_path)
+
+            word_html = highlight_grapheme_in_word(word, grapheme)
+            word_entries.append({
+                "word": word,
+                "word_html": word_html,
+                "photo": photo_uri,
+            })
+
+        if word_entries:
+            pages.append({
+                "grapheme": grapheme,
+                "grapheme_display": grapheme,
+                "words": word_entries,
+            })
+
+    return pages
+
+
+def compute_flex_pages(level: int, spotlight_count: int, is_print: bool = True) -> list:
+    """Compute which flex pages fill the remaining slots to reach 24 pages.
+
+    Returns a list of page type strings for the flex zone.
+    """
+    if level == 1 and is_print:
+        # Ditty print template: Part A + Part B, 4 spotlight slots total (2 per part)
+        # Flex handled by the ditty template directly
+        return []
+
+    # Standard template: 3 flex slots (pages 13-15)
+    flex_zone_size = 3
+    spotlights_in_flex = min(spotlight_count, flex_zone_size)
+    fillers_needed = flex_zone_size - spotlights_in_flex
+
+    filler_types = ["sentence_building", "word_sort", "rhyming_words"]
+    return filler_types[:fillers_needed]
+
+
 def _font_to_data_uri(font_path: Path) -> str:
     """Convert a TTF font file to a base64 data URI for embedding in HTML."""
     raw = font_path.read_bytes()
@@ -355,6 +475,36 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         "writing_graphemes": story_dict.get("writing_graphemes", []),
         "writing_words": story_dict.get("writing_words", []),
         "writing_starters": story_dict.get("writing_starters", []),
+
+        # Sound Spotlight pages (new for 24-page layout)
+        "sound_spotlight_pages": build_spotlight_pages(
+            story_dict.get("focus_graphemes", []),
+            level,
+            story_dict.get("spotlight_words", None),
+        ),
+
+        # Comprehension questions (separated for standalone page)
+        "comprehension_questions": questions,
+
+        # Flex pages for the flex zone
+        "flex_pages": compute_flex_pages(
+            level,
+            len(story_dict.get("focus_graphemes", [])),
+        ),
+
+        # Nonsense words challenge (standalone page, may differ from activity page nonsense)
+        "nonsense_words_challenge": story_dict.get(
+            "nonsense_words_challenge",
+            story_dict.get("nonsense_words", [])
+        ),
+
+        # Notes for Grown-Ups (page 23)
+        "notes_next_steps": story_dict.get("notes_next_steps", [
+            "Try reading the story again — repetition builds fluency and confidence.",
+            "Look for the focus sounds in other books, signs, and labels around you.",
+            "Encourage your child to write words using the sounds they have learnt.",
+            "When your child is confident, move to the next book in the series.",
+        ]),
     }
 
 
