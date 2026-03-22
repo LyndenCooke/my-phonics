@@ -3,28 +3,62 @@
   "configurations": [
     {
       "name": "frontend",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "--port",
+        "5173"
+      ],
       "port": 5173,
       "cwd": "frontend"
     },
     {
       "name": "fastapi",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-3.12", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"],
+      "runtimeArgs": [
+        "-3.12",
+        "-m",
+        "uvicorn",
+        "main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ],
       "port": 8000
     },
     {
       "name": "stripe-backend",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["node", "server.js"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "server.js"
+      ],
       "port": 3001
     },
     {
       "name": "book-preview",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-3.12", "-m", "http.server", "3002", "-d", "output/books"],
+      "runtimeArgs": [
+        "-3.12",
+        "-m",
+        "http.server",
+        "3002",
+        "-d",
+        "output/books"
+      ],
       "port": 3002
+    },
+    {
+      "name": "phonics-hub",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "--port",
+        "5174"
+      ],
+      "port": 5174,
+      "cwd": "phonics-fun-hub"
     }
   ]
 }

@@ -1,0 +1,693 @@
+{
+  "_note": "Sound Spotlight word bank. Each grapheme has 4-6 words with Unsplash search terms. Words must be decodable at 'decodable_at' level. Prefer nouns (clear photos) over verbs.",
+
+  "s": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "sun", "search": "bright sun sky"},
+      {"word": "sock", "search": "colourful sock"},
+      {"word": "six", "search": "number six"},
+      {"word": "sad", "search": "sad child face"}
+    ]
+  },
+  "a": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "hat", "search": "sun hat"},
+      {"word": "cat", "search": "tabby cat"},
+      {"word": "map", "search": "treasure map"},
+      {"word": "van", "search": "delivery van"}
+    ]
+  },
+  "t": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "tin", "search": "tin can food"},
+      {"word": "tap", "search": "water tap faucet"},
+      {"word": "ten", "search": "number ten"},
+      {"word": "tub", "search": "bathtub"}
+    ]
+  },
+  "p": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "pig", "search": "piglet farm"},
+      {"word": "pan", "search": "frying pan kitchen"},
+      {"word": "pin", "search": "safety pin"},
+      {"word": "peg", "search": "clothes peg"}
+    ]
+  },
+  "i": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "bin", "search": "rubbish bin"},
+      {"word": "dig", "search": "child digging sand"},
+      {"word": "fin", "search": "shark fin"},
+      {"word": "zip", "search": "jacket zip"}
+    ]
+  },
+  "n": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "net", "search": "fishing net"},
+      {"word": "nut", "search": "walnut"},
+      {"word": "nap", "search": "child napping"},
+      {"word": "nod", "search": "person nodding"}
+    ]
+  },
+  "m": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "mug", "search": "coffee mug"},
+      {"word": "mat", "search": "door mat"},
+      {"word": "mop", "search": "floor mop"},
+      {"word": "mud", "search": "muddy puddle"}
+    ]
+  },
+  "d": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "dog", "search": "puppy dog"},
+      {"word": "dam", "search": "water dam"},
+      {"word": "den", "search": "fox den"},
+      {"word": "dip", "search": "dipping sauce"}
+    ]
+  },
+  "g": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "gum", "search": "bubblegum"},
+      {"word": "gap", "search": "gap in fence"},
+      {"word": "gas", "search": "gas cooker hob"},
+      {"word": "gig", "search": "concert gig"}
+    ]
+  },
+  "o": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "cot", "search": "baby cot"},
+      {"word": "hot", "search": "hot sun thermometer"},
+      {"word": "log", "search": "wooden log"},
+      {"word": "mop", "search": "floor mop"}
+    ]
+  },
+  "c": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "cup", "search": "teacup"},
+      {"word": "cap", "search": "baseball cap"},
+      {"word": "cob", "search": "corn on the cob"},
+      {"word": "cab", "search": "taxi cab"}
+    ]
+  },
+  "k": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "kit", "search": "first aid kit"},
+      {"word": "kid", "search": "happy kid"},
+      {"word": "keg", "search": "wooden barrel keg"},
+      {"word": "kip", "search": "child sleeping"}
+    ]
+  },
+  "ck": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "duck", "search": "duck pond"},
+      {"word": "sock", "search": "colourful sock"},
+      {"word": "lock", "search": "padlock"},
+      {"word": "kick", "search": "child kicking ball"}
+    ]
+  },
+  "e": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "bed", "search": "cosy bed"},
+      {"word": "red", "search": "red apple"},
+      {"word": "hen", "search": "chicken hen"},
+      {"word": "web", "search": "spider web"}
+    ]
+  },
+  "u": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "bus", "search": "red bus"},
+      {"word": "cup", "search": "teacup"},
+      {"word": "jug", "search": "water jug"},
+      {"word": "rug", "search": "colourful rug"}
+    ]
+  },
+  "r": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "run", "search": "child running"},
+      {"word": "rat", "search": "pet rat"},
+      {"word": "rug", "search": "colourful rug"},
+      {"word": "rod", "search": "fishing rod"}
+    ]
+  },
+  "h": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "hat", "search": "sun hat"},
+      {"word": "hen", "search": "chicken hen"},
+      {"word": "hug", "search": "parent child hug"},
+      {"word": "hop", "search": "rabbit hopping"}
+    ]
+  },
+  "b": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "bat", "search": "cricket bat"},
+      {"word": "bed", "search": "cosy bed"},
+      {"word": "bus", "search": "red bus"},
+      {"word": "bun", "search": "bread bun"}
+    ]
+  },
+  "f": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "fan", "search": "electric fan"},
+      {"word": "fin", "search": "shark fin"},
+      {"word": "fog", "search": "foggy morning"},
+      {"word": "fun", "search": "children having fun"}
+    ]
+  },
+  "ff": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "off", "search": "light switch off"},
+      {"word": "huff", "search": "huffing puffing"},
+      {"word": "cuff", "search": "shirt cuff"},
+      {"word": "puff", "search": "puff of smoke"}
+    ]
+  },
+  "l": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "log", "search": "wooden log"},
+      {"word": "lip", "search": "smiling lips"},
+      {"word": "leg", "search": "leg foot"},
+      {"word": "lid", "search": "pot lid"}
+    ]
+  },
+  "ll": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "bell", "search": "golden bell"},
+      {"word": "doll", "search": "rag doll"},
+      {"word": "hill", "search": "green hill"},
+      {"word": "bull", "search": "bull cattle"}
+    ]
+  },
+  "ss": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "hiss", "search": "snake hissing"},
+      {"word": "moss", "search": "green moss"},
+      {"word": "miss", "search": "target miss"},
+      {"word": "boss", "search": "person in charge"}
+    ]
+  },
+  "j": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "jam", "search": "strawberry jam jar"},
+      {"word": "jet", "search": "jet aeroplane"},
+      {"word": "jog", "search": "person jogging"},
+      {"word": "jug", "search": "water jug"}
+    ]
+  },
+  "v": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "van", "search": "delivery van"},
+      {"word": "vet", "search": "veterinarian animal"},
+      {"word": "vat", "search": "large vat barrel"},
+      {"word": "vest", "search": "safety vest"}
+    ]
+  },
+  "w": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "wig", "search": "colourful wig"},
+      {"word": "win", "search": "child winning trophy"},
+      {"word": "web", "search": "spider web"},
+      {"word": "wet", "search": "wet rain"}
+    ]
+  },
+  "x": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "box", "search": "cardboard box"},
+      {"word": "fox", "search": "red fox"},
+      {"word": "mix", "search": "mixing bowl"},
+      {"word": "six", "search": "number six"}
+    ]
+  },
+  "y": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "yam", "search": "yam vegetable"},
+      {"word": "yak", "search": "yak animal"},
+      {"word": "yell", "search": "child yelling"},
+      {"word": "yap", "search": "small dog barking"}
+    ]
+  },
+  "z": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "zip", "search": "jacket zip"},
+      {"word": "zap", "search": "lightning bolt"},
+      {"word": "zig", "search": "zigzag pattern"},
+      {"word": "zen", "search": "zen garden"}
+    ]
+  },
+  "zz": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "buzz", "search": "bee buzzing"},
+      {"word": "fizz", "search": "fizzy drink bubbles"},
+      {"word": "jazz", "search": "jazz music"},
+      {"word": "fuzz", "search": "fuzzy fabric"}
+    ]
+  },
+  "qu": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "quiz", "search": "quiz question mark"},
+      {"word": "quit", "search": "stop sign"},
+      {"word": "quack", "search": "duck quacking"},
+      {"word": "quill", "search": "feather quill pen"}
+    ]
+  },
+  "ch": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "chop", "search": "chopping vegetables"},
+      {"word": "chin", "search": "chin face"},
+      {"word": "chat", "search": "friends chatting"},
+      {"word": "chip", "search": "potato chip crisp"}
+    ]
+  },
+  "sh": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "ship", "search": "sailing ship ocean"},
+      {"word": "fish", "search": "goldfish"},
+      {"word": "shed", "search": "garden shed"},
+      {"word": "shop", "search": "small shop"}
+    ]
+  },
+  "th": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "thin", "search": "thin pencil"},
+      {"word": "bath", "search": "bubble bath"},
+      {"word": "moth", "search": "moth insect"},
+      {"word": "path", "search": "garden path"}
+    ]
+  },
+  "ng": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "ring", "search": "golden ring"},
+      {"word": "song", "search": "child singing"},
+      {"word": "king", "search": "king crown"},
+      {"word": "gong", "search": "brass gong"}
+    ]
+  },
+  "nk": {
+    "decodable_at": 1,
+    "words": [
+      {"word": "sink", "search": "kitchen sink"},
+      {"word": "tank", "search": "fish tank aquarium"},
+      {"word": "bank", "search": "river bank"},
+      {"word": "ink", "search": "ink bottle"}
+    ]
+  },
+
+  "ay": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "day", "search": "sunny day blue sky"},
+      {"word": "hay", "search": "hay bales farm"},
+      {"word": "ray", "search": "sun ray light"},
+      {"word": "bay", "search": "bay coastline"}
+    ]
+  },
+  "ee": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "bee", "search": "honeybee flower"},
+      {"word": "seed", "search": "plant seed"},
+      {"word": "reef", "search": "coral reef"},
+      {"word": "feet", "search": "bare feet"}
+    ]
+  },
+  "igh": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "high", "search": "high mountain peak"},
+      {"word": "night", "search": "starry night sky"},
+      {"word": "light", "search": "light bulb"},
+      {"word": "sigh", "search": "person sighing"}
+    ]
+  },
+  "ow": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "bow", "search": "hair bow ribbon"},
+      {"word": "low", "search": "low bridge sign"},
+      {"word": "show", "search": "theatre show stage"},
+      {"word": "row", "search": "rowing boat"}
+    ]
+  },
+  "oo": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "zoo", "search": "zoo entrance"},
+      {"word": "moon", "search": "full moon night"},
+      {"word": "food", "search": "healthy food plate"},
+      {"word": "boot", "search": "wellington boot"}
+    ]
+  },
+  "ar": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "car", "search": "red car"},
+      {"word": "jar", "search": "glass jar"},
+      {"word": "bar", "search": "chocolate bar"},
+      {"word": "far", "search": "far away landscape"}
+    ]
+  },
+  "or": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "fork", "search": "silver fork"},
+      {"word": "corn", "search": "corn field"},
+      {"word": "horn", "search": "musical horn"},
+      {"word": "cord", "search": "rope cord"}
+    ]
+  },
+  "air": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "hair", "search": "child long hair"},
+      {"word": "fair", "search": "funfair rides"},
+      {"word": "chair", "search": "wooden chair"},
+      {"word": "pair", "search": "pair of shoes"}
+    ]
+  },
+  "ir": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "bird", "search": "robin bird"},
+      {"word": "girl", "search": "happy girl"},
+      {"word": "dirt", "search": "dirt soil"},
+      {"word": "sir", "search": "knight sir"}
+    ]
+  },
+  "ou": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "loud", "search": "loud speaker"},
+      {"word": "shout", "search": "child shouting"},
+      {"word": "out", "search": "door going out"},
+      {"word": "round", "search": "round ball"}
+    ]
+  },
+  "oy": {
+    "decodable_at": 2,
+    "words": [
+      {"word": "toy", "search": "children toy"},
+      {"word": "boy", "search": "happy boy"},
+      {"word": "joy", "search": "joyful celebration"},
+      {"word": "coy", "search": "shy person"}
+    ]
+  },
+
+  "ea": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "beach", "search": "sandy beach"},
+      {"word": "leaf", "search": "green leaf"},
+      {"word": "cream", "search": "ice cream"},
+      {"word": "pea", "search": "green peas"}
+    ]
+  },
+  "a-e": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "cake", "search": "birthday cake"},
+      {"word": "lake", "search": "calm lake"},
+      {"word": "gate", "search": "garden gate"},
+      {"word": "flame", "search": "candle flame"}
+    ]
+  },
+  "i-e": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "bike", "search": "bicycle"},
+      {"word": "kite", "search": "flying kite"},
+      {"word": "lime", "search": "lime fruit"},
+      {"word": "hive", "search": "bee hive"}
+    ]
+  },
+  "o-e": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "bone", "search": "dog bone"},
+      {"word": "stone", "search": "pebble stone"},
+      {"word": "rope", "search": "thick rope"},
+      {"word": "home", "search": "cosy home house"}
+    ]
+  },
+  "u-e": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "cube", "search": "ice cube"},
+      {"word": "flute", "search": "flute instrument"},
+      {"word": "tube", "search": "tube tunnel"},
+      {"word": "huge", "search": "huge elephant"}
+    ]
+  },
+  "oi": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "coin", "search": "gold coin"},
+      {"word": "foil", "search": "aluminium foil"},
+      {"word": "oil", "search": "cooking oil bottle"},
+      {"word": "soil", "search": "garden soil earth"}
+    ]
+  },
+  "aw": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "claw", "search": "cat claw paw"},
+      {"word": "draw", "search": "child drawing"},
+      {"word": "straw", "search": "drinking straw"},
+      {"word": "jaw", "search": "jaw bone face"}
+    ]
+  },
+  "ai": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "rain", "search": "rain drops"},
+      {"word": "snail", "search": "garden snail"},
+      {"word": "train", "search": "steam train"},
+      {"word": "tail", "search": "dog tail wagging"}
+    ]
+  },
+  "oa": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "boat", "search": "sailing boat"},
+      {"word": "coat", "search": "winter coat"},
+      {"word": "goat", "search": "goat farm"},
+      {"word": "road", "search": "winding road"}
+    ]
+  },
+  "ie": {
+    "decodable_at": 3,
+    "words": [
+      {"word": "pie", "search": "fruit pie"},
+      {"word": "tie", "search": "neck tie"},
+      {"word": "lie", "search": "person lying down"},
+      {"word": "die", "search": "dice die"}
+    ]
+  },
+
+  "are": {
+    "decodable_at": 4,
+    "words": [
+      {"word": "hare", "search": "hare rabbit field"},
+      {"word": "share", "search": "children sharing"},
+      {"word": "stare", "search": "cat staring"},
+      {"word": "flare", "search": "signal flare"}
+    ]
+  },
+  "ur": {
+    "decodable_at": 4,
+    "words": [
+      {"word": "burn", "search": "campfire burn"},
+      {"word": "curl", "search": "curly hair"},
+      {"word": "surf", "search": "surfing wave"},
+      {"word": "hurt", "search": "plaster bandage"}
+    ]
+  },
+  "er": {
+    "decodable_at": 4,
+    "words": [
+      {"word": "fern", "search": "green fern plant"},
+      {"word": "herb", "search": "fresh herbs"},
+      {"word": "herd", "search": "herd of cattle"},
+      {"word": "stern", "search": "ship stern"}
+    ]
+  },
+  "ew": {
+    "decodable_at": 4,
+    "words": [
+      {"word": "new", "search": "new gift present"},
+      {"word": "dew", "search": "morning dew drops"},
+      {"word": "few", "search": "few flowers"},
+      {"word": "chew", "search": "child chewing food"}
+    ]
+  },
+  "ue": {
+    "decodable_at": 4,
+    "words": [
+      {"word": "blue", "search": "blue sky"},
+      {"word": "glue", "search": "glue stick craft"},
+      {"word": "clue", "search": "magnifying glass clue"},
+      {"word": "true", "search": "tick mark true"}
+    ]
+  },
+
+  "ore": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "shore", "search": "seashore beach"},
+      {"word": "store", "search": "shop store"},
+      {"word": "snore", "search": "person sleeping snoring"},
+      {"word": "core", "search": "apple core"}
+    ]
+  },
+  "oor": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "door", "search": "wooden door"},
+      {"word": "floor", "search": "wooden floor"},
+      {"word": "moor", "search": "moorland heather"},
+      {"word": "poor", "search": "poor piggy bank"}
+    ]
+  },
+  "ire": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "fire", "search": "campfire flames"},
+      {"word": "tire", "search": "car tire"},
+      {"word": "wire", "search": "copper wire"},
+      {"word": "hire", "search": "for hire sign"}
+    ]
+  },
+  "ear": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "ear", "search": "human ear"},
+      {"word": "near", "search": "close near binoculars"},
+      {"word": "fear", "search": "scared face"},
+      {"word": "hear", "search": "child listening hear"}
+    ]
+  },
+  "ure": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "pure", "search": "pure water glass"},
+      {"word": "cure", "search": "medicine cure"},
+      {"word": "lure", "search": "fishing lure"},
+      {"word": "sure", "search": "thumbs up sure"}
+    ]
+  },
+  "tion": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "station", "search": "train station"},
+      {"word": "nation", "search": "flags nation"},
+      {"word": "action", "search": "action movie clapper"},
+      {"word": "potion", "search": "magic potion bottle"}
+    ]
+  },
+  "ph": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "phone", "search": "telephone"},
+      {"word": "photo", "search": "camera photo"},
+      {"word": "pheasant", "search": "pheasant bird"},
+      {"word": "dolphin", "search": "dolphin jumping"}
+    ]
+  },
+  "kn": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "knee", "search": "knee leg"},
+      {"word": "knit", "search": "knitting wool"},
+      {"word": "knock", "search": "knocking door"},
+      {"word": "knot", "search": "rope knot"}
+    ]
+  },
+  "wr": {
+    "decodable_at": 5,
+    "words": [
+      {"word": "write", "search": "child writing pencil"},
+      {"word": "wrap", "search": "wrapping gift present"},
+      {"word": "wrist", "search": "wrist watch"},
+      {"word": "wren", "search": "wren bird"}
+    ]
+  },
+
+  "ous": {
+    "decodable_at": 6,
+    "words": [
+      {"word": "famous", "search": "famous star celebrity"},
+      {"word": "enormous", "search": "enormous whale"},
+      {"word": "nervous", "search": "nervous child"},
+      {"word": "joyous", "search": "joyful celebration"}
+    ]
+  },
+  "cious": {
+    "decodable_at": 6,
+    "words": [
+      {"word": "precious", "search": "precious gem diamond"},
+      {"word": "spacious", "search": "spacious room"},
+      {"word": "gracious", "search": "gracious bow"},
+      {"word": "delicious", "search": "delicious food"}
+    ]
+  },
+  "tious": {
+    "decodable_at": 6,
+    "words": [
+      {"word": "cautious", "search": "cautious careful"},
+      {"word": "ambitious", "search": "mountain climber ambitious"},
+      {"word": "infectious", "search": "infectious smile laughing"},
+      {"word": "nutritious", "search": "nutritious healthy food"}
+    ]
+  },
+  "able": {
+    "decodable_at": 6,
+    "words": [
+      {"word": "table", "search": "dining table"},
+      {"word": "cable", "search": "cable wire"},
+      {"word": "stable", "search": "horse stable"},
+      {"word": "comfortable", "search": "comfortable sofa"}
+    ]
+  },
+  "ible": {
+    "decodable_at": 6,
+    "words": [
+      {"word": "visible", "search": "binoculars visible"},
+      {"word": "horrible", "search": "horrible weather storm"},
+      {"word": "terrible", "search": "terrible mess"},
+      {"word": "incredible", "search": "incredible sunset"}
+    ]
+  }
+}

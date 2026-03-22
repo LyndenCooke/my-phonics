@@ -70,6 +70,9 @@ def get_pilot_stories() -> dict:
     from data.belonging_story_l5_4_book1 import BELONGING_STORY_BOOK1
     from data.marvellous_neighbourhood_story_l6_1_book1 import MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 as SECRET_GARDEN_STORY_BOOK1
     from data.remarkable_story_l6_2_book1 import REMARKABLE_STORY_BOOK1
+    from data.draw_it_again_story_l3_4_book1 import DRAW_IT_AGAIN_STORY_BOOK1
+    from data.delicious_suspicious_story_l6_3_book1 import DELICIOUS_SUSPICIOUS_STORY_BOOK1
+    from data.bush_walk_story_l6_4_book1 import BUSH_WALK_STORY_BOOK1
 
     stories = PILOT_STORIES.copy()
     stories["L1_B1"] = FISH_STORY_BOOK1["L1_B1"]
@@ -103,6 +106,9 @@ def get_pilot_stories() -> dict:
     stories["L5_4_B1"] = BELONGING_STORY_BOOK1["L5_4_B1"]
     stories["L6_1_B1"] = SECRET_GARDEN_STORY_BOOK1["L6_1_B1"]
     stories["L6_2_B1"] = REMARKABLE_STORY_BOOK1["L6_2_B1"]
+    stories["L3_4_B1"] = DRAW_IT_AGAIN_STORY_BOOK1["L3_4_B1"]
+    stories["L6_3_B1"] = DELICIOUS_SUSPICIOUS_STORY_BOOK1["L6_3_B1"]
+    stories["L6_4_B1"] = BUSH_WALK_STORY_BOOK1["L6_4_B1"]
 
     return stories
 
@@ -144,6 +150,9 @@ LEVEL_KEYS = {
     6: "L6_B1",
     "6.1": "L6_1_B1",
     "6.2": "L6_2_B1",
+    "3.4": "L3_4_B1",
+    "6.3": "L6_3_B1",
+    "6.4": "L6_4_B1",
 }
 
 
@@ -200,29 +209,40 @@ async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
 
 
 async def generate_all_pilots(use_images: bool = True):
-    """Generate all 6 pilot book PDFs."""
+    """Generate all pilot book PDFs (all sub-levels)."""
     print("MyPhonicsBooks — Pilot Book Generator")
     print("=" * 55)
     print(f"Child: {CHILD_NAME} | Friend: {FRIEND_NAME}")
     print(f"Images: {'Yes' if use_images else 'No (placeholders)'}")
     print()
 
-    for level in range(1, 7):
-        stories = get_pilot_stories()
-        key = LEVEL_KEYS[level]
-        title = stories[key]["book_title"]
+    stories = get_pilot_stories()
+    generated = 0
+    failed = 0
 
-        print(f"[Level {level}] {LEVEL_NAMES[level]}: \"{title}\"")
+    # Generate every sub-level that has a story
+    for level_key, story_key in sorted(LEVEL_KEYS.items(), key=lambda x: str(x[0])):
+        if story_key not in stories:
+            continue
+
+        title = stories[story_key]["book_title"]
+        main_level = stories[story_key].get("level", 1)
+
+        print(f"[L{level_key}] {LEVEL_NAMES.get(main_level, '?')}: \"{title}\"")
         print(f"  Rendering HTML...")
 
-        output_path = await generate_pilot_pdf(level, use_images)
-
-        size_kb = output_path.stat().st_size / 1024
-        print(f"  Done: {output_path.name} ({size_kb:.0f} KB)")
+        try:
+            output_path = await generate_pilot_pdf(level_key, use_images)
+            size_kb = output_path.stat().st_size / 1024
+            print(f"  Done: {output_path.name} ({size_kb:.0f} KB)")
+            generated += 1
+        except Exception as e:
+            print(f"  ERROR: {e}")
+            failed += 1
         print()
 
     print("=" * 55)
-    print("All 6 pilot books generated!")
+    print(f"Generated {generated} books ({failed} failed)")
     print(f"Output folder: {OUTPUT_DIR}")
 
 
