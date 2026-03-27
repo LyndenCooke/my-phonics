@@ -1,0 +1,9 @@
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/tap-tap-tap.jpg' WHERE slug = 'tap-tap-tap';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/the-mud-on-the-dog.jpg' WHERE slug = 'the-mud-on-the-dog';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/the-red-socks.jpg' WHERE slug = 'the-red-socks';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/run-pup-run.jpg' WHERE slug = 'run-pup-run';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/fox-fell-off.jpg' WHERE slug = 'fox-fell-off';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/the-jam-jug.jpg' WHERE slug = 'the-jam-jug';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/the-yak-and-the-box.jpg' WHERE slug = 'the-yak-and-the-box';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/chop-chop-chop.jpg' WHERE slug = 'chop-chop-chop';
+UPDATE books SET cover_image_url = 'https://qzwkyubbtjqpgqdthwal.supabase.co/storage/v1/object/public/book-covers/buzz-and-sing.jpg' WHERE slug = 'buzz-and-sing';
