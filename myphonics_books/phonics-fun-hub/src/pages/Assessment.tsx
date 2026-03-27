@@ -27,6 +27,7 @@ import {
   checkLevelConfidence,
   getCategoryThreshold,
   buildSoundMap,
+  buildResultsMap,
   type Answer,
   type LevelScore,
   type CategoryResult,
@@ -713,6 +714,7 @@ export default function Assessment() {
     const levelInfo = LEVELS.find(l => l.level === recommendedLevel);
     const ageComparison = getAgeComparison();
     const soundMap = buildSoundMap(answers, levelScores, startLevel);
+    const resultsMap = buildResultsMap(answers, levelScores);
 
     return (
       <Layout>
@@ -790,10 +792,10 @@ export default function Assessment() {
             </div>
           )}
 
-          {/* Sound Map */}
+          {/* Results Map */}
           <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
-            <p className="text-xs font-bold text-foreground mb-3">Sound Map</p>
-            <SoundMap sounds={soundMap} />
+            <p className="text-xs font-bold text-foreground mb-3">Results Map</p>
+            <SoundMap sounds={soundMap} results={resultsMap} />
           </div>
 
           {/* Level-by-level breakdown */}

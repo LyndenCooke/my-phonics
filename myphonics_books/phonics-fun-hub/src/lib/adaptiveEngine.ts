@@ -160,6 +160,13 @@ export interface SoundStatus {
   status: 'known' | 'unknown' | 'untested';
 }
 
+export interface ResultItem {
+  item: string;
+  level: number;
+  category: Category;
+  status: 'known' | 'unknown' | 'untested';
+}
+
 export interface Answer {
   level: number;
   category: Category;
@@ -177,6 +184,7 @@ export interface LevelScore {
 
 /**
  * Build the sound map for final results.
+ * Levels below screening start are marked 'untested' (not assumed known).
  */
 export function buildSoundMap(
   answers: Answer[],
@@ -186,11 +194,6 @@ export function buildSoundMap(
   const allSounds = ASSESSMENT_ITEMS.filter(i => i.category === 'sound_recognition');
 
   return allSounds.map(sound => {
-    // Levels below screening start → assumed known
-    if (sound.level < startLevel) {
-      return { grapheme: sound.targetGrapheme || sound.item, displayName: sound.item, level: sound.level, status: 'known' as const };
-    }
-
     // Check if this sound was directly tested
     const answer = answers.find(
       a => a.level === sound.level && a.category === 'sound_recognition' && a.item === sound.item
@@ -210,8 +213,43 @@ export function buildSoundMap(
       return { grapheme: sound.targetGrapheme || sound.item, displayName: sound.item, level: sound.level, status: 'known' as const };
     }
 
-    // Untested (level above fail point)
+    // Everything else is untested (skipped via screening OR above fail point)
     return { grapheme: sound.targetGrapheme || sound.item, displayName: sound.item, level: sound.level, status: 'untested' as const };
+  });
+}
+
+/**
+ * Build a full results map across all categories (sounds, words, alien words, tricky words).
+ * Groups results by level and category for display.
+ */
+export function buildResultsMap(
+  answers: Answer[],
+  levelScores: LevelScore[],
+): ResultItem[] {
+  const testableCategories: Category[] = ['sound_recognition', 'word_reading', 'alien_words', 'tricky_words'];
+  const allItems = ASSESSMENT_ITEMS.filter(i => testableCategories.includes(i.category));
+
+  return allItems.map(item => {
+    // Check if directly tested
+    const answer = answers.find(
+      a => a.level === item.level && a.category === item.category && a.item === item.item
+    );
+    if (answer) {
+      return {
+        item: item.item,
+        level: item.level,
+        category: item.category,
+        status: answer.isCorrect ? 'known' as const : 'unknown' as const,
+      };
+    }
+
+    // Level passed but item not directly tested → assumed known
+    const levelScore = levelScores.find(ls => ls.level === item.level);
+    if (levelScore?.passed) {
+      return { item: item.item, level: item.level, category: item.category, status: 'known' as const };
+    }
+
+    return { item: item.item, level: item.level, category: item.category, status: 'untested' as const };
   });
 }
 
