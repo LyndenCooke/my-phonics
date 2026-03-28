@@ -48,16 +48,17 @@ interface TappableWordProps {
   wordData: StoryWord;
   focusSounds?: string[];
   size?: 'normal' | 'large';
+  highlight?: boolean;  // External highlight (e.g. during narration)
 }
 
-export default function TappableWord({ wordData, focusSounds = [], size = 'normal' }: TappableWordProps) {
+export default function TappableWord({ wordData, focusSounds = [], size = 'normal', highlight = false }: TappableWordProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPhonemes, setShowPhonemes] = useState(false);
   const [activePhoneme, setActivePhoneme] = useState<number | null>(null);
   const [isSoundingOut, setIsSoundingOut] = useState(false);
   const cancelRef = useRef(false);
 
-  const textSize = size === 'large' ? 'text-3xl' : 'text-2xl';
+  const textSize = size === 'large' ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl';
 
   const handleTapWord = useCallback(async () => {
     if (isPlaying || isSoundingOut) return;
@@ -105,7 +106,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
         className={`
           ${textSize} font-bold rounded-xl px-3 py-1
           transition-all duration-200 select-none
-          ${isPlaying
+          ${isPlaying || highlight
             ? 'text-pink-600 scale-110 bg-pink-100'
             : 'text-slate-800 hover:bg-pink-50 active:scale-95'
           }
@@ -127,7 +128,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
                 key={i}
                 onClick={() => handlePhonemeClick(i)}
                 className={`
-                  w-8 h-8 rounded-full text-sm font-bold
+                  w-10 h-10 rounded-full text-base font-bold
                   flex items-center justify-center
                   transition-all duration-200
                   ${isActive
@@ -149,7 +150,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
             onClick={handleSoundOut}
             disabled={isSoundingOut}
             className={`
-              w-8 h-8 rounded-full flex items-center justify-center ml-1
+              w-10 h-10 rounded-full flex items-center justify-center ml-1
               transition-all duration-200
               ${isSoundingOut
                 ? 'bg-amber-400 text-white animate-pulse'
