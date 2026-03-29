@@ -39,7 +39,7 @@ const L5_ALL_SOUNDS = [
 
 export const BOOK_L5_1_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'Before the Shore', subtitle: 'Level 5 · Confident Reader', imageUrl: '/illustrations/5_1/cover.png' },
+  { type: 'cover', title: 'Before the Shore', subtitle: 'Level 5 · Reading Together', imageUrl: '/illustrations/5_1/cover.png' },
 
   // ── SOUNDS ──
   {
@@ -179,7 +179,7 @@ export const BOOK_L5_1_PAGES: InteractivePage[] = [
       tricky('said.', 'said'),
       tricky('He', 'he'), word('twisted', 'twisted', ['t','w','i','s','t','e','d']),
       tricky('the', 'the'), word('wire', 'wire', ['w','ire']),
-      word('with', 'with', ['w','i','th']), word('care.', 'care', ['c','air']),
+      word('with', 'with', ['w','i','th']), word('care.', 'care', ['c','are']),
       word('It', 'it', ['i','t']), word('looked', 'looked', ['l','oo','k','d']),
       tricky('so', 'so'), word('nice!', 'nice', ['n','i_e','s']),
     ],
@@ -264,7 +264,7 @@ export const BOOK_L5_1_PAGES: InteractivePage[] = [
       word('and', 'and', ['a','n','d']), word('made', 'made', ['m','a_e','d']),
       tricky('a', 'a'), word('loop', 'loop', ['l','oo','p']),
       word('for', 'for', ['f','or']), word('each', 'each', ['ea','ch']),
-      word('one.', 'one', ['w','u','n']),
+      tricky('one.', 'one'),
       tricky('He', 'he'), tricky('would', 'would'),
       word('make', 'make', ['m','a_e','k']), tricky('a', 'a'),
       word('gift', 'gift', ['g','i','f','t']), word('for', 'for', ['f','or']),
@@ -354,10 +354,10 @@ export const BOOK_L5_1_PAGES: InteractivePage[] = [
 
   // ── SPELLING ──
   { type: 'spelling', words: [
-    { word: 'shore', imageUrl: '/images/words/shore.png', letters: ['sh','o','r','e'] },
-    { word: 'fire', imageUrl: '/images/words/fire.png', letters: ['f','i','r','e'] },
-    { word: 'wire', imageUrl: '/images/words/wire.png', letters: ['w','i','r','e'] },
-    { word: 'more', imageUrl: '/images/words/more.png', letters: ['m','o','r','e'] },
+    { word: 'shore', imageUrl: '/images/words/shore.png', letters: ['sh','ore'] },
+    { word: 'fire', imageUrl: '/images/words/fire.png', letters: ['f','ire'] },
+    { word: 'wire', imageUrl: '/images/words/wire.png', letters: ['w','ire'] },
+    { word: 'more', imageUrl: '/images/words/more.png', letters: ['m','ore'] },
   ] },
 
   // ── STORY ORDERING ──
@@ -383,7 +383,7 @@ export const BOOK_L5_1_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L5_2_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Near the Door', subtitle: 'Level 5 · Confident Reader', imageUrl: '/illustrations/5_2/cover.png' },
+  { type: 'cover', title: 'Near the Door', subtitle: 'Level 5 · Reading Together', imageUrl: '/illustrations/5_2/cover.png' },
 
   {
     type: 'sound_grid',
@@ -454,9 +454,9 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
       word('and', 'and', ['a','n','d']), word('smiled.', 'smiled', ['s','m','i_e','l','d']),
       tricky('I', 'I'), word('can', 'can', ['c','a','n']),
       word('tell', 'tell', ['t','e','ll']), word('what', 'what', ['wh','o','t']),
-      word('that', 'that', ['th','a','t']), word('is,', 'is', ['i','z']),
+      word('that', 'that', ['th','a','t']), tricky('is,', 'is'),
       tricky('he', 'he'), tricky('said.', 'said'),
-      word('It', 'it', ['i','t']), word('is', 'is', ['i','z']),
+      word('It', 'it', ['i','t']), tricky('is', 'is'),
       word('clear', 'clear', ['c','l','ear']), tricky('to', 'to'),
       word('me.', 'me', ['m','ee']), word('But', 'but', ['b','u','t']),
       tricky('I', 'I'), word('will', 'will', ['w','i','ll']),
@@ -515,7 +515,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
       word('and', 'and', ['a','n','d']), word('look.', 'look', ['l','oo','k']),
       tricky('You', 'you'), word('will', 'will', ['w','i','ll']),
       word('see', 'see', ['s','ee']), word('what', 'what', ['wh','o','t']),
-      word('it', 'it', ['i','t']), word('is.', 'is', ['i','z']),
+      word('it', 'it', ['i','t']), tricky('is.', 'is'),
     ],
     imageUrl: '/illustrations/5_2/page4.png',
   },
@@ -568,7 +568,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
       tricky('so', 'so'), word('thin.', 'thin', ['th','i','n']),
       tricky('He', 'he'), word('comes', 'comes', ['c','o','m','s']),
       word('near', 'near', ['n','ear']), word('when', 'when', ['wh','e','n']),
-      tricky('he', 'he'), word('is', 'is', ['i','z']),
+      tricky('he', 'he'), tricky('is', 'is'),
       word('looking', 'looking', ['l','oo','k','i','ng']),
       word('for', 'for', ['f','or']), word('food.', 'food', ['f','oo','d']),
     ],
@@ -634,7 +634,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
       word('looked', 'looked', ['l','oo','k','d']),
       word('up,', 'up', ['u','p']), word('then', 'then', ['th','e','n']),
       word('ran', 'ran', ['r','a','n']), word('back', 'back', ['b','a','ck']),
-      word('into', 'into', ['i','n','t','oo']),
+      tricky('into', 'into'),
       tricky('the', 'the'), word('trees.', 'trees', ['t','r','ee','s']),
     ],
     imageUrl: '/illustrations/5_2/page8.png',
@@ -686,10 +686,10 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
   ] },
 
   { type: 'spelling', words: [
-    { word: 'near', imageUrl: '/images/words/near.png', letters: ['n','e','a','r'] },
-    { word: 'dear', imageUrl: '/images/words/dear.png', letters: ['d','e','a','r'] },
-    { word: 'door', imageUrl: '/images/words/door.png', letters: ['d','o','o','r'] },
-    { word: 'fear', imageUrl: '/images/words/fear.png', letters: ['f','e','a','r'] },
+    { word: 'near', imageUrl: '/images/words/near.png', letters: ['n','ear'] },
+    { word: 'dear', imageUrl: '/images/words/dear.png', letters: ['d','ear'] },
+    { word: 'door', imageUrl: '/images/words/door.png', letters: ['d','oor'] },
+    { word: 'fear', imageUrl: '/images/words/fear.png', letters: ['f','ear'] },
   ] },
 
   { type: 'story_ordering', items: [
@@ -713,7 +713,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L5_3_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Sure She Can', subtitle: 'Level 5 · Confident Reader', imageUrl: '/illustrations/5_3/cover.png' },
+  { type: 'cover', title: 'Sure She Can', subtitle: 'Level 5 · Reading Together', imageUrl: '/illustrations/5_3/cover.png' },
 
   {
     type: 'sound_grid',
@@ -729,8 +729,8 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('attention', 'attention', ['a','tt','e','n','tion']),
       word('section', 'section', ['s','e','c','tion']),
       word('direction', 'direction', ['d','i','r','e','c','tion']),
-      word('concentration', 'concentration', ['c','o','n','s','e','n','t','r','a','tion']),
-      word('frustration', 'frustration', ['f','r','u','s','t','r','a','tion']),
+      tricky('concentration', 'concentration'),
+      tricky('frustration', 'frustration'),
       word('action', 'action', ['a','c','tion']),
     ],
   },
@@ -745,7 +745,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('colour', 'colour', ['c','o','l','er']),
       word('filled', 'filled', ['f','i','ll','d']),
       tricky('the', 'the'), word('sky', 'sky', ['s','k','y']),
-      tricky('over', 'over'), word('Jaipur.', 'jaipur', ['j','ai','p','ure']),
+      tricky('over', 'over'), tricky('Jaipur.', 'jaipur'),
       word('Red', 'red', ['r','e','d']), word('and', 'and', ['a','n','d']),
       word('green', 'green', ['g','r','ee','n']), word('and', 'and', ['a','n','d']),
       word('blue,', 'blue', ['b','l','ue']), tricky('they', 'they'),
@@ -756,7 +756,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('clear', 'clear', ['c','l','ear']),
       word('winter', 'winter', ['w','i','n','t','er']),
       word('air.', 'air', ['air']),
-      tricky('The', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('The', 'the'), tricky('girl', 'girl'),
       word('stood', 'stood', ['s','t','oo','d']), word('on', 'on', ['o','n']),
       tricky('the', 'the'), word('rooftop', 'rooftop', ['r','oo','f','t','o','p']),
       word('and', 'and', ['a','n','d']), word('watched', 'watched', ['w','o','t','ch','d']),
@@ -766,10 +766,10 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       tricky('to', 'to'), word('fly', 'fly', ['f','l','y']),
       tricky('a', 'a'), word('kite', 'kite', ['k','i_e','t']),
       word('more', 'more', ['m','ore']), word('than', 'than', ['th','a','n']),
-      word('anything.', 'anything', ['e','n','ee','th','i','ng']),
+      tricky('anything.', 'anything'),
       word('But', 'but', ['b','u','t']), tricky('she', 'she'),
       word('did', 'did', ['d','i','d']), word('not', 'not', ['n','o','t']),
-      word('own', 'own', ['ow','n']), word('one.', 'one', ['w','u','n']),
+      word('own', 'own', ['ow','n']), tricky('one.', 'one'),
     ],
     imageUrl: '/illustrations/5_3/page1.png',
   },
@@ -793,11 +793,11 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('bamboo', 'bamboo', ['b','a','m','b','oo']),
       word('sticks.', 'sticks', ['s','t','i','ck','s']),
       tricky('We', 'we'), word('can', 'can', ['c','a','n']),
-      word('make', 'make', ['m','a_e','k']), word('one,', 'one', ['w','u','n']),
+      word('make', 'make', ['m','a_e','k']), tricky('one,', 'one'),
       tricky('he', 'he'), tricky('said.', 'said'),
       tricky('I', 'I'), word('can', 'can', ['c','a','n']),
       word('show', 'show', ['sh','ow']), tricky('you', 'you'),
-      tricky('the', 'the'), word('instructions.', 'instructions', ['i','n','s','t','r','u','c','tion','s']),
+      tricky('the', 'the'), tricky('instructions.', 'instructions'),
       word('Pay', 'pay', ['p','ay']), word('close', 'close', ['c','l','o_e','s']),
       word('attention', 'attention', ['a','tt','e','n','tion']),
       word('and', 'and', ['a','n','d']), word('follow', 'follow', ['f','o','ll','ow']),
@@ -809,12 +809,12 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/5_3/page2.png',
   },
 
-  // Pages 3-8 (condensed for brevity — same pattern)
+  // Page 3
   {
     type: 'story',
     sentences: ['"Step one," said Dadaji.', '"Lay the sticks in a cross shape.', 'Tie them at this section here — that is the frame."', 'With great concentration, the girl tied the sticks.', '"Perfect!" said Dadaji.', '"Now pass the string around each point."'],
     words: [
-      word('Step', 'step', ['s','t','e','p']), word('one,', 'one', ['w','u','n']),
+      word('Step', 'step', ['s','t','e','p']), tricky('one,', 'one'),
       tricky('said', 'said'), word('Dadaji.', 'dadaji', ['d','a','d','a','j','ee']),
       word('Lay', 'lay', ['l','ay']), tricky('the', 'the'),
       word('sticks', 'sticks', ['s','t','i','ck','s']), word('in', 'in', ['i','n']),
@@ -823,15 +823,15 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('Tie', 'tie', ['t','ie']), word('them', 'them', ['th','e','m']),
       word('at', 'at', ['a','t']), word('this', 'this', ['th','i','s']),
       word('section', 'section', ['s','e','c','tion']),
-      word('here', 'here', ['h','ear']), word('that', 'that', ['th','a','t']),
-      word('is', 'is', ['i','z']), tricky('the', 'the'),
+      tricky('here', 'here'), word('that', 'that', ['th','a','t']),
+      tricky('is', 'is'), tricky('the', 'the'),
       word('frame.', 'frame', ['f','r','a_e','m']),
       word('With', 'with', ['w','i','th']), word('great', 'great', ['g','r','ea','t']),
-      word('concentration,', 'concentration', ['c','o','n','s','e','n','t','r','a','tion']),
-      tricky('the', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('concentration,', 'concentration'),
+      tricky('the', 'the'), tricky('girl', 'girl'),
       word('tied', 'tied', ['t','ie','d']), tricky('the', 'the'),
       word('sticks.', 'sticks', ['s','t','i','ck','s']),
-      word('Perfect!', 'perfect', ['p','er','f','e','c','t']),
+      tricky('Perfect!', 'perfect'),
       tricky('said', 'said'), word('Dadaji.', 'dadaji', ['d','a','d','a','j','ee']),
       word('Now', 'now', ['n','ow']), word('pass', 'pass', ['p','a','ss']),
       tricky('the', 'the'), word('string', 'string', ['s','t','r','i','ng']),
@@ -857,7 +857,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('string', 'string', ['s','t','r','i','ng']),
       word('and', 'and', ['a','n','d']), word('press', 'press', ['p','r','e','ss']),
       word('it', 'it', ['i','t']), word('down.', 'down', ['d','ow','n']),
-      tricky('The', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('The', 'the'), tricky('girl', 'girl'),
       word('worked', 'worked', ['w','er','k','d']),
       word('fast.', 'fast', ['f','a','s','t']),
       word('But', 'but', ['b','u','t']), tricky('the', 'the'),
@@ -880,7 +880,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     type: 'story',
     sentences: ['The girl crumpled the torn paper in her hands.', '"I am full of frustration!" she said.', '"I give up!"', 'Dadaji did not rush.', 'He sat with a calm look on his face and waited.', '"Are you sure you want to stop?" he said softly.', '"We are not done yet."'],
     words: [
-      tricky('The', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('The', 'the'), tricky('girl', 'girl'),
       word('crumpled', 'crumpled', ['c','r','u','m','p','l','d']),
       tricky('the', 'the'), word('torn', 'torn', ['t','ore','n']),
       word('paper', 'paper', ['p','a_e','p','er']),
@@ -888,7 +888,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('hands.', 'hands', ['h','a','n','d','s']),
       tricky('I', 'I'), word('am', 'am', ['a','m']),
       word('full', 'full', ['f','u','ll']), tricky('of', 'of'),
-      word('frustration!', 'frustration', ['f','r','u','s','t','r','a','tion']),
+      tricky('frustration!', 'frustration'),
       tricky('she', 'she'), tricky('said.', 'said'),
       tricky('I', 'I'), word('give', 'give', ['g','i','v']),
       word('up!', 'up', ['u','p']),
@@ -918,7 +918,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     type: 'story',
     sentences: ['The girl took a long breath and tried again.', '"Slow action this time," said Dadaji.', '"Press each section flat before you move on.', 'Work in one direction only."', 'She worked with great care.', 'She pressed. She smoothed. She waited.', 'The paper held.', '"It is working!" she cried.'],
     words: [
-      tricky('The', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('The', 'the'), tricky('girl', 'girl'),
       word('took', 'took', ['t','oo','k']), tricky('a', 'a'),
       word('long', 'long', ['l','o','ng']), word('breath', 'breath', ['b','r','e','th']),
       word('and', 'and', ['a','n','d']), word('tried', 'tried', ['t','r','ie','d']),
@@ -934,18 +934,18 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       tricky('you', 'you'), word('move', 'move', ['m','oo','v']),
       word('on.', 'on', ['o','n']),
       word('Work', 'work', ['w','er','k']), word('in', 'in', ['i','n']),
-      word('one', 'one', ['w','u','n']),
+      tricky('one', 'one'),
       word('direction', 'direction', ['d','i','r','e','c','tion']),
       word('only.', 'only', ['o_e','n','l','ee']),
       tricky('She', 'she'), word('worked', 'worked', ['w','er','k','d']),
       word('with', 'with', ['w','i','th']), word('great', 'great', ['g','r','ea','t']),
-      word('care.', 'care', ['c','air']),
+      word('care.', 'care', ['c','are']),
       tricky('She', 'she'), word('pressed.', 'pressed', ['p','r','e','ss','d']),
       tricky('She', 'she'), word('smoothed.', 'smoothed', ['s','m','oo','th','d']),
       tricky('She', 'she'), word('waited.', 'waited', ['w','ai','t','e','d']),
       tricky('The', 'the'), word('paper', 'paper', ['p','a_e','p','er']),
       word('held.', 'held', ['h','e','l','d']),
-      word('It', 'it', ['i','t']), word('is', 'is', ['i','z']),
+      word('It', 'it', ['i','t']), tricky('is', 'is'),
       word('working!', 'working', ['w','er','k','i','ng']),
       tricky('she', 'she'), word('cried.', 'cried', ['c','r','ie','d']),
     ],
@@ -994,7 +994,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     words: [
       tricky('The', 'the'), word('kite', 'kite', ['k','i_e','t']),
       word('shot', 'shot', ['sh','o','t']), word('up', 'up', ['u','p']),
-      word('into', 'into', ['i','n','t','oo']),
+      tricky('into', 'into'),
       tricky('the', 'the'), word('pure', 'pure', ['p','ure']),
       word('blue', 'blue', ['b','l','ue']), word('sky.', 'sky', ['s','k','y']),
       word('It', 'it', ['i','t']), word('soared', 'soared', ['s','ore','d']),
@@ -1010,7 +1010,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       word('clapped', 'clapped', ['c','l','a','pp','d']),
       word('his', 'his', ['h','i','s']), word('hands', 'hands', ['h','a','n','d','s']),
       word('with', 'with', ['w','i','th']), word('joy.', 'joy', ['j','oy']),
-      tricky('The', 'the'), word('girl', 'girl', ['g','er','l']),
+      tricky('The', 'the'), tricky('girl', 'girl'),
       word('watched', 'watched', ['w','o','t','ch','d']),
       word('her', 'her', ['h','er']), word('kite', 'kite', ['k','i_e','t']),
       word('spin', 'spin', ['s','p','i','n']), word('and', 'and', ['a','n','d']),
@@ -1055,7 +1055,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     word('sure', 'sure', ['sh','ure']), word('pure', 'pure', ['p','ure']),
     word('action', 'action', ['a','c','tion']), word('section', 'section', ['s','e','c','tion']),
     word('direction', 'direction', ['d','i','r','e','c','tion']),
-    word('frustration', 'frustration', ['f','r','u','s','t','r','a','tion']),
+    tricky('frustration', 'frustration'),
   ] },
 
   { type: 'tricky_words', words: [
@@ -1071,10 +1071,10 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
   ] },
 
   { type: 'spelling', words: [
-    { word: 'sure', imageUrl: '/images/words/sure.png', letters: ['s','u','r','e'] },
-    { word: 'pure', imageUrl: '/images/words/pure.png', letters: ['p','u','r','e'] },
-    { word: 'action', imageUrl: '/images/words/action.png', letters: ['a','c','t','i','o','n'] },
-    { word: 'section', imageUrl: '/images/words/section.png', letters: ['s','e','c','t','i','o','n'] },
+    { word: 'sure', imageUrl: '/images/words/sure.png', letters: ['sh','ure'] },
+    { word: 'pure', imageUrl: '/images/words/pure.png', letters: ['p','ure'] },
+    { word: 'action', imageUrl: '/images/words/action.png', letters: ['a','c','tion'] },
+    { word: 'section', imageUrl: '/images/words/section.png', letters: ['s','e','c','tion'] },
   ] },
 
   { type: 'story_ordering', items: [
@@ -1098,7 +1098,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L5_4_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'A Place for Me', subtitle: 'Level 5 · Confident Reader', imageUrl: '/illustrations/5_4/cover.png' },
+  { type: 'cover', title: 'A Place for Me', subtitle: 'Level 5 · Reading Together', imageUrl: '/illustrations/5_4/cover.png' },
 
   {
     type: 'sound_grid',
@@ -1156,9 +1156,9 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
     words: [
       tricky('I', 'I'), tricky('could', 'could'),
       word('hear', 'hear', ['h','ear']),
-      word('music', 'music', ['m','ew','s','i','k']),
+      tricky('music', 'music'),
       word('and', 'and', ['a','n','d']),
-      word('laughter', 'laughter', ['l','ar','f','t','er']),
+      tricky('laughter', 'laughter'),
       word('from', 'from', ['f','r','o','m']),
       word('every', 'every', ['e','v','r','ee']),
       word('door.', 'door', ['d','oor']),
@@ -1166,7 +1166,7 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
       word('see', 'see', ['s','ee']), word('food', 'food', ['f','oo','d']),
       word('and', 'and', ['a','n','d']), word('drums.', 'drums', ['d','r','u','m','s']),
       word('But', 'but', ['b','u','t']), word('no', 'no', ['n','o']),
-      word('one', 'one', ['w','u','n']), word('saw', 'saw', ['s','aw']),
+      tricky('one', 'one'), word('saw', 'saw', ['s','aw']),
       word('me.', 'me', ['m','ee']),
       tricky('I', 'I'), word('felt', 'felt', ['f','e','l','t']),
       word('left', 'left', ['l','e','f','t']),
@@ -1222,7 +1222,7 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
       word('me?', 'me', ['m','ee']),
       tricky('he', 'he'), tricky('said.', 'said'),
       tricky('I', 'I'), word('felt', 'felt', ['f','e','l','t']),
-      word('surprised', 'surprised', ['s','er','p','r','i_e','s','d']),
+      tricky('surprised', 'surprised'),
       word('and', 'and', ['a','n','d']),
       tricky('happy!', 'happy'),
     ],
@@ -1242,7 +1242,7 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
       word('gave', 'gave', ['g','a_e','v']),
       word('us', 'us', ['u','s']),
       word('golden-brown', 'golden-brown', ['g','o_e','l','d','e','n','b','r','ow','n']),
-      word('acarajé.', 'acaraje', ['a','c','a','r','a','j','ay']),
+      tricky('acarajé.', 'acaraje'),
       word('It', 'it', ['i','t']), tricky('was', 'was'),
       tricky('so', 'so'), word('good!', 'good', ['g','oo','d']),
       tricky('I', 'I'), word('took', 'took', ['t','oo','k']),
@@ -1263,7 +1263,7 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
     type: 'story',
     sentences: ['We walked down the street together.', 'We saw the old colourful buildings.', 'We heard drums near the fire.', '"I like this place," I said.', '"And I like you," said the boy.'],
     words: [
-      tricky('We', 'we'), word('walked', 'walked', ['w','a','l','k','d']),
+      tricky('We', 'we'), tricky('walked', 'walked'),
       word('down', 'down', ['d','ow','n']), tricky('the', 'the'),
       word('street', 'street', ['s','t','r','ee','t']),
       tricky('together.', 'together'),
@@ -1298,17 +1298,17 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
       word('came', 'came', ['c','a_e','m']), tricky('to', 'to'),
       word('join', 'join', ['j','oi','n']),
       word('us.', 'us', ['u','s']),
-      tricky('The', 'the'), word('music', 'music', ['m','ew','s','i','k']),
+      tricky('The', 'the'), tricky('music', 'music'),
       tricky('was', 'was'), word('all', 'all', ['a','ll']),
       word('around.', 'around', ['a','r','ou','n','d']),
       tricky('We', 'we'), word('spun', 'spun', ['s','p','u','n']),
       word('and', 'and', ['a','n','d']),
-      word('laughed.', 'laughed', ['l','ar','f','d']),
+      tricky('laughed.', 'laughed'),
       tricky('The', 'the'), word('fire', 'fire', ['f','ire']),
       word('and', 'and', ['a','n','d']), tricky('the', 'the'),
       word('drums', 'drums', ['d','r','u','m','s']),
       word('made', 'made', ['m','a_e','d']), tricky('the', 'the'),
-      word('perfect', 'perfect', ['p','er','f','e','c','t']),
+      tricky('perfect', 'perfect'),
       word('sound', 'sound', ['s','ou','n','d']),
       word('for', 'for', ['f','or']), tricky('our', 'our'),
       word('dance.', 'dance', ['d','a','n','s']),
@@ -1333,10 +1333,10 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
       word('Will', 'will', ['w','i','ll']), tricky('you', 'you'),
       word('come', 'come', ['c','o','m']),
       word('back?', 'back', ['b','a','ck']), tricky('he', 'he'),
-      word('asked.', 'asked', ['ar','s','k','d']),
+      word('asked.', 'asked', ['a','s','k','d']),
       word('Yes,', 'yes', ['y','e','s']), tricky('I', 'I'),
       tricky('said.', 'said'), word('This', 'this', ['th','i','s']),
-      word('is', 'is', ['i','z']), word('my', 'my', ['m','y']),
+      tricky('is', 'is'), word('my', 'my', ['m','y']),
       word('place', 'place', ['p','l','a_e','s']),
       word('too.', 'too', ['t','oo']),
     ],
@@ -1389,10 +1389,10 @@ export const BOOK_L5_4_PAGES: InteractivePage[] = [
   ] },
 
   { type: 'spelling', words: [
-    { word: 'shore', imageUrl: '/images/words/shore.png', letters: ['sh','o','r','e'] },
-    { word: 'near', imageUrl: '/images/words/near.png', letters: ['n','e','a','r'] },
-    { word: 'pure', imageUrl: '/images/words/pure.png', letters: ['p','u','r','e'] },
-    { word: 'fire', imageUrl: '/images/words/fire.png', letters: ['f','i','r','e'] },
+    { word: 'shore', imageUrl: '/images/words/shore.png', letters: ['sh','ore'] },
+    { word: 'near', imageUrl: '/images/words/near.png', letters: ['n','ear'] },
+    { word: 'pure', imageUrl: '/images/words/pure.png', letters: ['p','ure'] },
+    { word: 'fire', imageUrl: '/images/words/fire.png', letters: ['f','ire'] },
   ] },
 
   { type: 'story_ordering', items: [
