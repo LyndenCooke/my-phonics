@@ -35,15 +35,32 @@ async function playWordAsPhonemes(word: string): Promise<void> {
 
 const ANDIKA: React.CSSProperties = { fontFamily: "'Andika', sans-serif" };
 
-/** Split a word into graphemes, keeping digraphs (sh, ch, th, ng, nk, ck, ff, ll, ss, zz, qu) intact */
+/** Split a word into graphemes using longest-match-first (covers all L1–L6 graphemes) */
 function splitDigraphs(word: string): string[] {
-  const digraphs = ['sh','ch','th','ng','nk','ck','ff','ll','ss','zz','qu'];
+  const graphemes = [
+    'cious', 'tious',                                          // 5-letter (L6)
+    'tion', 'ture', 'able', 'ible',                           // 4-letter (L5–L6)
+    'igh', 'air', 'ear', 'oor', 'ore', 'ure', 'ire', 'are', 'our',  // 3-letter (L2–L5)
+    'ay', 'ee', 'oo', 'ar', 'or', 'ir', 'ou', 'oy',          // 2-letter vowels (L2–L4)
+    'oa', 'oi', 'aw', 'ai', 'ea', 'ie', 'ue', 'ew',
+    'ow', 'ey', 'oe', 'au',
+    'sh', 'ch', 'th', 'ng', 'nk', 'ck', 'ff', 'll', 'ss', 'zz', 'qu',  // L1 consonants
+    'ph', 'kn', 'wr', 'wh',                                   // L5+ consonants
+  ];
   const result: string[] = [];
   let i = 0;
-  while (i < word.length) {
-    const pair = word.slice(i, i + 2);
-    if (digraphs.includes(pair)) { result.push(pair); i += 2; }
-    else { result.push(word[i]); i += 1; }
+  const lower = word.toLowerCase();
+  while (i < lower.length) {
+    let matched = false;
+    for (const g of graphemes) {
+      if (lower.startsWith(g, i)) {
+        result.push(word.slice(i, i + g.length));
+        i += g.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) { result.push(word[i]); i += 1; }
   }
   return result;
 }
