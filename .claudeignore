@@ -1,25 +1,39 @@
-# Audio assets — binary files, not editable source
-public/sounds/
+# ── Claude Code context exclusions ──
+# Prevents Claude from auto-reading large binary/asset directories,
+# keeping context lean and tokens low.
 
-# Illustration & image assets — binary images
-public/illustrations/
-public/images/
-
-# Python book pipeline (separate project, large output)
-myphonics_books/
-myphonics_apps/
-
-# Build output & dependencies
-dist/
-dist-ssr/
+# Node modules
 node_modules/
 
-# Generated / temp files
-public/comparison.html
-phonics-explorer.html
-nul
+# Build output
+dist/
+dist-ssr/
+
+# Illustration assets — 510MB of PNGs, Claude doesn't need to read these
+public/illustrations/
+
+# Word card images — 295 PNGs, generated, not edited by Claude
+public/images/words/
+
+# Audio assets — hundreds of MP3s, not edited by Claude
+public/sounds/words/
+public/sounds/sentences/
+
+# Python PDF pipeline — 4.2GB, separate project
+myphonics_books/
+
+# Separate React/Node app — not part of main codebase
+myphonics_apps/
+
+# Unpacked Office document internals
 MyPhonicsBooks_Visual_Review_unpacked/
 
-# Binary documents
-*.docx
-*.xlsx
+# Python bytecode
+__pycache__/
+
+# Environment files
+.env
+.env.*
+
+# Generated PDFs
+*.pdf
