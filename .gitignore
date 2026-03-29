@@ -54,3 +54,12 @@ nul
 # Scratch / comparison files
 public/comparison.html
 phonics-explorer.html
+
+# Unpacked Office documents (temp extraction artifacts)
+MyPhonicsBooks_Visual_Review_unpacked/
+
+# Generated PDFs
+*.pdf
+
+# Thumbnails
+Thumbs.db
