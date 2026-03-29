@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import InteractiveBookReader from '@/components/InteractiveBookReader';
 import { useNavigate } from 'react-router-dom';
+import { LEVELS } from '@/lib/types';
 import type { Book } from '@/lib/types';
 import { INTERACTIVE_BOOKS } from '@/lib/interactiveBookData';
 
@@ -238,7 +239,7 @@ export default function Prototype() {
           <h2 className="text-xl font-bold text-slate-700 mb-3 text-left">
             Level {level}
             <span className="text-sm font-normal text-slate-400 ml-2">
-              {level === 1 ? 'Starting Stories' : level === 2 ? 'Longer Sounds' : level === 3 ? 'Split Digraphs' : level === 4 ? 'Building Fluency' : level === 5 ? 'Confident Reader' : 'Advanced Suffixes'}
+              {LEVELS.find(l => l.level === level)?.name ?? `Level ${level}`}
             </span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
