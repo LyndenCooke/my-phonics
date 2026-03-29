@@ -1,0 +1,25 @@
+# Audio assets — binary files, not editable source
+public/sounds/
+
+# Illustration & image assets — binary images
+public/illustrations/
+public/images/
+
+# Python book pipeline (separate project, large output)
+myphonics_books/
+myphonics_apps/
+
+# Build output & dependencies
+dist/
+dist-ssr/
+node_modules/
+
+# Generated / temp files
+public/comparison.html
+phonics-explorer.html
+nul
+MyPhonicsBooks_Visual_Review_unpacked/
+
+# Binary documents
+*.docx
+*.xlsx

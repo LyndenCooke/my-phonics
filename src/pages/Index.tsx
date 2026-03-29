@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import BookCard from '@/components/BookCard';
 import BookReader from '@/components/BookReader';
@@ -22,7 +22,9 @@ import {
 } from '@/components/ui/dialog';
 
 export default function Index() {
-  const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+  const location = useLocation();
+  const initialLevel = (location.state as { filterLevel?: number } | null)?.filterLevel ?? null;
+  const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const [upsellBook, setUpsellBook] = useState<Book | null>(null);

@@ -28,3 +28,29 @@ dist-ssr
 *.aup3
 *.aup3-shm
 *.aup3-wal
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Generated TTS word audio (app uses /sounds/*.mp3 phoneme files; words/ is regeneratable)
+public/sounds/words/
+public/sounds/sentences/
+
+# Python book pipeline (separate project with large PDF/image output)
+myphonics_books/
+
+# Other independent app directories
+myphonics_apps/
+
+# Windows artifacts
+nul
+
+# Scratch / comparison files
+public/comparison.html
+phonics-explorer.html

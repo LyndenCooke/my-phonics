@@ -20,27 +20,33 @@ function playAudioFile(url: string): Promise<void> {
   });
 }
 
-function speakWord(word: string): Promise<void> {
-  return new Promise((resolve) => {
-    const u = new SpeechSynthesisUtterance(word);
-    u.lang = 'en-GB'; u.rate = 0.85;
-    u.onend = () => resolve(); u.onerror = () => resolve();
-    speechSynthesis.speak(u);
-  });
-}
-
-async function playWord(word: string): Promise<void> {
-  const key = word.toLowerCase().replace(/\s+/g, '_');
-  try { await playAudioFile(`/sounds/words/${key}.mp3`); }
-  catch { await speakWord(word); }
-}
-
 async function playPhoneme(g: string): Promise<void> {
   try { await playAudioFile(`/sounds/${g.toLowerCase().replace(/-/g, '_')}.mp3`); }
   catch { /* no fallback */ }
 }
 
+async function playWordAsPhonemes(word: string): Promise<void> {
+  const graphemes = splitDigraphs(word);
+  for (const g of graphemes) {
+    await playPhoneme(g);
+    await new Promise(r => setTimeout(r, 150));
+  }
+}
+
 const ANDIKA: React.CSSProperties = { fontFamily: "'Andika', sans-serif" };
+
+/** Split a word into graphemes, keeping digraphs (sh, ch, th, ng, nk, ck, ff, ll, ss, zz, qu) intact */
+function splitDigraphs(word: string): string[] {
+  const digraphs = ['sh','ch','th','ng','nk','ck','ff','ll','ss','zz','qu'];
+  const result: string[] = [];
+  let i = 0;
+  while (i < word.length) {
+    const pair = word.slice(i, i + 2);
+    if (digraphs.includes(pair)) { result.push(pair); i += 2; }
+    else { result.push(word[i]); i += 1; }
+  }
+  return result;
+}
 
 // ─── Cover ──────────────────────────────────────────────────────────────────
 
@@ -59,32 +65,89 @@ function CoverPage({ page }: { page: Extract<InteractivePage, { type: 'cover' }>
 
 // ─── Sound Grid ─────────────────────────────────────────────────────────────
 
-function SoundGridPage({ page }: { page: Extract<InteractivePage, { type: 'sound_grid' }> }) {
-  const [playingSound, setPlayingSound] = useState<string | null>(null);
-  const handleSoundTap = async (s: string) => { setPlayingSound(s); await playPhoneme(s); setPlayingSound(null); };
+function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_grid' }>; level: number }) {
+  const [playingGroup, setPlayingGroup] = useState<string | null>(null);
+
+  const handleSoundTap = async (group: string) => {
+    setPlayingGroup(group);
+    // Play the first (primary) grapheme in the group
+    await playPhoneme(group.split('/')[0]);
+    setPlayingGroup(null);
+  };
 
   return (
-    <div className="flex flex-col md:flex-row h-full overflow-y-auto md:overflow-hidden">
-      <div className="flex-1 px-5 py-4 md:overflow-y-auto">
-        <h2 className="text-2xl font-bold text-slate-800 mb-1">Sounds in This Book</h2>
-        <p className="text-base text-slate-500 mb-4">Tap each sound to hear it!</p>
-        <div className="grid grid-cols-6 md:grid-cols-9 gap-2 mb-4">
-          {page.allSounds.map((s) => (
-            <button key={s} onClick={() => handleSoundTap(s)}
-              className={`py-2.5 rounded-xl text-lg font-bold transition-all duration-200
-                ${playingSound === s ? 'bg-pink-500 text-white scale-110 shadow-lg'
-                  : page.focusSounds.includes(s) ? 'bg-pink-100 text-pink-700 border-2 border-pink-300'
-                  : 'bg-slate-100 text-slate-600 border border-slate-200'}`}
-            >{s}</button>
-          ))}
-        </div>
+    <div className="flex flex-col h-full px-5 py-5 overflow-y-auto">
+      <h2 className="text-2xl font-bold text-slate-800 mb-1">Level {level} Sounds</h2>
+      <p className="text-base text-slate-500 mb-4">Pink = this book · Tap any sound to hear it!</p>
+      <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
+        {page.allSounds.map((group) => {
+          const sounds = group.split('/');
+          const isFocus = sounds.some(s => page.focusSounds.includes(s));
+          const isPlaying = playingGroup === group;
+          return (
+            <button key={group} onClick={() => handleSoundTap(group)}
+              className={`py-2.5 px-1 rounded-xl text-sm font-bold transition-all duration-200 leading-tight
+                ${isPlaying ? 'bg-pink-500 text-white scale-110 shadow-lg'
+                  : isFocus ? 'bg-pink-100 text-pink-700 border-2 border-pink-300'
+                  : 'bg-slate-100 text-slate-500 border border-slate-200'}`}
+            >
+              {sounds.join(' / ')}
+            </button>
+          );
+        })}
       </div>
-      <div className="md:w-[40%] md:border-l md:border-slate-200 px-5 py-4 md:overflow-y-auto">
-        <h3 className="text-xl font-bold text-slate-800 mb-2">Story Words</h3>
-        <p className="text-base text-slate-500 mb-3">Tap a word, then tap the sounds!</p>
-        <div className="flex flex-wrap gap-1.5">
-          {page.storyWords.map((w, i) => <TappableWord key={i} wordData={w} focusSounds={page.focusSounds} />)}
-        </div>
+    </div>
+  );
+}
+
+// ─── Vocab Preview ──────────────────────────────────────────────────────────
+
+function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vocab_preview' }> }) {
+  const [playing, setPlaying] = useState<string | null>(null);
+
+  return (
+    <div className="flex flex-col h-full px-5 py-4 overflow-y-auto">
+      <h2 className="text-2xl font-bold text-slate-800 mb-1">Story Words</h2>
+      <p className="text-base text-slate-500 mb-4">Tap a word to hear it!</p>
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        {page.words.map((w, i) => {
+          const isActive = playing === w.word;
+          return (
+            <button key={i}
+              onClick={async () => {
+                if (playing) return;
+                setPlaying(w.word);
+                await playWordAsPhonemes(w.word);
+                setPlaying(null);
+              }}
+              className={`flex flex-col items-center p-3 rounded-2xl border-2 transition-all duration-200
+                ${isActive ? 'border-pink-400 bg-pink-50 scale-105 shadow-md'
+                  : 'border-slate-200 bg-white hover:border-pink-200 shadow-sm'}`}
+            >
+              <img
+                src={`/images/words/${w.word}.png`}
+                alt={w.word}
+                className="w-14 h-14 object-contain mb-2"
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+              {w.isTricky ? (
+                <>
+                  <span className="text-lg font-bold text-slate-800">{w.word}</span>
+                  <span className="text-xs text-slate-400 mt-0.5">tricky word</span>
+                </>
+              ) : (
+                <div className="flex gap-1 justify-center flex-wrap">
+                  {w.phonemes.map((ph, pi) => (
+                    <div key={pi} className="flex flex-col items-center">
+                      <span className="text-base font-bold leading-tight text-slate-800">{ph}</span>
+                      <div className="w-1.5 h-1.5 rounded-full mt-0.5 bg-slate-500" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -92,10 +155,10 @@ function SoundGridPage({ page }: { page: Extract<InteractivePage, { type: 'sound
 
 // ─── Story Page ─────────────────────────────────────────────────────────────
 
-function StoryPage({ page, focusSounds }: { page: Extract<InteractivePage, { type: 'story' }>; focusSounds: string[] }) {
+function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<InteractivePage, { type: 'story' }>; focusSounds: string[]; level?: number }) {
   const [isNarrating, setIsNarrating] = useState(false);
   const [activeWordIdx, setActiveWordIdx] = useState<number | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [imageExpanded, setImageExpanded] = useState(false);
   const timersRef = useRef<number[]>([]);
 
   const handleNarrate = useCallback(() => {
@@ -105,53 +168,85 @@ function StoryPage({ page, focusSounds }: { page: Extract<InteractivePage, { typ
     timersRef.current = [];
     const wc = page.words.length;
 
-    if (page.audioUrl) {
-      const audio = new Audio(page.audioUrl);
-      audioRef.current = audio;
-      audio.onloadedmetadata = () => {
-        const dur = audio.duration * 1000;
-        const start = 200, end = 400, avail = dur - start - end, gap = avail / wc;
-        for (let i = 0; i < wc; i++) {
-          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), start + i * gap));
-        }
-      };
-      audio.onended = () => { setActiveWordIdx(null); setIsNarrating(false); audioRef.current = null; };
-      audio.onerror = () => { setActiveWordIdx(null); setIsNarrating(false); audioRef.current = null; };
-      audio.play().catch(() => { setActiveWordIdx(null); setIsNarrating(false); });
-    } else {
-      let d = 0;
-      for (let i = 0; i < wc; i++) {
-        timersRef.current.push(window.setTimeout(async () => { setActiveWordIdx(i); await playWord(page.words[i].word); }, d));
-        d += 600;
-      }
-      timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, d + 300));
+    let d = 0;
+    for (let i = 0; i < wc; i++) {
+      timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), d));
+      d += 800;
     }
-  }, [isNarrating, page.audioUrl, page.words]);
+    timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, d + 300));
+  }, [isNarrating, page.words]);
 
-  useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; } }, []);
+  useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); }, []);
+
+  // Level-based sizing: font gets smaller and spacing tighter as levels increase
+  // L1-2: large & spacious (beginner readers), L3-4: medium, L5-6: compact (approaching normal reading)
+  const wordSize: 'large' | 'medium' | 'normal' = level <= 2 ? 'large' : level <= 4 ? 'medium' : 'normal';
+  const gapClass = level <= 2 ? 'gap-x-1 md:gap-x-2 gap-y-1' : level <= 4 ? 'gap-x-0.5 md:gap-x-1 gap-y-0.5' : 'gap-x-0 md:gap-x-0.5 gap-y-0';
+  const textPad = level <= 2 ? 'px-4 md:px-8 lg:px-10' : level <= 4 ? 'px-3 md:px-6 lg:px-8' : 'px-2 md:px-4 lg:px-6';
+  // Higher levels get a slightly bigger image since text is more compact
+  const imgSize = level <= 2
+    ? 'w-[240px] h-[240px] md:w-[340px] md:h-[340px] lg:w-[420px] lg:h-[420px]'
+    : level <= 4
+      ? 'w-[180px] h-[180px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px]'
+      : 'w-[160px] h-[160px] md:w-[240px] md:h-[240px] lg:w-[300px] lg:h-[300px]';
 
   return (
-    <div className="flex flex-col md:flex-row h-full items-center">
-      <div className="order-2 md:order-1 flex items-center justify-center p-4 md:p-6 md:h-full flex-shrink-0">
-        <div className="w-[280px] h-[280px] md:w-[380px] md:h-[380px] lg:w-[440px] lg:h-[440px] rounded-3xl overflow-hidden shadow-xl flex-shrink-0">
-          <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
+    <div className="flex flex-col md:flex-row h-full">
+      {/* Expanded image overlay */}
+      {imageExpanded && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
+          onClick={() => setImageExpanded(false)}>
+          <div className="relative max-w-[90vw] max-h-[85vh]">
+            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
+            <button onClick={(e) => { e.stopPropagation(); setImageExpanded(false); }}
+              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all shadow-lg">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
+      )}
+
+      {/* ── DESKTOP: image left, text+button right ── */}
+      {/* Image */}
+      <div className="hidden md:flex md:items-center md:justify-center md:flex-none md:p-4 md:h-full">
+        <button onClick={() => setImageExpanded(true)} className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}>
+          <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
+        </button>
       </div>
-      <div className="order-1 md:order-2 flex flex-col flex-1 h-full bg-amber-50/50">
-        <div className="flex-1 flex items-center justify-center px-6 md:px-10 py-4">
-          <div className="flex flex-wrap items-end justify-center gap-x-2 gap-y-1">
+
+      {/* ── MOBILE: text centred between header & button, button+image at bottom ── */}
+      {/* ── DESKTOP: text+button right column centred ── */}
+      <div className="flex flex-col flex-1 h-full items-center justify-center md:justify-center">
+        {/* Mobile top spacer — pushes text to vertical centre between header and button */}
+        <div className="flex-1 md:hidden" />
+
+        {/* Text */}
+        <div className={`flex items-center justify-center ${textPad} py-2 md:py-4 flex-shrink-0`}>
+          <div className={`flex flex-wrap items-end justify-center ${gapClass}`}>
             {page.words.map((w, i) => (
-              <div key={i} className={`transition-transform duration-150 ${activeWordIdx === i ? '-translate-y-2' : ''}`}>
-                <TappableWord wordData={w} focusSounds={focusSounds} size="large" highlight={activeWordIdx === i} />
+              <div key={i} className={`transition-transform duration-150 ${activeWordIdx === i ? '-translate-y-1 md:-translate-y-2' : ''}`}>
+                <TappableWord wordData={w} focusSounds={focusSounds} size={wordSize} highlight={activeWordIdx === i} />
               </div>
             ))}
           </div>
         </div>
-        <div className="px-6 md:px-10 py-4 flex-shrink-0">
+
+        {/* Mobile bottom spacer — equal to top spacer so text is centred above button */}
+        <div className="flex-1 md:hidden" />
+
+        {/* Read to me button */}
+        <div className={`${textPad} py-1 md:py-2 flex-shrink-0 w-full`}>
           <button onClick={handleNarrate} disabled={isNarrating}
-            className={`w-full py-3.5 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all duration-200
+            className={`w-full py-2 md:py-3.5 rounded-2xl font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-200
               ${isNarrating ? 'bg-pink-500 text-white animate-pulse' : 'bg-pink-100 text-pink-700 hover:bg-pink-200 active:scale-[0.98]'}`}>
-            <Volume2 className="w-5 h-5" /> {isNarrating ? 'Reading...' : 'Read to me'}
+            <Volume2 className="w-4 h-4 md:w-5 md:h-5" /> {isNarrating ? 'Reading...' : 'Read to me'}
+          </button>
+        </div>
+
+        {/* Mobile image (below button, pinned at bottom) */}
+        <div className="md:hidden flex items-center justify-center p-2 flex-shrink-0">
+          <button onClick={() => setImageExpanded(true)} className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}>
+            <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
           </button>
         </div>
       </div>
@@ -186,12 +281,12 @@ function SoundSpotlightPage({ page }: { page: Extract<InteractivePage, { type: '
           const isActive = playingItem === item.word;
           return (
             <button key={item.word}
-              onClick={async () => { setPlayingItem(item.word); await playWord(item.word); setPlayingItem(null); }}
+              onClick={async () => { setPlayingItem(item.word); await playWordAsPhonemes(item.word); setPlayingItem(null); }}
               className={`flex flex-col items-center py-5 px-4 rounded-2xl border-2 transition-all duration-200
                 ${isActive ? 'border-pink-400 bg-pink-50 scale-105 shadow-lg' : 'border-slate-200 bg-white hover:border-pink-200 shadow-sm'}`}>
-              <span className="text-5xl md:text-6xl mb-3">{item.emoji}</span>
+              <img src={item.imageUrl} alt={item.word} className="w-16 h-16 md:w-20 md:h-20 object-contain mb-3" />
               <span className="text-2xl md:text-3xl font-bold">
-                {item.word.split('').map((ch, ci) => (
+                {splitDigraphs(item.word).map((ch, ci) => (
                   <span key={ci} className={ci === item.focusIndex ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>
                 ))}
               </span>
@@ -233,13 +328,13 @@ function TrickyWordsPage({ page }: { page: Extract<InteractivePage, { type: 'tri
         <h2 className="text-2xl font-bold text-slate-800">Tricky Words</h2>
         <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
       </div>
-      <p className="text-base text-slate-500 mb-6">These words are tricky! Tap to hear them.</p>
+      <p className="text-base text-slate-500 mb-6">These words don't sound how they look!</p>
       <div className="grid grid-cols-3 gap-4 w-full max-w-sm">
         {page.words.map((w, i) => {
           const isActive = playing === w.word;
           return (
             <button key={i}
-              onClick={async () => { setPlaying(w.word); await playWord(w.word); setPlaying(null); }}
+              onClick={() => setPlaying(isActive ? null : w.word)}
               className={`py-5 rounded-2xl text-3xl font-bold border-2 transition-all duration-200
                 ${isActive ? 'border-purple-400 bg-purple-100 text-purple-700 scale-105 shadow-lg'
                   : 'border-purple-200 bg-white text-slate-700 hover:border-purple-300 shadow-sm'}`}>
@@ -314,7 +409,7 @@ function QuizPage({ page }: { page: Extract<InteractivePage, { type: 'quiz' }> }
                   : showWrong ? 'border-red-300 bg-red-50 text-red-600'
                   : selected !== null ? 'border-slate-200 bg-slate-50 text-slate-400'
                   : 'border-slate-200 bg-white text-slate-700 hover:border-pink-300 hover:bg-pink-50'}`}>
-              {opt.emoji && <span className="text-4xl">{opt.emoji}</span>}
+              {opt.imageUrl && <img src={opt.imageUrl} alt={opt.label} className="w-10 h-10 object-contain flex-shrink-0" />}
               <span>{opt.label}</span>
               {showCorrect && <Check className="w-6 h-6 text-green-500 ml-auto" />}
             </button>
@@ -400,7 +495,7 @@ function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelli
   return (
     <div className="flex flex-col items-center justify-center h-full px-6 py-6 gap-6">
       <h2 className="text-2xl font-bold text-slate-800">Spell the Word!</h2>
-      <span className="text-7xl">{w.emoji}</span>
+      <img src={w.imageUrl} alt={w.word} className="w-28 h-28 object-contain" />
 
       {/* Letter slots */}
       <div className="flex gap-3">
@@ -696,8 +791,9 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
     const fs = book.focusSounds;
     switch (p.type) {
       case 'cover': return <CoverPage page={p} />;
-      case 'sound_grid': return <SoundGridPage page={p} />;
-      case 'story': return <StoryPage page={p} focusSounds={fs} />;
+      case 'sound_grid': return <SoundGridPage page={p} level={book.level} />;
+      case 'vocab_preview': return <VocabPreviewPage page={p} />;
+      case 'story': return <StoryPage page={p} focusSounds={fs} level={book.level} />;
       case 'sound_spotlight': return <SoundSpotlightPage page={p} />;
       case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} />;
       case 'tricky_words': return <TrickyWordsPage page={p} />;

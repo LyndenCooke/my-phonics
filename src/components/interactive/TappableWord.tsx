@@ -2,7 +2,6 @@ import { useState, useCallback, useRef } from 'react';
 import { Volume2 } from 'lucide-react';
 import type { StoryWord } from '@/lib/interactiveBookData';
 
-/** Play an audio file, returning a promise that resolves when done */
 function playAudioFile(url: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const audio = new Audio(url);
@@ -11,28 +10,6 @@ function playAudioFile(url: string): Promise<void> {
     audio.oncanplaythrough = () => { audio.play().catch(reject); };
     audio.load();
   });
-}
-
-/** Fallback: use browser speech synthesis */
-function speakWord(word: string): Promise<void> {
-  return new Promise((resolve) => {
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.lang = 'en-GB';
-    utterance.rate = 0.85;
-    utterance.onend = () => resolve();
-    utterance.onerror = () => resolve();
-    speechSynthesis.speak(utterance);
-  });
-}
-
-/** Try mp3 file first, fall back to speech synthesis */
-async function playWord(word: string): Promise<void> {
-  const key = word.toLowerCase().replace(/\s+/g, '_');
-  try {
-    await playAudioFile(`/sounds/words/${key}.mp3`);
-  } catch {
-    await speakWord(word);
-  }
 }
 
 async function playPhoneme(grapheme: string): Promise<void> {
@@ -47,26 +24,28 @@ async function playPhoneme(grapheme: string): Promise<void> {
 interface TappableWordProps {
   wordData: StoryWord;
   focusSounds?: string[];
-  size?: 'normal' | 'large';
+  size?: 'normal' | 'medium' | 'large';
   highlight?: boolean;  // External highlight (e.g. during narration)
 }
 
 export default function TappableWord({ wordData, focusSounds = [], size = 'normal', highlight = false }: TappableWordProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showPhonemes, setShowPhonemes] = useState(false);
   const [activePhoneme, setActivePhoneme] = useState<number | null>(null);
   const [isSoundingOut, setIsSoundingOut] = useState(false);
   const cancelRef = useRef(false);
 
-  const textSize = size === 'large' ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl';
+  const textSize = size === 'large'
+    ? 'text-3xl md:text-4xl lg:text-5xl'
+    : size === 'medium'
+      ? 'text-xl md:text-2xl lg:text-3xl'
+      : 'text-base md:text-lg lg:text-xl';
+  const wordPad = size === 'large' ? 'px-2 py-1 md:px-3' : size === 'medium' ? 'px-1.5 py-0.5' : 'px-1 py-0.5';
+  const wordMargin = size === 'large' ? 'mx-0.5 mb-1.5 md:mx-1 md:mb-2' : size === 'medium' ? 'mx-0 mb-0.5 md:mx-0.5 md:mb-1' : 'mx-0 mb-0';
 
-  const handleTapWord = useCallback(async () => {
-    if (isPlaying || isSoundingOut) return;
-    setIsPlaying(true);
+  const handleTapWord = useCallback(() => {
+    if (isSoundingOut) return;
     setShowPhonemes(true);
-    await playWord(wordData.word);
-    setIsPlaying(false);
-  }, [wordData.word, isPlaying, isSoundingOut]);
+  }, [isSoundingOut]);
 
   const handleSoundOut = useCallback(async () => {
     if (isSoundingOut || wordData.isTricky || wordData.phonemes.length === 0) return;
@@ -82,13 +61,6 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
       await new Promise(r => setTimeout(r, 300));
     }
     setActivePhoneme(null);
-
-    // Brief pause then blend the whole word
-    if (!cancelRef.current) {
-      await new Promise(r => setTimeout(r, 400));
-      await playWord(wordData.word);
-    }
-
     setIsSoundingOut(false);
   }, [wordData, isSoundingOut]);
 
@@ -99,14 +71,14 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
   }, [wordData.phonemes]);
 
   return (
-    <div className="inline-flex flex-col items-center mx-1 mb-2">
+    <div className={`inline-flex flex-col items-center ${wordMargin}`}>
       {/* The tappable word */}
       <button
         onClick={handleTapWord}
         className={`
-          ${textSize} font-bold rounded-xl px-3 py-1
+          ${textSize} font-bold rounded-xl ${wordPad}
           transition-all duration-200 select-none
-          ${isPlaying || highlight
+          ${highlight
             ? 'text-pink-600 scale-110 bg-pink-100'
             : 'text-slate-800 hover:bg-pink-50 active:scale-95'
           }
@@ -119,16 +91,17 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
 
       {/* Phoneme breakdown (shown after tapping the word) */}
       {showPhonemes && wordData.phonemes.length > 0 && !wordData.isTricky && (
-        <div className="flex items-center gap-1 mt-1 animate-in fade-in slide-in-from-top-1 duration-300">
+        <div className={`flex items-center gap-1 ${size === 'large' ? 'mt-1' : 'mt-0.5'} animate-in fade-in slide-in-from-top-1 duration-300`}>
           {wordData.phonemes.map((ph, i) => {
             const isFocus = focusSounds.includes(ph);
             const isActive = activePhoneme === i;
+            const btnSize = size === 'large' ? 'w-10 h-10 text-base' : size === 'medium' ? 'w-8 h-8 text-sm' : 'w-7 h-7 text-xs';
             return (
               <button
                 key={i}
                 onClick={() => handlePhonemeClick(i)}
                 className={`
-                  w-10 h-10 rounded-full text-base font-bold
+                  ${btnSize} rounded-full font-bold
                   flex items-center justify-center
                   transition-all duration-200
                   ${isActive
@@ -150,7 +123,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
             onClick={handleSoundOut}
             disabled={isSoundingOut}
             className={`
-              w-10 h-10 rounded-full flex items-center justify-center ml-1
+              ${size === 'large' ? 'w-10 h-10' : size === 'medium' ? 'w-8 h-8' : 'w-7 h-7'} rounded-full flex items-center justify-center ml-1
               transition-all duration-200
               ${isSoundingOut
                 ? 'bg-amber-400 text-white animate-pulse'
