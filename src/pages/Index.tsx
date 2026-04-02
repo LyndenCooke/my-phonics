@@ -3,10 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import BookCard from '@/components/BookCard';
 import BookReader from '@/components/BookReader';
+import InteractiveBookReader from '@/components/InteractiveBookReader';
+import { hasInteractiveData } from '@/lib/interactiveBookData';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
+import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -30,6 +33,7 @@ export default function Index() {
   const [upsellBook, setUpsellBook] = useState<Book | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -56,7 +60,7 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: !!ub || (b.is_free_sample ?? false),
+      unlocked: isAdmin || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
@@ -214,6 +218,16 @@ export default function Index() {
   }
 
   if (activeBook) {
+    // Use interactive reader when phonics data exists, fallback to JPG reader
+    if (hasInteractiveData(activeBook.subLevel)) {
+      return (
+        <InteractiveBookReader
+          book={activeBook}
+          onClose={() => setActiveBookId(null)}
+          onFinish={() => setActiveBookId(null)}
+        />
+      );
+    }
     return (
       <BookReader
         book={activeBook}

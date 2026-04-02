@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import Layout from '@/components/Layout';
-import { LEVELS } from '@/lib/types';
 import { useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Loader2 } from 'lucide-react';
+import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
@@ -16,14 +15,54 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
-const levelBgs: Record<number, string> = {
-  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-  4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
-};
-
-const badgeMap: Record<string, string | null> = {
-  starter_bundle: 'Popular',
-  full_bundle: 'Best Value',
+const PRODUCT_CONFIG: Record<string, {
+  icon: typeof Star;
+  gradient: string;
+  badge?: string;
+  features: string[];
+}> = {
+  free_sample: {
+    icon: Gift,
+    gradient: 'from-emerald-500 to-green-600',
+    features: [
+      'Free phonics assessment',
+      '1 book at your child\'s level',
+      'Progress tracking',
+    ],
+  },
+  full_bundle: {
+    icon: Crown,
+    gradient: 'from-amber-500 to-orange-600',
+    badge: 'Best Value',
+    features: [
+      'All 32 books across 6 levels',
+      'Yours forever — no expiry',
+      'All assessments & tracking',
+      'Future books included',
+    ],
+  },
+  subscription: {
+    icon: Zap,
+    gradient: 'from-violet-500 to-purple-600',
+    badge: '7-Day Free Trial',
+    features: [
+      'All 32 books, all levels',
+      'New books as they launch',
+      'Full assessment suite',
+      'Cancel anytime',
+    ],
+  },
+  subscription_annual: {
+    icon: Star,
+    gradient: 'from-pink-500 to-rose-600',
+    badge: 'Launch Deal',
+    features: [
+      'Everything in monthly',
+      'Price locked forever',
+      'Save over 30% vs monthly',
+      'Best for serious readers',
+    ],
+  },
 };
 
 export default function Shop() {
@@ -66,8 +105,9 @@ export default function Shop() {
       }
 
       if (data.free) {
-        toast.success('Free sample books added to your library!');
+        toast.success(`Free book unlocked at Level ${data.level}!`);
         setGuestDialog({ open: false, productId: null });
+        navigate('/');
         return;
       }
 
@@ -82,7 +122,17 @@ export default function Shop() {
     }
   };
 
-  const handleBuyClick = (productId: string) => {
+  const handleBuyClick = (productId: string, productType: string) => {
+    // Free sample requires auth + assessment
+    if (productType === 'free_sample') {
+      if (!user) {
+        navigate('/auth', { state: { returnTo: '/assess' } });
+        return;
+      }
+      handleCheckout(productId);
+      return;
+    }
+
     if (user) {
       handleCheckout(productId);
     } else {
@@ -101,91 +151,123 @@ export default function Shop() {
     handleCheckout(guestDialog.productId, guestEmail);
   };
 
+  // Sort: free_sample first, then full_bundle, subscription, subscription_annual
+  const sortOrder = ['free_sample', 'full_bundle', 'subscription', 'subscription_annual'];
+  const sortedProducts = [...(products ?? [])].sort(
+    (a, b) => sortOrder.indexOf(a.product_type) - sortOrder.indexOf(b.product_type)
+  );
+
   return (
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
-        <h2 className="text-2xl font-extrabold text-foreground mb-1 tracking-tight">Shop</h2>
-        <p className="text-sm text-muted-foreground mb-6">
-          Choose the right pack for your child's reading journey.
-        </p>
-
-        <div className="grid grid-cols-3 gap-2.5 mb-8">
-          {LEVELS.map((level) => (
-            <div
-              key={level.level}
-              className={`${levelBgs[level.level]} text-white rounded-xl p-3 text-center shadow-card relative overflow-hidden`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-black/10" />
-              <div className="relative">
-                <p className="text-xl font-extrabold">L{level.level}</p>
-                <p className="text-[10px] font-medium opacity-90 leading-tight mt-0.5">{level.name}</p>
-              </div>
-            </div>
-          ))}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-extrabold text-foreground tracking-tight">Choose Your Plan</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Every plan includes assessments, progress tracking & development reports.
+          </p>
         </div>
 
         {isLoading ? (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 rounded-xl bg-muted animate-pulse" />
+              <div key={i} className="h-48 rounded-2xl bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="space-y-3">
-            {(products ?? []).map((product) => {
-              const badge = badgeMap[product.product_type] ?? null;
-              const featured = product.product_type === 'starter_bundle' || product.product_type === 'full_bundle';
+          <div className="space-y-4">
+            {sortedProducts.map((product) => {
+              const config = PRODUCT_CONFIG[product.product_type];
+              if (!config) return null;
+
+              const Icon = config.icon;
               const isFree = product.product_type === 'free_sample';
               const isSub = product.product_type === 'subscription';
-              const isLoading = checkoutLoading === product.id;
+              const isAnnual = product.product_type === 'subscription_annual';
+              const isBundle = product.product_type === 'full_bundle';
+              const loading = checkoutLoading === product.id;
 
               return (
                 <div
                   key={product.id}
-                  className={`rounded-xl p-4 transition-all duration-200 shadow-card ${
-                    featured ? 'border-2 border-primary bg-tint-pink' : 'border border-border bg-card'
+                  className={`rounded-2xl overflow-hidden transition-all duration-200 shadow-card ${
+                    isBundle ? 'ring-2 ring-amber-500' : 'border border-border'
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-foreground">{product.name}</h3>
-                        {badge && (
-                          <span className="text-[10px] gradient-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold shadow-sm">
-                            {badge}
-                          </span>
-                        )}
+                  {/* Header */}
+                  <div className={`bg-gradient-to-r ${config.gradient} px-5 py-4 text-white`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <Icon className="w-5 h-5" />
+                        <h3 className="font-bold text-lg">{product.name}</h3>
                       </div>
-                      <p className="text-sm text-muted-foreground">{product.description}</p>
-                      <div className="flex items-center gap-1 mt-1.5">
-                        <BookOpen className="w-3 h-3 text-muted-foreground" />
-                        <span className="text-[10px] font-medium text-muted-foreground">
-                          {isSub ? 'All books' : `Levels ${product.levels_included.join(', ')}`}
+                      {config.badge && (
+                        <span className="text-[11px] bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full font-bold">
+                          {config.badge}
                         </span>
-                      </div>
+                      )}
                     </div>
-                    <span className="text-xl font-extrabold text-foreground whitespace-nowrap ml-3">
-                      {isSub ? `${formatPrice(product.price_pence)}/mo` : formatPrice(product.price_pence)}
-                    </span>
+                    <p className="text-sm text-white/85 mt-1">{product.description}</p>
                   </div>
-                  <button
-                    onClick={() => handleBuyClick(product.id)}
-                    disabled={!!checkoutLoading}
-                    className={`w-full py-3 rounded-lg font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 ${
-                      isFree
-                        ? 'bg-card border-2 border-primary text-primary'
-                        : 'gradient-primary text-primary-foreground shadow-button'
-                    }`}
-                  >
-                    {isLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin mx-auto" />
-                    ) : isFree ? 'Get Free Sample' : 'Buy Now'}
-                  </button>
+
+                  {/* Body */}
+                  <div className="bg-card px-5 py-4">
+                    {/* Price */}
+                    <div className="flex items-baseline gap-1 mb-3">
+                      <span className="text-3xl font-extrabold text-foreground">
+                        {formatPrice(product.price_pence)}
+                      </span>
+                      {isSub && <span className="text-sm text-muted-foreground">/month</span>}
+                      {isAnnual && <span className="text-sm text-muted-foreground">/year</span>}
+                      {isBundle && <span className="text-sm text-muted-foreground">one-time</span>}
+                    </div>
+
+                    {/* Monthly equivalent for annual */}
+                    {isAnnual && (
+                      <p className="text-xs text-muted-foreground -mt-2 mb-3">
+                        That's just {formatPrice(Math.round(product.price_pence / 12))}/month
+                      </p>
+                    )}
+
+                    {/* Features */}
+                    <ul className="space-y-2 mb-4">
+                      {config.features.map((f, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm text-foreground">
+                          <Check className="w-4 h-4 text-green-500 shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA */}
+                    <button
+                      onClick={() => handleBuyClick(product.id, product.product_type)}
+                      disabled={!!checkoutLoading}
+                      className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 ${
+                        isFree
+                          ? 'bg-card border-2 border-emerald-500 text-emerald-600'
+                          : `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
+                      }`}
+                    >
+                      {loading ? (
+                        <Loader2 className="w-4 h-4 animate-spin mx-auto" />
+                      ) : isFree ? (
+                        'Get Free Book'
+                      ) : isSub ? (
+                        'Start Free Trial'
+                      ) : (
+                        'Get Started'
+                      )}
+                    </button>
+                  </div>
                 </div>
               );
             })}
           </div>
         )}
+
+        <p className="text-xs text-muted-foreground text-center mt-6">
+          All prices in GBP. Subscriptions can be cancelled anytime from your profile.
+        </p>
       </div>
 
       {/* Guest checkout dialog */}
@@ -204,7 +286,7 @@ export default function Shop() {
                 setGuestDialog({ open: false, productId: null });
                 navigate('/auth', { state: { returnTo: '/shop' } });
               }}
-              className="w-full py-3 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97]"
+              className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg transition-all duration-200 active:scale-[0.97]"
             >
               Sign In
             </button>

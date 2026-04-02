@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { syncSourceToCRM } from '@/hooks/useFunnelTracker';
+import { syncToGHL } from '@/lib/ghlClient';
 
 interface AuthContextType {
   user: User | null;
@@ -20,10 +22,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+
+      // After signup, sync funnel source to CRM and push to GHL
+      if (event === 'SIGNED_IN' && session?.user) {
+        // Small delay to let the DB trigger create the crm_contact first
+        setTimeout(() => {
+          syncSourceToCRM().catch(() => {});
+          syncToGHL('contact.created', {
+            source: localStorage.getItem('mpb_funnel_source')
+              ? JSON.parse(localStorage.getItem('mpb_funnel_source')!).ref || 'direct'
+              : 'direct',
+          }).catch(() => {});
+        }, 2000);
+      }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
