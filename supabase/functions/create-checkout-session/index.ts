@@ -52,29 +52,48 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Product not found" }), { status: 404, headers: corsHeaders });
     }
 
-    // Free sample: need an account
+    // ─── Free sample: 1 book at assessed level ───
     if (product.product_type === "free_sample") {
       if (!userId) {
-        return new Response(JSON.stringify({ error: "Please create an account to get free sample books" }), { status: 400, headers: corsHeaders });
+        return new Response(JSON.stringify({ error: "Please create an account and complete the assessment to get your free book" }), { status: 400, headers: corsHeaders });
       }
-      const { data: freeBooks } = await supabaseAdmin
+
+      // Get user's latest assessment result
+      const { data: assessment } = await supabaseAdmin
+        .from("assessment_results")
+        .select("recommended_level")
+        .eq("user_id", userId)
+        .order("completed_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (!assessment) {
+        return new Response(JSON.stringify({ error: "Please complete the free assessment first to find your child's level" }), { status: 400, headers: corsHeaders });
+      }
+
+      const level = assessment.recommended_level;
+
+      // Get the first book at that level (lowest sort_order)
+      const { data: books } = await supabaseAdmin
         .from("books")
         .select("id")
-        .eq("is_free_sample", true);
+        .eq("level", level)
+        .order("sort_order", { ascending: true })
+        .limit(1);
 
-      if (freeBooks) {
-        for (const book of freeBooks) {
-          await supabaseAdmin.from("user_books").upsert(
-            { user_id: userId, book_id: book.id, source: "free_sample" },
-            { onConflict: "user_id,book_id" }
-          );
-        }
+      if (books && books.length > 0) {
+        await supabaseAdmin.from("user_books").upsert(
+          { user_id: userId, book_id: books[0].id, source: "free_sample" },
+          { onConflict: "user_id,book_id" }
+        );
       }
 
-      return new Response(JSON.stringify({ success: true, free: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return new Response(JSON.stringify({ success: true, free: true, level }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // Paid products: create Stripe checkout
+    // ─── Paid products: create Stripe checkout ───
     const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
     if (!STRIPE_SECRET_KEY) {
       return new Response(JSON.stringify({ error: "Stripe not configured" }), { status: 500, headers: corsHeaders });
@@ -91,7 +110,8 @@ Deno.serve(async (req) => {
       customerEmail = profile?.email || null;
     }
 
-    const mode = product.product_type === "subscription" ? "subscription" : "payment";
+    const isSubscription = product.product_type === "subscription" || product.product_type === "subscription_annual";
+    const mode = isSubscription ? "subscription" : "payment";
 
     const body = new URLSearchParams({
       mode,
@@ -103,6 +123,11 @@ Deno.serve(async (req) => {
       "metadata[product_type]": product.product_type,
       currency: "gbp",
     });
+
+    // 7-day free trial for monthly subscription
+    if (product.product_type === "subscription") {
+      body.set("subscription_data[trial_period_days]", "7");
+    }
 
     // Set client_reference_id for authenticated users
     if (userId) {
