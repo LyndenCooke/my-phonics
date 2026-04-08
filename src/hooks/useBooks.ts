@@ -32,7 +32,7 @@ export function useBooks(level?: number | null) {
           focus_sounds: c.focus_sounds,
           tricky_words: c.tricky_words,
           story_words: c.story_words,
-          cover_image_url: c.cover_image_url,
+          cover_image_url: c.cover_image_url ?? `/covers/${c.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`,
           pdf_url: c.pdf_url,
           page_count: c.page_count,
           sort_order: c.sort_order,

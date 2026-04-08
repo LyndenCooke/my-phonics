@@ -22,8 +22,8 @@ export interface CatalogBook {
 
 export const BOOK_CATALOG: CatalogBook[] = [
   // ── Level 1 ──────────────────────────────────────────────
-  { level: 1, sub_level: "L1.1", title: "Tap! Tap! Tap!", slug: "tap-tap-tap", focus_sounds: ["s","a","t","p","i","n"], tricky_words: ["the","to","I"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 11, is_free_sample: true, is_published: true },
-  { level: 1, sub_level: "L1.2", title: "The Mud on the Dog", slug: "the-mud-on-the-dog", focus_sounds: ["m","d","g","o"], tricky_words: ["the","to","I","no"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 12, is_free_sample: true, is_published: true },
+  { level: 1, sub_level: "L1.1", title: "Tap! Tap! Tap!", slug: "tap-tap-tap", focus_sounds: ["s","a","t","p","i","n"], tricky_words: ["the","to","I"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 11, is_free_sample: false, is_published: true },
+  { level: 1, sub_level: "L1.2", title: "The Mud on the Dog", slug: "the-mud-on-the-dog", focus_sounds: ["m","d","g","o"], tricky_words: ["the","to","I","no"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 12, is_free_sample: false, is_published: true },
   { level: 1, sub_level: "L1.3", title: "The Fish in the Tank", slug: "the-fish-in-the-tank", focus_sounds: ["sh","nk"], tricky_words: ["the","I","into"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 13, is_free_sample: false, is_published: true },
   { level: 1, sub_level: "L1.4", title: "The Red Socks", slug: "the-red-socks", focus_sounds: ["c","k","ck","e"], tricky_words: ["the","I","no"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 14, is_free_sample: false, is_published: true },
   { level: 1, sub_level: "L1.5", title: "Run, Pup, Run!", slug: "run-pup-run", focus_sounds: ["u","r","h","b"], tricky_words: ["the","to","I"], story_words: [], cover_image_url: null, pdf_url: null, page_count: 24, sort_order: 15, is_free_sample: false, is_published: true },
