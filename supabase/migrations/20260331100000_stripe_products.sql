@@ -21,7 +21,21 @@ VALUES (
   NULL
 );
 
--- 2. All Books Bundle (one-time £49.99)
+-- 2. Personalised Book (one-time £4.99)
+INSERT INTO products (name, description, product_type, price_pence, currency, levels_included, sort_order, is_active, stripe_price_id)
+VALUES (
+  'Personalised Book',
+  'A personalised online and printable phonics book starring your child',
+  'personalised_book',
+  499,
+  'gbp',
+  ARRAY[1,2,3,4,5,6],
+  2,
+  true,
+  'price_1THsk2JG3lJr8KQLhkl04vqm'
+);
+
+-- 3. All Books Bundle (one-time £49.99)
 INSERT INTO products (name, description, product_type, price_pence, currency, levels_included, sort_order, is_active, stripe_price_id)
 VALUES (
   'Complete Library',
@@ -30,12 +44,12 @@ VALUES (
   4999,
   'gbp',
   ARRAY[1,2,3,4,5,6],
-  2,
+  3,
   true,
-  'REPLACE_WITH_STRIPE_PRICE_ID_BUNDLE'
+  'price_1THjK6JG3lJr8KQLPu510aJC'
 );
 
--- 3. Monthly Subscription (£4.99/mo with 7-day free trial)
+-- 4. Monthly Subscription (£4.99/mo with 7-day free trial)
 INSERT INTO products (name, description, product_type, price_pence, currency, levels_included, sort_order, is_active, stripe_price_id)
 VALUES (
   'Monthly Access',
@@ -44,12 +58,12 @@ VALUES (
   499,
   'gbp',
   ARRAY[1,2,3,4,5,6],
-  3,
+  4,
   true,
-  'REPLACE_WITH_STRIPE_PRICE_ID_MONTHLY'
+  'price_1THsgEJG3lJr8KQLmBMQLt8T'
 );
 
--- 4. Annual Subscription (£39.99/year — launch deal, locked forever)
+-- 5. Annual Subscription (£39.99/year — launch deal, locked forever)
 INSERT INTO products (name, description, product_type, price_pence, currency, levels_included, sort_order, is_active, stripe_price_id)
 VALUES (
   'Annual Access — Launch Deal',
@@ -58,7 +72,7 @@ VALUES (
   3999,
   'gbp',
   ARRAY[1,2,3,4,5,6],
-  4,
+  5,
   true,
-  'REPLACE_WITH_STRIPE_PRICE_ID_ANNUAL'
+  'price_1THshhJG3lJr8KQLfPUxuXKN'
 );

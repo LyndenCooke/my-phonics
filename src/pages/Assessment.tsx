@@ -297,6 +297,48 @@ export default function Assessment() {
   // Tracking
   const [soundCeiling, setSoundCeiling] = useState<number | null>(null);
 
+  // Guest email capture (for unauthenticated users at results screen)
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestChildName, setGuestChildName] = useState('');
+  const [guestSubmitting, setGuestSubmitting] = useState(false);
+  const [guestSubmitted, setGuestSubmitted] = useState(false);
+
+  const submitGuestAssessment = async (recommendedLevel: number) => {
+    if (!guestEmail || !guestEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    setGuestSubmitting(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/guest-assessment-signup`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: guestEmail,
+            child_name: guestChildName,
+            recommended_level: recommendedLevel,
+            highest_level_passed: Math.max(1, recommendedLevel - 1),
+            answers_summary: {
+              sounds_correct: answers.filter(a => a.category === 'sound_recognition' && a.isCorrect).length,
+              sounds_asked: answers.filter(a => a.category === 'sound_recognition').length,
+              words_correct: answers.filter(a => a.category === 'word_reading' && a.isCorrect).length,
+              words_asked: answers.filter(a => a.category === 'word_reading').length,
+            },
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Signup failed');
+      setGuestSubmitted(true);
+    } catch (err) {
+      alert((err as Error).message || 'Something went wrong');
+    } finally {
+      setGuestSubmitting(false);
+    }
+  };
+
   // ─── Load helpers ─────────────────────────────────────────
 
   const loadItems = (level: number, category: Category, count?: number) => {
@@ -1195,21 +1237,72 @@ export default function Assessment() {
             </div>
           </div>
 
-          {/* Action buttons */}
-          <div className="flex gap-3 mb-3">
-            <button
-              onClick={reset}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-card border border-border font-bold text-sm shadow-card active:scale-[0.97] transition-transform duration-200"
-            >
-              <RotateCcw className="w-4 h-4" /> Retake
-            </button>
-            <button
-              onClick={() => navigate('/', { state: { filterLevel: recommendedLevel } })}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-sm shadow-sm active:scale-[0.97] transition-transform duration-200`}
-            >
-              Browse Level {recommendedLevel} <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          {/* Action area: email capture for guests, library button for authed */}
+          {!user && !guestSubmitted && (
+            <div className="bg-card border-2 border-primary rounded-2xl p-5 mb-3 text-left shadow-card">
+              <p className="text-sm font-bold text-foreground mb-1">
+                Save your results & get a free book
+              </p>
+              <p className="text-xs text-muted-foreground mb-4">
+                Enter your email and we'll unlock a free Level {recommendedLevel} book and send you a login link.
+              </p>
+              <input
+                type="text"
+                placeholder="Child's name (optional)"
+                value={guestChildName}
+                onChange={(e) => setGuestChildName(e.target.value)}
+                className="w-full mb-2 px-4 py-3 rounded-xl border border-border bg-background text-sm"
+              />
+              <input
+                type="email"
+                placeholder="Your email address"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="w-full mb-3 px-4 py-3 rounded-xl border border-border bg-background text-sm"
+              />
+              <button
+                onClick={() => submitGuestAssessment(recommendedLevel)}
+                disabled={guestSubmitting || !guestEmail}
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-sm shadow-sm active:scale-[0.97] transition-transform duration-200 disabled:opacity-50`}
+              >
+                {guestSubmitting ? 'Saving...' : <>Unlock My Free Book <ChevronRight className="w-4 h-4" /></>}
+              </button>
+            </div>
+          )}
+
+          {!user && guestSubmitted && (
+            <div className="bg-tint-green border-2 border-green-500 rounded-2xl p-5 mb-3 text-left">
+              <p className="text-sm font-bold text-foreground mb-1">
+                Check your email!
+              </p>
+              <p className="text-xs text-muted-foreground mb-3">
+                We've sent a login link to <strong>{guestEmail}</strong>. Click it to access your free Level {recommendedLevel} book in your library.
+              </p>
+              <button
+                onClick={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-card border border-border font-bold text-sm active:scale-[0.97] transition-transform duration-200"
+              >
+                Browse the Library <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {user && (
+            <div className="flex gap-3 mb-3">
+              <button
+                onClick={reset}
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-card border border-border font-bold text-sm shadow-card active:scale-[0.97] transition-transform duration-200"
+              >
+                <RotateCcw className="w-4 h-4" /> Retake
+              </button>
+              <button
+                onClick={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-sm shadow-sm active:scale-[0.97] transition-transform duration-200`}
+              >
+                Browse Level {recommendedLevel} <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </Layout>
     );
