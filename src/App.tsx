@@ -59,6 +59,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ConditionalHome />} />
+            <Route path="/library" element={<Index />} />
             <Route path="/assess" element={<Assessment />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

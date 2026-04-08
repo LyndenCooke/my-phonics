@@ -1,0 +1,33 @@
+# Python book pipeline (not needed for web app)
+myphonics_books/
+myphonics_apps/
+
+# Marketing assets
+marketing/
+marketing-mockups/
+remotion-transfer/
+
+# Large generated files
+output/
+*.pdf
+*.wav
+*.aup3
+
+# Python
+__pycache__/
+venv/
+.venv/
+*.pyc
+
+# Generated audio
+public/sounds/words/
+public/sounds/sentences/
+
+# Content pipeline
+content/
+agents/
+
+# Scratch files
+public/comparison.html
+phonics-explorer.html
+MyPhonicsBooks_Visual_Review_unpacked/

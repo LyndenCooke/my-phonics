@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import { useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift } from 'lucide-react';
+import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift, BookHeart } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
@@ -28,6 +28,15 @@ const PRODUCT_CONFIG: Record<string, {
       'Free phonics assessment',
       '1 book at your child\'s level',
       'Progress tracking',
+    ],
+  },
+  personalised_book: {
+    icon: BookHeart,
+    gradient: 'from-sky-500 to-blue-600',
+    features: [
+      'Your child as the star of the story',
+      'Online interactive + printable PDF',
+      'Matched to their reading level',
     ],
   },
   full_bundle: {
@@ -152,7 +161,7 @@ export default function Shop() {
   };
 
   // Sort: free_sample first, then full_bundle, subscription, subscription_annual
-  const sortOrder = ['free_sample', 'full_bundle', 'subscription', 'subscription_annual'];
+  const sortOrder = ['free_sample', 'personalised_book', 'full_bundle', 'subscription', 'subscription_annual'];
   const sortedProducts = [...(products ?? [])].sort(
     (a, b) => sortOrder.indexOf(a.product_type) - sortOrder.indexOf(b.product_type)
   );
@@ -181,6 +190,7 @@ export default function Shop() {
 
               const Icon = config.icon;
               const isFree = product.product_type === 'free_sample';
+              const isPersonalised = product.product_type === 'personalised_book';
               const isSub = product.product_type === 'subscription';
               const isAnnual = product.product_type === 'subscription_annual';
               const isBundle = product.product_type === 'full_bundle';
@@ -218,7 +228,7 @@ export default function Shop() {
                       </span>
                       {isSub && <span className="text-sm text-muted-foreground">/month</span>}
                       {isAnnual && <span className="text-sm text-muted-foreground">/year</span>}
-                      {isBundle && <span className="text-sm text-muted-foreground">one-time</span>}
+                      {(isBundle || isPersonalised) && <span className="text-sm text-muted-foreground">one-time</span>}
                     </div>
 
                     {/* Monthly equivalent for annual */}
@@ -252,6 +262,8 @@ export default function Shop() {
                         <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                       ) : isFree ? (
                         'Get Free Book'
+                      ) : isPersonalised ? (
+                        'Personalise a Book'
                       ) : isSub ? (
                         'Start Free Trial'
                       ) : (

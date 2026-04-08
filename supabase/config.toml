@@ -17,3 +17,9 @@ verify_jwt = false
 
 [functions.track-reading-activity]
 verify_jwt = false
+
+[functions.guest-assessment-signup]
+verify_jwt = false
+
+[functions.ghl-sync]
+verify_jwt = false
