@@ -90,7 +90,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         email,
         create_user: false,
-        email_redirect_to: `${origin}/library`,
+        email_redirect_to: `${origin}/welcome`,
       }),
     });
 
