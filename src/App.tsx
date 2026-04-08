@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import LandingPage from "./pages/LandingPage";
 import Assessment from "./pages/Assessment";
+import Welcome from "./pages/Welcome";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Shop from "./pages/Shop";
 import Progress from "./pages/Progress";
@@ -60,6 +61,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<ConditionalHome />} />
             <Route path="/library" element={<Index />} />
+            <Route path="/welcome" element={<Welcome />} />
             <Route path="/assess" element={<Assessment />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
