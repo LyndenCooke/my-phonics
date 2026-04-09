@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import BookCard from '@/components/BookCard';
@@ -7,6 +7,7 @@ import InteractiveBookReader from '@/components/InteractiveBookReader';
 import { hasInteractiveData } from '@/lib/interactiveBookData';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
+import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -42,6 +43,30 @@ export default function Index() {
   const { data: pagesData } = useBookPages(activeBookId);
   const { data: quizData } = useQuizQuestions(activeBookId);
   const { data: products } = useProducts();
+
+  // Show "Book Unlocked" modal for first-time login (magic link users)
+  const [showUnlockedModal, setShowUnlockedModal] = useState(false);
+  const [unlockedModalBook, setUnlockedModalBook] = useState<{ title: string; level: number; coverUrl: string | null } | null>(null);
+
+  useEffect(() => {
+    if (!user || !userBooksData || !booksData) return;
+    // Only show once per user
+    const key = `mpb_welcomed_${user.id}`;
+    if (localStorage.getItem(key)) return;
+
+    // Find their free sample book
+    const freeSample = userBooksData.find((ub: any) => ub.source === 'free_sample');
+    if (!freeSample) return;
+
+    const book = booksData.find((b: any) => b.id === freeSample.book_id);
+    if (!book) return;
+
+    const sub = book.sub_level as string;
+    const coverUrl = book.cover_image_url ?? `/covers/${sub.replace(/^L/, '').replace('.', '_')}_cover.jpg`;
+    setUnlockedModalBook({ title: book.title, level: book.level, coverUrl });
+    setShowUnlockedModal(true);
+    localStorage.setItem(key, '1');
+  }, [user, userBooksData, booksData]);
 
   const userBooksMap = new Map((userBooksData ?? []).map(ub => [ub.book_id, ub]));
 
@@ -255,6 +280,19 @@ export default function Index() {
 
   return (
     <Layout>
+      {/* Book Unlocked modal for first-time magic-link users */}
+      {unlockedModalBook && (
+        <BookUnlockedModal
+          open={showUnlockedModal}
+          onClose={() => setShowUnlockedModal(false)}
+          onContinue={() => setShowUnlockedModal(false)}
+          title={unlockedModalBook.title}
+          level={unlockedModalBook.level}
+          coverUrl={unlockedModalBook.coverUrl}
+          ctaLabel="Start Reading"
+        />
+      )}
+
       <div className="px-4 pt-5 pb-2 max-w-2xl mx-auto">
         <div className="mb-5">
           <h2 className="text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
