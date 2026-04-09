@@ -25,6 +25,8 @@ import {
   type CategoryResult,
 } from '@/lib/adaptiveEngine';
 import { CheckCircle2, XCircle, ChevronRight, RotateCcw, ArrowRight, Trophy, AlertTriangle, Star, Zap, Search, Baby, School, Languages, BookOpen, Heart, Lightbulb, Clock, MessageCircle, Sparkles } from 'lucide-react';
+import BookUnlockedModal from '@/components/BookUnlockedModal';
+import { BOOK_CATALOG } from '@/lib/bookCatalog';
 
 // ─── Onboarding ──────────────────────────────────────────────
 
@@ -1270,22 +1272,24 @@ export default function Assessment() {
             </div>
           )}
 
-          {!user && guestSubmitted && (
-            <div className="bg-tint-green border-2 border-green-500 rounded-2xl p-5 mb-3 text-left">
-              <p className="text-sm font-bold text-foreground mb-1">
-                Check your email!
-              </p>
-              <p className="text-xs text-muted-foreground mb-3">
-                We've sent a login link to <strong>{guestEmail}</strong>. Click it to access your free Level {recommendedLevel} book in your library.
-              </p>
-              <button
-                onClick={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-card border border-border font-bold text-sm active:scale-[0.97] transition-transform duration-200"
-              >
-                Browse the Library <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
+          {!user && guestSubmitted && (() => {
+            const firstBook = BOOK_CATALOG.find(b => b.level === recommendedLevel);
+            const coverUrl = firstBook
+              ? `/covers/${firstBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
+              : null;
+            return (
+              <BookUnlockedModal
+                open={true}
+                onClose={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
+                onContinue={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
+                title={firstBook?.title ?? `Level ${recommendedLevel} Book`}
+                level={recommendedLevel}
+                coverUrl={coverUrl}
+                subtitle={`Check your email at ${guestEmail} for your login link`}
+                ctaLabel="Browse the Library"
+              />
+            );
+          })()}
 
           {user && (
             <div className="flex gap-3 mb-3">
