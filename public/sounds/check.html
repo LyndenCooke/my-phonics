@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoneme Sound Checker</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; padding: 20px; }
+  h1 { text-align: center; color: #1e293b; margin-bottom: 8px; font-size: 24px; }
+  .subtitle { text-align: center; color: #64748b; margin-bottom: 24px; font-size: 14px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 16px; color: #475569; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+  .grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sound-btn {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 56px; height: 48px; padding: 4px 12px;
+    border: 2px solid #cbd5e1; border-radius: 12px;
+    background: white; color: #1e293b; font-size: 18px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .sound-btn:hover { border-color: #818cf8; background: #eef2ff; }
+  .sound-btn:active, .sound-btn.playing {
+    border-color: #6366f1; background: #6366f1; color: white;
+    transform: scale(0.95);
+  }
+  .sound-btn.error { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
+  .now-playing {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #1e293b; color: white; padding: 10px 24px; border-radius: 999px;
+    font-size: 16px; font-weight: 600; opacity: 0; transition: opacity 0.2s;
+    pointer-events: none; z-index: 10;
+  }
+  .now-playing.visible { opacity: 1; }
+  .stats { text-align: center; color: #94a3b8; font-size: 13px; margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<h1>Phoneme Sound Checker</h1>
+<p class="subtitle">Tap each sound to hear it. All sounds should be your recorded voice. e-e will show red until recorded (currently uses ee sound).</p>
+
+<div class="section">
+  <h2>Single Letters (Set 1)</h2>
+  <div class="grid" id="singles"></div>
+</div>
+
+<div class="section">
+  <h2>Digraphs & Trigraphs</h2>
+  <div class="grid" id="digraphs"></div>
+</div>
+
+<div class="section">
+  <h2>Long Vowels (Set 2)</h2>
+  <div class="grid" id="longvowels"></div>
+</div>
+
+<div class="section">
+  <h2>Split Digraphs</h2>
+  <div class="grid" id="splits"></div>
+</div>
+
+<div class="section">
+  <h2>Complex Vowels (Set 3)</h2>
+  <div class="grid" id="complex"></div>
+</div>
+
+<div class="section">
+  <h2>Suffixes (L6)</h2>
+  <div class="grid" id="suffixes"></div>
+</div>
+
+<div class="section">
+  <h2>Initial Blends</h2>
+  <div class="grid" id="blends"></div>
+</div>
+
+<div class="section">
+  <h2>Final Blends</h2>
+  <div class="grid" id="finalblends"></div>
+</div>
+
+<div class="section">
+  <h2>Double Letters</h2>
+  <div class="grid" id="doubles"></div>
+</div>
+
+<div class="now-playing" id="nowPlaying"></div>
+<p class="stats" id="stats"></p>
+
+<script>
+const groups = {
+  singles: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','qu','r','s','t','u','v','w','x','y','z'],
+  digraphs: ['ch','sh','th','ng','nk','ck','ph','kn','wr'],
+  longvowels: ['ay','ee','igh','ow','oo_moon','oo_look','ar','or','air','ir','ou','oy','ea','ie','oi','aw','ai','oa','ew','ue'],
+  splits: ['a_e','e_e','i_e','o_e','u_e'],
+  complex: ['are','ur','er','ear','oor','ore','ire','ure'],
+  suffixes: ['tion','ous','cious','tious','able','ible'],
+  blends: ['bl','br','cl','cr','dr','fl','fr','gr','pl','pr','sc','scr','sk','sl','sm','sn','sp','spr','st','str','sw','tr','tw'],
+  finalblends: ['mp','nd','ng','nk','nt','lk'],
+  doubles: ['ff','ll','ss','zz']
+};
+
+const display = {
+  'a_e': 'a-e', 'e_e': 'e-e', 'i_e': 'i-e', 'o_e': 'o-e', 'u_e': 'u-e',
+  'oo_moon': 'oo (moon)', 'oo_look': 'oo (look)'
+};
+
+let playCount = 0;
+const total = Object.values(groups).flat().length;
+
+function makeBtn(sound, container) {
+  const btn = document.createElement('button');
+  btn.className = 'sound-btn';
+  btn.textContent = display[sound] || sound;
+  btn.onclick = () => playSound(sound, btn);
+  container.appendChild(btn);
+}
+
+function playSound(sound, btn) {
+  const np = document.getElementById('nowPlaying');
+  const audio = new Audio(`/sounds/${sound}.mp3`);
+
+  btn.classList.add('playing');
+  btn.classList.remove('error');
+  np.textContent = display[sound] || sound;
+  np.classList.add('visible');
+
+  audio.onended = () => {
+    btn.classList.remove('playing');
+    np.classList.remove('visible');
+    playCount++;
+    document.getElementById('stats').textContent = `Checked ${playCount} of ${total} sounds`;
+  };
+  audio.onerror = () => {
+    btn.classList.remove('playing');
+    btn.classList.add('error');
+    np.textContent = `Missing: ${sound}`;
+    setTimeout(() => np.classList.remove('visible'), 1500);
+  };
+  audio.play().catch(() => {
+    btn.classList.remove('playing');
+    btn.classList.add('error');
+  });
+}
+
+// Build the grid
+for (const [id, sounds] of Object.entries(groups)) {
+  const container = document.getElementById(id);
+  if (!container) continue;
+  sounds.forEach(s => makeBtn(s, container));
+}
+
+document.getElementById('stats').textContent = `${total} sounds to check`;
+</script>
+
+</body>
+</html>
