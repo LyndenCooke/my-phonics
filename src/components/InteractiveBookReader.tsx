@@ -174,8 +174,7 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
 
 interface WordNarrationState {
   wordIdx: number;
-  phonemeIdx: number | null;  // null = whole word phase
-  wholeWord: boolean;
+  wholeWord: boolean;  // true = this word is currently being spoken
 }
 
 function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<InteractivePage, { type: 'story' }>; focusSounds: string[]; level?: number }) {
@@ -193,39 +192,24 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
     const words = page.words;
 
-    // Build the highlight timeline: for each word, sound out letters then whole word
-    // Tricky words skip letter-by-letter, just do whole word in purple
-    const PHONEME_MS = 350;   // time per letter highlight
-    const WHOLE_WORD_MS = 500; // time for whole word highlight
-    const GAP_MS = 150;        // pause between words
+    // Simple word-by-word highlight — reads like a story, no sounding out
+    // Each word lights up as it's spoken: red for regular, purple for tricky
+    const WORD_MS = 500;       // time each word stays highlighted
+    const PAUSE_AT_STOP = 400; // extra pause after full stops / ! / ?
 
     let delay = 0;
     for (let wi = 0; wi < words.length; wi++) {
-      const w = words[wi];
-      if (w.isTricky) {
-        // Tricky: just show whole word purple
-        const d = delay;
-        timersRef.current.push(window.setTimeout(() => {
-          setNarrationState({ wordIdx: wi, phonemeIdx: null, wholeWord: true });
-        }, d));
-        delay += WHOLE_WORD_MS;
-      } else {
-        // Sound out each phoneme (letter goes red)
-        for (let pi = 0; pi < w.phonemes.length; pi++) {
-          const d = delay;
-          timersRef.current.push(window.setTimeout(() => {
-            setNarrationState({ wordIdx: wi, phonemeIdx: pi, wholeWord: false });
-          }, d));
-          delay += PHONEME_MS;
-        }
-        // Then whole word red
-        const d = delay;
-        timersRef.current.push(window.setTimeout(() => {
-          setNarrationState({ wordIdx: wi, phonemeIdx: null, wholeWord: true });
-        }, d));
-        delay += WHOLE_WORD_MS;
+      const d = delay;
+      timersRef.current.push(window.setTimeout(() => {
+        setNarrationState({ wordIdx: wi, wholeWord: true });
+      }, d));
+      delay += WORD_MS;
+
+      // Pause at sentence endings (full stop, !, ?)
+      const display = words[wi].display;
+      if (/[.!?]$/.test(display)) {
+        delay += PAUSE_AT_STOP;
       }
-      delay += GAP_MS;
     }
 
     // End narration
@@ -239,7 +223,6 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
       const audio = new Audio(page.audioUrl);
       audioRef.current = audio;
       audio.play().catch(() => {
-        // Audio missing — try browser TTS
         if ('speechSynthesis' in window) {
           const utter = new SpeechSynthesisUtterance(page.sentences.join(' '));
           utter.rate = 0.85;
@@ -302,7 +285,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
           <div className={`flex flex-wrap items-end justify-center ${gapClass}`}>
             {page.words.map((w, i) => {
               const nh = narrationState && narrationState.wordIdx === i
-                ? { activePhonemeIdx: narrationState.phonemeIdx, wholeWord: narrationState.wholeWord }
+                ? { wholeWord: narrationState.wholeWord }
                 : null;
               return (
                 <div key={i} className="transition-transform duration-150">
