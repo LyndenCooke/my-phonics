@@ -21,14 +21,22 @@ async function playPhoneme(grapheme: string): Promise<void> {
   }
 }
 
+export interface NarrationHighlight {
+  /** Index of the phoneme/letter currently being sounded out (null = whole word phase or idle) */
+  activePhonemeIdx: number | null;
+  /** True when the whole word is being spoken (after sounding out letters) */
+  wholeWord: boolean;
+}
+
 interface TappableWordProps {
   wordData: StoryWord;
   focusSounds?: string[];
   size?: 'normal' | 'medium' | 'large';
-  highlight?: boolean;  // External highlight (e.g. during narration)
+  highlight?: boolean;           // Legacy: simple whole-word highlight
+  narrationHighlight?: NarrationHighlight | null;  // New: letter-by-letter + whole word
 }
 
-export default function TappableWord({ wordData, focusSounds = [], size = 'normal', highlight = false }: TappableWordProps) {
+export default function TappableWord({ wordData, focusSounds = [], size = 'normal', highlight = false, narrationHighlight = null }: TappableWordProps) {
   const [showPhonemes, setShowPhonemes] = useState(false);
   const [activePhoneme, setActivePhoneme] = useState<number | null>(null);
   const [isSoundingOut, setIsSoundingOut] = useState(false);
@@ -44,7 +52,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
 
   const handleTapWord = useCallback(() => {
     if (isSoundingOut) return;
-    setShowPhonemes(true);
+    setShowPhonemes(prev => !prev);
   }, [isSoundingOut]);
 
   const handleSoundOut = useCallback(async () => {
@@ -52,12 +60,10 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
     cancelRef.current = false;
     setIsSoundingOut(true);
 
-    // Play each phoneme sequentially with highlight
     for (let i = 0; i < wordData.phonemes.length; i++) {
       if (cancelRef.current) break;
       setActivePhoneme(i);
       await playPhoneme(wordData.phonemes[i]);
-      // Small pause between phonemes
       await new Promise(r => setTimeout(r, 300));
     }
     setActivePhoneme(null);
@@ -70,6 +76,73 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
     setActivePhoneme(null);
   }, [wordData.phonemes]);
 
+  // ─── Determine visual state ───────────────────────────────────────
+  const isNarrating = narrationHighlight !== null;
+  const isTricky = wordData.isTricky;
+
+  // During narration: render letters individually with colour changes
+  if (isNarrating) {
+    const { activePhonemeIdx, wholeWord } = narrationHighlight;
+
+    if (isTricky && wholeWord) {
+      // Tricky word highlighted: whole word purple
+      return (
+        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
+          <span
+            className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 text-purple-600 scale-110`}
+            style={{ fontFamily: "'Andika', sans-serif" }}
+          >
+            {wordData.display}
+          </span>
+        </div>
+      );
+    }
+
+    if (wholeWord) {
+      // Regular word fully spoken: whole word red
+      return (
+        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
+          <span
+            className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 text-red-500 scale-110`}
+            style={{ fontFamily: "'Andika', sans-serif" }}
+          >
+            {wordData.display}
+          </span>
+        </div>
+      );
+    }
+
+    if (isTricky) {
+      // Tricky word waiting (not yet spoken) — stays normal
+      return (
+        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
+          <span
+            className={`${textSize} font-bold ${wordPad} rounded-xl text-slate-800`}
+            style={{ fontFamily: "'Andika', sans-serif" }}
+          >
+            {wordData.display}
+          </span>
+        </div>
+      );
+    }
+
+    // Sounding out: render each letter, highlight active phoneme in red
+    // Map phonemes back to display characters
+    const letters = renderLettersWithPhonemeHighlight(wordData, activePhonemeIdx);
+
+    return (
+      <div className={`inline-flex flex-col items-center ${wordMargin}`}>
+        <span
+          className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200`}
+          style={{ fontFamily: "'Andika', sans-serif" }}
+        >
+          {letters}
+        </span>
+      </div>
+    );
+  }
+
+  // ─── Normal (non-narrating) interactive mode ──────────────────────
   return (
     <div className={`inline-flex flex-col items-center ${wordMargin}`}>
       {/* The tappable word */}
@@ -85,6 +158,7 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
           ${isSoundingOut ? 'bg-amber-50' : ''}
         `}
         aria-label={`Tap to hear "${wordData.word}"`}
+        style={{ fontFamily: "'Andika', sans-serif" }}
       >
         {wordData.display}
       </button>
@@ -146,4 +220,50 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
       )}
     </div>
   );
+}
+
+/**
+ * Renders individual letters/graphemes with the active phoneme highlighted in red.
+ * Maps phonemes back to display characters to handle digraphs (sh, th, ck, etc.)
+ * and punctuation correctly.
+ */
+function renderLettersWithPhonemeHighlight(wordData: StoryWord, activePhonemeIdx: number | null) {
+  const { display, phonemes } = wordData;
+  const elements: JSX.Element[] = [];
+
+  // Strip punctuation from end to match phonemes to clean word
+  const punctMatch = display.match(/[^a-zA-Z]+$/);
+  const punct = punctMatch ? punctMatch[0] : '';
+  const cleanDisplay = punct ? display.slice(0, -punct.length) : display;
+
+  // Walk through the clean display string, matching each phoneme
+  let charIdx = 0;
+  for (let pi = 0; pi < phonemes.length; pi++) {
+    const ph = phonemes[pi];
+    const phLen = ph.length;
+    const chunk = cleanDisplay.slice(charIdx, charIdx + phLen);
+    const isActive = activePhonemeIdx === pi;
+
+    elements.push(
+      <span
+        key={pi}
+        className={`transition-colors duration-150 ${isActive ? 'text-red-500' : 'text-slate-800'}`}
+      >
+        {chunk || ph}
+      </span>
+    );
+    charIdx += phLen;
+  }
+
+  // Any remaining characters (shouldn't happen, but safety)
+  if (charIdx < cleanDisplay.length) {
+    elements.push(<span key="rest" className="text-slate-800">{cleanDisplay.slice(charIdx)}</span>);
+  }
+
+  // Add punctuation back
+  if (punct) {
+    elements.push(<span key="punct" className="text-slate-800">{punct}</span>);
+  }
+
+  return <>{elements}</>;
 }
