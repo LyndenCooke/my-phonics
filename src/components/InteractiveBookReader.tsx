@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, X, Volume2, Sparkles, Star, Trash2, Check, RotateCcw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Volume2, Sparkles, Star, Trash2, Check, RotateCcw, Eye, EyeOff } from 'lucide-react';
 import { Book } from '@/lib/types';
 import {
   INTERACTIVE_BOOKS,
@@ -181,6 +181,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
   const [isNarrating, setIsNarrating] = useState(false);
   const [narrationState, setNarrationState] = useState<WordNarrationState | null>(null);
   const [imageExpanded, setImageExpanded] = useState(false);
+  const [showAnnotations, setShowAnnotations] = useState(false);
   const timersRef = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -301,7 +302,20 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
       {/* ── MOBILE: text centred between header & button, button+image at bottom ── */}
       {/* ── DESKTOP: text+button right column centred ── */}
-      <div className="flex flex-col flex-1 h-full items-center justify-center md:justify-center">
+      <div className="flex flex-col flex-1 h-full items-center justify-center md:justify-center relative">
+        {/* Annotations toggle — top-right corner */}
+        <button
+          onClick={() => setShowAnnotations(v => !v)}
+          className={`absolute top-2 right-2 z-10 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm
+            ${showAnnotations
+              ? 'bg-pink-500 text-white hover:bg-pink-600'
+              : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600'}`}
+          aria-label={showAnnotations ? 'Hide phonics hints' : 'Show phonics hints'}
+          title={showAnnotations ? 'Hide phonics hints' : 'Show phonics hints'}
+        >
+          {showAnnotations ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+        </button>
+
         {/* Mobile top spacer — pushes text to vertical centre between header and button */}
         <div className="flex-1 md:hidden" />
 
@@ -314,7 +328,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
                 : null;
               return (
                 <div key={i} className="transition-transform duration-150">
-                  <TappableWord wordData={w} focusSounds={focusSounds} size={wordSize} narrationHighlight={isNarrating ? nh : null} />
+                  <TappableWord wordData={w} focusSounds={focusSounds} size={wordSize} narrationHighlight={isNarrating ? nh : null} showAnnotations={showAnnotations} />
                 </div>
               );
             })}
