@@ -913,3 +913,190 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
   { type: 'drawing', prompt: 'Draw Your Favourite Part' },
   { type: 'certificate', bookTitle: 'Round and Round' },
 ];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// L2.6  —  The Night Fair  (Review: all L2 sounds)
+// ═══════════════════════════════════════════════════════════════════════════
+
+export const BOOK_L2_6_PAGES: InteractivePage[] = [
+  { type: 'cover', title: 'The Night Fair', subtitle: 'Level 2 · Review', imageUrl: '/illustrations/2_6/cover.png' },
+
+  { type: 'sound_grid', focusSounds: ['ay', 'ee', 'igh', 'ow', 'oo', 'ar', 'or', 'air', 'ir', 'ou', 'oy'], allSounds: L2_ALL_SOUNDS },
+
+  { type: 'vocab_preview', words: [
+    pw('night', 'night', ['n','igh','t']), pw('bright', 'bright', ['b','r','igh','t']),
+    pw('lamps', 'lamps', ['l','a','m','p','s']), pw('drum', 'drum', ['d','r','u','m']),
+    pw('food', 'food', ['f','oo','d']), pw('spoon', 'spoon', ['s','p','oo','n']),
+    pw('toy', 'toy', ['t','oy']), pw('bird', 'bird', ['b','ir','d']),
+    pw('stool', 'stool', ['s','t','oo','l']), pw('stars', 'stars', ['s','t','ar','s']),
+    pw('moon', 'moon', ['m','oo','n']), pw('round', 'round', ['r','ou','n','d']),
+  ]},
+
+  // Page 1 — girl and mum enter the souq at night
+  { type: 'story', sentences: ['It is night!', 'We go to the souq.', 'The lights up high are so bright!'],
+    words: [
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('night!', 'night', ['n','igh','t']),
+      tricky('We', 'we'), tricky('go', 'go'), tricky('to', 'to'), tricky('the', 'the'), pw('souq.', 'souq', ['s','ou','q']),
+      tricky('The', 'the'), pw('lights', 'lights', ['l','igh','t','s']), pw('up', 'up', ['u','p']),
+      pw('high', 'high', ['h','igh']), tricky('are', 'are'), tricky('so', 'so'), pw('bright!', 'bright', ['b','r','igh','t']),
+    ],
+    imageUrl: '/illustrations/2_6/page1.png', audioUrl: '/sounds/sentences/L2_6_p1.mp3' },
+
+  // Page 2 — girl amazed by colourful lamps
+  { type: 'story', sentences: ['I see lots of lamps.', 'Each one is so cool!', 'I feel such joy.'],
+    words: [
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), pw('lots', 'lots', ['l','o','t','s']),
+      pw('of', 'of', ['o','f']), pw('lamps.', 'lamps', ['l','a','m','p','s']),
+      pw('Each', 'each', ['ee','ch']), pw('one', 'one', ['w','u','n']), tricky('is', 'is'),
+      tricky('so', 'so'), pw('cool!', 'cool', ['c','oo','l']),
+      tricky('I', 'I'), pw('feel', 'feel', ['f','ee','l']), pw('such', 'such', ['s','u','ch']),
+      pw('joy.', 'joy', ['j','oy']),
+    ],
+    imageUrl: '/illustrations/2_6/page2.png', audioUrl: '/sounds/sentences/L2_6_p2.mp3' },
+
+  // Page 3 — man playing a drum
+  { type: 'story', sentences: ['A man plays a drum in the dark.', 'Tap, tap, tap!', 'I stay to see.'],
+    words: [
+      tricky('A', 'a'), pw('man', 'man', ['m','a','n']), pw('plays', 'plays', ['p','l','ay','s']),
+      tricky('a', 'a'), pw('drum', 'drum', ['d','r','u','m']), pw('in', 'in', ['i','n']),
+      tricky('the', 'the'), pw('dark.', 'dark', ['d','ar','k']),
+      pw('Tap,', 'tap', ['t','a','p']), pw('tap,', 'tap', ['t','a','p']), pw('tap!', 'tap', ['t','a','p']),
+      tricky('I', 'I'), pw('stay', 'stay', ['s','t','ay']), tricky('to', 'to'), pw('see.', 'see', ['s','ee']),
+    ],
+    imageUrl: '/illustrations/2_6/page3.png', audioUrl: '/sounds/sentences/L2_6_p3.mp3' },
+
+  // Page 4 — mum and girl at food stall
+  { type: 'story', sentences: ['Mum gets food for us.', 'I try a spoon.', 'It is hot and so yum!'],
+    words: [
+      pw('Mum', 'mum', ['m','u','m']), pw('gets', 'gets', ['g','e','t','s']),
+      pw('food', 'food', ['f','oo','d']), pw('for', 'for', ['f','or']), pw('us.', 'us', ['u','s']),
+      tricky('I', 'I'), pw('try', 'try', ['t','r','igh']), tricky('a', 'a'),
+      pw('spoon.', 'spoon', ['s','p','oo','n']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('hot', 'hot', ['h','o','t']),
+      pw('and', 'and', ['a','n','d']), tricky('so', 'so'), pw('yum!', 'yum', ['y','u','m']),
+    ],
+    imageUrl: '/illustrations/2_6/page4.png', audioUrl: '/sounds/sentences/L2_6_p4.mp3' },
+
+  // Page 5 — girl finds toy bird at stall
+  { type: 'story', sentences: ['I see a toy bird with soft hair.', '"Can I get it?" I say.', 'Mum says yes!'],
+    words: [
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), tricky('a', 'a'),
+      pw('toy', 'toy', ['t','oy']), pw('bird', 'bird', ['b','ir','d']),
+      pw('with', 'with', ['w','i','th']), pw('soft', 'soft', ['s','o','f','t']),
+      pw('hair.', 'hair', ['h','air']),
+      pw('"Can', 'can', ['c','a','n']), tricky('I', 'I'), pw('get', 'get', ['g','e','t']),
+      pw('it?"', 'it', ['i','t']), tricky('I', 'I'), pw('say.', 'say', ['s','ay']),
+      pw('Mum', 'mum', ['m','u','m']), pw('says', 'says', ['s','ay','s']),
+      pw('yes!', 'yes', ['y','e','s']),
+    ],
+    imageUrl: '/illustrations/2_6/page5.png', audioUrl: '/sounds/sentences/L2_6_p5.mp3' },
+
+  // Page 6 — girl sits with toy bird
+  { type: 'story', sentences: ['I sit on a stool.', 'The fair is so much fun!', 'The air is cool.'],
+    words: [
+      tricky('I', 'I'), pw('sit', 'sit', ['s','i','t']), pw('on', 'on', ['o','n']),
+      tricky('a', 'a'), pw('stool.', 'stool', ['s','t','oo','l']),
+      tricky('The', 'the'), pw('fair', 'fair', ['f','air']), tricky('is', 'is'),
+      tricky('so', 'so'), pw('much', 'much', ['m','u','ch']), pw('fun!', 'fun', ['f','u','n']),
+      tricky('The', 'the'), pw('air', 'air', ['air']), tricky('is', 'is'), pw('cool.', 'cool', ['c','oo','l']),
+    ],
+    imageUrl: '/illustrations/2_6/page6.png', audioUrl: '/sounds/sentences/L2_6_p6.mp3' },
+
+  // Page 7 — girl looks up at stars and moon
+  { type: 'story', sentences: ['Look up!', 'I see stars in the sky.', 'The moon is low and round.'],
+    words: [
+      pw('Look', 'look', ['l','oo','k']), pw('up!', 'up', ['u','p']),
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), pw('stars', 'stars', ['s','t','ar','s']),
+      pw('in', 'in', ['i','n']), tricky('the', 'the'), pw('sky.', 'sky', ['s','k','igh']),
+      tricky('The', 'the'), pw('moon', 'moon', ['m','oo','n']), tricky('is', 'is'),
+      pw('low', 'low', ['l','ow']), pw('and', 'and', ['a','n','d']), pw('round.', 'round', ['r','ou','n','d']),
+    ],
+    imageUrl: '/illustrations/2_6/page7.png', audioUrl: '/sounds/sentences/L2_6_p7.mp3' },
+
+  // Page 8 — girl waves goodnight to the moon
+  { type: 'story', sentences: ['My night at the souq is so good.', 'I wave good night to the big moon.'],
+    words: [
+      tricky('My', 'my'), pw('night', 'night', ['n','igh','t']), pw('at', 'at', ['a','t']),
+      tricky('the', 'the'), pw('souq', 'souq', ['s','ou','q']), tricky('is', 'is'),
+      tricky('so', 'so'), pw('good.', 'good', ['g','oo','d']),
+      tricky('I', 'I'), pw('wave', 'wave', ['w','ay','v']), pw('good', 'good', ['g','oo','d']),
+      pw('night', 'night', ['n','igh','t']), tricky('to', 'to'), tricky('the', 'the'),
+      pw('big', 'big', ['b','i','g']), pw('moon.', 'moon', ['m','oo','n']),
+    ],
+    imageUrl: '/illustrations/2_6/page8.png', audioUrl: '/sounds/sentences/L2_6_p8.mp3' },
+
+  // ── QUIZ ──
+  { type: 'quiz', questions: [
+    { question: 'Where did the girl go at night?',
+      options: [{ label: 'the souq', isCorrect: true }, { label: 'the zoo', isCorrect: false }, { label: 'the park', isCorrect: false }] },
+    { question: 'What toy did she get?',
+      options: [{ label: 'a bird', isCorrect: true }, { label: 'a camel', isCorrect: false }, { label: 'a drum', isCorrect: false }] },
+    { question: 'What did she see up high in the sky?',
+      options: [{ label: 'the moon', isCorrect: true }, { label: 'a kite', isCorrect: false }, { label: 'a bird', isCorrect: false }] },
+  ]},
+
+  // ── SOUND SPOTLIGHTS ──
+  { type: 'sound_spotlight', sound: 'igh', items: [
+    { word: 'night', imageUrl: '/images/words/night.png', focusIndex: 1 },
+    { word: 'bright', imageUrl: '/images/words/bright.png', focusIndex: 2 },
+    { word: 'high', imageUrl: '/images/words/high.png', focusIndex: 1 },
+    { word: 'light', imageUrl: '/images/words/light.png', focusIndex: 1 },
+  ]},
+  { type: 'sound_spotlight', sound: 'oo', items: [
+    { word: 'moon', imageUrl: '/images/words/moon.png', focusIndex: 1 },
+    { word: 'cool', imageUrl: '/images/words/cool.png', focusIndex: 1 },
+    { word: 'food', imageUrl: '/images/words/food.png', focusIndex: 1 },
+    { word: 'stool', imageUrl: '/images/words/stool.png', focusIndex: 2 },
+  ]},
+  { type: 'sound_spotlight', sound: 'ou', items: [
+    { word: 'round', imageUrl: '/images/words/round.png', focusIndex: 1 },
+    { word: 'shout', imageUrl: '/images/words/shout.png', focusIndex: 2 },
+    { word: 'out', imageUrl: '/images/words/out.png', focusIndex: 0 },
+    { word: 'loud', imageUrl: '/images/words/loud.png', focusIndex: 1 },
+  ]},
+
+  // ── WORD READING ──
+  { type: 'word_reading', words: [
+    pw('night', 'night', ['n','igh','t']), pw('bright', 'bright', ['b','r','igh','t']),
+    pw('cool', 'cool', ['c','oo','l']), pw('moon', 'moon', ['m','oo','n']),
+    pw('round', 'round', ['r','ou','n','d']), pw('fair', 'fair', ['f','air']),
+    pw('dark', 'dark', ['d','ar','k']),
+  ]},
+
+  // ── TRICKY WORDS ──
+  { type: 'tricky_words', words: [tricky('the', 'the'), tricky('I', 'I'), tricky('we', 'we'), tricky('to', 'to'), tricky('my', 'my'), tricky('are', 'are')] },
+
+  // ── SPELLING ──
+  { type: 'spelling', words: [
+    { word: 'night', imageUrl: '/images/words/night.png', letters: ['n','igh','t'] },
+    { word: 'moon', imageUrl: '/images/words/moon.png', letters: ['m','oo','n'] },
+    { word: 'round', imageUrl: '/images/words/round.png', letters: ['r','ou','n','d'] },
+    { word: 'fair', imageUrl: '/images/words/fair.png', letters: ['f','air'] },
+  ]},
+
+  // ── ALIEN WORDS ──
+  { type: 'nonsense_words', words: [
+    pw('tay', 'tay', ['t','ay']), pw('jee', 'jee', ['j','ee']),
+    pw('migh', 'migh', ['m','igh']), pw('zow', 'zow', ['z','ow']),
+    pw('joo', 'joo', ['j','oo']), pw('thar', 'thar', ['th','ar']),
+    pw('gor', 'gor', ['g','or']), pw('vair', 'vair', ['v','air']),
+    pw('bir', 'bir', ['b','ir']), pw('dou', 'dou', ['d','ou']),
+    pw('foy', 'foy', ['f','oy']), pw('zar', 'zar', ['z','ar']),
+  ]},
+
+  { type: 'writing_practice', letters: ['igh', 'oo'] },
+
+  { type: 'story_ordering', items: [
+    { imageUrl: '/illustrations/2_6/page1.png', label: 'It is night! We go to the souq.', correctIndex: 0 },
+    { imageUrl: '/illustrations/2_6/page2.png', label: 'I see lots of lamps. Joy!', correctIndex: 1 },
+    { imageUrl: '/illustrations/2_6/page3.png', label: 'A man plays a drum. Tap, tap!', correctIndex: 2 },
+    { imageUrl: '/illustrations/2_6/page4.png', label: 'Mum gets food. It is yum!', correctIndex: 3 },
+    { imageUrl: '/illustrations/2_6/page5.png', label: 'I see a toy bird. Can I get it?', correctIndex: 4 },
+    { imageUrl: '/illustrations/2_6/page6.png', label: 'I sit on a stool. The air is cool.', correctIndex: 5 },
+    { imageUrl: '/illustrations/2_6/page7.png', label: 'The moon is low and round.', correctIndex: 6 },
+    { imageUrl: '/illustrations/2_6/page8.png', label: 'I wave good night to the moon.', correctIndex: 7 },
+  ]},
+
+  { type: 'drawing', prompt: 'Draw Your Favourite Part' },
+  { type: 'certificate', bookTitle: 'The Night Fair' },
+];

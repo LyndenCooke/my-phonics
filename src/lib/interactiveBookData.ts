@@ -1940,7 +1940,7 @@ export const BOOK_L1_10_PAGES: InteractivePage[] = [
 
 import {
   BOOK_L2_1_PAGES, BOOK_L2_2_PAGES, BOOK_L2_3_PAGES,
-  BOOK_L2_4_PAGES, BOOK_L2_5_PAGES,
+  BOOK_L2_4_PAGES, BOOK_L2_5_PAGES, BOOK_L2_6_PAGES,
 } from './interactiveBookDataL2';
 import {
   BOOK_L3_1_PAGES, BOOK_L3_2_PAGES, BOOK_L3_3_PAGES,
@@ -1973,6 +1973,7 @@ export const INTERACTIVE_BOOKS: Record<string, InteractivePage[]> = {
   'L2.3': BOOK_L2_3_PAGES,
   'L2.4': BOOK_L2_4_PAGES,
   'L2.5': BOOK_L2_5_PAGES,
+  'L2.6': BOOK_L2_6_PAGES,
   'L3.1': BOOK_L3_1_PAGES,
   'L3.2': BOOK_L3_2_PAGES,
   'L3.3': BOOK_L3_3_PAGES,
