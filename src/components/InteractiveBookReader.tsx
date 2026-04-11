@@ -184,37 +184,34 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
   const [showAnnotations, setShowAnnotations] = useState(false);
   const timersRef = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const wordTimeFractionsRef = useRef<number[]>([]);
 
-  const scheduleHighlights = useCallback((durationMs: number) => {
+  // ─── Build word timing fractions (pre-computed, reused on every timeupdate) ──
+  const buildWordTimeFractions = useCallback(() => {
     const words = page.words;
     const wc = words.length;
-
-    // Calculate weighted timing — longer words get more time, sentence endings get a pause
     const weights: number[] = [];
     let totalWeight = 0;
+
     for (let i = 0; i < wc; i++) {
-      // Base weight proportional to word length
-      let w = Math.max(1, words[i].word.length);
-      // Extra weight for sentence-ending punctuation (natural pause)
-      if (/[.!?]$/.test(words[i].display)) w += 3;
+      // Base weight: syllable-aware — longer words take longer to say
+      let w = Math.max(1, words[i].word.length) * 1.0;
+      // Sentence-ending punctuation — significant pause in natural speech
+      if (/[.!?]$/.test(words[i].display)) w += 6;
+      // Comma/semicolon — smaller pause
+      else if (/[,;:]$/.test(words[i].display)) w += 3;
       weights.push(w);
       totalWeight += w;
     }
 
-    let elapsed = 0;
-    for (let wi = 0; wi < wc; wi++) {
-      const d = elapsed;
-      timersRef.current.push(window.setTimeout(() => {
-        setNarrationState({ wordIdx: wi, wholeWord: true });
-      }, d));
-      elapsed += (weights[wi] / totalWeight) * durationMs;
+    // Convert to cumulative start fractions [0..1)
+    const fractions: number[] = [];
+    let cumulative = 0;
+    for (let i = 0; i < wc; i++) {
+      fractions.push(cumulative / totalWeight);
+      cumulative += weights[i];
     }
-
-    // End narration
-    timersRef.current.push(window.setTimeout(() => {
-      setNarrationState(null);
-      setIsNarrating(false);
-    }, durationMs + 200));
+    return fractions;
   }, [page.words]);
 
   const handleNarrate = useCallback(() => {
@@ -223,26 +220,39 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
     timersRef.current.forEach(t => clearTimeout(t));
     timersRef.current = [];
 
+    // Pre-compute timing fractions
+    wordTimeFractionsRef.current = buildWordTimeFractions();
+
     if (page.audioUrl) {
       const audio = new Audio(page.audioUrl);
       audioRef.current = audio;
 
-      // Start highlights only when audio actually begins playing, using real duration
-      audio.addEventListener('playing', () => {
-        const durationMs = audio.duration * 1000;
-        scheduleHighlights(durationMs);
-      }, { once: true });
+      // Real-time tracking: update highlight based on actual audio position
+      const onTimeUpdate = () => {
+        if (!audio.duration) return;
+        const fraction = audio.currentTime / audio.duration;
+        const fractions = wordTimeFractionsRef.current;
+        // Find the last word whose start fraction <= current position
+        let wordIdx = 0;
+        for (let i = fractions.length - 1; i >= 0; i--) {
+          if (fractions[i] <= fraction) {
+            wordIdx = i;
+            break;
+          }
+        }
+        setNarrationState({ wordIdx, wholeWord: true });
+      };
+
+      audio.addEventListener('timeupdate', onTimeUpdate);
 
       audio.addEventListener('ended', () => {
-        // Ensure narration ends when audio ends (in case timers drift)
+        audio.removeEventListener('timeupdate', onTimeUpdate);
         setNarrationState(null);
         setIsNarrating(false);
-        timersRef.current.forEach(t => clearTimeout(t));
-        timersRef.current = [];
       }, { once: true });
 
       audio.play().catch(() => {
-        // Audio missing — fall back to browser TTS with estimated timing
+        audio.removeEventListener('timeupdate', onTimeUpdate);
         fallbackTTS();
       });
     } else {
@@ -252,7 +262,20 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
     function fallbackTTS() {
       const sentence = page.sentences.join(' ');
       const estimatedMs = sentence.length * 80;
-      scheduleHighlights(estimatedMs);
+      const fractions = wordTimeFractionsRef.current;
+      const wc = page.words.length;
+
+      // Schedule highlights using setTimeout for TTS fallback
+      for (let wi = 0; wi < wc; wi++) {
+        const delay = fractions[wi] * estimatedMs;
+        timersRef.current.push(window.setTimeout(() => {
+          setNarrationState({ wordIdx: wi, wholeWord: true });
+        }, delay));
+      }
+      timersRef.current.push(window.setTimeout(() => {
+        setNarrationState(null);
+        setIsNarrating(false);
+      }, estimatedMs + 200));
 
       if ('speechSynthesis' in window) {
         const utter = new SpeechSynthesisUtterance(sentence);
@@ -260,7 +283,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         window.speechSynthesis.speak(utter);
       }
     }
-  }, [isNarrating, page.sentences, page.audioUrl, scheduleHighlights]);
+  }, [isNarrating, page.sentences, page.words, page.audioUrl, buildWordTimeFractions]);
 
   useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); }, []);
 
