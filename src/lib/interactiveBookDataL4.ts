@@ -679,7 +679,7 @@ export const BOOK_L4_3_PAGES: InteractivePage[] = [
       tricky('the', 'the'), word('desk', 'desk', ['d','e','s','k']),
       word('and', 'and', ['a','n','d']), word('stuck', 'stuck', ['s','t','u','ck']),
       tricky('to', 'to'), tricky('her', 'her'), word('hand!', 'hand', ['h','a','n','d']),
-      tricky('She', 'she'), word('pulled', 'pulled', ['p','u','ll','d']),
+      tricky('She', 'she'), tricky('pulled', 'pulled'),
       word('and', 'and', ['a','n','d']), tricky('she', 'she'),
       word('shook.', 'shook', ['sh','oo','k']),
       word('Then', 'then', ['th','e','n']), tricky('the', 'the'),

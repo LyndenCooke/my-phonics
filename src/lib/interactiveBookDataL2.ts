@@ -81,7 +81,7 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
     words: [
       tricky('A', 'a'), pw('light', 'light', ['l','igh','t']),
       pw('up', 'up', ['u','p']), pw('high!', 'high', ['h','igh']),
-      tricky('The', 'the'), tricky('moon!', 'moon'),
+      tricky('The', 'the'), pw('moon!', 'moon', ['m','oo','n']),
     ],
     imageUrl: '/illustrations/2_1/page5.png', audioUrl: '/sounds/sentences/L2_1_p5.mp3' },
 
@@ -1019,7 +1019,7 @@ export const BOOK_L2_6_PAGES: InteractivePage[] = [
       tricky('My', 'my'), pw('night', 'night', ['n','igh','t']), pw('at', 'at', ['a','t']),
       tricky('the', 'the'), pw('souq', 'souq', ['s','ou','q']), tricky('is', 'is'),
       tricky('so', 'so'), pw('good.', 'good', ['g','oo','d']),
-      tricky('I', 'I'), pw('wave', 'wave', ['w','ay','v']), pw('good', 'good', ['g','oo','d']),
+      tricky('I', 'I'), tricky('wave', 'wave'), pw('good', 'good', ['g','oo','d']),
       pw('night', 'night', ['n','igh','t']), tricky('to', 'to'), tricky('the', 'the'),
       pw('big', 'big', ['b','i','g']), pw('moon.', 'moon', ['m','oo','n']),
     ],
