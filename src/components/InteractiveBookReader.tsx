@@ -226,11 +226,19 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
       const audio = new Audio(page.audioUrl);
       audioRef.current = audio;
 
-      // Wait for metadata to get actual duration, then sync highlights
-      audio.addEventListener('loadedmetadata', () => {
+      // Start highlights only when audio actually begins playing, using real duration
+      audio.addEventListener('playing', () => {
         const durationMs = audio.duration * 1000;
         scheduleHighlights(durationMs);
-      });
+      }, { once: true });
+
+      audio.addEventListener('ended', () => {
+        // Ensure narration ends when audio ends (in case timers drift)
+        setNarrationState(null);
+        setIsNarrating(false);
+        timersRef.current.forEach(t => clearTimeout(t));
+        timersRef.current = [];
+      }, { once: true });
 
       audio.play().catch(() => {
         // Audio missing — fall back to browser TTS with estimated timing
@@ -242,7 +250,6 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
     function fallbackTTS() {
       const sentence = page.sentences.join(' ');
-      // Estimate duration: ~130ms per character at 0.85 rate
       const estimatedMs = sentence.length * 80;
       scheduleHighlights(estimatedMs);
 
@@ -321,7 +328,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <div className={`${textPad} py-1 md:py-2 flex-shrink-0 w-full`}>
           <button onClick={handleNarrate} disabled={isNarrating}
             className={`w-full py-2 md:py-3.5 rounded-2xl font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-200
-              ${isNarrating ? 'bg-pink-500 text-white animate-pulse' : 'bg-pink-100 text-pink-700 hover:bg-pink-200 active:scale-[0.98]'}`}>
+              ${isNarrating ? 'bg-pink-500 text-white opacity-80 cursor-not-allowed' : 'bg-pink-100 text-pink-700 hover:bg-pink-200 active:scale-[0.98]'}`}>
             <Volume2 className="w-4 h-4 md:w-5 md:h-5" /> {isNarrating ? 'Reading...' : 'Read to me'}
           </button>
         </div>
