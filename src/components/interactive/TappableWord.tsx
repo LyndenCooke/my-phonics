@@ -18,6 +18,19 @@ async function playPhoneme(grapheme: string): Promise<void> {
   try { await playAudioFile(`/sounds/${key}.mp3`); } catch {}
 }
 
+function speakWord(word: string): Promise<void> {
+  return new Promise((resolve) => {
+    if (!('speechSynthesis' in window)) { resolve(); return; }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(word);
+    utter.rate = 0.8;
+    utter.lang = 'en-GB';
+    utter.onend = () => resolve();
+    utter.onerror = () => resolve();
+    window.speechSynthesis.speak(utter);
+  });
+}
+
 // ─── Known grapheme sets ───────────────────────────────────────────────
 
 const SPLIT_DIGRAPHS = new Set(['a-e', 'i-e', 'o-e', 'u-e', 'e-e']);
@@ -212,18 +225,24 @@ export default function TappableWord({
     cancelRef.current = false;
 
     if (wordData.isTricky) {
-      // Tricky word: quick purple highlight + read the word
+      // Tricky word: quick purple highlight + speak the whole word
       setTapped(true);
-      try { await playPhoneme(wordData.word); } catch {}
-      setTimeout(() => setTapped(false), 600);
+      await speakWord(wordData.word);
+      setTimeout(() => setTapped(false), 400);
     } else if (wordData.phonemes.length > 0) {
-      // Normal word: sound out each phoneme with highlight
+      // Normal word: sound out each phoneme, then blend the whole word
       setIsSoundingOut(true);
       for (let i = 0; i < wordData.phonemes.length; i++) {
         if (cancelRef.current) break;
         setActivePhonemeIdx(i);
         await playPhoneme(wordData.phonemes[i]);
+        await new Promise(r => setTimeout(r, 150));
+      }
+      if (!cancelRef.current) {
+        setActivePhonemeIdx(null);
+        // Brief pause, then speak the blended word
         await new Promise(r => setTimeout(r, 200));
+        await speakWord(wordData.word);
       }
       setActivePhonemeIdx(null);
       setIsSoundingOut(false);
