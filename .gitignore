@@ -64,9 +64,7 @@ nul
 .tmp/
 output/
 
-# Generated TTS word audio (app uses /sounds/*.mp3 phoneme files; words/ is regeneratable)
-public/sounds/words/
-public/sounds/sentences/
+# Generated TTS word audio — kept in repo (pre-generated, not regenerated at runtime)
 
 # Python book pipeline (separate project with large PDF/image output)
 myphonics_books/
@@ -86,3 +84,5 @@ MyPhonicsBooks_Visual_Review_unpacked/
 
 # Generated PDFs
 *.pdf
+
+.vercel

@@ -19,9 +19,7 @@ venv/
 .venv/
 *.pyc
 
-# Generated audio
-public/sounds/words/
-public/sounds/sentences/
+# Generated audio (kept — pre-generated MP3s needed for interactive books)
 
 # Content pipeline
 content/
