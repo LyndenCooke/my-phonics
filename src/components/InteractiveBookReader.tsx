@@ -415,9 +415,17 @@ function SoundSpotlightPage({ page }: { page: Extract<InteractivePage, { type: '
                 ${isActive ? 'border-pink-400 bg-pink-50 scale-105 shadow-lg' : 'border-slate-200 bg-white hover:border-pink-200 shadow-sm'}`}>
               <img src={item.imageUrl} alt={item.word} className="w-16 h-16 md:w-20 md:h-20 object-contain mb-3" />
               <span className="text-2xl md:text-3xl font-bold">
-                {splitDigraphs(item.word).map((ch, ci) => (
-                  <span key={ci} className={ci === item.focusIndex ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>
-                ))}
+                {(() => {
+                  const chars = splitDigraphs(item.word);
+                  const isSplitDigraph = page.sound.includes('-');
+                  // For split digraphs (a-e, i-e, etc.), highlight both the vowel AND the trailing 'e'
+                  const lastIdx = chars.length - 1;
+                  return chars.map((ch, ci) => {
+                    const isFocus = ci === item.focusIndex ||
+                      (isSplitDigraph && ci === lastIdx && ch.toLowerCase() === 'e');
+                    return <span key={ci} className={isFocus ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>;
+                  });
+                })()}
               </span>
             </button>
           );
