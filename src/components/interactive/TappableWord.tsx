@@ -216,8 +216,9 @@ export default function TappableWord({
 
     setArcOffset(x1);
     setArcWidth(w);
-    // Arc curves upward above the letters: starts bottom-left, curves up, ends bottom-right
-    setArcPath(`M 0,${h} Q ${w / 2},${-h * 0.6} ${w},${h}`);
+    // Arc curves upward above the letters: starts at bottom corners, peaks above
+    // Control point at -h*0.4 gives a gentle arc that clears middle letters
+    setArcPath(`M 0,${h} Q ${w / 2},${-h * 0.4} ${w},${h}`);
   }, [showAnnotations, spans, annotH, size]);
 
   // ─── Tap handler ────────────────────────────────────────────────────
@@ -312,7 +313,7 @@ export default function TappableWord({
             {arcPath && (
               <svg
                 className="absolute pointer-events-none"
-                style={{ left: arcOffset, top: -annotH }}
+                style={{ left: arcOffset, top: -annotH * 0.5 }}
                 width={arcWidth}
                 height={annotH}
                 viewBox={`0 0 ${arcWidth} ${annotH}`}
