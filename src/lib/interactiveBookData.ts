@@ -1826,7 +1826,7 @@ export const BOOK_L1_10_PAGES: InteractivePage[] = [
       tricky('No', 'no'), { display: 'buzz!', word: 'buzz', phonemes: ['b','u','zz'] },
       tricky('No', 'no'), { display: 'hiss!', word: 'hiss', phonemes: ['h','i','ss'] },
     ],
-    imageUrl: '/illustrations/1_10/page4.png',
+    imageUrl: '/illustrations/1_10/page4.png', audioUrl: '/sounds/sentences/L1_10_p4.mp3',
   },
   // Page 5: "I sing quick! I sing and sing!"
   {
