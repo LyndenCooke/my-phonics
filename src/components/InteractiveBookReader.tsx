@@ -184,57 +184,75 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
   const timersRef = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleNarrate = useCallback(() => {
-    if (isNarrating) return;
-    setIsNarrating(true);
-    timersRef.current.forEach(t => clearTimeout(t));
-    timersRef.current = [];
-
+  const scheduleHighlights = useCallback((durationMs: number) => {
     const words = page.words;
+    const wc = words.length;
 
-    // Simple word-by-word highlight — reads like a story, no sounding out
-    // Each word lights up as it's spoken: red for regular, purple for tricky
-    const WORD_MS = 500;       // time each word stays highlighted
-    const PAUSE_AT_STOP = 400; // extra pause after full stops / ! / ?
+    // Calculate weighted timing — longer words get more time, sentence endings get a pause
+    const weights: number[] = [];
+    let totalWeight = 0;
+    for (let i = 0; i < wc; i++) {
+      // Base weight proportional to word length
+      let w = Math.max(1, words[i].word.length);
+      // Extra weight for sentence-ending punctuation (natural pause)
+      if (/[.!?]$/.test(words[i].display)) w += 3;
+      weights.push(w);
+      totalWeight += w;
+    }
 
-    let delay = 0;
-    for (let wi = 0; wi < words.length; wi++) {
-      const d = delay;
+    let elapsed = 0;
+    for (let wi = 0; wi < wc; wi++) {
+      const d = elapsed;
       timersRef.current.push(window.setTimeout(() => {
         setNarrationState({ wordIdx: wi, wholeWord: true });
       }, d));
-      delay += WORD_MS;
-
-      // Pause at sentence endings (full stop, !, ?)
-      const display = words[wi].display;
-      if (/[.!?]$/.test(display)) {
-        delay += PAUSE_AT_STOP;
-      }
+      elapsed += (weights[wi] / totalWeight) * durationMs;
     }
 
     // End narration
     timersRef.current.push(window.setTimeout(() => {
       setNarrationState(null);
       setIsNarrating(false);
-    }, delay + 200));
+    }, durationMs + 200));
+  }, [page.words]);
 
-    // Play audio alongside the visual highlights
+  const handleNarrate = useCallback(() => {
+    if (isNarrating) return;
+    setIsNarrating(true);
+    timersRef.current.forEach(t => clearTimeout(t));
+    timersRef.current = [];
+
     if (page.audioUrl) {
       const audio = new Audio(page.audioUrl);
       audioRef.current = audio;
-      audio.play().catch(() => {
-        if ('speechSynthesis' in window) {
-          const utter = new SpeechSynthesisUtterance(page.sentences.join(' '));
-          utter.rate = 0.85;
-          window.speechSynthesis.speak(utter);
-        }
+
+      // Wait for metadata to get actual duration, then sync highlights
+      audio.addEventListener('loadedmetadata', () => {
+        const durationMs = audio.duration * 1000;
+        scheduleHighlights(durationMs);
       });
-    } else if ('speechSynthesis' in window) {
-      const utter = new SpeechSynthesisUtterance(page.sentences.join(' '));
-      utter.rate = 0.85;
-      window.speechSynthesis.speak(utter);
+
+      audio.play().catch(() => {
+        // Audio missing — fall back to browser TTS with estimated timing
+        fallbackTTS();
+      });
+    } else {
+      fallbackTTS();
     }
-  }, [isNarrating, page.words, page.sentences, page.audioUrl]);
+
+    function fallbackTTS() {
+      const sentence = page.sentences.join(' ');
+      // Estimate duration: ~130ms per character at 0.85 rate
+      const estimatedMs = sentence.length * 80;
+      scheduleHighlights(estimatedMs);
+
+      if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(sentence);
+        utter.rate = 0.85;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+  }, [isNarrating, page.sentences, page.audioUrl, scheduleHighlights]);
 
   useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); }, []);
 

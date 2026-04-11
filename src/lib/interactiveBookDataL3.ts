@@ -97,7 +97,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       tricky('the', 'the'),
       w('line.', 'line', ['l','i-e','n']),
     ],
-    imageUrl: '/illustrations/3_1/page1.png',
+    imageUrl: '/illustrations/3_1/page1.png', audioUrl: '/sounds/sentences/L3_1_p1.mp3',
   },
 
   // Page 2: "'Ride to the lake and back!' the man said."
@@ -123,7 +123,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('bike', 'bike', ['b','i-e','k']),
       w('tight.', 'tight', ['t','igh','t']),
     ],
-    imageUrl: '/illustrations/3_1/page2.png',
+    imageUrl: '/illustrations/3_1/page2.png', audioUrl: '/sounds/sentences/L3_1_p2.mp3',
   },
 
   // Page 3: "Off I go! Past a tall pine tree..."
@@ -151,7 +151,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       tricky('the', 'the'),
       w('sun.', 'sun', ['s','u','n']),
     ],
-    imageUrl: '/illustrations/3_1/page3.png',
+    imageUrl: '/illustrations/3_1/page3.png', audioUrl: '/sounds/sentences/L3_1_p3.mp3',
   },
 
   // Page 4: "Look out! Stones on the track."
@@ -180,7 +180,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('brave', 'brave', ['b','r','a-e','v']),
       w('smile.', 'smile', ['s','m','i-e','l']),
     ],
-    imageUrl: '/illustrations/3_1/page4.png',
+    imageUrl: '/illustrations/3_1/page4.png', audioUrl: '/sounds/sentences/L3_1_p4.mp3',
   },
 
   // Page 5: "I can see the lake!"
@@ -206,7 +206,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('turn', 'turn', ['t','ur','n']),
       w('back.', 'back', ['b','a','ck']),
     ],
-    imageUrl: '/illustrations/3_1/page5.png',
+    imageUrl: '/illustrations/3_1/page5.png', audioUrl: '/sounds/sentences/L3_1_p5.mp3',
   },
 
   // Page 6: "Can I make it back in time?"
@@ -231,7 +231,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('be', 'be', ['b','ee']),
       w('late!', 'late', ['l','a-e','t']),
     ],
-    imageUrl: '/illustrations/3_1/page6.png',
+    imageUrl: '/illustrations/3_1/page6.png', audioUrl: '/sounds/sentences/L3_1_p6.mp3',
   },
 
   // Page 7: "I am past the line! I made it!"
@@ -257,7 +257,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('wide', 'wide', ['w','i-e','d']),
       w('grin.', 'grin', ['g','r','i','n']),
     ],
-    imageUrl: '/illustrations/3_1/page7.png',
+    imageUrl: '/illustrations/3_1/page7.png', audioUrl: '/sounds/sentences/L3_1_p7.mp3',
   },
 
   // Page 8: "A prize! A flat plate with my name on it!"
@@ -285,7 +285,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('good', 'good', ['g','oo','d']),
       w('day!', 'day', ['d','ai']),
     ],
-    imageUrl: '/illustrations/3_1/page8.png',
+    imageUrl: '/illustrations/3_1/page8.png', audioUrl: '/sounds/sentences/L3_1_p8.mp3',
   },
 
   // ── QUIZ ──
@@ -413,7 +413,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('be', 'be', ['b','ee']),
       w('inside?', 'inside', ['i','n','s','i-e','d']),
     ],
-    imageUrl: '/illustrations/3_2/page1.png',
+    imageUrl: '/illustrations/3_2/page1.png', audioUrl: '/sounds/sentences/L3_2_p1.mp3',
   },
 
   // Page 2
@@ -440,7 +440,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       tricky('so', 'so'),
       w('cute.', 'cute', ['c','u-e','t']),
     ],
-    imageUrl: '/illustrations/3_2/page2.png',
+    imageUrl: '/illustrations/3_2/page2.png', audioUrl: '/sounds/sentences/L3_2_p2.mp3',
   },
 
   // Page 3
@@ -466,7 +466,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('at', 'at', ['a','t']),
       tricky('all.', 'all'),
     ],
-    imageUrl: '/illustrations/3_2/page3.png',
+    imageUrl: '/illustrations/3_2/page3.png', audioUrl: '/sounds/sentences/L3_2_p3.mp3',
   },
 
   // Page 4
@@ -492,7 +492,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('sweet', 'sweet', ['s','w','ee','t']),
       w('note.', 'note', ['n','o-e','t']),
     ],
-    imageUrl: '/illustrations/3_2/page4.png',
+    imageUrl: '/illustrations/3_2/page4.png', audioUrl: '/sounds/sentences/L3_2_p4.mp3',
   },
 
   // Page 5
@@ -518,7 +518,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('note,', 'note', ['n','o-e','t']),
       w('note!', 'note', ['n','o-e','t']),
     ],
-    imageUrl: '/illustrations/3_2/page5.png',
+    imageUrl: '/illustrations/3_2/page5.png', audioUrl: '/sounds/sentences/L3_2_p5.mp3',
   },
 
   // Page 6
@@ -545,7 +545,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('and', 'and', ['a','n','d']),
       w('sweet!', 'sweet', ['s','w','ee','t']),
     ],
-    imageUrl: '/illustrations/3_2/page6.png',
+    imageUrl: '/illustrations/3_2/page6.png', audioUrl: '/sounds/sentences/L3_2_p6.mp3',
   },
 
   // Page 7
@@ -574,7 +574,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       w('huge', 'huge', ['h','u-e','j']),
       w('smile.', 'smile', ['s','m','i-e','l']),
     ],
-    imageUrl: '/illustrations/3_2/page7.png',
+    imageUrl: '/illustrations/3_2/page7.png', audioUrl: '/sounds/sentences/L3_2_p7.mp3',
   },
 
   // Page 8
@@ -602,7 +602,7 @@ export const BOOK_L3_2_PAGES: InteractivePage[] = [
       tricky('the', 'the'),
       w('room!', 'room', ['r','oo','m']),
     ],
-    imageUrl: '/illustrations/3_2/page8.png',
+    imageUrl: '/illustrations/3_2/page8.png', audioUrl: '/sounds/sentences/L3_2_p8.mp3',
   },
 
   // ── QUIZ ──
@@ -717,7 +717,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w('is', 'is', ['i','z']), w('too', 'too', ['t','oo']),
       w('far.', 'far', ['f','ar']),
     ],
-    imageUrl: '/illustrations/3_3/page1.png',
+    imageUrl: '/illustrations/3_3/page1.png', audioUrl: '/sounds/sentences/L3_3_p1.mp3',
   },
 
   // Page 2
@@ -737,7 +737,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w('not', 'not', ['n','o','t']), w("big!'", 'big', ['b','i','g']),
       tricky('he', 'he'), tricky('said.', 'said'),
     ],
-    imageUrl: '/illustrations/3_3/page2.png',
+    imageUrl: '/illustrations/3_3/page2.png', audioUrl: '/sounds/sentences/L3_3_p2.mp3',
   },
 
   // Page 3
@@ -758,7 +758,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w("treat!'", 'treat', ['t','r','ea','t']),
       tricky('she', 'she'), tricky('said.', 'said'),
     ],
-    imageUrl: '/illustrations/3_3/page3.png',
+    imageUrl: '/illustrations/3_3/page3.png', audioUrl: '/sounds/sentences/L3_3_p3.mp3',
   },
 
   // Page 4
@@ -780,7 +780,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w('no', 'no', ['n','oa']), w("good,'", 'good', ['g','oo','d']),
       tricky('she', 'she'), tricky('said.', 'said'),
     ],
-    imageUrl: '/illustrations/3_3/page4.png',
+    imageUrl: '/illustrations/3_3/page4.png', audioUrl: '/sounds/sentences/L3_3_p4.mp3',
   },
 
   // Page 5
@@ -804,7 +804,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w('be', 'be', ['b','ee']), tricky('a', 'a'),
       w("team!'", 'team', ['t','ea','m']),
     ],
-    imageUrl: '/illustrations/3_3/page5.png',
+    imageUrl: '/illustrations/3_3/page5.png', audioUrl: '/sounds/sentences/L3_3_p5.mp3',
   },
 
   // Page 6
@@ -825,7 +825,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       w('to', 'to', ['t','oo']), tricky('the', 'the'),
       w('ground.', 'ground', ['g','r','ow','n','d']),
     ],
-    imageUrl: '/illustrations/3_3/page6.png',
+    imageUrl: '/illustrations/3_3/page6.png', audioUrl: '/sounds/sentences/L3_3_p6.mp3',
   },
 
   // Page 7
@@ -845,7 +845,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       tricky('What', 'what'), tricky('a', 'a'),
       w('feast!', 'feast', ['f','ea','s','t']),
     ],
-    imageUrl: '/illustrations/3_3/page7.png',
+    imageUrl: '/illustrations/3_3/page7.png', audioUrl: '/sounds/sentences/L3_3_p7.mp3',
   },
 
   // Page 8
@@ -872,7 +872,7 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
       tricky('the', 'the'), w('best', 'best', ['b','e','s','t']),
       w('mates.', 'mates', ['m','a-e','t','s']),
     ],
-    imageUrl: '/illustrations/3_3/page8.png',
+    imageUrl: '/illustrations/3_3/page8.png', audioUrl: '/sounds/sentences/L3_3_p8.mp3',
   },
 
   {
@@ -986,7 +986,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       tricky('a', 'a'), w('stick', 'stick', ['s','t','i','ck']),
       w('tight.', 'tight', ['t','igh','t']),
     ],
-    imageUrl: '/illustrations/3_4/page1.png',
+    imageUrl: '/illustrations/3_4/page1.png', audioUrl: '/sounds/sentences/L3_4_p1.mp3',
   },
 
   // Page 2
@@ -1005,7 +1005,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('on', 'on', ['o','n']), tricky('the', 'the'),
       w('sheet.', 'sheet', ['sh','ee','t']),
     ],
-    imageUrl: '/illustrations/3_4/page2.png',
+    imageUrl: '/illustrations/3_4/page2.png', audioUrl: '/sounds/sentences/L3_4_p2.mp3',
   },
 
   // Page 3
@@ -1025,7 +1025,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('Min', 'min', ['m','i','n']), w('feels', 'feels', ['f','ee','l','s']),
       w('raw', 'raw', ['r','aw']), w('inside.', 'inside', ['i','n','s','i-e','d']),
     ],
-    imageUrl: '/illustrations/3_4/page3.png',
+    imageUrl: '/illustrations/3_4/page3.png', audioUrl: '/sounds/sentences/L3_4_p3.mp3',
   },
 
   // Page 4
@@ -1047,7 +1047,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w("hawk!'", 'hawk', ['h','aw','k']),
       tricky('she', 'she'), tricky('said.', 'said'),
     ],
-    imageUrl: '/illustrations/3_4/page4.png',
+    imageUrl: '/illustrations/3_4/page4.png', audioUrl: '/sounds/sentences/L3_4_p4.mp3',
   },
 
   // Page 5
@@ -1069,7 +1069,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('in', 'in', ['i','n']), tricky('the', 'the'),
       w('light!', 'light', ['l','igh','t']),
     ],
-    imageUrl: '/illustrations/3_4/page5.png',
+    imageUrl: '/illustrations/3_4/page5.png', audioUrl: '/sounds/sentences/L3_4_p5.mp3',
   },
 
   // Page 6
@@ -1091,7 +1091,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w("'Can", 'can', ['c','a','n']), tricky('I', 'I'),
       w('join', 'join', ['j','oi','n']), w("in?'", 'in', ['i','n']),
     ],
-    imageUrl: '/illustrations/3_4/page6.png',
+    imageUrl: '/illustrations/3_4/page6.png', audioUrl: '/sounds/sentences/L3_4_p6.mp3',
   },
 
   // Page 7
@@ -1111,7 +1111,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       tricky('They', 'they'), w('toil', 'toil', ['t','oi','l']),
       w('and', 'and', ['a','n','d']), w('toil!', 'toil', ['t','oi','l']),
     ],
-    imageUrl: '/illustrations/3_4/page7.png',
+    imageUrl: '/illustrations/3_4/page7.png', audioUrl: '/sounds/sentences/L3_4_p7.mp3',
   },
 
   // Page 8
@@ -1137,7 +1137,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('hawk', 'hawk', ['h','aw','k']), w('is', 'is', ['i','z']),
       tricky('the', 'the'), w("best!'", 'best', ['b','e','s','t']),
     ],
-    imageUrl: '/illustrations/3_4/page8.png',
+    imageUrl: '/illustrations/3_4/page8.png', audioUrl: '/sounds/sentences/L3_4_p8.mp3',
   },
 
   {
@@ -1252,7 +1252,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('long', 'long', ['l','o','ng']),
       w('groan.', 'groan', ['g','r','oa','n']),
     ],
-    imageUrl: '/illustrations/3_5/page1.png',
+    imageUrl: '/illustrations/3_5/page1.png', audioUrl: '/sounds/sentences/L3_5_p1.mp3',
   },
 
   // Page 2
@@ -1274,7 +1274,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w("race!'", 'race', ['r','a-e','s']),
       tricky('he', 'he'), tricky('said.', 'said'),
     ],
-    imageUrl: '/illustrations/3_5/page2.png',
+    imageUrl: '/illustrations/3_5/page2.png', audioUrl: '/sounds/sentences/L3_5_p2.mp3',
   },
 
   // Page 3
@@ -1297,7 +1297,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('to', 'to', ['t','oo']), w('his', 'his', ['h','i','z']),
       w('feet!', 'feet', ['f','ee','t']),
     ],
-    imageUrl: '/illustrations/3_5/page3.png',
+    imageUrl: '/illustrations/3_5/page3.png', audioUrl: '/sounds/sentences/L3_5_p3.mp3',
   },
 
   // Page 4
@@ -1320,7 +1320,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('Can', 'can', ['c','a','n']), w('it', 'it', ['i','t']),
       w('be?', 'be', ['b','ee']),
     ],
-    imageUrl: '/illustrations/3_5/page4.png',
+    imageUrl: '/illustrations/3_5/page4.png', audioUrl: '/sounds/sentences/L3_5_p4.mp3',
   },
 
   // Page 5
@@ -1342,7 +1342,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('Is', 'is', ['i','z']), w('this', 'this', ['th','i','s']),
       w('his?', 'his', ['h','i','z']),
     ],
-    imageUrl: '/illustrations/3_5/page5.png',
+    imageUrl: '/illustrations/3_5/page5.png', audioUrl: '/sounds/sentences/L3_5_p5.mp3',
   },
 
   // Page 6
@@ -1363,7 +1363,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('Is', 'is', ['i','z']), w('that', 'that', ['th','a','t']),
       w("you?'", 'you', ['y','oo']),
     ],
-    imageUrl: '/illustrations/3_5/page6.png',
+    imageUrl: '/illustrations/3_5/page6.png', audioUrl: '/sounds/sentences/L3_5_p6.mp3',
   },
 
   // Page 7
@@ -1384,7 +1384,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       tricky('What', 'what'), tricky('a', 'a'),
       w('hug!', 'hug', ['h','u','g']),
     ],
-    imageUrl: '/illustrations/3_5/page7.png',
+    imageUrl: '/illustrations/3_5/page7.png', audioUrl: '/sounds/sentences/L3_5_p7.mp3',
   },
 
   // Page 8
@@ -1408,7 +1408,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('wait', 'wait', ['w','ai','t']), tricky('was', 'was'),
       w('worth', 'worth', ['w','or','th']), w('it.', 'it', ['i','t']),
     ],
-    imageUrl: '/illustrations/3_5/page8.png',
+    imageUrl: '/illustrations/3_5/page8.png', audioUrl: '/sounds/sentences/L3_5_p8.mp3',
   },
 
   {
