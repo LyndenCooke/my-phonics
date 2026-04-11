@@ -1,6 +1,7 @@
-import { useState, useCallback, useRef } from 'react';
-import { Volume2 } from 'lucide-react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { StoryWord } from '@/lib/interactiveBookData';
+
+// ─── Audio helpers ─────────────────────────────────────────────────────
 
 function playAudioFile(url: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -14,15 +15,115 @@ function playAudioFile(url: string): Promise<void> {
 
 async function playPhoneme(grapheme: string): Promise<void> {
   const key = grapheme.toLowerCase().replace(/-/g, '_');
-  try {
-    await playAudioFile(`/sounds/${key}.mp3`);
-  } catch {
-    // No fallback for phonemes — they need real audio
-  }
+  try { await playAudioFile(`/sounds/${key}.mp3`); } catch {}
 }
 
+// ─── Known grapheme sets ───────────────────────────────────────────────
+
+const SPLIT_DIGRAPHS = new Set(['a-e', 'i-e', 'o-e', 'u-e', 'e-e']);
+
+const MULTI_LETTER = new Set([
+  'sh', 'ch', 'th', 'ng', 'nk', 'ck', 'ff', 'll', 'ss', 'zz', 'qu',
+  'ph', 'kn', 'wr', 'wh', 'tch',
+  'ay', 'ee', 'oo', 'ar', 'or', 'ir', 'ou', 'oy',
+  'oa', 'oi', 'aw', 'ai', 'ea', 'ie', 'ue', 'ew', 'ow', 'ey', 'oe', 'au',
+  'igh', 'air', 'ear', 'oor', 'ore', 'ure', 'ire', 'are', 'eer', 'ere',
+  'tion', 'cious', 'tious', 'able', 'ible', 'ous',
+  'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt',
+]);
+
+// ─── Phoneme-to-letter span builder ────────────────────────────────────
+
+interface LetterSpan {
+  letter: string;
+  annotation: 'dot' | 'line-start' | 'line-mid' | 'line-end' | 'arc-start' | 'arc-mid-dot' | 'arc-end' | 'none';
+  phonemeIdx: number;
+}
+
+function buildLetterSpans(display: string, phonemes: string[]): LetterSpan[] {
+  // Strip trailing punctuation for mapping, re-append at end
+  const match = display.match(/^(.*?)([^a-zA-Z]*)$/);
+  const core = match ? match[1] : display;
+  const trailing = match ? match[2] : '';
+  const letters = core.split('');
+  const result: LetterSpan[] = [];
+  let charIdx = 0;
+
+  // Find split digraph
+  const splitPhIdx = phonemes.findIndex(p => SPLIT_DIGRAPHS.has(p));
+
+  // Build a plan: for each phoneme, how many letters does it consume?
+  interface PhPlan { ph: string; idx: number; letterCount: number; type: 'single' | 'multi' | 'split'; }
+  const plan: PhPlan[] = [];
+
+  for (let pi = 0; pi < phonemes.length; pi++) {
+    const ph = phonemes[pi];
+    if (SPLIT_DIGRAPHS.has(ph)) {
+      plan.push({ ph, idx: pi, letterCount: 1, type: 'split' }); // just the first vowel
+    } else if (MULTI_LETTER.has(ph.toLowerCase())) {
+      const clean = ph.replace(/[-]/g, '');
+      plan.push({ ph, idx: pi, letterCount: clean.length, type: 'multi' });
+    } else {
+      plan.push({ ph, idx: pi, letterCount: 1, type: 'single' });
+    }
+  }
+
+  // If there's a split digraph, we need to account for the trailing 'e'
+  // The plan above only consumed the first vowel of the split digraph
+  // After all phonemes, there should be a final 'e' left
+
+  let planIdx = 0;
+  for (const p of plan) {
+    if (p.type === 'split') {
+      // First vowel of split digraph
+      if (charIdx < letters.length) {
+        result.push({ letter: letters[charIdx], annotation: 'arc-start', phonemeIdx: p.idx });
+        charIdx++;
+      }
+    } else if (p.type === 'multi') {
+      // Digraph/trigraph
+      for (let j = 0; j < p.letterCount && charIdx < letters.length; j++) {
+        const ann = j === 0 ? 'line-start' : j === p.letterCount - 1 ? 'line-end' : 'line-mid';
+        result.push({ letter: letters[charIdx], annotation: ann, phonemeIdx: p.idx });
+        charIdx++;
+      }
+    } else {
+      // Single letter
+      if (charIdx < letters.length) {
+        // Check if this letter falls between arc-start and arc-end
+        const isInSplitZone = splitPhIdx >= 0 && p.idx > splitPhIdx;
+        result.push({
+          letter: letters[charIdx],
+          annotation: isInSplitZone ? 'arc-mid-dot' : 'dot',
+          phonemeIdx: p.idx,
+        });
+        charIdx++;
+      }
+    }
+    planIdx++;
+  }
+
+  // Remaining letters (the 'e' from split digraph)
+  while (charIdx < letters.length) {
+    result.push({
+      letter: letters[charIdx],
+      annotation: splitPhIdx >= 0 ? 'arc-end' : 'none',
+      phonemeIdx: splitPhIdx >= 0 ? splitPhIdx : -1,
+    });
+    charIdx++;
+  }
+
+  // Add trailing punctuation to last span
+  if (trailing && result.length > 0) {
+    result[result.length - 1].letter += trailing;
+  }
+
+  return result;
+}
+
+// ─── Types ─────────────────────────────────────────────────────────────
+
 export interface NarrationHighlight {
-  /** True when this word is currently being spoken */
   wholeWord: boolean;
 }
 
@@ -30,15 +131,31 @@ interface TappableWordProps {
   wordData: StoryWord;
   focusSounds?: string[];
   size?: 'normal' | 'medium' | 'large';
-  highlight?: boolean;           // Legacy: simple whole-word highlight
-  narrationHighlight?: NarrationHighlight | null;  // New: letter-by-letter + whole word
+  highlight?: boolean;
+  narrationHighlight?: NarrationHighlight | null;
+  showAnnotations?: boolean;
 }
 
-export default function TappableWord({ wordData, focusSounds = [], size = 'normal', highlight = false, narrationHighlight = null }: TappableWordProps) {
-  const [showPhonemes, setShowPhonemes] = useState(false);
-  const [activePhoneme, setActivePhoneme] = useState<number | null>(null);
+// ─── Component ─────────────────────────────────────────────────────────
+
+export default function TappableWord({
+  wordData,
+  size = 'normal',
+  highlight = false,
+  narrationHighlight = null,
+  showAnnotations = false,
+}: TappableWordProps) {
   const [isSoundingOut, setIsSoundingOut] = useState(false);
+  const [activePhonemeIdx, setActivePhonemeIdx] = useState<number | null>(null);
+  const [tapped, setTapped] = useState(false);
   const cancelRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  // Arc SVG state
+  const [arcPath, setArcPath] = useState<string | null>(null);
+  const [arcWidth, setArcWidth] = useState(0);
+  const [arcOffset, setArcOffset] = useState(0);
 
   const textSize = size === 'large'
     ? 'text-3xl md:text-4xl lg:text-5xl'
@@ -47,43 +164,78 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
       : 'text-base md:text-lg lg:text-xl';
   const wordPad = size === 'large' ? 'px-2 py-1 md:px-3' : size === 'medium' ? 'px-1.5 py-0.5' : 'px-1 py-0.5';
   const wordMargin = size === 'large' ? 'mx-0.5 mb-1.5 md:mx-1 md:mb-2' : size === 'medium' ? 'mx-0 mb-0.5 md:mx-0.5 md:mb-1' : 'mx-0 mb-0';
+  const annotH = size === 'large' ? 16 : size === 'medium' ? 12 : 10;
+  const dotR = size === 'large' ? 2.5 : 2;
+  const strokeW = size === 'large' ? 2 : 1.5;
 
-  const handleTapWord = useCallback(() => {
-    if (isSoundingOut) return;
-    setShowPhonemes(prev => !prev);
-  }, [isSoundingOut]);
+  // ─── Build letter spans for annotations ──────────────────────────────
+  const spans = (wordData.phonemes.length > 0 && !wordData.isTricky)
+    ? buildLetterSpans(wordData.display, wordData.phonemes)
+    : null;
 
-  const handleSoundOut = useCallback(async () => {
-    if (isSoundingOut || wordData.isTricky || wordData.phonemes.length === 0) return;
-    cancelRef.current = false;
-    setIsSoundingOut(true);
-
-    for (let i = 0; i < wordData.phonemes.length; i++) {
-      if (cancelRef.current) break;
-      setActivePhoneme(i);
-      await playPhoneme(wordData.phonemes[i]);
-      await new Promise(r => setTimeout(r, 300));
+  // ─── Measure arc positions after render ──────────────────────────────
+  useEffect(() => {
+    if (!showAnnotations || !spans || !containerRef.current) {
+      setArcPath(null);
+      return;
     }
-    setActivePhoneme(null);
-    setIsSoundingOut(false);
+
+    const arcStartIdx = spans.findIndex(s => s.annotation === 'arc-start');
+    const arcEndIdx = spans.findIndex(s => s.annotation === 'arc-end');
+    if (arcStartIdx < 0 || arcEndIdx < 0) {
+      setArcPath(null);
+      return;
+    }
+
+    const container = containerRef.current;
+    const startEl = letterRefs.current[arcStartIdx];
+    const endEl = letterRefs.current[arcEndIdx];
+    if (!startEl || !endEl || !container) { setArcPath(null); return; }
+
+    const cRect = container.getBoundingClientRect();
+    const sRect = startEl.getBoundingClientRect();
+    const eRect = endEl.getBoundingClientRect();
+
+    const x1 = sRect.left + sRect.width / 2 - cRect.left;
+    const x2 = eRect.left + eRect.width / 2 - cRect.left;
+    const w = x2 - x1;
+    const h = annotH - 2;
+
+    setArcOffset(x1);
+    setArcWidth(w);
+    setArcPath(`M 0,${h} Q ${w / 2},${-h * 0.3} ${w},${h}`);
+  }, [showAnnotations, spans, annotH, size]);
+
+  // ─── Tap handler ────────────────────────────────────────────────────
+  const handleTap = useCallback(async () => {
+    if (isSoundingOut) return;
+    cancelRef.current = false;
+
+    if (wordData.isTricky) {
+      // Tricky word: quick purple highlight + read the word
+      setTapped(true);
+      try { await playPhoneme(wordData.word); } catch {}
+      setTimeout(() => setTapped(false), 600);
+    } else if (wordData.phonemes.length > 0) {
+      // Normal word: sound out each phoneme with highlight
+      setIsSoundingOut(true);
+      for (let i = 0; i < wordData.phonemes.length; i++) {
+        if (cancelRef.current) break;
+        setActivePhonemeIdx(i);
+        await playPhoneme(wordData.phonemes[i]);
+        await new Promise(r => setTimeout(r, 200));
+      }
+      setActivePhonemeIdx(null);
+      setIsSoundingOut(false);
+    }
   }, [wordData, isSoundingOut]);
 
-  const handlePhonemeClick = useCallback(async (index: number) => {
-    setActivePhoneme(index);
-    await playPhoneme(wordData.phonemes[index]);
-    setActivePhoneme(null);
-  }, [wordData.phonemes]);
-
-  // ─── Determine visual state ───────────────────────────────────────
+  // ─── Narration mode (Read to Me) ───────────────────────────────────
   const isNarrating = narrationHighlight !== null;
   const isTricky = wordData.isTricky;
 
-  // During narration: render letters individually with colour changes
   if (isNarrating) {
     const { wholeWord } = narrationHighlight;
-
-    // During narration: whole word highlight only (no letter-by-letter)
-    // Red for regular words, purple for tricky words, normal if not yet reached
     const colour = wholeWord
       ? (isTricky ? 'text-purple-600' : 'text-red-500')
       : 'text-slate-800';
@@ -97,87 +249,134 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
         >
           {wordData.display}
         </span>
+        {showAnnotations && isTricky && (
+          <div className="flex justify-center w-full" style={{ marginTop: 1 }}>
+            <div className="bg-purple-500 rounded-full" style={{ height: strokeW, width: '85%' }} />
+          </div>
+        )}
       </div>
     );
   }
 
-  // ─── Normal (non-narrating) interactive mode ──────────────────────
+  // ─── Normal interactive mode ────────────────────────────────────────
+
+  // Work out which letter spans are active during sounding out
+  const getSpanHighlight = (span: LetterSpan): boolean => {
+    if (activePhonemeIdx === null) return false;
+    return span.phonemeIdx === activePhonemeIdx;
+  };
+
   return (
     <div className={`inline-flex flex-col items-center ${wordMargin}`}>
-      {/* The tappable word */}
       <button
-        onClick={handleTapWord}
+        onClick={handleTap}
         className={`
           ${textSize} font-bold rounded-xl ${wordPad}
           transition-all duration-200 select-none
           ${highlight
             ? 'text-pink-600 scale-110 bg-pink-100'
-            : 'text-slate-800 hover:bg-pink-50 active:scale-95'
+            : tapped
+              ? 'text-purple-600 scale-105 bg-purple-50'
+              : isSoundingOut
+                ? 'text-slate-800 bg-amber-50'
+                : 'text-slate-800 hover:bg-pink-50 active:scale-95'
           }
-          ${isSoundingOut ? 'bg-amber-50' : ''}
         `}
         aria-label={`Tap to hear "${wordData.word}"`}
         style={{ fontFamily: "'Andika', sans-serif" }}
       >
-        {wordData.display}
-      </button>
+        {(showAnnotations && spans) ? (
+          /* ─── Annotated word (normal, non-tricky) ─── */
+          <span className="inline-flex flex-col items-center" ref={containerRef}>
+            {/* Letters */}
+            <span className="inline-flex">
+              {spans.map((span, i) => (
+                <span
+                  key={i}
+                  ref={el => { letterRefs.current[i] = el; }}
+                  className={`transition-colors duration-100 ${getSpanHighlight(span) ? 'text-pink-600' : ''}`}
+                >
+                  {span.letter}
+                </span>
+              ))}
+            </span>
 
-      {/* Phoneme breakdown (shown after tapping the word) */}
-      {showPhonemes && wordData.phonemes.length > 0 && !wordData.isTricky && (
-        <div className={`flex items-center gap-1 ${size === 'large' ? 'mt-1' : 'mt-0.5'} animate-in fade-in slide-in-from-top-1 duration-300`}>
-          {wordData.phonemes.map((ph, i) => {
-            const isFocus = focusSounds.includes(ph);
-            const isActive = activePhoneme === i;
-            const btnSize = size === 'large' ? 'w-10 h-10 text-base' : size === 'medium' ? 'w-8 h-8 text-sm' : 'w-7 h-7 text-xs';
-            return (
-              <button
-                key={i}
-                onClick={() => handlePhonemeClick(i)}
-                className={`
-                  ${btnSize} rounded-full font-bold
-                  flex items-center justify-center
-                  transition-all duration-200
-                  ${isActive
-                    ? 'bg-pink-500 text-white scale-125 ring-2 ring-pink-300'
-                    : isFocus
-                      ? 'bg-pink-100 text-pink-700 hover:bg-pink-200'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            {/* Annotation row */}
+            <span className="relative flex items-end justify-start w-full" style={{ height: annotH }}>
+              {/* Dots and lines — positioned to match letters above */}
+              <span className="inline-flex items-center" style={{ height: annotH }}>
+                {spans.map((span, i) => {
+                  const cleanLen = span.letter.replace(/[^a-zA-Z]/g, '').length || 1;
+                  const spanW = `${cleanLen}ch`;
+
+                  if (span.annotation === 'dot' || span.annotation === 'arc-mid-dot') {
+                    return (
+                      <span key={i} className="inline-flex justify-center items-end" style={{ width: spanW, height: annotH }}>
+                        <svg width={dotR * 2 + 2} height={dotR * 2 + 2}>
+                          <circle cx={dotR + 1} cy={dotR + 1} r={dotR} fill="#1e293b" />
+                        </svg>
+                      </span>
+                    );
                   }
-                `}
-                aria-label={`Phoneme ${ph}`}
-              >
-                {ph}
-              </button>
-            );
-          })}
+                  if (span.annotation === 'line-start' || span.annotation === 'line-mid' || span.annotation === 'line-end') {
+                    // Continuous line across digraph letters
+                    const isStart = span.annotation === 'line-start';
+                    const isEnd = span.annotation === 'line-end';
+                    return (
+                      <span key={i} className="inline-flex items-end" style={{ width: spanW, height: annotH }}>
+                        <span
+                          className="bg-slate-800"
+                          style={{
+                            height: strokeW,
+                            width: '100%',
+                            borderRadius: isStart ? `${strokeW}px 0 0 ${strokeW}px` : isEnd ? `0 ${strokeW}px ${strokeW}px 0` : 0,
+                          }}
+                        />
+                      </span>
+                    );
+                  }
+                  if (span.annotation === 'arc-start' || span.annotation === 'arc-end') {
+                    // Space holder for arc (SVG drawn separately)
+                    return <span key={i} style={{ width: spanW, height: annotH }} />;
+                  }
+                  // 'none' — empty space
+                  return <span key={i} style={{ width: spanW, height: annotH }} />;
+                })}
+              </span>
 
-          {/* Sound-it-out button */}
-          <button
-            onClick={handleSoundOut}
-            disabled={isSoundingOut}
-            className={`
-              ${size === 'large' ? 'w-10 h-10' : size === 'medium' ? 'w-8 h-8' : 'w-7 h-7'} rounded-full flex items-center justify-center ml-1
-              transition-all duration-200
-              ${isSoundingOut
-                ? 'bg-amber-400 text-white animate-pulse'
-                : 'bg-amber-100 text-amber-600 hover:bg-amber-200'
-              }
-            `}
-            aria-label="Sound it out"
-            title="Sound it out"
-          >
-            <Volume2 className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-
-      {/* Tricky word badge */}
-      {showPhonemes && wordData.isTricky && (
-        <span className="text-xs text-purple-500 font-semibold mt-1 animate-in fade-in duration-300">
-          tricky word ⭐
-        </span>
-      )}
+              {/* Split digraph arc SVG overlay */}
+              {arcPath && (
+                <svg
+                  className="absolute pointer-events-none"
+                  style={{ left: arcOffset, bottom: 0 }}
+                  width={arcWidth}
+                  height={annotH}
+                  viewBox={`0 0 ${arcWidth} ${annotH}`}
+                >
+                  <path
+                    d={arcPath}
+                    fill="none"
+                    stroke="#1e293b"
+                    strokeWidth={strokeW}
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )}
+            </span>
+          </span>
+        ) : (showAnnotations && isTricky) ? (
+          /* ─── Tricky word with purple underline ─── */
+          <span className="inline-flex flex-col items-center">
+            <span>{wordData.display}</span>
+            <span className="flex justify-center w-full" style={{ height: annotH }}>
+              <span className="bg-purple-500 rounded-full self-end" style={{ height: strokeW, width: '85%' }} />
+            </span>
+          </span>
+        ) : (
+          /* ─── Plain text (no annotations) ─── */
+          wordData.display
+        )}
+      </button>
     </div>
   );
 }
-
