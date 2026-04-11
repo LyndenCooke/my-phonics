@@ -196,10 +196,10 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
     for (let i = 0; i < wc; i++) {
       // Base weight: syllable-aware — longer words take longer to say
       let w = Math.max(1, words[i].word.length) * 1.0;
-      // Sentence-ending punctuation — significant pause in natural speech
-      if (/[.!?]$/.test(words[i].display)) w += 6;
-      // Comma/semicolon — smaller pause
-      else if (/[,;:]$/.test(words[i].display)) w += 3;
+      // Sentence-ending punctuation — exaggerated pause for teacher-paced reading
+      if (/[.!?]$/.test(words[i].display)) w += 10;
+      // Comma/semicolon — noticeable pause
+      else if (/[,;:]$/.test(words[i].display)) w += 5;
       weights.push(w);
       totalWeight += w;
     }
@@ -225,6 +225,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
     if (page.audioUrl) {
       const audio = new Audio(page.audioUrl);
+      audio.playbackRate = 0.8; // 1.25× slower — teacher-paced reading
       audioRef.current = audio;
 
       // Real-time tracking: update highlight based on actual audio position
@@ -279,7 +280,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
       if ('speechSynthesis' in window) {
         const utter = new SpeechSynthesisUtterance(sentence);
-        utter.rate = 0.85;
+        utter.rate = 0.7;
         window.speechSynthesis.speak(utter);
       }
     }
