@@ -85,7 +85,9 @@ function buildLetterSpans(display: string, phonemes: string[]): LetterSpan[] {
   // The plan above only consumed the first vowel of the split digraph
   // After all phonemes, there should be a final 'e' left
 
-  let planIdx = 0;
+  // Track whether we've consumed the split digraph trailing 'e'
+  let splitEConsumed = false;
+
   for (const p of plan) {
     if (p.type === 'split') {
       // First vowel of split digraph
@@ -101,28 +103,30 @@ function buildLetterSpans(display: string, phonemes: string[]): LetterSpan[] {
         charIdx++;
       }
     } else {
-      // Single letter
+      // Single letter — check if it's the middle consonant of a split digraph
       if (charIdx < letters.length) {
-        // Check if this letter falls between arc-start and arc-end
-        const isInSplitZone = splitPhIdx >= 0 && p.idx > splitPhIdx;
-        result.push({
-          letter: letters[charIdx],
-          annotation: isInSplitZone ? 'arc-mid-dot' : 'dot',
-          phonemeIdx: p.idx,
-        });
-        charIdx++;
+        const isMiddleOfSplit = splitPhIdx >= 0 && !splitEConsumed && p.idx === splitPhIdx + 1;
+        if (isMiddleOfSplit) {
+          // Middle consonant between the split digraph vowels
+          result.push({ letter: letters[charIdx], annotation: 'arc-mid-dot', phonemeIdx: p.idx });
+          charIdx++;
+          // Now consume the trailing 'e' as arc-end
+          if (charIdx < letters.length) {
+            result.push({ letter: letters[charIdx], annotation: 'arc-end', phonemeIdx: splitPhIdx });
+            charIdx++;
+            splitEConsumed = true;
+          }
+        } else {
+          result.push({ letter: letters[charIdx], annotation: 'dot', phonemeIdx: p.idx });
+          charIdx++;
+        }
       }
     }
-    planIdx++;
   }
 
-  // Remaining letters (the 'e' from split digraph)
+  // Any truly remaining letters (shouldn't normally happen)
   while (charIdx < letters.length) {
-    result.push({
-      letter: letters[charIdx],
-      annotation: splitPhIdx >= 0 ? 'arc-end' : 'none',
-      phonemeIdx: splitPhIdx >= 0 ? splitPhIdx : -1,
-    });
+    result.push({ letter: letters[charIdx], annotation: 'none', phonemeIdx: -1 });
     charIdx++;
   }
 
@@ -374,13 +378,8 @@ export default function TappableWord({
                     );
                   }
                   if (span.annotation === 'arc-start' || span.annotation === 'arc-end') {
-                    return (
-                      <span key={i} className="inline-flex justify-center items-end" style={{ width: spanW, height: annotH }}>
-                        <svg width={dotR * 2 + 2} height={dotR * 2 + 2}>
-                          <circle cx={dotR + 1} cy={dotR + 1} r={dotR} fill="#1e293b" />
-                        </svg>
-                      </span>
-                    );
+                    // No dot — the arc connects these two letters
+                    return <span key={i} style={{ width: spanW, height: annotH }} />;
                   }
                   return <span key={i} style={{ width: spanW, height: annotH }} />;
                 })}
