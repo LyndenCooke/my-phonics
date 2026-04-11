@@ -147,21 +147,11 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
                 className="w-14 h-14 object-contain mb-2"
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
-              {w.isTricky ? (
-                <>
-                  <span className="text-lg font-bold text-slate-800">{w.word}</span>
-                  <span className="text-xs text-slate-400 mt-0.5">tricky word</span>
-                </>
-              ) : (
-                <div className="flex gap-1 justify-center flex-wrap">
-                  {w.phonemes.map((ph, pi) => (
-                    <div key={pi} className="flex flex-col items-center">
-                      <span className="text-base font-bold leading-tight text-slate-800">{ph}</span>
-                      <div className="w-1.5 h-1.5 rounded-full mt-0.5 bg-slate-500" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <TappableWord
+                wordData={w}
+                size="medium"
+                showAnnotations={true}
+              />
             </button>
           );
         })}
