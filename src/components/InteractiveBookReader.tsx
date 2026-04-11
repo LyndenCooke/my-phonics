@@ -226,7 +226,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
     if (page.audioUrl) {
       const audio = new Audio(page.audioUrl);
-      audio.playbackRate = 0.65; // ~1.5× slower — teacher-paced reading
+      audio.playbackRate = 0.75; // Teacher-paced reading
       audioRef.current = audio;
 
       // Track highlight with requestAnimationFrame (~60fps) instead of
