@@ -22,9 +22,7 @@ async function playPhoneme(grapheme: string): Promise<void> {
 }
 
 export interface NarrationHighlight {
-  /** Index of the phoneme/letter currently being sounded out (null = whole word phase or idle) */
-  activePhonemeIdx: number | null;
-  /** True when the whole word is being spoken (after sounding out letters) */
+  /** True when this word is currently being spoken */
   wholeWord: boolean;
 }
 
@@ -82,61 +80,22 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
 
   // During narration: render letters individually with colour changes
   if (isNarrating) {
-    const { activePhonemeIdx, wholeWord } = narrationHighlight;
+    const { wholeWord } = narrationHighlight;
 
-    if (isTricky && wholeWord) {
-      // Tricky word highlighted: whole word purple
-      return (
-        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
-          <span
-            className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 text-purple-600 scale-110`}
-            style={{ fontFamily: "'Andika', sans-serif" }}
-          >
-            {wordData.display}
-          </span>
-        </div>
-      );
-    }
-
-    if (wholeWord) {
-      // Regular word fully spoken: whole word red
-      return (
-        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
-          <span
-            className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 text-red-500 scale-110`}
-            style={{ fontFamily: "'Andika', sans-serif" }}
-          >
-            {wordData.display}
-          </span>
-        </div>
-      );
-    }
-
-    if (isTricky) {
-      // Tricky word waiting (not yet spoken) — stays normal
-      return (
-        <div className={`inline-flex flex-col items-center ${wordMargin}`}>
-          <span
-            className={`${textSize} font-bold ${wordPad} rounded-xl text-slate-800`}
-            style={{ fontFamily: "'Andika', sans-serif" }}
-          >
-            {wordData.display}
-          </span>
-        </div>
-      );
-    }
-
-    // Sounding out: render each letter, highlight active phoneme in red
-    // Map phonemes back to display characters
-    const letters = renderLettersWithPhonemeHighlight(wordData, activePhonemeIdx);
+    // During narration: whole word highlight only (no letter-by-letter)
+    // Red for regular words, purple for tricky words, normal if not yet reached
+    const colour = wholeWord
+      ? (isTricky ? 'text-purple-600' : 'text-red-500')
+      : 'text-slate-800';
+    const scale = wholeWord ? 'scale-110' : '';
 
     return (
       <div className={`inline-flex flex-col items-center ${wordMargin}`}>
         <span
-          className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200`}
+          className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 ${colour} ${scale}`}
           style={{ fontFamily: "'Andika', sans-serif" }}
         >
-          {letters}
+          {wordData.display}
         </span>
       </div>
     );
@@ -222,48 +181,3 @@ export default function TappableWord({ wordData, focusSounds = [], size = 'norma
   );
 }
 
-/**
- * Renders individual letters/graphemes with the active phoneme highlighted in red.
- * Maps phonemes back to display characters to handle digraphs (sh, th, ck, etc.)
- * and punctuation correctly.
- */
-function renderLettersWithPhonemeHighlight(wordData: StoryWord, activePhonemeIdx: number | null) {
-  const { display, phonemes } = wordData;
-  const elements: JSX.Element[] = [];
-
-  // Strip punctuation from end to match phonemes to clean word
-  const punctMatch = display.match(/[^a-zA-Z]+$/);
-  const punct = punctMatch ? punctMatch[0] : '';
-  const cleanDisplay = punct ? display.slice(0, -punct.length) : display;
-
-  // Walk through the clean display string, matching each phoneme
-  let charIdx = 0;
-  for (let pi = 0; pi < phonemes.length; pi++) {
-    const ph = phonemes[pi];
-    const phLen = ph.length;
-    const chunk = cleanDisplay.slice(charIdx, charIdx + phLen);
-    const isActive = activePhonemeIdx === pi;
-
-    elements.push(
-      <span
-        key={pi}
-        className={`transition-colors duration-150 ${isActive ? 'text-red-500' : 'text-slate-800'}`}
-      >
-        {chunk || ph}
-      </span>
-    );
-    charIdx += phLen;
-  }
-
-  // Any remaining characters (shouldn't happen, but safety)
-  if (charIdx < cleanDisplay.length) {
-    elements.push(<span key="rest" className="text-slate-800">{cleanDisplay.slice(charIdx)}</span>);
-  }
-
-  // Add punctuation back
-  if (punct) {
-    elements.push(<span key="punct" className="text-slate-800">{punct}</span>);
-  }
-
-  return <>{elements}</>;
-}
