@@ -185,6 +185,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
   const timersRef = useRef<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordTimeFractionsRef = useRef<number[]>([]);
+  const rafRef = useRef<number | null>(null);
 
   // ─── Build word timing fractions (pre-computed, reused on every timeupdate) ──
   const buildWordTimeFractions = useCallback(() => {
@@ -228,32 +229,39 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
       audio.playbackRate = 0.8; // 1.25× slower — teacher-paced reading
       audioRef.current = audio;
 
-      // Real-time tracking: update highlight based on actual audio position
-      const onTimeUpdate = () => {
-        if (!audio.duration) return;
-        const fraction = audio.currentTime / audio.duration;
-        const fractions = wordTimeFractionsRef.current;
-        // Find the last word whose start fraction <= current position
-        let wordIdx = 0;
-        for (let i = fractions.length - 1; i >= 0; i--) {
-          if (fractions[i] <= fraction) {
-            wordIdx = i;
-            break;
+      // Track highlight with requestAnimationFrame (~60fps) instead of
+      // timeupdate (~4fps) so every word reliably gets its highlight
+      let lastWordIdx = -1;
+      const tick = () => {
+        if (audio.paused || audio.ended) return;
+        if (audio.duration) {
+          const fraction = audio.currentTime / audio.duration;
+          const fractions = wordTimeFractionsRef.current;
+          let wordIdx = 0;
+          for (let i = fractions.length - 1; i >= 0; i--) {
+            if (fractions[i] <= fraction) { wordIdx = i; break; }
+          }
+          if (wordIdx !== lastWordIdx) {
+            lastWordIdx = wordIdx;
+            setNarrationState({ wordIdx, wholeWord: true });
           }
         }
-        setNarrationState({ wordIdx, wholeWord: true });
+        rafRef.current = requestAnimationFrame(tick);
       };
 
-      audio.addEventListener('timeupdate', onTimeUpdate);
+      audio.addEventListener('playing', () => {
+        rafRef.current = requestAnimationFrame(tick);
+      }, { once: true });
 
       audio.addEventListener('ended', () => {
-        audio.removeEventListener('timeupdate', onTimeUpdate);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
         setNarrationState(null);
         setIsNarrating(false);
       }, { once: true });
 
       audio.play().catch(() => {
-        audio.removeEventListener('timeupdate', onTimeUpdate);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
         fallbackTTS();
       });
     } else {
@@ -286,7 +294,10 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
     }
   }, [isNarrating, page.sentences, page.words, page.audioUrl, buildWordTimeFractions]);
 
-  useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); }, []);
+  useEffect(() => () => {
+    timersRef.current.forEach(t => clearTimeout(t));
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  }, []);
 
   // Level-based sizing: font gets smaller and spacing tighter as levels increase
   // L1-2: large & spacious (beginner readers), L3-4: medium, L5-6: compact (approaching normal reading)
