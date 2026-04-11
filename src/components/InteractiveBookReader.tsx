@@ -185,13 +185,50 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
     timersRef.current = [];
     const wc = page.words.length;
 
-    let d = 0;
-    for (let i = 0; i < wc; i++) {
-      timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), d));
-      d += 800;
+    // Try pre-generated audio first, fall back to browser TTS
+    const sentence = page.sentences.join(' ');
+    let audioDuration = wc * 600; // estimated ms for word highlighting
+
+    if (page.audioUrl) {
+      const audio = new Audio(page.audioUrl);
+      audio.play().then(() => {
+        // Use actual audio duration for word sync
+        const dur = (audio.duration || audioDuration / 1000) * 1000;
+        const perWord = dur / wc;
+        for (let i = 0; i < wc; i++) {
+          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), perWord * i));
+        }
+        timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, dur + 300));
+      }).catch(() => {
+        // Audio file missing — use browser TTS
+        speakWithHighlight(sentence, wc);
+      });
+    } else {
+      speakWithHighlight(sentence, wc);
     }
-    timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, d + 300));
-  }, [isNarrating, page.words]);
+
+    function speakWithHighlight(text: string, wordCount: number) {
+      if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 0.85;
+        utter.onend = () => { setActiveWordIdx(null); setIsNarrating(false); };
+        // Highlight words on a timer as TTS word boundary events are unreliable
+        const perWord = (text.length * 70) / wordCount; // rough ms per word
+        for (let i = 0; i < wordCount; i++) {
+          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), perWord * i));
+        }
+        window.speechSynthesis.speak(utter);
+      } else {
+        // No TTS available — just do visual highlight
+        let d = 0;
+        for (let i = 0; i < wordCount; i++) {
+          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), d));
+          d += 800;
+        }
+        timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, d + 300));
+      }
+    }
+  }, [isNarrating, page.words, page.sentences, page.audioUrl]);
 
   useEffect(() => () => { timersRef.current.forEach(t => clearTimeout(t)); }, []);
 
