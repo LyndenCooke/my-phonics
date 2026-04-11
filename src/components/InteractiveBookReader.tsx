@@ -172,61 +172,84 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
 
 // ─── Story Page ─────────────────────────────────────────────────────────────
 
+interface WordNarrationState {
+  wordIdx: number;
+  phonemeIdx: number | null;  // null = whole word phase
+  wholeWord: boolean;
+}
+
 function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<InteractivePage, { type: 'story' }>; focusSounds: string[]; level?: number }) {
   const [isNarrating, setIsNarrating] = useState(false);
-  const [activeWordIdx, setActiveWordIdx] = useState<number | null>(null);
+  const [narrationState, setNarrationState] = useState<WordNarrationState | null>(null);
   const [imageExpanded, setImageExpanded] = useState(false);
   const timersRef = useRef<number[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleNarrate = useCallback(() => {
     if (isNarrating) return;
-    setIsNarrating(true); setActiveWordIdx(0);
+    setIsNarrating(true);
     timersRef.current.forEach(t => clearTimeout(t));
     timersRef.current = [];
-    const wc = page.words.length;
 
-    // Try pre-generated audio first, fall back to browser TTS
-    const sentence = page.sentences.join(' ');
-    let audioDuration = wc * 600; // estimated ms for word highlighting
+    const words = page.words;
 
-    if (page.audioUrl) {
-      const audio = new Audio(page.audioUrl);
-      audio.play().then(() => {
-        // Use actual audio duration for word sync
-        const dur = (audio.duration || audioDuration / 1000) * 1000;
-        const perWord = dur / wc;
-        for (let i = 0; i < wc; i++) {
-          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), perWord * i));
+    // Build the highlight timeline: for each word, sound out letters then whole word
+    // Tricky words skip letter-by-letter, just do whole word in purple
+    const PHONEME_MS = 350;   // time per letter highlight
+    const WHOLE_WORD_MS = 500; // time for whole word highlight
+    const GAP_MS = 150;        // pause between words
+
+    let delay = 0;
+    for (let wi = 0; wi < words.length; wi++) {
+      const w = words[wi];
+      if (w.isTricky) {
+        // Tricky: just show whole word purple
+        const d = delay;
+        timersRef.current.push(window.setTimeout(() => {
+          setNarrationState({ wordIdx: wi, phonemeIdx: null, wholeWord: true });
+        }, d));
+        delay += WHOLE_WORD_MS;
+      } else {
+        // Sound out each phoneme (letter goes red)
+        for (let pi = 0; pi < w.phonemes.length; pi++) {
+          const d = delay;
+          timersRef.current.push(window.setTimeout(() => {
+            setNarrationState({ wordIdx: wi, phonemeIdx: pi, wholeWord: false });
+          }, d));
+          delay += PHONEME_MS;
         }
-        timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, dur + 300));
-      }).catch(() => {
-        // Audio file missing — use browser TTS
-        speakWithHighlight(sentence, wc);
-      });
-    } else {
-      speakWithHighlight(sentence, wc);
+        // Then whole word red
+        const d = delay;
+        timersRef.current.push(window.setTimeout(() => {
+          setNarrationState({ wordIdx: wi, phonemeIdx: null, wholeWord: true });
+        }, d));
+        delay += WHOLE_WORD_MS;
+      }
+      delay += GAP_MS;
     }
 
-    function speakWithHighlight(text: string, wordCount: number) {
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.rate = 0.85;
-        utter.onend = () => { setActiveWordIdx(null); setIsNarrating(false); };
-        // Highlight words on a timer as TTS word boundary events are unreliable
-        const perWord = (text.length * 70) / wordCount; // rough ms per word
-        for (let i = 0; i < wordCount; i++) {
-          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), perWord * i));
+    // End narration
+    timersRef.current.push(window.setTimeout(() => {
+      setNarrationState(null);
+      setIsNarrating(false);
+    }, delay + 200));
+
+    // Play audio alongside the visual highlights
+    if (page.audioUrl) {
+      const audio = new Audio(page.audioUrl);
+      audioRef.current = audio;
+      audio.play().catch(() => {
+        // Audio missing — try browser TTS
+        if ('speechSynthesis' in window) {
+          const utter = new SpeechSynthesisUtterance(page.sentences.join(' '));
+          utter.rate = 0.85;
+          window.speechSynthesis.speak(utter);
         }
-        window.speechSynthesis.speak(utter);
-      } else {
-        // No TTS available — just do visual highlight
-        let d = 0;
-        for (let i = 0; i < wordCount; i++) {
-          timersRef.current.push(window.setTimeout(() => setActiveWordIdx(i), d));
-          d += 800;
-        }
-        timersRef.current.push(window.setTimeout(() => { setActiveWordIdx(null); setIsNarrating(false); }, d + 300));
-      }
+      });
+    } else if ('speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(page.sentences.join(' '));
+      utter.rate = 0.85;
+      window.speechSynthesis.speak(utter);
     }
   }, [isNarrating, page.words, page.sentences, page.audioUrl]);
 
@@ -277,11 +300,16 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         {/* Text */}
         <div className={`flex items-center justify-center ${textPad} py-2 md:py-4 flex-shrink-0`}>
           <div className={`flex flex-wrap items-end justify-center ${gapClass}`}>
-            {page.words.map((w, i) => (
-              <div key={i} className={`transition-transform duration-150 ${activeWordIdx === i ? '-translate-y-1 md:-translate-y-2' : ''}`}>
-                <TappableWord wordData={w} focusSounds={focusSounds} size={wordSize} highlight={activeWordIdx === i} />
-              </div>
-            ))}
+            {page.words.map((w, i) => {
+              const nh = narrationState && narrationState.wordIdx === i
+                ? { activePhonemeIdx: narrationState.phonemeIdx, wholeWord: narrationState.wholeWord }
+                : null;
+              return (
+                <div key={i} className="transition-transform duration-150">
+                  <TappableWord wordData={w} focusSounds={focusSounds} size={wordSize} narrationHighlight={isNarrating ? nh : null} />
+                </div>
+              );
+            })}
           </div>
         </div>
 
