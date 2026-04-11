@@ -322,7 +322,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
   // ── TRICKY WORDS ──
   { type: 'tricky_words', words: [
     tricky('the', 'the'), tricky('said', 'said'), tricky('some', 'some'),
-    tricky('like', 'like'), tricky('what', 'what'), tricky('all', 'all')] },
+    w('like', 'like', ['l','i-e','k']), tricky('what', 'what'), tricky('all', 'all')] },
 
   // ── SPELLING ──
   { type: 'spelling', words: [
@@ -1217,7 +1217,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
     sentences: ["He moans and paces the road.", "'It is so slow!' he said.", "He spots a snail.", "'Even the snail wins the race!' he said."],
     words: [
       tricky('He', 'he'), w('moans', 'moans', ['m','oa','n','s']),
-      w('and', 'and', ['a','n','d']), w('paces', 'paces', ['p','a-e','s','e','s']),
+      w('and', 'and', ['a','n','d']), w('paces', 'paces', ['p','a-e','c','s']),
       tricky('the', 'the'), w('road.', 'road', ['r','oa','d']),
       w("'It", 'it', ['i','t']), tricky('is', 'is'),
       tricky('so', 'so'), w("slow!'", 'slow', ['s','l','ow']),
