@@ -12,10 +12,14 @@ import re
 import os
 
 INPUT_WAV = r"C:\Users\ASUS\myphonicsbooks\myphonics_books\phonics-fun-hub\phonics sounds.wav"
-OUTPUT_DIR = r"C:\Users\ASUS\myphonicsbooks\myphonics_books\phonics-fun-hub\public\sounds"
+OUTPUT_DIRS = [
+    r"C:\Users\ASUS\myphonicsbooks\myphonics_books\phonics-fun-hub\public\sounds",
+    r"C:\Users\ASUS\myphonicsbooks\public\sounds",
+]
 
 # Linear sequence: announcement, sounds, announcement, sounds, ...
 # Must match the order in the recording and assessmentData.ts
+# NOTE: "ow" recorded once only (covers both "ow" as in snow and "ou/ow" as in cow)
 SEQUENCE = [
     ('skip', 'Level 1'),
     ('sound', 's'), ('sound', 'a'), ('sound', 't'), ('sound', 'p'),
@@ -29,7 +33,7 @@ SEQUENCE = [
     ('sound', 'sh'), ('sound', 'th'), ('sound', 'ng'), ('sound', 'nk'),
     ('skip', 'Level 2'),
     ('sound', 'ay'), ('sound', 'ee'), ('sound', 'igh'),
-    ('sound', 'ow'), ('skip', 'ow_cow'),  # ow (cow) same sound, skip
+    ('sound', 'ow'),
     ('sound', 'oo_moon'), ('sound', 'oo_look'),
     ('sound', 'ar'), ('sound', 'or'), ('sound', 'air'), ('sound', 'ir'),
     ('sound', 'ou'), ('sound', 'oy'),
@@ -47,6 +51,7 @@ SEQUENCE = [
     ('skip', 'Level 6'),
     ('sound', 'ous'), ('sound', 'cious'), ('sound', 'tious'),
     ('sound', 'able'), ('sound', 'ible'),
+    ('skip', 'tail_noise'),  # trailing noise/silence artefact at end of recording
 ]
 
 
@@ -102,10 +107,15 @@ def merge_close_segments(segments, max_gap=0.35):
     return merged
 
 
-def extract_clip(wav_path, start, end, output_path, pad=0.05):
+import shutil
+
+
+def extract_clip(wav_path, start, end, output_paths, pad=0.05):
+    """Extract clip to first path, then copy to all other paths."""
     clip_start = max(0, start - pad)
     clip_duration = (end - start) + 2 * pad
 
+    primary = output_paths[0]
     # Normalize volume to -3dB peak, no fade (clips are too short for fades)
     cmd = [
         'ffmpeg', '-y', '-i', wav_path,
@@ -113,14 +123,19 @@ def extract_clip(wav_path, start, end, output_path, pad=0.05):
         '-t', str(clip_duration),
         '-af', 'loudnorm=I=-16:TP=-3:LRA=11',
         '-ac', '1', '-ar', '44100', '-b:a', '128k',
-        output_path
+        primary
     ]
     subprocess.run(cmd, capture_output=True, text=True)
+
+    # Copy to all other output directories
+    for extra in output_paths[1:]:
+        shutil.copy2(primary, extra)
 
 
 def main():
     print(f"Input:  {INPUT_WAV}")
-    print(f"Output: {OUTPUT_DIR}")
+    for d in OUTPUT_DIRS:
+        print(f"Output: {d}")
     print()
 
     # Silence detection
@@ -133,20 +148,23 @@ def main():
     print(f"Found {len(segments)} segments (expected {len(SEQUENCE)})")
     print()
 
+    # Show the full mapping for review
+    print("Proposed mapping:")
+    for i, seg in enumerate(segments):
+        label = SEQUENCE[i] if i < len(SEQUENCE) else ('?', '?')
+        print(f"  [{i:3d}] {seg['start']:7.2f}-{seg['end']:7.2f}s "
+              f"(dur={seg['dur']:.3f}s) -> {label[0]}: {label[1]}")
+    print()
+
     if len(segments) != len(SEQUENCE):
         print(f"WARNING: segment count ({len(segments)}) != expected ({len(SEQUENCE)})")
-        print("Showing mapping for review:")
-        for i, seg in enumerate(segments):
-            label = SEQUENCE[i] if i < len(SEQUENCE) else ('?', '?')
-            print(f"  [{i:3d}] {seg['start']:7.2f}-{seg['end']:7.2f}s "
-                  f"(dur={seg['dur']:.3f}s) -> {label[0]}: {label[1]}")
-        print()
-        resp = input("Continue anyway? (y/n): ")
-        if resp.lower() != 'y':
-            return
+        print("ABORTING — fix SEQUENCE to match segment count before proceeding.")
+        return
 
-    # Extract clips
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    # Create output directories
+    for d in OUTPUT_DIRS:
+        os.makedirs(d, exist_ok=True)
+
     extracted = 0
     skipped = 0
 
@@ -162,13 +180,22 @@ def main():
             skipped += 1
             continue
 
-        output_path = os.path.join(OUTPUT_DIR, f"{name}.mp3")
+        paths = [os.path.join(d, f"{name}.mp3") for d in OUTPUT_DIRS]
         print(f"  SAVE  {name:12s} -> {name}.mp3  ({seg['start']:.2f}-{seg['end']:.2f}s)")
-        extract_clip(INPUT_WAV, seg['start'], seg['end'], output_path)
+        extract_clip(INPUT_WAV, seg['start'], seg['end'], paths)
         extracted += 1
 
+    # Create oo.mp3 as a copy of oo_moon.mp3 (generic "oo" for backwards compat)
+    for d in OUTPUT_DIRS:
+        moon = os.path.join(d, 'oo_moon.mp3')
+        oo = os.path.join(d, 'oo.mp3')
+        if os.path.exists(moon):
+            shutil.copy2(moon, oo)
+            print(f"  COPY  oo.mp3 <- oo_moon.mp3  (in {d})")
+
     print(f"\nDone! Extracted {extracted} phoneme clips, skipped {skipped}")
-    print(f"Output: {OUTPUT_DIR}")
+    for d in OUTPUT_DIRS:
+        print(f"Output: {d}")
 
 
 if __name__ == '__main__':
