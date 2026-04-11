@@ -212,11 +212,12 @@ export default function TappableWord({
     const x1 = sRect.left + sRect.width / 2 - cRect.left;
     const x2 = eRect.left + eRect.width / 2 - cRect.left;
     const w = x2 - x1;
-    const h = annotH - 2;
+    const h = annotH;
 
     setArcOffset(x1);
     setArcWidth(w);
-    setArcPath(`M 0,${h} Q ${w / 2},${-h * 0.3} ${w},${h}`);
+    // Arc curves upward above the letters: starts bottom-left, curves up, ends bottom-right
+    setArcPath(`M 0,${h} Q ${w / 2},${-h * 0.6} ${w},${h}`);
   }, [showAnnotations, spans, annotH, size]);
 
   // ─── Tap handler ────────────────────────────────────────────────────
@@ -306,7 +307,26 @@ export default function TappableWord({
       >
         {(showAnnotations && spans) ? (
           /* ─── Annotated word (normal, non-tricky) ─── */
-          <span className="inline-flex flex-col items-center" ref={containerRef}>
+          <span className="inline-flex flex-col items-center relative" ref={containerRef}>
+            {/* Split digraph arc — above the letters */}
+            {arcPath && (
+              <svg
+                className="absolute pointer-events-none"
+                style={{ left: arcOffset, top: -annotH }}
+                width={arcWidth}
+                height={annotH}
+                viewBox={`0 0 ${arcWidth} ${annotH}`}
+              >
+                <path
+                  d={arcPath}
+                  fill="none"
+                  stroke="#1e293b"
+                  strokeWidth={strokeW}
+                  strokeLinecap="round"
+                />
+              </svg>
+            )}
+
             {/* Letters */}
             <span className="inline-flex">
               {spans.map((span, i) => (
@@ -320,9 +340,8 @@ export default function TappableWord({
               ))}
             </span>
 
-            {/* Annotation row */}
+            {/* Annotation row — dots and lines below letters */}
             <span className="relative flex items-end justify-start w-full" style={{ height: annotH }}>
-              {/* Dots and lines — positioned to match letters above */}
               <span className="inline-flex items-center" style={{ height: annotH }}>
                 {spans.map((span, i) => {
                   const cleanLen = span.letter.replace(/[^a-zA-Z]/g, '').length || 1;
@@ -338,7 +357,6 @@ export default function TappableWord({
                     );
                   }
                   if (span.annotation === 'line-start' || span.annotation === 'line-mid' || span.annotation === 'line-end') {
-                    // Continuous line across digraph letters
                     const isStart = span.annotation === 'line-start';
                     const isEnd = span.annotation === 'line-end';
                     return (
@@ -355,32 +373,17 @@ export default function TappableWord({
                     );
                   }
                   if (span.annotation === 'arc-start' || span.annotation === 'arc-end') {
-                    // Space holder for arc (SVG drawn separately)
-                    return <span key={i} style={{ width: spanW, height: annotH }} />;
+                    return (
+                      <span key={i} className="inline-flex justify-center items-end" style={{ width: spanW, height: annotH }}>
+                        <svg width={dotR * 2 + 2} height={dotR * 2 + 2}>
+                          <circle cx={dotR + 1} cy={dotR + 1} r={dotR} fill="#1e293b" />
+                        </svg>
+                      </span>
+                    );
                   }
-                  // 'none' — empty space
                   return <span key={i} style={{ width: spanW, height: annotH }} />;
                 })}
               </span>
-
-              {/* Split digraph arc SVG overlay */}
-              {arcPath && (
-                <svg
-                  className="absolute pointer-events-none"
-                  style={{ left: arcOffset, bottom: 0 }}
-                  width={arcWidth}
-                  height={annotH}
-                  viewBox={`0 0 ${arcWidth} ${annotH}`}
-                >
-                  <path
-                    d={arcPath}
-                    fill="none"
-                    stroke="#1e293b"
-                    strokeWidth={strokeW}
-                    strokeLinecap="round"
-                  />
-                </svg>
-              )}
             </span>
           </span>
         ) : (showAnnotations && isTricky) ? (
