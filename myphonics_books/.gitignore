@@ -36,8 +36,9 @@ Thumbs.db
 Desktop.ini
 nul
 
-# Generated output
+# Generated output (PDFs, images, books)
 output/
+*.pdf
 
 # Backend
 backend/node_modules/

@@ -28,3 +28,6 @@ dist-ssr
 *.aup3
 *.aup3-shm
 *.aup3-wal
+
+# Book page images (large binaries — manage locally, deploy separately)
+public/book-pages/
