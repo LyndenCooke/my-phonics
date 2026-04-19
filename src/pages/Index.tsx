@@ -11,7 +11,7 @@ import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-import { BookOpen, Lock, ShoppingBag, Loader2, Trophy, Sparkles, ChevronRight } from 'lucide-react';
+import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -380,27 +380,6 @@ export default function Index() {
             <p className="text-xs text-muted-foreground mt-1">Check back soon for new releases</p>
           </div>
         )}
-
-        {/* Personalised Book CTA — appears after every book list */}
-        <div className="mt-8">
-          <button
-            onClick={() => navigate('/personalised-book')}
-            className="group w-full bg-gradient-to-br from-[hsl(var(--level-5))] to-primary text-white rounded-2xl p-6 text-left shadow-card-hover hover:shadow-button transition-all hover:scale-[1.01] active:scale-[0.99]"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <p className="text-base sm:text-lg font-extrabold">Create a Personalised Book</p>
-                <p className="text-xs sm:text-sm text-white/90 mt-0.5">
-                  Your child as the hero. Their name, their face, their interests — at their exact reading level.
-                </p>
-              </div>
-              <ChevronRight className="w-5 h-5 text-white/90 group-hover:translate-x-1 transition-transform shrink-0" />
-            </div>
-          </button>
-        </div>
       </div>
 
       {/* Upsell dialog for locked books */}

@@ -6,7 +6,6 @@ import {
   Handshake,
   CheckSquare,
   BarChart3,
-  Sparkles,
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -17,7 +16,6 @@ const navItems = [
   { to: '/admin/pipeline', icon: Kanban, label: 'Pipeline' },
   { to: '/admin/deals', icon: Handshake, label: 'Deals' },
   { to: '/admin/tasks', icon: CheckSquare, label: 'Tasks' },
-  { to: '/admin/personalised-books', icon: Sparkles, label: 'Personalised Books' },
   { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
 ];
 
