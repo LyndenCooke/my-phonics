@@ -1,16 +1,16 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardCheck, Tag, BarChart3, User, LogIn } from 'lucide-react';
+import { Home, ClipboardCheck, Tag, User, LogIn } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 // Nav items shared between mobile bottom-bar and desktop top-nav.
 // "Home" = the hub home (/library), NOT the marketing landing — once the user
 // is inside the app, Home should mean hub home.
+// Reading progress lives inside the Profile page; we keep the nav tight at 4.
 const navItems = [
   { path: '/library', label: 'Home', icon: Home },
   { path: '/assess', label: 'Assess', icon: ClipboardCheck },
   { path: '/shop', label: 'Pricing', icon: Tag },
-  { path: '/progress', label: 'Progress', icon: BarChart3 },
   { path: '/profile', label: 'Profile', icon: User },
 ];
 

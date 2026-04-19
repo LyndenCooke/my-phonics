@@ -14,6 +14,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import Shop from "./pages/Shop";
 import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
+import PersonalisedBook from "./pages/PersonalisedBook";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
@@ -81,6 +82,7 @@ const App = () => (
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/personalised-book" element={<PersonalisedBook />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             {/* Funnels (ad landing pages) */}
