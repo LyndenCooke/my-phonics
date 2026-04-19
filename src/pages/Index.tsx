@@ -311,16 +311,24 @@ export default function Index() {
               <BookOpen className="w-4 h-4 text-primary" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">Unlock your first free book</p>
+              <p className="text-sm font-bold text-foreground">Browsing as a guest</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Take our 3-minute assessment and get a book at your child's level
+                Log in to access your library, or take the 3-minute assessment for a free book.
               </p>
-              <button
-                onClick={() => navigate('/assess')}
-                className="mt-2 text-xs font-bold text-primary hover:underline"
-              >
-                Start Free Assessment →
-              </button>
+              <div className="mt-2 flex flex-wrap gap-3">
+                <button
+                  onClick={() => navigate('/auth')}
+                  className="text-xs font-bold text-primary hover:underline"
+                >
+                  Log In →
+                </button>
+                <button
+                  onClick={() => navigate('/assess')}
+                  className="text-xs font-bold text-primary hover:underline"
+                >
+                  Start Free Assessment →
+                </button>
+              </div>
             </div>
           </div>
         )}

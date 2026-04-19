@@ -82,10 +82,10 @@ export default function LandingPage() {
       {showWelcome && <WelcomePopup onDismiss={dismissWelcome} onAction={() => { dismissWelcome(); navigate('/assess'); }} />}
 
       {/* ── Sticky nav ── */}
-      <NavBar onSignIn={() => navigate('/auth')} onAssess={() => navigate('/assess')} />
+      <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assess')} />
 
       {/* ── Sections ── */}
-      <HeroSection onAssess={() => navigate('/assess')} onTry={() => navigate('/auth')} />
+      <HeroSection onAssess={() => navigate('/assess')} onTry={() => navigate('/library')} />
       <HowItWorks />
       <FeatureShowcase />
       <LevelProgression />
@@ -99,7 +99,7 @@ export default function LandingPage() {
 }
 
 /* ─── NAV BAR ─── */
-function NavBar({ onSignIn, onAssess }: { onSignIn: () => void; onAssess: () => void }) {
+function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAssess: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -119,8 +119,8 @@ function NavBar({ onSignIn, onAssess }: { onSignIn: () => void; onAssess: () => 
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={onSignIn} className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
-            Sign In
+          <button onClick={onLearningHub} className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
+            Learning Hub
           </button>
           <button onClick={onAssess} className="text-sm font-bold text-white gradient-primary px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity">
             Free Assessment
@@ -492,6 +492,7 @@ function FooterCTA({ onAssess }: { onAssess: () => void }) {
 
 /* ─── FOOTER ─── */
 function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="border-t border-border py-8 bg-card">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -502,9 +503,16 @@ function Footer() {
           <span className="text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
-          <span>Privacy</span>
-          <span>Terms</span>
-          <span>Contact</span>
+          <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
+          <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
+          <a href="mailto:hello@myphonicsbooks.com" className="hover:text-foreground transition-colors">Contact</a>
+          <button
+            onClick={() => navigate('/admin')}
+            className="hover:text-foreground transition-colors"
+            aria-label="Admin"
+          >
+            Admin
+          </button>
         </div>
         <p className="text-xs text-muted-foreground">Made with care in the UK</p>
       </div>

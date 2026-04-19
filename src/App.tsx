@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import LandingPage from "./pages/LandingPage";
@@ -46,9 +46,23 @@ function AdminFallback() {
   );
 }
 
+/**
+ * Root route handler.
+ *
+ * Web: always shows the marketing LandingPage, regardless of auth state.
+ *      The user must click "Learning Hub" (or similar) to enter /library.
+ *      This preserves the landing page for ad traffic / SEO — it does NOT
+ *      auto-route signed-in users into the app.
+ *
+ * Native app (Capacitor): skips the landing page and goes straight to /library.
+ *      The landing page is a marketing funnel for web visitors only.
+ */
 function ConditionalHome() {
-  const { user } = useAuth();
-  return user ? <Index /> : <LandingPage />;
+  const isNative =
+    typeof window !== "undefined" &&
+    Boolean((window as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.());
+  if (isNative) return <Navigate to="/library" replace />;
+  return <LandingPage />;
 }
 
 const App = () => (
