@@ -2236,7 +2236,7 @@ export const BOOK_L6_3_PAGES: InteractivePage[] = [
       'But Nonna\'s cooking is nutritious and delicious — and this is the most precious treat on the whole coast."',
       'Sofia took a cautious lick.',
       'Her face lit up at once.',
-      'Nonna watched them from the doorway, the lemon groves glowing golden on the clifftop behind her, and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do.',
+      'Nonna watched them from the window, the lemon groves glowing golden on the clifftop behind her, and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do.',
     ],
     words: [
       tricky('Luca', 'luca'),
@@ -2296,7 +2296,7 @@ export const BOOK_L6_3_PAGES: InteractivePage[] = [
       word('them', 'them', ['th','e','m']),
       word('from', 'from', ['f','r','o','m']),
       tricky('the', 'the'),
-      word('doorway,', 'doorway', ['d','oor','w','ai']),
+      word('window,', 'window', ['w','i','n','d','ow']),
       tricky('the', 'the'),
       word('lemon', 'lemon', ['l','e','m','o','n']),
       word('groves', 'groves', ['g','r','oe','v','s']),
