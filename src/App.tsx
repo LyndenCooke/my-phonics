@@ -36,6 +36,7 @@ const PipelineBoard = lazy(() => import("./pages/admin/PipelineBoard"));
 const DealsList = lazy(() => import("./pages/admin/DealsList"));
 const TasksList = lazy(() => import("./pages/admin/TasksList"));
 const AnalyticsDashboard = lazy(() => import("./pages/admin/AnalyticsDashboard"));
+const PersonalisedBookRequests = lazy(() => import("./pages/admin/PersonalisedBookRequests"));
 
 const queryClient = new QueryClient();
 
@@ -100,6 +101,7 @@ const App = () => (
                 <Route path="/admin/pipeline" element={<Suspense fallback={<AdminFallback />}><PipelineBoard /></Suspense>} />
                 <Route path="/admin/deals" element={<Suspense fallback={<AdminFallback />}><DealsList /></Suspense>} />
                 <Route path="/admin/tasks" element={<Suspense fallback={<AdminFallback />}><TasksList /></Suspense>} />
+                <Route path="/admin/personalised-books" element={<Suspense fallback={<AdminFallback />}><PersonalisedBookRequests /></Suspense>} />
                 <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><AnalyticsDashboard /></Suspense>} />
               </Route>
             </Route>
