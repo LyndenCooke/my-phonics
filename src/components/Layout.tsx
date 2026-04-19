@@ -2,8 +2,10 @@ import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ClipboardCheck, ShoppingBag, BarChart3, User } from 'lucide-react';
 
+// Bottom-nav "Home" points to the hub home (/library), not the marketing landing.
+// Once a user is inside the hub they shouldn't be bounced back to the funnel.
 const navItems = [
-  { path: '/', label: 'Home', icon: Home },
+  { path: '/library', label: 'Home', icon: Home },
   { path: '/assess', label: 'Assess', icon: ClipboardCheck },
   { path: '/shop', label: 'Shop', icon: ShoppingBag },
   { path: '/progress', label: 'Progress', icon: BarChart3 },
@@ -15,16 +17,19 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
+      {/* Header — logo links back to the hub home so users are never trapped */}
       <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-xl border-b border-border px-4 py-3 flex items-center justify-between shadow-card">
-        <div className="flex items-center gap-2.5">
+        <Link to="/library" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="Go to Learning Hub home">
           <div className="w-9 h-9 rounded-[10px] gradient-primary flex items-center justify-center shadow-button">
             <span className="text-primary-foreground font-extrabold text-sm tracking-tight">M</span>
           </div>
           <h1 className="text-lg font-extrabold text-foreground tracking-tight">
             My<span className="text-primary">Phonics</span>Books
           </h1>
-        </div>
+        </Link>
+        <Link to="/" className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1" aria-label="Back to landing page">
+          Exit
+        </Link>
       </header>
 
       {/* Main content */}

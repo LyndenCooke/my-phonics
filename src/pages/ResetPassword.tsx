@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Lock } from 'lucide-react';
+import { ArrowLeft, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ResetPassword() {
@@ -26,21 +26,31 @@ export default function ResetPassword() {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
     } else {
       toast({ title: 'Password updated', description: 'You can now sign in with your new password.' });
-      navigate('/');
+      navigate('/library');
     }
     setSubmitting(false);
   };
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 gap-4">
         <p className="text-muted-foreground text-sm">Invalid or expired reset link.</p>
+        <Link to="/" className="text-sm font-bold text-primary hover:underline inline-flex items-center gap-1">
+          <ArrowLeft className="w-4 h-4" /> Back to home
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative">
+      <Link
+        to="/"
+        className="absolute top-4 left-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
+        aria-label="Back to home"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back
+      </Link>
       <div className="w-full max-w-sm">
         <h2 className="text-2xl font-extrabold text-foreground mb-2 text-center">Set New Password</h2>
         <p className="text-sm text-muted-foreground text-center mb-6">Enter your new password below.</p>

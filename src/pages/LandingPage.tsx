@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, Star, ChevronRight, X, Volume2, Trophy, Users, GraduationCap } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, Star, ChevronRight, Volume2, Trophy, GraduationCap } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 
@@ -61,26 +61,9 @@ function useReveal() {
 export default function LandingPage() {
   useFunnelTracker();
   const navigate = useNavigate();
-  const [showWelcome, setShowWelcome] = useState(false);
-
-  useEffect(() => {
-    const seen = localStorage.getItem('mpb_seen_welcome');
-    if (!seen) {
-      const t = setTimeout(() => setShowWelcome(true), 1200);
-      return () => clearTimeout(t);
-    }
-  }, []);
-
-  const dismissWelcome = () => {
-    setShowWelcome(false);
-    localStorage.setItem('mpb_seen_welcome', '1');
-  };
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      {/* ── Welcome popup ── */}
-      {showWelcome && <WelcomePopup onDismiss={dismissWelcome} onAction={() => { dismissWelcome(); navigate('/assess'); }} />}
-
       {/* ── Sticky nav ── */}
       <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assess')} />
 
@@ -110,14 +93,14 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
           <div className="w-9 h-9 rounded-[10px] gradient-primary flex items-center justify-center shadow-button">
             <span className="text-white font-extrabold text-sm">M</span>
           </div>
           <span className="text-lg font-extrabold text-foreground tracking-tight">
             My<span className="text-primary">Phonics</span>Books
           </span>
-        </div>
+        </Link>
         <div className="flex items-center gap-2">
           <button onClick={onLearningHub} className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
             Learning Hub
@@ -520,50 +503,3 @@ function Footer() {
   );
 }
 
-/* ─── WELCOME POPUP ─── */
-function WelcomePopup({ onDismiss, onAction }: { onDismiss: () => void; onAction: () => void }) {
-  const [step, setStep] = useState(0);
-  const slides = [
-    { icon: BookOpen, title: 'Welcome to MyPhonicsBooks!', desc: 'Beautiful decodable books that help your child learn to read — the right way.' },
-    { icon: Volume2, title: 'Interactive Reading', desc: 'Your child taps any word to hear it sounded out, phoneme by phoneme. Learning happens naturally.' },
-    { icon: Sparkles, title: 'Find Their Level', desc: 'Take our free 5-minute assessment. We will match your child with books at exactly the right difficulty.' },
-  ];
-  const slide = slides[step];
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-300 px-4">
-      <div className="bg-card rounded-3xl p-8 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 duration-300">
-        <button onClick={onDismiss} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors">
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
-            <slide.icon className="w-8 h-8 text-primary" />
-          </div>
-          <h3 className="text-xl font-extrabold text-foreground">{slide.title}</h3>
-          <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{slide.desc}</p>
-        </div>
-
-        {/* Dots */}
-        <div className="flex justify-center gap-1.5 mt-6">
-          {slides.map((_, i) => (
-            <div key={i} className={`w-2 h-2 rounded-full transition-all ${i === step ? 'bg-primary w-6' : 'bg-border'}`} />
-          ))}
-        </div>
-
-        <div className="mt-6">
-          {step < slides.length - 1 ? (
-            <button onClick={() => setStep(s => s + 1)} className="w-full py-3 rounded-xl gradient-primary text-white font-bold text-sm shadow-button hover:opacity-90 transition-opacity">
-              Next
-            </button>
-          ) : (
-            <button onClick={onAction} className="w-full py-3 rounded-xl gradient-primary text-white font-bold text-sm shadow-button hover:opacity-90 transition-opacity">
-              Start Free Assessment
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
