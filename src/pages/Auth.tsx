@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -34,7 +34,7 @@ export default function Auth() {
       } else {
         const { error } = await signIn(email, password);
         if (error) throw error;
-        navigate('/');
+        navigate('/library');
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
@@ -44,16 +44,27 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative">
+      {/* Top-left back arrow — always a way out of the auth screen */}
+      <Link
+        to="/"
+        className="absolute top-4 left-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
+        aria-label="Back to home"
+      >
+        <ArrowLeft className="w-4 h-4" /> Back
+      </Link>
+
       <div className="w-full max-w-sm">
-        {/* Logo */}
+        {/* Logo (clickable — returns to landing) */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center shadow-button mx-auto mb-4">
-            <span className="text-primary-foreground font-extrabold text-xl">M</span>
-          </div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">
-            My<span className="text-primary">Phonics</span>Books
-          </h1>
+          <Link to="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
+            <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center shadow-button mx-auto mb-4">
+              <span className="text-primary-foreground font-extrabold text-xl">M</span>
+            </div>
+            <h1 className="text-2xl font-extrabold text-foreground tracking-tight">
+              My<span className="text-primary">Phonics</span>Books
+            </h1>
+          </Link>
           <p className="text-sm text-muted-foreground mt-1">
             {mode === 'signin' ? 'Welcome back!' : mode === 'signup' ? 'Create your account' : 'Reset your password'}
           </p>
