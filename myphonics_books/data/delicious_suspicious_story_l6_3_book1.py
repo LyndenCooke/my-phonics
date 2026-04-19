@@ -211,7 +211,7 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
                     "But Nonna's cooking is nutritious and delicious — "
                     "and this is the most precious treat on the whole coast.\" "
                     "Sofia took a cautious lick. Her face lit up at once. "
-                    "Nonna watched them from the doorway, the lemon groves glowing "
+                    "Nonna watched them from the window, the lemon groves glowing "
                     "golden on the clifftop behind her, and she thought that feeding "
                     "the people you love was the most ambitious and delicious thing "
                     "a person could ever do."
