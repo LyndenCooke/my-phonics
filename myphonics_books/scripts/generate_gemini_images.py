@@ -498,18 +498,36 @@ HERO_PROMPTS = {
         "short": "the girl in the blue cardigan with black plait and brown satchel",
     },
     "5.3": {
-        # Picture Station tour - boy with British-Asian heritage
+        # Jaipur Indian girl — "Sure She Can!" kite-making story (Makar Sankranti)
         "description": (
-            "A cartoon boy character, about 6-7 years old, with warm brown skin (British-Asian heritage) "
-            "and neat short black hair. He wears black-rimmed glasses. "
-            "He wears a bright blue t-shirt with a small green leaf print on the chest, "
-            "tan-coloured cargo shorts, and white and blue trainers. "
-            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, "
-            "and a wide enthusiastic smile. Standing in a neutral pose, facing the viewer, "
-            "full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. "
+            "A cartoon girl character, about 6 years old, with medium-dark South Asian skin (#8B6B4A) "
+            "and dark black hair (#0D0D0D) in two neat braids hanging over her shoulders, "
+            "each tied with a small bright yellow ribbon at the end. "
+            "She wears a bright yellow kurta (traditional long top reaching below the knee) "
+            "with matching bright yellow salwar (loose gathered trousers) and simple flat sandals. "
+            "She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, "
+            "a warm bright smile, and an animated expressive face. "
+            "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
+            "Arms slightly away from body, feet shoulder-width apart. "
             "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
         ),
-        "short": "the boy in the blue leaf t-shirt and glasses",
+        "short": "the Indian girl in the bright yellow kurta and salwar with black braids and yellow ribbons",
+    },
+    "5.4": {
+        # Visiting British boy — "A Place for Me" Cartagena market story
+        "description": (
+            "A cartoon boy character, about 6 years old, with light skin (#F0D0B0) and "
+            "short straight brown hair with a side parting. "
+            "He wears a bright blue t-shirt, khaki/beige long chino trousers that reach "
+            "all the way to his ankles (FULL LENGTH, NOT shorts, NOT capris, NOT "
+            "three-quarter length — the trousers go to his shoes), and white trainers. "
+            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, "
+            "a gentle smile, and a curious open face. "
+            "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
+            "Arms slightly away from body, feet shoulder-width apart. "
+            "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
+        ),
+        "short": "the British boy in the blue t-shirt and long khaki chinos with straight brown hair",
     },
 }
 
@@ -716,26 +734,24 @@ SIDE_HERO_PROMPTS = {
         "short": "the Orthodox Jewish dad in the black hat and long coat with beard and payot",
         "filename": "side_hero_dad.png",
     },
-    "5.1_mum": {
-        # Mum: Orthodox Jewish mother for Before the Shore — FULL TICHEL WRAP style
+    # 5.1_mum REMOVED — story revised to boy + Dad only
+    "5.3_dadaji": {
+        # Dadaji: elderly Indian grandfather for Sure She Can! (Jaipur kite festival)
         "description": (
-            "A cartoon adult woman character, about 32 years old, with light olive skin. "
-            "She wears a full tichel wrap in the Orthodox Jewish style — fabric wrapped fully "
-            "around her head with volume and gathered shape at the back where the fabric is tied "
-            "and tucked. The tichel is a warm beige/cream colour. No hair visible at all — "
-            "the wrap covers everything completely. This is NOT a hijab style — it has distinctive "
-            "volume and shape at the back of the head from the wrapped fabric. "
-            "She wears a modest long-sleeved dark teal dress that reaches below her knees, "
-            "and low-heeled black shoes. "
-            "She has small friendly dot eyes, solid black, tiny and cute like a teddy bear — not too big. "
-            "She has a warm, kind, motherly expression with a gentle smile. "
-            "She is TALL — a fully grown adult woman, much taller than a child. "
+            "A cartoon elderly man character, about 65-70 years old, with medium-dark South Asian "
+            "skin (#8B6B4A) and short white-grey hair. He has a short neatly trimmed white beard "
+            "and a warm, patient, kind expression. "
+            "He wears a saffron-orange Rajasthani pagri (turban) wrapped neatly on his head, "
+            "a cream/white angrakha-style kurta (crossover front, tied at side), "
+            "loose white trousers, and brown leather sandals. "
+            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear — not too big. "
+            "He is TALL — a fully grown adult man, much taller than a child. "
             "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
             "Arms slightly away from body, feet shoulder-width apart. "
             "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
         ),
-        "short": "the Orthodox Jewish mum in teal dress with full tichel wrap (volume at back)",
-        "filename": "side_hero_mum.png",
+        "short": "the elderly Indian grandfather Dadaji in cream kurta and saffron pagri turban",
+        "filename": "side_hero_dadaji.png",
     },
     "5.2_dad": {
         # Dad: Swedish father for Near the Door — cosy winter sweater
@@ -769,7 +785,41 @@ SIDE_HERO_PROMPTS = {
         "short": "the red fox with the bushy tail",
         "filename": "side_hero_fox.png",
     },
+    "5.4": {
+        # Local Colombian boy for A Place for Me (Cartagena market) — primary side hero
+        "description": (
+            "A cartoon boy character, about 6 years old, with warm brown skin (#B8956A) "
+            "and thick curly dark brown hair (visibly curly and wavy, DIFFERENT from straight hair). "
+            "He wears a bright green t-shirt, dark blue long trousers, and brown sandals. "
+            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear — not too big, "
+            "a warm friendly smile, round cheeks, and an expressive animated face. "
+            "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
+            "Arms slightly away from body, feet shoulder-width apart. "
+            "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
+        ),
+        "short": "the Colombian boy with curly dark hair in the green t-shirt and dark blue trousers",
+        "filename": "side_hero_local_boy.png",
+    },
+    "5.4_dad": {
+        # Dad: British visitor's father for A Place for Me
+        "description": (
+            "A cartoon adult man character, about 35 years old, with light skin and "
+            "short brown hair with a side parting, a kind friendly face. "
+            "He wears a casual light-coloured short-sleeved shirt and khaki long trousers, "
+            "and brown casual shoes. "
+            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear — not too big. "
+            "He has a warm, kind, fatherly expression with a gentle smile. "
+            "He is TALL — a fully grown adult man, much taller than a child. "
+            "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
+            "Arms slightly away from body, feet shoulder-width apart. "
+            "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
+        ),
+        "short": "the British dad in the casual shirt and khaki trousers",
+        "filename": "side_hero_dad.png",
+    },
 }
+# Alias: "5.4_local_boy" is the same as "5.4" (used in scene-level side_hero_key references)
+SIDE_HERO_PROMPTS["5.4_local_boy"] = SIDE_HERO_PROMPTS["5.4"]
 
 # ─── Object Reference Prompts (key objects needing visual consistency) ────────
 
@@ -1784,12 +1834,12 @@ SCENE_PROMPTS["4.1"] = {
 # ═══════════════════════════════════════════════════════════════════
 # LEVEL 5.1 — "Before the Shore" (Orthodox Jewish London, flashback memory story)
 # ═══════════════════════════════════════════════════════════════════
+# CHARACTERS: Boy + Dad only (no Mum)
 # CHARACTER: Orthodox Jewish boy — white shirt, kippah, payot, dark trousers
 # DAD: Black hat, long coat, beard, payot (use side hero 5.1_dad)
-# MUM: Teal dress, full tichel wrap with volume at back (use side hero 5.1_mum)
 # KEY OBJECTS:
-# - SHORE STONE: "a smooth, flat, oval grey stone with a slight bluish tint, palm-sized"
-# - PARK STONE: "a smooth, flat, oval grey stone with a slight brownish tint, palm-sized"
+# - STONE: "a smooth, flat, oval AMBER/HONEY-coloured stone with a thin white stripe, palm-sized"
+#   (both stones look the same — one from the shore, one from the park)
 # - WIRE: "thin silver craft wire"
 # - SHELLS: "small seashells in pink, white, and cream colours"
 # SETTINGS:
@@ -1798,60 +1848,60 @@ SCENE_PROMPTS["4.1"] = {
 
 SCENE_PROMPTS["5.1"] = {
     "title": "Before the Shore",
-    "side_hero_key": "5.1_dad",  # Will be used for flashback scenes
+    "side_hero_key": "5.1_dad",
     "scenes": [
     {
         # COVER: Boy on bench holding stone, split scene (park and shore behind)
         "name": "cover",
-        "prompt": "BOOK COVER ILLUSTRATION. Show the character from the reference image sitting on a wooden park bench, holding a smooth grey stone up to the light with wonder. Behind him, the scene subtly splits: on one side, Victorian terraced houses and autumn trees (a London park); on the other side, a beach shore with gentle waves and sand. The boy looks thoughtful and dreamy. Same character, same outfit (white button-up shirt, dark navy trousers, black shoes, small dark navy kippah, payot visible), same light olive skin. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
+        "prompt": "BOOK COVER ILLUSTRATION. Show the character from the reference image sitting on a wooden park bench, holding a smooth, flat, oval AMBER/HONEY-coloured stone with a thin white stripe up to the light with wonder. Behind him, the scene subtly splits: on one side, Victorian terraced houses and autumn trees (a London park); on the other side, a beach shore with gentle waves and sand. The boy looks thoughtful and dreamy. Same character, same outfit (white button-up shirt, dark navy trousers, black shoes, small dark navy kippah, payot visible), same light olive skin. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
     },
     {
         # Page 1: "The boy went home from the park. He was tired, and his feet were sore."
         "name": "page1",
-        "prompt": "Show the character from the reference image looking tired, sitting on a wooden park bench in a London park. He is picking up a smooth, flat, oval grey stone with a slight brownish tint from the ground near his feet. Victorian red-brick terraced houses with bay windows visible in the background. Autumn leaves scattered on the ground. Overcast British sky with soft light. The boy looks weary but curious. Same character, same outfit (white button-up shirt, dark navy trousers, black shoes, small dark navy kippah, payot visible). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "Show the character from the reference image looking tired, sitting on a wooden park bench in a London park. He is picking up a smooth, flat, oval AMBER/HONEY-coloured stone with a thin white stripe from the ground near his feet. Victorian red-brick terraced houses with bay windows visible in the background. Autumn leaves scattered on the ground. Overcast British sky with soft light. The boy looks weary but curious. Same character, same outfit (white button-up shirt, dark navy trousers, black shoes, small dark navy kippah, payot visible). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
         # Page 2: "The stone felt cool in his hand. It had a shine, like something from the shore."
         "name": "page2",
-        "prompt": "Show the character from the reference image sitting on the park bench with his eyes peacefully closed, holding a smooth, flat grey stone in his cupped hands. A soft, dreamy glow or slight blur around the edges of the image suggests he is remembering something. Trees and park setting around him. Same character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: Eyes when visible MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "Show the character from the reference image sitting on a wooden park bench with his eyes peacefully closed, holding a smooth, flat AMBER/HONEY-coloured stone with a thin white stripe in his cupped hands. A soft, dreamy glow or slight blur around the edges suggests he is remembering something. AUTUMN setting — trees with orange, red, brown and golden leaves. Fallen autumn leaves on the ground. Overcast British sky. NO spring blossom, NO pink trees, NO green summer trees — this is AUTUMN in London. Same character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: Eyes when visible MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 3: FLASHBACK — "Before the cold came, his family went to the shore."
+        # Page 3: FLASHBACK — "Before the cold came, he went with Dad to the shore."
         "name": "page3",
         "side_hero": True,
         "side_hero_key": "5.1_dad",
-        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image running joyfully on a sandy British beach. The Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard, payot) runs alongside him. The Orthodox Jewish mum (teal dress, full tichel wrap with volume and gathered shape at back — NOT a hijab, this is wrapped fabric with distinctive volume at the back of head) watches from nearby with a warm smile. Waves rolling onto the shore behind them. In the corner, a small beach campfire with orange flames. British seaside setting with some pebbles mixed in the sand and grassy dunes visible. Same boy character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image running joyfully on a sandy British beach. The Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard, payot) runs alongside him. JUST THESE TWO CHARACTERS — no one else. Waves rolling onto the shore behind them. In the corner, a small beach campfire with orange flames. British seaside setting with some pebbles mixed in the sand and grassy dunes visible. Same boy character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 4: FLASHBACK — "The next day, he explored the rock pools. He found more and more shells!"
+        # Page 4: FLASHBACK — "The next day, he explored the rock pools. Dad helped him."
         "name": "page4",
         "side_hero": True,
-        "side_hero_key": "5.1_mum",
-        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image crouching beside a rocky tidal pool, his hands full of small seashells in pink, white, and cream colours. The Orthodox Jewish mum from the SECOND reference image (teal dress, full tichel wrap with volume and gathered shape at back — NOT a hijab, wrapped fabric with distinctive volume at the back of head) kneels beside him, helping him thread shells onto thin silver craft wire. Both are smiling happily. Rocky shore with shallow pools of water reflecting blue sky. More shells scattered around. Same boy character, same outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero_key": "5.1_dad",
+        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image crouching beside a rocky tidal pool, his hands full of small seashells in pink, white, and cream colours. The Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard, payot) kneels beside him, helping him thread shells onto thin silver craft wire. Both are smiling happily. JUST THESE TWO CHARACTERS — no one else. Rocky shore with shallow pools of water reflecting blue sky. More shells scattered around. Same boy character, same outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 5: FLASHBACK — "When it was time to go, he spotted a stone by the shore."
+        # Page 5: FLASHBACK — "He spotted a stone by the shore."
         "name": "page5",
         "side_hero": True,
         "side_hero_key": "5.1_dad",
-        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image picking up a smooth, flat, oval grey stone with a slight bluish tint from the edge of the shore. He looks at it with delight. The Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard) stands nearby, gesturing encouragingly toward the stone. The calm sea is behind them with gentle waves. The boy has a big smile. Same boy character, same outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "FLASHBACK SCENE — warmer, golden tones. Show the boy character from the FIRST reference image holding up a SMALL smooth flat oval AMBER/HONEY-coloured stone with a thin white stripe (palm-sized, fits easily in one child's hand) that he just picked up from the shore edge. He holds it in ONE hand between thumb and fingers, smiling with delight. The stone is SMALL — no bigger than an egg or a biscuit. The Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard) stands nearby, gesturing encouragingly. JUST THESE TWO CHARACTERS — no one else. The calm sea is behind them with gentle waves. Same boy character, same outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
         # Page 6: PRESENT — "The boy sat up and looked around."
         "name": "page6",
-        "prompt": "BACK TO PRESENT — cooler autumn tones. Show the character from the reference image sitting up alertly on the park bench, eyes open and bright, holding a smooth, flat grey stone up to the light. Sunlight catches the stone's smooth surface. He looks thoughtful and happy, as if he has just had a wonderful idea. London park with Victorian terraced houses in the background. Autumn leaves. Same character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "BACK TO PRESENT — cooler autumn tones. Show the character from the reference image sitting up alertly on the park bench, eyes open and bright, holding a smooth, flat AMBER/HONEY-coloured stone with a thin white stripe up to the light. Sunlight catches the stone's smooth surface. He looks thoughtful and happy, as if he has just had a wonderful idea. London park with Victorian terraced houses in the background. Autumn leaves. Same character, same outfit (white shirt, dark trousers, kippah, payot). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 7: "He ran home to get his old shore stone. Now he had a pair!"
+        # Page 7: "He ran home to get his shore stone. Now he had a pair!"
         "name": "page7",
-        "prompt": "Show the character from the reference image sitting at a wooden table inside a cosy home. On the table in front of him are TWO stones: one smooth, flat, oval grey stone with a slight bluish tint (from the shore) and one with a slight brownish tint (from the park). He is carefully bending thin silver craft wire to make loops around the stones. His tongue sticks out slightly in concentration. Warm home interior with family photos visible on the wall behind him. Same character, same outfit. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "Show the character from the reference image sitting at a wooden table inside a cosy home. On the table in front of him are TWO smooth, flat, oval AMBER/HONEY-coloured stones, each with a thin white stripe — they look like a matching pair. He is carefully bending thin silver craft wire to make loops around the stones. His tongue sticks out slightly in concentration. Warm home interior with family photos visible on the wall behind him. Same character, same outfit. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 8: "He gave the stones to Mum."
+        # Page 8: "He gave the stones to Dad."
         "name": "page8",
         "side_hero": True,
-        "side_hero_key": "5.1_mum",
-        "prompt": "Show the Orthodox Jewish mum from the SECOND reference image (teal dress, full tichel wrap with volume at back) receiving a handmade gift from the boy from the FIRST reference image. She holds up the two smooth grey stones (one bluish, one brownish) now threaded on thin silver craft wire as a charm. She is smiling warmly with joy. The boy looks proud and happy. She is attaching them to her handbag. Warm family moment in their cosy home. Same characters, same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero_key": "5.1_dad",
+        "prompt": "Show the Orthodox Jewish dad from the SECOND reference image (black hat, long coat, beard, payot) receiving a handmade gift from the boy from the FIRST reference image. Dad holds up two smooth AMBER/HONEY-coloured stones threaded on thin silver craft wire as a charm. Each stone is plain amber with exactly ONE single thin white line across it — NOT multiple stripes, just ONE white line per stone. Dad is smiling warmly with joy. The boy looks proud and happy. Dad is attaching them to his bag. JUST THESE TWO CHARACTERS — no one else. Warm family moment in their cosy home — plain walls, sofa, family photos. NO religious objects, NO menorah, NO candelabra, NO extra stones on tables. Same characters, same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
 ]}
 
@@ -2067,9 +2117,9 @@ SCENE_PROMPTS["4.3"] = {
         "prompt": "A girl at a wooden craft desk presses blue glue on a white card. Blue glue spreads everywhere across the desk. Colourful bedroom with warm terracotta walls, woven cushions, tiled floor. Craft supplies scattered around. She looks surprised at the mess. Whimsical children's book illustration. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. No text. Landscape orientation.",
     },
     {
-        # Page 2: Card flies through air toward staircase
+        # Page 2: Card with blue glue flies down staircase toward cat at bottom
         "name": "page2",
-        "prompt": "A girl shakes her hand frantically as a white card with blue glue flies through the air toward a colourful tiled staircase. Warm-coloured hallway with painted walls and decorative patterned tiles on the stair risers. She looks panicked. Whimsical children's book illustration. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. No text. Landscape orientation.",
+        "prompt": "A white card covered in blue glue flies down a colourful tiled staircase. The card is mid-air, tumbling down the steps. At the bottom of the stairs, a ginger tabby cat with orange stripes sits peacefully, unaware of the card flying toward it. Warm-coloured hallway with painted terracotta walls and decorative patterned tiles on the stair risers. No people in this scene — just the flying card and the cat. Whimsical children's book illustration. CRITICAL: The cat MUST have eyes that are tiny solid black filled circles — NO white. No text. Landscape orientation.",
     },
     {
         # Page 3: Cat at bottom of stairs with card stuck on it — FULL ROOM VIEW
@@ -2246,46 +2296,156 @@ SCENE_PROMPTS["5.2"] = {
 ]}
 
 # ═══════════════════════════════════════════════════════════════════
-# LEVEL 5.3 — "The Picture Station" (Qatar, Peru, Laos Tour)
+# LEVEL 5.3 — "Sure She Can!" (Jaipur, Rajasthan — Makar Sankranti kite festival)
 # ═══════════════════════════════════════════════════════════════════
+# CHARACTER: Indian girl — bright yellow kurta + salwar, black braids with yellow ribbons
+# DADAJI: Elderly grandfather — cream angrakha kurta, saffron pagri turban, white beard
+# KEY OBJECTS:
+# - KITE: bright yellow diamond-shaped kite with bamboo cross frame and white string
+#   (must be CONSISTENT across pages 4-8: same yellow colour, same diamond shape)
+# - BAMBOO STICKS: two thin pale bamboo sticks
+# - PAPER: thin white paper sheet
+# - PASTE: small round clay pot of paste
+# SETTING: Jaipur rooftop — pink sandstone buildings, blue winter sky, colourful kites
+
 SCENE_PROMPTS["5.3"] = {
-    "title": "The Picture Station",
+    "title": "Sure She Can!",
+    "side_hero_key": "5.3_dadaji",
     "scenes": [
     {
+        # COVER: Girl holds yellow kite triumphantly, Dadaji claps, Jaipur rooftop
         "name": "cover",
-        "prompt": "BOOK COVER ILLUSTRATION. Show the character from the reference image walking towards a high-tech 'Picture Station' booth in a modern school or science centre. The booth is sleek, white and blue, with a large screen and a big red button. Warm indoor lighting. Same character, same outfit (bright blue t-shirt with green leaf, tan shorts, white and blue trainers), same glasses, same appearance. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "BOOK COVER ILLUSTRATION. Show the girl character from the FIRST reference image holding up a bright yellow diamond-shaped kite triumphantly on a Jaipur rooftop. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron-orange pagri turban, white beard) stands beside her clapping joyfully. Pink sandstone buildings all around. Dozens of colourful kites fill a vivid blue winter sky. Celebratory, joyful mood. Same girl character, same outfit (bright yellow kurta, yellow salwar, black braids with yellow ribbons). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
     },
     {
+        # Page 1: Girl alone on rooftop watching kites
         "name": "page1",
-        "prompt": "Show the character from the reference image walking towards a high-tech 'Picture Station' booth in a modern school or science centre. He is smiling widely. The booth is sleek, white and blue, with a large screen and a big red button. Warm indoor lighting. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses), same appearance. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": "Wide-angle view from a Jaipur rooftop. Dozens of colourful kites — red, green, blue, orange — fill a clear vivid blue winter sky. Pink sandstone buildings with domed rooftops stretch across the background. Show the character from the reference image standing on the PINK SANDSTONE rooftop looking up at the kites. She is alone on the rooftop — no other people. Same character, same outfit (bright yellow kurta, yellow salwar, black braids with yellow ribbons, flat sandals). ABSOLUTELY CRITICAL EYE RULE: Her eyes MUST be tiny solid black filled circles like dots drawn with a marker — NO white sclera, NO white around the black, NO iris, NO pupil detail, NO highlights. Just small simple black dots like a teddy bear's eyes. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 2: Dadaji holds materials, girl leans forward excitedly
         "name": "page2",
-        "prompt": "Show the character from the reference image looking at a large screen inside the station. The screen shows a vibrant Qatar desert scene with golden sand dunes and a modern white SUV jumping over a dune. Dust is kicking up in the air. The boy looks excited, eyes wide behind his glasses. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image and the elderly grandfather Dadaji from the SECOND reference image on a Jaipur rooftop. Dadaji (cream angrakha kurta, saffron pagri turban, white beard) sits cross-legged, smiling warmly, holding up a thin white paper sheet in one hand and two pale bamboo sticks in the other. The girl leans forward with excitement. JUST THESE TWO CHARACTERS. Blue sky with colourful kites behind them. Same girl outfit (bright yellow kurta, yellow salwar, black braids with yellow ribbons). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 3: Girl ties bamboo sticks in cross shape, Dadaji points
         "name": "page3",
-        "prompt": "Show the character from the reference image pointing at the large screen which now shows Machu Picchu in Peru. Ancient grey stone walls and terraces on a lush green mountain top, surrounded by soft white clouds. The boy looks thoughtful and amazed. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image kneeling on a PINK SANDSTONE Jaipur rooftop floor, carefully tying two thin pale bamboo sticks in a cross (+) shape with white string. Her tongue sticks out slightly in concentration. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) crouches beside her, pointing gently at the crossing point. JUST THESE TWO CHARACTERS. The rooftop is made of warm PINK sandstone tiles. Pink sandstone buildings with arched windows and domed rooftops visible in the background — this is JAIPUR, the Pink City. Blue sky with colourful kites. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 4: Paper rips! Girl dismayed, Dadaji calm
         "name": "page4",
-        "prompt": "Show the character from the reference image looking at the large screen showing Luang Prabang in Laos. A beautiful wide river with green hills in the background. A line of monks in bright orange robes walking calmly past a golden temple with a tiered roof. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image kneeling on a PINK SANDSTONE Jaipur rooftop, pressing a large sheet of thin white paper onto a bamboo cross frame on the floor. The paper has a long diagonal rip running through it — it has clearly torn! Her expression shows dismay and disappointment — brows furrowed, mouth turned down. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) sits nearby looking calm and patient. JUST THESE TWO CHARACTERS. The rooftop is made of warm PINK sandstone tiles. Pink sandstone buildings with arched windows and domed rooftops visible in the background — this is JAIPUR, the Pink City. Blue sky with kites. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 5: Girl frustrated with crossed arms, Dadaji patient
         "name": "page5",
-        "prompt": "Show the character from the reference image looking out of a large screen. He is seeing a view from high up, looking down at a forest and a river in Laos from above. Sunlight is bright and warm, casting long shadows. He is smiling widely, enjoying the view. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image sitting on a PINK SANDSTONE Jaipur rooftop with arms crossed and brow furrowed in clear frustration. Crumpled torn paper lies beside her on the ground. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) sits nearby completely calm and patient, hands resting quietly in his lap, looking at her with gentle kindness. JUST THESE TWO CHARACTERS. The rooftop is made of warm PINK sandstone tiles. Pink sandstone buildings with arched windows and domed rooftops visible in the background — this is JAIPUR, the Pink City. Blue sky with colourful kites. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 6: Girl carefully pressing fresh paper, Dadaji watches proudly
         "name": "page6",
-        "prompt": "Show the character from the reference image following instructions on a small control panel next to the large screen. He is about to press a camera icon. The screen shows a grid with the Qatar, Peru, and Laos views. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image kneeling on a Jaipur rooftop, pressing a fresh sheet of thin white paper carefully and deliberately flat onto the bamboo cross frame. A small round clay pot of paste sits beside her. Her expression shows calm focused determination. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) watches with a proud smile. JUST THESE TWO CHARACTERS. Pink sandstone buildings visible. Blue sky with kites. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 7: Girl runs with bright yellow kite, Dadaji points upward
         "name": "page7",
-        "prompt": "Show the character from the reference image at home in a modern living room with Mum (South Asian heritage, modern casual clothes like a cardigan and jeans). He is showing her a printed picture of the white SUV in the Qatar desert. Mum is smiling and looking proud. Same character, same outfit (blue leaf t-shirt, tan shorts, glasses). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "Show the girl character from the FIRST reference image running across a Jaipur rooftop, arms raised high, holding a bright yellow diamond-shaped kite aloft. The kite is a simple diamond shape made of yellow paper on a bamboo cross frame — NO green corners, NO tail, just plain bright yellow with bamboo cross visible through it. White string trails behind her. Her face is full of excitement and effort, mouth open with joy. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) stands at the rooftop edge smiling and pointing upward. JUST THESE TWO CHARACTERS. Pink sandstone buildings around them, colourful kites in blue sky. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
+        # Page 8: Kite soaring high, girl cheers, Dadaji claps, neighbours wave
         "name": "page8",
-        "prompt": "Show the character from the reference image in bed at night, tucked under a blue duvet. Three pictures are pinned to the wall above his bed: the SUV in the desert, the stone city, and the river. He has a peaceful smile on his face, dreaming. Soft night-light in the room. Same character, same appearance. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "side_hero": True,
+        "side_hero_key": "5.3_dadaji",
+        "prompt": "A bright yellow diamond-shaped kite soars HIGH in a vivid clear blue sky above pink Jaipur sandstone buildings. The kite is plain bright yellow with bamboo cross visible — NO green, NO tail, same kite as previous page. Other colourful kites surround it. Below on the rooftop, the girl from the FIRST reference image throws both arms in the air with a huge radiant smile of pure joy. The elderly grandfather Dadaji from the SECOND reference image (cream angrakha kurta, saffron pagri turban, white beard) claps his hands beside her. On a neighbouring rooftop, two small people wave and cheer. Same girl outfit. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+]}
+
+# ═══════════════════════════════════════════════════════════════════
+# LEVEL 5.4 — "A Place for Me" (Cartagena, Colombia — morning fruit market, lost and found)
+# ═══════════════════════════════════════════════════════════════════
+# CHARACTER: Visiting British boy — blue t-shirt, khaki trousers, straight brown hair
+# SIDE HEROES:
+# - LOCAL COLOMBIAN BOY: curly dark brown hair, warm brown skin, green t-shirt (use side hero 5.4_local_boy)
+# - DAD: light skin, brown hair, casual shirt (use side hero 5.4_dad)
+# SETTING: Cartagena walled old city — BOLD vivid colonial buildings (bright yellow,
+# terracotta orange, cobalt blue), wooden balconies overflowing with pink bougainvillea,
+# terracotta clay tile roofs, cobblestone streets, coconut palms, fruit market stalls
+
+SCENE_PROMPTS["5.4"] = {
+    "title": "A Place for Me",
+    "side_hero_key": "5.4_local_boy",
+    "scenes": [
+    {
+        # COVER: British boy alone, in a panic, lost in the busy market
+        "name": "cover",
+        "prompt": "BOOK COVER ILLUSTRATION. Show the British boy from the reference image standing alone in the middle of a busy bustling Cartagena market, looking scared and worried — eyes wide with a hint of panic, hands clutched to his chest. He is lost. Adults and other people walk past him on all sides, not noticing him. Fruit stalls piled high with tropical fruit — mangoes, papayas, bananas — on both sides. BOLD vivid colonial Cartagena buildings rise behind him in bright yellow, terracotta orange, cobalt blue — with wooden balconies overflowing with bright pink bougainvillea. Coconut palms. Canvas shade canopies over the stalls. Cobblestone street. The boy is small and lost in the wide busy scene. Space at the top for a title. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
+    },
+    {
+        # Page 1: Boy and dad arriving at market — peering around corner
+        "name": "page1",
+        "side_hero": True,
+        "side_hero_key": "5.4_dad",
+        "prompt": "Show the British boy from the FIRST reference image peering around the corner of a BOLD bright yellow colonial building in Cartagena, Colombia. He grips the edge of the wall with one hand, leaning forward curiously. The dad from the SECOND reference image (light skin, brown hair, casual shirt, khaki trousers) stands behind him, one hand on the boy's shoulder, also looking ahead. Around the corner is a cobblestone street where market vendors are just setting up — stacking mangoes on wooden carts, hanging colourful cloth from frames. Terracotta orange and cobalt blue colonial buildings with wooden balconies overflowing with bright pink bougainvillea. Terracotta tile roofs. Coconut palms lean over the street. Warm golden early morning light. Same British boy character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 2: Market busy, boy overwhelmed at fruit stall
+        "name": "page2",
+        "prompt": "Show the British boy from the reference image standing on tiptoes trying to see over a crowded Cartagena market stall piled high with tropical fruit — bright yellow mangoes, green papayas, fat plantains, bananas, green limes — stacked on a wooden table. The market is busy and bustling around him. Other people browse the stalls (all in long trousers or long dresses). A canvas shade canopy above. BOLD vivid colonial buildings in the background — terracotta orange, cobalt blue — with wooden balconies overflowing with pink bougainvillea. The boy looks amazed and a little overwhelmed. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 3: Alone on step, scared, looking for dad
+        "name": "page3",
+        "prompt": "Show the British boy from the reference image sitting on a stone doorstep beside a large ornate dark wooden door of a bright yellow colonial building in Cartagena. He hugs his knees, looking down, anxious and scared — his dad has disappeared. The busy market carries on in the street in front of him but nobody notices him. Vendors calling out, people walking past. Bright pink bougainvillea trails down from the iron balcony above the door. Cobblestone street. Warm light but he feels cold and left out. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 4: Local Colombian boy finds him and offers help
+        "name": "page4",
+        "side_hero": True,
+        "side_hero_key": "5.4_local_boy",
+        "prompt": "Show the British boy from the FIRST reference image still sitting on the stone doorstep beside the yellow colonial building, but now looking up with surprise and the start of a small smile. Beside him, the local Colombian boy from the SECOND reference image (curly dark hair, warm brown skin, green t-shirt, dark blue trousers, brown sandals) crouches down with a warm friendly smile, one hand pointing toward the market street. Same yellow building, same dark wooden door, same pink bougainvillea trailing from the balcony above. On the right side of the image: more of the yellow colonial building wall continues, with another ornate window with wooden shutters and potted plants on the windowsill. Cobblestone street in the foreground. Same British boy outfit (blue t-shirt, khaki trousers, white trainers). ABSOLUTELY CRITICAL EYE RULE: ALL characters MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen — just small simple black dots like a teddy bear's eyes. NO white sclera, NO white around the black, NO iris, NO pupil detail, NO highlights. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 5: Searching stalls together — local boy holds up a mango
+        "name": "page5",
+        "side_hero": True,
+        "side_hero_key": "5.4_local_boy",
+        "prompt": "Show the local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) standing behind a Cartagena market stall, holding up a huge ripe yellow mango triumphantly above his head with a big smile. The British boy from the FIRST reference image (blue t-shirt, khaki trousers, straight brown hair) stands on the other side of the stall, leaning forward, eyes wide, impressed and laughing. Piles of tropical fruit around them — mangoes, papayas, green limes, plantains, bananas. Canvas shade canopy above. BOLD vivid colonial Cartagena buildings in the background with bougainvillea balconies. Cobblestone market street. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 6: Eating mangoes on the steps together
+        "name": "page6",
+        "side_hero": True,
+        "side_hero_key": "5.4_local_boy",
+        "prompt": "Show the British boy from the FIRST reference image and the local Colombian boy from the SECOND reference image sitting side by side on a low stone step in the shade of a terracotta colonial building, each eating a big ripe yellow mango with their hands. The British boy (blue t-shirt) has mango juice dripping down his chin and is laughing happily. The Colombian boy (green t-shirt, curly hair) takes a huge bite. Mango skins and seeds on the step beside them. A cobblestone Cartagena market street visible in the background with colourful stalls. Warm tropical light, relaxed friendly moment. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 7: Colombian boy points into the distance, British boy looks. Dad OFF-SCREEN.
+        "name": "page7",
+        "side_hero": True,
+        "side_hero_key": "5.4_local_boy",
+        "prompt": "Show ONLY TWO CHILDREN in the scene — NO other people visible except the two boys. The local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) stands with one arm extended HORIZONTALLY to the side, pointing OFF TO THE RIGHT SIDE of the image toward something beyond the frame. His arm is held out straight at shoulder height — NOT pointing up, NOT pointing down, NOT pointing at the floor. The British boy from the FIRST reference image (blue t-shirt, khaki trousers, straight brown hair) stands beside him, looking in the same direction as the Colombian boy is pointing, eyes wide with excitement and relief. Whatever they are looking at is OFF-SCREEN to the right. Colourful colonial Cartagena buildings behind them with pink bougainvillea balconies, market stalls. Cobblestone street. ABSOLUTELY CRITICAL EYE RULE: BOTH boys MUST have identical eyes — tiny solid black filled circles like dots drawn with a black marker pen — NO white, NO iris, NO pupil detail, NO highlights. Just small simple dark dots like a teddy bear's eyes. Whimsical children's book illustration. No text. Landscape orientation.",
+    },
+    {
+        # Page 8: Reunited with dad, local boy smiling beside them
+        "name": "page8",
+        "side_hero": True,
+        "side_hero_key": "5.4_local_boy",
+        "prompt": "Show the dad (light skin, brown hair, casual shirt, khaki trousers) kneeling on the cobblestone Cartagena street hugging the British boy from the FIRST reference image (blue t-shirt, khaki trousers) tightly — relief and love on both faces. The local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) stands beside them smiling warmly. The dad reaches one hand out toward the local boy in thanks. BOLD vivid colonial Cartagena buildings behind with pink bougainvillea balconies. Warm golden morning light. Market stalls in the background. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
 ]}
 
@@ -2528,21 +2688,34 @@ async def generate_book_images(level: int | str, hero_only: bool = False):
         hero_base64 = base64.b64encode(hero_path.read_bytes()).decode("utf-8")
         print(f"  [upload] Hero converted to base64 ({len(hero_base64)} chars)")
 
-        # Step 2b: Generate or load side hero reference (if applicable)
-        side_hero_base64 = None
+        # Step 2b: Generate or load side hero reference(s) — supports multiple per book
+        # Each scene can specify its own side_hero_key. Default is the book-level key.
         level_key = str(level)
-        side_hero_info = SIDE_HERO_PROMPTS.get(level_key)
-        if side_hero_info:
-            side_hero_path = book_dir / side_hero_info["filename"]
-            if not side_hero_path.exists():
-                side_hero_result = await generate_side_hero_image(
-                    session, side_hero_info, side_hero_path
-                )
-                if not side_hero_result:
-                    print(f"  [side_hero] WARNING: Failed to generate side hero — continuing without")
-            if side_hero_path.exists():
-                side_hero_base64 = base64.b64encode(side_hero_path.read_bytes()).decode("utf-8")
-                print(f"  [upload] Side hero ({side_hero_info['short']}) converted to base64 ({len(side_hero_base64)} chars)")
+        # Collect all unique side hero keys used across scenes
+        side_hero_keys_used = set()
+        if SIDE_HERO_PROMPTS.get(level_key):
+            side_hero_keys_used.add(level_key)
+        for scene in book["scenes"]:
+            sk = scene.get("side_hero_key")
+            if sk and sk in SIDE_HERO_PROMPTS:
+                side_hero_keys_used.add(sk)
+
+        # Pre-generate/load every side hero reference we'll need, keyed by side_hero_key
+        side_hero_base64_by_key = {}
+        for sk in side_hero_keys_used:
+            info = SIDE_HERO_PROMPTS[sk]
+            path = book_dir / info["filename"]
+            if not path.exists():
+                result = await generate_side_hero_image(session, info, path)
+                if not result:
+                    print(f"  [side_hero:{sk}] WARNING: Failed to generate — continuing without")
+            if path.exists():
+                b64 = base64.b64encode(path.read_bytes()).decode("utf-8")
+                side_hero_base64_by_key[sk] = b64
+                print(f"  [upload] Side hero '{sk}' ({info['short']}) converted to base64 ({len(b64)} chars)")
+
+        # Default side hero (for scenes that don't specify a scene-level key)
+        side_hero_base64 = side_hero_base64_by_key.get(level_key)
 
         # Step 2c: Generate or load object reference (if applicable)
         object_ref_base64 = None
@@ -2571,8 +2744,12 @@ async def generate_book_images(level: int | str, hero_only: bool = False):
                 generated.append(str(output_path))
                 continue
 
-            # Determine if this scene needs the side hero injected
-            scene_side_hero = side_hero_base64 if scene.get("side_hero") else None
+            # Determine if this scene needs a side hero injected
+            # Use scene-specific side_hero_key if provided, else fall back to book default
+            scene_side_hero = None
+            if scene.get("side_hero"):
+                scene_sk = scene.get("side_hero_key", level_key)
+                scene_side_hero = side_hero_base64_by_key.get(scene_sk, side_hero_base64)
             hero_label = " + side hero" if scene_side_hero else ""
             obj_label = " + object ref" if object_ref_base64 else ""
             print(f"  [{scene['name']}] Generating with hero reference{hero_label}{obj_label}...")

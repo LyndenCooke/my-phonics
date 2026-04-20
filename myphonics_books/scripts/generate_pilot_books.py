@@ -57,8 +57,8 @@ def get_pilot_stories() -> dict:
     from data.loud_toy_story_l2_5_book1 import LOUD_TOY_STORY_BOOK1
     from data.night_fair_story_l2_6_book1 import NIGHT_FAIR_STORY_BOOK1
     from data.bike_race_story_l3_1_book1 import BIKE_RACE_STORY_BOOK1
-    from data.stone_flute_story_l3_2_book1 import STONE_FLUTE_STORY_BOOK1
-    from data.reach_treat_story_l3_3_book1 import REACH_TREAT_STORY_BOOK1
+    from data.night_market_story_l3_2_book1 import NIGHT_MARKET_STORY_BOOK1
+    from data.dream_team_story_l3_3_book1 import DREAM_TEAM_STORY_BOOK1
     from data.red_sail_story_l3_5_book1 import RED_SAIL_STORY_BOOK1
     from data.purple_purse_story_l4_1_book1 import PURPLE_PURSE_STORY_BOOK1
     from data.brown_owl_story_l4_2_book1 import BROWN_OWL_STORY_BOOK1
@@ -93,8 +93,8 @@ def get_pilot_stories() -> dict:
     stories["L2_5_B1"] = LOUD_TOY_STORY_BOOK1["L2_5_B1"]
     stories["L2_6_B1"] = NIGHT_FAIR_STORY_BOOK1["L2_6_B1"]
     stories["L3_1_B1"] = BIKE_RACE_STORY_BOOK1["L3_1_B1"]
-    stories["L3_2_B1"] = STONE_FLUTE_STORY_BOOK1["L3_2_B1"]
-    stories["L3_3_B1"] = REACH_TREAT_STORY_BOOK1["L3_3_B1"]
+    stories["L3_2_B1"] = NIGHT_MARKET_STORY_BOOK1["L3_2_B1"]
+    stories["L3_3_B1"] = DREAM_TEAM_STORY_BOOK1["L3_3_B1"]
     stories["L3_5_B1"] = RED_SAIL_STORY_BOOK1["L3_5_B1"]
     stories["L4_1_B1"] = PURPLE_PURSE_STORY_BOOK1["L4_1_B1"]
     stories["L4_2_B1"] = BROWN_OWL_STORY_BOOK1["L4_2_B1"]
