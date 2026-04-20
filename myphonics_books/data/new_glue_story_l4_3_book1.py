@@ -43,7 +43,7 @@ NEW_GLUE_STORY_BOOK1 = {
             {
                 "page_number": 2,
                 "text": 'The blue glue spread across the desk and stuck to her hand! She pulled and she shook. Then the card flew off her hand, down the hall and down the stairs!',
-                "image_prompt": "A girl shakes her hand frantically as a card with blue glue flies through the air toward a colourful tiled staircase. Warm-coloured hallway with painted walls and decorative tiles on the stair risers. She looks panicked. Landscape orientation.",
+                "image_prompt": "A white card covered in blue glue flies down a colourful tiled staircase toward a ginger tabby cat sitting peacefully at the bottom. No people in this scene — just the flying card and the cat. Warm-coloured hallway with painted walls and decorative tiles on the stair risers. Landscape orientation.",
             },
             {
                 "page_number": 3,

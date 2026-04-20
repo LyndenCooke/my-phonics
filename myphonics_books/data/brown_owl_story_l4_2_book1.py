@@ -31,7 +31,7 @@ BROWN_OWL_STORY_BOOK1 = {
             {
                 "page_number": 1,
                 "text": "It was getting dark. From deep in the trees came a loud howl, then a growl. What was that? I stared out the window but all I saw were shadows.",
-                "image_description": "A girl pressing her face to a window at dusk, peering out at dark trees. Mysterious shadows visible outside. Warm lamplight inside contrasts with the blue-grey twilight. The girl looks curious and excited."
+                "image_description": "A girl seen from behind in a cosy jumper, standing at a window looking out into the dark evening. Curly dark brown hair in two puffs. Bare tree silhouettes and distant house lights outside. Warm lamplight inside, curtains either side."
             },
             {
                 "page_number": 2,
@@ -40,23 +40,23 @@ BROWN_OWL_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": "Then Mum stopped and stared up. \u2018Look!\u2019 she said. A big brown owl sat on a bare branch. It stared down at us and did not look scared at all.",
-                "image_description": "A large brown owl (tawny owl) perched on a bare branch, staring down with round dark eyes. Below, the girl and her mum look up in wonder. The owl has rich brown feathers with cream markings. Dusk light filters through bare tree branches."
+                "text": "Then Mum stopped and stared up at the bare branches. \u2018Look!\u2019 she said. I stared too. Something was up there in the dark. What was it?",
+                "image_description": "The girl and her mum standing in a dark autumn woodland at dusk, both looking up at bare branches above. Mum points upward. No owl visible — just anticipation. Bare trees, fallen brown leaves, twilight sky."
             },
             {
                 "page_number": 4,
-                "text": "I stared at the owl. The owl stared right back. \u2018How rare!\u2019 said Mum. \u2018You do not see owls like this!\u2019 I wanted to get close but I did not dare.",
-                "image_description": "Close-up composition: the girl and the owl facing each other. The girl stares up with wide-eyed wonder. The owl stares back from its branch, head tilted slightly. The mum stands behind with a hand on the girl's shoulder. A bare branch bridges the space between them."
+                "text": "Then I saw it. A big brown owl! It sat high up on a bare branch and stared right down at me. How rare! I stared back but I did not dare to get close.",
+                "image_description": "The girl seen from behind, looking up at a large owl perched high in a tall bare oak tree. The owl stares down. Dark atmospheric woodland at dusk, bare winter trees, fallen leaves. Dramatic, quiet moment."
             },
             {
                 "page_number": 5,
-                "text": "Then the owl spread its wings and swooped down. Wow! It landed on a stump close to us. I froze. I did not dare to make a sound.",
-                "image_description": "The owl in dramatic flight, wings spread wide, swooping down from the branch. The girl stands frozen with her mouth open in amazement. A tree stump visible on the ground nearby. Dynamic movement captured in the swooping pose. Dusk woodland setting."
+                "text": "Then the owl spread its wings and swooped down from the branch. Wow! I froze. I did not dare to make a sound.",
+                "image_description": "The owl in dramatic flight with wings spread wide, swooping down from a branch. The girl stands frozen below with mouth open in amazement. Tree stump nearby. Dusk woodland setting with bare trees."
             },
             {
                 "page_number": 6,
-                "text": "The owl looked up at a hole high in the tree. Out came soft cheeps. \u2018Owlets!\u2019 said Mum. \u2018She must look after them!\u2019 I peeked and saw fluffy brown faces staring down at me.",
-                "image_description": "The owl looking up at a dark hole in a tall tree trunk. Two or three small fluffy brown owlet faces peeping out of the hole, looking down with round dark eyes. The girl stands on tiptoes trying to peek up. Warm soft light emanating from inside the hole. The mum points up at the owlets."
+                "text": "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. \u2018Owlets!\u2019 said Mum. \u2018She must look after them!\u2019 I peeked and saw fluffy brown faces staring down at me.",
+                "image_description": "The owl perched on a branch next to a dark hole in a tall oak tree. Two small fluffy owlets peek out of the hole. The girl stands on tiptoes looking up, delighted. The mum points up at the owlets. Dark blue twilight sky, bare winter trees."
             },
             {
                 "page_number": 7,
@@ -93,7 +93,7 @@ BROWN_OWL_STORY_BOOK1 = {
             "during": "Point to the words with 'are' (stared, bare, dare, care, rare, scared). Point to the words with 'ow' as in 'cow' (owl, howl, growl, brown, down, wow, owlets, crowded, now). Ask: 'What do you think will happen next?'",
             "after": "What was your favourite part? Would you like to see a real owl? Can you think of other animals that come out at night?"
         },
-        "word_count": 265,
-        "sentences_per_page": [4, 4, 4, 5, 5, 5, 4, 6],
+        "word_count": 252,
+        "sentences_per_page": [4, 5, 6, 5, 4, 6, 4, 6],
     }
 }

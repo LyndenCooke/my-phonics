@@ -71,19 +71,10 @@
     "total_books_needed": 5,
     "completed_books": [
       {"sub_level": "3.1", "title": "The Big Bike Race", "focus_sounds": ["a-e","i-e"], "culture": "European countryside, France", "theme": "Determination / sportsmanship"},
-      {"sub_level": "3.2", "title": "The Stone Flute", "focus_sounds": ["o-e","u-e"], "culture": "Moroccan home, Casablanca", "theme": "Patience with practice / family support"}
+      {"sub_level": "3.2", "title": "Lost at the Night Market", "focus_sounds": ["o-e","u-e"], "culture": "Bangkok night market, Thailand", "theme": "Getting lost and found / staying close"},
+      {"sub_level": "3.3", "title": "The Dream Team", "focus_sounds": ["ea","ie"], "culture": "Accra, Ghana — residential compound, local shop", "theme": "Friendship / teamwork / helping family"}
     ],
     "planned_books": [
-      {
-        "sub_level": "3.3",
-        "focus_sounds": ["ea","ie"],
-        "title": null,
-        "culture": "Accra, Ghana — modern painted concrete houses, kente cloth accents, lush tropical trees",
-        "theme": "FRIENDSHIP / making a new friend",
-        "structure": "Before/After Contrast (alone struggling > together succeeding)",
-        "story_idea": "Two children (boy + girl) who don't know each other. Boy tries to reach a treat in a high tree, can't do it. Girl has a stick but can't reach either. They team up, share the treat, become best friends.",
-        "notes": "FIRST story with TWO child peers as main characters. KEY THEME GAP: friendship."
-      },
       {
         "sub_level": "3.4",
         "focus_sounds": ["oi","aw"],
@@ -192,10 +183,10 @@
         "sub_level": "6.1",
         "focus_sounds": ["ous"],
         "title": null,
-        "culture": "Cairo, Egypt — modern Nile corniche, apartment buildings, local market, pyramids in distance",
+        "culture": "Cairo, Egypt — modern Nile corniche, apartment buildings, local market, minaret",
         "theme": "Celebrating your own world / seeing beauty in the familiar",
         "structure": "Discovery/Observation",
-        "story_idea": "Boy thinks his neighbourhood is boring. A famous storyteller visits and tells marvellous tales about the enormous city. The boy looks again and sees his home differently — it IS marvellous.",
+        "story_idea": "Boy thinks his neighbourhood is boring. His well-travelled Uncle Tarek visits and walks him around the city, sharing marvellous stories. The boy looks again and sees his home differently — it IS marvellous.",
         "nonfiction_feature": "Labels/signs (on neighbourhood landmarks)",
         "notes": "KEY THEME GAP: celebrating differences."
       },

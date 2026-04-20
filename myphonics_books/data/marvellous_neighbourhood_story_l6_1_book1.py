@@ -3,10 +3,10 @@ The Marvellous Neighbourhood — Level 6.1 Story
 Focus sounds: ous (fabulous, marvellous, glorious, enormous, joyous, wondrous, etc.)
 Setting: Contemporary Cairo, Egypt — Nile corniche, apartment block, market, bakery
 Cultural approach: Contemporary-first Cairo. Modern apartment building, the Nile corniche,
-a local market street, a neighbourhood bakery. The Giza pyramids appear only on the hazy
-distant horizon. Characters in modern clothing (not stereotypical robes or kufis).
-The storyteller references the hakawati tradition — an authentic Egyptian/Arab oral
-storytelling culture, now revived in community settings.
+a local market street, a neighbourhood bakery. Characters in modern clothing (not stereotypical
+robes or kufis). The well-travelled uncle (Uncle Tarek) draws on the hakawati tradition —
+an authentic Egyptian/Arab oral storytelling culture — as he shows Yusuf his own neighbourhood.
+Family guide (uncle, not a stranger) reinforces cultural norms around trusted adults.
 Written 2026-03-18
 
 Story structure: Discovery/Observation (L6 plan)
@@ -53,7 +53,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
                     "Rows of cream-coloured blocks lined the road, and cars honked in the hot afternoon heat. "
                     "From the market around the corner, he could hear the calls of vendors and the clatter of carts. "
                     "\"Nothing glorious or fabulous ever happens here,\" he muttered. \"This place is so ordinary.\" "
-                    "Just then, a curious-looking man with a worn notebook sat down quietly on the step beside him."
+                    "Just then, his Uncle Tarek sat down quietly on the step beside him, a worn notebook tucked under his arm."
                 ),
                 "image_prompt": (
                     "An Egyptian boy (Yusuf, 8-9 years old, medium-dark brown skin tone #8B6B4A, short black hair, "
@@ -69,11 +69,11 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 2,
                 "text": (
-                    "\"You look like somebody who thinks they have seen everything there is to see,\" said the man with a smile. "
+                    "\"You look like somebody who thinks they have seen everything there is to see,\" said Uncle Tarek with a smile. "
                     "Yusuf shrugged. \"I live here. It is just houses, traffic, and the same old market.\" "
-                    "The man had a luminous look in his eyes, as if he knew something tremendous. "
+                    "His uncle had a luminous look in his eyes, as if he knew something tremendous. "
                     "\"I have spent my whole life travelling to marvellous places,\" he said, leaning forward. "
-                    "\"And I am going to tell you something. This is one of the most glorious cities on Earth.\""
+                    "\"And I am going to tell you something, Yusuf. This is one of the most glorious cities on Earth.\""
                 ),
                 "image_prompt": (
                     "The older man (Egyptian storyteller, 60s, medium brown skin, short grey hair, white collared shirt "
@@ -87,7 +87,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 3,
                 "text": (
-                    "The man stood and walked with Yusuf to the wide road that ran along the edge of the river. "
+                    "Uncle Tarek stood and walked with Yusuf to the wide road that ran along the edge of the river. "
                     "\"That is the Nile,\" he said in a wondrous voice, \"the most famous river in the whole world.\" "
                     "\"It has flowed past this very spot for thousands and thousands of years.\" "
                     "Yusuf had walked along the corniche countless times, but he had never stopped to wonder. "
@@ -105,9 +105,9 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 4,
                 "text": (
-                    "Next, the man led Yusuf around the corner to the old bakery on their street. "
+                    "Next, his uncle led Yusuf around the corner to the old bakery on their street. "
                     "An enormous cloud of warm bread smell drifted out through the open door. "
-                    "\"The baker has been here for forty years,\" said the man. \"He knows every family by name.\" "
+                    "\"The baker has been here for forty years,\" said Uncle Tarek. \"He knows every family by name.\" "
                     "Yusuf realised he had never once stopped to wave or say good morning to him. "
                     "The baker spotted them and held out a warm round of aish baladi, the famous flat bread of Egypt."
                 ),
@@ -123,11 +123,11 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 5,
                 "text": (
-                    "They walked on, and the man pointed to the slim minaret that rose above the rooftops. "
+                    "They walked on, and Uncle Tarek pointed to the slim minaret that rose above the rooftops. "
                     "\"On quiet mornings, the call from that tower can be heard for miles and miles,\" he said. "
                     "Down by the river, white-sailed boats drifted past on the gleaming water. "
                     "A cluster of street cats — Cairo was famous for its cats — sunned themselves on a warm wall. "
-                    "\"Is this place still boring to you?\" the man asked, his eyes twinkling."
+                    "\"Is this place still boring to you?\" his uncle asked, his eyes twinkling."
                 ),
                 "image_prompt": (
                     "Yusuf and the storyteller walk along a Cairo street. The storyteller points upward at a slim "
@@ -142,7 +142,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
                 "page_number": 6,
                 "text": (
                     "Yusuf stood still for a moment and looked around with new, curious eyes. "
-                    "He could see the enormous pyramids on the far horizon, golden in the dusty afternoon haze. "
+                    "He could see the white-sailed boats drifting on the enormous Nile, golden in the afternoon haze. "
                     "He could hear the joyous calls of the market sellers drifting around the corner. "
                     "He could smell the fabulous bread from the bakery he had walked past hundreds of times. "
                     "\"It is marvellous,\" he said, in a quiet, amazed voice. \"My neighbourhood is truly marvellous.\""
@@ -160,7 +160,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 7,
                 "text": (
-                    "The man smiled and handed Yusuf a small notebook and a pen. "
+                    "Uncle Tarek smiled and handed Yusuf a small notebook and a pen. "
                     "\"Write down what you see,\" he said. \"Give each part of your neighbourhood the name it deserves.\" "
                     "Yusuf picked up the pen and began to write, one label for each place he could now see. "
                     "He wrote: The Marvellous Corniche. The Enormous Nile. The Famous Bakery. The Joyous Market. The Glorious Minaret. "
@@ -190,7 +190,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 8,
                 "text": (
-                    "Later, when the storyteller had gone, Yusuf sat on his step once more. "
+                    "Later, when Uncle Tarek had gone home, Yusuf sat on his step once more. "
                     "But this time, he was not bored — he was curious and adventurous, watching the world with new eyes. "
                     "The enormous city hummed and buzzed all around him, full of marvellous, ordinary life. "
                     "He opened his notebook and added one last label at the bottom of the page: My Marvellous Home. "
@@ -270,16 +270,17 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             ),
         },
         "side_characters": {
-            "storyteller": {
-                "name": "The storyteller (hakawati figure)",
+            "uncle_tarek": {
+                "name": "Uncle Tarek (Yusuf's uncle)",
                 "appearance": (
                     "Egyptian man, 60s. Medium brown skin (#B8956A). Short grey hair, "
                     "short grey beard. Warm, intelligent eyes. Carries a worn brown leather notebook."
                 ),
                 "outfit": "White collared shirt (linen, slightly crumpled). Light stone-coloured trousers. Brown leather sandals.",
                 "notes": (
-                    "NOT a stereotypical 'wizard' or 'robed elder'. He is a real, contemporary man — "
-                    "smart, warm, articulate. References the hakawati (oral storyteller) tradition of Egypt. "
+                    "Yusuf's uncle — family, NOT a stranger. A well-travelled, warm older relative "
+                    "who has come to visit and take Yusuf on a walk around the neighbourhood. "
+                    "He draws on the hakawati (oral storyteller) tradition of Egypt in how he shares stories. "
                     "Always smiling, always pointing at something new."
                 ),
             },
