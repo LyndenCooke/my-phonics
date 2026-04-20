@@ -86,3 +86,12 @@ MyPhonicsBooks_Visual_Review_unpacked/
 *.pdf
 
 .vercel
+
+# Supabase local temp
+supabase/.temp/
+
+# Image backups (kept locally only)
+public/illustrations/**/*_backup.png
+
+# Raw AI generation outputs (too large, not canonical)
+content/gemini-raw/
