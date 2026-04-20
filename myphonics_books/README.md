@@ -66,12 +66,18 @@ Six levels aligned to the Letters and Sounds progression:
 
 ## Production Status
 
-| Level | Status | Completed Books |
-|-------|--------|-----------------|
-| **L1** | ✅ COMPLETE | 10/10 — Tap! Tap! Tap!, The Mud on the Dog, The Fish in the Tank, The Red Socks, Run Pup Run!, Fox Fell Off!, The Jam Jug, The Yak and the Box, Chop Chop Chop!, Buzz and Sing! |
-| **L2** | 🔄 In Progress | 4/5 — The Night Light, Moo at the Zoo, The Shadow Show, The Fair in the Air |
-| **L3** | 🔄 In Progress | 1/5 — The Big Bike Race |
-| **L4–L6** | 🔲 Not Started | 0/12 |
+| Level | Status | Books |
+|-------|--------|-------|
+| **L1** | ✅ Complete | 10/10 |
+| **L2** | ✅ Complete | 5/5 |
+| **L3** | 🔄 In progress | 3/5 |
+| **L4** | ✅ Complete | 4/4 |
+| **L5** | 🔄 In progress | 2/4 |
+| **L6** | 🔄 In progress | 1/4 |
+
+See [`PRODUCTION_CHECKLIST.md`](./PRODUCTION_CHECKLIST.md) and
+[`data/story_summaries.json`](./data/story_summaries.json) for the
+canonical per-book status, titles, and cultural settings.
 
 ---
 

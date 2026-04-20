@@ -33,7 +33,7 @@ export function useAdminDeals(filters?: { status?: string; stage_id?: string }) 
 
       return (data ?? []).map(d => ({
         ...d,
-        contact: d.crm_contacts as Deal['contact'],
+        contact: d.crm_contacts as unknown as Deal['contact'],
         stage: d.crm_pipeline_stages as Deal['stage'],
       })) as Deal[];
     },

@@ -136,7 +136,7 @@ function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => v
               Phonics Books
             </h1>
             <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
-              Personalised decodable books for children aged 4-8, with interactive reading, sound-by-sound guidance, and stories from around the world.
+              Decodable books for children aged 4-8, with interactive reading, sound-by-sound guidance, and stories from around the world.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
               <button onClick={onAssess} className="gradient-primary text-white font-bold px-7 py-3.5 rounded-2xl shadow-button hover:opacity-90 transition-all text-base flex items-center justify-center gap-2">

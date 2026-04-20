@@ -31,7 +31,10 @@ export default function EmailCapture({
     setError('');
 
     try {
-      const { error: dbError } = await supabase.from('funnel_leads').insert({
+      // `funnel_leads` table exists but isn't in the generated Supabase
+      // types yet — cast via `any` until types are regenerated.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: dbError } = await (supabase as any).from('funnel_leads').insert({
         child_name: childName.trim() || null,
         email: email.trim(),
         source,
