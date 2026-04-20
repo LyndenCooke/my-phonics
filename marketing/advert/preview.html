@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPhonicsBooks — Meta Ad Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .header {
+    text-align: center;
+    padding: 40px 20px 20px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: #3B82F6; }
+  .header p {
+    color: #94a3b8;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .tab-bar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 2px solid #1e293b;
+    background: transparent;
+    color: #94a3b8;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab:hover { border-color: #3B82F6; color: #fff; }
+  .tab.active {
+    background: #3B82F6;
+    border-color: #3B82F6;
+    color: #fff;
+  }
+
+  .preview-area {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .phone-frame {
+    width: 360px;
+    height: 640px;
+    border-radius: 40px;
+    border: 4px solid #1e293b;
+    overflow: hidden;
+    position: relative;
+    background: #0f172a;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .scene.active { opacity: 1; }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 20px;
+    align-items: center;
+  }
+  .timeline-dot {
+    width: 48px;
+    height: 6px;
+    border-radius: 3px;
+    background: #1e293b;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .timeline-dot.active { background: #3B82F6; }
+  .timeline-dot.passed { background: #475569; }
+
+  .scene-label {
+    text-align: center;
+    padding: 0 20px 10px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+  }
+  .btn {
+    padding: 10px 28px;
+    border-radius: 10px;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-play {
+    background: #3B82F6;
+    color: #fff;
+  }
+  .btn-play:hover { background: #2563eb; }
+  .btn-play.playing { background: #EF4444; }
+  .btn-reset {
+    background: #1e293b;
+    color: #94a3b8;
+  }
+  .btn-reset:hover { background: #334155; color: #fff; }
+
+  /* ===== AD 1: THE HEADLINE ===== */
+  .news-card {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .news-bar { height: 5px; background: #DC2626; }
+  .news-inner { padding: 24px; }
+  .news-tag {
+    display: inline-block;
+    background: #DC2626;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .news-headline {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+  }
+  .news-source {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  /* Context scene */
+  .context-muted { color: #94a3b8; font-size: 17px; }
+  .context-year { color: #F59E0B; font-size: 32px; font-weight: 900; margin: 8px 0; }
+  .context-title { color: #fff; font-size: 28px; font-weight: 800; line-height: 1.3; }
+  .context-punch {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 24px;
+    padding-bottom: 4px;
+    border-bottom: 3px solid #DC2626;
+    display: inline-block;
+  }
+
+  /* Flip scene */
+  .struck {
+    color: #94a3b8;
+    font-size: 20px;
+    text-decoration: line-through;
+    text-decoration-color: #DC2626;
+    text-decoration-thickness: 3px;
+  }
+  .right-word {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 16px;
+  }
+  .right-word em {
+    color: #22C55E;
+    font-style: normal;
+    text-decoration: underline;
+    text-decoration-color: #22C55E;
+    text-underline-offset: 4px;
+  }
+  .matched-text {
+    color: #94a3b8;
+    font-size: 16px;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .level-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .level-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+
+  /* ===== AD 2: THE MYTH ===== */
+  .myth-bg { background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%); }
+  .myth-label {
+    font-size: 13px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .speech-bubble {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px solid #e2e8f0;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  .speech-quote {
+    font-size: 60px;
+    color: #e2e8f0;
+    font-family: Georgia, serif;
+    line-height: 0.5;
+    position: absolute;
+    top: 12px;
+    left: 16px;
+  }
+  .speech-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+  }
+  .speech-text span { color: #3B82F6; }
+
+  /* Bust scene */
+  .stamp {
+    border: 4px solid #DC2626;
+    border-radius: 8px;
+    padding: 8px 24px;
+    display: inline-block;
+    transform: rotate(-5deg);
+  }
+  .stamp-text {
+    font-size: 30px;
+    font-weight: 900;
+    color: #DC2626;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .bust-explain {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 24px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .bust-kill {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 8px;
+  }
+  .bust-kill em {
+    color: #DC2626;
+    font-style: normal;
+    text-decoration: underline;
+    text-decoration-color: #DC2626;
+    text-underline-offset: 4px;
+  }
+  .bust-divider {
+    width: 60%;
+    height: 1px;
+    background: #475569;
+    margin: 24px 0;
+  }
+  .bust-solution {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .bust-solution em {
+    color: #22C55E;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .bust-sub {
+    font-size: 15px;
+    color: #94a3b8;
+    margin-top: 8px;
+  }
+
+  /* ===== AD 3: THE STAT ===== */
+  .stat-number {
+    font-size: 100px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat-percent { color: #DC2626; }
+  .stat-context {
+    font-size: 18px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .stat-context strong { color: #fff; font-weight: 700; }
+  .stat-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  /* Question scene */
+  .question-text {
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+  }
+  .question-mark {
+    font-size: 60px;
+    font-weight: 900;
+    color: #F59E0B;
+    margin-top: 8px;
+  }
+  .check-list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-self: flex-start;
+    padding-left: 20px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: #fff;
+  }
+  .check-circle {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #22C55E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ===== SHARED CTA ===== */
+  .cta-brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .cta-brand span { color: #3B82F6; }
+  .cta-headline {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .cta-sub {
+    font-size: 16px;
+    color: #94a3b8;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .cta-button {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    padding: 16px 36px;
+    border-radius: 14px;
+    margin-top: 24px;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  }
+  .cta-button-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cta-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #22C55E;
+  }
+  .cta-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22C55E;
+  }
+  .level-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    height: 5px;
+  }
+  .level-bar div { flex: 1; }
+
+  /* Info panel */
+  .info-panel {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .info-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .info-desc {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+  .info-timing {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .timing-row {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .timing-time {
+    color: #3B82F6;
+    font-weight: 700;
+    min-width: 48px;
+  }
+  .timing-label { color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>My<span>Phonics</span>Books — Meta Ad Preview</h1>
+  <p>Hormozi-style direct response ads (9:16 vertical, 15 seconds)</p>
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab active" data-ad="headline">The Headline</button>
+  <button class="tab" data-ad="myth">The Myth</button>
+  <button class="tab" data-ad="stat">The Stat</button>
+</div>
+
+<div class="preview-area">
+  <div class="phone-frame" id="phone">
+
+    <!-- ===== AD 1: THE HEADLINE ===== -->
+    <!-- Scene 1: News Hook -->
+    <div class="scene active" id="headline-1" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="news-card">
+        <div class="news-bar"></div>
+        <div class="news-inner">
+          <div class="news-tag">UK EDUCATION</div>
+          <div class="news-headline">1 in 4 children leave primary school unable to read properly</div>
+          <div class="news-source">ITV News / National Literacy Trust, 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Context -->
+    <div class="scene" id="headline-2" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="context-muted">The government just declared</div>
+      <div class="context-year">2026</div>
+      <div class="context-title" style="text-align:center;">the National Year<br>of Reading</div>
+      <div class="context-punch">That's how serious this is.</div>
+    </div>
+
+    <!-- Scene 3: Flip -->
+    <div class="scene" id="headline-3" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="struck">"Just read more books"</div>
+      <div class="right-word">The <em>right</em> books.</div>
+      <div class="matched-text" style="text-align:center;">Matched to exactly what<br>they can decode</div>
+      <div class="level-dots">
+        <div class="level-dot" style="background:#E84B8A;"></div>
+        <div class="level-dot" style="background:#F59E0B;"></div>
+        <div class="level-dot" style="background:#22C55E;"></div>
+        <div class="level-dot" style="background:#3B82F6;"></div>
+        <div class="level-dot" style="background:#8B5CF6;"></div>
+        <div class="level-dot" style="background:#14B8A6;"></div>
+      </div>
+    </div>
+
+    <!-- Scene 4: CTA -->
+    <div class="scene" id="headline-4" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="cta-brand">My<span>Phonics</span>Books</div>
+      <div class="cta-headline">Find their level</div>
+      <div class="cta-sub">3-minute assessment. 3 free books.</div>
+      <div class="cta-button"><div class="cta-button-text">Start free assessment →</div></div>
+      <div class="cta-badge"><div class="cta-badge-dot"></div> Free. No card needed.</div>
+      <div class="level-bar">
+        <div style="background:#E84B8A;"></div>
+        <div style="background:#F59E0B;"></div>
+        <div style="background:#22C55E;"></div>
+        <div style="background:#3B82F6;"></div>
+        <div style="background:#8B5CF6;"></div>
+        <div style="background:#14B8A6;"></div>
+      </div>
+    </div>
+
+    <!-- ===== AD 2: THE MYTH ===== -->
+    <!-- Scene 1: Myth Hook -->
+    <div class="scene myth-bg" id="myth-1">
+      <div class="myth-label">Every parent thinks this</div>
+      <div class="speech-bubble">
+        <div class="speech-quote">"</div>
+        <div class="speech-text">They just need to<br><span>read more</span></div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Bust -->
+    <div class="scene" id="myth-2" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="stamp"><div class="stamp-text">Wrong.</div></div>
+      <div class="bust-explain">Wrong level books don't<br>build confidence.</div>
+      <div class="bust-kill">They <em>kill</em> it.</div>
+      <div class="bust-divider"></div>
+      <div class="bust-solution">Every word matched to<br><em>exactly what they can decode</em></div>
+      <div class="bust-sub">Their name. Their level. Their book.</div>
+    </div>
+
+    <!-- Scene 3: CTA -->
+    <div class="scene" id="myth-3" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="cta-brand">My<span>Phonics</span>Books</div>
+      <div class="cta-headline">The right level matters</div>
+      <div class="cta-sub">3-minute assessment. 3 free books. Zero risk.</div>
+      <div class="cta-button"><div class="cta-button-text">Find their level →</div></div>
+      <div class="cta-badge"><div class="cta-badge-dot"></div> Free. No card needed.</div>
+      <div class="level-bar">
+        <div style="background:#E84B8A;"></div>
+        <div style="background:#F59E0B;"></div>
+        <div style="background:#22C55E;"></div>
+        <div style="background:#3B82F6;"></div>
+        <div style="background:#8B5CF6;"></div>
+        <div style="background:#14B8A6;"></div>
+      </div>
+    </div>
+
+    <!-- ===== AD 3: THE STAT ===== -->
+    <!-- Scene 1: Stat Hook -->
+    <div class="scene" id="stat-1" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="stat-glow"></div>
+      <div class="stat-number" style="position:relative;z-index:1;">20<span class="stat-percent">%</span></div>
+      <div class="stat-context" style="position:relative;z-index:1;">of Year 1 children<br><strong>failed the phonics check</strong></div>
+    </div>
+
+    <!-- Scene 2: Question -->
+    <div class="scene" id="stat-2" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="question-text">Would yours pass?</div>
+      <div class="question-mark">?</div>
+      <div style="width:1px;height:1px;background:#475569;width:60%;margin:20px 0;"></div>
+      <div style="font-size:20px;font-weight:700;color:#fff;text-align:center;">Find out in <span style="color:#F59E0B;">3 minutes</span></div>
+      <div class="check-list">
+        <div class="check-item"><div class="check-circle">✓</div> UK phonics curriculum</div>
+        <div class="check-item"><div class="check-circle">✓</div> Exact level in 3 minutes</div>
+        <div class="check-item"><div class="check-circle">✓</div> Books matched to their level</div>
+      </div>
+    </div>
+
+    <!-- Scene 3: CTA -->
+    <div class="scene" id="stat-3" style="background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);">
+      <div class="cta-brand">My<span>Phonics</span>Books</div>
+      <div class="cta-headline" style="font-size:24px;">Get their level +<br>3 free books</div>
+      <div class="cta-sub">Free. No card needed.</div>
+      <div class="cta-button"><div class="cta-button-text">Start assessment →</div></div>
+      <div class="cta-badge"><div class="cta-badge-dot"></div> Free. No card needed.</div>
+      <div class="level-bar">
+        <div style="background:#E84B8A;"></div>
+        <div style="background:#F59E0B;"></div>
+        <div style="background:#22C55E;"></div>
+        <div style="background:#3B82F6;"></div>
+        <div style="background:#8B5CF6;"></div>
+        <div style="background:#14B8A6;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="timeline" id="timeline"></div>
+<div class="scene-label" id="sceneLabel"></div>
+
+<div class="controls">
+  <button class="btn btn-play" id="playBtn">Play</button>
+  <button class="btn btn-reset" id="resetBtn">Reset</button>
+</div>
+
+<div class="info-panel" id="infoPanel"></div>
+
+<script>
+const ads = {
+  headline: {
+    scenes: 4,
+    title: 'Ad 1: "The Headline" — News Hook',
+    desc: 'Opens with a real news headline about the UK reading crisis. Parent sees something familiar from their feed. Then we flip: the solution is not more books, it is the RIGHT books matched to their level.',
+    labels: ['News Hook', 'Context', 'The Flip', 'CTA'],
+    timing: [
+      { time: '0–3s', label: 'News headline screenshot (pattern interrupt)' },
+      { time: '3–7s', label: '"2026 National Year of Reading. That\'s how serious this is."' },
+      { time: '7–11s', label: '"Just read more" struck through → "The right books"' },
+      { time: '11–15s', label: 'CTA: "Find their level. Free."' },
+    ],
+  },
+  myth: {
+    scenes: 3,
+    title: 'Ad 2: "The Myth" — Belief Breaker',
+    desc: 'Opens with what every parent thinks: "They just need to read more." Light background, speech bubble, feels familiar. Then smashes to dark with a red WRONG stamp. Wrong level books kill confidence. Reveals the solution.',
+    labels: ['Common Belief', 'Myth Bust', 'CTA'],
+    timing: [
+      { time: '0–3s', label: 'Speech bubble: "They just need to read more"' },
+      { time: '3–10s', label: '"Wrong." stamp → "Wrong level books kill confidence"' },
+      { time: '10–15s', label: 'CTA: "The right level matters. 3 free books."' },
+    ],
+  },
+  stat: {
+    scenes: 3,
+    title: 'Ad 3: "The Stat" — Pattern Interrupt',
+    desc: 'Giant "20%" fills the screen with a red flash. Counter animation from 0 to 20. Context reveals it is Year 1 phonics failures. Asks: "Would yours pass?" Shows solution checklist.',
+    labels: ['Giant Stat', 'Question + Solution', 'CTA'],
+    timing: [
+      { time: '0–3s', label: 'Giant "20%" counter with red flash impact' },
+      { time: '3–11s', label: '"Would yours pass?" → checklist solution' },
+      { time: '11–15s', label: 'CTA: "Get their level + 3 free books"' },
+    ],
+  },
+};
+
+let currentAd = 'headline';
+let currentScene = 1;
+let isPlaying = false;
+let playInterval = null;
+
+function showAd(adName) {
+  currentAd = adName;
+  currentScene = 1;
+  stopPlaying();
+
+  // Update tabs
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`[data-ad="${adName}"]`).classList.add('active');
+
+  // Hide all scenes
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+
+  // Show first scene of selected ad
+  const el = document.getElementById(`${adName}-1`);
+  if (el) el.classList.add('active');
+
+  updateTimeline();
+  updateInfo();
+}
+
+function showScene(num) {
+  currentScene = num;
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(`${currentAd}-${num}`);
+  if (el) el.classList.add('active');
+  updateTimeline();
+}
+
+function updateTimeline() {
+  const ad = ads[currentAd];
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  for (let i = 1; i <= ad.scenes; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'timeline-dot';
+    if (i === currentScene) dot.classList.add('active');
+    if (i < currentScene) dot.classList.add('passed');
+    dot.addEventListener('click', () => { showScene(i); });
+    timeline.appendChild(dot);
+  }
+  document.getElementById('sceneLabel').textContent =
+    ad.labels[currentScene - 1] || '';
+}
+
+function updateInfo() {
+  const ad = ads[currentAd];
+  const panel = document.getElementById('infoPanel');
+  panel.innerHTML = `
+    <div class="info-title">${ad.title}</div>
+    <div class="info-desc">${ad.desc}</div>
+    <div class="info-timing">
+      ${ad.timing.map(t => `
+        <div class="timing-row">
+          <div class="timing-time">${t.time}</div>
+          <div class="timing-label">${t.label}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function startPlaying() {
+  if (isPlaying) return;
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = 'Pause';
+  document.getElementById('playBtn').classList.add('playing');
+
+  const ad = ads[currentAd];
+  playInterval = setInterval(() => {
+    if (currentScene < ad.scenes) {
+      showScene(currentScene + 1);
+    } else {
+      stopPlaying();
+    }
+  }, 3000);
+}
+
+function stopPlaying() {
+  isPlaying = false;
+  if (playInterval) clearInterval(playInterval);
+  playInterval = null;
+  document.getElementById('playBtn').textContent = 'Play';
+  document.getElementById('playBtn').classList.remove('playing');
+}
+
+// Event listeners
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => showAd(tab.dataset.ad));
+});
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  if (isPlaying) stopPlaying();
+  else startPlaying();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  stopPlaying();
+  showScene(1);
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  const ad = ads[currentAd];
+  if (e.key === 'ArrowRight' && currentScene < ad.scenes) showScene(currentScene + 1);
+  if (e.key === 'ArrowLeft' && currentScene > 1) showScene(currentScene - 1);
+  if (e.key === ' ') { e.preventDefault(); isPlaying ? stopPlaying() : startPlaying(); }
+});
+
+// Init
+showAd('headline');
+</script>
+</body>
+</html>
