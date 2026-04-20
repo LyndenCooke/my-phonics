@@ -66,8 +66,37 @@ output/
 
 # Generated TTS word audio — kept in repo (pre-generated, not regenerated at runtime)
 
-# Python book pipeline (separate project with large PDF/image output)
-myphonics_books/
+# Python book pipeline — track code + data; skip scratch/local outputs
+myphonics_books/_archive/
+myphonics_books/output/
+myphonics_books/temp_youtube/
+myphonics_books/assets/photos/
+myphonics_books/.claude/plans/
+myphonics_books/.claude/scheduled_tasks.lock
+myphonics_books/phonics-fun-hub/*.aup3
+myphonics_books/phonics-fun-hub/*.wav
+myphonics_books/phonics-fun-hub/public/book-pages/
+myphonics_books/phonics-fun-hub/public/books/
+myphonics_books/phonics-fun-hub/supabase/.temp/
+
+# One-off fix / scratch scripts (kept locally, not shipped)
+myphonics_books/analyze_watermarks.py
+myphonics_books/inspect_corners.py
+myphonics_books/watermark_analysis.txt
+myphonics_books/scripts/fix_*.py
+myphonics_books/scripts/regen_*.py
+myphonics_books/scripts/paint_*.py
+myphonics_books/scripts/redo_*.py
+myphonics_books/scripts/chain_swap_boy.py
+myphonics_books/scripts/edit_hero_trousers.py
+myphonics_books/scripts/edit_trousers.py
+myphonics_books/scripts/make_page5_from_page4.py
+myphonics_books/scripts/swap_hero.py
+myphonics_books/scripts/screenshot_site.py
+myphonics_books/scripts/generate_cat_ref.py
+myphonics_books/scripts/generate_logo_concepts.py
+myphonics_books/scripts/generate_logo_variants.py
+myphonics_books/scripts/regenerate_alien_words.py
 
 # Other independent app directories
 myphonics_apps/

@@ -1,0 +1,515 @@
+"""Generate sentence audio for interactive book "Read to me" using ElevenLabs.
+
+Uses the same voice and settings as word audio for consistency.
+Outputs to public/sounds/sentences/ with filenames like L1_1_p1.mp3, L1_1_p2.mp3, etc.
+"""
+import os
+import time
+import requests
+
+# Read API key from .env
+ENV_PATH = os.path.join(os.path.dirname(__file__), '..', 'phonics-fun-hub', '.env')
+API_KEY = None
+with open(ENV_PATH) as f:
+    for line in f:
+        if line.startswith('ELEVENLABS_API_KEY='):
+            API_KEY = line.strip().split('=', 1)[1].strip('"\'')
+            break
+
+if not API_KEY:
+    # Try parent .env
+    ENV_PATH2 = os.path.join(os.path.dirname(__file__), '..', '.env')
+    if os.path.exists(ENV_PATH2):
+        with open(ENV_PATH2) as f:
+            for line in f:
+                if line.startswith('ELEVENLABS_API_KEY='):
+                    API_KEY = line.strip().split('=', 1)[1].strip('"\'')
+                    break
+
+if not API_KEY:
+    raise ValueError("ELEVENLABS_API_KEY not found in .env")
+
+print(f"API key: {API_KEY[:8]}...")
+
+# Output to the main project's public folder (served by Vite)
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'public', 'sounds', 'sentences')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+BASE_URL = "https://api.elevenlabs.io/v1"
+
+
+def find_british_voice():
+    """Find the same British voice used for word audio."""
+    resp = requests.get(f"{BASE_URL}/voices", headers={"xi-api-key": API_KEY})
+    resp.raise_for_status()
+    voices = resp.json()["voices"]
+
+    # Look for George specifically (the voice used for words)
+    for v in voices:
+        if v['name'].lower() == 'george':
+            print(f"Found voice: {v['name']} ({v['voice_id']})")
+            return v['voice_id']
+
+    # Fallback: any British voice
+    for v in voices:
+        label_str = str(v.get('labels', {})).lower()
+        if 'british' in label_str:
+            print(f"Using British voice: {v['name']} ({v['voice_id']})")
+            return v['voice_id']
+
+    print(f"Using first voice: {voices[0]['name']}")
+    return voices[0]['voice_id']
+
+
+def add_pauses(text: str) -> str:
+    """Add SSML pauses after full stops and question marks for natural reading."""
+    # Wrap in SSML speak tags with slow prosody
+    inner = text
+    # Add a 600ms pause after each sentence-ending punctuation
+    inner = inner.replace('. ', '. <break time="600ms"/> ')
+    inner = inner.replace('? ', '? <break time="600ms"/> ')
+    inner = inner.replace('! ', '! <break time="500ms"/> ')
+    return f'<speak><prosody rate="85%">{inner}</prosody></speak>'
+
+
+def generate_sentence(text: str, voice_id: str, output_path: str) -> bool:
+    """Generate audio for a sentence/paragraph with SSML pauses."""
+    url = f"{BASE_URL}/text-to-speech/{voice_id}"
+    headers = {
+        "xi-api-key": API_KEY,
+        "Content-Type": "application/json",
+        "Accept": "audio/mpeg",
+    }
+
+    # Use plain text with natural punctuation pauses
+    # ElevenLabs handles ". " and "? " as natural sentence breaks
+    # Add extra dots for longer pauses at key story beats
+    slow_text = text.replace('. ', '... ').replace('? ', '?... ').replace('! ', '!... ')
+
+    data = {
+        "text": slow_text,
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+            "stability": 0.55,
+            "similarity_boost": 0.80,
+            "style": 0.15,
+            "use_speaker_boost": True,
+        }
+    }
+
+    try:
+        resp = requests.post(url, json=data, headers=headers, timeout=30)
+        if resp.status_code == 200:
+            with open(output_path, 'wb') as f:
+                f.write(resp.content)
+            size_kb = os.path.getsize(output_path) / 1024
+            print(f"  OK  ({size_kb:.0f} KB) {text[:60]}")
+            return True
+        else:
+            print(f"  ERROR {resp.status_code}: {resp.text[:100]}")
+            return False
+    except Exception as e:
+        print(f"  EXCEPTION: {e}")
+        return False
+
+
+# All books — each page's full text as a natural reading
+SENTENCES = {
+    # ── L1.1 "Tap! Tap! Tap!" ──────────────────────────────────────────────
+    'L1_1_p1': 'I sit at a mat. Tap, tap, tap!',
+    'L1_1_p2': 'Is it a rat? Is it a bat?',
+    'L1_1_p3': 'It is not a rat. It is not a bat.',
+    'L1_1_p4': 'Tap, tap! I pat at it.',
+    'L1_1_p5': 'It is a cat! A fat cat!',
+    'L1_1_p6': 'I pat the cat. The cat naps. I am happy!',
+    # ── L1.2 "The Mud on the Dog" ──────────────────────────────────────────
+    'L1_2_p1': 'I got a dog. It is a big dog.',
+    'L1_2_p2': 'The dog ran in the mud. Mud, mud, mud!',
+    'L1_2_p3': 'The dog is a mess! Mud is on the dog.',
+    'L1_2_p4': 'I get a mop. I mop the dog.',
+    'L1_2_p5': 'No! The mop is a mess! Mud is on me!',
+    'L1_2_p6': 'Mum got a tub. The dog sat in it. No mud! No mess!',
+    # ── L1.3 "The Fish in the Tank" ────────────────────────────────────────
+    'L1_3_p1': 'I have a fish! It is in a bag.',
+    'L1_3_p2': 'The fish is sad. The bag is not big.',
+    'L1_3_p3': 'I get a cup. No! It is not big.',
+    'L1_3_p4': 'I get a tank. Yes! The fish can go in!',
+    'L1_3_p5': 'Wish, wish! The fish is in the tank!',
+    'L1_3_p6': 'The fish is not sad. I am happy!',
+    # ── L1.4 "The Red Socks" ───────────────────────────────────────────────
+    'L1_4_p1': 'I have no socks! I am sad.',
+    'L1_4_p2': 'I check the bed. I get a sock. Not red!',
+    'L1_4_p3': 'I check the bag. I get a sock. Not red!',
+    'L1_4_p4': 'I check the hen pen. The hen has red socks!',
+    'L1_4_p5': 'I get the socks. The hen pecks me! Peck, peck!',
+    'L1_4_p6': 'Red socks on me! I can kick! I am so happy!',
+    # ── L1.5 "Run, Pup, Run!" ──────────────────────────────────────────────
+    'L1_5_p1': 'I have a pup. The pup can run!',
+    'L1_5_p2': 'Run, pup, run! The pup hid in the hut.',
+    'L1_5_p3': 'Run, pup, run! The pup hid in the bush.',
+    'L1_5_p4': 'Run, pup, run! The pup is in the tub!',
+    'L1_5_p5': 'I rub the pup. Rub, rub, rub!',
+    'L1_5_p6': 'The pup and me! A big hug!',
+    # ── L1.6 "Fox Fell Off!" ───────────────────────────────────────────────
+    'L1_6_p1': 'I have a fox. Fox is on a log.',
+    'L1_6_p2': 'Fox fell off the log! Oh, Fox!',
+    'L1_6_p3': 'Fox is on a wall. Fox fell off the wall!',
+    'L1_6_p4': 'Fox is on a hill. Fox fell off the hill!',
+    'L1_6_p5': 'I get a big, fat mat. Sit on it, Fox!',
+    'L1_6_p6': 'Fox is on the mat! Fox did not fall off! I hug Fox!',
+    # ── L1.7 "The Jam Jug" ─────────────────────────────────────────────────
+    'L1_7_p1': 'Dad has a van. The van has jam in big jugs.',
+    'L1_7_p2': 'I dip in a jug. Fig jam! It is yum!',
+    'L1_7_p3': 'I dip in a jug. Red jam! It is yum!',
+    'L1_7_p4': 'The jug tips! Jam on the rug! Oh, no!',
+    'L1_7_p5': 'I get a wet rag. I mop it up.',
+    'L1_7_p6': 'No jam on the rug! I did it! I hug Dad.',
+    # ── L1.8 "The Yak and the Box" ─────────────────────────────────────────
+    'L1_8_p1': 'I have a yak. The yak is big!',
+    'L1_8_p2': 'I have a box. I zip it up. Six figs in the box.',
+    'L1_8_p3': 'The yak sat on the box! Oh, no!',
+    'L1_8_p4': 'I fix the box. I set it on top of the hut.',
+    'L1_8_p5': 'The yak can not get it! I get the six figs.',
+    'L1_8_p6': 'I munch a fig. The big yak gets a fig. Yum!',
+    # ── L1.9 "Chop, Chop, Chop!" ───────────────────────────────────────────
+    'L1_9_p1': 'Nan chops, chops, chops! This is fun!',
+    'L1_9_p2': 'Nan chops it thin. Nan chops it thick.',
+    'L1_9_p3': 'Chips in a hot pan. I got a big dish!',
+    'L1_9_p4': 'I got a chip. That chip is thick!',
+    'L1_9_p5': 'I dip a chip in. Yum, yum, yum!',
+    'L1_9_p6': 'Chips with Nan! Munch, munch, munch!',
+    # ── L1.10 "Buzz and Sing!" ─────────────────────────────────────────────
+    'L1_10_p1': 'I sit on a big log. Buzz, buzz, buzz!',
+    'L1_10_p2': 'A big bug sits on a rock. Hiss, hiss, hiss!',
+    'L1_10_p3': 'I sing a long, long song!',
+    'L1_10_p4': 'The bugs stop! No buzz. No hiss.',
+    'L1_10_p5': 'I sing quick! I sing and sing!',
+    'L1_10_p6': 'Buzz! Hiss! I sing with the bugs!',
+    # ── L2.1 "The Night Light" ─────────────────────────────────────────────
+    'L2_1_p1': 'The day ends. I sigh.',
+    'L2_1_p2': 'We go out. It is night.',
+    'L2_1_p3': 'See the lights! I can see!',
+    'L2_1_p4': 'It is dim. I need a light.',
+    'L2_1_p5': 'A light up high! The moon!',
+    'L2_1_p6': 'Dad can see. I am sad.',
+    'L2_1_p7': 'My cat! I see it! Yay!',
+    'L2_1_p8': 'Day and night! I say Yay!',
+    # ── L2.2 "Moo at the Zoo" ──────────────────────────────────────────────
+    'L2_2_p1': 'I go to the zoo with my dad. I need to see the owl!',
+    'L2_2_p2': 'I look at the cows. Moo! Moo! No owl. I will look on.',
+    'L2_2_p3': 'Wow! A big show. A seal can shoot a hoop! No owl.',
+    'L2_2_p4': 'Ooh! I see a cool pool. Fish zoom in it. No owl.',
+    'L2_2_p5': 'Boo! A big dim room. I see bats. No owl!',
+    'L2_2_p6': 'I am so sad now. Then my dad calls, "Look up!"',
+    'L2_2_p7': 'Hoo! Hoo! I look up. The owl! It is up high!',
+    'L2_2_p8': 'The owl bows at me. I bow too. The zoo is so good!',
+    # ── L2.3 "Morning on the Farm" ─────────────────────────────────────────
+    'L2_3_p1': 'We go far in the car. I can see a farm!',
+    'L2_3_p2': 'The farm is big! I see a yard with corn in a jar.',
+    'L2_3_p3': 'I get a fork for the garden. I dig, dig, dig! Good food for the farm.',
+    'L2_3_p4': 'Now it is dark. I look at the barn. I need to look in the barn!',
+    'L2_3_p5': 'I get a torch for the dark. I march to the big barn door.',
+    'L2_3_p6': 'It is dark in the barn. I look far into a corner. I see a thing!',
+    'L2_3_p7': 'A kid! Born this morning! Her mum is with her.',
+    'L2_3_p8': 'I hug the warm kid with my dad. This farm is too good!',
+    # ── L2.4 "The Fair in the Air" ─────────────────────────────────────────
+    'L2_4_p1': 'I go to the fair! I can see it. The air is cool. The fair is so big!',
+    'L2_4_p2': 'The air is in my hair! It is such a gush! I put my hat on.',
+    'L2_4_p3': 'Look! Toy ducks, a pair! I can win! I say.',
+    'L2_4_p4': 'Yes! I say. I win the pair! I hug my pair. My pair is so good!',
+    'L2_4_p5': 'A gush in the air! My pair shoots up, up, up! No! My pair!',
+    'L2_4_p6': 'Sir! Sir! My pair is in the air! The sir said: I can see it! By the fir!',
+    'L2_4_p7': 'The sir ran to a big fir. My pair is in the fir! He got my pair down!',
+    'L2_4_p8': 'I hug my pair. I sit in a chair. The fair is fun! My pair is back!',
+    # ── L2.5 "Round and Round" ─────────────────────────────────────────────
+    'L2_5_p1': 'I went out with my toy car. I zoomed it round and round. Zoom! Zoom!',
+    'L2_5_p2': 'I zoomed it far down the path. Round and round! It got loud!',
+    'L2_5_p3': 'But it ran too far! My toy! I looked around and around. I can not see it!',
+    'L2_5_p4': 'I shouted out loud. Mum! I need you! I can not see my toy!',
+    'L2_5_p5': 'Mum ran out to me. I will look around and around, she said.',
+    'L2_5_p6': 'We looked around the big rock. No toy! We looked around the shed. No toy!',
+    'L2_5_p7': 'Look! said Mum. I found it! My toy! Joy! Joy! I shouted out loud!',
+    'L2_5_p8': 'I hugged my toy and I hugged Mum. Thank you! I said. We went in.',
+    # ── L3.1 "The Big Bike Race" ─────────────────────────────────────────
+    'L3_1_p1': 'Bikes line up at the gate. It is time for the race to start! I stand with my bike on the line.',
+    'L3_1_p2': "'Ride to the lake and back!' the man said. Can I win? I grip my bike tight.",
+    'L3_1_p3': 'Off I go! Past a tall pine tree. Past a wide stone gate. I ride fast in the sun.',
+    'L3_1_p4': 'Look out! Stones on the track. A bike slides and a girl falls off. She gave me a brave smile.',
+    'L3_1_p5': 'I can see the lake! It shines in the sun. I ride past it and turn back.',
+    'L3_1_p6': 'Can I make it back in time? I ride and ride. I must not be late!',
+    'L3_1_p7': 'I am past the line! I made it! I slide off my bike with a wide grin.',
+    'L3_1_p8': 'A prize! I am on the top step! I smile and wave at my mates. What a good day!',
+    # ── L3.2 "Lost at the Night Market" ────────────────────────────────────
+    'L3_2_p1': "Mum and I went to the night market. It was huge! 'Stay close to me,' Mum spoke. And I did.",
+    'L3_2_p2': 'We see cute stone elephants on a stall. We see bright noodle pots. The food smelt so good!',
+    'L3_2_p3': 'Then a man bumped me! I spun round and round. I cannot see Mum! I froze.',
+    'L3_2_p4': "It was dark and loud. I felt so small. 'Mum!' I shout. But Mum is not there.",
+    'L3_2_p5': 'Then I see the cute stone elephants! We went past those! Mum must be close!',
+    'L3_2_p6': 'I run past the bright lights. I run past the noodle stall. Then... I see Mum!',
+    'L3_2_p7': "Mum gave me a huge tight hug. 'You are safe!' she spoke. I did not let go.",
+    'L3_2_p8': "We sat close and ate hot noodles in the moonlight. 'Stay close to me!' spoke Mum. I gave a huge grin. Home time!",
+    # ── L6.1 "The Marvellous Neighbourhood" ───────────────────────────────
+    'L6_1_p1': (
+        'Yusuf sat on the front steps of his apartment block and frowned at the street below. '
+        'Rows of cream-coloured blocks lined the road, and cars honked in the hot afternoon heat. '
+        'From the market around the corner, he could hear the calls of vendors and the clatter of carts. '
+        'Nothing glorious or fabulous ever happens here, he muttered. This place is so ordinary. '
+        'Just then, a curious-looking man with a worn notebook sat down quietly on the step beside him.'
+    ),
+    'L6_1_p2': (
+        'You look like somebody who thinks they have seen everything there is to see, said the man with a smile. '
+        'Yusuf shrugged. I live here. It is just houses, traffic, and the same old market. '
+        'The man had a luminous look in his eyes, as if he knew something tremendous. '
+        'I have spent my whole life travelling to marvellous places, he said, leaning forward. '
+        'And I am going to tell you something. This is one of the most glorious cities on Earth.'
+    ),
+    'L6_1_p3': (
+        'The man stood and walked with Yusuf to the wide road that ran along the edge of the river. '
+        'That is the Nile, he said in a wondrous voice, the most famous river in the whole world. '
+        'It has flowed past this very spot for thousands and thousands of years. '
+        'Yusuf had walked along the corniche countless times, but he had never stopped to wonder. '
+        'He looked at the grey-green water as if he was seeing it for the very first time.'
+    ),
+    'L6_1_p4': (
+        'Next, the man led Yusuf around the corner to the old bakery on their street. '
+        'An enormous cloud of warm bread smell drifted out through the open door. '
+        'The baker has been here for forty years, said the man. He knows every family by name. '
+        'Yusuf realised he had never once stopped to wave or say good morning to him. '
+        'The baker spotted them and held out a warm round of aish baladi, the famous flat bread of Egypt.'
+    ),
+    'L6_1_p5': (
+        'They walked on, and the man pointed to the slim minaret that rose above the rooftops. '
+        'On quiet mornings, the call from that tower can be heard for miles and miles, he said. '
+        'Down by the river, white-sailed boats drifted past on the gleaming water. '
+        'A cluster of street cats — Cairo was famous for its cats — sunned themselves on a warm wall. '
+        'Is this place still boring to you? the man asked, his eyes twinkling.'
+    ),
+    'L6_1_p6': (
+        'Yusuf stood still for a moment and looked around with new, curious eyes. '
+        'He could see the enormous pyramids on the far horizon, golden in the dusty afternoon haze. '
+        'He could hear the joyous calls of the market sellers drifting around the corner. '
+        'He could smell the fabulous bread from the bakery he had walked past hundreds of times. '
+        'It is marvellous, he said, in a quiet, amazed voice. My neighbourhood is truly marvellous.'
+    ),
+    'L6_1_p7': (
+        'The man smiled and handed Yusuf a small notebook and a pen. '
+        'Write down what you see, he said. Give each part of your neighbourhood the name it deserves. '
+        'Yusuf picked up the pen and began to write, one label for each place he could now see. '
+        'He wrote: The Marvellous Corniche. The Enormous Nile. The Famous Bakery. The Joyous Market. The Glorious Minaret. '
+        'These are the tremendous things that make up my home, said Yusuf, and he felt proud.'
+    ),
+    'L6_1_p8': (
+        'Later, when the storyteller had gone, Yusuf sat on his step once more. '
+        'But this time, he was not bored — he was curious and adventurous, watching the world with new eyes. '
+        'The enormous city hummed and buzzed all around him, full of marvellous, ordinary life. '
+        'He opened his notebook and added one last label at the bottom of the page: My Marvellous Home. '
+        'And from that day on, Yusuf never forgot that the most glorious place in the world was the one right outside his door.'
+    ),
+    # ── L6.2 "You Are Remarkable" ──────────────────────────────────────────
+    'L6_2_p1': (
+        'The Lantern Festival had filled the river park with golden light. '
+        'Hundreds of glowing lanterns drifted above the Li River, and the karst mountains rose like dark peaks behind the city. '
+        'The girl was watching a paper lantern float upward when she noticed something terrible. '
+        'A small boy sat alone on a stone step, clutching a stuffed panda, with tears on his face. '
+        'The people all around him walked past as if he were invisible. She stopped.'
+    ),
+    'L6_2_p2': (
+        'She crouched down beside the boy and spoke to him in a gentle voice. '
+        'He was perhaps three years old, and he looked absolutely miserable — his face red, his eyes wide, his small hands gripping the panda. '
+        'Where is your family? she asked, but he could only shake his head and sob. '
+        'It was clear he was not capable of finding them alone. '
+        'She looked around at the crowds flowing past, and she made a decision: she was responsible for helping him, and it was possible to do it.'
+    ),
+    'L6_2_p3': (
+        'She pulled a small notebook from her jacket pocket and thought for a moment. '
+        'Then she wrote a careful note in neat, readable handwriting and tore it out. '
+        'The note said: Lost child, dark jacket, green buttons, age three. He is by the red lantern at the bridge. '
+        'His family is searching for him. If you have seen them, please come at once. '
+        'She held it up as high as she could. It was a sensible and responsible plan.'
+    ),
+    'L6_2_p4': (
+        'She took the boy\'s hand and walked towards the busy lantern stalls. '
+        'An elderly woman selling tangyuan shook her head when she saw the note, but pointed further along the riverbank towards the bridge. '
+        'A group of young people gathered, read the note, and looked around — but nobody recognised the child. '
+        'Each person was willing, but none were able to help. '
+        'She did not give up. Giving up was not a reasonable or responsible option.'
+    ),
+    'L6_2_p5': (
+        'Near the entrance of the park, she spotted a security guard in a yellow jacket. '
+        'She walked straight up to him, held out the note, and said clearly: This child is lost. He has been here for some time. '
+        'The guard read the note carefully, nodded, and spoke into his radio. '
+        'He asked her to stay in one comfortable spot beside the red lantern at the bridge. '
+        'She sat with the boy and told him a quiet story about the panda in his arms. He stopped crying and leaned against her shoulder.'
+    ),
+    'L6_2_p6': (
+        'While they waited, she bought the boy a warm roasted sweet potato from a nearby cart. '
+        'His face changed — from miserable and terrified, to curious, to something almost cheerful. '
+        'He held the sweet potato in both hands and looked up at her. '
+        'Panda, he said, and held the toy out to her. '
+        'It was an adorable thing to do, and she understood it at once — he was sharing his most valuable possession with her. '
+        'She held it carefully, and for the first time that evening, he smiled.'
+    ),
+    'L6_2_p7': (
+        'The guard came running back with a woman and a man following close behind. '
+        'The little boy looked up — and in less than a second, his face went from frightened to overjoyed. '
+        'Mama! he cried, and the woman rushed forward and scooped him up, clutching him in an incredible, tearful hug. '
+        'The man gripped the guard\'s hand and then looked at the girl with a grateful and disbelieving expression. '
+        'She stood a little way back, watching the most remarkable reunion she had ever seen, with something warm and steady building inside her.'
+    ),
+    'L6_2_p8': (
+        'The mother turned to the girl, still holding her son tightly. '
+        'You kept him safe, she said, and her voice was not quite steady. '
+        'You stayed. You helped. '
+        'She paused for a moment, and then she said something the girl would always remember. '
+        'You are remarkable. '
+        'The girl walked back through the incredible festival, past the glowing lanterns and the karst mountains rising in the dark. '
+        'She thought about what it meant to be capable, and she thought it was quite simple: '
+        'when something terrible is visible, a responsible person does not walk past.'
+    ),
+    # ── L6.3 "It Looks Suspicious!" ───────────────────────────────────────
+    'L6_3_p1': (
+        'Luca stood in Nonna\'s spacious kitchen and crossed his arms. '
+        'The morning sun streamed through the open window, and the bright clifftop houses of the Amalfi Coast glowed pink and cream outside. '
+        'Nonna had set a big glass dish on the tiled bench, and inside it sat something green, something red, and something Luca did not trust. '
+        'What is that? he asked, taking a cautious step back. '
+        'It looks suspicious.'
+    ),
+    'L6_3_p2': (
+        'Nonna just smiled. '
+        'She was a gracious and patient woman who had fed this cautious boy for all of his visits, and she understood him. '
+        'She picked up a fat, ripe lemon from the tree outside the door — its skin was bright and luscious. '
+        'She sliced it open, and a sharp, fresh smell burst into the room. '
+        'Luca sniffed. That smells... not bad, he admitted, but he remained cautious.'
+    ),
+    'L6_3_p3': (
+        'Nonna drizzled green oil over the sliced tomatoes and torn basil leaves. '
+        'Then she grated fresh lemon rind on top and added a pinch of salt. '
+        'This is bruschetta, she said. It is simple and nutritious. '
+        'Luca peered at the crusty bread stacked on a plate beside the dish. '
+        'He picked one up and inspected it. It looks suspicious, he said again. '
+        'But the smell was delicious — fresh and bright and sharp.'
+    ),
+    'L6_3_p4': (
+        'Next, Nonna filled a big pot with hot water and set it on the stove. '
+        'She tipped in long strands of fresh pasta and stirred them with a wooden spoon. '
+        'Pasta al limone, she announced. My mother\'s precious secret — lemon, cream, and a sprinkle of pepper. '
+        'The steam that rose from the pot smelled absolutely delicious, and Luca found himself stepping closer, even though he was still cautious. '
+        'I am not eating that, he said, but his feet did not step back.'
+    ),
+    'L6_3_p5': (
+        'Nonna set the last dish on the kitchen table: a small glass cup of pale yellow granita, topped with a thin slice of lemon and a mint leaf. '
+        'Limoncello granita, she said. Frozen, sweet, and scrumptious. '
+        'This is the most delicious treat on the Amalfi Coast. '
+        'Luca looked at the bruschetta, the pasta, and the granita. '
+        'All three smelled delicious, and he had to admit something: he was not just cautious any more — he was also very, very hungry.'
+    ),
+    'L6_3_p6': (
+        'He reached out — slowly, carefully — and picked up one small piece of bruschetta. '
+        'He took the tiniest bite. His eyes went wide. It was delicious. '
+        'He took a bigger bite, and then another. '
+        'The fresh tomato and lemon burst across his mouth, and the crusty bread was perfect. '
+        'He tried the pasta next. It was creamy, sharp, and absolutely scrumptious. '
+        'Nonna, he said, and his voice was thick with feeling, this is the most delicious thing I have ever tasted.'
+    ),
+    'L6_3_p7': (
+        'The front door clicked open and small feet pattered down the hall. '
+        'Luca\'s little sister Sofia ran into the kitchen, her yellow headband bright against her dark curls. '
+        'She stopped at the table and stared at the granita with a suspicious look on her face. '
+        'What is that? she asked, pointing at the frozen treat. '
+        'It looks suspicious! '
+        'Luca grinned. He knew those words — he had said them himself, not long before.'
+    ),
+    'L6_3_p8': (
+        'Luca picked up the glass of granita and held it out to his sister. '
+        'Trust me, he said. I was suspicious too. '
+        'But Nonna\'s cooking is nutritious and delicious — and this is the most precious treat on the whole coast. '
+        'Sofia took a cautious lick. Her face lit up at once. '
+        'Nonna watched them from the doorway, the lemon groves glowing golden on the clifftop behind her, '
+        'and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do.'
+    ),
+    # ── L6.4 "The Incredible Bush Walk" ───────────────────────────────────
+    'L6_4_p1': (
+        'Mia was ambitious. She stood at the start of the bush walk trail and looked out at the enormous Blue Mountains stretching before them. '
+        'The famous blue haze hung over the peaks like a glorious curtain of mist. '
+        'I am going to spot everything first, she told her brother Tom. I am the most capable one here. '
+        'Tom said nothing. He just opened his small notebook and started to draw.'
+    ),
+    'L6_4_p2': (
+        'The trail led them through spacious groves of tall gum trees. '
+        'Mia strode ahead, pointing at everything she saw. '
+        'Look at that gorgeous rosella in the branches! she called back. '
+        'And those enormous cliffs are visible from here — they are famous! '
+        'Tom walked behind, slower and more cautious. '
+        'He crouched down beside a fallen log and peered at something small and precious that Mia had walked straight past.'
+    ),
+    'L6_4_p3': (
+        'Tom, you are too cautious and too slow, Mia said with a sigh. '
+        'If you keep stopping, it will be impossible to reach the lookout before lunch. '
+        'She was not gracious about it. Tom closed his notebook and tried to keep up, but he felt nervous. '
+        'He could hear something incredible deep in the bush — a curious sound, like a song mixed with the calls of other birds. '
+        'He stopped walking and listened.'
+    ),
+    'L6_4_p4': (
+        'Tom crept off the trail, cautious and sensible, placing each foot with care. '
+        'Behind a thick fern, he saw something wondrous — a lyrebird. '
+        'Its enormous tail feathers fanned out like a gorgeous silver veil. '
+        'The bird was performing its famous song, copying the calls of every creature in the bush. '
+        'It was the most incredible thing Tom had ever seen. '
+        'He held his breath and sketched it in his notebook as fast as he could.'
+    ),
+    'L6_4_p5': (
+        'Mia! Tom whispered. Come here — but be flexible and go slowly! '
+        'Mia came back along the trail, looking suspicious. '
+        'But when she crouched beside Tom and saw the lyrebird, her face changed. '
+        'That is remarkable, she breathed. I had no idea it was there. '
+        'She was conscious now that she had rushed past something precious. '
+        'Being fast did not make her more capable — it just meant she had missed the most valuable thing on the whole walk.'
+    ),
+    'L6_4_p6': (
+        'After the lyrebird slipped back into the bush, they walked on together. '
+        'This time, Mia let Tom set the pace. '
+        'He showed her observable things she had never noticed — a notable pattern in the bark of a gum tree, '
+        'a tiny scrumptious bush berry that was edible, and the delicious smell of eucalyptus oil hanging in the warm air. '
+        'You are admirable at this, Mia said, and she meant it. '
+        'The glorious view from the lookout was even better when they reached it side by side.'
+    ),
+    'L6_4_p7': (
+        'At the visitor centre near the end of the trail, they found a gallery of Aboriginal dot art on the walls — '
+        'swirling, joyous paintings of the land and its creatures in dots of red, gold, and white. '
+        'Tom held up his notebook and compared his own drawings to the art. '
+        'Your sketches are incredible, said Dad, who had been comfortable walking at the back the whole time. '
+        'You were responsible and patient, and you saw more than anyone. '
+        'Mia nodded. She was not adventurous in the same way as Tom, but she was learning that his way of seeing was just as remarkable as hers.'
+    ),
+    'L6_4_p8': (
+        'That evening, Tom read from his notebook. '
+        'Dear Journal. Today was an incredible bush walk. The enormous mountains were visible through the famous blue haze. '
+        'I was cautious and quiet, and I spotted a precious lyrebird with gorgeous tail feathers performing its marvellous song. '
+        'Mia missed it at first, but then she came back and we watched it together. It was the most impossible, glorious, wondrous moment. '
+        'He closed the notebook. Mia smiled. You are remarkable, Tom, she said.'
+    ),
+}
+
+
+def main():
+    voice_id = find_british_voice()
+    print(f"\nGenerating {len(SENTENCES)} sentence audio files...\n")
+
+    success = 0
+    for key, text in SENTENCES.items():
+        output_path = os.path.join(OUTPUT_DIR, f"{key}.mp3")
+        if os.path.exists(output_path):
+            print(f"  SKIP (exists) {key}")
+            success += 1
+            continue
+
+        if generate_sentence(text, voice_id, output_path):
+            success += 1
+        time.sleep(0.5)  # Rate limit
+
+    print(f"\nDone: {success}/{len(SENTENCES)} generated")
+    print(f"Output: {OUTPUT_DIR}")
+
+
+if __name__ == '__main__':
+    main()
