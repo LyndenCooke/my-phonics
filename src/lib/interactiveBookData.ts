@@ -38,7 +38,12 @@ export interface SpellingWord {
 
 export type InteractivePage =
   | { type: 'cover'; title: string; subtitle: string; imageUrl: string }
-  | { type: 'sound_grid'; focusSounds: string[]; allSounds: string[] }
+  | {
+      type: 'sound_grid';
+      focusSounds: string[];
+      allSounds: string[];
+      storyWords?: Array<{ display: string; word: string; phonemes: string[] }>;
+    }
   | { type: 'vocab_preview'; words: StoryWord[] }
   | { type: 'story'; sentences: string[]; words: StoryWord[]; imageUrl: string; audioUrl?: string }
   | { type: 'sound_spotlight'; sound: string; items: SpotlightItem[] }

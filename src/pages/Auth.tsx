@@ -137,6 +137,14 @@ export default function Auth() {
               ? 'Create Account'
               : 'Send Reset Link'}
           </button>
+
+          {mode === 'signup' && (
+            <p className="text-[11px] text-muted-foreground text-center">
+              By creating an account you agree to our{' '}
+              <a href="/terms" className="underline">Terms</a> and{' '}
+              <a href="/privacy" className="underline">Privacy Policy</a>.
+            </p>
+          )}
         </form>
 
         <div className="text-center mt-6">

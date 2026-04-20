@@ -42,7 +42,7 @@ export function useAdminTasks(filter?: 'all' | 'overdue' | 'mine' | 'completed')
 
       return (data ?? []).map(t => ({
         ...t,
-        contact: t.crm_contacts as CrmTask['contact'],
+        contact: t.crm_contacts as unknown as CrmTask['contact'],
       })) as CrmTask[];
     },
   });
