@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Lock, CheckCircle2 } from 'lucide-react';
+import { Lock, CheckCircle2, Sparkles } from 'lucide-react';
 import { Book, LEVELS } from '@/lib/types';
 import { getCoverImageUrl } from '@/lib/imageResolver';
+import { hasInteractiveData } from '@/lib/interactiveBookData';
 
 interface BookCardProps {
   book: Book;
@@ -17,6 +18,7 @@ export default function BookCard({ book, onSelect }: BookCardProps) {
   const levelInfo = LEVELS.find((l) => l.level === book.level);
   const levelBg = levelBgClasses[book.level] || 'bg-primary';
   const [imgError, setImgError] = useState(false);
+  const isInteractive = hasInteractiveData(book.subLevel);
 
   // Resolve cover image: use Supabase URL, fall back to local PNG
   const resolvedCover = getCoverImageUrl(book.subLevel, book.coverImageUrl);
@@ -44,6 +46,17 @@ export default function BookCard({ book, onSelect }: BookCardProps) {
         {book.completed && (
           <div className="absolute top-2 right-2 z-10">
             <CheckCircle2 className="w-5 h-5 text-white drop-shadow-md" />
+          </div>
+        )}
+
+        {/* Interactive badge */}
+        {isInteractive && !book.completed && (
+          <div
+            className="absolute top-2 right-2 z-10 flex items-center gap-0.5 rounded-full bg-white/90 px-1.5 py-0.5 text-[9px] font-bold text-foreground shadow-sm"
+            title="Tap-to-hear interactive reader"
+          >
+            <Sparkles className="w-2.5 h-2.5" />
+            <span>Interactive</span>
           </div>
         )}
 
