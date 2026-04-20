@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Lock, CheckCircle2, Sparkles } from 'lucide-react';
 import { Book, LEVELS } from '@/lib/types';
 import { getCoverImageUrl } from '@/lib/imageResolver';
-import { hasInteractiveData } from '@/lib/interactiveBookData';
+import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 
 interface BookCardProps {
   book: Book;

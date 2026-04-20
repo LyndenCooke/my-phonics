@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { Book } from '@/lib/types';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, RefreshCw } from 'lucide-react';
+import { useUpdateReadingProgress } from '@/hooks/useBooks';
 
 interface BookReaderProps {
   book: Book;
@@ -28,8 +29,11 @@ function subLevelToKey(subLevel: string): string | null {
 
 export default function BookReader({ book, onClose, onFinish }: BookReaderProps) {
   const [currentPage, setCurrentPage] = useState(0);
+  const [imgError, setImgError] = useState(false);
+  const [imgRetry, setImgRetry] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const updateProgress = useUpdateReadingProgress();
 
   const key = subLevelToKey(book.subLevel);
   const totalPages = getPageCount(book.level);
@@ -37,6 +41,21 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
 
   const getPageUrl = (index: number) =>
     key ? `/book-pages/${key}/p${index + 1}.jpg` : null;
+
+  // Persist reading progress whenever the page changes.
+  useEffect(() => {
+    updateProgress.mutate({
+      bookId: book.id,
+      lastPageRead: currentPage + 1,
+      completed: currentPage === totalPages - 1,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [book.id, currentPage, totalPages]);
+
+  // Reset image error when page or retry counter changes
+  useEffect(() => {
+    setImgError(false);
+  }, [currentPage, imgRetry]);
 
   const goNext = useCallback(() => {
     if (currentPage < totalPages - 1) {
@@ -137,14 +156,28 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
 
       {/* Page display */}
       <div className="flex-1 relative overflow-hidden flex items-center justify-center">
-        {pageUrl ? (
+        {pageUrl && !imgError ? (
           <img
-            key={currentPage}
+            key={`${currentPage}-${imgRetry}`}
             src={pageUrl}
             alt={`${book.title} — page ${currentPage + 1}`}
             className="max-w-full max-h-full object-contain select-none"
             draggable={false}
+            onError={() => setImgError(true)}
           />
+        ) : pageUrl && imgError ? (
+          <div className="text-white/70 text-center px-6">
+            <p className="text-base font-semibold">We couldn't load this page.</p>
+            <p className="text-sm text-white/50 mt-1">
+              Check your connection and try again.
+            </p>
+            <button
+              onClick={() => setImgRetry((r) => r + 1)}
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white/15 hover:bg-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" /> Try again
+            </button>
+          </div>
         ) : (
           <div className="text-white/50 text-center">
             <p className="text-lg font-bold">{book.title}</p>

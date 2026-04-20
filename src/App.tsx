@@ -6,19 +6,24 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react";
-import Index from "./pages/Index";
+// Landing is the entry route for ad/SEO traffic — keep it eager so the
+// first paint doesn't wait on a chunk.
 import LandingPage from "./pages/LandingPage";
-import Assessment from "./pages/Assessment";
-import Welcome from "./pages/Welcome";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import Shop from "./pages/Shop";
-import Progress from "./pages/Progress";
-import Profile from "./pages/Profile";
-import Auth from "./pages/Auth";
-import ResetPassword from "./pages/ResetPassword";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
+
+// Everything else is lazy-loaded so the landing page ships the smallest
+// possible JS payload.
+const Index = lazy(() => import("./pages/Index"));
+const Assessment = lazy(() => import("./pages/Assessment"));
+const Welcome = lazy(() => import("./pages/Welcome"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Progress = lazy(() => import("./pages/Progress"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Auth = lazy(() => import("./pages/Auth"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 
 // Lazy-loaded funnel pages
 const LinkTree = lazy(() => import("./pages/funnels/LinkTree"));
@@ -44,6 +49,14 @@ function AdminFallback() {
   return (
     <div className="flex h-screen items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+    </div>
+  );
+}
+
+function PageFallback() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
     </div>
   );
 }
@@ -74,6 +87,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<ConditionalHome />} />
             <Route path="/library" element={<Index />} />
@@ -107,6 +121,7 @@ const App = () => (
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

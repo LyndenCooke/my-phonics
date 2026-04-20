@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import BookCard from '@/components/BookCard';
-import BookReader from '@/components/BookReader';
-import InteractiveBookReader from '@/components/InteractiveBookReader';
-import { hasInteractiveData } from '@/lib/interactiveBookData';
+import { lazy, Suspense } from 'react';
+const BookReader = lazy(() => import('@/components/BookReader'));
+const InteractiveBookReader = lazy(() => import('@/components/InteractiveBookReader'));
+import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
@@ -243,28 +244,35 @@ export default function Index() {
   }
 
   if (activeBook) {
+    const readerFallback = (
+      <div className="fixed inset-0 z-[9999] bg-slate-900" />
+    );
     // Use interactive reader when phonics data exists, fallback to JPG reader
     if (hasInteractiveData(activeBook.subLevel)) {
       return (
-        <InteractiveBookReader
-          book={activeBook}
-          onClose={() => setActiveBookId(null)}
-          onFinish={() => setActiveBookId(null)}
-        />
+        <Suspense fallback={readerFallback}>
+          <InteractiveBookReader
+            book={activeBook}
+            onClose={() => setActiveBookId(null)}
+            onFinish={() => setActiveBookId(null)}
+          />
+        </Suspense>
       );
     }
     return (
-      <BookReader
-        book={activeBook}
-        onClose={() => setActiveBookId(null)}
-        onFinish={() => {
-          if (quizQuestions.length > 0) {
-            setShowQuiz(true);
-          } else {
-            setActiveBookId(null);
-          }
-        }}
-      />
+      <Suspense fallback={readerFallback}>
+        <BookReader
+          book={activeBook}
+          onClose={() => setActiveBookId(null)}
+          onFinish={() => {
+            if (quizQuestions.length > 0) {
+              setShowQuiz(true);
+            } else {
+              setActiveBookId(null);
+            }
+          }}
+        />
+      </Suspense>
     );
   }
 

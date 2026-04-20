@@ -357,36 +357,40 @@ function CulturalDiversity() {
   );
 }
 
-/* ─── TESTIMONIALS ─── */
+/* ─── TRUST STRIP ─── */
+// TODO: once we have real opted-in parent reviews, replace this
+// factual trust strip with a `Testimonials` component. Do not ship
+// invented quotes — ASA rules + investor-review integrity.
 function Testimonials() {
   const r = useReveal();
-  const reviews = [
-    { name: 'Sarah M.', child: 'Mum of Amira, age 5', text: "She went from sounding out single letters to reading whole sentences in just three weeks. The interactive tap-to-hear feature is brilliant.", stars: 5 },
-    { name: 'James K.', child: 'Dad of Oliver, age 6', text: "Finally a phonics app that actually follows the school curriculum. Oliver's teacher noticed the improvement straight away.", stars: 5 },
-    { name: 'Priya S.', child: 'Mum of Zara, age 4', text: "My daughter loves the stories from different countries. She asks me to read 'the Morocco one' every night. Beautiful illustrations too.", stars: 5 },
+  const pillars = [
+    {
+      title: 'UK Letters and Sounds',
+      body: 'Every grapheme, every tricky word, mapped to the public-domain progression schools use.',
+    },
+    {
+      title: 'Built with a phonics specialist',
+      body: 'Levels and assessment designed alongside a trained primary literacy teacher.',
+    },
+    {
+      title: 'A window into the world',
+      body: 'Each book is set in a different contemporary culture, illustrated with real reference — not clip-art stereotypes.',
+    },
   ];
 
   return (
     <section className="py-16 md:py-24 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Parents Love It</h2>
-          <p className="mt-3 text-muted-foreground text-lg">Real families, real reading progress</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Why parents trust us</h2>
+          <p className="mt-3 text-muted-foreground text-lg">Grounded in the UK curriculum, made by a teacher, set in the real world.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
-          {reviews.map((rev, i) => (
+          {pillars.map((p, i) => (
             <div key={i} className="bg-background rounded-2xl p-6 border border-border">
-              <div className="flex gap-0.5 mb-3">
-                {Array.from({ length: rev.stars }).map((_, j) => (
-                  <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="text-sm text-foreground leading-relaxed mb-4">"{rev.text}"</p>
-              <div>
-                <p className="text-sm font-bold text-foreground">{rev.name}</p>
-                <p className="text-xs text-muted-foreground">{rev.child}</p>
-              </div>
+              <p className="text-sm font-bold text-foreground mb-2">{p.title}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
             </div>
           ))}
         </div>
