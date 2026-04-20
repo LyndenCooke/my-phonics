@@ -114,6 +114,30 @@
   .font-child {
     font-family: 'Andika', 'Quicksand', 'Nunito', sans-serif;
   }
+
+  /* Visible keyboard focus ring for every interactive element.
+     Pointer focus is suppressed to avoid showing rings on tap. */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Skip-to-content link for keyboard / screen-reader users. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    z-index: 100;
+  }
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+  }
 }
 
 @layer utilities {
