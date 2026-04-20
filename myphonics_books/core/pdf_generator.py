@@ -59,8 +59,9 @@ class PlaywrightPDFGenerator(PDFGenerator):
             browser = await p.chromium.launch()
             page = await browser.new_page()
 
-            # Load HTML content (longer timeout for large images)
-            await page.set_content(html_content, wait_until="networkidle", timeout=300000)
+            # Load HTML content — use "domcontentloaded" since all images are
+            # inline base64, no network requests needed
+            await page.set_content(html_content, wait_until="domcontentloaded", timeout=300000)
 
             # Explicit font loading wait (more reliable than timeout)
             await page.evaluate("""

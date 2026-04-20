@@ -1,14 +1,17 @@
 """
 Generate illustrations for L5.2 "Near the Door" using Gemini API.
 
-Setting: Contemporary Stockholm suburb, Sweden — Nordic winter, snowy garden.
-Main character: Swedish girl Astrid (5 years old, blonde braids, red wool jumper)
-Side characters: Dad (grey wool sweater, brown hair), Red fox
+Setting: Snowy Swedish forest — journey/peek-reveal story.
+Main character: Swedish girl Astrid (5 years old, blonde braids, red wool jumper
+under a dark blue winter coat + Nordic hat + scarf + mittens for outdoor pages)
+Side characters: Dad (bookend pages 1 + 8 only), red fox (pages 2-3),
+snow hare (pages 4-5), red deer stag (pages 6-7)
 
 Pipeline:
-  1. Generate hero reference image (girl, neutral pose, full body)
+  1. Generate hero reference image (girl, neutral pose, full body, indoor outfit)
   2. Inject hero into every scene alongside scene-specific prompt
-  3. Dad and fox described in scene prompts (consistent description each time)
+  3. Outdoor scenes re-specify the winter outerwear on top of the hero
+  4. Each animal described consistently in its two adjacent scene prompts
 
 Usage:
     py -3.12 scripts/generate_l5_2_images.py           # Generate all images
@@ -76,159 +79,262 @@ GIRL_HERO = {
     "short": "the girl in the red wool jumper with two blonde braids",
 }
 
-# Dad description used consistently in all scene prompts
+# Dad description used consistently (appears only on pages 1 and 8)
 DAD_DESC = (
     "Swedish dad (35-40 years old, light skin hex #F0D0B0, short brown hair, "
-    "friendly face with slight stubble, warm eyes, grey wool sweater with a "
-    "subtle Scandinavian pattern at the neckline, dark trousers, woolly socks)"
+    "friendly face with slight stubble, warm kind eyes, grey wool sweater with a "
+    "subtle Scandinavian pattern at the neckline, dark trousers, woolly socks, "
+    "tiny solid black dot eyes)"
 )
 
-# Fox description used consistently
+# Outdoor outfit — re-specified in every outdoor scene prompt so Gemini adds
+# the winter outerwear on top of the hero reference (which shows indoor outfit)
+OUTDOOR_OUTFIT = (
+    "She is dressed for deep winter: her cosy red hand-knitted wool jumper is "
+    "now worn UNDER a thick dark blue winter coat (knee-length, buttoned up), "
+    "with a cream wool hat with a Nordic snowflake pattern pulled down over her "
+    "head (braids still hanging out below the hat), a bright red wool scarf "
+    "wrapped around her neck, dark blue wool mittens on her hands, and warm "
+    "brown leather winter boots on her feet."
+)
+
+# Animal descriptions (used only on the pages where they appear)
 FOX_DESC = (
-    "a beautiful wild red fox with bright orange-red fur, white chest and "
-    "belly, big pointed ears with black tips, bushy tail with white tip, "
-    "dark intelligent eyes, small and slightly thin"
+    "a red fox: bright orange-red fur, white chest and belly, large pointed "
+    "ears with black tips, thick bushy tail with a white tip, small sharp "
+    "muzzle, tiny solid black dot eyes, delicate black legs"
 )
 
-# Setting descriptions for consistency
-SETTING_INDOOR = (
-    "modern minimalist Scandinavian living room: pale wooden floors, white walls, "
-    "sheepskin rug, wood-burning stove with warm orange glow, simple wooden "
-    "furniture, snow visible through large windows, warm cosy lighting"
+HARE_DESC = (
+    "a mountain hare in pure white winter coat (blending with the snow), long "
+    "upright ears with distinct black tips, powerful bent back legs, small "
+    "front paws, short white tail, tiny solid black dot eyes"
 )
 
-SETTING_DOOR = (
-    "white painted front door of a modern Swedish wooden house, snowy garden "
-    "visible outside with birch trees and a low wooden fence, bright winter "
-    "daylight streaming in"
+DEER_DESC = (
+    "a majestic red deer stag: thick warm brown winter coat, tall branching "
+    "antlers with 4-5 points per side rising up into the sky, strong neck, "
+    "elegant legs, kind calm expression, tiny solid black dot eyes"
 )
 
-SETTING_GARDEN = (
-    "snowy Swedish garden in winter: fresh white snow covering the ground, "
-    "slender birch trees with bare branches, a low wooden fence, modern "
-    "Scandinavian wooden house in background with snow on the roof"
+# Settings
+SETTING_CABIN_INTERIOR = (
+    "cosy Scandinavian log cabin interior: pale wooden floors, warm wooden "
+    "walls, sheepskin rug, wood-burning stove with warm orange firelight glow, "
+    "simple wooden armchair, minimalist Nordic decor, warm inviting lighting"
+)
+
+SETTING_FOREST_LIGHT = (
+    "snowy Swedish forest with tall snow-covered pine trees, deep fresh white "
+    "snow on the forest floor, soft dappled winter daylight filtering through "
+    "the branches, gentle snowfall"
+)
+
+SETTING_FROZEN_STREAM = (
+    "snowy Swedish forest beside a frozen stream with jagged patterns of pale "
+    "blue-white ice, weathered grey boulders, deep untouched snow, birch and "
+    "pine trees in the background, cold crisp winter air with visible breath"
+)
+
+SETTING_FOREST_DEEP = (
+    "denser darker part of the Swedish pine forest: tall dark pine trunks "
+    "close together, less light filtering down, pine needles dark against the "
+    "snow, shadowy mysterious atmosphere, a broken branch on the snowy ground"
+)
+
+SETTING_FOREST_CLEARING = (
+    "snowy forest clearing surrounded by dark pines, soft gentle snowfall, "
+    "pale grey winter sky, quiet reverent atmosphere"
 )
 
 # ─── Scene Prompts ────────────────────────────────────────────────
+# Journey structure: cabin → forest (clue/reveal x3) → cabin
+# Pages with the girl outdoors add OUTDOOR_OUTFIT on top of the hero reference.
+# CLUE pages (2, 4, 6) must show ONLY the body part hinted at — never the
+# whole animal — so the reveal on the next page lands.
 SCENES = [
     {
         "name": "cover",
         "prompt": (
-            f"Show the girl from the reference image kneeling in white snow beside "
-            f"{FOX_DESC}. She reaches out one hand gently toward the fox. "
-            f"Behind them, a modern Scandinavian wooden house with a white door and "
-            f"snow on the roof, birch trees around. Magical winter scene with soft "
-            f"falling snowflakes. Girl wears red wool jumper and dark blue jeans. "
-            f"Skin colour {SKIN_HEX}. "
-            f"Eyes: tiny solid black dots ONLY, no white. Portrait format 3:4."
+            f"Mysterious, curiosity-filled winter book-cover scene. Show the girl "
+            f"from the reference image standing alone in the centre of "
+            f"{SETTING_FOREST_CLEARING}, her body half-turned as she looks ahead "
+            f"into the misty snowy pines with a wondering, curious expression — as "
+            f"if she can sense something wonderful just out of sight. {OUTDOOR_OUTFIT} "
+            f"Small animal paw prints and hoof prints trail away through the fresh "
+            f"snow off into the misty trees — tantalising hints that animals are "
+            f"near, but NO animals are visible anywhere in the image. "
+            f"The misty pines in the distance hint at hidden shapes but do not reveal "
+            f"any animal. Soft snow falling, warm golden-blue winter light filtering "
+            f"through the trees, a sense of quiet adventure and mystery. "
+            f"Do NOT draw any fox, hare, deer, or any animal — just the girl, the "
+            f"snowy forest, and the prints in the snow. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"PORTRAIT format 3:4 (book cover)."
         ),
     },
     {
         "name": "page1",
         "prompt": (
-            f"Show the girl from the reference image ALONE inside {SETTING_INDOOR}. "
-            f"She is crouching on the pale wooden floor, pressing her ear against "
-            f"a white front door, listening intently with wide curious eyes. "
-            f"Snow visible through a nearby window. She looks excited and curious. "
-            f"Girl wears red wool jumper, dark blue jeans, grey woolly socks. "
-            f"Skin colour {SKIN_HEX}. "
+            f"Show the girl from the reference image inside {SETTING_CABIN_INTERIOR}, "
+            f"standing by an open wooden front door, in the act of pulling on her "
+            f"thick dark blue winter coat over her red wool jumper. Her cream wool "
+            f"hat with Nordic snowflake pattern is on her head, braids hanging down. "
+            f"Her red wool scarf and dark blue mittens lie ready on a wooden bench "
+            f"beside her. Brown winter boots on her feet. Through the open doorway: "
+            f"a snowy path between tall snow-covered pine trees. "
+            f"In the BACKGROUND of the cabin: {DAD_DESC} sits in a wooden armchair by "
+            f"the wood-burning stove, warm firelight glowing around him, smiling at "
+            f"her. Both characters skin colour {SKIN_HEX}. "
             f"Eyes: tiny solid black dots ONLY, no white. Landscape format."
         ),
     },
     {
         "name": "page2",
         "prompt": (
-            f"Show two characters inside {SETTING_INDOOR}: "
-            f"1) {DAD_DESC} sitting in a cosy armchair by a wood-burning stove, "
-            f"smiling knowingly with a twinkle in his eye. "
-            f"2) The girl from the reference image (red wool jumper, blonde braids) "
-            f"standing near the door, looking back at Dad with a questioning expression. "
-            f"Warm orange glow from the stove. Snow falls outside the window. "
-            f"Skin colour {SKIN_HEX} for both characters. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Show the girl from the reference image walking alone in {SETTING_FOREST_LIGHT}. "
+            f"{OUTDOOR_OUTFIT} Small boot prints trail behind her through the deep "
+            f"fresh snow. She has stopped and is listening intently — head tilted, "
+            f"one mittened hand raised near her ear, curious alert expression. "
+            f"Beside a LARGE THICK pine tree trunk just ahead of her: sticking out "
+            f"from behind the trunk near the ground is a single bushy FOX TAIL — "
+            f"fluffy orange-red fur with a distinct WHITE TIP, curling out from "
+            f"behind the tree. ONLY the tail is visible. The body, head, legs, and "
+            f"ears of the fox are COMPLETELY HIDDEN behind the thick pine trunk. "
+            f"Do NOT show any part of the fox's head, face, body, ears, or legs — "
+            f"ONLY the fluffy orange-and-white tail peeking out from behind the "
+            f"tree. The thick tree trunk blocks everything else from view. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page3",
         "prompt": (
-            f"Show the girl from the reference image (red wool jumper, blonde braids) "
-            f"peering nervously through a frosty window beside the white front door. "
-            f"Inside: {SETTING_INDOOR}. Outside the window: a mysterious dark shape "
-            f"is visible in the snowy garden. Her expression shows curiosity mixed "
-            f"with slight nervousness — biting her lip, hands pressed against glass. "
-            f"Warm interior light, cold blue exterior. "
-            f"Skin colour {SKIN_HEX}. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Show the girl from the reference image crouched low in the snow in "
+            f"{SETTING_FOREST_LIGHT}, peeking around the side of a thick pine tree "
+            f"trunk with a delighted surprised smile. {OUTDOOR_OUTFIT} "
+            f"Now fully revealed in front of her, sitting calmly in the snow facing "
+            f"her: {FOX_DESC}. The fox looks at her with quiet curiosity, not afraid. "
+            f"Same snowy pine forest setting as the previous page. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page4",
         "prompt": (
-            f"Show two characters inside {SETTING_INDOOR}: "
-            f"1) {DAD_DESC} gesturing encouragingly toward the white front door "
-            f"from his armchair by the wood-burning stove, warm reassuring smile. "
-            f"2) The girl from the reference image (red wool jumper, blonde braids) "
-            f"standing hesitantly near the door, looking uncertain but building courage. "
-            f"One hand reaching toward the door handle. "
-            f"Skin colour {SKIN_HEX} for both characters. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Show the girl from the reference image standing alert on a snowy "
+            f"forest path. {OUTDOOR_OUTFIT} Her breath is visible as a soft white "
+            f"puff in the cold air. "
+            f"Just AHEAD of her, sitting on DEEP WHITE SNOW on the snowy forest "
+            f"floor: a large weathered grey boulder. The boulder is clearly on "
+            f"snow-covered solid ground — NOT in water, NOT in a stream. The snow "
+            f"around the base of the boulder is deep and white. "
+            f"Above the top of the boulder: TWO long white ears with distinct "
+            f"black tips poke straight up — ONLY the ear tips visible, the rest "
+            f"of the animal COMPLETELY HIDDEN behind the rock. Do NOT show the "
+            f"full hare — only the two ear tips above the rock. "
+            f"A frozen stream with pale blue-white ice may be visible in the "
+            f"DISTANT BACKGROUND, but the rock and the girl are both on the snowy "
+            f"bank WELL AWAY from the water. Snow-covered birch and pine trees "
+            f"around. "
+            f"Her expression is alert, curious, holding very still. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page5",
         "prompt": (
-            f"Show the girl from the reference image (red wool jumper, blonde braids) "
-            f"standing at the wide-open white front door, face showing pure delight "
-            f"and wonder — mouth open, eyes wide. She has just opened the door. "
-            f"In the snowy garden beyond the doorstep, {FOX_DESC} sits in the white "
-            f"snow looking up at her with bright eyes. {SETTING_GARDEN} visible behind "
-            f"the fox. Bright winter daylight floods in through the open door. "
-            f"Skin colour {SKIN_HEX}. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Show the girl from the reference image tiptoeing quietly beside the "
+            f"large grey boulder in {SETTING_FROZEN_STREAM}, peeking over the top of "
+            f"the rock with wide delighted eyes, one mittened finger pressed to her "
+            f"lips in a 'shh' gesture. {OUTDOOR_OUTFIT} "
+            f"Now fully revealed: {HARE_DESC}, caught mid-leap bounding away across "
+            f"deep WHITE SNOW on the forest floor — powerful back legs extended, "
+            f"soft motion-blur lines showing quick movement. "
+            f"CRITICAL: the hare is leaping ON THE DEEP SNOW on the snowy bank "
+            f"BESIDE the frozen stream — NOT on the water, NOT on the ice of the "
+            f"stream. The hare's feet touch fresh white snow, not the blue ice. "
+            f"The frozen stream may be visible in the scene but the hare is clearly "
+            f"on snowy ground away from the water. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page6",
         "prompt": (
-            f"Show three figures at the open white front door: "
-            f"1) {DAD_DESC} standing behind the girl, one hand on her shoulder, "
-            f"smiling warmly down at the fox. "
-            f"2) The girl from the reference image (red wool jumper, blonde braids) "
-            f"standing at the doorstep, beaming with joy. "
-            f"3) {FOX_DESC} sitting in the white snow just beyond the doorstep, "
-            f"looking up at them with bright trusting eyes. "
-            f"{SETTING_GARDEN} in background. "
-            f"Skin colour {SKIN_HEX} for human characters. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Winter forest scene. "
+            f"FOREGROUND: the girl from the reference image stands in deep snow "
+            f"to one side of the scene, small in frame, looking off across to "
+            f"the other side with a curious, slightly wary expression. "
+            f"{OUTDOOR_OUTFIT} "
+            f"HER EYES must match the eye reference exactly — tiny solid black "
+            f"filled dots, ZERO white, no iris, no pupil detail, no highlight. "
+            f"MIDGROUND: a BROAD, WIDE, DOME-SHAPED snow dune — a huge wide "
+            f"rounded mound of windswept snow, much WIDER than it is tall, "
+            f"sitting on the snowy forest floor and filling the centre of the "
+            f"scene. The dune is shaped like a long low hill or an igloo — "
+            f"wide and broad with a gently rounded crest. The viewing angle "
+            f"is from a LOW position, almost eye-level with the top of the "
+            f"dune, so that the dune's crest acts as a horizon line blocking "
+            f"everything behind it from view. "
+            f"VISIBLE above the crest of the dune against the pale grey misty "
+            f"sky: ONLY two tall branching antler-shapes (4-5 points per side), "
+            f"dark silhouette like elegant bare winter branches. Just the "
+            f"antlers — that is all. The antler bases appear to come from "
+            f"BEHIND the crest of the dune, rising up into the sky. "
+            f"DO NOT DRAW anywhere in the image: any deer head, any deer face, "
+            f"any deer eyes, any deer ears, any deer muzzle, any deer nose, "
+            f"any deer neck, any deer fur, any deer body, any deer legs, or "
+            f"any silhouette of a deer. The ONLY part that hints at an animal "
+            f"is the pair of antler shapes above the dune's crest. The image "
+            f"must suggest 'something is hidden behind the dune' — not 'a deer "
+            f"is standing behind the dune with its head peeking out.' Treat "
+            f"the antlers as abstract branching shapes emerging from behind "
+            f"the snow mound, with NOTHING else animal-like visible. "
+            f"Dense dark misty pine forest in the far background, pale "
+            f"atmospheric light. Skin colour {SKIN_HEX}. "
+            f"Eyes (of the girl only): tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page7",
         "prompt": (
-            f"Show three figures at the open front door of a Swedish wooden house: "
-            f"1) {FOX_DESC} eating food from a small dish on the snowy doorstep, "
-            f"tail fluffy and bright against the white snow. "
-            f"2) The girl from the reference image (red wool jumper, blonde braids) "
-            f"sitting on the pale wooden floor just inside the doorway, watching "
-            f"the fox with pure wonder and a gentle smile. "
-            f"3) {DAD_DESC} standing nearby in the doorway. "
-            f"Warm interior light meets cold winter exterior. "
-            f"Skin colour {SKIN_HEX} for human characters. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"Show the girl from the reference image standing very still and small "
+            f"in {SETTING_FOREST_CLEARING}, hands at her sides, looking up in awe. "
+            f"{OUTDOOR_OUTFIT} "
+            f"Now fully revealed, stepping out from between the dark pines: "
+            f"{DEER_DESC}. The stag stands calm and still, meeting the girl's gaze "
+            f"directly. Soft snow falling gently. Quiet reverent magical mood. "
+            f"Skin colour {SKIN_HEX}. Eyes: tiny solid black dots ONLY, no white. "
+            f"Landscape format."
         ),
     },
     {
         "name": "page8",
         "prompt": (
-            f"Show the girl from the reference image (red wool jumper, blonde braids) "
-            f"waving goodbye from the white front doorway of a Swedish wooden house. "
-            f"{FOX_DESC} trots away through the snowy garden toward birch trees, "
-            f"looking back over its shoulder. {DAD_DESC} stands behind the girl "
-            f"with a warm proud smile, hand on her shoulder. "
-            f"Soft golden winter light, peaceful snowy landscape. "
-            f"Hopeful, warm ending. "
-            f"Skin colour {SKIN_HEX} for human characters. "
-            f"Eyes: tiny solid black dots ONLY. Landscape format."
+            f"View from OUTSIDE the Scandinavian log cabin, looking TOWARD the open "
+            f"front door. The girl from the reference image walks TOWARD the door "
+            f"from the snowy outside, her BACK toward the viewer (seen from behind "
+            f"or three-quarter rear view), stepping INTO the warm cabin. {OUTDOOR_OUTFIT} "
+            f"Her coat, hat and shoulders are lightly DUSTED with snowflakes from "
+            f"her walk. Small fresh boot prints in the snow behind her lead up to "
+            f"the door. "
+            f"Framed in the open doorway ahead of her: {DAD_DESC} stands just inside "
+            f"the cabin, holding the door wide open with one hand and welcoming her "
+            f"in with a warm loving smile, the other hand reaching gently toward her. "
+            f"Warm orange firelight glows from {SETTING_CABIN_INTERIOR} visible "
+            f"behind Dad through the doorway. Outside (around the girl): snow "
+            f"falling thickly in the late afternoon winter light, snow-covered pines "
+            f"beyond the cabin. "
+            f"CRITICAL: the girl is walking INTO the cabin (toward Dad, away from "
+            f"the viewer) — she is NOT leaving the cabin, she is RETURNING home. "
+            f"Both characters skin colour {SKIN_HEX}. "
+            f"Eyes: tiny solid black dots ONLY, no white. Landscape format."
         ),
     },
 ]
@@ -335,12 +441,16 @@ async def generate_scene_image(
         })
         parts.append({"inlineData": {"mimeType": "image/png", "data": eye_ref_b64}})
 
-    # Hero reference
+    # Hero reference — preserve face + hair identity; outerwear may be added
+    # on top of the red jumper for outdoor scenes per the scene prompt.
     parts.append({
         "text": (
-            f"CHARACTER REFERENCE — GIRL. Keep her exact appearance: "
-            f"light fair skin {SKIN_HEX}, golden blonde hair {HAIR_HEX} "
-            f"in two braids, cosy red wool jumper, dark blue jeans, grey woolly socks. "
+            f"CHARACTER REFERENCE — GIRL. Keep her EXACT face, skin tone, and hair: "
+            f"light fair skin {SKIN_HEX}, golden blonde hair {HAIR_HEX} in two neat "
+            f"braids, same friendly face. Her red wool jumper is always worn "
+            f"underneath — but for outdoor winter scenes, follow the SCENE prompt "
+            f"and add the winter coat, hat, scarf, mittens and boots ON TOP of the "
+            f"jumper as described there. "
             f"Eyes must be solid black dots exactly like the eye reference above:"
         )
     })
@@ -396,7 +506,7 @@ async def main():
         sys.exit(1)
 
     print(f"\n{'='*55}")
-    print(f'L5.2: "Near the Door" — Stockholm, Sweden')
+    print(f'L5.2: "Near the Door" — Snowy Swedish forest journey')
     print(f"Output: {OUTPUT_DIR}")
     print(f"Mode: {mode}")
     print(f"{'='*55}")

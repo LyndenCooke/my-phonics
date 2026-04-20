@@ -85,7 +85,9 @@ BOY_DESC = (
     "Afro-Brazilian boy (6 years old, dark skin hex #4E3524 with warm undertone, "
     f"natural afro hairstyle with black-near-black hair hex {BOY_HAIR_HEX}, "
     "bright orange t-shirt with short sleeves, cargo shorts in khaki that reach "
-    "to below the knee (modesty: full leg coverage), white trainers, warm welcoming "
+    "to below the knee (modesty: full leg coverage), "
+    "RIGHT leg is a below-knee prosthetic leg (silver/metallic blade-style running prosthetic), "
+    "left foot wears a white trainer, warm welcoming "
     "expression with genuine smile)"
 )
 
@@ -223,8 +225,8 @@ async def generate_scenes(session: aiohttp.ClientSession, hero_b64: str):
         },
         {
             "name": "page5_food_stall.png",
-            "action": "Boy and girl together at food vendor stall. Girl holding {acaraje_description} and taking a bite, smiling for first time.",
-            "details": f"{VENDOR_STALL_DESC}. Joy visible on girl's face. Tropical fruit visible. Both happy.",
+            "action": f"Boy and girl together at food vendor stall. Girl holding {ACARAJE_DESC} and taking a bite, smiling for first time.",
+            "details": f"{BOY_DESC}. {VENDOR_STALL_DESC}. Joy visible on girl's face. Tropical fruit visible. Both happy.",
         },
         {
             "name": "page6_exploring.png",
@@ -244,6 +246,12 @@ async def generate_scenes(session: aiohttp.ClientSession, hero_b64: str):
     ]
 
     for i, scene in enumerate(scenes, 1):
+        # Skip if already exists (allows single-page regen by deleting one file)
+        filepath = OUTPUT_DIR / scene["name"]
+        if filepath.exists():
+            print(f"\n[IMG] Scene {i}/8 ({scene['name']}) — already exists, skipping")
+            continue
+
         print(f"\n[IMG] Generating scene {i}/8 ({scene['name']})...")
 
         scene_prompt = (
