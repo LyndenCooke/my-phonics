@@ -37,6 +37,8 @@ class ValidationResult:
     failed_sentences: List[Dict] = field(default_factory=list)
     decodable_words_used: List[str] = field(default_factory=list)
     tricky_words_used: List[str] = field(default_factory=list)
+    warnings: List[Dict] = field(default_factory=list)
+    proper_nouns_detected: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialisation."""
@@ -49,8 +51,36 @@ class ValidationResult:
             "failed_sentences": self.failed_sentences,
             "decodable_words_used": self.decodable_words_used,
             "tricky_words_used": self.tricky_words_used,
-            "failed_count": len(self.failed_words)
+            "warnings": self.warnings,
+            "proper_nouns_detected": self.proper_nouns_detected,
+            "failed_count": len(self.failed_words),
+            "warning_count": len(self.warnings),
         }
+
+
+def detect_proper_nouns(text: str) -> Set[str]:
+    """
+    Detect proper nouns (character / place names) in text.
+
+    A word is treated as a proper noun if every occurrence in the text is
+    capitalised. Common words (the, a, is, ...) that only ever appear
+    capitalised at a sentence start still match here, but those are already
+    resolved as decodable/tricky before the proper-noun fallback is used.
+
+    Returns a set of lowercased proper-noun forms.
+    """
+    sentences = extract_sentences(text)
+    per_word_caps: Dict[str, List[bool]] = {}
+
+    for sentence in sentences:
+        for word in extract_words(sentence):
+            if not word:
+                continue
+            lower = word.lower()
+            is_cap = word[:1].isupper() and word[1:].islower()
+            per_word_caps.setdefault(lower, []).append(is_cap)
+
+    return {lower for lower, caps in per_word_caps.items() if caps and all(caps)}
 
 
 def extract_words(text: str) -> List[str]:
@@ -143,15 +173,32 @@ def validate_word(word: str, level: int) -> Dict:
     }
 
 
-def validate_story_text(text: str, level: int) -> ValidationResult:
+def validate_story_text(
+    text: str,
+    level: int,
+    *,
+    strict: bool = True,
+    allowed_exceptions: Optional[Set[str]] = None,
+    detect_names: bool = True,
+) -> ValidationResult:
     """
     Validate story text against the word bank for a given level.
 
-    THIS IS THE QUALITY GATE. Every word must pass.
+    The quality bar is that every word is either decodable at the level,
+    a listed tricky word, a detected proper noun (character/place name),
+    or on the caller's ``allowed_exceptions`` list.
 
     Args:
         text: Full story text (all pages)
         level: Reading level 1-6
+        strict: If True (default), failed words block validation. If False,
+            failed words are demoted to warnings and ``valid`` stays True —
+            useful when the pitch-level fit matters more than exact
+            word-bank membership.
+        allowed_exceptions: Optional set of lowercased words that should
+            never fail (per-book overrides).
+        detect_names: Auto-detect proper nouns via capitalisation. Defaults
+            to True so character names like "Sam" pass without setup.
 
     Returns:
         ValidationResult with pass/fail status and details
@@ -162,12 +209,17 @@ def validate_story_text(text: str, level: int) -> ValidationResult:
     words = extract_words(text)
     sentences = extract_sentences(text)
 
+    allowed_exceptions = {w.lower() for w in (allowed_exceptions or set())}
+    proper_nouns: Set[str] = detect_proper_nouns(text) if detect_names else set()
+
     # Track results
     failed_words: List[Dict] = []
+    warnings: List[Dict] = []
     failed_sentences: List[Dict] = []
     decodable_used: Set[str] = set()
     tricky_used: Set[str] = set()
     seen_words: Set[str] = set()
+    seen_warned: Set[str] = set()
     unique_words: Set[str] = set()
 
     # Validate each word
@@ -186,7 +238,15 @@ def validate_story_text(text: str, level: int) -> ValidationResult:
                 decodable_used.add(base)
             if result["is_tricky"]:
                 tricky_used.add(base)
-        else:
+            continue
+
+        base_lower = result.get("base_word", word).lower()
+
+        # Exempt proper nouns and caller-supplied exceptions.
+        if base_lower in proper_nouns or base_lower in allowed_exceptions:
+            continue
+
+        if strict:
             # Only add each failed word once
             if word_lower not in seen_words:
                 failed_words.append({
@@ -195,6 +255,15 @@ def validate_story_text(text: str, level: int) -> ValidationResult:
                     "level": level
                 })
                 seen_words.add(word_lower)
+        else:
+            if word_lower not in seen_warned:
+                warnings.append({
+                    "word": word,
+                    "word_normalised": word_lower,
+                    "level": level,
+                    "reason": "out-of-bank (non-strict mode)",
+                })
+                seen_warned.add(word_lower)
 
     # Find sentences containing failed words
     if failed_words:
@@ -218,25 +287,36 @@ def validate_story_text(text: str, level: int) -> ValidationResult:
         total_words=len(words),
         unique_words=len(unique_words),
         failed_words=failed_words,
+        warnings=warnings,
+        proper_nouns_detected=sorted(proper_nouns),
         failed_sentences=failed_sentences,
         decodable_words_used=sorted(list(decodable_used)),
         tricky_words_used=sorted(list(tricky_used))
     )
 
 
-def validate_story_pages(pages: List[str], level: int) -> ValidationResult:
+def validate_story_pages(
+    pages: List[str],
+    level: int,
+    *,
+    strict: bool = True,
+    allowed_exceptions: Optional[Set[str]] = None,
+    detect_names: bool = True,
+) -> ValidationResult:
     """
     Validate multiple story pages against the word bank.
 
-    Args:
-        pages: List of page texts (typically 8 story pages)
-        level: Reading level 1-6
-
-    Returns:
-        ValidationResult for the combined text
+    See ``validate_story_text`` for ``strict``, ``allowed_exceptions`` and
+    ``detect_names`` semantics.
     """
     combined_text = " ".join(pages)
-    return validate_story_text(combined_text, level)
+    return validate_story_text(
+        combined_text,
+        level,
+        strict=strict,
+        allowed_exceptions=allowed_exceptions,
+        detect_names=detect_names,
+    )
 
 
 def get_replacement_suggestions(
@@ -321,18 +401,26 @@ def format_validation_report(result: ValidationResult) -> str:
 
 
 # Convenience function for quick validation
-def quick_validate(text: str, level: int) -> bool:
+def quick_validate(
+    text: str,
+    level: int,
+    *,
+    strict: bool = True,
+    allowed_exceptions: Optional[Set[str]] = None,
+    detect_names: bool = True,
+) -> bool:
     """
     Quick check if text passes validation.
 
-    Args:
-        text: Text to validate
-        level: Reading level 1-6
-
-    Returns:
-        True if all words pass, False otherwise
+    See ``validate_story_text`` for option semantics.
     """
-    result = validate_story_text(text, level)
+    result = validate_story_text(
+        text,
+        level,
+        strict=strict,
+        allowed_exceptions=allowed_exceptions,
+        detect_names=detect_names,
+    )
     return result.valid
 
 
