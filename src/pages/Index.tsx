@@ -103,6 +103,23 @@ export default function Index() {
 
   const activeBook = activeBookId ? books.find(b => b.id === activeBookId) ?? null : null;
 
+  // Deep-link support: `/library?book=L3.1` auto-opens that book's reader
+  // once the book catalogue has loaded. Clears the query string once handled
+  // so the URL doesn't sit with a stale param after closing the reader.
+  useEffect(() => {
+    if (activeBookId || books.length === 0) return;
+    const params = new URLSearchParams(location.search);
+    const wanted = params.get('book');
+    if (!wanted) return;
+    const match = books.find((b) => b.subLevel === wanted);
+    if (match && match.unlocked) {
+      setActiveBookId(match.id);
+      const url = new URL(window.location.href);
+      url.searchParams.delete('book');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [activeBookId, books, location.search]);
+
   const quizQuestions = (quizData ?? []).map(q => ({
     id: q.id,
     bookId: q.book_id,

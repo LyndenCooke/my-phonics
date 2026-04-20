@@ -64,10 +64,13 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <a href="#main" className="skip-link">Skip to main content</a>
+
       {/* ── Sticky nav ── */}
       <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assess')} />
 
       {/* ── Sections ── */}
+      <main id="main">
       <HeroSection onAssess={() => navigate('/assess')} onTry={() => navigate('/library')} />
       <HowItWorks />
       <FeatureShowcase />
@@ -76,6 +79,7 @@ export default function LandingPage() {
       <Testimonials />
       <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/shop')} />
       <FooterCTA onAssess={() => navigate('/assess')} />
+      </main>
       <Footer />
     </div>
   );
@@ -146,7 +150,7 @@ function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => v
                 Try a Free Book
               </button>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">No credit card required. 2 free books included.</p>
+            <p className="mt-4 text-xs text-muted-foreground">No credit card required. Free book matched to your child's level.</p>
           </div>
 
           {/* Book carousel */}
