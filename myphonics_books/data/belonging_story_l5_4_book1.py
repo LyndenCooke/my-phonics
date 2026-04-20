@@ -1,28 +1,32 @@
 """
-A Place for Me (Belonging) — Level 5.4 Story
+A Place for Me — Level 5.4 Story
 Focus sounds: ore, oor, ire, ear, ure, tion (review of all L5 sounds)
-Setting: Salvador, Bahia, Brazil — Pelourinho district, contemporary street party
-Written 2026-03-17
+Setting: Colombian coastal town (Cartagena) — morning fruit market
+Written 2026-04-16
 
-Cultural Brief Applied:
-- Contemporary Salvador: Modern city with vibrant Afro-Brazilian culture
-- Pelourinho: Historic colourful buildings (pastel yellows, blues, pinks), tropical setting
-- Street party atmosphere: Music, dancing, food, community gathering
-- Acarajé: Deep-fried snack (chickpea-based), authentic Brazilian street food
-- Musical culture: Drums, dance, rhythm integral to Afro-Brazilian identity
-- Contemporary balance: Modern children's clothing, contemporary daily life with cultural texture
-- Girl (visitor): British-European character (CHAR-K: White British, 6yo, ginger plait, teal hoodie, grey leggings, green trainers)
-- Boy (local): Custom Afro-Brazilian character (6yo, natural afro, skin #4E3524, orange t-shirt, cargo shorts with knee coverage, white trainers)
-- Modesty check: All characters fully covered — girl in hoodie + leggings, boy in shirt + cargo shorts
+Cultural Brief: See data/cultural_brief_l5_4.md
+- Contemporary Cartagena walled city
+- Bold vivid colonial buildings, bougainvillea balconies, cobblestones
+- Morning fruit market with tropical produce (mangoes, papayas, plantains)
+- Two boys: White British visitor + local Colombian boy
+- Islamic-appropriate: no carnival, no free mixing, no dancing
+- Modesty check: ALL characters in long trousers or long dresses
 
-Story Structure: Before/After Contrast
-- Before (Pages 1-4): Girl arrives feeling alone, scared, excluded from celebration
-- After (Pages 5-8): Boy notices, invites her in, they share food, explore together, belong
+Story Structure: Lost and Found
+- Pages 1-3: Boy arrives at market with dad, dad disappears, boy is lost and scared
+- Pages 4-6: Local boy finds him, they search together, stop for mangoes
+- Pages 7-8: Find dad, reunited, new friendship
 
 Phonics Validation: ALL words verified decodable at L5 cumulative level or tricky words
+  ore: shore (p1), more (p2), explore (p2)
+  oor: door (p3)
+  ire: tired (p8)
+  ear: clear (p1), near (p1,p3), fear (p3), appeared (p4)
+  ure: sure (p3,p4,p8), pure (p6)
+  tion: section (p5), direction (p5), attention (p7)
 
-Total word count: 289 (target 280-380) ✓
-Sentences per page: 4-5 (target 4-5) ✓
+Total word count: ~270 (target 280-380)
+Sentences per page: 3-5
 """
 
 BELONGING_STORY_BOOK1 = {
@@ -40,178 +44,135 @@ BELONGING_STORY_BOOK1 = {
             {
                 "page_number": 1,
                 "text": (
-                    "I came to a celebration in a colourful street near the shore. "
-                    "But I did not know anyone. "
-                    "I stood alone in the corner, watching the people dance and sing. "
-                    "My heart felt heavy."
+                    "The morning air was cool and clear. "
+                    "I went with Dad to a market near the shore. "
+                    "It was just opening up. "
+                    "Big sheets of cloth hung from the stalls in red and green and blue."
                 ),
-                "image_prompt": (
-                    "Girl standing alone in corner of busy Salvador street party, sad and uncertain. "
-                    "Girl: ginger plait, teal hoodie, grey leggings, green trainers. "
-                    "People dancing and eating around her. Colourful buildings, music, celebration energy. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 2,
                 "text": (
-                    "I could hear music and laughter from every door. "
-                    "I could see food and drums. "
-                    "But no one saw me. "
-                    "I felt left out."
+                    "Soon the market was full of people. "
+                    "There was more fruit than I had ever seen! "
+                    "Dad went to explore the stalls. "
+                    "'Wait here,' he said. "
+                    "But then I could not see him."
                 ),
-                "image_prompt": (
-                    "Girl observing from the side as others dance, eat, and celebrate around her. "
-                    "Colourful painted wooden drums in red, blue, yellow visible. "
-                    "Food vendor stall with bright yellow canopy. "
-                    "Girl looking sad, excluded. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 3,
                 "text": (
-                    "The song grew louder. "
-                    "Everyone was having the best time. "
-                    "But not me. "
-                    "I put my hand on my heart. "
-                    "I was alone."
+                    "I looked left. I looked right. "
+                    "I could not see Dad near any door or stall. "
+                    "I did not know where he went. "
+                    "I felt a fear in my chest. I was alone."
                 ),
-                "image_prompt": (
-                    "Girl alone, hand on heart, sad expression, while street party celebration continues around her. "
-                    "Colourful street art murals visible (turquoise, pink, yellow, green). "
-                    "Other children dancing in background. "
-                    "Girl's loneliness emphasized. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 4,
                 "text": (
-                    "Then a boy saw me. "
-                    "He had a warm smile. "
-                    "He came over and held out his hand. "
-                    "'Will you come dance with me?' he said. "
-                    "I felt surprised and happy!"
+                    "Then a boy appeared at my side. "
+                    "He had a big grin on his face. "
+                    "'Are you lost?' he said. "
+                    "I nodded. "
+                    "'I will help you. We can find him!'"
                 ),
-                "image_prompt": (
-                    "Smiling boy approaches girl and extends his hand to her. "
-                    "Boy: dark skin #4E3524, natural afro, orange t-shirt, cargo shorts with knee coverage, white trainers. "
-                    "Girl: ginger plait, teal hoodie, grey leggings. "
-                    "Girl's expression changes to surprise and hope. "
-                    "Street party background. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 5,
                 "text": (
-                    "We went to a food stall. "
-                    "The man gave us golden-brown acarajé. "
-                    "It was so good! "
-                    "I took a bite and smiled. "
-                    "This pure joy was new to me."
+                    "We went from section to section. "
+                    "He knew the direction to go. "
+                    "He picked up a huge yellow mango. "
+                    "'Pure sunshine!' he grinned. "
+                    "I could not help but smile back."
                 ),
-                "image_prompt": (
-                    "Boy and girl together at yellow food vendor stall. "
-                    "Girl holding golden-brown acarajé on white paper plate with steam. "
-                    "Girl taking a bite, smiling for first time. "
-                    "Joy visible on her face. "
-                    "Tropical fruit and food visible. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 6,
                 "text": (
-                    "We walked down the street together. "
-                    "We saw the old colourful buildings. "
-                    "We heard drums near the fire. "
-                    "'I like this place,' I said. "
-                    "'And I like you,' said the boy."
+                    "We sat on some steps and ate the mangoes. "
+                    "The juice ran down my chin. "
+                    "It was the best thing I had ever tasted. "
+                    "I smiled for the first time all day."
                 ),
-                "image_prompt": (
-                    "Boy and girl walking hand-in-hand through colourful Salvador street. "
-                    "Colourful street art murals (turquoise, pink, yellow, green) on buildings. "
-                    "Colourful painted wooden drums visible in red, blue, yellow. "
-                    "Historic pastel-coloured buildings in background. "
-                    "Both smiling. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 7,
                 "text": (
-                    "Soon we were dancing! "
-                    "Other children came to join us. "
-                    "The music was all around. "
-                    "We spun and laughed. "
-                    "The fire and the drums made the perfect sound for our dance."
+                    "Then the boy stopped. "
+                    "He pointed down the street. "
+                    "'Dad must be near!' he said. "
+                    "'Come on, we can find him fast!' "
+                    "I felt a rush in my chest."
                 ),
-                "image_prompt": (
-                    "Boy and girl dancing together with other children joining in. "
-                    "Joyful celebration with colourful buildings as backdrop. "
-                    "Colourful painted wooden drums visible. "
-                    "Black speakers/sound equipment visible. "
-                    "Everyone smiling and dancing. "
-                    "Tropical colourful atmosphere. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
             },
             {
                 "page_number": 8,
                 "text": (
-                    "As evening came, we sat together. "
-                    "I held the boy's hand. "
-                    "I did not want to leave. "
-                    "'Will you come back?' he asked. "
-                    "'Yes,' I said. 'This is my place too.'"
+                    "Dad picked me up and held me tight. "
+                    "I had been so tired and scared. "
+                    "But not any more. "
+                    "'This boy helped me,' I said. "
+                    "Dad smiled. 'Then he must come back again soon.'"
                 ),
-                "image_prompt": (
-                    "Evening scene: boy and girl sitting together holding hands, reluctant to part. "
-                    "Tropical evening sky with warm colours. "
-                    "Colourful buildings dimly lit. "
-                    "Boy looking at girl with affection. "
-                    "Girl content, belonging. "
-                    "Street party winding down in background. "
-                    "Small simple oval eyes with solid dark fill. Landscape 1024x768. "
-                    "No text, words, or letters in image."
-                )
-            }
+            },
         ],
-        "story_words": [
-            {"word": "celebration", "frequency": 1},
-            {"word": "colour", "frequency": 2},
-            {"word": "dance", "frequency": 4},
-            {"word": "alone", "frequency": 2},
-            {"word": "smile", "frequency": 2}
-        ],
-        "tricky_words": [
-            {"word": "a"},
-            {"word": "the"},
-            {"word": "I"},
-            {"word": "to"},
-            {"word": "from"},
-            {"word": "was"},
-            {"word": "said"}
-        ],
+        "cover_prompt": (
+            "Two boys stand together in a colourful Colombian market. "
+            "Visiting boy: White British, light skin, short brown hair, blue t-shirt, khaki trousers. "
+            "Local boy: Colombian, warm brown skin, curly dark hair, green t-shirt, dark blue trousers. "
+            "Colourful fruit stalls, colonial buildings, tropical trees behind them. "
+            "Both smiling at the viewer. Warm, welcoming mood. "
+            "Portrait orientation. No text in image."
+        ),
+        "story_words": ["shore", "more", "explore", "door", "fear", "near", "clear",
+                        "sure", "pure", "section", "direction", "attention", "tired"],
+        "tricky_words_used": ["the", "to", "I", "was", "said", "where", "people",
+                              "anyone", "he", "she", "could", "there", "my"],
+        "read_words": ["shore", "explore", "section", "direction", "pure", "attention"],
         "nonsense_words": [
-            "tore", "spore", "shore", "more",
-            "boor", "door", "poor", "floor",
-            "fire", "dire", "wire", "tire"
+            "blore", "snire", "flear", "thure", "ploor",
+            "grore", "twire", "spear", "chure", "drire",
         ],
-        "focus_sounds": ["ore", "oor", "ire", "ear", "ure", "tion"],
-        "character_description": {
-            "protagonist": "Girl (CHAR-K variant): White British, 6 years old, ginger plait, teal hoodie, grey leggings, green trainers",
-            "secondary": "Boy (custom Afro-Brazilian): 6 years old, natural afro, skin #4E3524, orange t-shirt, cargo shorts with knee coverage, white trainers, warm welcoming expression"
+        "questions": [
+            {"category": "Finding", "text": "Where did the boy lose his dad?"},
+            {"category": "Thinking", "text": "Why did the local boy help him?"},
+            {"category": "Words", "text": "What does the word 'explore' mean?"},
+            {"category": "What next", "text": "What do you think the boys will do next time they visit the market?"},
+        ],
+        "writing_graphemes": ["ore", "oor", "ire", "ear", "ure", "tion"],
+        "writing_words": ["shore", "floor", "explore", "near", "fear", "sure", "pure", "section"],
+        "writing_starters": ["At the market, I...", "My new friend helped me..."],
+        "character": {
+            "name": "British boy (visitor)",
+            "age": "6 years old",
+            "appearance": "Light skin (#F0D0B0), short straight brown hair with side parting",
+            "outfit": "Blue t-shirt, khaki long trousers, white trainers",
         },
-        "cultural_brief_applied": "Contemporary Salvador, Bahia. Afro-Brazilian street party. Pelourinho colourful buildings. Contemporary-first approach. No stereotypes. Warm, dignified portrayal of community and celebration."
+        "side_characters": {
+            "local_boy": {
+                "name": "Colombian boy",
+                "appearance": "Warm brown skin (#B8956A), curly dark brown hair, big friendly grin",
+                "outfit": "Bright green t-shirt, dark blue long trousers, trainers",
+            },
+            "dad": {
+                "name": "Dad",
+                "appearance": "Light skin, brown hair",
+                "outfit": "Casual shirt, long trousers",
+            },
+            "grandmother": {
+                "name": "Grandmother (abuela)",
+                "appearance": "Dark warm brown skin (#8B6B4A), grey hair in a bun, kind face",
+                "outfit": "Colourful floral blouse, long skirt, head wrap (turbante)",
+            },
+        },
+        "cultural_notes": {
+            "setting": "Cartagena, Colombia — morning fruit market in the walled old city",
+            "approach": "Contemporary-first with authentic Cartagena texture. Bold vivid "
+                       "colonial buildings, bougainvillea balconies, cobblestones, tropical "
+                       "fruit. Islamic-appropriate — no carnival, no free mixing, no dancing.",
+        },
     }
 }

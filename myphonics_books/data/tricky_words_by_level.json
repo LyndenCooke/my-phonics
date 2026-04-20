@@ -26,13 +26,13 @@
   "level_5": {
     "name": "Reading Together",
     "maps_to": "RWI Blue",
-    "new_tricky_words": ["does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman"]
+    "new_tricky_words": ["does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart"],
+    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart"]
   },
   "level_6": {
     "name": "Reading Champion",
     "maps_to": "RWI Grey",
     "new_tricky_words": ["should", "many", "above", "father", "son", "mother", "buy", "bought", "great", "caught", "worse", "love", "wear", "thought", "everyone", "walk", "talk"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "should", "many", "above", "father", "son", "mother", "buy", "bought", "great", "caught", "worse", "love", "wear", "thought", "everyone", "walk", "talk"]
+    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart", "should", "many", "above", "father", "son", "mother", "buy", "bought", "great", "caught", "worse", "love", "wear", "thought", "everyone", "walk", "talk"]
   }
 }
