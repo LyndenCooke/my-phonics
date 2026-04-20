@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyPhonicsBooks — Logo Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #E96480;
+      --ink: #213649;
+      --amber: #DB9D2B;
+      --muted: #6B7685;
+      --cream: #F8F5E9;
+      --card: #FFFFFF;
+      --border: #E8E4D8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    header {
+      padding: 56px 40px 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin: 0 0 8px;
+    }
+    h1 .pink { color: var(--pink); }
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 40px 80px;
+      display: grid;
+      gap: 28px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      align-items: start;
+      padding: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+    .label h2 {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      letter-spacing: -0.3px;
+    }
+    .label p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+    .label code {
+      font-size: 11px;
+      background: var(--cream);
+      padding: 3px 7px;
+      border-radius: 6px;
+      color: var(--ink);
+      display: inline-block;
+      border: 1px solid var(--border);
+    }
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      border-radius: 16px;
+      min-height: 200px;
+    }
+    .panel-cream { background: var(--cream); border: 1px solid var(--border); }
+    .panel-dark { background: var(--ink); }
+    .panel-white { background: var(--card); border: 1px solid var(--border); }
+    .panel-pink { background: var(--pink); }
+
+    .size-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 36px;
+      padding: 24px 28px;
+      background: var(--cream);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .size-row > div { text-align: center; }
+    .size-row img { display: block; margin: 0 auto; }
+    .size-caption {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .swatch {
+      padding: 16px;
+      border-radius: 12px;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .swatch small { opacity: 0.85; font-weight: 500; display: block; margin-top: 2px; font-family: 'SF Mono', Menlo, monospace; }
+
+    .usage {
+      background: linear-gradient(135deg, #FFF4F8 0%, #FFF8F3 100%);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-top: 4px;
+    }
+    .usage h3 { margin: 0 0 12px; font-size: 15px; }
+    .usage pre {
+      background: var(--ink);
+      color: #F8F5E9;
+      padding: 16px 20px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 12.5px;
+      line-height: 1.7;
+      font-family: 'SF Mono', Menlo, monospace;
+      margin: 8px 0 0;
+    }
+
+    @media (max-width: 800px) {
+      .row { grid-template-columns: 1fr; }
+      .panels { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My<span class="pink">Phonics</span>Books — Logo Kit</h1>
+    <p class="subtitle">Three core assets + a lockup. Generated from Gemini Concept 1 (Book + Star).</p>
+  </header>
+
+  <main>
+    <!-- Mark -->
+    <section class="row">
+      <div class="label">
+        <h2>Mark</h2>
+        <p>The sign. Social avatar, app icon, anywhere a square image is needed.</p>
+        <code>/logo/mpb-mark.png</code><br/><br/>
+        <code>/logo/mpb-mark-transparent.png</code>
+      </div>
+      <div class="panels">
+        <div class="panel panel-cream"><img src="mpb-mark.png" alt="" style="width: 160px; height: 160px;"/></div>
+        <div class="panel panel-dark"><img src="mpb-mark-transparent.png" alt="" style="width: 160px; height: 160px;"/></div>
+      </div>
+    </section>
+
+    <!-- Initials -->
+    <section class="row">
+      <div class="label">
+        <h2>Initials</h2>
+        <p>Tight square. For favicons, app icons, small places.</p>
+        <code>/logo/mpb-initials.svg</code>
+      </div>
+      <div class="panels">
+        <div class="panel panel-cream"><img src="mpb-initials.svg" alt="" style="width: 160px; height: 160px;"/></div>
+        <div class="panel panel-dark"><img src="mpb-initials.svg" alt="" style="width: 160px; height: 160px;"/></div>
+      </div>
+    </section>
+
+    <!-- Wordmark -->
+    <section class="row">
+      <div class="label">
+        <h2>Wordmark</h2>
+        <p>The long name. For headers, emails, business cards.</p>
+        <code>/logo/mpb-wordmark.svg</code>
+      </div>
+      <div class="panels">
+        <div class="panel panel-cream"><img src="mpb-wordmark.svg" alt="" style="width: 100%; max-width: 460px;"/></div>
+        <div class="panel panel-white"><img src="mpb-wordmark.svg" alt="" style="width: 100%; max-width: 460px;"/></div>
+      </div>
+    </section>
+
+    <!-- Lockup -->
+    <section class="row">
+      <div class="label">
+        <h2>Lockup</h2>
+        <p>Mark + wordmark locked together. Primary use in the main website header.</p>
+        <code>/logo/mpb-lockup.svg</code>
+      </div>
+      <div class="panels" style="grid-template-columns: 1fr;">
+        <div class="panel panel-cream" style="padding: 48px;"><img src="mpb-lockup.svg" alt="" style="width: 100%; max-width: 720px;"/></div>
+      </div>
+    </section>
+
+    <!-- Size test -->
+    <section class="row">
+      <div class="label">
+        <h2>Size test</h2>
+        <p>Readability check for the mark + initials from 16px favicon up to 96px social avatar.</p>
+      </div>
+      <div class="size-row">
+        <div><img src="mpb-mark-transparent.png" width="16" height="16"/><div class="size-caption">Mark 16</div></div>
+        <div><img src="mpb-mark-transparent.png" width="32" height="32"/><div class="size-caption">Mark 32</div></div>
+        <div><img src="mpb-mark-transparent.png" width="48" height="48"/><div class="size-caption">Mark 48</div></div>
+        <div><img src="mpb-mark-transparent.png" width="72" height="72"/><div class="size-caption">Mark 72</div></div>
+        <div><img src="mpb-mark-transparent.png" width="96" height="96"/><div class="size-caption">Mark 96</div></div>
+        <div><img src="mpb-initials.svg" width="16" height="16"/><div class="size-caption">Init 16</div></div>
+        <div><img src="mpb-initials.svg" width="32" height="32"/><div class="size-caption">Init 32</div></div>
+        <div><img src="mpb-initials.svg" width="64" height="64"/><div class="size-caption">Init 64</div></div>
+      </div>
+    </section>
+
+    <!-- Palette -->
+    <section class="row">
+      <div class="label">
+        <h2>Palette</h2>
+        <p>Sampled from the approved mark so everything stays in sync.</p>
+      </div>
+      <div class="palette">
+        <div class="swatch" style="background: #E96480;">Pink <small>#E96480</small></div>
+        <div class="swatch" style="background: #213649;">Ink <small>#213649</small></div>
+        <div class="swatch" style="background: #DB9D2B;">Amber <small>#DB9D2B</small></div>
+        <div class="swatch" style="background: #F8F5E9; color: #213649; border: 1px solid var(--border);">Cream <small>#F8F5E9</small></div>
+      </div>
+    </section>
+
+    <!-- Usage -->
+    <section class="row">
+      <div class="label">
+        <h2>How to use</h2>
+        <p>Drop-in examples for the React app.</p>
+      </div>
+      <div class="usage">
+        <h3>Header lockup</h3>
+<pre>&lt;div className="flex items-center gap-3"&gt;
+  &lt;img src="/logo/mpb-mark-transparent.png"
+       alt="MyPhonicsBooks" className="w-10 h-10" /&gt;
+  &lt;img src="/logo/mpb-wordmark.svg"
+       alt="" className="h-6" /&gt;
+&lt;/div&gt;</pre>
+        <h3 style="margin-top: 20px;">Favicon</h3>
+<pre>&lt;!-- in index.html --&gt;
+&lt;link rel="icon" type="image/svg+xml"
+      href="/logo/mpb-initials.svg" /&gt;</pre>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

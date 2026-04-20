@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" width="1000" height="200" role="img" aria-label="my phonics books wordmark">
+  <text x="500" y="135"
+        text-anchor="middle"
+        font-family="'Plus Jakarta Sans', 'Nunito', 'Quicksand', system-ui, -apple-system, sans-serif"
+        font-weight="800"
+        font-size="112"
+        letter-spacing="-4">
+    <tspan fill="#213649">my </tspan><tspan fill="#E96480">phonics</tspan><tspan fill="#213649"> books</tspan>
+  </text>
+</svg>

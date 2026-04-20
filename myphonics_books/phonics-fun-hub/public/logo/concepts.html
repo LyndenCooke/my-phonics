@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyPhonicsBooks — Logo Concepts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #E84B8A;
+      --ink: #1F1B24;
+      --muted: #7C6B75;
+      --cream: #FFF8F3;
+      --border: #EFE6E0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+    }
+    header {
+      padding: 48px 40px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin: 0 0 6px; }
+    h1 span { color: var(--pink); }
+    .subtitle { color: var(--muted); margin: 0 0 8px; font-size: 15px; }
+    .subtitle strong { color: var(--ink); }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 40px 80px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .hero {
+      background: var(--cream);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .hero img { width: 100%; height: 100%; object-fit: contain; }
+
+    .body { padding: 20px 24px 24px; }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--pink);
+      margin-bottom: 6px;
+    }
+    h2 { font-size: 20px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.3px; }
+    p.desc { color: var(--muted); font-size: 14px; margin: 0 0 16px; line-height: 1.5; }
+
+    .size-test {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      background: var(--cream);
+      border-radius: 12px;
+    }
+    .size-test img { display: block; }
+    .size-test .caption {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .pick-bar {
+      margin-top: 14px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #FFF4F8, #FFF8F3);
+      border-radius: 12px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .pick-bar code {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Logo Concepts — My<span>Phonics</span>Books</h1>
+    <p class="subtitle">Four mark directions from Gemini. <strong>Pick one</strong> — I'll then rebuild the initials and wordmark to match the winner's style.</p>
+  </header>
+
+  <main>
+    <article class="card">
+      <div class="hero"><img src="concepts/01_book_and_star.png" alt="Book and star concept"/></div>
+      <div class="body">
+        <span class="badge">Concept 1</span>
+        <h2>Book + Star</h2>
+        <p class="desc">Classic: open book with a shining star above. Straightforward, warm, universally reads as "children's books".</p>
+        <div class="size-test">
+          <div><img src="concepts/01_book_and_star.png" width="24" height="24"/><div class="caption">24</div></div>
+          <div><img src="concepts/01_book_and_star.png" width="40" height="40"/><div class="caption">40</div></div>
+          <div><img src="concepts/01_book_and_star.png" width="64" height="64"/><div class="caption">64</div></div>
+          <div><img src="concepts/01_book_and_star.png" width="96" height="96"/><div class="caption">96</div></div>
+        </div>
+        <div class="pick-bar">To pick this: say <code>go with 1</code></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hero"><img src="concepts/02_book_as_window.png" alt="Book as window concept"/></div>
+      <div class="body">
+        <span class="badge">Concept 2</span>
+        <h2>Book as Window</h2>
+        <p class="desc">Pages reveal a sunlit sky — "a window to the world". Matches the brand's core metaphor literally.</p>
+        <div class="size-test">
+          <div><img src="concepts/02_book_as_window.png" width="24" height="24"/><div class="caption">24</div></div>
+          <div><img src="concepts/02_book_as_window.png" width="40" height="40"/><div class="caption">40</div></div>
+          <div><img src="concepts/02_book_as_window.png" width="64" height="64"/><div class="caption">64</div></div>
+          <div><img src="concepts/02_book_as_window.png" width="96" height="96"/><div class="caption">96</div></div>
+        </div>
+        <div class="pick-bar">To pick this: say <code>go with 2</code></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hero"><img src="concepts/03_fox_with_book.png" alt="Fox with book concept"/></div>
+      <div class="body">
+        <span class="badge">Concept 3</span>
+        <h2>Fox + Book</h2>
+        <p class="desc">A tiny character mascot peeking over a book. Personality-first. Matches the illustrated animal heroes already used in your L1 books.</p>
+        <div class="size-test">
+          <div><img src="concepts/03_fox_with_book.png" width="24" height="24"/><div class="caption">24</div></div>
+          <div><img src="concepts/03_fox_with_book.png" width="40" height="40"/><div class="caption">40</div></div>
+          <div><img src="concepts/03_fox_with_book.png" width="64" height="64"/><div class="caption">64</div></div>
+          <div><img src="concepts/03_fox_with_book.png" width="96" height="96"/><div class="caption">96</div></div>
+        </div>
+        <div class="pick-bar">To pick this: say <code>go with 3</code></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hero"><img src="concepts/04_speech_bubble_book.png" alt="Speech bubble book concept"/></div>
+      <div class="body">
+        <span class="badge">Concept 4</span>
+        <h2>Book + Speech Bubble</h2>
+        <p class="desc">Book with a speech bubble of three dots — evokes sounds, phonics, reading aloud. Conceptually closest to "phonics".</p>
+        <div class="size-test">
+          <div><img src="concepts/04_speech_bubble_book.png" width="24" height="24"/><div class="caption">24</div></div>
+          <div><img src="concepts/04_speech_bubble_book.png" width="40" height="40"/><div class="caption">40</div></div>
+          <div><img src="concepts/04_speech_bubble_book.png" width="64" height="64"/><div class="caption">64</div></div>
+          <div><img src="concepts/04_speech_bubble_book.png" width="96" height="96"/><div class="caption">96</div></div>
+        </div>
+        <div class="pick-bar">To pick this: say <code>go with 4</code></div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
