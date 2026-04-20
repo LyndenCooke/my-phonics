@@ -10,20 +10,48 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function badRequest(message: string) {
+  return new Response(JSON.stringify({ error: message }), {
+    status: 400,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { email, child_name, recommended_level, highest_level_passed, answers_summary } = await req.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return badRequest("Invalid JSON body");
+    }
 
-    if (!email || !email.includes("@")) {
-      return new Response(JSON.stringify({ error: "Valid email required" }), { status: 400, headers: corsHeaders });
+    const emailRaw = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const child_name =
+      typeof body.child_name === "string" ? body.child_name.trim().slice(0, 80) : "";
+    const recommended_level_raw = body.recommended_level;
+    const highest_level_passed = body.highest_level_passed;
+    const answers_summary = body.answers_summary;
+
+    if (!EMAIL_RE.test(emailRaw)) {
+      return badRequest("Valid email required");
     }
-    if (!recommended_level || recommended_level < 1 || recommended_level > 6) {
-      return new Response(JSON.stringify({ error: "recommended_level required (1-6)" }), { status: 400, headers: corsHeaders });
+    if (emailRaw.length > 254) {
+      return badRequest("Email too long");
     }
+    const recommended_level =
+      typeof recommended_level_raw === "number" ? Math.floor(recommended_level_raw) : NaN;
+    if (!Number.isInteger(recommended_level) || recommended_level < 1 || recommended_level > 6) {
+      return badRequest("recommended_level must be an integer 1-6");
+    }
+
+    const email = emailRaw;
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;

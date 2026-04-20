@@ -596,8 +596,17 @@ export default function Assessment() {
             </div>
           </div>
 
+          <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left">
+            <p className="text-xs font-bold text-foreground mb-2">What you'll get at the end</p>
+            <ul className="space-y-1.5 text-xs text-muted-foreground">
+              <li className="flex gap-2"><span>✓</span><span>Your child's reading level (L1–L6)</span></li>
+              <li className="flex gap-2"><span>✓</span><span>One free book matched to that level</span></li>
+              <li className="flex gap-2"><span>✓</span><span>A simple "next steps" plan</span></li>
+            </ul>
+          </div>
+
           <p className="text-xs text-muted-foreground mb-6">
-            Sit with your child. Takes about 4 minutes.
+            Sit with your child. Takes about 4 minutes. No credit card needed.
           </p>
 
           <button
@@ -606,6 +615,11 @@ export default function Assessment() {
           >
             Get Started
           </button>
+
+          <p className="mt-4 text-[10px] text-muted-foreground">
+            Your answers are private. See our{' '}
+            <a href="/privacy" className="underline">privacy policy</a>.
+          </p>
         </div>
       </Layout>
     );

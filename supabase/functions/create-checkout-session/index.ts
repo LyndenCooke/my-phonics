@@ -5,6 +5,17 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function badRequest(message: string) {
+  return new Response(JSON.stringify({ error: message }), {
+    status: 400,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -32,14 +43,25 @@ Deno.serve(async (req) => {
       }
     }
 
-    const { product_id, guest_email } = await req.json();
-    if (!product_id) {
-      return new Response(JSON.stringify({ error: "product_id required" }), { status: 400, headers: corsHeaders });
+    let payload: { product_id?: unknown; guest_email?: unknown };
+    try {
+      payload = await req.json();
+    } catch {
+      return badRequest("Invalid JSON body");
     }
 
-    // Guest must provide email
+    const product_id = typeof payload.product_id === "string" ? payload.product_id.trim() : "";
+    const guest_email =
+      typeof payload.guest_email === "string" ? payload.guest_email.trim().toLowerCase() : "";
+
+    if (!product_id || !UUID_RE.test(product_id)) {
+      return badRequest("product_id must be a valid UUID");
+    }
+    if (guest_email && !EMAIL_RE.test(guest_email)) {
+      return badRequest("guest_email is not a valid email address");
+    }
     if (!userId && !guest_email) {
-      return new Response(JSON.stringify({ error: "Email required for guest checkout" }), { status: 400, headers: corsHeaders });
+      return badRequest("Email required for guest checkout");
     }
 
     const { data: product, error: productError } = await supabaseAdmin

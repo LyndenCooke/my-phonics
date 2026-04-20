@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, X, Volume2, Sparkles, Star, Trash2, Check, RotateCcw, Eye, EyeOff } from 'lucide-react';
 import { Book } from '@/lib/types';
+import { useUpdateReadingProgress } from '@/hooks/useBooks';
 import {
   INTERACTIVE_BOOKS,
   type InteractivePage, type StoryWord, type SpotlightItem,
@@ -895,6 +896,18 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
   const touchStartY = useRef<number | null>(null);
   const totalPages = pages.length;
   const levelBg = levelColors[book.level] || 'bg-primary';
+  const updateProgress = useUpdateReadingProgress();
+
+  // Persist reading progress whenever the page changes.
+  useEffect(() => {
+    updateProgress.mutate({
+      bookId: book.id,
+      lastPageRead: currentPage + 1,
+      completed: currentPage === totalPages - 1,
+    });
+    // updateProgress is stable (react-query mutation); exclude to avoid loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [book.id, currentPage, totalPages]);
 
   const goNext = useCallback(() => { if (currentPage < totalPages - 1) setCurrentPage(p => p + 1); else onFinish(); }, [currentPage, totalPages, onFinish]);
   const goPrev = useCallback(() => { if (currentPage > 0) setCurrentPage(p => p - 1); }, [currentPage]);

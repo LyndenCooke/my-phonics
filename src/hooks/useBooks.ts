@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
@@ -58,6 +58,41 @@ export function useUserBooks() {
       return data;
     },
     enabled: !!user,
+  });
+}
+
+/**
+ * Persist reading progress for a book. Silently no-ops if the book is a
+ * local/synthesised row (id prefix "local-") or the user is signed out,
+ * so callers can fire it unconditionally on page change.
+ */
+export function useUpdateReadingProgress() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      bookId,
+      lastPageRead,
+      completed = false,
+    }: {
+      bookId: string;
+      lastPageRead: number;
+      completed?: boolean;
+    }) => {
+      if (!user || !bookId || bookId.startsWith('local-')) return;
+      const patch: Record<string, unknown> = {
+        user_id: user.id,
+        book_id: bookId,
+        last_page_read: lastPageRead,
+      };
+      if (completed) patch.completed_at = new Date().toISOString();
+      await supabase
+        .from('user_books')
+        .upsert(patch, { onConflict: 'user_id,book_id' });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user_books'] });
+    },
   });
 }
 
