@@ -11,6 +11,17 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    watch: {
+      // Playwright writes a churn of trace / screenshot / HTML report
+      // files during a stress-test run. That pile drowns Vite's file
+      // watcher and crashes the dev server. Exclude those directories.
+      ignored: [
+        "**/review/stress_test/_out/**",
+        "**/review/stress_test/.playwright-artifacts-*/**",
+        "**/playwright-report/**",
+        "**/test-results/**",
+      ],
+    },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

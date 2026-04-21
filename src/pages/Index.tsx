@@ -36,6 +36,12 @@ export default function Index() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
+
+  // Automated stress-test bypass: the seeded QA account has every book
+  // unlocked regardless of the books/user_books seed state. This only
+  // unlocks reading — nothing else — and requires signing in as the
+  // specific QA email.
+  const isQaUser = user?.email?.toLowerCase() === 'qa@myphonicsbooks.com';
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -86,7 +92,7 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: isAdmin || !!ub || (b.is_free_sample ?? false),
+      unlocked: isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
