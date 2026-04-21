@@ -49,6 +49,29 @@ like `01_route_coverage.md`, `02_book_sweep.md`, etc.
 
 ---
 
+## Pass 0 — Sign in as QA user (do this first)
+
+A dedicated QA user has been seeded in Supabase with every book unlocked.
+The credentials are passed in-chat — **do not commit them anywhere in
+this repo**. Reference them only inside Playwright test scripts that
+live in a scratch directory (`review/stress_test/_scratch/` — also do
+not commit scripts that contain the password).
+
+At the start of every persona that needs books unlocked:
+
+1. Navigate to `/auth`.
+2. Submit the QA email and password supplied in the invocation message.
+3. Wait for redirect to `/library`.
+4. Save auth state with `context.storageState({ path: '<scratch>/auth.json' })`
+   and reuse it for subsequent persona runs.
+
+Personas that explicitly test the guest/unsigned flow (Persona A cold
+landing, Persona B ad funnel, Persona E mobile) must start from a
+**fresh browser context with no storage** — don't reuse the QA session
+for those.
+
+---
+
 ## Pass 1 — Route coverage (`01_route_coverage.md`)
 
 Visit every route below. For each:
