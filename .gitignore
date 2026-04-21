@@ -125,3 +125,5 @@ public/illustrations/**/*_backup.png
 # Raw AI generation outputs (too large, not canonical)
 content/gemini-raw/
 review/stress_test/_scratch/
+.env.playwright
+review/stress_test/_out/
