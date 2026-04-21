@@ -327,6 +327,20 @@ WORDS = {
     'admirable': 'a gold star medal being awarded',
     'capable': 'a child flexing muscles with a confident smile and a thumbs up',
     'cautious': 'a child looking carefully both ways before crossing a road',
+
+    # Missing spotlight words flagged by Pass 3 stress test 2026-04-21
+    'bright': 'a bright glowing light bulb with yellow rays',
+    'clean': 'sparkling clean plate with soap bubbles',
+    'close': 'a closed door swinging shut',
+    'cried': 'a child with a single tear on their cheek, sad face',
+    'dried': 'a line of dried laundry on a washing line in the sun',
+    'food': 'a plate with sandwich, apple and a glass of milk',
+    'fried': 'a fried egg in a frying pan, sunny side up',
+    'rude': 'a child sticking out their tongue with a cheeky grin',
+    'rule': 'a wooden school ruler with markings',
+    'spoke': 'two children talking with speech bubbles',
+    'stool': 'a small wooden three-legged stool',
+    'tried': 'a child lifting a heavy weight with a determined face',
 }
 
 STYLE = "Simple flat icon illustration, bold black outlines, bright solid colours, white background, children's educational app style, centred in frame, no text, no labels, square format, suitable for ages 4-6"
