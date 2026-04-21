@@ -1,0 +1,68 @@
+name: Stress Test
+
+on:
+  # Run on every push to master after CI passes
+  push:
+    branches: [master]
+  # Manual re-run from the Actions tab
+  workflow_dispatch:
+  # Nightly regression at 02:00 UTC
+  schedule:
+    - cron: "0 2 * * *"
+
+concurrency:
+  group: stress-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  stress-test:
+    name: Playwright stress test (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [desktop-chromium, mobile-chromium]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run stress tests
+        env:
+          BASE_URL: https://myphonicsbooks.vercel.app
+          QA_EMAIL: ${{ secrets.QA_EMAIL }}
+          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          npx playwright test \
+            --config review/stress_test/playwright.config.ts \
+            --project ${{ matrix.project }}
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stress-test-html-${{ matrix.project }}
+          path: review/stress_test/_out/html/
+          retention-days: 14
+
+      - name: Upload raw JSON + markdown reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stress-test-reports-${{ matrix.project }}
+          path: |
+            review/stress_test/_out/*.json
+            review/stress_test/0*.md
+          retention-days: 30
