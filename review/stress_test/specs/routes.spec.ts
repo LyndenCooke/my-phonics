@@ -65,11 +65,17 @@ for (const [category, urls] of Object.entries(ROUTES)) {
       });
 
       const t0 = Date.now();
-      const resp = await page.goto(route, { waitUntil: 'networkidle' });
+      // Use domcontentloaded — Supabase real-time clients keep the
+      // network alive indefinitely, so `networkidle` times out even on
+      // perfectly-working pages.
+      const resp = await page.goto(route, {
+        waitUntil: 'domcontentloaded',
+        timeout: 20_000,
+      });
       const loadTimeMs = Date.now() - t0;
 
       // Wait a beat so React lazy routes finish rendering
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1500);
 
       const title = await page.title();
       const firstHeading = await page

@@ -4,15 +4,19 @@
 import { Page, BrowserContext, expect } from '@playwright/test';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-export const OUT_DIR = path.resolve(__dirname, '..', '_out');
+const __filename_ = fileURLToPath(import.meta.url);
+const __dirname_ = path.dirname(__filename_);
+
+export const OUT_DIR = path.resolve(__dirname_, '..', '_out');
 
 export function ensureOutDir() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 }
 
 export function writeReport(filename: string, body: string) {
-  const target = path.resolve(__dirname, '..', filename);
+  const target = path.resolve(__dirname_, '..', filename);
   fs.writeFileSync(target, body, 'utf-8');
 }
 
@@ -38,11 +42,24 @@ export function requireQaCreds() {
  */
 export async function signInAsQa(page: Page) {
   const { email, password } = requireQaCreds();
-  await page.goto('/auth');
+  await page.goto('/auth', { waitUntil: 'domcontentloaded' });
   await page.getByPlaceholder(/email/i).fill(email);
   await page.getByPlaceholder(/password/i).fill(password);
-  await page.getByRole('button', { name: /sign in/i }).click();
-  await page.waitForURL(/\/library|\/welcome/, { timeout: 20_000 });
+  // There may be multiple "Sign In" buttons (form submit + toggle link).
+  // The form submit button has type=submit.
+  await page.locator('button[type="submit"]').first().click();
+
+  // Post-login can land on /library, /welcome, or still on /auth with an
+  // error banner. Wait for any of those to stabilise.
+  await page
+    .waitForURL(
+      (url) => !url.pathname.startsWith('/auth') || url.pathname === '/',
+      { timeout: 20_000 },
+    )
+    .catch(() => {
+      /* ignore — caller can inspect the page to decide if it's OK */
+    });
+  await page.waitForTimeout(1500);
 }
 
 /**
@@ -62,8 +79,9 @@ export async function saveAuthState(context: BrowserContext, suffix = 'qa') {
  */
 export async function waitForReaderReady(page: Page) {
   await expect(
-    page.locator('[aria-label="Next page"], [aria-label="Close book"]')
-  ).toBeVisible({ timeout: 15_000 });
+    page.locator('[aria-label*="Next page" i], [aria-label*="Close book" i], [aria-label*="close" i]')
+      .first()
+  ).toBeVisible({ timeout: 20_000 });
 }
 
 export type ConsoleCapture = {

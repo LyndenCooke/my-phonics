@@ -10,13 +10,12 @@ import { defineConfig, devices } from '@playwright/test';
  *
  * Run locally:  npx playwright test --config review/stress_test/playwright.config.ts
  */
-import 'dotenv/config';
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  require('dotenv').config({ path: '.env.playwright' });
-} catch {
-  // dotenv optional — values may come from real env vars in CI
-}
+import { config as dotenvConfig } from 'dotenv';
+
+// Load root .env first (harmless if missing), then .env.playwright
+// (local-only, gitignored) on top so it wins.
+dotenvConfig();
+dotenvConfig({ path: '.env.playwright', override: true });
 
 export default defineConfig({
   testDir: './specs',
