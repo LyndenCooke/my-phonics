@@ -7,8 +7,8 @@ Public root: `public`
 ## Summary
 
 - Static asset references found: **822**
-- Present in ./public: **797**
-- Missing: **25**
+- Present in ./public: **809**
+- Missing: **13**
 - Phonemes referenced in interactiveBookData: **36**
 - Phonemes missing audio: **0**
 - Book covers referenced: **0**
@@ -46,42 +46,6 @@ Public root: `public`
 
 ### `/images/words/${w.word}.png`
 - referenced by `src\components\InteractiveBookReader.tsx`
-
-### `/images/words/bright.png`
-- referenced by `src\lib\interactiveBookDataL2.ts`
-
-### `/images/words/clean.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/close.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/cried.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/dried.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/food.png`
-- referenced by `src\lib\interactiveBookDataL2.ts`
-
-### `/images/words/fried.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/rude.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/rule.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/spoke.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
-
-### `/images/words/stool.png`
-- referenced by `src\lib\interactiveBookDataL2.ts`
-
-### `/images/words/tried.png`
-- referenced by `src\lib\interactiveBookDataL3.ts`
 
 ### `/sounds/${g.toLowerCase().replace(/-/g, `
 - referenced by `src\components\InteractiveBookReader.tsx`
