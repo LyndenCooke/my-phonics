@@ -485,18 +485,18 @@ function FooterCTA({ onAssess }: { onAssess: () => void }) {
 function Footer() {
   const navigate = useNavigate();
   return (
-    <footer className="border-t border-border py-8 bg-card">
+    <footer className="border-t border-indigo-100 py-8 bg-gradient-to-b from-card to-indigo-50/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg gradient-primary flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg gradient-trust flex items-center justify-center shadow-sm">
             <span className="text-white text-xs font-bold">M</span>
           </div>
-          <span className="text-sm font-bold text-foreground">MyPhonicsBooks</span>
+          <span className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
-          <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
-          <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
-          <a href="mailto:hello@myphonicsbooks.com" className="hover:text-foreground transition-colors">Contact</a>
+          <a href="/privacy" className="hover:text-trust-ink transition-colors">Privacy</a>
+          <a href="/terms" className="hover:text-trust-ink transition-colors">Terms</a>
+          <a href="mailto:hello@myphonicsbooks.com" className="hover:text-trust-ink transition-colors">Contact</a>
           <button
             onClick={() => navigate('/admin')}
             className="hover:text-foreground transition-colors"

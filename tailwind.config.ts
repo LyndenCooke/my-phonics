@@ -64,6 +64,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        trust: {
+          DEFAULT: "hsl(var(--brand-trust))",
+          ink: "hsl(var(--brand-trust-ink))",
+          tint: "hsl(var(--brand-trust-tint))",
+        },
         level: {
           1: "hsl(var(--level-1))",
           2: "hsl(var(--level-2))",
