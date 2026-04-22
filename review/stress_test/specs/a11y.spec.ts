@@ -19,6 +19,11 @@ type AxeFinding = {
     impact: string | null;
     help: string;
     nodes: number;
+    nodeDetails: {
+      target: string[];
+      html: string;
+      failureSummary: string;
+    }[];
   }[];
 };
 
@@ -36,6 +41,11 @@ async function scan(page: import('@playwright/test').Page, label: string) {
       impact: v.impact ?? null,
       help: v.help,
       nodes: v.nodes.length,
+      nodeDetails: v.nodes.slice(0, 10).map((n) => ({
+        target: (n.target as string[]).map((t) => String(t)),
+        html: n.html.slice(0, 280),
+        failureSummary: n.failureSummary ?? '',
+      })),
     })),
   });
 }

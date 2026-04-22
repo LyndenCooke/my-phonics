@@ -27,6 +27,7 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
           dark: "hsl(var(--primary-dark))",
+          ink: "hsl(var(--primary-ink))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -69,6 +70,12 @@ export default {
           4: "hsl(var(--level-4))",
           5: "hsl(var(--level-5))",
           6: "hsl(var(--level-6))",
+          "1-ink": "hsl(var(--level-1-ink))",
+          "2-ink": "hsl(var(--level-2-ink))",
+          "3-ink": "hsl(var(--level-3-ink))",
+          "4-ink": "hsl(var(--level-4-ink))",
+          "5-ink": "hsl(var(--level-5-ink))",
+          "6-ink": "hsl(var(--level-6-ink))",
         },
         tint: {
           pink: "hsl(var(--tint-pink))",

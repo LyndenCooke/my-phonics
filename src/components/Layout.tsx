@@ -31,7 +31,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span className="text-primary-foreground font-extrabold text-sm tracking-tight">M</span>
           </div>
           <h1 className="text-lg font-extrabold text-foreground tracking-tight">
-            My<span className="text-primary">Phonics</span>Books
+            My<span className="text-primary-ink">Phonics</span>Books
           </h1>
         </Link>
 
@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 to={path}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-colors ${
                   isActive
-                    ? 'bg-primary/10 text-primary'
+                    ? 'bg-primary/10 text-primary-ink'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                 }`}
               >
@@ -94,7 +94,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 to={path}
                 className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? 'text-primary'
+                    ? 'text-primary-ink'
                     : 'text-muted-foreground'
                 }`}
               >
