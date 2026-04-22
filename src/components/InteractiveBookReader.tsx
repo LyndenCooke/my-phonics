@@ -121,26 +121,17 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
 // ─── Vocab Preview ──────────────────────────────────────────────────────────
 
 function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vocab_preview' }> }) {
-  const [playing, setPlaying] = useState<string | null>(null);
-
   return (
     <div className="flex flex-col h-full px-5 py-4 overflow-y-auto">
       <h2 className="text-2xl font-bold text-slate-800 mb-1">Story Words</h2>
       <p className="text-base text-slate-500 mb-4">Tap a word to hear it!</p>
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
         {page.words.map((w, i) => {
-          const isActive = playing === w.word;
           return (
-            <button key={i}
-              onClick={async () => {
-                if (playing) return;
-                setPlaying(w.word);
-                await playWordAsPhonemes(w.word);
-                setPlaying(null);
-              }}
-              className={`flex flex-col items-center p-3 rounded-2xl border-2 transition-all duration-200
-                ${isActive ? 'border-pink-400 bg-pink-50 scale-105 shadow-md'
-                  : 'border-slate-200 bg-white hover:border-pink-200 shadow-sm'}`}
+            // Card is visual only — TappableWord inside is the real button.
+            // Nesting <button> inside <button> is invalid HTML.
+            <div key={i}
+              className="flex flex-col items-center p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-pink-200 shadow-sm transition-all duration-200"
             >
               <img
                 src={`/images/words/${w.word}.png`}
@@ -153,7 +144,7 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
                 size="medium"
                 showAnnotations={true}
               />
-            </button>
+            </div>
           );
         })}
       </div>
@@ -311,6 +302,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
           <div className="relative max-w-[90vw] max-h-[85vh]">
             <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
             <button onClick={(e) => { e.stopPropagation(); setImageExpanded(false); }}
+              aria-label="Close image"
               className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all shadow-lg">
               <X className="w-4 h-4" />
             </button>
@@ -321,7 +313,11 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
       {/* ── DESKTOP: image left, text+button right ── */}
       {/* Image */}
       <div className="hidden md:flex md:items-center md:justify-center md:flex-none md:p-4 md:h-full">
-        <button onClick={() => setImageExpanded(true)} className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}>
+        <button
+          onClick={() => setImageExpanded(true)}
+          aria-label="Expand illustration"
+          className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}
+        >
           <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
         </button>
       </div>
@@ -375,7 +371,11 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
         {/* Mobile image (below button, pinned at bottom) */}
         <div className="md:hidden flex items-center justify-center p-2 flex-shrink-0">
-          <button onClick={() => setImageExpanded(true)} className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}>
+          <button
+            onClick={() => setImageExpanded(true)}
+            aria-label="Expand illustration"
+            className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}
+          >
             <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
           </button>
         </div>
