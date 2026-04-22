@@ -61,8 +61,8 @@ export default function Auth() {
             <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center shadow-button mx-auto mb-4">
               <span className="text-primary-foreground font-extrabold text-xl">M</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-foreground tracking-tight">
-              My<span className="text-primary">Phonics</span>Books
+            <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">
+              My<span className="text-primary-ink">Phonics</span>Books
             </h1>
           </Link>
           <p className="text-sm text-muted-foreground mt-1">

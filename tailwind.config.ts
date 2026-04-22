@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         child: ["Andika", "Quicksand", "Nunito", "sans-serif"],
         sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+        display: ["Outfit", "Plus Jakarta Sans", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

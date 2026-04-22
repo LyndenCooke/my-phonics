@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <div className="w-9 h-9 rounded-[10px] gradient-primary flex items-center justify-center shadow-button">
             <span className="text-primary-foreground font-extrabold text-sm tracking-tight">M</span>
           </div>
-          <h1 className="text-lg font-extrabold text-foreground tracking-tight">
+          <h1 className="font-display text-lg font-extrabold text-foreground tracking-tight">
             My<span className="text-primary-ink">Phonics</span>Books
           </h1>
         </Link>

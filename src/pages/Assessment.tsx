@@ -569,7 +569,7 @@ export default function Assessment() {
     return (
       <Layout>
         <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
-          <h2 className="text-[28px] font-extrabold text-foreground mb-2 tracking-tight">
+          <h2 className="font-display text-[28px] font-extrabold text-foreground mb-2 tracking-tight">
             Phonics Assessment
           </h2>
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-xs mx-auto">

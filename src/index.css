@@ -55,10 +55,10 @@
     /* Primary "ink" — for text/border use on light backgrounds. */
     --primary-ink: 338 78% 42%;
 
-    /* Shadows */
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --shadow-button: 0 2px 6px rgba(232, 75, 138, 0.25);
+    /* Shadows — layered for a softer, more premium feel */
+    --shadow-card: 0 1px 2px rgba(20, 24, 40, 0.04), 0 4px 12px rgba(20, 24, 40, 0.05);
+    --shadow-card-hover: 0 2px 4px rgba(20, 24, 40, 0.05), 0 10px 24px rgba(20, 24, 40, 0.08);
+    --shadow-button: 0 1px 2px rgba(232, 75, 138, 0.2), 0 4px 14px rgba(232, 75, 138, 0.24);
 
     /* Tints */
     --tint-pink: 338 80% 96%;
@@ -121,6 +121,16 @@
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Opt-in display font for brand headings. Applied via .font-display
+     or at the page-wrapper level via fontFamily. Andika stays the
+     default inside the interactive reader where the single-storey
+     a/g matters for beginning readers. */
+  .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.01em;
   }
 
   .font-child {
