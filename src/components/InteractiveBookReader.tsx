@@ -93,27 +93,82 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
     setPlayingGroup(null);
   };
 
+  const focusGroups = page.allSounds.filter(g =>
+    g.split('/').some(s => page.focusSounds.includes(s))
+  );
+  const reviewGroups = page.allSounds.filter(g =>
+    !g.split('/').some(s => page.focusSounds.includes(s))
+  );
+
   return (
-    <div className="flex flex-col h-full px-5 py-5 overflow-y-auto">
-      <h2 className="text-2xl font-bold text-slate-800 mb-1">Level {level} Sounds</h2>
-      <p className="text-base text-slate-500 mb-4">Pink = this book · Tap any sound to hear it!</p>
-      <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
-        {page.allSounds.map((group) => {
+    <div className="flex flex-col h-full px-5 py-5 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
+      {/* ── New sounds (focus) ── */}
+      <div className="flex items-center gap-2 mb-1">
+        <Sparkles className="w-5 h-5 text-pink-500" />
+        <h2 className="text-2xl font-extrabold text-slate-800">New sounds in this book</h2>
+      </div>
+      <p className="text-sm text-slate-500 mb-4">
+        Tap each one to hear it. These are the sounds your child will practise.
+      </p>
+
+      <div className={`grid gap-3 mb-7 ${focusGroups.length <= 3 ? 'grid-cols-3' : 'grid-cols-3 sm:grid-cols-6'}`}>
+        {focusGroups.map((group) => {
           const sounds = group.split('/');
-          const isFocus = sounds.some(s => page.focusSounds.includes(s));
           const isPlaying = playingGroup === group;
           return (
-            <button key={group} onClick={() => handleSoundTap(group)}
-              className={`py-2.5 px-1 rounded-xl text-sm font-bold transition-all duration-200 leading-tight
-                ${isPlaying ? 'bg-pink-500 text-white scale-110 shadow-lg'
-                  : isFocus ? 'bg-pink-100 text-pink-700 border-2 border-pink-300'
-                  : 'bg-slate-100 text-slate-500 border border-slate-200'}`}
+            <button
+              key={group}
+              onClick={() => handleSoundTap(group)}
+              aria-label={`Play sound ${sounds.join(' or ')}`}
+              className={`relative py-5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
+                ${isPlaying
+                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.08] ring-4 ring-pink-200'
+                  : 'bg-gradient-to-br from-pink-50 to-pink-100 text-pink-700 border-2 border-pink-300 hover:border-pink-400 hover:from-pink-100 hover:to-pink-200'}`}
             >
-              {sounds.join(' / ')}
+              <span className="block text-3xl sm:text-4xl">{sounds.join(' ')}</span>
+              {isPlaying && (
+                <Volume2 className="absolute top-2 right-2 w-4 h-4 text-white/90" />
+              )}
             </button>
           );
         })}
       </div>
+
+      {/* ── Review sounds ── */}
+      {reviewGroups.length > 0 && (
+        <>
+          <div className="flex items-center gap-2 mb-1 mt-2">
+            <div className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Sounds you've seen before
+            </span>
+            <div className="h-px flex-1 bg-slate-200" />
+          </div>
+          <p className="text-xs text-slate-400 mb-3 text-center">
+            Tap to remind yourself
+          </p>
+
+          <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 pb-4">
+            {reviewGroups.map((group) => {
+              const sounds = group.split('/');
+              const isPlaying = playingGroup === group;
+              return (
+                <button
+                  key={group}
+                  onClick={() => handleSoundTap(group)}
+                  aria-label={`Play sound ${sounds.join(' or ')}`}
+                  className={`py-2.5 px-1 rounded-lg text-sm font-bold transition-all duration-200 leading-tight active:scale-95
+                    ${isPlaying
+                      ? 'bg-pink-500 text-white scale-110 shadow'
+                      : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-700'}`}
+                >
+                  {sounds.join(' / ')}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -121,34 +176,74 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
 // ─── Vocab Preview ──────────────────────────────────────────────────────────
 
 function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vocab_preview' }> }) {
+  const [activeWord, setActiveWord] = useState<string | null>(null);
+
+  const handleCardTap = async (word: string) => {
+    setActiveWord(word);
+    await playWordAsPhonemes(word);
+    setActiveWord(null);
+  };
+
   return (
-    <div className="flex flex-col h-full px-5 py-4 overflow-y-auto">
-      <h2 className="text-2xl font-bold text-slate-800 mb-1">Story Words</h2>
-      <p className="text-base text-slate-500 mb-4">Tap a word to hear it!</p>
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+    <div className="flex flex-col h-full px-5 py-4 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
+      <div className="flex items-center gap-2 mb-1">
+        <BookOpenIcon />
+        <h2 className="text-2xl font-extrabold text-slate-800">Story Words</h2>
+      </div>
+      <p className="text-sm text-slate-500 mb-4">
+        Tap a card to hear the word. You'll meet all of these in the story.
+      </p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {page.words.map((w, i) => {
+          const isActive = activeWord === w.word;
           return (
-            // Card is visual only — TappableWord inside is the real button.
-            // Nesting <button> inside <button> is invalid HTML.
-            <div key={i}
-              className="flex flex-col items-center p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-pink-200 shadow-sm transition-all duration-200"
+            // role="button" keeps the card interactive for keyboard users
+            // without creating a nested <button>. The inner TappableWord
+            // still exposes its own accessible button for AT users.
+            <div
+              key={i}
+              role="button"
+              tabIndex={0}
+              aria-pressed={isActive}
+              aria-label={`${w.word}. Tap to hear.`}
+              onClick={() => handleCardTap(w.word)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleCardTap(w.word);
+                }
+              }}
+              className={`flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
+                ${isActive
+                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg ring-4 ring-pink-200'
+                  : 'border-slate-200 bg-white hover:border-pink-200 hover:shadow-md shadow-sm'}`}
             >
               <img
                 src={`/images/words/${w.word}.png`}
-                alt={w.word}
-                className="w-14 h-14 object-contain mb-2"
+                alt=""
+                className="w-20 h-20 object-contain mb-2 pointer-events-none"
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
-              <TappableWord
-                wordData={w}
-                size="medium"
-                showAnnotations={true}
-              />
+              <div className="pointer-events-none">
+                <TappableWord
+                  wordData={w}
+                  size="medium"
+                  showAnnotations={true}
+                />
+              </div>
             </div>
           );
         })}
       </div>
     </div>
+  );
+}
+
+function BookOpenIcon() {
+  return (
+    <svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zm20 0h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+    </svg>
   );
 }
 
@@ -976,13 +1071,24 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
       </div>
 
       <div className="flex items-center justify-center gap-1 py-2.5 bg-white/90 backdrop-blur-sm shrink-0">
-        <button onClick={goPrev} disabled={isFirst} className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-20 mr-2"><ChevronLeft className="w-5 h-5 text-slate-600" /></button>
+        <button
+          onClick={goPrev}
+          disabled={isFirst}
+          aria-label="Previous page"
+          className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-20 mr-2"
+        >
+          <ChevronLeft className="w-5 h-5 text-slate-600" />
+        </button>
         <div className="w-40 md:w-56 h-2 bg-slate-200 rounded-full overflow-hidden">
           <div className={`h-full ${levelBg} rounded-full transition-all duration-300`}
             style={{ width: `${((currentPage + 1) / totalPages) * 100}%` }} />
         </div>
         <span className="text-xs text-slate-400 font-medium ml-2 min-w-[40px]">{currentPage + 1}/{totalPages}</span>
-        <button onClick={goNext} className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? `${levelBg} text-white rounded-xl px-4` : 'hover:bg-slate-100 text-slate-600'}`}>
+        <button
+          onClick={goNext}
+          aria-label={isLast ? 'Finish book' : 'Next page'}
+          className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? `${levelBg} text-white rounded-xl px-4` : 'hover:bg-slate-100 text-slate-600'}`}
+        >
           {isLast ? <span className="text-base font-bold">Finish</span> : <ChevronRight className="w-5 h-5" />}
         </button>
       </div>
