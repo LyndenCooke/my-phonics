@@ -55,6 +55,15 @@
     /* Primary "ink" — for text/border use on light backgrounds. */
     --primary-ink: 338 78% 42%;
 
+    /* Brand-trust: indigo -> violet. Used on commerce/trust moments
+       (shop, footer, legal, auth security strip). Pink stays the
+       warm child-facing accent; indigo is the grown-up "you can
+       trust this with your money and data" face. */
+    --brand-trust: 239 84% 52%;        /* indigo-600 */
+    --brand-trust-2: 258 90% 58%;      /* violet-600 */
+    --brand-trust-ink: 239 55% 36%;    /* indigo-800 for text */
+    --brand-trust-tint: 238 100% 97%;  /* indigo-50 for backgrounds */
+
     /* Shadows — layered for a softer, more premium feel */
     --shadow-card: 0 1px 2px rgba(20, 24, 40, 0.04), 0 4px 12px rgba(20, 24, 40, 0.05);
     --shadow-card-hover: 0 2px 4px rgba(20, 24, 40, 0.05), 0 10px 24px rgba(20, 24, 40, 0.08);
@@ -171,6 +180,9 @@
   }
   .gradient-primary {
     background: linear-gradient(135deg, hsl(338, 78%, 60%), hsl(338, 78%, 48%));
+  }
+  .gradient-trust {
+    background: linear-gradient(135deg, hsl(var(--brand-trust)), hsl(var(--brand-trust-2)));
   }
   .scrollbar-hide {
     -ms-overflow-style: none;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 type Mode = 'signin' | 'signup' | 'forgot';
@@ -68,6 +68,12 @@ export default function Auth() {
           <p className="text-sm text-muted-foreground mt-1">
             {mode === 'signin' ? 'Welcome back!' : mode === 'signup' ? 'Create your account' : 'Reset your password'}
           </p>
+
+          {/* Trust strip — indigo accent, brand "we handle your data with care" voice. */}
+          <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-trust-tint text-trust-ink text-[11px] font-semibold">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Your family's data stays private
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

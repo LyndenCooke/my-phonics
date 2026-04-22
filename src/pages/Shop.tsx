@@ -32,7 +32,8 @@ const PRODUCT_CONFIG: Record<string, {
   },
   full_bundle: {
     icon: Crown,
-    gradient: 'from-amber-500 to-orange-600',
+    // Brand-trust gradient (indigo -> violet) — our premium, forever-yours tier.
+    gradient: 'from-indigo-600 to-violet-600',
     badge: 'Best Value',
     features: [
       'All 32 books across 6 levels',
@@ -190,7 +191,7 @@ export default function Shop() {
                 <div
                   key={product.id}
                   className={`rounded-2xl overflow-hidden transition-all duration-200 shadow-card ${
-                    isBundle ? 'ring-2 ring-amber-500' : 'border border-border'
+                    isBundle ? 'ring-2 ring-indigo-500' : 'border border-border'
                   }`}
                 >
                   {/* Header */}

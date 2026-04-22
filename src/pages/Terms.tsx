@@ -7,7 +7,7 @@ export default function Terms() {
       <div className="max-w-3xl mx-auto px-4 py-8">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-6"
+          className="inline-flex items-center gap-1.5 text-sm text-trust-ink hover:text-trust-ink/80 mb-6"
         >
           <ArrowLeft className="w-4 h-4" /> Back to home
         </Link>
