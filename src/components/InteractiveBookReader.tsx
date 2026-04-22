@@ -40,7 +40,7 @@ const ANDIKA: React.CSSProperties = { fontFamily: "'Andika', sans-serif" };
 function splitDigraphs(word: string): string[] {
   const graphemes = [
     'cious', 'tious',                                          // 5-letter (L6)
-    'tion', 'ture', 'able', 'ible',                           // 4-letter (L5–L6)
+    'tion', 'ture', 'able', 'ible', 'ous',                    // 4-letter (L5–L6)
     'igh', 'air', 'ear', 'oor', 'ore', 'ure', 'ire', 'are', 'our',  // 3-letter (L2–L5)
     'ay', 'ee', 'oo', 'ar', 'or', 'ir', 'ou', 'oy',          // 2-letter vowels (L2–L4)
     'oa', 'oi', 'aw', 'ai', 'ea', 'ie', 'ue', 'ew',
@@ -62,6 +62,51 @@ function splitDigraphs(word: string): string[] {
       }
     }
     if (!matched) { result.push(word[i]); i += 1; }
+  }
+  return result;
+}
+
+/**
+ * Work out which grapheme chunks in a word should be pink for a given
+ * focus sound. Computes from the sound itself instead of a stored
+ * focusIndex — that index was letter-based but we render by grapheme
+ * chunks, so it was off whenever the word contained any digraph before
+ * the focus letter. Caused 42 wrong-letter highlights across L2–L6.
+ */
+function computeSpotlightFocus(word: string, sound: string): Set<number> {
+  const chunks = splitDigraphs(word);
+  const result = new Set<number>();
+
+  // Split digraph (a-e, i-e, o-e, u-e, e-e): the vowel anywhere in the
+  // word, plus a trailing 'e'.
+  if (sound.includes('-')) {
+    const vowel = sound[0].toLowerCase();
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].toLowerCase() === vowel) {
+        result.add(i);
+        break;
+      }
+    }
+    const last = chunks.length - 1;
+    if (chunks[last].toLowerCase() === 'e') result.add(last);
+    return result;
+  }
+
+  // Regular sound: find its first occurrence in the word, then mark
+  // every chunk whose character range overlaps with it.
+  const soundLower = sound.toLowerCase();
+  const wordLower = word.toLowerCase();
+  const soundStart = wordLower.indexOf(soundLower);
+  if (soundStart < 0) return result;
+  const soundEnd = soundStart + soundLower.length;
+
+  let chunkStart = 0;
+  for (let i = 0; i < chunks.length; i++) {
+    const chunkEnd = chunkStart + chunks[i].length;
+    if (chunkStart < soundEnd && chunkEnd > soundStart) {
+      result.add(i);
+    }
+    chunkStart = chunkEnd;
   }
   return result;
 }
@@ -513,14 +558,10 @@ function SoundSpotlightPage({ page }: { page: Extract<InteractivePage, { type: '
               <span className="text-2xl md:text-3xl font-bold">
                 {(() => {
                   const chars = splitDigraphs(item.word);
-                  const isSplitDigraph = page.sound.includes('-');
-                  // For split digraphs (a-e, i-e, etc.), highlight both the vowel AND the trailing 'e'
-                  const lastIdx = chars.length - 1;
-                  return chars.map((ch, ci) => {
-                    const isFocus = ci === item.focusIndex ||
-                      (isSplitDigraph && ci === lastIdx && ch.toLowerCase() === 'e');
-                    return <span key={ci} className={isFocus ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>;
-                  });
+                  const focusSet = computeSpotlightFocus(item.word, page.sound);
+                  return chars.map((ch, ci) => (
+                    <span key={ci} className={focusSet.has(ci) ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>
+                  ));
                 })()}
               </span>
             </button>

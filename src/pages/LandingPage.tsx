@@ -98,11 +98,9 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
-          <div className="w-9 h-9 rounded-[10px] gradient-primary flex items-center justify-center shadow-button">
-            <span className="text-white font-extrabold text-sm">M</span>
-          </div>
-          <span className="text-lg font-extrabold text-foreground tracking-tight">
-            My<span className="text-primary">Phonics</span>Books
+          <img src="/logo/mpb-mark-transparent.png" alt="" className="w-10 h-10 object-contain" draggable={false} />
+          <span className="font-display text-lg font-extrabold text-foreground tracking-tight">
+            My<span className="text-primary-ink">Phonics</span>Books
           </span>
         </Link>
         <div className="flex items-center gap-2">
@@ -488,9 +486,7 @@ function Footer() {
     <footer className="border-t border-indigo-100 py-8 bg-gradient-to-b from-card to-indigo-50/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg gradient-trust flex items-center justify-center shadow-sm">
-            <span className="text-white text-xs font-bold">M</span>
-          </div>
+          <img src="/logo/mpb-mark-transparent.png" alt="" className="w-8 h-8 object-contain" draggable={false} />
           <span className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
