@@ -27,9 +27,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0"
           aria-label="Go to Learning Hub home"
         >
-          <div className="w-9 h-9 rounded-[10px] gradient-primary flex items-center justify-center shadow-button">
-            <span className="text-primary-foreground font-extrabold text-sm tracking-tight">M</span>
-          </div>
+          <img
+            src="/logo/mpb-mark-transparent.png"
+            alt=""
+            className="w-10 h-10 object-contain"
+            draggable={false}
+          />
           <h1 className="font-display text-lg font-extrabold text-foreground tracking-tight">
             My<span className="text-primary-ink">Phonics</span>Books
           </h1>

@@ -58,9 +58,7 @@ export default function Auth() {
         {/* Logo (clickable — returns to landing) */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
-            <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center shadow-button mx-auto mb-4">
-              <span className="text-primary-foreground font-extrabold text-xl">M</span>
-            </div>
+            <img src="/logo/mpb-mark-transparent.png" alt="" className="w-20 h-20 object-contain mx-auto mb-2" draggable={false} />
             <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">
               My<span className="text-primary-ink">Phonics</span>Books
             </h1>

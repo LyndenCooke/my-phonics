@@ -268,7 +268,7 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
       tricky('I', 'I'), pw('am', 'am', ['a','m']), tricky('so', 'so'),
       cvc('sad', 'sad'), pw('now.', 'now', ['n','ow']),
       pw('Then', 'then', ['th','e','n']), tricky('my', 'my'), cvc('dad', 'dad'),
-      pw('calls,', 'call', ['c','a','ll']),
+      tricky('calls,', 'calls'),
       pw('"Look', 'look', ['l','oo','k']), pw('up!"', 'up', ['u','p']),
     ],
     imageUrl: '/illustrations/2_2/page6.png', audioUrl: '/sounds/sentences/L2_2_p6.mp3' },
