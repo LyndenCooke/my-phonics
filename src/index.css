@@ -35,13 +35,25 @@
 
     --radius: 0.75rem;
 
-    /* Level colours */
+    /* Level colours — used as backgrounds */
     --level-1: 338 78% 60%;
     --level-2: 38 92% 50%;
     --level-3: 142 71% 45%;
     --level-4: 217 91% 60%;
     --level-5: 258 90% 66%;
     --level-6: 173 58% 39%;
+
+    /* Level "ink" — darker versions for text/border on white so we hit
+       WCAG AA 4.5:1. Same hue, reduced lightness. */
+    --level-1-ink: 338 78% 42%;
+    --level-2-ink: 30 92% 32%;
+    --level-3-ink: 142 71% 30%;
+    --level-4-ink: 217 91% 42%;
+    --level-5-ink: 258 60% 50%;
+    --level-6-ink: 173 58% 28%;
+
+    /* Primary "ink" — for text/border use on light backgrounds. */
+    --primary-ink: 338 78% 42%;
 
     /* Shadows */
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);

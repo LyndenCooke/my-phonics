@@ -244,7 +244,7 @@ export default function Shop() {
                       disabled={!!checkoutLoading}
                       className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 ${
                         isFree
-                          ? 'bg-card border-2 border-emerald-500 text-emerald-600'
+                          ? 'bg-card border-2 border-emerald-600 text-emerald-700'
                           : `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
                       }`}
                     >

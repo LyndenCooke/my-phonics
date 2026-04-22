@@ -349,13 +349,13 @@ export default function Index() {
               <div className="mt-2 flex flex-wrap gap-3">
                 <button
                   onClick={() => navigate('/auth')}
-                  className="text-xs font-bold text-primary hover:underline"
+                  className="text-xs font-bold text-primary-ink hover:underline"
                 >
                   Log In →
                 </button>
                 <button
                   onClick={() => navigate('/assess')}
-                  className="text-xs font-bold text-primary hover:underline"
+                  className="text-xs font-bold text-primary-ink hover:underline"
                 >
                   Start Free Assessment →
                 </button>

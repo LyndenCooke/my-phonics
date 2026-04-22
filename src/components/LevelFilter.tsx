@@ -11,8 +11,8 @@ const levelBgs: Record<number, string> = {
 };
 
 const levelBorders: Record<number, string> = {
-  1: 'border-level-1 text-level-1', 2: 'border-level-2 text-level-2', 3: 'border-level-3 text-level-3',
-  4: 'border-level-4 text-level-4', 5: 'border-level-5 text-level-5', 6: 'border-level-6 text-level-6',
+  1: 'border-level-1-ink text-level-1-ink', 2: 'border-level-2-ink text-level-2-ink', 3: 'border-level-3-ink text-level-3-ink',
+  4: 'border-level-4-ink text-level-4-ink', 5: 'border-level-5-ink text-level-5-ink', 6: 'border-level-6-ink text-level-6-ink',
 };
 
 export default function LevelFilter({ selected, onSelect }: LevelFilterProps) {
