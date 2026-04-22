@@ -101,15 +101,26 @@ export function useBookPages(bookId: string | null) {
     queryKey: ['book_pages', bookId],
     queryFn: async () => {
       if (!bookId) return [];
+      // `book_pages` was an old table for PDF-imported pages. The
+      // interactive reader now uses hard-coded INTERACTIVE_BOOKS data
+      // and the static reader uses /book-pages/*.jpg. If the table
+      // doesn't exist in this Supabase project (common), return an
+      // empty list instead of noisy console 404s.
       const { data, error } = await supabase
         .from('book_pages')
         .select('*')
         .eq('book_id', bookId)
         .order('sort_order');
-      if (error) throw error;
+      if (error) {
+        if (error.code === '42P01' || /not.*exist|404/i.test(error.message)) {
+          return [];
+        }
+        throw error;
+      }
       return data;
     },
     enabled: !!bookId,
+    retry: false,
   });
 }
 
@@ -181,15 +192,24 @@ export function useQuizQuestions(bookId: string | null) {
     queryKey: ['quiz_questions', bookId],
     queryFn: async () => {
       if (!bookId) return [];
+      // Gracefully handle the quiz_questions table not existing yet
+      // — feature is unused in the current reader, but the query
+      // fires on every book open.
       const { data, error } = await supabase
         .from('quiz_questions')
         .select('*')
         .eq('book_id', bookId)
         .order('sort_order');
-      if (error) throw error;
+      if (error) {
+        if (error.code === '42P01' || /not.*exist|404/i.test(error.message)) {
+          return [];
+        }
+        throw error;
+      }
       return data;
     },
     enabled: !!bookId,
+    retry: false,
   });
 }
 
