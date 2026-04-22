@@ -19,7 +19,7 @@ export default function Progress() {
     return (
       <Layout>
         <div className="px-4 pt-8 pb-4 max-w-md mx-auto text-center">
-          <h2 className="text-2xl font-extrabold text-foreground mb-3">Progress</h2>
+          <h2 className="font-display text-2xl font-extrabold text-foreground mb-3">Progress</h2>
           <p className="text-sm text-muted-foreground mb-6">Sign in to track your child's reading progress.</p>
           <button onClick={() => navigate('/auth')} className="py-3 px-8 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button">
             Sign In
@@ -62,7 +62,7 @@ export default function Progress() {
   return (
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-md mx-auto">
-        <h2 className="text-2xl font-extrabold text-foreground mb-5 tracking-tight">Progress</h2>
+        <h2 className="font-display text-2xl font-extrabold text-foreground mb-5 tracking-tight">Progress</h2>
 
         {isLoading ? (
           <div className="space-y-4">

@@ -47,7 +47,7 @@ export default function Profile() {
     return (
       <Layout>
         <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
-          <h2 className="text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
+          <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
           <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-14 h-14 rounded-2xl bg-tint-pink flex items-center justify-center">
@@ -73,7 +73,7 @@ export default function Profile() {
   return (
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
-        <h2 className="text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
+        <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
 
         {/* User card */}
         <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">

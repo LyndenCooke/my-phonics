@@ -12,7 +12,7 @@ export default function Terms() {
           <ArrowLeft className="w-4 h-4" /> Back to home
         </Link>
 
-        <h1 className="text-3xl font-extrabold text-foreground tracking-tight mb-2">
+        <h1 className="font-display text-3xl font-extrabold text-foreground tracking-tight mb-2">
           Terms of Service
         </h1>
         <p className="text-sm text-muted-foreground mb-8">

@@ -326,7 +326,7 @@ export default function Index() {
 
       <div className="px-4 pt-5 pb-2 max-w-2xl mx-auto">
         <div className="mb-5">
-          <h2 className="text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
+          <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Tap a book to start reading
           </p>

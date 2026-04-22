@@ -16,7 +16,7 @@ export default function PaymentSuccess() {
         <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
-        <h1 className="text-2xl font-extrabold text-foreground mb-2">Payment Successful</h1>
+        <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">Payment Successful</h1>
         <p className="text-sm text-muted-foreground mb-6">
           {user
             ? "Your books have been unlocked and are ready to read!"

@@ -134,9 +134,9 @@ function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => v
             <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" /> UK Phonics Curriculum Aligned
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground tracking-tight leading-[1.1]">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground tracking-tight leading-[1.05]">
               Learn to Read with{' '}
-              <span className="text-primary">Beautiful</span>{' '}
+              <span className="text-primary-ink">Beautiful</span>{' '}
               Phonics Books
             </h1>
             <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
@@ -199,7 +199,7 @@ function HowItWorks() {
     <section className="py-16 md:py-24 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">How It Works</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">How It Works</h2>
           <p className="mt-3 text-muted-foreground text-lg">Three simple steps to confident reading</p>
         </div>
 
@@ -239,7 +239,7 @@ function FeatureShowcase() {
       <div ref={r.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
               Everything Your Child Needs to{' '}
               <span className="text-primary">Love Reading</span>
             </h2>
@@ -298,7 +298,7 @@ function LevelProgression() {
     <section className="py-16 md:py-24 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">6 Levels, One Clear Path</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">6 Levels, One Clear Path</h2>
           <p className="mt-3 text-muted-foreground text-lg">From first sounds to confident reading</p>
         </div>
 
@@ -337,7 +337,7 @@ function CulturalDiversity() {
     <section className="py-16 md:py-24">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
             Every Book Is a{' '}
             <span className="text-primary">Window Into the World</span>
           </h2>
@@ -386,7 +386,7 @@ function Testimonials() {
     <section className="py-16 md:py-24 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Why parents trust us</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Why parents trust us</h2>
           <p className="mt-3 text-muted-foreground text-lg">Grounded in the UK curriculum, made by a teacher, set in the real world.</p>
         </div>
 
@@ -411,7 +411,7 @@ function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void })
     <section className="py-16 md:py-24">
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Simple, Fair Pricing</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Simple, Fair Pricing</h2>
           <p className="mt-3 text-muted-foreground text-lg">Start free. Upgrade when you're ready.</p>
         </div>
 
@@ -466,7 +466,7 @@ function FooterCTA({ onAssess }: { onAssess: () => void }) {
     <section className="py-16 md:py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <div className="bg-gradient-to-br from-primary/10 via-background to-[hsl(var(--level-5))]/10 rounded-3xl p-10 md:p-14 border border-primary/20">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
             Ready to Start Your Child's Reading Journey?
           </h2>
           <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">

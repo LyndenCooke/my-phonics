@@ -161,7 +161,7 @@ export default function Shop() {
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-extrabold text-foreground tracking-tight">Choose Your Plan</h2>
+          <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">Choose Your Plan</h2>
           <p className="text-sm text-muted-foreground mt-1">
             Every plan includes assessments, progress tracking & development reports.
           </p>
