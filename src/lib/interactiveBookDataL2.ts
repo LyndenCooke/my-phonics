@@ -587,7 +587,7 @@ export const BOOK_L2_4_PAGES: InteractivePage[] = [
       pw('Look!', 'look', ['l','oo','k']),
       pw('Toy', 'toy', ['t','oy']), pw('ducks,', 'duck', ['d','u','ck']),
       tricky('a', 'a'), pw('pair!', 'pair', ['p','air']),
-      pw('"I', 'I', []), cvc('can', 'can'), pw('win!"', 'win', ['w','i','n']),
+      tricky('"I', 'I'), cvc('can', 'can'), pw('win!"', 'win', ['w','i','n']),
       tricky('I', 'I'), pw('say.', 'say', ['s','ay']),
     ],
     imageUrl: '/illustrations/2_4/page3.png', audioUrl: '/sounds/sentences/L2_4_p3.mp3' },
@@ -625,7 +625,7 @@ export const BOOK_L2_4_PAGES: InteractivePage[] = [
       tricky('My', 'my'), pw('pair', 'pair', ['p','air']), tricky('is', 'is'),
       pw('in', 'in', ['i','n']), tricky('the', 'the'), pw('air!"', 'air', ['air']),
       tricky('The', 'the'), pw('sir', 'sir', ['s','ir']),
-      tricky('said,', 'said'), pw('"I', 'I', []),
+      tricky('said,', 'said'), tricky('"I', 'I'),
       cvc('can', 'can'), pw('see', 'see', ['s','ee']),
       pw('it!', 'it', ['i','t']), pw('By', 'by', ['b','y']),
       tricky('the', 'the'), pw('fir!"', 'fir', ['f','ir']),
@@ -799,7 +799,7 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
     words: [
       cvc('Mum', 'mum'), cvc('ran', 'ran'), pw('out', 'out', ['ou','t']),
       tricky('to', 'to'), tricky('me.', 'me'),
-      pw('"I', 'I', []), pw('will', 'will', ['w','i','ll']),
+      tricky('"I', 'I'), pw('will', 'will', ['w','i','ll']),
       pw('look', 'look', ['l','oo','k']),
       pw('around', 'around', ['a','r','ou','n','d']),
       pw('and', 'and', ['a','n','d']),
@@ -826,7 +826,7 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
   { type: 'story', sentences: ['"Look!" said Mum. "I found it!"', 'My toy! Joy! Joy!', 'I shouted out loud!'],
     words: [
       pw('"Look!"', 'look', ['l','oo','k']), tricky('said', 'said'),
-      cvc('Mum.', 'mum'), pw('"I', 'I', []),
+      cvc('Mum.', 'mum'), tricky('"I', 'I'),
       pw('found', 'found', ['f','ou','n','d']), pw('it!"', 'it', ['i','t']),
       tricky('My', 'my'), pw('toy!', 'toy', ['t','oy']),
       pw('Joy!', 'joy', ['j','oy']), pw('Joy!', 'joy', ['j','oy']),
@@ -868,7 +868,7 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
     { word: 'toy', imageUrl: '/images/words/toy.png', focusIndex: 1 },
     { word: 'joy', imageUrl: '/images/words/joy.png', focusIndex: 1 },
     { word: 'boy', imageUrl: '/images/words/boy.png', focusIndex: 1 },
-    { word: 'enjoy', imageUrl: '/images/words/enjoy.png', focusIndex: 2 },
+    { word: 'enjoy', imageUrl: '/images/words/enjoy.png', focusIndex: 3 },
   ]},
 
   { type: 'word_reading', words: [
@@ -936,7 +936,7 @@ export const BOOK_L2_6_PAGES: InteractivePage[] = [
   { type: 'story', sentences: ['It is night!', 'We go to the souq.', 'The lights up high are so bright!'],
     words: [
       pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('night!', 'night', ['n','igh','t']),
-      tricky('We', 'we'), tricky('go', 'go'), tricky('to', 'to'), tricky('the', 'the'), pw('souq.', 'souq', ['s','ou','q']),
+      tricky('We', 'we'), tricky('go', 'go'), tricky('to', 'to'), tricky('the', 'the'), tricky('souq.', 'souq'),
       tricky('The', 'the'), pw('lights', 'lights', ['l','igh','t','s']), pw('up', 'up', ['u','p']),
       pw('high', 'high', ['h','igh']), tricky('are', 'are'), tricky('so', 'so'), pw('bright!', 'bright', ['b','r','igh','t']),
     ],
@@ -1017,7 +1017,7 @@ export const BOOK_L2_6_PAGES: InteractivePage[] = [
   { type: 'story', sentences: ['My night at the souq is so good.', 'I wave good night to the big moon.'],
     words: [
       tricky('My', 'my'), pw('night', 'night', ['n','igh','t']), pw('at', 'at', ['a','t']),
-      tricky('the', 'the'), pw('souq', 'souq', ['s','ou','q']), tricky('is', 'is'),
+      tricky('the', 'the'), tricky('souq', 'souq'), tricky('is', 'is'),
       tricky('so', 'so'), pw('good.', 'good', ['g','oo','d']),
       tricky('I', 'I'), tricky('wave', 'wave'), pw('good', 'good', ['g','oo','d']),
       pw('night', 'night', ['n','igh','t']), tricky('to', 'to'), tricky('the', 'the'),

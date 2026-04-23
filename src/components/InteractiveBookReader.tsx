@@ -165,9 +165,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
               key={group}
               onClick={() => handleSoundTap(group)}
               aria-label={`Play sound ${sounds.join(' or ')}`}
-              className={`relative py-5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
+              className={`relative py-3.5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
                 ${isPlaying
-                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.08] ring-4 ring-pink-200'
+                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.06]'
                   : 'bg-gradient-to-br from-pink-50 to-pink-100 text-pink-700 border-2 border-pink-300 hover:border-pink-400 hover:from-pink-100 hover:to-pink-200'}`}
             >
               <span className="block text-3xl sm:text-4xl">{sounds.join(' ')}</span>
@@ -260,7 +260,7 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
               }}
               className={`flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
                 ${isActive
-                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg ring-4 ring-pink-200'
+                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg'
                   : 'border-slate-200 bg-white hover:border-pink-200 hover:shadow-md shadow-sm'}`}
             >
               <img
@@ -440,7 +440,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
           onClick={() => setImageExpanded(false)}>
           <div className="relative max-w-[90vw] max-h-[85vh]">
-            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
+            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-xl object-contain" />
             <button onClick={(e) => { e.stopPropagation(); setImageExpanded(false); }}
               aria-label="Close image"
               className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all shadow-lg">
@@ -456,7 +456,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <button
           onClick={() => setImageExpanded(true)}
           aria-label="Expand illustration"
-          className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}
+          className={`${imgSize} rounded-3xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-200`}
         >
           <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
         </button>
@@ -514,7 +514,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
           <button
             onClick={() => setImageExpanded(true)}
             aria-label="Expand illustration"
-            className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}
+            className={`${imgSize} rounded-2xl overflow-hidden shadow-md flex-shrink-0 cursor-pointer hover:shadow-lg active:scale-[0.98] transition-all duration-200`}
           >
             <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
           </button>
@@ -536,9 +536,9 @@ function SoundSpotlightPage({ page }: { page: Extract<InteractivePage, { type: '
       <button
         onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
         className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center
-          text-6xl md:text-7xl font-bold transition-all duration-200 leading-none
-          ${playingSound ? 'bg-pink-500 text-white scale-110 ring-4 ring-pink-300 animate-pulse'
-            : 'bg-pink-100 text-pink-600 hover:bg-pink-200 shadow-lg'}`}
+          text-6xl md:text-7xl font-bold transition-all duration-200 leading-none shadow-lg
+          ${playingSound ? 'bg-pink-500 text-white scale-105'
+            : 'bg-pink-100 text-pink-600 hover:bg-pink-200'}`}
         aria-label={`Play sound ${page.sound}`}
       >
         {page.sound}
@@ -997,15 +997,15 @@ function CertificatePage({ page }: { page: Extract<InteractivePage, { type: 'cer
     <div className="flex flex-col items-center justify-center h-full px-6 text-center relative overflow-hidden">
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 30 }).map((_, i) => (
+          {Array.from({ length: 12 }).map((_, i) => (
             <div key={i} className="absolute w-3 h-3 rounded-sm animate-bounce"
               style={{ left: `${Math.random()*100}%`, top: `${Math.random()*100}%`,
                 backgroundColor: ['#e91e63','#2196f3','#4caf50','#ff9800','#9c27b0','#ffeb3b'][i%6],
-                animationDelay: `${Math.random()*2}s`, animationDuration: `${1+Math.random()*2}s`, opacity: 0.8 }} />
+                animationDelay: `${Math.random()*1.5}s`, animationDuration: `${0.8+Math.random()*0.6}s`, opacity: 0.6 }} />
           ))}
         </div>
       )}
-      <div className="bg-white rounded-3xl border-4 border-pink-400 p-10 shadow-2xl max-w-sm w-full">
+      <div className="bg-white rounded-3xl border-2 border-pink-400 p-10 shadow-xl max-w-sm w-full">
         <div className="text-6xl mb-4">&#11088;</div>
         <h1 className="text-3xl font-bold text-pink-600 mb-2">I Read a Book!</h1>
         <p className="text-base text-slate-500 mb-3">Reading Star Certificate</p>
