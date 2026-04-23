@@ -594,7 +594,8 @@ export const BOOK_L1_3_PAGES: InteractivePage[] = [
     { display: 'donk', word: 'donk', phonemes: ['d','o','nk'] },
     { display: 'bunk', word: 'bunk', phonemes: ['b','u','nk'] },
     { display: 'lenk', word: 'lenk', phonemes: ['l','e','nk'] },
-    cvc('thud', 'thud'), cvc('chop', 'chop'),
+    { display: 'thud', word: 'thud', phonemes: ['th','u','d'] },
+    { display: 'chop', word: 'chop', phonemes: ['ch','o','p'] },
     { display: 'thib', word: 'thib', phonemes: ['th','i','b'] },
     { display: 'quop', word: 'quop', phonemes: ['qu','o','p'] }] },
 
@@ -1108,7 +1109,7 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     { word: 'fin', imageUrl: '/images/words/fin.png', focusIndex: 0 }] },
   { type: 'sound_spotlight', sound: 'll', items: [
     { word: 'fell', imageUrl: '/images/words/fell.png', focusIndex: 2 },
-    { word: 'quill', imageUrl: '/images/words/quill.png', focusIndex: 2 },
+    { word: 'quill', imageUrl: '/images/words/quill.png', focusIndex: 3 },
     { word: 'hill', imageUrl: '/images/words/hill.png', focusIndex: 2 },
     { word: 'bell', imageUrl: '/images/words/bell.png', focusIndex: 2 }] },
 
