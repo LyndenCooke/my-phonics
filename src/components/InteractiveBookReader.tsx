@@ -8,6 +8,7 @@ import {
   type OrderingItem, type QuizQuestion, type SpellingWord,
 } from '@/lib/interactiveBookData';
 import TappableWord from '@/components/interactive/TappableWord';
+import { awardStamp, getStamps, MAX_STAMPS, type BookStamps } from '@/lib/stamps';
 
 // ─── Audio helpers ──────────────────────────────────────────────────────────
 
@@ -1137,34 +1138,111 @@ function WritingCanvas() {
   );
 }
 
-// ─── Certificate ────────────────────────────────────────────────────────────
+// ─── Certificate — stamp progress + gated Reading-Champion award ────────────
+// Each calendar day's first completion earns one stamp, up to MAX_STAMPS (5).
+// Same-day re-reads don't award another stamp — the child has to come back
+// tomorrow. This mirrors school practice where a decodable is read 5+ times
+// to build genuine fluency, and gives parents a visible "N of 5" signal so
+// they don't mistake "read once" for "mastered".
 
-function CertificatePage({ page }: { page: Extract<InteractivePage, { type: 'certificate' }> }) {
+function CertificatePage({ page, level, bookId }: { page: Extract<InteractivePage, { type: 'certificate' }>; level: number; bookId: string }) {
+  const theme = getTheme(level);
+  const [stampState, setStampState] = useState<BookStamps>(() => getStamps(bookId));
+  const [awardedNow, setAwardedNow] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  useEffect(() => { setShowConfetti(true); const t = setTimeout(() => setShowConfetti(false), 3000); return () => clearTimeout(t); }, []);
+  const hasAwarded = useRef(false);
+
+  useEffect(() => {
+    // Guard against double-award in StrictMode / page revisit within same mount
+    if (hasAwarded.current) return;
+    hasAwarded.current = true;
+    const result = awardStamp(bookId);
+    setStampState(result.state);
+    setAwardedNow(result.awardedNow);
+    if (result.awardedNow) {
+      setShowConfetti(true);
+      const t = setTimeout(() => setShowConfetti(false), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [bookId]);
+
+  const isChampion = stampState.count >= MAX_STAMPS;
+  const confettiCount = isChampion ? 30 : 14;
+  const title = isChampion ? 'Reading Champion!'
+    : awardedNow ? 'Great Reading!'
+    : 'Already Read Today';
+  const emoji = isChampion ? '\u{1F3C6}' : awardedNow ? '\u{1F389}' : '\u{1F4DA}';
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 text-center relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-16 py-8 text-center relative overflow-hidden">
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 30 }).map((_, i) => (
-            <div key={i} className="absolute w-3 h-3 rounded-sm animate-bounce"
-              style={{ left: `${Math.random()*100}%`, top: `${Math.random()*100}%`,
+          {Array.from({ length: confettiCount }).map((_, i) => (
+            <div key={i} className="absolute w-3 h-3 md:w-4 md:h-4 rounded-sm animate-bounce"
+              style={{ left: `${Math.random()*100}%`, top: `${Math.random()*80}%`,
                 backgroundColor: ['#e91e63','#2196f3','#4caf50','#ff9800','#9c27b0','#ffeb3b'][i%6],
-                animationDelay: `${Math.random()*2}s`, animationDuration: `${1+Math.random()*2}s`, opacity: 0.8 }} />
+                animationDelay: `${Math.random()*1.5}s`, animationDuration: `${1+Math.random()*2}s`, opacity: 0.8 }} />
           ))}
         </div>
       )}
-      <div className="bg-white rounded-3xl border-4 border-pink-400 p-10 shadow-2xl max-w-sm w-full">
-        <div className="text-6xl mb-4">&#11088;</div>
-        <h1 className="text-3xl font-bold text-pink-600 mb-2">I Read a Book!</h1>
-        <p className="text-base text-slate-500 mb-3">Reading Star Certificate</p>
-        <p className="text-2xl font-bold italic text-slate-700 mb-4">{page.bookTitle}</p>
-        <div className="border-t-2 border-dashed border-slate-200 pt-4 mt-4">
-          <p className="text-sm text-slate-400">MyPhonicsBooks</p>
+
+      <div className={`relative bg-white rounded-3xl border-4 ${isChampion ? 'border-amber-400' : theme.cardBorderActive}
+        p-8 md:p-10 lg:p-14 shadow-2xl max-w-3xl w-full flex flex-col items-center gap-5 md:gap-7`}>
+
+        <div className="text-5xl md:text-6xl lg:text-7xl">{emoji}</div>
+        <h1 className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold ${isChampion ? 'text-amber-600' : theme.textAccent}`}>
+          {title}
+        </h1>
+        <p className="text-xl md:text-2xl lg:text-3xl font-bold italic text-slate-700 px-4">{page.bookTitle}</p>
+
+        {/* ── Stamp row ── */}
+        <div className="flex items-end gap-3 md:gap-4 lg:gap-6 mt-2 md:mt-4">
+          {Array.from({ length: MAX_STAMPS }).map((_, i) => {
+            const earned = i < stampState.count;
+            const justEarned = awardedNow && i === stampState.count - 1;
+            return (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className={`w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex items-center justify-center transition-all duration-300
+                  ${earned
+                    ? `bg-gradient-to-br ${theme.heroBgActive} shadow-xl ${justEarned ? 'ring-4 ring-amber-300 scale-110' : ''}`
+                    : 'border-2 border-dashed border-slate-300 bg-slate-50'}`}>
+                  {earned ? (
+                    <Star className={`w-7 h-7 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 text-white fill-white drop-shadow ${justEarned ? 'animate-pulse' : ''}`} />
+                  ) : (
+                    <span className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-300">{i + 1}</span>
+                  )}
+                </div>
+                <span className={`text-[10px] md:text-xs lg:text-sm font-medium ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
+                  Day {i + 1}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Status message ── */}
+        <div className="mt-3 md:mt-4 max-w-xl">
+          {isChampion ? (
+            <p className="text-lg md:text-xl lg:text-2xl font-bold text-amber-700">
+              You read this book 5 times — you've mastered it! &#11088;
+            </p>
+          ) : awardedNow ? (
+            <p className="text-base md:text-lg lg:text-xl text-slate-600">
+              Stamp <span className={`font-bold ${theme.textAccent}`}>{stampState.count} of {MAX_STAMPS}</span> unlocked!
+              Come back tomorrow for stamp {stampState.count + 1}.
+            </p>
+          ) : (
+            <p className="text-base md:text-lg lg:text-xl text-slate-600">
+              You've already earned today's stamp — great work!
+              Come back tomorrow for stamp {stampState.count + 1}.
+            </p>
+          )}
+        </div>
+
+        <div className="border-t-2 border-dashed border-slate-200 pt-3 mt-2 w-full max-w-sm">
+          <p className="text-xs md:text-sm text-slate-400">MyPhonicsBooks</p>
         </div>
       </div>
-      <p className="text-pink-600 font-bold mt-8 text-xl">Well done!</p>
     </div>
   );
 }
@@ -1239,7 +1317,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
       case 'story_ordering': return <StoryOrderingPage page={p} />;
       case 'quiz': return <QuizPage page={p} level={book.level} />;
       case 'spelling': return <SpellingPage page={p} level={book.level} />;
-      case 'certificate': return <CertificatePage page={p} />;
+      case 'certificate': return <CertificatePage page={p} level={book.level} bookId={book.subLevel} />;
       default: return null;
     }
   };
