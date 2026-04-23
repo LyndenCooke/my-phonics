@@ -91,7 +91,7 @@ export const BOOK_L6_1_PAGES: InteractivePage[] = [
       word('blocks', 'blocks', ['b','l','o','ck','s']), word('lined', 'lined', ['l','i-e','n','d']),
       tricky('the', 'the'), word('road,', 'road', ['r','oa','d']),
       word('and', 'and', ['a','n','d']), word('cars', 'cars', ['c','ar','s']),
-      word('honked', 'honked', ['h','o','nk','ed']), word('in', 'in', ['i','n']),
+      word('honked', 'honked', ['h','o','n','k','d']), word('in', 'in', ['i','n']),
       tricky('the', 'the'), word('hot', 'hot', ['h','o','t']),
       word('afternoon', 'afternoon', ['a','f','t','er','n','oo','n']),
       word('heat.', 'heat', ['h','ee','t']),
