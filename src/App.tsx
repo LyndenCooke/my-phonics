@@ -24,6 +24,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
+const Prototype = lazy(() => import("./pages/Prototype"));
 
 // Lazy-loaded funnel pages
 const LinkTree = lazy(() => import("./pages/funnels/LinkTree"));
@@ -101,6 +102,7 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/prototype" element={<Suspense fallback={<AdminFallback />}><Prototype /></Suspense>} />
             {/* Funnels (ad landing pages) */}
             <Route path="/links" element={<Suspense fallback={<AdminFallback />}><LinkTree /></Suspense>} />
             <Route path="/f/wrong-books" element={<Suspense fallback={<AdminFallback />}><WrongBooks /></Suspense>} />

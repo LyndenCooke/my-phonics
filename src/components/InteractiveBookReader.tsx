@@ -111,6 +111,37 @@ function computeSpotlightFocus(word: string, sound: string): Set<number> {
   return result;
 }
 
+// ─── Level theming — shared by every activity page ─────────────────────────
+// Each level gets a palette bundle: hero button gradient, card accents,
+// solid CTA bg, text colours. Keeping class names literal so Tailwind's
+// JIT picks them up during build.
+
+interface LevelTheme {
+  heroBgIdle: string;           // gradient bg for hero button at rest
+  heroBgActive: string;         // gradient bg when playing
+  heroText: string;             // hero text at rest
+  cardBorderActive: string;     // card border when selected/playing
+  cardBgActive: string;         // card bg gradient when selected/playing
+  cardHoverBorder: string;      // card hover border
+  textAccent: string;           // focus-letter / title accent
+  textAccentMuted: string;      // caption accent
+  solidBg: string;              // solid CTA background
+  solidBgHover: string;         // solid CTA hover
+  softGradient: string;         // decorative background panels
+  focusRing: string;            // focus-visible ring colour
+}
+
+const LEVEL_THEME: Record<number, LevelTheme> = {
+  1: { heroBgIdle: 'from-pink-100 to-pink-200', heroBgActive: 'from-pink-500 to-pink-600', heroText: 'text-pink-700', cardBorderActive: 'border-pink-400', cardBgActive: 'from-pink-50 to-pink-100', cardHoverBorder: 'hover:border-pink-300', textAccent: 'text-pink-600', textAccentMuted: 'text-pink-500', solidBg: 'bg-pink-500', solidBgHover: 'hover:bg-pink-600', softGradient: 'from-pink-50 to-pink-100', focusRing: 'focus-visible:ring-pink-400' },
+  2: { heroBgIdle: 'from-amber-100 to-amber-200', heroBgActive: 'from-amber-500 to-amber-600', heroText: 'text-amber-700', cardBorderActive: 'border-amber-400', cardBgActive: 'from-amber-50 to-amber-100', cardHoverBorder: 'hover:border-amber-300', textAccent: 'text-amber-600', textAccentMuted: 'text-amber-500', solidBg: 'bg-amber-500', solidBgHover: 'hover:bg-amber-600', softGradient: 'from-amber-50 to-amber-100', focusRing: 'focus-visible:ring-amber-400' },
+  3: { heroBgIdle: 'from-green-100 to-green-200', heroBgActive: 'from-green-500 to-green-600', heroText: 'text-green-700', cardBorderActive: 'border-green-400', cardBgActive: 'from-green-50 to-green-100', cardHoverBorder: 'hover:border-green-300', textAccent: 'text-green-600', textAccentMuted: 'text-green-500', solidBg: 'bg-green-500', solidBgHover: 'hover:bg-green-600', softGradient: 'from-green-50 to-green-100', focusRing: 'focus-visible:ring-green-400' },
+  4: { heroBgIdle: 'from-blue-100 to-blue-200', heroBgActive: 'from-blue-500 to-blue-600', heroText: 'text-blue-700', cardBorderActive: 'border-blue-400', cardBgActive: 'from-blue-50 to-blue-100', cardHoverBorder: 'hover:border-blue-300', textAccent: 'text-blue-600', textAccentMuted: 'text-blue-500', solidBg: 'bg-blue-500', solidBgHover: 'hover:bg-blue-600', softGradient: 'from-blue-50 to-blue-100', focusRing: 'focus-visible:ring-blue-400' },
+  5: { heroBgIdle: 'from-purple-100 to-purple-200', heroBgActive: 'from-purple-500 to-purple-600', heroText: 'text-purple-700', cardBorderActive: 'border-purple-400', cardBgActive: 'from-purple-50 to-purple-100', cardHoverBorder: 'hover:border-purple-300', textAccent: 'text-purple-600', textAccentMuted: 'text-purple-500', solidBg: 'bg-purple-500', solidBgHover: 'hover:bg-purple-600', softGradient: 'from-purple-50 to-purple-100', focusRing: 'focus-visible:ring-purple-400' },
+  6: { heroBgIdle: 'from-teal-100 to-teal-200', heroBgActive: 'from-teal-500 to-teal-600', heroText: 'text-teal-700', cardBorderActive: 'border-teal-400', cardBgActive: 'from-teal-50 to-teal-100', cardHoverBorder: 'hover:border-teal-300', textAccent: 'text-teal-600', textAccentMuted: 'text-teal-500', solidBg: 'bg-teal-500', solidBgHover: 'hover:bg-teal-600', softGradient: 'from-teal-50 to-teal-100', focusRing: 'focus-visible:ring-teal-400' },
+};
+
+const getTheme = (level: number): LevelTheme => LEVEL_THEME[level] ?? LEVEL_THEME[1];
+
 // ─── Cover ──────────────────────────────────────────────────────────────────
 
 function CoverPage({ page }: { page: Extract<InteractivePage, { type: 'cover' }> }) {
@@ -165,9 +196,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
               key={group}
               onClick={() => handleSoundTap(group)}
               aria-label={`Play sound ${sounds.join(' or ')}`}
-              className={`relative py-3.5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
+              className={`relative py-5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
                 ${isPlaying
-                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.06]'
+                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.08] ring-4 ring-pink-200'
                   : 'bg-gradient-to-br from-pink-50 to-pink-100 text-pink-700 border-2 border-pink-300 hover:border-pink-400 hover:from-pink-100 hover:to-pink-200'}`}
             >
               <span className="block text-3xl sm:text-4xl">{sounds.join(' ')}</span>
@@ -260,7 +291,7 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
               }}
               className={`flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
                 ${isActive
-                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg'
+                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg ring-4 ring-pink-200'
                   : 'border-slate-200 bg-white hover:border-pink-200 hover:shadow-md shadow-sm'}`}
             >
               <img
@@ -440,7 +471,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
           onClick={() => setImageExpanded(false)}>
           <div className="relative max-w-[90vw] max-h-[85vh]">
-            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-xl object-contain" />
+            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
             <button onClick={(e) => { e.stopPropagation(); setImageExpanded(false); }}
               aria-label="Close image"
               className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all shadow-lg">
@@ -456,7 +487,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <button
           onClick={() => setImageExpanded(true)}
           aria-label="Expand illustration"
-          className={`${imgSize} rounded-3xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all duration-200`}
+          className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}
         >
           <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
         </button>
@@ -514,7 +545,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
           <button
             onClick={() => setImageExpanded(true)}
             aria-label="Expand illustration"
-            className={`${imgSize} rounded-2xl overflow-hidden shadow-md flex-shrink-0 cursor-pointer hover:shadow-lg active:scale-[0.98] transition-all duration-200`}
+            className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}
           >
             <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
           </button>
@@ -524,98 +555,166 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
   );
 }
 
-// ─── Sound Spotlight (redesigned — clean centered layout) ───────────────────
+// ─── Sound Spotlight — Pattern A "Hero + Interactive" ───────────────────────
+// Left half: huge focus-sound circle (readable from the back row of a
+// classroom). Right half: 2x2 grid of big word cards with generous images.
+// Mobile/portrait: stacks vertically.
 
-function SoundSpotlightPage({ page }: { page: Extract<InteractivePage, { type: 'sound_spotlight' }> }) {
+function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_spotlight' }>; level: number }) {
   const [playingItem, setPlayingItem] = useState<string | null>(null);
   const [playingSound, setPlayingSound] = useState(false);
+  const theme = getTheme(level);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 py-6 gap-6">
-      {/* Big tappable letter */}
-      <button
-        onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
-        className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center
-          text-6xl md:text-7xl font-bold transition-all duration-200 leading-none shadow-lg
-          ${playingSound ? 'bg-pink-500 text-white scale-105'
-            : 'bg-pink-100 text-pink-600 hover:bg-pink-200'}`}
-        aria-label={`Play sound ${page.sound}`}
-      >
-        {page.sound}
-      </button>
-      <p className="text-sm text-slate-400 -mt-3">Tap the sound!</p>
+    <div className="flex flex-col md:flex-row h-full w-full">
+      {/* ── HERO LEFT — focus sound ── */}
+      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6">
+        <button
+          onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
+          className={`aspect-square w-40 md:w-56 lg:w-[22rem] xl:w-[26rem] max-w-full
+            rounded-full flex items-center justify-center font-bold leading-none
+            transition-all duration-200 select-none bg-gradient-to-br
+            ${playingSound
+              ? `${theme.heroBgActive} text-white scale-105 shadow-2xl`
+              : `${theme.heroBgIdle} ${theme.heroText} shadow-xl hover:shadow-2xl hover:scale-[1.02]`}`}
+          aria-label={`Play sound ${page.sound}`}
+        >
+          <span className="text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem]">{page.sound}</span>
+        </button>
+        <p className="text-lg md:text-xl lg:text-2xl text-slate-500 font-medium">Tap the sound!</p>
+      </div>
 
-      {/* Word cards — 2x2 grid */}
-      <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-        {page.items.map((item) => {
-          const isActive = playingItem === item.word;
-          return (
-            <button key={item.word}
-              onClick={async () => { setPlayingItem(item.word); await playWordAsPhonemes(item.word); setPlayingItem(null); }}
-              className={`flex flex-col items-center py-5 px-4 rounded-2xl border-2 transition-all duration-200
-                ${isActive ? 'border-pink-400 bg-pink-50 scale-105 shadow-lg' : 'border-slate-200 bg-white hover:border-pink-200 shadow-sm'}`}>
-              <img src={item.imageUrl} alt={item.word} className="w-16 h-16 md:w-20 md:h-20 object-contain mb-3" />
-              <span className="text-2xl md:text-3xl font-bold">
-                {(() => {
-                  const chars = splitDigraphs(item.word);
-                  const focusSet = computeSpotlightFocus(item.word, page.sound);
-                  return chars.map((ch, ci) => (
-                    <span key={ci} className={focusSet.has(ci) ? 'text-pink-600' : 'text-slate-700'}>{ch}</span>
-                  ));
-                })()}
-              </span>
-            </button>
-          );
-        })}
+      {/* ── WORD CARDS RIGHT — 2x2 grid ── */}
+      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-4 md:p-8 lg:p-12 pb-8">
+        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:gap-8 w-full max-w-3xl">
+          {page.items.map((item) => {
+            const isActive = playingItem === item.word;
+            return (
+              <button
+                key={item.word}
+                onClick={async () => { setPlayingItem(item.word); await playWordAsPhonemes(item.word); setPlayingItem(null); }}
+                className={`flex flex-col items-center justify-center aspect-square p-4 md:p-6 lg:p-8
+                  rounded-3xl border-2 transition-all duration-200 select-none
+                  ${isActive
+                    ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.03] shadow-xl`
+                    : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-lg shadow-sm hover:scale-[1.02]`}`}
+              >
+                <img
+                  src={item.imageUrl}
+                  alt={item.word}
+                  className="w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 object-contain mb-3 md:mb-4 pointer-events-none"
+                />
+                <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
+                  {(() => {
+                    const chars = splitDigraphs(item.word);
+                    const focusSet = computeSpotlightFocus(item.word, page.sound);
+                    return chars.map((ch, ci) => (
+                      <span key={ci} className={focusSet.has(ci) ? theme.textAccent : 'text-slate-700'}>{ch}</span>
+                    ));
+                  })()}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
 
-// ─── Word Reading ───────────────────────────────────────────────────────────
+// ─── Word Reading — Pattern A: level-themed hero + big word tiles ───────────
 
-function WordReadingPage({ page, focusSounds }: { page: Extract<InteractivePage, { type: 'word_reading' }>; focusSounds: string[] }) {
+function WordReadingPage({ page, focusSounds, level }: { page: Extract<InteractivePage, { type: 'word_reading' }>; focusSounds: string[]; level: number }) {
+  const theme = getTheme(level);
+
+  // Scale grid cols with word count: 2 or 3 cols depending on how many words
+  const cols = page.words.length <= 4 ? 'grid-cols-2'
+             : page.words.length <= 6 ? 'grid-cols-2 md:grid-cols-3'
+             : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+
   return (
-    <div className="flex flex-col items-center justify-center h-full px-5 py-5">
-      <h2 className="text-2xl font-bold text-slate-800 mb-1">Can You Read These?</h2>
-      <p className="text-base text-slate-500 mb-8">Tap each word to hear it!</p>
-      <div className="grid grid-cols-2 gap-6 w-full max-w-md">
-        {page.words.map((w, i) => (
-          <div key={i} className="flex justify-center">
-            <TappableWord wordData={w} focusSounds={focusSounds} size="large" />
+    <div className="flex flex-col md:flex-row h-full w-full">
+      {/* ── HERO LEFT — themed sparkle anchor ── */}
+      <div className={`flex flex-col items-center justify-center md:w-2/5 lg:w-[42%] p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br ${theme.softGradient}`}>
+        <div className="relative">
+          <div className={`w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-3xl bg-gradient-to-br ${theme.heroBgIdle} shadow-xl flex items-center justify-center rotate-3`}>
+            <Sparkles className={`w-20 h-20 md:w-28 md:h-28 lg:w-40 lg:h-40 ${theme.heroText} drop-shadow-lg`} />
           </div>
-        ))}
+          <Sparkles className={`absolute -top-3 -right-3 md:-top-4 md:-right-4 lg:-top-5 lg:-right-5 w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 ${theme.textAccent} animate-pulse`} />
+        </div>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800">Can You Read These?</h2>
+        <p className={`text-base md:text-lg lg:text-xl ${theme.textAccentMuted} text-center max-w-xs font-medium`}>
+          Tap each word to hear it sounded out!
+        </p>
+      </div>
+
+      {/* ── RIGHT — big word tiles ── */}
+      <div className="flex items-center justify-center flex-1 p-6 md:p-10 lg:p-12">
+        <div className={`grid ${cols} gap-4 md:gap-6 lg:gap-8 w-full max-w-4xl`}>
+          {page.words.map((w, i) => (
+            <div
+              key={i}
+              className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-lg transition-all duration-200 py-8 md:py-10 lg:py-14 px-4 shadow-sm`}
+            >
+              <TappableWord wordData={w} focusSounds={focusSounds} size="large" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-// ─── Tricky Words (redesigned — nicer cards) ────────────────────────────────
+// ─── Tricky Words — Pattern A: purple "mascot" hero, big card grid right ────
+// Tricky-words keep purple accents (semantic convention across the app),
+// regardless of book level. Amber stars carry the "special" vibe.
 
 function TrickyWordsPage({ page }: { page: Extract<InteractivePage, { type: 'tricky_words' }> }) {
   const [playing, setPlaying] = useState<string | null>(null);
 
+  // Cards-per-row scales by word count so 3 or 6 words still fill the grid
+  const cols = page.words.length <= 4 ? 'md:grid-cols-2 lg:grid-cols-2'
+             : page.words.length <= 6 ? 'md:grid-cols-2 lg:grid-cols-3'
+             : 'md:grid-cols-3 lg:grid-cols-4';
+
   return (
-    <div className="flex flex-col items-center justify-center h-full px-5 py-5">
-      <div className="flex items-center gap-2 mb-2">
-        <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
-        <h2 className="text-2xl font-bold text-slate-800">Tricky Words</h2>
-        <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
+    <div className="flex flex-col md:flex-row h-full w-full">
+      {/* ── HERO LEFT — purple decorative anchor ── */}
+      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="relative">
+          <div className="w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full bg-gradient-to-br from-purple-200 to-purple-300 shadow-xl flex items-center justify-center">
+            <Star className="w-20 h-20 md:w-28 md:h-28 lg:w-40 lg:h-40 text-amber-400 fill-amber-400 drop-shadow-lg" />
+          </div>
+          {/* Orbiting mini stars for whimsy */}
+          <Star className="absolute -top-2 -right-2 md:-top-3 md:-right-3 lg:-top-4 lg:-right-4 w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 text-amber-300 fill-amber-300 animate-pulse" />
+          <Star className="absolute -bottom-1 -left-3 md:-bottom-2 md:-left-5 lg:-bottom-4 lg:-left-8 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-amber-200 fill-amber-200 animate-pulse" style={{ animationDelay: '0.5s' }} />
+        </div>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-purple-800">Tricky Words</h2>
+        <p className="text-base md:text-lg lg:text-xl text-purple-600 text-center max-w-xs">
+          These don't sound how they look — just know them by sight!
+        </p>
       </div>
-      <p className="text-base text-slate-500 mb-6">These words don't sound how they look!</p>
-      <div className="grid grid-cols-3 gap-4 w-full max-w-sm">
-        {page.words.map((w, i) => {
-          const isActive = playing === w.word;
-          return (
-            <button key={i}
-              onClick={() => setPlaying(isActive ? null : w.word)}
-              className={`py-5 rounded-2xl text-3xl font-bold border-2 transition-all duration-200
-                ${isActive ? 'border-purple-400 bg-purple-100 text-purple-700 scale-105 shadow-lg'
-                  : 'border-purple-200 bg-white text-slate-700 hover:border-purple-300 shadow-sm'}`}>
-              {w.display}
-            </button>
-          );
-        })}
+
+      {/* ── CARDS RIGHT — big tricky cards ── */}
+      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-10 lg:p-12">
+        <div className={`grid grid-cols-2 ${cols} gap-4 md:gap-6 lg:gap-8 w-full max-w-3xl`}>
+          {page.words.map((w, i) => {
+            const isActive = playing === w.word;
+            return (
+              <button
+                key={i}
+                onClick={() => setPlaying(isActive ? null : w.word)}
+                className={`py-6 md:py-8 lg:py-10 px-3 md:px-4 rounded-3xl border-2 font-bold transition-all duration-200 select-none
+                  text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+                  ${isActive
+                    ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-purple-200 text-purple-800 scale-[1.03] shadow-xl'
+                    : 'border-purple-200 bg-white text-slate-700 hover:border-purple-400 hover:bg-purple-50 hover:scale-[1.02] shadow-sm hover:shadow-lg'}`}
+              >
+                {w.display}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -643,12 +742,16 @@ function NonsenseWordsPage({ page, focusSounds }: { page: Extract<InteractivePag
   );
 }
 
-// ─── Comprehension Quiz ─────────────────────────────────────────────────────
+// ─── Comprehension Quiz — Kahoot-style full-width ───────────────────────────
+// Top: themed question banner with optional image + big question text.
+// Body: large answer cards (2 cols, or 3 cols when there are 3 options).
+// Level-themed highlights; wrong/right feedback in red/green regardless of level.
 
-function QuizPage({ page }: { page: Extract<InteractivePage, { type: 'quiz' }> }) {
+function QuizPage({ page, level }: { page: Extract<InteractivePage, { type: 'quiz' }>; level: number }) {
   const [qIdx, setQIdx] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [correct, setCorrect] = useState(false);
+  const theme = getTheme(level);
 
   const q = page.questions[qIdx];
   const isLast = qIdx === page.questions.length - 1;
@@ -666,41 +769,67 @@ function QuizPage({ page }: { page: Extract<InteractivePage, { type: 'quiz' }> }
     setCorrect(false);
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center h-full px-6 py-6">
-      <p className="text-sm text-pink-500 font-bold mb-2">Question {qIdx + 1} of {page.questions.length}</p>
-      <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">{q.question}</h2>
+  const optionGridCols = q.options.length === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
 
-      <div className="flex flex-col gap-3 w-full max-w-sm">
+  return (
+    <div className="flex flex-col h-full w-full px-6 md:px-12 lg:px-16 py-6 md:py-8 lg:py-10 overflow-y-auto">
+      {/* ── Question banner ── */}
+      <div className={`rounded-3xl bg-gradient-to-br ${theme.softGradient} p-6 md:p-8 lg:p-10 mb-5 md:mb-6 lg:mb-8 flex flex-col md:flex-row items-center gap-5 md:gap-8 shadow-sm flex-shrink-0`}>
+        {q.imageUrl && (
+          <img src={q.imageUrl} alt="" className="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 object-contain flex-shrink-0 rounded-2xl" />
+        )}
+        <div className="flex-1 text-center md:text-left">
+          <p className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider`}>
+            Question {qIdx + 1} of {page.questions.length}
+          </p>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800 leading-tight">
+            {q.question}
+          </h2>
+        </div>
+      </div>
+
+      {/* ── Answer cards ── */}
+      <div className={`grid gap-4 md:gap-6 lg:gap-8 w-full ${optionGridCols} flex-1 items-stretch min-h-0`}>
         {q.options.map((opt, oi) => {
           const isThis = selected === oi;
           const showCorrect = selected !== null && opt.isCorrect;
           const showWrong = isThis && !opt.isCorrect;
           return (
-            <button key={oi} onClick={() => handleSelect(oi)}
-              className={`flex items-center gap-4 px-5 py-4 rounded-2xl border-2 text-left transition-all duration-200 text-xl font-bold
-                ${showCorrect ? 'border-green-400 bg-green-50 text-green-700'
-                  : showWrong ? 'border-red-300 bg-red-50 text-red-600'
-                  : selected !== null ? 'border-slate-200 bg-slate-50 text-slate-400'
-                  : 'border-slate-200 bg-white text-slate-700 hover:border-pink-300 hover:bg-pink-50'}`}>
-              {opt.imageUrl && <img src={opt.imageUrl} alt={opt.label} className="w-10 h-10 object-contain flex-shrink-0" />}
+            <button
+              key={oi}
+              onClick={() => handleSelect(oi)}
+              className={`flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 px-6 md:px-8 py-6 md:py-8
+                rounded-3xl border-2 transition-all duration-200 font-bold select-none
+                text-2xl md:text-3xl lg:text-4xl xl:text-5xl
+                ${showCorrect
+                  ? 'border-green-400 bg-gradient-to-br from-green-50 to-green-100 text-green-700 scale-[1.02] shadow-xl'
+                  : showWrong
+                    ? 'border-red-300 bg-gradient-to-br from-red-50 to-red-100 text-red-600'
+                    : selected !== null
+                      ? 'border-slate-200 bg-slate-50 text-slate-400'
+                      : `border-slate-200 bg-white text-slate-700 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] shadow-sm`}`}
+            >
+              {opt.imageUrl && <img src={opt.imageUrl} alt="" className="w-16 h-16 md:w-20 md:h-20 lg:w-28 lg:h-28 object-contain flex-shrink-0" />}
               <span>{opt.label}</span>
-              {showCorrect && <Check className="w-6 h-6 text-green-500 ml-auto" />}
+              {showCorrect && <Check className="w-8 h-8 md:w-10 md:h-10 text-green-500 md:ml-auto" />}
             </button>
           );
         })}
       </div>
 
+      {/* ── Feedback + Next ── */}
       {selected !== null && (
-        <div className="mt-6">
+        <div className="mt-5 md:mt-6 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 flex-shrink-0">
           {correct ? (
-            <p className="text-green-600 font-bold text-lg mb-3">Well done! &#11088;</p>
+            <p className="text-green-600 font-bold text-xl md:text-2xl lg:text-3xl">Well done! &#11088;</p>
           ) : (
-            <p className="text-amber-600 font-bold text-lg mb-3">Not quite — the green one is right!</p>
+            <p className="text-amber-600 font-bold text-xl md:text-2xl lg:text-3xl">Not quite — the green one is right!</p>
           )}
           {!isLast && (
-            <button onClick={handleNext}
-              className="px-6 py-3 rounded-2xl bg-pink-500 text-white font-bold text-base hover:bg-pink-600 transition-colors">
+            <button
+              onClick={handleNext}
+              className={`px-6 md:px-8 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
+            >
               Next Question &rarr;
             </button>
           )}
@@ -710,12 +839,13 @@ function QuizPage({ page }: { page: Extract<InteractivePage, { type: 'quiz' }> }
   );
 }
 
-// ─── Spelling — drag letters into boxes ─────────────────────────────────────
+// ─── Spelling — Pattern A: image hero left, slots + tile bank right ─────────
 
-function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelling' }> }) {
+function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 'spelling' }>; level: number }) {
   const [wordIdx, setWordIdx] = useState(0);
   const w = page.words[wordIdx];
   const isLast = wordIdx === page.words.length - 1;
+  const theme = getTheme(level);
 
   // Shuffle available letters (include some distractors)
   const [available, setAvailable] = useState<string[]>([]);
@@ -726,7 +856,6 @@ function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelli
     const word = page.words[wi];
     const distractors = ['b', 'g', 'o', 'e', 'r', 'd'].filter(l => !word.letters.includes(l)).slice(0, 2);
     const all = [...word.letters, ...distractors];
-    // Shuffle
     for (let i = all.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [all[i], all[j]] = [all[j], all[i]]; }
     setAvailable(all);
     setPlaced(word.letters.map(() => null));
@@ -737,7 +866,6 @@ function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelli
 
   const handleLetterTap = (letter: string, fromIdx: number) => {
     if (isCorrect) return;
-    // Find first empty slot
     const slotIdx = placed.indexOf(null);
     if (slotIdx === -1) return;
     const newPlaced = [...placed];
@@ -746,11 +874,9 @@ function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelli
     const newAvail = [...available];
     newAvail.splice(fromIdx, 1);
     setAvailable(newAvail);
-    // Check if complete and correct
     if (!newPlaced.includes(null)) {
       setIsCorrect(newPlaced.join('') === w.word);
       if (newPlaced.join('') !== w.word) {
-        // Wrong — reset after a moment
         setTimeout(() => resetWord(wordIdx), 1200);
       }
     }
@@ -767,40 +893,64 @@ function SpellingPage({ page }: { page: Extract<InteractivePage, { type: 'spelli
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 py-6 gap-6">
-      <h2 className="text-2xl font-bold text-slate-800">Spell the Word!</h2>
-      <img src={w.imageUrl} alt={w.word} className="w-28 h-28 object-contain" />
-
-      {/* Letter slots */}
-      <div className="flex gap-3">
-        {placed.map((letter, si) => (
-          <button key={si} onClick={() => handleSlotTap(si)}
-            className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl border-3 flex items-center justify-center text-3xl md:text-4xl font-bold transition-all duration-200
-              ${letter ? (isCorrect ? 'border-green-400 bg-green-50 text-green-700' : 'border-pink-400 bg-pink-50 text-pink-700')
-                : 'border-dashed border-slate-300 bg-white text-slate-300'}`}>
-            {letter || '?'}
-          </button>
-        ))}
+    <div className="flex flex-col md:flex-row h-full w-full">
+      {/* ── HERO LEFT — word image + title ── */}
+      <div className={`flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br ${theme.softGradient}`}>
+        <img
+          src={w.imageUrl}
+          alt={w.word}
+          className="w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-contain drop-shadow-xl"
+        />
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800">Spell the Word!</h2>
+        {isCorrect && (
+          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; Correct!</p>
+        )}
       </div>
 
-      {isCorrect && <p className="text-green-600 font-bold text-xl">&#11088; Correct!</p>}
+      {/* ── RIGHT — slots + tile bank ── */}
+      <div className="flex flex-col items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-6 md:gap-8 lg:gap-10">
+        {/* Letter slots */}
+        <div className="flex gap-3 md:gap-4 lg:gap-5 flex-wrap justify-center">
+          {placed.map((letter, si) => (
+            <button
+              key={si}
+              onClick={() => handleSlotTap(si)}
+              className={`w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-[3px] flex items-center justify-center text-4xl md:text-5xl lg:text-6xl font-bold transition-all duration-200 shadow-sm
+                ${letter
+                  ? (isCorrect
+                      ? 'border-green-400 bg-green-50 text-green-700 scale-[1.02]'
+                      : `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} ${theme.heroText}`)
+                  : 'border-dashed border-slate-300 bg-white text-slate-300'}`}
+            >
+              {letter || '?'}
+            </button>
+          ))}
+        </div>
 
-      {/* Available letters */}
-      <div className="flex gap-2 flex-wrap justify-center">
-        {available.map((letter, li) => (
-          <button key={li} onClick={() => handleLetterTap(letter, li)}
-            className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-amber-100 border-2 border-amber-300 text-2xl md:text-3xl font-bold text-amber-800 hover:bg-amber-200 hover:scale-105 transition-all duration-200 shadow-sm">
-            {letter}
+        <div className="h-px w-full max-w-md bg-slate-200" />
+
+        {/* Available tiles */}
+        <div className="flex gap-3 md:gap-4 flex-wrap justify-center max-w-lg">
+          {available.map((letter, li) => (
+            <button
+              key={li}
+              onClick={() => handleLetterTap(letter, li)}
+              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-amber-100 border-2 border-amber-300 text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 hover:bg-amber-200 hover:scale-105 transition-all duration-200 shadow-md"
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+
+        {isCorrect && !isLast && (
+          <button
+            onClick={() => setWordIdx(i => i + 1)}
+            className={`px-8 md:px-10 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
+          >
+            Next Word &rarr;
           </button>
-        ))}
+        )}
       </div>
-
-      {isCorrect && !isLast && (
-        <button onClick={() => setWordIdx(i => i + 1)}
-          className="px-6 py-3 rounded-2xl bg-pink-500 text-white font-bold text-base hover:bg-pink-600 transition-colors">
-          Next Word &rarr;
-        </button>
-      )}
     </div>
   );
 }
@@ -997,15 +1147,15 @@ function CertificatePage({ page }: { page: Extract<InteractivePage, { type: 'cer
     <div className="flex flex-col items-center justify-center h-full px-6 text-center relative overflow-hidden">
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 12 }).map((_, i) => (
+          {Array.from({ length: 30 }).map((_, i) => (
             <div key={i} className="absolute w-3 h-3 rounded-sm animate-bounce"
               style={{ left: `${Math.random()*100}%`, top: `${Math.random()*100}%`,
                 backgroundColor: ['#e91e63','#2196f3','#4caf50','#ff9800','#9c27b0','#ffeb3b'][i%6],
-                animationDelay: `${Math.random()*1.5}s`, animationDuration: `${0.8+Math.random()*0.6}s`, opacity: 0.6 }} />
+                animationDelay: `${Math.random()*2}s`, animationDuration: `${1+Math.random()*2}s`, opacity: 0.8 }} />
           ))}
         </div>
       )}
-      <div className="bg-white rounded-3xl border-2 border-pink-400 p-10 shadow-xl max-w-sm w-full">
+      <div className="bg-white rounded-3xl border-4 border-pink-400 p-10 shadow-2xl max-w-sm w-full">
         <div className="text-6xl mb-4">&#11088;</div>
         <h1 className="text-3xl font-bold text-pink-600 mb-2">I Read a Book!</h1>
         <p className="text-base text-slate-500 mb-3">Reading Star Certificate</p>
@@ -1080,15 +1230,15 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
       case 'sound_grid': return <SoundGridPage page={p} level={book.level} />;
       case 'vocab_preview': return <VocabPreviewPage page={p} />;
       case 'story': return <StoryPage page={p} focusSounds={fs} level={book.level} />;
-      case 'sound_spotlight': return <SoundSpotlightPage page={p} />;
-      case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} />;
+      case 'sound_spotlight': return <SoundSpotlightPage page={p} level={book.level} />;
+      case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} level={book.level} />;
       case 'tricky_words': return <TrickyWordsPage page={p} />;
       case 'writing_practice': return <WritingPracticePage page={p} />;
       case 'drawing': return <DrawingCanvas prompt={p.prompt} />;
       case 'nonsense_words': return <NonsenseWordsPage page={p} focusSounds={fs} />;
       case 'story_ordering': return <StoryOrderingPage page={p} />;
-      case 'quiz': return <QuizPage page={p} />;
-      case 'spelling': return <SpellingPage page={p} />;
+      case 'quiz': return <QuizPage page={p} level={book.level} />;
+      case 'spelling': return <SpellingPage page={p} level={book.level} />;
       case 'certificate': return <CertificatePage page={p} />;
       default: return null;
     }
