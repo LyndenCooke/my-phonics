@@ -17,11 +17,14 @@ export interface BookStamps {
   count: number;            // 0–5
   lastReadDate: string;     // YYYY-MM-DD (local time)
   readDates: string[];      // log of unique read dates
+  /** Readiness-check results keyed by the stamp number they were taken
+   *  with. Only stamps 3, 4, 5 have a check-in; 1 and 2 are warm-up. */
+  checkInResults: Record<number, boolean>;
 }
 
 type StampStore = Record<string, BookStamps>;
 
-const EMPTY: BookStamps = { count: 0, lastReadDate: '', readDates: [] };
+const EMPTY: BookStamps = { count: 0, lastReadDate: '', readDates: [], checkInResults: {} };
 
 /** Local date as YYYY-MM-DD — uses local timezone so "tomorrow" means the
  *  child's local tomorrow, not UTC's. */
@@ -50,29 +53,58 @@ function writeStore(store: StampStore): void {
 
 export function getStamps(bookId: string): BookStamps {
   const store = readStore();
-  return store[bookId] ?? EMPTY;
+  const raw = store[bookId];
+  if (!raw) return EMPTY;
+  // Migrate older records that pre-date checkInResults
+  return { ...EMPTY, ...raw, checkInResults: raw.checkInResults ?? {} };
+}
+
+/** Returns true if the next stamp this child would earn should gate on a
+ *  readiness check-in. Stamps 3, 4, 5 gate; 1 and 2 are free warm-ups. */
+export function needsCheckIn(bookId: string): boolean {
+  const current = getStamps(bookId);
+  if (current.lastReadDate === todayIso()) return false; // already earned today, no gate
+  const nextStamp = Math.min(MAX_STAMPS, current.count + 1);
+  return nextStamp >= 3;
 }
 
 /** Award a stamp for today's reading if not already earned today.
- *  Returns the new state and whether a stamp was actually awarded on this
- *  call (so the UI can decide whether to celebrate or gently remind). */
-export function awardStamp(bookId: string): { state: BookStamps; awardedNow: boolean } {
+ *  Optionally records whether the readiness check-in was passed (for
+ *  stamps 3+; ignored for 1 and 2). Returns the new state and whether a
+ *  stamp was actually awarded on this call. */
+export function awardStamp(
+  bookId: string,
+  opts?: { checkInPassed?: boolean }
+): { state: BookStamps; awardedNow: boolean } {
   const store = readStore();
   const current = store[bookId] ?? EMPTY;
   const today = todayIso();
 
   if (current.lastReadDate === today) {
-    return { state: current, awardedNow: false };
+    return { state: { ...EMPTY, ...current, checkInResults: current.checkInResults ?? {} }, awardedNow: false };
   }
 
   const newCount = Math.min(MAX_STAMPS, current.count + 1);
   const newDates = current.readDates.includes(today)
     ? current.readDates
     : [...current.readDates, today];
-  const next: BookStamps = { count: newCount, lastReadDate: today, readDates: newDates };
+  const checkInResults = { ...(current.checkInResults ?? {}) };
+  if (opts?.checkInPassed !== undefined && newCount >= 3) {
+    checkInResults[newCount] = opts.checkInPassed;
+  }
+  const next: BookStamps = { count: newCount, lastReadDate: today, readDates: newDates, checkInResults };
   store[bookId] = next;
   writeStore(store);
   return { state: next, awardedNow: true };
+}
+
+/** True when all three gated check-ins (stamps 3, 4, 5) were passed. Used
+ *  to unlock the "Ready to Move Up!" badge on the champion certificate. */
+export function isReadyToMoveUp(stamps: BookStamps): boolean {
+  if (stamps.count < MAX_STAMPS) return false;
+  return stamps.checkInResults[3] === true
+      && stamps.checkInResults[4] === true
+      && stamps.checkInResults[5] === true;
 }
 
 /** Dev helper — reset stamps for a specific book (used by UI "start over"). */

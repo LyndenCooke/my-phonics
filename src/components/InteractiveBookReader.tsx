@@ -8,7 +8,7 @@ import {
   type OrderingItem, type QuizQuestion, type SpellingWord,
 } from '@/lib/interactiveBookData';
 import TappableWord from '@/components/interactive/TappableWord';
-import { awardStamp, getStamps, MAX_STAMPS, type BookStamps } from '@/lib/stamps';
+import { awardStamp, getStamps, isReadyToMoveUp, MAX_STAMPS, needsCheckIn, type BookStamps } from '@/lib/stamps';
 
 // ─── Audio helpers ──────────────────────────────────────────────────────────
 
@@ -1183,28 +1183,155 @@ function WritingCanvas() {
 // to build genuine fluency, and gives parents a visible "N of 5" signal so
 // they don't mistake "read once" for "mastered".
 
-function CertificatePage({ page, level, bookId }: { page: Extract<InteractivePage, { type: 'certificate' }>; level: number; bookId: string }) {
+// ─── Check-In Phase (readiness gate for stamps 3, 4, 5) ─────────────────────
+// Shows 2 random questions from the book's existing quiz pool before
+// awarding the stamp. Not a hard gate — stamp still awards either way —
+// but pass/fail is tracked and fed into the "Ready to Move Up!" signal
+// that unlocks on stamp 5 only if all three check-ins were passed.
+
+function CheckInPhase({
+  questions,
+  theme,
+  stampNumber,
+  onComplete,
+}: {
+  questions: QuizQuestion[];
+  theme: LevelTheme;
+  stampNumber: number;
+  onComplete: (passed: boolean) => void;
+}) {
+  // Shuffle and take up to 2 — randomness means rereads see variation
+  // even without new content (backlog item to author larger pools).
+  const picked = useRef<QuizQuestion[]>();
+  if (!picked.current) {
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    picked.current = shuffled.slice(0, Math.min(2, shuffled.length));
+  }
+  const qs = picked.current;
+
+  const [qIdx, setQIdx] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const q = qs[qIdx];
+  const isLast = qIdx === qs.length - 1;
+
+  const handleSelect = (oi: number) => {
+    if (selected !== null) return;
+    setSelected(oi);
+    if (q.options[oi].isCorrect) setCorrectCount(c => c + 1);
+    // Auto-advance after 1.4s so the child sees feedback
+    setTimeout(() => {
+      if (isLast) {
+        const finalCorrect = correctCount + (q.options[oi].isCorrect ? 1 : 0);
+        onComplete(finalCorrect === qs.length);
+      } else {
+        setQIdx(i => i + 1);
+        setSelected(null);
+      }
+    }, 1400);
+  };
+
+  return (
+    <div className="flex flex-col h-full w-full px-6 md:px-12 lg:px-16 py-6 md:py-8 lg:py-10 overflow-y-auto">
+      <div className={`rounded-3xl bg-gradient-to-br ${theme.softGradient} p-5 md:p-7 lg:p-9 mb-5 md:mb-6 flex flex-col md:flex-row items-center gap-5 md:gap-8 shadow-sm flex-shrink-0`}>
+        <div className="text-5xl md:text-6xl lg:text-7xl flex-shrink-0">&#x1F9E0;</div>
+        <div className="flex-1 text-center md:text-left">
+          <p className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider`}>
+            Check-in {qIdx + 1} of {qs.length} &middot; Day {stampNumber}
+          </p>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800 leading-tight">
+            {q.question}
+          </h2>
+        </div>
+      </div>
+
+      <div className={`grid gap-4 md:gap-6 lg:gap-8 w-full ${q.options.length === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'} flex-1 items-stretch min-h-0`}>
+        {q.options.map((opt, oi) => {
+          const isThis = selected === oi;
+          const showCorrect = selected !== null && opt.isCorrect;
+          const showWrong = isThis && !opt.isCorrect;
+          return (
+            <button
+              key={oi}
+              onClick={() => handleSelect(oi)}
+              className={`flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 px-6 md:px-8 py-6 md:py-8
+                rounded-3xl border-2 transition-all duration-200 font-bold select-none
+                text-2xl md:text-3xl lg:text-4xl xl:text-5xl
+                ${showCorrect
+                  ? 'border-green-400 bg-gradient-to-br from-green-50 to-green-100 text-green-700 scale-[1.02] shadow-xl'
+                  : showWrong
+                    ? 'border-red-300 bg-gradient-to-br from-red-50 to-red-100 text-red-600'
+                    : selected !== null
+                      ? 'border-slate-200 bg-slate-50 text-slate-400'
+                      : `border-slate-200 bg-white text-slate-700 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] shadow-sm`}`}
+            >
+              {opt.imageUrl && <img src={opt.imageUrl} alt="" className="w-16 h-16 md:w-20 md:h-20 lg:w-28 lg:h-28 object-contain flex-shrink-0" />}
+              <span>{opt.label}</span>
+              {showCorrect && <Check className="w-8 h-8 md:w-10 md:h-10 text-green-500 md:ml-auto" />}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── Certificate — stamp progress + gated Reading-Champion award ────────────
+// Each calendar day's first completion earns one stamp, up to MAX_STAMPS (5).
+// Stamps 1-2 are free warm-ups; stamps 3-5 gate on a 2-question check-in
+// from the book's existing quiz pool. Passing all three check-ins unlocks
+// a "Ready to Move Up!" confirmation on the champion certificate — the
+// signal parents and teachers need to know the child is actually fluent
+// at this level, not just rushing through.
+
+function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract<InteractivePage, { type: 'certificate' }>; level: number; bookId: string; quizQuestions: QuizQuestion[] }) {
   const theme = getTheme(level);
   const [stampState, setStampState] = useState<BookStamps>(() => getStamps(bookId));
   const [awardedNow, setAwardedNow] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const hasAwarded = useRef(false);
+  const hasInitialised = useRef(false);
 
-  useEffect(() => {
-    // Guard against double-award in StrictMode / page revisit within same mount
-    if (hasAwarded.current) return;
-    hasAwarded.current = true;
-    const result = awardStamp(bookId);
+  // Phase: 'checking' shows the CheckInPhase first; 'done' shows the
+  // certificate. For stamps 1-2 (or when check-in isn't applicable),
+  // we go straight to 'done'.
+  const initialGate = useRef(needsCheckIn(bookId) && quizQuestions.length >= 1);
+  const [phase, setPhase] = useState<'checking' | 'done'>(initialGate.current ? 'checking' : 'done');
+
+  const awardAndCelebrate = useCallback((checkInPassed?: boolean) => {
+    const result = awardStamp(bookId, checkInPassed !== undefined ? { checkInPassed } : undefined);
     setStampState(result.state);
     setAwardedNow(result.awardedNow);
+    setPhase('done');
     if (result.awardedNow) {
       setShowConfetti(true);
-      const t = setTimeout(() => setShowConfetti(false), 3000);
-      return () => clearTimeout(t);
+      setTimeout(() => setShowConfetti(false), 3000);
     }
   }, [bookId]);
 
+  useEffect(() => {
+    // Guard against double-award in StrictMode / page revisit within same mount
+    if (hasInitialised.current) return;
+    hasInitialised.current = true;
+    // If there's no check-in gate, award immediately
+    if (!initialGate.current) awardAndCelebrate();
+  }, [awardAndCelebrate]);
+
+  // ── Phase 1: readiness check-in ───────────────────────────────────────
+  if (phase === 'checking') {
+    const nextStamp = Math.min(MAX_STAMPS, stampState.count + 1);
+    return (
+      <CheckInPhase
+        questions={quizQuestions}
+        theme={theme}
+        stampNumber={nextStamp}
+        onComplete={(passed) => awardAndCelebrate(passed)}
+      />
+    );
+  }
+
+  // ── Phase 2: stamp progress / champion certificate ────────────────────
   const isChampion = stampState.count >= MAX_STAMPS;
+  const readyToMoveUp = isReadyToMoveUp(stampState);
   const confettiCount = isChampion ? 30 : 14;
   const title = isChampion ? 'Reading Champion!'
     : awardedNow ? 'Great Reading!'
@@ -1238,31 +1365,55 @@ function CertificatePage({ page, level, bookId }: { page: Extract<InteractivePag
           {Array.from({ length: MAX_STAMPS }).map((_, i) => {
             const earned = i < stampState.count;
             const justEarned = awardedNow && i === stampState.count - 1;
+            const stampNum = i + 1;
+            const checkInPassed = stampState.checkInResults[stampNum];
             return (
               <div key={i} className="flex flex-col items-center gap-2">
-                <div className={`w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex items-center justify-center transition-all duration-300
+                <div className={`relative w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex items-center justify-center transition-all duration-300
                   ${earned
                     ? `bg-gradient-to-br ${theme.heroBgActive} shadow-xl ${justEarned ? 'ring-4 ring-amber-300 scale-110' : ''}`
                     : 'border-2 border-dashed border-slate-300 bg-slate-50'}`}>
                   {earned ? (
                     <Star className={`w-7 h-7 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 text-white fill-white drop-shadow ${justEarned ? 'animate-pulse' : ''}`} />
                   ) : (
-                    <span className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-300">{i + 1}</span>
+                    <span className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-300">{stampNum}</span>
+                  )}
+                  {/* Check-in indicator — small green tick or red X in the corner for stamps 3+ */}
+                  {earned && stampNum >= 3 && checkInPassed !== undefined && (
+                    <span
+                      className={`absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center text-xs md:text-sm font-bold shadow
+                        ${checkInPassed ? 'bg-green-500 text-white' : 'bg-amber-400 text-white'}`}
+                      title={checkInPassed ? 'Check-in passed' : 'Check-in — keep practising'}
+                    >
+                      {checkInPassed ? '\u2713' : '\u2715'}
+                    </span>
                   )}
                 </div>
                 <span className={`text-[10px] md:text-xs lg:text-sm font-medium ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
-                  Day {i + 1}
+                  Day {stampNum}
                 </span>
               </div>
             );
           })}
         </div>
 
+        {/* ── Ready-to-move-up badge (champion only, all check-ins passed) ── */}
+        {isChampion && readyToMoveUp && (
+          <div className="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-gradient-to-r from-amber-200 to-amber-300 border-2 border-amber-400 shadow-lg">
+            <span className="text-2xl md:text-3xl">&#x1F680;</span>
+            <span className="text-base md:text-lg lg:text-xl font-bold text-amber-800">Ready to Move Up!</span>
+          </div>
+        )}
+
         {/* ── Status message ── */}
-        <div className="mt-3 md:mt-4 max-w-xl">
-          {isChampion ? (
+        <div className="mt-2 md:mt-3 max-w-xl">
+          {isChampion && readyToMoveUp ? (
             <p className="text-lg md:text-xl lg:text-2xl font-bold text-amber-700">
-              You read this book 5 times — you've mastered it! &#11088;
+              5 reads, 3 check-ins passed. You've really mastered this book!
+            </p>
+          ) : isChampion ? (
+            <p className="text-lg md:text-xl lg:text-2xl font-bold text-amber-700">
+              5 reads complete! A few more reads at this level will build real fluency.
             </p>
           ) : awardedNow ? (
             <p className="text-base md:text-lg lg:text-xl text-slate-600">
@@ -1338,6 +1489,13 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
 
   const isFirst = currentPage === 0, isLast = currentPage === totalPages - 1;
 
+  // Quiz questions are pulled once per book so the CertificatePage check-in
+  // can sample from the same pool the child already saw during the main read.
+  const quizQuestions = (() => {
+    const quizPage = pages.find((q): q is Extract<InteractivePage, { type: 'quiz' }> => q.type === 'quiz');
+    return quizPage?.questions ?? [];
+  })();
+
   const renderPage = () => {
     const p = pages[currentPage]; if (!p) return null;
     const fs = book.focusSounds;
@@ -1355,7 +1513,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
       case 'story_ordering': return <StoryOrderingPage page={p} />;
       case 'quiz': return <QuizPage page={p} level={book.level} />;
       case 'spelling': return <SpellingPage page={p} level={book.level} />;
-      case 'certificate': return <CertificatePage page={p} level={book.level} bookId={book.subLevel} />;
+      case 'certificate': return <CertificatePage page={p} level={book.level} bookId={book.subLevel} quizQuestions={quizQuestions} />;
       default: return null;
     }
   };
