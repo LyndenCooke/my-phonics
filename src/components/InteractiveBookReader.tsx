@@ -143,17 +143,23 @@ const LEVEL_THEME: Record<number, LevelTheme> = {
 
 const getTheme = (level: number): LevelTheme => LEVEL_THEME[level] ?? LEVEL_THEME[1];
 
-// ─── Cover ──────────────────────────────────────────────────────────────────
+// ─── Cover — Pattern C: dramatic hero illustration ──────────────────────────
+// Illustration takes ~45% of vertical real estate; title typography scales
+// big on whiteboard viewports. Swipe hint nudges upward to avoid competing
+// with the title.
 
-function CoverPage({ page }: { page: Extract<InteractivePage, { type: 'cover' }> }) {
+function CoverPage({ page, level }: { page: Extract<InteractivePage, { type: 'cover' }>; level: number }) {
+  const theme = getTheme(level);
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 text-center">
-      <div className="w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-xl mb-6 flex-shrink-0">
+    <div className="flex flex-col items-center justify-center h-full px-6 md:px-10 lg:px-16 text-center gap-5 md:gap-7 lg:gap-9">
+      <div className="w-64 h-64 md:w-80 md:h-80 lg:w-[26rem] lg:h-[26rem] xl:w-[32rem] xl:h-[32rem] rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 ring-4 ring-white/70">
         <img src={page.imageUrl} alt={page.title} className="w-full h-full object-cover" draggable={false} />
       </div>
-      <h1 className="text-4xl md:text-5xl font-bold text-slate-800">{page.title}</h1>
-      <p className="text-xl text-slate-500 mt-2">{page.subtitle}</p>
-      <p className="text-base text-pink-500 mt-6 animate-bounce">Swipe to start &rarr;</p>
+      <div className="flex flex-col items-center gap-2 md:gap-3">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-800 leading-tight max-w-4xl">{page.title}</h1>
+        <p className={`text-lg md:text-xl lg:text-2xl font-semibold ${theme.textAccentMuted} uppercase tracking-wider`}>{page.subtitle}</p>
+      </div>
+      <p className={`text-base md:text-lg lg:text-xl font-bold ${theme.textAccent} animate-bounce mt-2`}>Swipe to start &rarr;</p>
     </div>
   );
 }
@@ -162,10 +168,10 @@ function CoverPage({ page }: { page: Extract<InteractivePage, { type: 'cover' }>
 
 function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_grid' }>; level: number }) {
   const [playingGroup, setPlayingGroup] = useState<string | null>(null);
+  const theme = getTheme(level);
 
   const handleSoundTap = async (group: string) => {
     setPlayingGroup(group);
-    // Play the first (primary) grapheme in the group
     await playPhoneme(group.split('/')[0]);
     setPlayingGroup(null);
   };
@@ -177,18 +183,25 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
     !g.split('/').some(s => page.focusSounds.includes(s))
   );
 
+  // Focus-row columns scale to count so 2 sounds (L3+) get wide hero cards
+  // and 6 sounds (L1.1) still fit on one row without the last one clipping.
+  const focusCols = focusGroups.length <= 2 ? 'grid-cols-2'
+                  : focusGroups.length <= 3 ? 'grid-cols-3'
+                  : focusGroups.length <= 4 ? 'grid-cols-2 md:grid-cols-4'
+                  : 'grid-cols-3 md:grid-cols-6';
+
   return (
-    <div className="flex flex-col h-full px-5 py-5 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
+    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-5 md:py-8 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
       {/* ── New sounds (focus) ── */}
       <div className="flex items-center gap-2 mb-1">
-        <Sparkles className="w-5 h-5 text-pink-500" />
-        <h2 className="text-2xl font-extrabold text-slate-800">New sounds in this book</h2>
+        <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${theme.textAccentMuted}`} />
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">New sounds in this book</h2>
       </div>
-      <p className="text-sm text-slate-500 mb-4">
+      <p className="text-sm md:text-base lg:text-lg text-slate-500 mb-4 md:mb-6">
         Tap each one to hear it. These are the sounds your child will practise.
       </p>
 
-      <div className={`grid gap-3 mb-7 ${focusGroups.length <= 3 ? 'grid-cols-3' : 'grid-cols-3 sm:grid-cols-6'}`}>
+      <div className={`grid ${focusCols} gap-3 md:gap-4 lg:gap-5 mb-7 md:mb-10`}>
         {focusGroups.map((group) => {
           const sounds = group.split('/');
           const isPlaying = playingGroup === group;
@@ -197,14 +210,14 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
               key={group}
               onClick={() => handleSoundTap(group)}
               aria-label={`Play sound ${sounds.join(' or ')}`}
-              className={`relative py-5 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
+              className={`relative py-6 md:py-8 lg:py-10 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
                 ${isPlaying
-                  ? 'bg-gradient-to-br from-pink-400 to-pink-600 text-white scale-[1.08] ring-4 ring-pink-200'
-                  : 'bg-gradient-to-br from-pink-50 to-pink-100 text-pink-700 border-2 border-pink-300 hover:border-pink-400 hover:from-pink-100 hover:to-pink-200'}`}
+                  ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
+                  : `bg-gradient-to-br ${theme.heroBgIdle} ${theme.heroText} hover:shadow-xl hover:scale-[1.02]`}`}
             >
-              <span className="block text-3xl sm:text-4xl">{sounds.join(' ')}</span>
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">{sounds.join(' ')}</span>
               {isPlaying && (
-                <Volume2 className="absolute top-2 right-2 w-4 h-4 text-white/90" />
+                <Volume2 className="absolute top-3 right-3 w-4 h-4 md:w-5 md:h-5 text-white/90" />
               )}
             </button>
           );
@@ -216,16 +229,16 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
         <>
           <div className="flex items-center gap-2 mb-1 mt-2">
             <div className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-xs md:text-sm font-semibold uppercase tracking-wider text-slate-400">
               Sounds you've seen before
             </span>
             <div className="h-px flex-1 bg-slate-200" />
           </div>
-          <p className="text-xs text-slate-400 mb-3 text-center">
+          <p className="text-xs md:text-sm text-slate-400 mb-3 text-center">
             Tap to remind yourself
           </p>
 
-          <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 pb-4">
+          <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5 md:gap-2 pb-4">
             {reviewGroups.map((group) => {
               const sounds = group.split('/');
               const isPlaying = playingGroup === group;
@@ -234,9 +247,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
                   key={group}
                   onClick={() => handleSoundTap(group)}
                   aria-label={`Play sound ${sounds.join(' or ')}`}
-                  className={`py-2.5 px-1 rounded-lg text-sm font-bold transition-all duration-200 leading-tight active:scale-95
+                  className={`py-2.5 md:py-3 px-1 rounded-lg text-sm md:text-base font-bold transition-all duration-200 leading-tight active:scale-95
                     ${isPlaying
-                      ? 'bg-pink-500 text-white scale-110 shadow'
+                      ? `${theme.solidBg} text-white scale-110 shadow`
                       : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-700'}`}
                 >
                   {sounds.join(' / ')}
@@ -252,8 +265,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
 
 // ─── Vocab Preview ──────────────────────────────────────────────────────────
 
-function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vocab_preview' }> }) {
+function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { type: 'vocab_preview' }>; level: number }) {
   const [activeWord, setActiveWord] = useState<string | null>(null);
+  const theme = getTheme(level);
 
   const handleCardTap = async (word: string) => {
     setActiveWord(word);
@@ -261,16 +275,22 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
     setActiveWord(null);
   };
 
+  // Full-bleed grid scales cols with viewport so 9-word L1.1 fits cleanly
+  // at 1920 without clipping or orphan rows.
+  const cols = page.words.length <= 6
+    ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6'
+    : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
+
   return (
-    <div className="flex flex-col h-full px-5 py-4 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
+    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-4 md:py-8 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
       <div className="flex items-center gap-2 mb-1">
-        <BookOpenIcon />
-        <h2 className="text-2xl font-extrabold text-slate-800">Story Words</h2>
+        <BookOpenIcon className={theme.textAccentMuted} />
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">Story Words</h2>
       </div>
-      <p className="text-sm text-slate-500 mb-4">
+      <p className="text-sm md:text-base lg:text-lg text-slate-500 mb-4 md:mb-6">
         Tap a card to hear the word. You'll meet all of these in the story.
       </p>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className={`grid ${cols} gap-4 md:gap-5 lg:gap-6`}>
         {page.words.map((w, i) => {
           const isActive = activeWord === w.word;
           return (
@@ -290,15 +310,15 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
                   handleCardTap(w.word);
                 }
               }}
-              className={`flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
+              className={`flex flex-col items-center p-4 md:p-5 lg:p-6 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
                 ${isActive
-                  ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-pink-100 scale-[1.04] shadow-lg ring-4 ring-pink-200'
-                  : 'border-slate-200 bg-white hover:border-pink-200 hover:shadow-md shadow-sm'}`}
+                  ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.04] shadow-lg`
+                  : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-md shadow-sm`}`}
             >
               <img
                 src={`/images/words/${w.word}.png`}
                 alt=""
-                className="w-20 h-20 object-contain mb-2 pointer-events-none"
+                className="w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 object-contain mb-2 md:mb-3 pointer-events-none"
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
               <div className="pointer-events-none">
@@ -316,9 +336,9 @@ function VocabPreviewPage({ page }: { page: Extract<InteractivePage, { type: 'vo
   );
 }
 
-function BookOpenIcon() {
+function BookOpenIcon({ className = 'text-pink-500' }: { className?: string }) {
   return (
-    <svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+    <svg className={`w-5 h-5 md:w-6 md:h-6 ${className}`} fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zm20 0h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
     </svg>
   );
@@ -513,9 +533,11 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         {/* Mobile top spacer — pushes text to vertical centre between header and button */}
         <div className="flex-1 md:hidden" />
 
-        {/* Text */}
-        <div className={`flex items-center justify-center ${textPad} py-2 md:py-4 flex-shrink-0`}>
-          <div className={`flex flex-wrap items-end justify-center ${gapClass}`}>
+        {/* Text — capped at a comfortable reading measure so long sentences
+             wrap inside the column instead of clipping the right edge.
+             max-w-* progressively wider at higher breakpoints. */}
+        <div className={`flex items-center justify-center ${textPad} py-2 md:py-4 flex-shrink-0 w-full`}>
+          <div className={`flex flex-wrap items-end justify-center ${gapClass} max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl`}>
             {page.words.map((w, i) => {
               const nh = narrationState && narrationState.wordIdx === i
                 ? { wholeWord: narrationState.wholeWord }
@@ -723,21 +745,37 @@ function TrickyWordsPage({ page }: { page: Extract<InteractivePage, { type: 'tri
 
 // ─── Nonsense / Alien Words (redesigned — boxed words) ──────────────────────
 
+// Nonsense/alien words stay green across all levels — green is the semantic
+// "not a real word, just sound it out" signal, mirroring how tricky words
+// keep purple. Alien character images per word are a follow-up (backlog #2).
 function NonsenseWordsPage({ page, focusSounds }: { page: Extract<InteractivePage, { type: 'nonsense_words' }>; focusSounds: string[] }) {
+  // Scale grid cols with word count so 6-word books breathe and 12-word
+  // books still fit without horizontal overflow.
+  const cols = page.words.length <= 6 ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3'
+             : page.words.length <= 9 ? 'grid-cols-3 md:grid-cols-3 lg:grid-cols-3'
+             : 'grid-cols-3 md:grid-cols-4 lg:grid-cols-4';
+
   return (
-    <div className="flex flex-col items-center justify-center h-full px-5 py-5">
-      <div className="flex items-center gap-2 mb-1">
-        <Sparkles className="w-6 h-6 text-green-500" />
-        <h2 className="text-2xl font-bold text-slate-800">Alien Words</h2>
-        <Sparkles className="w-6 h-6 text-green-500" />
+    <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-5 md:py-8">
+      <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 flex-shrink-0">
+        <Sparkles className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-green-500" />
+        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800">Alien Words</h2>
+        <Sparkles className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-green-500" />
       </div>
-      <p className="text-base text-slate-500 mb-6 text-center">Not real words! Sound them out.</p>
-      <div className="grid grid-cols-3 gap-3 w-full max-w-md">
-        {page.words.map((w, i) => (
-          <div key={i} className="bg-green-50 border-2 border-green-200 rounded-2xl p-3 flex justify-center shadow-sm hover:border-green-300 transition-colors">
-            <TappableWord wordData={w} focusSounds={focusSounds} />
-          </div>
-        ))}
+      <p className="text-base md:text-lg lg:text-xl text-slate-500 mb-5 md:mb-8 text-center flex-shrink-0">
+        Not real words — just sound them out!
+      </p>
+      <div className="flex-1 flex items-center justify-center min-h-0">
+        <div className={`grid ${cols} gap-4 md:gap-5 lg:gap-6 w-full max-w-5xl`}>
+          {page.words.map((w, i) => (
+            <div
+              key={i}
+              className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl px-4 py-6 md:py-8 lg:py-10 flex justify-center shadow-sm hover:border-green-400 hover:shadow-lg transition-all duration-200"
+            >
+              <TappableWord wordData={w} focusSounds={focusSounds} size="large" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1304,9 +1342,9 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
     const p = pages[currentPage]; if (!p) return null;
     const fs = book.focusSounds;
     switch (p.type) {
-      case 'cover': return <CoverPage page={p} />;
+      case 'cover': return <CoverPage page={p} level={book.level} />;
       case 'sound_grid': return <SoundGridPage page={p} level={book.level} />;
-      case 'vocab_preview': return <VocabPreviewPage page={p} />;
+      case 'vocab_preview': return <VocabPreviewPage page={p} level={book.level} />;
       case 'story': return <StoryPage page={p} focusSounds={fs} level={book.level} />;
       case 'sound_spotlight': return <SoundSpotlightPage page={p} level={book.level} />;
       case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} level={book.level} />;
