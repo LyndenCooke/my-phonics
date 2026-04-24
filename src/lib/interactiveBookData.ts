@@ -36,6 +36,30 @@ export interface SpellingWord {
   letters: string[];      // The letters to drag into place
 }
 
+// ─── Grammar ─────────────────────────────────────────────────────────────
+// A single generic `grammar` page type that carries a discriminated variant.
+// Variants are added per level: L2 ships with `word_order`; L3-L6 variants
+// (sentence_type, find_describing_word, past_or_now, join_with) slot into
+// the same page type by extending the variant union.
+
+export interface GrammarWordOrderItem {
+  /** The correct sentence, split by word/punctuation. The renderer
+   *  shuffles these for display and the child drags/taps them back
+   *  into the right order. */
+  correctWords: string[];
+  /** Optional illustration — typically the story page that shows the
+   *  scene the sentence describes, e.g. '/illustrations/2_1/page3.png'. */
+  imageUrl?: string;
+}
+
+export type GrammarPage =
+  | {
+      type: 'grammar';
+      variant: 'word_order';
+      title?: string;           // default: "Build the sentence!"
+      items: GrammarWordOrderItem[];
+    };
+
 export type InteractivePage =
   | { type: 'cover'; title: string; subtitle: string; imageUrl: string }
   | {
@@ -55,6 +79,7 @@ export type InteractivePage =
   | { type: 'story_ordering'; items: OrderingItem[] }
   | { type: 'quiz'; questions: QuizQuestion[] }
   | { type: 'spelling'; words: SpellingWord[] }
+  | GrammarPage
   | { type: 'certificate'; bookTitle: string };
 
 // Helper: auto-split a simple CVC word into single-letter phonemes

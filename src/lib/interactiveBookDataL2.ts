@@ -173,6 +173,11 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
 
   { type: 'writing_practice', letters: ['ay', 'ee', 'igh'] },
 
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['The', 'day', 'ends.'], imageUrl: '/illustrations/2_1/page1.png' },
+    { correctWords: ['I', 'see', 'the', 'moon.'], imageUrl: '/illustrations/2_1/page5.png' },
+  ]},
+
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_1/page1.png', label: 'The day ends. I sigh.', correctIndex: 0 },
     { imageUrl: '/illustrations/2_1/page2.png', label: 'We go out. It is night.', correctIndex: 1 },
@@ -344,6 +349,11 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
   ]},
 
   { type: 'writing_practice', letters: ['ow', 'oo'] },
+
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['I', 'see', 'the', 'owl.'], imageUrl: '/illustrations/2_2/page7.png' },
+    { correctWords: ['The', 'zoo', 'is', 'cool.'], imageUrl: '/illustrations/2_2/page4.png' },
+  ]},
 
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_2/page1.png', label: 'I go to the zoo!', correctIndex: 0 },
@@ -522,6 +532,11 @@ export const BOOK_L2_3_PAGES: InteractivePage[] = [
   ]},
 
   { type: 'writing_practice', letters: ['ar', 'or'] },
+
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['We', 'go', 'to', 'the', 'farm.'], imageUrl: '/illustrations/2_3/page1.png' },
+    { correctWords: ['I', 'hug', 'the', 'kid.'], imageUrl: '/illustrations/2_3/page8.png' },
+  ]},
 
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_3/page1.png', label: 'We go far to a farm.', correctIndex: 0 },
@@ -709,6 +724,11 @@ export const BOOK_L2_4_PAGES: InteractivePage[] = [
   ]},
 
   { type: 'writing_practice', letters: ['air', 'ir'] },
+
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['I', 'go', 'to', 'the', 'fair.'], imageUrl: '/illustrations/2_4/page1.png' },
+    { correctWords: ['I', 'win', 'a', 'pair.'], imageUrl: '/illustrations/2_4/page4.png' },
+  ]},
 
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_4/page1.png', label: 'I go to the fair!', correctIndex: 0 },
@@ -899,6 +919,11 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
 
   { type: 'writing_practice', letters: ['ou', 'oy'] },
 
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['The', 'toy', 'is', 'loud.'], imageUrl: '/illustrations/2_5/page2.png' },
+    { correctWords: ['Mum', 'found', 'my', 'toy.'], imageUrl: '/illustrations/2_5/page7.png' },
+  ]},
+
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_5/page1.png', label: 'Zoom! Round and round!', correctIndex: 0 },
     { imageUrl: '/illustrations/2_5/page2.png', label: 'It got loud!', correctIndex: 1 },
@@ -1085,6 +1110,11 @@ export const BOOK_L2_6_PAGES: InteractivePage[] = [
   ]},
 
   { type: 'writing_practice', letters: ['igh', 'oo'] },
+
+  { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
+    { correctWords: ['I', 'see', 'the', 'lamps.'], imageUrl: '/illustrations/2_6/page2.png' },
+    { correctWords: ['The', 'moon', 'is', 'round.'], imageUrl: '/illustrations/2_6/page7.png' },
+  ]},
 
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/2_6/page1.png', label: 'It is night! We go to the souq.', correctIndex: 0 },

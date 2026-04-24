@@ -6,6 +6,7 @@ import {
   INTERACTIVE_BOOKS,
   type InteractivePage, type StoryWord, type SpotlightItem,
   type OrderingItem, type QuizQuestion, type SpellingWord,
+  type GrammarWordOrderItem,
 } from '@/lib/interactiveBookData';
 import TappableWord from '@/components/interactive/TappableWord';
 import { awardStamp, getStamps, isReadyToMoveUp, MAX_STAMPS, needsCheckIn, type BookStamps } from '@/lib/stamps';
@@ -994,6 +995,138 @@ function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 
   );
 }
 
+// ─── Grammar — Pattern A: Word Order (L2) ───────────────────────────────────
+// Children drag (tap) word tiles into sentence slots. First variant in a
+// progressive grammar track: L2 = word order, L3 = sentence type (./?/!),
+// L4 = find the describing word, L5 = past-or-now, L6 = joining sentences.
+
+function GrammarWordOrderPage({ page, level }: { page: Extract<InteractivePage, { type: 'grammar'; variant: 'word_order' }>; level: number }) {
+  const theme = getTheme(level);
+  const [itemIdx, setItemIdx] = useState(0);
+  const item: GrammarWordOrderItem = page.items[itemIdx];
+  const isLast = itemIdx === page.items.length - 1;
+
+  const [available, setAvailable] = useState<string[]>([]);
+  const [placed, setPlaced] = useState<(string | null)[]>([]);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const resetItem = useCallback((ii: number) => {
+    const correct = page.items[ii].correctWords;
+    // Shuffle copy of correct words
+    const shuffled = [...correct];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setAvailable(shuffled);
+    setPlaced(correct.map(() => null));
+    setIsCorrect(false);
+  }, [page.items]);
+
+  useEffect(() => { resetItem(itemIdx); }, [itemIdx, resetItem]);
+
+  const handleTileTap = (word: string, fromIdx: number) => {
+    if (isCorrect) return;
+    const slotIdx = placed.indexOf(null);
+    if (slotIdx === -1) return;
+    const nextPlaced = [...placed];
+    nextPlaced[slotIdx] = word;
+    setPlaced(nextPlaced);
+    const nextAvail = [...available];
+    nextAvail.splice(fromIdx, 1);
+    setAvailable(nextAvail);
+    if (!nextPlaced.includes(null)) {
+      const correct = nextPlaced.join(' ') === item.correctWords.join(' ');
+      setIsCorrect(correct);
+      if (!correct) {
+        // Gentle auto-reset after a moment
+        setTimeout(() => resetItem(itemIdx), 1400);
+      }
+    }
+  };
+
+  const handleSlotTap = (slotIdx: number) => {
+    if (isCorrect) return;
+    const word = placed[slotIdx];
+    if (!word) return;
+    const nextPlaced = [...placed];
+    nextPlaced[slotIdx] = null;
+    setPlaced(nextPlaced);
+    setAvailable([...available, word]);
+  };
+
+  const title = page.title ?? 'Build the sentence!';
+
+  return (
+    <div className="flex flex-col md:flex-row h-full w-full">
+      {/* ── HERO LEFT — illustration + prompt ── */}
+      <div className={`flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br ${theme.softGradient}`}>
+        {item.imageUrl ? (
+          <div className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-[22rem] xl:h-[22rem] rounded-3xl overflow-hidden shadow-xl ring-4 ring-white/70">
+            <img src={item.imageUrl} alt="" className="w-full h-full object-cover" draggable={false} />
+          </div>
+        ) : (
+          <div className={`w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-3xl bg-gradient-to-br ${theme.heroBgIdle} shadow-xl flex items-center justify-center`}>
+            <span className="text-7xl md:text-8xl lg:text-9xl">&#x1F4DD;</span>
+          </div>
+        )}
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 text-center">{title}</h2>
+        <p className={`text-base md:text-lg lg:text-xl font-medium ${theme.textAccentMuted} uppercase tracking-wider`}>
+          Sentence {itemIdx + 1} of {page.items.length}
+        </p>
+        {isCorrect && (
+          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; Correct!</p>
+        )}
+      </div>
+
+      {/* ── RIGHT — slots + tile bank + next ── */}
+      <div className="flex flex-col items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-6 md:gap-8 lg:gap-10">
+        {/* Sentence slots */}
+        <div className="flex gap-2 md:gap-3 lg:gap-4 flex-wrap justify-center w-full">
+          {placed.map((word, si) => (
+            <button
+              key={si}
+              onClick={() => handleSlotTap(si)}
+              className={`min-w-[4rem] md:min-w-[5rem] lg:min-w-[6rem] h-14 md:h-16 lg:h-20 xl:h-24 px-3 md:px-4 lg:px-5 rounded-2xl border-[3px] flex items-center justify-center text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold transition-all duration-200 shadow-sm
+                ${word
+                  ? (isCorrect
+                      ? 'border-green-400 bg-green-50 text-green-700 scale-[1.02]'
+                      : `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} ${theme.heroText}`)
+                  : 'border-dashed border-slate-300 bg-white text-slate-300'}`}
+            >
+              {word || '___'}
+            </button>
+          ))}
+        </div>
+
+        <div className="h-px w-full max-w-md bg-slate-200" />
+
+        {/* Word tile bank */}
+        <div className="flex gap-2 md:gap-3 lg:gap-4 flex-wrap justify-center max-w-2xl">
+          {available.map((word, li) => (
+            <button
+              key={li}
+              onClick={() => handleTileTap(word, li)}
+              className="min-w-[4rem] md:min-w-[5rem] lg:min-w-[6rem] px-4 md:px-5 lg:px-6 py-3 md:py-4 lg:py-5 rounded-2xl bg-amber-100 border-2 border-amber-300 text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-amber-800 hover:bg-amber-200 hover:scale-105 transition-all duration-200 shadow-md"
+            >
+              {word}
+            </button>
+          ))}
+        </div>
+
+        {isCorrect && !isLast && (
+          <button
+            onClick={() => setItemIdx(i => i + 1)}
+            className={`px-8 md:px-10 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
+          >
+            Next Sentence &rarr;
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Story Ordering (numbers outside images, tighter layout) ────────────────
 
 function StoryOrderingPage({ page }: { page: Extract<InteractivePage, { type: 'story_ordering' }> }) {
@@ -1513,6 +1646,9 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
       case 'story_ordering': return <StoryOrderingPage page={p} />;
       case 'quiz': return <QuizPage page={p} level={book.level} />;
       case 'spelling': return <SpellingPage page={p} level={book.level} />;
+      case 'grammar':
+        if (p.variant === 'word_order') return <GrammarWordOrderPage page={p} level={book.level} />;
+        return null;
       case 'certificate': return <CertificatePage page={p} level={book.level} bookId={book.subLevel} quizQuestions={quizQuestions} />;
       default: return null;
     }
