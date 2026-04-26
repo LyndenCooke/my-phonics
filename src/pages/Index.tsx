@@ -69,7 +69,7 @@ export default function Index() {
     if (!book) return;
 
     const sub = book.sub_level as string;
-    const coverUrl = book.cover_image_url ?? `/covers/${sub.replace(/^L/, '').replace('.', '_')}_cover.jpg`;
+    const coverUrl = book.cover_image_url ?? `/illustrations/${sub.replace(/^L/, '').replace('.', '_')}/cover.png`;
     setUnlockedModalBook({ title: book.title, level: book.level, coverUrl });
     setShowUnlockedModal(true);
     localStorage.setItem(key, '1');

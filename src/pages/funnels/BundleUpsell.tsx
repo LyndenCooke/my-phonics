@@ -2,7 +2,7 @@ import { BookOpen, Check, ArrowRight } from 'lucide-react';
 
 const LEVEL_CONFIG: Record<number, { colour: string; name: string; books: number; price: string }> = {
   1: { colour: '#E84B8A', name: 'Starting Stories', books: 10, price: '14.99' },
-  2: { colour: '#F5A623', name: 'Longer Sounds', books: 5, price: '9.99' },
+  2: { colour: '#F5A623', name: 'Longer Sounds', books: 6, price: '9.99' },
   3: { colour: '#4ABD6D', name: 'New Spellings', books: 5, price: '9.99' },
   4: { colour: '#5B9EFF', name: 'Building Fluency', books: 4, price: '9.99' },
   5: { colour: '#A78EFF', name: 'Reading Together', books: 4, price: '9.99' },

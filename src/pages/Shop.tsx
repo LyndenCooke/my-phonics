@@ -36,7 +36,7 @@ const PRODUCT_CONFIG: Record<string, {
     gradient: 'from-indigo-600 to-violet-600',
     badge: 'Best Value',
     features: [
-      'All 32 books across 6 levels',
+      'All 33 books across 6 levels',
       'Yours forever — no expiry',
       'All assessments & tracking',
       'Future books included',
@@ -47,7 +47,7 @@ const PRODUCT_CONFIG: Record<string, {
     gradient: 'from-violet-500 to-purple-600',
     badge: '7-Day Free Trial',
     features: [
-      'All 32 books, all levels',
+      'All 33 books, all levels',
       'New books as they launch',
       'Full assessment suite',
       'Cancel anytime',
