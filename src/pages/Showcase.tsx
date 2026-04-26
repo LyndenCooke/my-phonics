@@ -106,7 +106,7 @@ export default function Showcase() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {BOOKS.filter(b => b.level === level).map(book => {
                 const key = book.sub.replace('.', '_');
-                const coverUrl = `/covers/${key}_cover.jpg`;
+                const coverUrl = `/illustrations/${key}/cover.png`;
                 const pdfUrl = `/book-pdfs/${key}.pdf`;
                 return (
                   <div key={book.sub} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">

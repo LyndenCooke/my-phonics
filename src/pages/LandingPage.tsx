@@ -225,7 +225,7 @@ function FeatureShowcase() {
   const r = useReveal();
   const features = [
     { icon: Volume2, text: 'Tap any word to hear it sounded out phoneme by phoneme' },
-    { icon: BookOpen, text: '32 books across 6 carefully graded reading levels' },
+    { icon: BookOpen, text: '33 books across 6 carefully graded reading levels' },
     { icon: Globe, text: 'Stories set in Japan, Kenya, Morocco, France, Turkey & more' },
     { icon: Trophy, text: 'Comprehension quizzes and nonsense word challenges' },
     { icon: BarChart3, text: 'Progress tracking so parents can see growth' },
@@ -442,7 +442,7 @@ function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void })
               <span className="text-4xl font-extrabold text-foreground">All Levels</span>
             </div>
             <ul className="space-y-3 mb-6">
-              {['All 32 books across 6 levels', 'All comprehension quizzes', 'Full progress dashboard', 'New books added regularly', 'Certificate on completion'].map(f => (
+              {['All 33 books across 6 levels', 'All comprehension quizzes', 'Full progress dashboard', 'New books added regularly', 'Certificate on completion'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
                 </li>

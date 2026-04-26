@@ -12,7 +12,7 @@ export function getCoverImageUrl(subLevel: string, existingUrl?: string): string
   if (existingUrl) return existingUrl;
   const key = parseLevelSub(subLevel);
   if (!key) return undefined;
-  return `/covers/${key}_cover.jpg`;
+  return `/illustrations/${key}/cover.png`;
 }
 
 export function getBookPageUrl(subLevel: string, pageNumber: number): string | undefined {
