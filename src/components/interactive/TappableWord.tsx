@@ -18,16 +18,19 @@ async function playPhoneme(grapheme: string): Promise<void> {
   try { await playAudioFile(`/sounds/${key}.mp3`); } catch {}
 }
 
-function speakWord(word: string): Promise<void> {
+function playWordAudio(word: string): Promise<void> {
+  // Plays the pre-recorded ElevenLabs (George) MP3 at /sounds/words/<word>.mp3.
+  // Silent-on-miss by design: never fall back to browser TTS, since that
+  // produces a different voice (Microsoft David / Samantha / etc) and the
+  // brand is single-voice George across every book.
   return new Promise((resolve) => {
-    if (!('speechSynthesis' in window)) { resolve(); return; }
-    window.speechSynthesis.cancel();
-    const utter = new SpeechSynthesisUtterance(word);
-    utter.rate = 0.8;
-    utter.lang = 'en-GB';
-    utter.onend = () => resolve();
-    utter.onerror = () => resolve();
-    window.speechSynthesis.speak(utter);
+    const key = word.toLowerCase().replace(/[^a-z]/g, '');
+    if (!key) { resolve(); return; }
+    const audio = new Audio(`/sounds/words/${key}.mp3`);
+    audio.onended = () => resolve();
+    audio.onerror = () => resolve();
+    audio.oncanplaythrough = () => { audio.play().catch(() => resolve()); };
+    audio.load();
   });
 }
 
@@ -233,7 +236,7 @@ export default function TappableWord({
     if (wordData.isTricky) {
       // Tricky word: quick purple highlight + speak the whole word
       setTapped(true);
-      await speakWord(wordData.word);
+      await playWordAudio(wordData.word);
       setTimeout(() => setTapped(false), 400);
     } else if (wordData.phonemes.length > 0) {
       // Normal word: sound out each phoneme, then blend the whole word
@@ -248,7 +251,7 @@ export default function TappableWord({
         setActivePhonemeIdx(null);
         // Brief pause, then speak the blended word
         await new Promise(r => setTimeout(r, 200));
-        await speakWord(wordData.word);
+        await playWordAudio(wordData.word);
       }
       setActivePhonemeIdx(null);
       setIsSoundingOut(false);
