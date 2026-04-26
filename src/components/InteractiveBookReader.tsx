@@ -28,7 +28,30 @@ async function playPhoneme(g: string): Promise<void> {
   catch { /* no fallback */ }
 }
 
+async function playWordFile(word: string): Promise<void> {
+  // Plays the pre-recorded ElevenLabs (George) MP3 for the whole word.
+  // Silent-on-miss; never falls back to browser TTS.
+  const key = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (!key) return;
+  try { await playAudioFile(`/sounds/words/${key}.mp3`); }
+  catch { /* no fallback */ }
+}
+
+/** Play a phoneme sequence supplied directly (e.g. from StoryWord.phonemes).
+ *  Use this in preference to splitDigraphs when the data already specifies the
+ *  correct breakdown — it's the source of truth and never disagrees with the
+ *  visual annotations. */
+async function playPhonemeSequence(phonemes: string[]): Promise<void> {
+  for (const g of phonemes) {
+    await playPhoneme(g);
+    await new Promise(r => setTimeout(r, 150));
+  }
+}
+
 async function playWordAsPhonemes(word: string): Promise<void> {
+  // Fallback path for callers that only have a word string (e.g. sound_spotlight
+  // SpotlightItem doesn't carry phonemes). Prefer playPhonemeSequence whenever
+  // the data already has phonemes available.
   const graphemes = splitDigraphs(word);
   for (const g of graphemes) {
     await playPhoneme(g);
@@ -47,8 +70,9 @@ function splitDigraphs(word: string): string[] {
     'ay', 'ee', 'oo', 'ar', 'or', 'ir', 'ou', 'oy',          // 2-letter vowels (L2–L4)
     'oa', 'oi', 'aw', 'ai', 'ea', 'ie', 'ue', 'ew',
     'ow', 'ey', 'oe', 'au',
-    'sh', 'ch', 'th', 'ng', 'nk', 'ck', 'ff', 'll', 'ss', 'zz', 'qu',  // L1 consonants
+    'sh', 'ch', 'th', 'ng', 'nk', 'ck', 'ff', 'll', 'ss', 'zz', 'qu', 'tch',  // L1 consonants
     'ph', 'kn', 'wr', 'wh',                                   // L5+ consonants
+    'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt',                 // doubled consonants — one phoneme
   ];
   const result: string[] = [];
   let i = 0;
@@ -151,24 +175,68 @@ const getTheme = (level: number): LevelTheme => LEVEL_THEME[level] ?? LEVEL_THEM
 
 function CoverPage({ page, level }: { page: Extract<InteractivePage, { type: 'cover' }>; level: number }) {
   const theme = getTheme(level);
+  // Cover fits the entire viewport — header (~48px) + cover content + bottom-nav
+  // (~52px). Image consumes most of the available height but is constrained by
+  // h-0 + flex-1 + min-h-0 so the title and swipe-hint always remain visible at
+  // 720p and below. aspect-square keeps the cover artwork from distorting on
+  // wide screens.
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 md:px-10 lg:px-16 text-center gap-5 md:gap-7 lg:gap-9">
-      <div className="w-64 h-64 md:w-80 md:h-80 lg:w-[26rem] lg:h-[26rem] xl:w-[32rem] xl:h-[32rem] rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 ring-4 ring-white/70">
-        <img src={page.imageUrl} alt={page.title} className="w-full h-full object-cover" draggable={false} />
+    <div className="flex flex-col items-center justify-between h-full px-6 md:px-10 lg:px-16 text-center py-4 md:py-6">
+      <div className="flex-1 min-h-0 flex items-center justify-center w-full">
+        <div className="aspect-square h-full max-h-full max-w-full rounded-3xl overflow-hidden shadow-2xl ring-4 ring-white/70">
+          <img src={page.imageUrl} alt={page.title} className="w-full h-full object-cover" draggable={false} />
+        </div>
       </div>
-      <div className="flex flex-col items-center gap-2 md:gap-3">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-800 leading-tight max-w-4xl">{page.title}</h1>
-        <p className={`text-lg md:text-xl lg:text-2xl font-semibold ${theme.textAccentMuted} uppercase tracking-wider`}>{page.subtitle}</p>
+      <div className="flex flex-col items-center gap-1 md:gap-2 mt-3 md:mt-4 shrink-0">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight max-w-4xl">{page.title}</h1>
+        <p className={`text-sm md:text-base lg:text-lg font-semibold ${theme.textAccentMuted} uppercase tracking-wider`}>{page.subtitle}</p>
+        <p className={`text-sm md:text-base font-bold ${theme.textAccent} animate-bounce mt-1`}>Swipe to start &rarr;</p>
       </div>
-      <p className={`text-base md:text-lg lg:text-xl font-bold ${theme.textAccent} animate-bounce mt-2`}>Swipe to start &rarr;</p>
     </div>
   );
 }
 
 // ─── Sound Grid ─────────────────────────────────────────────────────────────
 
+// Each grapheme group ('s/ss', 'a-e', 'tion') is canonically introduced at one
+// level. This map drives the accordion grouping on SoundGridPage so reviewing
+// children can collapse / expand whole sets at a time. Single-letter L1
+// graphemes are listed under their own row so e.g. 's' and 'ss' aren't separated.
+const GRAPHEME_LEVEL: Record<string, number> = {
+  // L1 — Set 1 single letters + L1 digraphs
+  's/ss': 1, 's': 1, 'ss': 1, 'a': 1, 't': 1, 'p': 1, 'i': 1, 'n': 1,
+  'm': 1, 'd': 1, 'g': 1, 'o': 1, 'c/k/ck': 1, 'c': 1, 'k': 1, 'ck': 1,
+  'e': 1, 'u': 1, 'r': 1, 'h': 1, 'b': 1, 'f/ff': 1, 'f': 1, 'ff': 1,
+  'l/ll': 1, 'l': 1, 'll': 1, 'j': 1, 'v': 1, 'w': 1, 'x': 1, 'y': 1,
+  'z/zz': 1, 'z': 1, 'zz': 1, 'qu': 1, 'ch': 1, 'sh': 1, 'th': 1, 'ng': 1, 'nk': 1,
+  // L2 — Longer Sounds
+  'ay': 2, 'ee': 2, 'igh': 2, 'ow': 2, 'oo': 2, 'ar': 2, 'or': 2,
+  'air': 2, 'ir': 2, 'ou': 2, 'oy': 2,
+  // L3 — New Spellings
+  'a-e': 3, 'i-e': 3, 'o-e': 3, 'u-e': 3, 'ea': 3, 'ie': 3,
+  'oi': 3, 'aw': 3, 'ai': 3, 'oa': 3,
+  // L4 — Building Fluency
+  'ur': 4, 'er': 4, 'are': 4, 'ew': 4, 'ue': 4,
+  // L5 — Reading Together
+  'ore': 5, 'ire': 5, 'oor': 5, 'ear': 5, 'ure': 5, 'tion': 5,
+  // L6 — Reading Champion
+  'ous': 6, 'able': 6, 'ible': 6, 'cious': 6, 'tious': 6,
+};
+
+const LEVEL_LABEL: Record<number, string> = {
+  1: 'Level 1 — Starting Stories',
+  2: 'Level 2 — Longer Sounds',
+  3: 'Level 3 — New Spellings',
+  4: 'Level 4 — Building Fluency',
+  5: 'Level 5 — Reading Together',
+  6: 'Level 6 — Reading Champion',
+};
+
 function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_grid' }>; level: number }) {
   const [playingGroup, setPlayingGroup] = useState<string | null>(null);
+  // Current level open by default; tapping another level closes the current one
+  // and opens the new one (only one accordion row open at a time).
+  const [openLevel, setOpenLevel] = useState<number | null>(level);
   const theme = getTheme(level);
 
   const handleSoundTap = async (group: string) => {
@@ -184,25 +252,39 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
     !g.split('/').some(s => page.focusSounds.includes(s))
   );
 
-  // Focus-row columns scale to count so 2 sounds (L3+) get wide hero cards
-  // and 6 sounds (L1.1) still fit on one row without the last one clipping.
+  // Bucket review sounds by canonical level using the GRAPHEME_LEVEL map.
+  const reviewByLevel: Record<number, string[]> = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+  for (const g of reviewGroups) {
+    const primary = g.split('/')[0];
+    const lvl = GRAPHEME_LEVEL[g] ?? GRAPHEME_LEVEL[primary] ?? 1;
+    reviewByLevel[lvl].push(g);
+  }
+  const populatedLevels = (Object.keys(reviewByLevel) as unknown as number[])
+    .map(Number)
+    .filter(l => reviewByLevel[l].length > 0)
+    .sort((a, b) => a - b);
+
   const focusCols = focusGroups.length <= 2 ? 'grid-cols-2'
                   : focusGroups.length <= 3 ? 'grid-cols-3'
                   : focusGroups.length <= 4 ? 'grid-cols-2 md:grid-cols-4'
                   : 'grid-cols-3 md:grid-cols-6';
 
+  const handleAccordionToggle = (lvl: number) => {
+    setOpenLevel(curr => (curr === lvl ? null : lvl));
+  };
+
   return (
-    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-5 md:py-8 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
-      {/* ── New sounds (focus) ── */}
-      <div className="flex items-center gap-2 mb-1">
+    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-5" style={{ fontFamily: "'Andika', sans-serif" }}>
+      {/* ── New sounds (focus row stays large at the top) ── */}
+      <div className="flex items-center gap-2 mb-0.5 shrink-0">
         <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${theme.textAccentMuted}`} />
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">New sounds in this book</h2>
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">New sounds in this book</h2>
       </div>
-      <p className="text-sm md:text-base lg:text-lg text-slate-500 mb-4 md:mb-6">
+      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
         Tap each one to hear it. These are the sounds your child will practise.
       </p>
 
-      <div className={`grid ${focusCols} gap-3 md:gap-4 lg:gap-5 mb-7 md:mb-10`}>
+      <div className={`grid ${focusCols} gap-2.5 md:gap-3 lg:gap-4 mb-4 md:mb-6 shrink-0`}>
         {focusGroups.map((group) => {
           const sounds = group.split('/');
           const isPlaying = playingGroup === group;
@@ -211,54 +293,72 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
               key={group}
               onClick={() => handleSoundTap(group)}
               aria-label={`Play sound ${sounds.join(' or ')}`}
-              className={`relative py-6 md:py-8 lg:py-10 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
+              className={`relative py-4 md:py-5 lg:py-6 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
                 ${isPlaying
                   ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
                   : `bg-gradient-to-br ${theme.heroBgIdle} ${theme.heroText} hover:shadow-xl hover:scale-[1.02]`}`}
             >
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl">{sounds.join(' ')}</span>
+              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl">{sounds.join(' ')}</span>
               {isPlaying && (
-                <Volume2 className="absolute top-3 right-3 w-4 h-4 md:w-5 md:h-5 text-white/90" />
+                <Volume2 className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 text-white/90" />
               )}
             </button>
           );
         })}
       </div>
 
-      {/* ── Review sounds ── */}
-      {reviewGroups.length > 0 && (
-        <>
-          <div className="flex items-center gap-2 mb-1 mt-2">
-            <div className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs md:text-sm font-semibold uppercase tracking-wider text-slate-400">
-              Sounds you've seen before
-            </span>
-            <div className="h-px flex-1 bg-slate-200" />
-          </div>
-          <p className="text-xs md:text-sm text-slate-400 mb-3 text-center">
-            Tap to remind yourself
+      {/* ── Review sounds — accordion grouped by level ── */}
+      {populatedLevels.length > 0 && (
+        <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto">
+          <p className="text-xs md:text-sm text-slate-400 text-center mb-1 shrink-0">
+            Tap a level to see those sounds
           </p>
-
-          <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5 md:gap-2 pb-4">
-            {reviewGroups.map((group) => {
-              const sounds = group.split('/');
-              const isPlaying = playingGroup === group;
-              return (
+          {populatedLevels.map((lvl) => {
+            const isOpen = openLevel === lvl;
+            const groups = reviewByLevel[lvl];
+            return (
+              <div key={lvl} className="rounded-xl border border-slate-200 bg-white overflow-hidden shrink-0">
                 <button
-                  key={group}
-                  onClick={() => handleSoundTap(group)}
-                  aria-label={`Play sound ${sounds.join(' or ')}`}
-                  className={`py-2.5 md:py-3 px-1 rounded-lg text-sm md:text-base font-bold transition-all duration-200 leading-tight active:scale-95
-                    ${isPlaying
-                      ? `${theme.solidBg} text-white scale-110 shadow`
-                      : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-700'}`}
+                  onClick={() => handleAccordionToggle(lvl)}
+                  aria-expanded={isOpen}
+                  className={`w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-2.5 text-left transition-colors
+                    ${isOpen ? 'bg-slate-50' : 'hover:bg-slate-50'}`}
                 >
-                  {sounds.join(' / ')}
+                  <span className="text-sm md:text-base font-semibold text-slate-700">
+                    {LEVEL_LABEL[lvl] ?? `Level ${lvl}`}
+                    <span className="ml-2 text-xs text-slate-400 font-normal">({groups.length})</span>
+                  </span>
+                  <ChevronRight
+                    className={`w-4 h-4 md:w-5 md:h-5 text-slate-400 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  />
                 </button>
-              );
-            })}
-          </div>
-        </>
+                {isOpen && (
+                  <div className="px-3 md:px-4 pb-3 pt-1">
+                    <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5 md:gap-2">
+                      {groups.map((group) => {
+                        const sounds = group.split('/');
+                        const isPlaying = playingGroup === group;
+                        return (
+                          <button
+                            key={group}
+                            onClick={() => handleSoundTap(group)}
+                            aria-label={`Play sound ${sounds.join(' or ')}`}
+                            className={`py-2 md:py-2.5 px-1 rounded-lg text-sm md:text-base font-bold transition-all duration-200 leading-tight active:scale-95
+                              ${isPlaying
+                                ? `${theme.solidBg} text-white scale-110 shadow`
+                                : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-800'}`}
+                          >
+                            {sounds.join(' / ')}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
@@ -270,48 +370,61 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
   const [activeWord, setActiveWord] = useState<string | null>(null);
   const theme = getTheme(level);
 
-  const handleCardTap = async (word: string) => {
-    setActiveWord(word);
-    await playWordAsPhonemes(word);
+  // Audio rules:
+  //  - L5+: every word plays the whole-word MP3 (per pedagogy — children at L5
+  //    are reading, not decoding sound by sound).
+  //  - Tricky words: always play the whole-word MP3 (they aren't decodable).
+  //  - L1–L4 regular words: sound out using the data's phoneme array (source
+  //    of truth — never re-split via splitDigraphs, which used to drop tt/dd/etc
+  //    digraphs and pronounce e.g. "attention" as a-t-t-e-n-tion).
+  const handleCardTap = async (w: StoryWord) => {
+    setActiveWord(w.word);
+    if (level >= 5 || w.isTricky || w.phonemes.length === 0) {
+      await playWordFile(w.word);
+    } else {
+      await playPhonemeSequence(w.phonemes);
+      // Brief pause, then blend the whole word
+      await new Promise(r => setTimeout(r, 200));
+      await playWordFile(w.word);
+    }
     setActiveWord(null);
   };
 
-  // Full-bleed grid scales cols with viewport so 9-word L1.1 fits cleanly
-  // at 1920 without clipping or orphan rows.
-  const cols = page.words.length <= 6
-    ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6'
-    : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
+  // Cards size to fit available height — count-based grid columns and rows so
+  // every card stays visible without inner scroll. cardCount = page.words.length.
+  const n = page.words.length;
+  const cols = n <= 4 ? 'grid-cols-2 md:grid-cols-4'
+              : n <= 6 ? 'grid-cols-3 md:grid-cols-3 lg:grid-cols-6'
+              : n <= 8 ? 'grid-cols-2 sm:grid-cols-4 md:grid-cols-4'
+              : 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6';
 
   return (
-    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-4 md:py-8 overflow-y-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
-      <div className="flex items-center gap-2 mb-1">
+    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-5" style={{ fontFamily: "'Andika', sans-serif" }}>
+      <div className="flex items-center gap-2 mb-0.5 shrink-0">
         <BookOpenIcon className={theme.textAccentMuted} />
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">Story Words</h2>
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">Story Words</h2>
       </div>
-      <p className="text-sm md:text-base lg:text-lg text-slate-500 mb-4 md:mb-6">
+      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
         Tap a card to hear the word. You'll meet all of these in the story.
       </p>
-      <div className={`grid ${cols} gap-4 md:gap-5 lg:gap-6`}>
+      <div className={`grid ${cols} gap-3 md:gap-4 flex-1 min-h-0 content-start`}>
         {page.words.map((w, i) => {
           const isActive = activeWord === w.word;
           return (
-            // role="button" keeps the card interactive for keyboard users
-            // without creating a nested <button>. The inner TappableWord
-            // still exposes its own accessible button for AT users.
             <div
               key={i}
               role="button"
               tabIndex={0}
               aria-pressed={isActive}
               aria-label={`${w.word}. Tap to hear.`}
-              onClick={() => handleCardTap(w.word)}
+              onClick={() => handleCardTap(w)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  handleCardTap(w.word);
+                  handleCardTap(w);
                 }
               }}
-              className={`flex flex-col items-center p-4 md:p-5 lg:p-6 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200
+              className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200 min-h-0
                 ${isActive
                   ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.04] shadow-lg`
                   : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-md shadow-sm`}`}
@@ -319,7 +432,7 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
               <img
                 src={`/images/words/${w.word}.png`}
                 alt=""
-                className="w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 object-contain mb-2 md:mb-3 pointer-events-none"
+                className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain mb-2 pointer-events-none"
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
               />
               <div className="pointer-events-none">
@@ -618,7 +731,19 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
             return (
               <button
                 key={item.word}
-                onClick={async () => { setPlayingItem(item.word); await playWordAsPhonemes(item.word); setPlayingItem(null); }}
+                onClick={async () => {
+                  setPlayingItem(item.word);
+                  if (level >= 5) {
+                    // L5+: play the whole word in George's voice (children at
+                    // this level read words, not sound them out).
+                    await playWordFile(item.word);
+                  } else {
+                    await playWordAsPhonemes(item.word);
+                    await new Promise(r => setTimeout(r, 200));
+                    await playWordFile(item.word);
+                  }
+                  setPlayingItem(null);
+                }}
                 className={`flex flex-col items-center justify-center aspect-square p-4 md:p-6 lg:p-8
                   rounded-3xl border-2 transition-all duration-200 select-none
                   ${isActive
