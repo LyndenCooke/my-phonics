@@ -461,11 +461,13 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         setIsNarrating(false);
       }, estimatedMs + 200));
 
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(sentence);
-        utter.rate = 0.7;
-        window.speechSynthesis.speak(utter);
-      }
+      // No browser-TTS fallback: the reader is single-voice (ElevenLabs / George)
+      // across every book, and SpeechSynthesisUtterance produces a different OS
+      // voice that breaks brand consistency. If the sentence MP3 is missing,
+      // the word-highlight timeline still runs visually — children see the words
+      // animate even without audio. Missing MP3s should be caught and generated
+      // upstream, not papered over with a wrong-voice fallback.
+      void sentence;
     }
   }, [isNarrating, page.sentences, page.words, page.audioUrl, buildWordTimeFractions]);
 
