@@ -1,38 +1,70 @@
 {
+  "_note": "Tricky/sight words by level. Updated 2026-04-26: rebalanced to put RWI Set 1 sentence-builders (my, you, he, she, said) at L1, moved was/they/all to L2 from L3, dropped 'washing' (not a real tricky word), added Phase 4 staples (have/come/were/there/when/out/little) to L3, added Phase 5 staples (looked/asked/oh) to L4.",
   "level_1": {
     "name": "Starting Stories",
-    "maps_to": "RWI Red",
-    "new_tricky_words": ["the", "to", "I", "no", "go", "into"],
-    "cumulative": ["the", "to", "I", "no", "go", "into"]
+    "maps_to": "RWI Red / L&S Phase 2 + early Phase 3",
+    "new_tricky_words": ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said"]
   },
   "level_2": {
     "name": "Longer Sounds",
-    "maps_to": "RWI Green + Purple",
-    "new_tricky_words": ["he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put"]
+    "maps_to": "RWI Green + Purple / L&S Phase 3",
+    "new_tricky_words": ["we", "me", "be", "was", "her", "your", "are", "put", "they", "all"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said",
+                         "we", "me", "be", "was", "her", "your", "are", "put", "they", "all"]
   },
   "level_3": {
     "name": "New Spellings",
-    "maps_to": "RWI Pink + Orange",
-    "new_tricky_words": ["all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again"]
+    "maps_to": "RWI Pink + Orange / L&S Phase 4",
+    "new_tricky_words": ["like", "want", "call", "some", "what", "do", "old", "so", "one", "two",
+                         "again", "have", "come", "were", "there", "when", "out", "little"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said",
+                         "we", "me", "be", "was", "her", "your", "are", "put", "they", "all",
+                         "like", "want", "call", "some", "what", "do", "old", "so", "one", "two",
+                         "again", "have", "come", "were", "there", "when", "out", "little"]
   },
   "level_4": {
     "name": "Building Fluency",
-    "maps_to": "RWI Yellow",
-    "new_tricky_words": ["saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move"]
+    "maps_to": "RWI Yellow / L&S Phase 5",
+    "new_tricky_words": ["saw", "watch", "their", "school", "where", "small", "who", "tall",
+                         "brother", "any", "fall", "eyes", "done", "move", "looked", "asked", "oh"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said",
+                         "we", "me", "be", "was", "her", "your", "are", "put", "they", "all",
+                         "like", "want", "call", "some", "what", "do", "old", "so", "one", "two",
+                         "again", "have", "come", "were", "there", "when", "out", "little",
+                         "saw", "watch", "their", "school", "where", "small", "who", "tall",
+                         "brother", "any", "fall", "eyes", "done", "move", "looked", "asked", "oh"]
   },
   "level_5": {
     "name": "Reading Together",
     "maps_to": "RWI Blue",
-    "new_tricky_words": ["does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart"]
+    "new_tricky_words": ["does", "could", "would", "anyone", "over", "through", "once", "whole",
+                         "people", "water", "though", "knew", "woman", "heart"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said",
+                         "we", "me", "be", "was", "her", "your", "are", "put", "they", "all",
+                         "like", "want", "call", "some", "what", "do", "old", "so", "one", "two",
+                         "again", "have", "come", "were", "there", "when", "out", "little",
+                         "saw", "watch", "their", "school", "where", "small", "who", "tall",
+                         "brother", "any", "fall", "eyes", "done", "move", "looked", "asked", "oh",
+                         "does", "could", "would", "anyone", "over", "through", "once", "whole",
+                         "people", "water", "though", "knew", "woman", "heart"]
   },
   "level_6": {
     "name": "Reading Champion",
     "maps_to": "RWI Grey",
-    "new_tricky_words": ["should", "many", "above", "father", "son", "mother", "buy", "bought", "great", "caught", "worse", "love", "wear", "thought", "everyone", "walk", "talk"],
-    "cumulative": ["the", "to", "I", "no", "go", "into", "he", "she", "we", "me", "be", "my", "you", "her", "said", "your", "are", "put", "all", "like", "want", "call", "some", "what", "they", "do", "old", "was", "so", "washing", "one", "two", "again", "saw", "watch", "their", "school", "where", "were", "small", "who", "tall", "brother", "any", "fall", "there", "eyes", "done", "move", "does", "could", "would", "anyone", "over", "through", "once", "whole", "people", "water", "though", "knew", "woman", "heart", "should", "many", "above", "father", "son", "mother", "buy", "bought", "great", "caught", "worse", "love", "wear", "thought", "everyone", "walk", "talk"]
+    "new_tricky_words": ["should", "many", "above", "father", "son", "mother", "buy", "bought",
+                         "great", "caught", "worse", "love", "wear", "thought", "everyone",
+                         "walk", "talk"],
+    "cumulative":       ["the", "to", "I", "no", "go", "into", "my", "you", "he", "she", "said",
+                         "we", "me", "be", "was", "her", "your", "are", "put", "they", "all",
+                         "like", "want", "call", "some", "what", "do", "old", "so", "one", "two",
+                         "again", "have", "come", "were", "there", "when", "out", "little",
+                         "saw", "watch", "their", "school", "where", "small", "who", "tall",
+                         "brother", "any", "fall", "eyes", "done", "move", "looked", "asked", "oh",
+                         "does", "could", "would", "anyone", "over", "through", "once", "whole",
+                         "people", "water", "though", "knew", "woman", "heart",
+                         "should", "many", "above", "father", "son", "mother", "buy", "bought",
+                         "great", "caught", "worse", "love", "wear", "thought", "everyone",
+                         "walk", "talk"]
   }
 }
