@@ -12,7 +12,7 @@ import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-import { useAppMode } from '@/hooks/useAppMode';
+import { useAppMode, maybeAutoDefaultToChild } from '@/hooks/useAppMode';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import { SoundMatsResources } from '@/components/SoundMatsResources';
 import ChildHomeScreen from '@/components/ChildHomeScreen';
@@ -129,6 +129,15 @@ export default function Index() {
       window.history.replaceState({}, '', url.toString());
     }
   }, [activeBookId, books, location.search]);
+
+  // Auto-default to child mode once the parent has unlocked at least one
+  // book. Runs at most once per device — if the parent later toggles back
+  // to parent mode manually, that choice is respected on future sessions.
+  useEffect(() => {
+    if (!user || books.length === 0) return;
+    const hasUnlocked = books.some(b => b.unlocked);
+    maybeAutoDefaultToChild(hasUnlocked);
+  }, [user, books]);
 
   const quizQuestions = (quizData ?? []).map(q => ({
     id: q.id,

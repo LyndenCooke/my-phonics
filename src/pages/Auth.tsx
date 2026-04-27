@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -16,6 +17,27 @@ export default function Auth() {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // ── Google OAuth ─────────────────────────────────────────────────────
+  // Supabase handles the redirect dance. Successful sign-in lands the user
+  // back on /library where AuthContext picks up the session. Requires the
+  // Google provider to be enabled in the Supabase dashboard with redirect
+  // URLs set to the production + preview Vercel domains.
+  const handleGoogle = async () => {
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/library` },
+      });
+      if (error) throw error;
+      // signInWithOAuth redirects the page; we won't reach this line
+      // unless something blocked the redirect.
+    } catch (err: any) {
+      toast({ title: 'Google sign-in failed', description: err.message, variant: 'destructive' });
+      setSubmitting(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +95,33 @@ export default function Auth() {
             Your family's data stays private
           </div>
         </div>
+
+        {/* ── Google sign-in (above the email/password form because OAuth
+         *  is faster for most parents — fewer passwords to remember). */}
+        {mode !== 'forgot' && (
+          <>
+            <button
+              type="button"
+              onClick={handleGoogle}
+              disabled={submitting}
+              className="w-full py-3 rounded-xl bg-white border-2 border-border hover:border-primary/40 text-foreground font-bold text-sm shadow-sm hover:shadow flex items-center justify-center gap-2.5 transition-all disabled:opacity-60"
+            >
+              {/* Google "G" mark — inline SVG to avoid an extra dep */}
+              <svg className="w-4 h-4" viewBox="0 0 48 48" aria-hidden="true">
+                <path fill="#FFC107" d="M43.61 20.08H42V20H24v8h11.3c-1.65 4.66-6.08 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20c0-1.34-.14-2.65-.39-3.92z"/>
+                <path fill="#FF3D00" d="M6.31 14.69l6.57 4.81C14.66 15.13 18.97 12 24 12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 16.32 4 9.66 8.34 6.31 14.69z"/>
+                <path fill="#4CAF50" d="M24 44c5.17 0 9.86-1.98 13.41-5.21l-6.19-5.24C29.21 35.09 26.71 36 24 36c-5.2 0-9.62-3.32-11.28-7.96l-6.52 5.02C9.5 39.55 16.23 44 24 44z"/>
+                <path fill="#1976D2" d="M43.61 20.08H42V20H24v8h11.3c-.79 2.24-2.23 4.16-4.09 5.55l6.19 5.24C40.99 35.27 44 30 44 24c0-1.34-.14-2.65-.39-3.92z"/>
+              </svg>
+              Continue with Google
+            </button>
+
+            <div className="relative my-1">
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
+              <div className="relative flex justify-center"><span className="bg-background px-3 text-xs text-muted-foreground">or use email</span></div>
+            </div>
+          </>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
