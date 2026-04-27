@@ -430,6 +430,13 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
       <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
         Tap each one to hear it. These are the sounds your child will practise.
       </p>
+      {/* Optional teaching note — used when one grapheme has multiple sounds
+       *  (e.g. L5.3 'ure' has both /jʊər/ and /ər/). */}
+      {page.note && (
+        <div className={`shrink-0 mb-3 md:mb-4 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-br ${theme.softGradient} border-2 ${theme.cardBorderActive} text-sm md:text-base text-slate-700 leading-snug`}>
+          <span className="font-bold">Heads up: </span>{page.note}
+        </div>
+      )}
 
       <div className={`grid ${focusCols} gap-2.5 md:gap-3 lg:gap-4 mb-3 md:mb-4 shrink-0`}>
         {focusGroups.map((group) => (
@@ -829,11 +836,107 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 // classroom). Right half: 2x2 grid of big word cards with generous images.
 // Mobile/portrait: stacks vertically.
 
+/** Render a word with an optional morphological split — e.g. 'pure' with
+ *  morphSplit=1 renders as "p-ure" with the focus suffix highlighted. */
+function SpotlightWord({ word, focusIndex, morphSplit, focusColor }: {
+  word: string; focusIndex: number; morphSplit?: number; focusColor: string;
+}) {
+  void focusIndex; // legacy field; visual highlight now keyed off morphSplit
+  const stem = morphSplit !== undefined ? word.slice(0, morphSplit) : '';
+  const suffix = morphSplit !== undefined ? word.slice(morphSplit) : word;
+  return (
+    <span className="font-bold">
+      {stem && <span className="text-slate-700">{stem}</span>}
+      {stem && <span className="text-slate-400 mx-0.5">-</span>}
+      <span className={focusColor}>{suffix}</span>
+    </span>
+  );
+}
+
 function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_spotlight' }>; level: number }) {
   const [playingItem, setPlayingItem] = useState<string | null>(null);
-  const [playingSound, setPlayingSound] = useState(false);
+  const [playingVariant, setPlayingVariant] = useState<string | null>(null);
   const theme = getTheme(level);
 
+  // ── Dual-variant layout (e.g. 'ure' = /jʊər/ vs /ər/) ──────────────────
+  // When the data declares variants[], render one column per variant. Each
+  // column has its own small sound circle + the items whose .variant matches.
+  if (page.variants && page.variants.length > 0) {
+    return (
+      <div className="flex flex-col h-full w-full px-4 md:px-8 lg:px-12 py-3 md:py-4 overflow-hidden" style={{ fontFamily: "'Andika', sans-serif" }}>
+        {page.explanation && (
+          <p className="text-sm md:text-base lg:text-lg text-center text-slate-600 mb-2 md:mb-3 shrink-0">
+            {page.explanation}
+          </p>
+        )}
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6 flex-1 min-h-0">
+          {page.variants.map((v) => {
+            const items = page.items.filter(i => i.variant === v.audioKey);
+            const isPlaying = playingVariant === v.audioKey;
+            return (
+              <div key={v.audioKey} className="flex flex-col items-center min-h-0">
+                {/* Column header — small circle + label */}
+                <button
+                  onClick={async () => { setPlayingVariant(v.audioKey); await playPhoneme(v.audioKey); setPlayingVariant(null); }}
+                  className={`aspect-square w-20 md:w-24 lg:w-28 xl:w-32
+                    rounded-full grid place-items-center font-bold leading-none mb-1
+                    transition-all duration-200 select-none bg-gradient-to-br shrink-0
+                    ${isPlaying
+                      ? `${theme.heroBgActive} text-white scale-105 shadow-xl`
+                      : `${theme.heroBgIdle} ${theme.heroText} shadow-md hover:shadow-lg hover:scale-[1.02]`}`}
+                  aria-label={`Play sound ${page.sound} (${v.label})`}
+                >
+                  <span className="text-2xl md:text-3xl lg:text-4xl">{page.sound}</span>
+                </button>
+                <p className={`text-sm md:text-base font-bold ${theme.textAccent} mb-2 md:mb-3 shrink-0`}>
+                  {v.label}
+                </p>
+                {/* Item list */}
+                <div className="grid grid-cols-1 gap-2 md:gap-2.5 w-full flex-1 min-h-0 content-center">
+                  {items.map((item) => {
+                    const isActive = playingItem === item.word;
+                    return (
+                      <button
+                        key={item.word}
+                        onClick={async () => {
+                          setPlayingItem(item.word);
+                          await playWordFile(item.word);
+                          setPlayingItem(null);
+                        }}
+                        className={`flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1.5 md:py-2
+                          rounded-2xl border-2 transition-all duration-200 select-none
+                          text-lg md:text-xl lg:text-2xl
+                          ${isActive
+                            ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.02] shadow-lg`
+                            : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-md shadow-sm hover:scale-[1.01]`}`}
+                      >
+                        {item.imageUrl && (
+                          <img
+                            src={item.imageUrl}
+                            alt=""
+                            className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain shrink-0 pointer-events-none"
+                            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        )}
+                        <SpotlightWord
+                          word={item.word}
+                          focusIndex={item.focusIndex}
+                          morphSplit={item.morphSplit}
+                          focusColor={theme.textAccent}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Single-variant layout (default) ───────────────────────────────────
   return (
     <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
       {/* ── HERO LEFT — focus sound. Centred via block layout + text-center
@@ -841,11 +944,11 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
        *  the circle (was offset before due to flex baseline alignment). */}
       <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-[40%] p-3 md:p-6 lg:p-8 gap-3 min-h-0">
         <button
-          onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
+          onClick={async () => { setPlayingVariant('default'); await playPhoneme(page.sound); setPlayingVariant(null); }}
           className={`aspect-square w-28 md:w-44 lg:w-[14rem] xl:w-[18rem] max-w-full
             rounded-full grid place-items-center font-bold leading-none
             transition-all duration-200 select-none bg-gradient-to-br
-            ${playingSound
+            ${playingVariant === 'default'
               ? `${theme.heroBgActive} text-white scale-105 shadow-2xl`
               : `${theme.heroBgIdle} ${theme.heroText} shadow-xl hover:shadow-2xl hover:scale-[1.02]`}`}
           aria-label={`Play sound ${page.sound}`}
