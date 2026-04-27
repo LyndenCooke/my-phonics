@@ -59,6 +59,18 @@ export function getStamps(bookId: string): BookStamps {
   return { ...EMPTY, ...raw, checkInResults: raw.checkInResults ?? {} };
 }
 
+/** Returns the full stamps store keyed by subLevel ("L1.1", "L5.3", ...).
+ *  Used by the parent-facing progress dashboard to aggregate activity
+ *  across all 33 books (heat map, per-sound coverage). */
+export function getAllStamps(): Record<string, BookStamps> {
+  const store = readStore();
+  const out: Record<string, BookStamps> = {};
+  for (const [k, v] of Object.entries(store)) {
+    out[k] = { ...EMPTY, ...v, checkInResults: v.checkInResults ?? {} };
+  }
+  return out;
+}
+
 /** Returns true if the next stamp this child would earn should gate on a
  *  readiness check-in. Stamps 3, 4, 5 gate; 1 and 2 are free warm-ups. */
 export function needsCheckIn(bookId: string): boolean {
