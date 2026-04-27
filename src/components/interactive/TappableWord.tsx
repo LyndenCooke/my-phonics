@@ -274,20 +274,27 @@ export default function TappableWord({
   const isTricky = wordData.isTricky;
 
   if (isNarrating) {
+    // Narration mode keeps the layout stable — the active word changes
+    // colour only, no scale jump. The earlier scale-110 was reflowing the
+    // sentence each time a word fired and made the type appear to "stutter"
+    // because individual word highlights couldn't keep up with the audio.
     const { wholeWord } = narrationHighlight;
     const colour = wholeWord
       ? (isTricky ? 'text-purple-600' : 'text-red-500')
       : 'text-slate-800';
-    const scale = wholeWord ? 'scale-110' : '';
 
+    // Narrated words remain interactive — children can still tap any word
+    // (active or not) to hear it played in isolation.
     return (
       <div className={`inline-flex flex-col items-center ${wordMargin}`}>
-        <span
-          className={`${textSize} font-bold ${wordPad} rounded-xl transition-all duration-200 ${colour} ${scale}`}
+        <button
+          onClick={handleTap}
+          className={`${textSize} font-bold ${wordPad} rounded-xl transition-colors duration-200 ${colour} hover:bg-pink-50`}
           style={{ fontFamily: "'Andika', sans-serif" }}
+          aria-label={`Tap to hear "${wordData.word}"`}
         >
           {wordData.display}
-        </span>
+        </button>
         {showAnnotations && isTricky && (
           <div className="flex justify-center w-full" style={{ marginTop: 1 }}>
             <div className="bg-purple-500 rounded-full" style={{ height: strokeW, width: '85%' }} />

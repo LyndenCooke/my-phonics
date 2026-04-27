@@ -642,7 +642,9 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
 
     if (page.audioUrl) {
       const audio = new Audio(page.audioUrl);
-      audio.playbackRate = 0.75; // Teacher-paced reading
+      audio.playbackRate = 1.0; // Natural reading speed — slow-down was
+      // making the per-word highlight drift visibly out of sync, and made
+      // the audio sound robotic. Children get the feel of a real read-aloud.
       audioRef.current = audio;
 
       // Track highlight with requestAnimationFrame (~60fps) instead of
@@ -921,13 +923,13 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
         <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
       </div>
       <p className="text-xs md:text-sm lg:text-base text-slate-500 text-center mb-3 md:mb-4 shrink-0">
-        Tap each word to hear it.
+        Tap each word to blend it together. Use the dots to sound it out.
       </p>
 
       {/* ── Flashcard grid — scaled-down padding/size from old word_reading
        *  so 6 words fit on a single screen at 1366x768 without scrolling.
-       *  wholeWordOnly: per pedagogy, this page is "George says the word",
-       *  not "child sounds it out". The dots/lines stay as visual reference. */}
+       *  Sound-out behaviour kept here per pedagogy (this is decoding
+       *  practice). Sound spotlight is the whole-word page. */}
       <div className="flex-1 min-h-0 flex items-center justify-center">
         <div className={`grid ${cols} gap-3 md:gap-4 lg:gap-5 w-full max-w-5xl content-center`}>
           {page.words.map((w, i) => (
@@ -935,7 +937,7 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
               key={i}
               className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] transition-all duration-200 py-5 md:py-7 lg:py-9 px-3 shadow-sm min-h-0`}
             >
-              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} wholeWordOnly={true} />
+              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} />
             </div>
           ))}
         </div>
