@@ -16,6 +16,27 @@ export interface SpotlightItem {
   word: string;
   imageUrl: string;
   focusIndex: number;   // Index of the focus letter in the word
+  /** Index where the stem ends, used to render a morphological break like
+   *  'p-ure' (split=1) or 'nat-ure' (split=3). Optional; when omitted the
+   *  word renders without a hyphen. */
+  morphSplit?: number;
+  /** When the page has multiple sound variants (e.g. 'ure' as /jʊər/ vs
+   *  /ər/), this points at the audioKey of the variant column this item
+   *  belongs to. */
+  variant?: string;
+}
+
+/** Sound-spotlight variant — used when one grapheme has multiple sounds.
+ *  The page renders one column per variant; each column gets its own
+ *  sound circle (linked to /sounds/<audioKey>.mp3) and the items with
+ *  matching `variant` keys are listed below. */
+export interface SoundSpotlightVariant {
+  /** Phoneme audio key — file lives at /sounds/<audioKey>.mp3 */
+  audioKey: string;
+  /** Caption above the column, e.g. "sounds 'yoor'" */
+  label: string;
+  /** A representative example word for the column header, e.g. 'pure' */
+  example?: string;
 }
 
 export interface OrderingItem {
@@ -67,10 +88,23 @@ export type InteractivePage =
       focusSounds: string[];
       allSounds: string[];
       storyWords?: Array<{ display: string; word: string; phonemes: string[] }>;
+      /** Optional teaching note shown beneath the focus row. Used when one
+       *  grapheme has multiple sounds (e.g. L5.3 'ure' = 'yoor' + 'ur'). */
+      note?: string;
     }
   | { type: 'vocab_preview'; words: StoryWord[] }
   | { type: 'story'; sentences: string[]; words: StoryWord[]; imageUrl: string; audioUrl?: string }
-  | { type: 'sound_spotlight'; sound: string; items: SpotlightItem[] }
+  | {
+      type: 'sound_spotlight';
+      sound: string;
+      items: SpotlightItem[];
+      /** Optional dual-variant config: when present the page renders one
+       *  column per entry, grouping items by their `variant` key. */
+      variants?: SoundSpotlightVariant[];
+      /** Brief explanation displayed at the top of the dual-variant page,
+       *  e.g. "These letters can sound two different ways." */
+      explanation?: string;
+    }
   | { type: 'word_reading'; words: StoryWord[] }
   | { type: 'tricky_words'; words: StoryWord[] }
   | { type: 'writing_practice'; letters: string[] }

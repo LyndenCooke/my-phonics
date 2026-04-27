@@ -719,6 +719,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     type: 'sound_grid',
     focusSounds: ['ure', 'tion'],
     allSounds: L5_ALL_SOUNDS,
+    note: "The letters 'ure' have two sounds! At the end of a word it can sound like 'yoor' (as in pure) OR like 'ur' (as in nature). You'll meet both in this book.",
   },
 
   {
@@ -1038,12 +1039,23 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
     ],
   },
 
-  { type: 'sound_spotlight', sound: 'ure', items: [
-    { word: 'sure', imageUrl: '/images/words/sure.png', focusIndex: 1 },
-    { word: 'pure', imageUrl: '/images/words/pure.png', focusIndex: 1 },
-    { word: 'picture', imageUrl: '/images/words/picture.png', focusIndex: 4 },
-    { word: 'nature', imageUrl: '/images/words/nature.png', focusIndex: 3 },
-  ] },
+  { type: 'sound_spotlight', sound: 'ure',
+    explanation: "The letters 'ure' make two different sounds. Tap each one to hear!",
+    variants: [
+      { audioKey: 'ure_yoor', label: "sounds 'yoor'", example: 'pure' },
+      { audioKey: 'ure_ur',   label: "sounds 'ur'",   example: 'nature' },
+    ],
+    items: [
+      // /jʊər/ — 'yoor' words: sound like p-ure, s-ure, c-ure
+      { word: 'sure', imageUrl: '/images/words/sure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      { word: 'pure', imageUrl: '/images/words/pure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      { word: 'cure', imageUrl: '/images/words/cure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      // /ər/ — 'ur' words: sound like nat-ure, pict-ure, fut-ure
+      { word: 'nature',  imageUrl: '/images/words/nature.png',  focusIndex: 3, morphSplit: 3, variant: 'ure_ur' },
+      { word: 'picture', imageUrl: '/images/words/picture.png', focusIndex: 4, morphSplit: 4, variant: 'ure_ur' },
+      { word: 'future',  imageUrl: '/images/words/future.png',  focusIndex: 3, morphSplit: 3, variant: 'ure_ur' },
+    ],
+  },
   { type: 'sound_spotlight', sound: 'tion', items: [
     { word: 'action', imageUrl: '/images/words/action.png', focusIndex: 2 },
     { word: 'section', imageUrl: '/images/words/section.png', focusIndex: 3 },
