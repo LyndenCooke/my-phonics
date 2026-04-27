@@ -333,33 +333,25 @@ function getSoundCard(group: string): string | undefined {
   return undefined;
 }
 
-/** Hero focus-row card — large, with clipart on the right and the letter on
- *  the left, matching the printed sound-mat aesthetic. */
+/** Hero focus-row card — large, letter-only. Cue images are deferred until a
+ *  cleanly-cropped batch is available; for now showing just the letter keeps
+ *  the layout consistent with the printed sound mat. */
 function FocusSoundCard({ group, isPlaying, theme, onTap }: {
   group: string; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
 }) {
   const sounds = group.split('/');
-  const card = getSoundCard(group);
   return (
     <button
       onClick={onTap}
       aria-label={`Play sound ${sounds.join(' or ')}`}
-      className={`relative flex items-center justify-between gap-2 rounded-2xl border-2 px-3 md:px-4 py-3 md:py-4 transition-all duration-200 shadow-md active:scale-95 overflow-hidden
+      className={`relative flex items-center justify-center rounded-2xl py-5 md:py-6 lg:py-8 px-3 transition-all duration-200 shadow-md active:scale-95
         ${isPlaying
-          ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.04]`
-          : `border-slate-200 bg-white hover:shadow-xl hover:scale-[1.02] ${theme.cardHoverBorder}`}`}
+          ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
+          : `bg-gradient-to-br ${theme.heroBgIdle} ${theme.heroText} hover:shadow-xl hover:scale-[1.02]`}`}
     >
-      <span className={`block text-3xl md:text-4xl lg:text-5xl font-extrabold leading-none flex-shrink-0 ${isPlaying ? 'text-white' : theme.heroText}`}>
+      <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">
         {sounds.join(' ')}
       </span>
-      {card ? (
-        <img
-          src={card}
-          alt=""
-          className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain flex-shrink-0 pointer-events-none"
-          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-        />
-      ) : null}
       {isPlaying && (
         <Volume2 className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 text-white/90" />
       )}
@@ -367,30 +359,22 @@ function FocusSoundCard({ group, isPlaying, theme, onTap }: {
   );
 }
 
-/** Smaller accordion card — compact letter+clipart pair for the review rows. */
+/** Smaller accordion card — compact letter-only pill. Clipart removed to
+ *  match the focus row; will return when a cleanly-cropped batch is ready. */
 function ReviewSoundCard({ group, isPlaying, theme, onTap }: {
   group: string; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
 }) {
   const sounds = group.split('/');
-  const card = getSoundCard(group);
   return (
     <button
       onClick={onTap}
       aria-label={`Play sound ${sounds.join(' or ')}`}
-      className={`flex items-center justify-center gap-1 rounded-lg border px-1.5 py-1.5 transition-all duration-200 active:scale-95
+      className={`flex items-center justify-center rounded-lg border px-2 py-2 transition-all duration-200 active:scale-95
         ${isPlaying
           ? `${theme.solidBg} text-white scale-110 shadow border-transparent`
           : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300'}`}
     >
       <span className="text-sm md:text-base font-bold leading-none">{sounds.join('/')}</span>
-      {card && (
-        <img
-          src={card}
-          alt=""
-          className="w-6 h-6 md:w-7 md:h-7 object-contain pointer-events-none"
-          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-        />
-      )}
     </button>
   );
 }
@@ -444,7 +428,7 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
         <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">New sounds in this book</h2>
       </div>
       <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
-        Tap each one to hear it. Same cue pictures as your sound mat.
+        Tap each one to hear it. These are the sounds your child will practise.
       </p>
 
       <div className={`grid ${focusCols} gap-2.5 md:gap-3 lg:gap-4 mb-3 md:mb-4 shrink-0`}>
@@ -850,26 +834,31 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
-      {/* ── HERO LEFT — focus sound ── */}
-      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-4 md:p-8 lg:p-10 gap-3 md:gap-5 min-h-0">
+      {/* ── HERO LEFT — focus sound. Centred via block layout + text-center
+       *  so multi-character sounds like 'o-e' or 'tion' sit in the middle of
+       *  the circle (was offset before due to flex baseline alignment). */}
+      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-[40%] p-3 md:p-6 lg:p-8 gap-3 min-h-0">
         <button
           onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
-          className={`aspect-square w-32 md:w-48 lg:w-[18rem] xl:w-[22rem] max-w-full
-            rounded-full flex items-center justify-center font-bold leading-none
+          className={`aspect-square w-28 md:w-44 lg:w-[14rem] xl:w-[18rem] max-w-full
+            rounded-full grid place-items-center font-bold leading-none
             transition-all duration-200 select-none bg-gradient-to-br
             ${playingSound
               ? `${theme.heroBgActive} text-white scale-105 shadow-2xl`
               : `${theme.heroBgIdle} ${theme.heroText} shadow-xl hover:shadow-2xl hover:scale-[1.02]`}`}
           aria-label={`Play sound ${page.sound}`}
         >
-          <span className="text-6xl md:text-7xl lg:text-[8rem] xl:text-[10rem]">{page.sound}</span>
+          <span className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center">{page.sound}</span>
         </button>
-        <p className="text-base md:text-lg lg:text-xl text-slate-500 font-medium">Tap the sound!</p>
+        <p className="text-sm md:text-base lg:text-lg text-slate-500 font-medium">Tap the sound!</p>
       </div>
 
-      {/* ── WORD CARDS RIGHT — 2x2 grid ── */}
-      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-3 md:p-6 lg:p-8 min-h-0">
-        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6 w-full max-w-3xl">
+      {/* ── WORD CARDS RIGHT — 2x2 grid. Audio is George's voice (whole word)
+       *  for every level: too many phoneme-derivation edge cases (e.g. 'stone'
+       *  splitting as 5 sounds instead of 4) for the splitDigraphs path to be
+       *  pedagogically reliable. */}
+      <div className="flex items-center justify-center md:w-3/5 lg:w-[60%] p-3 md:p-5 lg:p-6 min-h-0">
+        <div className="grid grid-cols-2 gap-2.5 md:gap-3 lg:gap-4 w-full max-w-2xl h-full max-h-full">
           {page.items.map((item) => {
             const isActive = playingItem === item.word;
             return (
@@ -877,19 +866,11 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
                 key={item.word}
                 onClick={async () => {
                   setPlayingItem(item.word);
-                  if (level >= 5) {
-                    // L5+: play the whole word in George's voice (children at
-                    // this level read words, not sound them out).
-                    await playWordFile(item.word);
-                  } else {
-                    await playWordAsPhonemes(item.word);
-                    await new Promise(r => setTimeout(r, 200));
-                    await playWordFile(item.word);
-                  }
+                  await playWordFile(item.word);
                   setPlayingItem(null);
                 }}
-                className={`flex flex-col items-center justify-center aspect-square p-3 md:p-4 lg:p-6
-                  rounded-3xl border-2 transition-all duration-200 select-none
+                className={`flex flex-col items-center justify-center p-2 md:p-3 lg:p-4 min-h-0
+                  rounded-2xl border-2 transition-all duration-200 select-none
                   ${isActive
                     ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.03] shadow-xl`
                     : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-lg shadow-sm hover:scale-[1.02]`}`}
@@ -897,9 +878,9 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
                 <img
                   src={item.imageUrl}
                   alt={item.word}
-                  className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-36 xl:h-36 object-contain mb-2 md:mb-3 pointer-events-none"
+                  className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 object-contain mb-1 md:mb-2 pointer-events-none"
                 />
-                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold">
+                <span className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">
                   {(() => {
                     const chars = splitDigraphs(item.word);
                     const focusSet = computeSpotlightFocus(item.word, page.sound);
@@ -940,11 +921,13 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
         <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
       </div>
       <p className="text-xs md:text-sm lg:text-base text-slate-500 text-center mb-3 md:mb-4 shrink-0">
-        Tap each word to blend it together. Use the dots to sound it out.
+        Tap each word to hear it.
       </p>
 
       {/* ── Flashcard grid — scaled-down padding/size from old word_reading
-       *  so 6 words fit on a single screen at 1366x768 without scrolling. */}
+       *  so 6 words fit on a single screen at 1366x768 without scrolling.
+       *  wholeWordOnly: per pedagogy, this page is "George says the word",
+       *  not "child sounds it out". The dots/lines stay as visual reference. */}
       <div className="flex-1 min-h-0 flex items-center justify-center">
         <div className={`grid ${cols} gap-3 md:gap-4 lg:gap-5 w-full max-w-5xl content-center`}>
           {page.words.map((w, i) => (
@@ -952,7 +935,7 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
               key={i}
               className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] transition-all duration-200 py-5 md:py-7 lg:py-9 px-3 shadow-sm min-h-0`}
             >
-              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} />
+              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} wholeWordOnly={true} />
             </div>
           ))}
         </div>
