@@ -155,6 +155,12 @@ interface TappableWordProps {
   highlight?: boolean;
   narrationHighlight?: NarrationHighlight | null;
   showAnnotations?: boolean;
+  /** When true, taps play the whole-word MP3 only — no per-phoneme sounding-
+   *  out and no animation across the letter spans. Used by sound_spotlight,
+   *  word_reading and similar pages where the rule is "George says the word"
+   *  rather than "child sounds it out". Story words page keeps the default
+   *  sound-out behaviour. */
+  wholeWordOnly?: boolean;
 }
 
 // ─── Component ─────────────────────────────────────────────────────────
@@ -165,6 +171,7 @@ export default function TappableWord({
   highlight = false,
   narrationHighlight = null,
   showAnnotations = false,
+  wholeWordOnly = false,
 }: TappableWordProps) {
   const [isSoundingOut, setIsSoundingOut] = useState(false);
   const [activePhonemeIdx, setActivePhonemeIdx] = useState<number | null>(null);
@@ -234,8 +241,11 @@ export default function TappableWord({
     if (isSoundingOut) return;
     cancelRef.current = false;
 
-    if (wordData.isTricky) {
-      // Tricky word: quick purple highlight + speak the whole word
+    if (wholeWordOnly || wordData.isTricky) {
+      // Whole-word path: tricky words always, plus any caller that opts in
+      // (sound_spotlight, word_reading). George's voice only — no sounding
+      // out — so kids hear the canonical pronunciation without the renderer
+      // having to derive a phoneme breakdown that may disagree with the data.
       setTapped(true);
       await playWordAudio(wordData.word);
       setTimeout(() => setTapped(false), 400);
@@ -257,7 +267,7 @@ export default function TappableWord({
       setActivePhonemeIdx(null);
       setIsSoundingOut(false);
     }
-  }, [wordData, isSoundingOut]);
+  }, [wordData, isSoundingOut, wholeWordOnly]);
 
   // ─── Narration mode (Read to Me) ───────────────────────────────────
   const isNarrating = narrationHighlight !== null;
