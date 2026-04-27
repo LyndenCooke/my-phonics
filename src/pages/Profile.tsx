@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { User, Baby, LogOut, Download, Settings, ChevronRight, Pencil, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { ChildProgress } from '@/components/profile/ChildProgress';
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -46,7 +47,7 @@ export default function Profile() {
   if (!user) {
     return (
       <Layout>
-        <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
+        <div className="px-4 pt-5 pb-8 max-w-2xl mx-auto">
           <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
           <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
             <div className="flex items-center gap-4 mb-5">
@@ -65,6 +66,10 @@ export default function Profile() {
               Sign In / Sign Up
             </button>
           </div>
+          {/* Even signed-out users can see device-local reading activity. Once
+           *  they sign in we'll cloud-sync; for now any stamps already on this
+           *  device show up so the parent gets immediate value. */}
+          <ChildProgress />
         </div>
       </Layout>
     );
@@ -152,6 +157,9 @@ export default function Profile() {
             </button>
           )}
         </div>
+
+        {/* ── Child progress dashboard — heat map + sound coverage ── */}
+        <ChildProgress childName={child?.name} />
 
         {/* Menu items */}
         <div className="bg-card rounded-2xl border border-border divide-y divide-border shadow-card mb-6">
