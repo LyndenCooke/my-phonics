@@ -44,8 +44,9 @@ const MULTI_LETTER = new Set([
   'ay', 'ee', 'oo', 'ar', 'or', 'ir', 'ou', 'oy',
   'oa', 'oi', 'aw', 'ai', 'ea', 'ie', 'ue', 'ew', 'ow', 'ey', 'oe', 'au',
   'igh', 'air', 'ear', 'oor', 'ore', 'ure', 'ire', 'are', 'eer', 'ere',
-  'tion', 'cious', 'tious', 'able', 'ible', 'ous',
-  'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt',
+  'tion', 'cious', 'tious', 'able', 'ible', 'ous', 'sion',
+  'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt', 'bb',
+  'ed',  // past-tense suffix — pronounced /t/, /d/ or /ɪd/ depending on stem
 ]);
 
 // ─── Phoneme-to-letter span builder ────────────────────────────────────

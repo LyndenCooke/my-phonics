@@ -72,7 +72,8 @@ function splitDigraphs(word: string): string[] {
     'ow', 'ey', 'oe', 'au',
     'sh', 'ch', 'th', 'ng', 'nk', 'ck', 'ff', 'll', 'ss', 'zz', 'qu', 'tch',  // L1 consonants
     'ph', 'kn', 'wr', 'wh',                                   // L5+ consonants
-    'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt',                 // doubled consonants — one phoneme
+    'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt', 'bb',           // doubled consonants — one phoneme
+    'ed', 'sion',                                             // past-tense suffix + tion variant
   ];
   const result: string[] = [];
   let i = 0;
