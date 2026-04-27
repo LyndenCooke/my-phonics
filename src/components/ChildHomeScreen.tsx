@@ -15,7 +15,7 @@
  * never hit a paywall mid-reading.
  */
 import { useMemo } from 'react';
-import { Sparkles, ChevronRight } from 'lucide-react';
+import { Sparkles, ChevronRight, Lock } from 'lucide-react';
 import type { Book } from '@/lib/types';
 import { LEVELS } from '@/lib/types';
 import { getAllStamps, MAX_STAMPS } from '@/lib/stamps';
@@ -27,10 +27,7 @@ interface Props {
 }
 
 export default function ChildHomeScreen({ books, onBookSelect }: Props) {
-  // Only books the child can actually open — never show locked covers in
-  // child mode. They'd just lead to an upsell modal which is parent-only.
   const unlocked = useMemo(() => books.filter(b => b.unlocked), [books]);
-
   const stamps = useMemo(() => getAllStamps(), []);
 
   // Most-recently-read book = the one with the latest lastReadDate. Fall back
@@ -51,10 +48,13 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
 
   const continueStamps = continueBook ? (stamps[continueBook.subLevel]?.count ?? 0) : 0;
 
-  // Other books = unlocked, minus the continue card. Sorted by level/sub.
+  // Carousel = every book EXCEPT the continue card. Locked books are kept
+  // (rendered greyed with a lock icon) so the child sees the curriculum they
+  // are working toward — taps on locked books bounce harmlessly without
+  // opening the parent upsell modal.
   const otherBooks = useMemo(
-    () => unlocked.filter(b => b.id !== continueBook?.id).sort((a, b) => a.sortOrder - b.sortOrder),
-    [unlocked, continueBook]
+    () => books.filter(b => b.id !== continueBook?.id).sort((a, b) => a.sortOrder - b.sortOrder),
+    [books, continueBook]
   );
 
   if (!continueBook) {
@@ -141,31 +141,53 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
               const li = LEVELS.find(l => l.level === b.level);
               const cover = getCoverImageUrl(b.subLevel, b.coverImageUrl);
               const sCount = stamps[b.subLevel]?.count ?? 0;
+              const locked = !b.unlocked;
               return (
                 <button
                   key={b.id}
-                  onClick={() => onBookSelect(b)}
-                  className="shrink-0 w-32 md:w-36 snap-start text-left bg-card rounded-2xl border-2 border-border shadow-card overflow-hidden hover:shadow-lg active:scale-[0.97] transition-all duration-200"
+                  onClick={() => { if (!locked) onBookSelect(b); }}
+                  disabled={locked}
+                  className={`shrink-0 w-32 md:w-36 snap-start text-left rounded-2xl border-2 overflow-hidden transition-all duration-200
+                    ${locked
+                      ? 'bg-slate-50 border-slate-200 cursor-not-allowed opacity-70'
+                      : 'bg-card border-border shadow-card hover:shadow-lg active:scale-[0.97]'}`}
+                  aria-label={locked ? `${b.title} (locked — ask a grown-up)` : `Open ${b.title}`}
+                  title={locked ? 'Locked — ask a grown-up' : undefined}
                 >
-                  <div className="aspect-square w-full bg-muted">
-                    {cover && <img src={cover} alt={b.title} className="w-full h-full object-cover" />}
+                  <div className="aspect-square w-full bg-muted relative">
+                    {cover && (
+                      <img
+                        src={cover}
+                        alt={b.title}
+                        className={`w-full h-full object-cover ${locked ? 'grayscale opacity-60' : ''}`}
+                      />
+                    )}
+                    {locked && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center">
+                          <Lock className="w-4 h-4 md:w-5 md:h-5 text-slate-500" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="p-2.5">
-                    <p className={`text-[10px] font-bold uppercase tracking-wider ${li?.colorClass ?? 'text-primary-ink'} mb-0.5`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-wider mb-0.5 ${locked ? 'text-slate-400' : (li?.colorClass ?? 'text-primary-ink')}`}>
                       Level {b.level}
                     </p>
-                    <p className="text-xs md:text-sm font-bold text-foreground leading-tight line-clamp-2 min-h-[2.4em]">
+                    <p className={`text-xs md:text-sm font-bold leading-tight line-clamp-2 min-h-[2.4em] ${locked ? 'text-slate-400' : 'text-foreground'}`}>
                       {b.title}
                     </p>
-                    {/* Mini stamp counter */}
-                    <div className="flex items-center gap-1 mt-1.5">
-                      {Array.from({ length: MAX_STAMPS }).map((_, i) => (
-                        <span
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full ${i < sCount ? `bg-level-${b.level}` : 'bg-slate-200'}`}
-                        />
-                      ))}
-                    </div>
+                    {/* Mini stamp counter — only on unlocked books */}
+                    {!locked && (
+                      <div className="flex items-center gap-1 mt-1.5">
+                        {Array.from({ length: MAX_STAMPS }).map((_, i) => (
+                          <span
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full ${i < sCount ? `bg-level-${b.level}` : 'bg-slate-200'}`}
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </button>
               );

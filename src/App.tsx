@@ -33,6 +33,8 @@ const FreeAssessment = lazy(() => import("./pages/funnels/FreeAssessment"));
 const ThreeMinuteCheck = lazy(() => import("./pages/funnels/ThreeMinuteCheck"));
 const TheGap = lazy(() => import("./pages/funnels/TheGap"));
 
+const ChildModeGuard = lazy(() => import("./components/ChildModeGuard"));
+
 // Lazy-loaded admin pages
 const AdminGuard = lazy(() => import("./components/admin/AdminGuard"));
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
@@ -92,13 +94,13 @@ const App = () => (
           <Routes>
             <Route path="/" element={<ConditionalHome />} />
             <Route path="/library" element={<Index />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/assess" element={<Assessment />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Welcome /></ChildModeGuard></Suspense>} />
+            <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Assessment /></ChildModeGuard></Suspense>} />
+            <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Shop /></ChildModeGuard></Suspense>} />
+            <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><PaymentSuccess /></ChildModeGuard></Suspense>} />
+            <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Progress /></ChildModeGuard></Suspense>} />
+            <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Profile /></ChildModeGuard></Suspense>} />
+            <Route path="/auth" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Auth /></ChildModeGuard></Suspense>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />

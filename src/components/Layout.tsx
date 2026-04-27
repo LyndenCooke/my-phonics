@@ -1,8 +1,12 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
+
+// Lazy: the PIN dialog is only used on the parent toggle; no need to ship
+// it in the main bundle for kids who never see it.
+const ParentPinDialog = lazy(() => import('@/components/ParentPinDialog'));
 
 // Nav items shared between mobile bottom-bar and desktop top-nav.
 // "Home" = the hub home (/library), NOT the marketing landing — once the user
@@ -24,8 +28,19 @@ const CHILD_NAV = [
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { user } = useAuth();
-  const { mode, toggle } = useAppMode();
+  const { mode, setMode, toggle } = useAppMode();
   const navItems = mode === 'child' ? CHILD_NAV : PARENT_NAV;
+  const [pinOpen, setPinOpen] = useState(false);
+
+  // Toggle behaviour:
+  //  parent → child: free, no gate (the parent is in control).
+  //  child → parent: PIN-gated to stop kids tapping their way back to the
+  //                  shop. First-ever child→parent transition runs the
+  //                  set-PIN flow; subsequent ones run the verify flow.
+  const handleToggle = () => {
+    if (mode === 'parent') { toggle(); return; }
+    setPinOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -75,7 +90,7 @@ export default function Layout({ children }: { children: ReactNode }) {
            *  "PARENT" so a grown-up can switch back. In parent mode, it's a
            *  more inviting "Child mode" button. */}
           <button
-            onClick={toggle}
+            onClick={handleToggle}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all
               ${mode === 'child'
                 ? 'border-2 border-amber-400 bg-amber-50 text-amber-700 hover:bg-amber-100'
@@ -113,6 +128,17 @@ export default function Layout({ children }: { children: ReactNode }) {
       <main className="flex-1 pb-20 md:pb-4">
         {children}
       </main>
+
+      {/* Parent PIN gate */}
+      {pinOpen && (
+        <Suspense fallback={null}>
+          <ParentPinDialog
+            open={pinOpen}
+            onClose={() => setPinOpen(false)}
+            onSuccess={() => { setPinOpen(false); setMode('parent'); }}
+          />
+        </Suspense>
+      )}
 
       {/* Bottom tab bar (mobile only — desktop uses the top-nav) */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden">
