@@ -1,22 +1,31 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardCheck, Tag, User, LogIn } from 'lucide-react';
+import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAppMode } from '@/hooks/useAppMode';
 
 // Nav items shared between mobile bottom-bar and desktop top-nav.
 // "Home" = the hub home (/library), NOT the marketing landing — once the user
 // is inside the app, Home should mean hub home.
 // Reading progress lives inside the Profile page; we keep the nav tight at 4.
-const navItems = [
+const PARENT_NAV = [
   { path: '/library', label: 'Home', icon: Home },
   { path: '/assess', label: 'Assess', icon: ClipboardCheck },
   { path: '/shop', label: 'Pricing', icon: Tag },
   { path: '/profile', label: 'Profile', icon: User },
 ];
 
+// Child-mode nav: only Home (the simplified library). Hides Pricing,
+// Assess, and Profile so kids can't wander into purchase flows or settings.
+const CHILD_NAV = [
+  { path: '/library', label: 'Home', icon: Home },
+];
+
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { user } = useAuth();
+  const { mode, toggle } = useAppMode();
+  const navItems = mode === 'child' ? CHILD_NAV : PARENT_NAV;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -59,9 +68,26 @@ export default function Layout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        {/* Right-side auth + exit */}
+        {/* Right-side: mode toggle + auth + exit */}
         <div className="flex items-center gap-2 shrink-0">
-          {!user && (
+          {/* Parent / Child mode toggle. In child mode, the button is small,
+           *  unobtrusive (kids shouldn't tap it accidentally), and labelled
+           *  "PARENT" so a grown-up can switch back. In parent mode, it's a
+           *  more inviting "Child mode" button. */}
+          <button
+            onClick={toggle}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all
+              ${mode === 'child'
+                ? 'border-2 border-amber-400 bg-amber-50 text-amber-700 hover:bg-amber-100'
+                : 'border-2 border-primary/30 bg-tint-pink text-primary-ink hover:border-primary'
+              }`}
+            aria-label={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode'}
+            title={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode (kid-safe)'}
+          >
+            {mode === 'child' ? <Users className="w-3.5 h-3.5" /> : <Baby className="w-3.5 h-3.5" />}
+            <span className="hidden sm:inline">{mode === 'child' ? 'Parent' : 'Child mode'}</span>
+          </button>
+          {!user && mode === 'parent' && (
             <Link
               to="/auth"
               className="flex items-center gap-1 text-sm font-bold text-white gradient-primary px-3 py-1.5 rounded-xl shadow-button hover:opacity-90 transition-opacity"
@@ -71,13 +97,15 @@ export default function Layout({ children }: { children: ReactNode }) {
               <span className="hidden sm:inline">Sign In</span>
             </Link>
           )}
-          <Link
-            to="/"
-            className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
-            aria-label="Back to landing page"
-          >
-            Exit
-          </Link>
+          {mode === 'parent' && (
+            <Link
+              to="/"
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
+              aria-label="Back to landing page"
+            >
+              Exit
+            </Link>
+          )}
         </div>
       </header>
 

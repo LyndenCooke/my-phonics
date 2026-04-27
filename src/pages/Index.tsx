@@ -12,8 +12,10 @@ import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
+import { useAppMode } from '@/hooks/useAppMode';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import { SoundMatsResources } from '@/components/SoundMatsResources';
+import ChildHomeScreen from '@/components/ChildHomeScreen';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -33,6 +35,7 @@ export default function Index() {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
+  const { mode } = useAppMode();
   const [upsellBook, setUpsellBook] = useState<Book | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
@@ -309,6 +312,19 @@ export default function Index() {
     if (pence === 0) return 'Free';
     return `£${(pence / 100).toFixed(2)}`;
   };
+
+  // ── Child mode: render the simplified home screen instead of the parent
+  // library grid. The child can still tap any unlocked book to start reading
+  // (handleBookSelect still routes through the unlock check) but the upsell,
+  // resources and free-sample CTA are all hidden. Parent toggles back via
+  // the small "PARENT" button in the top header.
+  if (mode === 'child') {
+    return (
+      <Layout>
+        <ChildHomeScreen books={books} onBookSelect={handleBookSelect} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
