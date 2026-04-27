@@ -335,58 +335,51 @@ export default function TappableWord({
               </svg>
             )}
 
-            {/* Letters */}
+            {/* Letter columns — each letter sits above its own annotation so
+             * the dot or line is always centred under the actual character.
+             * Previous implementation used a separate annotation row sized by
+             * `1ch` per letter, which drifted right of the actual letter
+             * widths in proportional fonts (Andika): up to ~16px off-centre
+             * by the end of a 9-letter word. Sharing a flex column ties the
+             * annotation width to the letter's real rendered width. */}
             <span className="inline-flex">
-              {spans.map((span, i) => (
-                <span
-                  key={i}
-                  ref={el => { letterRefs.current[i] = el; }}
-                  className={`transition-colors duration-100 ${getSpanHighlight(span) ? 'text-pink-600' : ''}`}
-                >
-                  {span.letter}
-                </span>
-              ))}
-            </span>
-
-            {/* Annotation row — dots and lines below letters */}
-            <span className="relative flex items-end justify-start w-full" style={{ height: annotH }}>
-              <span className="inline-flex items-center" style={{ height: annotH }}>
-                {spans.map((span, i) => {
-                  const cleanLen = span.letter.replace(/[^a-zA-Z]/g, '').length || 1;
-                  const spanW = `${cleanLen}ch`;
-
-                  if (span.annotation === 'dot' || span.annotation === 'arc-mid-dot') {
-                    return (
-                      <span key={i} className="inline-flex justify-center items-end" style={{ width: spanW, height: annotH }}>
-                        <svg width={dotR * 2 + 2} height={dotR * 2 + 2}>
+              {spans.map((span, i) => {
+                const isStart = span.annotation === 'line-start';
+                const isEnd = span.annotation === 'line-end';
+                const isLine = isStart || span.annotation === 'line-mid' || isEnd;
+                const isDot = span.annotation === 'dot' || span.annotation === 'arc-mid-dot';
+                return (
+                  <span key={i} className="inline-flex flex-col items-center">
+                    <span
+                      ref={el => { letterRefs.current[i] = el; }}
+                      className={`transition-colors duration-100 ${getSpanHighlight(span) ? 'text-pink-600' : ''}`}
+                    >
+                      {span.letter}
+                    </span>
+                    <span
+                      className="flex justify-center items-end w-full"
+                      style={{ height: annotH }}
+                    >
+                      {isDot && (
+                        <svg width={dotR * 2 + 2} height={dotR * 2 + 2} className="self-center">
                           <circle cx={dotR + 1} cy={dotR + 1} r={dotR} fill="#1e293b" />
                         </svg>
-                      </span>
-                    );
-                  }
-                  if (span.annotation === 'line-start' || span.annotation === 'line-mid' || span.annotation === 'line-end') {
-                    const isStart = span.annotation === 'line-start';
-                    const isEnd = span.annotation === 'line-end';
-                    return (
-                      <span key={i} className="inline-flex items-end" style={{ width: spanW, height: annotH }}>
+                      )}
+                      {isLine && (
                         <span
-                          className="bg-slate-800"
+                          className="bg-slate-800 self-center"
                           style={{
                             height: strokeW,
                             width: '100%',
                             borderRadius: isStart ? `${strokeW}px 0 0 ${strokeW}px` : isEnd ? `0 ${strokeW}px ${strokeW}px 0` : 0,
                           }}
                         />
-                      </span>
-                    );
-                  }
-                  if (span.annotation === 'arc-start' || span.annotation === 'arc-end') {
-                    // No dot — the arc connects these two letters
-                    return <span key={i} style={{ width: spanW, height: annotH }} />;
-                  }
-                  return <span key={i} style={{ width: spanW, height: annotH }} />;
-                })}
-              </span>
+                      )}
+                      {/* arc-start / arc-end / none: empty slot keeps column sized */}
+                    </span>
+                  </span>
+                );
+              })}
             </span>
           </span>
         ) : (showAnnotations && isTricky) ? (

@@ -232,6 +232,168 @@ const LEVEL_LABEL: Record<number, string> = {
   6: 'Level 6 — Reading Champion',
 };
 
+// Sound → clipart card map. The clipart pack lives in /public/clipart/level_N/cards/
+// with filenames `<sound>_<cueword>.png`. Cards visually match the printed
+// MyPhonicsBooks sound mats (letter on the left, hand-drawn cue picture on
+// the right). Sounds not in this map fall back to a plain text button.
+//
+// Doubled-consonant graphemes (ss, ll, ff, zz) and 'ck' don't have their
+// own card — they share the parent letter's card via the slash-grouping
+// (e.g. 's/ss' uses s_sun.png, 'c/k/ck' uses c_cat.png).
+const SOUND_CARD: Record<string, string> = {
+  // L1 single letters
+  'a': '/clipart/level_1/cards/a_apple.png',
+  'b': '/clipart/level_1/cards/b_ball.png',
+  'c': '/clipart/level_1/cards/c_cat.png',
+  'd': '/clipart/level_1/cards/d_dog.png',
+  'e': '/clipart/level_1/cards/e_egg.png',
+  'f': '/clipart/level_1/cards/f_fish.png',
+  'g': '/clipart/level_1/cards/g_goat.png',
+  'h': '/clipart/level_1/cards/h_hat.png',
+  'i': '/clipart/level_1/cards/i_ink.png',
+  'j': '/clipart/level_1/cards/j_jam.png',
+  'k': '/clipart/level_1/cards/k_kite.png',
+  'l': '/clipart/level_1/cards/l_leaf.png',
+  'm': '/clipart/level_1/cards/m_mud.png',
+  'n': '/clipart/level_1/cards/n_nest.png',
+  'o': '/clipart/level_1/cards/o_orange.png',
+  'p': '/clipart/level_1/cards/p_pan.png',
+  'qu': '/clipart/level_1/cards/qu_queen.png',
+  'r': '/clipart/level_1/cards/r_rabbit.png',
+  's': '/clipart/level_1/cards/s_sun.png',
+  't': '/clipart/level_1/cards/t_tap.png',
+  'u': '/clipart/level_1/cards/u_umbrella.png',
+  'v': '/clipart/level_1/cards/v_van.png',
+  'w': '/clipart/level_1/cards/w_web.png',
+  'x': '/clipart/level_1/cards/x_box.png',
+  'y': '/clipart/level_1/cards/y_yak.png',
+  'z': '/clipart/level_1/cards/z_zip.png',
+  // L1 digraphs
+  'ch': '/clipart/level_1/cards/ch_chip.png',
+  'sh': '/clipart/level_1/cards/sh_ship.png',
+  'th': '/clipart/level_1/cards/th_thumb.png',
+  'ng': '/clipart/level_1/cards/ng_ring.png',
+  'nk': '/clipart/level_1/cards/nk_tank.png',
+  // L2
+  'air': '/clipart/level_2/cards/air_fair.png',
+  'ar': '/clipart/level_2/cards/ar_car.png',
+  'ay': '/clipart/level_2/cards/ay_day.png',
+  'ee': '/clipart/level_2/cards/ee_bee.png',
+  'igh': '/clipart/level_2/cards/igh_night.png',
+  'ir': '/clipart/level_2/cards/ir_bird.png',
+  'oo': '/clipart/level_2/cards/oo_zoo.png',
+  'or': '/clipart/level_2/cards/or_fork.png',
+  'ou': '/clipart/level_2/cards/ou_loud.png',
+  'ow': '/clipart/level_2/cards/ow_bow.png',
+  'oy': '/clipart/level_2/cards/oy_toy.png',
+  // L3 — split digraphs use underscore filenames
+  'a-e': '/clipart/level_3/cards/a_e_gate.png',
+  'i-e': '/clipart/level_3/cards/i_e_bike.png',
+  'o-e': '/clipart/level_3/cards/o_e_stone.png',
+  'u-e': '/clipart/level_3/cards/u_e_flute.png',
+  'ai': '/clipart/level_3/cards/ai_sail.png',
+  'aw': '/clipart/level_3/cards/aw_claw.png',
+  'ea': '/clipart/level_3/cards/ea_leaf.png',
+  'ie': '/clipart/level_3/cards/ie_tie.png',
+  'oa': '/clipart/level_3/cards/oa_boat.png',
+  'oi': '/clipart/level_3/cards/oi_coin.png',
+  // L4
+  'are': '/clipart/level_4/cards/are_hare.png',
+  'er': '/clipart/level_4/cards/er_fern.png',
+  'ew': '/clipart/level_4/cards/ew_new.png',
+  'ue': '/clipart/level_4/cards/ue_glue.png',
+  'ur': '/clipart/level_4/cards/ur_purse.png',
+  // L5
+  'ear': '/clipart/level_5/cards/ear_ear.png',
+  'ire': '/clipart/level_5/cards/ire_fire.png',
+  'oor': '/clipart/level_5/cards/oor_door.png',
+  'ore': '/clipart/level_5/cards/ore_shore.png',
+  'tion': '/clipart/level_5/cards/tion_station.png',
+  'ure': '/clipart/level_5/cards/ure_picture.png',
+  'kn': '/clipart/level_5/cards/kn_knee.png',
+  'ph': '/clipart/level_5/cards/ph_phone.png',
+  'wr': '/clipart/level_5/cards/wr_wrist.png',
+  // L6 suffixes
+  'able': '/clipart/level_6/cards/able_table.png',
+  'cious': '/clipart/level_6/cards/cious_delicious.png',
+  'ible': '/clipart/level_6/cards/ible_incredible.png',
+  'ous': '/clipart/level_6/cards/ous_enormous.png',
+  'tious': '/clipart/level_6/cards/tious_nutritious.png',
+};
+
+/** Resolve a grapheme group like 's/ss' or 'c/k/ck' to its clipart card path.
+ *  Tries each alternative in the slash group, falling back to undefined if
+ *  none match (caller should render plain text). */
+function getSoundCard(group: string): string | undefined {
+  for (const s of group.split('/')) {
+    const card = SOUND_CARD[s.toLowerCase()];
+    if (card) return card;
+  }
+  return undefined;
+}
+
+/** Hero focus-row card — large, with clipart on the right and the letter on
+ *  the left, matching the printed sound-mat aesthetic. */
+function FocusSoundCard({ group, isPlaying, theme, onTap }: {
+  group: string; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
+}) {
+  const sounds = group.split('/');
+  const card = getSoundCard(group);
+  return (
+    <button
+      onClick={onTap}
+      aria-label={`Play sound ${sounds.join(' or ')}`}
+      className={`relative flex items-center justify-between gap-2 rounded-2xl border-2 px-3 md:px-4 py-3 md:py-4 transition-all duration-200 shadow-md active:scale-95 overflow-hidden
+        ${isPlaying
+          ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.04]`
+          : `border-slate-200 bg-white hover:shadow-xl hover:scale-[1.02] ${theme.cardHoverBorder}`}`}
+    >
+      <span className={`block text-3xl md:text-4xl lg:text-5xl font-extrabold leading-none flex-shrink-0 ${isPlaying ? 'text-white' : theme.heroText}`}>
+        {sounds.join(' ')}
+      </span>
+      {card ? (
+        <img
+          src={card}
+          alt=""
+          className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain flex-shrink-0 pointer-events-none"
+          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+      ) : null}
+      {isPlaying && (
+        <Volume2 className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 text-white/90" />
+      )}
+    </button>
+  );
+}
+
+/** Smaller accordion card — compact letter+clipart pair for the review rows. */
+function ReviewSoundCard({ group, isPlaying, theme, onTap }: {
+  group: string; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
+}) {
+  const sounds = group.split('/');
+  const card = getSoundCard(group);
+  return (
+    <button
+      onClick={onTap}
+      aria-label={`Play sound ${sounds.join(' or ')}`}
+      className={`flex items-center justify-center gap-1 rounded-lg border px-1.5 py-1.5 transition-all duration-200 active:scale-95
+        ${isPlaying
+          ? `${theme.solidBg} text-white scale-110 shadow border-transparent`
+          : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300'}`}
+    >
+      <span className="text-sm md:text-base font-bold leading-none">{sounds.join('/')}</span>
+      {card && (
+        <img
+          src={card}
+          alt=""
+          className="w-6 h-6 md:w-7 md:h-7 object-contain pointer-events-none"
+          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
+      )}
+    </button>
+  );
+}
+
 function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type: 'sound_grid' }>; level: number }) {
   const [playingGroup, setPlayingGroup] = useState<string | null>(null);
   // Current level open by default; tapping another level closes the current one
@@ -264,8 +426,8 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
     .filter(l => reviewByLevel[l].length > 0)
     .sort((a, b) => a - b);
 
-  const focusCols = focusGroups.length <= 2 ? 'grid-cols-2'
-                  : focusGroups.length <= 3 ? 'grid-cols-3'
+  const focusCols = focusGroups.length <= 2 ? 'grid-cols-1 md:grid-cols-2'
+                  : focusGroups.length <= 3 ? 'grid-cols-2 md:grid-cols-3'
                   : focusGroups.length <= 4 ? 'grid-cols-2 md:grid-cols-4'
                   : 'grid-cols-3 md:grid-cols-6';
 
@@ -274,37 +436,26 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
   };
 
   return (
-    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-5" style={{ fontFamily: "'Andika', sans-serif" }}>
-      {/* ── New sounds (focus row stays large at the top) ── */}
+    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-4 overflow-hidden" style={{ fontFamily: "'Andika', sans-serif" }}>
+      {/* ── New sounds (focus row — clipart cards) ── */}
       <div className="flex items-center gap-2 mb-0.5 shrink-0">
         <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${theme.textAccentMuted}`} />
         <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">New sounds in this book</h2>
       </div>
       <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
-        Tap each one to hear it. These are the sounds your child will practise.
+        Tap each one to hear it. Same cue pictures as your sound mat.
       </p>
 
-      <div className={`grid ${focusCols} gap-2.5 md:gap-3 lg:gap-4 mb-4 md:mb-6 shrink-0`}>
-        {focusGroups.map((group) => {
-          const sounds = group.split('/');
-          const isPlaying = playingGroup === group;
-          return (
-            <button
-              key={group}
-              onClick={() => handleSoundTap(group)}
-              aria-label={`Play sound ${sounds.join(' or ')}`}
-              className={`relative py-4 md:py-5 lg:py-6 px-2 rounded-2xl font-extrabold leading-none transition-all duration-200 shadow-md active:scale-95
-                ${isPlaying
-                  ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
-                  : `bg-gradient-to-br ${theme.heroBgIdle} ${theme.heroText} hover:shadow-xl hover:scale-[1.02]`}`}
-            >
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl">{sounds.join(' ')}</span>
-              {isPlaying && (
-                <Volume2 className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 text-white/90" />
-              )}
-            </button>
-          );
-        })}
+      <div className={`grid ${focusCols} gap-2.5 md:gap-3 lg:gap-4 mb-3 md:mb-4 shrink-0`}>
+        {focusGroups.map((group) => (
+          <FocusSoundCard
+            key={group}
+            group={group}
+            isPlaying={playingGroup === group}
+            theme={theme}
+            onTap={() => handleSoundTap(group)}
+          />
+        ))}
       </div>
 
       {/* ── Review sounds — accordion grouped by level ── */}
@@ -334,24 +485,16 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
                 </button>
                 {isOpen && (
                   <div className="px-3 md:px-4 pb-3 pt-1">
-                    <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5 md:gap-2">
-                      {groups.map((group) => {
-                        const sounds = group.split('/');
-                        const isPlaying = playingGroup === group;
-                        return (
-                          <button
-                            key={group}
-                            onClick={() => handleSoundTap(group)}
-                            aria-label={`Play sound ${sounds.join(' or ')}`}
-                            className={`py-2 md:py-2.5 px-1 rounded-lg text-sm md:text-base font-bold transition-all duration-200 leading-tight active:scale-95
-                              ${isPlaying
-                                ? `${theme.solidBg} text-white scale-110 shadow`
-                                : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-800'}`}
-                          >
-                            {sounds.join(' / ')}
-                          </button>
-                        );
-                      })}
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-1.5 md:gap-2">
+                      {groups.map((group) => (
+                        <ReviewSoundCard
+                          key={group}
+                          group={group}
+                          isPlaying={playingGroup === group}
+                          theme={theme}
+                          onTap={() => handleSoundTap(group)}
+                        />
+                      ))}
                     </div>
                   </div>
                 )}
@@ -705,12 +848,12 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
   const theme = getTheme(level);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full">
+    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
       {/* ── HERO LEFT — focus sound ── */}
-      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6">
+      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-4 md:p-8 lg:p-10 gap-3 md:gap-5 min-h-0">
         <button
           onClick={async () => { setPlayingSound(true); await playPhoneme(page.sound); setPlayingSound(false); }}
-          className={`aspect-square w-40 md:w-56 lg:w-[22rem] xl:w-[26rem] max-w-full
+          className={`aspect-square w-32 md:w-48 lg:w-[18rem] xl:w-[22rem] max-w-full
             rounded-full flex items-center justify-center font-bold leading-none
             transition-all duration-200 select-none bg-gradient-to-br
             ${playingSound
@@ -718,14 +861,14 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
               : `${theme.heroBgIdle} ${theme.heroText} shadow-xl hover:shadow-2xl hover:scale-[1.02]`}`}
           aria-label={`Play sound ${page.sound}`}
         >
-          <span className="text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem]">{page.sound}</span>
+          <span className="text-6xl md:text-7xl lg:text-[8rem] xl:text-[10rem]">{page.sound}</span>
         </button>
-        <p className="text-lg md:text-xl lg:text-2xl text-slate-500 font-medium">Tap the sound!</p>
+        <p className="text-base md:text-lg lg:text-xl text-slate-500 font-medium">Tap the sound!</p>
       </div>
 
       {/* ── WORD CARDS RIGHT — 2x2 grid ── */}
-      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-4 md:p-8 lg:p-12 pb-8">
-        <div className="grid grid-cols-2 gap-4 md:gap-6 lg:gap-8 w-full max-w-3xl">
+      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-3 md:p-6 lg:p-8 min-h-0">
+        <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-6 w-full max-w-3xl">
           {page.items.map((item) => {
             const isActive = playingItem === item.word;
             return (
@@ -744,7 +887,7 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
                   }
                   setPlayingItem(null);
                 }}
-                className={`flex flex-col items-center justify-center aspect-square p-4 md:p-6 lg:p-8
+                className={`flex flex-col items-center justify-center aspect-square p-3 md:p-4 lg:p-6
                   rounded-3xl border-2 transition-all duration-200 select-none
                   ${isActive
                     ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.03] shadow-xl`
@@ -753,9 +896,9 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
                 <img
                   src={item.imageUrl}
                   alt={item.word}
-                  className="w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 object-contain mb-3 md:mb-4 pointer-events-none"
+                  className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-36 xl:h-36 object-contain mb-2 md:mb-3 pointer-events-none"
                 />
-                <span className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
+                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold">
                   {(() => {
                     const chars = splitDigraphs(item.word);
                     const focusSet = computeSpotlightFocus(item.word, page.sound);
@@ -778,36 +921,37 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
 function WordReadingPage({ page, focusSounds, level }: { page: Extract<InteractivePage, { type: 'word_reading' }>; focusSounds: string[]; level: number }) {
   const theme = getTheme(level);
 
-  // Scale grid cols with word count: 2 or 3 cols depending on how many words
-  const cols = page.words.length <= 4 ? 'grid-cols-2'
-             : page.words.length <= 6 ? 'grid-cols-2 md:grid-cols-3'
+  // Visual differentiation from Tricky Words: top banner + full-width card
+  // grid (instead of split hero / grid). Card grid uses a "challenge mat"
+  // feel — each card is a flashcard with a glow on tap.
+  const n = page.words.length;
+  const cols = n <= 3 ? 'grid-cols-1 md:grid-cols-3'
+             : n <= 4 ? 'grid-cols-2 md:grid-cols-4'
+             : n <= 6 ? 'grid-cols-2 md:grid-cols-3'
              : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full">
-      {/* ── HERO LEFT — themed sparkle anchor ── */}
-      <div className={`flex flex-col items-center justify-center md:w-2/5 lg:w-[42%] p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br ${theme.softGradient}`}>
-        <div className="relative">
-          <div className={`w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-3xl bg-gradient-to-br ${theme.heroBgIdle} shadow-xl flex items-center justify-center rotate-3`}>
-            <Sparkles className={`w-20 h-20 md:w-28 md:h-28 lg:w-40 lg:h-40 ${theme.heroText} drop-shadow-lg`} />
-          </div>
-          <Sparkles className={`absolute -top-3 -right-3 md:-top-4 md:-right-4 lg:-top-5 lg:-right-5 w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 ${theme.textAccent} animate-pulse`} />
-        </div>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800">Can You Read These?</h2>
-        <p className={`text-base md:text-lg lg:text-xl ${theme.textAccentMuted} text-center max-w-xs font-medium`}>
-          Tap each word to hear it sounded out!
-        </p>
+    <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-3 md:py-5 overflow-hidden">
+      {/* ── Top banner ── */}
+      <div className={`flex items-center justify-center gap-2 md:gap-3 mb-1 shrink-0`}>
+        <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">Can You Read These?</h2>
+        <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
       </div>
+      <p className="text-xs md:text-sm lg:text-base text-slate-500 text-center mb-3 md:mb-4 shrink-0">
+        Tap each word to blend it together. Use the dots to sound it out.
+      </p>
 
-      {/* ── RIGHT — big word tiles ── */}
-      <div className="flex items-center justify-center flex-1 p-6 md:p-10 lg:p-12">
-        <div className={`grid ${cols} gap-4 md:gap-6 lg:gap-8 w-full max-w-4xl`}>
+      {/* ── Flashcard grid — scaled-down padding/size from old word_reading
+       *  so 6 words fit on a single screen at 1366x768 without scrolling. */}
+      <div className="flex-1 min-h-0 flex items-center justify-center">
+        <div className={`grid ${cols} gap-3 md:gap-4 lg:gap-5 w-full max-w-5xl content-center`}>
           {page.words.map((w, i) => (
             <div
               key={i}
-              className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-lg transition-all duration-200 py-8 md:py-10 lg:py-14 px-4 shadow-sm`}
+              className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] transition-all duration-200 py-5 md:py-7 lg:py-9 px-3 shadow-sm min-h-0`}
             >
-              <TappableWord wordData={w} focusSounds={focusSounds} size="large" />
+              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} />
             </div>
           ))}
         </div>
@@ -823,40 +967,47 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
 function TrickyWordsPage({ page }: { page: Extract<InteractivePage, { type: 'tricky_words' }> }) {
   const [playing, setPlaying] = useState<string | null>(null);
 
-  // Cards-per-row scales by word count so 3 or 6 words still fill the grid
-  const cols = page.words.length <= 4 ? 'md:grid-cols-2 lg:grid-cols-2'
-             : page.words.length <= 6 ? 'md:grid-cols-2 lg:grid-cols-3'
-             : 'md:grid-cols-3 lg:grid-cols-4';
+  const handleTap = async (word: string) => {
+    setPlaying(word);
+    await playWordFile(word);
+    setPlaying(null);
+  };
+
+  // Cards-per-row scales by word count. Capped at 3 cols even on lg+ so cards
+  // stay wide enough to fit longer words like "through" without text-clipping.
+  const n = page.words.length;
+  const cols = n <= 4 ? 'grid-cols-2'
+             : 'grid-cols-2 md:grid-cols-3';
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full">
-      {/* ── HERO LEFT — purple decorative anchor ── */}
-      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-4 md:gap-6 bg-gradient-to-br from-purple-50 to-purple-100">
+    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
+      {/* ── HERO LEFT — purple decorative anchor (compacted) ── */}
+      <div className="flex flex-col items-center justify-center md:w-2/5 lg:w-[38%] p-4 md:p-6 lg:p-8 gap-3 md:gap-4 bg-gradient-to-br from-purple-50 to-purple-100 min-h-0">
         <div className="relative">
-          <div className="w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full bg-gradient-to-br from-purple-200 to-purple-300 shadow-xl flex items-center justify-center">
-            <Star className="w-20 h-20 md:w-28 md:h-28 lg:w-40 lg:h-40 text-amber-400 fill-amber-400 drop-shadow-lg" />
+          <div className="w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 rounded-full bg-gradient-to-br from-purple-200 to-purple-300 shadow-xl flex items-center justify-center">
+            <Star className="w-14 h-14 md:w-20 md:h-20 lg:w-28 lg:h-28 text-amber-400 fill-amber-400 drop-shadow-lg" />
           </div>
-          {/* Orbiting mini stars for whimsy */}
-          <Star className="absolute -top-2 -right-2 md:-top-3 md:-right-3 lg:-top-4 lg:-right-4 w-8 h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 text-amber-300 fill-amber-300 animate-pulse" />
-          <Star className="absolute -bottom-1 -left-3 md:-bottom-2 md:-left-5 lg:-bottom-4 lg:-left-8 w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-amber-200 fill-amber-200 animate-pulse" style={{ animationDelay: '0.5s' }} />
+          <Star className="absolute -top-2 -right-2 md:-top-3 md:-right-3 w-6 h-6 md:w-8 md:h-8 text-amber-300 fill-amber-300 animate-pulse" />
+          <Star className="absolute -bottom-1 -left-3 md:-bottom-2 md:-left-5 w-5 h-5 md:w-7 md:h-7 text-amber-200 fill-amber-200 animate-pulse" style={{ animationDelay: '0.5s' }} />
         </div>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-purple-800">Tricky Words</h2>
-        <p className="text-base md:text-lg lg:text-xl text-purple-600 text-center max-w-xs">
-          These don't sound how they look — just know them by sight!
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-purple-800">Tricky Words</h2>
+        <p className="text-sm md:text-base lg:text-lg text-purple-600 text-center max-w-xs">
+          These don't sound how they look &mdash; just know them by sight!
         </p>
       </div>
 
-      {/* ── CARDS RIGHT — big tricky cards ── */}
-      <div className="flex items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-10 lg:p-12">
-        <div className={`grid grid-cols-2 ${cols} gap-4 md:gap-6 lg:gap-8 w-full max-w-3xl`}>
+      {/* ── CARDS RIGHT — big tricky cards. Text caps at lg:text-5xl so a
+       *  7-letter word like "through" never clips the card edge. */}
+      <div className="flex items-center justify-center flex-1 p-4 md:p-6 lg:p-8 min-h-0">
+        <div className={`grid ${cols} gap-3 md:gap-4 lg:gap-5 w-full max-w-3xl`}>
           {page.words.map((w, i) => {
             const isActive = playing === w.word;
             return (
               <button
                 key={i}
-                onClick={() => setPlaying(isActive ? null : w.word)}
-                className={`py-6 md:py-8 lg:py-10 px-3 md:px-4 rounded-3xl border-2 font-bold transition-all duration-200 select-none
-                  text-4xl md:text-5xl lg:text-6xl xl:text-7xl
+                onClick={() => handleTap(w.word)}
+                className={`py-5 md:py-7 lg:py-9 px-3 md:px-4 rounded-3xl border-2 font-bold transition-all duration-200 select-none
+                  text-3xl md:text-4xl lg:text-5xl truncate
                   ${isActive
                     ? 'border-purple-400 bg-gradient-to-br from-purple-100 to-purple-200 text-purple-800 scale-[1.03] shadow-xl'
                     : 'border-purple-200 bg-white text-slate-700 hover:border-purple-400 hover:bg-purple-50 hover:scale-[1.02] shadow-sm hover:shadow-lg'}`}
@@ -884,21 +1035,23 @@ function NonsenseWordsPage({ page, focusSounds }: { page: Extract<InteractivePag
              : 'grid-cols-3 md:grid-cols-4 lg:grid-cols-4';
 
   return (
-    <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-5 md:py-8">
-      <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 flex-shrink-0">
-        <Sparkles className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-green-500" />
-        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800">Alien Words</h2>
-        <Sparkles className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-green-500" />
+    <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-3 md:py-5 overflow-hidden">
+      <div className="flex items-center justify-center gap-2 md:gap-3 mb-0.5 shrink-0">
+        <Sparkles className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-green-500" />
+        <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-slate-800">Alien Words</h2>
+        <Sparkles className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-green-500" />
       </div>
-      <p className="text-base md:text-lg lg:text-xl text-slate-500 mb-5 md:mb-8 text-center flex-shrink-0">
-        Not real words — just sound them out!
+      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 text-center shrink-0">
+        Not real words &mdash; just sound them out!
       </p>
-      <div className="flex-1 flex items-center justify-center min-h-0">
-        <div className={`grid ${cols} gap-4 md:gap-5 lg:gap-6 w-full max-w-5xl`}>
+      {/* content-start instead of items-center stops the grid from growing
+       * upward and overlapping the subtitle when it has many cards. */}
+      <div className="flex-1 min-h-0 flex items-center justify-center">
+        <div className={`grid ${cols} gap-3 md:gap-4 lg:gap-5 w-full max-w-5xl content-center`}>
           {page.words.map((w, i) => (
             <div
               key={i}
-              className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl px-4 py-6 md:py-8 lg:py-10 flex justify-center shadow-sm hover:border-green-400 hover:shadow-lg transition-all duration-200"
+              className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl px-3 py-4 md:py-6 lg:py-8 flex justify-center shadow-sm hover:border-green-400 hover:shadow-lg transition-all duration-200 min-h-0"
             >
               <TappableWord wordData={w} focusSounds={focusSounds} size="large" />
             </div>
@@ -1599,7 +1752,7 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
   const emoji = isChampion ? '\u{1F3C6}' : awardedNow ? '\u{1F389}' : '\u{1F4DA}';
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-6 md:px-12 lg:px-16 py-8 text-center relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-full px-4 md:px-8 lg:px-12 py-3 md:py-4 text-center relative overflow-hidden">
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none">
           {Array.from({ length: confettiCount }).map((_, i) => (
@@ -1612,36 +1765,36 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
       )}
 
       <div className={`relative bg-white rounded-3xl border-4 ${isChampion ? 'border-amber-400' : theme.cardBorderActive}
-        p-8 md:p-10 lg:p-14 shadow-2xl max-w-3xl w-full flex flex-col items-center gap-5 md:gap-7`}>
+        p-5 md:p-7 lg:p-9 shadow-2xl max-w-3xl w-full flex flex-col items-center gap-3 md:gap-4`}>
 
-        <div className="text-5xl md:text-6xl lg:text-7xl">{emoji}</div>
-        <h1 className={`text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold ${isChampion ? 'text-amber-600' : theme.textAccent}`}>
+        <div className="text-4xl md:text-5xl lg:text-6xl">{emoji}</div>
+        <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold ${isChampion ? 'text-amber-600' : theme.textAccent}`}>
           {title}
         </h1>
-        <p className="text-xl md:text-2xl lg:text-3xl font-bold italic text-slate-700 px-4">{page.bookTitle}</p>
+        <p className="text-lg md:text-xl lg:text-2xl font-bold italic text-slate-700 px-4">{page.bookTitle}</p>
 
         {/* ── Stamp row ── */}
-        <div className="flex items-end gap-3 md:gap-4 lg:gap-6 mt-2 md:mt-4">
+        <div className="flex items-end gap-2 md:gap-3 lg:gap-4 mt-1">
           {Array.from({ length: MAX_STAMPS }).map((_, i) => {
             const earned = i < stampState.count;
             const justEarned = awardedNow && i === stampState.count - 1;
             const stampNum = i + 1;
             const checkInPassed = stampState.checkInResults[stampNum];
             return (
-              <div key={i} className="flex flex-col items-center gap-2">
-                <div className={`relative w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex items-center justify-center transition-all duration-300
+              <div key={i} className="flex flex-col items-center gap-1">
+                <div className={`relative w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full flex items-center justify-center transition-all duration-300
                   ${earned
                     ? `bg-gradient-to-br ${theme.heroBgActive} shadow-xl ${justEarned ? 'ring-4 ring-amber-300 scale-110' : ''}`
                     : 'border-2 border-dashed border-slate-300 bg-slate-50'}`}>
                   {earned ? (
-                    <Star className={`w-7 h-7 md:w-10 md:h-10 lg:w-12 lg:h-12 xl:w-14 xl:h-14 text-white fill-white drop-shadow ${justEarned ? 'animate-pulse' : ''}`} />
+                    <Star className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-12 xl:h-12 text-white fill-white drop-shadow ${justEarned ? 'animate-pulse' : ''}`} />
                   ) : (
-                    <span className="text-lg md:text-2xl lg:text-3xl font-bold text-slate-300">{stampNum}</span>
+                    <span className="text-base md:text-xl lg:text-2xl font-bold text-slate-300">{stampNum}</span>
                   )}
                   {/* Check-in indicator — small green tick or red X in the corner for stamps 3+ */}
                   {earned && stampNum >= 3 && checkInPassed !== undefined && (
                     <span
-                      className={`absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center text-xs md:text-sm font-bold shadow
+                      className={`absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold shadow
                         ${checkInPassed ? 'bg-green-500 text-white' : 'bg-amber-400 text-white'}`}
                       title={checkInPassed ? 'Check-in passed' : 'Check-in — keep practising'}
                     >
@@ -1649,7 +1802,7 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] md:text-xs lg:text-sm font-medium ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
+                <span className={`text-[10px] md:text-xs font-medium ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
                   Day {stampNum}
                 </span>
               </div>
@@ -1657,39 +1810,37 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
           })}
         </div>
 
-        {/* ── Ready-to-move-up badge (champion only, all check-ins passed) ── */}
         {isChampion && readyToMoveUp && (
-          <div className="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-full bg-gradient-to-r from-amber-200 to-amber-300 border-2 border-amber-400 shadow-lg">
-            <span className="text-2xl md:text-3xl">&#x1F680;</span>
-            <span className="text-base md:text-lg lg:text-xl font-bold text-amber-800">Ready to Move Up!</span>
+          <div className="flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-amber-200 to-amber-300 border-2 border-amber-400 shadow-lg">
+            <span className="text-xl md:text-2xl">&#x1F680;</span>
+            <span className="text-sm md:text-base lg:text-lg font-bold text-amber-800">Ready to Move Up!</span>
           </div>
         )}
 
-        {/* ── Status message ── */}
-        <div className="mt-2 md:mt-3 max-w-xl">
+        <div className="max-w-xl">
           {isChampion && readyToMoveUp ? (
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-amber-700">
+            <p className="text-base md:text-lg lg:text-xl font-bold text-amber-700">
               5 reads, 3 check-ins passed. You've really mastered this book!
             </p>
           ) : isChampion ? (
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-amber-700">
+            <p className="text-base md:text-lg lg:text-xl font-bold text-amber-700">
               5 reads complete! A few more reads at this level will build real fluency.
             </p>
           ) : awardedNow ? (
-            <p className="text-base md:text-lg lg:text-xl text-slate-600">
+            <p className="text-sm md:text-base lg:text-lg text-slate-600">
               Stamp <span className={`font-bold ${theme.textAccent}`}>{stampState.count} of {MAX_STAMPS}</span> unlocked!
               Come back tomorrow for stamp {stampState.count + 1}.
             </p>
           ) : (
-            <p className="text-base md:text-lg lg:text-xl text-slate-600">
-              You've already earned today's stamp — great work!
+            <p className="text-sm md:text-base lg:text-lg text-slate-600">
+              You've already earned today's stamp &mdash; great work!
               Come back tomorrow for stamp {stampState.count + 1}.
             </p>
           )}
         </div>
 
-        <div className="border-t-2 border-dashed border-slate-200 pt-3 mt-2 w-full max-w-sm">
-          <p className="text-xs md:text-sm text-slate-400">MyPhonicsBooks</p>
+        <div className="border-t-2 border-dashed border-slate-200 pt-2 w-full max-w-sm">
+          <p className="text-xs text-slate-400">MyPhonicsBooks</p>
         </div>
       </div>
     </div>
