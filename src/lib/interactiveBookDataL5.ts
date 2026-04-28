@@ -1046,12 +1046,14 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
       { audioKey: 'ure_ur',   label: "sounds 'ur'",   example: 'nature' },
     ],
     items: [
-      // /jʊər/ — 'yoor' words. 'sure' deliberately not in the decode list:
-      // its 's' makes /ʃ/ (irregular), so it lives as a tricky word in the
-      // vocab list, not as a decoding example for 'ure'.
-      { word: 'pure', imageUrl: '/images/words/pure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
-      { word: 'cure', imageUrl: '/images/words/cure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
-      { word: 'lure', imageUrl: '/images/words/lure.png', focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      // /jʊər/ — 'yoor' words: the 'y'-glide before 'ure' is triggered by
+      // certain preceding consonants (p, c/k, m, s+e, etc). 'lure' /lʊər/
+      // doesn't qualify — no /j/ glide after 'l' — so it lives elsewhere.
+      // 'sure' is also excluded: its 's' is irregular (/ʃ/) and it lives
+      // in the vocab tricky list.
+      { word: 'pure',   imageUrl: '/images/words/pure.png',   focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      { word: 'cure',   imageUrl: '/images/words/cure.png',   focusIndex: 1, morphSplit: 1, variant: 'ure_yoor' },
+      { word: 'secure', imageUrl: '/images/words/secure.png', focusIndex: 3, morphSplit: 3, variant: 'ure_yoor' },
       // /ər/ — 'ur' words: sound like nat-ure, pict-ure, fut-ure
       { word: 'nature',  imageUrl: '/images/words/nature.png',  focusIndex: 3, morphSplit: 3, variant: 'ure_ur' },
       { word: 'picture', imageUrl: '/images/words/picture.png', focusIndex: 4, morphSplit: 4, variant: 'ure_ur' },
