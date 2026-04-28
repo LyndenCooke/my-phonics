@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { buildShareUrl, buildWhatsappMessage, buildFacebookMessage } from '@/lib/referral';
-import { Copy, Check, Share2, Users, MousePointer2, PoundSterling, MessageCircle } from 'lucide-react';
+import { Copy, Check, Share2, Users, MousePointer2, PoundSterling, MessageCircle, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ReferralRow {
@@ -35,6 +35,10 @@ export function ReferralPanel() {
   const [row, setRow] = useState<ReferralRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState<'link' | 'wa' | 'fb' | null>(null);
+  // Collapsed by default — parents see a small earnings teaser and click to
+  // open the full panel. Reduces visual noise on the Profile page for the
+  // 95% of visits that aren't about sharing.
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (!user) { setLoading(false); return; }
@@ -93,17 +97,45 @@ export function ReferralPanel() {
 
   return (
     <div className="bg-card rounded-2xl border border-border shadow-card mb-6 overflow-hidden">
-      {/* Gradient header */}
-      <div className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-600 text-white px-5 py-4">
-        <div className="flex items-center gap-2 mb-1">
-          <Share2 className="w-4 h-4" />
-          <h3 className="font-bold text-base">Refer & Earn</h3>
+      {/* Gradient header — also acts as the expand/collapse toggle */}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-600 text-white px-5 py-4 text-left hover:brightness-105 transition-all"
+        aria-expanded={expanded}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <Share2 className="w-4 h-4" />
+              <h3 className="font-bold text-base">Refer & Earn</h3>
+              {row.total_earnings_pence > 0 && (
+                <span className="text-[11px] font-extrabold bg-white text-fuchsia-700 px-2 py-0.5 rounded-full tabular-nums">
+                  £{earningsGbp}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-white/85 leading-snug">
+              {expanded
+                ? 'Share MyPhonicsBooks and earn 50% on every Founders Club spot you bring in.'
+                : `Earn 50% per Founders Club referral · ${row.total_clicks} clicks · ${row.total_conversions} sales`}
+            </p>
+          </div>
+          <ChevronDown className={`w-5 h-5 shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} />
         </div>
-        <p className="text-xs text-white/85">
-          Share MyPhonicsBooks and earn 50% on every Founders Club spot you bring in.
-        </p>
-      </div>
+      </button>
 
+      {!expanded && (
+        <div className="px-5 py-3">
+          <button
+            onClick={() => setExpanded(true)}
+            className="w-full py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-bold shadow-button active:scale-[0.97] transition-transform"
+          >
+            Get my share link →
+          </button>
+        </div>
+      )}
+
+      {expanded && (
       <div className="px-5 py-4 space-y-5">
         {/* Stats */}
         <div className="grid grid-cols-2 gap-2.5">
@@ -171,6 +203,7 @@ export function ReferralPanel() {
           Self-referrals don't count.
         </p>
       </div>
+      )}
     </div>
   );
 }
