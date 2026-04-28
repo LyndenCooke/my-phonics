@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    let payload: { product_id?: unknown; guest_email?: unknown };
+    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown };
     try {
       payload = await req.json();
     } catch {
@@ -53,6 +53,12 @@ Deno.serve(async (req) => {
     const product_id = typeof payload.product_id === "string" ? payload.product_id.trim() : "";
     const guest_email =
       typeof payload.guest_email === "string" ? payload.guest_email.trim().toLowerCase() : "";
+    const ref_code_raw =
+      typeof payload.ref_code === "string" ? payload.ref_code.trim().toUpperCase() : "";
+    // Validate referral code shape — 4-12 uppercase alphanumerics. We don't
+    // hard-fail if it's invalid; just drop it. The webhook will look it up
+    // and skip attribution if no matching referrer exists.
+    const ref_code = /^[A-Z0-9]{4,12}$/.test(ref_code_raw) ? ref_code_raw : "";
 
     if (!product_id || !UUID_RE.test(product_id)) {
       return badRequest("product_id must be a valid UUID");
@@ -159,6 +165,14 @@ Deno.serve(async (req) => {
     // For guests, store email in metadata so webhook can create account
     if (!userId && guest_email) {
       body.set("metadata[guest_email]", guest_email);
+    }
+
+    // Affiliate ref code — webhook reads this on checkout.session.completed
+    // and writes a row to referral_attributions crediting the referrer.
+    // We skip attribution if the buyer is the same user as the referrer
+    // (handled in the webhook, not here).
+    if (ref_code) {
+      body.set("metadata[ref_code]", ref_code);
     }
 
     if (customerEmail) {

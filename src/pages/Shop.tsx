@@ -3,9 +3,11 @@ import Layout from '@/components/Layout';
 import { useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift } from 'lucide-react';
+import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { getStoredRefCode } from '@/lib/referral';
+import { useCountdown, isFoundersClubActive } from '@/lib/foundersClub';
 import {
   Dialog,
   DialogContent,
@@ -28,6 +30,17 @@ const PRODUCT_CONFIG: Record<string, {
       'Free phonics assessment',
       '1 book at your child\'s level',
       'Progress tracking',
+    ],
+  },
+  founders_club: {
+    icon: Sparkles,
+    gradient: 'from-pink-500 via-fuchsia-500 to-violet-600',
+    badge: '£1 Limited',
+    features: [
+      'Lifetime access to all 33 books',
+      'Every assessment & progress report',
+      'All future books included',
+      'For our first 1,000 founding families',
     ],
   },
   full_bundle: {
@@ -88,6 +101,11 @@ export default function Shop() {
       if (guestEmailOverride) {
         body.guest_email = guestEmailOverride;
       }
+      // Attach affiliate ref code if the visitor came in via a /?ref=CODE
+      // share link. The webhook reads this from Stripe metadata and credits
+      // the referrer when the purchase completes.
+      const ref = getStoredRefCode();
+      if (ref) body.ref_code = ref;
 
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       const session = (await supabase.auth.getSession()).data.session;
@@ -152,9 +170,18 @@ export default function Shop() {
     handleCheckout(guestDialog.productId, guestEmail);
   };
 
-  // Sort: free_sample first, then full_bundle, subscription, subscription_annual
-  const sortOrder = ['free_sample', 'full_bundle', 'subscription', 'subscription_annual'];
-  const sortedProducts = [...(products ?? [])].sort(
+  // Sort: founders_club FIRST while the offer is live (most urgent),
+  // then free_sample, full_bundle, subscriptions. Once the offer expires
+  // we drop founders_club to the end so it visually de-prioritises if it
+  // somehow stays active in the DB.
+  const foundersFirst = isFoundersClubActive();
+  const sortOrder = foundersFirst
+    ? ['founders_club', 'free_sample', 'full_bundle', 'subscription', 'subscription_annual']
+    : ['free_sample', 'full_bundle', 'subscription', 'subscription_annual', 'founders_club'];
+  const visibleProducts = (products ?? []).filter(
+    (p) => p.product_type !== 'founders_club' || foundersFirst
+  );
+  const sortedProducts = [...visibleProducts].sort(
     (a, b) => sortOrder.indexOf(a.product_type) - sortOrder.indexOf(b.product_type)
   );
 
@@ -185,13 +212,14 @@ export default function Shop() {
               const isSub = product.product_type === 'subscription';
               const isAnnual = product.product_type === 'subscription_annual';
               const isBundle = product.product_type === 'full_bundle';
+              const isFounders = product.product_type === 'founders_club';
               const loading = checkoutLoading === product.id;
 
               return (
                 <div
                   key={product.id}
                   className={`rounded-2xl overflow-hidden transition-all duration-200 shadow-card ${
-                    isBundle ? 'ring-2 ring-indigo-500' : 'border border-border'
+                    isFounders ? 'ring-2 ring-fuchsia-500' : isBundle ? 'ring-2 ring-indigo-500' : 'border border-border'
                   }`}
                 >
                   {/* Header */}
@@ -229,6 +257,11 @@ export default function Shop() {
                       </p>
                     )}
 
+                    {/* Live countdown on the founders card */}
+                    {isFounders && (
+                      <FoundersCountdownLine />
+                    )}
+
                     {/* Features */}
                     <ul className="space-y-2 mb-4">
                       {config.features.map((f, i) => (
@@ -255,6 +288,8 @@ export default function Shop() {
                         'Get Free Book'
                       ) : isSub ? (
                         'Start Free Trial'
+                      ) : isFounders ? (
+                        'Claim my £1 spot'
                       ) : (
                         'Get Started'
                       )}
@@ -340,5 +375,15 @@ export default function Shop() {
         </DialogContent>
       </Dialog>
     </Layout>
+  );
+}
+
+function FoundersCountdownLine() {
+  const c = useCountdown();
+  if (c.expired) return null;
+  return (
+    <p className="text-xs font-bold text-fuchsia-700 -mt-2 mb-3 tabular-nums">
+      ⏳ Ends in {c.days}d {c.hours}h {c.minutes}m {String(c.seconds).padStart(2, '0')}s
+    </p>
   );
 }
