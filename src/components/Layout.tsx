@@ -7,6 +7,7 @@ import { useAppMode } from '@/hooks/useAppMode';
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
 const ParentPinDialog = lazy(() => import('@/components/ParentPinDialog'));
+import ModeToggleHint from '@/components/ModeToggleHint';
 
 // Nav items shared between mobile bottom-bar and desktop top-nav.
 // "Home" = the hub home (/library), NOT the marketing landing — once the user
@@ -88,20 +89,33 @@ export default function Layout({ children }: { children: ReactNode }) {
           {/* Parent / Child mode toggle. In child mode, the button is small,
            *  unobtrusive (kids shouldn't tap it accidentally), and labelled
            *  "PARENT" so a grown-up can switch back. In parent mode, it's a
-           *  more inviting "Child mode" button. */}
-          <button
-            onClick={handleToggle}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all
-              ${mode === 'child'
-                ? 'border-2 border-amber-400 bg-amber-50 text-amber-700 hover:bg-amber-100'
-                : 'border-2 border-primary/30 bg-tint-pink text-primary-ink hover:border-primary'
-              }`}
-            aria-label={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode'}
-            title={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode (kid-safe)'}
-          >
-            {mode === 'child' ? <Users className="w-3.5 h-3.5" /> : <Baby className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">{mode === 'child' ? 'Parent' : 'Child mode'}</span>
-          </button>
+           *  more inviting "Child mode" button.
+           *
+           *  Wrapped in `relative` so the first-run ModeToggleHint can
+           *  position itself directly underneath it. */}
+          <div className="relative">
+            <button
+              onClick={handleToggle}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-all
+                ${mode === 'child'
+                  ? 'border-2 border-amber-400 bg-amber-50 text-amber-700 hover:bg-amber-100'
+                  : 'border-2 border-primary/30 bg-tint-pink text-primary-ink hover:border-primary animate-pulse-soft'
+                }`}
+              aria-label={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode'}
+              title={mode === 'child' ? 'Switch to parent mode' : 'Switch to child mode (kid-safe)'}
+            >
+              {mode === 'child' ? <Users className="w-3.5 h-3.5" /> : <Baby className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{mode === 'child' ? 'Parent' : 'Child mode'}</span>
+            </button>
+            <ModeToggleHint />
+            <style>{`
+              @keyframes pulse-soft {
+                0%, 100% { box-shadow: 0 0 0 0 rgba(232, 75, 138, 0.0); }
+                50% { box-shadow: 0 0 0 6px rgba(232, 75, 138, 0.15); }
+              }
+              .animate-pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+            `}</style>
+          </div>
           {!user && mode === 'parent' && (
             <Link
               to="/auth"
