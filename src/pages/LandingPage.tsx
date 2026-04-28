@@ -96,19 +96,24 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
-          <img src="/logo/mpb-mark-transparent.png" alt="" className="w-10 h-10 object-contain" draggable={false} />
-          <span className="font-display text-lg font-extrabold text-foreground tracking-tight">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-top ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
+        {/* Logo — collapses to mark-only under 380px so the nav buttons
+         *  don't overlap the wordmark on small phones. */}
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0 min-w-0" aria-label="MyPhonicsBooks home">
+          <img src="/logo/mpb-mark-transparent.png" alt="" className="w-9 h-9 sm:w-10 sm:h-10 object-contain shrink-0" draggable={false} />
+          <span className="font-display text-base sm:text-lg font-extrabold text-foreground tracking-tight truncate hidden xs:inline">
             My<span className="text-primary-ink">Phonics</span>Books
           </span>
         </Link>
-        <div className="flex items-center gap-2">
-          <button onClick={onLearningHub} className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Learning Hub — hidden on the smallest screens. The Free
+           *  Assessment CTA is the primary action; Learning Hub is
+           *  reachable from the footer. */}
+          <button onClick={onLearningHub} className="hidden sm:inline text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
             Learning Hub
           </button>
-          <button onClick={onAssess} className="text-sm font-bold text-white gradient-primary px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity">
+          <button onClick={onAssess} className="text-xs sm:text-sm font-bold text-white gradient-primary px-3 sm:px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap">
             Free Assessment
           </button>
         </div>

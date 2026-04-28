@@ -73,18 +73,13 @@ export default function ModeToggleHint() {
           className="absolute -top-2 right-6 w-4 h-4 bg-amber-400 rotate-45"
           aria-hidden="true"
         />
-        <div className="relative bg-amber-400 text-amber-950 rounded-xl shadow-lg px-3 py-2.5 max-w-[15rem] flex items-start gap-2">
-          <div className="flex-1">
-            <p className="text-xs font-extrabold leading-tight">
-              Switch to Child mode 👶
-            </p>
-            <p className="text-[11px] mt-0.5 leading-snug">
-              Tap here to flip to a kid-safe view that hides the shop and settings.
-            </p>
-          </div>
+        <div className="relative bg-amber-400 text-amber-950 rounded-xl shadow-lg px-3 py-2 max-w-[12rem] flex items-center gap-2">
+          <p className="text-xs font-extrabold leading-tight flex-1">
+            Tap for kid-safe mode
+          </p>
           <button
             onClick={dismiss}
-            className="shrink-0 -mr-1 -mt-1 w-5 h-5 rounded-full hover:bg-amber-500/30 flex items-center justify-center"
+            className="shrink-0 -mr-1 w-5 h-5 rounded-full hover:bg-amber-500/30 flex items-center justify-center"
             aria-label="Dismiss hint"
           >
             <X className="w-3 h-3" />

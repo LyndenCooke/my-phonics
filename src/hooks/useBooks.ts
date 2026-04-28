@@ -124,6 +124,49 @@ export function useBookPages(bookId: string | null) {
   });
 }
 
+/**
+ * Returns the user's purchase history with derived flags so callers don't
+ * have to repeat membership-checking logic. The Founders Club banner /
+ * shop sort order / "upgrade" CTAs all key off these flags.
+ */
+export function usePurchases() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['purchases', user?.id],
+    queryFn: async () => {
+      if (!user) {
+        return {
+          purchases: [],
+          hasFoundersClub: false,
+          hasFullBundle: false,
+          hasActiveSubscription: false,
+          hasAnyPaid: false,
+        };
+      }
+      const { data, error } = await supabase
+        .from('purchases')
+        .select('*, products(product_type)')
+        .eq('user_id', user.id)
+        .eq('status', 'completed');
+      if (error) throw error;
+      const rows = data || [];
+      const types = new Set(rows.map((r: any) => r.products?.product_type).filter(Boolean));
+      return {
+        purchases: rows,
+        hasFoundersClub: types.has('founders_club'),
+        hasFullBundle: types.has('full_bundle'),
+        hasActiveSubscription: types.has('subscription') || types.has('subscription_annual'),
+        hasAnyPaid:
+          types.has('founders_club') ||
+          types.has('full_bundle') ||
+          types.has('subscription') ||
+          types.has('subscription_annual'),
+      };
+    },
+    enabled: !!user,
+  });
+}
+
 export function useProducts() {
   return useQuery({
     queryKey: ['products'],

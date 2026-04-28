@@ -12,8 +12,9 @@
  * the import.
  */
 import { Link } from 'react-router-dom';
-import { Sparkles, Clock } from 'lucide-react';
+import { Sparkles, Clock, Check } from 'lucide-react';
 import { useCountdown, FOUNDERS_PRICE_DISPLAY } from '@/lib/foundersClub';
+import { usePurchases } from '@/hooks/useBooks';
 
 interface Props {
   variant?: 'hero' | 'inline';
@@ -22,7 +23,26 @@ interface Props {
 
 export default function FoundersClubBanner({ variant = 'hero', className = '' }: Props) {
   const c = useCountdown();
+  const { data: purchases } = usePurchases();
   if (c.expired) return null;
+
+  // Already a member — show a quiet "you're in" badge instead of nagging
+  // them to buy what they already own. Skipped on the hero variant because
+  // members shouldn't see launch-pitch hero copy at all.
+  if (purchases?.hasFoundersClub || purchases?.hasFullBundle || purchases?.hasActiveSubscription) {
+    if (variant === 'hero') return null;
+    return (
+      <div className={`rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-3 shadow-card flex items-center gap-3 ${className}`}>
+        <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+          <Check className="w-5 h-5" strokeWidth={3} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-bold text-sm leading-tight">You're a Founder 🎉</p>
+          <p className="text-[11px] text-white/85">Lifetime access unlocked. Thank you for backing us.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (variant === 'inline') {
     return (

@@ -15,11 +15,12 @@
  * never hit a paywall mid-reading.
  */
 import { useMemo } from 'react';
-import { Sparkles, ChevronRight, Lock } from 'lucide-react';
+import { Sparkles, ChevronRight, Lock, Star } from 'lucide-react';
 import type { Book } from '@/lib/types';
 import { LEVELS } from '@/lib/types';
 import { getAllStamps, MAX_STAMPS } from '@/lib/stamps';
 import { getCoverImageUrl } from '@/lib/imageResolver';
+import { useChildren } from '@/hooks/useBooks';
 
 interface Props {
   books: Book[];
@@ -29,6 +30,12 @@ interface Props {
 export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   const unlocked = useMemo(() => books.filter(b => b.unlocked), [books]);
   const stamps = useMemo(() => getAllStamps(), []);
+  const { data: children } = useChildren();
+  const childName = children?.[0]?.name ?? '';
+  const totalStamps = useMemo(
+    () => Object.values(stamps).reduce((sum, s) => sum + (s?.count ?? 0), 0),
+    [stamps]
+  );
 
   // Most-recently-read book = the one with the latest lastReadDate. Fall back
   // to the first unlocked book if no stamps yet.
@@ -76,10 +83,28 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
 
   return (
     <div className="px-4 pt-5 pb-24 max-w-3xl mx-auto" style={{ fontFamily: "'Andika', sans-serif" }}>
+      {/* ── Greeting strip — personal, sets the tone for "this is for ME" ── */}
+      <div className="flex items-center justify-between mb-4 px-1">
+        <div>
+          <p className="font-display text-xl md:text-2xl font-extrabold text-foreground leading-tight">
+            {childName ? `Hi ${childName}!` : 'Hi there!'} 👋
+          </p>
+          <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
+            {totalStamps > 0 ? `You've read ${totalStamps} time${totalStamps === 1 ? '' : 's'}!` : 'Ready to read?'}
+          </p>
+        </div>
+        {totalStamps > 0 && (
+          <div className="flex items-center gap-1.5 bg-amber-100 border-2 border-amber-300 rounded-full px-3 py-1.5">
+            <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
+            <span className="text-sm font-extrabold text-amber-700 tabular-nums">{totalStamps}</span>
+          </div>
+        )}
+      </div>
+
       {/* ── Hero: Continue Reading ── */}
       <button
         onClick={() => onBookSelect(continueBook)}
-        className="w-full text-left rounded-3xl border-4 border-primary bg-gradient-to-br from-tint-pink to-white p-5 md:p-6 shadow-2xl active:scale-[0.99] hover:shadow-xl transition-all duration-200 mb-6"
+        className="w-full text-left rounded-3xl border-4 border-primary bg-gradient-to-br from-tint-pink to-white p-5 md:p-6 shadow-2xl active:scale-[0.99] hover:shadow-xl transition-all duration-200 mb-6 press-scale"
       >
         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center">
           {coverUrl && (
