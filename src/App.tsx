@@ -69,19 +69,35 @@ function PageFallback() {
 /**
  * Root route handler.
  *
- * Web: always shows the marketing LandingPage, regardless of auth state.
- *      The user must click "Learning Hub" (or similar) to enter /library.
- *      This preserves the landing page for ad traffic / SEO — it does NOT
- *      auto-route signed-in users into the app.
+ * Web (browser tab):       marketing LandingPage. The funnel target.
+ * Native (Capacitor app):  /library — landing is a marketing surface, the
+ *                          installed app should open straight into the
+ *                          product.
+ * Installed PWA (iOS/Android Add-to-Home-Screen): /library, same reasoning
+ *                          as native. Detected via display-mode media
+ *                          query OR navigator.standalone (iOS Safari
+ *                          legacy).
  *
- * Native app (Capacitor): skips the landing page and goes straight to /library.
- *      The landing page is a marketing funnel for web visitors only.
+ * Anyone with the marketing link in a browser still sees the landing page.
+ * Once they install the app to their home screen, every subsequent open
+ * skips it.
  */
 function ConditionalHome() {
-  const isNative =
-    typeof window !== "undefined" &&
-    Boolean((window as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor?.isNativePlatform?.());
-  if (isNative) return <Navigate to="/library" replace />;
+  if (typeof window === "undefined") return <LandingPage />;
+
+  const isNative = Boolean(
+    (window as { Capacitor?: { isNativePlatform?: () => boolean } })
+      .Capacitor?.isNativePlatform?.()
+  );
+
+  // PWA standalone — installed to home screen. Two checks: standard CSS
+  // media query (Chrome / Android / desktop PWAs) + navigator.standalone
+  // (iOS Safari, predates the spec).
+  const isStandalonePwa =
+    window.matchMedia?.("(display-mode: standalone)").matches ||
+    Boolean((window.navigator as { standalone?: boolean }).standalone);
+
+  if (isNative || isStandalonePwa) return <Navigate to="/library" replace />;
   return <LandingPage />;
 }
 
