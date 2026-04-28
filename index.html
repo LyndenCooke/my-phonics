@@ -2,7 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover so iOS reports safe-area insets via env(); -->
+    <!-- maximum-scale stops Safari auto-zoom on focused inputs (the dead -->
+    <!-- giveaway of "this is a webview"). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#FDF8F7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="MyPhonicsBooks" />
     <title>MyPhonicsBooks — Decodable phonics books for children aged 4-8</title>
     <meta name="description" content="Decodable phonics books for children aged 4–8, with interactive reading, sound-by-sound guidance, and stories from around the world. Free reading assessment, UK Letters and Sounds aligned." />
     <meta name="author" content="MyPhonicsBooks" />
