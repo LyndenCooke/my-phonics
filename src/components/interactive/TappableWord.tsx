@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { StoryWord } from '@/lib/interactiveBookData';
+import { hapticLight } from '@/lib/native';
 
 // ─── Audio helpers ─────────────────────────────────────────────────────
 
@@ -240,6 +241,9 @@ export default function TappableWord({
   const handleTap = useCallback(async () => {
     if (isSoundingOut) return;
     cancelRef.current = false;
+    // Tiny haptic on tap so the kid gets a physical "I felt that" cue
+    // before any audio fires. Native-only — no-op on web.
+    hapticLight();
 
     if (wholeWordOnly || wordData.isTricky) {
       // Whole-word path: tricky words always, plus any caller that opts in

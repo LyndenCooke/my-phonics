@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { captureRefFromUrl } from "@/lib/referral";
+import AnimatedRoutes from "@/components/AnimatedRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -97,7 +98,25 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
-          <Routes>
+          <RoutesWithTransition />
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
+  );
+};
+
+/**
+ * Routes wrapped in AnimatePresence so screens slide in/out (native) or
+ * cross-fade (web) on every navigation. Has to live inside <BrowserRouter>
+ * so useLocation() works.
+ */
+function RoutesWithTransition() {
+  const location = useLocation();
+  return (
+    <AnimatedRoutes>
+      <Routes location={location}>
             <Route path="/" element={<ConditionalHome />} />
             <Route path="/library" element={<Index />} />
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Welcome /></ChildModeGuard></Suspense>} />
@@ -130,13 +149,9 @@ const App = () => {
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
-          </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+      </Routes>
+    </AnimatedRoutes>
   );
-};
+}
 
 export default App;

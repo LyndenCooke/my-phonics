@@ -2,19 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "frontend",
+      "name": "hub",
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
-      "runtimeArgs": ["node_modules/vite/bin/vite.js", "--port", "5173"],
-      "port": 5173,
-      "cwd": "C:\\Users\\ASUS\\myphonicsbooks\\myphonics_books\\phonics-fun-hub"
-    },
-    {
-      "name": "prototype",
-      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
-      "runtimeArgs": ["node_modules/vite/bin/vite.js", "--port", "5182"],
-      "port": 5182,
-      "autoPort": false,
-      "cwd": "C:\\Users\\ASUS\\myphonicsbooks"
+      "runtimeArgs": ["node_modules/vite/bin/vite.js", "--port", "5183"],
+      "port": 5183,
+      "autoPort": false
     }
   ]
 }

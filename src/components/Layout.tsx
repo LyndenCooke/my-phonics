@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
+import { hapticLight } from '@/lib/native';
 
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
@@ -39,14 +40,17 @@ export default function Layout({ children }: { children: ReactNode }) {
   //                  shop. First-ever child→parent transition runs the
   //                  set-PIN flow; subsequent ones run the verify flow.
   const handleToggle = () => {
+    hapticLight();
     if (mode === 'parent') { toggle(); return; }
     setPinOpen(true);
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header — logo links back to the hub home so users are never trapped */}
-      <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-xl border-b border-border px-4 py-3 flex items-center justify-between gap-4 shadow-card">
+      {/* Header — logo links back to the hub home so users are never trapped.
+       *  pt-safe pads behind the iOS notch / Android status bar so the
+       *  status bar text isn't overlapping our logo. */}
+      <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-xl border-b border-border px-4 pt-safe py-3 flex items-center justify-between gap-4 shadow-card no-select">
         <Link
           to="/library"
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0"
@@ -138,8 +142,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* Main content */}
-      <main className="flex-1 pb-20 md:pb-4">
+      {/* Main content. pb-20 clears the bottom nav on mobile; on iOS the
+       *  nav itself adds safe-area padding for the home indicator, so
+       *  content underneath only needs the nav's height (80px). */}
+      <main className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4">
         {children}
       </main>
 
@@ -154,8 +160,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         </Suspense>
       )}
 
-      {/* Bottom tab bar (mobile only — desktop uses the top-nav) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden">
+      {/* Bottom tab bar (mobile only — desktop uses the top-nav).
+       *  pb-safe gives the iOS home indicator + Android gesture bar room
+       *  so they don't overlap the icons. */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
         <div className="flex items-center justify-around py-2 px-2">
           {navItems.map(({ path, label, icon: Icon }) => {
             const isActive = pathname === path;
@@ -163,7 +171,8 @@ export default function Layout({ children }: { children: ReactNode }) {
               <Link
                 key={path}
                 to={path}
-                className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 ${
+                onClick={() => { if (!isActive) hapticLight(); }}
+                className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 press-scale ${
                   isActive
                     ? 'text-primary-ink'
                     : 'text-muted-foreground'
