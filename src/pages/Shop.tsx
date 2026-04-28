@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Layout from '@/components/Layout';
-import { useProducts } from '@/hooks/useBooks';
+import { useProducts, usePurchases } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift, Sparkles } from 'lucide-react';
@@ -81,6 +81,7 @@ const PRODUCT_CONFIG: Record<string, {
 
 export default function Shop() {
   const { data: products, isLoading } = useProducts();
+  const { data: purchases } = usePurchases();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
@@ -178,9 +179,16 @@ export default function Shop() {
   const sortOrder = foundersFirst
     ? ['founders_club', 'free_sample', 'full_bundle', 'subscription', 'subscription_annual']
     : ['free_sample', 'full_bundle', 'subscription', 'subscription_annual', 'founders_club'];
-  const visibleProducts = (products ?? []).filter(
-    (p) => p.product_type !== 'founders_club' || foundersFirst
-  );
+  const visibleProducts = (products ?? []).filter((p) => {
+    // Hide founders_club once expired
+    if (p.product_type === 'founders_club' && !foundersFirst) return false;
+    // Hide founders_club / bundle / subscriptions to users who already own
+    // them — no point showing "Buy Founders Club" to a Founder.
+    if (purchases?.hasFoundersClub && p.product_type === 'founders_club') return false;
+    if (purchases?.hasFullBundle && p.product_type === 'full_bundle') return false;
+    if (purchases?.hasActiveSubscription && (p.product_type === 'subscription' || p.product_type === 'subscription_annual')) return false;
+    return true;
+  });
   const sortedProducts = [...visibleProducts].sort(
     (a, b) => sortOrder.indexOf(a.product_type) - sortOrder.indexOf(b.product_type)
   );
