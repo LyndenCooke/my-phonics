@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { captureRefFromUrl } from "@/lib/referral";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -83,7 +84,12 @@ function ConditionalHome() {
   return <LandingPage />;
 }
 
-const App = () => (
+const App = () => {
+  // Capture ?ref=CODE the first time a visitor lands. Stored in localStorage
+  // for 60 days so the credit survives sign-up + Stripe redirect.
+  useEffect(() => { captureRefFromUrl(); }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
@@ -130,6 +136,7 @@ const App = () => (
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

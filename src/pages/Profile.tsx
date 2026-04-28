@@ -8,6 +8,8 @@ import { User, Baby, LogOut, Download, Settings, ChevronRight, Pencil, Plus } fr
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChildProgress } from '@/components/profile/ChildProgress';
+import { ReferralPanel } from '@/components/profile/ReferralPanel';
+import FoundersClubBanner from '@/components/FoundersClubBanner';
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -160,6 +162,13 @@ export default function Profile() {
 
         {/* ── Child progress dashboard — heat map + sound coverage ── */}
         <ChildProgress childName={child?.name} />
+
+        {/* ── Founders Club countdown (above referral panel — gives users
+         *  something concrete to share) ── */}
+        <FoundersClubBanner variant="inline" className="mb-6" />
+
+        {/* ── Refer & earn — affiliate share dashboard ── */}
+        <ReferralPanel />
 
         {/* Menu items */}
         <div className="bg-card rounded-2xl border border-border divide-y divide-border shadow-card mb-6">

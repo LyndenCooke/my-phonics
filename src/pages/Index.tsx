@@ -16,6 +16,7 @@ import { useAppMode, maybeAutoDefaultToChild } from '@/hooks/useAppMode';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import { SoundMatsResources } from '@/components/SoundMatsResources';
 import ChildHomeScreen from '@/components/ChildHomeScreen';
+import FoundersClubBanner from '@/components/FoundersClubBanner';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -357,6 +358,11 @@ export default function Index() {
             Tap a book to start reading
           </p>
         </div>
+
+        {/* Founders Club inline banner — visible to parents in the library
+         *  before they hit the level filter. Hides itself once the offer
+         *  expires. */}
+        <FoundersClubBanner variant="inline" className="mb-5" />
 
         <div className="mb-5">
           <LevelFilter selected={selectedLevel} onSelect={setSelectedLevel} />

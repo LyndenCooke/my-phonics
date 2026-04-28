@@ -124,6 +124,76 @@ Deno.serve(async (req) => {
       return userId;
     }
 
+    // ─── Helper: record affiliate attribution if metadata.ref_code present ───
+    // 50% commission on the gross amount paid (in pence). Adjust here if
+    // we want different rates per product type later.
+    const COMMISSION_RATE = 0.5;
+    async function recordAttribution(session: any, buyerUserId: string | null, productId?: string) {
+      const refCode = session.metadata?.ref_code;
+      if (!refCode) return;
+
+      const { data: referrer } = await supabaseAdmin
+        .from("referrals")
+        .select("user_id, code")
+        .eq("code", refCode)
+        .single();
+
+      if (!referrer) {
+        console.log("ref_code not found in referrals table:", refCode);
+        return;
+      }
+
+      // Don't credit a user for their own purchase
+      if (buyerUserId && referrer.user_id === buyerUserId) {
+        console.log("Skipping self-referral:", refCode);
+        return;
+      }
+
+      const amount_pence = session.amount_total || 0;
+      const commission_pence = Math.round(amount_pence * COMMISSION_RATE);
+
+      const { error: insertErr } = await supabaseAdmin.from("referral_attributions").insert({
+        referrer_user_id: referrer.user_id,
+        buyer_user_id: buyerUserId,
+        buyer_email: session.customer_email || session.metadata?.guest_email || null,
+        ref_code: refCode,
+        stripe_session_id: session.id,
+        product_id: productId || null,
+        amount_pence,
+        commission_pence,
+      });
+
+      if (insertErr) {
+        // Unique violation on stripe_session_id is fine — webhook may retry
+        if (insertErr.code !== "23505") {
+          console.error("Attribution insert failed:", insertErr);
+        }
+        return;
+      }
+
+      // Bump rollup counters on the referrer row
+      await supabaseAdmin.rpc("increment_referral_stats", {
+        p_user_id: referrer.user_id,
+        p_commission: commission_pence,
+      }).then(() => {}, async () => {
+        // Fallback if the RPC isn't deployed: update directly
+        const { data: cur } = await supabaseAdmin
+          .from("referrals")
+          .select("total_conversions, total_earnings_pence")
+          .eq("user_id", referrer.user_id)
+          .single();
+        if (cur) {
+          await supabaseAdmin
+            .from("referrals")
+            .update({
+              total_conversions: (cur.total_conversions || 0) + 1,
+              total_earnings_pence: (cur.total_earnings_pence || 0) + commission_pence,
+            })
+            .eq("user_id", referrer.user_id);
+        }
+      });
+    }
+
     // ─── Handle events ───
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
@@ -170,6 +240,13 @@ Deno.serve(async (req) => {
           completed_at: new Date().toISOString(),
         });
       }
+
+      // Affiliate attribution — if a ref_code came in via metadata, credit
+      // the referrer. Run AFTER the purchase row exists so we have the
+      // amount_total figure to compute commission against.
+      await recordAttribution(session, userId, productId).catch((err) => {
+        console.error("recordAttribution failed:", err);
+      });
 
       // Unlock books based on product type
       if (productType === "subscription" || productType === "subscription_annual") {
