@@ -88,6 +88,11 @@ export default function Shop() {
   const [guestDialog, setGuestDialog] = useState<{ open: boolean; productId: string | null }>({ open: false, productId: null });
   const [guestEmail, setGuestEmail] = useState('');
   const [guestLoading, setGuestLoading] = useState(false);
+  // Founders Club has terms attached: Founders commit to sharing feedback
+  // at 24h and 1 week. Block the CTA until the box is ticked so nobody
+  // joins without realising it's a feedback-loop programme, not just a
+  // discount.
+  const [foundersTermsAccepted, setFoundersTermsAccepted] = useState(false);
 
   const formatPrice = (pence: number) => {
     if (pence === 0) return 'Free';
@@ -248,15 +253,27 @@ export default function Shop() {
 
                   {/* Body */}
                   <div className="bg-card px-5 py-4">
-                    {/* Price */}
-                    <div className="flex items-baseline gap-1 mb-3">
+                    {/* Price — Founders Club shows the regular £99 lifetime
+                     *  price struck through next to the £1 to make the
+                     *  saving visible at a glance. */}
+                    <div className="flex items-baseline gap-2 mb-1 flex-wrap">
                       <span className="text-3xl font-extrabold text-foreground">
                         {formatPrice(product.price_pence)}
                       </span>
                       {isSub && <span className="text-sm text-muted-foreground">/month</span>}
                       {isAnnual && <span className="text-sm text-muted-foreground">/year</span>}
                       {isBundle && <span className="text-sm text-muted-foreground">one-time</span>}
+                      {isFounders && (
+                        <>
+                          <span className="text-lg text-muted-foreground line-through tabular-nums">£99</span>
+                          <span className="text-xs font-extrabold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">SAVE £98</span>
+                        </>
+                      )}
                     </div>
+                    {isFounders && (
+                      <p className="text-xs text-muted-foreground mb-3">Lifetime access · normally £99</p>
+                    )}
+                    {!isFounders && <div className="mb-3" />}
 
                     {/* Monthly equivalent for annual */}
                     {isAnnual && (
@@ -280,10 +297,27 @@ export default function Shop() {
                       ))}
                     </ul>
 
+                    {/* Founders Club T&Cs — must agree to share reviews
+                     *  at 24h and 1 week. The Founders programme is a
+                     *  feedback loop, not a deep discount. Be explicit. */}
+                    {isFounders && (
+                      <label className="flex items-start gap-2.5 mb-4 p-3 rounded-xl bg-fuchsia-50 border border-fuchsia-200 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={foundersTermsAccepted}
+                          onChange={(e) => setFoundersTermsAccepted(e.target.checked)}
+                          className="mt-0.5 w-4 h-4 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-300 shrink-0"
+                        />
+                        <span className="text-[11px] leading-relaxed text-foreground">
+                          I'm joining as a Founder and agree to share <strong>two short reviews</strong> — one at 24 hours, one after a week — so the team can fix bugs and improve the app. Reviews are private unless I explicitly opt in to marketing on the form.
+                        </span>
+                      </label>
+                    )}
+
                     {/* CTA */}
                     <button
                       onClick={() => handleBuyClick(product.id, product.product_type)}
-                      disabled={!!checkoutLoading}
+                      disabled={!!checkoutLoading || (isFounders && !foundersTermsAccepted)}
                       className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 ${
                         isFree
                           ? 'bg-card border-2 border-emerald-600 text-emerald-700'

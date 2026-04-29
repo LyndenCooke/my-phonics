@@ -10,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ChildProgress } from '@/components/profile/ChildProgress';
 import { ReferralPanel } from '@/components/profile/ReferralPanel';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
+import FoundersReviewPrompt from '@/components/FoundersReviewPrompt';
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -81,6 +82,12 @@ export default function Profile() {
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
         <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
+
+        {/* Founders Club review prompt — fires when 24h / 1week is due.
+         *  Pinned at the top because Founders agreed to share feedback as
+         *  part of joining and reviews are the highest-leverage signal
+         *  we get for fixing bugs and refining the product. */}
+        <FoundersReviewPrompt />
 
         {/* User card */}
         <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
