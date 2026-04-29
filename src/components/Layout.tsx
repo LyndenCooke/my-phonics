@@ -4,6 +4,7 @@ import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-reac
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { hapticLight } from '@/lib/native';
+import { hasParentPin } from '@/hooks/useAppMode';
 
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
@@ -36,12 +37,17 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   // Toggle behaviour:
   //  parent → child: free, no gate (the parent is in control).
-  //  child → parent: PIN-gated to stop kids tapping their way back to the
-  //                  shop. First-ever child→parent transition runs the
-  //                  set-PIN flow; subsequent ones run the verify flow.
+  //  child → parent: ONLY PIN-gated if a PIN has been set. The PIN is
+  //                  opt-in — parents who want kid-proofing can set one
+  //                  via Profile → Settings (or proactively via the
+  //                  dialog when they first switch to child mode). If
+  //                  no PIN exists, switching back is free — we don't
+  //                  bully a parent into setting up security they didn't
+  //                  ask for. Auto-default-to-child mustn't trap them.
   const handleToggle = () => {
     hapticLight();
     if (mode === 'parent') { toggle(); return; }
+    if (!hasParentPin()) { setMode('parent'); return; }
     setPinOpen(true);
   };
 
