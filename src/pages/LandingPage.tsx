@@ -168,18 +168,42 @@ function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => v
           <div className="relative h-[420px] md:h-[480px]">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="grid grid-cols-4 gap-4 -rotate-3">
-                {SHOWCASE_BOOKS.map((b, i) => (
+                {SHOWCASE_BOOKS.map((b, i) => {
+                  // First 4 covers are above the fold even on mobile; load
+                  // them eagerly with high priority so the hero looks
+                  // populated immediately. The remaining 4 wait until the
+                  // browser has bandwidth.
+                  const aboveFold = i < 4;
+                  return (
                   <div
                     key={b.key}
                     className="w-32 md:w-40 rounded-2xl overflow-hidden shadow-card-hover transform transition-transform hover:scale-105 hover:-rotate-2"
                     style={{ animation: 'float 3s ease-in-out infinite', animationDelay: `${i * 0.4}s` }}
                   >
-                    <img src={`/illustrations/${b.key}/cover.png`} alt={b.title} className="w-full aspect-[3/4] object-cover" style={{ imageRendering: 'auto' }} loading="eager" draggable={false} />
+                    {/* WebP first (~80KB) for browsers that support it,
+                     *  PNG fallback (~450KB) for everyone else. */}
+                    <picture>
+                      <source srcSet={`/illustrations/${b.key}/cover.webp`} type="image/webp" />
+                      <img
+                        src={`/illustrations/${b.key}/cover.png`}
+                        alt={b.title}
+                        width={160}
+                        height={213}
+                        className="w-full aspect-[3/4] object-cover"
+                        style={{ imageRendering: 'auto' }}
+                        loading={aboveFold ? 'eager' : 'lazy'}
+                        // @ts-expect-error fetchpriority not yet typed in React types
+                        fetchpriority={aboveFold ? 'high' : 'auto'}
+                        decoding="async"
+                        draggable={false}
+                      />
+                    </picture>
                     <div className="px-2 py-1.5 bg-card">
                       <div className="w-full h-1 rounded-full" style={{ backgroundColor: LEVEL_COLORS[b.level] }} />
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -279,7 +303,7 @@ function FeatureShowcase() {
                   </div>
                   <span className="text-xs font-bold text-foreground">The Fish in the Tank</span>
                 </div>
-                <img src="/illustrations/1_3/page1.png" alt="Interactive reading" className="w-full aspect-[4/3] object-cover" />
+                <img src="/illustrations/1_3/page1.png" alt="Interactive reading" className="w-full aspect-[4/3] object-cover" loading="lazy" decoding="async" />
                 <div className="px-4 py-3 space-y-2">
                   <div className="flex flex-wrap gap-1.5">
                     {['A', 'big', 'fish', 'is', 'in', 'the', 'tank!'].map(w => (
@@ -360,7 +384,7 @@ function CulturalDiversity() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {CULTURAL_COVERS.map(c => (
             <div key={c.key} className="group relative rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
-              <img src={`/illustrations/${c.key}/cover.png`} alt={c.country} className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src={`/illustrations/${c.key}/cover.png`} alt={c.country} className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-10 pb-3 px-3">
                 <p className="text-white text-sm font-bold">{c.country}</p>
               </div>
