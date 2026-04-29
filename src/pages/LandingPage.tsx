@@ -107,14 +107,15 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Learning Hub — hidden on the smallest screens. The Free
-           *  Assessment CTA is the primary action; Learning Hub is
-           *  reachable from the footer. */}
-          <button onClick={onLearningHub} className="hidden sm:inline text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-3 py-2">
-            Learning Hub
+          {/* Learning Hub — secondary CTA, kept on phones (just smaller).
+           *  Existing customers need a fast path back to /library. */}
+          <button onClick={onLearningHub} className="text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 sm:px-3 py-2 whitespace-nowrap">
+            <span className="sm:hidden">Hub</span>
+            <span className="hidden sm:inline">Learning Hub</span>
           </button>
           <button onClick={onAssess} className="text-xs sm:text-sm font-bold text-white gradient-primary px-3 sm:px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap">
-            Free Assessment
+            <span className="sm:hidden">Assess</span>
+            <span className="hidden sm:inline">Free Assessment</span>
           </button>
         </div>
       </div>
