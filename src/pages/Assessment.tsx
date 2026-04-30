@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { PhonemePlayer } from '@/components/PhonemePlayer';
@@ -6,6 +6,8 @@ import { WordPlayer } from '@/components/WordPlayer';
 import { SoundMap } from '@/components/SoundMap';
 import { useAuth } from '@/contexts/AuthContext';
 import { useChildren } from '@/hooks/useBooks';
+import { supabase } from '@/integrations/supabase/client';
+import PhonicsAveragesChart from '@/components/PhonicsAveragesChart';
 import { LEVELS } from '@/lib/types';
 import {
   AGE_EXPECTATIONS,
@@ -385,6 +387,55 @@ export default function Assessment() {
     if (!ageRange) return null;
     return AGE_EXPECTATIONS.find(e => e.age === ageRange);
   };
+
+  /** Compute the child's age in months at the moment of test, from the
+   *  birthMonth + birthYear captured during onboarding. Returns null if
+   *  the parent skipped DOB. */
+  const getAgeMonths = (): number | null => {
+    if (!profile.birthMonth || !profile.birthYear) return null;
+    const now = new Date();
+    let months = (now.getFullYear() - profile.birthYear) * 12 + (now.getMonth() + 1 - profile.birthMonth);
+    if (months < 0 || months > 240) return null;
+    return months;
+  };
+
+  // ─── Auto-save result for authenticated users ─────────────────────────
+  // Guest flow already POSTs to guest-assessment-signup; for signed-in
+  // users we hit save-assessment-result with the answers + age + country.
+  // Only fires once per arrival at final-results. We track a ref so React
+  // strict-mode double-mounts don't double-insert.
+  const savedRef = useRef(false);
+  useEffect(() => {
+    if (stage !== 'final-results' || !user || savedRef.current) return;
+    savedRef.current = true;
+    (async () => {
+      try {
+        const session = (await supabase.auth.getSession()).data.session;
+        if (!session?.access_token) return;
+        const recommendedLevel = getRecommendedLevel();
+        const ageMonths = getAgeMonths();
+        // Country: best-effort — try the browser's locale region. The
+        // chart uses this only for context; real country needs a UI ask.
+        const countryCode =
+          (typeof navigator !== 'undefined' &&
+            navigator.language?.split('-')[1]?.toUpperCase()) || null;
+        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/save-assessment-result`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({
+            child_id: children?.[0]?.id ?? null,
+            answers: answers.map(a => ({ item_id: a.itemId ?? null, is_correct: a.isCorrect })),
+            age_months: ageMonths,
+            country_code: countryCode,
+            recommended_level_hint: recommendedLevel,
+          }),
+        });
+      } catch {
+        // Save is best-effort — failing here doesn't block the user
+        // seeing their results, and we don't want to surface noise.
+      }
+    })();
+  }, [stage, user, children, answers]);
 
   const reset = () => {
     setStage('welcome');
@@ -1097,6 +1148,28 @@ export default function Assessment() {
               </>
             )}
           </div>
+
+          {/* National + international comparison chart — only renders if
+           *  we know the child's age (from the DOB onboarding step). For
+           *  the expat market this is the headline feature: a parent in
+           *  Malaysia or Pakistan can see at a glance how their child
+           *  compares to UK peers AND the international cohort. */}
+          {(() => {
+            const ageMonths = getAgeMonths();
+            if (!ageMonths) return null;
+            const countryCode = typeof navigator !== 'undefined'
+              ? (navigator.language?.split('-')[1]?.toUpperCase() ?? null)
+              : null;
+            return (
+              <div className="mb-5 text-left">
+                <PhonicsAveragesChart
+                  ageMonths={ageMonths}
+                  childLevel={recommendedLevel}
+                  countryCode={countryCode}
+                />
+              </div>
+            );
+          })()}
 
           {/* Age comparison */}
           {ageComparison && (
