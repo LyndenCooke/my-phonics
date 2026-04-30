@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { PhonemePlayer } from '@/components/PhonemePlayer';
 import { WordPlayer } from '@/components/WordPlayer';
@@ -234,6 +234,11 @@ type SoundResult = 'clear-pass' | 'near-pass' | 'medium-fail' | 'clear-fail';
 const ALIEN_CHECK_COUNT = 6;
 const WORD_CONFIRM_COUNT = 6;
 
+/** Rapid = adaptive sound-led path that short-circuits once a level is
+ *  passed (~3-4 min). Full = always runs alien-check AND word-confirm at
+ *  every reached level so the result screen has data for every category. */
+type AssessmentMode = 'rapid' | 'full';
+
 // ─── Constants ────────────────────────────────────────────────
 const LEVEL_COLORS: Record<number, string> = {
   1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
@@ -272,8 +277,22 @@ export default function Assessment() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: children } = useChildren();
+  const [searchParams] = useSearchParams();
 
-  // Core state
+  // Level Check mode: when launched from the child dashboard with
+  // ?level=N, we test only level N's content and update the child's
+  // current_level on pass. lockedLevel == null means a normal full
+  // adaptive assessment.
+  const lockedLevelParam = searchParams.get('level');
+  const lockedLevel = lockedLevelParam && /^[1-6]$/.test(lockedLevelParam)
+    ? Number(lockedLevelParam)
+    : null;
+
+  // Core state. NOTE: `mode` is captured for the result screen and future
+  // full-mode behaviour (extra word_reading + tricky_words rounds). Today
+  // both modes share the adaptive path; the difference is which categories
+  // are tested vs labelled "Not tested" on the result.
+  const [mode, setMode] = useState<AssessmentMode>('rapid');
   const [stage, setStage] = useState<Stage>('welcome');
   const [onboardingStep, setOnboardingStep] = useState<OnboardingStep>('dob');
   const [profile, setProfile] = useState<ChildProfile>({
@@ -399,6 +418,27 @@ export default function Assessment() {
     return months;
   };
 
+  // ─── Level Check mode: jump straight to the locked level's sound test
+  // ────────────────────────────────────────────────────────────────────
+  // Triggered when the child dashboard navigates to /assess?level=N. We
+  // skip welcome / onboarding / screening and go directly to testing
+  // level N. The sound-pass handler (below) checks lockedLevel to stop
+  // advancing to N+1.
+  const lockedJumpedRef = useRef(false);
+  useEffect(() => {
+    if (lockedJumpedRef.current) return;
+    if (lockedLevel === null) return;
+    lockedJumpedRef.current = true;
+    setMode('full');                    // Test all categories for the locked level
+    setStartLevel(lockedLevel);
+    setCurrentLevel(lockedLevel);
+    setTestItems(getItems(lockedLevel, 'sound_recognition'));
+    setTestIdx(0);
+    setTestCorrect(0);
+    setConsecutiveWrong(0);
+    setStage('sound-test');
+  }, [lockedLevel]);
+
   // ─── Auto-save result for authenticated users ─────────────────────────
   // Guest flow already POSTs to guest-assessment-signup; for signed-in
   // users we hit save-assessment-result with the answers + age + country.
@@ -430,6 +470,20 @@ export default function Assessment() {
             recommended_level_hint: recommendedLevel,
           }),
         });
+
+        // Update the child's current_level so the dashboard advances. We
+        // only ever raise the level — a poor retake shouldn't demote the
+        // child. Best-effort; failure is silent.
+        // useChildren returns raw supabase rows (snake_case)
+        const childRow = children?.[0] as { id?: string; current_level?: number } | undefined;
+        const childId = childRow?.id;
+        const childCurrent = childRow?.current_level ?? 1;
+        if (childId && recommendedLevel > childCurrent) {
+          await supabase
+            .from('children')
+            .update({ current_level: recommendedLevel })
+            .eq('id', childId);
+        }
       } catch {
         // Save is best-effort — failing here doesn't block the user
         // seeing their results, and we don't want to surface noise.
@@ -469,8 +523,15 @@ export default function Assessment() {
       case 'clear-pass':
         // Passed! Record and do 6 alien words to confirm, then advance
         recordLevelScore(level, [catResult], true);
-        if (level >= 6) {
-          setStage('final-results');
+        if (level >= 6 || lockedLevel !== null) {
+          // Locked-level (Level Check) mode: still run the alien check at
+          // this level for completeness, but don't probe higher.
+          if (lockedLevel !== null) {
+            loadItems(level, 'alien_words', ALIEN_CHECK_COUNT);
+            setStage('alien-check');
+          } else {
+            setStage('final-results');
+          }
         } else {
           // Do 6 alien words then move up
           loadItems(level, 'alien_words', ALIEN_CHECK_COUNT);
@@ -519,8 +580,9 @@ export default function Assessment() {
     };
     recordLevelScore(level, [catResult], levelScores.find(s => s.level === level)?.passed ?? false);
 
-    // If this level was a ceiling (medium fail), go to results
-    if (soundCeiling !== null) {
+    // If this level was a ceiling (medium fail), or we're in Level Check
+    // mode (locked to one level), stop here and go to results.
+    if (soundCeiling !== null || lockedLevel !== null) {
       setStage('final-results');
       return;
     }
@@ -531,7 +593,7 @@ export default function Assessment() {
     } else {
       setStage('level-passed');
     }
-  }, [soundCeiling, levelScores]);
+  }, [soundCeiling, levelScores, lockedLevel]);
 
   // ─── Word confirm completion (after clear fail, testing level below) ─
 
@@ -656,16 +718,43 @@ export default function Assessment() {
             </ul>
           </div>
 
-          <p className="text-xs text-muted-foreground mb-6">
-            Sit with your child. Takes about 4 minutes. No credit card needed.
+          <p className="text-xs text-muted-foreground mb-4">
+            Sit with your child. No credit card needed.
           </p>
 
-          <button
-            onClick={() => { setOnboardingStep('dob'); setStage('onboarding'); }}
-            className="w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200"
-          >
-            Get Started
-          </button>
+          {/* Two-button mode picker — see AssessmentMode type. The Level
+              Check entry (?level=N) bypasses this picker entirely. */}
+          <p className="text-xs font-bold text-foreground mb-3 text-left">Choose a test:</p>
+          <div className="space-y-3">
+            <button
+              onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
+              className="w-full p-4 rounded-2xl border-2 border-primary bg-card text-left active:scale-[0.98] transition-transform duration-200 shadow-card"
+            >
+              <div className="flex items-start gap-3">
+                <Zap className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-extrabold text-foreground">Quick Check · 3 min</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Adaptive sound test to find your child's level fast.
+                  </p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
+              className="w-full p-4 rounded-2xl border-2 border-border bg-card text-left active:scale-[0.98] transition-transform duration-200 shadow-card"
+            >
+              <div className="flex items-start gap-3">
+                <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-extrabold text-foreground">Full Test · ~10 min</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Tests sounds, real words, alien words and tricky words at every level.
+                  </p>
+                </div>
+              </div>
+            </button>
+          </div>
 
           <p className="mt-4 text-[10px] text-muted-foreground">
             Your answers are private. See our{' '}
@@ -1249,15 +1338,27 @@ export default function Assessment() {
                       {score.passed ? 'PASSED' : 'NOT YET'}
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                    {score.categories.map(cat => (
-                      <div key={cat.category} className="flex justify-between text-[11px]">
-                        <span className="text-muted-foreground">{CATEGORY_LABELS[cat.category]}</span>
-                        <span className={`font-bold ${cat.passed ? 'text-foreground' : 'text-orange-500'}`}>
-                          {cat.percentage}%
-                        </span>
-                      </div>
-                    ))}
+                  {/* Show all three core categories explicitly. Untested
+                      categories say "Not tested" rather than silently
+                      omitting them — the rapid path often only runs sound
+                      recognition, and the parent needs to know the other
+                      categories were skipped, not passed. */}
+                  <div className="grid grid-cols-1 gap-y-1">
+                    {(['sound_recognition', 'word_reading', 'tricky_words'] as const).map(catKey => {
+                      const cat = score.categories.find(c => c.category === catKey);
+                      return (
+                        <div key={catKey} className="flex justify-between text-[11px]">
+                          <span className="text-muted-foreground">{CATEGORY_LABELS[catKey]}</span>
+                          {cat ? (
+                            <span className={`font-bold ${cat.passed ? 'text-foreground' : 'text-orange-500'}`}>
+                              {cat.percentage}%
+                            </span>
+                          ) : (
+                            <span className="font-medium text-muted-foreground italic">Not tested</span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
