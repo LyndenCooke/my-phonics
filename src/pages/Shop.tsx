@@ -201,10 +201,14 @@ export default function Shop() {
   return (
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">Choose Your Plan</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Every plan includes assessments, progress tracking & development reports.
+        {/* Header — softer mobile-app style. Matches the new Profile/Home
+         *  visual language: pink accent on key word, generous spacing. */}
+        <div className="text-center mb-8 px-2">
+          <h1 className="font-display text-3xl font-extrabold text-foreground tracking-tight leading-tight">
+            Choose Your <span className="text-primary-ink">Plan</span>
+          </h1>
+          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+            Unlock all books, assessments and rewards.
           </p>
         </div>
 
@@ -231,7 +235,7 @@ export default function Shop() {
               return (
                 <div
                   key={product.id}
-                  className={`rounded-2xl overflow-hidden transition-all duration-200 shadow-card ${
+                  className={`rounded-3xl overflow-hidden transition-all duration-200 shadow-card ${
                     isFounders ? 'ring-2 ring-fuchsia-500' : isBundle ? 'ring-2 ring-indigo-500' : 'border border-border'
                   }`}
                 >
@@ -343,8 +347,8 @@ export default function Shop() {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground text-center mt-6">
-          All prices in GBP. Subscriptions can be cancelled anytime from your profile.
+        <p className="text-xs text-muted-foreground text-center mt-6 leading-relaxed">
+          Secure checkout. Cancel anytime. All prices in GBP.
         </p>
       </div>
 
