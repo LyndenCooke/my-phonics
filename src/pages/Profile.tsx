@@ -1,16 +1,53 @@
+/**
+ * Profile — parent hub.
+ *
+ * Spec'd sections (top → bottom):
+ *  1. Header (title + settings)
+ *  2. Child card (avatar + name + level + Switch Child)
+ *  3. For You card — 2-3 high-priority items
+ *  4. Parent controls list: Parent View / Messages / My Rewards / Referrals
+ *  5. Account list: Download History / Account Settings / Help & Support / Sign Out
+ *
+ * Existing widgets we keep because they're load-bearing:
+ *  - FoundersReviewPrompt (24h / 1week feedback gate, pinned at top)
+ *  - FoundersClubBanner (countdown for the limited-spots offer)
+ *  - ChildProgress (heat map + sound coverage — moved into Parent View)
+ */
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile, useChildren } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
-import { User, Baby, LogOut, Download, Settings, ChevronRight, Pencil, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
-import { ChildProgress } from '@/components/profile/ChildProgress';
-import { ReferralPanel } from '@/components/profile/ReferralPanel';
-import FoundersClubBanner from '@/components/FoundersClubBanner';
+import {
+  User, Baby, LogOut, Download, Settings, ChevronRight, Plus,
+  LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle,
+} from 'lucide-react';
+import { LEVELS } from '@/lib/types';
+import { getUnreadMessageCount } from '@/lib/nudges';
 import FoundersReviewPrompt from '@/components/FoundersReviewPrompt';
+import FoundersClubBanner from '@/components/FoundersClubBanner';
+
+// "For You" — dynamic top-of-page nudges. Replace with real data once
+// the parent_messages table lands; today these are friendly placeholders
+// the parent can dismiss/use without breaking the flow.
+type ForYouItem = {
+  id: string;
+  icon: 'gift' | 'video' | 'users';
+  title: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+const FOR_YOU_ITEMS: ForYouItem[] = [
+  { id: '1', icon: 'gift', title: "You've unlocked a bonus story!", ctaLabel: 'Open', ctaHref: '/library' },
+  { id: '2', icon: 'video', title: 'New tip: How to help with blending', ctaLabel: 'Watch', ctaHref: '/profile/messages' },
+  { id: '3', icon: 'users', title: 'Invite a friend, get £5', ctaLabel: 'Invite', ctaHref: '/profile/referrals' },
+];
+
+const FOR_YOU_ICON = { gift: Gift, video: PlayCircle, users: Users };
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -24,6 +61,9 @@ export default function Profile() {
   const [childDob, setChildDob] = useState('');
 
   const child = children?.[0];
+  const childLevel = child?.current_level ?? 1;
+  const levelInfo = LEVELS.find(l => l.level === childLevel);
+  const unreadMessages = getUnreadMessageCount();
 
   const handleAddChild = async () => {
     if (!user || !childName.trim()) return;
@@ -47,11 +87,12 @@ export default function Profile() {
     navigate('/');
   };
 
+  // ─── Signed-out state ─────────────────────────────────────────
   if (!user) {
     return (
       <Layout>
-        <div className="px-4 pt-5 pb-8 max-w-2xl mx-auto">
-          <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
+        <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
+          <h1 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h1>
           <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-14 h-14 rounded-2xl bg-tint-pink flex items-center justify-center">
@@ -69,69 +110,49 @@ export default function Profile() {
               Sign In / Sign Up
             </button>
           </div>
-          {/* Even signed-out users can see device-local reading activity. Once
-           *  they sign in we'll cloud-sync; for now any stamps already on this
-           *  device show up so the parent gets immediate value. */}
-          <ChildProgress />
         </div>
       </Layout>
     );
   }
 
+  // ─── Signed-in state ──────────────────────────────────────────
   return (
     <Layout>
-      <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
-        <h2 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h2>
-
-        {/* Founders Club review prompt — fires when 24h / 1week is due.
-         *  Pinned at the top because Founders agreed to share feedback as
-         *  part of joining and reviews are the highest-leverage signal
-         *  we get for fixing bugs and refining the product. */}
-        <FoundersReviewPrompt />
-
-        {/* User card */}
-        <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-tint-pink flex items-center justify-center">
-              <User className="w-7 h-7 text-primary" />
-            </div>
-            <div>
-              <p className="font-bold text-foreground text-lg">{profile?.full_name || 'Parent'}</p>
-              <p className="text-sm text-muted-foreground">{profile?.email}</p>
-            </div>
-          </div>
+      <div className="px-4 pt-5 pb-8 max-w-lg mx-auto space-y-5">
+        {/* 1. Header */}
+        <div className="flex items-center justify-between">
+          <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">Profile</h1>
+          <Link
+            to="/profile?settings=1"
+            aria-label="Account settings"
+            className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
+          >
+            <Settings className="w-4 h-4 text-foreground" />
+          </Link>
         </div>
 
-        {/* Child details */}
-        <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
-          <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
-            <Baby className="w-4 h-4 text-primary" /> Child's Details
-          </h3>
+        {/* Founders Club review prompt (24h/1week gate) — high-priority slot */}
+        <FoundersReviewPrompt />
 
+        {/* 2. Child card */}
+        <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
           {child ? (
-            <div className="space-y-0">
-              {[
-                { label: 'Name', value: child.name },
-                { label: 'Date of Birth', value: child.date_of_birth || 'Not set' },
-                { label: 'Current Level', value: `Level ${child.current_level}`, isLevel: true },
-              ].map(({ label, value, isLevel }, i, arr) => (
-                <div
-                  key={label}
-                  className={`flex items-center justify-between py-3 ${i < arr.length - 1 ? 'border-b border-border' : ''}`}
-                >
-                  <span className="text-sm text-muted-foreground">{label}</span>
-                  <div className="flex items-center gap-2">
-                    {isLevel ? (
-                      <span className={`text-xs font-bold text-white px-2.5 py-0.5 rounded-full bg-level-${child.current_level ?? 1}`}>
-                        {value}
-                      </span>
-                    ) : (
-                      <span className="text-sm text-foreground">{value}</span>
-                    )}
-                    <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-tint-pink flex items-center justify-center shrink-0">
+                <Baby className="w-7 h-7 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-display text-lg font-extrabold text-foreground leading-tight">{child.name}</p>
+                <p className={`text-xs font-semibold ${levelInfo?.colorClass ?? 'text-muted-foreground'} mt-0.5`}>
+                  Level {childLevel} · {levelInfo?.name ?? ''}
+                </p>
+              </div>
+              <button
+                onClick={() => setEditingChild(true)}
+                className="text-xs font-bold text-primary-ink hover:underline shrink-0"
+              >
+                Switch Child
+              </button>
             </div>
           ) : editingChild ? (
             <div className="space-y-3">
@@ -149,12 +170,8 @@ export default function Profile() {
                 className="w-full px-3 py-2.5 rounded-lg bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
               <div className="flex gap-2">
-                <button onClick={() => setEditingChild(false)} className="flex-1 py-2 rounded-lg border border-border text-sm font-medium">
-                  Cancel
-                </button>
-                <button onClick={handleAddChild} className="flex-1 py-2 rounded-lg gradient-primary text-primary-foreground text-sm font-bold shadow-button">
-                  Save
-                </button>
+                <button onClick={() => setEditingChild(false)} className="flex-1 py-2 rounded-lg border border-border text-sm font-medium">Cancel</button>
+                <button onClick={handleAddChild} className="flex-1 py-2 rounded-lg gradient-primary text-primary-foreground text-sm font-bold shadow-button">Save</button>
               </div>
             </div>
           ) : (
@@ -165,42 +182,118 @@ export default function Profile() {
               <Plus className="w-4 h-4" /> Add child's details
             </button>
           )}
-        </div>
+        </section>
 
-        {/* ── Child progress dashboard — heat map + sound coverage ── */}
-        <ChildProgress childName={child?.name} />
+        {/* 3. For You — 2-3 high priority items */}
+        {FOR_YOU_ITEMS.length > 0 && (
+          <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">For You</p>
+              <span className="text-[10px] font-bold bg-rose-500 text-white px-2 py-0.5 rounded-full">
+                {FOR_YOU_ITEMS.length} new
+              </span>
+            </div>
+            <div className="space-y-2">
+              {FOR_YOU_ITEMS.slice(0, 3).map(item => {
+                const Icon = FOR_YOU_ICON[item.icon];
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.ctaHref}
+                    className="flex items-center gap-3 p-3 rounded-2xl bg-tint-pink border border-primary/15 hover:border-primary/30 active:scale-[0.99] transition-all"
+                  >
+                    <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm shrink-0">
+                      <Icon className="w-4 h-4 text-primary-ink" />
+                    </div>
+                    <p className="flex-1 text-sm font-bold text-foreground leading-snug">{item.title}</p>
+                    <span className="text-xs font-bold text-primary-ink shrink-0 flex items-center gap-0.5">
+                      {item.ctaLabel}
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
-        {/* ── Founders Club countdown (above referral panel — gives users
-         *  something concrete to share) ── */}
-        <FoundersClubBanner variant="inline" className="mb-6" />
+        <FoundersClubBanner variant="inline" />
 
-        {/* ── Refer & earn — affiliate share dashboard ── */}
-        <ReferralPanel />
+        {/* 4. Parent controls */}
+        <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
+          <ProfileLink
+            to="/profile/parent-dashboard"
+            icon={LayoutDashboard}
+            label="Parent View"
+            sub="Go to parent dashboard"
+          />
+          <ProfileLink
+            to="/profile/messages"
+            icon={MessageSquare}
+            label="Messages"
+            sub="Rewards, tips & updates"
+            badge={unreadMessages}
+          />
+          <ProfileLink
+            to="/profile/messages?type=reward"
+            icon={Trophy}
+            label="My Rewards"
+            sub="See your unlocked rewards"
+          />
+          <ProfileLink
+            to="/profile/referrals"
+            icon={Users}
+            label="Referrals"
+            sub="Invite friends & earn rewards"
+          />
+        </section>
 
-        {/* Menu items */}
-        <div className="bg-card rounded-2xl border border-border divide-y divide-border shadow-card mb-6">
-          {[
-            { icon: Download, label: 'Download History' },
-            { icon: Settings, label: 'Account Settings' },
-          ].map(({ icon: Icon, label }) => (
-            <button key={label} className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors duration-200">
-              <div className="flex items-center gap-3">
-                <Icon className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-foreground">{label}</span>
-              </div>
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </button>
-          ))}
-        </div>
+        {/* 5. Account */}
+        <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
+          <ProfileLink to="/profile?download=1" icon={Download} label="Download History" />
+          <ProfileLink to="/profile?settings=1" icon={Settings} label="Account Settings" />
+          <ProfileLink to="/privacy" icon={HelpCircle} label="Help & Support" />
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left"
+          >
+            <div className="flex items-center gap-3">
+              <LogOut className="w-4 h-4 text-destructive" />
+              <span className="text-sm font-medium text-destructive">Sign Out</span>
+            </div>
+          </button>
+        </section>
 
-        {/* Sign out */}
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-destructive/30 text-destructive text-sm font-bold hover:bg-destructive/5 transition-colors"
-        >
-          <LogOut className="w-4 h-4" /> Sign Out
-        </button>
+        <p className="text-[10px] text-muted-foreground text-center pt-2">
+          {profile?.email}
+        </p>
       </div>
     </Layout>
+  );
+}
+
+function ProfileLink({
+  to, icon: Icon, label, sub, badge,
+}: {
+  to: string; icon: typeof Settings; label: string; sub?: string; badge?: number;
+}) {
+  return (
+    <Link to={to} className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
+      <div className="flex items-center gap-3 min-w-0">
+        <Icon className="w-4 h-4 text-muted-foreground shrink-0" />
+        <div className="min-w-0">
+          <span className="text-sm font-medium text-foreground block truncate">{label}</span>
+          {sub && <span className="text-[11px] text-muted-foreground block truncate">{sub}</span>}
+        </div>
+      </div>
+      <div className="flex items-center gap-2 shrink-0">
+        {badge !== undefined && badge > 0 && (
+          <span className="min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center px-1.5">
+            {badge > 9 ? '9+' : badge}
+          </span>
+        )}
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+      </div>
+    </Link>
   );
 }
