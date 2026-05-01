@@ -130,24 +130,36 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   const heroMastered = currentEntry?.mastered ?? true;
   const coverUrl = getCoverImageUrl(heroBook.subLevel, heroBook.coverImageUrl);
 
-  // CTA state machine — see spec §2
+  // CTA state machine — child-facing copy, exactly as spec'd. We avoid
+  // adult terms (fluency, assessment, decoding, mastery) on the child
+  // screen; "Check" is the only word for the readiness gate.
   let ctaLabel: string;
   let ctaSub: string;
   if (allMastered) {
-    ctaLabel = 'Level Complete';
-    ctaSub = 'Take your Level Check below';
+    ctaLabel = 'Start Level Check';
+    ctaSub = "You've finished all your books!";
   } else if (heroMastered) {
-    ctaLabel = 'Continue';
-    ctaSub = 'Next book unlocked';
+    ctaLabel = 'Next Book';
+    ctaSub = 'Next book unlocked!';
   } else if (heroStamps >= MAX_STAMPS) {
-    ctaLabel = 'Start Sound Check';
-    ctaSub = 'Fluency complete — ready for your check';
+    ctaLabel = 'Start Check';
+    ctaSub = 'Ready for your Check!';
   } else if (heroStamps === 0) {
-    ctaLabel = "Let's Read!";
-    ctaSub = 'Read this book 5 times to master it';
-  } else {
+    ctaLabel = 'Read Book';
+    ctaSub = 'Read this book 5 times.';
+  } else if (heroStamps === 1) {
     ctaLabel = 'Read Again';
-    ctaSub = `${MAX_STAMPS - heroStamps} more read${MAX_STAMPS - heroStamps === 1 ? '' : 's'} to your sound check`;
+    ctaSub = 'Great start. 4 reads to go.';
+  } else if (heroStamps === 2) {
+    ctaLabel = 'Read Again';
+    ctaSub = "You're doing great. 3 more reads to go.";
+  } else if (heroStamps === 3) {
+    ctaLabel = 'Read Again';
+    ctaSub = "You're getting faster. 2 reads to go.";
+  } else {
+    // heroStamps === 4
+    ctaLabel = 'Last Read!';
+    ctaSub = 'Almost there. Last read!';
   }
 
   return (
