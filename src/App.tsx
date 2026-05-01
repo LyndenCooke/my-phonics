@@ -22,6 +22,9 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Progress = lazy(() => import("./pages/Progress"));
 const Profile = lazy(() => import("./pages/Profile"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Referrals = lazy(() => import("./pages/Referrals"));
+const ParentDashboard = lazy(() => import("./pages/ParentDashboard"));
 const Auth = lazy(() => import("./pages/Auth"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -141,6 +144,9 @@ function RoutesWithTransition() {
             <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><PaymentSuccess /></ChildModeGuard></Suspense>} />
             <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Progress /></ChildModeGuard></Suspense>} />
             <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Profile /></ChildModeGuard></Suspense>} />
+            <Route path="/profile/messages" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Messages /></ChildModeGuard></Suspense>} />
+            <Route path="/profile/referrals" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Referrals /></ChildModeGuard></Suspense>} />
+            <Route path="/profile/parent-dashboard" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><ParentDashboard /></ChildModeGuard></Suspense>} />
             <Route path="/auth" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Auth /></ChildModeGuard></Suspense>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/privacy" element={<Privacy />} />
