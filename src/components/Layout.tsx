@@ -1,10 +1,13 @@
 import { ReactNode, useState, lazy, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
+import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users, Sparkles } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { hapticLight } from '@/lib/native';
 import { hasParentPin } from '@/hooks/useAppMode';
+import { getNudges, getUnreadNudgeCount, getUnreadMessageCount } from '@/lib/nudges';
+
+const SmartNudgeDrawer = lazy(() => import('@/components/SmartNudgeDrawer'));
 
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
@@ -15,17 +18,19 @@ import ModeToggleHint from '@/components/ModeToggleHint';
 // "Home" = the hub home (/library), NOT the marketing landing — once the user
 // is inside the app, Home should mean hub home.
 // Reading progress lives inside the Profile page; we keep the nav tight at 4.
+// `badgeKey` selects which unread counter to show on this tab — Profile owns
+// the Messages inbox, so it gets the unread-messages dot.
 const PARENT_NAV = [
-  { path: '/library', label: 'Home', icon: Home },
-  { path: '/assess', label: 'Assess', icon: ClipboardCheck },
-  { path: '/shop', label: 'Pricing', icon: Tag },
-  { path: '/profile', label: 'Profile', icon: User },
+  { path: '/library', label: 'Home', icon: Home, badgeKey: null as 'messages' | null },
+  { path: '/assess', label: 'Assess', icon: ClipboardCheck, badgeKey: null },
+  { path: '/shop', label: 'Pricing', icon: Tag, badgeKey: null },
+  { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const },
 ];
 
 // Child-mode nav: only Home (the simplified library). Hides Pricing,
 // Assess, and Profile so kids can't wander into purchase flows or settings.
 const CHILD_NAV = [
-  { path: '/library', label: 'Home', icon: Home },
+  { path: '/library', label: 'Home', icon: Home, badgeKey: null as 'messages' | null },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -34,6 +39,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { mode, setMode, toggle } = useAppMode();
   const navItems = mode === 'child' ? CHILD_NAV : PARENT_NAV;
   const [pinOpen, setPinOpen] = useState(false);
+  const [nudgeOpen, setNudgeOpen] = useState(false);
+
+  // Counters for header + tab badges. Backed by stub data today; once the
+  // parent_messages table exists these become real reads.
+  const unreadNudges = getUnreadNudgeCount();
+  const unreadMessages = getUnreadMessageCount();
 
   // Toggle behaviour:
   //  parent → child: free, no gate (the parent is in control).
@@ -94,8 +105,24 @@ export default function Layout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        {/* Right-side: mode toggle + auth + exit */}
+        {/* Right-side: smart nudge + mode toggle + auth + exit */}
         <div className="flex items-center gap-2 shrink-0">
+          {/* Smart Nudge — small pill button with optional red badge.
+           *  Hidden in child mode so kids can't open the parent panel. */}
+          {mode === 'parent' && (
+            <button
+              onClick={() => { hapticLight(); setNudgeOpen(true); }}
+              aria-label={unreadNudges > 0 ? `Nudges (${unreadNudges} new)` : 'Nudges'}
+              className="relative flex items-center justify-center w-9 h-9 rounded-full border-2 border-primary/40 bg-tint-pink hover:border-primary transition-colors"
+            >
+              <Sparkles className="w-4 h-4 text-primary-ink" />
+              {unreadNudges > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
+                  {unreadNudges > 9 ? '9+' : unreadNudges}
+                </span>
+              )}
+            </button>
+          )}
           {/* Parent / Child mode toggle. In child mode, the button is small,
            *  unobtrusive (kids shouldn't tap it accidentally), and labelled
            *  "PARENT" so a grown-up can switch back. In parent mode, it's a
@@ -171,8 +198,9 @@ export default function Layout({ children }: { children: ReactNode }) {
        *  so they don't overlap the icons. */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
         <div className="flex items-center justify-around py-2 px-2">
-          {navItems.map(({ path, label, icon: Icon }) => {
+          {navItems.map(({ path, label, icon: Icon, badgeKey }) => {
             const isActive = pathname === path;
+            const badgeCount = badgeKey === 'messages' ? unreadMessages : 0;
             return (
               <Link
                 key={path}
@@ -184,13 +212,32 @@ export default function Layout({ children }: { children: ReactNode }) {
                     : 'text-muted-foreground'
                 }`}
               >
-                <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+                <span className="relative">
+                  <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+                  {badgeCount > 0 && (
+                    <span className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
+                      {badgeCount > 9 ? '9+' : badgeCount}
+                    </span>
+                  )}
+                </span>
                 <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
               </Link>
             );
           })}
         </div>
       </nav>
+
+      {/* Smart Nudge drawer — lazy so the bundle stays lean. Only rendered
+       *  when first opened. */}
+      {nudgeOpen && (
+        <Suspense fallback={null}>
+          <SmartNudgeDrawer
+            open={nudgeOpen}
+            onClose={() => setNudgeOpen(false)}
+            nudges={getNudges()}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
