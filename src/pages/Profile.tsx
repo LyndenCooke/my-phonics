@@ -27,7 +27,6 @@ import {
 } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { getUnreadMessageCount } from '@/lib/nudges';
-import FoundersReviewPrompt from '@/components/FoundersReviewPrompt';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
 
 // "For You" — dynamic top-of-page nudges. Replace with real data once
@@ -131,8 +130,8 @@ export default function Profile() {
           </Link>
         </div>
 
-        {/* Founders Club review prompt (24h/1week gate) — high-priority slot */}
-        <FoundersReviewPrompt />
+        {/* (Founders Club review prompt now pops up as a global modal —
+            mounted in Layout. No inline slot here.) */}
 
         {/* 2. Child card */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card">

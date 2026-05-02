@@ -57,6 +57,20 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // ─── Helper: fire GHL sync (non-blocking, swallow errors) ───
+    // Calls the ghl-sync edge function so a successful purchase is reflected
+    // as a GHL contact event/tag. Failures are logged but never block the
+    // webhook response — Stripe must always see 200.
+    async function syncGHL(eventName: string, data: Record<string, unknown>) {
+      try {
+        await supabaseAdmin.functions.invoke("ghl-sync", {
+          body: { event: eventName, data },
+        });
+      } catch (err) {
+        console.error("ghl-sync invoke failed (non-fatal):", err);
+      }
+    }
+
     // ─── Helper: unlock all books for a user ───
     async function unlockAllBooks(userId: string, purchaseId?: string) {
       const { data: books } = await supabaseAdmin
@@ -291,6 +305,27 @@ Deno.serve(async (req) => {
             }
           }
         }
+      }
+
+      // GHL sync — fire contact.purchased so the CRM tags / pipelines
+      // update on the buyer's contact. Best-effort.
+      const buyerEmail = session.customer_email || session.metadata?.guest_email || null;
+      if (buyerEmail) {
+        const { data: productRow } = await supabaseAdmin
+          .from("products")
+          .select("name, product_type")
+          .eq("id", productId ?? "")
+          .single();
+        await syncGHL("contact.purchased", {
+          email: buyerEmail,
+          user_id: userId,
+          product_id: productId,
+          product_type: productType ?? productRow?.product_type ?? null,
+          product_name: productRow?.name ?? null,
+          amount_pence: session.amount_total ?? 0,
+          currency: session.currency ?? "gbp",
+          stripe_session_id: session.id,
+        });
       }
 
     } else if (event.type === "customer.subscription.deleted") {

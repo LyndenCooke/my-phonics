@@ -139,6 +139,39 @@ Deno.serve(async (req) => {
         .eq("user_id", userId);
     }
 
+    // GHL sync — fire contact.assessed so the CRM tags the contact with
+    // their recommended level and category scores. Best-effort; failures
+    // never block the response.
+    try {
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", userId)
+        .single();
+      if (profile?.email) {
+        await supabaseAdmin.functions.invoke("ghl-sync", {
+          body: {
+            event: "contact.assessed",
+            data: {
+              email: profile.email,
+              user_id: userId,
+              full_name: profile.full_name,
+              recommended_level: recommendedLevel,
+              highest_level_passed: highestLevelPassed,
+              sounds_correct: soundsCorrect,
+              sounds_asked: soundsAsked,
+              words_correct: wordsCorrect,
+              words_asked: wordsAsked,
+              tricky_correct: trickyCorrect,
+              tricky_asked: trickyAsked,
+            },
+          },
+        });
+      }
+    } catch (err) {
+      console.error("ghl-sync invoke failed (non-fatal):", err);
+    }
+
     return new Response(
       JSON.stringify({
         recommended_level: recommendedLevel,

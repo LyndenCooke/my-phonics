@@ -8,6 +8,11 @@ import { hapticLight } from '@/lib/native';
 import { hasParentPin } from '@/hooks/useAppMode';
 import { getUnreadMessageCount } from '@/lib/nudges';
 
+// Founders feedback modal — auto-pops globally when a review is due.
+// Component handles all gating internally (returns null when nothing to
+// show, when snoozed, or when the user is signed-out).
+const FoundersReviewPrompt = lazy(() => import('@/components/FoundersReviewPrompt'));
+
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
 const ParentPinDialog = lazy(() => import('@/components/ParentPinDialog'));
@@ -218,6 +223,15 @@ export default function Layout({ children }: { children: ReactNode }) {
         document.body
       )}
 
+      {/* Global founders-feedback modal. Only mount in parent mode so a
+       *  child can't see it. The component itself handles "is there a
+       *  due review" gating, so on most page-loads this lazy module
+       *  briefly renders nothing and returns null. */}
+      {mode === 'parent' && (
+        <Suspense fallback={null}>
+          <FoundersReviewPrompt />
+        </Suspense>
+      )}
     </div>
   );
 }
