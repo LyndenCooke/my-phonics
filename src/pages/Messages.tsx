@@ -9,7 +9,7 @@
  * unchanged.
  */
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Gift, PlayCircle, Users, TrendingUp, Tag, BookOpen, ArrowLeft, ChevronRight, Inbox } from 'lucide-react';
 import { getParentMessages, type ParentMessage, type ParentMessageType } from '@/lib/nudges';
@@ -70,9 +70,19 @@ function MessageCard({ m }: { m: ParentMessage }) {
 
 export default function Messages() {
   const [filter, setFilter] = useState<Filter>('all');
-  const all = useMemo(() => getParentMessages(), []);
+  const [searchParams] = useSearchParams();
+  // Optional ?type=reward filter so /profile/messages?type=reward shows
+  // only rewards (used by the "My Rewards" entry on Profile).
+  const typeFilter = searchParams.get('type') as ParentMessageType | null;
+
+  const all = useMemo(() => {
+    let list = getParentMessages();
+    if (typeFilter) list = list.filter(m => m.type === typeFilter);
+    return list;
+  }, [typeFilter]);
   const visible = filter === 'unread' ? all.filter(m => !m.read) : all;
   const unreadCount = all.filter(m => !m.read).length;
+  const titleSuffix = typeFilter ? ` · ${typeFilter[0].toUpperCase()}${typeFilter.slice(1)}s` : '';
 
   return (
     <Layout>
@@ -86,7 +96,7 @@ export default function Messages() {
           >
             <ArrowLeft className="w-4 h-4 text-foreground" />
           </Link>
-          <h1 className="font-display text-xl font-extrabold text-foreground">Messages</h1>
+          <h1 className="font-display text-xl font-extrabold text-foreground">Messages{titleSuffix}</h1>
         </div>
 
         {/* Filter tabs */}

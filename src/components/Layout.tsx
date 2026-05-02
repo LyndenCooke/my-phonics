@@ -1,13 +1,12 @@
 import { ReactNode, useState, lazy, Suspense } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users, Sparkles } from 'lucide-react';
+import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { hapticLight } from '@/lib/native';
 import { hasParentPin } from '@/hooks/useAppMode';
-import { getNudges, getUnreadNudgeCount, getUnreadMessageCount } from '@/lib/nudges';
-
-const SmartNudgeDrawer = lazy(() => import('@/components/SmartNudgeDrawer'));
+import { getUnreadMessageCount } from '@/lib/nudges';
 
 // Lazy: the PIN dialog is only used on the parent toggle; no need to ship
 // it in the main bundle for kids who never see it.
@@ -39,11 +38,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { mode, setMode, toggle } = useAppMode();
   const navItems = mode === 'child' ? CHILD_NAV : PARENT_NAV;
   const [pinOpen, setPinOpen] = useState(false);
-  const [nudgeOpen, setNudgeOpen] = useState(false);
 
-  // Counters for header + tab badges. Backed by stub data today; once the
-  // parent_messages table exists these become real reads.
-  const unreadNudges = getUnreadNudgeCount();
+  // Profile-tab unread badge. Backed by stub data today (returns 0); once
+  // the parent_messages Supabase table exists this lights up automatically.
   const unreadMessages = getUnreadMessageCount();
 
   // Toggle behaviour:
@@ -105,24 +102,11 @@ export default function Layout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        {/* Right-side: smart nudge + mode toggle + auth + exit */}
+        {/* Right-side: mode toggle + auth + exit.
+         *  (Smart Nudge button removed — there's no real data to surface
+         *  yet. Once a parent_messages table exists and the badge can
+         *  show genuine new items, restore it here.) */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* Smart Nudge — small pill button with optional red badge.
-           *  Hidden in child mode so kids can't open the parent panel. */}
-          {mode === 'parent' && (
-            <button
-              onClick={() => { hapticLight(); setNudgeOpen(true); }}
-              aria-label={unreadNudges > 0 ? `Nudges (${unreadNudges} new)` : 'Nudges'}
-              className="relative flex items-center justify-center w-9 h-9 rounded-full border-2 border-primary/40 bg-tint-pink hover:border-primary transition-colors"
-            >
-              <Sparkles className="w-4 h-4 text-primary-ink" />
-              {unreadNudges > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
-                  {unreadNudges > 9 ? '9+' : unreadNudges}
-                </span>
-              )}
-            </button>
-          )}
           {/* Parent / Child mode toggle. In child mode, the button is small,
            *  unobtrusive (kids shouldn't tap it accidentally), and labelled
            *  "PARENT" so a grown-up can switch back. In parent mode, it's a
@@ -194,50 +178,46 @@ export default function Layout({ children }: { children: ReactNode }) {
       )}
 
       {/* Bottom tab bar (mobile only — desktop uses the top-nav).
-       *  pb-safe gives the iOS home indicator + Android gesture bar room
-       *  so they don't overlap the icons. */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
-        <div className="flex items-center justify-around py-2 px-2">
-          {navItems.map(({ path, label, icon: Icon, badgeKey }) => {
-            const isActive = pathname === path;
-            const badgeCount = badgeKey === 'messages' ? unreadMessages : 0;
-            return (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => { if (!isActive) hapticLight(); }}
-                className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 press-scale ${
-                  isActive
-                    ? 'text-primary-ink'
-                    : 'text-muted-foreground'
-                }`}
-              >
-                <span className="relative">
-                  <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
-                  {badgeCount > 0 && (
-                    <span className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
-                      {badgeCount > 9 ? '9+' : badgeCount}
-                    </span>
-                  )}
-                </span>
-                <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      {/* Smart Nudge drawer — lazy so the bundle stays lean. Only rendered
-       *  when first opened. */}
-      {nudgeOpen && (
-        <Suspense fallback={null}>
-          <SmartNudgeDrawer
-            open={nudgeOpen}
-            onClose={() => setNudgeOpen(false)}
-            nudges={getNudges()}
-          />
-        </Suspense>
+       *  Rendered via a portal directly onto document.body so the
+       *  page-transition wrapper's `transform/opacity` willChange doesn't
+       *  create a containing block for it. (Without the portal, fixed
+       *  positioning gets resolved against the transformed ancestor and
+       *  the nav scrolls with the page on iOS PWAs.)
+       *  pb-safe gives the iOS home indicator + Android gesture bar room. */}
+      {typeof document !== 'undefined' && createPortal(
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
+          <div className="flex items-center justify-around py-2 px-2">
+            {navItems.map(({ path, label, icon: Icon, badgeKey }) => {
+              const isActive = pathname === path;
+              const badgeCount = badgeKey === 'messages' ? unreadMessages : 0;
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={() => { if (!isActive) hapticLight(); }}
+                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 press-scale ${
+                    isActive
+                      ? 'text-primary-ink'
+                      : 'text-muted-foreground'
+                  }`}
+                >
+                  <span className="relative">
+                    <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+                    {badgeCount > 0 && (
+                      <span className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
+                        {badgeCount > 9 ? '9+' : badgeCount}
+                      </span>
+                    )}
+                  </span>
+                  <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>,
+        document.body
       )}
+
     </div>
   );
 }

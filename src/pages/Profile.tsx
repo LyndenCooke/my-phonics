@@ -123,7 +123,7 @@ export default function Profile() {
         <div className="flex items-center justify-between">
           <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">Profile</h1>
           <Link
-            to="/profile?settings=1"
+            to="/profile/account"
             aria-label="Account settings"
             className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
           >
@@ -250,9 +250,9 @@ export default function Profile() {
 
         {/* 5. Account */}
         <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
-          <ProfileLink to="/profile?download=1" icon={Download} label="Download History" />
-          <ProfileLink to="/profile?settings=1" icon={Settings} label="Account Settings" />
-          <ProfileLink to="/privacy" icon={HelpCircle} label="Help & Support" />
+          <ProfileLink to="/profile/downloads" icon={Download} label="Download History" />
+          <ProfileLink to="/profile/account" icon={Settings} label="Account Settings" />
+          <ProfileLink to="/profile/help" icon={HelpCircle} label="Help & Support" />
           <button
             onClick={handleSignOut}
             className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left"

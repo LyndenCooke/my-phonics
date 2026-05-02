@@ -686,7 +686,7 @@ export default function Assessment() {
             Phonics Assessment
           </h2>
           <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-xs mx-auto">
-            Find your child's reading level in about 4 minutes.
+            Find your child's reading level. Pick a quick check or a full test below.
           </p>
 
           <div className="bg-tint-pink rounded-2xl p-5 mb-6 text-left">
@@ -719,7 +719,7 @@ export default function Assessment() {
           </div>
 
           <p className="text-xs text-muted-foreground mb-4">
-            Sit with your child. No credit card needed.
+            Sit with your child. No credit card needed. 3 to 10 minutes depending on the test you pick.
           </p>
 
           {/* Two-button mode picker — see AssessmentMode type. The Level
