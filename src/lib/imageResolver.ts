@@ -12,7 +12,10 @@ export function getCoverImageUrl(subLevel: string, existingUrl?: string): string
   if (existingUrl) return existingUrl;
   const key = parseLevelSub(subLevel);
   if (!key) return undefined;
-  return `/illustrations/${key}/cover.png`;
+  // Prefer the level-coded printed PDF cover over the AI illustration —
+  // the printed cover carries the level colour band the parent designed,
+  // and matches what kids see in the physical book.
+  return `/covers/${key}_cover.jpg`;
 }
 
 export function getBookPageUrl(subLevel: string, pageNumber: number): string | undefined {
