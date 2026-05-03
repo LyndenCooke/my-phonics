@@ -3,8 +3,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
-import { CheckCircle, BookOpen, ArrowRight, Loader2, Smartphone } from 'lucide-react';
+import { CheckCircle, BookOpen, ArrowRight, Loader2 } from 'lucide-react';
 import { hapticSuccess } from '@/lib/native';
+import { supabase } from '@/integrations/supabase/client';
 import AddToHomeScreenPrompt from '@/components/AddToHomeScreenPrompt';
 
 export default function PaymentSuccess() {
@@ -26,6 +27,32 @@ export default function PaymentSuccess() {
 
     let cancelled = false;
     let attempts = 0;
+
+    // Self-heal: even if the Stripe webhook ran fine, ALSO call the
+    // ensure_my_books_unlocked() RPC. It's idempotent and scoped to the
+    // caller's own completed purchases, so calling it on every success-
+    // page load guarantees their books are present regardless of whether
+    // the webhook unlocked them, partially unlocked them, or failed
+    // outright. Without this, founders occasionally see "Ready!" but
+    // their library is empty and we get support emails.
+    const selfHeal = async () => {
+      try {
+        const { data: insertedCount, error } = await (supabase.rpc as unknown as (fn: string) => Promise<{ data: number | null; error: unknown }>)('ensure_my_books_unlocked');
+        if (error) {
+          console.warn('ensure_my_books_unlocked failed (non-fatal):', error);
+          return;
+        }
+        if (typeof insertedCount === 'number' && insertedCount > 0) {
+          // Force the user_books query to refetch so the library reflects
+          // the rows we just inserted.
+          await queryClient.invalidateQueries({ queryKey: ['user_books'] });
+        }
+      } catch (err) {
+        console.warn('ensure_my_books_unlocked threw (non-fatal):', err);
+      }
+    };
+    selfHeal();
+
     const poll = async () => {
       attempts += 1;
       // Force a fresh fetch of all the membership-relevant caches
@@ -35,17 +62,26 @@ export default function PaymentSuccess() {
         queryClient.invalidateQueries({ queryKey: ['profile'] }),
       ]);
       const data: any = queryClient.getQueryData(['purchases', user.id]);
+      const userBooks: any = queryClient.getQueryData(['user_books', user.id]);
       if (cancelled) return;
-      if (data?.hasAnyPaid) {
+      // Done when we see BOTH a purchase row AND at least one unlocked
+      // book. Either alone isn't enough — that was the previous bug
+      // (purchase row appeared, books stayed locked, page said "Ready").
+      if (data?.hasAnyPaid && Array.isArray(userBooks) && userBooks.length > 0) {
         setUnlocking(false);
         hapticSuccess();
         return;
       }
-      // Stop polling after 30s — webhook may have failed; let user proceed
-      // anyway, books will appear when they refresh later.
+      // Stop polling after 30s — fall back to user-tappable retry button.
       if (Date.now() - startedAt.current > 30_000) {
         setUnlocking(false);
         return;
+      }
+      // After ~10s with a purchase but no books, kick the self-heal RPC
+      // again — the webhook may have just inserted the purchase row but
+      // bailed before unlocking the books.
+      if (attempts === 8 && data?.hasAnyPaid && (!userBooks || userBooks.length === 0)) {
+        await selfHeal();
       }
       // Backoff: 1s for first 5 tries, then 3s
       setTimeout(poll, attempts < 5 ? 1000 : 3000);
@@ -53,6 +89,22 @@ export default function PaymentSuccess() {
     poll();
     return () => { cancelled = true; };
   }, [user, queryClient]);
+
+  // Fallback button — if polling ended but books still aren't unlocked,
+  // user can tap to retry the self-heal RPC manually.
+  const [retrying, setRetrying] = useState(false);
+  const handleRetry = async () => {
+    setRetrying(true);
+    try {
+      await (supabase.rpc as unknown as (fn: string) => Promise<{ data: number | null; error: unknown }>)('ensure_my_books_unlocked');
+      await queryClient.invalidateQueries({ queryKey: ['user_books'] });
+      await queryClient.invalidateQueries({ queryKey: ['purchases'] });
+    } finally {
+      setRetrying(false);
+    }
+  };
+  const userBooksData = queryClient.getQueryData<unknown[]>(['user_books', user?.id]);
+  const showRetry = !unlocking && user && (!userBooksData || userBooksData.length === 0);
 
   return (
     <Layout>
@@ -84,13 +136,25 @@ export default function PaymentSuccess() {
         )}
 
         {!unlocking && (user ? (
-          <button
-            onClick={() => navigate('/library')}
-            className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
-          >
-            <BookOpen className="w-4 h-4" />
-            Open My Library
-          </button>
+          <div className="space-y-3">
+            {showRetry && (
+              <button
+                onClick={handleRetry}
+                disabled={retrying}
+                className="w-full py-3 rounded-xl font-bold text-sm border-2 border-amber-400 bg-amber-50 text-amber-800 active:scale-[0.97] transition-transform disabled:opacity-60 flex items-center justify-center gap-2"
+              >
+                {retrying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                {retrying ? 'Unlocking…' : 'Books not showing? Tap to unlock now'}
+              </button>
+            )}
+            <button
+              onClick={() => navigate('/library')}
+              className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
+            >
+              <BookOpen className="w-4 h-4" />
+              Open My Library
+            </button>
+          </div>
         ) : (
           <div className="space-y-3">
             <button
