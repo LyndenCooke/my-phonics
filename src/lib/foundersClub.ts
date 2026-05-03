@@ -2,10 +2,12 @@
  * Founders Club — the £1 limited launch offer.
  *
  * Anchor: a fixed end date so the timer counts down to the SAME moment for
- * every visitor (not "18 days from when you first land"). Set once on
+ * every visitor (not "14 days from when you first land"). Set once on
  * launch day so the offer expires for everyone simultaneously.
  *
- * Anchor date: 2026-05-16 23:59:59 UTC (18 days from launch on 2026-04-28).
+ * Anchor date: 2026-05-17 23:59:59 UTC — exactly 2 weeks from launch on
+ * 2026-05-03. Matches the "first 2 weeks only" copy on the Shop card and
+ * Founders banner.
  *
  * Once expired, banners hide themselves and the £1 product can be marked
  * inactive in the products table (or this constant flipped — UI checks
@@ -14,7 +16,7 @@
 import { useEffect, useState } from 'react';
 
 /** Hard-coded launch end. Change this in one place to extend / shorten. */
-export const FOUNDERS_END_AT = new Date('2026-05-16T23:59:59.000Z').getTime();
+export const FOUNDERS_END_AT = new Date('2026-05-17T23:59:59.000Z').getTime();
 
 export interface Countdown {
   days: number;
