@@ -40,7 +40,7 @@ const PRODUCT_CONFIG: Record<string, {
       'Lifetime access to all 33 books',
       'Every assessment & progress report',
       'All future books included',
-      'For our first 1,000 founding families',
+      'For our first 2 weeks only',
     ],
   },
   full_bundle: {
