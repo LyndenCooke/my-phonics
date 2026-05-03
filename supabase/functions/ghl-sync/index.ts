@@ -110,23 +110,46 @@ serve(async (req) => {
 
     const { event, data } = await req.json();
 
-    // Get the authenticated user from the request
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
-    );
+    // Resolve the buyer/learner identity from one of:
+    //   1. Authenticated user (client-side calls — AuthContext → contact.created)
+    //   2. data.email + data.full_name (service-to-service calls from
+    //      stripe-webhook / save-assessment-result, where there's no user
+    //      session and the payload carries the identity directly)
+    // This is what was preventing every server-side sync from landing.
+    let email = '';
+    let fullName = '';
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
+    const authHeader = req.headers.get('Authorization');
+    if (authHeader) {
+      try {
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+          { global: { headers: { Authorization: authHeader } } }
+        );
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user) {
+          email = user.email ?? '';
+          fullName = user.user_metadata?.full_name ?? '';
+        }
+      } catch {
+        // Swallow — fall through to data-payload identity
+      }
+    }
+
+    // data payload wins when explicitly provided (e.g. server-side calls
+    // where the buyer might be a guest with no Supabase user yet).
+    if (data?.email) email = data.email as string;
+    if (data?.full_name) fullName = data.full_name as string;
+
+    if (!email) {
+      console.error('ghl-sync: no email resolved from auth or data payload', { event, data });
+      return new Response(JSON.stringify({ error: 'No email — provide data.email or call with auth' }), {
+        status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const email = user.email ?? '';
-    const fullName = user.user_metadata?.full_name ?? '';
     const [firstName, ...lastParts] = fullName.split(' ');
     const lastName = lastParts.join(' ');
 
@@ -152,15 +175,36 @@ serve(async (req) => {
       }
 
       case 'contact.assessed': {
+        // Create if missing — assessment can be taken by guests before
+        // they've signed up (GuestAssessmentSignup flow).
         ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'assessed'],
+          });
+        }
         if (ghlContactId) {
-          await addTags(ghlContactId, ['assessed', `level:${data?.level ?? 'unknown'}`]);
+          const lvl = data?.recommended_level ?? data?.level ?? 'unknown';
+          await addTags(ghlContactId, ['assessed', `level:${lvl}`]);
         }
         break;
       }
 
       case 'contact.free_trial': {
         ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'free-trial'],
+          });
+        }
         if (ghlContactId) {
           await addTags(ghlContactId, ['free-trial']);
         }
@@ -168,15 +212,26 @@ serve(async (req) => {
       }
 
       case 'contact.purchased': {
+        // Guest checkouts may not have a Supabase profile yet — create the
+        // GHL contact on the fly so we don't lose the buyer.
         ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'purchased'],
+          });
+        }
         if (ghlContactId) {
+          const productName = data?.product_name ?? data?.product ?? null;
+          const productType = data?.product_type ?? null;
           await addTags(ghlContactId, [
             'purchased',
-            ...(data?.product ? [`product:${data.product}`] : []),
+            ...(productType ? [`product-type:${productType}`] : []),
+            ...(productName ? [`product:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
           ]);
-          await updateContact(ghlContactId, {
-            tags: ['purchased'],
-          });
         }
         break;
       }
