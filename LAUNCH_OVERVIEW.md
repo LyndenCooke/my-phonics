@@ -79,7 +79,7 @@ Available in [Shop.tsx](src/pages/Shop.tsx). Live tiers:
 | Plan | Price | What's included |
 |---|---|---|
 | **Free Sample** | £0 | One book matched to assessed level |
-| **Founders Club** | £1 lifetime *(limited to 1,000 spots)* | All 33 books, all assessments, all future books, in exchange for two short reviews (24h + 1 week) |
+| **Founders Club** | £1 lifetime *(only available during the first 2 weeks of launch)* | All 33 books, all assessments, all future books, in exchange for two short reviews (24h + 1 week) |
 | **Full Bundle** | One-time | All 33 books, no expiry, all future books |
 | **Subscription** | £x/month | All books, new releases, full assessment suite, cancel anytime |
 | **Annual** | £x/year | Same as subscription, ~30% saving |

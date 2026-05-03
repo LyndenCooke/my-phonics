@@ -83,7 +83,7 @@ export default function FoundersClubBanner({ variant = 'hero', className = '' }:
       </h3>
       <p className="text-sm sm:text-base text-white/90 mt-2 leading-relaxed">
         Lifetime access to all 33 books, every assessment, all future releases.
-        For our first 1,000 founding families only.
+        For our first 2 weeks only.
       </p>
 
       <div className="mt-4 flex items-center gap-2 text-sm font-semibold">
