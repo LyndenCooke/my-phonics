@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { captureRefFromUrl } from "@/lib/referral";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -136,6 +137,9 @@ const App = () => {
  */
 function RoutesWithTransition() {
   const location = useLocation();
+  // Fire a GA4 page_view on every route change. No-op if gtag isn't loaded
+  // (ad-blocker / no consent / dev without the tag).
+  useGoogleAnalytics();
   return (
     <AnimatedRoutes>
       <Routes location={location}>
