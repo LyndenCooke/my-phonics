@@ -13,5 +13,15 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+    // PKCE = the modern, more-secure OAuth flow. Required for Google
+    // sign-in to land a session on the SPA on return. Without this the
+    // redirect carries an auth code that nothing on the page knows how to
+    // exchange, the user lands on the home route, and the Sign-In button
+    // is still there.
+    flowType: 'pkce',
+    // Detect ?code=... or #access_token=... in the URL on first load and
+    // exchange it for a session. Defaults to true in current supabase-js,
+    // but being explicit prevents regressions if the default ever flips.
+    detectSessionInUrl: true,
   }
 });
