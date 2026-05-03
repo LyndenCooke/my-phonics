@@ -37,6 +37,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               ? JSON.parse(localStorage.getItem('mpb_funnel_source')!).ref || 'direct'
               : 'direct',
           }).catch(() => {});
+
+          // Self-heal book unlocks once per session. Idempotent — only
+          // inserts user_books rows that don't already exist for this
+          // user's completed purchases. Belt-and-braces guarantee for
+          // founders who hit the "ready but no books" bug.
+          (supabase.rpc as unknown as (fn: string) => Promise<unknown>)('ensure_my_books_unlocked').then(
+            () => {},
+            (err) => console.warn('ensure_my_books_unlocked failed (non-fatal):', err),
+          );
         }, 2000);
       }
     });
