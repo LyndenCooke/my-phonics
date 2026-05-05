@@ -160,11 +160,11 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
   // ── 3-8. STORY PAGES ──
   {
     type: 'story',
-    sentences: ['I sit at a mat.', 'Tap, tap, tap!'],
+    sentences: ['I sit on a mat.', 'Tap, tap, tap!'],
     words: [
       tricky('I', 'I'),
       cvc('sit', 'sit'),
-      { display: 'at', word: 'at', phonemes: ['a','t'] },
+      { display: 'on', word: 'on', phonemes: ['o','n'] },
       tricky('a', 'a'),
       cvc('mat.', 'mat'),
       cvc('Tap,', 'tap'),
@@ -213,16 +213,16 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
     audioUrl: '/sounds/sentences/L1_1_p3.mp3',
   },
 
-  // Page 7: Story - "Tap, tap! I pat at it."
+  // Page 7: Story - "Tap, tap! I tap on it."
   {
     type: 'story',
-    sentences: ['Tap, tap!', 'I pat at it.'],
+    sentences: ['Tap, tap!', 'I tap on it.'],
     words: [
       cvc('Tap,', 'tap'),
       cvc('tap!', 'tap'),
       tricky('I', 'I'),
-      cvc('pat', 'pat'),
-      { display: 'at', word: 'at', phonemes: ['a','t'] },
+      cvc('tap', 'tap'),
+      { display: 'on', word: 'on', phonemes: ['o','n'] },
       { display: 'it.', word: 'it', phonemes: ['i','t'] },
     ],
     imageUrl: '/illustrations/1_1/page4.png',
@@ -1682,23 +1682,23 @@ export const BOOK_L1_9_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_9/page2.png', audioUrl: '/sounds/sentences/L1_9_p2.mp3',
   },
-  // Page 3: "Chips in a hot pan. I got a big dish!"
+  // Page 3: "Chips in a hot pan. I get a big dish!"
   {
-    type: 'story', sentences: ['Chips in a hot pan.', 'I got a big dish!'],
+    type: 'story', sentences: ['Chips in a hot pan.', 'I get a big dish!'],
     words: [
       { display: 'Chips', word: 'chip', phonemes: ['ch','i','p'] },
       { display: 'in', word: 'in', phonemes: ['i','n'] }, tricky('a', 'a'),
       cvc('hot', 'hot'), cvc('pan.', 'pan'),
-      tricky('I', 'I'), cvc('got', 'got'), tricky('a', 'a'),
+      tricky('I', 'I'), cvc('get', 'get'), tricky('a', 'a'),
       cvc('big', 'big'), { display: 'dish!', word: 'dish', phonemes: ['d','i','sh'] },
     ],
     imageUrl: '/illustrations/1_9/page3.png', audioUrl: '/sounds/sentences/L1_9_p3.mp3',
   },
-  // Page 4: "I got a chip. That chip is thick!"
+  // Page 4: "I get a chip. That chip is thick!"
   {
-    type: 'story', sentences: ['I got a chip.', 'That chip is thick!'],
+    type: 'story', sentences: ['I get a chip.', 'That chip is thick!'],
     words: [
-      tricky('I', 'I'), cvc('got', 'got'), tricky('a', 'a'),
+      tricky('I', 'I'), cvc('get', 'get'), tricky('a', 'a'),
       { display: 'chip.', word: 'chip', phonemes: ['ch','i','p'] },
       { display: 'That', word: 'that', phonemes: ['th','a','t'] },
       { display: 'chip', word: 'chip', phonemes: ['ch','i','p'] },
@@ -1883,11 +1883,10 @@ export const BOOK_L1_10_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_10/page3.png', audioUrl: '/sounds/sentences/L1_10_p3.mp3',
   },
-  // Page 4: "I sing! No buzz! No hiss!"
+  // Page 4: "No buzz! No hiss!" (image shows shushing — bugs have gone quiet)
   {
-    type: 'story', sentences: ['I sing!', 'No buzz! No hiss!'],
+    type: 'story', sentences: ['No buzz!', 'No hiss!'],
     words: [
-      tricky('I', 'I'), { display: 'sing!', word: 'sing', phonemes: ['s','i','ng'] },
       tricky('No', 'no'), { display: 'buzz!', word: 'buzz', phonemes: ['b','u','zz'] },
       tricky('No', 'no'), { display: 'hiss!', word: 'hiss', phonemes: ['h','i','ss'] },
     ],
