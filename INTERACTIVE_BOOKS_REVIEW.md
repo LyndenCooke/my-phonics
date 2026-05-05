@@ -105,7 +105,7 @@ interface StoryWord {
 | L3.1 | The Big Bike Race | 3 — New Spellings | a-e, i-e | `public/illustrations/3_1/` |
 | L3.2 | The Stone Flute | 3 — New Spellings | o-e, u-e | `public/illustrations/3_2/` |
 | L3.3 | Reach for the Treat! | 3 — New Spellings | ea, ie | `public/illustrations/3_3/` |
-| L3.4 | Draw It Again! | 3 — New Spellings | oi, aw | `public/illustrations/3_4/` |
+| L3.4 | What Min Saw | 3 — New Spellings | oi, aw | `public/illustrations/3_4/` |
 | L3.5 | The Boat with the Red Sail | 3 — New Spellings | ai, oa | `public/illustrations/3_5/` |
 | L4.1 | The Purple Purse | 4 — Building Fluency | ur, er | `public/illustrations/4_1/` |
 | L4.2 | The Brown Owl | 4 — Building Fluency | are, ow | `public/illustrations/4_2/` |
