@@ -392,12 +392,19 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
     setPlayingGroup(null);
   };
 
-  const focusGroups = page.allSounds.filter(g =>
-    g.split('/').some(s => page.focusSounds.includes(s))
-  );
-  const reviewGroups = page.allSounds.filter(g =>
-    !g.split('/').some(s => page.focusSounds.includes(s))
-  );
+  // Split each grapheme group into focus parts and review parts so that a
+  // partially-focused group like 's/ss' only shows the focus letter on the
+  // focus card. Otherwise an L1.1 card teaching just /s/ would display
+  // "s ss" together and imply the digraph is being taught.
+  const focusGroups: string[] = [];
+  const reviewGroups: string[] = [];
+  for (const g of page.allSounds) {
+    const parts = g.split('/');
+    const focusParts = parts.filter(s => page.focusSounds.includes(s));
+    const reviewParts = parts.filter(s => !page.focusSounds.includes(s));
+    if (focusParts.length > 0) focusGroups.push(focusParts.join('/'));
+    if (reviewParts.length > 0) reviewGroups.push(reviewParts.join('/'));
+  }
 
   // Bucket review sounds by canonical level using the GRAPHEME_LEVEL map.
   const reviewByLevel: Record<number, string[]> = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };

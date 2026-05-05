@@ -1091,17 +1091,17 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_6/page2.png', audioUrl: '/sounds/sentences/L1_6_p2.mp3',
   },
-  // Page 3: "Fox is on a wall. Fox fell off the wall!"
+  // Page 3: "Fox is on a hut. Fox fell off the hut!"
   {
-    type: 'story', sentences: ['Fox is on a wall.', 'Fox fell off the wall!'],
+    type: 'story', sentences: ['Fox is on a hut.', 'Fox fell off the hut!'],
     words: [
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] }, tricky('is', 'is'),
       { display: 'on', word: 'on', phonemes: ['o','n'] }, tricky('a', 'a'),
-      tricky('wall.', 'wall'),
+      cvc('hut.', 'hut'),
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] },
       { display: 'fell', word: 'fell', phonemes: ['f','e','ll'] },
       { display: 'off', word: 'off', phonemes: ['o','ff'] },
-      tricky('the', 'the'), tricky('wall!', 'wall'),
+      tricky('the', 'the'), cvc('hut!', 'hut'),
     ],
     imageUrl: '/illustrations/1_6/page3.png', audioUrl: '/sounds/sentences/L1_6_p3.mp3',
   },
@@ -1177,7 +1177,7 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     { display: 'fox', word: 'fox', phonemes: ['f','o','x'] },
     { display: 'fell', word: 'fell', phonemes: ['f','e','ll'] },
     { display: 'off', word: 'off', phonemes: ['o','ff'] },
-    tricky('wall', 'wall'),
+    cvc('hut', 'hut'),
     { display: 'hill', word: 'hill', phonemes: ['h','i','ll'] },
     tricky('fall', 'fall')] },
 
@@ -1211,7 +1211,7 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
   { type: 'story_ordering', items: [
     { imageUrl: '/illustrations/1_6/page1.png', label: 'Fox on a log.', correctIndex: 0 },
     { imageUrl: '/illustrations/1_6/page2.png', label: 'Fell off the log!', correctIndex: 1 },
-    { imageUrl: '/illustrations/1_6/page3.png', label: 'Fox on a wall.', correctIndex: 2 },
+    { imageUrl: '/illustrations/1_6/page3.png', label: 'Fox on a hut.', correctIndex: 2 },
     { imageUrl: '/illustrations/1_6/page4.png', label: 'Fox on a hill.', correctIndex: 3 },
     { imageUrl: '/illustrations/1_6/page5.png', label: 'A big, fat mat.', correctIndex: 4 },
     { imageUrl: '/illustrations/1_6/page6.png', label: 'Fox did not fall!', correctIndex: 5 }] },

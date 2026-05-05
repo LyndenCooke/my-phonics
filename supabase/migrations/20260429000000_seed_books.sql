@@ -31,7 +31,7 @@ VALUES
   (3, 'L3.1', 'The Big Bike Race', 'the-big-bike-race', ARRAY['a-e','i-e'], ARRAY['all','like','want'], ARRAY[]::text[], 24, 31, false, true),
   (3, 'L3.2', 'Lost at the Night Market', 'lost-at-the-night-market', ARRAY['o-e','u-e'], ARRAY['I','the','you','she','we','elephant'], ARRAY['close','spoke','huge','stone','bright','noodle'], 24, 32, false, true),
   (3, 'L3.3', 'Reach for the Treat!', 'reach-for-the-treat', ARRAY['ea','ie'], ARRAY['call','do','old'], ARRAY[]::text[], 24, 33, false, true),
-  (3, 'L3.4', 'Draw It Again', 'draw-it-again', ARRAY['oi','aw'], ARRAY['was','so','what'], ARRAY[]::text[], 24, 34, false, true),
+  (3, 'L3.4', 'What Min Saw', 'what-min-saw', ARRAY['oi','aw'], ARRAY['said','they','what'], ARRAY['saw','hawk','claws','points','soil','stream'], 24, 34, false, true),
   (3, 'L3.5', 'The Boat with the Red Sail', 'the-boat-with-the-red-sail', ARRAY['ai','oa'], ARRAY['all','some','they'], ARRAY[]::text[], 24, 35, false, true),
   -- Level 4
   (4, 'L4.1', 'The Purple Purse', 'the-purple-purse', ARRAY['ur','er'], ARRAY['saw','watch','their'], ARRAY[]::text[], 24, 41, false, true),
@@ -46,6 +46,6 @@ VALUES
   -- Level 6
   (6, 'L6.1', 'The Marvellous Neighbourhood', 'the-marvellous-neighbourhood', ARRAY['ous'], ARRAY['should','many','above'], ARRAY[]::text[], 24, 61, false, true),
   (6, 'L6.2', 'You Are Remarkable', 'you-are-remarkable', ARRAY['able','ible'], ARRAY['father','mother','great'], ARRAY[]::text[], 24, 62, false, true),
-  (6, 'L6.3', 'It Looks Suspicious', 'it-looks-suspicious', ARRAY['cious','tious'], ARRAY['bought','caught','thought'], ARRAY[]::text[], 24, 63, false, true),
+  (6, 'L6.3', 'It Looks Suspicious!', 'it-looks-suspicious', ARRAY['cious','tious'], ARRAY['bought','caught','thought'], ARRAY[]::text[], 24, 63, false, true),
   (6, 'L6.4', 'The Incredible Bush Walk', 'the-incredible-bush-walk', ARRAY['ous','able','ible','cious','tious'], ARRAY['everyone','walk','talk'], ARRAY[]::text[], 24, 64, false, true)
 ON CONFLICT (slug) DO NOTHING;
