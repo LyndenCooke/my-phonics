@@ -5,25 +5,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Minimal shape of the Stripe checkout session fields we read. The real
-// object has dozens of other properties — we only declare what we touch.
-type StripeSession = {
-  id: string;
-  client_reference_id?: string | null;
-  customer_email?: string | null;
-  customer?: string | null;
-  payment_intent?: string | null;
-  subscription?: string | null;
-  amount_total?: number | null;
-  currency?: string | null;
-  metadata?: {
-    guest_email?: string;
-    ref_code?: string;
-    product_id?: string;
-    product_type?: string;
-  };
-};
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -112,14 +93,14 @@ Deno.serve(async (req) => {
     }
 
     // ─── Helper: resolve or create user from session ───
-    async function resolveUser(session: StripeSession): Promise<string | null> {
+    async function resolveUser(session: any): Promise<string | null> {
       let userId = session.client_reference_id;
       const guestEmail = session.metadata?.guest_email;
 
       if (!userId && guestEmail) {
         const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
         const existingUser = existingUsers?.users?.find(
-          (u: { email?: string | null }) => u.email === guestEmail
+          (u: any) => u.email === guestEmail
         );
 
         if (existingUser) {
@@ -161,7 +142,7 @@ Deno.serve(async (req) => {
     // 50% commission on the gross amount paid (in pence). Adjust here if
     // we want different rates per product type later.
     const COMMISSION_RATE = 0.5;
-    async function recordAttribution(session: StripeSession, buyerUserId: string | null, productId?: string) {
+    async function recordAttribution(session: any, buyerUserId: string | null, productId?: string) {
       const refCode = session.metadata?.ref_code;
       if (!refCode) return;
 

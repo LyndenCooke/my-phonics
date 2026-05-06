@@ -150,11 +150,7 @@ export function usePurchases() {
         .eq('status', 'completed');
       if (error) throw error;
       const rows = data || [];
-      const types = new Set(
-        rows
-          .map((r) => (r as { products?: { product_type?: string } }).products?.product_type)
-          .filter(Boolean),
-      );
+      const types = new Set(rows.map((r: any) => r.products?.product_type).filter(Boolean));
       return {
         purchases: rows,
         hasFoundersClub: types.has('founders_club'),

@@ -16,11 +16,7 @@ function playAudioFile(url: string): Promise<void> {
 
 async function playPhoneme(grapheme: string): Promise<void> {
   const key = grapheme.toLowerCase().replace(/-/g, '_');
-  try {
-    await playAudioFile(`/sounds/${key}.mp3`);
-  } catch {
-    // Silent on miss: a missing phoneme MP3 should not break tap-playback.
-  }
+  try { await playAudioFile(`/sounds/${key}.mp3`); } catch {}
 }
 
 function playWordAudio(word: string): Promise<void> {

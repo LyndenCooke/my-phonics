@@ -67,10 +67,7 @@ export async function syncSourceToCRM() {
   if (source.ref) tags.push(`ref:${source.ref}`);
 
   try {
-    await (supabase.rpc as unknown as (
-      fn: string,
-      args: Record<string, unknown>,
-    ) => Promise<unknown>)('crm_set_source', {
+    await (supabase.rpc as any)('crm_set_source', {
       _source: sourceName,
       _tags: tags,
     });

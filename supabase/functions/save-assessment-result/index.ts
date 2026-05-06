@@ -40,9 +40,7 @@ Deno.serve(async (req) => {
     );
 
     // Get assessment items to join with answers
-    type AnswerInput = { item_id: string; is_correct: boolean };
-    const typedAnswers = answers as AnswerInput[];
-    const itemIds = typedAnswers.map((a) => a.item_id);
+    const itemIds = answers.map((a: any) => a.item_id);
     const { data: items } = await supabaseAdmin
       .from("assessment_items")
       .select("*")
@@ -59,7 +57,7 @@ Deno.serve(async (req) => {
     let wordsCorrect = 0, wordsAsked = 0;
     let trickyCorrect = 0, trickyAsked = 0;
 
-    const detailedAnswers = typedAnswers.map((a) => {
+    const detailedAnswers = answers.map((a: any) => {
       const item = itemMap.get(a.item_id);
       if (!item) return null;
 
@@ -108,10 +106,10 @@ Deno.serve(async (req) => {
     
     // If child got <50% of Level 1 sounds, recommend Level 1
     const lvl1Sounds = detailedAnswers.filter(
-      (d) => d && d.round_type === "sound_recognition" && d.target_level === 1
+      (d: any) => d && d.round_type === "sound_recognition" && d.target_level === 1
     );
     if (lvl1Sounds.length > 0) {
-      const lvl1SoundsCorrect = lvl1Sounds.filter((d) => d?.is_correct).length;
+      const lvl1SoundsCorrect = lvl1Sounds.filter((d: any) => d.is_correct).length;
       if (lvl1SoundsCorrect / lvl1Sounds.length < 0.5) {
         recommendedLevel = 1;
       }
