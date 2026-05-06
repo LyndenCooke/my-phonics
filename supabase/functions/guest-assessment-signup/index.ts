@@ -60,7 +60,9 @@ Deno.serve(async (req) => {
     // 1. Find or create user
     let userId: string;
     const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-    const existingUser = existingUsers?.users?.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
+    const existingUser = existingUsers?.users?.find(
+      (u: { email?: string | null }) => u.email?.toLowerCase() === email.toLowerCase(),
+    );
 
     if (existingUser) {
       userId = existingUser.id;
