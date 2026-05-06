@@ -160,15 +160,15 @@ const L4_SENTENCES = {
 
 // ─── L5 Sentences ───────────────────────────────────────────────────────────
 const L5_SENTENCES = {
-  // L5.1 Before the Shore (rewritten 2026-05-05 — full decodability + Dad-only)
-  "L5_1_p1": "The boy went through the park on his way home. He was tired, and his feet were sore from play. He sat on a bench to rest for a bit. On the path he saw a smooth, flat stone. He bent to pick it up and held it.",
-  "L5_1_p2": "The stone felt cool in his hand as he sat. It had a shine, like one found by the shore. Once, before this winter, he had seen a stone like it. He sat still and went back to that day. Leaves fell near the bench, and he shut his eyes.",
-  "L5_1_p3": "Before winter came, Dad took him to the shore. The sea air was pure and fresh, and the sand felt soft. \"Let us explore!\" said Dad, and they ran on the beach. They splashed in waves and watched the fire by the rocks. Dad took a photo as flames moved in slow motion.",
-  "L5_1_p4": "The next day, he explored the rock pools near the shore. He found more and more shells and set them in a pile. Dad helped him put the best ones on a wire. \"We can make a gift,\" said Dad, and the boy grinned. He twisted the wire with care, and it looked nice.",
-  "L5_1_p5": "Then it was time to go home from the shore. He spotted a smooth, flat stone by the water line. \"Keep it safe,\" said Dad, so you remember this trip. He put the stone in his pocket and smiled.",
-  "L5_1_p6": "Back on the bench, the boy sat up and smiled. He still had that shore stone at home on a shelf. But this was a new stone, smooth and cool to hold. He held it up to the light and took a breath. The shore felt so close again, right at his feet.",
-  "L5_1_p7": "He ran home and in at the front door. He got his shore stone, so now he had two. He knew where Dad kept the wire and thin cord. He made a loop for each stone and tied knots. He wrote Dad on a tag, for a gift later.",
-  "L5_1_p8": "He gave the stones to Dad in the sitting room. \"From the shore and from the park,\" he said, proud. Dad smiled wide and hooked them on his brown bag. \"I will keep them with me, so I never forget.\" Dad wore them that day, hanging bright on his bag.",
+  // L5.1 The Shore Stone
+  "L5_1_p1": "The boy went home from the park. He was tired, and his feet were sore. He sat on a bench to rest. Then he saw something on the path — a smooth, flat stone. He picked it up.",
+  "L5_1_p2": "The stone felt cool in his hand. It had a shine, like something from the shore. Once, before this week, he had seen a stone just like it. He sat still and let his mind go back.",
+  "L5_1_p3": "Before the cold came, he went with Mum and Dad to the shore. The air was fresh and the sand soft. Come and explore with me! said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
+  "L5_1_p4": "The next day, he explored the rock pools. He found more and more shells! Mum helped him put them on a wire. We can make a gift, she said. He twisted the wire with care. It looked so nice!",
+  "L5_1_p5": "Then it was time to go. He spotted a stone by the shore. It was smooth and flat. Keep it safe, said Dad. So you never forget this trip. He put the stone in his pocket with a smile.",
+  "L5_1_p6": "The boy sat up and looked around. He still had that shore stone at home. But in his hand was a new stone, just as smooth! He held it up to the light. The shore felt so close.",
+  "L5_1_p7": "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Mum — just like before.",
+  "L5_1_p8": "He gave the stones to Mum. From the shore and from the park, he said. She smiled wide. I will keep them with me, she said. So I never forget. She wore them on her bag that day.",
   // L5.2 The Red Fox
   "L5_2_p1": "I was sitting on the floor when I heard a sound. Crunch, crunch, crunch. It came from near the door. What could it be? I crept over and put my ear to the door. Crunch, crunch. I heard it again.",
   "L5_2_p2": "Dad heard it too. He was in his seat by the fire. He looked at me and smiled. I can tell what that is, he said. It is clear to me. But I will not say.",
