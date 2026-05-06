@@ -67,10 +67,10 @@ export default function Index() {
     if (localStorage.getItem(key)) return;
 
     // Find their free sample book
-    const freeSample = userBooksData.find((ub: any) => ub.source === 'free_sample');
+    const freeSample = userBooksData.find((ub) => ub.source === 'free_sample');
     if (!freeSample) return;
 
-    const book = booksData.find((b: any) => b.id === freeSample.book_id);
+    const book = booksData.find((b) => b.id === freeSample.book_id);
     if (!book) return;
 
     const sub = book.sub_level as string;

@@ -19,13 +19,14 @@ export default function Welcome() {
   const { data: allBooks, isLoading: booksLoading } = useBooks();
 
   // Find the first free-sample book the user has unlocked
-  const [unlockedBook, setUnlockedBook] = useState<any>(null);
+  type UnlockedBook = NonNullable<typeof allBooks>[number];
+  const [unlockedBook, setUnlockedBook] = useState<UnlockedBook | null>(null);
 
   useEffect(() => {
     if (!userBooks || !allBooks) return;
-    const freeSample = userBooks.find((ub: any) => ub.source === 'free_sample') || userBooks[0];
+    const freeSample = userBooks.find((ub) => ub.source === 'free_sample') || userBooks[0];
     if (!freeSample) return;
-    const book = allBooks.find((b: any) => b.id === freeSample.book_id);
+    const book = allBooks.find((b) => b.id === freeSample.book_id);
     if (book) setUnlockedBook(book);
   }, [userBooks, allBooks]);
 
