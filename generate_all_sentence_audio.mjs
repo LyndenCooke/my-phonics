@@ -188,14 +188,14 @@ const L5_SENTENCES = {
   "L5_3_p7": "At last, the kite was done. Look at the picture we made! she cried. Dadaji tied the string to the centre. Now for the action! he said. Run in that direction and let the wind catch it! She ran with all her might and let the string out.",
   "L5_3_p8": "The kite shot up into the pure blue sky. It soared higher and higher! Woh Kata! cheered the people on the next rooftop. Dadaji clapped his hands with joy. The girl watched her kite spin and dance over the pink city. Pure joy! she cried. Pure joy!",
   // L5.4 The Celebration
-  "L5_4_p1": "Dad and I came to a bright market street. Doors stood open, with flowers over rails on each floor. Dad went to a stall, and I sat near a door. I did not know anyone and felt a bit left out.",
-  "L5_4_p2": "I could hear chat and calls from each stall and door. I went the wrong way and slid by the pears. Men and mums looked at them, but no one saw me. I felt my fear rise and I went back.",
-  "L5_4_p3": "I sat on a step by a tall brown door. People were near, but no one came to chat. I shut my eyes and counted to ten, very slow. I did not want to cry, but I was tired.",
-  "L5_4_p4": "Then a boy came by and sat down near me. He gave me a big grin and held out his hand. Do you want to look at that stall? he said. I went with him, and my fear went away.",
-  "L5_4_p5": "We met a man at a stall of pears and melons. He let us hold a melon, and it was big. My new pal put it on top like a hat. I chose a ripe pear, and we paid the man. He gave us a small portion.",
-  "L5_4_p6": "We sat on the steps and ate the pear and melon. Sweet, wet bits ran on my chin and on my shirt. We both smiled more and more, with pure joy inside. When we were done, we slid the peels in a bin.",
-  "L5_4_p7": "Then my pal said, Look, Dad is near. We went down the street, and he ran before me. We got one more pear and a wrap for Dad. I said, Thank you, and he said, See you soon.",
-  "L5_4_p8": "Dad knelt and held me, and I felt safe again. He got a photo of us with my new pal. I said, Can I see him next year? Dad said yes, and I waved to the boy. This street felt like home, and my heart was light.",
+  "L5_4_p1": "I came to a celebration in a colourful street near the shore. But I did not know anyone. I stood alone in the corner, watching the people dance and sing. My heart felt heavy.",
+  "L5_4_p2": "I could hear music and laughter from every door. I could see food and drums. But no one saw me. I felt left out.",
+  "L5_4_p3": "The song grew louder. Everyone was having the best time. But not me. I put my hand on my heart. I was alone.",
+  "L5_4_p4": "Then a boy saw me. He had a warm smile. He came over and held out his hand. Will you come dance with me? he said. I felt surprised and happy!",
+  "L5_4_p5": "We went to a food stall. The man gave us golden-brown acarajé. It was so good! I took a bite and smiled. This pure joy was new to me.",
+  "L5_4_p6": "We walked down the street together. We saw the old colourful buildings. We heard drums near the fire. I like this place, I said. And I like you, said the boy.",
+  "L5_4_p7": "Soon we were dancing! Other children came to join us. The music was all around. We spun and laughed. The fire and the drums made the perfect sound for our dance.",
+  "L5_4_p8": "As evening came, we sat together. I held the boy's hand. I did not want to leave. Will you come back? he asked. Yes, I said. This is my place too.",
 };
 
 // ─── L6 Sentences ───────────────────────────────────────────────────────────
