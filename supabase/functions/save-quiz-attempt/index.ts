@@ -40,9 +40,7 @@ Deno.serve(async (req) => {
     );
 
     // Get correct answers
-    type QuizAnswerInput = { question_id: string; selected_answer: string };
-    const typedAnswers = answers as QuizAnswerInput[];
-    const questionIds = typedAnswers.map((a) => a.question_id);
+    const questionIds = answers.map((a: any) => a.question_id);
     const { data: questions } = await supabaseAdmin
       .from("quiz_questions")
       .select("id, correct_answer")
@@ -55,7 +53,7 @@ Deno.serve(async (req) => {
     const correctMap = new Map(questions.map(q => [q.id, q.correct_answer]));
 
     let score = 0;
-    const detailedAnswers = typedAnswers.map((a) => {
+    const detailedAnswers = answers.map((a: any) => {
       const correct = correctMap.get(a.question_id);
       const isCorrect = a.selected_answer === correct;
       if (isCorrect) score++;

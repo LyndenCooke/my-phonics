@@ -139,9 +139,8 @@ export default function Shop() {
       if (data.url) {
         window.location.href = data.url;
       }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Something went wrong';
-      toast.error(message);
+    } catch (err: any) {
+      toast.error(err.message || 'Something went wrong');
     } finally {
       setCheckoutLoading(null);
       setGuestLoading(false);

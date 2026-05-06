@@ -52,16 +52,8 @@ export default function CustomerDetail() {
           </div>
         </div>
         {contact && (
-          <Badge
-            style={{
-              backgroundColor:
-                (contact as { crm_pipeline_stages?: { colour?: string; name?: string } })
-                  .crm_pipeline_stages?.colour ?? '#6366f1',
-            }}
-            className="text-white"
-          >
-            {(contact as { crm_pipeline_stages?: { name?: string } })
-              .crm_pipeline_stages?.name ?? 'Unknown Stage'}
+          <Badge style={{ backgroundColor: (contact as any).crm_pipeline_stages?.colour ?? '#6366f1' }} className="text-white">
+            {(contact as any).crm_pipeline_stages?.name ?? 'Unknown Stage'}
           </Badge>
         )}
       </div>
@@ -157,7 +149,7 @@ export default function CustomerDetail() {
                     {purchases.map(p => (
                       <TableRow key={p.id}>
                         <TableCell className="font-medium">
-                          {(p as { products?: { name?: string } }).products?.name ?? 'Unknown'}
+                          {(p as any).products?.name ?? 'Unknown'}
                         </TableCell>
                         <TableCell>£{(p.amount_paid / 100).toFixed(2)}</TableCell>
                         <TableCell>
@@ -196,9 +188,9 @@ export default function CustomerDetail() {
                     {userBooks.map(ub => (
                       <TableRow key={ub.id}>
                         <TableCell className="font-medium">
-                          {(ub as { books?: { title?: string; sub_level?: string } }).books?.title ?? 'Unknown'}
+                          {(ub as any).books?.title ?? 'Unknown'}
                         </TableCell>
-                        <TableCell>{(ub as { books?: { sub_level?: string } }).books?.sub_level ?? '-'}</TableCell>
+                        <TableCell>{(ub as any).books?.sub_level ?? '-'}</TableCell>
                         <TableCell><Badge variant="secondary">{ub.source ?? '-'}</Badge></TableCell>
                         <TableCell>
                           {ub.completed_at ? (
