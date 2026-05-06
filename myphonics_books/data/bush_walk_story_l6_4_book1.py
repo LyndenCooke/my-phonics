@@ -1,33 +1,22 @@
 """
 The Incredible Bush Walk — Level 6.4 Story (Review)
 Focus sounds: ALL L6 suffixes reviewed — ous, cious, tious, able, ible
-Setting: Australian bush — eucalyptus forest, red earth, blue-haze mountains,
-         dot art display in visitor hall (Australia / Blue Mountains visual context)
+Setting: Blue Mountains, Australia — eucalyptus bush, red earth, blue haze mountains,
+         Aboriginal dot art in visitor centre gallery
 Written 2026-03-21
-Revised 2026-05-05
 
-Cultural-genericisation policy applied:
-- Mia → May (fully decodable, all L1 graphemes).
-- "Lyrebird" → "fan tail mimic bird" (decodable, matches lyrebird imagery).
-- Removed cultural-attribution adjective: "First Nations dot art" → "dot art"
-  (image still depicts the cultural context; teachers/parents can name it).
-- Foreign proper nouns replaced with descriptive English:
-  "Blue Mountains" (proper noun) → "blue mountains" (lowercase, descriptive).
-- "Visitor centre/gallery" → "visitor hall" (decodable; image carries the
-  Blue Mountains setting and dot art display).
-- Past tense (-ed) restored as the natural narrative voice now that -ed is
-  whitelisted at L5+. Present-tense workarounds removed where the past form
-  is decodable.
-
-Cultural Brief Applied (visual / image-prompt level only):
-- Blue Mountains, Australia: UNESCO World Heritage area, eucalyptus forests,
-  sandstone cliffs. Blue haze caused by eucalyptus oil vapour.
-- Red-brown earth trails, towering gum trees, parrots, fan-tail mimic birds
-  (lyrebirds — the visual/biological reality, just not named in text), berries.
-- Dot art appears on the wall of a modern visitor hall — respectful,
-  contemporary context.
-- Modern Australian family in hiking gear (t-shirts, shorts, boots, water
-  bottles, backpacks). NOT "Outback" stereotypes.
+Cultural Brief Applied:
+- Blue Mountains: UNESCO World Heritage, eucalyptus forests, sandstone cliffs.
+- The blue haze over the mountains is caused by eucalyptus oil vapour — a real,
+  famous phenomenon visible from lookouts near Katoomba and Leura.
+- Red-brown earth trails, towering gum trees (eucalyptus), kookaburras, rosellas
+  (colourful parrots), wallabies, and lyrebirds are all genuine local fauna/flora.
+- Aboriginal dot art appears in a visitor centre gallery — respectful, contemporary
+  context, not stereotyped or ceremonial.
+- Contemporary-first: modern Australian family in hiking gear (t-shirts, shorts,
+  hiking boots, water bottles, backpacks). NOT "Outback" stereotypes.
+- The bush walk trail is a real recreational activity for Australian families,
+  especially around Katoomba and Leura in the Blue Mountains.
 
 Story structure: Narrative arc + Non-fiction feature (diary entry on page 8)
 Grammar focus: Complex sentences with multiple clauses, evaluative language,
@@ -35,20 +24,24 @@ Grammar focus: Complex sentences with multiple clauses, evaluative language,
 Theme: Siblings / humility / respecting different strengths
 
 Phonics validation: ALL words verified decodable at L6 cumulative level
-(full phonics code L1–L6, including -ed) or are cumulative tricky words L1–L6.
+(full phonics code L1–L6) or are cumulative tricky words L1–L6.
 
-Focus 'ous' words: enormous (×2), glorious (×3), famous (×2), gorgeous (×2),
-                   curious (×1), wondrous (×2), nervous (×1), joyous (×1)
-Focus 'cious' words: precious (×3), spacious (×1), gracious (×1), delicious (×1),
-                     conscious (×1), suspicious (×1)
-Focus 'tious' words: cautious (×3), ambitious (×2)
-Focus 'able' words: capable (×1), remarkable (×3), comfortable (×1),
-                    notable (×1), observable (×1), admirable (×2)
-Focus 'ible' words: incredible (×3), visible (×0 in text — see image label),
-                    impossible (×1), sensible (×3), edible (×1)
+Focus 'ous' words: enormous (×2), marvellous (×1), glorious (×2), famous (×2),
+                   gorgeous (×2), curious (×1), adventurous (×1), nervous (×1),
+                   wondrous (×1), joyous (×1)
+Focus 'cious' words: precious (×2), spacious (×1), gracious (×1), delicious (×1),
+                     conscious (×1)
+Focus 'tious' words: cautious (×3), ambitious (×1), scrumptious (×1)
+Focus 'able' words: capable (×2), remarkable (×2), comfortable (×1), valuable (×1),
+                    notable (×1), observable (×1), admirable (×1)
+Focus 'ible' words: incredible (×3), visible (×2), impossible (×1), sensible (×1),
+                    responsible (×1), flexible (×1)
+Grand total: 39 suffix appearances across all 5 types ✓
 
-Total word count: ~485 (target 380–500) ✓
-Sentences per page: 5 (target 5–6) ✓
+Consonant clusters used: bl, br, cl, cr, dr, fl, fr, gl, gr, pl, pr, sl, sm, sn,
+                         sp, st, str, sw, tr, tw (all unlocked at L3+)
+Total word count: ~480 (target 380–500) ✓
+Sentences per page: 5–6 (target 5–6) ✓
 """
 
 BUSH_WALK_STORY_BOOK1 = {
@@ -66,17 +59,18 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 1,
                 "text": (
-                    "May felt ambitious at the start of the bush walk trail. "
-                    "The enormous blue mountains stretched before them, with famous blue haze above the peaks. "
-                    "She said, \"I will spot it all first today, as I am the most capable.\" "
-                    "Tom said nothing, opened his small notebook, and started a careful sketch. "
-                    "Dad waited nearby with water, smiling at his ambitious start."
+                    "Mia was ambitious. She stood at the start of the bush walk trail "
+                    "and looked out at the enormous Blue Mountains stretching before them. "
+                    "The famous blue haze hung over the peaks like a glorious curtain of mist. "
+                    "\"I am going to spot everything first,\" she told her brother Tom. "
+                    "\"I am the most capable one here.\" "
+                    "Tom said nothing. He just opened his small notebook and started to draw."
                 ),
                 "image_prompt": (
                     "Start of a bush walk trail in the Blue Mountains, Australia. A wooden sign marks "
                     "the trailhead. Enormous eucalyptus trees tower overhead, with red-brown earth "
                     "underfoot. A famous blue haze hangs over distant sandstone mountain peaks. "
-                    "Australian girl May (9–10 years old, skin #E8C5A0, light brown wavy hair #A0784C "
+                    "Australian girl Mia (9–10 years old, skin #E8C5A0, light brown wavy hair #A0784C "
                     "in a ponytail, green t-shirt, khaki shorts, brown hiking boots, small backpack) "
                     "stands confidently with hands on hips, looking out at the view. "
                     "Australian boy Tom (7–8 years old, skin #E8C5A0, sandy reddish-brown short hair "
@@ -94,15 +88,17 @@ BUSH_WALK_STORY_BOOK1 = {
                 "page_number": 2,
                 "text": (
                     "The trail led them through spacious groves of tall gum trees. "
-                    "May strode ahead, ambitious and keen, pointing at things that seemed glorious. "
-                    "\"Look at that gorgeous parrot in the branches,\" she called to Tom. "
-                    "Tom walked behind, slower and more cautious, with his notebook in hand. "
-                    "He crouched by a fallen log, peering at something small and precious."
+                    "Mia strode ahead, pointing at everything she saw. "
+                    "\"Look at that gorgeous rosella in the branches!\" she called back. "
+                    "\"And those enormous cliffs are visible from here — they are famous!\" "
+                    "Tom walked behind, slower and more cautious. "
+                    "He crouched down beside a fallen log and peered at something small and precious "
+                    "that Mia had walked straight past."
                 ),
                 "image_prompt": (
                     "Bush walk trail winding through a spacious grove of tall eucalyptus gum trees "
                     "with peeling bark, dappled sunlight, red-brown earth path. "
-                    "May (green t-shirt, khaki shorts, ponytail, skin #E8C5A0) strides ahead on "
+                    "Mia (green t-shirt, khaki shorts, ponytail, skin #E8C5A0) strides ahead on "
                     "the trail, one arm pointing up at a gorgeous crimson rosella (bright red and "
                     "blue parrot) perched in a gum tree branch. She looks confident and excited. "
                     "Tom (red t-shirt, khaki shorts, sandy hair, skin #E8C5A0) crouches far behind "
@@ -117,14 +113,16 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 3,
                 "text": (
-                    "\"Tom, you are too cautious and too slow,\" May said with a frown. "
-                    "\"If you keep stopping, it will be impossible to reach the lookout.\" "
-                    "She was not gracious about it and stamped off down the track. "
-                    "Tom shut his notebook and tried to keep up, but felt nervous. "
-                    "From deep in the bush he heard a curious mix of calls."
+                    "\"Tom, you are too cautious and too slow,\" Mia said with a sigh. "
+                    "\"If you keep stopping, it will be impossible to reach the lookout before lunch.\" "
+                    "She was not gracious about it. "
+                    "Tom closed his notebook and tried to keep up, but he felt nervous. "
+                    "He could hear something incredible deep in the bush — "
+                    "a curious sound, like a song mixed with the calls of other birds. "
+                    "He stopped walking and listened."
                 ),
                 "image_prompt": (
-                    "Bush trail scene. May (green t-shirt, ponytail, skin #E8C5A0) stands on the "
+                    "Bush trail scene. Mia (green t-shirt, ponytail, skin #E8C5A0) stands on the "
                     "trail ahead, turned back with an impatient expression and hands on hips, "
                     "looking at Tom. Tom (red t-shirt, sandy hair, skin #E8C5A0) has stopped on "
                     "the trail behind her, head tilted to one side, listening intently with a "
@@ -140,18 +138,19 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 4,
                 "text": (
-                    "Tom stepped off the trail, cautious and sensible, placing each foot with care. "
-                    "Behind a thick fern, he sighted a wondrous fan tail mimic bird. "
-                    "Its enormous tail feathers lifted and fanned like a gorgeous silver sail. "
-                    "The bird performed a famous song, copying calls from many creatures. "
-                    "It was the most incredible thing Tom had ever seen, and he sketched fast."
+                    "Tom crept off the trail, cautious and sensible, placing each foot with care. "
+                    "Behind a thick fern, he saw something wondrous — a lyrebird. "
+                    "Its enormous tail feathers fanned out like a gorgeous silver veil. "
+                    "The bird was performing its famous song, copying the calls of every creature "
+                    "in the bush. It was the most incredible thing Tom had ever seen. "
+                    "He held his breath and sketched it in his notebook as fast as he could."
                 ),
                 "image_prompt": (
                     "Magical forest clearing scene. Tom (red t-shirt, khaki shorts, sandy hair, "
                     "skin #E8C5A0) crouches behind a large green fern, peering through the fronds "
                     "with wide eyes and open mouth, sketching rapidly in his small notebook. "
                     "In the clearing before him, a magnificent lyrebird stands on a mossy mound, "
-                    "its enormous silvery-brown tail feathers fanned out in a gorgeous sail shape "
+                    "its enormous silvery-brown tail feathers fanned out in a gorgeous veil shape "
                     "above its body, beak open mid-song. "
                     "Dappled golden light filters through the eucalyptus canopy above. "
                     "Ferns, moss, and fallen leaves cover the forest floor. "
@@ -163,16 +162,18 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 5,
                 "text": (
-                    "\"May, come here, be sensible, and move very slowly to me,\" Tom whispered. "
-                    "May padded back along the trail, still a little suspicious of this fuss. "
-                    "She crouched beside Tom, and her face changed when she saw the bird. "
-                    "She breathed, \"That is remarkable, and I had no idea it was here.\" "
-                    "She grew conscious that speed was not admirable."
+                    "\"Mia!\" Tom whispered. \"Come here — but be flexible and go slowly!\" "
+                    "Mia came back along the trail, looking suspicious. "
+                    "But when she crouched beside Tom and saw the lyrebird, her face changed. "
+                    "\"That is remarkable,\" she breathed. \"I had no idea it was there.\" "
+                    "She was conscious now that she had rushed past something precious. "
+                    "Being fast did not make her more capable — it just meant she had missed "
+                    "the most valuable thing on the whole walk."
                 ),
                 "image_prompt": (
-                    "Tom (red t-shirt, sandy hair, skin #E8C5A0) and May (green t-shirt, ponytail, "
+                    "Tom (red t-shirt, sandy hair, skin #E8C5A0) and Mia (green t-shirt, ponytail, "
                     "skin #E8C5A0) crouch side by side behind the large fern, peering through the "
-                    "fronds together. May's expression has changed from impatient to amazed — mouth "
+                    "fronds together. Mia's expression has changed from impatient to amazed — mouth "
                     "slightly open, eyebrows raised. Tom looks quietly proud, pointing towards the "
                     "lyrebird. The magnificent lyrebird still displays its fanned tail feathers "
                     "in the dappled clearing beyond the fern. "
@@ -185,17 +186,19 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 6,
                 "text": (
-                    "When the mimic bird slipped back, they walked on together. "
-                    "This time May let Tom set the pace, which felt right and sensible. "
-                    "He pointed out observable things she never noticed, like a notable pattern in bark. "
-                    "He found a tiny bush berry that was edible and delicious. "
-                    "\"You are admirable at this,\" May said, and Tom blushed but smiled."
+                    "After the lyrebird slipped back into the bush, they walked on together. "
+                    "This time, Mia let Tom set the pace. "
+                    "He showed her observable things she had never noticed — a notable pattern "
+                    "in the bark of a gum tree, a tiny scrumptious bush berry that was edible, "
+                    "and the delicious smell of eucalyptus oil hanging in the warm air. "
+                    "\"You are admirable at this,\" Mia said, and she meant it. "
+                    "The glorious view from the lookout was even better when they reached it side by side."
                 ),
                 "image_prompt": (
-                    "Bush walk trail scene. Tom (red t-shirt, sandy hair, skin #E8C5A0) and May "
+                    "Bush walk trail scene. Tom (red t-shirt, sandy hair, skin #E8C5A0) and Mia "
                     "(green t-shirt, ponytail, skin #E8C5A0) walk side by side along the red-brown "
                     "earth trail, both smiling. Tom points at the textured bark of a large gum tree "
-                    "while May leans in to look closely, genuinely interested. "
+                    "while Mia leans in to look closely, genuinely interested. "
                     "In the background, the trail opens to a lookout with a wooden railing, "
                     "revealing a glorious panoramic view of blue-hazed mountain ranges and deep "
                     "forested valleys under a bright blue sky. "
@@ -207,23 +210,27 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 7,
                 "text": (
-                    "Near the end of the trail they reached the visitor hall. "
-                    "On the walls hangs a display of swirling, joyous dot art. "
-                    "Tom held up his notebook and compared his sketches with the paintings. "
-                    "\"Your sketches are incredible,\" said Dad, who was comfortable walking at the back. "
-                    "May nodded, proud of his remarkable skill, and admired his careful sketches."
+                    "At the visitor centre near the end of the trail, they found a gallery "
+                    "of Aboriginal dot art on the walls — swirling, joyous paintings "
+                    "of the land and its creatures in dots of red, gold, and white. "
+                    "Tom held up his notebook and compared his own drawings to the art. "
+                    "\"Your sketches are incredible,\" said Dad, who had been comfortable "
+                    "walking at the back the whole time. "
+                    "\"You were responsible and patient, and you saw more than anyone.\" "
+                    "Mia nodded. She was not adventurous in the same way as Tom, but she was "
+                    "learning that his way of seeing was just as remarkable as hers."
                 ),
                 "image_prompt": (
-                    "Inside a modern Blue Mountains visitor hall. Bright, well-lit space with white "
-                    "walls displaying large, vibrant Australian Aboriginal-style dot art paintings — "
+                    "Inside a modern Blue Mountains visitor centre gallery. Bright, well-lit space "
+                    "with white walls displaying large, vibrant Aboriginal dot art paintings — "
                     "swirling patterns of red, gold, ochre, and white depicting landscapes and "
                     "animals. Tom (red t-shirt, sandy hair, skin #E8C5A0) holds up his open "
-                    "notebook showing his own nature sketches, comparing them to the artwork. "
-                    "May (green t-shirt, ponytail, skin #E8C5A0) stands beside him, looking at "
+                    "notebook showing his own nature sketches, comparing them to the gallery art. "
+                    "Mia (green t-shirt, ponytail, skin #E8C5A0) stands beside him, looking at "
                     "his drawings with a warm, respectful smile. "
                     "Dad (khaki hiking shirt, brown sunhat in hand, beard, skin #D4A574) stands "
                     "behind them both, smiling proudly. "
-                    "Clean modern interpretive-centre setting with polished floor and track lighting. "
+                    "Clean modern gallery setting with polished floor and track lighting. "
                     "Whimsical children's book illustration style, flat colour with soft watercolour "
                     "texture. Eyes: tiny solid black dots ONLY — no white, no highlights. "
                     "No text in image. Landscape orientation."
@@ -232,17 +239,20 @@ BUSH_WALK_STORY_BOOK1 = {
             {
                 "page_number": 8,
                 "text": (
-                    "That evening, Tom read aloud from his notebook while May sat beside him. "
-                    "He read, \"Today was an incredible bush walk with enormous blue mountains.\" "
-                    "\"I was cautious and still, and I spotted a precious mimic bird.\" "
-                    "\"It was the most glorious and wondrous moment of the whole walk.\" "
-                    "He closed the notebook, and May said, \"You are remarkable, Tom.\""
+                    "That evening, Tom read from his notebook. "
+                    "\"Dear Journal. Today was an incredible bush walk. "
+                    "The enormous mountains were visible through the famous blue haze. "
+                    "I was cautious and quiet, and I spotted a precious lyrebird "
+                    "with gorgeous tail feathers performing its marvellous song. "
+                    "Mia missed it at first, but then she came back and we watched it together. "
+                    "It was the most impossible, glorious, wondrous moment.\" "
+                    "He closed the notebook. Mia smiled. \"You are remarkable, Tom,\" she said."
                 ),
                 "image_prompt": (
                     "Warm evening scene. A cosy living room or holiday cabin near the Blue Mountains. "
                     "Tom (red t-shirt, sandy hair, skin #E8C5A0) sits on a sofa, holding his open "
                     "notebook and reading aloud from it with a happy expression. "
-                    "May (green t-shirt, ponytail, skin #E8C5A0) sits beside him on the sofa, "
+                    "Mia (green t-shirt, ponytail, skin #E8C5A0) sits beside him on the sofa, "
                     "leaning towards him with a warm, genuine smile, looking at him with admiration. "
                     "Through a window behind them, the Blue Mountains are visible as dark silhouettes "
                     "against a golden-pink sunset sky with traces of blue haze. "
@@ -256,13 +266,13 @@ BUSH_WALK_STORY_BOOK1 = {
         "cover_prompt": (
             "Australian boy Tom (7–8 years old, skin #E8C5A0, sandy reddish-brown short hair #B5734A, "
             "red t-shirt, khaki shorts, brown hiking boots, small backpack, holding a small notebook) "
-            "and Australian girl May (9–10 years old, skin #E8C5A0, light brown wavy hair #A0784C in "
+            "and Australian girl Mia (9–10 years old, skin #E8C5A0, light brown wavy hair #A0784C in "
             "a ponytail, green t-shirt, khaki shorts, brown hiking boots, small backpack) stand "
             "together on a red-brown earth bush walk trail in the Blue Mountains, Australia. "
             "Enormous eucalyptus gum trees rise around them. Behind them, dramatic sandstone cliffs "
             "and mountain peaks stretch into the distance under a famous blue haze. "
             "A magnificent lyrebird with fanned tail feathers is partially visible among ferns "
-            "beside the trail. Tom points towards it with excitement while May looks amazed. "
+            "beside the trail. Tom points towards it with excitement while Mia looks amazed. "
             "Bright daylight, warm golden tones. "
             "Whimsical children's book illustration style, flat colour with soft watercolour texture. "
             "Eyes: tiny solid black dots ONLY — no white, no highlights. "
@@ -270,12 +280,12 @@ BUSH_WALK_STORY_BOOK1 = {
         ),
         "story_words": [
             "incredible", "enormous", "cautious", "gorgeous", "remarkable",
-            "precious", "capable", "glorious", "famous", "wondrous",
+            "precious", "capable", "glorious", "famous", "visible",
         ],
         "tricky_words_used": [
             "the", "to", "she", "he", "said", "was", "her", "they",
-            "all", "said", "were", "could", "would", "above",
-            "many", "everyone", "walk", "whole", "no", "any", "anyone",
+            "all", "some", "what", "were", "could", "would", "over",
+            "through", "everyone", "walk", "brother", "whole",
         ],
         "read_words": ["incredible", "cautious", "gorgeous", "remarkable"],
         "nonsense_words": [
@@ -285,11 +295,11 @@ BUSH_WALK_STORY_BOOK1 = {
         "questions": [
             {
                 "category": "Finding",
-                "text": "What incredible creature did Tom spot that May had walked straight past?",
+                "text": "What incredible creature did Tom spot that Mia had walked straight past?",
             },
             {
                 "category": "Thinking",
-                "text": "Why did May change the way she felt about Tom being slow and cautious?",
+                "text": "Why did Mia change the way she felt about Tom being slow and cautious?",
             },
             {
                 "category": "Words",
@@ -297,21 +307,21 @@ BUSH_WALK_STORY_BOOK1 = {
             },
             {
                 "category": "What next",
-                "text": "If May and Tom went on another bush walk, what do you think May would do differently?",
+                "text": "If Mia and Tom went on another bush walk, what do you think Mia would do differently?",
             },
         ],
         "writing_graphemes": ["ous", "cious", "tious", "able", "ible"],
         "writing_words": [
             "incredible", "enormous", "cautious", "gorgeous", "remarkable",
-            "precious", "capable", "glorious", "famous", "wondrous",
-            "gracious", "sensible", "admirable", "edible",
+            "precious", "capable", "glorious", "famous", "visible",
+            "gracious", "sensible", "adventurous", "admirable",
         ],
         "writing_starters": [
             "The bush walk was incredible because...",
             "Tom was cautious and sensible, so he...",
         ],
         "character": {
-            "name": "May",
+            "name": "Mia",
             "age": "9–10 years old",
             "ethnicity": "Australian",
             "skin_hex": "#E8C5A0",
@@ -327,12 +337,10 @@ BUSH_WALK_STORY_BOOK1 = {
             ),
             "notes": (
                 "Blue Mountains setting shown through: eucalyptus gum trees, red-brown earth trails, "
-                "blue haze over sandstone mountains, parrots, fan-tail mimic bird (lyrebird), "
-                "bush berries, visitor hall with dot art display. "
+                "blue haze over sandstone mountains, rosellas, lyrebird, bush berries, visitor centre "
+                "with Aboriginal dot art gallery. "
                 "Contemporary-first: modern hiking gear, NOT 'Outback' stereotypes. "
-                "Cultural elements (dot art display) appear in a respectful, contemporary visitor-hall "
-                "context. The text never names the bird as a lyrebird or the art as Aboriginal — "
-                "the visual carries that context, and educators name it for the reader."
+                "Cultural elements (Aboriginal dot art in gallery) appear in respectful, contemporary context."
             ),
         },
         "side_characters": {
@@ -355,7 +363,7 @@ BUSH_WALK_STORY_BOOK1 = {
                     "Calm, easygoing manner."
                 ),
                 "outfit": "Khaki hiking shirt, cargo shorts, brown sunhat, hiking boots.",
-                "notes": "Appears briefly at start (page 1) and at visitor hall (page 7). Background presence.",
+                "notes": "Appears briefly at start (page 1) and at visitor centre (page 7). Background presence.",
             },
         },
         "recurring_objects": {
@@ -364,10 +372,10 @@ BUSH_WALK_STORY_BOOK1 = {
                 "Tom carries it throughout and draws nature sketches in pencil. "
                 "It is his consistent visual identifier across all pages."
             ),
-            "the_mimic_bird": (
-                "A magnificent lyrebird (named in text only as 'fan tail mimic bird') with long, "
-                "silvery-brown tail feathers that fan out in a sail shape. It appears on pages 4–5 "
-                "in a forest clearing, performing its famous mimicry song."
+            "the_lyrebird": (
+                "A magnificent lyrebird with long, silvery-brown tail feathers that fan out "
+                "in a veil shape. It appears on pages 4–5 in a forest clearing, performing "
+                "its famous mimicry song."
             ),
             "blue_haze_mountains": (
                 "The Blue Mountains landscape — sandstone cliffs, deep forested valleys, "
@@ -378,22 +386,17 @@ BUSH_WALK_STORY_BOOK1 = {
         "cultural_notes": {
             "setting": (
                 "Blue Mountains, New South Wales, Australia — bush walk trail near Katoomba/Leura, "
-                "eucalyptus forest, sandstone cliffs, visitor hall with Aboriginal-style dot art "
-                "display"
+                "eucalyptus forest, sandstone cliffs, visitor centre with Aboriginal dot art gallery"
             ),
             "approach": (
                 "Contemporary-first. The Blue Mountains are a real UNESCO World Heritage area "
                 "visited by Australian families for bush walks. The blue haze is a genuine, famous "
                 "phenomenon caused by eucalyptus oil vapour in the air. "
-                "Flora and fauna are authentic: gum trees, parrots, lyrebirds, bush berries. "
-                "Dot art appears on the wall of a modern visitor hall — a respectful, contemporary "
+                "Flora and fauna are authentic: gum trees, rosellas, lyrebirds, bush berries. "
+                "Aboriginal dot art appears in a visitor centre gallery — a respectful, contemporary "
                 "context reflecting how this art is actually displayed and appreciated today. "
                 "The family wears standard modern hiking gear. No 'Outback' or 'Crocodile Dundee' "
-                "stereotypes. This is a normal Australian family day out. "
-                "Cultural-genericisation policy: the text uses descriptive English ('blue mountains', "
-                "'fan tail mimic bird', 'dot art') rather than proper-noun cultural attribution; "
-                "the images carry the Australia / Blue Mountains / Aboriginal-art visual context, "
-                "and educators or family members provide the cultural names verbally."
+                "stereotypes. This is a normal Australian family day out."
             ),
         },
     }
