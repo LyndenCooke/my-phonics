@@ -1,9 +1,4 @@
 """
-[STALE 2026-05-04] This script generates the OLD "Draw It Again!" art-class
-images. The L3.4 illustrations were replaced with an autumn-walk scene
-("What Min Saw") and this script no longer reflects what's in production.
-Re-running it will produce the wrong images. Rewrite before use.
-
 Generate illustrations for L3.4 "Draw It Again!" using Gemini API.
 
 Setting: Seoul, South Korea — modern school art class

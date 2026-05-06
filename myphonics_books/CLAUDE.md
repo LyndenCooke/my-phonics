@@ -40,20 +40,6 @@ Stories must have emotional journey + Dear Zoo-style hooks (cliffhangers, curios
 
 ---
 
-## Content Policy (decided 2026-05-05)
-
-**Past-tense `-ed` is permitted from L5.** Treated as a regular suffix, taught explicitly with its three pronunciations: /t/ (looked, walked, jumped), /d/ (smiled, closed, played), /id/ (started, wanted, painted). Recorded in `data/graphemes_by_level.json` (L5 graphemes + cumulative; L6 cumulative).
-
-**Cultural setting carried by images, not text.** The "window into the world" creative direction stays — but text uses decodable English throughout. Specifically:
-
-- **No foreign proper nouns or place names in story text** (no Jaipur, Cairo, Amalfi, bruschetta, tangyuan, acarajé, corniche, etc.). The illustrations carry the Indian/Egyptian/Italian/Chinese/Brazilian setting; the text says "the town", "the big port", "Gran's lemon pasta", "round dumplings".
-- **Character names use decodable English first names** appropriate to the level's cumulative graphemes (Sam, Tim, Jen, Kim, Tom, Mia, Ben, Lin, Pat, Nan, Dad, Mum). Avoid Luca/Sofia/Yusuf-style names that fight strict decodability.
-- **Why this approach:** strict text decodability is non-negotiable for the brand. Cultural specificity is preserved through art, costume, architecture, food shown in illustration. Text describes universal child experiences.
-
-When rewriting L5/L6 books that currently use foreign names/terms, rename in story file, regenerate hero reference images if the name change implies a visual change (rare — usually it doesn't), regenerate audio.
-
----
-
 ## Hero Injection (Mandatory for Images)
 
 Character consistency comes from injecting a hero reference image into every scene, NOT text descriptions. Generate hero ONCE, inject into ALL scenes. Read `art-generator` skill for full pipeline.

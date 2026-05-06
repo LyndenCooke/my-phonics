@@ -1,11 +1,4 @@
 """
-[STALE 2026-05-04] This file describes the OLD L3.4 story ("Draw It Again!"),
-where Min drew a hawk in art class. The L3.4 images have since been replaced
-with an autumn-walk scene through Seoul, and the interactive book has been
-rewritten as "What Min Saw". This file has NOT been updated to match — the
-print-PDF pipeline will still produce the old story until this is rewritten.
-See src/lib/interactiveBookDataL3.ts for the canonical new story text.
-
 Draw It Again! — Level 3.4 Story
 Focus sounds: oi, aw
 Setting: Contemporary Seoul, South Korea — modern school art class
