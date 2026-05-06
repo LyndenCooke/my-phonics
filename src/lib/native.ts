@@ -127,8 +127,11 @@ export async function nativeShare(opts: { title?: string; text: string; url?: st
     if (!_share) _share = await import('@capacitor/share');
     return _share.Share.share(opts).catch(() => {});
   }
-  if (typeof navigator !== 'undefined' && (navigator as any).share) {
-    return (navigator as any).share(opts).catch(() => {});
+  const navWithShare = navigator as Navigator & {
+    share?: (data: { title?: string; text: string; url?: string }) => Promise<void>;
+  };
+  if (typeof navigator !== 'undefined' && navWithShare.share) {
+    return navWithShare.share(opts).catch(() => {});
   }
   // No share support — caller should have used a copy-to-clipboard fallback.
 }

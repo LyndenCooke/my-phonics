@@ -43,7 +43,7 @@ export default function AnimatedRoutes({ children }: { children: ReactNode }) {
         initial={t.initial}
         animate={t.animate}
         exit={t.exit}
-        transition={t.transition as any}
+        transition={t.transition}
         // Absolute-positioned so the outgoing + incoming screens can
         // overlap during the slide. Each screen is full-height so this
         // is fine layout-wise.

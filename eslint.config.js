@@ -5,7 +5,11 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  // Ignore sibling projects with their own toolchains.
+  // myphonics_books/ is the Python/Jinja PDF pipeline (and a legacy copy
+  // of the hub app). myphonics_apps/ is the Capacitor wrapper.
+  // marketing/ holds Remotion ad creators. Each has its own toolchain.
+  { ignores: ["dist", "myphonics_books/**", "myphonics_apps/**", "marketing/**"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],

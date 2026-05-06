@@ -33,8 +33,9 @@ export default function Auth() {
       if (error) throw error;
       // signInWithOAuth redirects the page; we won't reach this line
       // unless something blocked the redirect.
-    } catch (err: any) {
-      toast({ title: 'Google sign-in failed', description: err.message, variant: 'destructive' });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      toast({ title: 'Google sign-in failed', description: message, variant: 'destructive' });
       setSubmitting(false);
     }
   };
@@ -58,8 +59,9 @@ export default function Auth() {
         if (error) throw error;
         navigate('/library');
       }
-    } catch (err: any) {
-      toast({ title: 'Error', description: err.message, variant: 'destructive' });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      toast({ title: 'Error', description: message, variant: 'destructive' });
     } finally {
       setSubmitting(false);
     }

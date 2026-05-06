@@ -34,11 +34,11 @@ export default function AddToHomeScreenPrompt() {
   const isStandalone =
     typeof window !== 'undefined' &&
     (window.matchMedia?.('(display-mode: standalone)').matches ||
-      Boolean((window.navigator as any).standalone));
+      Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone));
 
   // Detect platform for the right instructions
   const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-  const isIos = /iPhone|iPad|iPod/.test(ua) && !(window as any).MSStream;
+  const isIos = /iPhone|iPad|iPod/.test(ua) && !(window as Window & { MSStream?: unknown }).MSStream;
   const isAndroid = /android/i.test(ua);
   const isMobile = isIos || isAndroid;
 
