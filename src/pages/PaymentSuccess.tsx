@@ -61,8 +61,8 @@ export default function PaymentSuccess() {
         queryClient.invalidateQueries({ queryKey: ['user_books'] }),
         queryClient.invalidateQueries({ queryKey: ['profile'] }),
       ]);
-      const data: any = queryClient.getQueryData(['purchases', user.id]);
-      const userBooks: any = queryClient.getQueryData(['user_books', user.id]);
+      const data = queryClient.getQueryData<{ hasAnyPaid?: boolean }>(['purchases', user.id]);
+      const userBooks = queryClient.getQueryData<unknown[]>(['user_books', user.id]);
       if (cancelled) return;
       // Done when we see BOTH a purchase row AND at least one unlocked
       // book. Either alone isn't enough — that was the previous bug

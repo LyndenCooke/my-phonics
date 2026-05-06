@@ -43,8 +43,9 @@ export default function EmailCapture({
       if (dbError) throw new Error(dbError.message);
 
       onSuccess({ childName: childName.trim(), email: email.trim() });
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      setError(message);
     } finally {
       setLoading(false);
     }
