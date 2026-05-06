@@ -413,7 +413,7 @@ export default function Assessment() {
   const getAgeMonths = (): number | null => {
     if (!profile.birthMonth || !profile.birthYear) return null;
     const now = new Date();
-    let months = (now.getFullYear() - profile.birthYear) * 12 + (now.getMonth() + 1 - profile.birthMonth);
+    const months = (now.getFullYear() - profile.birthYear) * 12 + (now.getMonth() + 1 - profile.birthMonth);
     if (months < 0 || months > 240) return null;
     return months;
   };
