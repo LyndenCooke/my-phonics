@@ -5,7 +5,7 @@
  * L3.1 "The Big Bike Race"   — a-e, i-e
  * L3.2 "Lost at the Night Market" — o-e, u-e
  * L3.3 "Reach for the Treat" — ea, ie
- * L3.4 "Draw It Again"       — oi, aw
+ * L3.4 "What Min Saw"        — oi, aw
  * L3.5 "The Boat with the Red Sail" — ai, oa
  */
 
@@ -891,14 +891,14 @@ export const BOOK_L3_3_PAGES: InteractivePage[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// L3.4 — "Draw It Again!"
-// Focus sounds: oi, aw
+// L3.4 — "What Min Saw"
+// Focus sounds: oi, aw — Min and Mum take an autumn walk through Seoul.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L3_4_PAGES: InteractivePage[] = [
   {
     type: 'cover',
-    title: 'Draw It Again!',
+    title: 'What Min Saw',
     subtitle: 'Level 3 · New Spellings',
     imageUrl: '/illustrations/3_4/cover.png',
   },
@@ -910,187 +910,165 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   {
     type: 'vocab_preview',
     words: [
-      w('draw', 'draw', ['d','r','aw']),
+      w('saw', 'saw', ['s','aw']),
       w('hawk', 'hawk', ['h','aw','k']),
       w('claws', 'claws', ['c','l','aw','z']),
-      w('oil', 'oil', ['oi','l']),
       w('points', 'points', ['p','oi','n','t','s']),
-      w('toil', 'toil', ['t','oi','l']),
-      w('raw', 'raw', ['r','aw']),
-      w('spoil', 'spoil', ['s','p','oi','l']),
+      w('soil', 'soil', ['s','oi','l']),
+      w('coats', 'coats', ['c','oa','t','s']),
+      w('stream', 'stream', ['s','t','r','ea','m']),
+      w('stones', 'stones', ['s','t','o-e','n','s']),
+      w('home', 'home', ['h','o-e','m']),
+      w('leaves', 'leaves', ['l','ea','v','s']),
     ],
   },
 
-  // Page 1
+  // Page 1 — apartment, Min and Mum putting on coats
   {
     type: 'story',
-    sentences: ["Min gets out her oil sticks and a big sheet.", "'I will draw a hawk with sharp claws!' she said.", 'She grips a stick tight.'],
+    sentences: ['Min and Mum put on thick coats.', "'Let us go!' said Min with a big grin."],
     words: [
-      w('Min', 'min', ['m','i','n']), w('gets', 'gets', ['g','e','t','s']),
-      w('out', 'out', ['ou','t']), w('her', 'her', ['h','er']),
-      w('oil', 'oil', ['oi','l']), w('sticks', 'sticks', ['s','t','i','ck','s']),
-      w('and', 'and', ['a','n','d']), tricky('a', 'a'),
-      w('big', 'big', ['b','i','g']), w('sheet.', 'sheet', ['sh','ee','t']),
-      tricky("'I", 'I'), w('will', 'will', ['w','i','ll']),
-      w('draw', 'draw', ['d','r','aw']), tricky('a', 'a'),
-      w('hawk', 'hawk', ['h','aw','k']), w('with', 'with', ['w','i','th']),
-      w('sharp', 'sharp', ['sh','ar','p']),
-      w("claws!'", 'claws', ['c','l','aw','z']),
-      tricky('she', 'she'), tricky('said.', 'said'),
-      tricky('She', 'she'), w('grips', 'grips', ['g','r','i','p','s']),
-      tricky('a', 'a'), w('stick', 'stick', ['s','t','i','ck']),
-      w('tight.', 'tight', ['t','igh','t']),
+      w('Min', 'min', ['m','i','n']), w('and', 'and', ['a','n','d']),
+      w('Mum', 'mum', ['m','u','m']), tricky('put', 'put'),
+      w('on', 'on', ['o','n']), w('thick', 'thick', ['th','i','ck']),
+      w('coats.', 'coats', ['c','oa','t','s']),
+      w("'Let", 'let', ['l','e','t']), w('us', 'us', ['u','s']),
+      w("go!'", 'go', ['g','o']), tricky('said', 'said'),
+      w('Min', 'min', ['m','i','n']), w('with', 'with', ['w','i','th']),
+      tricky('a', 'a'), w('big', 'big', ['b','i','g']),
+      w('grin.', 'grin', ['g','r','i','n']),
     ],
     imageUrl: '/illustrations/3_4/page1.png', audioUrl: '/sounds/sentences/L3_4_p1.mp3',
   },
 
-  // Page 2
+  // Page 2 — Seoul street, Min pointing at a tall building
   {
     type: 'story',
-    sentences: ['She draws and draws.', 'The hawk has sharp claws and a long beak.', 'Oil drips on the sheet.'],
+    sentences: ['Min and Mum step on to the street.', 'Min points at a big block.', "'Look at that!' she said."],
     words: [
-      tricky('She', 'she'), w('draws', 'draws', ['d','r','aw','z']),
-      w('and', 'and', ['a','n','d']), w('draws.', 'draws', ['d','r','aw','z']),
-      tricky('The', 'the'), w('hawk', 'hawk', ['h','aw','k']),
-      tricky('has', 'has'), w('sharp', 'sharp', ['sh','ar','p']),
-      w('claws', 'claws', ['c','l','aw','z']), w('and', 'and', ['a','n','d']),
-      tricky('a', 'a'), w('long', 'long', ['l','o','ng']),
-      w('beak.', 'beak', ['b','ea','k']),
-      w('Oil', 'oil', ['oi','l']), w('drips', 'drips', ['d','r','i','p','s']),
-      w('on', 'on', ['o','n']), tricky('the', 'the'),
-      w('sheet.', 'sheet', ['sh','ee','t']),
+      w('Min', 'min', ['m','i','n']), w('and', 'and', ['a','n','d']),
+      w('Mum', 'mum', ['m','u','m']), w('step', 'step', ['s','t','e','p']),
+      w('on', 'on', ['o','n']), tricky('to', 'to'),
+      tricky('the', 'the'), w('street.', 'street', ['s','t','r','ee','t']),
+      w('Min', 'min', ['m','i','n']), w('points', 'points', ['p','oi','n','t','s']),
+      w('at', 'at', ['a','t']), tricky('a', 'a'),
+      w('big', 'big', ['b','i','g']), w('block.', 'block', ['b','l','o','ck']),
+      w("'Look", 'look', ['l','oo','k']), w('at', 'at', ['a','t']),
+      w("that!'", 'that', ['th','a','t']),
+      tricky('she', 'she'), tricky('said.', 'said'),
     ],
     imageUrl: '/illustrations/3_4/page2.png', audioUrl: '/sounds/sentences/L3_4_p2.mp3',
   },
 
-  // Page 3
+  // Page 3 — park, grey cat near Min
   {
     type: 'story',
-    sentences: ["A boy points at it.", "'That is not right!' he said.", "'The claws are too big!'", 'Min feels raw inside.'],
+    sentences: ['They go to the park.', 'A cat sits in the grass.', "'Look! A cat!' said Min."],
     words: [
-      tricky('A', 'a'), w('boy', 'boy', ['b','oy']),
-      w('points', 'points', ['p','oi','n','t','s']),
-      w('at', 'at', ['a','t']), w('it.', 'it', ['i','t']),
-      w("'That", 'that', ['th','a','t']), tricky('is', 'is'),
-      w('not', 'not', ['n','o','t']), w("right!'", 'right', ['r','igh','t']),
-      tricky('he', 'he'), tricky('said.', 'said'),
-      tricky("'The", 'the'), w('claws', 'claws', ['c','l','aw','z']),
-      tricky('are', 'are'), w('too', 'too', ['t','oo']),
-      w("big!'", 'big', ['b','i','g']),
-      w('Min', 'min', ['m','i','n']), w('feels', 'feels', ['f','ee','l','s']),
-      w('raw', 'raw', ['r','aw']), w('inside.', 'inside', ['i','n','s','i-e','d']),
+      tricky('They', 'they'), tricky('go', 'go'),
+      tricky('to', 'to'), tricky('the', 'the'),
+      w('park.', 'park', ['p','ar','k']),
+      tricky('A', 'a'), w('cat', 'cat', ['c','a','t']),
+      w('sits', 'sits', ['s','i','t','s']), w('in', 'in', ['i','n']),
+      tricky('the', 'the'), w('grass.', 'grass', ['g','r','a','ss']),
+      w("'Look!", 'look', ['l','oo','k']), tricky('A', 'a'),
+      w("cat!'", 'cat', ['c','a','t']),
+      tricky('said', 'said'), w('Min.', 'min', ['m','i','n']),
     ],
     imageUrl: '/illustrations/3_4/page3.png', audioUrl: '/sounds/sentences/L3_4_p3.mp3',
   },
 
-  // Page 4
+  // Page 4 — stream with stepping stones
   {
     type: 'story',
-    sentences: ['She wants to spoil it all.', 'But she stops.', 'No! She takes a fresh sheet.', "'I will draw that hawk!' she said."],
+    sentences: ['Min sees a stream.', 'She hops on the stones in the soil.', "'Min, look out!' said Mum."],
     words: [
-      tricky('She', 'she'), tricky('wants', 'want'),
-      tricky('to', 'to'), w('spoil', 'spoil', ['s','p','oi','l']),
-      w('it', 'it', ['i','t']), tricky('all.', 'all'),
-      w('But', 'but', ['b','u','t']), tricky('she', 'she'),
-      w('stops.', 'stops', ['s','t','o','p','s']),
-      tricky('No!', 'no'), tricky('She', 'she'),
-      w('takes', 'takes', ['t','a-e','k','s']), tricky('a', 'a'),
-      w('fresh', 'fresh', ['f','r','e','sh']),
-      w('sheet.', 'sheet', ['sh','ee','t']),
-      tricky("'I", 'I'), w('will', 'will', ['w','i','ll']),
-      w('draw', 'draw', ['d','r','aw']), w('that', 'that', ['th','a','t']),
-      w("hawk!'", 'hawk', ['h','aw','k']),
-      tricky('she', 'she'), tricky('said.', 'said'),
+      w('Min', 'min', ['m','i','n']), w('sees', 'sees', ['s','ee','s']),
+      tricky('a', 'a'), w('stream.', 'stream', ['s','t','r','ea','m']),
+      tricky('She', 'she'), w('hops', 'hops', ['h','o','p','s']),
+      w('on', 'on', ['o','n']), tricky('the', 'the'),
+      w('stones', 'stones', ['s','t','o-e','n','s']),
+      w('in', 'in', ['i','n']), tricky('the', 'the'),
+      w('soil.', 'soil', ['s','oi','l']),
+      w("'Min,", 'min', ['m','i','n']), w('look', 'look', ['l','oo','k']),
+      w("out!'", 'out', ['ou','t']),
+      tricky('said', 'said'), w('Mum.', 'mum', ['m','u','m']),
     ],
     imageUrl: '/illustrations/3_4/page4.png', audioUrl: '/sounds/sentences/L3_4_p4.mp3',
   },
 
-  // Page 5
+  // Page 5 — hilltop overlooking Seoul
   {
     type: 'story',
-    sentences: ['This time, she draws with smooth oil strokes.', 'The claws look just right.', 'The wings spread wide and shine in the light!'],
+    sentences: ['They go up the hill.', 'Min sees big trees and hills.', "'Look at this!' she said."],
     words: [
-      w('This', 'this', ['th','i','s']), w('time,', 'time', ['t','i-e','m']),
-      tricky('she', 'she'), w('draws', 'draws', ['d','r','aw','z']),
-      w('with', 'with', ['w','i','th']), w('smooth', 'smooth', ['s','m','oo','th']),
-      w('oil', 'oil', ['oi','l']), w('strokes.', 'strokes', ['s','t','r','o-e','k','s']),
-      tricky('The', 'the'), w('claws', 'claws', ['c','l','aw','z']),
-      w('look', 'look', ['l','oo','k']), w('just', 'just', ['j','u','s','t']),
-      w('right.', 'right', ['r','igh','t']),
-      tricky('The', 'the'), w('wings', 'wings', ['w','i','ng','s']),
-      w('spread', 'spread', ['s','p','r','e','d']),
-      w('wide', 'wide', ['w','i-e','d']), w('and', 'and', ['a','n','d']),
-      w('shine', 'shine', ['sh','i-e','n']),
-      w('in', 'in', ['i','n']), tricky('the', 'the'),
-      w('light!', 'light', ['l','igh','t']),
+      tricky('They', 'they'), tricky('go', 'go'),
+      w('up', 'up', ['u','p']), tricky('the', 'the'),
+      w('hill.', 'hill', ['h','i','ll']),
+      w('Min', 'min', ['m','i','n']), w('sees', 'sees', ['s','ee','s']),
+      w('big', 'big', ['b','i','g']),
+      w('trees', 'trees', ['t','r','ee','s']),
+      w('and', 'and', ['a','n','d']),
+      w('hills.', 'hills', ['h','i','ll','s']),
+      w("'Look", 'look', ['l','oo','k']), w('at', 'at', ['a','t']),
+      w("this!'", 'this', ['th','i','s']),
+      tricky('she', 'she'), tricky('said.', 'said'),
     ],
     imageUrl: '/illustrations/3_4/page5.png', audioUrl: '/sounds/sentences/L3_4_p5.mp3',
   },
 
-  // Page 6
+  // Page 6 — open grass, hawk circling, Min pointing up
   {
     type: 'story',
-    sentences: ['The boy steps up to look.', "He points at the claws.", "'Those claws are so good!' he said.", "'Can I join in?'"],
+    sentences: ['A big hawk is up high!', 'Min points at it.', 'The hawk has sharp claws.'],
     words: [
-      tricky('The', 'the'), w('boy', 'boy', ['b','oy']),
-      w('steps', 'steps', ['s','t','e','p','s']),
-      w('up', 'up', ['u','p']), tricky('to', 'to'),
-      w('look.', 'look', ['l','oo','k']),
-      tricky('He', 'he'), w('points', 'points', ['p','oi','n','t','s']),
-      w('at', 'at', ['a','t']), tricky('the', 'the'),
+      tricky('A', 'a'), w('big', 'big', ['b','i','g']),
+      w('hawk', 'hawk', ['h','aw','k']), tricky('is', 'is'),
+      w('up', 'up', ['u','p']), w('high!', 'high', ['h','igh']),
+      w('Min', 'min', ['m','i','n']), w('points', 'points', ['p','oi','n','t','s']),
+      w('at', 'at', ['a','t']), w('it.', 'it', ['i','t']),
+      tricky('The', 'the'), w('hawk', 'hawk', ['h','aw','k']),
+      tricky('has', 'has'), w('sharp', 'sharp', ['sh','ar','p']),
       w('claws.', 'claws', ['c','l','aw','z']),
-      w("'Those", 'those', ['th','o-e','z']),
-      w('claws', 'claws', ['c','l','aw','z']), tricky('are', 'are'),
-      tricky('so', 'so'), w("good!'", 'good', ['g','oo','d']),
-      tricky('he', 'he'), tricky('said.', 'said'),
-      w("'Can", 'can', ['c','a','n']), tricky('I', 'I'),
-      w('join', 'join', ['j','oi','n']), w("in?'", 'in', ['i','n']),
     ],
     imageUrl: '/illustrations/3_4/page6.png', audioUrl: '/sounds/sentences/L3_4_p6.mp3',
   },
 
-  // Page 7
+  // Page 7 — Min and Mum sitting on grass, hawk above
   {
     type: 'story',
-    sentences: ['Min nods.', 'He grabs oil sticks too.', 'They draw a green lawn with soil and straw.', 'They toil and toil!'],
+    sentences: ['They sit on the grass.', 'The hawk stays up high.', "'It looks just right,' Mum said."],
     words: [
-      w('Min', 'min', ['m','i','n']), w('nods.', 'nods', ['n','o','d','s']),
-      tricky('He', 'he'), w('grabs', 'grabs', ['g','r','a','b','s']),
-      w('oil', 'oil', ['oi','l']), w('sticks', 'sticks', ['s','t','i','ck','s']),
-      w('too.', 'too', ['t','oo']),
-      tricky('They', 'they'), w('draw', 'draw', ['d','r','aw']),
-      tricky('a', 'a'), w('green', 'green', ['g','r','ee','n']),
-      w('lawn', 'lawn', ['l','aw','n']), w('with', 'with', ['w','i','th']),
-      w('soil', 'soil', ['s','oi','l']), w('and', 'and', ['a','n','d']),
-      w('straw.', 'straw', ['s','t','r','aw']),
-      tricky('They', 'they'), w('toil', 'toil', ['t','oi','l']),
-      w('and', 'and', ['a','n','d']), w('toil!', 'toil', ['t','oi','l']),
+      tricky('They', 'they'), w('sit', 'sit', ['s','i','t']),
+      w('on', 'on', ['o','n']), tricky('the', 'the'),
+      w('grass.', 'grass', ['g','r','a','ss']),
+      tricky('The', 'the'), w('hawk', 'hawk', ['h','aw','k']),
+      w('stays', 'stays', ['s','t','ay','s']),
+      w('up', 'up', ['u','p']), w('high.', 'high', ['h','igh']),
+      w("'It", 'it', ['i','t']), w('looks', 'looks', ['l','oo','k','s']),
+      w('just', 'just', ['j','u','s','t']),
+      w("right,'", 'right', ['r','igh','t']),
+      w('Mum', 'mum', ['m','u','m']), tricky('said.', 'said'),
     ],
     imageUrl: '/illustrations/3_4/page7.png', audioUrl: '/sounds/sentences/L3_4_p7.mp3',
   },
 
-  // Page 8
+  // Page 8 — walking home through golden autumn leaves
   {
     type: 'story',
-    sentences: ['They pin it up for the class to see.', "Min grins. 'I am glad I did not stop,' she said.", "The boy grins too. 'That hawk is the best!'"],
+    sentences: ['On the way home, Min runs in the leaves.', "'I will tell Dad what I saw!' said Min."],
     words: [
-      tricky('They', 'they'), w('pin', 'pin', ['p','i','n']),
-      w('it', 'it', ['i','t']), w('up', 'up', ['u','p']),
-      w('for', 'for', ['f','or']), tricky('the', 'the'),
-      w('class', 'class', ['c','l','a','ss']), tricky('to', 'to'),
-      w('see.', 'see', ['s','ee']),
-      w('Min', 'min', ['m','i','n']), w('grins.', 'grins', ['g','r','i','n','s']),
-      tricky("'I", 'I'), w('am', 'am', ['a','m']),
-      w('glad', 'glad', ['g','l','a','d']), tricky('I', 'I'),
-      w('did', 'did', ['d','i','d']), w('not', 'not', ['n','o','t']),
-      w("stop,'", 'stop', ['s','t','o','p']),
-      tricky('she', 'she'), tricky('said.', 'said'),
-      tricky('The', 'the'), w('boy', 'boy', ['b','oy']),
-      w('grins', 'grins', ['g','r','i','n','s']),
-      w('too.', 'too', ['t','oo']),
-      w("'That", 'that', ['th','a','t']),
-      w('hawk', 'hawk', ['h','aw','k']), tricky('is', 'is'),
-      tricky('the', 'the'), w("best!'", 'best', ['b','e','s','t']),
+      w('On', 'on', ['o','n']), tricky('the', 'the'),
+      w('way', 'way', ['w','ay']),
+      w('home,', 'home', ['h','o-e','m']),
+      w('Min', 'min', ['m','i','n']), w('runs', 'runs', ['r','u','n','s']),
+      w('in', 'in', ['i','n']), tricky('the', 'the'),
+      w('leaves.', 'leaves', ['l','ea','v','s']),
+      tricky("'I", 'I'), w('will', 'will', ['w','i','ll']),
+      w('tell', 'tell', ['t','e','ll']), w('Dad', 'dad', ['d','a','d']),
+      tricky('what', 'what'), tricky('I', 'I'),
+      w("saw!'", 'saw', ['s','aw']),
+      tricky('said', 'said'), w('Min.', 'min', ['m','i','n']),
     ],
     imageUrl: '/illustrations/3_4/page8.png', audioUrl: '/sounds/sentences/L3_4_p8.mp3',
   },
@@ -1098,12 +1076,12 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   {
     type: 'quiz',
     questions: [
-      { question: 'What did Min draw?',
-        options: [{ label: 'a hawk', isCorrect: true }, { label: 'a dog', isCorrect: false }, { label: 'a fish', isCorrect: false }] },
-      { question: 'What did the boy say at first?',
-        options: [{ label: 'the claws are too big', isCorrect: true }, { label: 'it is pretty', isCorrect: false }, { label: 'can I have it', isCorrect: false }] },
-      { question: 'What did Min do?',
-        options: [{ label: 'drew it again', isCorrect: true }, { label: 'gave up', isCorrect: false }, { label: 'ran away', isCorrect: false }] },
+      { question: 'Where did Min and Mum go?',
+        options: [{ label: 'for a walk', isCorrect: true }, { label: 'to school', isCorrect: false }, { label: 'to bed', isCorrect: false }] },
+      { question: 'What did Min see in the park?',
+        options: [{ label: 'a cat', isCorrect: true }, { label: 'a fish', isCorrect: false }, { label: 'a dog', isCorrect: false }] },
+      { question: 'What was up high in the sky?',
+        options: [{ label: 'a hawk', isCorrect: true }, { label: 'a kite', isCorrect: false }, { label: 'a plane', isCorrect: false }] },
     ],
   },
 
@@ -1113,22 +1091,22 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
     { word: 'join', imageUrl: '/images/words/join.png', focusIndex: 1 },
     { word: 'soil', imageUrl: '/images/words/soil.png', focusIndex: 1 }] },
   { type: 'sound_spotlight', sound: 'aw', items: [
-    { word: 'draw', imageUrl: '/images/words/draw.png', focusIndex: 2 },
+    { word: 'saw', imageUrl: '/images/words/saw.png', focusIndex: 1 },
     { word: 'hawk', imageUrl: '/images/words/hawk.png', focusIndex: 1 },
     { word: 'straw', imageUrl: '/images/words/straw.png', focusIndex: 3 },
     { word: 'claw', imageUrl: '/images/words/claw.png', focusIndex: 2 }] },
 
   { type: 'word_reading', words: [
-    w('draw', 'draw', ['d','r','aw']), w('hawk', 'hawk', ['h','aw','k']),
-    w('oil', 'oil', ['oi','l']), w('join', 'join', ['j','oi','n']),
-    w('claws', 'claws', ['c','l','aw','z']), w('toil', 'toil', ['t','oi','l'])] },
+    w('saw', 'saw', ['s','aw']), w('hawk', 'hawk', ['h','aw','k']),
+    w('soil', 'soil', ['s','oi','l']), w('points', 'points', ['p','oi','n','t','s']),
+    w('claws', 'claws', ['c','l','aw','z']), w('join', 'join', ['j','oi','n'])] },
 
   { type: 'tricky_words', words: [
-    tricky('said', 'said'), tricky('she', 'she'), tricky('he', 'he'),
-    tricky('are', 'are'), tricky('so', 'so'), tricky('they', 'they')] },
+    tricky('said', 'said'), tricky('she', 'she'), tricky('they', 'they'),
+    tricky('what', 'what'), tricky('the', 'the'), tricky('to', 'to')] },
 
   { type: 'spelling', words: [
-    { word: 'draw', imageUrl: '/images/words/draw.png', letters: ['d','r','a','w'] },
+    { word: 'saw', imageUrl: '/images/words/saw.png', letters: ['s','a','w'] },
     { word: 'hawk', imageUrl: '/images/words/hawk.png', letters: ['h','a','w','k'] },
     { word: 'oil', imageUrl: '/images/words/oil.png', letters: ['o','i','l'] },
     { word: 'join', imageUrl: '/images/words/join.png', letters: ['j','o','i','n'] }] },
@@ -1142,17 +1120,17 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   { type: 'writing_practice', letters: ['oi', 'aw', 'o', 'a'] },
 
   { type: 'story_ordering', items: [
-    { imageUrl: '/illustrations/3_4/page1.png', label: 'Min draws a hawk.', correctIndex: 0 },
-    { imageUrl: '/illustrations/3_4/page2.png', label: 'Sharp claws and beak.', correctIndex: 1 },
-    { imageUrl: '/illustrations/3_4/page3.png', label: 'A boy says not right.', correctIndex: 2 },
-    { imageUrl: '/illustrations/3_4/page4.png', label: 'Min tries again.', correctIndex: 3 },
-    { imageUrl: '/illustrations/3_4/page5.png', label: 'Claws look just right!', correctIndex: 4 },
-    { imageUrl: '/illustrations/3_4/page6.png', label: 'Can I join in?', correctIndex: 5 },
-    { imageUrl: '/illustrations/3_4/page7.png', label: 'They draw together.', correctIndex: 6 },
-    { imageUrl: '/illustrations/3_4/page8.png', label: 'The best hawk!', correctIndex: 7 }] },
+    { imageUrl: '/illustrations/3_4/page1.png', label: 'Min and Mum put on coats.', correctIndex: 0 },
+    { imageUrl: '/illustrations/3_4/page2.png', label: 'On the street.', correctIndex: 1 },
+    { imageUrl: '/illustrations/3_4/page3.png', label: 'A cat in the park.', correctIndex: 2 },
+    { imageUrl: '/illustrations/3_4/page4.png', label: 'Hops on the stones.', correctIndex: 3 },
+    { imageUrl: '/illustrations/3_4/page5.png', label: 'Up the hill.', correctIndex: 4 },
+    { imageUrl: '/illustrations/3_4/page6.png', label: 'A hawk up high!', correctIndex: 5 },
+    { imageUrl: '/illustrations/3_4/page7.png', label: 'They sit and look.', correctIndex: 6 },
+    { imageUrl: '/illustrations/3_4/page8.png', label: 'On the way home.', correctIndex: 7 }] },
 
-  { type: 'drawing', prompt: 'Draw Your Favourite Part' },
-  { type: 'certificate', bookTitle: 'Draw It Again!' },
+  { type: 'drawing', prompt: 'Draw What You Saw on a Walk' },
+  { type: 'certificate', bookTitle: 'What Min Saw' },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
