@@ -9,10 +9,10 @@ const OUTPUT_DIR = 'C:/Users/ASUS/myphonicsbooks/public/sounds/sentences';
 // All L1 story sentences extracted from interactiveBookData.ts
 const SENTENCES = {
   // L1.1 Tap! Tap! Tap!
-  "L1_1_p1": "I sit on a mat. Tap, tap, tap!",
+  "L1_1_p1": "I sit at a mat. Tap, tap, tap!",
   "L1_1_p2": "Is it a rat? Is it a bat?",
   "L1_1_p3": "It is not a rat. It is not a bat.",
-  "L1_1_p4": "Tap, tap! I tap on it.",
+  "L1_1_p4": "Tap, tap! I pat at it.",
   "L1_1_p5": "It is a cat! A fat cat!",
   "L1_1_p6": "I pat the cat. The cat naps. I am happy!",
   // L1.2 The Mud on the Dog
@@ -67,15 +67,15 @@ const SENTENCES = {
   // L1.9 Chop, Chop, Chop!
   "L1_9_p1": "Nan chops, chops, chops! This is fun!",
   "L1_9_p2": "Nan chops it thin. Nan chops it thick.",
-  "L1_9_p3": "Chips in a hot pan. I get a big dish!",
-  "L1_9_p4": "I get a chip. That chip is thick!",
+  "L1_9_p3": "Chips in a hot pan. I got a big dish!",
+  "L1_9_p4": "I got a chip. That chip is thick!",
   "L1_9_p5": "I dip a chip in. Yum, yum, yum!",
   "L1_9_p6": "Chips with Nan! Munch, munch, munch!",
   // L1.10 Buzz and Sing!
   "L1_10_p1": "I sit on a big log. Buzz, buzz, buzz!",
   "L1_10_p2": "A big bug sits on a rock. Hiss, hiss, hiss!",
   "L1_10_p3": "I sing a long, long song!",
-  "L1_10_p4": "No buzz! No hiss!",
+  "L1_10_p4": "I sing! No buzz! No hiss!",
   "L1_10_p5": "I sing quick! I sing and sing!",
   "L1_10_p6": "Buzz! Hiss! I sing with the bugs!",
 };

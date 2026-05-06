@@ -122,9 +122,9 @@ const DEMO_BOOKS: Book[] = [
     sortOrder: 33, unlocked: true, completed: false, lastPageRead: 0, pages: [],
   },
   {
-    id: 'prototype-l3-4', level: 3, subLevel: 'L3.4', title: 'What Min Saw',
-    slug: 'what-min-saw', focusSounds: ['oi', 'aw'],
-    trickyWords: ['said', 'she', 'they', 'what', 'the', 'to'], storyWords: ['saw','hawk','claws','points','soil','stream'], pageCount: 28,
+    id: 'prototype-l3-4', level: 3, subLevel: 'L3.4', title: 'Draw It Again!',
+    slug: 'draw-it-again', focusSounds: ['oi', 'aw'],
+    trickyWords: ['said', 'she', 'he', 'are', 'so', 'they'], storyWords: [], pageCount: 28,
     sortOrder: 34, unlocked: true, completed: false, lastPageRead: 0, pages: [],
   },
   {
