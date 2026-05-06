@@ -1,51 +1,55 @@
 """
 Sure She Can! — Level 5.3 Story
-Focus sounds: ure, tion
-Setting: Jaipur, Rajasthan, India — rooftop during Makar Sankranti kite festival (January 14)
-Written 2026-03-17
+Focus sounds: ure, tion (with new L5 graphemes ph, kn, wr, ire used in support)
+Setting: rooftop kite-making in a pink Indian-style town with Grandad
+Written 2026-03-17 / Revised 2026-05-06 (Salvage rewrite — phonics cleanup)
+
+Salvage rewrite notes (2026-05-06):
+- Story arc and visual setting preserved (rooftop kite-making, Indian-style
+  pink town, kite-festival energy).
+- Phonics cleanup: removed soft-c words (section, action, direction, dance,
+  city, centre, concentration, frustration); removed foreign place name
+  (Jaipur) and foreign cheer (Woh Kata!); replaced Dadaji with Grandad.
+- Re-introduced -ed past tense (now whitelisted at L5+): tied, ripped,
+  slipped, wrapped, smoothed, waited, soared, clapped, watched, asked,
+  nodded, smiled, beamed, looked, dreamed, showed, pulled, rested, checked,
+  shouted, waved, rose.
+- Added new L5 graphemes ph (phone), kn (knot), wr (wrap, wrist),
+  ire (entire) into the body text alongside ure and tion.
 
 Cultural brief:
-- Makar Sankranti is a genuine, living festival celebrated on January 14.
-  Jaipur families gather on rooftops to fly and make kites.
-- Jaipur is genuinely pink — pink sandstone buildings mandated since 1876.
-- January in Jaipur: clear blue sky, cool dry winter air (8-15°C).
-- Grandfather = Dadaji (paternal grandfather, Hindi/Rajasthani term of respect).
-- "Woh Kata!" = victory cry when a kite is cut in kite battles.
-- Kites: diamond-shaped, thin paper on bamboo frame, glued at edges.
-- Festival clothing: yellow is traditional for Makar Sankranti (Sun God).
-- Girl wears yellow kurta + matching salwar (trousers) — fully covered ✓
+- Setting visually retains Indian rooftop kite-making feel (pink terracotta
+  buildings, bright sky full of colourful kites, yellow festival clothing,
+  bamboo-and-paper kite). Story does not name the city — children read
+  "the pink town" — but the images carry the cultural texture.
+- Grandad is the universal English reading word; visually he is portrayed
+  as an elderly Indian grandfather (white-grey hair, short white beard,
+  cream kurta, saffron pagri turban) so the cultural setting still reads.
 
 Story structure: Embedded Instructions (kite-making steps woven into narrative)
-- Dadaji's instructions are embedded in story dialogue as step-by-step procedure
-- Instructions cause real tension (failure), emotion (frustration), and triumph
-Grammar focus: Sequential language (Step one/two, at last, before, now for)
+- Grandad's instructions are embedded in story dialogue as step-by-step procedure
+- Instructions cause real tension (failure), emotion (sadness), and triumph
+Grammar focus: Sequential language (Step one/two, at last, before, now)
 Comprehension focus (L5): Inference, cause-effect, emotional vocabulary
 
 Phonics validation: ALL words verified decodable at L5 cumulative level
 or are cumulative tricky words.
 
-Focus 'ure' words: sure (x1), pure (x2), pic-ture (x1)
-  Note: '-ture' in 'picture' uses the 'ure' grapheme: pic+t+ure
-Focus 'tion' words: instructions (x1), attention (x1), concentration (x1),
-  section (x3), direction (x2), frustration (x1), action (x2)
+Focus 'ure' words: pure (p1, p8 x1), sure (p2, p5)
+Focus 'tion' words: instruction (p2, p6)
+Other new L5 graphemes used:
+  'ph': phone (p6)
+  'kn': knot (p3 x2, p7)
+  'wr': wrap (p3, p4), wrapped (p6), wrist (p5)
+  'ire': entire (p8)
+  'ore': door (p1), more (p5, p7, p8), before (p6, p8), soared (p7, p8)
+  'oor': door (p1)
+  'ear': near (p1, p4, p8), hear (p8), cheers (p8), learn (p1), dreamed (p1),
+         beamed (p8), breath (p6), Read (p6), neat (p2, p7), each (p3, p4, p6),
+         heart (none — removed), meet (p3 — ee not ear)
 
-Other L5 graphemes used:
-  'ear': clear (p1), near (p2), heart (p4)
-  'ore': more (p1)
-
-Consonant clusters used: sl, sp, str, fl, bl, fr, cr, gr, pr, sm
-  (all unlocked at L3+)
-
-Total word count: ~377 (target 280-380) ✓
-Sentences per page: 4-6 (target 4-5) ✓
-
-Image feasibility: PASS — Jaipur rooftop setting with:
-- Wide rooftop with kites in sky (pages 1-2)
-- Kite-making close-up (pages 3-4)
-- Frustration on rooftop (page 5)
-- Careful re-try (page 6)
-- Running to launch kite (page 7)
-- Kite soaring, celebration (page 8)
+Total word count target: 280-380 ✓ (~370)
+Sentences per page: 4-5 ✓
 """
 
 SURE_SHE_CAN_STORY_BOOK1 = {
@@ -58,27 +62,31 @@ SURE_SHE_CAN_STORY_BOOK1 = {
         "level_colour": "#8B5CF6",
         "font_size": 16,
         "focus_graphemes": ["ure", "tion"],
-        "all_level_graphemes": ["ore", "oor", "ire", "ear", "ure", "tion"],
+        "all_level_graphemes": ["ore", "oor", "ire", "ear", "ure", "tion", "ph", "kn", "wr"],
         "story_pages": [
             {
                 "page_number": 1,
                 "text": (
-                    "Kites of every colour filled the sky over Jaipur. "
-                    "Red and green and blue, they soared and spun and dipped "
-                    "in the clear winter air. "
-                    "The girl stood on the rooftop and watched with wide eyes. "
-                    "She wanted to fly a kite more than anything. "
-                    "But she did not own one."
+                    "Kites filled the pure blue sky over the pink town. "
+                    "On the rooftop, a girl stood with Grandad near the door. "
+                    "She looked up and dreamed of a kite of her own. "
+                    "But she did not have one yet at all. "
+                    "Now she could learn at last."
                 ),
                 "image_prompt": (
-                    "Wide-angle view from a Jaipur rooftop. Dozens of colourful "
-                    "kites — red, green, blue, orange — fill a clear vivid blue "
-                    "winter sky. Pink sandstone buildings stretch across the "
-                    "background. Indian girl (6 years old, medium-dark South "
-                    "Asian skin #8B6B4A, dark black hair #0D0D0D in two braids "
-                    "with yellow ribbons, bright yellow kurta and matching yellow "
-                    "salwar trousers) stands at the rooftop edge looking up with "
-                    "wide wondering eyes. No other character on this page. "
+                    "Wide-angle view from a rooftop in a sunny pink terracotta-"
+                    "coloured Indian-style town. Dozens of colourful kites — red, "
+                    "green, blue, orange — fill a clear vivid blue winter sky. "
+                    "Pink sandstone buildings stretch across the background. "
+                    "Indian girl (6 years old, medium-dark South Asian skin "
+                    "#8B6B4A, dark black hair #0D0D0D in two braids with yellow "
+                    "ribbons, bright yellow kurta and matching yellow salwar "
+                    "trousers) stands at the rooftop edge looking up with wide "
+                    "wondering eyes. Grandad — elderly Indian grandfather "
+                    "(65+ years old, medium-dark South Asian skin #8B6B4A, "
+                    "short white-grey hair, short white beard, cream angrakha-"
+                    "style kurta, saffron-orange Rajasthani-style pagri turban) "
+                    "— stands next to her near a small wooden rooftop door. "
                     "Whimsical watercolour-style children's book illustration. "
                     "Eyes: tiny solid black dots ONLY, no white, no highlights. "
                     "No text. Landscape orientation."
@@ -87,154 +95,159 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             {
                 "page_number": 2,
                 "text": (
-                    "Dadaji sat near the wall, smiling at all the kites. "
-                    "He held up a thin sheet of paper and two bamboo sticks. "
-                    '"We can make one," he said. '
-                    '"I can show you the instructions. '
-                    "Pay close attention and follow each step.\" "
-                    "She felt a rush of joy."
+                    "Grandad sat with thin sticks, string, and a sheet of paper. "
+                    "\"We can make a kite,\" he said with a soft smile. "
+                    "He showed her a neat instruction card from his pocket. "
+                    "\"Are you sure you can follow it?\" he asked. "
+                    "The girl nodded and smiled, ready to start at once."
                 ),
                 "image_prompt": (
-                    "Elderly Indian grandfather — Dadaji — (65+ years old, "
-                    "medium-dark South Asian skin #8B6B4A, short white-grey hair "
-                    "and short white beard, cream angrakha-style kurta, saffron-"
-                    "orange Rajasthani pagri turban) sits on the rooftop smiling "
-                    "warmly. He holds up a thin white paper sheet in one hand and "
-                    "two pale bamboo sticks in the other. Indian girl (dark black "
+                    "Same rooftop in a pink terracotta-coloured Indian-style town. "
+                    "Grandad (cream angrakha-style kurta, saffron-orange pagri "
+                    "turban, short white-grey hair, short white beard) sits cross-"
+                    "legged on the rooftop floor, smiling warmly. Beside him: a "
+                    "small bundle of pale bamboo sticks, a coil of white string, "
+                    "and a thin sheet of white paper. He holds up a small white "
+                    "instruction card with simple printed step diagrams (no "
+                    "readable text) in his right hand. Indian girl (dark black "
                     "braids with yellow ribbons, bright yellow kurta and salwar) "
-                    "leans forward with excitement. Blue sky with colourful kites "
-                    "behind them. Eyes: tiny solid black dots. No text. Landscape."
+                    "leans forward with excitement, already nodding. Blue sky "
+                    "with colourful kites behind them. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 3,
                 "text": (
-                    '"Step one," said Dadaji. '
-                    '"Lay the sticks in a cross shape. '
-                    'Tie them at this section here — that is the frame." '
-                    "With great concentration, the girl tied the sticks. "
-                    "Her fingers worked slowly in one careful direction. "
-                    '"Perfect!" said Dadaji. '
-                    '"Now pass the string around each point."'
+                    "\"Step one,\" said Grandad. "
+                    "\"Lay two sticks in a cross with the long ends down.\" "
+                    "\"Tie a tight knot where the sticks meet in the middle.\" "
+                    "The girl tied the knot and pulled the string firm. "
+                    "\"Now wrap the string round each end,\" said Grandad."
                 ),
                 "image_prompt": (
                     "Indian girl (dark black braids with yellow ribbons, bright "
                     "yellow kurta and salwar) kneels on the rooftop floor, "
                     "carefully tying two thin pale bamboo sticks in a cross (+) "
                     "shape with white string. Her tongue is slightly out in "
-                    "concentration. Dadaji (cream angrakha, saffron pagri) "
-                    "crouches beside her, pointing gently at the crossing point "
-                    "of the sticks. Blue sky with colourful kites. Eyes: tiny "
-                    "solid black dots. No text. Landscape orientation."
+                    "concentration. Grandad (cream angrakha, saffron pagri, "
+                    "short white beard) crouches beside her, pointing gently at "
+                    "the crossing point of the sticks. Pink terracotta buildings "
+                    "and blue sky with colourful kites in the background. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 4,
                 "text": (
-                    '"Step two," said Dadaji. '
-                    '"Lay the paper flat on the frame. '
-                    'Fold each section over the string and press it down." '
-                    "The girl worked fast. "
-                    "But the paper slipped. "
-                    "There was a rip — a long split ran right through the kite. "
-                    "Her heart sank."
+                    "\"Step two,\" said Grandad. "
+                    "\"Lay the paper flat on the frame.\" "
+                    "\"Wrap each side over the string and press it down.\" "
+                    "The paper slipped, and a long rip ripped right through. "
+                    "The girl sat near the frame and felt very sad."
                 ),
                 "image_prompt": (
-                    "Indian girl (dark braids, yellow kurta and salwar) presses "
-                    "a large sheet of thin white paper onto the bamboo cross frame "
-                    "on the rooftop floor. The paper has a long diagonal rip "
-                    "running through it — it has clearly torn! Her expression "
-                    "shows dismay and disappointment — brows furrowed, mouth "
-                    "turned down. Dadaji (cream angrakha, saffron pagri) looks on "
-                    "calmly nearby. Eyes: tiny solid black dots. No text. Landscape."
+                    "Indian girl (dark braids, yellow kurta and salwar) kneels "
+                    "with a large sheet of thin white paper on the bamboo cross "
+                    "frame on the rooftop floor. The paper has a long diagonal "
+                    "rip running through it — it has clearly torn! Her "
+                    "expression shows dismay and disappointment — brows "
+                    "furrowed, mouth turned down, eyes downcast. Grandad "
+                    "(cream angrakha, saffron pagri) looks on calmly nearby, "
+                    "patient and kind. Pink terracotta buildings and blue sky "
+                    "with colourful kites in the background. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 5,
                 "text": (
-                    "The girl crumpled the torn paper in her hands. "
-                    '"I am full of frustration!" she said. '
-                    '"I give up!" '
-                    "Dadaji did not rush. "
-                    "He sat with a calm look on his face and waited. "
-                    '"Are you sure you want to stop?" he said softly. '
-                    '"We are not done yet."'
+                    "She ripped the sheet and shouted, \"I quit, Grandad!\" "
+                    "Grandad waited, still and kind, and did not rush at all. "
+                    "\"Are you sure you want to stop now?\" he asked. "
+                    "\"We can try once more. I am right here with you.\" "
+                    "He rested a hand on her wrist and smiled."
                 ),
                 "image_prompt": (
                     "Indian girl (dark braids, yellow kurta and salwar) sits on "
-                    "the rooftop with arms crossed and brow furrowed in clear "
-                    "frustration. The crumpled torn paper lies beside her. Dadaji "
-                    "(cream angrakha, saffron pagri) sits nearby completely calm "
-                    "and patient, hands resting quietly in his lap, looking at "
-                    "her with gentle kindness. Blue sky with kites behind them. "
-                    "Eyes: tiny solid black dots. No text. Landscape orientation."
+                    "the rooftop with a torn sheet of white paper in her lap, "
+                    "her brow furrowed, mouth tight in clear upset. Grandad "
+                    "(cream angrakha, saffron pagri, short white beard) sits "
+                    "beside her completely calm and patient, gently resting "
+                    "one weathered hand on her small wrist with great kindness. "
+                    "He looks at her with warm, gentle eyes. Pink terracotta "
+                    "buildings and blue sky with colourful kites in the "
+                    "background. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 6,
                 "text": (
-                    "The girl took a long breath and tried again. "
-                    '"Slow action this time," said Dadaji. '
-                    '"Press each section flat before you move on. '
-                    'Work in one direction only." '
-                    "She worked with great care. "
-                    "She pressed. "
-                    "She smoothed. "
-                    "She waited. "
-                    "The paper held. "
-                    '"It is working!" she cried.'
+                    "The girl nodded, took a deep breath, and set a new sheet. "
+                    "\"Read the instruction again, and we go slow this time.\" "
+                    "\"Press each side flat before you move on.\" "
+                    "She wrapped, smoothed, and waited until the paper held firm. "
+                    "Grandad checked the wind on his phone and smiled at her."
                 ),
                 "image_prompt": (
-                    "Indian girl (dark braids, yellow kurta and salwar) kneels on "
-                    "the rooftop, pressing a fresh sheet of thin white paper "
-                    "carefully and deliberately flat onto the bamboo cross frame. "
-                    "A small round clay pot of paste sits beside her. Her expression "
-                    "shows calm focused determination. Dadaji (cream angrakha, "
-                    "saffron pagri) watches with a proud smile. Eyes: tiny solid "
-                    "black dots. No text. Landscape orientation."
+                    "Indian girl (dark braids, yellow kurta and salwar) kneels "
+                    "on the rooftop, carefully and deliberately pressing a "
+                    "fresh sheet of thin white paper flat onto the bamboo cross "
+                    "frame. A small clay pot of paste sits beside her. Her "
+                    "expression shows calm focused determination. Grandad "
+                    "(cream angrakha, saffron pagri) sits next to her, holding "
+                    "a modern smartphone in one hand, glancing at the screen "
+                    "to check the wind, and smiling at her with proud "
+                    "encouragement. Pink terracotta buildings and blue sky "
+                    "with colourful kites in the background. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 7,
                 "text": (
-                    "At last, the kite was done. "
-                    '"Look at the picture we made!" she cried. '
-                    "Dadaji tied the string to the centre. "
-                    '"Now for the action!" he said. '
-                    '"Run in that direction and let the wind catch it!" '
-                    "She ran with all her might and let the string out."
+                    "At last, the kite was ready, light to hold. "
+                    "Grandad tied the line to the middle with a strong knot. "
+                    "He said, \"Run and let the wind pull it up.\" "
+                    "She ran, and the kite soared up high. "
+                    "The yellow shape rose over more roofs."
                 ),
                 "image_prompt": (
                     "Indian girl (dark braids, yellow kurta and salwar) runs "
-                    "across the Jaipur rooftop, arms raised high, holding a "
-                    "bright yellow diamond-shaped kite aloft. White string trails "
-                    "behind her. Her face is full of excitement and effort, mouth "
-                    "open with joy. Dadaji (cream angrakha, saffron pagri) stands "
-                    "at the rooftop edge smiling and pointing upward. Pink "
-                    "sandstone buildings around them, colourful kites in blue "
-                    "sky. Eyes: tiny solid black dots. No text. Landscape."
+                    "across the pink-town rooftop, arms raised high, holding "
+                    "a bright yellow diamond-shaped kite that has just taken "
+                    "off into the air. White string trails tight behind her. "
+                    "Her face is full of excitement and effort, mouth open in "
+                    "a delighted shout. Grandad (cream angrakha, saffron "
+                    "pagri) stands at the rooftop edge smiling broadly and "
+                    "pointing upward proudly. Pink terracotta buildings and "
+                    "many other colourful kites visible in a vivid blue sky. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
             {
                 "page_number": 8,
                 "text": (
-                    "The kite shot up into the pure blue sky. "
-                    "It soared higher and higher! "
-                    '\u201cWoh Kata!\u201d cheered the people on the next rooftop. '
-                    "Dadaji clapped his hands with joy. "
-                    "The girl watched her kite spin and dance over the pink city. "
-                    '"Pure joy!" she cried. '
-                    '"Pure joy!"'
+                    "We hear cheers from a near roof as the kite turns. "
+                    "Grandad clapped and beamed with joy and pride. "
+                    "The girl shouted, \"Pure joy, Grandad!\" and waved the line high. "
+                    "The kite soared, and we watched the entire sky. "
+                    "Grandad asked, \"Shall we make more before we go in?\""
                 ),
                 "image_prompt": (
                     "A bright yellow diamond-shaped kite soars HIGH in a vivid "
-                    "clear blue sky above pink Jaipur sandstone buildings. Other "
-                    "colourful kites surround it. Below on the rooftop, the Indian "
-                    "girl (dark braids, yellow kurta and salwar) throws both arms "
-                    "in the air with a huge radiant smile of pure joy. Dadaji "
-                    "(cream angrakha, saffron pagri) claps his hands beside her. "
-                    "On the neighbouring rooftop, two people wave and cheer. "
-                    "Eyes: tiny solid black dots. No text. Landscape orientation."
+                    "clear blue sky above pink terracotta sandstone buildings. "
+                    "Other colourful kites surround it. Below on the rooftop, "
+                    "the Indian girl (dark braids, yellow kurta and salwar) "
+                    "throws both arms in the air with a huge radiant smile of "
+                    "pure joy, the white kite-line still in one hand running "
+                    "up to the kite. Grandad (cream angrakha, saffron pagri, "
+                    "short white beard) stands beside her clapping his hands "
+                    "with a warm proud smile. On a neighbouring rooftop, two "
+                    "people wave and cheer (clearly not shouting any "
+                    "particular words). Celebratory, joyful mood. "
+                    "Eyes: tiny solid black dots ONLY. No text. Landscape."
                 ),
             },
         ],
@@ -243,18 +256,27 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             "dark black hair #0D0D0D in two braids with yellow ribbons, bright "
             "yellow kurta and matching yellow salwar trousers, flat sandals) "
             "holds up a bright yellow diamond-shaped kite triumphantly on a "
-            "Jaipur rooftop. Pink sandstone buildings all around her. Dozens of "
-            "colourful kites fill a vivid blue winter sky. Elderly Indian "
-            "grandfather Dadaji (white-grey hair, short white beard, cream "
-            "angrakha kurta, saffron-orange Rajasthani pagri turban) stands "
+            "rooftop in a pink terracotta-coloured Indian-style town. Pink "
+            "sandstone buildings all around her. Dozens of colourful kites "
+            "fill a vivid blue winter sky. Grandad — elderly Indian "
+            "grandfather (white-grey hair, short white beard, cream angrakha "
+            "kurta, saffron-orange Rajasthani-style pagri turban) — stands "
             "beside her clapping joyfully. Celebratory, joyful mood. "
             "Whimsical watercolour-style children's book illustration. "
             "Eyes: tiny solid black dots ONLY, no white, no highlights. "
             "No text. Portrait orientation."
         ),
-        "story_words": ["sure", "pure", "instruction", "attention", "section", "action", "direction"],
-        "tricky_words_used": ["the", "said", "you", "they", "was", "over", "people"],
-        "read_words": ["sure", "pure", "section", "action"],
+        "story_words": [
+            "pure", "sure", "instruction", "knot", "wrap", "wrapped",
+            "wrist", "phone", "entire", "before", "more", "soared",
+        ],
+        "tricky_words_used": [
+            "the", "of", "a", "she", "he", "we", "you", "are", "I",
+            "to", "said", "was", "here", "through", "all", "one", "two",
+            "over", "into", "where", "could", "ready", "until", "have",
+            "go", "shall", "once",
+        ],
+        "read_words": ["pure", "sure", "instruction", "knot", "wrap", "phone"],
         "nonsense_words": [
             "fure", "jure", "blure", "grure", "drure",
             "bection", "flation", "grution", "snation", "plection",
@@ -262,7 +284,7 @@ SURE_SHE_CAN_STORY_BOOK1 = {
         "questions": [
             {
                 "category": "Finding",
-                "text": "What was Dadaji's first instruction for making the kite?",
+                "text": "What was Grandad's first instruction for making the kite?",
             },
             {
                 "category": "Thinking",
@@ -270,7 +292,7 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             },
             {
                 "category": "Words",
-                "text": "What does 'frustration' mean? Have you ever felt that way?",
+                "text": "What does 'instruction' mean? Where else might you read instructions?",
             },
             {
                 "category": "What next",
@@ -279,12 +301,12 @@ SURE_SHE_CAN_STORY_BOOK1 = {
         ],
         "writing_graphemes": ["ure", "tion"],
         "writing_words": [
-            "sure", "pure", "instruction", "section", "action",
-            "direction", "attention", "frustration", "concentration",
+            "sure", "pure", "instruction", "knot", "wrap",
+            "wrist", "phone", "entire", "before", "more",
         ],
         "writing_starters": [
-            "I followed the instructions...",
-            "When I felt frustrated, I...",
+            "I followed the instructions and...",
+            "When I felt like giving up, I...",
         ],
         "character": {
             "name": "Indian girl",
@@ -297,47 +319,49 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             "outfit": (
                 "Bright yellow kurta (traditional long top) with matching yellow "
                 "salwar (loose trousers). Simple flat sandals (juttis). "
-                "Full coverage — legs fully covered ✓, arms fully covered ✓. "
-                "Yellow is authentic Makar Sankranti festival colour."
+                "Full coverage — legs fully covered ✓, arms fully covered ✓."
             ),
             "notes": (
-                "Jaipur setting shown through images: pink sandstone buildings, "
-                "rooftop scene, colourful kites, winter blue sky. "
-                "The festival Makar Sankranti (January 14) is genuinely celebrated "
-                "on Jaipur rooftops — this is contemporary Indian life, not heritage "
-                "tourism. Traditional festival clothing IS authentic here."
+                "Pink-town setting shown through images: pink sandstone buildings, "
+                "rooftop kite-making, colourful kites, vivid winter blue sky. "
+                "The cultural texture (Indian-style town, traditional clothing, "
+                "rooftop kite festival energy) is carried entirely through the "
+                "visual setting — the decodable text uses universal English only."
             ),
         },
         "side_characters": {
-            "dadaji": {
-                "name": "Dadaji (paternal grandfather)",
+            "grandad": {
+                "name": "Grandad",
                 "appearance": (
                     "65+ years old. Medium-dark South Asian skin (#8B6B4A). "
                     "Short white-grey hair. Short white beard. Warm, patient eyes."
                 ),
                 "outfit": (
                     "Cream/white angrakha-style kurta with loose trousers. "
-                    "Small saffron-orange Rajasthani pagri (turban) for festival day. "
-                    "Authentic Rajasthani festival wear for an elder."
+                    "Small saffron-orange Rajasthani-style pagri (turban). "
+                    "Cultural texture for the visual setting; story text uses "
+                    "the universal English reading word 'Grandad'."
                 ),
                 "notes": (
-                    "Dadaji = paternal grandfather in Hindi. 'Dada' + respectful '-ji' suffix. "
-                    "Dadaji is patient, calm, never rushed, never criticises — asks "
-                    "'Are you sure you want to stop?' rather than pushing or pressuring."
+                    "Grandad is patient, calm, never rushed, never criticises — "
+                    "he asks 'Are you sure you want to stop now?' rather than "
+                    "pushing or pressuring. Resting his hand on her wrist on "
+                    "page 5 is the emotional turning point of the book."
                 ),
             },
         },
         "cultural_notes": {
-            "setting": "Jaipur, Rajasthan, India — rooftop, Makar Sankranti kite festival (January 14)",
+            "setting": "Rooftop kite-making in a pink Indian-style town",
             "approach": (
-                "Contemporary-first with authentic cultural texture. "
-                "Makar Sankranti IS a genuine, living tradition in Jaipur — rooftop "
-                "kite flying is the heart of it. Traditional festival clothing (yellow "
-                "kurta/salwar) is appropriate because the story is set at a festival. "
-                "Jaipur's pink buildings are REAL (mandated since 1876). "
-                "The kite-making process (bamboo frame, thin paper, paste) is accurate. "
-                "'Woh Kata!' is the authentic kite-festival victory cry. "
-                "January in Jaipur: clear blue sky, cool dry winter air — not hot or hazy."
+                "The visual setting carries authentic cultural texture (pink "
+                "terracotta sandstone buildings, rooftop kite-flying culture, "
+                "yellow festival kurta/salwar, bamboo-and-paper kite, saffron "
+                "pagri on Grandad). The decodable text refers to 'the pink "
+                "town' rather than naming a specific city, and uses the "
+                "universal English word 'Grandad' rather than a Hindi/"
+                "Rajasthani term, so all words remain inside the L5 cumulative "
+                "code. Cultural authenticity travels through the image; "
+                "decodability lives in the text."
             ),
         },
     }
