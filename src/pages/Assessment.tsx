@@ -273,7 +273,17 @@ function classifySoundResult(correct: number, total: number): SoundResult {
 }
 
 // ─── Component ────────────────────────────────────────────────
-export default function Assessment() {
+interface AssessmentProps {
+  /** When set, skip the welcome chooser and start with this mode pre-selected. */
+  initialMode?: AssessmentMode;
+  /** When true, replace the guest email capture at final-results with a single
+   *  Continue button so a parent funnel can take over the post-result flow. */
+  funnelMode?: boolean;
+  /** Called when the user clicks Continue at the funnel-mode result screen. */
+  onFunnelComplete?: (recommendedLevel: number, summary: { sounds_correct: number; sounds_asked: number; words_correct: number; words_asked: number; }) => void;
+}
+
+export default function Assessment({ initialMode, funnelMode, onFunnelComplete }: AssessmentProps = {}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: children } = useChildren();
@@ -292,8 +302,10 @@ export default function Assessment() {
   // full-mode behaviour (extra word_reading + tricky_words rounds). Today
   // both modes share the adaptive path; the difference is which categories
   // are tested vs labelled "Not tested" on the result.
-  const [mode, setMode] = useState<AssessmentMode>('rapid');
-  const [stage, setStage] = useState<Stage>('welcome');
+  const [mode, setMode] = useState<AssessmentMode>(initialMode ?? 'rapid');
+  // When the funnel pre-selects a mode we skip the welcome chooser and jump
+  // straight into onboarding — the chooser already lives in the funnel page.
+  const [stage, setStage] = useState<Stage>(initialMode ? 'onboarding' : 'welcome');
   const [onboardingStep, setOnboardingStep] = useState<OnboardingStep>('dob');
   const [profile, setProfile] = useState<ChildProfile>({
     birthMonth: 0,
@@ -1427,8 +1439,25 @@ export default function Assessment() {
             </div>
           </div>
 
-          {/* Action area: email capture for guests, library button for authed */}
-          {!user && !guestSubmitted && (
+          {/* Action area: email capture for guests, library button for authed.
+              In funnelMode the parent funnel page owns the post-result flow
+              (continue → upsell → email-or-checkout), so we just hand off the
+              level via onFunnelComplete instead of asking for an email here. */}
+          {!user && !guestSubmitted && funnelMode && (
+            <button
+              onClick={() => onFunnelComplete?.(recommendedLevel, {
+                sounds_correct: answers.filter(a => a.category === 'sound_recognition' && a.isCorrect).length,
+                sounds_asked: answers.filter(a => a.category === 'sound_recognition').length,
+                words_correct: answers.filter(a => a.category === 'word_reading' && a.isCorrect).length,
+                words_asked: answers.filter(a => a.category === 'word_reading').length,
+              })}
+              className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+            >
+              Continue <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+
+          {!user && !guestSubmitted && !funnelMode && (
             <div className="bg-card border-2 border-primary rounded-2xl p-5 mb-3 text-left shadow-card">
               <p className="text-sm font-bold text-foreground mb-1">
                 Save your results & get a free book
