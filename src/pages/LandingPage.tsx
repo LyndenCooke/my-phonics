@@ -68,18 +68,18 @@ export default function LandingPage() {
       <a href="#main" className="skip-link">Skip to main content</a>
 
       {/* ── Sticky nav ── */}
-      <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assess')} />
+      <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
 
       {/* ── Sections ── */}
       <main id="main">
-      <HeroSection onAssess={() => navigate('/assess')} onTry={() => navigate('/library')} />
+      <HeroSection onAssess={() => navigate('/assessment')} onFreeBook={() => navigate('/free-book')} />
       <HowItWorks />
       <FeatureShowcase />
       <LevelProgression />
       <CulturalDiversity />
       <Testimonials />
       <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/shop')} />
-      <FooterCTA onAssess={() => navigate('/assess')} />
+      <FooterCTA onAssess={() => navigate('/assessment')} />
       </main>
       <Footer />
     </div>
@@ -124,7 +124,7 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
 }
 
 /* ─── HERO ─── */
-function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => void }) {
+function HeroSection({ onAssess, onFreeBook }: { onAssess: () => void; onFreeBook: () => void }) {
   return (
     <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
       {/* Background gradient */}
@@ -148,14 +148,14 @@ function HeroSection({ onAssess, onTry }: { onAssess: () => void; onTry: () => v
               Decodable books for children aged 4-8, with interactive reading, sound-by-sound guidance, and stories from around the world.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <button onClick={onAssess} className="gradient-primary text-white font-bold px-7 py-3.5 rounded-2xl shadow-button hover:opacity-90 transition-all text-base flex items-center justify-center gap-2">
-                Start Free Assessment <ChevronRight className="w-4 h-4" />
+              <button onClick={onAssess} className="gradient-primary text-white font-bold px-7 py-4 rounded-2xl shadow-button hover:opacity-90 transition-all text-base flex items-center justify-center gap-2">
+                Find their reading level <ChevronRight className="w-4 h-4" />
               </button>
-              <button onClick={onTry} className="bg-card text-foreground font-bold px-7 py-3.5 rounded-2xl shadow-card hover:shadow-card-hover transition-all text-base border border-border">
-                Try a Free Book
+              <button onClick={onFreeBook} className="bg-card text-foreground font-bold px-7 py-4 rounded-2xl shadow-card hover:shadow-card-hover transition-all text-base border border-border flex items-center justify-center gap-2">
+                Get a free book <ChevronRight className="w-4 h-4" />
               </button>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">No credit card required. Free book matched to your child's level.</p>
+            <p className="mt-4 text-xs text-muted-foreground">3-minute check or pick a level — your choice. No card required.</p>
 
             {/* Founders Club banner — sits below the primary CTAs so the
              *  free-assessment path is the main attraction, but the £1
