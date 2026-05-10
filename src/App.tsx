@@ -41,6 +41,7 @@ const WrongBooks = lazy(() => import("./pages/funnels/WrongBooks"));
 const FreeAssessment = lazy(() => import("./pages/funnels/FreeAssessment"));
 const ThreeMinuteCheck = lazy(() => import("./pages/funnels/ThreeMinuteCheck"));
 const TheGap = lazy(() => import("./pages/funnels/TheGap"));
+const FreeBook = lazy(() => import("./pages/funnels/FreeBook"));
 
 const ChildModeGuard = lazy(() => import("./components/ChildModeGuard"));
 
@@ -162,10 +163,13 @@ function RoutesWithTransition() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/prototype" element={<Suspense fallback={<AdminFallback />}><Prototype /></Suspense>} />
-            {/* Funnels (ad landing pages) */}
+            {/* Funnels — clean URLs */}
+            <Route path="/free-book" element={<Suspense fallback={<AdminFallback />}><FreeBook /></Suspense>} />
+            <Route path="/assessment" element={<Suspense fallback={<AdminFallback />}><FreeAssessment /></Suspense>} />
+            {/* Legacy funnel URLs — keep alive for existing ads/links */}
             <Route path="/links" element={<Suspense fallback={<AdminFallback />}><LinkTree /></Suspense>} />
             <Route path="/f/wrong-books" element={<Suspense fallback={<AdminFallback />}><WrongBooks /></Suspense>} />
-            <Route path="/f/free-assessment" element={<Suspense fallback={<AdminFallback />}><FreeAssessment /></Suspense>} />
+            <Route path="/f/free-assessment" element={<Navigate to="/assessment" replace />} />
             <Route path="/f/3-minute-check" element={<Suspense fallback={<AdminFallback />}><ThreeMinuteCheck /></Suspense>} />
             <Route path="/f/the-gap" element={<Suspense fallback={<AdminFallback />}><TheGap /></Suspense>} />
             {/* Admin CRM */}
