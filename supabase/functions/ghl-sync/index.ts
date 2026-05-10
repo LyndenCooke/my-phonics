@@ -189,7 +189,14 @@ serve(async (req) => {
         }
         if (ghlContactId) {
           const lvl = data?.recommended_level ?? data?.level ?? 'unknown';
-          await addTags(ghlContactId, ['assessed', `level:${lvl}`]);
+          const tags = ['assessed', `level:${lvl}`];
+          // source lets the user scope GHL automation to a specific
+          // funnel (e.g. only fire the free-book email for leads from
+          // the /assessment funnel, not the existing /assess flow).
+          if (typeof data?.source === 'string' && data.source) {
+            tags.push(`source:${data.source}`);
+          }
+          await addTags(ghlContactId, tags);
         }
         break;
       }

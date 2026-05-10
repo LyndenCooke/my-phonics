@@ -122,6 +122,27 @@ Deno.serve(async (req) => {
       }),
     });
 
+    // 5. GHL sync — fire contact.assessed so the CRM tags the lead with
+    // their level + funnel source. The user can then build email
+    // automations off the `assessed`, `level:N`, and `source:` tags
+    // (e.g. send the matching free-book PDF for their level).
+    // Best-effort; failures must not block the signup response.
+    try {
+      await supabaseAdmin.functions.invoke("ghl-sync", {
+        body: {
+          event: "contact.assessed",
+          data: {
+            email,
+            full_name: child_name || "",
+            recommended_level,
+            source: "assessment-funnel",
+          },
+        },
+      });
+    } catch (err) {
+      console.error("ghl-sync invoke failed (non-fatal):", err);
+    }
+
     return new Response(
       JSON.stringify({ success: true, recommended_level, email_sent: true }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
