@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import FunnelLayout from '@/components/funnels/FunnelLayout';
 import { PhonemePlayer } from '@/components/PhonemePlayer';
 import { WordPlayer } from '@/components/WordPlayer';
 import { SoundMap } from '@/components/SoundMap';
@@ -317,6 +318,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   });
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [levelScores, setLevelScores] = useState<LevelScore[]>([]);
+
+  // Funnel-mode chrome: when this assessment is rendered inside the
+  // /assessment funnel we strip the global app shell (top nav + bottom
+  // tab bar) so visitors stay focused on completing the test rather
+  // than wandering off into Library / Pricing / Profile mid-funnel.
+  const Wrap = ({ children }: { children: ReactNode }) =>
+    funnelMode ? <FunnelLayout>{children}</FunnelLayout> : <Layout>{children}</Layout>;
 
   // Screening
   const [screeningChecks, setScreeningChecks] = useState<Record<number, boolean>>({});
@@ -692,7 +700,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   // ═══════════════════════════════════════════════════════════
   if (stage === 'welcome') {
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
           <h2 className="font-display text-[28px] font-extrabold text-foreground mb-2 tracking-tight">
             Phonics Assessment
@@ -773,7 +781,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <a href="/privacy" className="underline">privacy policy</a>.
           </p>
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
@@ -811,7 +819,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     const yearOptions = Array.from({ length: 10 }, (_, i) => currentYear - 3 - i); // ages ~3-12
 
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-6 pb-4 max-w-md mx-auto">
           {/* Progress */}
           <div className="flex items-center gap-2 mb-1">
@@ -1005,7 +1013,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             </div>
           )}
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
@@ -1021,7 +1029,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     };
 
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
           <h2 className="text-xl font-extrabold text-foreground mb-2 tracking-tight">
             Quick Check
@@ -1077,7 +1085,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             Skip — start from Level 1
           </button>
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
@@ -1108,7 +1116,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     const progressPct = ((testIdx) / testItems.length) * 100;
 
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
           {/* Header */}
           <div className="flex justify-between items-center mb-2">
@@ -1183,7 +1191,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             </p>
           )}
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
@@ -1192,7 +1200,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   // ═══════════════════════════════════════════════════════════
   if (stage === 'level-passed') {
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-12 pb-4 max-w-md mx-auto text-center">
           <div className={`${LEVEL_COLORS[currentLevel]} text-white rounded-2xl p-8 mb-6 shadow-card`}>
             <Trophy className="w-12 h-12 mx-auto mb-3 opacity-90" />
@@ -1207,7 +1215,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             Continue to Level {currentLevel + 1} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
@@ -1225,7 +1233,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     const wrongItems = answers.filter(a => !a.isCorrect);
 
     return (
-      <Layout>
+      <Wrap>
         <div className="px-4 pt-6 pb-8 max-w-md mx-auto text-center">
           <h2 className="text-[28px] font-extrabold text-foreground mb-1 tracking-tight">
             Assessment Complete
@@ -1525,7 +1533,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             </div>
           )}
         </div>
-      </Layout>
+      </Wrap>
     );
   }
 
