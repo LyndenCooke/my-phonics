@@ -42,6 +42,7 @@ const FreeAssessment = lazy(() => import("./pages/funnels/FreeAssessment"));
 const ThreeMinuteCheck = lazy(() => import("./pages/funnels/ThreeMinuteCheck"));
 const TheGap = lazy(() => import("./pages/funnels/TheGap"));
 const FreeBook = lazy(() => import("./pages/funnels/FreeBook"));
+const AssessmentFunnel = lazy(() => import("./pages/funnels/AssessmentFunnel"));
 
 const ChildModeGuard = lazy(() => import("./components/ChildModeGuard"));
 
@@ -165,7 +166,7 @@ function RoutesWithTransition() {
             <Route path="/prototype" element={<Suspense fallback={<AdminFallback />}><Prototype /></Suspense>} />
             {/* Funnels — clean URLs */}
             <Route path="/free-book" element={<Suspense fallback={<AdminFallback />}><FreeBook /></Suspense>} />
-            <Route path="/assessment" element={<Suspense fallback={<AdminFallback />}><FreeAssessment /></Suspense>} />
+            <Route path="/assessment" element={<Suspense fallback={<AdminFallback />}><AssessmentFunnel /></Suspense>} />
             {/* Legacy funnel URLs — keep alive for existing ads/links */}
             <Route path="/links" element={<Suspense fallback={<AdminFallback />}><LinkTree /></Suspense>} />
             <Route path="/f/wrong-books" element={<Suspense fallback={<AdminFallback />}><WrongBooks /></Suspense>} />
