@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBooks, useUserBooks } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
-import { Sparkles, ChevronRight, Loader2, BookOpen, Lock, Check, Mail } from 'lucide-react';
+import { Sparkles, ChevronRight, Loader2, BookOpen, Lock, Check, Mail, Download } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -133,28 +133,45 @@ export default function Welcome() {
         </div>
 
         {unlockedBook ? (
-          <button
-            onClick={() => navigate('/library', { state: { filterLevel: level, openBookId: unlockedBook.id } })}
-            className="block w-full mb-6 group"
-          >
-            <div className="relative rounded-2xl overflow-hidden shadow-card bg-card border-2 border-primary transition-transform duration-200 group-active:scale-[0.97]">
-              {unlockedBook.cover_image_url ? (
-                <img
-                  src={unlockedBook.cover_image_url}
-                  alt={unlockedBook.title}
-                  className="w-full aspect-[3/4] object-cover"
-                />
-              ) : (
-                <div className={`w-full aspect-[3/4] flex items-center justify-center ${LEVEL_COLORS[level]} text-white`}>
-                  <BookOpen className="w-16 h-16 opacity-70" />
+          <div className="mb-6">
+            <button
+              onClick={() => navigate('/library', { state: { filterLevel: level, openBookId: unlockedBook.id } })}
+              className="block w-full group"
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-card bg-card border-2 border-primary transition-transform duration-200 group-active:scale-[0.97]">
+                {unlockedBook.cover_image_url ? (
+                  <img
+                    src={unlockedBook.cover_image_url}
+                    alt={unlockedBook.title}
+                    className="w-full aspect-[3/4] object-cover"
+                  />
+                ) : (
+                  <div className={`w-full aspect-[3/4] flex items-center justify-center ${LEVEL_COLORS[level]} text-white`}>
+                    <BookOpen className="w-16 h-16 opacity-70" />
+                  </div>
+                )}
+                <div className={`${LEVEL_COLORS[level]} text-white py-3 px-4 text-left`}>
+                  <p className="text-xs opacity-90">Level {level} — {levelInfo?.name}</p>
+                  <p className="font-bold text-lg">{unlockedBook.title}</p>
                 </div>
-              )}
-              <div className={`${LEVEL_COLORS[level]} text-white py-3 px-4`}>
-                <p className="text-xs opacity-90">Level {level} — {levelInfo?.name}</p>
-                <p className="font-bold text-lg">{unlockedBook.title}</p>
               </div>
-            </div>
-          </button>
+            </button>
+
+            {/* Download button — sits under the title so parents can grab
+                the PDF without leaving the page. Files are public at
+                /book-pdfs/{level}_{sub}.pdf so this is a direct anchor. */}
+            {unlockedBook.sub_level && (
+              <a
+                href={`/book-pdfs/${unlockedBook.sub_level.replace(/^L/, '').replace('.', '_')}.pdf`}
+                download={`${unlockedBook.title}.pdf`}
+                target="_blank"
+                rel="noopener"
+                className="mt-3 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
+              >
+                <Download className="w-4 h-4" /> Download PDF
+              </a>
+            )}
+          </div>
         ) : (
           <div className="mb-6 p-6 bg-card border border-border rounded-2xl">
             <p className="text-sm text-muted-foreground">
@@ -164,7 +181,12 @@ export default function Welcome() {
         )}
 
         <button
-          onClick={() => navigate('/library')}
+          onClick={() => navigate('/library', {
+            // No level filter on purpose — show the whole library so the
+            // unlocked book sits among all the locked ones the parent
+            // could unlock next. scrollToBookId centres their book in view.
+            state: unlockedBook ? { scrollToBookId: unlockedBook.id } : undefined,
+          })}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200"
         >
           Continue to Library <ChevronRight className="w-4 h-4" />

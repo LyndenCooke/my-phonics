@@ -26,6 +26,7 @@ export default function BookCard({ book, onSelect }: BookCardProps) {
 
   return (
     <button
+      id={`book-card-${book.id}`}
       onClick={() => onSelect(book)}
       className={`group relative rounded-xl overflow-hidden text-left w-full transition-all duration-200 ${
         book.unlocked

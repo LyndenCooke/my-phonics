@@ -5,12 +5,10 @@ import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import Assessment from '@/pages/Assessment';
 import BundleUpsell from './BundleUpsell';
-import BookUnlockedModal from '@/components/BookUnlockedModal';
-import { BOOK_CATALOG } from '@/lib/bookCatalog';
 import { supabase } from '@/integrations/supabase/client';
 
 type Mode = 'rapid' | 'full';
-type Stage = 'choose' | 'assess' | 'upsell' | 'paid-email' | 'free-book-email' | 'unlocked';
+type Stage = 'choose' | 'assess' | 'upsell' | 'paid-email' | 'free-book-email';
 
 interface AnswersSummary {
   sounds_correct: number;
@@ -26,8 +24,6 @@ export default function AssessmentFunnel() {
   const [mode, setMode] = useState<Mode>('rapid');
   const [level, setLevel] = useState(1);
   const [summary, setSummary] = useState<AnswersSummary | null>(null);
-
-  const goToHub = () => navigate('/library', { state: { filterLevel: level } });
 
   // Step 1: chooser — two big buttons. Pick fast or thorough.
   if (stage === 'choose') {
@@ -138,39 +134,25 @@ export default function AssessmentFunnel() {
   }
 
   // Step 5b: free-book email capture. guest-assessment-signup creates the
-  // user, saves the result, unlocks the level book, and emails a magic link.
+  // user, saves the result, unlocks the level book, and returns a magic-
+  // link token the form consumes to sign the parent in straight away.
+  // No "check your inbox" detour — they land in /welcome with the book.
   if (stage === 'free-book-email') {
     return (
       <FunnelLayout>
         <FreeBookEmail
           level={level}
           summary={summary}
-          onSuccess={() => setStage('unlocked')}
+          onSuccess={() => navigate('/welcome', { state: { filterLevel: level } })}
         />
       </FunnelLayout>
     );
   }
 
-  // Step 6: unlocked — celebrate and route to /library.
-  const firstBook = BOOK_CATALOG.find(b => b.level === level);
-  const coverUrl = firstBook
-    ? `/covers/${firstBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
-    : null;
-
-  return (
-    <FunnelLayout>
-      <BookUnlockedModal
-        open={true}
-        onClose={goToHub}
-        onContinue={goToHub}
-        title={firstBook?.title ?? `Level ${level} Book`}
-        level={level}
-        coverUrl={coverUrl}
-        subtitle="Check your inbox for the login link"
-        ctaLabel="Browse the Library"
-      />
-    </FunnelLayout>
-  );
+  // Unused leftover stage — kept in the type for backwards-compat. Bounce
+  // to /welcome so we never strand the user on a blank funnel screen.
+  navigate('/welcome', { state: { filterLevel: level } });
+  return null;
 }
 
 /* ─── Free-book email capture ───────────────────────────────────── */
@@ -214,6 +196,20 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Signup failed');
+
+      // Auto-login with the one-time token the edge function returned,
+      // so the next screen is their library — not an email-check page.
+      if (data?.auth?.token_hash) {
+        const { error: otpError } = await supabase.auth.verifyOtp({
+          token_hash: data.auth.token_hash,
+          type: 'magiclink',
+        });
+        if (otpError) {
+          // Non-fatal — still send them to /welcome; the GHL email
+          // contains a backup login link.
+          console.error('Auto-login failed:', otpError.message);
+        }
+      }
       onSuccess();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');

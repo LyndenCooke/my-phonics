@@ -118,7 +118,23 @@ Deno.serve(async (req) => {
       bookPdfUrl = `https://myphonicsbooks.com/book-pdfs/${subSlug}.pdf`;
     }
 
-    // 4. GHL sync — fire contact.assessed so the CRM tags the lead with
+    // 4. Generate a fresh magiclink token the client can immediately
+    // verify to establish a session — so the parent lands on their
+    // library straight after submitting their email, no inbox detour.
+    // The token_hash is single-use and short-lived; we only ship it
+    // back to the browser that just made this request.
+    let authTokenHash: string | null = null;
+    try {
+      const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
+        type: "magiclink",
+        email,
+      });
+      authTokenHash = linkData?.properties?.hashed_token ?? null;
+    } catch (err) {
+      console.error("generateLink failed (non-fatal):", err);
+    }
+
+    // 5. GHL sync — fire contact.assessed so the CRM tags the lead with
     // their level + funnel source AND writes custom fields the email
     // template merges in (book title, public PDF link, login URL).
     // GHL is the sole email sender; we no longer trigger Supabase's
@@ -147,7 +163,12 @@ Deno.serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true, recommended_level, email_sent: true }),
+      JSON.stringify({
+        success: true,
+        recommended_level,
+        email_sent: true,
+        auth: authTokenHash ? { token_hash: authTokenHash } : null,
+      }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
