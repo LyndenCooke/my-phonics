@@ -1,7 +1,10 @@
 // Guest assessment signup: email-only lightweight signup.
 // Creates (or finds) a Supabase user, saves their assessment result,
-// unlocks a free sample book at their recommended level, and emails
-// a magic link so they can log in.
+// and unlocks a free sample book at their recommended level. The
+// "you've unlocked your book" email is sent by GoHighLevel — we fire
+// a contact.assessed event so GHL's workflow can email the matching
+// PDF + login link. Supabase no longer sends its own magic link from
+// this endpoint to avoid duplicate emails.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -54,7 +57,6 @@ Deno.serve(async (req) => {
     const email = emailRaw;
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const supabaseAdmin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
     // 1. Find or create user
@@ -92,41 +94,37 @@ Deno.serve(async (req) => {
       detailed_answers: answers_summary?.detail ?? [],
     });
 
-    // 3. Unlock the first book at the recommended level as a free sample
+    // 3. Unlock the first book at the recommended level as a free sample.
+    // We also need the title + sub_level so we can build the PDF link
+    // for the GHL email (PDFs live at /book-pdfs/{level}_{sub}.pdf).
     const { data: books } = await supabaseAdmin
       .from("books")
-      .select("id")
+      .select("id, title, sub_level")
       .eq("level", recommended_level)
       .order("sort_order", { ascending: true })
       .limit(1);
 
+    let bookTitle = `Level ${recommended_level} Book`;
+    let bookPdfUrl = "";
     if (books && books.length > 0) {
       await supabaseAdmin.from("user_books").upsert(
         { user_id: userId, book_id: books[0].id, source: "free_sample" },
         { onConflict: "user_id,book_id" }
       );
+      bookTitle = books[0].title ?? bookTitle;
+      const subSlug = (books[0].sub_level ?? `L${recommended_level}.1`)
+        .replace(/^L/, "")
+        .replace(".", "_");
+      bookPdfUrl = `https://myphonicsbooks.com/book-pdfs/${subSlug}.pdf`;
     }
 
-    // 4. Send a magic link so they can log in by email
-    const origin = req.headers.get("origin") || "https://myphonicsbooks.vercel.app";
-    await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({
-        email,
-        create_user: false,
-        email_redirect_to: `${origin}/welcome`,
-      }),
-    });
-
-    // 5. GHL sync — fire contact.assessed so the CRM tags the lead with
-    // their level + funnel source. The user can then build email
-    // automations off the `assessed`, `level:N`, and `source:` tags
-    // (e.g. send the matching free-book PDF for their level).
-    // Best-effort; failures must not block the signup response.
+    // 4. GHL sync — fire contact.assessed so the CRM tags the lead with
+    // their level + funnel source AND writes custom fields the email
+    // template merges in (book title, public PDF link, login URL).
+    // GHL is the sole email sender; we no longer trigger Supabase's
+    // built-in magic-link send. Best-effort; failures must not block.
+    const origin = req.headers.get("origin") || "https://myphonicsbooks.com";
+    const loginUrl = `${origin}/welcome?email=${encodeURIComponent(email)}`;
     try {
       await supabaseAdmin.functions.invoke("ghl-sync", {
         body: {
@@ -136,6 +134,11 @@ Deno.serve(async (req) => {
             full_name: child_name || "",
             recommended_level,
             source: "assessment-funnel",
+            custom_fields: {
+              book_title: bookTitle,
+              book_pdf_url: bookPdfUrl,
+              login_url: loginUrl,
+            },
           },
         },
       });

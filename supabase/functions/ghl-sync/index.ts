@@ -5,6 +5,35 @@ const GHL_API_KEY = Deno.env.get('GHL_API_KEY') ?? '';
 const GHL_LOCATION_ID = Deno.env.get('GHL_LOCATION_ID') ?? '';
 const GHL_BASE = 'https://services.leadconnectorhq.com';
 
+// GHL custom field IDs — set these in Supabase env once the fields are
+// created in GHL (Settings → Custom Fields). Missing IDs are skipped so
+// the integration degrades gracefully while fields are being set up.
+const GHL_FIELD_BOOK_TITLE = Deno.env.get('GHL_FIELD_BOOK_TITLE') ?? '';
+const GHL_FIELD_BOOK_PDF_URL = Deno.env.get('GHL_FIELD_BOOK_PDF_URL') ?? '';
+const GHL_FIELD_LOGIN_URL = Deno.env.get('GHL_FIELD_LOGIN_URL') ?? '';
+
+interface CustomFieldsPayload {
+  book_title?: string;
+  book_pdf_url?: string;
+  login_url?: string;
+}
+
+/** Map our payload keys → GHL custom field IDs, dropping missing ones. */
+function buildCustomFields(cf?: CustomFieldsPayload): { id: string; value: string }[] {
+  if (!cf) return [];
+  const fields: { id: string; value: string }[] = [];
+  if (cf.book_title && GHL_FIELD_BOOK_TITLE) {
+    fields.push({ id: GHL_FIELD_BOOK_TITLE, value: cf.book_title });
+  }
+  if (cf.book_pdf_url && GHL_FIELD_BOOK_PDF_URL) {
+    fields.push({ id: GHL_FIELD_BOOK_PDF_URL, value: cf.book_pdf_url });
+  }
+  if (cf.login_url && GHL_FIELD_LOGIN_URL) {
+    fields.push({ id: GHL_FIELD_LOGIN_URL, value: cf.login_url });
+  }
+  return fields;
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -197,6 +226,14 @@ serve(async (req) => {
             tags.push(`source:${data.source}`);
           }
           await addTags(ghlContactId, tags);
+
+          // Write custom fields so the GHL email template can include
+          // the book title, a public PDF download link, and a login URL
+          // via merge tags — one template covers all 6 levels.
+          const customFields = buildCustomFields(data?.custom_fields as CustomFieldsPayload);
+          if (customFields.length > 0) {
+            await updateContact(ghlContactId, { customFields });
+          }
         }
         break;
       }
