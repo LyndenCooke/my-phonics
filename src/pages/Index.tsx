@@ -32,7 +32,9 @@ import {
 
 export default function Index() {
   const location = useLocation();
-  const initialLevel = (location.state as { filterLevel?: number } | null)?.filterLevel ?? null;
+  const navState = location.state as { filterLevel?: number; scrollToBookId?: string } | null;
+  const initialLevel = navState?.filterLevel ?? null;
+  const scrollToBookId = navState?.scrollToBookId ?? null;
   const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -79,6 +81,26 @@ export default function Index() {
     setShowUnlockedModal(true);
     localStorage.setItem(key, '1');
   }, [user, userBooksData, booksData]);
+
+  // Scroll to the unlocked book when arriving from /welcome so the user
+  // lands ON their book card, with the surrounding locked books visible —
+  // it builds curiosity for what comes next without them having to scroll.
+  useEffect(() => {
+    if (!scrollToBookId || booksLoading) return;
+    // Wait one frame so the grid is in the DOM with its final layout
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`book-card-${scrollToBookId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Soft highlight to draw the eye without being garish
+        el.classList.add('ring-4', 'ring-primary', 'ring-offset-2');
+        setTimeout(() => {
+          el.classList.remove('ring-4', 'ring-primary', 'ring-offset-2');
+        }, 2500);
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [scrollToBookId, booksLoading, booksData]);
 
   const userBooksMap = new Map((userBooksData ?? []).map(ub => [ub.book_id, ub]));
 
