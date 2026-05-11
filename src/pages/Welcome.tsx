@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBooks, useUserBooks } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
-import { Sparkles, ChevronRight, Loader2, BookOpen, Lock, Check } from 'lucide-react';
+import { Sparkles, ChevronRight, Loader2, BookOpen, Lock, Check, Mail } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -14,12 +14,22 @@ const LEVEL_COLORS: Record<number, string> = {
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const emailParam = searchParams.get('email') ?? '';
   const { user, loading: authLoading } = useAuth();
   const { data: userBooks, isLoading: ubLoading } = useUserBooks();
   const { data: allBooks, isLoading: booksLoading } = useBooks();
 
   // Find the first free-sample book the user has unlocked
   const [unlockedBook, setUnlockedBook] = useState<any>(null);
+
+  // Magic-link state for visitors arriving from a GHL email with ?email=...
+  // The GHL "Continue reading" button sends them here so we can issue a
+  // fresh Supabase login link on the spot (links would expire if we
+  // baked them into the email at send time).
+  const [linkSent, setLinkSent] = useState(false);
+  const [linkSending, setLinkSending] = useState(false);
+  const [linkError, setLinkError] = useState('');
 
   useEffect(() => {
     if (!userBooks || !allBooks) return;
@@ -29,14 +39,67 @@ export default function Welcome() {
     if (book) setUnlockedBook(book);
   }, [userBooks, allBooks]);
 
-  // If not logged in, bounce to assessment
+  // Auto-send the magic link on first arrival from GHL, then show the
+  // "check your inbox" screen. If no email param is present we bounce
+  // to /assess as before.
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (authLoading || user) return;
+    if (!emailParam) {
       navigate('/assess');
+      return;
     }
-  }, [authLoading, user, navigate]);
+    if (linkSent || linkSending) return;
+    setLinkSending(true);
+    supabase.auth
+      .signInWithOtp({
+        email: emailParam,
+        options: { emailRedirectTo: `${window.location.origin}/welcome` },
+      })
+      .then(({ error }) => {
+        if (error) setLinkError(error.message);
+        else setLinkSent(true);
+      })
+      .finally(() => setLinkSending(false));
+  }, [authLoading, user, emailParam, linkSent, linkSending, navigate]);
 
   const loading = authLoading || ubLoading || booksLoading;
+
+  // Visitor arriving via the GHL email button — show "check your inbox"
+  // confirmation. We render this BEFORE the auth-loading gate so they
+  // aren't staring at a spinner while the OTP request completes.
+  if (!user && emailParam) {
+    return (
+      <Layout>
+        <div className="px-4 pt-12 pb-8 max-w-md mx-auto text-center">
+          <div className="bg-card border border-border rounded-3xl p-8 shadow-card">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-tint-pink flex items-center justify-center">
+              <Mail className="w-7 h-7 text-primary" />
+            </div>
+            <h1 className="text-2xl font-extrabold text-foreground mb-2">
+              Check your inbox
+            </h1>
+            <p className="text-sm text-muted-foreground mb-1">
+              We've sent a one-tap login link to
+            </p>
+            <p className="text-sm font-bold text-foreground mb-5 break-all">{emailParam}</p>
+            {linkSending && (
+              <p className="text-xs text-muted-foreground flex items-center justify-center gap-2">
+                <Loader2 className="w-3 h-3 animate-spin" /> Sending link…
+              </p>
+            )}
+            {linkSent && !linkSending && (
+              <p className="text-xs text-muted-foreground">
+                Tap the button in that email to log in and unlock your book.
+              </p>
+            )}
+            {linkError && (
+              <p className="text-xs text-destructive">{linkError}</p>
+            )}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (loading) {
     return (
