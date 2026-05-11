@@ -19,7 +19,7 @@ const LEVEL_CONFIG: Record<number, { colour: string; name: string }> = {
 };
 
 type Mode = 'rapid' | 'full';
-type Stage = 'choose' | 'assess' | 'result' | 'upsell' | 'paid-email' | 'free-book-email' | 'unlocked';
+type Stage = 'choose' | 'assess' | 'book-reveal' | 'result' | 'upsell' | 'paid-email' | 'free-book-email' | 'unlocked';
 
 interface AnswersSummary {
   sounds_correct: number;
@@ -37,6 +37,12 @@ export default function AssessmentFunnel() {
   const [summary, setSummary] = useState<AnswersSummary | null>(null);
 
   const goToHub = () => navigate('/library', { state: { filterLevel: level } });
+
+  // The free book we're gifting them — first published book at their level.
+  const unlockedBook = BOOK_CATALOG.find(b => b.level === level);
+  const unlockedCoverUrl = unlockedBook
+    ? `/covers/${unlockedBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
+    : null;
 
   // Step 1: chooser — two big buttons. Pick fast or thorough.
   if (stage === 'choose') {
@@ -110,13 +116,33 @@ export default function AssessmentFunnel() {
         onFunnelComplete={(lv, sm) => {
           setLevel(lv);
           setSummary(sm);
-          setStage('result');
+          setStage('book-reveal');
         }}
       />
     );
   }
 
-  // Step 3: celebrate the level + free book unlock with one Continue button.
+  // Step 3a: book reveal popup — the celebration moment. Grey overlay over
+  // an empty layout with the actual unlocked book in the middle so the user
+  // sees the reward before any data breakdown.
+  if (stage === 'book-reveal') {
+    return (
+      <FunnelLayout>
+        <BookUnlockedModal
+          open={true}
+          onClose={() => setStage('result')}
+          onContinue={() => setStage('result')}
+          title={unlockedBook?.title ?? `Level ${level} Book`}
+          level={level}
+          coverUrl={unlockedCoverUrl}
+          subtitle="Based on your results, you've unlocked this free book"
+          ctaLabel="Continue"
+        />
+      </FunnelLayout>
+    );
+  }
+
+  // Step 3b: celebrate the level + free book unlock with one Continue button.
   // Email/payment are deferred to the next steps so action precedes ask.
   if (stage === 'result') {
     const config = LEVEL_CONFIG[level] || LEVEL_CONFIG[1];
