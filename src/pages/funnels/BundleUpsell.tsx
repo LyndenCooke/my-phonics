@@ -1,9 +1,20 @@
-import { BookOpen, Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 
 const LEVEL_COLOUR: Record<number, string> = {
   1: '#E84B8A', 2: '#F5A623', 3: '#4ABD6D',
   4: '#5B9EFF', 5: '#A78EFF', 6: '#2B8A6E',
 };
+
+// One representative cover per level — the first book in each progression.
+// Stored under /public/covers/{level}_{sub}_cover.jpg.
+const LEVEL_COVERS: { level: number; src: string; alt: string }[] = [
+  { level: 1, src: '/covers/1_1_cover.jpg', alt: 'Level 1 — Tap! Tap! Tap!' },
+  { level: 2, src: '/covers/2_1_cover.jpg', alt: 'Level 2 — The Night Light' },
+  { level: 3, src: '/covers/3_1_cover.jpg', alt: 'Level 3 — The Big Bike Race' },
+  { level: 4, src: '/covers/4_1_cover.jpg', alt: 'Level 4 — The Purple Purse' },
+  { level: 5, src: '/covers/5_1_cover.jpg', alt: 'Level 5 — Before the Shore' },
+  { level: 6, src: '/covers/6_1_cover.jpg', alt: 'Level 6 — My Marvellous Home' },
+];
 
 const ALL_BOOKS_PRICE = '49.99';
 const ALL_BOOKS_TOTAL = 32;
@@ -30,26 +41,31 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
   return (
     <div className="max-w-md mx-auto pt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-6 sm:p-8 text-center">
-        {/* Cascading book stack — represents "all the books" */}
-        <div className="relative w-44 h-48 mx-auto mb-6">
-          {[
-            LEVEL_COLOUR[1], LEVEL_COLOUR[2], LEVEL_COLOUR[3],
-            LEVEL_COLOUR[4], LEVEL_COLOUR[5], LEVEL_COLOUR[6],
-          ].map((colour, i) => (
+        {/* Real cover grid — one per level so parents see what's actually
+            inside the bundle. The child's current level is highlighted with
+            a coloured ring so the upgrade story is "you're here → all this". */}
+        <div className="grid grid-cols-3 gap-2 mb-6">
+          {LEVEL_COVERS.map(({ level: lv, src, alt }) => (
             <div
-              key={i}
-              className="absolute inset-0 rounded-xl shadow-lg border-2 border-white"
+              key={lv}
+              className="relative rounded-lg overflow-hidden bg-white shadow-md"
               style={{
-                backgroundColor: colour,
-                transform: `rotate(${-10 + i * 4}deg) translateX(${i * 4}px)`,
-                zIndex: i,
-                opacity: 0.7 + i * 0.05,
+                outline: lv === level ? `3px solid ${accent}` : '1px solid rgba(0,0,0,0.06)',
+                outlineOffset: lv === level ? '1px' : '0',
               }}
             >
-              <BookOpen
-                size={26}
-                className="text-white/40 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              <img
+                src={src}
+                alt={alt}
+                className="w-full aspect-[3/4] object-cover"
+                loading="lazy"
               />
+              <div
+                className="absolute top-1 left-1 text-[10px] font-extrabold text-white px-1.5 py-0.5 rounded shadow"
+                style={{ backgroundColor: LEVEL_COLOUR[lv] }}
+              >
+                L{lv}
+              </div>
             </div>
           ))}
         </div>

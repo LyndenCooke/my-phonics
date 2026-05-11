@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap, Search, Sparkles, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
+import { Zap, Search, ChevronRight, Loader2, ArrowRight } from 'lucide-react';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import Assessment from '@/pages/Assessment';
@@ -9,17 +9,8 @@ import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
 import { supabase } from '@/integrations/supabase/client';
 
-const LEVEL_CONFIG: Record<number, { colour: string; name: string }> = {
-  1: { colour: '#E84B8A', name: 'Starting Stories' },
-  2: { colour: '#F5A623', name: 'Longer Sounds' },
-  3: { colour: '#4ABD6D', name: 'New Spellings' },
-  4: { colour: '#5B9EFF', name: 'Building Fluency' },
-  5: { colour: '#A78EFF', name: 'Reading Together' },
-  6: { colour: '#2B8A6E', name: 'Reading Champion' },
-};
-
 type Mode = 'rapid' | 'full';
-type Stage = 'choose' | 'assess' | 'book-reveal' | 'result' | 'upsell' | 'paid-email' | 'free-book-email' | 'unlocked';
+type Stage = 'choose' | 'assess' | 'upsell' | 'paid-email' | 'free-book-email' | 'unlocked';
 
 interface AnswersSummary {
   sounds_correct: number;
@@ -37,12 +28,6 @@ export default function AssessmentFunnel() {
   const [summary, setSummary] = useState<AnswersSummary | null>(null);
 
   const goToHub = () => navigate('/library', { state: { filterLevel: level } });
-
-  // The free book we're gifting them — first published book at their level.
-  const unlockedBook = BOOK_CATALOG.find(b => b.level === level);
-  const unlockedCoverUrl = unlockedBook
-    ? `/covers/${unlockedBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
-    : null;
 
   // Step 1: chooser — two big buttons. Pick fast or thorough.
   if (stage === 'choose') {
@@ -105,9 +90,10 @@ export default function AssessmentFunnel() {
     );
   }
 
-  // Step 2: run the actual assessment. Assessment.tsx handles onboarding +
-  // adaptive testing internally; in funnelMode it hands the level back via
-  // onFunnelComplete instead of asking for an email at the result screen.
+  // Step 2: run the actual assessment. Assessment.tsx handles onboarding,
+  // adaptive testing, AND the funnelMode book-reveal popup over the result
+  // breakdown internally; it hands the level back via onFunnelComplete when
+  // the parent dismisses the modal and then taps Continue on the breakdown.
   if (stage === 'assess') {
     return (
       <Assessment
@@ -116,75 +102,13 @@ export default function AssessmentFunnel() {
         onFunnelComplete={(lv, sm) => {
           setLevel(lv);
           setSummary(sm);
-          setStage('book-reveal');
+          setStage('upsell');
         }}
       />
     );
   }
 
-  // Step 3a: book reveal popup — the celebration moment. Grey overlay over
-  // an empty layout with the actual unlocked book in the middle so the user
-  // sees the reward before any data breakdown.
-  if (stage === 'book-reveal') {
-    return (
-      <FunnelLayout>
-        <BookUnlockedModal
-          open={true}
-          onClose={() => setStage('result')}
-          onContinue={() => setStage('result')}
-          title={unlockedBook?.title ?? `Level ${level} Book`}
-          level={level}
-          coverUrl={unlockedCoverUrl}
-          subtitle="Based on your results, you've unlocked this free book"
-          ctaLabel="Continue"
-        />
-      </FunnelLayout>
-    );
-  }
-
-  // Step 3b: celebrate the level + free book unlock with one Continue button.
-  // Email/payment are deferred to the next steps so action precedes ask.
-  if (stage === 'result') {
-    const config = LEVEL_CONFIG[level] || LEVEL_CONFIG[1];
-    return (
-      <FunnelLayout>
-        <div className="max-w-md mx-auto pt-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-6 sm:p-8 text-center mb-5">
-            <div
-              className="w-24 h-24 mx-auto mb-5 rounded-full flex items-center justify-center text-white shadow-lg animate-in zoom-in duration-500"
-              style={{ backgroundColor: config.colour }}
-            >
-              <Sparkles size={42} />
-            </div>
-            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-1">
-              Their reading level
-            </p>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-1">
-              Level {level}
-            </h1>
-            <p className="text-base font-bold mb-5" style={{ color: config.colour }}>
-              {config.name}
-            </p>
-            <div
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-white text-sm font-bold shadow-md"
-              style={{ backgroundColor: config.colour }}
-            >
-              <Sparkles size={14} /> Free book unlocked
-            </div>
-          </div>
-
-          <button
-            onClick={() => setStage('upsell')}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[hsl(var(--primary))] to-rose-500 text-white font-bold text-base shadow-lg shadow-pink-500/30 active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2"
-          >
-            Continue <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-      </FunnelLayout>
-    );
-  }
-
-  // Step 4: bundle upsell — Yes goes to email-then-checkout, No goes to
+  // Step 3: bundle upsell — Yes goes to email-then-checkout, No goes to
   // email-only for the free book.
   if (stage === 'upsell') {
     return (

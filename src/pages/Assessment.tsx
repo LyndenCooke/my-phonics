@@ -346,6 +346,11 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   const [guestSubmitting, setGuestSubmitting] = useState(false);
   const [guestSubmitted, setGuestSubmitted] = useState(false);
 
+  // In funnelMode the book reveal popup opens immediately on the results
+  // screen as the celebration moment. The actual breakdown sits behind it
+  // dimmed, and is revealed when the parent clicks Continue on the modal.
+  const [bookRevealDismissed, setBookRevealDismissed] = useState(false);
+
   const submitGuestAssessment = async (recommendedLevel: number) => {
     if (!guestEmail || !guestEmail.includes('@')) {
       alert('Please enter a valid email address');
@@ -1232,8 +1237,27 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     const testedCount = answers.length;
     const wrongItems = answers.filter(a => !a.isCorrect);
 
+    // Book reveal celebration for funnelMode — shown on top of the
+    // dimmed results page. Parent clicks Continue to see the breakdown.
+    const revealBook = funnelMode ? BOOK_CATALOG.find(b => b.level === recommendedLevel) : null;
+    const revealCoverUrl = revealBook
+      ? `/covers/${revealBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
+      : null;
+
     return (
       <Wrap>
+        {funnelMode && !bookRevealDismissed && (
+          <BookUnlockedModal
+            open={true}
+            onClose={() => setBookRevealDismissed(true)}
+            onContinue={() => setBookRevealDismissed(true)}
+            title={revealBook?.title ?? `Level ${recommendedLevel} Book`}
+            level={recommendedLevel}
+            coverUrl={revealCoverUrl}
+            subtitle="Based on your results, you've unlocked this free book"
+            ctaLabel="Continue"
+          />
+        )}
         <div className="px-4 pt-6 pb-8 max-w-md mx-auto text-center">
           <h2 className="text-[28px] font-extrabold text-foreground mb-1 tracking-tight">
             Assessment Complete
