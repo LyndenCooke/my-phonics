@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Save, Mail, Lock } from 'lucide-react';
+import PasswordSetup from '@/components/PasswordSetup';
 
 export default function AccountSettings() {
   const { user } = useAuth();
@@ -146,11 +147,21 @@ export default function AccountSettings() {
             </p>
           </Field>
 
+          {/* Inline set/change password — works for users who signed in
+              via magic link and never set one. The "Send reset email"
+              button below stays as the fallback in case they want a
+              link to set it from another device. */}
+          <PasswordSetup
+            title="Set or change your password"
+            subtitle="Pick a password so you can sign in without waiting for an email link."
+            required
+          />
+
           <button
             onClick={handlePasswordReset}
             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted/50 transition-colors"
           >
-            <Lock className="w-4 h-4" /> Send password reset email
+            <Lock className="w-4 h-4" /> Send password reset email instead
           </button>
         </section>
 
