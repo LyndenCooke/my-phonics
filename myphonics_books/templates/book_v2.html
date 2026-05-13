@@ -1,0 +1,3072 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ book_title }}</title>
+  {{ "<style>
+    :root {
+      --level-color: " ~ level_colour ~ ";
+      --story-font-size: " ~ story_font_size ~ "pt;
+    }
+  </style>" | safe }}
+  <style>
+    /* ===== FONTS ===== */
+    @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; font-style: normal; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; font-style: normal; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_italic }}') format('truetype'); font-weight: 400; font-style: italic; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_bold_italic }}') format('truetype'); font-weight: 700; font-style: italic; }
+
+    /* ===== RESET & PAGE ===== */
+    @page { size: 148mm 210mm; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: 'Andika', sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 148mm; height: 210mm; position: relative; overflow: hidden;
+      page-break-after: always; page-break-inside: avoid; background: #ffffff;
+    }
+    .page:last-child { page-break-after: avoid; }
+    .page-inner { width: 100%; height: 100%; padding: 12mm; display: flex; flex-direction: column; }
+
+    /* Page number badge */
+    .page-num {
+      position: absolute; bottom: 4mm; font-size: 8pt; color: #999; font-weight: 700;
+    }
+    .page-num-left { left: 5mm; } .page-num-right { right: 5mm; }
+
+    /* ================================================================
+       COVER — matches the library covers in /public/covers/.
+       Top band + full-bleed illustration + bottom band with centred title.
+       ================================================================ */
+    .cover { padding: 0; display: flex; flex-direction: column; }
+
+    .cover-top-band {
+      height: 14mm;
+      background: var(--level-color);
+      padding: 0 8mm;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0;
+    }
+    .cover-top-level {
+      font-size: 9pt; font-weight: 700; color: #ffffff;
+      text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    .cover-top-brand {
+      font-size: 9pt; color: #ffffff;
+      letter-spacing: 0.2px;
+    }
+
+    .cover-illustration {
+      flex: 1;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: #f5f5f5;
+    }
+    .cover-illustration img { width: 100%; height: 100%; object-fit: cover; }
+    .cover-illustration-fallback {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--level-color) 0%, #f5f5f5 100%);
+    }
+
+    .cover-bottom-band {
+      height: 50mm;
+      background: var(--level-color);
+      padding: 8mm 10mm;
+      color: #ffffff;
+      flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .cover-title {
+      font-size: 26pt; font-weight: 700; color: #ffffff;
+      line-height: 1.1; letter-spacing: -0.2px;
+      margin-bottom: 3mm;
+    }
+    .cover-subtitle {
+      font-size: 11pt; color: rgba(255,255,255,0.95);
+      font-style: italic;
+    }
+
+    /* ================================================================
+       GRAMMAR TOUCHPOINTS — same focus skill threaded through five
+       slots: Guide tip (p2), Reference Writing Tip (p3), Spot It margin
+       nudge on a story page, retell-scaffold note (p15), and the Word
+       Workshop spotlight (p17).  Each block is visually distinct so
+       parent + child can recognise the pattern across the book.
+       ================================================================ */
+    /* Writing Tip — used on the Guide page and the Reference page.    */
+    .writing-tip {
+      margin-top: 4mm;
+      padding: 3.5mm 4mm;
+      background: #fffaf0;
+      border: 0.4mm solid #f0d8a8;
+      border-radius: 2mm;
+    }
+    .writing-tip-label {
+      font-size: 7.5pt; font-weight: 700;
+      color: #b8801a;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1.5mm;
+    }
+    .writing-tip-body {
+      font-size: 10pt; color: #1a1a1a; line-height: 1.45;
+    }
+    .writing-tip-body strong { color: var(--level-color); }
+
+    /* Spot It — small margin bubble that lives at the bottom of one
+       story page, tying the day's grammar feature to the story.       */
+    .spot-it-bubble {
+      position: absolute;
+      bottom: 16mm; left: 8mm; right: 8mm;
+      padding: 2.5mm 3.5mm;
+      background: rgba(255, 255, 255, 0.94);
+      border: 0.4mm solid var(--level-color);
+      border-radius: 3mm;
+      display: flex; align-items: center; gap: 3mm;
+      box-shadow: 0 0.5mm 1mm rgba(0, 0, 0, 0.06);
+      z-index: 2;
+    }
+    /* On L5+ pages there's no GPC strip, so Spot It can sit lower. */
+    .story-page-no-gpc .spot-it-bubble {
+      bottom: 8mm;
+    }
+    .spot-it-badge {
+      flex: 0 0 auto;
+      font-size: 7pt; font-weight: 700;
+      color: #ffffff; background: var(--level-color);
+      padding: 1mm 2.5mm;
+      border-radius: 1.5mm;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .spot-it-text {
+      font-size: 9pt; color: #1a1a1a; line-height: 1.35;
+    }
+
+    /* Retell scaffold note — single line above the writing area      */
+    .retell-note {
+      margin-bottom: 2mm;
+      padding: 2mm 3mm;
+      background: #f7f9fc;
+      border-left: 1mm solid var(--level-color);
+      font-size: 9pt; color: #444;
+      font-style: italic;
+    }
+
+    /* ================================================================
+       GUIDE FOR GROWN-UPS (during + after only — before-script lives on Sounds page)
+       ================================================================ */
+    .guide-title {
+      font-size: 18pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 2mm;
+    }
+    .guide-intro {
+      font-size: 9.5pt; color: #555; line-height: 1.6;
+      margin-bottom: 6mm;
+    }
+    .guide-section { margin-bottom: 6mm; }
+    .guide-section-title {
+      font-size: 10pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 3mm; padding-bottom: 1.5mm;
+      border-bottom: 0.4mm solid var(--level-color);
+    }
+    .guide-script-line {
+      font-size: 10pt; color: #333; line-height: 1.6;
+      margin-bottom: 3mm; padding-left: 5mm;
+    }
+    .guide-script-line::before {
+      content: ""; display: inline-block;
+      width: 1.5mm; height: 1.5mm; border-radius: 50%;
+      background: var(--level-color);
+      margin-left: -5mm; margin-right: 3mm; vertical-align: middle;
+    }
+    .guide-script-line strong { color: #1a1a1a; }
+    .guide-quote {
+      margin-top: auto;
+      padding: 5mm 6mm;
+      border-left: 1.2mm solid var(--level-color);
+      background: #f9f9f9;
+      font-size: 9.5pt; font-style: italic; color: #555;
+      line-height: 1.5;
+    }
+
+    /* ================================================================
+       SOUNDS + STORY WORDS (with before-reading script + sound-buttoned words)
+       ================================================================ */
+    .sw-before-script {
+      padding: 4mm 5mm;
+      background: #f9f9f9;
+      border-left: 1.2mm solid var(--level-color);
+      border-radius: 0 2mm 2mm 0;
+      margin-bottom: 5mm;
+    }
+    .sw-before-script-label {
+      font-size: 8pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1.5mm;
+    }
+    .sw-before-script-text {
+      font-size: 9.5pt; color: #444; line-height: 1.5;
+    }
+
+    .sw-section-title {
+      font-size: 11pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 1mm;
+      margin-top: 3mm;
+    }
+    .sw-section-desc {
+      font-size: 8pt; color: #777; margin-bottom: 2mm;
+    }
+
+    .sw-sound-row {
+      display: flex; flex-wrap: wrap; gap: 2.5mm;
+      margin-bottom: 4mm;
+    }
+    .sw-sound-circle {
+      width: 12mm; height: 12mm; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12pt; font-weight: 700;
+      background: var(--level-color); color: #ffffff;
+    }
+    .sw-sound-circle-multi { font-size: 8pt; padding: 0 1mm; text-align: center; }
+
+    /* Sound-buttoned word list — proper SSP arc + dot notation rendered
+       inline as SVG so dots and arcs line up with character widths.
+       Each character is a fixed-width span; SVG sits below (or above for
+       split digraphs) at exact horizontal positions. */
+    .sw-words-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm 4mm;
+      margin-bottom: 3mm;
+    }
+    .sw-word-cell {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0.5mm 0;
+      overflow: hidden;
+      min-width: 0;
+    }
+    /* Long sound-buttoned words at L5/L6 ("instruction", "neighbourhood")
+       overflow the 1/3 column.  Scale the SVG to fit while preserving the
+       letter geometry. */
+    .sw-word-cell .sb-word {
+      max-width: 100%;
+    }
+    .sw-word-cell .sb-word svg {
+      width: 100%;
+      height: auto;
+      max-width: 38mm;
+    }
+    /* All-SVG sound-buttoned word.  Letters AND marks share the same
+       coordinate system, so dots/lines/arcs always sit dead-centre under
+       (or over) the visual glyph regardless of natural Andika advance
+       widths.  See sb_word macro for the SVG geometry. */
+    .sb-word {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 0;
+      width: var(--sb-natural-w, auto);  /* natural width when there's room */
+      max-width: 100%;                     /* never overflow the cell */
+    }
+    .sb-word svg {
+      display: block;
+      overflow: visible;
+      width: 100%;       /* scale long words down inside their cell */
+      height: auto;
+    }
+    .sb-word text {
+      font-family: 'Andika', sans-serif;
+      font-weight: 500;
+      fill: #1a1a1a;
+    }
+
+    .sw-tricky-strip {
+      margin-top: 3mm;
+      padding: 3mm 4mm;
+      background: #fffbe6;
+      border: 0.4mm solid #f5deb3;
+      border-radius: 2mm;
+    }
+    .sw-tricky-label {
+      font-size: 8pt; color: #b8860b; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 2mm;
+    }
+    .sw-tricky-words {
+      display: flex; flex-wrap: wrap; gap: 2mm 5mm;
+    }
+    .sw-tricky-word {
+      font-size: 13pt; font-style: italic; color: #1a1a1a;
+    }
+
+    /* Pronunciation note (e.g. soft-c in "race" at L3.1).  Small parent
+       callout so they know to pre-teach an alternative pronunciation
+       that the focus-sound table doesn't surface. */
+    .sw-pron-note {
+      margin-top: 4mm;
+      padding: 3mm 4mm;
+      background: #fff5f0;
+      border: 0.4mm solid #f0c8a8;
+      border-radius: 2mm;
+    }
+    .sw-pron-note-label {
+      font-size: 8pt; font-weight: 700; color: #b86a30;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1.5mm;
+    }
+    .sw-pron-note-body {
+      font-size: 9pt; color: #5c4020; line-height: 1.5;
+      margin-bottom: 2mm;
+    }
+    /* Two-column grid: each example is "<word> → <pronunciation>" laid out
+       on one line.  Each cell keeps its arrow + pronunciation together;
+       cells wrap to a new row only when the column is full. */
+    .sw-pron-note-examples {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5mm 6mm;
+      margin-top: 1mm;
+    }
+    .sw-pron-note-example {
+      font-size: 10pt; color: #1a1a1a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sw-pron-note-example strong { font-weight: 700; }
+    .sw-pron-note-example .arrow {
+      color: #b86a30; margin: 0 1.5mm; font-weight: 700;
+    }
+
+    /* ================================================================
+       SOUND TRACING + LETTER FORMATION (combined page)
+       ================================================================ */
+    .tf-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 0.5mm;
+    }
+    .tf-instruction {
+      font-size: 8.5pt; color: #777; margin-bottom: 3mm;
+    }
+    .tf-section-label {
+      font-size: 8.5pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 2mm;
+      margin-top: 1mm;
+    }
+
+    /* Per-grapheme formation row.  Compacted to fit four rows + free-write
+       paper inside the A5 page-inner (186mm).  Formation letter sits on
+       the left; rhyme is BELOW the letter inside the same column. */
+    .tf-row {
+      display: flex; align-items: center; gap: 3mm;
+      margin-bottom: 3mm;
+      padding: 2mm 3mm;
+      background: #fafafa;
+      border: 0.4mm solid #eee;
+      border-radius: 3mm;
+    }
+    .tf-formation-block {
+      flex: 0 0 24mm;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .tf-formation-letter {
+      width: 18mm; height: 18mm;
+      border: 0.4mm solid var(--level-color);
+      border-radius: 2mm;
+      background: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28pt; font-weight: 700;
+      color: var(--level-color);
+      line-height: 1;
+      position: relative;
+      margin-bottom: 1mm;
+    }
+    .tf-formation-letter-multi { font-size: 18pt; }
+    .tf-stroke-num {
+      position: absolute; top: -1.5mm; left: -1.5mm;
+      width: 5mm; height: 5mm; border-radius: 50%;
+      background: var(--level-color); color: #ffffff;
+      font-size: 8pt; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border: 0.4mm solid #ffffff;
+    }
+    .tf-formation-rhyme {
+      font-size: 6.5pt; color: #666; text-align: center;
+      line-height: 1.25; font-style: italic;
+      max-width: 24mm;
+    }
+
+    /* Trace cells — child traces over a faint outline letter.
+       Outlined letter (text-stroke) is the visual "ghost" that signals
+       "trace me" without being a full filled letter. */
+    .tf-trace-block {
+      flex: 1;
+      display: flex; gap: 3mm;
+      align-items: stretch;
+    }
+    /* Trace cell — letter is anchored to the BASELINE (bottom guide)
+       not centred in the box.  Ascenders rise to top guide, x-height
+       letters sit between baseline and mid-line, descenders dip below. */
+    .tf-trace-cell {
+      flex: 1;
+      position: relative;
+      background: #ffffff;
+      border: 0.3mm solid #e0e0e0;
+      border-radius: 2mm;
+      min-height: 18mm;
+      /* No flexbox centring — we anchor children to the baseline guide. */
+    }
+    .tf-trace-ghost {
+      position: absolute;
+      left: 0; right: 0;
+      /* Baseline guide is at bottom: 3.5mm.  line-height: 1 sets em-box
+         bottom ≈ font baseline.  With bottom: 3.1mm the visual baseline
+         of x-height letters sits ON the bottom dashed line. */
+      bottom: 3.1mm;
+      text-align: center;
+      font-size: 26pt; font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 0.5mm #b0b0b0;
+      line-height: 1;
+    }
+    .tf-trace-ghost-multi { font-size: 18pt; }
+    /* Pale blue 4-line baseline guide running through the trace cells.
+       top    = ascender / cap-height line
+       mid    = x-height line (top of x-height letters)
+       bottom = baseline (where letters sit)
+       descender drop is implied below the baseline. */
+    .tf-trace-cell::before,
+    .tf-trace-cell::after {
+      content: ""; position: absolute; left: 1.5mm; right: 1.5mm;
+      border-top: 0.25mm dashed rgba(80, 130, 180, 0.5);
+    }
+    .tf-trace-cell::before { top: 2mm; }      /* ascender / cap line — ascenders touch this */
+    .tf-trace-cell::after  { bottom: 3.5mm; } /* baseline */
+    .tf-trace-mid {
+      position: absolute; left: 1.5mm; right: 1.5mm;
+      /* x-height line: top of x-height letters lands here.
+         Cell min-height 18mm; baseline bottom:3.5mm; x-height ~6mm
+         above baseline → mid-line at bottom: 9.5mm. */
+      bottom: 9.5mm;
+      border-top: 0.3mm dashed rgba(80, 130, 180, 0.6);
+    }
+
+    /* Free-write row at the bottom — proper handwriting paper.
+       Line count + line style scale with level so emerging writers (L1-L2)
+       get the full 4-line baseline scaffold, while fluent writers (L5-L6)
+       get plain solid lines and more rows for sentence writing. */
+    .tf-write-row {
+      margin-top: 3mm;
+    }
+    .tf-write-label {
+      font-size: 8pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 1mm;
+    }
+    .tf-write-prompt {
+      font-size: 8.5pt; color: #555; font-style: italic;
+      margin-bottom: 2mm;
+    }
+    .tf-hw-paper {
+      position: relative;
+      height: 11mm;
+      margin-bottom: 1.5mm;
+    }
+    .tf-hw-paper-tall { height: 13mm; }
+    .tf-hw-line {
+      position: absolute; left: 0; right: 0;
+      height: 0;
+    }
+    .tf-hw-top { top: 0; border-top: 0.3mm dashed rgba(80, 130, 180, 0.5); }
+    .tf-hw-mid { top: 50%; border-top: 0.25mm dashed rgba(80, 130, 180, 0.35); }
+    .tf-hw-base { bottom: 0; border-top: 0.4mm solid rgba(80, 130, 180, 0.7); }
+    /* Plain single-baseline rule for fluent writers */
+    .tf-hw-plain {
+      position: relative;
+      height: 9mm;
+      margin-bottom: 1mm;
+      border-bottom: 0.4mm solid rgba(80, 130, 180, 0.7);
+    }
+
+    /* ================================================================
+       STORY PAGES (with focus-sound footer strip — the "real SSP" signal)
+       ================================================================ */
+    .story-page { padding: 0; display: flex; flex-direction: column; }
+    .story-text-area {
+      padding: 12mm 12mm 6mm 12mm;
+      flex-grow: 0; flex-shrink: 0;
+    }
+    .story-text {
+      font-size: var(--story-font-size);
+      line-height: 1.5; color: #2b2b2b;
+      white-space: pre-wrap; font-weight: 500;
+    }
+    .story-illustration {
+      flex: 1; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .story-illustration img { width: 100%; height: 100%; object-fit: cover; }
+    .story-illustration-placeholder {
+      width: 100%; height: 100%;
+      background: #f4f4f4;
+      display: flex; align-items: center; justify-content: center;
+      color: #bbb; font-size: 10pt;
+    }
+    /* Per-page focus-sound strip */
+    .story-gpc-strip {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2mm 8mm;
+      background: rgba(255, 255, 255, 0.92);
+      display: flex; align-items: center; gap: 4mm;
+      border-top: 0.3mm solid #eee;
+    }
+    .story-gpc-label {
+      font-size: 7pt; color: #999;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .story-gpc-sound {
+      font-size: 11pt; font-weight: 700; color: var(--level-color);
+    }
+
+    /* ================================================================
+       SOUND SPOTLIGHT (upgraded — hero + 2x2 cards, sound highlighted in level colour)
+       ================================================================ */
+    .spot-page { padding: 0; }
+    .spot-page .page-inner { padding: 10mm 8mm; }
+    .spot-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 4mm;
+    }
+    .spot-body {
+      flex: 1;
+      display: flex; gap: 6mm;
+      align-items: stretch;
+    }
+    .spot-hero {
+      width: 38%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 3mm;
+    }
+    .spot-hero-circle {
+      width: 38mm; height: 38mm; border-radius: 50%;
+      background: var(--level-color); color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32pt; font-weight: 700;
+      line-height: 1;
+    }
+    .spot-hero-circle-multi { font-size: 22pt; }
+    .spot-hero-caption {
+      font-size: 9pt; color: #777; text-align: center;
+      line-height: 1.4;
+    }
+    .spot-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3mm;
+    }
+    .spot-card {
+      display: flex; flex-direction: column;
+      border: 0.4mm solid #e0e0e0;
+      border-radius: 3mm;
+      overflow: hidden;
+      background: #fafafa;
+    }
+    .spot-photo {
+      flex: 1; min-height: 38mm;
+      background: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      padding: 2mm;
+    }
+    .spot-photo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .spot-photo-placeholder {
+      color: #bbb; font-size: 9pt; font-style: italic;
+    }
+    .spot-word {
+      padding: 2.5mm;
+      font-size: 18pt; font-weight: 700;
+      text-align: center; color: #1a1a1a;
+      background: #ffffff;
+      border-top: 0.3mm solid #eee;
+    }
+    .spot-word .focus { color: var(--level-color); }
+
+    /* Multi-sound spotlight — stacked rows, one per focus grapheme */
+    .spot-stack {
+      flex: 1;
+      display: flex; flex-direction: column;
+      gap: 4mm;
+      min-height: 0;
+    }
+    .spot-row {
+      flex: 1;
+      display: flex; gap: 4mm;
+      align-items: stretch;
+      min-height: 0;
+    }
+    .spot-row-hero {
+      flex: 0 0 26mm;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .spot-row-circle {
+      width: 22mm; height: 22mm; border-radius: 50%;
+      background: var(--level-color); color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18pt; font-weight: 700;
+      line-height: 1;
+    }
+    .spot-row-circle-multi { font-size: 12pt; padding: 0 1mm; text-align: center; }
+    .spot-row-cards {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3mm;
+      min-height: 0;
+    }
+    .spot-stack .spot-card { min-height: 0; }
+    .spot-stack .spot-photo { min-height: 26mm; }
+    .spot-stack .spot-word { font-size: 14pt; padding: 1.5mm 2mm; }
+
+    /* ================================================================
+       READ WORDS / NONSENSE WORDS / READ+NONSENSE COMBINED (L1)
+       ================================================================ */
+    .activity-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 1mm;
+    }
+    .activity-subtitle {
+      font-size: 9pt; color: #777; margin-bottom: 4mm;
+    }
+
+    .read-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm 5mm;
+      margin-bottom: 4mm;
+    }
+    .read-cell {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 22mm;
+      background: #ffffff;
+      border: 0.6mm solid var(--level-color);
+      border-radius: 2.5mm;
+      padding: 1.5mm 2mm;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .read-cell .sb-word {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      text-align: center;
+    }
+    /* Size the sound-button SVG by HEIGHT (not width), so a 3-letter word
+       and a 5-letter word render at the same visual size and the under-dot
+       buttons stay visible inside the cell.  Without this the SVG fills
+       the wide cell, computed height exceeds the cell, and overflow:hidden
+       clips off the phonics buttons — exactly the buttons the subtitle
+       tells the child to use. */
+    .read-cell .sb-word svg {
+      display: block;
+      margin: 0 auto;
+      height: 17mm;
+      width: auto;
+      max-width: 100%;
+    }
+    .read-cell-word {
+      font-size: 18pt; font-weight: 700; color: #1a1a1a;
+      line-height: 1;
+    }
+    /* Read Words bottom half — handwriting trace+write rows */
+    .rw-write-section {
+      margin-top: 4mm;
+      padding-top: 4mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .rw-write-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 4mm;
+    }
+    .rw-write-row {
+      display: flex; align-items: center; gap: 4mm;
+      margin-bottom: 4mm;
+    }
+    .rw-write-trace {
+      width: 28mm;
+      font-size: 18pt; font-weight: 400;
+      color: #d8d8d8;
+      font-style: italic;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .rw-write-paper {
+      flex: 1;
+      position: relative;
+      height: 12mm;
+    }
+
+    /* Nonsense / Alien word styling (PSC-flavoured) */
+    .alien-section {
+      margin-top: auto;
+      padding: 4mm;
+      background: #f7f4ec;
+      border: 0.4mm dashed #c8b878;
+      border-radius: 3mm;
+    }
+    .alien-header {
+      display: flex; align-items: center; gap: 3mm;
+      margin-bottom: 3mm;
+    }
+    .alien-icon {
+      width: 8mm; height: 8mm; border-radius: 50%;
+      background: #c8b878; color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11pt; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .alien-headline {
+      font-size: 11pt; font-weight: 700; color: #5a4a1c;
+    }
+    .alien-subline {
+      font-size: 8pt; color: #7a6a3c;
+      font-style: italic;
+    }
+    .alien-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5mm;
+    }
+    .alien-cell {
+      height: 11mm;
+      background: #ffffff;
+      border: 0.4mm dashed #c8b878;
+      border-radius: 2mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13pt; font-style: italic; color: #5a4a1c;
+    }
+
+    /* Full nonsense-words page (L2+) — bigger, more cards */
+    .nonsense-grid-full {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin-bottom: 6mm;
+    }
+    .nonsense-card-full {
+      height: 17mm;
+      background: #fffaf0;
+      border: 0.5mm dashed var(--level-color);
+      border-radius: 3mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17pt; font-weight: 700; color: #1a1a1a;
+    }
+    .nonsense-tip {
+      margin-top: auto;
+      padding: 4mm 5mm;
+      background: #f5f5f5;
+      border-radius: 2mm;
+      font-size: 8.5pt; color: #666;
+      line-height: 1.5;
+    }
+    .nonsense-tip strong { color: #1a1a1a; }
+    .nw-write-section {
+      margin-top: 3mm;
+      padding-top: 4mm;
+      border-top: 0.4mm dashed #ddd;
+      margin-bottom: 4mm;
+    }
+    .nw-write-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 3mm;
+    }
+    .aw-instruction {
+      font-size: 9pt; color: #777;
+      margin-bottom: 4mm;
+    }
+
+    /* Initial Sounds (L1 — Reception): picture + 2 letter options */
+    .initial-sounds-grid {
+      display: flex; flex-direction: column;
+      gap: 3mm;
+    }
+    .is-row {
+      display: flex; align-items: center; gap: 5mm;
+      padding: 2.5mm 4mm;
+      background: #fafafa;
+      border: 0.4mm solid #e8e8e8;
+      border-radius: 2mm;
+    }
+    .is-photo {
+      width: 17mm; height: 17mm;
+      background: #ffffff;
+      border-radius: 2mm;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      border: 0.3mm solid #eee;
+    }
+    .is-photo img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+    }
+    .is-options {
+      display: flex; gap: 5mm;
+    }
+    .is-option {
+      width: 13mm; height: 13mm;
+      border: 0.5mm solid #aaa;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18pt; font-weight: 700; color: #1a1a1a;
+      background: #ffffff;
+    }
+
+    /* Match the Word to the Picture (L2+ — Y1+): 3 words ↔ 3 pictures.
+       Each row is height-locked so the page never overflows regardless
+       of natural image aspect ratio. */
+    .mtp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 10mm;
+    }
+    .mtp-words, .mtp-pictures {
+      display: flex; flex-direction: column;
+      gap: 3mm;
+    }
+    .mtp-word {
+      height: 16mm;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2mm 4mm;
+      background: #ffffff;
+      border: 0.6mm solid var(--level-color);
+      border-radius: 2.5mm;
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+    }
+    .mtp-pic {
+      height: 16mm;
+      background: #ffffff;
+      border: 0.4mm solid #ddd;
+      border-radius: 2.5mm;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1mm;
+    }
+    .mtp-pic img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* ================================================================
+       TELL THE STORY (Story Ordering + B/M/E retell)
+       ================================================================ */
+    .tell-title {
+      font-size: 15pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 0.5mm;
+    }
+    .tell-instruction {
+      font-size: 8.5pt; color: #777; margin-bottom: 2.5mm;
+    }
+
+    .ordering-grid {
+      display: grid;
+      gap: 2mm;
+      margin-bottom: 3mm;
+    }
+    .ordering-grid-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .ordering-grid-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    /* Compact horizontal ordering strip — used at L3+ to free vertical
+       space for the retell area below.  Cells shrink to a single row. */
+    .ordering-grid-compact { grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr; }
+    .ordering-grid-compact .ordering-cell { height: 22mm; }
+    .ordering-grid-compact .ordering-number-box {
+      width: 5.5mm; height: 5.5mm; font-size: 7pt;
+      top: 1mm; left: 1mm;
+    }
+    /* Large 2x2 variant — used at L1 (16-page books) where the picture-
+       ordering page has no retell scaffold below.  The grid absorbs the
+       remaining vertical space so each scene is shown full-size, and
+       object-fit:contain ensures no part of the illustration is cropped. */
+    .ordering-grid-4-large {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .ordering-grid-4-large .ordering-cell {
+      height: auto;
+      min-height: 0;
+    }
+    .ordering-grid-4-large .ordering-cell img {
+      object-fit: contain;
+      background: #ffffff;
+    }
+
+    .ordering-cell {
+      position: relative;
+      border: 0.5mm solid #ddd;
+      border-radius: 2mm;
+      overflow: hidden;
+      background: #fafafa;
+      height: 28mm;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ordering-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .ordering-cell-placeholder {
+      color: #bbb; font-size: 9pt; font-style: italic;
+    }
+    .ordering-number-box {
+      position: absolute; top: 2mm; left: 2mm;
+      width: 7mm; height: 7mm; border-radius: 1.5mm;
+      background: #ffffff;
+      border: 0.4mm solid var(--level-color);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8pt; color: var(--level-color); font-weight: 700;
+    }
+
+    /* Retell strip — fills the remaining vertical space on the Tell-
+       the-Story page so writing lines absorb whatever's left.  Steps
+       share that space proportionally; each line uses flex:1 with a
+       sensible minimum so a child has room to write without being
+       cramped on a long-keyword L3 page. */
+    .retell-strip {
+      margin-top: 1mm;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .retell-step {
+      margin-bottom: 1.5mm;
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .retell-step:last-child { margin-bottom: 0; }
+    .retell-step-header {
+      display: flex; align-items: baseline; gap: 3mm;
+      margin-bottom: 0.5mm;
+      flex: 0 0 auto;
+    }
+    .retell-label {
+      font-size: 9.5pt; font-weight: 700;
+      color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .retell-hint {
+      font-size: 7.5pt; color: #888;
+      font-style: italic;
+    }
+    .retell-line {
+      border-bottom: 0.4mm solid #888;
+      flex: 1 1 0;
+      min-height: 6mm;
+      margin-bottom: 0.5mm;
+      position: relative;
+    }
+    /* First line of a step prints the starter ("First, ") and a faint
+       ghost end mark — children see the conventions modelled exactly
+       where they'll write them. */
+    .retell-line-first {
+      padding-left: 0;
+    }
+    .retell-line-first::before {
+      content: attr(data-starter);
+      position: absolute;
+      left: 0;
+      bottom: 0.5mm;
+      font-size: 11pt;
+      color: #1a1a1a;
+      font-weight: 400;
+      pointer-events: none;
+    }
+    .retell-line::after {
+      content: attr(data-ghost);
+      position: absolute;
+      right: 1mm;
+      bottom: 0.5mm;
+      font-size: 11pt;
+      color: rgba(80, 130, 180, 0.35);
+      font-weight: 700;
+    }
+    /* L6 paragraph block — fixed margin starters at line 1, mid, late.
+       One cohesive paragraph instead of three boxed steps. */
+    .retell-paragraph {
+      position: relative;
+      margin-top: 1mm;
+    }
+    .retell-paragraph .retell-line {
+      padding-left: 18mm;
+    }
+    .retell-paragraph .retell-line[data-starter]::before {
+      content: attr(data-starter);
+      position: absolute;
+      left: 0;
+      bottom: 0.5mm;
+      font-size: 10.5pt;
+      color: #1a1a1a;
+    }
+    /* Writing Goals checkbox strip — sits above the retell area.
+       Tickboxes the child owns: capital, finger spaces, full stop,
+       plus level-appropriate extras (?, joining word, wow word, "). */
+    .writing-goals {
+      margin-top: 1mm;
+      margin-bottom: 2.5mm;
+      padding: 2mm 3mm;
+      background: #fffaf0;
+      border: 0.4mm solid #f0e0c0;
+      border-radius: 2mm;
+    }
+    .writing-goals-label {
+      font-size: 7.5pt; font-weight: 700; color: #b8860b;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 1.5mm;
+    }
+    .writing-goals-list {
+      display: flex; flex-wrap: wrap; gap: 2mm 5mm;
+    }
+    .writing-goal {
+      display: flex; align-items: center; gap: 1.5mm;
+      font-size: 9pt; color: #1a1a1a;
+    }
+    .writing-goal-tick {
+      width: 4mm; height: 4mm;
+      border: 0.4mm solid #999;
+      border-radius: 0.8mm;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .writing-goal-icon {
+      font-weight: 700; color: var(--level-color);
+      min-width: 4mm; text-align: center;
+    }
+    /* Keyword bank for retell at L2+ */
+    .retell-keywords {
+      margin-top: 1mm;
+      margin-bottom: 2mm;
+      padding: 2mm 3mm;
+      background: #f0f7f9;
+      border: 0.4mm solid #c5d8df;
+      border-radius: 2mm;
+    }
+    .retell-keywords-label {
+      font-size: 7.5pt; font-weight: 700; color: #4a6a78;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 1mm;
+    }
+    .retell-keywords-list {
+      display: flex; flex-wrap: wrap; gap: 1mm 5mm;
+    }
+    .retell-keyword {
+      font-size: 10pt; color: #1a1a1a;
+      font-weight: 500;
+    }
+
+    /* ================================================================
+       TALK ABOUT THE STORY (text-to-self anchored, Tier 2 vocab)
+       ================================================================ */
+    .talk-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 4mm;
+    }
+    .talk-question {
+      margin-bottom: 4mm;
+      padding: 3.5mm 4mm;
+      border-left: 1.2mm solid var(--level-color);
+      background: #f9f9f9;
+      border-radius: 0 2mm 2mm 0;
+    }
+    .talk-question-category {
+      font-size: 7.5pt; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--level-color);
+      margin-bottom: 1.5mm;
+    }
+    .talk-question-text {
+      font-size: 11pt; color: #333; line-height: 1.5;
+    }
+    /* Draw + feeling row for bottom of Talk page */
+    .talk-draw-section {
+      margin-top: 4mm;
+      padding-top: 4mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .talk-draw-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 3mm;
+    }
+    .talk-draw-box {
+      border: 0.4mm dashed #ccc;
+      border-radius: 2mm;
+      flex: 1;
+      min-height: 50mm;
+      margin-bottom: 3mm;
+    }
+    .talk-draw-section { display: flex; flex-direction: column; flex: 1; }
+    .talk-feeling-row {
+      display: flex; align-items: center; gap: 3mm;
+      margin-bottom: 3mm;
+      font-size: 10pt;
+    }
+    .talk-feeling-stem {
+      flex: 0 0 auto;
+      color: #444;
+    }
+    .talk-feeling-stem-line {
+      flex: 1;
+      border-bottom: 0.4mm solid #888;
+      height: 5mm;
+    }
+    .talk-faces-row {
+      display: flex; gap: 4mm; align-items: center;
+      margin-top: 1mm;
+    }
+    .talk-face {
+      width: 9mm; height: 9mm;
+      border: 0.4mm solid #ccc;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12pt;
+    }
+    .talk-faces-prompt {
+      font-size: 9pt; color: #555;
+      margin-right: 2mm;
+    }
+
+    /* ================================================================
+       WORD WORKSHOP (was: Tricky Words)
+       Three stacked sections: LCWC for new tricky words, Tricky Word
+       Hunt (cumulative recognition), Grammar Spotlight (per-book mini
+       task).  Sections collapse cleanly when their data is empty.
+       ================================================================ */
+    .tricky-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 1mm;
+    }
+    .tricky-subtitle {
+      font-size: 9pt; color: #777; margin-bottom: 4mm;
+    }
+    .ww-section-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 2mm;
+    }
+
+    /* Grammar Spotlight — bottom-of-page mini-task */
+    .gs-section {
+      margin-top: 3mm;
+      padding: 3mm 3.5mm;
+      background: #f7f9fc;
+      border: 0.4mm solid #d8e2ec;
+      border-radius: 2mm;
+    }
+    .gs-header {
+      display: flex; align-items: baseline; gap: 3mm;
+      margin-bottom: 1mm;
+    }
+    .gs-badge {
+      font-size: 7.5pt; font-weight: 700; color: #ffffff;
+      background: var(--level-color);
+      padding: 1mm 2.5mm;
+      border-radius: 1.5mm;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .gs-skill {
+      font-size: 11pt; font-weight: 700; color: #1a1a1a;
+    }
+    .gs-instruction {
+      font-size: 8.5pt; color: #555; margin-bottom: 2mm;
+    }
+    .gs-rows {
+      display: flex; flex-direction: column; gap: 1.5mm;
+    }
+    .gs-row {
+      display: flex; align-items: center; gap: 2.5mm;
+      font-size: 10pt; color: #1a1a1a;
+      padding: 1.2mm 2mm;
+      background: #ffffff;
+      border-radius: 1.5mm;
+    }
+    .gs-num {
+      flex: 0 0 5mm;
+      font-weight: 700; color: var(--level-color);
+    }
+    .gs-sentence { flex: 1; line-height: 1.35; }
+    .gs-choices { display: flex; gap: 2mm; flex-shrink: 0; }
+    .gs-choice {
+      min-width: 7mm; height: 7mm;
+      padding: 0 2mm;
+      border: 0.4mm solid #aaa;
+      border-radius: 1.5mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10pt; font-weight: 700; color: #555;
+      background: #fafafa;
+      white-space: nowrap;
+    }
+    .gs-answer-box {
+      width: 9mm; height: 7mm;
+      border: 0.4mm dashed #aaa;
+      border-radius: 1.5mm;
+      flex-shrink: 0;
+    }
+    .gs-image {
+      width: 14mm; height: 14mm;
+      object-fit: cover;
+      border-radius: 1.5mm;
+      flex-shrink: 0;
+    }
+    .gs-row-with-image { align-items: center; }
+    /* Worked example shown ABOVE the answerable rows.  Visually distinct
+       so the child knows this one is the model, not a task. */
+    .gs-example {
+      display: flex; align-items: baseline; gap: 2.5mm;
+      margin-bottom: 2.5mm;
+      padding: 1.5mm 2.5mm;
+      background: #ffffff;
+      border-left: 1.2mm solid var(--level-color);
+      border-radius: 0 1.5mm 1.5mm 0;
+      font-size: 10pt;
+    }
+    .gs-example-tag {
+      font-size: 7.5pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .gs-example-text { color: #1a1a1a; line-height: 1.35; }
+    .gs-example-text strong { color: var(--level-color); }
+    /* Writing prompt below the spotlight — fills the empty page space.
+       margin-top: auto pushes it to the bottom of the page-inner flex so
+       it grows to take whatever vertical room is left, regardless of how
+       many spotlight rows the book has. */
+    .gs-writing {
+      margin-top: 4mm;
+      padding-top: 4mm;
+      border-top: 0.4mm dashed #ddd;
+      display: flex; flex-direction: column;
+    }
+    .gs-writing-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 2mm;
+    }
+    .gs-writing-prompt {
+      font-size: 9.5pt; color: #444; line-height: 1.4;
+      margin-bottom: 3mm;
+    }
+    .gs-writing-lines {
+      display: flex; flex-direction: column; gap: 6mm;
+    }
+    .gs-writing-line {
+      border-bottom: 0.4mm solid #888;
+      height: 0;
+    }
+    .tricky-instructions {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1mm;
+      margin-bottom: 3mm;
+      font-size: 7.5pt; color: #888;
+      text-transform: uppercase; letter-spacing: 0.4px;
+      font-weight: 700;
+    }
+    .tricky-instructions div { text-align: center; }
+    .tricky-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 1.5mm;
+    }
+    .tricky-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2mm;
+      align-items: stretch;
+    }
+    .tricky-look {
+      background: #ffffff;
+      border: 0.5mm solid var(--level-color);
+      border-radius: 2mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13pt; font-weight: 700; color: #1a1a1a;
+      height: 11mm;
+    }
+    .tricky-cover {
+      background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 2mm, #e6e6e6 2mm, #e6e6e6 4mm);
+      border: 0.4mm solid #ccc;
+      border-radius: 2mm;
+      height: 11mm;
+    }
+    .tricky-write {
+      border: 0.4mm dashed #aaa;
+      border-radius: 2mm;
+      height: 11mm;
+    }
+    .tricky-check {
+      background: #ffffff;
+      border: 0.4mm solid #ccc;
+      border-radius: 2mm;
+      height: 11mm;
+    }
+    /* Tricky Word Hunt — fills the bottom half */
+    .tricky-hunt {
+      margin-top: 4mm;
+      padding-top: 3mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .tricky-hunt-label {
+      font-size: 11pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 2mm;
+    }
+    .tricky-hunt-instruction {
+      font-size: 9pt; color: #777; margin-bottom: 5mm;
+    }
+    .tricky-hunt-sent {
+      font-size: 9.5pt; color: #1a1a1a;
+      line-height: 1.35;
+      margin-bottom: 1.5mm;
+      padding: 1.5mm 2.5mm;
+      background: #fafafa;
+      border-radius: 2mm;
+    }
+    .tricky-hunt {
+      margin-top: 5mm;
+      padding-top: 4mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .tricky-hunt-label {
+      font-size: 10pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1.5mm;
+    }
+    .tricky-hunt-instruction {
+      font-size: 8.5pt; color: #777; margin-bottom: 3mm;
+    }
+
+    /* ================================================================
+       SPELLING & WRITING (encoding hear-write + sentence dictation)
+       ================================================================ */
+    .sw2-title {
+      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 1mm;
+    }
+    .sw2-subtitle {
+      font-size: 9pt; color: #777; margin-bottom: 4mm;
+    }
+    .sw2-section-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 3mm;
+      margin-top: 3mm;
+    }
+    .sw2-encoding-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 3mm 6mm;
+      margin-bottom: 5mm;
+    }
+    .sw2-encoding-row {
+      display: flex; align-items: center; gap: 3mm;
+    }
+    .sw2-encoding-prompt {
+      font-size: 11pt; color: #333; line-height: 1;
+      white-space: nowrap;
+    }
+    .sw2-encoding-prompt .phoneme {
+      font-style: italic; color: var(--level-color);
+      font-weight: 700;
+    }
+    .sw2-encoding-line {
+      flex: 1;
+      border-bottom: 0.5mm solid #555;
+      height: 0;
+      margin-bottom: 1mm;
+    }
+    .sw2-dictation {
+      margin-top: auto;
+      padding: 4mm 5mm;
+      background: #f9f9f9;
+      border-left: 1.2mm solid var(--level-color);
+      border-radius: 0 2mm 2mm 0;
+    }
+    .sw2-dictation-label {
+      font-size: 8pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1.5mm;
+    }
+    .sw2-dictation-prompt {
+      font-size: 10pt; color: #444; line-height: 1.5;
+      margin-bottom: 4mm;
+      font-style: italic;
+    }
+    .sw2-dictation-line {
+      border-bottom: 0.4mm solid #888;
+      height: 11mm;
+      margin-bottom: 3mm;
+    }
+
+    /* Build a Word / Listen and Write — phoneme-box encoding */
+    .bw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm 6mm;
+      margin-bottom: 6mm;
+    }
+    /* Listen-and-Write variant: numbered rows, no picture */
+    .bw-grid-listen {
+      grid-template-columns: 1fr;
+      gap: 4mm;
+    }
+    .bw-cell {
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 3mm;
+      border: 0.5mm solid #e8e8e8;
+      border-radius: 3mm;
+      background: #fafafa;
+    }
+    .bw-grid-listen .bw-cell {
+      flex-direction: row;
+      gap: 5mm;
+      padding: 3mm 5mm;
+    }
+    .bw-row-num {
+      width: 8mm; height: 8mm; border-radius: 50%;
+      background: var(--level-color); color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11pt; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .bw-image {
+      width: 100%; height: 30mm;
+      background: #ffffff;
+      border-radius: 2mm;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      margin-bottom: 3mm;
+      border: 0.3mm solid #eee;
+    }
+    .bw-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    /* GROWN-UP PANEL — pinned to the BOTTOM of Listen-and-Write and rotated
+       180°.  The point of the exercise is encoding from hearing, so neither
+       the answer words nor the dictation tip should sit right-side-up in
+       the child's eyeline while they work.  Parents flip the book to read
+       the whole panel — words, instructions, tip — in one place. */
+    .bw-grownup-panel {
+      margin-top: auto;          /* push to bottom of page-inner flex */
+      margin-bottom: 0;
+      padding: 4mm 6mm 5mm 6mm;
+      background: #faf6f0;
+      border-top: 0.4mm dashed #d4c4b0;
+      transform: rotate(180deg);
+      transform-origin: center center;
+      display: flex; flex-direction: column; gap: 2.5mm;
+    }
+    .bw-grownup-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 4mm;
+    }
+    .bw-grownup-title {
+      font-size: 8.5pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.7px;
+    }
+    .bw-grownup-flip-cue {
+      font-size: 8pt; color: #8a7355; font-style: italic;
+    }
+    .bw-grownup-words {
+      display: flex; flex-wrap: wrap; gap: 1.5mm 7mm;
+    }
+    .bw-grownup-word {
+      font-size: 10.5pt; color: #1a1a1a;
+    }
+    .bw-grownup-word strong { color: var(--level-color); margin-right: 1mm; }
+    .bw-grownup-tip {
+      font-size: 8.5pt; color: #555; line-height: 1.45;
+      padding-top: 2mm;
+      border-top: 0.25mm solid #e6dccd;
+    }
+    .bw-grownup-tip strong { color: #1a1a1a; }
+    .bw-grownup-tip em {
+      color: var(--level-color);
+      font-style: italic; font-weight: 700;
+    }
+    .bw-image-placeholder {
+      color: #aaa; font-size: 11pt; font-style: italic;
+      text-align: center;
+      padding: 0 2mm;
+    }
+    .bw-boxes {
+      display: flex; gap: 1mm;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      justify-content: center;
+      width: 100%;
+    }
+    /* For long suffix words (5+ phonemes), shrink boxes so they all fit. */
+    .bw-cell-long .bw-boxes { gap: 0.6mm; }
+    .bw-cell-long .bw-box { width: 8mm; height: 8mm; }
+    .bw-cell-long .bw-box-len-2 { width: 14mm; }
+    .bw-cell-long .bw-box-len-3 { width: 20mm; }
+    .bw-cell-long .bw-box-len-4 { width: 26mm; }
+    .bw-cell-long .bw-box-len-5 { width: 32mm; }
+    .bw-box {
+      width: 10mm; height: 10mm;
+      background: #ffffff;
+      border: 0.5mm solid var(--level-color);
+      border-radius: 1.5mm;
+      flex-shrink: 0;
+    }
+    /* Width scales with the number of letters in the phoneme: digraphs are
+       a touch wider, trigraphs wider still, 4-letter suffix chunks (able,
+       ible) get the room they need so the child writes them as one unit. */
+    .bw-box-len-2 { width: 16mm; position: relative; }
+    .bw-box-len-3 { width: 22mm; position: relative; }
+    .bw-box-len-4 { width: 28mm; position: relative; }
+    .bw-box-len-5 { width: 34mm; position: relative; }
+    /* For two-letter digraphs, a single dashed centre line is a useful cue
+       ("two letters, one sound").  For 3+ letter chunks we suppress dividers
+       — the child has been taught the chunk as one unit (-igh, -tion, -able,
+       -ible) and a divider would suggest splitting it. */
+    .bw-box-len-2::before {
+      content: ""; position: absolute;
+      top: 1mm; bottom: 1mm; left: 50%;
+      width: 0; border-left: 0.3mm dashed #aaa;
+    }
+    /* Legacy alias: older Jinja still emits bw-box-digraph for 2-letter
+       graphemes.  Map it to the new 2-letter width so nothing breaks. */
+    .bw-box-digraph { width: 16mm; position: relative; }
+    .bw-box-digraph::before {
+      content: ""; position: absolute;
+      top: 1mm; bottom: 1mm; left: 50%;
+      width: 0; border-left: 0.3mm dashed #aaa;
+    }
+    .bw-tip {
+      margin-top: auto;
+      padding: 4mm 5mm;
+      background: #f5f5f5;
+      border-radius: 2mm;
+      font-size: 9pt; color: #555;
+      line-height: 1.5;
+    }
+    .bw-tip strong { color: #1a1a1a; }
+    .bw-tip em {
+      color: var(--level-color);
+      font-style: italic; font-weight: 700;
+    }
+
+    /* ================================================================
+       BACK COVER
+       ================================================================ */
+    .back-cover { padding: 0; display: flex; flex-direction: column; }
+    .back-banner {
+      background: var(--level-color);
+      padding: 7mm 10mm;
+      color: #ffffff;
+    }
+    .back-brand-name { font-size: 14pt; font-weight: 700; }
+    .back-level-text {
+      font-size: 8pt; color: rgba(255, 255, 255, 0.75);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-top: 0.5mm;
+    }
+    .back-body {
+      flex: 1; padding: 6mm 10mm;
+      display: flex; flex-direction: column;
+    }
+    .back-description {
+      font-size: 10pt; color: #444; line-height: 1.5;
+      margin-bottom: 4mm;
+    }
+    .back-decodability {
+      padding: 3mm 4mm;
+      background: #f9f9f9;
+      border-left: 1mm solid var(--level-color);
+      border-radius: 0 2mm 2mm 0;
+      font-size: 9pt; color: #555; line-height: 1.5;
+      margin-bottom: 5mm;
+    }
+    .back-decodability strong { color: #1a1a1a; }
+    .back-series-label {
+      font-size: 8pt; color: #888;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 2.5mm;
+    }
+    .back-series-row {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      gap: 2mm; margin-bottom: 5mm;
+    }
+    .back-series-box {
+      text-align: center; padding: 2mm 1mm;
+      border: 0.3mm solid #ddd; border-radius: 1.5mm;
+    }
+    .back-series-box-active {
+      background: var(--level-color);
+      border-color: var(--level-color);
+      color: #ffffff;
+    }
+    .back-series-num { font-size: 12pt; font-weight: 700; }
+    .back-series-name { font-size: 5pt; color: #888; margin-top: 0.3mm; }
+    .back-series-box-active .back-series-name { color: rgba(255, 255, 255, 0.8); }
+    .back-footer {
+      margin-top: auto;
+      background: #f5f5f5;
+      padding: 4mm 10mm;
+      text-align: center;
+    }
+    .back-footer-brand { font-size: 9pt; font-weight: 700; color: #888; }
+    .back-footer-url { font-size: 8pt; color: #aaa; margin-top: 0.3mm; }
+
+    /* ─────────────────────────────────────────────────────────────
+       24-PAGE SECTIONS (L5/L6 only)
+       Styles for Your Turn to Write (wp-*), Read & Match (stp-*),
+       Reading Star certificate (rs-*) and Read It Again log (rl-*).
+       ───────────────────────────────────────────────────────────── */
+
+    /* Your Turn to Write — header */
+    .wp-inner { gap: 2mm; }
+    .wp-title {
+      font-size: 18pt; font-weight: 700; color: var(--level-color);
+      margin-bottom: 1mm;
+    }
+    .wp-subtitle {
+      font-size: 10pt; color: #444; margin-bottom: 2mm;
+    }
+    .wp-retell-strip { flex: 1 1 auto; }
+
+    /* Read & Match — 2×2 picture grid + numbered sentence rows */
+    .stp-title {
+      font-size: 18pt; font-weight: 700; color: var(--level-color);
+      margin-bottom: 1mm;
+    }
+    .stp-instruction {
+      font-size: 10pt; color: #444; margin-bottom: 3mm;
+    }
+    .stp-pictures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3mm;
+      margin-bottom: 4mm;
+      flex: 0 0 auto;
+    }
+    .stp-pic-cell {
+      position: relative;
+      background: #fafafa;
+      border: 0.4mm solid #d8d8d8;
+      border-radius: 2mm;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stp-pic-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .stp-pic-num {
+      position: absolute;
+      top: 1.5mm; left: 1.5mm;
+      width: 7mm; height: 7mm;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 0.5mm solid var(--level-color);
+      color: var(--level-color);
+      font-size: 10pt; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2;
+    }
+    .stp-sentences {
+      display: flex; flex-direction: column;
+      gap: 2.5mm;
+      flex: 1 1 auto;
+    }
+    .stp-sentence-row {
+      display: flex; align-items: center; gap: 3mm;
+      font-size: 11pt; color: #1a1a1a;
+    }
+    .stp-sent-letter {
+      flex: 0 0 7mm;
+      font-weight: 700; color: var(--level-color);
+    }
+    .stp-sent-text { flex: 1 1 auto; }
+    .stp-sent-box {
+      flex: 0 0 9mm; height: 9mm;
+      border: 0.5mm solid var(--level-color);
+      border-radius: 1.5mm;
+      background: #ffffff;
+    }
+
+    /* Reading Star certificate */
+    .rs-inner {
+      padding: 14mm 10mm;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+    .rs-band-top {
+      width: 100%; height: 3mm;
+      background: var(--level-color);
+      border-radius: 1.5mm;
+      margin-bottom: 6mm;
+    }
+    .rs-medal {
+      font-size: 36pt; color: var(--level-color);
+      line-height: 1;
+      margin-bottom: 2mm;
+    }
+    .rs-headline {
+      font-size: 26pt; font-weight: 700;
+      color: var(--level-color);
+      letter-spacing: 1px;
+      margin-bottom: 4mm;
+    }
+    .rs-sub { font-size: 11pt; color: #444; margin-bottom: 3mm; }
+    .rs-name-line {
+      width: 80%; height: 0;
+      border-bottom: 0.5mm solid #888;
+      margin: 0 auto 8mm;
+    }
+    .rs-body {
+      font-size: 11pt; color: #1a1a1a;
+      max-width: 110mm; line-height: 1.4;
+      margin-bottom: 10mm;
+    }
+    .rs-sound {
+      display: inline-block;
+      padding: 0 2mm; margin: 0 0.5mm;
+      border: 0.4mm solid var(--level-color);
+      border-radius: 1mm;
+      color: var(--level-color);
+      font-weight: 700;
+    }
+    .rs-row {
+      display: flex; gap: 8mm; width: 100%;
+      margin-bottom: auto;
+    }
+    .rs-row-cell { flex: 1 1 0; text-align: center; }
+    .rs-row-label {
+      font-size: 8pt; color: #888;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 1mm;
+    }
+    .rs-row-line {
+      width: 100%; height: 0;
+      border-bottom: 0.4mm solid #888;
+    }
+    .rs-band-bottom {
+      width: 100%;
+      margin-top: auto;
+      padding-top: 4mm;
+      border-top: 0.4mm solid #ddd;
+      text-align: center;
+      font-size: 8pt; color: #888;
+      letter-spacing: 0.5px;
+    }
+
+    /* Prefix Power — replaces the Reading Star certificate at L5/L6 */
+    .pp-title {
+      font-size: 18pt; font-weight: 700; color: var(--level-color);
+      margin-bottom: 1mm;
+    }
+    .pp-instruction {
+      font-size: 10pt; color: #444; margin-bottom: 4mm;
+    }
+    .pp-rows {
+      display: flex; flex-direction: column;
+      gap: 4mm; flex: 1 1 auto;
+    }
+    .pp-row {
+      display: flex; align-items: center; gap: 2.5mm;
+      padding: 2.5mm 3mm;
+      background: #fafafa;
+      border: 0.4mm solid #e5e5e5;
+      border-radius: 2mm;
+      font-size: 12pt;
+      flex-wrap: wrap;
+    }
+    .pp-num {
+      flex: 0 0 6mm;
+      font-weight: 700; color: var(--level-color);
+    }
+    .pp-piece {
+      padding: 0.8mm 2mm;
+      border-radius: 1.5mm;
+      background: #ffffff;
+      border: 0.4mm solid #d8d8d8;
+      font-family: inherit;
+      min-width: 12mm;
+      text-align: center;
+    }
+    .pp-prefix {
+      color: var(--level-color);
+      border-color: var(--level-color);
+      font-weight: 700;
+    }
+    .pp-root { color: #1a1a1a; }
+    .pp-plus, .pp-equals {
+      font-size: 13pt; font-weight: 700; color: #666;
+    }
+    .pp-answer-box {
+      flex: 0 0 28mm; height: 9mm;
+      border: 0.5mm solid var(--level-color);
+      border-radius: 1.5mm;
+      background: #ffffff;
+    }
+    .pp-hint {
+      flex: 1 1 100%;
+      margin-left: 8mm;
+      font-size: 8.5pt; color: #777;
+      font-style: italic;
+    }
+    .pp-tip {
+      margin-top: 3mm;
+      padding: 2.5mm 3mm;
+      background: #fffaf0;
+      border: 0.4mm solid #f0e0c0;
+      border-radius: 2mm;
+      font-size: 9pt; color: #1a1a1a;
+    }
+    .pp-tip strong { color: #b8860b; }
+
+    /* Sentence Stretch — replaces the Read It Again log at L5/L6 */
+    .ss-title {
+      font-size: 18pt; font-weight: 700; color: var(--level-color);
+      margin-bottom: 1mm;
+    }
+    .ss-instruction {
+      font-size: 10pt; color: #444; margin-bottom: 4mm;
+    }
+    .ss-rows {
+      display: flex; flex-direction: column;
+      gap: 4mm; flex: 1 1 auto;
+    }
+    .ss-row {
+      padding: 2.5mm 3mm;
+      background: #fafafa;
+      border: 0.4mm solid #e5e5e5;
+      border-radius: 2mm;
+      display: grid;
+      grid-template-columns: 7mm 1fr;
+      grid-template-rows: auto auto auto;
+      column-gap: 2.5mm;
+      row-gap: 1.5mm;
+      align-items: center;
+    }
+    .ss-row-num {
+      grid-row: 1 / span 3;
+      grid-column: 1;
+      width: 7mm; height: 7mm;
+      border-radius: 50%;
+      background: var(--level-color); color: #ffffff;
+      font-size: 11pt; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ss-stem {
+      grid-row: 1;
+      grid-column: 2;
+      font-size: 11pt; color: #1a1a1a; font-weight: 600;
+    }
+    .ss-connectors {
+      grid-row: 2;
+      grid-column: 2;
+      display: flex; gap: 2mm; flex-wrap: wrap;
+    }
+    .ss-choice {
+      padding: 0.8mm 2.5mm;
+      background: #ffffff;
+      border: 0.4mm solid var(--level-color);
+      border-radius: 4mm;
+      font-size: 9pt; color: var(--level-color); font-weight: 600;
+    }
+    .ss-write {
+      grid-row: 3;
+      grid-column: 2;
+      display: flex; flex-direction: column; gap: 4mm;
+      margin-top: 1mm;
+    }
+    .ss-line {
+      width: 100%;
+      border-bottom: 0.4mm solid #999;
+      height: 0;
+    }
+    .ss-tip {
+      margin-top: 3mm;
+      padding: 2.5mm 3mm;
+      background: #fffaf0;
+      border: 0.4mm solid #f0e0c0;
+      border-radius: 2mm;
+      font-size: 9pt; color: #1a1a1a;
+    }
+    .ss-tip strong { color: #b8860b; }
+  </style>
+</head>
+
+<body>
+
+{# ----------------------------------------------------------------
+   Macro: sound-buttoned word — proper SSP notation, ALL-SVG.
+
+   Notation rules:
+   - Single phoneme letter: dot directly under
+   - Digraph / trigraph: straight line under both letters (no dots)
+   - Split digraph: no under-dot on vowel or silent-e; shallow over-arc
+     spans vowel→e; middle consonant(s) keep their under-dot.
+
+   Letters are rendered as <text text-anchor="middle"> at fixed cell
+   centres.  Dots / under-lines / over-arcs are drawn in the SAME SVG
+   at the SAME x-coordinates, so marks always sit dead-centre under
+   (or over) the *visual centre* of each glyph regardless of natural
+   Andika advance widths (w, i, m vs i, l, etc.).
+
+   Geometry (all in mm; viewBox is mm-equivalent):
+     - Cell width  : char_w
+     - Total width : len(chars) * char_w
+     - Letter band : y = 0..8mm  (font-size set so x-height + descender fit)
+     - Under-marks : y = 9..12mm
+     - Over-arc    : y = -3..-0.5mm  (negative; SVG overflow visible)
+   ---------------------------------------------------------------- #}
+{% macro sb_word(w, char_w=4.5) %}
+  {% set chars = w.word | list %}
+  {% set n = chars | length %}
+  {% set total_w = n * char_w %}
+  {# Letter band height: leave 8mm for cap+descender. Marks below at +9..+12. #}
+  {% set letter_y = 6.5 %}     {# baseline y inside the SVG #}
+  {% set under_y = 10.0 %}     {# y for under dots / line #}
+  {% set vb_top = -3.5 %}      {# top of viewBox (room for over-arc) #}
+  {% set vb_h   = 14.5 %}      {# total viewBox height #}
+  {# Font size in mm — chosen to match previous 18pt visual size (18pt ≈ 6.35mm). #}
+  {% set font_mm = 6.35 %}
+
+  {% set ns = namespace(over_first=-1, over_last=-1) %}
+  {% for m in w.marks %}{% if m.type == 'over_arc' %}
+    {% set ns.over_first = m.indices[0] %}
+    {% set ns.over_last = m.indices[-1] %}
+  {% endif %}{% endfor %}
+
+  <div class="sb-word" style="--sb-natural-w: {{ total_w }}mm;">
+    <svg viewBox="0 {{ vb_top }} {{ total_w }} {{ vb_h }}"
+         preserveAspectRatio="xMidYMid meet"
+         xmlns="http://www.w3.org/2000/svg">
+      {# Letters — text-anchor="middle" centres the glyph on cx exactly #}
+      {% for c in chars %}
+        {% set cx = loop.index0 * char_w + char_w / 2 %}
+        <text x="{{ cx }}" y="{{ letter_y }}"
+              text-anchor="middle"
+              font-size="{{ font_mm }}"
+              font-family="Andika, sans-serif"
+              font-weight="500"
+              fill="#1a1a1a">{{ c }}</text>
+      {% endfor %}
+
+      {# Over-arc (split digraphs) #}
+      {% for m in w.marks %}{% if m.type == "over_arc" %}
+        {% set x1 = m.indices[0] * char_w + char_w * 0.5 %}
+        {% set x2 = (m.indices[-1] + 1) * char_w - char_w * 0.5 %}
+        {% set mid = (x1 + x2) / 2 %}
+        <path d="M {{ x1 }},-0.6 Q {{ mid }},-2.6 {{ x2 }},-0.6"
+              fill="none" stroke="#1a1a1a" stroke-width="0.35" stroke-linecap="round"/>
+      {% endif %}{% endfor %}
+
+      {# Single-phoneme dots — skip arc endpoints #}
+      {% for m in w.marks %}{% if m.type == "dot" %}
+        {% set ix = m.indices[0] %}
+        {% set is_arc_endpoint = (ix == ns.over_first or ix == ns.over_last) %}
+        {% if not is_arc_endpoint %}
+          {% set cx = ix * char_w + char_w / 2 %}
+          <circle cx="{{ cx }}" cy="{{ under_y }}" r="0.55" fill="#1a1a1a"/>
+        {% endif %}
+      {% endif %}{% endfor %}
+
+      {# Digraph / trigraph: straight line under all letters in the cluster #}
+      {% for m in w.marks %}{% if m.type == "under_arc" %}
+        {% set x1 = m.indices[0] * char_w + char_w * 0.2 %}
+        {% set x2 = (m.indices[-1] + 1) * char_w - char_w * 0.2 %}
+        <line x1="{{ x1 }}" y1="{{ under_y }}" x2="{{ x2 }}" y2="{{ under_y }}"
+              stroke="#1a1a1a" stroke-width="0.4" stroke-linecap="round"/>
+      {% endif %}{% endfor %}
+    </svg>
+  </div>
+{% endmacro %}
+
+  <!-- ============================================================
+       PAGE 1 — FRONT COVER (matches library covers in /public/covers/)
+       ============================================================ -->
+  <div class="page cover">
+    <div class="cover-top-band">
+      <div class="cover-top-level">Level {{ level }} &middot; {{ level_name }}</div>
+      <div class="cover-top-brand">MyPhonicsBooks</div>
+    </div>
+
+    <div class="cover-illustration">
+      {% if cover_image %}
+      <img src="{{ cover_image }}" alt="Cover illustration">
+      {% else %}
+      <div class="cover-illustration-fallback"></div>
+      {% endif %}
+    </div>
+
+    <div class="cover-bottom-band">
+      <div class="cover-title">{{ book_title }}</div>
+      <div class="cover-subtitle">Level {{ level }} &middot; {{ level_name }}</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 2 — GUIDE FOR GROWN-UPS (during + after only)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="guide-title">For Grown-Ups</div>
+      <div class="guide-intro">
+        Your child reads. You sit close and help when stuck. The full how-to
+        lives in our short videos — this page is the at-a-glance reminder.
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-section-title">When They Get Stuck</div>
+        <div class="guide-script-line">
+          <strong>Decodable word:</strong> "Sound it out:
+          {% if guide_blend_example %}
+            {{ guide_blend_example.phoneme_str }}. Now blend it: <em>{{ guide_blend_example.word }}</em>."
+          {% else %}
+            sound out each letter, then blend."
+          {% endif %}
+        </div>
+        <div class="guide-script-line">
+          <strong>Tricky word:</strong> Tell them straight away: "That one says <em>the</em>."  Don&rsquo;t try to sound out tricky words.
+        </div>
+      </div>
+
+      {% if grammar_spotlight and grammar_spotlight.grownups_tip %}
+      <div class="writing-tip">
+        <div class="writing-tip-label">Writing Focus This Book &mdash; <strong>{{ grammar_spotlight.focus_skill }}</strong></div>
+        <div class="writing-tip-body">{{ grammar_spotlight.grownups_tip }}</div>
+      </div>
+      {% endif %}
+
+      <div class="guide-quote">
+        Watch the parent video at <strong>myphonicsbooks.com/guide</strong> for the full how-to.  Re-read each book three to five times — that&rsquo;s where fluency comes from.
+      </div>
+    </div>
+    <div class="page-num page-num-left">2</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 3 — SOUNDS + STORY WORDS (with before-script + sound buttons)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="sw-section-title">Focus Sounds</div>
+      <div class="sw-section-desc">Practise these before reading.</div>
+      <div class="sw-sound-row">
+        {% for g in focus_graphemes %}
+        <div class="sw-sound-circle {% if g|length > 1 %}sw-sound-circle-multi{% endif %}">{{ g }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="sw-section-title">Story Words</div>
+      <div class="sw-section-desc">Sound out each phoneme, then blend. Dashes mark digraphs.</div>
+      <div class="sw-words-grid">
+        {% for w in sound_buttoned_words %}
+        <div class="sw-word-cell">
+          {{ sb_word(w, 5.5) }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if tricky_words %}
+      <div class="sw-tricky-strip">
+        <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
+        <div class="sw-tricky-words">
+          {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {# Writing tip is shown ONLY when the book has no pronunciation notes —
+         otherwise the Watch Out panel needs the vertical space, and the
+         same focus_skill is already surfaced on the Word Workshop page
+         (Grammar Spotlight badge).  No information is lost when this is
+         hidden, just deduplicated. #}
+      {% if grammar_spotlight and grammar_spotlight.reference_tip and not pronunciation_notes %}
+      <div class="writing-tip">
+        <div class="writing-tip-label">Writing Tip</div>
+        <div class="writing-tip-body">{{ grammar_spotlight.reference_tip }}</div>
+      </div>
+      {% endif %}
+
+      {% for note in pronunciation_notes %}
+      <div class="sw-pron-note">
+        <div class="sw-pron-note-label">{{ note.title }}</div>
+        <div class="sw-pron-note-body">{{ note.body }}</div>
+        {% if note.examples %}
+        <div class="sw-pron-note-examples">
+          {% for ex in note.examples %}
+            {% set _parts = ex.split('→') %}
+            {% if _parts|length == 2 %}
+            <span class="sw-pron-note-example"><strong>{{ _parts[0]|trim }}</strong><span class="arrow">&rarr;</span>{{ _parts[1]|trim }}</span>
+            {% else %}
+            <span class="sw-pron-note-example">{{ ex }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <div class="page-num page-num-right">3</div>
+  </div>
+
+  <!-- ============================================================
+       PAGE 4 — SOUND TRACING + LETTER FORMATION
+       Per-grapheme row: formation letter w/ start-num + stroke rhyme,
+       three trace cells with ghost-letter outlines on a pale-blue
+       4-line baseline.  Free-write rows below.
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="tf-title">Trace &amp; Form the Sounds</div>
+      <div class="tf-instruction">
+        Trace the outline letters with your finger, then with a pencil. Say the sound as you write.
+      </div>
+
+      <div class="tf-section-label">Form &mdash; Trace</div>
+
+      {% for f in formation_drills[:4] %}
+      <div class="tf-row">
+        <div class="tf-formation-block">
+          <div class="tf-formation-letter {% if f.grapheme|length > 1 %}tf-formation-letter-multi{% endif %}">
+            <span class="tf-stroke-num">1</span>{{ f.grapheme }}
+          </div>
+          <div class="tf-formation-rhyme">{{ f.rhyme }}</div>
+        </div>
+        <div class="tf-trace-block">
+          {% for _ in range(3) %}
+          <div class="tf-trace-cell">
+            <span class="tf-trace-mid"></span>
+            <span class="tf-trace-ghost {% if f.grapheme|length > 1 %}tf-trace-ghost-multi{% endif %}">{{ f.grapheme }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      {# Level-aware writing area.  L1-L2 form individual letters on the
+         4-line baseline; L3-L4 write the focus sounds and short words; L5-L6
+         move to plain ruled lines and write a sentence using a focus sound.
+         Line count grows with level to encourage writing fluency. #}
+      {% set _writing_lines = {1: 2, 2: 2, 3: 4, 4: 4, 5: 5, 6: 6}.get(level, 4) %}
+      <div class="tf-write-row">
+        <div class="tf-write-label">
+          {%- if level <= 2 %}Now you try
+          {%- elif level <= 4 %}Now write the sounds &mdash; then a word
+          {%- else %}Now write a sentence
+          {%- endif %}
+        </div>
+        <div class="tf-write-prompt">
+          {%- if level <= 2 -%}
+            Form each letter on the lines below. Say the sound as you write.
+          {%- elif level <= 4 -%}
+            Write each focus sound, then have a go at a word that uses one.
+          {%- else -%}
+            Write a sentence using one of the focus sounds from this book.
+          {%- endif -%}
+        </div>
+        {% for _ in range(_writing_lines) %}
+          {% if level <= 4 %}
+          <div class="tf-hw-paper">
+            <div class="tf-hw-line tf-hw-top"></div>
+            <div class="tf-hw-line tf-hw-mid"></div>
+            <div class="tf-hw-line tf-hw-base"></div>
+          </div>
+          {% else %}
+          <div class="tf-hw-plain"></div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="page-num page-num-left">4</div>
+  </div>
+
+  <!-- ============================================================
+       PAGES 5..N — STORY PAGES
+       ============================================================ -->
+  {% for sp in story_pages %}
+  <div class="page story-page {% if level > 4 %}story-page-no-gpc{% endif %}">
+    <div class="story-text-area">
+      <div class="story-text">{{ sp.text }}</div>
+    </div>
+    <div class="story-illustration">
+      {% if sp.image %}
+      <img src="{{ sp.image }}" alt="Illustration for page {{ loop.index }}">
+      {% else %}
+      <div class="story-illustration-placeholder">[ Scene {{ loop.index }} ]</div>
+      {% endif %}
+    </div>
+    {# GPC strip is a Reception/Y1 scaffold; drop at L5+ (Y2+) where it
+       reads as clutter against an immersive story page. #}
+    {% if level <= 4 %}
+    <div class="story-gpc-strip">
+      <span class="story-gpc-label">Sounds in this book:</span>
+      {% for g in focus_graphemes %}
+      <span class="story-gpc-sound">{{ g }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% set pnum = loop.index + 4 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endfor %}
+
+  {% set after_story = story_pages|length + 4 %}
+
+  <!-- ============================================================
+       SOUND SPOTLIGHT
+       ============================================================ -->
+  {# Single Spotlight page covering ALL focus sounds the book teaches.
+     Layout adapts: 1 sound = hero+2×2 grid; 2 sounds = stacked rows
+     (small hero each + 1×2 grid each); 3+ sounds = compact rows. #}
+  {% set spotlights_to_show = sound_spotlight_pages[:6] %}
+  {% if spotlights_to_show %}
+  <div class="page spot-page">
+    <div class="page-inner">
+      <div class="spot-title">Sound Spotlight</div>
+      {% if spotlights_to_show|length == 1 %}
+      {# Original hero-style layout for single-sound books #}
+      <div class="spot-body">
+        <div class="spot-hero">
+          <div class="spot-hero-circle {% if spotlights_to_show[0].grapheme_display|length > 1 %}spot-hero-circle-multi{% endif %}">
+            {{ spotlights_to_show[0].grapheme_display }}
+          </div>
+          <div class="spot-hero-caption">
+            Find this sound in the words on the right.
+          </div>
+        </div>
+        <div class="spot-grid">
+          {% for entry in spotlights_to_show[0].words[:4] %}
+          <div class="spot-card">
+            <div class="spot-photo">
+              {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
+              {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
+            </div>
+            <div class="spot-word">{{ entry.word_html | safe }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      {# Multi-sound stacked layout: one row per focus sound #}
+      <div class="spot-stack">
+        {% for spot in spotlights_to_show %}
+        <div class="spot-row">
+          <div class="spot-row-hero">
+            <div class="spot-row-circle {% if spot.grapheme_display|length > 1 %}spot-row-circle-multi{% endif %}">{{ spot.grapheme_display }}</div>
+          </div>
+          <div class="spot-row-cards">
+            {% for entry in spot.words[:3] %}
+            <div class="spot-card">
+              <div class="spot-photo">
+                {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
+                {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
+              </div>
+              <div class="spot-word">{{ entry.word_html | safe }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% set pnum = after_story + 1 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endif %}
+
+  {% set after_spot = after_story + (1 if spotlights_to_show else 0) %}
+
+  <!-- ============================================================
+       READ WORDS — always its own page
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="activity-title">Can You Read These?</div>
+      <div class="activity-subtitle">Sound out each word, then blend it. Use the buttons under each word.</div>
+      <div class="read-grid">
+        {% for w in sound_buttoned_words[:6] %}
+        <div class="read-cell">
+          {{ sb_word(w, 6) }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {# Bottom half — handwriting trace+write rows.  Capped at 4 so the
+         page never overflows on A5 (per GPT-5 review).  The Read row
+         above still shows up to 6 words so the child reads more than
+         they hand-write. #}
+      <div class="rw-write-section">
+        <div class="rw-write-label">Now Write Each Word</div>
+        {% for w in sound_buttoned_words[:4] %}
+        <div class="rw-write-row">
+          <div class="rw-write-trace">{{ w.word }}</div>
+          <div class="rw-write-paper">
+            <div class="tf-hw-line tf-hw-top"></div>
+            <div class="tf-hw-line tf-hw-mid"></div>
+            <div class="tf-hw-line tf-hw-base"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% set pnum = after_spot + 1 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  <!-- ============================================================
+       NONSENSE WORDS — always its own page
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="activity-title">Alien Words Challenge</div>
+      <div class="activity-subtitle">These aren&rsquo;t real words! Use your phonics to sound them out.</div>
+      <div class="nonsense-grid-full">
+        {% for w in nonsense_words[:6] %}
+        <div class="nonsense-card-full">{{ w }}</div>
+        {% endfor %}
+      </div>
+
+      {% if page_count == 16 and initial_sounds %}
+      <div class="nw-write-section">
+        <div class="nw-write-label">Initial Sounds</div>
+        <div class="aw-instruction">Circle the sound the picture starts with.</div>
+        <div class="initial-sounds-grid">
+          {% for item in initial_sounds[:3] %}
+          <div class="is-row">
+            <div class="is-photo">
+              {% if item.photo %}<img src="{{ item.photo }}" alt="">{% endif %}
+            </div>
+            <div class="is-options">
+              {% for opt in item.options %}
+              <div class="is-option">{{ opt }}</div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% elif match_to_picture and match_to_picture.words|length == 3 %}
+      <div class="nw-write-section">
+        <div class="nw-write-label">Match the Word to the Picture</div>
+        <div class="aw-instruction">Read each word, then draw a line to the matching picture.</div>
+        <div class="mtp-grid">
+          <div class="mtp-words">
+            {% for w in match_to_picture.words %}
+            <div class="mtp-word">{{ w.word }}</div>
+            {% endfor %}
+          </div>
+          <div class="mtp-pictures">
+            {% for idx in match_to_picture.pic_order %}
+            <div class="mtp-pic">
+              {% if match_to_picture.words[idx].photo %}
+              <img src="{{ match_to_picture.words[idx].photo }}" alt="">
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="nonsense-tip">
+        {% if level <= 4 %}
+        <strong>Why this matters:</strong> The Year 1 Phonics Screening Check uses
+        made-up words to test pure decoding. If your child can read these, they
+        truly understand sound-letter mapping &mdash; they&rsquo;re not guessing from memory.
+        {% else %}
+        <strong>Why this matters:</strong> By Year 2/3 your child has met every common
+        spelling pattern. Made-up words are now used to check they can decode any
+        new word they encounter &mdash; including unfamiliar real ones &mdash; using
+        only their knowledge of sound-letter patterns.
+        {% endif %}
+      </div>
+    </div>
+    {% set pnum = after_spot + 2 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  {% set after_read = after_spot + 2 %}
+
+  <!-- ============================================================
+       TELL THE STORY — Story Ordering (+ B/M/E retell at 20pp)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="tell-title">Tell the Story</div>
+      <div class="tell-instruction">
+        Number the pictures 1, 2, 3, 4{% if ordering_image_count == 6 %}, 5, 6{% endif %} in the order they happened.
+        {% if page_count >= 20 %}Then retell the story below.{% endif %}
+      </div>
+
+      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6{% elif level >= 3 %}ordering-grid-compact{% elif page_count == 16 %}ordering-grid-4 ordering-grid-4-large{% else %}ordering-grid-4{% endif %}">
+        {% for item in ordering_items %}
+        <div class="ordering-cell">
+          {% if item.image %}
+          <img src="{{ item.image }}" alt="">
+          {% else %}
+          <div class="ordering-cell-placeholder">[ scene {{ loop.index }} ]</div>
+          {% endif %}
+          <div class="ordering-number-box"></div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {# At 20 pages, the retell scaffold + writing goals live on this page.
+         At 24 pages (L5/L6) the writing moves to its own dedicated
+         "Your Turn to Write" page so it isn't squashed against the
+         picture-ordering grid.  See block further down. #}
+      {% if page_count == 20 %}
+      {# Retell scaffold MODELS the conventions it asks for:
+         - First line of each step is printed with a sentence starter
+           ("First, ") so the child sees a capital + comma + space.
+         - A faint grey end mark (. or ?) is ghosted at the right end
+           of each line.
+         - L1 = 2 short sentences (no time words — not yet decodable).
+         - L2-L5 = 3 starters: First, / Then, / In the end,
+         - L6 = single paragraph block with margin starters at fixed
+           line indices (cohesion, not three boxed steps).
+         Architecture from senior-pedagogue review (gpt-5, 2026-05-10).  #}
+      {% set retell_keywords = sound_buttoned_words | map(attribute='word') | list %}
+
+      {# Writing Goals — capped at 4 (5 for L6) per pedagogy review.
+         No "wow word" (invites non-decodable adjectives + flabby prose). #}
+      {% set _wg = [
+        {'icon': 'Aa', 'text': 'Capital at the start'},
+        {'icon': '⎵', 'text': 'Finger spaces'},
+        {'icon': '.', 'text': 'Full stop at the end'},
+      ] %}
+      {% if level >= 3 %}
+        {# Replace plain full stop with end-mark choice once question marks land. #}
+        {% set _wg = [
+          {'icon': 'Aa', 'text': 'Capital at the start'},
+          {'icon': '⎵', 'text': 'Finger spaces'},
+          {'icon': '. ?', 'text': 'Correct end mark'},
+        ] %}
+      {% endif %}
+      {% if level >= 4 %}{% set _wg = _wg + [{'icon': '↔', 'text': 'One joining word: and or but'}] %}{% endif %}
+      {% if level == 5 %}{% set _wg = _wg + [{'icon': '✳', 'text': 'One describing word'}] %}{% endif %}
+      {% if level >= 6 %}{% set _wg = _wg + [{'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
+      <div class="writing-goals">
+        <div class="writing-goals-label">Writing Goals &mdash; tick when you remember</div>
+        <div class="writing-goals-list">
+          {% for g in _wg %}
+          <div class="writing-goal">
+            <span class="writing-goal-tick"></span>
+            <span class="writing-goal-icon">{{ g.icon }}</span>
+            <span>{{ g.text }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if retell_keywords %}
+      <div class="retell-keywords">
+        <div class="retell-keywords-label">Keywords &mdash; use these in your retell</div>
+        <div class="retell-keywords-list">
+          {% for kw in retell_keywords[:6] %}
+          <span class="retell-keyword">{{ kw }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if grammar_spotlight and grammar_spotlight.retell_note %}
+      <div class="retell-note">{{ grammar_spotlight.retell_note }}</div>
+      {% endif %}
+
+      {# Per-level retell scaffold — modelled starters + ghost end marks. #}
+      {% if level == 1 %}
+        {% set retell_steps = [
+          {'label': 'Sentence 1', 'hint': 'Say it first. Count the words on your fingers.', 'starter': 'It ', 'lines': 2, 'ghost': '.'},
+          {'label': 'Sentence 2', 'hint': 'One more thing about the story.',                  'starter': 'It ', 'lines': 2, 'ghost': '.'},
+        ] %}
+      {% elif level == 2 %}
+        {% set retell_steps = [
+          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 2, 'ghost': '.'},
+          {'label': 'Middle',    'hint': 'Then, …',       'starter': 'Then, ',       'lines': 2, 'ghost': '.'},
+          {'label': 'End',       'hint': 'At the end, …', 'starter': 'At the end, ', 'lines': 2, 'ghost': '.'},
+        ] %}
+      {% elif level == 3 %}
+        {% set retell_steps = [
+          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 2, 'ghost': '.'},
+          {'label': 'Next part', 'hint': 'Next, …',       'starter': 'Next, ',       'lines': 2, 'ghost': '.'},
+          {'label': 'End',       'hint': 'In the end, …', 'starter': 'In the end, ', 'lines': 2, 'ghost': '.'},
+        ] %}
+      {% elif level == 4 %}
+        {% set retell_steps = [
+          {'label': 'Beginning', 'hint': 'First, …',                'starter': 'First, ',      'lines': 3, 'ghost': '.'},
+          {'label': 'Add a join','hint': 'Use and or but once.',    'starter': 'Then, ',       'lines': 3, 'ghost': '.'},
+          {'label': 'End',       'hint': 'After that, …',           'starter': 'After that, ', 'lines': 3, 'ghost': '.'},
+        ] %}
+      {% elif level == 5 %}
+        {% set retell_steps = [
+          {'label': 'Set the scene', 'hint': 'At the start, …',                            'starter': 'At the start, ', 'lines': 3, 'ghost': '.'},
+          {'label': 'Tell why',      'hint': 'Use because to give a reason.',              'starter': 'Then, ',         'lines': 3, 'ghost': '.'},
+          {'label': 'Finish strong', 'hint': 'In the end, … (add one describing word)',   'starter': 'In the end, ',   'lines': 3, 'ghost': '.'},
+        ] %}
+      {% else %}
+        {# L6 — paragraph block with margin starters at fixed line indices #}
+        {% set retell_paragraph = {
+          'label': 'Paragraph retell',
+          'hint':  'Use these to guide your paragraph: At first, … Then, … In the end, …',
+          'lines': 8,
+          'margin_starters': {0: 'At first, ', 3: 'Then, ', 6: 'In the end, '},
+        } %}
+      {% endif %}
+
+      {% if level <= 5 %}
+      <div class="retell-strip">
+        {% for step in retell_steps %}
+        <div class="retell-step">
+          <div class="retell-step-header">
+            <span class="retell-label">{{ step.label }}</span>
+            <span class="retell-hint">{{ step.hint }}</span>
+          </div>
+          {% for n in range(step.lines) %}
+            {% if n == 0 %}
+            <div class="retell-line retell-line-first"
+                 data-starter="{{ step.starter }}"
+                 data-ghost="{{ step.ghost }}"></div>
+            {% else %}
+            <div class="retell-line" data-ghost="{{ step.ghost }}"></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="retell-strip">
+        <div class="retell-step">
+          <div class="retell-step-header">
+            <span class="retell-label">{{ retell_paragraph.label }}</span>
+            <span class="retell-hint">{{ retell_paragraph.hint }}</span>
+          </div>
+          <div class="retell-paragraph">
+            {% for n in range(retell_paragraph.lines) %}
+              {% set starter = retell_paragraph.margin_starters.get(n) %}
+              {% if starter %}
+              <div class="retell-line" data-starter="{{ starter }}" data-ghost="."></div>
+              {% else %}
+              <div class="retell-line" data-ghost="."></div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+    {% set pnum = after_read + 1 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  {% set after_tell = after_read + 1 %}
+  {# Page-count offset: at 24 pages a dedicated Writing Practice page sits
+     between Tell-the-Story and Talk-About-It, pushing every later page
+     number up by one. #}
+  {% set wp_off = 1 if page_count >= 24 else 0 %}
+
+  {% if page_count >= 24 %}
+  <!-- ============================================================
+       WRITING PRACTICE — full A5 page of writing lines, writing goals,
+       and a level-appropriate retell prompt.  L5/L6 only (24-page).
+       Splits writing off the cramped Tell-the-Story page so the child
+       has real room to compose and revise.
+       ============================================================ -->
+  {% set retell_keywords = sound_buttoned_words | map(attribute='word') | list %}
+
+  {% set _wg = [
+    {'icon': 'Aa', 'text': 'Capital at the start'},
+    {'icon': '⎵', 'text': 'Finger spaces'},
+    {'icon': '. ?', 'text': 'Correct end mark'},
+  ] %}
+  {% if level >= 4 %}{% set _wg = _wg + [{'icon': '↔', 'text': 'One joining word: and / but'}] %}{% endif %}
+  {% if level == 5 %}{% set _wg = _wg + [{'icon': '✳', 'text': 'One describing word'}] %}{% endif %}
+  {% if level >= 6 %}{% set _wg = _wg + [{'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
+
+  {% if level == 5 %}
+    {% set wp_steps = [
+      {'label': 'Set the scene', 'hint': 'At the start, …',                          'starter': 'At the start, ', 'lines': 4, 'ghost': '.'},
+      {'label': 'Tell why',      'hint': 'Use because to give a reason.',            'starter': 'Then, ',         'lines': 4, 'ghost': '.'},
+      {'label': 'Finish strong', 'hint': 'In the end, … (add one describing word)', 'starter': 'In the end, ',   'lines': 4, 'ghost': '.'},
+    ] %}
+  {% else %}
+    {# L6 — paragraph block with margin starters #}
+    {% set wp_paragraph = {
+      'label': 'Paragraph retell',
+      'hint':  'At first, … Then, … In the end, …',
+      'lines': 14,
+      'margin_starters': {0: 'At first, ', 5: 'Then, ', 10: 'In the end, '},
+    } %}
+  {% endif %}
+
+  <div class="page">
+    <div class="page-inner wp-inner">
+      <div class="wp-title">Your Turn to Write</div>
+      <div class="wp-subtitle">
+        Retell what happened in the story. Use the starters and tick a goal as you remember it.
+      </div>
+
+      <div class="writing-goals">
+        <div class="writing-goals-label">Writing Goals &mdash; tick when you remember</div>
+        <div class="writing-goals-list">
+          {% for g in _wg %}
+          <div class="writing-goal">
+            <span class="writing-goal-tick"></span>
+            <span class="writing-goal-icon">{{ g.icon }}</span>
+            <span>{{ g.text }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      {% if retell_keywords %}
+      <div class="retell-keywords">
+        <div class="retell-keywords-label">Keywords &mdash; use these in your retell</div>
+        <div class="retell-keywords-list">
+          {% for kw in retell_keywords[:6] %}
+          <span class="retell-keyword">{{ kw }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if level == 5 %}
+      <div class="retell-strip wp-retell-strip">
+        {% for step in wp_steps %}
+        <div class="retell-step">
+          <div class="retell-step-header">
+            <span class="retell-label">{{ step.label }}</span>
+            <span class="retell-hint">{{ step.hint }}</span>
+          </div>
+          {% for n in range(step.lines) %}
+            {% if n == 0 %}
+            <div class="retell-line retell-line-first"
+                 data-starter="{{ step.starter }}"
+                 data-ghost="{{ step.ghost }}"></div>
+            {% else %}
+            <div class="retell-line" data-ghost="{{ step.ghost }}"></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="retell-strip wp-retell-strip">
+        <div class="retell-step">
+          <div class="retell-step-header">
+            <span class="retell-label">{{ wp_paragraph.label }}</span>
+            <span class="retell-hint">{{ wp_paragraph.hint }}</span>
+          </div>
+          <div class="retell-paragraph">
+            {% for n in range(wp_paragraph.lines) %}
+              {% set starter = wp_paragraph.margin_starters.get(n) %}
+              {% if starter %}
+              <div class="retell-line" data-starter="{{ starter }}" data-ghost="."></div>
+              {% else %}
+              <div class="retell-line" data-ghost="."></div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% set pnum = after_tell + 1 %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endif %}
+
+  <!-- ============================================================
+       TALK ABOUT THE STORY (always)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="talk-title">Talk About It</div>
+      {% for q in comprehension_questions[:3] %}
+      <div class="talk-question">
+        <div class="talk-question-category">{{ q.category }}</div>
+        <div class="talk-question-text">{{ q.text }}</div>
+      </div>
+      {% endfor %}
+
+      <div class="talk-draw-section">
+        <div class="talk-draw-label">Draw Your Favourite Part</div>
+        <div class="talk-draw-box"></div>
+        <div class="talk-feeling-row">
+          <span class="talk-feeling-stem">It made me feel</span>
+          <div class="talk-feeling-stem-line"></div>
+        </div>
+        <div class="talk-faces-row">
+          <span class="talk-faces-prompt">Circle one:</span>
+          <div class="talk-face">&#x1F60A;</div>
+          <div class="talk-face">&#x1F61E;</div>
+          <div class="talk-face">&#x1F62E;</div>
+          <div class="talk-face">&#x1F914;</div>
+        </div>
+      </div>
+    </div>
+    {% set pnum = after_tell + 1 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  {% if page_count >= 20 %}
+  <!-- ============================================================
+       WORD WORKSHOP — only new tricky words get LCWC; older tricky
+       words are exercised via recognition (Hunt), not spelling.  The
+       freed space hosts a Grammar Spotlight that scales by level.
+       ============================================================ -->
+  {# Cap LCWC at 3 — even when many new tricky words land at this level,
+     three rows is enough deliberate practice on one page; the rest
+     surface again across the wider book series. #}
+  {% set lcwc_words = tricky_words_new[:3] %}
+  <div class="page">
+    <div class="page-inner">
+      <div class="tricky-title">Word Workshop</div>
+      <div class="tricky-subtitle">
+        {%- if lcwc_words and level <= 3 -%}
+        New tricky words to lock in &mdash; then a quick grammar challenge.
+        {%- elif lcwc_words -%}
+        New tricky words to lock in, then a grammar challenge.
+        {%- elif level <= 3 -%}
+        Hunt for tricky words you already know, then try the grammar challenge.
+        {%- else -%}
+        A focused grammar challenge for this book.
+        {%- endif -%}
+      </div>
+
+      {% if lcwc_words %}
+      <div class="ww-section-label">New This Level &mdash; Look, Cover, Write, Check</div>
+      <div class="tricky-instructions">
+        <div>1. Look</div>
+        <div>2. Cover</div>
+        <div>3. Write</div>
+        <div>4. Check</div>
+      </div>
+      <div class="tricky-grid">
+        {% for tw in lcwc_words %}
+        <div class="tricky-row">
+          <div class="tricky-look">{{ tw }}</div>
+          <div class="tricky-cover"></div>
+          <div class="tricky-write"></div>
+          <div class="tricky-check"></div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Tricky Word Hunt is a Reception/Y1 scaffold — by L4 (Y1 Phase 5a)
+         children recognise tricky words at speed and the hunt becomes
+         busywork.  Drop it from L4 onwards so the Grammar Spotlight has
+         room to breathe. #}
+      {% if level <= 3 %}
+      <div class="tricky-hunt">
+        <div class="tricky-hunt-label">Tricky Word Hunt</div>
+        <div class="tricky-hunt-instruction">Read each sentence. Circle every tricky word you spot.</div>
+        {% for sent in story_pages[:2] %}
+        <div class="tricky-hunt-sent">{{ sent.text }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if grammar_spotlight and grammar_spotlight.spotlight %}
+      {% set _spot = grammar_spotlight.spotlight %}
+      <div class="gs-section">
+        <div class="gs-header">
+          <span class="gs-badge">Grammar Spotlight</span>
+          <span class="gs-skill">{{ _spot.skill }}</span>
+        </div>
+        <div class="gs-instruction">{{ _spot.instruction }}</div>
+        {% if _spot.example %}
+        <div class="gs-example">
+          <span class="gs-example-tag">e.g.</span>
+          <span class="gs-example-text">{{ _spot.example | safe }}</span>
+        </div>
+        {% endif %}
+        {% if _spot["items"] %}
+        <div class="gs-rows">
+          {% for item in _spot["items"] %}
+          <div class="gs-row{% if item.image %} gs-row-with-image{% endif %}">
+            <span class="gs-num">{{ loop.index }}.</span>
+            {% if item.image %}
+            <img class="gs-image" src="{{ item.image }}" alt="">
+            {% endif %}
+            <span class="gs-sentence">{{ item.text | safe }}</span>
+            {% if item.choices %}
+            <span class="gs-choices">
+              {% for c in item.choices %}<span class="gs-choice">{{ c }}</span>{% endfor %}
+            </span>
+            {% else %}
+            <span class="gs-answer-box"></span>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {# Writing prompt fills the empty space below the spotlight: the child
+         uses one of their new words in a sentence that retells a moment from
+         the story.  This turns dead vertical space into a meaningful
+         "apply-the-skill" beat without adding a page. #}
+      {% set _writing_prompt = (grammar_spotlight.writing_prompt if grammar_spotlight.writing_prompt else "Now tell part of the story.  Write a sentence using one of your new words.") %}
+      {% set _writing_lines = (grammar_spotlight.writing_lines if grammar_spotlight.writing_lines else (4 if level >= 4 else 3)) %}
+      <div class="gs-writing">
+        <div class="gs-writing-label">Write About the Story</div>
+        <div class="gs-writing-prompt">{{ _writing_prompt }}</div>
+        <div class="gs-writing-lines">
+          {% for _ in range(_writing_lines) %}
+          <div class="gs-writing-line"></div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% set pnum = after_tell + 2 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  <!-- ============================================================
+       LISTEN AND WRITE — parent-led phoneme dictation.
+       The word is hidden from the child; only the grown-up sees it.
+       Child writes each sound in a box.  This forces encoding from
+       hearing, not copying.  Answer strip is rotated 180° at the
+       bottom edge so the child can't read it while writing.
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="sw2-title">Listen and Write</div>
+      <div class="sw2-subtitle">Your grown-up will say a word.  Listen carefully.  Write one sound or letter in each box.</div>
+
+      <div class="bw-grid bw-grid-listen">
+        {% for w in sound_buttoned_words[:4] %}
+        <div class="bw-cell {% if w.phonemes|length >= 5 %}bw-cell-long{% endif %}">
+          <div class="bw-row-num">{{ loop.index }}</div>
+          <div class="bw-boxes">
+            {% for ph in w.phonemes %}
+            <div class="bw-box bw-box-len-{{ ph|length }}"></div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="bw-grownup-panel">
+        <div class="bw-grownup-header">
+          <span class="bw-grownup-title">Grown-Up Panel</span>
+          <span class="bw-grownup-flip-cue">&#x21bb; turn the book to read</span>
+        </div>
+        <div class="bw-grownup-words">
+          {% for w in sound_buttoned_words[:4] %}
+          <span class="bw-grownup-word"><strong>{{ loop.index }}.</strong> {{ w.word }}</span>
+          {% endfor %}
+        </div>
+        <div class="bw-grownup-tip">
+          <strong>How to dictate:</strong> Say each word slowly, stretching every sound &mdash;
+          <em>fff &mdash; iii &mdash; sh</em>.  Don&rsquo;t spell it for them.  Digraphs (two letters, one sound) sit in one box together.
+        </div>
+      </div>
+    </div>
+    {% set pnum = after_tell + 3 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endif %}
+
+  {% if page_count >= 24 %}
+  <!-- ============================================================
+       SENTENCE-TO-PICTURE — L5/L6 stretch.  Word-to-picture matching
+       is too easy by this stage; here children read four short
+       sentences pulled from the story and number the picture each one
+       describes.  Gives a comprehension check that's harder than
+       single-word recognition.
+       ============================================================ -->
+  {% set sp_items = [] %}
+  {% for sp in story_pages[:4] %}
+    {% set first_sent = sp.text.split('.')[0].strip() ~ '.' %}
+    {% set _ = sp_items.append({'sentence': first_sent, 'image': sp.image, 'original_index': loop.index}) %}
+  {% endfor %}
+  <div class="page">
+    <div class="page-inner">
+      <div class="stp-title">Read &amp; Match</div>
+      <div class="stp-instruction">
+        Read each sentence. Find the picture it tells you about and write its number in the box.
+      </div>
+
+      <div class="stp-pictures">
+        {% for it in sp_items %}
+        <div class="stp-pic-cell">
+          <div class="stp-pic-num">{{ loop.index }}</div>
+          {% if it.image %}<img src="{{ it.image }}" alt="">{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="stp-sentences">
+        {% for it in sp_items %}
+        <div class="stp-sentence-row">
+          <span class="stp-sent-letter">{{ ['A','B','C','D'][loop.index0] }}</span>
+          <span class="stp-sent-text">{{ it.sentence }}</span>
+          <span class="stp-sent-box"></span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% set pnum = after_tell + 4 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  <!-- ============================================================
+       PREFIX POWER — L5/L6 prefix challenge.  Replaces the prior
+       Reading Star certificate (a celebration page that duplicated
+       end-of-book work absent from L1–L4 books).  Children build
+       new words by adding a prefix to a root they already meet.
+       Defaults can be overridden per-book via
+       grammar_spotlight.prefix_items in data/grammar_spotlights.py.
+       ============================================================ -->
+  {% set _default_prefix_items = [
+    {'prefix': 'un',   'root': 'happy',  'hint': 'not happy'},
+    {'prefix': 're',   'root': 'do',     'hint': 'do it again'},
+    {'prefix': 'pre',  'root': 'view',   'hint': 'view it before'},
+    {'prefix': 'dis',  'root': 'like',   'hint': 'do not like'},
+  ] %}
+  {% set _prefix_items = (grammar_spotlight.prefix_items if grammar_spotlight and grammar_spotlight.prefix_items else _default_prefix_items) %}
+  <div class="page">
+    <div class="page-inner">
+      <div class="pp-title">Prefix Power</div>
+      <div class="pp-instruction">
+        A prefix is a small word part you add to the <strong>front</strong> of a word.
+        Read each row.  Write the new word in the box, then say what it means.
+      </div>
+      <div class="pp-rows">
+        {% for it in _prefix_items %}
+        <div class="pp-row">
+          <span class="pp-num">{{ loop.index }}.</span>
+          <span class="pp-piece pp-prefix">{{ it.prefix }}&ndash;</span>
+          <span class="pp-plus">+</span>
+          <span class="pp-piece pp-root">{{ it.root }}</span>
+          <span class="pp-equals">=</span>
+          <span class="pp-answer-box"></span>
+          <span class="pp-hint">{{ it.hint }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="pp-tip">
+        <strong>Grown-up tip:</strong> say the prefix and the root in turn before
+        blending them.  Ask: <em>what changed in the meaning?</em>
+      </div>
+    </div>
+    {% set pnum = after_tell + 5 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+
+  <!-- ============================================================
+       SENTENCE STRETCH — extend a short main clause with a
+       subordinator (because / when / if) and finish the idea.
+       Trains subordinate-clause writing that the regular Writing
+       Practice goals box flags but doesn't drill.
+       Stems can be overridden per-book via
+       grammar_spotlight.stretch_stems in data/grammar_spotlights.py.
+       ============================================================ -->
+  {% set _default_stretch_stems = [
+    'The cat ran fast',
+    'I held on tight',
+    'We went home',
+  ] %}
+  {% set _stretch_stems = (grammar_spotlight.stretch_stems if grammar_spotlight and grammar_spotlight.stretch_stems else _default_stretch_stems) %}
+  <div class="page">
+    <div class="page-inner">
+      <div class="ss-title">Sentence Stretch</div>
+      <div class="ss-instruction">
+        Read the short sentence.  Stretch it by adding
+        <strong>because</strong>, <strong>when</strong> or <strong>if</strong>
+        — then finish your idea.  Don&rsquo;t forget the full stop.
+      </div>
+      <div class="ss-rows">
+        {% for stem in _stretch_stems %}
+        <div class="ss-row">
+          <div class="ss-row-num">{{ loop.index }}</div>
+          <div class="ss-stem">{{ stem }}</div>
+          <div class="ss-connectors">
+            <span class="ss-choice">because</span>
+            <span class="ss-choice">when</span>
+            <span class="ss-choice">if</span>
+          </div>
+          <div class="ss-write">
+            <div class="ss-line"></div>
+            <div class="ss-line"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="ss-tip">
+        <strong>Grown-up tip:</strong> a sentence with <em>because</em> gives a
+        reason; <em>when</em> gives a time; <em>if</em> gives a condition.  Read
+        each finished sentence aloud and check it makes sense.
+      </div>
+    </div>
+    {% set pnum = after_tell + 6 + wp_off %}
+    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+  </div>
+  {% endif %}
+
+  <!-- ============================================================
+       BACK COVER
+       ============================================================ -->
+  <div class="page back-cover">
+    <div class="back-banner">
+      <div class="back-brand-name">MyPhonicsBooks</div>
+      <div class="back-level-text">Level {{ level }} &middot; {{ level_name }} &middot; Ages {{ age_range }}</div>
+    </div>
+    <div class="back-body">
+      <div class="back-description">
+        <strong>{{ book_title }}</strong> &mdash; a fully decodable phonics story
+        set in a real, contemporary culture. Every word can be sounded out using
+        only the sounds taught up to Level {{ level }}, plus a small set of tricky
+        words listed inside.
+      </div>
+
+      <div class="back-decodability">
+        <strong>100% decodable.</strong> No guessing words from pictures.
+        Aligned to {{ phase_label }}.
+      </div>
+
+      <div class="back-series-label">The Series</div>
+      <div class="back-series-row">
+        {% for lvl in series_levels %}
+        <div class="back-series-box {% if lvl.num == level %}back-series-box-active{% endif %}">
+          <div class="back-series-num">{{ lvl.num }}</div>
+          <div class="back-series-name">{{ lvl.name }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="back-footer">
+        <div class="back-footer-brand">myphonicsbooks.com</div>
+        <div class="back-footer-url">Decodable phonics stories from around the world</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
