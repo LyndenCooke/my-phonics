@@ -24,11 +24,11 @@ NIGHT_MARKET_STORY_BOOK1 = {
         "focus_graphemes": ["o-e", "u-e"],
         "story_pages": [
             {
-                "text": "Mum and I went to the night market. It was huge! \u2018Stay close to me,\u2019 Mum spoke. And I did.",
+                "text": "Mum and I went to the night market. It was huge! \u2018Stay close to me,\u2019 Mum said. And I did.",
                 "image": None,
             },
             {
-                "text": "We see cute stone elephants on a stall. We see bright noodle pots. The food smelt so good!",
+                "text": "We see cute stone models on a stand. We see bright noodle pots. The food smelt so good!",
                 "image": None,
             },
             {
@@ -36,28 +36,28 @@ NIGHT_MARKET_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "It was dark and loud. I felt so small. \u2018Mum!\u2019 I shout. But Mum is not there.",
+                "text": "It was dark and loud. I felt little. \u2018Mum!\u2019 I shouted. But Mum was not near.",
                 "image": None,
             },
             {
-                "text": "Then I see the cute stone elephants! We went past those! Mum must be close!",
+                "text": "Then I see the cute stone models! We went past those! Mum must be close!",
                 "image": None,
             },
             {
-                "text": "I run past the bright lights. I run past the noodle stall. Then\u2026 I see Mum!",
+                "text": "I run past the bright lights. I run past the noodle stand. Then\u2026 I see Mum!",
                 "image": None,
             },
             {
-                "text": "Mum gave me a huge tight hug. \u2018You are safe!\u2019 she spoke. I did not let go.",
+                "text": "Mum gave me a huge tight hug. \u2018You are safe!\u2019 she said. I did not let go.",
                 "image": None,
             },
             {
-                "text": "We sat close and ate hot noodles in the moonlight. \u2018Stay close to me!\u2019 spoke Mum. I gave a huge grin. Home time!",
+                "text": "We sat close and ate hot noodles in the moonlight. \u2018Stay close to me!\u2019 said Mum. I gave a huge grin. Home time!",
                 "image": None,
             },
         ],
-        "story_words": ["close", "spoke", "huge", "stone", "bright", "noodle"],
-        "tricky_words_used": ["I", "the", "you", "she", "we", "elephant"],
+        "story_words": ["close", "huge", "stone", "bright", "noodle"],
+        "tricky_words_used": ["the", "to", "I", "was", "we", "me", "you", "are", "so", "go", "she", "said"],
         "read_words": ["close", "spoke", "huge", "stone"],
         "nonsense_words": [
             "blone", "frope", "snoke", "plone", "stobe", "grode",

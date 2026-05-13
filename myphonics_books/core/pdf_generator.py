@@ -61,7 +61,7 @@ class PlaywrightPDFGenerator(PDFGenerator):
 
             # Load HTML content — use "domcontentloaded" since all images are
             # inline base64, no network requests needed
-            await page.set_content(html_content, wait_until="domcontentloaded", timeout=300000)
+            await page.set_content(html_content, wait_until="domcontentloaded", timeout=900000)
 
             # Explicit font loading wait (more reliable than timeout)
             await page.evaluate("""

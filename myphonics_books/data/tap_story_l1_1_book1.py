@@ -14,15 +14,15 @@ TAP_STORY_BOOK1 = {
         "character_id": "CHAR-B",
         "character_name": "White British boy (casual home)",
         "story_pages": [
-            {"text": "I sit at a mat. Tap, tap, tap!", "image": None},
+            {"text": "I sit on a mat. Tap, tap, tap!", "image": None},
             {"text": "Is it a rat? Is it a bat?", "image": None},
             {"text": "It is not a rat. It is not a bat.", "image": None},
-            {"text": "Tap, tap! I pat at it.", "image": None},
+            {"text": "Tap, tap! I tap it.", "image": None},
             {"text": "It is a cat! A fat cat!", "image": None},
-            {"text": "I pat the cat. The cat naps. I am happy!", "image": None},
+            {"text": "I pat the cat. The cat naps. I am glad!", "image": None},
         ],
         "story_words": ["sit", "mat", "tap", "rat", "bat", "pat", "cat", "fat", "naps"],
-        "tricky_words_used": ["I", "a", "the", "is", "happy"],  # Actually used - "it" is decodable (i-t), "happy" is tricky (2 syllables)
+        "tricky_words_used": ["I", "the"],  # 'a' and 'is' and 'it' are decodable from SATPIN. 'on' uses 'o' which is taught.
         "read_words": ["sat", "pat", "tap", "nap"],  # SATPIN focus for activity
         "nonsense_words": [
             "sap", "tas", "pim", "nit",  # SATPIN only

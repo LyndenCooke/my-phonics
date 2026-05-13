@@ -28,15 +28,15 @@ RUN_PUP_STORY_BOOK1 = {
         "character_id": "CHAR-L",
         "character_name": "Mixed heritage boy (pet owner)",
         "story_pages": [
-            {"text": "I have a pup. The pup can run!", "image": None},
+            {"text": "I hug a pup. The pup can run!", "image": None},
             {"text": "Run, pup, run! The pup hid in the hut.", "image": None},
             {"text": "Run, pup, run! The pup hid in the bush.", "image": None},
             {"text": "Run, pup, run! The pup is in the tub!", "image": None},
             {"text": "I rub the pup. Rub, rub, rub!", "image": None},
-            {"text": "The pup and me! A big hug!", "image": None},
+            {"text": "I hug the pup! A big hug!", "image": None},
         ],
         "story_words": ["run", "pup", "hut", "bush", "tub", "rub", "hug", "hid"],
-        "tricky_words_used": ["I", "a", "the", "have", "me", "happy"],  # Actually used in story
+        "tricky_words_used": ["I", "the"],  # 'a' treated as decodable at L1; off-list words removed
         "read_words": ["hub", "rub", "hut", "bug"],  # Focus on u, r, h, b
         "nonsense_words": [
             "hup", "rud", "bup", "reb",  # u, r, h, b focus

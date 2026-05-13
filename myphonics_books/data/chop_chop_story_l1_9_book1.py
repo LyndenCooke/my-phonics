@@ -47,11 +47,11 @@ CHOP_CHOP_STORY_BOOK1 = {
             {"text": "Chips with Nan! Munch, munch, munch!", "image": None},
         ],
         "story_words": ["chop", "chip", "thin", "thick", "this", "that", "pan", "hot", "dip", "dish"],
-        "tricky_words_used": ["I", "a", "the", "have", "happy"],  # Actually used in story
+        "tricky_words_used": ["I", "the"],  # 'a' decodable; 'have'/'happy' not used in current text
         "read_words": ["chop", "chin", "this", "that"],  # Focus on ch, th
         "nonsense_words": [
             "chod", "chep", "chib", "chun",  # ch onset
-            "thob", "them", "thud", "thig",  # th onset
+            "thob", "theb", "thud", "thig",  # th onset (theb replaces real word 'them')
             "dach", "mich", "foch", "luch",  # ch in coda
         ],
         "questions": [

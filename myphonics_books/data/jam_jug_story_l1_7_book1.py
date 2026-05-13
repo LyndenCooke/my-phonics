@@ -39,12 +39,12 @@ JAM_JUG_STORY_BOOK1 = {
             {"text": "Dad has a van. The van has jam in big jugs.", "image": None},
             {"text": "I dip in a jug. Fig jam! It is yum!", "image": None},
             {"text": "I dip in a jug. Red jam! It is yum!", "image": None},
-            {"text": "The jug tips! Jam on the rug! Oh, no!", "image": None},
+            {"text": "The jug tips! Jam on the rug! No!", "image": None},
             {"text": "I get a wet rag. I mop it up.", "image": None},
             {"text": "No jam on the rug! I did it! I hug Dad.", "image": None},
         ],
         "story_words": ["jam", "jug", "van", "wet", "win", "rug", "fig", "dip", "vat"],
-        "tricky_words_used": ["I", "a", "the", "no", "oh"],  # Actually used in story
+        "tricky_words_used": ["I", "the", "no"],  # 'a' treated as decodable; 'oh' removed via rewrite
         "read_words": ["jug", "van", "web", "wig"],  # Focus on j, v, w
         "nonsense_words": [
             "jod", "jev", "jup", "jig",  # j onset

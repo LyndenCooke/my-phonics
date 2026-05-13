@@ -87,31 +87,31 @@ FAIR_AIR_STORY_BOOK1 = {
 
         "story_pages": [
             {
-                "text": "I go to the fair! I can see it. The air is cool. The fair is so big!",
+                "text": "I go to the fair! I can see it. The air is cool. The fair is big!",
                 "image": None,
             },
             {
-                "text": "The air is in my hair! It is such a gush! I put my hat on.",
+                "text": "The air is in my hair! It is such a gust! I put my hat on.",
                 "image": None,
             },
             {
-                "text": "Look! Toy ducks, a pair! \"I can win!\" I say.",
+                "text": "Look! Big ducks, a pair! \"I can win!\" I say.",
                 "image": None,
             },
             {
-                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is so good!",
+                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is good!",
                 "image": None,
             },
             {
-                "text": "A gush in the air! My pair shoots up, up, up! No! My pair!",
+                "text": "A gust in the air! My pair shoots up, up, up! No! My pair!",
                 "image": None,
             },
             {
-                "text": "\"Sir! Sir! My pair is in the air!\" The sir said, \"I can see it! By the fir!\"",
+                "text": "\"Sir! Sir! My pair is in the air!\" The man said, \"I can see it! In the fir!\"",
                 "image": None,
             },
             {
-                "text": "The sir ran to a big fir. My pair is in the fir! He got my pair down!",
+                "text": "The man ran to a big fir. My pair is in the fir! He got my pair down!",
                 "image": None,
             },
             {
@@ -121,10 +121,10 @@ FAIR_AIR_STORY_BOOK1 = {
         ],
 
         "story_words": ["fair", "air", "pair", "hair", "sir", "fir"],
-        "tricky_words_used": ["the", "I", "my", "to", "no", "said"],
+        "tricky_words_used": ["the", "I", "my", "to", "no", "said", "go", "put", "he"],  # 'so', 'two', 'by' removed via rewrites; sir noun replaced with 'man'
         "read_words": ["fair", "pair", "chair", "fir"],
         "nonsense_words": [
-            "dair", "jair", "lair", "tair",     # air combinations
+            "dair", "jair", "vair", "tair",     # air combinations (vair replaces real word 'lair')
             "gir", "nir", "dir", "bir",          # ir combinations
             "mair", "vair", "zair", "chir",      # mixed digraph onsets
         ],

@@ -86,7 +86,7 @@ RED_SAIL_STORY_BOOK1 = {
             },
             {
                 "page_number": 6,
-                "text": "The boat docks with a big load of fish. A man in a coat calls out. \u2018Kai! Kai!\u2019",
+                "text": "The boat docks with a big load of fish. A man in a coat shouts out. \u2018Kai! Kai!\u2019",
                 "image": None,
             },
             {
@@ -101,7 +101,7 @@ RED_SAIL_STORY_BOOK1 = {
             },
         ],
         "story_words": ["rain", "sail", "snail", "boat", "coat", "road"],
-        "tricky_words_used": ["said", "he", "they", "to", "is", "the"],
+        "tricky_words_used": ["said", "he", "they", "to", "the", "into", "I"],  # 'is' decodable; added 'into' and 'I'
         "read_words": ["sail", "snail", "boat", "coat"],
         "nonsense_words": [
             "straif", "blaip", "drail", "plaig", "snaim", "fraib",

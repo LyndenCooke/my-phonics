@@ -250,6 +250,21 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             "The most marvellous thing I have ever seen is...",
             "My neighbourhood is...",
         ],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — How to Say",
+                "body": (
+                    "A few place words in this story use spellings we have not "
+                    "learnt yet. Help your child say each one by sounding out "
+                    "the parts shown."
+                ),
+                "examples": [
+                    "corniche → cor · neesh",
+                    "Egypt → ee · jipt",
+                    "neighbourhood → nay · ber · hood",
+                ],
+            },
+        ],
         "character": {
             "name": "Yusuf",
             "age": "8-9 years old",

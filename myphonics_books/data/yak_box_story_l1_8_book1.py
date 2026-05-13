@@ -37,15 +37,15 @@ YAK_BOX_STORY_BOOK1 = {
         "character_id": None,  # No roster character — custom mountain village child
         "character_name": "Child in a mountain village with a yak",
         "story_pages": [
-            {"text": "I have a yak. The yak is big!", "image": None},
-            {"text": "I have a box. I zip it up. Six figs in the box.", "image": None},
-            {"text": "The yak sat on the box! Oh, no!", "image": None},
+            {"text": "I am with a yak. The yak is big!", "image": None},
+            {"text": "I get a box. Six figs in the box. I zip it up.", "image": None},
+            {"text": "The yak sat on the box! No, no!", "image": None},
             {"text": "I fix the box. I set it on top of the hut.", "image": None},
-            {"text": "The yak can not get it! I get the six figs.", "image": None},
-            {"text": "I munch a fig. The big yak gets a fig. Yum!", "image": None},
+            {"text": "The yak cannot get it! I will get the six figs.", "image": None},
+            {"text": "I toss a fig. The big yak gets a fig. Yum!", "image": None},
         ],
         "story_words": ["yak", "box", "six", "zip", "fix", "fig", "hut", "set", "top"],
-        "tricky_words_used": ["I", "a", "the", "no", "oh"],  # Actually used in story
+        "tricky_words_used": ["I", "the", "no"],  # 'a' treated as decodable; 'have', 'oh' removed via rewrites
         "read_words": ["fox", "yak", "zip", "mix"],  # Focus on x, y, z
         "nonsense_words": [
             "yob", "yud", "yem", "yig",  # y onset

@@ -142,11 +142,11 @@ MORNING_FARM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I get a torch for the dark. I march to the big barn door.",
+                "text": "I get a torch for the dark. I march to the big barn doors.",
                 "image": None,
             },
             {
-                "text": "It is dark in the barn. I look far into a corner. I see a thing!",
+                "text": "It is dark in the barn. I look far into a pen. I see a thing!",
                 "image": None,
             },
             {
@@ -159,7 +159,7 @@ MORNING_FARM_STORY_BOOK1 = {
             },
         ],
         "story_words": ["farm", "barn", "corn", "torch", "dark", "morning"],
-        "tricky_words_used": ["the", "I", "we", "go", "a", "her"],
+        "tricky_words_used": ["the", "I", "we", "go", "to", "my", "her"],  # 'a' decodable; 'to' and 'my' added
         "read_words": ["farm", "barn", "torch", "morning", "dark", "corn"],
         "nonsense_words": [
             "zar", "thar", "shar", "yark",

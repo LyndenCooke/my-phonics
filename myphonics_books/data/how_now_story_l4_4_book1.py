@@ -57,7 +57,7 @@ HOW_NOW_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": 'But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. "How now!" said the boy. "What is THAT?"',
+                "text": 'But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. "How now!" said the boy. "What is that?"',
                 "image_prompt": "A Malaysian boy (orange t-shirt, blue trousers, round glasses) stopped on a garden path, looking surprised at a brown long-tailed macaque monkey sitting on a low stone wall. The monkey has brown fur, a pale face, and a long tail, staring at the boy with a cheeky expression. Surrounded by tropical gardens with flowering hedges, palm trees, and hibiscus. Boy's hands raised in surprise. No mosque. Whimsical children's book illustration style. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Landscape orientation.",
             },
             {
@@ -88,7 +88,7 @@ HOW_NOW_STORY_BOOK1 = {
         ],
         "cover_prompt": "A Malaysian boy (orange t-shirt, blue trousers, round glasses) stands in tropical gardens with the rose-pink Masjid Putra mosque (single minaret) in the background. A cheeky brown macaque monkey sits on a garden wall nearby. His mother (tall, slender, dark green abaya, black niqab) stands beside him. Putrajaya Lake and palm trees in background. Bright sunny day. Whimsical children's book illustration with soft watercolour textured background. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Portrait orientation.",
         "story_words": ["brown", "furry", "down", "now", "how", "new"],
-        "tricky_words_used": ["said", "was", "the", "to", "I", "her", "you", "where"],
+        "tricky_words_used": ["they", "he", "what", "into", "she", "there", "so", "said", "was", "the", "to", "I", "her", "you", "where"],  # NOTE: 'monkey'/'mosque' kept (decodability flagged but content decision deferred)
         "read_words": ["stare", "turn", "true", "glow"],
         "nonsense_words": [
             "frow", "plew", "grue", "blare", "chur",
@@ -103,6 +103,16 @@ HOW_NOW_STORY_BOOK1 = {
         "writing_graphemes": ["ow", "ew", "ue", "ur", "are"],
         "writing_words": ["now", "down", "brown", "new", "blue", "furry", "stare"],
         "writing_starters": ["I saw a brown...", "The pink mosque was..."],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — How to Say",
+                "body": (
+                    "Two words in this book use spellings we have not learnt yet. "
+                    "Help your child say them by sounding out the parts shown."
+                ),
+                "examples": ["monkey → munk · ee", "mosque → mosk"],
+            },
+        ],
         "character": {
             "name": "Malaysian boy",
             "age": "5 years old",

@@ -35,12 +35,12 @@ PURPLE_PURSE_STORY_BOOK1 = {
         "story_pages": [
             {
                 "page_number": 1,
-                "text": '"My purple purse! Where is it?" The girl looked in her bag but it was not in it. She turned out all her pockets. She turned to Dad. "I lost my purse!"',
+                "text": '"My purple purse! Where is it?" The girl looked all around but it was not there. She turned out all her pockets. She turned to Dad. "I lost my purse!"',
                 "image_prompt": "A worried girl turns out her empty pockets in a modern apartment hallway. Dad stands nearby looking concerned. Landscape orientation.",
             },
             {
                 "page_number": 2,
-                "text": '"Where did you go?" said Dad. The girl had to think. "The park first. Then the corner shop. Then the herb stall!" Dad took her hand. "Right. Let us go and look."',
+                "text": '"Where did you go?" said Dad. The girl had to think. "The park first. Then the corner shop. Then the herb stand!" Dad took her hand. "Right. Let us go and look."',
                 "image_prompt": "A girl and her dad walk hand in hand down a modern city street with colourful buildings. She looks thoughtful. Landscape orientation.",
             },
             {
@@ -55,12 +55,12 @@ PURPLE_PURSE_STORY_BOOK1 = {
             },
             {
                 "page_number": 5,
-                "text": 'She turned down a long street. Ferns grew up the old stone wall by a church. She checked and checked. But her purse was not tucked in them. "What if I never get it back?" she said.',
+                "text": 'She turned down a long street. Ferns grew on old stone by a church. She checked and checked. But her purse was not tucked in them. "What if I never get it back?" she said.',
                 "image_prompt": "A girl walks along a street past an old stone wall covered in ferns. A small church is visible in the background. She looks sad. Landscape orientation.",
             },
             {
                 "page_number": 6,
-                "text": 'Then Dad said, "The herb stall! You put your purse down when you got the herbs!" They rushed back. The herb seller smiled. "Is this it?" She held up a purple purse!',
+                "text": 'Then Dad said, "The herb stand! You put your purse down as you got the herbs!" They rushed back. The herb seller smiled. "Is this it?" She held up a purple purse!',
                 "image_prompt": "A smiling woman at a herb stall holds up a small purple purse. The girl reaches for it with delight while Dad watches. Herbs in wooden crates around the stall. Landscape orientation.",
             },
             {
@@ -76,7 +76,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
         ],
         "cover_prompt": "A girl in a purple jumper stands on a colourful modern street, holding a small purple purse close to her chest with a smile. Green ferns and modern shops behind her. Portrait orientation.",
         "story_words": ["purple", "purse", "turned", "ferns", "herbs", "never"],
-        "tricky_words_used": ["was", "where", "said", "what", "she", "my"],
+        "tricky_words_used": ["the", "to", "I", "you", "her", "your", "go", "no", "so", "old", "put", "was", "where", "said", "what", "she", "my"],  # 'by'/'stall'/'wall'/'when' removed via rewrites
         "read_words": ["church", "burst", "seller", "corner"],
         "nonsense_words": [
             "chur", "gern", "flur", "sperk", "thurn",
@@ -84,7 +84,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
         ],
         "questions": [
             {"category": "Finding", "text": "What was the girl looking for?"},
-            {"category": "Thinking", "text": "Why did the girl feel hurt when the shop keeper said no?"},
+            {"category": "Thinking", "text": "Why did the girl feel hurt when the shopkeeper said no?"},
             {"category": "Words", "text": "What does the word 'seller' mean?"},
             {"category": "What next", "text": "What do you think the girl told Mum when she got home?"},
         ],

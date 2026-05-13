@@ -55,12 +55,12 @@ BROWN_OWL_STORY_BOOK1 = {
             },
             {
                 "page_number": 6,
-                "text": "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. \u2018Owlets!\u2019 said Mum. \u2018She must look after them!\u2019 I peeked and saw fluffy brown faces staring down at me.",
+                "text": "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. \u2018Owlets!\u2019 said Mum. \u2018She must look after them!\u2019 I peeked and saw fluffy white faces staring down at me.",
                 "image_description": "The owl perched on a branch next to a dark hole in a tall oak tree. Two small fluffy owlets peek out of the hole. The girl stands on tiptoes looking up, delighted. The mum points up at the owlets. Dark blue twilight sky, bare winter trees."
             },
             {
                 "page_number": 7,
-                "text": "The owl swooped back up with a mouse in its claws. The owlets crowded round, cheeping loud. What a rare sight! Mum and I shared a smile.",
+                "text": "The owl swooped back up with a mouse in its claws. The owlets crowded round, cheeping loudly. What a rare sight! Mum and I shared a smile.",
                 "image_description": "The mother owl arriving at the tree hole with a small mouse in her talons. Baby owlets crowding around the entrance with open beaks, cheeping excitedly. Below, the girl and her mum watch with delighted smiles, sharing a warm moment. Twilight woodland backdrop."
             },
             {
@@ -70,7 +70,7 @@ BROWN_OWL_STORY_BOOK1 = {
             },
         ],
         "story_words": ["owl", "stared", "brown", "dare", "howl", "care"],
-        "tricky_words_used": ["said", "was", "what", "were", "she", "all"],
+        "tricky_words_used": ["the", "to", "I", "we", "my", "go", "me", "her", "saw", "there", "want", "said", "was", "what", "were", "she", "all"],
         "tricky_words_all": ["the", "to", "I", "was", "what", "all", "were", "she", "me", "my", "said", "you", "do", "like", "want", "we", "go", "saw", "to", "her"],
         "read_words": ["howl", "bare", "brown", "stared"],
         "nonsense_words": [
