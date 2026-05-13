@@ -282,6 +282,21 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
             "The food smelled delicious because...",
             "I was cautious when I tried...",
         ],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — How to Say",
+                "body": (
+                    "The Italian food words in this book have spellings we "
+                    "have not learnt yet. Help your child enjoy them by "
+                    "sounding out the parts shown."
+                ),
+                "examples": [
+                    "bruschetta → broo · sket · ta",
+                    "granita → gra · nee · ta",
+                    "limoncello → lee · mon · chell · oh",
+                ],
+            },
+        ],
         "character": {
             "name": "Luca",
             "age": "7–8 years old",

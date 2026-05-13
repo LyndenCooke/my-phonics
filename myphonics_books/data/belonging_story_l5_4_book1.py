@@ -45,18 +45,18 @@ BELONGING_STORY_BOOK1 = {
                 "page_number": 1,
                 "text": (
                     "The morning air was cool and clear. "
-                    "I went with Dad to a market near the shore. "
-                    "It was just opening up. "
-                    "Big sheets of cloth hung from the stalls in red and green and blue."
+                    "I went with Dad to a market near the old town. "
+                    "It was just starting up. "
+                    "Big sheets of cloth hung from the stands in red, green and blue."
                 ),
             },
             {
                 "page_number": 2,
                 "text": (
                     "Soon the market was full of people. "
-                    "There was more fruit than I had ever seen! "
-                    "Dad went to explore the stalls. "
-                    "'Wait here,' he said. "
+                    "There was more to see than I had ever seen! "
+                    "Dad went to explore the stands. "
+                    "'Wait at this stand,' he said. "
                     "But then I could not see him."
                 ),
             },
@@ -64,7 +64,7 @@ BELONGING_STORY_BOOK1 = {
                 "page_number": 3,
                 "text": (
                     "I looked left. I looked right. "
-                    "I could not see Dad near any door or stall. "
+                    "I could not see Dad near any door or stand. "
                     "I did not know where he went. "
                     "I felt a fear in my chest. I was alone."
                 ),
@@ -76,7 +76,7 @@ BELONGING_STORY_BOOK1 = {
                     "He had a big grin on his face. "
                     "'Are you lost?' he said. "
                     "I nodded. "
-                    "'I will help you. We can find him!'"
+                    "'I will help you. We can spot him!'"
                 ),
             },
             {
@@ -84,7 +84,7 @@ BELONGING_STORY_BOOK1 = {
                 "text": (
                     "We went from section to section. "
                     "He knew the direction to go. "
-                    "He picked up a huge yellow mango. "
+                    "He picked up a big yellow mango. "
                     "'Pure sunshine!' he grinned. "
                     "I could not help but smile back."
                 ),
@@ -92,8 +92,8 @@ BELONGING_STORY_BOOK1 = {
             {
                 "page_number": 6,
                 "text": (
-                    "We sat on some steps and ate the mangoes. "
-                    "The juice ran down my chin. "
+                    "We sat on some steps and ate the mangos. "
+                    "The sweet mess ran down my chin. "
                     "It was the best thing I had ever tasted. "
                     "I smiled for the first time all day."
                 ),
@@ -104,7 +104,7 @@ BELONGING_STORY_BOOK1 = {
                     "Then the boy stopped. "
                     "He pointed down the street. "
                     "'Dad must be near!' he said. "
-                    "'Come on, we can find him fast!' "
+                    "'Let’s go, we can spot him fast!' "
                     "I felt a rush in my chest."
                 ),
             },
@@ -115,7 +115,7 @@ BELONGING_STORY_BOOK1 = {
                     "I had been so tired and scared. "
                     "But not any more. "
                     "'This boy helped me,' I said. "
-                    "Dad smiled. 'Then he must come back again soon.'"
+                    "Dad smiled. 'Then he must see us again soon.'"
                 ),
             },
         ],
@@ -128,9 +128,10 @@ BELONGING_STORY_BOOK1 = {
             "Portrait orientation. No text in image."
         ),
         "story_words": ["shore", "more", "explore", "door", "fear", "near", "clear",
-                        "sure", "pure", "section", "direction", "attention", "tired"],
+                        "pure", "section", "direction", "attention", "tired"],
         "tricky_words_used": ["the", "to", "I", "was", "said", "where", "people",
-                              "anyone", "he", "she", "could", "there", "my"],
+                              "anyone", "he", "she", "could", "there", "my",
+                              "are", "any", "again", "knew", "sure"],
         "read_words": ["shore", "explore", "section", "direction", "pure", "attention"],
         "nonsense_words": [
             "blore", "snire", "flear", "thure", "ploor",

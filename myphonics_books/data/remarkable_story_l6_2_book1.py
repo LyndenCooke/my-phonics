@@ -244,12 +244,18 @@ REMARKABLE_STORY_BOOK1 = {
             "Eyes: tiny solid black dots ONLY — no white, no highlights. "
             "No text in image. Portrait orientation (3:4)."
         ),
+        # Practice-page words: only CLOSED-SYLLABLE -able/-ible items where
+        # the syllable before the suffix has a real (short) vowel that the
+        # child can sound out cleanly.  Open-syllable words like "capable"
+        # /keɪ-pə-bəl/ and "remarkable" /rɪ-MAR-kə-bəl/ still appear in the
+        # story text (with adult support) but are pulled from Read Words,
+        # Listen-and-Write and Writing Practice to keep encoding clean.
         "story_words": [
-            "capable", "remarkable", "responsible", "sensible",
-            "possible", "miserable", "terrible", "incredible"
+            "sensible", "possible", "terrible", "horrible",
+            "visible", "incredible", "responsible", "predictable",
         ],
         "tricky_words_used": ["the", "said", "was", "you", "her", "their", "people", "thought"],
-        "read_words": ["capable", "possible", "terrible", "remarkable"],
+        "read_words": ["sensible", "possible", "terrible", "incredible"],
         "nonsense_words": [
             "flable", "grable", "strable", "brable", "crable",
             "flosible", "grisible", "strable", "plossible", "drisible",
@@ -274,12 +280,37 @@ REMARKABLE_STORY_BOOK1 = {
         ],
         "writing_graphemes": ["able", "ible"],
         "writing_words": [
-            "capable", "remarkable", "responsible", "sensible",
-            "comfortable", "possible", "miserable", "terrible", "incredible",
+            "sensible", "possible", "terrible", "horrible",
+            "visible", "incredible", "responsible", "predictable",
         ],
         "writing_starters": [
-            "She was capable of...",
             "It was possible to help because...",
+            "She was sensible when she...",
+        ],
+        # Open-syllable -able words and other awkward pronunciations are listed
+        # here so the grown-up can pre-say them when they crop up in the story
+        # text.  The Listen-and-Write / Read Words pages never use these — only
+        # the story text does, where the parent is reading alongside.
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — How to Say",
+                "body": (
+                    "These story words don't follow the normal sound rules.  "
+                    "Say them once before reading so your child hears the "
+                    "real word."
+                ),
+                "examples": [
+                    "capable → KAY-puh-bul",
+                    "remarkable → ri-MARK-uh-bul",
+                    "miserable → MIZ-ruh-bul",
+                    "adorable → uh-DOR-uh-bul",
+                    "valuable → VAL-yoo-uh-bul",
+                    "admirable → AD-muh-ruh-bul",
+                    "recognised → REK-og-nized",
+                    "bridge → brij",
+                    "tangyuan → tang · yoo · an",
+                ],
+            },
         ],
         "character": {
             "name": "Chinese girl",

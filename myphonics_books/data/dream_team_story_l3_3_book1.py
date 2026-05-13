@@ -33,11 +33,11 @@ DREAM_TEAM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Nana sits in her red seat. I clean up the weeds and pick each brown leaf off the ground.",
+                "text": "Nana sits in her red seat. I clean up the weeds and pick each brown leaf off the path.",
                 "image": None,
             },
             {
-                "text": "A boy from the street runs up. \u2018Can I be in your team?\u2019 he said. He tries a big kick \u2014 the ball flies past me!",
+                "text": "A boy from the street runs up. \u2018Can I be in your team?\u2019 he says. He tries a big kick \u2014 the ball flies past me!",
                 "image": None,
             },
             {
@@ -45,24 +45,24 @@ DREAM_TEAM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Nana needs tins from the high shelf. I stand on a stool and reach up high. He holds it still so I am safe.",
+                "text": "Nana needs jars from the high shelf. I stand on a stool and reach up high. He keeps it still so I am safe.",
                 "image": None,
             },
             {
-                "text": "We line up each tin neat and clean. Nana spies us from the door. \u2018What a team!\u2019 she cries.",
+                "text": "We line up each jar neat and clean. Nana spies us from the door. \u2018What a team!\u2019 she cries.",
                 "image": None,
             },
             {
-                "text": "Nana has coins for a treat. We go to the street shop. I reach for a green drink and he grabs a red one.",
+                "text": "Nana has cash for a treat. We go to the street shop. I reach for a green drink and he grabs a red one.",
                 "image": None,
             },
             {
-                "text": "We eat a big feast at Nana\u2019s home. Steam from the beans and rice fills each dish. We are the dream team!",
+                "text": "We eat a big feast at Nana\u2019s home. Steam from the beans fills each dish. We are the dream team!",
                 "image": None,
             },
         ],
         "story_words": ["clean", "team", "reach", "feast", "tries", "spies"],
-        "tricky_words_used": ["said", "what", "are", "she", "he", "your"],
+        "tricky_words_used": ["the", "to", "I", "she", "her", "we", "he", "your", "me", "go", "one", "said", "what", "are", "so"],
         "read_words": ["clean", "team", "reach", "feast"],
         "nonsense_words": [
             "dreap", "pleaf", "treab", "fream", "breat", "sneal",

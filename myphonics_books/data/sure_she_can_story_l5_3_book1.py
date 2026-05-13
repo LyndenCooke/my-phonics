@@ -63,11 +63,11 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             {
                 "page_number": 1,
                 "text": (
-                    "Kites of every colour filled the sky over Jaipur. "
-                    "Red and green and blue, they soared and spun and dipped "
+                    "Kites filled the blue air over Jaipur. "
+                    "Red and green and blue, they flew and spun and dipped "
                     "in the clear winter air. "
-                    "The girl stood on the rooftop and watched with wide eyes. "
-                    "She wanted to fly a kite more than anything. "
+                    "The girl stood on the rooftop and looked with wide eyes. "
+                    "She wanted to send up a kite more than anything. "
                     "But she did not own one."
                 ),
                 "image_prompt": (
@@ -111,9 +111,9 @@ SURE_SHE_CAN_STORY_BOOK1 = {
                 "text": (
                     '"Step one," said Dadaji. '
                     '"Lay the sticks in a cross shape. '
-                    'Tie them at this section here — that is the frame." '
-                    "With great concentration, the girl tied the sticks. "
-                    "Her fingers worked slowly in one careful direction. "
+                    'Tie them at this section — that is the frame." '
+                    "With strong concentration, the girl tied the sticks. "
+                    "Her fingers moved in a slow, careful direction. "
                     '"Perfect!" said Dadaji. '
                     '"Now pass the string around each point."'
                 ),
@@ -156,8 +156,8 @@ SURE_SHE_CAN_STORY_BOOK1 = {
                     '"I am full of frustration!" she said. '
                     '"I give up!" '
                     "Dadaji did not rush. "
-                    "He sat with a calm look on his face and waited. "
-                    '"Are you sure you want to stop?" he said softly. '
+                    "He sat still and waited. "
+                    '"Do you want to stop?" he said in a soft voice. '
                     '"We are not done yet."'
                 ),
                 "image_prompt": (
@@ -198,10 +198,10 @@ SURE_SHE_CAN_STORY_BOOK1 = {
                 "page_number": 7,
                 "text": (
                     "At last, the kite was done. "
-                    '"Look at the picture we made!" she cried. '
+                    '"Look at the shape we made!" she cried. '
                     "Dadaji tied the string to the centre. "
                     '"Now for the action!" he said. '
-                    '"Run in that direction and let the wind catch it!" '
+                    '"Run in that direction and let the wind take it!" '
                     "She ran with all her might and let the string out."
                 ),
                 "image_prompt": (
@@ -218,11 +218,11 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             {
                 "page_number": 8,
                 "text": (
-                    "The kite shot up into the pure blue sky. "
-                    "It soared higher and higher! "
+                    "The kite shot up into the pure blue air. "
+                    "It flew higher and higher! "
                     '\u201cWoh Kata!\u201d cheered the people on the next rooftop. '
                     "Dadaji clapped his hands with joy. "
-                    "The girl watched her kite spin and dance over the pink city. "
+                    "The girl looked at her kite spin and dance over the pink town. "
                     '"Pure joy!" she cried. '
                     '"Pure joy!"'
                 ),
@@ -252,8 +252,9 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             "Eyes: tiny solid black dots ONLY, no white, no highlights. "
             "No text. Portrait orientation."
         ),
-        "story_words": ["sure", "pure", "instruction", "attention", "section", "action", "direction"],
-        "tricky_words_used": ["the", "said", "you", "they", "was", "over", "people"],
+        "story_words": ["pure", "instruction", "attention", "section", "action", "direction"],
+        "tricky_words_used": ["the", "said", "you", "they", "was", "over", "people",
+                              "she", "he", "we", "I", "to", "into", "are", "all", "one", "two", "there", "through", "heart", "again", "her", "done", "eyes", "want"],
         "read_words": ["sure", "pure", "section", "action"],
         "nonsense_words": [
             "fure", "jure", "blure", "grure", "drure",

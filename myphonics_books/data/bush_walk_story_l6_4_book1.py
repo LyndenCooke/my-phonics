@@ -320,6 +320,21 @@ BUSH_WALK_STORY_BOOK1 = {
             "The bush walk was incredible because...",
             "Tom was cautious and sensible, so he...",
         ],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — How to Say",
+                "body": (
+                    "A few Australian nature words in this book use spellings "
+                    "we have not learnt yet. Help your child say them by "
+                    "sounding out the parts shown."
+                ),
+                "examples": [
+                    "eucalyptus → yoo · ka · lip · tus",
+                    "kookaburra → kook · a · burr · a",
+                    "wallaby → wall · a · bee",
+                ],
+            },
+        ],
         "character": {
             "name": "Mia",
             "age": "9–10 years old",

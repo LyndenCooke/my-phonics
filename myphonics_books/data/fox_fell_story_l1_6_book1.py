@@ -33,15 +33,15 @@ FOX_FELL_STORY_BOOK1 = {
         "character_id": "CHAR-K",
         "character_name": "White British girl (pet owner)",
         "story_pages": [
-            {"text": "I have a fox. Fox is on a log.", "image": None},
-            {"text": "Fox fell off the log! Oh, Fox!", "image": None},
-            {"text": "Fox is on a wall. Fox fell off the wall!", "image": None},
+            {"text": "I am with a fox. Fox is on a log.", "image": None},
+            {"text": "Fox fell off the log!", "image": None},
+            {"text": "Fox is on a rock. Fox fell off the rock!", "image": None},
             {"text": "Fox is on a hill. Fox fell off the hill!", "image": None},
             {"text": "I get a big, fat mat. Sit on it, Fox!", "image": None},
-            {"text": "Fox is on the mat! Fox did not fall off! I hug Fox!", "image": None},
+            {"text": "Fox is on the mat! Fox did not slip off! I hug Fox!", "image": None},
         ],
-        "story_words": ["fox", "fell", "off", "log", "wall", "hill", "fall", "mat"],
-        "tricky_words_used": ["I", "a", "the", "have", "oh", "happy"],  # Actually used in story
+        "story_words": ["fox", "fell", "off", "log", "rock", "hill", "slip", "mat"],
+        "tricky_words_used": ["I", "the"],  # 'a' treated as decodable; 'have', 'oh', 'wall', 'fall' removed via rewrites
         "read_words": ["fill", "fell", "huff", "doll"],  # Focus on f, l, ff, ll
         "nonsense_words": [
             "feg", "lod", "fep", "lig",  # f, l single letter focus

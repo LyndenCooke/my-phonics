@@ -76,11 +76,11 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I look at the cows. Moo! Moo! No owl. I will look on.",
+                "text": "I look at the cow. Moo! Moo! No owl. I will look on.",
                 "image": None,
             },
             {
-                "text": "Wow! A big show. A seal can shoot a hoop! No owl.",
+                "text": "Wow! A big show. A shark can shoot a hoop! No owl.",
                 "image": None,
             },
             {
@@ -92,7 +92,7 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I am so sad now. Then my dad calls, \u201cLook up!\u201d",
+                "text": "I am sad now. Then my dad shouts, \u201cLook up!\u201d",
                 "image": None,
             },
             {
@@ -100,12 +100,12 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "The owl bows at me. I bow too. The zoo is so good!",
+                "text": "The owl bows at me. I bow too. The zoo is good!",
                 "image": None,
             },
         ],
         "story_words": ["zoo", "cow", "owl", "moo", "hoop", "cool"],
-        "tricky_words_used": ["the", "I", "to", "no", "my", "me"],
+        "tricky_words_used": ["the", "I", "to", "no", "my", "me", "go"],  # 'go' on p1; 'so'/'calls' removed via rewrites
         "read_words": ["zoo", "owl", "cool", "hoop"],
         "nonsense_words": [
             "dow", "jow", "fow", "zow",

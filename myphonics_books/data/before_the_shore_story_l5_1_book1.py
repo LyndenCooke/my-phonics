@@ -37,7 +37,7 @@ SECRET_SHORE_STORY_BOOK1 = {
         "story_pages": [
             {
                 "page_number": 1,
-                "text": "The boy went home from the park. He was tired, and his feet were sore. He sat on a bench to rest. Then he saw something on the path \u2014 a smooth, flat stone. He picked it up.",
+                "text": "The boy went home from the park. He was tired, and his feet were sore. He sat on a bench to rest. Then he saw something on the path \u2014 a smooth, flat stone. He reached to pick it up.",
                 "image_prompt": "An Orthodox Jewish boy with kippah and payot sits tired on a park bench, picking up a smooth amber stone with a white stripe. Victorian terraced houses in background, autumn leaves on ground. Landscape orientation.",
             },
             {
@@ -47,7 +47,7 @@ SECRET_SHORE_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": "Before the cold came, he went with Dad to the shore. The air was fresh and the sand soft. \"Come and explore with me!\" said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
+                "text": "Before the cold came, he went with Dad to the shore. The air was fresh and the sand soft. \"Run and explore with me!\" said Dad. They ran along the beach and played in the waves. Later, they sat by a fire and the flames jumped and flicked.",
                 "image_prompt": "FLASHBACK \u2014 warmer golden tones. The boy runs on a sandy British beach with Orthodox Jewish Dad (black hat, long coat, beard). Waves behind. Small campfire visible. British seaside with grassy dunes. Landscape orientation.",
             },
             {
@@ -72,13 +72,13 @@ SECRET_SHORE_STORY_BOOK1 = {
             },
             {
                 "page_number": 8,
-                "text": "He gave the stones to Dad. \"From the shore and from the park,\" he said. Dad smiled wide. \"I will keep them with me,\" he said. \"So I never forget.\" He wore them on his bag that day.",
+                "text": "He gave the stones to Dad. \"From the shore and from the park,\" he said. Dad smiled wide. \"I will keep them with me,\" he said. \"So I never forget.\" He hooked them on his bag that day.",
                 "image_prompt": "Dad (black hat, long coat) receives the wire-and-stone gift from the boy. He holds up the two amber stones on wire, smiling warmly. The boy looks proud. Dad attaches them to his bag. Cosy home interior. Landscape orientation.",
             },
         ],
         "cover_prompt": "An Orthodox Jewish boy (kippah, white shirt, dark trousers, payot) sits on a park bench holding a smooth amber stone with a white stripe up to the light with wonder. Behind him, a split scene: London park with Victorian houses on one side, beach shore with waves on the other. Portrait orientation.",
         "story_words": ["shore", "stone", "before", "wire", "more", "fire"],
-        "tricky_words_used": ["the", "to", "he", "was", "said"],
+        "tricky_words_used": ["the", "to", "he", "was", "said", "once", "they", "we", "you", "so", "put", "go", "I", "me", "one", "some", "would"],
         "read_words": ["shore", "stone", "before", "explore"],
         "nonsense_words": [
             "blore", "snire", "flear", "thure", "ploor",

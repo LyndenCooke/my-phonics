@@ -46,12 +46,12 @@ BUZZ_SING_STORY_BOOK1 = {
             {"text": "I sit on a big log. Buzz, buzz, buzz!", "image": None},
             {"text": "A big bug sits on a rock. Hiss, hiss, hiss!", "image": None},
             {"text": "I sing a long, long song!", "image": None},
-            {"text": "The bugs stop! No buzz. No hiss.", "image": None},
-            {"text": "I sing quick! I sing and sing!", "image": None},
+            {"text": "The bugs go! No buzz. No hiss.", "image": None},
+            {"text": "I sing quick, quick! I sing and sing!", "image": None},
             {"text": "Buzz! Hiss! I sing with the bugs!", "image": None},
         ],
-        "story_words": ["buzz", "sing", "song", "long", "hiss", "quick", "stop", "log", "bug", "and"],
-        "tricky_words_used": ["I", "a", "the", "no"],  # Actually used in story
+        "story_words": ["buzz", "sing", "song", "long", "hiss", "quick", "log", "bug", "and"],
+        "tricky_words_used": ["I", "the", "no", "go"],  # 'a' decodable; 'go' used on p4 ("The bugs go!")
         "read_words": ["ring", "buzz", "hiss", "king"],  # Focus on ng, zz, ss, qu
         "nonsense_words": [
             "rong", "bung", "ding", "mang",  # ng combinations
@@ -61,7 +61,7 @@ BUZZ_SING_STORY_BOOK1 = {
         ],
         "questions": [
             {"category": "Finding", "text": "What sounds did the child hear?"},
-            {"category": "Thinking", "text": "Why did the child sing quick?"},
+            {"category": "Thinking", "text": "Why did the child sing quick, quick?"},
             {"category": "Words", "text": "What does 'hiss' sound like?"},
             {"category": "What next", "text": "What sounds can you hear outside?"},
         ],

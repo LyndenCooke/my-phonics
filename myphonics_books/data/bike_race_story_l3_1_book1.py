@@ -21,14 +21,14 @@ BIKE_RACE_STORY_BOOK1 = {
             {"text": "Bikes line up at the gate. It is time for the race to start! I stand with my bike on the line.", "image": None},
             {"text": "\u2018Ride to the lake and back!\u2019 the man said. Can I win? I grip my bike tight.", "image": None},
             {"text": "Off I go! Past a tall pine tree. Past a wide stone gate. I ride fast in the sun.", "image": None},
-            {"text": "Look out! Stones on the track. A bike slides and a girl falls off. She gave me a brave smile.", "image": None},
-            {"text": "I can see the lake! It shines in the sun. I ride past it and turn back.", "image": None},
+            {"text": "Look out! Stones on the track. A bike slides and a girl falls off. She gives me a brave smile.", "image": None},
+            {"text": "I can see the lake! It shines in the sun. I ride past it and head back.", "image": None},
             {"text": "Can I make it back in time? I ride and ride. I must not be late!", "image": None},
-            {"text": "I am past the line! I made it! I slide off my bike with a wide grin.", "image": None},
-            {"text": "A prize! A flat plate with my name on it! I wave at my mates. What a good day!", "image": None},
+            {"text": "I am past the line! I made it! I race past the line with a wide grin.", "image": None},
+            {"text": "A prize! A gold medal! I wave at my mates. What a good day!", "image": None},
         ],
         "story_words": ["ride", "bike", "gate", "lake", "made", "brave"],
-        "tricky_words_used": ["the", "said", "some", "like", "what", "all"],
+        "tricky_words_used": ["the", "I", "to", "my", "she", "said", "me", "go", "what"],  # Removed unused 'some/like/all'; added words actually in text
         "read_words": ["shine", "prize", "plate", "flame", "wave", "pine"],
         "nonsense_words": [
             "dake", "fape", "tave", "bave", "jate", "mape",
@@ -43,5 +43,21 @@ BIKE_RACE_STORY_BOOK1 = {
         "writing_graphemes": ["a-e", "i-e"],
         "writing_words": [],
         "writing_starters": [],
+
+        # Per-book pronunciation notes — surfaced on page 3 (Sounds + Story
+        # Words) as a small "Watch Out" callout for the parent.  Used here
+        # to explain that 'c' says /s/ before 'e' in race / face / place —
+        # the soft-c rule sits alongside the a-e split digraph in this book.
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — Soft C",
+                "body": (
+                    "When 'c' comes before 'e' (or 'i' or 'y'), it says /s/ "
+                    "instead of /k/.  In this story you'll meet 'race' — "
+                    "the 'c' says /s/ because it sits before the silent 'e'."
+                ),
+                "examples": ["race", "face", "place"],
+            },
+        ],
     }
 }

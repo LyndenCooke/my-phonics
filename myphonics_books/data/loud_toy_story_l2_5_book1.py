@@ -53,7 +53,7 @@ Word validation (L2.5 cumulative graphemes + tricky words + final blends):
   Page 3: But(b-u-t) it(i-t) ran(r-a-n) too(t-oo) far(f-ar)! My(T) toy(t-oy)!
           I(T) looked(l-oo-k-d) around(a-r-ou-nd) and(a-nd) around(a-r-ou-nd).
           I(T) could(T-L3?) not(n-o-t) see(s-ee) it(i-t)! — 18 words
-          NOTE: keeping "I can not see it!" as present-tense exclamation ✓
+          NOTE: keeping "I cannot see it!" as present-tense exclamation ✓
 
   Page 4: I(T) shouted(sh-ou-t-ed) out(ou-t) loud(l-ou-d). "Mum(m-u-m)! I(T)
           need(n-ee-d) you(T)! I(T) can(c-a-n) not(n-o-t) see(s-ee) my(T)
@@ -158,7 +158,7 @@ LOUD_TOY_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": "But it ran too far! My toy! I looked around and around. I can not see it!",
+                "text": "But it ran too far! My toy! I looked around and around. I cannot see it!",
                 "image_prompt": (
                     "Show the character from the reference image standing in a snowy Reykjavik "
                     "street, looking panicked and upset, staring into the distance. His arms are "
@@ -177,7 +177,7 @@ LOUD_TOY_STORY_BOOK1 = {
             },
             {
                 "page_number": 4,
-                "text": 'I shouted out loud. "Mum! I need you! I can not see my toy!"',
+                "text": 'I shouted out loud. "Mum! I need you! I cannot see my toy!"',
                 "image_prompt": (
                     "Show the character from the reference image standing in the snowy street, "
                     "cupping his hands around his mouth and shouting. He looks upset and frustrated, "
@@ -291,7 +291,7 @@ LOUD_TOY_STORY_BOOK1 = {
             "No text, words, or letters in the image. Portrait format."
         ),
         "story_words": ["around", "loud", "out", "shouted", "found", "toy", "joy", "zoomed"],
-        "tricky_words_used": ["I", "my", "we", "she", "said", "you", "to"],
+        "tricky_words_used": ["I", "my", "we", "she", "said", "you", "to", "the", "me", "no"],
         "read_words": ["out", "shout", "round", "toy"],
         "nonsense_words": [
             "mout", "gound", "fout", "dound",

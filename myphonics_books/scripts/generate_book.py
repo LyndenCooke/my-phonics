@@ -12,6 +12,7 @@ Usage:
 import asyncio
 import base64
 import json
+import sys
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
@@ -340,12 +341,36 @@ def _font_to_data_uri(font_path: Path) -> str:
     return f"data:font/truetype;base64,{b64}"
 
 
-def image_to_data_uri(image_path: Path) -> str:
-    """Convert a PNG/JPG image to a base64 data URI for embedding in HTML."""
+def image_to_data_uri(image_path: Path, max_dimension: int = 1600,
+                      jpeg_quality: int = 85) -> str:
+    """Convert a PNG/JPG image to a base64 data URI for embedding in HTML.
+
+    Re-encodes to JPEG q=85 at max 1600px on the longest side when the
+    source file is larger than 2 MB.  Keeps the original encoding for
+    smaller images.  This stops oversize source PNGs (30-60 MB per book)
+    bloating the embedded HTML past Playwright's set_content threshold.
+    """
     suffix = image_path.suffix.lower()
-    mime = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
-            ".webp": "image/webp", ".gif": "image/gif"}.get(suffix, "image/png")
+    mime_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+                ".webp": "image/webp", ".gif": "image/gif"}
+
     raw = image_path.read_bytes()
+    if len(raw) > 2_000_000:
+        try:
+            from PIL import Image
+            from io import BytesIO
+            img = Image.open(BytesIO(raw))
+            img = img.convert("RGB") if img.mode in ("RGBA", "P") else img
+            img.thumbnail((max_dimension, max_dimension))
+            buf = BytesIO()
+            img.save(buf, format="JPEG", quality=jpeg_quality, optimize=True)
+            raw = buf.getvalue()
+            mime = "image/jpeg"
+        except Exception:
+            mime = mime_map.get(suffix, "image/png")
+    else:
+        mime = mime_map.get(suffix, "image/png")
+
     b64 = base64.b64encode(raw).decode("ascii")
     return f"data:{mime};base64,{b64}"
 
@@ -375,7 +400,8 @@ def get_guide_content(level: int) -> dict:
 
 
 def build_book_data_from_story(story_dict: dict, child_name: str,
-                                friend_name: str, image_dir: Path = None) -> dict:
+                                friend_name: str, image_dir: Path = None,
+                                page_count: int = None) -> dict:
     """Build a complete book_data dict from a pilot/all_stories entry.
 
     Args:
@@ -404,22 +430,31 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     # Cumulative tricky words (children should know all tricky words up to this level)
     tricky_entry = tricky_data.get(key, {})
     tricky_words = tricky_entry.get("cumulative", [])
+    # Newly-introduced tricky words for THIS level only — these are the ones
+    # that genuinely deserve a spelling-practice treatment (Look-Cover-Write-
+    # Check).  Words from earlier levels (e.g. "the", "said") should already
+    # be in long-term memory and don't need re-testing.
+    tricky_words_new = tricky_entry.get("new_tricky_words", [])
 
     # Cover sounds — first 8
     cover_sounds = all_graphemes[:8] if len(all_graphemes) >= 8 else all_graphemes
 
-    # Process story pages — swap names and embed images
+    # Process story pages — swap names and embed images.
+    # When child_name / friend_name are not provided (pilot/universal mode),
+    # only the explicit placeholder tokens (CHILD_NAME / FRIEND_NAME) are
+    # blanked.  Hard-coded character names like "Emma" or "Mia" are kept
+    # in place so stories that genuinely use them remain readable.
     story_pages = []
     for i, page in enumerate(story_dict["story_pages"]):
         text = page["text"]
         if child_name:
             text = text.replace("CHILD_NAME", child_name).replace("Emma", child_name)
         else:
-            text = text.replace("CHILD_NAME", "").replace("Emma", "")
+            text = text.replace("CHILD_NAME", "")
         if friend_name:
             text = text.replace("FRIEND_NAME", friend_name).replace("Mia", friend_name)
         else:
-            text = text.replace("FRIEND_NAME", "").replace("Mia", "")
+            text = text.replace("FRIEND_NAME", "")
         img = None
         if image_dir:
             img_path = image_dir / f"page{i+1}.png"
@@ -436,19 +471,19 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
             cover_img = image_to_data_uri(cover_path)
             cover_bg = cover_img  # Use same image as background
 
-    # Process questions — swap names
+    # Process questions — swap names (same logic as story pages)
     questions = []
     for q in story_dict.get("questions", []):
-        questions.append({
-            **q,
-            "text": (q["text"]
-                     .replace("CHILD_NAME", child_name)
-                     .replace("Emma", child_name)),
-        })
+        text = q["text"]
+        if child_name:
+            text = text.replace("CHILD_NAME", child_name).replace("Emma", child_name)
+        else:
+            text = text.replace("CHILD_NAME", "")
+        questions.append({**q, "text": text})
 
     guide = get_guide_content(level)
 
-    return {
+    book_data = {
         "level": level,
         "level_name": LEVEL_NAMES[level],
         "level_colour": LEVEL_COLOURS[level],
@@ -468,37 +503,27 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         "story_pages": story_pages,
         "story_words": story_dict.get("story_words", []),
         "read_words": story_dict.get("read_words", []),
-        # Use story-specific tricky words if provided, otherwise fall back to cumulative
         "tricky_words": story_dict.get("tricky_words_used", tricky_words),
+        "tricky_words_new": tricky_words_new,
         "nonsense_words": story_dict.get("nonsense_words", []),
         "questions": questions,
         "writing_graphemes": story_dict.get("writing_graphemes", []),
         "writing_words": story_dict.get("writing_words", []),
         "writing_starters": story_dict.get("writing_starters", []),
-
-        # Sound Spotlight pages (new for 24-page layout)
         "sound_spotlight_pages": build_spotlight_pages(
             story_dict.get("focus_graphemes", []),
             level,
             story_dict.get("spotlight_words", None),
         ),
-
-        # Comprehension questions (separated for standalone page)
         "comprehension_questions": questions,
-
-        # Flex pages for the flex zone
         "flex_pages": compute_flex_pages(
             level,
             len(story_dict.get("focus_graphemes", [])),
         ),
-
-        # Nonsense words challenge (standalone page, may differ from activity page nonsense)
         "nonsense_words_challenge": story_dict.get(
             "nonsense_words_challenge",
             story_dict.get("nonsense_words", [])
         ),
-
-        # Notes for Grown-Ups (page 23)
         "notes_next_steps": story_dict.get("notes_next_steps", [
             "Try reading the story again — repetition builds fluency and confidence.",
             "Look for the focus sounds in other books, signs, and labels around you.",
@@ -507,13 +532,98 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         ]),
     }
 
+    # ─── v2 fields (ignored by the legacy templates) ─────────────
+    from v2_helpers import (
+        build_sound_buttoned_words, build_formation_drills,
+        build_ordering_items, get_phase_label, get_page_count,
+        pick_dictation_sentence, build_match_to_picture,
+        build_initial_sounds, build_guide_blend_example,
+    )
 
-def get_template_name(level: int) -> str:
+    cumulative = []
+    for lv in range(1, level + 1):
+        lv_entry = graphemes_data.get(f"level_{lv}", {})
+        cumulative.extend(lv_entry.get("graphemes", []))
+
+    button_source = (
+        story_dict.get("story_words")
+        or story_dict.get("read_words")
+        or []
+    )
+    ordering_count = 4 if level <= 3 else 6
+
+    book_data["page_count"] = get_page_count(level, page_count)
+    book_data["phase_label"] = get_phase_label(level)
+    book_data["sound_buttoned_words"] = build_sound_buttoned_words(
+        button_source, cumulative,
+    )
+    book_data["formation_drills"] = build_formation_drills(
+        story_dict.get("focus_graphemes", []),
+    )
+    book_data["ordering_items"] = build_ordering_items(
+        story_pages, count=ordering_count,
+    )
+    book_data["ordering_image_count"] = ordering_count
+    book_data["dictation_sentence"] = pick_dictation_sentence(story_pages)
+    book_data["guide_blend_example"] = build_guide_blend_example(
+        book_data["sound_buttoned_words"]
+    )
+    book_data["pronunciation_notes"] = story_dict.get("pronunciation_notes", [])
+    book_data["vocab_word"] = story_dict.get("vocab_word")
+    # Grammar Spotlight — per-book mini-task on the Word Workshop page.
+    # Per-story override wins; otherwise look up by sub-level.
+    data_dir = str(BASE_DIR / "data")
+    if data_dir not in sys.path:
+        sys.path.insert(0, data_dir)
+    try:
+        from grammar_spotlights import get_grammar_spotlight  # noqa: WPS433
+        gs_entry = get_grammar_spotlight(
+            level=level,
+            sub_level=story_dict.get("sub_level"),
+            override=story_dict.get("grammar_spotlight"),
+        )
+        # Resolve any image_word / image_grapheme references in spotlight
+        # items into embedded data URIs (so the rendered HTML is self-
+        # contained when Playwright loads it).
+        if gs_entry and gs_entry.get("spotlight"):
+            for item in gs_entry["spotlight"].get("items", []):
+                word = item.get("image_word")
+                grapheme = item.get("image_grapheme")
+                if word and grapheme and "image" not in item:
+                    safe = grapheme.replace("-", "_")
+                    candidate = PHOTOS_DIR / safe / f"{word}.jpg"
+                    if candidate.exists():
+                        item["image"] = image_to_data_uri(candidate)
+        book_data["grammar_spotlight"] = gs_entry
+    except Exception as exc:  # any failure → no spotlight, surface via stderr
+        print(f"  [grammar_spotlight] skipped: {type(exc).__name__}: {exc}",
+              file=sys.stderr)
+        book_data["grammar_spotlight"] = story_dict.get("grammar_spotlight")
+    # Alien Words bottom-half activity — level-appropriate
+    spotlight_pgs = book_data.get("sound_spotlight_pages", [])
+    book_data["match_to_picture"] = build_match_to_picture(spotlight_pgs)
+    book_data["initial_sounds"] = build_initial_sounds(
+        story_dict.get("focus_graphemes", []), spotlight_pgs,
+        cumulative_graphemes=cumulative,
+    )
+    # Use the dedicated nonsense_words_challenge list when present
+    book_data["nonsense_words"] = story_dict.get(
+        "nonsense_words_challenge",
+        story_dict.get("nonsense_words", []),
+    )
+
+    return book_data
+
+
+def get_template_name(level: int, use_v2: bool = False) -> str:
     """Return the appropriate template based on level.
 
-    Level 1 uses the 12-page 'ditty' format with simpler structure.
-    Levels 2-6 use the standard 16-page format.
+    v2 (use_v2=True) → book_v2.html — the modular 16/20pp redesign.
+    Level 1 (legacy)  → book_ditty.html — 12-page ditty format.
+    Levels 2-6 (legacy) → book.html — 24-page standard format.
     """
+    if use_v2:
+        return "book_v2.html"
     if level == 1:
         return "book_ditty.html"
     return "book.html"
@@ -526,8 +636,9 @@ def render_book_html(book_data: dict) -> str:
         autoescape=False,
     )
 
-    # Select template based on level
-    template_name = get_template_name(book_data.get("level", 1))
+    # v2 template kicks in when page_count is set (16/20/24).
+    use_v2 = book_data.get("page_count") in (16, 20, 24)
+    template_name = get_template_name(book_data.get("level", 1), use_v2=use_v2)
     template = env.get_template(template_name)
 
     # Embed fonts as base64 data URIs so Playwright's Chromium loads them
@@ -634,6 +745,7 @@ def build_book_data(child_name: str, level: int, friend_name: str = "Sam",
         "story_words": EXAMPLE_BOOK["story_words"],
         "read_words": EXAMPLE_BOOK["read_words"],
         "tricky_words": tricky_words,
+        "tricky_words_new": [],
         "nonsense_words": EXAMPLE_BOOK["nonsense_words"],
         "questions": [
             {**q, "text": q["text"].replace("Emma", child_name)}
