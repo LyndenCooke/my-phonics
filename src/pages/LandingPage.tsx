@@ -68,7 +68,7 @@ export default function LandingPage() {
       <a href="#main" className="skip-link">Skip to main content</a>
 
       {/* ── Sticky nav ── */}
-      <NavBar onLearningHub={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
+      <NavBar onBrowse={() => navigate('/library')} />
 
       {/* ── Sections ── */}
       <main id="main">
@@ -87,7 +87,7 @@ export default function LandingPage() {
 }
 
 /* ─── NAV BAR ─── */
-function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAssess: () => void }) {
+function NavBar({ onBrowse }: { onBrowse: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -98,8 +98,6 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-top ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
-        {/* Logo — collapses to mark-only under 380px so the nav buttons
-         *  don't overlap the wordmark on small phones. */}
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0 min-w-0" aria-label="MyPhonicsBooks home">
           <img src="/logo/mpb-mark-transparent.png" alt="" className="w-9 h-9 sm:w-10 sm:h-10 object-contain shrink-0" draggable={false} />
           <span className="font-display text-base sm:text-lg font-extrabold text-foreground tracking-tight truncate hidden xs:inline">
@@ -107,15 +105,9 @@ function NavBar({ onLearningHub, onAssess }: { onLearningHub: () => void; onAsse
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Learning Hub — secondary CTA, kept on phones (just smaller).
-           *  Existing customers need a fast path back to /library. */}
-          <button onClick={onLearningHub} className="text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 sm:px-3 py-2 whitespace-nowrap">
-            <span className="sm:hidden">Hub</span>
-            <span className="hidden sm:inline">Learning Hub</span>
-          </button>
-          <button onClick={onAssess} className="text-xs sm:text-sm font-bold text-white gradient-primary px-3 sm:px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap">
-            <span className="sm:hidden">Assess</span>
-            <span className="hidden sm:inline">Free Assessment</span>
+          <button onClick={onBrowse} className="text-xs sm:text-sm font-bold text-white gradient-primary px-3 sm:px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap">
+            <span className="sm:hidden">Explore</span>
+            <span className="hidden sm:inline">Explore Books</span>
           </button>
         </div>
       </div>
