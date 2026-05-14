@@ -8,6 +8,10 @@ import { CATEGORY_LABELS } from '@/lib/assessmentData';
 interface SoundMapProps {
   sounds: SoundStatus[];
   results?: ResultItem[];
+  /** When true, fold fully-untested levels into a single summary line and
+   *  drop the legend "Not tested" pill — used by the assessment funnel
+   *  results page where vertical space matters. */
+  compact?: boolean;
 }
 
 const STATUS_STYLES = {
@@ -36,7 +40,7 @@ const LEVEL_BG_COLORS: Record<number, string> = {
 
 const CATEGORY_ORDER: Category[] = ['sound_recognition', 'word_reading', 'alien_words', 'tricky_words'];
 
-export function SoundMap({ sounds, results }: SoundMapProps) {
+export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
   const levels = [1, 2, 3, 4, 5, 6];
 
   // Group sounds by level
@@ -85,8 +89,15 @@ export function SoundMap({ sounds, results }: SoundMapProps) {
     setExpanded(prev => ({ ...prev, [level]: !prev[level] }));
   };
 
+  // In compact mode, collect the fully-untested levels into one summary
+  // line so we don't render 4-5 nearly-empty cards eating screen height.
+  const compactUntestedLevels = compact
+    ? levels.filter(l => fullyUntested.has(l))
+    : [];
+  const visibleLevels = compact ? levels.filter(l => !fullyUntested.has(l)) : levels;
+
   return (
-    <div className="space-y-3">
+    <div className={compact ? 'space-y-2' : 'space-y-3'}>
       {/* Legend */}
       <div className="flex gap-4 justify-center text-xs">
         <span className="flex items-center gap-1.5">
@@ -97,7 +108,7 @@ export function SoundMap({ sounds, results }: SoundMapProps) {
           <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
           To learn ({unknown})
         </span>
-        {untested > 0 && (
+        {!compact && untested > 0 && (
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
             Not tested ({untested})
@@ -106,7 +117,7 @@ export function SoundMap({ sounds, results }: SoundMapProps) {
       </div>
 
       {/* Level groups */}
-      {levels.map(level => {
+      {visibleLevels.map(level => {
         const levelSounds = groupedSounds.find(g => g.level === level)?.sounds || [];
         const levelCategories = groupedResults?.find(g => g.level === level)?.categories;
         if (levelSounds.length === 0 && (!levelCategories || levelCategories.length === 0)) return null;
@@ -199,6 +210,14 @@ export function SoundMap({ sounds, results }: SoundMapProps) {
           </div>
         );
       })}
+
+      {/* Compact-mode summary for fully-untested levels — one line instead
+          of one empty card per level. */}
+      {compact && compactUntestedLevels.length > 0 && (
+        <p className="text-[11px] text-muted-foreground text-center pt-1">
+          Levels {compactUntestedLevels.join(', ')} not yet tested
+        </p>
+      )}
     </div>
   );
 }
