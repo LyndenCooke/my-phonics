@@ -119,7 +119,7 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+      unlocked: import.meta.env.DEV || isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
@@ -185,6 +185,68 @@ export default function Index() {
     } else {
       // Show upsell
       setUpsellBook(book);
+    }
+  };
+
+  // Gated download. Hits generate-pdf-download which enforces tier rules
+  // (free: 1 ever, monthly sub: 1 new book/7d, bundle: unlimited). On
+  // success the function returns the public Supabase Storage URL; we open
+  // it in a new tab so the browser triggers the actual file download. On
+  // throttle we render the cooldown / upgrade prompt as a toast.
+  const formatCooldown = (iso: string): string => {
+    const ms = new Date(iso).getTime() - Date.now();
+    if (ms <= 0) return 'soon';
+    const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+    const hours = Math.ceil((ms % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    if (days >= 1) return `${days} day${days === 1 ? '' : 's'}`;
+    return `${hours} hour${hours === 1 ? '' : 's'}`;
+  };
+
+  const handleDownloadBook = async (book: Book) => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    const tid = toast.loading(`Preparing ${book.title}…`);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-pdf-download`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({ book_id: book.id, format: 'a5' }),
+        }
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        // Throttle / tier limit — surface the user-facing message.
+        if (data?.error === 'download_limit') {
+          const cooldown = data.cooldown_until
+            ? ` Try again in ${formatCooldown(data.cooldown_until)}.`
+            : '';
+          toast.error(`${data.message ?? 'Download not available.'}${cooldown}`, {
+            id: tid,
+            action: data.tier === 'free' || data.tier === 'monthly'
+              ? { label: 'Upgrade', onClick: () => navigate('/shop') }
+              : undefined,
+          });
+          return;
+        }
+        throw new Error(data?.error || 'Download failed');
+      }
+
+      // Open in a new tab — browser triggers download via the PDF
+      // content-type. We don't refetch user_books because download access
+      // doesn't change library state.
+      window.open(data.url, '_blank', 'noopener');
+      toast.success(`${book.title} downloading`, { id: tid });
+    } catch (err) {
+      toast.error((err as Error).message || 'Download failed', { id: tid });
     }
   };
 
@@ -451,6 +513,7 @@ export default function Index() {
                 key={book.id}
                 book={book}
                 onSelect={handleBookSelect}
+                onDownload={handleDownloadBook}
               />
             ))}
           </div>

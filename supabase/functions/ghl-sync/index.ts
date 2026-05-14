@@ -11,11 +11,15 @@ const GHL_BASE = 'https://services.leadconnectorhq.com';
 const GHL_FIELD_BOOK_TITLE = Deno.env.get('GHL_FIELD_BOOK_TITLE') ?? '';
 const GHL_FIELD_BOOK_PDF_URL = Deno.env.get('GHL_FIELD_BOOK_PDF_URL') ?? '';
 const GHL_FIELD_LOGIN_URL = Deno.env.get('GHL_FIELD_LOGIN_URL') ?? '';
+const GHL_FIELD_CHILD_NAME = Deno.env.get('GHL_FIELD_CHILD_NAME') ?? '';
+const GHL_FIELD_BOOK_A4_URL = Deno.env.get('GHL_FIELD_BOOK_A4_URL') ?? '';
 
 interface CustomFieldsPayload {
   book_title?: string;
   book_pdf_url?: string;
+  book_a4_url?: string;
   login_url?: string;
+  child_name?: string;
 }
 
 /** Map our payload keys → GHL custom field IDs, dropping missing ones. */
@@ -28,8 +32,14 @@ function buildCustomFields(cf?: CustomFieldsPayload): { id: string; value: strin
   if (cf.book_pdf_url && GHL_FIELD_BOOK_PDF_URL) {
     fields.push({ id: GHL_FIELD_BOOK_PDF_URL, value: cf.book_pdf_url });
   }
+  if (cf.book_a4_url && GHL_FIELD_BOOK_A4_URL) {
+    fields.push({ id: GHL_FIELD_BOOK_A4_URL, value: cf.book_a4_url });
+  }
   if (cf.login_url && GHL_FIELD_LOGIN_URL) {
     fields.push({ id: GHL_FIELD_LOGIN_URL, value: cf.login_url });
+  }
+  if (cf.child_name && GHL_FIELD_CHILD_NAME) {
+    fields.push({ id: GHL_FIELD_CHILD_NAME, value: cf.child_name });
   }
   return fields;
 }
@@ -217,6 +227,19 @@ serve(async (req) => {
           });
         }
         if (ghlContactId) {
+          // ORDER MATTERS: write custom fields + firstName BEFORE adding the
+          // tag that triggers the GHL email workflow. If tags fire first, the
+          // workflow renders the template with empty merge tags and the
+          // parent receives a broken email. Custom fields must be on the
+          // contact at the moment the trigger fires.
+          const customFields = buildCustomFields(data?.custom_fields as CustomFieldsPayload);
+          const updates: Partial<GHLContact> = {};
+          if (customFields.length > 0) updates.customFields = customFields;
+          if (firstName) updates.firstName = firstName;
+          if (Object.keys(updates).length > 0) {
+            await updateContact(ghlContactId, updates);
+          }
+
           const lvl = data?.recommended_level ?? data?.level ?? 'unknown';
           const tags = ['assessed', `level:${lvl}`];
           // source lets the user scope GHL automation to a specific
@@ -226,14 +249,6 @@ serve(async (req) => {
             tags.push(`source:${data.source}`);
           }
           await addTags(ghlContactId, tags);
-
-          // Write custom fields so the GHL email template can include
-          // the book title, a public PDF download link, and a login URL
-          // via merge tags — one template covers all 6 levels.
-          const customFields = buildCustomFields(data?.custom_fields as CustomFieldsPayload);
-          if (customFields.length > 0) {
-            await updateContact(ghlContactId, { customFields });
-          }
         }
         break;
       }
