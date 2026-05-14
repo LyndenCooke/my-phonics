@@ -5,10 +5,11 @@ import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import Assessment from '@/pages/Assessment';
 import BundleUpsell from './BundleUpsell';
+import MonthlyDownsell from './MonthlyDownsell';
 import { supabase } from '@/integrations/supabase/client';
 
 type Mode = 'rapid' | 'full';
-type Stage = 'choose' | 'assess' | 'upsell' | 'paid-email' | 'free-book-email';
+type Stage = 'choose' | 'assess' | 'upsell' | 'downsell' | 'paid-email' | 'monthly-email' | 'free-book-email';
 
 interface AnswersSummary {
   sounds_correct: number;
@@ -104,8 +105,8 @@ export default function AssessmentFunnel() {
     );
   }
 
-  // Step 3: bundle upsell — Yes goes to email-then-checkout, No goes to
-  // email-only for the free book.
+  // Step 3: bundle upsell — Yes goes to email-then-Stripe (lifetime). No
+  // goes to the monthly downsell rather than straight to the free book.
   if (stage === 'upsell') {
     return (
       <FunnelLayout>
@@ -113,21 +114,51 @@ export default function AssessmentFunnel() {
           childName=""
           level={level}
           onAccept={() => setStage('paid-email')}
+          onDecline={() => setStage('downsell')}
+        />
+      </FunnelLayout>
+    );
+  }
+
+  // Step 3b: monthly downsell — Yes goes to email-then-Stripe (subscription).
+  // No falls through to the free-book email capture.
+  if (stage === 'downsell') {
+    return (
+      <FunnelLayout>
+        <MonthlyDownsell
+          childName=""
+          level={level}
+          onAccept={() => setStage('monthly-email')}
           onDecline={() => setStage('free-book-email')}
         />
       </FunnelLayout>
     );
   }
 
-  // Step 5a: email modal then straight to Stripe checkout. The webhook
-  // creates the Supabase account on payment success, ties guest_email to
-  // the new user, and unlocks the bundle.
+  // Step 5a: email then straight to Stripe checkout for the lifetime
+  // bundle. The webhook creates the Supabase account on payment success.
   if (stage === 'paid-email') {
     return (
       <FunnelLayout>
         <PaidCheckoutEmail
           level={level}
+          productType="full_bundle"
+          missingProductMsg="Bundle product not found. Please contact support."
           onBack={() => setStage('upsell')}
+        />
+      </FunnelLayout>
+    );
+  }
+
+  // Step 5c: email then Stripe checkout for the monthly subscription.
+  if (stage === 'monthly-email') {
+    return (
+      <FunnelLayout>
+        <PaidCheckoutEmail
+          level={level}
+          productType="subscription"
+          missingProductMsg="Monthly plan not found. Please contact support."
+          onBack={() => setStage('downsell')}
         />
       </FunnelLayout>
     );
@@ -280,10 +311,14 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
 
 interface PaidCheckoutEmailProps {
   level: number;
+  /** Which product_type to look up in the `products` table. */
+  productType: 'full_bundle' | 'subscription' | 'subscription_annual';
+  /** Shown to the user if the product row is missing from the DB. */
+  missingProductMsg: string;
   onBack: () => void;
 }
 
-function PaidCheckoutEmail({ level, onBack }: PaidCheckoutEmailProps) {
+function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: PaidCheckoutEmailProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -313,13 +348,13 @@ function PaidCheckoutEmail({ level, onBack }: PaidCheckoutEmailProps) {
       })
         .from('products')
         .select('id')
-        .eq('product_type', 'full_bundle')
+        .eq('product_type', productType)
         .eq('is_active', true)
         .limit(1);
 
       if (dbError) throw new Error(dbError.message);
       if (!products || products.length === 0) {
-        throw new Error('Bundle product not found. Please contact support.');
+        throw new Error(missingProductMsg);
       }
       const product_id = products[0].id;
 

@@ -1244,20 +1244,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
       ? `/covers/${revealBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
       : null;
 
-    return (
-      <Wrap>
-        {funnelMode && !bookRevealDismissed && (
-          <BookUnlockedModal
-            open={true}
-            onClose={() => setBookRevealDismissed(true)}
-            onContinue={() => setBookRevealDismissed(true)}
+    // Funnel-mode reveal: a full-page celebration of the unlocked book
+    // BEFORE the breakdown — replaces the old layered modal, which on phones
+    // landed below the long-scrolling results page where parents missed it.
+    if (funnelMode && !bookRevealDismissed) {
+      return (
+        <Wrap>
+          <BookRevealFullPage
             title={revealBook?.title ?? `Level ${recommendedLevel} Book`}
             level={recommendedLevel}
             coverUrl={revealCoverUrl}
-            subtitle="Based on your results, you've unlocked this free book"
-            ctaLabel="Continue"
+            onContinue={() => setBookRevealDismissed(true)}
           />
-        )}
+        </Wrap>
+      );
+    }
+
+    return (
+      <Wrap>
         <div className="px-4 pt-6 pb-8 max-w-md mx-auto text-center">
           <h2 className="text-[28px] font-extrabold text-foreground mb-1 tracking-tight">
             Assessment Complete
@@ -1265,12 +1269,17 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           <p className="text-sm text-muted-foreground mb-1">
             Here's your child's phonics profile.
           </p>
-          <p className="text-[10px] text-muted-foreground mb-5">
+          <p className="text-[10px] text-muted-foreground mb-3">
             {testedCount} items tested
           </p>
 
+          {/* Quick-jump tabs — parents on phones don't have to scroll the
+              whole report; they can tap straight to the section they want.
+              Sticky so the nav follows them as they explore. */}
+          <ResultsSectionNav />
+
           {/* Recommended level */}
-          <div className={`${LEVEL_COLORS[recommendedLevel]} text-white rounded-2xl p-6 mb-5 shadow-card`}>
+          <div id="result-level" className={`${LEVEL_COLORS[recommendedLevel]} text-white rounded-2xl p-6 mb-5 shadow-card scroll-mt-24`}>
             <Star className="w-8 h-8 mx-auto mb-2 opacity-90" />
             <p className="text-sm opacity-80 mb-1">Recommended starting level</p>
             <p className="text-4xl font-extrabold mb-1">Level {recommendedLevel}</p>
@@ -1358,15 +1367,36 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           )}
 
           {/* Results Map */}
-          <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
+          <div id="result-map" className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card scroll-mt-24">
             <p className="text-xs font-bold text-foreground mb-3">Results Map</p>
             <SoundMap sounds={soundMap} results={resultsMap} />
           </div>
 
-          {/* Level-by-level breakdown */}
+          {/* Early Continue — funnel-only. Parents who've seen the headline
+              shouldn't have to scroll past every level breakdown to claim. */}
+          {funnelMode && (
+            <button
+              onClick={() => onFunnelComplete?.(recommendedLevel, {
+                sounds_correct: answers.filter(a => a.category === 'sound_recognition' && a.isCorrect).length,
+                sounds_asked: answers.filter(a => a.category === 'sound_recognition').length,
+                words_correct: answers.filter(a => a.category === 'word_reading' && a.isCorrect).length,
+                words_asked: answers.filter(a => a.category === 'word_reading').length,
+              })}
+              className={`w-full flex items-center justify-center gap-2 py-4 mb-5 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+            >
+              Claim My Free Book <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+
+          {/* Level-by-level breakdown — collapsed by default in funnelMode
+              so the page is short and a Continue button is reachable. */}
           {levelScores.length > 0 && (
-            <div className="space-y-3 mb-5">
-              <p className="text-xs font-bold text-foreground text-left">Level Results</p>
+            <details id="result-levels" className="mb-5 scroll-mt-24 text-left" open={!funnelMode}>
+              <summary className="text-xs font-bold text-foreground cursor-pointer py-2 list-none flex items-center justify-between">
+                <span>Level Results ({levelScores.length})</span>
+                <ChevronRight className="w-4 h-4 text-muted-foreground transition-transform [details[open]_&]:rotate-90" />
+              </summary>
+              <div className="space-y-3 mt-2">
               {levelScores.map(score => (
                 <div key={score.level} className="bg-card border border-border rounded-2xl p-4 text-left shadow-card">
                   <div className="flex items-center justify-between mb-2">
@@ -1406,7 +1436,8 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            </details>
           )}
 
           {/* All wrong items */}
@@ -1477,15 +1508,16 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               level via onFunnelComplete instead of asking for an email here. */}
           {!user && !guestSubmitted && funnelMode && (
             <button
+              id="result-continue"
               onClick={() => onFunnelComplete?.(recommendedLevel, {
                 sounds_correct: answers.filter(a => a.category === 'sound_recognition' && a.isCorrect).length,
                 sounds_asked: answers.filter(a => a.category === 'sound_recognition').length,
                 words_correct: answers.filter(a => a.category === 'word_reading' && a.isCorrect).length,
                 words_asked: answers.filter(a => a.category === 'word_reading').length,
               })}
-              className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+              className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200 scroll-mt-24`}
             >
-              Continue <ChevronRight className="w-5 h-5" />
+              Claim My Free Book <ChevronRight className="w-5 h-5" />
             </button>
           )}
 
@@ -1562,4 +1594,86 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   }
 
   return null;
+}
+
+/* ─── Full-page book reveal for the assessment funnel ───────────── */
+
+interface BookRevealFullPageProps {
+  title: string;
+  level: number;
+  coverUrl: string | null;
+  onContinue: () => void;
+}
+
+function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFullPageProps) {
+  const levelInfo = LEVELS.find(l => l.level === level);
+  return (
+    <div className="px-4 pt-6 pb-10 max-w-md mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 shadow-card`}>
+        <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full mb-4">
+          <Sparkles className="w-4 h-4" />
+          <span className="text-xs font-bold uppercase tracking-wide">Book Unlocked!</span>
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1">
+          Your free book is ready
+        </h2>
+        <p className="text-sm opacity-90 mb-5">
+          Level {level} — {levelInfo?.name}
+        </p>
+
+        <div className="relative rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-white mx-auto max-w-[220px]">
+          {coverUrl ? (
+            <img src={coverUrl} alt={title} className="w-full aspect-[3/4] object-cover" />
+          ) : (
+            <div className="w-full aspect-[3/4] flex items-center justify-center bg-white/10">
+              <BookOpen className="w-12 h-12 opacity-80" />
+            </div>
+          )}
+        </div>
+        <p className="font-bold text-white text-lg mt-4">{title}</p>
+        <p className="text-xs opacity-90 mt-1">
+          Based on your results, you've unlocked this free book.
+        </p>
+      </div>
+
+      <button
+        onClick={onContinue}
+        className={`mt-6 w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[level]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+      >
+        Continue to my results <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  );
+}
+
+/* ─── Quick-jump section nav for the long results page ──────────── */
+
+const RESULT_SECTIONS: { id: string; label: string }[] = [
+  { id: 'result-level', label: 'Level' },
+  { id: 'result-map', label: 'Map' },
+  { id: 'result-levels', label: 'Levels' },
+  { id: 'result-continue', label: 'Continue' },
+];
+
+function ResultsSectionNav() {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  return (
+    <nav className="sticky top-2 z-30 mb-4 -mx-1 px-1">
+      <div className="flex gap-1.5 overflow-x-auto rounded-full bg-white/85 backdrop-blur-md border border-border shadow-sm p-1">
+        {RESULT_SECTIONS.map(s => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => scrollTo(s.id)}
+            className="flex-1 min-w-[5rem] text-[11px] font-bold text-foreground/80 hover:text-foreground hover:bg-pink-50 active:bg-pink-100 rounded-full px-3 py-1.5 transition-colors whitespace-nowrap"
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
 }

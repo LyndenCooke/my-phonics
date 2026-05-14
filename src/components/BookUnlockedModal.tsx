@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Sparkles, ChevronRight, X, BookOpen } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 
@@ -35,9 +36,16 @@ export default function BookUnlockedModal({
 
   useEffect(() => {
     if (open) {
-      // Small delay for entrance animation
+      // Lock body scroll while the modal is up so a tap on the backdrop
+      // doesn't accidentally scroll the long results page underneath
+      // before the parent has seen the book.
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
       const t = setTimeout(() => setAnimateIn(true), 50);
-      return () => clearTimeout(t);
+      return () => {
+        clearTimeout(t);
+        document.body.style.overflow = prevOverflow;
+      };
     } else {
       setAnimateIn(false);
     }
@@ -45,18 +53,22 @@ export default function BookUnlockedModal({
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  // Render into document.body via portal so no ancestor with transform /
+  // filter / contain can break `position: fixed`. Without this, on some
+  // mobile layouts the modal anchored below the fold of a long results
+  // page and parents saw only the grey backdrop.
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-[max(1rem,env(safe-area-inset-top))] sm:items-center sm:pt-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
         style={{ opacity: animateIn ? 1 : 0 }}
         onClick={onClose}
       />
 
       {/* Modal */}
       <div
-        className="relative bg-card rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden transition-all duration-500"
+        className="relative bg-card rounded-3xl shadow-2xl max-w-sm w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overflow-x-hidden transition-all duration-500 my-auto"
         style={{
           opacity: animateIn ? 1 : 0,
           transform: animateIn ? 'scale(1) translateY(0)' : 'scale(0.9) translateY(20px)',
@@ -117,6 +129,7 @@ export default function BookUnlockedModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
