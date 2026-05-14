@@ -169,20 +169,36 @@ export default function Welcome() {
               </p>
             </button>
 
-            {/* Download button — sits under the title so parents can grab
-                the PDF without leaving the page. Files are public at
-                /book-pdfs/{level}_{sub}.pdf so this is a direct anchor. */}
-            {unlockedBook.sub_level && (
-              <a
-                href={`/book-pdfs/${unlockedBook.sub_level.replace(/^L/, '').replace('.', '_')}.pdf`}
-                download={`${unlockedBook.title}.pdf`}
-                target="_blank"
-                rel="noopener"
-                className="mt-3 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
-              >
-                <Download className="w-4 h-4" /> Download PDF
-              </a>
-            )}
+            {/* Download buttons — A5 (one-page-per-sheet) for screen/standard
+                print, A4 booklet for fold-and-staple home printing. PDFs live
+                in the public Supabase Storage `book-pdfs` bucket; the same
+                URLs are used by the post-assessment marketing email. */}
+            {unlockedBook.sub_level && (() => {
+              const slug = unlockedBook.sub_level.replace(/^L/, '').replace('.', '_');
+              const BUCKET = 'https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs';
+              return (
+                <div className="mt-3 flex flex-col gap-2">
+                  <a
+                    href={`${BUCKET}/a5/${slug}.pdf`}
+                    download={`${unlockedBook.title}.pdf`}
+                    target="_blank"
+                    rel="noopener"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
+                  >
+                    <Download className="w-4 h-4" /> Read on screen / print A5
+                  </a>
+                  <a
+                    href={`${BUCKET}/a4/${slug}.pdf`}
+                    download={`${unlockedBook.title} (Printable Booklet).pdf`}
+                    target="_blank"
+                    rel="noopener"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
+                  >
+                    <Download className="w-4 h-4" /> Print and fold (A4 booklet)
+                  </a>
+                </div>
+              );
+            })()}
           </div>
         ) : (
           <div className="mb-6 p-6 bg-card border border-border rounded-2xl">

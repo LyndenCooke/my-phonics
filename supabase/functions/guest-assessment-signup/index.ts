@@ -104,8 +104,21 @@ Deno.serve(async (req) => {
       .order("sort_order", { ascending: true })
       .limit(1);
 
+    // Canonical site domain — used as the fallback origin when the request
+    // didn't carry one (server-to-server invokes have no Origin header).
+    const SITE_ORIGIN = "https://www.myphonicsbooks.co.uk";
+    const origin = req.headers.get("origin") || SITE_ORIGIN;
+
+    // Supabase Storage public URLs for the free sample book. The bucket
+    // holds two variants per book:
+    //   /a5/{slug}.pdf — one-page-per-sheet, screen-friendly + plain A5 print
+    //   /a4/{slug}.pdf — saddle-stitch imposition for fold-it-into-a-book print
+    // Emails offer both so the parent picks based on their printer setup.
+    const STORAGE_PUBLIC = "https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs";
+
     let bookTitle = `Level ${recommended_level} Book`;
     let bookPdfUrl = "";
+    let bookA4Url = "";
     if (books && books.length > 0) {
       await supabaseAdmin.from("user_books").upsert(
         { user_id: userId, book_id: books[0].id, source: "free_sample" },
@@ -115,21 +128,32 @@ Deno.serve(async (req) => {
       const subSlug = (books[0].sub_level ?? `L${recommended_level}.1`)
         .replace(/^L/, "")
         .replace(".", "_");
-      bookPdfUrl = `https://myphonicsbooks.com/book-pdfs/${subSlug}.pdf`;
+      bookPdfUrl = `${STORAGE_PUBLIC}/a5/${subSlug}.pdf`;
+      bookA4Url = `${STORAGE_PUBLIC}/a4/${subSlug}.pdf`;
     }
 
-    // 4. Generate a fresh magiclink token the client can immediately
-    // verify to establish a session — so the parent lands on their
-    // library straight after submitting their email, no inbox detour.
-    // The token_hash is single-use and short-lived; we only ship it
-    // back to the browser that just made this request.
+    // 4. Generate a fresh magic link. We use the same link for two purposes:
+    //   - hashed_token is shipped back to the calling browser so the funnel
+    //     auto-establishes a session without an inbox detour.
+    //   - action_link goes into the GHL "your book is ready" email as the
+    //     Login URL — clicking it verifies the token at Supabase and lands
+    //     the parent on /welcome already authenticated. Without action_link
+    //     /welcome sees no session and triggers a duplicate magic-link send
+    //     that immediately hits Supabase's rate limiter.
+    // Both consume the same token; whichever click happens first wins, the
+    // other path becomes a no-op (parent is already logged in by then).
     let authTokenHash: string | null = null;
+    let actionLink: string | null = null;
     try {
       const { data: linkData } = await supabaseAdmin.auth.admin.generateLink({
         type: "magiclink",
         email,
+        options: {
+          redirectTo: `${SITE_ORIGIN}/welcome?email=${encodeURIComponent(email)}`,
+        },
       });
       authTokenHash = linkData?.properties?.hashed_token ?? null;
+      actionLink = linkData?.properties?.action_link ?? null;
     } catch (err) {
       console.error("generateLink failed (non-fatal):", err);
     }
@@ -139,8 +163,9 @@ Deno.serve(async (req) => {
     // template merges in (book title, public PDF link, login URL).
     // GHL is the sole email sender; we no longer trigger Supabase's
     // built-in magic-link send. Best-effort; failures must not block.
-    const origin = req.headers.get("origin") || "https://myphonicsbooks.com";
-    const loginUrl = `${origin}/welcome?email=${encodeURIComponent(email)}`;
+    // loginUrl prefers the Supabase action_link (auto-signs in on click);
+    // falls back to a plain /welcome URL only if generateLink failed.
+    const loginUrl = actionLink || `${origin}/welcome?email=${encodeURIComponent(email)}`;
     try {
       await supabaseAdmin.functions.invoke("ghl-sync", {
         body: {
@@ -153,7 +178,9 @@ Deno.serve(async (req) => {
             custom_fields: {
               book_title: bookTitle,
               book_pdf_url: bookPdfUrl,
+              book_a4_url: bookA4Url,
               login_url: loginUrl,
+              child_name: child_name || "",
             },
           },
         },
