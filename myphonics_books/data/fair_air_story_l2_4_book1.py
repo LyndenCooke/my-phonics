@@ -95,33 +95,33 @@ FAIR_AIR_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Look! Big ducks, a pair! \"I can win!\" I say.",
+                "text": "Look! A pair of ducks! \"I can win the pair!\" I say.",
                 "image": None,
             },
             {
-                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is good!",
+                "text": "\"Yes!\" I say. I win the pair of ducks! I hug my pair. My ducks are good!",
                 "image": None,
             },
             {
-                "text": "A gust in the air! My pair shoots up, up, up! No! My pair!",
+                "text": "A gust in the air! My pair of ducks shoots up, up, up! No! My ducks!",
                 "image": None,
             },
             {
-                "text": "\"Sir! Sir! My pair is in the air!\" The man said, \"I can see it! In the fir!\"",
+                "text": "\"Sir! Sir! My pair of ducks is in the air!\" The man said, \"I can see it! In the fir!\"",
                 "image": None,
             },
             {
-                "text": "The man ran to a big fir. My pair is in the fir! He got my pair down!",
+                "text": "The man ran to a big fir. My pair of ducks is in the fir! He got my pair down!",
                 "image": None,
             },
             {
-                "text": "I hug my pair. I sit in a chair. The fair is fun! My pair is back!",
+                "text": "I hug my pair of ducks. I sit in a chair. The fair is fun! My ducks are back!",
                 "image": None,
             },
         ],
 
-        "story_words": ["fair", "air", "pair", "hair", "sir", "fir"],
-        "tricky_words_used": ["the", "I", "my", "to", "no", "said", "go", "put", "he"],  # 'so', 'two', 'by' removed via rewrites; sir noun replaced with 'man'
+        "story_words": ["fair", "air", "pair", "hair", "sir", "fir", "ducks", "chair"],
+        "tricky_words_used": ["the", "I", "my", "to", "no", "said", "go", "put", "he", "of", "are"],  # 'of' now L2-tricky (lets "pair of ducks" read naturally); 'are' for "ducks are"
         "read_words": ["fair", "pair", "chair", "fir"],
         "nonsense_words": [
             "dair", "jair", "vair", "tair",     # air combinations (vair replaces real word 'lair')
