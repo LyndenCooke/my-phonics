@@ -336,21 +336,23 @@ function getSoundCard(group: string): string | undefined {
 /** Hero focus-row card — large, letter-only. Cue images are deferred until a
  *  cleanly-cropped batch is available; for now showing just the letter keeps
  *  the layout consistent with the printed sound mat. */
-function FocusSoundCard({ group, isPlaying, theme, onTap }: {
-  group: string; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
+function FocusSoundCard({ group, focusSounds, isPlaying, theme, onTap }: {
+  group: string; focusSounds: string[]; isPlaying: boolean; theme: LevelTheme; onTap: () => void;
 }) {
-  const sounds = group.split('/');
+  const allSounds = group.split('/');
+  const focusOnly = allSounds.filter(s => focusSounds.includes(s));
+  const display = focusOnly.length > 0 ? focusOnly : allSounds;
   return (
     <button
       onClick={onTap}
-      aria-label={`Play sound ${sounds.join(' or ')}`}
+      aria-label={`Play sound ${display.join(' or ')}`}
       className={`relative flex items-center justify-center rounded-2xl py-5 md:py-6 lg:py-8 px-3 transition-all duration-200 shadow-md active:scale-95
         ${isPlaying
           ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
           : `bg-gradient-to-br ${theme.heroBgIdle} ${theme.heroText} hover:shadow-xl hover:scale-[1.02]`}`}
     >
       <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">
-        {sounds.join(' ')}
+        {display.join(' ')}
       </span>
       {isPlaying && (
         <Volume2 className="absolute top-2 right-2 w-4 h-4 md:w-5 md:h-5 text-white/90" />
@@ -443,6 +445,7 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
           <FocusSoundCard
             key={group}
             group={group}
+            focusSounds={page.focusSounds}
             isPlaying={playingGroup === group}
             theme={theme}
             onTap={() => handleSoundTap(group)}
