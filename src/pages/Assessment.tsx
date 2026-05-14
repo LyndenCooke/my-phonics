@@ -1291,29 +1291,8 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             )}
           </div>
 
-          {/* National + international comparison chart — only renders if
-           *  we know the child's age (from the DOB onboarding step). For
-           *  the expat market this is the headline feature: a parent in
-           *  Malaysia or Pakistan can see at a glance how their child
-           *  compares to UK peers AND the international cohort. */}
-          {(() => {
-            const ageMonths = getAgeMonths();
-            if (!ageMonths) return null;
-            const countryCode = typeof navigator !== 'undefined'
-              ? (navigator.language?.split('-')[1]?.toUpperCase() ?? null)
-              : null;
-            return (
-              <div className="mb-5 text-left">
-                <PhonicsAveragesChart
-                  ageMonths={ageMonths}
-                  childLevel={recommendedLevel}
-                  countryCode={countryCode}
-                />
-              </div>
-            );
-          })()}
-
-          {/* Age comparison */}
+          {/* Age comparison — small text-only summary, kept near the headline
+              so parents see the "expected vs actual" stat before the chart. */}
           {ageComparison && (
             <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
               <p className="text-xs font-bold text-foreground mb-2">
@@ -1366,14 +1345,50 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             </div>
           )}
 
-          {/* Results Map */}
+          {/* National + international comparison chart — the headline visual.
+              Parents need to see this BEFORE the first Continue so the line
+              graph is what closes the offer. */}
+          {(() => {
+            const ageMonths = getAgeMonths();
+            if (!ageMonths) return null;
+            const countryCode = typeof navigator !== 'undefined'
+              ? (navigator.language?.split('-')[1]?.toUpperCase() ?? null)
+              : null;
+            return (
+              <div className="mb-5 text-left">
+                <PhonicsAveragesChart
+                  ageMonths={ageMonths}
+                  childLevel={recommendedLevel}
+                  countryCode={countryCode}
+                />
+              </div>
+            );
+          })()}
+
+          {/* Continue #1 — directly under the line graph, per the
+              chart→button→sounds→button structure the user asked for. */}
+          {funnelMode && (
+            <button
+              onClick={() => onFunnelComplete?.(recommendedLevel, {
+                sounds_correct: answers.filter(a => a.category === 'sound_recognition' && a.isCorrect).length,
+                sounds_asked: answers.filter(a => a.category === 'sound_recognition').length,
+                words_correct: answers.filter(a => a.category === 'word_reading' && a.isCorrect).length,
+                words_asked: answers.filter(a => a.category === 'word_reading').length,
+              })}
+              className={`w-full flex items-center justify-center gap-2 py-4 mb-5 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+            >
+              Claim My Free Book <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+
+          {/* Sounds breakdown — condensed in funnelMode (untested levels
+              folded into a single 'not tested' line). */}
           <div id="result-map" className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card scroll-mt-24">
-            <p className="text-xs font-bold text-foreground mb-3">Results Map</p>
-            <SoundMap sounds={soundMap} results={resultsMap} />
+            <p className="text-xs font-bold text-foreground mb-3">Sound Map</p>
+            <SoundMap sounds={soundMap} results={resultsMap} compact={funnelMode} />
           </div>
 
-          {/* Early Continue — funnel-only. Parents who've seen the headline
-              shouldn't have to scroll past every level breakdown to claim. */}
+          {/* Continue #2 — directly under the sounds breakdown. */}
           {funnelMode && (
             <button
               onClick={() => onFunnelComplete?.(recommendedLevel, {
