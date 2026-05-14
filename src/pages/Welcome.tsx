@@ -115,6 +115,15 @@ export default function Welcome() {
   const level = unlockedBook?.level ?? 1;
   const levelInfo = LEVELS.find(l => l.level === level);
 
+  // Some seeded book rows don't have `cover_image_url` set, which dropped
+  // parents onto a big BookOpen-icon placeholder after submitting their
+  // email. Fall back to the public `/covers/{n}_{sub}_cover.jpg` path the
+  // funnel reveal page already uses — same image, same source of truth.
+  const fallbackCover = unlockedBook?.sub_level
+    ? `/covers/${unlockedBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
+    : null;
+  const coverUrl: string | null = unlockedBook?.cover_image_url || fallbackCover;
+
   return (
     <Layout>
       <div className="px-4 pt-8 pb-8 max-w-md mx-auto text-center">
@@ -137,25 +146,27 @@ export default function Welcome() {
           <div className="mb-6">
             <button
               onClick={() => navigate('/library', { state: { filterLevel: level, openBookId: unlockedBook.id } })}
-              className="block w-full group"
+              className="group block mx-auto w-full max-w-[220px]"
             >
               <div className="relative rounded-2xl overflow-hidden shadow-card bg-card border-2 border-primary transition-transform duration-200 group-active:scale-[0.97]">
-                {unlockedBook.cover_image_url ? (
+                {coverUrl ? (
                   <img
-                    src={unlockedBook.cover_image_url}
+                    src={coverUrl}
                     alt={unlockedBook.title}
                     className="w-full aspect-[3/4] object-cover"
                   />
                 ) : (
                   <div className={`w-full aspect-[3/4] flex items-center justify-center ${LEVEL_COLORS[level]} text-white`}>
-                    <BookOpen className="w-16 h-16 opacity-70" />
+                    <BookOpen className="w-12 h-12 opacity-70" />
                   </div>
                 )}
-                <div className={`${LEVEL_COLORS[level]} text-white py-3 px-4 text-left`}>
-                  <p className="text-xs opacity-90">Level {level} — {levelInfo?.name}</p>
-                  <p className="font-bold text-lg">{unlockedBook.title}</p>
-                </div>
               </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Level {level} — {levelInfo?.name}
+              </p>
+              <p className="font-bold text-base text-foreground">
+                {unlockedBook.title}
+              </p>
             </button>
 
             {/* Download button — sits under the title so parents can grab
