@@ -1,7 +1,7 @@
 import { ReactNode, useState, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ClipboardCheck, Tag, User, LogIn, Baby, Users } from 'lucide-react';
+import { BookOpen, FolderOpen, User, LogIn, Baby, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { hapticLight } from '@/lib/native';
@@ -19,22 +19,19 @@ const ParentPinDialog = lazy(() => import('@/components/ParentPinDialog'));
 import ModeToggleHint from '@/components/ModeToggleHint';
 
 // Nav items shared between mobile bottom-bar and desktop top-nav.
-// "Home" = the hub home (/library), NOT the marketing landing — once the user
-// is inside the app, Home should mean hub home.
-// Reading progress lives inside the Profile page; we keep the nav tight at 4.
-// `badgeKey` selects which unread counter to show on this tab — Profile owns
-// the Messages inbox, so it gets the unread-messages dot.
+// Library-first model: every visitor lands in /library, the assessment and
+// pricing pages are accessible from inside the library/resources flows but
+// removed from primary nav to reduce friction. Three tabs only.
 const PARENT_NAV = [
-  { path: '/library', label: 'Home', icon: Home, badgeKey: null as 'messages' | null },
-  { path: '/assess', label: 'Assess', icon: ClipboardCheck, badgeKey: null },
-  { path: '/shop', label: 'Pricing', icon: Tag, badgeKey: null },
+  { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null as 'messages' | null },
+  { path: '/resources', label: 'Resources', icon: FolderOpen, badgeKey: null },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const },
 ];
 
-// Child-mode nav: only Home (the simplified library). Hides Pricing,
-// Assess, and Profile so kids can't wander into purchase flows or settings.
+// Child-mode nav: only Library (the simplified hub). Hides Resources and
+// Profile so kids can't wander into adult-facing pages.
 const CHILD_NAV = [
-  { path: '/library', label: 'Home', icon: Home, badgeKey: null as 'messages' | null },
+  { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null as 'messages' | null },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -150,15 +147,6 @@ export default function Layout({ children }: { children: ReactNode }) {
             >
               <LogIn className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign In</span>
-            </Link>
-          )}
-          {mode === 'parent' && (
-            <Link
-              to="/"
-              className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
-              aria-label="Back to landing page"
-            >
-              Exit
             </Link>
           )}
         </div>

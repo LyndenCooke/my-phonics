@@ -9,13 +9,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react";
-// Landing is the entry route for ad/SEO traffic — keep it eager so the
-// first paint doesn't wait on a chunk.
-import LandingPage from "./pages/LandingPage";
 import NotFound from "./pages/NotFound";
 
-// Everything else is lazy-loaded so the landing page ships the smallest
-// possible JS payload.
+// All traffic — web, PWA, native — lands directly in the library. The
+// marketing landing page stays available at /landing for ad campaigns that
+// want to send to it, but is no longer the default at /.
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Index = lazy(() => import("./pages/Index"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
@@ -75,41 +74,6 @@ function PageFallback() {
   );
 }
 
-/**
- * Root route handler.
- *
- * Web (browser tab):       marketing LandingPage. The funnel target.
- * Native (Capacitor app):  /library — landing is a marketing surface, the
- *                          installed app should open straight into the
- *                          product.
- * Installed PWA (iOS/Android Add-to-Home-Screen): /library, same reasoning
- *                          as native. Detected via display-mode media
- *                          query OR navigator.standalone (iOS Safari
- *                          legacy).
- *
- * Anyone with the marketing link in a browser still sees the landing page.
- * Once they install the app to their home screen, every subsequent open
- * skips it.
- */
-function ConditionalHome() {
-  if (typeof window === "undefined") return <LandingPage />;
-
-  const isNative = Boolean(
-    (window as { Capacitor?: { isNativePlatform?: () => boolean } })
-      .Capacitor?.isNativePlatform?.()
-  );
-
-  // PWA standalone — installed to home screen. Two checks: standard CSS
-  // media query (Chrome / Android / desktop PWAs) + navigator.standalone
-  // (iOS Safari, predates the spec).
-  const isStandalonePwa =
-    window.matchMedia?.("(display-mode: standalone)").matches ||
-    Boolean((window.navigator as { standalone?: boolean }).standalone);
-
-  if (isNative || isStandalonePwa) return <Navigate to="/library" replace />;
-  return <LandingPage />;
-}
-
 const App = () => {
   // Capture ?ref=CODE the first time a visitor lands. Stored in localStorage
   // for 60 days so the credit survives sign-up + Stripe redirect.
@@ -145,7 +109,8 @@ function RoutesWithTransition() {
   return (
     <AnimatedRoutes>
       <Routes location={location}>
-            <Route path="/" element={<ConditionalHome />} />
+            <Route path="/" element={<Navigate to="/library" replace />} />
+            <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
             <Route path="/library" element={<Index />} />
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Welcome /></ChildModeGuard></Suspense>} />
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Assessment /></ChildModeGuard></Suspense>} />
