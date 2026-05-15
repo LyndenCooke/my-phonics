@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 // want to send to it, but is no longer the default at /.
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Index = lazy(() => import("./pages/Index"));
+const Resources = lazy(() => import("./pages/Resources"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
@@ -112,6 +113,7 @@ function RoutesWithTransition() {
             <Route path="/" element={<Navigate to="/library" replace />} />
             <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
             <Route path="/library" element={<Index />} />
+            <Route path="/resources" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Resources /></ChildModeGuard></Suspense>} />
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Welcome /></ChildModeGuard></Suspense>} />
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Assessment /></ChildModeGuard></Suspense>} />
             <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Shop /></ChildModeGuard></Suspense>} />
