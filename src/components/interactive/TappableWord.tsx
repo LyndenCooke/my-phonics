@@ -16,7 +16,7 @@ function playAudioFile(url: string): Promise<void> {
 
 async function playPhoneme(grapheme: string): Promise<void> {
   const key = grapheme.toLowerCase().replace(/-/g, '_');
-  try { await playAudioFile(`/sounds/${key}.mp3`); } catch {}
+  try { await playAudioFile(`/sounds/${key}.mp3`); } catch { /* silent on miss — phoneme audio is optional */ }
 }
 
 function playWordAudio(word: string): Promise<void> {
