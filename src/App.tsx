@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-route
 import { captureRefFromUrl } from "@/lib/referral";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
 import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -142,6 +143,9 @@ function RoutesWithTransition() {
   // Fire a GA4 page_view on every route change. No-op if gtag isn't loaded
   // (ad-blocker / no consent / dev without the tag).
   useGoogleAnalytics();
+  // Same for Meta Pixel — SPA navigations need a manual PageView so Meta's
+  // optimiser sees in-funnel dropoff, not just one event per session.
+  useMetaPixel();
   return (
     <AnimatedRoutes>
       <Routes location={location}>
