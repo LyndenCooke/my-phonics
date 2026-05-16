@@ -13,6 +13,7 @@ import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } f
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useAppMode, maybeAutoDefaultToChild } from '@/hooks/useAppMode';
+import { useNotifications } from '@/hooks/useNotifications';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import ChildHomeScreen from '@/components/ChildHomeScreen';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
@@ -42,6 +43,7 @@ export default function Index() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
+  const { add: addNotification } = useNotifications();
 
   // Automated stress-test bypass: the seeded QA account has every book
   // unlocked regardless of the books/user_books seed state. This only
@@ -244,6 +246,15 @@ export default function Index() {
       // doesn't change library state.
       window.open(data.url, '_blank', 'noopener');
       toast.success(`${book.title} downloading`, { id: tid });
+      // Drop a notification so the parent can find the file later via
+      // Profile → Download History without scrolling browser downloads.
+      addNotification({
+        icon: 'download',
+        title: `${book.title} ready`,
+        body: 'Saved to your downloads — tap to view history',
+        ctaLabel: 'View',
+        ctaHref: '/profile/downloads',
+      });
     } catch (err) {
       toast.error((err as Error).message || 'Download failed', { id: tid });
     }

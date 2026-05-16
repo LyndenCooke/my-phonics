@@ -23,30 +23,25 @@ import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   User, Baby, LogOut, Download, Settings, ChevronRight, Plus,
-  LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle,
+  LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle, Sparkles, X,
+  Shield,
 } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { getUnreadMessageCount } from '@/lib/nudges';
+import { useNotifications } from '@/hooks/useNotifications';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
 
-// "For You" — dynamic top-of-page nudges. Replace with real data once
-// the parent_messages table lands; today these are friendly placeholders
-// the parent can dismiss/use without breaking the flow.
-type ForYouItem = {
-  id: string;
-  icon: 'gift' | 'video' | 'users';
-  title: string;
-  ctaLabel: string;
-  ctaHref: string;
-};
-
-const FOR_YOU_ITEMS: ForYouItem[] = [
-  { id: '1', icon: 'gift', title: "You've unlocked a bonus story!", ctaLabel: 'Open', ctaHref: '/library' },
-  { id: '2', icon: 'video', title: 'New tip: How to help with blending', ctaLabel: 'Watch', ctaHref: '/profile/messages' },
-  { id: '3', icon: 'users', title: 'Invite a friend, get £5', ctaLabel: 'Invite', ctaHref: '/profile/referrals' },
-];
-
-const FOR_YOU_ICON = { gift: Gift, video: PlayCircle, users: Users };
+// Notification icon → Lucide component. New kinds added here as the
+// store grows; default falls back to Sparkles so a missing mapping
+// doesn't render an empty circle.
+const FOR_YOU_ICON = {
+  download: Download,
+  gift: Gift,
+  video: PlayCircle,
+  users: Users,
+  reward: Trophy,
+  sparkle: Sparkles,
+} as const;
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -63,6 +58,13 @@ export default function Profile() {
   const childLevel = child?.current_level ?? 1;
   const levelInfo = LEVELS.find(l => l.level === childLevel);
   const unreadMessages = getUnreadMessageCount();
+  const { notifications, dismiss: dismissNotification } = useNotifications();
+  const forYouItems = notifications.filter(n => !n.read).slice(0, 3);
+
+  const handleForYouTap = (id: string, href?: string) => {
+    dismissNotification(id);
+    if (href) navigate(href);
+  };
 
   const handleAddChild = async () => {
     if (!user || !childName.trim()) return;
@@ -109,6 +111,9 @@ export default function Profile() {
               Sign In / Sign Up
             </button>
           </div>
+          <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
+            <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
+          </section>
         </div>
       </Layout>
     );
@@ -183,33 +188,58 @@ export default function Profile() {
           )}
         </section>
 
-        {/* 3. For You — 2-3 high priority items */}
-        {FOR_YOU_ITEMS.length > 0 && (
+        {/* 3. For You — unread notifications (download ready, etc.). Each
+            card dismisses on tap; the CTA navigates. The section vanishes
+            when the queue empties so the page doesn't sit on a hollow
+            "0 new" header. */}
+        {forYouItems.length > 0 && (
           <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
             <div className="flex items-center justify-between mb-3">
               <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">For You</p>
               <span className="text-[10px] font-bold bg-rose-500 text-white px-2 py-0.5 rounded-full">
-                {FOR_YOU_ITEMS.length} new
+                {forYouItems.length} new
               </span>
             </div>
             <div className="space-y-2">
-              {FOR_YOU_ITEMS.slice(0, 3).map(item => {
-                const Icon = FOR_YOU_ICON[item.icon];
+              {forYouItems.map(item => {
+                const Icon = FOR_YOU_ICON[item.icon] ?? Sparkles;
                 return (
-                  <Link
+                  <div
                     key={item.id}
-                    to={item.ctaHref}
-                    className="flex items-center gap-3 p-3 rounded-2xl bg-tint-pink border border-primary/15 hover:border-primary/30 active:scale-[0.99] transition-all"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleForYouTap(item.id, item.ctaHref)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleForYouTap(item.id, item.ctaHref);
+                      }
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-2xl bg-tint-pink border border-primary/15 hover:border-primary/30 active:scale-[0.99] transition-all cursor-pointer"
                   >
                     <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm shrink-0">
                       <Icon className="w-4 h-4 text-primary-ink" />
                     </div>
-                    <p className="flex-1 text-sm font-bold text-foreground leading-snug">{item.title}</p>
-                    <span className="text-xs font-bold text-primary-ink shrink-0 flex items-center gap-0.5">
-                      {item.ctaLabel}
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </span>
-                  </Link>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-foreground leading-snug truncate">{item.title}</p>
+                      {item.body && <p className="text-[11px] text-muted-foreground leading-snug truncate">{item.body}</p>}
+                    </div>
+                    {item.ctaLabel && (
+                      <span className="text-xs font-bold text-primary-ink shrink-0 flex items-center gap-0.5">
+                        {item.ctaLabel}
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </span>
+                    )}
+                    {/* Quiet dismiss — stops the card's click from also firing. */}
+                    <button
+                      type="button"
+                      aria-label="Dismiss notification"
+                      onClick={(e) => { e.stopPropagation(); dismissNotification(item.id); }}
+                      className="w-7 h-7 -mr-1 rounded-full flex items-center justify-center text-muted-foreground hover:bg-white/60 hover:text-foreground shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -252,6 +282,7 @@ export default function Profile() {
           <ProfileLink to="/profile/downloads" icon={Download} label="Download History" />
           <ProfileLink to="/profile/account" icon={Settings} label="Account Settings" />
           <ProfileLink to="/profile/help" icon={HelpCircle} label="Help & Support" />
+          <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
           <button
             onClick={handleSignOut}
             className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left"
