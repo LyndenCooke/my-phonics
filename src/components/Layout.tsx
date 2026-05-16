@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { hapticLight } from '@/lib/native';
 import { hasParentPin } from '@/hooks/useAppMode';
-import { getUnreadMessageCount } from '@/lib/nudges';
+import { useNotifications } from '@/hooks/useNotifications';
 
 // Founders feedback modal — auto-pops globally when a review is due.
 // Component handles all gating internally (returns null when nothing to
@@ -41,9 +41,10 @@ export default function Layout({ children }: { children: ReactNode }) {
   const navItems = mode === 'child' ? CHILD_NAV : PARENT_NAV;
   const [pinOpen, setPinOpen] = useState(false);
 
-  // Profile-tab unread badge. Backed by stub data today (returns 0); once
-  // the parent_messages Supabase table exists this lights up automatically.
-  const unreadMessages = getUnreadMessageCount();
+  // Profile-tab unread badge — reflects unread in-app notifications
+  // (download ready, etc.). Per-user localStorage; once a server-side
+  // parent_messages table lands, merge its count in here too.
+  const { unreadCount: unreadMessages } = useNotifications();
 
   // Toggle behaviour:
   //  parent → child: free, no gate (the parent is in control).
