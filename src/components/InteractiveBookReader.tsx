@@ -2037,8 +2037,12 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
 
       <div className="flex-1 relative overflow-hidden">
         {renderPage()}
-        {!isFirst && <button onClick={goPrev} className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/70 shadow-lg items-center justify-center hover:bg-white z-20 hidden md:flex" aria-label="Previous page"><ChevronLeft className="w-6 h-6 text-slate-700" /></button>}
-        {!isLast && <button onClick={goNext} className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/70 shadow-lg items-center justify-center hover:bg-white z-20 hidden md:flex" aria-label="Next page"><ChevronRight className="w-6 h-6 text-slate-700" /></button>}
+        {/* Always-visible side arrows. On story pages the swipe gesture
+         *  also works; on writing-practice / drawing pages the canvas
+         *  swallows touch events so these buttons (at z-20, above the
+         *  canvas) are the only way past. */}
+        {!isFirst && <button onClick={goPrev} className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/85 shadow-lg flex items-center justify-center hover:bg-white active:scale-95 z-20" aria-label="Previous page"><ChevronLeft className="w-6 h-6 text-slate-700" /></button>}
+        {!isLast && <button onClick={goNext} className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/85 shadow-lg flex items-center justify-center hover:bg-white active:scale-95 z-20" aria-label="Next page"><ChevronRight className="w-6 h-6 text-slate-700" /></button>}
       </div>
 
       <div className="flex items-center justify-center gap-1 py-2.5 bg-white/90 backdrop-blur-sm shrink-0">
