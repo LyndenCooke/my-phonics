@@ -24,6 +24,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   User, Baby, LogOut, Download, Settings, ChevronRight, Plus,
   LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle, Sparkles, X,
+  Shield,
 } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { getUnreadMessageCount } from '@/lib/nudges';
@@ -110,6 +111,9 @@ export default function Profile() {
               Sign In / Sign Up
             </button>
           </div>
+          <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
+            <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
+          </section>
         </div>
       </Layout>
     );
@@ -278,6 +282,7 @@ export default function Profile() {
           <ProfileLink to="/profile/downloads" icon={Download} label="Download History" />
           <ProfileLink to="/profile/account" icon={Settings} label="Account Settings" />
           <ProfileLink to="/profile/help" icon={HelpCircle} label="Help & Support" />
+          <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
           <button
             onClick={handleSignOut}
             className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors text-left"
