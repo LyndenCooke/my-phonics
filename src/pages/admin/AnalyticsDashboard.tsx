@@ -1,7 +1,34 @@
-import { Users, PoundSterling, ShoppingCart, ClipboardCheck, BookOpen, TrendingUp } from 'lucide-react';
+import { Users, PoundSterling, ShoppingCart, ClipboardCheck, BookOpen, TrendingUp, Eye, BarChart2, Target, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import StatCard from '@/components/admin/StatCard';
 import { useAdminAnalytics } from '@/hooks/useAdminAnalytics';
+
+// External analytics deep-links. Internal Supabase KPIs answer "how many"
+// — these answer "what are they actually doing". Clarity = session
+// recordings + heatmaps, GA = traffic + acquisition, Meta = paid funnel.
+const LIVE_TOOLS = [
+  {
+    href: 'https://clarity.microsoft.com/projects/view/wrmgoeh5fq/dashboard',
+    label: 'Clarity sessions',
+    description: 'Watch real visitors. Rage clicks, dead clicks, scroll depth, heatmaps.',
+    icon: Eye,
+    accent: 'bg-violet-50 text-violet-700 border-violet-200',
+  },
+  {
+    href: 'https://analytics.google.com/',
+    label: 'Google Analytics',
+    description: 'Traffic, acquisition, page-level funnels, country breakdown.',
+    icon: BarChart2,
+    accent: 'bg-amber-50 text-amber-700 border-amber-200',
+  },
+  {
+    href: 'https://business.facebook.com/events_manager2/',
+    label: 'Meta Events Manager',
+    description: 'Ad attribution + pixel events. Inert until window.__META_PIXEL_ID is set.',
+    icon: Target,
+    accent: 'bg-sky-50 text-sky-700 border-sky-200',
+  },
+];
 import {
   BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -41,6 +68,34 @@ export default function AnalyticsDashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Analytics</h1>
+
+      {/* Live traffic tools — qualitative dropoff insight lives in these
+       *  external dashboards, not in our internal Supabase KPIs. */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Live traffic — where are they dropping off?</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {LIVE_TOOLS.map(({ href, label, description, icon: Icon, accent }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group flex flex-col gap-2 rounded-xl border p-4 transition-all hover:shadow-md ${accent}`}
+              >
+                <div className="flex items-center justify-between">
+                  <Icon className="h-5 w-5" />
+                  <ExternalLink className="h-3.5 w-3.5 opacity-50 transition-opacity group-hover:opacity-100" />
+                </div>
+                <div className="text-sm font-bold">{label}</div>
+                <div className="text-xs leading-snug opacity-80">{description}</div>
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* KPI Row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
