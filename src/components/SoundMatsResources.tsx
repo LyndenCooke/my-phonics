@@ -32,9 +32,9 @@ const LEVEL_BG: Record<string | number, string> = {
 
 export function SoundMatsResources() {
   return (
-    <div className="mt-10 mb-6">
+    <section className="mb-10">
       <div className="mb-4">
-        <h2 className="font-display text-xl font-extrabold text-foreground tracking-tight">Resources</h2>
+        <h2 className="font-display text-xl font-extrabold text-foreground tracking-tight">Sound mats</h2>
         <p className="text-sm text-muted-foreground mt-1">
           Printable sound mats for home and classroom — A3 landscape PNGs
         </p>
@@ -81,6 +81,6 @@ export function SoundMatsResources() {
           </a>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

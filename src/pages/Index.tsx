@@ -14,7 +14,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useAppMode, maybeAutoDefaultToChild } from '@/hooks/useAppMode';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
-import { SoundMatsResources } from '@/components/SoundMatsResources';
 import ChildHomeScreen from '@/components/ChildHomeScreen';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
 import { supabase } from '@/integrations/supabase/client';
@@ -528,8 +527,6 @@ export default function Index() {
             <p className="text-xs text-muted-foreground mt-1">Check back soon for new releases</p>
           </div>
         )}
-
-        <SoundMatsResources />
       </div>
 
       {/* Upsell dialog for locked books */}
