@@ -13,10 +13,8 @@ import DownloadFormatDialog, { type DownloadFormat } from '@/components/Download
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-import { useAppMode, maybeAutoDefaultToChild } from '@/hooks/useAppMode';
 import { useNotifications } from '@/hooks/useNotifications';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
-import ChildHomeScreen from '@/components/ChildHomeScreen';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -39,7 +37,6 @@ export default function Index() {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
-  const { mode } = useAppMode();
   const [upsellBook, setUpsellBook] = useState<Book | null>(null);
   const [downloadBook, setDownloadBook] = useState<Book | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -155,15 +152,6 @@ export default function Index() {
       window.history.replaceState({}, '', url.toString());
     }
   }, [activeBookId, books, location.search]);
-
-  // Auto-default to child mode once the parent has unlocked at least one
-  // book. Runs at most once per device — if the parent later toggles back
-  // to parent mode manually, that choice is respected on future sessions.
-  useEffect(() => {
-    if (!user || books.length === 0) return;
-    const hasUnlocked = books.some(b => b.unlocked);
-    maybeAutoDefaultToChild(hasUnlocked);
-  }, [user, books]);
 
   const quizQuestions = (quizData ?? []).map(q => ({
     id: q.id,
@@ -443,19 +431,6 @@ export default function Index() {
     if (pence === 0) return 'Free';
     return `£${(pence / 100).toFixed(2)}`;
   };
-
-  // ── Child mode: render the simplified home screen instead of the parent
-  // library grid. The child can still tap any unlocked book to start reading
-  // (handleBookSelect still routes through the unlock check) but the upsell,
-  // resources and free-sample CTA are all hidden. Parent toggles back via
-  // the small "PARENT" button in the top header.
-  if (mode === 'child') {
-    return (
-      <Layout>
-        <ChildHomeScreen books={books} onBookSelect={handleBookSelect} />
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

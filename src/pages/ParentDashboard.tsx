@@ -9,10 +9,9 @@
  *   5. Suggested Action
  *   6. End-of-level Level Check status
  *
- * Quick Actions are best-effort stubs today — the unlock/free-mode controls
- * are wired into local state via useAppMode + the stamps store; the cloud
- * unlock-next-book mutation is future work (will need a Supabase RPC or
- * direct user_books insert).
+ * Quick Actions are best-effort stubs today — local state via the stamps
+ * store. The cloud unlock-next-book mutation is future work (will need a
+ * Supabase RPC or direct user_books insert).
  */
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
