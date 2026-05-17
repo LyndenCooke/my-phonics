@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { syncToGHL } from '@/lib/ghlClient';
 
 interface EmailCaptureProps {
   source: string;
@@ -42,6 +43,17 @@ export default function EmailCapture({
 
       if (dbError) throw new Error(dbError.message);
 
+      syncToGHL('contact.created', {
+        email: email.trim(),
+        source,
+      });
+
+      // Advanced Matching: re-init the pixel with the captured email so
+      // Meta hashes it client-side and uses it for attribution + Lookalikes.
+      const pixelId = (window as unknown as { __META_PIXEL_ID?: string }).__META_PIXEL_ID;
+      if (pixelId && window.fbq) {
+        window.fbq('init', pixelId, { em: email.trim().toLowerCase() });
+      }
       window.fbq?.('track', 'Lead', { content_name: source });
 
       onSuccess({ childName: childName.trim(), email: email.trim() });
