@@ -3,10 +3,48 @@ import { useNavigate } from 'react-router-dom';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from '@/components/ui/dialog';
-import { BookOpen, Printer, Loader2, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
+import { BookOpen, FileText, Loader2, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
 import type { Book } from '@/lib/types';
 
+// The edge function still keys off the SOURCE paper size:
+//   'a4' -> bucket book-pdfs/a4/{slug}.pdf  = the 2-up landscape imposition
+//                                              (prints on A4, folds into an A5 booklet)
+//   'a5' -> bucket book-pdfs/a5/{slug}.pdf  = the sequential 16-page A5 portrait file
+//                                              (one page per sheet — useful as A4 singles)
+// Parents think about the OUTPUT size — what they hold in their hand. So
+// the picker labels the imposed file as "A5 Booklet" and the sequential
+// file as "A4 Sheets" even though the internal format codes look swapped.
 export type DownloadFormat = 'a5' | 'a4';
+
+export function formatDisplayLabel(format: DownloadFormat): string {
+  return format === 'a4' ? 'A5 Booklet' : 'A4 Sheets';
+}
+
+const VARIANTS: Array<{
+  format: DownloadFormat;
+  label: string;
+  description: string;
+  icon: typeof BookOpen;
+  iconWrap: string;
+  iconColor: string;
+}> = [
+  {
+    format: 'a4',
+    label: 'A5 Booklet',
+    description: 'Print on A4 double-sided, fold + staple to make a proper A5 booklet. Last + first page sit on the same sheet.',
+    icon: BookOpen,
+    iconWrap: 'bg-tint-pink',
+    iconColor: 'text-primary-ink',
+  },
+  {
+    format: 'a5',
+    label: 'A4 Sheets',
+    description: 'Each page on its own sheet. Good for large-format reading or classroom use.',
+    icon: FileText,
+    iconWrap: 'bg-amber-50 border border-amber-200',
+    iconColor: 'text-amber-700',
+  },
+];
 
 type Stage = 'choose' | 'downloading' | 'success' | 'error';
 
@@ -69,37 +107,27 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
             </DialogHeader>
 
             <div className="space-y-2 pt-2">
-              <button
-                onClick={() => handlePick('a5')}
-                className="w-full flex items-center gap-3 p-4 rounded-2xl border border-border hover:border-primary/40 hover:bg-tint-pink/40 transition-colors text-left active:scale-[0.99]"
-              >
-                <div className="w-11 h-11 rounded-xl bg-tint-pink flex items-center justify-center shrink-0">
-                  <BookOpen className="w-5 h-5 text-primary-ink" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-foreground">A5 — Standard book</p>
-                  <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                    Read on screen, or print A5 with pages in normal reading order.
-                  </p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-              </button>
-
-              <button
-                onClick={() => handlePick('a4')}
-                className="w-full flex items-center gap-3 p-4 rounded-2xl border border-border hover:border-primary/40 hover:bg-tint-pink/40 transition-colors text-left active:scale-[0.99]"
-              >
-                <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
-                  <Printer className="w-5 h-5 text-amber-700" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-foreground">A4 — Print-at-home booklet</p>
-                  <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                    Print double-sided on A4, fold, and staple. Last + first page sit on the same sheet.
-                  </p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
-              </button>
+              {VARIANTS.map((v) => {
+                const Icon = v.icon;
+                return (
+                  <button
+                    key={v.format}
+                    onClick={() => handlePick(v.format)}
+                    className="w-full flex items-center gap-3 p-4 rounded-2xl border border-border hover:border-primary/40 hover:bg-tint-pink/40 transition-colors text-left active:scale-[0.99]"
+                  >
+                    <div className={`w-11 h-11 rounded-xl ${v.iconWrap} flex items-center justify-center shrink-0`}>
+                      <Icon className={`w-5 h-5 ${v.iconColor}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-foreground">{v.label}</p>
+                      <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
+                        {v.description}
+                      </p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                  </button>
+                );
+              })}
             </div>
           </>
         )}
@@ -108,7 +136,7 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
           <div className="py-6 text-center">
             <Loader2 className="w-8 h-8 text-primary mx-auto animate-spin" />
             <p className="text-sm font-bold text-foreground mt-3">
-              Preparing {pickedFormat?.toUpperCase()} PDF…
+              Preparing {pickedFormat ? formatDisplayLabel(pickedFormat) : 'PDF'}…
             </p>
             <p className="text-[11px] text-muted-foreground mt-1">
               {book.title}
@@ -126,7 +154,7 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                 Saved to your downloads
               </p>
               <p className="text-xs text-muted-foreground mt-1 leading-snug">
-                {book.title} ({pickedFormat?.toUpperCase()}) is in your Download History — open it from there any time.
+                {book.title} ({pickedFormat ? formatDisplayLabel(pickedFormat) : ''}) is in your Download History — open it from there any time.
               </p>
             </div>
             <div className="space-y-2 pt-1">
