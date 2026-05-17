@@ -145,7 +145,7 @@ export function usePurchases() {
       }
       const { data, error } = await supabase
         .from('purchases')
-        .select('*, products(product_type)')
+        .select('*, products(product_type, name, description)')
         .eq('user_id', user.id)
         .eq('status', 'completed');
       if (error) throw error;
@@ -162,6 +162,42 @@ export function usePurchases() {
           types.has('subscription') ||
           types.has('subscription_annual'),
       };
+    },
+    enabled: !!user,
+  });
+}
+
+/**
+ * Recent PDF downloads (newest first), joined to the book so the UI can
+ * show title + level without a second lookup. Distinct on book_id so a
+ * book the parent has re-downloaded six times shows once with its most
+ * recent timestamp.
+ */
+export function useDownloadLog() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['download_log', user?.id],
+    queryFn: async () => {
+      if (!user) return [] as Array<{
+        book_id: string;
+        downloaded_at: string;
+        books: { title: string; sub_level: string; level: number; cover_image_url: string | null } | null;
+      }>;
+      const { data, error } = await supabase
+        .from('download_log')
+        .select('book_id, downloaded_at, books(title, sub_level, level, cover_image_url)')
+        .eq('user_id', user.id)
+        .order('downloaded_at', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      const seen = new Set<string>();
+      const unique: typeof data = [];
+      for (const row of (data ?? [])) {
+        if (seen.has(row.book_id)) continue;
+        seen.add(row.book_id);
+        unique.push(row);
+      }
+      return unique as any;
     },
     enabled: !!user,
   });

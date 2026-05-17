@@ -241,20 +241,35 @@ export default function Index() {
         throw new Error(data?.error || 'Download failed');
       }
 
-      // Open in a new tab — browser triggers download via the PDF
-      // content-type. We don't refetch user_books because download access
-      // doesn't change library state.
-      window.open(data.url, '_blank', 'noopener');
-      toast.success(`${book.title} downloading`, { id: tid });
-      // Drop a notification so the parent can find the file later via
-      // Profile → Download History without scrolling browser downloads.
+      // Trigger a real file save by fetching the PDF as a blob and clicking
+      // a hidden <a download>. window.open(url) after an await chain is
+      // silently popup-blocked by Safari/Chrome and on installed PWAs, which
+      // is why the previous flow toasted "downloading" but nothing landed on
+      // disk. The blob path works everywhere and gives the file a sensible
+      // name instead of the storage slug.
+      const pdfRes = await fetch(data.url);
+      if (!pdfRes.ok) throw new Error('PDF file unavailable');
+      const blob = await pdfRes.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${book.title}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+
+      toast.success(`${book.title} downloaded`, { id: tid });
+      // Surface in Profile → Download History too, so the parent can
+      // re-download later without hunting through device downloads.
       addNotification({
         icon: 'download',
-        title: `${book.title} ready`,
-        body: 'Saved to your downloads — tap to view history',
+        title: `${book.title} downloaded`,
+        body: 'Tap to re-download from your history',
         ctaLabel: 'View',
         ctaHref: '/profile/downloads',
       });
+      queryClient.invalidateQueries({ queryKey: ['download_log'] });
     } catch (err) {
       toast.error((err as Error).message || 'Download failed', { id: tid });
     }
