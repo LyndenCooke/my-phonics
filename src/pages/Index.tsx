@@ -9,6 +9,7 @@ import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
+import DownloadFormatDialog, { type DownloadFormat } from '@/components/DownloadFormatDialog';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -40,6 +41,7 @@ export default function Index() {
   const [showQuiz, setShowQuiz] = useState(false);
   const { mode } = useAppMode();
   const [upsellBook, setUpsellBook] = useState<Book | null>(null);
+  const [downloadBook, setDownloadBook] = useState<Book | null>(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
@@ -203,12 +205,26 @@ export default function Index() {
     return `${hours} hour${hours === 1 ? '' : 's'}`;
   };
 
-  const handleDownloadBook = async (book: Book) => {
+  // Triggered when a book's Download button is tapped. We don't kick off
+  // the fetch here — that happens inside DownloadFormatDialog once the
+  // parent chooses A5 vs A4. This indirection means we don't have to
+  // hardcode a format and we get a focused "go to Download History"
+  // success state instead of a toast that disappears.
+  const handleDownloadBook = (book: Book) => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    const tid = toast.loading(`Preparing ${book.title}…`);
+    setDownloadBook(book);
+  };
+
+  // Runs from inside DownloadFormatDialog once the user picks a format.
+  // Returns success/error so the dialog can swap to its success or
+  // retry state. No toasts here — the dialog owns the visible feedback.
+  const performDownload = async (
+    book: Book,
+    format: DownloadFormat,
+  ): Promise<{ success: boolean; error?: string }> => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const res = await fetch(
@@ -219,7 +235,7 @@ export default function Index() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session?.access_token}`,
           },
-          body: JSON.stringify({ book_id: book.id, format: 'a5' }),
+          body: JSON.stringify({ book_id: book.id, format }),
         }
       );
       const data = await res.json();
@@ -230,48 +246,44 @@ export default function Index() {
           const cooldown = data.cooldown_until
             ? ` Try again in ${formatCooldown(data.cooldown_until)}.`
             : '';
-          toast.error(`${data.message ?? 'Download not available.'}${cooldown}`, {
-            id: tid,
-            action: data.tier === 'free' || data.tier === 'monthly'
-              ? { label: 'Upgrade', onClick: () => navigate('/shop') }
-              : undefined,
-          });
-          return;
+          return {
+            success: false,
+            error: `${data.message ?? 'Download not available.'}${cooldown}`,
+          };
         }
-        throw new Error(data?.error || 'Download failed');
+        return { success: false, error: data?.error || 'Download failed' };
       }
 
       // Trigger a real file save by fetching the PDF as a blob and clicking
       // a hidden <a download>. window.open(url) after an await chain is
-      // silently popup-blocked by Safari/Chrome and on installed PWAs, which
-      // is why the previous flow toasted "downloading" but nothing landed on
-      // disk. The blob path works everywhere and gives the file a sensible
-      // name instead of the storage slug.
+      // silently popup-blocked by Safari/Chrome and on installed PWAs.
       const pdfRes = await fetch(data.url);
-      if (!pdfRes.ok) throw new Error('PDF file unavailable');
+      if (!pdfRes.ok) return { success: false, error: 'PDF file unavailable' };
       const blob = await pdfRes.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = blobUrl;
-      a.download = `${book.title}.pdf`;
+      // Suffix the filename with the format so re-downloading both
+      // variants doesn't clobber one with the other.
+      a.download = `${book.title} (${format.toUpperCase()}).pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 
-      toast.success(`${book.title} downloaded`, { id: tid });
-      // Surface in Profile → Download History too, so the parent can
-      // re-download later without hunting through device downloads.
+      // Profile-tab badge surfaces the new download — keeps the path
+      // discoverable even if the user closes the success modal.
       addNotification({
         icon: 'download',
         title: `${book.title} downloaded`,
-        body: 'Tap to re-download from your history',
+        body: `${format.toUpperCase()} saved — tap to re-download`,
         ctaLabel: 'View',
         ctaHref: '/profile/downloads',
       });
       queryClient.invalidateQueries({ queryKey: ['download_log'] });
+      return { success: true };
     } catch (err) {
-      toast.error((err as Error).message || 'Download failed', { id: tid });
+      return { success: false, error: (err as Error).message || 'Download failed' };
     }
   };
 
@@ -618,6 +630,15 @@ export default function Index() {
           })()}
         </DialogContent>
       </Dialog>
+
+      {/* Download format picker — opens when a parent taps Download on
+       *  any unlocked book. Owns its own download → success/error UI so
+       *  Index.tsx doesn't need to track download state. */}
+      <DownloadFormatDialog
+        book={downloadBook}
+        onClose={() => setDownloadBook(null)}
+        onDownload={(format) => performDownload(downloadBook!, format)}
+      />
     </Layout>
   );
 }
