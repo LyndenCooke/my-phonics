@@ -42,6 +42,8 @@ export default function EmailCapture({
 
       if (dbError) throw new Error(dbError.message);
 
+      window.fbq?.('track', 'Lead', { content_name: source });
+
       onSuccess({ childName: childName.trim(), email: email.trim() });
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');
