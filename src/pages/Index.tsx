@@ -9,7 +9,7 @@ import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
-import DownloadFormatDialog, { type DownloadFormat } from '@/components/DownloadFormatDialog';
+import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from '@/components/DownloadFormatDialog';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
@@ -263,9 +263,10 @@ export default function Index() {
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = blobUrl;
-      // Suffix the filename with the format so re-downloading both
-      // variants doesn't clobber one with the other.
-      a.download = `${book.title} (${format.toUpperCase()}).pdf`;
+      // Suffix the filename with the user-facing label (A5 Booklet / A4
+      // Sheets) so the file the parent saves matches what they ticked in
+      // the picker, and the two variants don't clobber each other.
+      a.download = `${book.title} (${formatDisplayLabel(format)}).pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -276,7 +277,7 @@ export default function Index() {
       addNotification({
         icon: 'download',
         title: `${book.title} downloaded`,
-        body: `${format.toUpperCase()} saved — tap to re-download`,
+        body: `${formatDisplayLabel(format)} saved — tap to re-download`,
         ctaLabel: 'View',
         ctaHref: '/profile/downloads',
       });
