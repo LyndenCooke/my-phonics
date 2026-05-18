@@ -14,6 +14,7 @@ import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } f
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useTeacherSession } from '@/lib/teacherSession';
 import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
 import FoundersClubBanner from '@/components/FoundersClubBanner';
 import { supabase } from '@/integrations/supabase/client';
@@ -49,6 +50,11 @@ export default function Index() {
   // unlocks reading — nothing else — and requires signing in as the
   // specific QA email.
   const isQaUser = user?.email?.toLowerCase() === 'qa@myphonicsbooks.com';
+  // Teacher pass holders (TPT-TEACHERS code etc.) get read access to every
+  // book without signing up — their entitlement lives in localStorage, not
+  // auth.users, so the regular user_books gating doesn't see them.
+  const { session: teacherSession } = useTeacherSession();
+  const isTeacher = !!teacherSession;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -119,7 +125,7 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: import.meta.env.DEV || isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+      unlocked: import.meta.env.DEV || isAdmin || isQaUser || isTeacher || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)

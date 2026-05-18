@@ -36,6 +36,8 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Prototype = lazy(() => import("./pages/Prototype"));
+const Teachers = lazy(() => import("./pages/Teachers"));
+const TeachersLibrary = lazy(() => import("./pages/TeachersLibrary"));
 
 // Lazy-loaded funnel pages
 const LinkTree = lazy(() => import("./pages/funnels/LinkTree"));
@@ -135,6 +137,10 @@ function RoutesWithTransition() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/prototype" element={<Suspense fallback={<AdminFallback />}><Prototype /></Suspense>} />
+            {/* TPT teacher pass — single shared code unlocks the whole library
+                with no email/signup. See migration 20260518000000_teacher_codes.sql */}
+            <Route path="/teachers" element={<Suspense fallback={<AdminFallback />}><Teachers /></Suspense>} />
+            <Route path="/teachers/library" element={<Suspense fallback={<AdminFallback />}><TeachersLibrary /></Suspense>} />
             {/* Funnels — clean URLs */}
             <Route path="/free-book" element={<Suspense fallback={<AdminFallback />}><FreeBook /></Suspense>} />
             <Route path="/assessment" element={<Suspense fallback={<AdminFallback />}><AssessmentFunnel /></Suspense>} />
