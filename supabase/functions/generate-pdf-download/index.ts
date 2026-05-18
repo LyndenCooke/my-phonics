@@ -34,6 +34,11 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Sentinel so we can confirm in the dashboard's function logs that the
+  // post-v2 build is actually being hit (the previous flow was emitting
+  // nothing visible, making it impossible to diagnose silent failures).
+  console.log("generate-pdf-download invoked", { method: req.method });
+
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {

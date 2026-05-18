@@ -90,6 +90,15 @@ export default function DownloadHistory() {
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 
+      // Belt-and-braces client-side log (the edge function tries too, but
+      // we kept seeing it sit at zero rows — see comment in Index.tsx).
+      if (user && !bookId.startsWith('local-')) {
+        const { error: logErr } = await supabase
+          .from('download_log')
+          .insert({ user_id: user.id, book_id: bookId });
+        if (logErr) console.warn('download_log insert failed (client):', logErr);
+      }
+
       toast.success(`${title} downloaded`, { id: tid });
       addNotification({
         icon: 'download',
