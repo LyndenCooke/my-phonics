@@ -90,7 +90,7 @@ export default function Teachers() {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="TPT-TEACHERS"
+              placeholder="Enter your code"
               autoComplete="off"
               autoCapitalize="characters"
               autoCorrect="off"
