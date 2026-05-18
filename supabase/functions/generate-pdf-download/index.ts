@@ -140,14 +140,22 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Only log NEW-book downloads. Re-downloads of an already-owned book
-    // shouldn't fill the log (or count toward throttles). check_download_entitlement
-    // returns reason='already_owned' in that case.
-    if (entitlement?.reason !== "already_owned") {
-      await supabaseAdmin.from("download_log").insert({
-        user_id: userId,
-        book_id,
-      });
+    // Log every successful download. Throttles use COUNT(DISTINCT book_id),
+    // so re-downloads of the same book don't over-count. Earlier we skipped
+    // already-owned re-downloads here, but that left bundle/founders users
+    // with an empty download_log (their entitlement always resolves to
+    // 'already_owned'), so Profile -> Download History stayed empty even
+    // after a real download. We now log every hit and surface insert errors
+    // instead of swallowing them.
+    const { error: logErr } = await supabaseAdmin.from("download_log").insert({
+      user_id: userId,
+      book_id,
+    });
+    if (logErr) {
+      console.error(
+        "download_log insert failed",
+        { user_id: userId, book_id, format, code: logErr.code, message: logErr.message },
+      );
     }
 
     return new Response(
