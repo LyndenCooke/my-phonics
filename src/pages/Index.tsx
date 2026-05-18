@@ -260,6 +260,20 @@ export default function Index() {
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 
+      // Client-side download_log insert. The edge function tries to log too
+      // for entitlement-throttle reasons, but in practice we kept seeing the
+      // log table sit at zero rows — likely because cached PWA bundles or
+      // edge-function deploy hiccups break the server-side path silently.
+      // Logging from the client (which has the user's JWT and RLS access to
+      // their own rows) means Download History stays accurate regardless of
+      // what happens server-side. Skip local-only catalog books (no FK match).
+      if (user && !book.id.startsWith('local-')) {
+        const { error: logErr } = await supabase
+          .from('download_log')
+          .insert({ user_id: user.id, book_id: book.id });
+        if (logErr) console.warn('download_log insert failed (client):', logErr);
+      }
+
       // Profile-tab badge surfaces the new download — keeps the path
       // discoverable even if the user closes the success modal.
       addNotification({
