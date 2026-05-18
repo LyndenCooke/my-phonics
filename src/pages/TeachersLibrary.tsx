@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -13,22 +13,27 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { BOOK_CATALOG, type CatalogBook } from '@/lib/bookCatalog';
-import { LEVELS } from '@/lib/types';
+import { LEVELS, type Book } from '@/lib/types';
 import {
   clearTeacherSession,
   useTeacherSession,
 } from '@/lib/teacherSession';
-import { formatDisplayLabel, type DownloadFormat } from '@/components/DownloadFormatDialog';
+import DownloadFormatDialog, {
+  formatDisplayLabel,
+  type DownloadFormat,
+} from '@/components/DownloadFormatDialog';
 
-// Direct public-bucket URL — the `book-pdfs` bucket is set to public in
-// migration 20260514140000_book_pdfs_public.sql, so the teacher page
-// doesn't need to go through the entitlement-gated edge function at all.
-// Internal format codes are inverted vs. the user-facing label:
-//   bucket `a4/` = A5 Booklet (imposed for printing on A4)
-//   bucket `a5/` = A4 Sheets   (one page per sheet)
-function publicPdfUrl(slug: string, format: DownloadFormat): string {
+// Storage layout (set in publish_books.py + migration 20260514140000):
+//   bucket book-pdfs / a4 / {level}_{n}.pdf   = 2-up A4 imposition (label: "A5 Booklet")
+//   bucket book-pdfs / a5 / {level}_{n}.pdf   = sequential A5 sheets (label: "A4 Sheets")
+// The key is built from sub_level — e.g. "L1.1" -> "1_1", NOT from slug.
+function storageKey(subLevel: string): string {
+  return subLevel.replace(/^L/, '').replace('.', '_');
+}
+
+function publicPdfUrl(subLevel: string, format: DownloadFormat): string {
   const base = import.meta.env.VITE_SUPABASE_URL as string;
-  return `${base}/storage/v1/object/public/book-pdfs/${format}/${slug}.pdf`;
+  return `${base}/storage/v1/object/public/book-pdfs/${format}/${storageKey(subLevel)}.pdf`;
 }
 
 interface MergedBook extends CatalogBook {
@@ -39,10 +44,8 @@ interface MergedBook extends CatalogBook {
 export default function TeachersLibrary() {
   const { session, loading } = useTeacherSession();
   const navigate = useNavigate();
+  const [downloadBook, setDownloadBook] = useState<Book | null>(null);
 
-  // Merge DB books with the local catalog so the page lists everything
-  // currently published — same merge strategy useBooks() uses, just
-  // unauthenticated. Public RLS already exposes published books.
   const { data: books, isLoading: booksLoading } = useQuery({
     queryKey: ['teachers-library-books'],
     queryFn: async (): Promise<MergedBook[]> => {
@@ -54,8 +57,7 @@ export default function TeachersLibrary() {
 
       return BOOK_CATALOG.filter((c) => c.is_published).map((c) => {
         const db = dbBySubLevel.get(c.sub_level);
-        const sub = c.sub_level.replace(/^L/, '').replace('.', '_');
-        const fallbackCover = `/illustrations/${sub}/cover.png`;
+        const fallbackCover = `/illustrations/${storageKey(c.sub_level)}/cover.png`;
         return {
           ...c,
           id: db?.id ?? `local-${c.sub_level}`,
@@ -81,6 +83,36 @@ export default function TeachersLibrary() {
   const handleSignOut = () => {
     clearTeacherSession();
     navigate('/teachers', { replace: true });
+  };
+
+  // Teachers get the same format picker dialog as parents, but the download
+  // path is simpler: the book-pdfs bucket is public, so we fetch the file
+  // directly (no entitlement edge function, no auth). Same blob-via-<a>
+  // pattern as performDownload() in Index.tsx so installed PWAs and Safari
+  // actually save the file instead of silently dropping the popup.
+  const performTeacherDownload = async (
+    book: Book,
+    format: DownloadFormat,
+  ): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const url = publicPdfUrl(book.subLevel, format);
+      const res = await fetch(url);
+      if (!res.ok) {
+        return { success: false, error: `PDF not found (${res.status})` };
+      }
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${book.title} (${formatDisplayLabel(format)}).pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: (err as Error).message || 'Download failed' };
+    }
   };
 
   if (loading) {
@@ -136,9 +168,9 @@ export default function TeachersLibrary() {
             Welcome, teacher.
           </h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-2xl leading-snug">
-            Every MyPhonicsBooks title is here, free for your classroom. Download
-            the printable PDFs in whichever format prints best for you, or read
-            online with your class.
+            Every MyPhonicsBooks title is here, free for your classroom.
+            Download the printable PDF, read online with your class, or grab
+            the matching worksheet.
           </p>
           <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
@@ -169,30 +201,62 @@ export default function TeachersLibrary() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {levelBooks.map((book) => (
-                    <BookRow key={book.sub_level} book={book} levelBg={level.bgClass} />
+                    <BookRow
+                      key={book.sub_level}
+                      book={book}
+                      levelBg={level.bgClass}
+                      onDownload={(b) => setDownloadBook(b)}
+                    />
                   ))}
                 </div>
               </section>
             );
           })}
-
-        <section className="mt-12 rounded-2xl border border-dashed border-border bg-muted/20 p-6 text-center">
-          <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-          <h3 className="font-bold text-base text-foreground">
-            Printable worksheets — coming soon
-          </h3>
-          <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto leading-snug">
-            We're moving the classroom worksheet pack into this portal. Check
-            back shortly — your code already covers it.
-          </p>
-        </section>
       </main>
+
+      <DownloadFormatDialog
+        book={downloadBook}
+        onClose={() => setDownloadBook(null)}
+        onDownload={(format) => performTeacherDownload(downloadBook!, format)}
+      />
     </div>
   );
 }
 
-function BookRow({ book, levelBg }: { book: MergedBook; levelBg: string }) {
+function BookRow({
+  book,
+  levelBg,
+  onDownload,
+}: {
+  book: MergedBook;
+  levelBg: string;
+  onDownload: (book: Book) => void;
+}) {
   const readerHref = `/library?book=${book.sub_level}`;
+
+  // DownloadFormatDialog only reads { id, title }, but its prop type is the
+  // full Book. Adapt MergedBook into a minimal Book — the dialog never reads
+  // the other fields. subLevel is included so performTeacherDownload can
+  // build the storage URL.
+  const asBook: Book = {
+    id: book.id,
+    level: book.level,
+    subLevel: book.sub_level,
+    title: book.title,
+    slug: book.slug,
+    focusSounds: book.focus_sounds,
+    trickyWords: book.tricky_words,
+    storyWords: book.story_words,
+    coverImageUrl: book.coverUrl,
+    pdfUrl: undefined,
+    pageCount: book.page_count,
+    sortOrder: book.sort_order,
+    unlocked: true,
+    completed: false,
+    lastPageRead: 0,
+    pages: [],
+  };
+
   return (
     <article className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col">
       <div className={`relative aspect-[4/3] ${levelBg}/10`}>
@@ -202,9 +266,6 @@ function BookRow({ book, levelBg }: { book: MergedBook; levelBg: string }) {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
-            // Fall back to the level colour block if a cover hasn't been
-            // generated yet — keeps the grid visually intact instead of
-            // showing a broken-image icon.
             (e.currentTarget as HTMLImageElement).style.display = 'none';
           }}
         />
@@ -222,36 +283,33 @@ function BookRow({ book, levelBg }: { book: MergedBook; levelBg: string }) {
           {book.focus_sounds.length > 4 ? '…' : ''}
         </p>
 
-        <div className="mt-3 grid grid-cols-2 gap-1.5">
-          <a
-            href={publicPdfUrl(book.slug, 'a4')}
-            download={`${book.title} (${formatDisplayLabel('a4')}).pdf`}
-            target="_blank"
-            rel="noopener"
-            className="flex items-center justify-center gap-1 py-2 rounded-lg bg-primary text-primary-foreground text-[11px] font-bold hover:opacity-90 transition-opacity"
+        <div className="mt-3 grid grid-cols-1 gap-1.5">
+          <button
+            type="button"
+            onClick={() => onDownload(asBook)}
+            className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-primary text-primary-foreground text-[11px] font-bold hover:opacity-90 transition-opacity"
           >
-            <Download className="w-3 h-3" />
-            A5 Booklet
-          </a>
-          <a
-            href={publicPdfUrl(book.slug, 'a5')}
-            download={`${book.title} (${formatDisplayLabel('a5')}).pdf`}
-            target="_blank"
-            rel="noopener"
-            className="flex items-center justify-center gap-1 py-2 rounded-lg bg-card border border-border text-foreground text-[11px] font-bold hover:bg-muted/40 transition-colors"
+            <Download className="w-3.5 h-3.5" />
+            Download
+          </button>
+          <Link
+            to={readerHref}
+            state={{ from: 'teachers' }}
+            className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-card border border-border text-foreground text-[11px] font-bold hover:bg-muted/40 transition-colors"
           >
-            <Download className="w-3 h-3" />
-            A4 Sheets
-          </a>
+            <BookOpen className="w-3.5 h-3.5" />
+            Read online
+          </Link>
+          <button
+            type="button"
+            disabled
+            title="Worksheets coming soon — your code already covers them."
+            className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-card border border-dashed border-border text-muted-foreground text-[11px] font-bold cursor-not-allowed"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Worksheet · soon
+          </button>
         </div>
-
-        <Link
-          to={readerHref}
-          className="mt-1.5 flex items-center justify-center gap-1 py-2 rounded-lg text-primary-ink text-[11px] font-bold hover:bg-tint-pink/40 transition-colors"
-        >
-          <BookOpen className="w-3 h-3" />
-          Read online
-        </Link>
       </div>
     </article>
   );
