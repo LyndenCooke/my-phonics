@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 // marketing landing page stays available at /landing for ad campaigns that
 // want to send to it, but is no longer the default at /.
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const Learn = lazy(() => import("./pages/Learn"));
 const Index = lazy(() => import("./pages/Index"));
 const Resources = lazy(() => import("./pages/Resources"));
 const Assessment = lazy(() => import("./pages/Assessment"));
@@ -44,8 +45,6 @@ const ThreeMinuteCheck = lazy(() => import("./pages/funnels/ThreeMinuteCheck"));
 const TheGap = lazy(() => import("./pages/funnels/TheGap"));
 const FreeBook = lazy(() => import("./pages/funnels/FreeBook"));
 const AssessmentFunnel = lazy(() => import("./pages/funnels/AssessmentFunnel"));
-
-const ChildModeGuard = lazy(() => import("./components/ChildModeGuard"));
 
 // Lazy-loaded admin pages
 const AdminGuard = lazy(() => import("./components/admin/AdminGuard"));
@@ -116,21 +115,22 @@ function RoutesWithTransition() {
       <Routes location={location}>
             <Route path="/" element={<Navigate to="/library" replace />} />
             <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
+            <Route path="/learn" element={<Suspense fallback={<AdminFallback />}><Learn /></Suspense>} />
             <Route path="/library" element={<Index />} />
-            <Route path="/resources" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Resources /></ChildModeGuard></Suspense>} />
-            <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Welcome /></ChildModeGuard></Suspense>} />
-            <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Assessment /></ChildModeGuard></Suspense>} />
-            <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Shop /></ChildModeGuard></Suspense>} />
-            <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><PaymentSuccess /></ChildModeGuard></Suspense>} />
-            <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Progress /></ChildModeGuard></Suspense>} />
-            <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Profile /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/messages" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Messages /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/referrals" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Referrals /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/parent-dashboard" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><ParentDashboard /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/account" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><AccountSettings /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/downloads" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><DownloadHistory /></ChildModeGuard></Suspense>} />
-            <Route path="/profile/help" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><HelpSupport /></ChildModeGuard></Suspense>} />
-            <Route path="/auth" element={<Suspense fallback={<AdminFallback />}><ChildModeGuard><Auth /></ChildModeGuard></Suspense>} />
+            <Route path="/resources" element={<Suspense fallback={<AdminFallback />}><Resources /></Suspense>} />
+            <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><Welcome /></Suspense>} />
+            <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
+            <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
+            <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><PaymentSuccess /></Suspense>} />
+            <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><Progress /></Suspense>} />
+            <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><Profile /></Suspense>} />
+            <Route path="/profile/messages" element={<Suspense fallback={<AdminFallback />}><Messages /></Suspense>} />
+            <Route path="/profile/referrals" element={<Suspense fallback={<AdminFallback />}><Referrals /></Suspense>} />
+            <Route path="/profile/parent-dashboard" element={<Suspense fallback={<AdminFallback />}><ParentDashboard /></Suspense>} />
+            <Route path="/profile/account" element={<Suspense fallback={<AdminFallback />}><AccountSettings /></Suspense>} />
+            <Route path="/profile/downloads" element={<Suspense fallback={<AdminFallback />}><DownloadHistory /></Suspense>} />
+            <Route path="/profile/help" element={<Suspense fallback={<AdminFallback />}><HelpSupport /></Suspense>} />
+            <Route path="/auth" element={<Suspense fallback={<AdminFallback />}><Auth /></Suspense>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
