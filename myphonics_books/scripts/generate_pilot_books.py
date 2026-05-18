@@ -118,6 +118,7 @@ LEVEL_KEYS = {
     1: "L1_B1",
     "1.1": "L1_1_B1",
     "1.2": "L1_2_B1",
+    "1.3": "L1_B1",   # L1.3 = The Fish in the Tank (legacy "L1_B1" story keyed under its public sub-level)
     "1.4": "L1_4_B1",
     "1.5": "L1_5_B1",
     "1.6": "L1_6_B1",
@@ -246,8 +247,46 @@ async def generate_all_pilots(use_images: bool = True):
     print(f"Output folder: {OUTPUT_DIR}")
 
 
+def _publish(level_arg):
+    """Auto-sync regenerated PDFs to public/book-pdfs/ + Supabase Storage so
+    downstream consumers (the unlock page, the post-assessment email, other
+    Claude sessions) immediately see the new content. Pass --no-publish on
+    the command line to skip — e.g. during local-only test renders.
+
+    Chains: impose A4 saddle-stitch booklet → push A5+A4 to public/ + Supabase.
+    """
+    import subprocess
+    here = Path(__file__).parent
+    # Narrow the level arg so we don't impose / publish all 6 levels when only
+    # one was rendered.
+    level_filter = None
+    if isinstance(level_arg, int):
+        level_filter = str(level_arg)
+    elif isinstance(level_arg, str) and "." in level_arg:
+        level_filter = level_arg.split(".")[0]
+
+    print("\n--- Imposing A4 saddle-stitch booklets ---")
+    impose_cmd = ["py", "-3.12", str(here / "make_printable_booklet.py")]
+    impose_cmd += ["--level", level_filter] if level_filter else ["--all"]
+    rc = subprocess.call(impose_cmd)
+    if rc != 0:
+        print(f"WARNING: make_printable_booklet.py exited with {rc}. "
+              "Continuing to publish anyway — A4 versions may be stale.")
+
+    print("\n--- Publishing to public/book-pdfs/ + Supabase ---")
+    publish_cmd = ["py", "-3.12", str(here / "publish_books.py")]
+    if level_filter:
+        publish_cmd.append(level_filter)
+    rc = subprocess.call(publish_cmd)
+    if rc != 0:
+        print(f"WARNING: publish_books.py exited with {rc}. PDFs rendered "
+              "but NOT pushed to Supabase. Re-run scripts/publish_books.py "
+              "manually to fix.")
+
+
 if __name__ == "__main__":
     use_images = "--no-images" not in sys.argv
+    do_publish = "--no-publish" not in sys.argv
 
     # Check for single level
     level_arg = None
@@ -266,3 +305,6 @@ if __name__ == "__main__":
         asyncio.run(generate_pilot_pdf(level_arg, use_images))
     else:
         asyncio.run(generate_all_pilots(use_images))
+
+    if do_publish:
+        _publish(level_arg)
