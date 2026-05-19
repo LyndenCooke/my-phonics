@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import { useProducts, usePurchases } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Check, Crown, Ticket, Heart, Sparkles, Lock } from 'lucide-react';
+import { Loader2, Check, Crown, Ticket, Sparkles, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { getStoredRefCode } from '@/lib/referral';
@@ -154,10 +154,17 @@ export default function Shop() {
   const annual  = products?.find((p) => p.product_type === 'subscription_annual');
   const lifetime = products?.find((p) => p.product_type === 'full_bundle');
 
-  // Subscription card has a Monthly/Yearly toggle. Default to Yearly so the
-  // best-value option is the one the user sees first.
-  const [subCadence, setSubCadence] = useState<'month' | 'year'>('year');
+  // Subscription card has a Monthly/Yearly toggle. Default to Monthly so the
+  // cheapest headline price (£4.99) is what the visitor sees first — they
+  // can flip to Yearly to compare.
+  const [subCadence, setSubCadence] = useState<'month' | 'year'>('month');
   const activeSub = subCadence === 'month' ? monthly : annual;
+
+  // Voucher is collapsed by default — a single "Have a voucher code?" link
+  // expands the input. Keeps the upsell focused on the £39 price; vouchers
+  // are for people who already have a code (friends/family, affiliates,
+  // promo partners) and know to look for it.
+  const [voucherOpen, setVoucherOpen] = useState(false);
 
   // What plan is the signed-in user already on? Drives the "Current plan"
   // panel at the top of the page.
@@ -344,46 +351,55 @@ export default function Shop() {
                     )}
                   </button>
 
-                  {/* Friends & family voucher. Valid code (MYPHONICSFRIENDS)
+                  {/* Voucher — collapsed by default so the upsell stays
+                   *  focused on the price. A valid code (e.g. the friends-
+                   *  and-family MYPHONICSFRIENDS, future affiliate codes)
                    *  bypasses Stripe and unlocks the library via the
-                   *  teacher_codes session flow — no payment, no signup. */}
+                   *  teacher_codes session flow. */}
                   <div className="mt-4 pt-4 border-t border-border">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <Heart className="w-3.5 h-3.5 text-primary-ink" />
-                      <p className="text-xs font-bold text-foreground">Got a friends & family code?</p>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground mb-2 leading-relaxed">
-                      Enter it below and we'll unlock everything — free.
-                    </p>
-                    <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <Ticket className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
-                        <Input
-                          type="text"
-                          value={voucher}
-                          onChange={(e) => { setVoucher(e.target.value.toUpperCase()); setVoucherError(null); }}
-                          onKeyDown={(e) => e.key === 'Enter' && handleRedeemVoucher()}
-                          placeholder="Enter code"
-                          autoComplete="off"
-                          autoCapitalize="characters"
-                          autoCorrect="off"
-                          spellCheck={false}
-                          className="rounded-xl pl-8 h-10 font-mono text-sm font-bold tracking-wider uppercase"
-                          disabled={voucherLoading}
-                        />
-                      </div>
+                    {!voucherOpen ? (
                       <button
-                        onClick={handleRedeemVoucher}
-                        disabled={voucherLoading || !voucher.trim()}
-                        className="h-10 px-4 rounded-xl font-bold text-xs bg-foreground text-background shadow-button active:scale-[0.97] transition-transform disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-1.5"
+                        type="button"
+                        onClick={() => setVoucherOpen(true)}
+                        className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
                       >
-                        {voucherLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
+                        <Ticket className="w-3.5 h-3.5" />
+                        Have a voucher code?
                       </button>
-                    </div>
-                    {voucherError && (
-                      <p className="text-[11px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5 mt-2">
-                        {voucherError}
-                      </p>
+                    ) : (
+                      <>
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Ticket className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
+                            <Input
+                              type="text"
+                              value={voucher}
+                              onChange={(e) => { setVoucher(e.target.value.toUpperCase()); setVoucherError(null); }}
+                              onKeyDown={(e) => e.key === 'Enter' && handleRedeemVoucher()}
+                              placeholder="Enter code"
+                              autoComplete="off"
+                              autoCapitalize="characters"
+                              autoCorrect="off"
+                              spellCheck={false}
+                              autoFocus
+                              className="rounded-xl pl-8 h-10 font-mono text-sm font-bold tracking-wider uppercase"
+                              disabled={voucherLoading}
+                            />
+                          </div>
+                          <button
+                            onClick={handleRedeemVoucher}
+                            disabled={voucherLoading || !voucher.trim()}
+                            className="h-10 px-4 rounded-xl font-bold text-xs bg-foreground text-background shadow-button active:scale-[0.97] transition-transform disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-1.5"
+                          >
+                            {voucherLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
+                          </button>
+                        </div>
+                        {voucherError && (
+                          <p className="text-[11px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5 mt-2">
+                            {voucherError}
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
