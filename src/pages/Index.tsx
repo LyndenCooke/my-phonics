@@ -8,14 +8,15 @@ const InteractiveBookReader = lazy(() => import('@/components/InteractiveBookRea
 import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
+import WorksheetsPanel from '@/components/WorksheetsPanel';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from '@/components/DownloadFormatDialog';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
-import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
-import FoundersClubBanner from '@/components/FoundersClubBanner';
+import { useTeacherSession } from '@/lib/teacherSession';
+import { BookOpen, Lock, ShoppingBag, Loader2, Trophy, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -31,9 +32,23 @@ import {
 
 export default function Index() {
   const location = useLocation();
-  const navState = location.state as { filterLevel?: number; scrollToBookId?: string } | null;
+  const navState = location.state as { filterLevel?: number; scrollToBookId?: string; from?: string } | null;
   const initialLevel = navState?.filterLevel ?? null;
   const scrollToBookId = navState?.scrollToBookId ?? null;
+  // Sub-tab inside /library: 'books' (default grid) vs 'worksheets'
+  // (sound mats + printable resources, formerly the /resources page).
+  // Initial state honours `?tab=worksheets` so deep links from the old
+  // /resources route can land directly on the right panel.
+  const initialTab = (new URLSearchParams(location.search).get('tab') === 'worksheets')
+    ? 'worksheets' as const
+    : 'books' as const;
+  const [libraryTab, setLibraryTab] = useState<'books' | 'worksheets'>(initialTab);
+  // Teachers arrive via Link state={{ from: 'teachers' }} on /teachers/library.
+  // We use this to (a) skip the regular library framing while the deep-linked
+  // book is opening (avoids the flash of the parent library between mount
+  // and the deep-link useEffect firing), and (b) send them back to
+  // /teachers/library on close instead of stranding them on /library.
+  const fromTeachers = navState?.from === 'teachers';
   const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -49,6 +64,11 @@ export default function Index() {
   // unlocks reading — nothing else — and requires signing in as the
   // specific QA email.
   const isQaUser = user?.email?.toLowerCase() === 'qa@myphonicsbooks.com';
+  // Teacher pass holders (TPT-TEACHERS code etc.) get read access to every
+  // book without signing up — their entitlement lives in localStorage, not
+  // auth.users, so the regular user_books gating doesn't see them.
+  const { session: teacherSession } = useTeacherSession();
+  const isTeacher = !!teacherSession;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -119,7 +139,7 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: import.meta.env.DEV || isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+      unlocked: import.meta.env.DEV || isAdmin || isQaUser || isTeacher || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
@@ -139,6 +159,9 @@ export default function Index() {
   // Deep-link support: `/library?book=L3.1` auto-opens that book's reader
   // once the book catalogue has loaded. Clears the query string once handled
   // so the URL doesn't sit with a stale param after closing the reader.
+  // For teachers, if the book param doesn't resolve (typo, unpublished),
+  // we bounce them back to the teacher library rather than leaving them on
+  // an empty parent /library view they can't escape.
   useEffect(() => {
     if (activeBookId || books.length === 0) return;
     const params = new URLSearchParams(location.search);
@@ -150,8 +173,20 @@ export default function Index() {
       const url = new URL(window.location.href);
       url.searchParams.delete('book');
       window.history.replaceState({}, '', url.toString());
+    } else if (fromTeachers) {
+      navigate('/teachers/library', { replace: true });
     }
-  }, [activeBookId, books, location.search]);
+  }, [activeBookId, books, location.search, fromTeachers, navigate]);
+
+  // For teachers: closing the reader should return to the teacher library,
+  // not strand them on the parent /library page (which is gated by auth and
+  // would just show empty/locked content for a teacher-pass visitor).
+  const closeReader = () => {
+    setActiveBookId(null);
+    if (fromTeachers) {
+      navigate('/teachers/library', { replace: true });
+    }
+  };
 
   const quizQuestions = (quizData ?? []).map(q => ({
     id: q.id,
@@ -398,7 +433,7 @@ export default function Index() {
         onComplete={handleQuizComplete}
         onClose={() => {
           setShowQuiz(false);
-          setActiveBookId(null);
+          closeReader();
         }}
       />
     );
@@ -414,8 +449,8 @@ export default function Index() {
         <Suspense fallback={readerFallback}>
           <InteractiveBookReader
             book={activeBook}
-            onClose={() => setActiveBookId(null)}
-            onFinish={() => setActiveBookId(null)}
+            onClose={closeReader}
+            onFinish={closeReader}
           />
         </Suspense>
       );
@@ -424,17 +459,34 @@ export default function Index() {
       <Suspense fallback={readerFallback}>
         <BookReader
           book={activeBook}
-          onClose={() => setActiveBookId(null)}
+          onClose={closeReader}
           onFinish={() => {
             if (quizQuestions.length > 0) {
               setShowQuiz(true);
             } else {
-              setActiveBookId(null);
+              closeReader();
             }
           }}
         />
       </Suspense>
     );
+  }
+
+  // No flash of the parent library for teachers: when a teacher follows a
+  // deep link from /teachers/library, the deep-link useEffect needs the
+  // books query to resolve first. Until activeBookId is set, show only a
+  // loading screen — never the parent library grid. Once books load, the
+  // useEffect either opens the reader (matched) or bounces back to
+  // /teachers/library (unmatched), so this gate naturally clears.
+  if (fromTeachers && !activeBookId) {
+    const params = new URLSearchParams(location.search);
+    if (params.get('book')) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+        </div>
+      );
+    }
   }
 
   const levelBgs: Record<number, string> = {
@@ -466,15 +518,45 @@ export default function Index() {
         <div className="mb-5">
           <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Tap a book to start reading
+            {libraryTab === 'books' ? 'Tap a book to start reading' : 'Free printable sound mats and worksheets'}
           </p>
         </div>
 
-        {/* Founders Club inline banner — visible to parents in the library
-         *  before they hit the level filter. Hides itself once the offer
-         *  expires. */}
-        <FoundersClubBanner variant="inline" className="mb-5" />
+        {/* Books / Worksheets sub-tab toggle. Replaces the separate
+         *  /resources top-nav slot — keeps the parent nav at 5 buttons. */}
+        <div className="mb-5 inline-flex rounded-xl border border-border bg-card p-1 shadow-card">
+          <button
+            type="button"
+            onClick={() => setLibraryTab('books')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+              libraryTab === 'books'
+                ? 'bg-primary/10 text-primary-ink'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            aria-pressed={libraryTab === 'books'}
+          >
+            <BookOpen className="w-4 h-4" />
+            Books
+          </button>
+          <button
+            type="button"
+            onClick={() => setLibraryTab('worksheets')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+              libraryTab === 'worksheets'
+                ? 'bg-primary/10 text-primary-ink'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            aria-pressed={libraryTab === 'worksheets'}
+          >
+            <FileText className="w-4 h-4" />
+            Worksheets
+          </button>
+        </div>
 
+        {libraryTab === 'worksheets' ? (
+          <WorksheetsPanel />
+        ) : (
+        <>
         <div className="mb-5">
           <LevelFilter selected={selectedLevel} onSelect={setSelectedLevel} />
         </div>
@@ -554,6 +636,8 @@ export default function Index() {
             <p className="text-sm font-medium">No books found for this level yet</p>
             <p className="text-xs text-muted-foreground mt-1">Check back soon for new releases</p>
           </div>
+        )}
+        </>
         )}
       </div>
 
