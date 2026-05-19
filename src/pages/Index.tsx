@@ -8,6 +8,7 @@ const InteractiveBookReader = lazy(() => import('@/components/InteractiveBookRea
 import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import ComprehensionQuiz from '@/components/ComprehensionQuiz';
 import LevelFilter from '@/components/LevelFilter';
+import WorksheetsPanel from '@/components/WorksheetsPanel';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from '@/components/DownloadFormatDialog';
 import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
@@ -15,8 +16,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useTeacherSession } from '@/lib/teacherSession';
-import { BookOpen, Lock, ShoppingBag, Loader2, Trophy } from 'lucide-react';
-import FoundersClubBanner from '@/components/FoundersClubBanner';
+import { BookOpen, Lock, ShoppingBag, Loader2, Trophy, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,14 @@ export default function Index() {
   const navState = location.state as { filterLevel?: number; scrollToBookId?: string; from?: string } | null;
   const initialLevel = navState?.filterLevel ?? null;
   const scrollToBookId = navState?.scrollToBookId ?? null;
+  // Sub-tab inside /library: 'books' (default grid) vs 'worksheets'
+  // (sound mats + printable resources, formerly the /resources page).
+  // Initial state honours `?tab=worksheets` so deep links from the old
+  // /resources route can land directly on the right panel.
+  const initialTab = (new URLSearchParams(location.search).get('tab') === 'worksheets')
+    ? 'worksheets' as const
+    : 'books' as const;
+  const [libraryTab, setLibraryTab] = useState<'books' | 'worksheets'>(initialTab);
   // Teachers arrive via Link state={{ from: 'teachers' }} on /teachers/library.
   // We use this to (a) skip the regular library framing while the deep-linked
   // book is opening (avoids the flash of the parent library between mount
@@ -510,15 +518,45 @@ export default function Index() {
         <div className="mb-5">
           <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Tap a book to start reading
+            {libraryTab === 'books' ? 'Tap a book to start reading' : 'Free printable sound mats and worksheets'}
           </p>
         </div>
 
-        {/* Founders Club inline banner — visible to parents in the library
-         *  before they hit the level filter. Hides itself once the offer
-         *  expires. */}
-        <FoundersClubBanner variant="inline" className="mb-5" />
+        {/* Books / Worksheets sub-tab toggle. Replaces the separate
+         *  /resources top-nav slot — keeps the parent nav at 5 buttons. */}
+        <div className="mb-5 inline-flex rounded-xl border border-border bg-card p-1 shadow-card">
+          <button
+            type="button"
+            onClick={() => setLibraryTab('books')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+              libraryTab === 'books'
+                ? 'bg-primary/10 text-primary-ink'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            aria-pressed={libraryTab === 'books'}
+          >
+            <BookOpen className="w-4 h-4" />
+            Books
+          </button>
+          <button
+            type="button"
+            onClick={() => setLibraryTab('worksheets')}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
+              libraryTab === 'worksheets'
+                ? 'bg-primary/10 text-primary-ink'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            aria-pressed={libraryTab === 'worksheets'}
+          >
+            <FileText className="w-4 h-4" />
+            Worksheets
+          </button>
+        </div>
 
+        {libraryTab === 'worksheets' ? (
+          <WorksheetsPanel />
+        ) : (
+        <>
         <div className="mb-5">
           <LevelFilter selected={selectedLevel} onSelect={setSelectedLevel} />
         </div>
@@ -598,6 +636,8 @@ export default function Index() {
             <p className="text-sm font-medium">No books found for this level yet</p>
             <p className="text-xs text-muted-foreground mt-1">Check back soon for new releases</p>
           </div>
+        )}
+        </>
         )}
       </div>
 

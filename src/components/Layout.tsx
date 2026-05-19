@@ -1,7 +1,7 @@
 import { ReactNode, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, FolderOpen, User, LogIn, Home } from 'lucide-react';
+import { BookOpen, ClipboardList, Tag, User, LogIn, Home } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -11,13 +11,13 @@ import { useNotifications } from '@/hooks/useNotifications';
 // show, when snoozed, or when the user is signed-out).
 const FoundersReviewPrompt = lazy(() => import('@/components/FoundersReviewPrompt'));
 
-// Single nav for everyone — the old parent/child mode toggle was removed
-// 2026-05-17. `Learn` is the simplified hub (formerly child-mode home),
-// `Library` is the full book grid + shop entry, then Resources and Profile.
+// Top nav (and mobile bottom-nav) — 5 tabs. Resources merged into Library
+// as a Books/Worksheets sub-toggle, freeing the slot for Assess + Pricing.
 const NAV = [
   { path: '/learn', label: 'Learn', icon: Home, badgeKey: null as 'messages' | null },
+  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null },
   { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null },
-  { path: '/resources', label: 'Resources', icon: FolderOpen, badgeKey: null },
+  { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const },
 ];
 
@@ -112,7 +112,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                   key={path}
                   to={path}
                   onClick={() => { if (!isActive) hapticLight(); }}
-                  className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all duration-200 press-scale ${
+                  className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all duration-200 press-scale ${
                     isActive
                       ? 'text-primary-ink'
                       : 'text-muted-foreground'

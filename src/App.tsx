@@ -123,6 +123,7 @@ function RoutesWithTransition() {
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><Welcome /></Suspense>} />
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
             <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
+            <Route path="/pricing" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
             <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><PaymentSuccess /></Suspense>} />
             <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><Progress /></Suspense>} />
             <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><Profile /></Suspense>} />
