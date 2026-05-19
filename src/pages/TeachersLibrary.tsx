@@ -36,6 +36,15 @@ function publicPdfUrl(subLevel: string, format: DownloadFormat): string {
   return `${base}/storage/v1/object/public/book-pdfs/${format}/${storageKey(subLevel)}.pdf`;
 }
 
+// Worksheet bundles live in their own public bucket (one PDF per book,
+// 5 worksheets inside). No format dimension — there's only one pack.
+// Built by myphonics_books/scripts/build_worksheets.py and uploaded by
+// scripts/publish_worksheets.py.
+function publicWorksheetUrl(subLevel: string): string {
+  const base = import.meta.env.VITE_SUPABASE_URL as string;
+  return `${base}/storage/v1/object/public/worksheet-pdfs/${storageKey(subLevel)}.pdf`;
+}
+
 interface MergedBook extends CatalogBook {
   id: string;
   coverUrl: string;
@@ -112,6 +121,37 @@ export default function TeachersLibrary() {
       return { success: true };
     } catch (err) {
       return { success: false, error: (err as Error).message || 'Download failed' };
+    }
+  };
+
+  // Same blob-via-<a> save pattern as the book download, just pointed
+  // at the worksheet-pdfs bucket. No format picker — there's only one
+  // bundled worksheet pack per book (5 sheets inside).
+  const [worksheetState, setWorksheetState] = useState<
+    Record<string, 'idle' | 'loading' | 'error'>
+  >({});
+  const handleWorksheet = async (book: { subLevel: string; title: string }) => {
+    setWorksheetState((s) => ({ ...s, [book.subLevel]: 'loading' }));
+    try {
+      const url = publicWorksheetUrl(book.subLevel);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Worksheet not found (${res.status})`);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${book.title} — Worksheets.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      setWorksheetState((s) => ({ ...s, [book.subLevel]: 'idle' }));
+    } catch {
+      setWorksheetState((s) => ({ ...s, [book.subLevel]: 'error' }));
+      setTimeout(
+        () => setWorksheetState((s) => ({ ...s, [book.subLevel]: 'idle' })),
+        2500,
+      );
     }
   };
 
@@ -206,6 +246,8 @@ export default function TeachersLibrary() {
                       book={book}
                       levelBg={level.bgClass}
                       onDownload={(b) => setDownloadBook(b)}
+                      onWorksheet={handleWorksheet}
+                      worksheetStatus={worksheetState[book.sub_level] ?? 'idle'}
                     />
                   ))}
                 </div>
@@ -227,10 +269,14 @@ function BookRow({
   book,
   levelBg,
   onDownload,
+  onWorksheet,
+  worksheetStatus,
 }: {
   book: MergedBook;
   levelBg: string;
   onDownload: (book: Book) => void;
+  onWorksheet: (book: { subLevel: string; title: string }) => void;
+  worksheetStatus: 'idle' | 'loading' | 'error';
 }) {
   const readerHref = `/library?book=${book.sub_level}`;
 
@@ -302,12 +348,16 @@ function BookRow({
           </Link>
           <button
             type="button"
-            disabled
-            title="Worksheets coming soon — your code already covers them."
-            className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-card border border-dashed border-border text-muted-foreground text-[11px] font-bold cursor-not-allowed"
+            onClick={() => onWorksheet({ subLevel: book.sub_level, title: book.title })}
+            disabled={worksheetStatus === 'loading'}
+            className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-card border border-border text-foreground text-[11px] font-bold hover:bg-muted/40 transition-colors disabled:opacity-60 disabled:cursor-progress"
           >
-            <FileText className="w-3.5 h-3.5" />
-            Worksheet · soon
+            {worksheetStatus === 'loading' ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <FileText className="w-3.5 h-3.5" />
+            )}
+            {worksheetStatus === 'error' ? 'Try again' : 'Worksheet pack'}
           </button>
         </div>
       </div>
