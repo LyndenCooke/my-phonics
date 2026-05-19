@@ -3,11 +3,11 @@ import Layout from '@/components/Layout';
 import { useProducts, usePurchases } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Loader2, Check, Star, Zap, Crown, Gift, Sparkles } from 'lucide-react';
+import { Loader2, Check, Crown, Ticket, Heart, Sparkles, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { getStoredRefCode } from '@/lib/referral';
-import { useCountdown, isFoundersClubActive } from '@/lib/foundersClub';
+import { redeemTeacherCode } from '@/lib/teacherSession';
 import {
   Dialog,
   DialogContent,
@@ -17,67 +17,29 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
-const PRODUCT_CONFIG: Record<string, {
-  icon: typeof Star;
-  gradient: string;
-  badge?: string;
-  features: string[];
-}> = {
-  free_sample: {
-    icon: Gift,
-    gradient: 'from-emerald-500 to-green-600',
-    features: [
-      'Free phonics assessment',
-      '1 book at your child\'s level',
-      'Progress tracking',
-    ],
-  },
-  founders_club: {
-    icon: Sparkles,
-    gradient: 'from-pink-500 via-fuchsia-500 to-violet-600',
-    badge: '£1 Limited',
-    features: [
-      'Lifetime access to all 33 books',
-      'Every assessment & progress report',
-      'All future books included',
-      'For our first 2 weeks only',
-    ],
-  },
-  full_bundle: {
-    icon: Crown,
-    // Brand-trust gradient (indigo -> violet) — our premium, forever-yours tier.
-    gradient: 'from-indigo-600 to-violet-600',
-    badge: 'Best Value',
-    features: [
-      'All 33 books across 6 levels',
-      'Yours forever — no expiry',
-      'All assessments & tracking',
-      'Future books included',
-    ],
-  },
-  subscription: {
-    icon: Zap,
-    gradient: 'from-violet-500 to-purple-600',
-    badge: '7-Day Free Trial',
-    features: [
-      'All 33 books, all levels',
-      'New books as they launch',
-      'Full assessment suite',
-      'Cancel anytime',
-    ],
-  },
-  subscription_annual: {
-    icon: Star,
-    gradient: 'from-pink-500 to-rose-600',
-    badge: 'Launch Deal',
-    features: [
-      'Everything in monthly',
-      'Price locked forever',
-      'Save over 30% vs monthly',
-      'Best for serious readers',
-    ],
-  },
-};
+// All books, everything — features shared by both the monthly/annual sub
+// card and the lifetime card. The lifetime card appends "future books".
+const SUB_FEATURES = [
+  'All 33 books across 6 levels — downloadable',
+  'Every printable worksheet',
+  'All sound mats and TPT printables',
+  'Full assessments and progress reports',
+];
+
+const LIFETIME_FEATURES = [
+  ...SUB_FEATURES,
+  'All future books included as we add them',
+  'Yours forever — pay once',
+];
+
+// Free-tier entitlements shown in the "Current plan" card so signed-in
+// visitors can see what they already have before deciding to upgrade.
+const FREE_FEATURES = [
+  '6 free books to read and download',
+  '6 free worksheets',
+  'Free sound mats and TPT printables',
+  'Free phonics assessment',
+];
 
 export default function Shop() {
   const { data: products, isLoading } = useProducts();
@@ -88,11 +50,11 @@ export default function Shop() {
   const [guestDialog, setGuestDialog] = useState<{ open: boolean; productId: string | null }>({ open: false, productId: null });
   const [guestEmail, setGuestEmail] = useState('');
   const [guestLoading, setGuestLoading] = useState(false);
-  // Founders Club has terms attached: Founders commit to sharing feedback
-  // at 24h and 1 week. Block the CTA until the box is ticked so nobody
-  // joins without realising it's a feedback-loop programme, not just a
-  // discount.
-  const [foundersTermsAccepted, setFoundersTermsAccepted] = useState(false);
+  // Friends & family voucher — reuses the teacher_codes mechanism so a valid
+  // code unlocks the whole library locally with no payment / signup.
+  const [voucher, setVoucher] = useState('');
+  const [voucherLoading, setVoucherLoading] = useState(false);
+  const [voucherError, setVoucherError] = useState<string | null>(null);
 
   const formatPrice = (pence: number) => {
     if (pence === 0) return 'Free';
@@ -147,23 +109,31 @@ export default function Shop() {
     }
   };
 
-  const handleBuyClick = (productId: string, productType: string) => {
-    // Free sample requires auth + assessment
-    if (productType === 'free_sample') {
-      if (!user) {
-        navigate('/auth', { state: { returnTo: '/assess' } });
-        return;
-      }
-      handleCheckout(productId);
-      return;
-    }
-
+  const handleBuyClick = (productId: string) => {
     if (user) {
       handleCheckout(productId);
     } else {
       setGuestDialog({ open: true, productId });
       setGuestEmail('');
     }
+  };
+
+  const handleRedeemVoucher = async () => {
+    const trimmed = voucher.trim();
+    if (!trimmed) {
+      setVoucherError('Please enter your code.');
+      return;
+    }
+    setVoucherLoading(true);
+    setVoucherError(null);
+    const result = await redeemTeacherCode(trimmed);
+    setVoucherLoading(false);
+    if (!result.ok) {
+      setVoucherError(result.error);
+      return;
+    }
+    toast.success('Library unlocked — welcome!');
+    navigate('/library', { replace: true });
   };
 
   const handleGuestContinue = () => {
@@ -176,27 +146,24 @@ export default function Shop() {
     handleCheckout(guestDialog.productId, guestEmail);
   };
 
-  // Sort: founders_club FIRST while the offer is live (most urgent),
-  // then free_sample, full_bundle, subscriptions. Once the offer expires
-  // we drop founders_club to the end so it visually de-prioritises if it
-  // somehow stays active in the DB.
-  const foundersFirst = isFoundersClubActive();
-  const sortOrder = foundersFirst
-    ? ['founders_club', 'free_sample', 'full_bundle', 'subscription', 'subscription_annual']
-    : ['free_sample', 'full_bundle', 'subscription', 'subscription_annual', 'founders_club'];
-  const visibleProducts = (products ?? []).filter((p) => {
-    // Hide founders_club once expired
-    if (p.product_type === 'founders_club' && !foundersFirst) return false;
-    // Hide founders_club / bundle / subscriptions to users who already own
-    // them — no point showing "Buy Founders Club" to a Founder.
-    if (purchases?.hasFoundersClub && p.product_type === 'founders_club') return false;
-    if (purchases?.hasFullBundle && p.product_type === 'full_bundle') return false;
-    if (purchases?.hasActiveSubscription && (p.product_type === 'subscription' || p.product_type === 'subscription_annual')) return false;
-    return true;
-  });
-  const sortedProducts = [...visibleProducts].sort(
-    (a, b) => sortOrder.indexOf(a.product_type) - sortOrder.indexOf(b.product_type)
-  );
+  // Lookup the three concrete products we render (monthly sub, annual sub,
+  // and lifetime bundle). Prices come straight from the DB so updating
+  // products.price_pence (matched to the Stripe price IDs) is the only
+  // place a price change has to land.
+  const monthly = products?.find((p) => p.product_type === 'subscription');
+  const annual  = products?.find((p) => p.product_type === 'subscription_annual');
+  const lifetime = products?.find((p) => p.product_type === 'full_bundle');
+
+  // Subscription card has a Monthly/Yearly toggle. Default to Yearly so the
+  // best-value option is the one the user sees first.
+  const [subCadence, setSubCadence] = useState<'month' | 'year'>('year');
+  const activeSub = subCadence === 'month' ? monthly : annual;
+
+  // What plan is the signed-in user already on? Drives the "Current plan"
+  // panel at the top of the page.
+  const currentPlan: 'lifetime' | 'subscriber' | 'free' =
+    purchases?.hasFullBundle ? 'lifetime' :
+    purchases?.hasActiveSubscription ? 'subscriber' : 'free';
 
   return (
     <Layout>
@@ -212,138 +179,228 @@ export default function Shop() {
           </p>
         </div>
 
+        {/* Current plan — signed-in users see their entitlement status up
+         *  top so they can tell at a glance what they already have before
+         *  comparing the upgrade options below. */}
+        {user && (
+          <div className="mb-5 rounded-2xl border border-border bg-card p-4 shadow-card">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-[11px] uppercase tracking-wide font-bold text-muted-foreground">Current plan</p>
+              <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
+                currentPlan === 'lifetime' ? 'bg-indigo-100 text-indigo-700' :
+                currentPlan === 'subscriber' ? 'bg-emerald-100 text-emerald-700' :
+                'bg-muted text-muted-foreground'
+              }`}>
+                {currentPlan === 'lifetime' ? 'Lifetime' :
+                 currentPlan === 'subscriber' ? 'Subscriber' :
+                 'Free account'}
+              </span>
+            </div>
+            <p className="text-sm font-bold text-foreground mb-2">
+              {currentPlan === 'lifetime' ? 'Everything unlocked — forever' :
+               currentPlan === 'subscriber' ? 'All books and worksheets unlocked' :
+               '6 books, 6 free worksheets'}
+            </p>
+            <ul className="space-y-1.5">
+              {(currentPlan === 'free' ? FREE_FEATURES : LIFETIME_FEATURES).map((f, i) => (
+                <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {isLoading ? (
           <div className="space-y-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-48 rounded-2xl bg-muted animate-pulse" />
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div key={i} className="h-64 rounded-2xl bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
           <div className="space-y-4">
-            {sortedProducts.map((product) => {
-              const config = PRODUCT_CONFIG[product.product_type];
-              if (!config) return null;
-
-              const Icon = config.icon;
-              const isFree = product.product_type === 'free_sample';
-              const isSub = product.product_type === 'subscription';
-              const isAnnual = product.product_type === 'subscription_annual';
-              const isBundle = product.product_type === 'full_bundle';
-              const isFounders = product.product_type === 'founders_club';
-              const loading = checkoutLoading === product.id;
-
-              return (
-                <div
-                  key={product.id}
-                  className={`rounded-3xl overflow-hidden transition-all duration-200 shadow-card ${
-                    isFounders ? 'ring-2 ring-fuchsia-500' : isBundle ? 'ring-2 ring-indigo-500' : 'border border-border'
-                  }`}
-                >
-                  {/* Header */}
-                  <div className={`bg-gradient-to-r ${config.gradient} px-5 py-4 text-white`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <Icon className="w-5 h-5" />
-                        <h3 className="font-bold text-lg">{product.name}</h3>
-                      </div>
-                      {config.badge && (
-                        <span className="text-[11px] bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full font-bold">
-                          {config.badge}
-                        </span>
-                      )}
+            {/* Subscription card — Monthly / Yearly toggle inside one card.
+             *  Same feature list either way; only the price + cadence
+             *  suffix change. */}
+            {monthly && annual && !purchases?.hasActiveSubscription && !purchases?.hasFullBundle && (
+              <div className="rounded-3xl overflow-hidden shadow-card border border-border">
+                <div className="bg-gradient-to-r from-pink-500 to-rose-600 px-5 py-4 text-white">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Sparkles className="w-5 h-5" />
+                      <h3 className="font-bold text-lg">All books, everything</h3>
                     </div>
-                    <p className="text-sm text-white/85 mt-1">{product.description}</p>
                   </div>
+                  <p className="text-sm text-white/85 mt-1">Every book, every worksheet — read, download, repeat.</p>
+                </div>
 
-                  {/* Body */}
-                  <div className="bg-card px-5 py-4">
-                    {/* Price — Founders Club shows the regular £99 lifetime
-                     *  price struck through next to the £1 to make the
-                     *  saving visible at a glance. */}
-                    <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                      <span className="text-3xl font-extrabold text-foreground">
-                        {formatPrice(product.price_pence)}
-                      </span>
-                      {isSub && <span className="text-sm text-muted-foreground">/month</span>}
-                      {isAnnual && <span className="text-sm text-muted-foreground">/year</span>}
-                      {isBundle && <span className="text-sm text-muted-foreground">one-time</span>}
-                      {isFounders && (
-                        <>
-                          <span className="text-lg text-muted-foreground line-through tabular-nums">£99</span>
-                          <span className="text-xs font-extrabold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">SAVE £98</span>
-                        </>
-                      )}
-                    </div>
-                    {isFounders && (
-                      <p className="text-xs text-muted-foreground mb-3">Lifetime access · normally £99</p>
-                    )}
-                    {!isFounders && <div className="mb-3" />}
-
-                    {/* Monthly equivalent for annual */}
-                    {isAnnual && (
-                      <p className="text-xs text-muted-foreground -mt-2 mb-3">
-                        That's just {formatPrice(Math.round(product.price_pence / 12))}/month
-                      </p>
-                    )}
-
-                    {/* Live countdown on the founders card */}
-                    {isFounders && (
-                      <FoundersCountdownLine />
-                    )}
-
-                    {/* Features */}
-                    <ul className="space-y-2 mb-4">
-                      {config.features.map((f, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-foreground">
-                          <Check className="w-4 h-4 text-green-500 shrink-0" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Founders Club T&Cs — must agree to share reviews
-                     *  at 24h and 1 week. The Founders programme is a
-                     *  feedback loop, not a deep discount. Be explicit. */}
-                    {isFounders && (
-                      <label className="flex items-start gap-2.5 mb-4 p-3 rounded-xl bg-fuchsia-50 border border-fuchsia-200 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={foundersTermsAccepted}
-                          onChange={(e) => setFoundersTermsAccepted(e.target.checked)}
-                          className="mt-0.5 w-4 h-4 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-300 shrink-0"
-                        />
-                        <span className="text-[11px] leading-relaxed text-foreground">
-                          I'm joining as a Founder and agree to share <strong>two short reviews</strong> — one at 24 hours, one after a week — so the team can fix bugs and improve the app. Reviews are private unless I explicitly opt in to marketing on the form.
-                        </span>
-                      </label>
-                    )}
-
-                    {/* CTA */}
+                <div className="bg-card px-5 py-4">
+                  {/* Cadence toggle */}
+                  <div className="inline-flex rounded-xl border border-border bg-muted/30 p-1 mb-4">
                     <button
-                      onClick={() => handleBuyClick(product.id, product.product_type)}
-                      disabled={!!checkoutLoading || (isFounders && !foundersTermsAccepted)}
-                      className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 ${
-                        isFree
-                          ? 'bg-card border-2 border-emerald-600 text-emerald-700'
-                          : `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
+                      type="button"
+                      onClick={() => setSubCadence('month')}
+                      className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                        subCadence === 'month' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
                       }`}
+                      aria-pressed={subCadence === 'month'}
                     >
-                      {loading ? (
-                        <Loader2 className="w-4 h-4 animate-spin mx-auto" />
-                      ) : isFree ? (
-                        'Get Free Book'
-                      ) : isSub ? (
-                        'Start Free Trial'
-                      ) : isFounders ? (
-                        'Claim my £1 spot'
-                      ) : (
-                        'Get Started'
-                      )}
+                      Monthly
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSubCadence('year')}
+                      className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                        subCadence === 'year' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'
+                      }`}
+                      aria-pressed={subCadence === 'year'}
+                    >
+                      Yearly
+                      <span className="text-[10px] font-extrabold bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full">SAVE 50%</span>
                     </button>
                   </div>
+
+                  <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                    <span className="text-3xl font-extrabold text-foreground">
+                      {formatPrice(activeSub?.price_pence ?? 0)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {subCadence === 'month' ? '/month' : '/year'}
+                    </span>
+                  </div>
+                  {subCadence === 'year' && annual && (
+                    <p className="text-xs text-muted-foreground mb-3">
+                      That's just {formatPrice(Math.round(annual.price_pence / 12))}/month, billed yearly
+                    </p>
+                  )}
+                  {subCadence === 'month' && <div className="mb-3" />}
+
+                  <ul className="space-y-2 mb-4">
+                    {SUB_FEATURES.map((f, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-foreground">
+                        <Check className="w-4 h-4 text-green-500 shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => activeSub && handleBuyClick(activeSub.id)}
+                    disabled={!!checkoutLoading || !activeSub}
+                    className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg"
+                  >
+                    {checkoutLoading === activeSub?.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin mx-auto" />
+                    ) : (
+                      'Get Started'
+                    )}
+                  </button>
                 </div>
-              );
-            })}
+              </div>
+            )}
+
+            {/* Lifetime — one-off card with the friends & family voucher */}
+            {lifetime && !purchases?.hasFullBundle && (
+              <div className="rounded-3xl overflow-hidden shadow-card ring-2 ring-indigo-500">
+                <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 text-white">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <Crown className="w-5 h-5" />
+                      <h3 className="font-bold text-lg">Lifetime — Everything Forever</h3>
+                    </div>
+                    <span className="text-[11px] bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full font-bold">Best Value</span>
+                  </div>
+                  <p className="text-sm text-white/85 mt-1">Pay once. Every book — now and in the future.</p>
+                </div>
+
+                <div className="bg-card px-5 py-4">
+                  <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                    <span className="text-3xl font-extrabold text-foreground">
+                      {formatPrice(lifetime.price_pence)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">one-time</span>
+                  </div>
+                  <div className="mb-3" />
+
+                  <ul className="space-y-2 mb-4">
+                    {LIFETIME_FEATURES.map((f, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-foreground">
+                        <Check className="w-4 h-4 text-green-500 shrink-0" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => handleBuyClick(lifetime.id)}
+                    disabled={!!checkoutLoading}
+                    className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg"
+                  >
+                    {checkoutLoading === lifetime.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin mx-auto" />
+                    ) : (
+                      'Get Started'
+                    )}
+                  </button>
+
+                  {/* Friends & family voucher. Valid code (MYPHONICSFRIENDS)
+                   *  bypasses Stripe and unlocks the library via the
+                   *  teacher_codes session flow — no payment, no signup. */}
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <Heart className="w-3.5 h-3.5 text-primary-ink" />
+                      <p className="text-xs font-bold text-foreground">Got a friends & family code?</p>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mb-2 leading-relaxed">
+                      Enter it below and we'll unlock everything — free.
+                    </p>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Ticket className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
+                        <Input
+                          type="text"
+                          value={voucher}
+                          onChange={(e) => { setVoucher(e.target.value.toUpperCase()); setVoucherError(null); }}
+                          onKeyDown={(e) => e.key === 'Enter' && handleRedeemVoucher()}
+                          placeholder="Enter code"
+                          autoComplete="off"
+                          autoCapitalize="characters"
+                          autoCorrect="off"
+                          spellCheck={false}
+                          className="rounded-xl pl-8 h-10 font-mono text-sm font-bold tracking-wider uppercase"
+                          disabled={voucherLoading}
+                        />
+                      </div>
+                      <button
+                        onClick={handleRedeemVoucher}
+                        disabled={voucherLoading || !voucher.trim()}
+                        className="h-10 px-4 rounded-xl font-bold text-xs bg-foreground text-background shadow-button active:scale-[0.97] transition-transform disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-1.5"
+                      >
+                        {voucherLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
+                      </button>
+                    </div>
+                    {voucherError && (
+                      <p className="text-[11px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5 mt-2">
+                        {voucherError}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Already on a paid plan — show a quiet confirmation card so
+             *  the page isn't empty for upgraded users. */}
+            {purchases?.hasFullBundle && (
+              <div className="rounded-3xl border border-border bg-card p-5 text-center shadow-card">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 mb-2">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <p className="font-bold text-foreground">You're on Lifetime</p>
+                <p className="text-xs text-muted-foreground mt-1">Every book, every worksheet, forever.</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -421,15 +478,5 @@ export default function Shop() {
         </DialogContent>
       </Dialog>
     </Layout>
-  );
-}
-
-function FoundersCountdownLine() {
-  const c = useCountdown();
-  if (c.expired) return null;
-  return (
-    <p className="text-xs font-bold text-fuchsia-700 -mt-2 mb-3 tabular-nums">
-      ⏳ Ends in {c.days}d {c.hours}h {c.minutes}m {String(c.seconds).padStart(2, '0')}s
-    </p>
   );
 }
