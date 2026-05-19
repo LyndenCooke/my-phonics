@@ -133,7 +133,22 @@ export default function Shop() {
       return;
     }
     toast.success('Library unlocked — welcome!');
+    setVoucherDialogOpen(false);
     navigate('/library', { replace: true });
+  };
+
+  // "Get Started" on the Lifetime card opens the voucher prompt first. If
+  // the buyer doesn't have a code, "Skip" continues to Stripe Checkout.
+  const handleLifetimeClick = () => {
+    setVoucher('');
+    setVoucherError(null);
+    setVoucherDialogOpen(true);
+  };
+
+  const handleLifetimeSkipToCheckout = () => {
+    if (!lifetime) return;
+    setVoucherDialogOpen(false);
+    handleBuyClick(lifetime.id);
   };
 
   const handleGuestContinue = () => {
@@ -160,11 +175,11 @@ export default function Shop() {
   const [subCadence, setSubCadence] = useState<'month' | 'year'>('month');
   const activeSub = subCadence === 'month' ? monthly : annual;
 
-  // Voucher is collapsed by default — a single "Have a voucher code?" link
-  // expands the input. Keeps the upsell focused on the £39 price; vouchers
-  // are for people who already have a code (friends/family, affiliates,
-  // promo partners) and know to look for it.
-  const [voucherOpen, setVoucherOpen] = useState(false);
+  // Voucher dialog is opened from the Lifetime "Get Started" click — sits
+  // between the click and the Stripe redirect so voucher holders (friends,
+  // family, affiliates) can enter the code without ever paying. Skipping
+  // sends them straight to Stripe Checkout for the £39 charge.
+  const [voucherDialogOpen, setVoucherDialogOpen] = useState(false);
 
   // What plan is the signed-in user already on? Drives the "Current plan"
   // panel at the top of the page.
@@ -340,7 +355,7 @@ export default function Shop() {
                   </ul>
 
                   <button
-                    onClick={() => handleBuyClick(lifetime.id)}
+                    onClick={handleLifetimeClick}
                     disabled={!!checkoutLoading}
                     className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg"
                   >
@@ -350,58 +365,6 @@ export default function Shop() {
                       'Get Started'
                     )}
                   </button>
-
-                  {/* Voucher — collapsed by default so the upsell stays
-                   *  focused on the price. A valid code (e.g. the friends-
-                   *  and-family MYPHONICSFRIENDS, future affiliate codes)
-                   *  bypasses Stripe and unlocks the library via the
-                   *  teacher_codes session flow. */}
-                  <div className="mt-4 pt-4 border-t border-border">
-                    {!voucherOpen ? (
-                      <button
-                        type="button"
-                        onClick={() => setVoucherOpen(true)}
-                        className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
-                      >
-                        <Ticket className="w-3.5 h-3.5" />
-                        Have a voucher code?
-                      </button>
-                    ) : (
-                      <>
-                        <div className="flex gap-2">
-                          <div className="relative flex-1">
-                            <Ticket className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
-                            <Input
-                              type="text"
-                              value={voucher}
-                              onChange={(e) => { setVoucher(e.target.value.toUpperCase()); setVoucherError(null); }}
-                              onKeyDown={(e) => e.key === 'Enter' && handleRedeemVoucher()}
-                              placeholder="Enter code"
-                              autoComplete="off"
-                              autoCapitalize="characters"
-                              autoCorrect="off"
-                              spellCheck={false}
-                              autoFocus
-                              className="rounded-xl pl-8 h-10 font-mono text-sm font-bold tracking-wider uppercase"
-                              disabled={voucherLoading}
-                            />
-                          </div>
-                          <button
-                            onClick={handleRedeemVoucher}
-                            disabled={voucherLoading || !voucher.trim()}
-                            className="h-10 px-4 rounded-xl font-bold text-xs bg-foreground text-background shadow-button active:scale-[0.97] transition-transform disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-1.5"
-                          >
-                            {voucherLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Apply'}
-                          </button>
-                        </div>
-                        {voucherError && (
-                          <p className="text-[11px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1.5 mt-2">
-                            {voucherError}
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
                 </div>
               </div>
             )}
@@ -424,6 +387,63 @@ export default function Shop() {
           Secure checkout. Cancel anytime. All prices in GBP.
         </p>
       </div>
+
+      {/* Voucher prompt — opens when "Get Started" is pressed on the
+       *  Lifetime card. Valid code → skip Stripe entirely, unlock library
+       *  via the teacher_codes session flow. Skip → continue to Stripe
+       *  Checkout for the £39 charge. */}
+      <Dialog open={voucherDialogOpen} onOpenChange={setVoucherDialogOpen}>
+        <DialogContent className="max-w-sm mx-auto rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold text-foreground">Have a voucher code?</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Pop it in below to unlock everything free. No code? Skip to checkout.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 pt-2">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Ticket className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
+                <Input
+                  type="text"
+                  value={voucher}
+                  onChange={(e) => { setVoucher(e.target.value.toUpperCase()); setVoucherError(null); }}
+                  onKeyDown={(e) => e.key === 'Enter' && handleRedeemVoucher()}
+                  placeholder="Enter code"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  autoFocus
+                  className="rounded-xl pl-9 h-11 font-mono text-sm font-bold tracking-wider uppercase"
+                  disabled={voucherLoading}
+                />
+              </div>
+              <button
+                onClick={handleRedeemVoucher}
+                disabled={voucherLoading || !voucher.trim()}
+                className="h-11 px-5 rounded-xl font-bold text-sm bg-foreground text-background shadow-button active:scale-[0.97] transition-transform disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
+              >
+                {voucherLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply'}
+              </button>
+            </div>
+            {voucherError && (
+              <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
+                {voucherError}
+              </p>
+            )}
+
+            <button
+              onClick={handleLifetimeSkipToCheckout}
+              disabled={voucherLoading || !!checkoutLoading}
+              className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg active:scale-[0.97] transition-transform disabled:opacity-60"
+            >
+              No code — continue to checkout ({lifetime ? formatPrice(lifetime.price_pence) : ''})
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Guest checkout dialog */}
       <Dialog open={guestDialog.open} onOpenChange={(open) => setGuestDialog({ open, productId: open ? guestDialog.productId : null })}>
