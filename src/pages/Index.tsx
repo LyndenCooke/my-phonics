@@ -139,7 +139,12 @@ export default function Index() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: import.meta.env.DEV || isAdmin || isQaUser || isTeacher || !!ub || (b.is_free_sample ?? false),
+      // Do NOT include import.meta.env.DEV here — a misconfigured Vercel
+      // build (e.g. `vite build --mode development`) makes DEV evaluate to
+      // true, which then collapses this whole OR chain to `true` and
+      // unlocks every book for every visitor in production. Caused an
+      // outage 2026-05-20. Use explicit roles instead.
+      unlocked: isAdmin || isQaUser || isTeacher || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
