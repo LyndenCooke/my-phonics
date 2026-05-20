@@ -41,11 +41,11 @@
       gtag('config', 'G-WR9QE9ZMEN');
     </script>
 
-    <!-- Meta Pixel — set window.__META_PIXEL_ID to the 15-digit ID from -->
-    <!-- Events Manager (Data Sets) and the snippet self-activates. Until -->
-    <!-- then the loader is a no-op and useMetaPixel.ts safely skips. -->
+    <!-- Meta Pixel — window.__META_PIXEL_ID is read by funnel components -->
+    <!-- (EmailCapture, useMetaPixel) so they can attribute events to the -->
+    <!-- same Pixel without hardcoding the ID twice. -->
     <script>
-      window.__META_PIXEL_ID = "960924586932468";
+      window.__META_PIXEL_ID = "1476818270794642";
       if (window.__META_PIXEL_ID) {
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -59,6 +59,9 @@
         fbq('track', 'PageView');
       }
     </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1476818270794642&ev=PageView&noscript=1"
+    /></noscript>
 
     <!-- Microsoft Clarity — swap YOUR_CLARITY_PROJECT_ID for the ID from -->
     <!-- clarity.microsoft.com (Settings → Setup). Auto-tracks SPA routes. -->
