@@ -49,7 +49,8 @@ export default function Learn() {
       pdfUrl: b.pdf_url ?? undefined,
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
-      unlocked: import.meta.env.DEV || isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+      // See Index.tsx:142 — never key entitlement off import.meta.env.DEV.
+      unlocked: isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: [],
