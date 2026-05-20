@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { useProducts, usePurchases } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, Check, Crown, Ticket, Sparkles, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { getStoredRefCode } from '@/lib/referral';
-import { redeemTeacherCode } from '@/lib/teacherSession';
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,24 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+
+// Survives the /auth redirect so the visitor can pick the voucher flow
+// back up after signing in or creating an account. sessionStorage rather
+// than localStorage so it auto-clears with the tab if they abandon.
+const PENDING_VOUCHER_KEY = 'mpb_pending_voucher';
+
+type RedeemVoucherResponse =
+  | { ok: true; product_type: string; code: string; label: string }
+  | { ok: false; reason: string };
+
+function reasonToMessage(reason: string): string {
+  switch (reason) {
+    case 'auth_required': return 'Please sign in to redeem your voucher.';
+    case 'invalid_or_expired': return 'That code is not valid or has expired.';
+    case 'product_not_found': return 'This voucher can\'t be redeemed right now — please contact support.';
+    default: return 'Something went wrong. Please try again.';
+  }
+}
 
 // All books, everything — features shared by both the monthly/annual sub
 // card and the lifetime card. The lifetime card appends "future books".
@@ -46,6 +64,7 @@ export default function Shop() {
   const { data: purchases } = usePurchases();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
   const [guestDialog, setGuestDialog] = useState<{ open: boolean; productId: string | null }>({ open: false, productId: null });
   const [guestEmail, setGuestEmail] = useState('');
@@ -118,6 +137,31 @@ export default function Shop() {
     }
   };
 
+  const redeemForSignedInUser = async (code: string): Promise<boolean> => {
+    const { data, error } = await (supabase.rpc as unknown as (
+      fn: string,
+      args: Record<string, unknown>,
+    ) => Promise<{ data: RedeemVoucherResponse | null; error: unknown }>)('redeem_voucher_for_user', {
+      p_code: code,
+    });
+    if (error || !data) {
+      setVoucherError('Something went wrong. Please try again.');
+      return false;
+    }
+    if (!data.ok) {
+      setVoucherError(reasonToMessage(data.reason));
+      return false;
+    }
+    // Refresh both the purchases flag (gates the Pricing cards / nav)
+    // and the per-book unlock state in the library.
+    await queryClient.invalidateQueries({ queryKey: ['purchases'] });
+    await queryClient.invalidateQueries({ queryKey: ['user_books'] });
+    toast.success('Library unlocked — welcome!');
+    setVoucherDialogOpen(false);
+    navigate('/library', { replace: true });
+    return true;
+  };
+
   const handleRedeemVoucher = async () => {
     const trimmed = voucher.trim();
     if (!trimmed) {
@@ -126,16 +170,37 @@ export default function Shop() {
     }
     setVoucherLoading(true);
     setVoucherError(null);
-    const result = await redeemTeacherCode(trimmed);
-    setVoucherLoading(false);
-    if (!result.ok) {
-      setVoucherError(result.error);
+
+    // Signed-out path: stash the code and bounce to /auth. The post-auth
+    // useEffect below picks it back up and finishes the redemption.
+    if (!user) {
+      try { sessionStorage.setItem(PENDING_VOUCHER_KEY, trimmed); } catch { /* ignore */ }
+      setVoucherLoading(false);
+      setVoucherDialogOpen(false);
+      toast.info('Create an account to claim your voucher.');
+      navigate('/auth', { state: { returnTo: '/pricing', tab: 'register' } });
       return;
     }
-    toast.success('Library unlocked — welcome!');
-    setVoucherDialogOpen(false);
-    navigate('/library', { replace: true });
+
+    await redeemForSignedInUser(trimmed);
+    setVoucherLoading(false);
   };
+
+  // After the visitor signs in / signs up, finish the voucher redemption
+  // they started. The code lives in sessionStorage from the moment they
+  // pressed Apply while signed out; clearing it whether we succeed or
+  // fail so a stale code can't haunt later visits.
+  useEffect(() => {
+    if (!user) return;
+    let pending: string | null = null;
+    try { pending = sessionStorage.getItem(PENDING_VOUCHER_KEY); } catch { /* ignore */ }
+    if (!pending) return;
+    try { sessionStorage.removeItem(PENDING_VOUCHER_KEY); } catch { /* ignore */ }
+    setVoucher(pending);
+    setVoucherDialogOpen(true);
+    void redeemForSignedInUser(pending);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   // "Get Started" on the Lifetime card opens the voucher prompt first. If
   // the buyer doesn't have a code, "Skip" continues to Stripe Checkout.
@@ -389,15 +454,17 @@ export default function Shop() {
       </div>
 
       {/* Voucher prompt — opens when "Get Started" is pressed on the
-       *  Lifetime card. Valid code → skip Stripe entirely, unlock library
-       *  via the teacher_codes session flow. Skip → continue to Stripe
-       *  Checkout for the £39 charge. */}
+       *  Lifetime card. Valid code redeems via redeem_voucher_for_user
+       *  (requires signup) and grants the full_bundle product to the
+       *  user's account. Skip → continue to Stripe Checkout for £39. */}
       <Dialog open={voucherDialogOpen} onOpenChange={setVoucherDialogOpen}>
         <DialogContent className="max-w-sm mx-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-foreground">Have a voucher code?</DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
-              Pop it in below to unlock everything free. No code? Skip to checkout.
+              {user
+                ? 'Pop it in below to unlock everything free. No code? Skip to checkout.'
+                : 'Enter your code and we\'ll send you to sign up. Your account will unlock as soon as you confirm.'}
             </DialogDescription>
           </DialogHeader>
 
