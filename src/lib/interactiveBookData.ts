@@ -1067,11 +1067,12 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
   },
 
   // ── STORY PAGES ──
-  // Page 1: "I have a fox. Fox is on a log."
+  // Page 1: "I am with a fox. Fox is on a log."
   {
-    type: 'story', sentences: ['I have a fox.', 'Fox is on a log.'],
+    type: 'story', sentences: ['I am with a fox.', 'Fox is on a log.'],
     words: [
-      tricky('I', 'I'), tricky('have', 'have'), tricky('a', 'a'),
+      tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
+      { display: 'with', word: 'with', phonemes: ['w','i','th'] }, tricky('a', 'a'),
       { display: 'fox.', word: 'fox', phonemes: ['f','o','x'] },
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] }, tricky('is', 'is'),
       { display: 'on', word: 'on', phonemes: ['o','n'] }, tricky('a', 'a'),
@@ -1079,29 +1080,28 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_6/page1.png', audioUrl: '/sounds/sentences/L1_6_p1.mp3',
   },
-  // Page 2: "Fox fell off the log! Oh, Fox!"
+  // Page 2: "Fox fell off the log!"
   {
-    type: 'story', sentences: ['Fox fell off the log!', 'Oh, Fox!'],
+    type: 'story', sentences: ['Fox fell off the log!'],
     words: [
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] },
       { display: 'fell', word: 'fell', phonemes: ['f','e','ll'] },
       { display: 'off', word: 'off', phonemes: ['o','ff'] },
       tricky('the', 'the'), cvc('log!', 'log'),
-      tricky('Oh,', 'oh'), { display: 'Fox!', word: 'fox', phonemes: ['f','o','x'] },
     ],
     imageUrl: '/illustrations/1_6/page2.png', audioUrl: '/sounds/sentences/L1_6_p2.mp3',
   },
-  // Page 3: "Fox is on a wall. Fox fell off the wall!"
+  // Page 3: "Fox is on a rock. Fox fell off the rock!"
   {
-    type: 'story', sentences: ['Fox is on a wall.', 'Fox fell off the wall!'],
+    type: 'story', sentences: ['Fox is on a rock.', 'Fox fell off the rock!'],
     words: [
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] }, tricky('is', 'is'),
       { display: 'on', word: 'on', phonemes: ['o','n'] }, tricky('a', 'a'),
-      tricky('wall.', 'wall'),
+      { display: 'rock.', word: 'rock', phonemes: ['r','o','ck'] },
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] },
       { display: 'fell', word: 'fell', phonemes: ['f','e','ll'] },
       { display: 'off', word: 'off', phonemes: ['o','ff'] },
-      tricky('the', 'the'), tricky('wall!', 'wall'),
+      tricky('the', 'the'), { display: 'rock!', word: 'rock', phonemes: ['r','o','ck'] },
     ],
     imageUrl: '/illustrations/1_6/page3.png', audioUrl: '/sounds/sentences/L1_6_p3.mp3',
   },
@@ -1133,16 +1133,16 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_6/page5.png', audioUrl: '/sounds/sentences/L1_6_p5.mp3',
   },
-  // Page 6: "Fox is on the mat! Fox did not fall off! I hug Fox!"
+  // Page 6: "Fox is on the mat! Fox did not slip off! I hug Fox!"
   {
-    type: 'story', sentences: ['Fox is on the mat!', 'Fox did not fall off!', 'I hug Fox!'],
+    type: 'story', sentences: ['Fox is on the mat!', 'Fox did not slip off!', 'I hug Fox!'],
     words: [
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] }, tricky('is', 'is'),
       { display: 'on', word: 'on', phonemes: ['o','n'] }, tricky('the', 'the'),
       cvc('mat!', 'mat'),
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] },
       cvc('did', 'did'), { display: 'not', word: 'not', phonemes: ['n','o','t'] },
-      tricky('fall', 'fall'),
+      { display: 'slip', word: 'slip', phonemes: ['s','l','i','p'] },
       { display: 'off!', word: 'off', phonemes: ['o','ff'] },
       tricky('I', 'I'), cvc('hug', 'hug'),
       { display: 'Fox!', word: 'fox', phonemes: ['f','o','x'] },
@@ -1303,16 +1303,16 @@ export const BOOK_L1_7_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_7/page3.png', audioUrl: '/sounds/sentences/L1_7_p3.mp3',
   },
-  // Page 4: "The jug tips! Jam on the rug! Oh, no!"
+  // Page 4: "The jug tips! Jam on the rug! No!"
   {
-    type: 'story', sentences: ['The jug tips!', 'Jam on the rug!', 'Oh, no!'],
+    type: 'story', sentences: ['The jug tips!', 'Jam on the rug!', 'No!'],
     words: [
       tricky('The', 'the'), { display: 'jug', word: 'jug', phonemes: ['j','u','g'] },
       { display: 'tips!', word: 'tip', phonemes: ['t','i','p'] },
       { display: 'Jam', word: 'jam', phonemes: ['j','a','m'] },
       { display: 'on', word: 'on', phonemes: ['o','n'] },
       tricky('the', 'the'), cvc('rug!', 'rug'),
-      tricky('Oh,', 'oh'), tricky('no!', 'no'),
+      tricky('No!', 'no'),
     ],
     imageUrl: '/illustrations/1_7/page4.png', audioUrl: '/sounds/sentences/L1_7_p4.mp3',
   },
@@ -1457,41 +1457,42 @@ export const BOOK_L1_8_PAGES: InteractivePage[] = [
   },
 
   // ── STORY PAGES ──
-  // Page 1: "I have a yak. The yak is big!"
+  // Page 1: "I am with a yak. The yak is big!"
   {
-    type: 'story', sentences: ['I have a yak.', 'The yak is big!'],
+    type: 'story', sentences: ['I am with a yak.', 'The yak is big!'],
     words: [
-      tricky('I', 'I'), tricky('have', 'have'), tricky('a', 'a'),
+      tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
+      { display: 'with', word: 'with', phonemes: ['w','i','th'] }, tricky('a', 'a'),
       { display: 'yak.', word: 'yak', phonemes: ['y','a','k'] },
       tricky('The', 'the'), { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
       tricky('is', 'is'), cvc('big!', 'big'),
     ],
     imageUrl: '/illustrations/1_8/page1.png', audioUrl: '/sounds/sentences/L1_8_p1.mp3',
   },
-  // Page 2: "I have a box. I zip it up. Six figs in the box."
+  // Page 2: "I get a box. Six figs in the box. I zip it up."
   {
-    type: 'story', sentences: ['I have a box.', 'I zip it up.', 'Six figs in the box.'],
+    type: 'story', sentences: ['I get a box.', 'Six figs in the box.', 'I zip it up.'],
     words: [
-      tricky('I', 'I'), tricky('have', 'have'), tricky('a', 'a'),
-      { display: 'box.', word: 'box', phonemes: ['b','o','x'] },
-      tricky('I', 'I'), { display: 'zip', word: 'zip', phonemes: ['z','i','p'] },
-      { display: 'it', word: 'it', phonemes: ['i','t'] },
-      { display: 'up.', word: 'up', phonemes: ['u','p'] },
+      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
+      tricky('a', 'a'), { display: 'box.', word: 'box', phonemes: ['b','o','x'] },
       { display: 'Six', word: 'six', phonemes: ['s','i','x'] },
       { display: 'figs', word: 'fig', phonemes: ['f','i','g'] },
       { display: 'in', word: 'in', phonemes: ['i','n'] },
       tricky('the', 'the'), { display: 'box.', word: 'box', phonemes: ['b','o','x'] },
+      tricky('I', 'I'), { display: 'zip', word: 'zip', phonemes: ['z','i','p'] },
+      { display: 'it', word: 'it', phonemes: ['i','t'] },
+      { display: 'up.', word: 'up', phonemes: ['u','p'] },
     ],
     imageUrl: '/illustrations/1_8/page2.png', audioUrl: '/sounds/sentences/L1_8_p2.mp3',
   },
-  // Page 3: "The yak sat on the box! Oh, no!"
+  // Page 3: "The yak sat on the box! No, no!"
   {
-    type: 'story', sentences: ['The yak sat on the box!', 'Oh, no!'],
+    type: 'story', sentences: ['The yak sat on the box!', 'No, no!'],
     words: [
       tricky('The', 'the'), { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
       cvc('sat', 'sat'), { display: 'on', word: 'on', phonemes: ['o','n'] },
       tricky('the', 'the'), { display: 'box!', word: 'box', phonemes: ['b','o','x'] },
-      tricky('Oh,', 'oh'), tricky('no!', 'no'),
+      tricky('No,', 'no'), tricky('no!', 'no'),
     ],
     imageUrl: '/illustrations/1_8/page3.png', audioUrl: '/sounds/sentences/L1_8_p3.mp3',
   },
@@ -1509,26 +1510,26 @@ export const BOOK_L1_8_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_8/page4.png', audioUrl: '/sounds/sentences/L1_8_p4.mp3',
   },
-  // Page 5: "The yak can not get it! I get the six figs."
+  // Page 5: "The yak cannot get it! I will get the six figs."
   {
-    type: 'story', sentences: ['The yak can not get it!', 'I get the six figs.'],
+    type: 'story', sentences: ['The yak cannot get it!', 'I will get the six figs.'],
     words: [
       tricky('The', 'the'), { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
-      { display: 'can', word: 'can', phonemes: ['c','a','n'] },
-      { display: 'not', word: 'not', phonemes: ['n','o','t'] },
+      tricky('cannot', 'cannot'),
       { display: 'get', word: 'get', phonemes: ['g','e','t'] },
       { display: 'it!', word: 'it', phonemes: ['i','t'] },
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
+      tricky('I', 'I'), tricky('will', 'will'),
+      { display: 'get', word: 'get', phonemes: ['g','e','t'] },
       tricky('the', 'the'), { display: 'six', word: 'six', phonemes: ['s','i','x'] },
       { display: 'figs.', word: 'fig', phonemes: ['f','i','g'] },
     ],
     imageUrl: '/illustrations/1_8/page5.png', audioUrl: '/sounds/sentences/L1_8_p5.mp3',
   },
-  // Page 6: "I munch a fig. The big yak gets a fig. Yum!"
+  // Page 6: "I toss a fig. The big yak gets a fig. Yum!"
   {
-    type: 'story', sentences: ['I munch a fig.', 'The big yak gets a fig.', 'Yum!'],
+    type: 'story', sentences: ['I toss a fig.', 'The big yak gets a fig.', 'Yum!'],
     words: [
-      tricky('I', 'I'), { display: 'munch', word: 'munch', phonemes: ['m','u','n','ch'] },
+      tricky('I', 'I'), { display: 'toss', word: 'toss', phonemes: ['t','o','ss'] },
       tricky('a', 'a'), cvc('fig.', 'fig'),
       tricky('The', 'the'), cvc('big', 'big'),
       { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
@@ -1883,21 +1884,23 @@ export const BOOK_L1_10_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_10/page3.png', audioUrl: '/sounds/sentences/L1_10_p3.mp3',
   },
-  // Page 4: "I sing! No buzz! No hiss!"
+  // Page 4: "The bugs go! No buzz. No hiss."
   {
-    type: 'story', sentences: ['I sing!', 'No buzz! No hiss!'],
+    type: 'story', sentences: ['The bugs go!', 'No buzz.', 'No hiss.'],
     words: [
-      tricky('I', 'I'), { display: 'sing!', word: 'sing', phonemes: ['s','i','ng'] },
-      tricky('No', 'no'), { display: 'buzz!', word: 'buzz', phonemes: ['b','u','zz'] },
-      tricky('No', 'no'), { display: 'hiss!', word: 'hiss', phonemes: ['h','i','ss'] },
+      tricky('The', 'the'), { display: 'bugs', word: 'bugs', phonemes: ['b','u','g','s'] },
+      tricky('go!', 'go'),
+      tricky('No', 'no'), { display: 'buzz.', word: 'buzz', phonemes: ['b','u','zz'] },
+      tricky('No', 'no'), { display: 'hiss.', word: 'hiss', phonemes: ['h','i','ss'] },
     ],
     imageUrl: '/illustrations/1_10/page4.png', audioUrl: '/sounds/sentences/L1_10_p4.mp3',
   },
-  // Page 5: "I sing quick! I sing and sing!"
+  // Page 5: "I sing quick, quick! I sing and sing!"
   {
-    type: 'story', sentences: ['I sing quick!', 'I sing and sing!'],
+    type: 'story', sentences: ['I sing quick, quick!', 'I sing and sing!'],
     words: [
       tricky('I', 'I'), { display: 'sing', word: 'sing', phonemes: ['s','i','ng'] },
+      { display: 'quick,', word: 'quick', phonemes: ['qu','i','ck'] },
       { display: 'quick!', word: 'quick', phonemes: ['qu','i','ck'] },
       tricky('I', 'I'), { display: 'sing', word: 'sing', phonemes: ['s','i','ng'] },
       { display: 'and', word: 'and', phonemes: ['a','n','d'] },

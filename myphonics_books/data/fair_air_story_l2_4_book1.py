@@ -87,31 +87,31 @@ FAIR_AIR_STORY_BOOK1 = {
 
         "story_pages": [
             {
-                "text": "I go to the fair! I can see it. The air is cool. The fair is big!",
+                "text": "I go to the fair! I can see it. The air is cool. The fair is so big!",
                 "image": None,
             },
             {
-                "text": "The air is in my hair! It is such a gust! I put my hat on.",
+                "text": "The air is in my hair! It is such a gush! I put my hat on.",
                 "image": None,
             },
             {
-                "text": "Look! Big ducks, a pair! \"I can win!\" I say.",
+                "text": "Look! Toy ducks, a pair! \"I can win!\" I say.",
                 "image": None,
             },
             {
-                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is good!",
+                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is so good!",
                 "image": None,
             },
             {
-                "text": "A gust in the air! My pair shoots up, up, up! No! My pair!",
+                "text": "A gush in the air! My pair shoots up, up, up! No! My pair!",
                 "image": None,
             },
             {
-                "text": "\"Sir! Sir! My pair is in the air!\" The man said, \"I can see it! In the fir!\"",
+                "text": "\"Sir! Sir! My pair is in the air!\" The sir said, \"I can see it! By the fir!\"",
                 "image": None,
             },
             {
-                "text": "The man ran to a big fir. My pair is in the fir! He got my pair down!",
+                "text": "The sir ran to a big fir. My pair is in the fir! He got my pair down!",
                 "image": None,
             },
             {

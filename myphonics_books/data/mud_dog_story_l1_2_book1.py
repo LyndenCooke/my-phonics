@@ -14,12 +14,12 @@ MUD_DOG_STORY_BOOK1 = {
         "character_id": "CHAR-D",
         "character_name": "British-Asian girl (outdoor adventure)",
         "story_pages": [
-            {"text": "I got the dog. Big dog!", "image": None},
+            {"text": "I got a dog. It is a big dog.", "image": None},
             {"text": "The dog ran in the mud. Mud, mud, mud!", "image": None},
-            {"text": "The dog got mud! Mud on the dog.", "image": None},
-            {"text": "I get the mop. I mop the dog.", "image": None},
-            {"text": "No! The mop got mud! Mud on me!", "image": None},
-            {"text": "Mum got the tub. The dog sat in it. No mud! No mess!", "image": None},
+            {"text": "The dog is a mess! Mud is on the dog.", "image": None},
+            {"text": "I get a mop. I mop the dog.", "image": None},
+            {"text": "No! The mop is a mess! Mud is on me!", "image": None},
+            {"text": "Mum got a tub. The dog sat in it. No mud! No mess!", "image": None},
         ],
         "story_words": ["dog", "mud", "mop", "mum", "mess", "got", "big", "tub"],
         "tricky_words_used": ["I", "the", "no", "me"],  # 'me' added (high-utility, p5 keeps it); 'a'/'is' removed via rewrites

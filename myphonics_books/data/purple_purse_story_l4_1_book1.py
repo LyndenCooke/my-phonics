@@ -35,42 +35,42 @@ PURPLE_PURSE_STORY_BOOK1 = {
         "story_pages": [
             {
                 "page_number": 1,
-                "text": '"My purple purse! Where is it?" The girl looked all around but it was not there. She turned out all her pockets. She turned to Dad. "I lost my purse!"',
+                "text": "My purple purse was gone! I turned my pockets inside out, but it was not there. I was so upset!",
                 "image_prompt": "A worried girl turns out her empty pockets in a modern apartment hallway. Dad stands nearby looking concerned. Landscape orientation.",
             },
             {
                 "page_number": 2,
-                "text": '"Where did you go?" said Dad. The girl had to think. "The park first. Then the corner shop. Then the herb stand!" Dad took her hand. "Right. Let us go and look."',
+                "text": "Dad came with me to search. We walked up and down the street. 'It must be here,' said Dad.",
                 "image_prompt": "A girl and her dad walk hand in hand down a modern city street with colourful buildings. She looks thoughtful. Landscape orientation.",
             },
             {
                 "page_number": 3,
-                "text": 'First, they rushed to the park. She looked under the bench and in the ferns. She turned the leaves and checked the bushes. But no purple purse! "It is not at the park," she said.',
+                "text": "I looked under the bench in the park. I searched in the ferns. Not there!",
                 "image_prompt": "A girl bends down to search under a park bench surrounded by green ferns. She looks frustrated. Landscape orientation.",
             },
             {
                 "page_number": 4,
-                "text": 'Next, the corner shop. "Did you see a purple purse?" she asked. The man shook his head. "Not in my shop." The girl felt her chest hurt. Where was her purse?',
+                "text": "'A currant bun?' said the baker. But I had no coins to pay! I turned away, sad.",
                 "image_prompt": "A girl stands at the counter of a small corner shop, asking the shopkeeper a question. The shopkeeper shakes his head. Landscape orientation.",
             },
             {
                 "page_number": 5,
-                "text": 'She turned down a long street. Ferns grew on old stone by a church. She checked and checked. But her purse was not tucked in them. "What if I never get it back?" she said.',
+                "text": "Further on, we passed a church. Past more stalls and tall garden walls. I started to give up.",
                 "image_prompt": "A girl walks along a street past an old stone wall covered in ferns. A small church is visible in the background. She looks sad. Landscape orientation.",
             },
             {
                 "page_number": 6,
-                "text": 'Then Dad said, "The herb stand! You put your purse down as you got the herbs!" They rushed back. The herb seller smiled. "Is this it?" She held up a purple purse!',
+                "text": "Then a market lady held up a purple purse! 'I found this on the kerb. Is it yours?'",
                 "image_prompt": "A smiling woman at a herb stall holds up a small purple purse. The girl reaches for it with delight while Dad watches. Herbs in wooden crates around the stall. Landscape orientation.",
             },
             {
                 "page_number": 7,
-                "text": '"Yes! My purse!" The girl burst with joy. She turned it in her hands. It was just the same \u2014 soft, like fur. "Thank you so much!" she said to the seller.',
+                "text": "I turned the purse over. My coins were still in it! 'Thank you!' I burst out, smiling.",
                 "image_prompt": "A joyful girl holds a small purple purse close, examining it with a huge smile. Dad stands behind her smiling. Herb stall and modern street behind. Landscape orientation.",
             },
             {
                 "page_number": 8,
-                "text": 'On the way home, Dad said, "You did well. You did not stop." The girl held her purple purse close. "I will never let it go," she said. And she never did.',
+                "text": "Dad and I walked home in the warm afternoon. I held the purse close to my chest. 'She was so kind,' I said.",
                 "image_prompt": "A girl and her dad walk home along a modern street at golden hour. She clutches a small purple purse to her chest, looking happy and relieved. Landscape orientation.",
             },
         ],

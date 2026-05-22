@@ -378,7 +378,7 @@ export const BOOK_L4_2_PAGES: InteractivePage[] = [
   // Page 3
   {
     type: 'story',
-    sentences: ["Then Mum stopped and stared up.", "'Look!' she said.", 'A big brown owl sat on a bare branch.', 'It stared down at us and did not look scared at all.'],
+    sentences: ['Then Mum stopped and stared up at the bare branches.', "'Look!' she said.", 'I stared too.', 'Something was up there in the dark.', 'What was it?'],
     words: [
       word('Then', 'then', ['th','e','n']), word('Mum', 'mum', ['m','u','m']),
       word('stopped', 'stopped', ['s','t','o','pp','ed']), word('and', 'and', ['a','n','d']),
@@ -402,7 +402,7 @@ export const BOOK_L4_2_PAGES: InteractivePage[] = [
   // Page 4
   {
     type: 'story',
-    sentences: ['I stared at the owl.', 'The owl stared right back.', "'How rare!' said Mum.", "'You do not see owls like this!'", 'I wanted to get close but I did not dare.'],
+    sentences: ['Then I saw it.', 'A big brown owl!', 'It sat high up on a bare branch and stared right down at me.', 'How rare!', 'I stared back but I did not dare to get close.'],
     words: [
       tricky('I', 'I'), word('stared', 'stared', ['s','t','are','d']),
       word('at', 'at', ['a','t']), tricky('the', 'the'), word('owl.', 'owl', ['ow','l']),
@@ -427,7 +427,7 @@ export const BOOK_L4_2_PAGES: InteractivePage[] = [
   // Page 5
   {
     type: 'story',
-    sentences: ['Then the owl spread its wings and swooped down.', 'Wow!', 'It landed on a stump close to us.', 'I froze.', 'I did not dare to make a sound.'],
+    sentences: ['Then the owl spread its wings and swooped down from the branch.', 'Wow!', 'I froze.', 'I did not dare to make a sound.'],
     words: [
       word('Then', 'then', ['th','e','n']), tricky('the', 'the'),
       word('owl', 'owl', ['ow','l']), word('spread', 'spread', ['s','p','r','e','d']),
@@ -452,7 +452,7 @@ export const BOOK_L4_2_PAGES: InteractivePage[] = [
   // Page 6
   {
     type: 'story',
-    sentences: ['The owl looked up at a hole high in the tree.', "Out came soft cheeps.", "'Owlets!' said Mum.", "'She must look after them!'", 'I peeked and saw fluffy brown faces staring down at me.'],
+    sentences: ['The owl sat on a branch next to a hole high in the tree.', 'Out came soft cheeps.', "'Owlets!' said Mum.", "'She must look after them!'", 'I peeked and saw fluffy white faces staring down at me.'],
     words: [
       tricky('The', 'the'), word('owl', 'owl', ['ow','l']),
       word('looked', 'looked', ['l','oo','k','ed']), word('up', 'up', ['u','p']),
@@ -482,7 +482,7 @@ export const BOOK_L4_2_PAGES: InteractivePage[] = [
   // Page 7
   {
     type: 'story',
-    sentences: ['The owl swooped back up with a mouse in its claws.', 'The owlets crowded round, cheeping loud.', 'What a rare sight!', 'Mum and I shared a smile.'],
+    sentences: ['The owl swooped back up with a mouse in its claws.', 'The owlets crowded round, cheeping loudly.', 'What a rare sight!', 'Mum and I shared a smile.'],
     words: [
       tricky('The', 'the'), word('owl', 'owl', ['ow','l']),
       word('swooped', 'swooped', ['s','w','oo','p','ed']),

@@ -14,14 +14,14 @@ NIGHT_LIGHT_STORY_BOOK1 = {
         "book_title": "The Night Light",
         "focus_graphemes": ["ay", "ee", "igh"],  # L2.1 focus sounds
         "story_pages": [
-            {"text": "The sun is up.", "image": None},
-            {"text": "The day is ending.", "image": None},
-            {"text": "I sigh. It is dim.", "image": None},
-            {"text": "I need more light!", "image": None},
-            {"text": "A light! Up high! I can see!", "image": None},
-            {"text": "I see the way. The night is lit.", "image": None},
-            {"text": "Lights in the night. I can see!", "image": None},
-            {"text": "Day and night! I say 'Yay!'", "image": None},
+            {"text": "The day ends. I can not see my toy cat.", "image": None},
+            {"text": "We go out to look. It is night.", "image": None},
+            {"text": "Look at the lights. I can see in the shop.", "image": None},
+            {"text": "It is dim on the way. I need a light.", "image": None},
+            {"text": "Look, a light up high! It is the moon.", "image": None},
+            {"text": "Dad can see I am sad. He hugs me in the light.", "image": None},
+            {"text": "I see my toy cat! Dad and I run to it.", "image": None},
+            {"text": "I hug my toy cat. I say, \"Yay, my toy!\"", "image": None},
         ],
         "story_words": ["high", "day", "sigh", "need", "light", "see", "way", "night", "say", "yay"],
         "tricky_words_used": ["the", "I"],  # 'is', 'a' are decodable at this level

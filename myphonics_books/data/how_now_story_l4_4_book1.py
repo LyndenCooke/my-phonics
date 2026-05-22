@@ -47,7 +47,7 @@ HOW_NOW_STORY_BOOK1 = {
         "story_pages": [
             {
                 "page_number": 1,
-                "text": 'The sun was up. It was a new day! The boy and Mum went to the big pink mosque. "Wow!" said the boy. "Look at the trees!"',
+                "text": "The sun was up. It was a new day! The boy and Mum went to the big pink mosque. \"Wow!\" said the boy. \"It is so big!\"",
                 "image_prompt": "A Malaysian boy (about 5 years old, medium brown skin, short black hair, bright orange t-shirt, blue trousers, round glasses) and his mother (tall, slender, flowing dark green abaya and black niqab, only warm brown eyes visible) arrive at lush tropical gardens in Putrajaya, Malaysia. They walk along a path lined with tall palm trees and bright hibiscus flowers. The boy looks amazed, pointing ahead. Warm morning light. Whimsical children's book illustration style. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Landscape orientation.",
             },
             {
@@ -57,7 +57,7 @@ HOW_NOW_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": 'But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. "How now!" said the boy. "What is that?"',
+                "text": "But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. \"Wow!\" said the boy. \"What is THAT?\"",
                 "image_prompt": "A Malaysian boy (orange t-shirt, blue trousers, round glasses) stopped on a garden path, looking surprised at a brown long-tailed macaque monkey sitting on a low stone wall. The monkey has brown fur, a pale face, and a long tail, staring at the boy with a cheeky expression. Surrounded by tropical gardens with flowering hedges, palm trees, and hibiscus. Boy's hands raised in surprise. No mosque. Whimsical children's book illustration style. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Landscape orientation.",
             },
             {
@@ -67,7 +67,7 @@ HOW_NOW_STORY_BOOK1 = {
             },
             {
                 "page_number": 5,
-                "text": 'The boy ran after it. Round and round! The brown furry tail went past a tree. "How now! Where did it go?"',
+                "text": "The boy ran after it. Round and round! The brown furry tail went past a tree. \"Oh no! Where did it go?\"",
                 "image_prompt": "A Malaysian boy (orange t-shirt, blue trousers, round glasses) searching around a large palm tree trunk in tropical gardens. The brown tail of a macaque monkey is just visible poking out behind the trunk. Dense tropical plants, colourful flowers, neat hedges. The boy looks puzzled. No mosque. Whimsical children's book illustration style. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Landscape orientation.",
             },
             {
@@ -82,7 +82,7 @@ HOW_NOW_STORY_BOOK1 = {
             },
             {
                 "page_number": 8,
-                "text": 'The boy sat down with Mum by the water. The monkey was still munching. "How now!" said the boy with a grin. "This is the best day!"',
+                "text": "The boy sat down with Mum by the water. The monkey was still munching. \"Wow!\" said the boy with a grin. \"This is the best day!\"",
                 "image_prompt": "A Malaysian boy (orange t-shirt, blue trousers, round glasses) sits on a low wall by Putrajaya Lake with his mother (tall, slender, dark green abaya, black niqab). They look out across the water at the rose-pink Masjid Putra mosque in the distance — its pink dome and single minaret reflected in calm blue water. A brown macaque monkey sits nearby contentedly. Warm golden afternoon light. Serene scene. Whimsical children's book illustration style. CRITICAL: All characters must have tiny solid black dot eyes with NO white. Landscape orientation.",
             },
         ],
