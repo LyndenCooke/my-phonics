@@ -160,11 +160,11 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
   // ── 3-8. STORY PAGES ──
   {
     type: 'story',
-    sentences: ['I sit on a mat.', 'Tap, tap, tap!'],
+    sentences: ['I sit at a mat.', 'Tap, tap, tap!'],
     words: [
       tricky('I', 'I'),
       cvc('sit', 'sit'),
-      { display: 'on', word: 'on', phonemes: ['o','n'] },
+      { display: 'at', word: 'at', phonemes: ['a','t'] },
       tricky('a', 'a'),
       cvc('mat.', 'mat'),
       cvc('Tap,', 'tap'),
@@ -213,15 +213,16 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
     audioUrl: '/sounds/sentences/L1_1_p3.mp3',
   },
 
-  // Page 4: Story - "Tap, tap! I tap it."
+  // Page 7: Story - "Tap, tap! I pat at it."
   {
     type: 'story',
-    sentences: ['Tap, tap!', 'I tap it.'],
+    sentences: ['Tap, tap!', 'I pat at it.'],
     words: [
       cvc('Tap,', 'tap'),
       cvc('tap!', 'tap'),
       tricky('I', 'I'),
-      cvc('tap', 'tap'),
+      cvc('pat', 'pat'),
+      { display: 'at', word: 'at', phonemes: ['a','t'] },
       { display: 'it.', word: 'it', phonemes: ['i','t'] },
     ],
     imageUrl: '/illustrations/1_1/page4.png',
@@ -245,10 +246,10 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
     audioUrl: '/sounds/sentences/L1_1_p5.mp3',
   },
 
-  // Page 6: Story - "I pat the cat. The cat naps. I am glad!"
+  // Page 9: Story - "I pat the cat. The cat naps. I am happy!"
   {
     type: 'story',
-    sentences: ['I pat the cat.', 'The cat naps.', 'I am glad!'],
+    sentences: ['I pat the cat.', 'The cat naps.', 'I am happy!'],
     words: [
       tricky('I', 'I'),
       cvc('pat', 'pat'),
@@ -259,7 +260,7 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
       { display: 'naps.', word: 'naps', phonemes: ['n','a','p','s'] },
       tricky('I', 'I'),
       { display: 'am', word: 'am', phonemes: ['a','m'] },
-      { display: 'glad!', word: 'glad', phonemes: ['g','l','a','d'] },
+      tricky('happy!', 'happy'),
     ],
     imageUrl: '/illustrations/1_1/page6.png',
     audioUrl: '/sounds/sentences/L1_1_p6.mp3',
@@ -323,10 +324,10 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
 
   // ── 22. STORY ORDERING ──
   { type: 'story_ordering', items: [
-    { imageUrl: '/illustrations/1_1/page1.png', label: 'I sit on a mat.', correctIndex: 0 },
+    { imageUrl: '/illustrations/1_1/page1.png', label: 'I sit at a mat.', correctIndex: 0 },
     { imageUrl: '/illustrations/1_1/page2.png', label: 'Is it a rat?', correctIndex: 1 },
     { imageUrl: '/illustrations/1_1/page3.png', label: 'It is not a rat.', correctIndex: 2 },
-    { imageUrl: '/illustrations/1_1/page4.png', label: 'I tap it.', correctIndex: 3 },
+    { imageUrl: '/illustrations/1_1/page4.png', label: 'I pat at it.', correctIndex: 3 },
     { imageUrl: '/illustrations/1_1/page5.png', label: 'It is a cat!', correctIndex: 4 },
     { imageUrl: '/illustrations/1_1/page6.png', label: 'The cat naps.', correctIndex: 5 }] },
 

@@ -44,87 +44,82 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
     pw('say', 'say', ['s','ay']), pw('yay', 'yay', ['y','ay']),
   ]},
 
-  // Page 1 — sunset, child noticing the day is ending
-  { type: 'story', sentences: ['The sun is up.'],
+  // Page 1 — boy at home at dusk, searching sofa cushions for toy cat
+  { type: 'story', sentences: ['The day ends.', 'I sigh.'],
     words: [
-      tricky('The', 'the'), pw('sun', 'sun', ['s','u','n']),
-      tricky('is', 'is'), pw('up.', 'up', ['u','p']),
+      tricky('The', 'the'), pw('day', 'day', ['d','ay']), pw('ends.', 'ends', ['e','n','d','s']),
+      tricky('I', 'I'), pw('sigh.', 'sigh', ['s','igh']),
     ],
     imageUrl: '/illustrations/2_1/page1.png', audioUrl: '/sounds/sentences/L2_1_p1.mp3' },
 
-  // Page 2 — daylight fading
-  { type: 'story', sentences: ['The day is ending.'],
+  // Page 2 — dad and boy step out onto Tokyo street at night
+  { type: 'story', sentences: ['We go out.', 'It is night.'],
     words: [
-      tricky('The', 'the'), pw('day', 'day', ['d','ay']),
-      tricky('is', 'is'),
-      { display: 'ending.', word: 'ending', phonemes: ['e','n','d','i','ng'] },
+      tricky('We', 'we'), tricky('go', 'go'), pw('out.', 'out', ['ou','t']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('night.', 'night', ['n','igh','t']),
     ],
     imageUrl: '/illustrations/2_1/page2.png', audioUrl: '/sounds/sentences/L2_1_p2.mp3' },
 
-  // Page 3 — dim light, child sighs
-  { type: 'story', sentences: ['I sigh.', 'It is dim.'],
+  // Page 3 — boy peering into bright konbini, searching
+  { type: 'story', sentences: ['See the lights!', 'I can see!'],
     words: [
-      tricky('I', 'I'), pw('sigh.', 'sigh', ['s','igh']),
-      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('dim.', 'dim', ['d','i','m']),
+      pw('See', 'see', ['s','ee']), tricky('the', 'the'), pw('lights!', 'light', ['l','igh','t']),
+      tricky('I', 'I'), cvc('can', 'can'), pw('see!', 'see', ['s','ee']),
     ],
     imageUrl: '/illustrations/2_1/page3.png', audioUrl: '/sounds/sentences/L2_1_p3.mp3' },
 
-  // Page 4 — child wants more light to see
-  { type: 'story', sentences: ['I need more light!'],
+  // Page 4 — darker side street, boy pointing, worried
+  { type: 'story', sentences: ['It is dim.', 'I need a light.'],
     words: [
-      tricky('I', 'I'), pw('need', 'need', ['n','ee','d']),
-      tricky('more', 'more'),
-      pw('light!', 'light', ['l','igh','t']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('dim.', 'dim', ['d','i','m']),
+      tricky('I', 'I'), pw('need', 'need', ['n','ee','d']), tricky('a', 'a'), pw('light.', 'light', ['l','igh','t']),
     ],
     imageUrl: '/illustrations/2_1/page4.png', audioUrl: '/sounds/sentences/L2_1_p4.mp3' },
 
-  // Page 5 — a light up high (moon or street lamp); child can see again
-  { type: 'story', sentences: ['A light!', 'Up high!', 'I can see!'],
+  // Page 5 — both looking up at the full moon high above the city
+  { type: 'story', sentences: ['A light up high!', 'The moon!'],
     words: [
-      tricky('A', 'a'), pw('light!', 'light', ['l','igh','t']),
-      pw('Up', 'up', ['u','p']), pw('high!', 'high', ['h','igh']),
-      tricky('I', 'I'), cvc('can', 'can'), pw('see!', 'see', ['s','ee']),
+      tricky('A', 'a'), pw('light', 'light', ['l','igh','t']),
+      pw('up', 'up', ['u','p']), pw('high!', 'high', ['h','igh']),
+      tricky('The', 'the'), pw('moon!', 'moon', ['m','oo','n']),
     ],
     imageUrl: '/illustrations/2_1/page5.png', audioUrl: '/sounds/sentences/L2_1_p5.mp3' },
 
-  // Page 6 — child sees the way; night is fully lit
-  { type: 'story', sentences: ['I see the way.', 'The night is lit.'],
+  // Page 6 — dad crouches down, comforting sad boy
+  { type: 'story', sentences: ['Dad can see.', 'I am sad.'],
     words: [
-      tricky('I', 'I'), pw('see', 'see', ['s','ee']),
-      tricky('the', 'the'), pw('way.', 'way', ['w','ay']),
-      tricky('The', 'the'), pw('night', 'night', ['n','igh','t']),
-      tricky('is', 'is'), pw('lit.', 'lit', ['l','i','t']),
+      pw('Dad', 'dad', ['d','a','d']), cvc('can', 'can'), pw('see.', 'see', ['s','ee']),
+      tricky('I', 'I'), cvc('am', 'am'), pw('sad.', 'sad', ['s','a','d']),
     ],
     imageUrl: '/illustrations/2_1/page6.png', audioUrl: '/sounds/sentences/L2_1_p6.mp3' },
 
-  // Page 7 — many lights brighten the night
-  { type: 'story', sentences: ['Lights in the night.', 'I can see!'],
+  // Page 7 — dad points at the toy cat under a street light, boy runs toward it
+  { type: 'story', sentences: ['My cat!', 'I see it!', 'Yay!'],
     words: [
-      pw('Lights', 'lights', ['l','igh','t','s']),
-      pw('in', 'in', ['i','n']),
-      tricky('the', 'the'), pw('night.', 'night', ['n','igh','t']),
-      tricky('I', 'I'), cvc('can', 'can'), pw('see!', 'see', ['s','ee']),
+      tricky('My', 'my'), pw('cat!', 'cat', ['c','a','t']),
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), pw('it!', 'it', ['i','t']),
+      pw('Yay!', 'yay', ['y','ay']),
     ],
     imageUrl: '/illustrations/2_1/page7.png', audioUrl: '/sounds/sentences/L2_1_p7.mp3' },
 
-  // Page 8 — celebrating day and night
-  { type: 'story', sentences: ['Day and night!', "I say 'Yay!'"],
+  // Page 8 — boy hugging toy cat, both smiling happily
+  { type: 'story', sentences: ['Day and night!', 'I say "Yay!"'],
     words: [
       pw('Day', 'day', ['d','ay']),
       pw('and', 'and', ['a','n','d']), pw('night!', 'night', ['n','igh','t']),
       tricky('I', 'I'), pw('say', 'say', ['s','ay']),
-      { display: "'Yay!'", word: 'yay', phonemes: ['y','ay'] },
+      pw('"Yay!"', 'yay', ['y','ay']),
     ],
     imageUrl: '/illustrations/2_1/page8.png', audioUrl: '/sounds/sentences/L2_1_p8.mp3' },
 
   // ── QUIZ ──
   { type: 'quiz', questions: [
-    { question: 'Why did the child need a light?',
-      options: [{ label: 'It was getting dim.', isCorrect: true }, { label: 'It was raining.', isCorrect: false }, { label: 'They were cold.', isCorrect: false }] },
-    { question: 'What lit up the night?',
-      options: [{ label: 'a light up high', isCorrect: true }, { label: 'a torch', isCorrect: false }, { label: 'a candle', isCorrect: false }] },
-    { question: "What did the child say at the end?",
-      options: [{ label: "'Yay!'", isCorrect: true }, { label: "'No!'", isCorrect: false }, { label: "'Help!'", isCorrect: false }] },
+    { question: 'What did the boy lose?',
+      options: [{ label: 'his cat', isCorrect: true }, { label: 'his hat', isCorrect: false }, { label: 'his bag', isCorrect: false }] },
+    { question: 'What was up high in the night sky?',
+      options: [{ label: 'the moon', isCorrect: true }, { label: 'a kite', isCorrect: false }, { label: 'a plane', isCorrect: false }] },
+    { question: 'What did the boy say when he found his cat?',
+      options: [{ label: 'Yay!', isCorrect: true }, { label: 'No!', isCorrect: false }, { label: 'Help!', isCorrect: false }] },
   ]},
 
   // ── SOUND SPOTLIGHTS ──
@@ -179,19 +174,19 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
   { type: 'writing_practice', letters: ['ay', 'ee', 'igh'] },
 
   { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
-    { correctWords: ['The', 'sun', 'is', 'up.'], imageUrl: '/illustrations/2_1/page1.png' },
-    { correctWords: ['I', 'can', 'see!'], imageUrl: '/illustrations/2_1/page5.png' },
+    { correctWords: ['The', 'day', 'ends.'], imageUrl: '/illustrations/2_1/page1.png' },
+    { correctWords: ['I', 'see', 'the', 'moon.'], imageUrl: '/illustrations/2_1/page5.png' },
   ]},
 
   { type: 'story_ordering', items: [
-    { imageUrl: '/illustrations/2_1/page1.png', label: 'The sun is up.', correctIndex: 0 },
-    { imageUrl: '/illustrations/2_1/page2.png', label: 'The day is ending.', correctIndex: 1 },
-    { imageUrl: '/illustrations/2_1/page3.png', label: 'I sigh. It is dim.', correctIndex: 2 },
-    { imageUrl: '/illustrations/2_1/page4.png', label: 'I need more light!', correctIndex: 3 },
-    { imageUrl: '/illustrations/2_1/page5.png', label: 'A light! Up high!', correctIndex: 4 },
-    { imageUrl: '/illustrations/2_1/page6.png', label: 'I see the way.', correctIndex: 5 },
-    { imageUrl: '/illustrations/2_1/page7.png', label: 'Lights in the night.', correctIndex: 6 },
-    { imageUrl: '/illustrations/2_1/page8.png', label: "Day and night! I say 'Yay!'", correctIndex: 7 },
+    { imageUrl: '/illustrations/2_1/page1.png', label: 'The day ends. I sigh.', correctIndex: 0 },
+    { imageUrl: '/illustrations/2_1/page2.png', label: 'We go out. It is night.', correctIndex: 1 },
+    { imageUrl: '/illustrations/2_1/page3.png', label: 'See the lights! I can see!', correctIndex: 2 },
+    { imageUrl: '/illustrations/2_1/page4.png', label: 'It is dim. I need a light.', correctIndex: 3 },
+    { imageUrl: '/illustrations/2_1/page5.png', label: 'A light up high! The moon!', correctIndex: 4 },
+    { imageUrl: '/illustrations/2_1/page6.png', label: 'Dad can see. I am sad.', correctIndex: 5 },
+    { imageUrl: '/illustrations/2_1/page7.png', label: 'My cat! I see it! Yay!', correctIndex: 6 },
+    { imageUrl: '/illustrations/2_1/page8.png', label: 'Day and night! I say Yay!', correctIndex: 7 },
   ]},
 
   { type: 'drawing', prompt: 'Draw Your Favourite Part' },

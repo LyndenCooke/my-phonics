@@ -103,14 +103,14 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
   // Page 2: "'Ride to the lake and back!' the man said."
   {
     type: 'story',
-    sentences: ['‘Ride to the lake and back!’ the man said.', 'Can I win?', 'I grip my bike tight.'],
+    sentences: ["'Ride to the lake and back!' the man said.", 'Can I win?', 'I grip my bike tight.'],
     words: [
-      w('‘Ride', 'ride', ['r','i-e','d']),
+      w("'Ride", 'ride', ['r','i-e','d']),
       tricky('to', 'to'),
       tricky('the', 'the'),
       w('lake', 'lake', ['l','a-e','k']),
       w('and', 'and', ['a','n','d']),
-      w('back!’', 'back', ['b','a','ck']),
+      w("back!'", 'back', ['b','a','ck']),
       tricky('the', 'the'),
       w('man', 'man', ['m','a','n']),
       tricky('said.', 'said'),
@@ -157,7 +157,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
   // Page 4: "Look out! Stones on the track."
   {
     type: 'story',
-    sentences: ['Look out!', 'Stones on the track.', 'A bike slides and a girl falls off.', 'She gives me a brave smile.'],
+    sentences: ['Look out!', 'Stones on the track.', 'A bike slides and a girl falls off.', 'She gave me a brave smile.'],
     words: [
       w('Look', 'look', ['l','oo','k']),
       w('out!', 'out', ['ou','t']),
@@ -174,7 +174,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('falls', 'falls', ['f','a','ll','s']),
       w('off.', 'off', ['o','ff']),
       tricky('She', 'she'),
-      w('gives', 'gives', ['g','i','v','s']),
+      w('gave', 'gave', ['g','a-e','v']),
       w('me', 'me', ['m','ee']),
       tricky('a', 'a'),
       w('brave', 'brave', ['b','r','a-e','v']),
@@ -186,7 +186,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
   // Page 5: "I can see the lake!"
   {
     type: 'story',
-    sentences: ['I can see the lake!', 'It shines in the sun.', 'I ride past it and head back.'],
+    sentences: ['I can see the lake!', 'It shines in the sun.', 'I ride past it and turn back.'],
     words: [
       tricky('I', 'I'),
       w('can', 'can', ['c','a','n']),
@@ -203,7 +203,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('past', 'past', ['p','a','s','t']),
       w('it', 'it', ['i','t']),
       w('and', 'and', ['a','n','d']),
-      w('head', 'head', ['h','ea','d']),
+      w('turn', 'turn', ['t','ur','n']),
       w('back.', 'back', ['b','a','ck']),
     ],
     imageUrl: '/illustrations/3_1/page5.png', audioUrl: '/sounds/sentences/L3_1_p5.mp3',
@@ -237,7 +237,7 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
   // Page 7: "I am past the line! I made it!"
   {
     type: 'story',
-    sentences: ['I am past the line!', 'I made it!', 'I race past the line with a wide grin.'],
+    sentences: ['I am past the line!', 'I made it!', 'I slide off my bike with a wide grin.'],
     words: [
       tricky('I', 'I'),
       w('am', 'am', ['a','m']),
@@ -248,10 +248,10 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
       w('made', 'made', ['m','a-e','d']),
       w('it!', 'it', ['i','t']),
       tricky('I', 'I'),
-      w('race', 'race', ['r','a-e','s']),
-      w('past', 'past', ['p','a','s','t']),
-      tricky('the', 'the'),
-      w('line', 'line', ['l','i-e','n']),
+      w('slide', 'slide', ['s','l','i-e','d']),
+      w('off', 'off', ['o','ff']),
+      w('my', 'my', ['m','y']),
+      w('bike', 'bike', ['b','i-e','k']),
       w('with', 'with', ['w','i','th']),
       tricky('a', 'a'),
       w('wide', 'wide', ['w','i-e','d']),
@@ -260,17 +260,22 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/3_1/page7.png', audioUrl: '/sounds/sentences/L3_1_p7.mp3',
   },
 
-  // Page 8: "A prize! A gold medal!"
+  // Page 8: "A prize! I am on the top step!"
   {
     type: 'story',
-    sentences: ['A prize!', 'A gold medal!', 'I wave at my mates.', 'What a good day!'],
+    sentences: ['A prize!', 'I am on the top step!', 'I smile and wave at my mates.', 'What a good day!'],
     words: [
       tricky('A', 'a'),
       w('prize!', 'prize', ['p','r','i-e','z']),
-      tricky('A', 'a'),
-      w('gold', 'gold', ['g','o','l','d']),
-      w('medal!', 'medal', ['m','e','d','a','l']),
       tricky('I', 'I'),
+      w('am', 'am', ['a','m']),
+      w('on', 'on', ['o','n']),
+      tricky('the', 'the'),
+      w('top', 'top', ['t','o','p']),
+      w('step!', 'step', ['s','t','e','p']),
+      tricky('I', 'I'),
+      w('smile', 'smile', ['s','m','i-e','l']),
+      w('and', 'and', ['a','n','d']),
       w('wave', 'wave', ['w','a-e','v']),
       w('at', 'at', ['a','t']),
       w('my', 'my', ['m','y']),
@@ -291,8 +296,8 @@ export const BOOK_L3_1_PAGES: InteractivePage[] = [
         options: [{ label: 'the lake', isCorrect: true }, { label: 'the shops', isCorrect: false }, { label: 'the park', isCorrect: false }] },
       { question: 'What happened on the track?',
         options: [{ label: 'a girl fell off', isCorrect: true }, { label: 'it rained', isCorrect: false }, { label: 'a dog ran past', isCorrect: false }] },
-      { question: 'What did the rider win at the end?',
-        options: [{ label: 'a gold medal', isCorrect: true }, { label: 'a new bike', isCorrect: false }, { label: 'a snack', isCorrect: false }] },
+      { question: 'What happened at the end?',
+        options: [{ label: 'he got on the top step', isCorrect: true }, { label: 'he fell off', isCorrect: false }, { label: 'he came last', isCorrect: false }] },
     ],
   },
 
