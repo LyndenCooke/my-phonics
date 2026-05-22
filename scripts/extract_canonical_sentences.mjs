@@ -30,7 +30,10 @@ const TS_FILES = [
 
 const BOOK_RE = /export\s+const\s+BOOK_L(\d+)_(\d+)_PAGES\s*:\s*InteractivePage\[\]\s*=\s*\[/g;
 
-/** Find the matching closing bracket for `[` at `openIdx`. */
+/** Find the matching closing bracket for `[` at `openIdx`.
+ *  Skips JS line (`//`) and block (`/* *\/`) comments so contractions
+ *  like `doesn't` in a comment don't open a phantom string and swallow
+ *  the real closing bracket. */
 function matchBracket(src, openIdx) {
   let depth = 0;
   let inStr = null;
@@ -41,6 +44,16 @@ function matchBracket(src, openIdx) {
       if (c === '\\') { i += 2; continue; }
       if (c === inStr) inStr = null;
     } else {
+      if (c === '/' && src[i + 1] === '/') {
+        const nl = src.indexOf('\n', i);
+        if (nl === -1) return -1;
+        i = nl + 1; continue;
+      }
+      if (c === '/' && src[i + 1] === '*') {
+        const end = src.indexOf('*/', i + 2);
+        if (end === -1) return -1;
+        i = end + 2; continue;
+      }
       if (c === '"' || c === "'" || c === '`') inStr = c;
       else if (c === '[') depth++;
       else if (c === ']') { depth--; if (depth === 0) return i; }
