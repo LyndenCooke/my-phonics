@@ -37,78 +37,90 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
   { type: 'sound_grid', focusSounds: ['ay', 'ee', 'igh'], allSounds: L2_ALL_SOUNDS },
 
   { type: 'vocab_preview', words: [
-    pw('high', 'high', ['h','igh']), pw('day', 'day', ['d','ay']),
-    pw('sigh', 'sigh', ['s','igh']), pw('need', 'need', ['n','ee','d']),
-    pw('light', 'light', ['l','igh','t']), pw('see', 'see', ['s','ee']),
-    pw('way', 'way', ['w','ay']), pw('night', 'night', ['n','igh','t']),
+    pw('day', 'day', ['d','ay']), pw('way', 'way', ['w','ay']),
     pw('say', 'say', ['s','ay']), pw('yay', 'yay', ['y','ay']),
+    pw('see', 'see', ['s','ee']), pw('need', 'need', ['n','ee','d']),
+    pw('light', 'light', ['l','igh','t']), pw('night', 'night', ['n','igh','t']),
+    pw('high', 'high', ['h','igh']), pw('toy', 'toy', ['t','oy']),
   ]},
 
   // Page 1 — boy at home at dusk, searching sofa cushions for toy cat
-  { type: 'story', sentences: ['The day ends.', 'I sigh.'],
+  { type: 'story', sentences: ['The day ends.', 'I can not see my toy cat.'],
     words: [
       tricky('The', 'the'), pw('day', 'day', ['d','ay']), pw('ends.', 'ends', ['e','n','d','s']),
-      tricky('I', 'I'), pw('sigh.', 'sigh', ['s','igh']),
+      tricky('I', 'I'), pw('can', 'can', ['c','a','n']), pw('not', 'not', ['n','o','t']),
+      pw('see', 'see', ['s','ee']),
+      tricky('my', 'my'), pw('toy', 'toy', ['t','oy']), pw('cat.', 'cat', ['c','a','t']),
     ],
     imageUrl: '/illustrations/2_1/page1.png', audioUrl: '/sounds/sentences/L2_1_p1.mp3' },
 
   // Page 2 — dad and boy step out onto Tokyo street at night
-  { type: 'story', sentences: ['We go out.', 'It is night.'],
+  { type: 'story', sentences: ['We go out to look.', 'It is night.'],
     words: [
-      tricky('We', 'we'), tricky('go', 'go'), pw('out.', 'out', ['ou','t']),
+      tricky('We', 'we'), tricky('go', 'go'), pw('out', 'out', ['ou','t']),
+      tricky('to', 'to'), pw('look.', 'look', ['l','oo','k']),
       pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('night.', 'night', ['n','igh','t']),
     ],
     imageUrl: '/illustrations/2_1/page2.png', audioUrl: '/sounds/sentences/L2_1_p2.mp3' },
 
   // Page 3 — boy peering into bright konbini, searching
-  { type: 'story', sentences: ['See the lights!', 'I can see!'],
+  { type: 'story', sentences: ['Look at the lights.', 'I can see in the shop.'],
     words: [
-      pw('See', 'see', ['s','ee']), tricky('the', 'the'), pw('lights!', 'light', ['l','igh','t']),
-      tricky('I', 'I'), cvc('can', 'can'), pw('see!', 'see', ['s','ee']),
+      pw('Look', 'look', ['l','oo','k']), pw('at', 'at', ['a','t']),
+      tricky('the', 'the'), pw('lights.', 'lights', ['l','igh','t','s']),
+      tricky('I', 'I'), cvc('can', 'can'), pw('see', 'see', ['s','ee']),
+      pw('in', 'in', ['i','n']), tricky('the', 'the'), pw('shop.', 'shop', ['sh','o','p']),
     ],
     imageUrl: '/illustrations/2_1/page3.png', audioUrl: '/sounds/sentences/L2_1_p3.mp3' },
 
   // Page 4 — darker side street, boy pointing, worried
-  { type: 'story', sentences: ['It is dim.', 'I need a light.'],
+  { type: 'story', sentences: ['It is dim on the way.', 'I need a light.'],
     words: [
-      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('dim.', 'dim', ['d','i','m']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('dim', 'dim', ['d','i','m']),
+      pw('on', 'on', ['o','n']), tricky('the', 'the'), pw('way.', 'way', ['w','ay']),
       tricky('I', 'I'), pw('need', 'need', ['n','ee','d']), tricky('a', 'a'), pw('light.', 'light', ['l','igh','t']),
     ],
     imageUrl: '/illustrations/2_1/page4.png', audioUrl: '/sounds/sentences/L2_1_p4.mp3' },
 
   // Page 5 — both looking up at the full moon high above the city
-  { type: 'story', sentences: ['A light up high!', 'The moon!'],
+  { type: 'story', sentences: ['Look, a light up high!', 'It is the moon.'],
     words: [
-      tricky('A', 'a'), pw('light', 'light', ['l','igh','t']),
-      pw('up', 'up', ['u','p']), pw('high!', 'high', ['h','igh']),
-      tricky('The', 'the'), pw('moon!', 'moon', ['m','oo','n']),
+      pw('Look,', 'look', ['l','oo','k']), tricky('a', 'a'),
+      pw('light', 'light', ['l','igh','t']), pw('up', 'up', ['u','p']),
+      pw('high!', 'high', ['h','igh']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), tricky('the', 'the'),
+      pw('moon.', 'moon', ['m','oo','n']),
     ],
     imageUrl: '/illustrations/2_1/page5.png', audioUrl: '/sounds/sentences/L2_1_p5.mp3' },
 
   // Page 6 — dad crouches down, comforting sad boy
-  { type: 'story', sentences: ['Dad can see.', 'I am sad.'],
+  { type: 'story', sentences: ['Dad can see I am sad.', 'He hugs me in the light.'],
     words: [
-      pw('Dad', 'dad', ['d','a','d']), cvc('can', 'can'), pw('see.', 'see', ['s','ee']),
+      pw('Dad', 'dad', ['d','a','d']), cvc('can', 'can'), pw('see', 'see', ['s','ee']),
       tricky('I', 'I'), cvc('am', 'am'), pw('sad.', 'sad', ['s','a','d']),
+      tricky('He', 'he'), pw('hugs', 'hugs', ['h','u','g','s']), tricky('me', 'me'),
+      pw('in', 'in', ['i','n']), tricky('the', 'the'), pw('light.', 'light', ['l','igh','t']),
     ],
     imageUrl: '/illustrations/2_1/page6.png', audioUrl: '/sounds/sentences/L2_1_p6.mp3' },
 
   // Page 7 — dad points at the toy cat under a street light, boy runs toward it
-  { type: 'story', sentences: ['My cat!', 'I see it!', 'Yay!'],
+  { type: 'story', sentences: ['I see my toy cat!', 'Dad and I run to it.'],
     words: [
-      tricky('My', 'my'), pw('cat!', 'cat', ['c','a','t']),
-      tricky('I', 'I'), pw('see', 'see', ['s','ee']), pw('it!', 'it', ['i','t']),
-      pw('Yay!', 'yay', ['y','ay']),
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), tricky('my', 'my'),
+      pw('toy', 'toy', ['t','oy']), pw('cat!', 'cat', ['c','a','t']),
+      pw('Dad', 'dad', ['d','a','d']), pw('and', 'and', ['a','n','d']),
+      tricky('I', 'I'), pw('run', 'run', ['r','u','n']), tricky('to', 'to'),
+      pw('it.', 'it', ['i','t']),
     ],
     imageUrl: '/illustrations/2_1/page7.png', audioUrl: '/sounds/sentences/L2_1_p7.mp3' },
 
   // Page 8 — boy hugging toy cat, both smiling happily
-  { type: 'story', sentences: ['Day and night!', 'I say "Yay!"'],
+  { type: 'story', sentences: ['I hug my toy cat.', 'I say, "Yay, my toy!"'],
     words: [
-      pw('Day', 'day', ['d','ay']),
-      pw('and', 'and', ['a','n','d']), pw('night!', 'night', ['n','igh','t']),
-      tricky('I', 'I'), pw('say', 'say', ['s','ay']),
-      pw('"Yay!"', 'yay', ['y','ay']),
+      tricky('I', 'I'), pw('hug', 'hug', ['h','u','g']), tricky('my', 'my'),
+      pw('toy', 'toy', ['t','oy']), pw('cat.', 'cat', ['c','a','t']),
+      tricky('I', 'I'), pw('say,', 'say', ['s','ay']),
+      pw('"Yay,', 'yay', ['y','ay']), tricky('my', 'my'), pw('toy!"', 'toy', ['t','oy']),
     ],
     imageUrl: '/illustrations/2_1/page8.png', audioUrl: '/sounds/sentences/L2_1_p8.mp3' },
 
@@ -221,11 +233,11 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_2/page1.png', audioUrl: '/sounds/sentences/L2_2_p1.mp3' },
 
   // Page 2
-  { type: 'story', sentences: ['I look at the cows.', 'Moo! Moo! No owl.', 'I will look on.'],
+  { type: 'story', sentences: ['I look at the cow.', 'Moo! Moo! No owl.', 'I will look on.'],
     words: [
       tricky('I', 'I'), pw('look', 'look', ['l','oo','k']),
       pw('at', 'at', ['a','t']), tricky('the', 'the'),
-      pw('cows.', 'cow', ['c','ow']),
+      pw('cow.', 'cow', ['c','ow']),
       pw('Moo!', 'moo', ['m','oo']), pw('Moo!', 'moo', ['m','oo']),
       tricky('No', 'no'), pw('owl.', 'owl', ['ow','l']),
       tricky('I', 'I'), pw('will', 'will', ['w','i','ll']),
@@ -234,11 +246,11 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_2/page2.png', audioUrl: '/sounds/sentences/L2_2_p2.mp3' },
 
   // Page 3
-  { type: 'story', sentences: ['Wow! A big show.', 'A seal can shoot a hoop!', 'No owl.'],
+  { type: 'story', sentences: ['Wow! A big show.', 'A shark can shoot a hoop!', 'No owl.'],
     words: [
       pw('Wow!', 'wow', ['w','ow']), tricky('A', 'a'), cvc('big', 'big'),
       pw('show.', 'show', ['sh','ow']),
-      tricky('A', 'a'), pw('seal', 'seal', ['s','ee','l']), cvc('can', 'can'),
+      tricky('A', 'a'), pw('shark', 'shark', ['sh','ar','k']), cvc('can', 'can'),
       pw('shoot', 'shoot', ['sh','oo','t']), tricky('a', 'a'),
       pw('hoop!', 'hoop', ['h','oo','p']),
       tricky('No', 'no'), pw('owl.', 'owl', ['ow','l']),
@@ -268,12 +280,12 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_2/page5.png', audioUrl: '/sounds/sentences/L2_2_p5.mp3' },
 
   // Page 6
-  { type: 'story', sentences: ['I am so sad now.', 'Then my dad calls, "Look up!"'],
+  { type: 'story', sentences: ['I am sad now.', 'Then my dad shouts, "Look up!"'],
     words: [
-      tricky('I', 'I'), pw('am', 'am', ['a','m']), tricky('so', 'so'),
+      tricky('I', 'I'), pw('am', 'am', ['a','m']),
       cvc('sad', 'sad'), pw('now.', 'now', ['n','ow']),
       pw('Then', 'then', ['th','e','n']), tricky('my', 'my'), cvc('dad', 'dad'),
-      tricky('calls,', 'calls'),
+      pw('shouts,', 'shouts', ['sh','ou','t','s']),
       pw('"Look', 'look', ['l','oo','k']), pw('up!"', 'up', ['u','p']),
     ],
     imageUrl: '/illustrations/2_2/page6.png', audioUrl: '/sounds/sentences/L2_2_p6.mp3' },
@@ -290,13 +302,13 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_2/page7.png', audioUrl: '/sounds/sentences/L2_2_p7.mp3' },
 
   // Page 8
-  { type: 'story', sentences: ['The owl bows at me.', 'I bow too.', 'The zoo is so good!'],
+  { type: 'story', sentences: ['The owl bows at me.', 'I bow too.', 'The zoo is good!'],
     words: [
       tricky('The', 'the'), pw('owl', 'owl', ['ow','l']),
       pw('bows', 'bow', ['b','ow']), pw('at', 'at', ['a','t']), tricky('me.', 'me'),
       tricky('I', 'I'), pw('bow', 'bow', ['b','ow']), pw('too.', 'too', ['t','oo']),
       tricky('The', 'the'), pw('zoo', 'zoo', ['z','oo']), tricky('is', 'is'),
-      tricky('so', 'so'), pw('good!', 'good', ['g','oo','d']),
+      pw('good!', 'good', ['g','oo','d']),
     ],
     imageUrl: '/illustrations/2_2/page8.png', audioUrl: '/sounds/sentences/L2_2_p8.mp3' },
 
@@ -435,25 +447,25 @@ export const BOOK_L2_3_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_3/page4.png', audioUrl: '/sounds/sentences/L2_3_p4.mp3' },
 
   // Page 5
-  { type: 'story', sentences: ['I get a torch for the dark.', 'I march to the big barn door.'],
+  { type: 'story', sentences: ['I get a torch for the dark.', 'I march to the big barn doors.'],
     words: [
       tricky('I', 'I'), pw('get', 'get', ['g','e','t']), tricky('a', 'a'),
       pw('torch', 'torch', ['t','or','ch']), pw('for', 'for', ['f','or']),
       tricky('the', 'the'), pw('dark.', 'dark', ['d','ar','k']),
       tricky('I', 'I'), pw('march', 'march', ['m','ar','ch']),
       tricky('to', 'to'), tricky('the', 'the'), cvc('big', 'big'),
-      pw('barn', 'barn', ['b','ar','n']), pw('door.', 'door', ['d','oo','r']),
+      pw('barn', 'barn', ['b','ar','n']), pw('doors.', 'doors', ['d','oo','r','s']),
     ],
     imageUrl: '/illustrations/2_3/page5.png', audioUrl: '/sounds/sentences/L2_3_p5.mp3' },
 
   // Page 6
-  { type: 'story', sentences: ['It is dark in the barn.', 'I look far into a corner.', 'I see a thing!'],
+  { type: 'story', sentences: ['It is dark in the barn.', 'I look far into a pen.', 'I see a thing!'],
     words: [
       pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('dark', 'dark', ['d','ar','k']),
       pw('in', 'in', ['i','n']), tricky('the', 'the'), pw('barn.', 'barn', ['b','ar','n']),
       tricky('I', 'I'), pw('look', 'look', ['l','oo','k']),
       pw('far', 'far', ['f','ar']), tricky('into', 'into'),
-      tricky('a', 'a'), pw('corner.', 'corner', ['c','or','n','er']),
+      tricky('a', 'a'), pw('pen.', 'pen', ['p','e','n']),
       tricky('I', 'I'), pw('see', 'see', ['s','ee']), tricky('a', 'a'),
       pw('thing!', 'thing', ['th','i','ng']),
     ],
@@ -471,7 +483,7 @@ export const BOOK_L2_3_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_3/page7.png', audioUrl: '/sounds/sentences/L2_3_p7.mp3' },
 
   // Page 8
-  { type: 'story', sentences: ['I hug the warm kid with my dad.', 'This farm is too good!'],
+  { type: 'story', sentences: ['I hug the warm kid with my dad.', 'This farm is too good!', 'I wish I had a farm!'],
     words: [
       tricky('I', 'I'), cvc('hug', 'hug'), tricky('the', 'the'),
       pw('warm', 'warm', ['w','ar','m']), cvc('kid', 'kid'),
@@ -479,6 +491,9 @@ export const BOOK_L2_3_PAGES: InteractivePage[] = [
       pw('This', 'this', ['th','i','s']), pw('farm', 'farm', ['f','ar','m']),
       tricky('is', 'is'), pw('too', 'too', ['t','oo']),
       pw('good!', 'good', ['g','oo','d']),
+      tricky('I', 'I'), pw('wish', 'wish', ['w','i','sh']),
+      tricky('I', 'I'), pw('had', 'had', ['h','a','d']),
+      tricky('a', 'a'), pw('farm!', 'farm', ['f','ar','m']),
     ],
     imageUrl: '/illustrations/2_3/page8.png', audioUrl: '/sounds/sentences/L2_3_p8.mp3' },
 
@@ -789,7 +804,7 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
     imageUrl: '/illustrations/2_5/page2.png', audioUrl: '/sounds/sentences/L2_5_p2.mp3' },
 
   // Page 3
-  { type: 'story', sentences: ['But it ran too far!', 'My toy!', 'I looked around and around.', 'I can not see it!'],
+  { type: 'story', sentences: ['But it ran too far!', 'My toy!', 'I looked around and around.', 'I cannot see it!'],
     words: [
       pw('But', 'but', ['b','u','t']), pw('it', 'it', ['i','t']),
       cvc('ran', 'ran'), pw('too', 'too', ['t','oo']), pw('far!', 'far', ['f','ar']),
@@ -797,19 +812,19 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
       tricky('I', 'I'), pw('looked', 'look', ['l','oo','k']),
       pw('around', 'around', ['a','r','ou','n','d']),
       pw('and', 'and', ['a','n','d']), pw('around.', 'around', ['a','r','ou','n','d']),
-      tricky('I', 'I'), cvc('can', 'can'), cvc('not', 'not'),
+      tricky('I', 'I'), tricky('cannot', 'cannot'),
       pw('see', 'see', ['s','ee']), pw('it!', 'it', ['i','t']),
     ],
     imageUrl: '/illustrations/2_5/page3.png', audioUrl: '/sounds/sentences/L2_5_p3.mp3' },
 
   // Page 4
-  { type: 'story', sentences: ['I shouted out loud.', '"Mum! I need you!', 'I can not see my toy!"'],
+  { type: 'story', sentences: ['I shouted out loud.', '"Mum! I need you!', 'I cannot see my toy!"'],
     words: [
       tricky('I', 'I'), pw('shouted', 'shout', ['sh','ou','t']),
       pw('out', 'out', ['ou','t']), pw('loud.', 'loud', ['l','ou','d']),
       pw('"Mum!', 'mum', ['m','u','m']), tricky('I', 'I'),
       pw('need', 'need', ['n','ee','d']), tricky('you!', 'you'),
-      tricky('I', 'I'), cvc('can', 'can'), cvc('not', 'not'),
+      tricky('I', 'I'), tricky('cannot', 'cannot'),
       pw('see', 'see', ['s','ee']), tricky('my', 'my'), pw('toy!"', 'toy', ['t','oy']),
     ],
     imageUrl: '/illustrations/2_5/page4.png', audioUrl: '/sounds/sentences/L2_5_p4.mp3' },

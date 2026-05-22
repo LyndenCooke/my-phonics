@@ -24,7 +24,7 @@ NIGHT_MARKET_STORY_BOOK1 = {
         "focus_graphemes": ["o-e", "u-e"],
         "story_pages": [
             {
-                "text": "Mum and I went to the night market. It was huge! \u2018Stay close to me,\u2019 Mum said. And I did.",
+                "text": "Mum and I went to the night market. It was huge! ‘Stay close to me,’ Mum spoke. And I did.",
                 "image": None,
             },
             {
@@ -36,7 +36,7 @@ NIGHT_MARKET_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "It was dark and loud. I felt little. \u2018Mum!\u2019 I shouted. But Mum was not near.",
+                "text": "It was dark and loud. I felt so small. ‘Mum!’ I shout. But Mum is not there.",
                 "image": None,
             },
             {
@@ -44,15 +44,15 @@ NIGHT_MARKET_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I run past the bright lights. I run past the noodle stand. Then\u2026 I see Mum!",
+                "text": "I run past the bright lights. I run past the noodle stand. Then… I see Mum!",
                 "image": None,
             },
             {
-                "text": "Mum gave me a huge tight hug. \u2018You are safe!\u2019 she said. I did not let go.",
+                "text": "Mum gave me a huge tight hug. ‘You are safe!’ she spoke. I did not let go.",
                 "image": None,
             },
             {
-                "text": "We sat close and ate hot noodles in the moonlight. \u2018Stay close to me!\u2019 said Mum. I gave a huge grin. Home time!",
+                "text": "We sat close and ate hot noodles in the moonlight. ‘Stay close to me!’ spoke Mum. I gave a huge grin. Home time!",
                 "image": None,
             },
         ],

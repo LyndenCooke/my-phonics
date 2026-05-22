@@ -29,35 +29,35 @@ DREAM_TEAM_STORY_BOOK1 = {
         "focus_graphemes": ["ea", "ie"],
         "story_pages": [
             {
-                "text": "Each week I go to see Nana at her home. She has a neat yard with green plants and a big tree.",
+                "text": "Nana sits by her gate. She looks so tired. \"I need to clean,\" she said. \"But it is too much.\"",
                 "image": None,
             },
             {
-                "text": "Nana sits in her red seat. I clean up the weeds and pick each brown leaf off the path.",
+                "text": "I kneel by each plant pot and clean the leaves. \"Let me help, Nana!\" I said. She tried to grin.",
                 "image": None,
             },
             {
-                "text": "A boy from the street runs up. \u2018Can I be in your team?\u2019 he says. He tries a big kick \u2014 the ball flies past me!",
+                "text": "I run and find him. \"Please, can you help?\" I cried. \"We need to be a team!\"",
                 "image": None,
             },
             {
-                "text": "We help Nana clean. I sweep the leaves in a heap. He dries each seat and picks up sticks.",
+                "text": "We each grab a cloth. We clean the step and sweep the yard. Leaves fly!",
                 "image": None,
             },
             {
-                "text": "Nana needs jars from the high shelf. I stand on a stool and reach up high. He keeps it still so I am safe.",
+                "text": "I stand on a stool. He holds it. I reach up and grab each tin from the shelf. \"I got them!\"",
                 "image": None,
             },
             {
-                "text": "We line up each jar neat and clean. Nana spies us from the door. \u2018What a team!\u2019 she cries.",
+                "text": "We clean each tin and line them up neat. Nana peeks in. \"What a dream team!\" she cried.",
                 "image": None,
             },
             {
-                "text": "Nana has cash for a treat. We go to the street shop. I reach for a green drink and he grabs a red one.",
+                "text": "Then we run to the shop. We get beans and rice and sweet plantain for Nana. What a treat!",
                 "image": None,
             },
             {
-                "text": "We eat a big feast at Nana\u2019s home. Steam from the beans fills each dish. We are the dream team!",
+                "text": "Nana grins and grins. She brings us each a big feast — beans and rice with fried plantain! We beam. \"Thank you, Nana!\"",
                 "image": None,
             },
         ],

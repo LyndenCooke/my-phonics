@@ -37,12 +37,12 @@ NEW_GLUE_STORY_BOOK1 = {
         "story_pages": [
             {
                 "page_number": 1,
-                "text": 'The girl had a bottle of new blue glue. She drew a bird on a card. "This card is for Mum," she said to Dad. She pressed the blue glue on \u2014 but she pressed too hard!',
+                "text": "The girl had a pot of new blue glue. She drew a bird on a card. \"This card is for Mum,\" she said to Dad. She pressed the blue glue on — but she pressed too hard!",
                 "image_prompt": "A girl at a craft desk in a colourful bedroom presses glue on a card. Blue glue spreads everywhere on the desk. Warm terracotta walls, colourful woven cushions, tiled floor. She looks surprised. Landscape orientation.",
             },
             {
                 "page_number": 2,
-                "text": 'The blue glue spread across the desk and stuck to her hand! She pulled and she shook. Then the card flew off her hand, across the room and down the stairs!',
+                "text": "The blue glue spread across the desk and stuck to her hand! She pulled and she shook. Then the card flew off her hand, down the hall and down the stairs!",
                 "image_prompt": "A white card covered in blue glue flies down a colourful tiled staircase toward a ginger tabby cat sitting peacefully at the bottom. No people in this scene — just the flying card and the cat. Warm-coloured hallway with painted walls and decorative tiles on the stair risers. Landscape orientation.",
             },
             {
@@ -52,17 +52,17 @@ NEW_GLUE_STORY_BOOK1 = {
             },
             {
                 "page_number": 4,
-                "text": 'The cat flew into the living room and jumped on the shelf. It bumped a blue cup of tea. The cup fell and tea ran down on to the new rug.',
+                "text": "The cat flew into the front room and jumped on the shelf. It bumped a blue cup of tea. The cup fell and tea ran down on to the new rug.",
                 "image_prompt": "A ginger cat leaps across a colourful living room and bumps a blue cup off a shelf. Tea spills down toward a bright woven rug. Warm walls with colourful pottery on shelves. Landscape orientation.",
             },
             {
                 "page_number": 5,
-                "text": 'Then the cat ran into the room. Dad was at the sink. He turned to look, but he did not see the wet patch on the ground. So he slid and fell with a bump! "This is all due to that blue glue!" he said.',
+                "text": "Then the cat ran into the kitchen. Dad was at the sink. He turned to look, but he did not see the wet patch on the ground. So he slid and fell with a bump! \"This is all due to that blue glue!\" he said.",
                 "image_prompt": "A man slips and falls on a wet kitchen floor while a ginger cat runs past. Blue and white Talavera tiles on the wall, modern kitchen with clay pots on a shelf. He looks surprised mid-fall. Landscape orientation.",
             },
             {
                 "page_number": 6,
-                "text": 'Then the cat ran out into the garden. It jumped up high and bumped a pot of blue flowers. The pot started to fall! The girl threw her arms out and rescued it just in time.',
+                "text": "Then the cat ran out into the garden. It jumped on the wall and bumped a pot of blue flowers. The pot started to fall! The girl threw her arms out and rescued it just in time.",
                 "image_prompt": "A girl dives to catch a falling terracotta pot of blue flowers knocked by a ginger cat on a garden wall. Lush patio garden with bougainvillea, potted plants, and warm-coloured walls. She looks determined. Landscape orientation. CRITICAL: The ginger cat MUST have tiny solid black dot eyes with NO white in them.",
             },
             {

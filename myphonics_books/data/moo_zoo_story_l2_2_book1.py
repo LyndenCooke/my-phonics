@@ -92,7 +92,7 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I am sad now. Then my dad shouts, \u201cLook up!\u201d",
+                "text": "I am sad now. Then my dad shouts, \"Look up!\"",
                 "image": None,
             },
             {

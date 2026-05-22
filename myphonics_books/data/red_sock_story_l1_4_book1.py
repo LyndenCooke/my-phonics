@@ -29,12 +29,12 @@ RED_SOCK_STORY_BOOK1 = {
         "character_id": "CHAR-C",
         "character_name": "Black British girl (smart casual)",
         "story_pages": [
-            {"text": "No socks! I am sad.", "image": None},
+            {"text": "I have no socks! I am sad.", "image": None},
             {"text": "I check the bed. I get a sock. Not red!", "image": None},
             {"text": "I check the bag. I get a sock. Not red!", "image": None},
             {"text": "I check the hen pen. The hen has red socks!", "image": None},
-            {"text": "I get the socks. The hen pecks! Peck, peck!", "image": None},
-            {"text": "Red socks on! I can kick! I am glad!", "image": None},
+            {"text": "I get the socks. The hen pecks me! Peck, peck!", "image": None},
+            {"text": "Red socks on me! I can kick! I am so happy!", "image": None},
         ],
         "story_words": ["socks", "check", "red", "bed", "hen", "pen", "pecks", "kick"],
         "tricky_words_used": ["I", "the", "no"],  # 'a' is treated as decodable at L1; off-list words removed via text edits
