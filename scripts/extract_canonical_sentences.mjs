@@ -85,7 +85,18 @@ function extractSentenceArrays(body) {
         let s = '';
         while (j < inner.length) {
           const ch = inner[j];
-          if (ch === '\\') { s += inner[j + 1]; j += 2; continue; }
+          if (ch === '\\') {
+            const next = inner[j + 1];
+            if (next === 'u') {
+              // \uXXXX → unicode character
+              s += String.fromCharCode(parseInt(inner.slice(j + 2, j + 6), 16));
+              j += 6;
+            } else if (next === 'n') { s += '\n'; j += 2; }
+            else if (next === 't') { s += '\t'; j += 2; }
+            else if (next === 'r') { s += '\r'; j += 2; }
+            else { s += next; j += 2; }
+            continue;
+          }
           if (ch === quote) break;
           s += ch;
           j++;
