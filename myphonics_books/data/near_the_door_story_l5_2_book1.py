@@ -73,7 +73,7 @@ NEAR_THE_DOOR_STORY_BOOK1 = {
             },
             {
                 "page_number": 5,
-                "text": "The rabbit sprang from the rock and ran to the stream. It leapt clear over the water with long, strong legs. Splash, splash, then the rabbit ran on again. I called out as it landed safe and kept on. What a dear, quick rabbit with big pink ears!",
+                "text": "The rabbit sprang from the rock and ran to the stream. It leapt clear over the water with long, strong legs. Splash, splash, then the rabbit ran on again. I called out as it landed safe and kept on. What a quick rabbit with big pink ears!",
                 "perspective": "GIRL",
                 "image_prompt": "Astrid (same outfit) tiptoeing quietly on the snow beside the large grey boulder, peeking over the top of the rock with wide delighted eyes, one finger to her lips. A snow hare (pure white winter coat blending with the snow, long upright ears with black tips, powerful bent back legs mid-spring, small front paws, short white tail, tiny solid black dot eyes) leaps away across the snow with a soft motion-blur suggesting quick movement. The frozen stream and snowy Swedish forest visible in the scene. Landscape orientation. Warm children's book illustration style.",
             },
@@ -85,7 +85,7 @@ NEAR_THE_DOOR_STORY_BOOK1 = {
             },
             {
                 "page_number": 7,
-                "text": "Out stepped a deer, tall and grand, with big antlers. He stood near me and did not run. I spoke clear and slow. \"Dear deer,\" I said, \"we will not harm you.\" He looked at me, then stepped off into the trees.",
+                "text": "Out stepped a deer, tall and grand, with big antlers. He stood near me and did not run. I spoke clear and slow. \"Hello, deer,\" I said, \"we will not harm you.\" He looked at me, then stepped off into the trees.",
                 "perspective": "GIRL",
                 "image_prompt": "Astrid (same outfit) standing very still and small in a snowy forest clearing, hands at her sides, looking up in awe. A majestic red deer stag has stepped out from between the dark pines — thick warm brown winter coat, tall branching antlers (4-5 points per side) reaching up into the pale grey winter sky, strong neck, kind dark eyes looking directly at Astrid, elegant legs in the snow, tiny solid black dot eyes. The stag stands calm and still, meeting Astrid's gaze. Soft snow falling gently. Quiet, reverent, magical mood. Landscape orientation. Warm children's book illustration style.",
             },
