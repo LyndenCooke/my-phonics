@@ -38,6 +38,13 @@ CHAR_REF_FILES_L1_2 = [
     ROOT / "output" / "images" / "L1_2_B1" / "hero_reference.png",
     ROOT / "output" / "images" / "L1_2_B1" / "page5.png",
 ]
+# L1.3 book character set: girl in lavender hijab + yellow top + mint trousers
+# (wheelchair user; chair appears in some scenes, not all). Companion: orange goldfish.
+# From 'The Fish in the Tank'.
+CHAR_REF_FILES_L1_3 = [
+    ROOT / "output" / "images" / "L1_3_B1" / "hero_reference.png",
+    ROOT / "output" / "images" / "L1_3_B1" / "page5.png",
+]
 
 OUT_DIR = REPO / "marketing-mockups" / "worksheet images" / "v2"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -1338,16 +1345,25 @@ def build_sound_prompt(
     s2_words: list[tuple[str, str]],   # 5 entries: (word, picture description for dictionary)
     s3_words: list[tuple[str, str]],   # 4 entries: (word, picture description)
     letter_specific_rule: str = "",    # extra constraint for tricky letters (e.g. g descender)
+    position: str = "start",   # "start" for s/m/sh-prefix words, "end" for nk/ng-suffix words
 ) -> str:
     assert len(s2_words) == 5 and len(s3_words) == 4
+    assert position in ("start", "end")
+    plen = len(letter)  # 1 for single letters, 2 for digraphs (sh, nk, ch, th, ng, qu)
     s2_rows = "\n".join(
         f"    Row {i+1}:  [{w} picture]   {w}   [empty strip]"
         for i, (w, _) in enumerate(s2_words)
     )
-    s3_cells = "\n".join(
-        f"    Cell {i+1}:  [{w} picture]   _{w[1:]}    ←   child writes \"{letter}\" to make \"{w}\""
-        for i, (w, _) in enumerate(s3_words)
-    )
+    if position == "start":
+        s3_cells = "\n".join(
+            f"    Cell {i+1}:  [{w} picture]   _{w[plen:]}    ←   child writes \"{letter}\" to make \"{w}\""
+            for i, (w, _) in enumerate(s3_words)
+        )
+    else:  # "end" — blank at the end of the word
+        s3_cells = "\n".join(
+            f"    Cell {i+1}:  [{w} picture]   {w[:-plen]}_    ←   child writes \"{letter}\" to make \"{w}\""
+            for i, (w, _) in enumerate(s3_words)
+        )
     dictionary = "\n".join(f"  {w} = {desc}" for w, desc in s2_words + s3_words)
     all_words = [w for w, _ in s2_words + s3_words]
     s3_fragments = ", ".join(f"_{w[1:]}" for w, _ in s3_words)
@@ -1429,6 +1445,249 @@ VISUAL DICTIONARY (use exactly these meanings):
 """
 
 
+# ============================================================
+# LEVEL 1.3 — 'The Fish in the Tank' (focus digraphs sh, nk)
+# Skill-only pack — story scaffold lives in the book itself.
+# Character set: girl in lavender hijab + orange goldfish.
+# ============================================================
+
+L13_RULES_HEADER = """ATTACHED REFERENCE IMAGES:
+- Images 1-5: prior worksheet pack — STYLE ONLY (pink banner, pastel boxes, cute cartoons,
+  grey footer). Match this overall look. Do not copy their content.
+- Image 6: tracing-strip reference for the 3-zone handwriting guide style.
+- Images 7-8: CHARACTER references — the girl (light brown skin, lavender hijab framing
+  her face, yellow long-sleeve top, mint-green trousers; she is a wheelchair user but
+  the chair is OPTIONAL on worksheet scenes — focus on her face/top to keep
+  consistency) and her orange goldfish (round body, smiling, in a clear water tank).
+  EYE STYLE on every face: TWO SMALL PURE BLACK SOLID DOTS only. NO whites, NO pupils,
+  NO irises, NO eyelashes, NO sparkle highlights.
+
+UNIVERSAL RULES:
+- Banner pink (#E84B8A) at the top with the title on the left, TWO small chips top-right:
+  "Level 1 · sh nk" and "The Fish in the Tank". Small roundel top-left of the BANNER
+  showing the girl in her hijab and the goldfish together (matching the character refs).
+- Footer left (grey, 9pt): "MyPhonicsBooks · decodable phonics practice".
+  Footer right (grey, 9pt): "Worksheet N of 5".
+- NO reward stars on the sections. NO bottom "colour the stars" strip. NO row of stars.
+- Strict letter inventory for L1.3: only lowercase s a t p i n m d g o and the
+  DIGRAPHS sh, nk (always written as joined two-letter pairs) may appear in printed
+  words. Tricky words allowed: the, to, I, no, go, into. NO 'b', 'c', 'e', 'f', 'h',
+  'j', 'l', 'r', 'u', 'v', 'w', 'x', 'y', 'z', 'q' as standalone letters in printed
+  words. (Pictures may show anything from the visual dictionary — pictures are not read.)
+- All printed letters lowercase, single-storey 'a', no serifs. Letters sit ON the
+  baseline. The 'sh' and 'nk' digraphs are written as a two-letter pair with no
+  underline or accent, but always together — never split.
+"""
+
+WORKSHEET_1_L13_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "1. Sound Hunt: sh and nk"
+
+{L13_RULES_HEADER}
+
+LAYOUT:
+
+[1] "Tick sh" — "Tick the pictures with the 'sh' sound."
+    A SINGLE pink-outlined section with the digraph "sh" displayed LARGE on the left
+    inside a small white circle, then a horizontal row of FOUR pictures to its right
+    inside softly outlined picture boxes. Below each picture is ONE small empty square
+    tick-box (~10mm), centred. All four tick-boxes start EMPTY.
+    Pictures left-to-right: ship | dish | dog | tank
+    Correct pictures (have the /sh/ sound): ship (initial sh), dish (final sh).
+    Distractors: dog, tank.
+
+[2] "Tick nk" — "Tick the pictures with the 'nk' sound."
+    Same layout as §1 but with "nk" in the left circle and a different picture row.
+    Pictures left-to-right: ink | sink | mat | pink
+    Correct pictures (have the /nk/ sound): ink (final nk), sink (final nk),
+    pink (final nk). Distractor: mat.
+
+VISUAL DICTIONARY (use exactly these meanings):
+  ship  = a small cartoon sailing ship, side view, white sails, blue hull, on a wavy
+          line of water beneath.
+  dish  = a single ceramic dish/plate, top view, plain white with a thin pink rim,
+          no food.
+  dog   = a golden retriever sitting upright; PURE BLACK DOT EYES, small smile.
+  tank  = a clear glass fish tank, side view, water inside, a green plant and one
+          orange goldfish visible inside.
+  ink   = a small open ink pot, blue ink visible at the top, classic round shape.
+  sink  = a kitchen sink, front view, with two taps and water dripping from one tap.
+  mat   = a striped rectangular floor mat (pink and cream stripes), viewed from above.
+  pink  = the word concept "pink" — show a single pink-coloured object (a pink heart
+          or a pink balloon), no other content in the picture.
+  girl  = the girl from the character refs (lavender hijab, yellow top, mint trousers,
+          light brown skin); PURE BLACK DOT EYES.
+"""
+
+WORKSHEET_2_L13_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "2. Trace and Write: sh and nk"
+
+{L13_RULES_HEADER}
+
+This worksheet is WRITING-FOCUSED. Two long handwriting strips dominate the page.
+The child traces the digraphs and the example words; no reading-comprehension.
+
+LAYOUT:
+
+Two long horizontal handwriting strips spanning the full width of the page below the
+banner. A small "1" label sits to the LEFT of the first strip, a small "2" left of
+the second.
+
+Strip 1 — the digraph "sh":
+  Reads left-to-right: ONE solid dark "sh" pair (the two letters joined as a single
+  unit, kept together) on the LEFT of the strip, then 4 dotted-grey TRACE copies of
+  "sh" following it. Then the rest of the strip continues with TWO trace words evenly
+  spaced: "ship" (dotted) and "dish" (dotted) — both written with the "sh" digraph
+  ALWAYS joined as a single two-letter unit.
+
+Strip 2 — the digraph "nk":
+  Same structure. ONE solid dark "nk" pair on the LEFT, then 4 dotted-grey TRACE
+  copies of "nk". Then TWO trace words: "ink" (dotted) and "tank" (dotted) — "nk"
+  always joined as a single two-letter unit.
+
+Both strips use full 3-zone guide lines: solid BASELINE, dashed MIDLINE at x-height,
+faint dotted TOPLINE. BASELINE COMPLIANCE: every letter body sits flush ON the
+baseline. The 'h' ascender rises above the midline toward the topline. The 'k'
+ascender does the same. The 'p' in "ship" has its body on the baseline and tail
+BELOW. The 'i' and 'n' are pure x-height. No floating glyphs.
+
+Below the two strips, ONE small pink-outlined empty box about 30mm tall × 130mm wide,
+centred, labelled in small text "My best 'sh' or 'nk'". Empty inside — the child
+writes their best version.
+"""
+
+WORKSHEET_3_L13_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "3. Read and Do"
+
+{L13_RULES_HEADER}
+
+LAYOUT:
+
+[1] "Read and Do" — "Read each sentence. Do the action! Then tick the box."
+    Four rows stacked vertically. Each row has three cells side by side:
+      Left cell:   ONE picture from the visual dictionary showing the girl in her
+                   lavender hijab performing the action described.
+      Middle cell: the sentence in large clear lowercase letters (capital "I" for
+                   the pronoun, full stop at the end). Nothing else.
+      Right cell:  ONE empty tick-box (~10mm), centred.
+
+    Row 1:  [girl dipping her finger into a small open ink pot] "Dip in the ink."  ☐
+    Row 2:  [girl tapping a fish tank with her index finger]    "Tap the tank."    ☐
+    Row 3:  [girl patting a small pink heart-shaped cushion]     "Pat the pink."    ☐
+    Row 4:  [girl nodding her head, small motion arcs]           "Nod at the fish." ☐
+
+    Same row height across all four rows. Sentences EXACTLY as written above — no
+    commas, no exclamation marks, no extra words.
+
+[2] "Word and Picture Match" — "Read each word. Tick the box under the right picture."
+    Four rows stacked vertically. Each row: word on the left in large lowercase, then
+    TWO picture choices side by side on the right. Each picture sits in a soft rounded
+    pink-outlined box, with ONE small empty tick-box (~9mm) BELOW the picture, centred.
+
+    Row 1:  "fish"  →  [fish picture] ☐    [dog picture]  ☐
+    Row 2:  "tank"  →  [tin picture]  ☐    [tank picture] ☐
+    Row 3:  "ink"   →  [ink-pot picture] ☐ [pin picture]  ☐
+    Row 4:  "dish"  →  [dish picture] ☐    [mat picture]  ☐
+
+    Vary the position of the correct picture (sometimes left, sometimes right). All
+    eight tick-boxes the same size; all eight picture boxes the same size.
+
+VISUAL DICTIONARY:
+  girl     = the girl from the character refs (lavender hijab, yellow top, mint
+             trousers, light brown skin); PURE BLACK DOT EYES.
+  ink pot  = small open ink pot with blue ink visible.
+  tank     = clear glass fish tank, water inside, one orange goldfish, side view.
+  pink     = a small pink heart-shaped cushion (the action "pat the pink" means pat
+             this cushion).
+  fish     = orange goldfish from the character refs, side view, smiling, PURE BLACK
+             DOT EYES.
+  dog      = golden retriever sitting upright, PURE BLACK DOT EYES.
+  tin      = a tin can, side view, blank label.
+  pin      = red drawing pin / push pin.
+  dish     = ceramic plate, top view, plain white with a pink rim, no food.
+  mat      = striped rectangular floor mat, viewed from above.
+"""
+
+WORKSHEET_4_L13_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "4. Alien Word Mission"
+
+{L13_RULES_HEADER}
+
+The page theme is OUTER-SPACE fun: friendly cartoon aliens (purple, teal, lime, pink,
+orange, blue blob bodies, two stubby legs, antennae topped with balls, PURE BLACK
+DOT EYES, simple smile). Aliens are small and decorative beside each word.
+
+WORDS ON THE PAGE (strict — only these, plus titles/instructions/footer):
+  Real (decodable at L1.3):  ship, dash, tank, sink
+  Alien (decodable nonsense at L1.3 using sh + nk):  shim, mish, tash, gonk, donk, nink
+
+LAYOUT:
+
+[1] "Read the Alien Words" — "Read each alien word out loud."
+    Six alien words shown in a 3-cols × 2-rows grid (six cards total). Each card is
+    a soft rounded pink-outlined box (~50mm wide, ~30mm tall) containing:
+      - one cute cartoon alien on the LEFT of the card (different colour each card),
+      - the ALIEN WORD printed large in clear lowercase on the centre/right.
+
+    Card 1: alien + word  shim
+    Card 2: alien + word  mish
+    Card 3: alien + word  tash
+    Card 4: alien + word  gonk
+    Card 5: alien + word  donk
+    Card 6: alien + word  nink
+
+    Same card size across all six. EVERY alien has PURE BLACK DOT EYES.
+
+[2] "Real or Alien?" — "Read each word. Tick Real or Alien."
+    A simple table with THREE columns and a header row plus SIX body rows.
+    Header row (small pink banner across the top of the table):
+      | Word | Real | Alien |
+    Body rows — word in the LEFT column, one empty tick-box in Real, one in Alien.
+    All twelve tick-boxes start EMPTY.
+
+      Row 1:  ship  | ☐ | ☐
+      Row 2:  shim  | ☐ | ☐
+      Row 3:  tank  | ☐ | ☐
+      Row 4:  gonk  | ☐ | ☐
+      Row 5:  dash  | ☐ | ☐
+      Row 6:  tash  | ☐ | ☐
+
+    Rows evenly spaced. Pink-outlined cell borders, white background.
+"""
+
+WORKSHEET_5_L13_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "5. Sound Sort: sh or nk?"
+
+{L13_RULES_HEADER}
+
+This is a SOUND-SORTING drill, not a story-tied worksheet. The child reads eight
+words and sorts them into two columns by their digraph. No drawing, no story prompt.
+
+LAYOUT:
+
+[1] "Word Bank" — small pink-outlined strip near the top, containing EIGHT words
+    arranged in two rows of four, separated by small dots. Each word is printed in
+    clear lowercase. The eight words (exact order):
+      Row A:  ship · dish · ink · tank
+      Row B:  sink · dash · pink · monk
+
+[2] "Sort by Sound" — TWO large columns side by side, equal width, filling most of
+    the page below the word bank. Each column is a soft pink-outlined rectangle.
+      Left column header (small pink banner): "sh"
+      Right column header (small pink banner): "nk"
+    Inside each column, EIGHT empty 3-zone handwriting rows stacked vertically
+    (solid baseline, dashed midline, dotted topline; about 12mm tall each), so the
+    child can write the words into the right column. The two columns must be the
+    same size, equally tall, evenly spaced — NO model words pre-printed inside the
+    columns.
+
+[3] "Check Your Work" — a tiny pink-outlined strip at the bottom (~15mm tall) with
+    one short instruction in lowercase: "say each word to a grown-up." Nothing else.
+
+NO PICTURES of the goldfish or the girl in the body of this worksheet — banner
+roundel only. This page is pure sound discrimination + handwriting practice.
+"""
+
+
 SOUND_M_PROMPT = build_sound_prompt(
     letter="m",
     sound_name='/m/ (as in "man", "mat")',
@@ -1494,6 +1753,56 @@ SOUND_G_PROMPT = build_sound_prompt(
     ),
 )
 
+SOUND_SH_PROMPT = build_sound_prompt(
+    letter="sh",
+    sound_name='/sh/ (as in "ship", "fish")',
+    s2_words=[
+        ("ship",  "a small cartoon sailing ship, side view, white sails, blue hull, on a wavy water line beneath"),
+        ("shop",  "a small storefront with a striped awning and a single window display, side view, no people, no printed text on the sign"),
+        ("sheep", "small cartoon sheep standing in profile, fluffy white body, simple black face and legs, PURE BLACK DOT EYES"),
+        ("shoe",  "a single child's lace-up shoe, side view, simple cartoon style, no foot inside"),
+        ("shark", "small friendly cartoon shark, side view, grey body, simple fin, simple closed mouth (no teeth), PURE BLACK DOT EYES"),
+    ],
+    s3_words=[
+        ("shed",   "a small wooden garden shed, side view, sloped roof, closed door, no people"),
+        ("shell",  "a single pink-and-cream spiral seashell, side view"),
+        ("shorts", "a single pair of children's denim shorts on a tiny hanger, no person"),
+        ("shrimp", "small cartoon shrimp, pink body, curled, simple cartoon, PURE BLACK DOT EYES"),
+    ],
+    letter_specific_rule=(
+        "The 'sh' digraph is ALWAYS written as a joined two-letter unit (lowercase s "
+        "and h together, no underline, no accent, no space between). The 'h' ascender "
+        "rises above the midline toward the topline; the 's' is pure x-height."
+    ),
+)
+
+SOUND_NK_PROMPT = build_sound_prompt(
+    letter="nk",
+    sound_name='/nk/ (as in "tank", "ink") — always at the END of the word',
+    s2_words=[
+        ("tank",  "a clear glass fish tank, side view, water inside, a green plant and an orange goldfish visible"),
+        ("ink",   "a small open ink pot with blue ink visible at the top, classic round bottle shape"),
+        ("sink",  "a kitchen sink, front view, two taps, water dripping from one"),
+        ("pink",  "a single pink-coloured heart-shaped balloon with a thin string trailing down, no face, the WORD-CONCEPT 'pink'"),
+        ("monk",  "small cartoon monk in a brown robe with a hood, hands clasped together, friendly face, PURE BLACK DOT EYES"),
+    ],
+    s3_words=[
+        ("bank",  "a small piggy bank, side view, pink ceramic body, small slot on top, no face"),
+        ("honk",  "a single yellow car-horn (the bulb-and-trumpet hand-honk style) with two motion lines and a small 'Honk!' tag — purely the horn, no car around it"),
+        ("wink",  "a small cartoon child's face winking — one eye closed (a small curve), one eye an open PURE BLACK SOLID DOT, small smile, no body just the head"),
+        ("junk",  "a small pile of cartoon objects (a tin can, a broken toy, a crumpled paper) representing junk, on a flat ground line, no people"),
+    ],
+    letter_specific_rule=(
+        "The 'nk' digraph is ALWAYS at the END of these words and ALWAYS written as a "
+        "joined two-letter unit (lowercase n and k together, no underline, no accent, "
+        "no space between). The 'k' ascender rises above the midline toward the topline; "
+        "the 'n' is pure x-height. There is NO initial-nk word in English — every §2 and "
+        "§3 word ends in nk."
+    ),
+    position="end",
+)
+
+
 SOUND_O_PROMPT = build_sound_prompt(
     letter="o",
     sound_name='/o/ (as in "octopus", "ox") and /oh/ (as in "owl", "orange")',
@@ -1538,6 +1847,13 @@ PROMPTS = {
     "d": {"file": "sound_d_v1.png",                          "prompt": SOUND_D_PROMPT,     "char_refs": False},
     "g": {"file": "sound_g_v1.png",                          "prompt": SOUND_G_PROMPT,     "char_refs": False},
     "o": {"file": "sound_o_v1.png",                          "prompt": SOUND_O_PROMPT,     "char_refs": False},
+    "1_l13": {"file": "l13_worksheet_01_sound_hunt_v1.png",     "prompt": WORKSHEET_1_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
+    "2_l13": {"file": "l13_worksheet_02_trace_and_write_v1.png", "prompt": WORKSHEET_2_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
+    "3_l13": {"file": "l13_worksheet_03_read_and_do_v1.png",    "prompt": WORKSHEET_3_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
+    "4_l13": {"file": "l13_worksheet_04_alien_words_v1.png",    "prompt": WORKSHEET_4_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
+    "5_l13": {"file": "l13_worksheet_05_sound_sort_v1.png",     "prompt": WORKSHEET_5_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
+    "sh": {"file": "sound_sh_v1.png", "prompt": SOUND_SH_PROMPT, "char_refs": False},
+    "nk": {"file": "sound_nk_v1.png", "prompt": SOUND_NK_PROMPT, "char_refs": False},
 }
 
 
