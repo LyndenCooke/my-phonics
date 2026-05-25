@@ -6,6 +6,7 @@
     { "source": "/illustrations/:path*", "destination": "/illustrations/:path*" },
     { "source": "/sounds/:path*", "destination": "/sounds/:path*" },
     { "source": "/images/:path*", "destination": "/images/:path*" },
+    { "source": "/worksheets/:path*", "destination": "/worksheets/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
