@@ -28,8 +28,8 @@ export default function CustomerDetail() {
     .reduce((sum, p) => sum + p.amount_paid, 0);
 
   const handleAddNote = async () => {
-    if (!noteContent.trim() || !contact?.id) return;
-    await createNote.mutateAsync({ contact_id: contact.id, content: noteContent });
+    if (!noteContent.trim() || !profile?.id) return;
+    await createNote.mutateAsync({ profile_id: profile.id, content: noteContent });
     setNoteContent('');
   };
 
@@ -247,25 +247,24 @@ export default function CustomerDetail() {
 
         <TabsContent value="notes">
           <div className="space-y-4">
-            {/* Add Note */}
-            {contact && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Add Note</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Textarea
-                    placeholder="Write a note about this customer..."
-                    value={noteContent}
-                    onChange={e => setNoteContent(e.target.value)}
-                    rows={3}
-                  />
-                  <Button onClick={handleAddNote} disabled={!noteContent.trim() || createNote.isPending}>
-                    {createNote.isPending ? 'Saving...' : 'Add Note'}
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+            {/* Add Note — keyed to profile_id so it works regardless of
+                whether the legacy crm_contacts row exists. */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Add Note</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Textarea
+                  placeholder="Write a note about this customer..."
+                  value={noteContent}
+                  onChange={e => setNoteContent(e.target.value)}
+                  rows={3}
+                />
+                <Button onClick={handleAddNote} disabled={!noteContent.trim() || createNote.isPending}>
+                  {createNote.isPending ? 'Saving...' : 'Add Note'}
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* Tasks */}
             {tasks.length > 0 && (
