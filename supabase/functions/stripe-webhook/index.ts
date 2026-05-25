@@ -355,14 +355,47 @@ Deno.serve(async (req) => {
           .eq("id", productId ?? "")
           .single();
 
+        // Trial detection — two signals, either is sufficient. Belt-and-braces
+        // because the previous "status === trialing" check alone misclassified
+        // a known trial as a purchase (likely a transient fetch failure on the
+        // subscriptions endpoint that silently returned null).
         let isTrialStart = false;
         let trialEnd: number | null = null;
+        let subFetchOk = false;
         if (session.subscription) {
           const sub = await fetchStripeSubscription(session.subscription);
+          subFetchOk = !!sub;
+          console.log("[stripe-webhook] subscription fetch", {
+            id: session.subscription,
+            ok: subFetchOk,
+            status: sub?.status,
+            trial_end: sub?.trial_end,
+          });
           if (sub?.status === "trialing") {
             isTrialStart = true;
             trialEnd = sub.trial_end ?? null;
+          } else if (sub?.trial_end && sub.trial_end * 1000 > Date.now()) {
+            // Race-condition fallback: status might briefly be 'incomplete'
+            // between checkout.completed and trial activation.
+            isTrialStart = true;
+            trialEnd = sub.trial_end;
           }
+        }
+
+        // If this looks like a subscription checkout but we couldn't confirm
+        // any state, prefer free_trial over purchased — wrong direction is
+        // much less painful in the CRM (a free-trial tag on a real buyer is
+        // easy to spot; a purchased tag on a trialer is invisible).
+        if (
+          !isTrialStart &&
+          !subFetchOk &&
+          session.subscription &&
+          (productType === "subscription")
+        ) {
+          console.warn(
+            "[stripe-webhook] subscription fetch failed; defaulting to free_trial for product_type=subscription"
+          );
+          isTrialStart = true;
         }
 
         const ghlPayload: Record<string, unknown> = {
