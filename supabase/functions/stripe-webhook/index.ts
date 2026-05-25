@@ -418,6 +418,16 @@ Deno.serve(async (req) => {
         }
       }
 
+      // Persist the lifecycle state so the in-app CRM pipeline can derive
+      // Free Trial vs Subscribed without re-hitting Stripe. NULL stays NULL
+      // for one-time purchases.
+      if (session.subscription) {
+        await supabaseAdmin
+          .from("purchases")
+          .update({ subscription_state: isTrialStart ? "trialing" : "active" })
+          .eq("stripe_session_id", session.id);
+      }
+
     } else if (event.type === "customer.subscription.updated") {
       // Detect trial → active transition (first paid charge after the 7-day
       // trial). Stripe sends previous_attributes.status when status changes,
@@ -429,6 +439,13 @@ Deno.serve(async (req) => {
       const nowActive = subscription.status === "active";
 
       if (wasTrialing && nowActive) {
+        // Persist the lifecycle change so the CRM pipeline moves the
+        // contact from Free Trial → Subscribed.
+        await supabaseAdmin
+          .from("purchases")
+          .update({ subscription_state: "active" })
+          .eq("stripe_subscription_id", subscription.id);
+
         const { userId, email } = await emailForCustomer(subscription.customer);
         if (email) {
           // Pull product info off the subscription's first item.price.product
@@ -486,10 +503,12 @@ Deno.serve(async (req) => {
           .eq("user_id", userId)
           .eq("source", "subscription");
 
-        // Mark purchase as cancelled
+        // Mark purchase as cancelled — both `status` (legacy field) and
+        // `subscription_state` (drives the CRM pipeline) so the contact
+        // moves to Churned.
         await supabaseAdmin
           .from("purchases")
-          .update({ status: "cancelled" })
+          .update({ status: "cancelled", subscription_state: "cancelled" })
           .eq("stripe_subscription_id", subscription.id);
       }
 
