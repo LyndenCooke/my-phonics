@@ -55,6 +55,7 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const CustomerList = lazy(() => import("./pages/admin/CustomerList"));
 const CustomerDetail = lazy(() => import("./pages/admin/CustomerDetail"));
 const PipelineBoard = lazy(() => import("./pages/admin/PipelineBoard"));
+const RecoveryQueue = lazy(() => import("./pages/admin/RecoveryQueue"));
 const DealsList = lazy(() => import("./pages/admin/DealsList"));
 const TasksList = lazy(() => import("./pages/admin/TasksList"));
 const AnalyticsDashboard = lazy(() => import("./pages/admin/AnalyticsDashboard"));
@@ -158,6 +159,7 @@ function RoutesWithTransition() {
                 <Route path="/admin/customers" element={<Suspense fallback={<AdminFallback />}><CustomerList /></Suspense>} />
                 <Route path="/admin/customers/:id" element={<Suspense fallback={<AdminFallback />}><CustomerDetail /></Suspense>} />
                 <Route path="/admin/pipeline" element={<Suspense fallback={<AdminFallback />}><PipelineBoard /></Suspense>} />
+                <Route path="/admin/recovery" element={<Suspense fallback={<AdminFallback />}><RecoveryQueue /></Suspense>} />
                 <Route path="/admin/deals" element={<Suspense fallback={<AdminFallback />}><DealsList /></Suspense>} />
                 <Route path="/admin/tasks" element={<Suspense fallback={<AdminFallback />}><TasksList /></Suspense>} />
                 <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><AnalyticsDashboard /></Suspense>} />

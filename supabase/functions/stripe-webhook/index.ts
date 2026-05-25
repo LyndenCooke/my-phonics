@@ -428,6 +428,38 @@ Deno.serve(async (req) => {
           .eq("stripe_session_id", session.id);
       }
 
+    } else if (event.type === "checkout.session.expired") {
+      // Stripe expires unfinished checkouts ~24h after creation. Fire an
+      // abandoned-checkout event so the user's GHL workflow can send a
+      // recovery email. This is the auto path; admin/recovery has a manual
+      // button for in-the-moment recovery before Stripe expires the session.
+      const session = event.data.object;
+      const buyerEmail =
+        session.customer_email || session.metadata?.guest_email || null;
+      if (buyerEmail) {
+        const productId = session.metadata?.product_id;
+        const { data: productRow } = await supabaseAdmin
+          .from("products")
+          .select("name, product_type")
+          .eq("id", productId ?? "")
+          .single();
+        await syncGHL("contact.abandoned_checkout", {
+          email: buyerEmail,
+          product_id: productId,
+          product_type: session.metadata?.product_type ?? productRow?.product_type ?? null,
+          product_name: productRow?.name ?? null,
+          amount_pence: session.amount_total ?? 0,
+          stripe_session_id: session.id,
+        });
+        // Mark our purchases row so it stops showing in the admin recovery
+        // queue — Stripe has officially given up on this session.
+        await supabaseAdmin
+          .from("purchases")
+          .update({ status: "failed" })
+          .eq("stripe_session_id", session.id)
+          .eq("status", "pending");
+      }
+
     } else if (event.type === "customer.subscription.updated") {
       // Detect trial → active transition (first paid charge after the 7-day
       // trial). Stripe sends previous_attributes.status when status changes,

@@ -353,6 +353,33 @@ serve(async (req) => {
         break;
       }
 
+      case 'contact.abandoned_checkout': {
+        // Someone started Stripe checkout but never completed. Tag them so
+        // the user's GHL workflow can fire a 'Did you forget something?'
+        // email. abandoned-product:<type> lets the workflow vary copy by
+        // what they nearly bought.
+        ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'abandoned-checkout'],
+          });
+        }
+        if (ghlContactId) {
+          const productName = data?.product_name ?? null;
+          const productType = data?.product_type ?? null;
+          await addTags(ghlContactId, [
+            'abandoned-checkout',
+            ...(productType ? [`abandoned-product:${productType}`] : []),
+            ...(productName ? [`abandoned:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
+          ]);
+        }
+        break;
+      }
+
       case 'contact.stage_changed': {
         ghlContactId = await findContact(email);
         if (ghlContactId && data?.stage) {
