@@ -1323,6 +1323,200 @@ VISUAL DICTIONARY:
 """
 
 
+# ============================================================
+# Single-sound prompt builder for the L1.2+ packs (m d g o etc).
+# Mirrors the proven SATPIN single-sound layout. Three sections:
+#   §1 Trace the Letter — 1 model + 8 dotted traces + blank ruled line
+#   §2 Trace the Words  — 5 pictures, each with a dotted trace word
+#                         and a blank strip for the child to write again
+#   §3 Write the Missing — 4 pictures with the initial letter blanked
+# ============================================================
+
+def build_sound_prompt(
+    letter: str,
+    sound_name: str,           # e.g. "/m/ (as in 'man')" — used in the writing-focus note
+    s2_words: list[tuple[str, str]],   # 5 entries: (word, picture description for dictionary)
+    s3_words: list[tuple[str, str]],   # 4 entries: (word, picture description)
+    letter_specific_rule: str = "",    # extra constraint for tricky letters (e.g. g descender)
+) -> str:
+    assert len(s2_words) == 5 and len(s3_words) == 4
+    s2_rows = "\n".join(
+        f"    Row {i+1}:  [{w} picture]   {w}   [empty strip]"
+        for i, (w, _) in enumerate(s2_words)
+    )
+    s3_cells = "\n".join(
+        f"    Cell {i+1}:  [{w} picture]   _{w[1:]}    ←   child writes \"{letter}\" to make \"{w}\""
+        for i, (w, _) in enumerate(s3_words)
+    )
+    dictionary = "\n".join(f"  {w} = {desc}" for w, desc in s2_words + s3_words)
+    all_words = [w for w, _ in s2_words + s3_words]
+    s3_fragments = ", ".join(f"_{w[1:]}" for w, _ in s3_words)
+    extra_rule = f"\n   {letter_specific_rule}" if letter_specific_rule else ""
+    return f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks — single-sound page.
+Title: "The Sound  {letter}"   Left chip: "Level 1"   Right chip: "Sound · {letter}"
+
+ATTACHED REFERENCE IMAGES:
+- Images 1-5: prior worksheet pack — STYLE ONLY (pink banner, pastel boxes, grey footer).
+- Image 6: handwriting/tracing reference. Every handwriting strip on the page MUST match
+  this style: solid model + dotted trace copies, full 3-zone guide lines (solid baseline,
+  dashed midline, faint dotted topline). Letters sit DIRECTLY on the baseline.
+
+This worksheet is WRITING-FOCUSED. The child WRITES; they do not read for comprehension.
+NO characters from any book appear on the page. NO boy. NO cat. NO girl. NO dog. Pure
+handwriting + word-writing practice for the sound {sound_name}. Lowercase only.
+
+FIVE RULES — follow all five:
+1. THREE activities on this page (§1, §2, §3). §1 ~18% of page, §2 ~52%, §3 ~22%.
+   Big, airy, generous white space. NO reward stars on sections. NO bottom star strip.
+   NO row of stars anywhere. NO stroke-direction arrows, NO numbered stroke order,
+   NO start/end coloured dots — just clean dotted letters to trace.
+2. Only these letters/words may appear anywhere on the page: lowercase {letter}; the §2
+   words {", ".join(all_words[:5])}; and the §3 word fragments {s3_fragments}
+   (with a blank space where the {letter} goes). NO uppercase {letter.upper()}. No other
+   letters or words anywhere.
+3. Every printed letter on the page must sit DIRECTLY on the baseline (touching it, not
+   floating above). Lowercase {letter} is single-storey, no serifs. Every handwriting
+   strip has the full 3-zone guide lines (solid baseline, dashed midline, faint dotted
+   topline).{extra_rule}
+4. NO cartoon faces or characters on this page beyond the simple object pictures listed
+   below. Any animal in the visual dictionary gets TWO SMALL PURE BLACK SOLID DOT EYES
+   only — no whites, no pupils, no sparkles. Nothing else has eyes.
+5. Top banner pink (#E84B8A) with title "The Sound  {letter}" and two small chips
+   top-right: "Level 1" and "Sound · {letter}". On the left of the banner: one small
+   white circular badge containing a clean lowercase "{letter}" in pink — no arrows,
+   no dots, just the letter. Footer left (grey, 9pt): "MyPhonicsBooks · decodable
+   phonics practice". Footer right (grey, 9pt): "Single Sound · {letter}".
+
+LAYOUT:
+
+[1] "Trace the Letter {letter}" — "Trace the letter. Then write some on your own."
+    ONE long horizontal handwriting strip spanning the full width of the section.
+    The strip reads: ONE solid dark lowercase model {letter} on the left, then EIGHT
+    dotted-grey trace copies of lowercase {letter} evenly spaced across the strip,
+    then the rest of the strip is BLANK ruled space (3-zone guide lines continue) for
+    the child to write more {letter}'s on their own. Lowercase only — no uppercase
+    {letter.upper()} anywhere.
+
+[2] "Trace the Words" — "Trace each word. Then write it on your own."
+    FIVE rows stacked vertically across the section. Each row contains THREE cells side
+    by side, all the same height (~18mm tall):
+      Left cell  (~25mm wide):  ONE small clear picture of the word — see visual
+                                dictionary. Pictures only, no labels under them.
+      Middle cell (~55mm wide): a short 3-zone handwriting strip with the word written
+                                ONCE as a dotted-grey trace word for the child to trace.
+                                Lowercase letters, single-storey a, no serifs, every
+                                letter sitting on the baseline.
+      Right cell  (~55mm wide): a short 3-zone handwriting strip that is EMPTY (just
+                                the baseline, dashed midline, dotted topline) — for the
+                                child to write the word again on their own.
+{s2_rows}
+
+[3] "Write the Missing {letter}" — "What letter is missing? Write the {letter}."
+    FOUR cells in a single horizontal row across the section. The four pictures in §3
+    MUST be different from the five pictures in §2. Each cell contains:
+      - ONE small picture from the visual dictionary at the top of the cell
+      - BELOW the picture, a SHORT 3-zone handwriting strip with the word printed but
+        the initial {letter} REPLACED by a blank space the same width as a letter. The
+        rest of the word is solid black. The blank space is just empty ruled lines
+        (NOT a dotted {letter}, NOT an underscore — just empty) where the child writes
+        the {letter}.
+{s3_cells}
+    All four cells the same size. All four blanks the same width. The 3-zone guide
+    lines run continuously through the blank and under the rest of the word.
+
+VISUAL DICTIONARY (use exactly these meanings):
+{dictionary}
+"""
+
+
+SOUND_M_PROMPT = build_sound_prompt(
+    letter="m",
+    sound_name='/m/ (as in "man", "mat")',
+    s2_words=[
+        ("man",  "simple cartoon man, side view, single colour shirt and trousers, friendly stance, PURE BLACK DOT EYES, small smile"),
+        ("mat",  "a small striped rectangular floor mat viewed from above-side, pink and cream stripes, no character on it"),
+        ("mug",  "a single white ceramic mug with a handle, side view, faint steam curl rising from the top"),
+        ("moon", "a smiling crescent moon, pale cream colour, PURE BLACK DOT EYES (only the moon has eyes), small smile, surrounded by 3 tiny stars"),
+        ("milk", "a cardboard milk carton, side view, plain white with a small blue band, no printed text"),
+    ],
+    s3_words=[
+        ("monkey",   "small cartoon monkey sitting upright, brown body and lighter face, long curled tail, PURE BLACK DOT EYES, small smile"),
+        ("mouse",    "tiny grey cartoon mouse standing on hind feet, large round ears, long thin tail, PURE BLACK DOT EYES, small smile"),
+        ("mushroom", "a red-topped mushroom with white spots, plump white stem, no face"),
+        ("mountain", "a single triangular mountain with a small snow cap, no face, side profile only"),
+    ],
+)
+
+SOUND_D_PROMPT = build_sound_prompt(
+    letter="d",
+    sound_name='/d/ (as in "dog", "duck")',
+    s2_words=[
+        ("dog",  "a golden retriever puppy sitting upright, tongue out, PURE BLACK DOT EYES, small smile"),
+        ("duck", "a yellow cartoon duckling standing upright, small orange beak, PURE BLACK DOT EYES"),
+        ("drum", "a child's snare drum, side view, red and white striped sides, two drumsticks crossed on top, no face"),
+        ("doll", "a simple rag doll standing upright, yarn hair in two pigtails, plain dress, no face features beyond PURE BLACK DOT EYES and a small smile"),
+        ("dot",  "a single large black dot/circle centred in the cell"),
+    ],
+    s3_words=[
+        ("deer",     "small cartoon deer standing in profile, light brown body, small antlers, PURE BLACK DOT EYES"),
+        ("donut",    "a single pink-frosted donut with rainbow sprinkles, side view"),
+        ("dinosaur", "small friendly green cartoon dinosaur, side view, short arms, PURE BLACK DOT EYES, small smile"),
+        ("donkey",   "small grey cartoon donkey standing in profile, large ears, dark mane, PURE BLACK DOT EYES"),
+    ],
+    letter_specific_rule=(
+        "Lowercase d has an ASCENDER: the round body sits on the baseline and reaches up "
+        "to the midline, and the vertical stick rises above the midline toward the topline. "
+        "No descender — d does NOT drop below the baseline."
+    ),
+)
+
+SOUND_G_PROMPT = build_sound_prompt(
+    letter="g",
+    sound_name='/g/ (as in "goat", "gum")',
+    s2_words=[
+        ("gate",  "a simple wooden garden gate, closed, side view, two horizontal slats with two vertical posts, no face"),
+        ("goat",  "small cartoon goat standing in profile, white body, small horns, PURE BLACK DOT EYES"),
+        ("gum",   "a single piece of pink chewing gum (a small rectangular block) with one or two tiny bubbles floating above"),
+        ("girl",  "simple cartoon girl, side view, brown short hair, plain pink t-shirt and blue trousers, PURE BLACK DOT EYES, small smile"),
+        ("ghost", "small friendly cartoon ghost, white wavy body, no arms, PURE BLACK DOT EYES, small smile"),
+    ],
+    s3_words=[
+        ("garden", "a small green grassy patch with three or four simple flowers (pink and yellow), no people"),
+        ("grape",  "a small bunch of purple grapes with one green leaf at the top, no face"),
+        ("glass",  "a single clear drinking glass with water inside, side view, no face, no other content"),
+        ("guitar", "a single acoustic guitar standing upright on its base, brown body with a sound hole and six visible strings, no face"),
+    ],
+    letter_specific_rule=(
+        "Lowercase g has a DESCENDER: the round body sits on the baseline and reaches up "
+        "to the midline; the tail drops BELOW the baseline (classroom-friendly single-storey "
+        "style — an open or closed loop tail, NOT a serif print g). Do not draw g with a "
+        "double-storey loop like a print typeface."
+    ),
+)
+
+SOUND_O_PROMPT = build_sound_prompt(
+    letter="o",
+    sound_name='/o/ (as in "octopus", "ox") and /oh/ (as in "owl", "orange")',
+    s2_words=[
+        ("octopus", "small cute cartoon octopus, purple body, eight curling tentacles, PURE BLACK DOT EYES, small smile, a few small bubbles around it"),
+        ("ox",      "small cartoon ox standing in profile, brown body, two small horns, PURE BLACK DOT EYES"),
+        ("owl",     "small round cartoon owl, brown feathers, large round head, two small ear tufts, PURE BLACK DOT EYES, small beak"),
+        ("orange",  "a single orange fruit with one green leaf on top, side view, simple cross-hatch texture"),
+        ("otter",   "small cartoon otter floating on its back in calm blue water, brown fur, white belly, paws crossed, PURE BLACK DOT EYES, small smile"),
+    ],
+    s3_words=[
+        ("oven",     "a small cartoon kitchen oven, front view, with a window in the door and two dials on top, no face"),
+        ("olive",    "a small bunch of two green olives on a tiny stem with one olive leaf, no face"),
+        ("ostrich",  "small cartoon ostrich standing tall in profile, long neck, brown body and grey legs, PURE BLACK DOT EYES, small beak"),
+        ("omelette", "a single golden-yellow folded omelette on a small plate, side view, no face"),
+    ],
+    letter_specific_rule=(
+        "Lowercase o is a perfectly round body that sits flush ON the baseline and reaches "
+        "EXACTLY up to the midline. No ascender, no descender."
+    ),
+)
+
+
 PROMPTS = {
     1:   {"file": "worksheet_01_tap_sound_hunt_v5.png",      "prompt": WORKSHEET_1_PROMPT, "char_refs": CHAR_REF_FILES},
     2:   {"file": "worksheet_02_tap_the_sounds_v1.png",      "prompt": WORKSHEET_2_PROMPT, "char_refs": CHAR_REF_FILES},
@@ -1340,6 +1534,10 @@ PROMPTS = {
     "p": {"file": "sound_p_v2.png",                          "prompt": SOUND_P_PROMPT,     "char_refs": False},
     "i": {"file": "sound_i_v2.png",                          "prompt": SOUND_I_PROMPT,     "char_refs": False},
     "n": {"file": "sound_n_v1.png",                          "prompt": SOUND_N_PROMPT,     "char_refs": False},
+    "m": {"file": "sound_m_v1.png",                          "prompt": SOUND_M_PROMPT,     "char_refs": False},
+    "d": {"file": "sound_d_v1.png",                          "prompt": SOUND_D_PROMPT,     "char_refs": False},
+    "g": {"file": "sound_g_v1.png",                          "prompt": SOUND_G_PROMPT,     "char_refs": False},
+    "o": {"file": "sound_o_v1.png",                          "prompt": SOUND_O_PROMPT,     "char_refs": False},
 }
 
 
