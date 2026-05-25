@@ -1,0 +1,77 @@
+/* =============================================================================
+ * School-8 palette and chrome.
+ *
+ * Scoped to the `.school-app` wrapper so it ONLY affects the /school/* routes.
+ * The parent-facing site is completely untouched.
+ *
+ * Palette (RWI-aligned):
+ *   L1 Pink   #E84B8A   (unchanged from parent)
+ *   L2 Coral  #F97066   (NEW)
+ *   L3 Amber  #F59E0B
+ *   L4 Green  #22C55E
+ *   L5 Blue   #3B82F6
+ *   L6 Indigo #6366F1   (NEW)
+ *   L7 Purple #8B5CF6
+ *   L8 Teal   #14B8A6
+ * ============================================================================= */
+
+.school-app {
+  --s-level-1: 232, 75, 138;
+  --s-level-2: 249, 112, 102;
+  --s-level-3: 245, 158, 11;
+  --s-level-4: 34, 197, 94;
+  --s-level-5: 59, 130, 246;
+  --s-level-6: 99, 102, 241;
+  --s-level-7: 139, 92, 246;
+  --s-level-8: 20, 184, 166;
+
+  --s-level-1-ink: 188, 50, 110;
+  --s-level-2-ink: 200, 70, 60;
+  --s-level-3-ink: 175, 110, 8;
+  --s-level-4-ink: 22, 130, 60;
+  --s-level-5-ink: 36, 90, 180;
+  --s-level-6-ink: 70, 70, 200;
+  --s-level-7-ink: 100, 60, 200;
+  --s-level-8-ink: 13, 130, 120;
+}
+
+/* Backgrounds, borders, and ink text — picked by data-level=1..8. */
+.school-app [data-school-level="1"] { --s-level: var(--s-level-1); --s-ink: var(--s-level-1-ink); }
+.school-app [data-school-level="2"] { --s-level: var(--s-level-2); --s-ink: var(--s-level-2-ink); }
+.school-app [data-school-level="3"] { --s-level: var(--s-level-3); --s-ink: var(--s-level-3-ink); }
+.school-app [data-school-level="4"] { --s-level: var(--s-level-4); --s-ink: var(--s-level-4-ink); }
+.school-app [data-school-level="5"] { --s-level: var(--s-level-5); --s-ink: var(--s-level-5-ink); }
+.school-app [data-school-level="6"] { --s-level: var(--s-level-6); --s-ink: var(--s-level-6-ink); }
+.school-app [data-school-level="7"] { --s-level: var(--s-level-7); --s-ink: var(--s-level-7-ink); }
+.school-app [data-school-level="8"] { --s-level: var(--s-level-8); --s-ink: var(--s-level-8-ink); }
+
+.school-app .s-bg-level   { background-color: rgb(var(--s-level)); }
+.school-app .s-bg-tint    { background-color: rgb(var(--s-level) / 0.10); }
+.school-app .s-border     { border-color:     rgb(var(--s-level)); }
+.school-app .s-text-level { color:            rgb(var(--s-level)); }
+.school-app .s-text-ink   { color:            rgb(var(--s-ink)); }
+.school-app .s-ring       { box-shadow:       0 0 0 2px rgb(var(--s-level)); }
+
+/* Top banner — keeps reviewers oriented that this is the school preview. */
+.school-app__banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(90deg, #f59e0b, #ec4899);
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.school-app__banner a {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

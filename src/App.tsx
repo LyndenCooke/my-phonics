@@ -59,6 +59,9 @@ const RecoveryQueue = lazy(() => import("./pages/admin/RecoveryQueue"));
 const DealsList = lazy(() => import("./pages/admin/DealsList"));
 const TasksList = lazy(() => import("./pages/admin/TasksList"));
 const AnalyticsDashboard = lazy(() => import("./pages/admin/AnalyticsDashboard"));
+// School preview — RWI-aligned 8-level system in development.
+// Admin-gated; entirely self-contained under src/school/.
+const AppSchool = lazy(() => import("./school/AppSchool"));
 
 const queryClient = new QueryClient();
 
@@ -164,6 +167,9 @@ function RoutesWithTransition() {
                 <Route path="/admin/tasks" element={<Suspense fallback={<AdminFallback />}><TasksList /></Suspense>} />
                 <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><AnalyticsDashboard /></Suspense>} />
               </Route>
+              {/* School preview (8-level RWI version, in development).
+                  Lives outside AdminLayout so it brings its own chrome. */}
+              <Route path="/school/*" element={<Suspense fallback={<AdminFallback />}><AppSchool /></Suspense>} />
             </Route>
             <Route path="*" element={<NotFound />} />
       </Routes>
