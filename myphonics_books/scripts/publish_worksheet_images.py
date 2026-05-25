@@ -61,6 +61,19 @@ MDGO_SOUNDS = [
     ("sound_o_v1.png", "sound_o", "The Sound o"),
 ]
 
+L13_BOOK = [
+    ("l13_worksheet_01_sound_hunt_v1.png",     "01_sound_hunt",         "1. Sound Hunt: sh and nk"),
+    ("l13_worksheet_02_trace_and_write_v1.png", "02_trace_and_write",   "2. Trace and Write: sh and nk"),
+    ("l13_worksheet_03_read_and_do_v1.png",    "03_read_and_do",        "3. Read and Do"),
+    ("l13_worksheet_04_alien_words_v1.png",    "04_alien_word_mission", "4. Alien Word Mission"),
+    ("l13_worksheet_05_sound_sort_v1.png",     "05_sound_sort",         "5. Sound Sort: sh or nk?"),
+]
+
+SHNK_SOUNDS = [
+    ("sound_sh_v1.png", "sound_sh", "The Sound sh"),
+    ("sound_nk_v1.png", "sound_nk", "The Sound nk"),
+]
+
 
 # Pack registry — drives both Drive output and public/ mirroring.
 # Each entry: (display name, sheet spec, drive subpath, web subpath, bundle filename stem)
@@ -69,6 +82,8 @@ PACKS = [
     ("L1.1 — SATPIN single-sound pack",  SATPIN_SOUNDS, "Sound_Pack",                "Sound_Pack",                "SATPIN_Sound_Pack"),
     ("L1.2 — The Mud on the Dog pack",   L12_BOOK,      "L1/1_2_Mud_on_Dog_Pack",    "L1/1_2_Mud_on_Dog_Pack",    "Mud_on_Dog_Pack"),
     ("L1.2 — m d g o single-sound pack", MDGO_SOUNDS,   "Sound_Pack_MDGO",           "Sound_Pack_MDGO",           "MDGO_Sound_Pack"),
+    ("L1.3 — Fish in the Tank book pack", L13_BOOK,     "L1/1_3_Fish_in_Tank_Pack",  "L1/1_3_Fish_in_Tank_Pack",  "Fish_in_Tank_Pack"),
+    ("L1.3 — sh + nk digraph pack",       SHNK_SOUNDS,  "Sound_Pack_SHNK",           "Sound_Pack_SHNK",           "SHNK_Sound_Pack"),
 ]
 
 

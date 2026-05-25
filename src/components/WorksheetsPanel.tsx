@@ -102,7 +102,36 @@ const L1_BOOKS: BookFolder[] = [
       },
     ],
   },
-  { id: 'l1-3',  bookNumber: '1.3',  title: 'The Fish in the Tank',  focusSounds: ['sh', 'nk'],           status: 'coming-soon', groups: [] },
+  {
+    id: 'l1-3',
+    bookNumber: '1.3',
+    title: 'The Fish in the Tank',
+    focusSounds: ['sh', 'nk'],
+    status: 'ready',
+    groups: [
+      {
+        label: 'Book worksheets',
+        bundleHref: '/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf',
+        bundleLabel: 'Download all 5 sheets',
+        sheets: [
+          { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/01_sound_hunt.pdf',         title: 'Sound Hunt',         thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/01_sound_hunt.png' },
+          { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/02_trace_and_write.pdf',    title: 'Trace and Write',    thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/02_trace_and_write.png' },
+          { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/03_read_and_do.pdf',        title: 'Read and Do',        thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/03_read_and_do.png' },
+          { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/04_alien_word_mission.pdf', title: 'Alien Word Mission', thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/04_alien_word_mission.png' },
+          { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/05_sound_sort.pdf',         title: 'Sound Sort',         thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/05_sound_sort.png' },
+        ],
+      },
+      {
+        label: 'Single-sound sheets — sh nk',
+        bundleHref: '/worksheets/Sound_Pack_SHNK/SHNK_Sound_Pack.pdf',
+        bundleLabel: 'Download all 2 sheets',
+        sheets: [
+          { href: '/worksheets/Sound_Pack_SHNK/sound_sh.pdf', title: 'Sound sh', thumb: '/worksheets/Sound_Pack_SHNK/sound_sh.png' },
+          { href: '/worksheets/Sound_Pack_SHNK/sound_nk.pdf', title: 'Sound nk', thumb: '/worksheets/Sound_Pack_SHNK/sound_nk.png' },
+        ],
+      },
+    ],
+  },
   { id: 'l1-4',  bookNumber: '1.4',  title: 'The Red Socks',         focusSounds: ['c', 'k', 'ck', 'e'],  status: 'coming-soon', groups: [] },
   { id: 'l1-5',  bookNumber: '1.5',  title: 'Run, Pup, Run!',        focusSounds: ['u', 'r', 'h', 'b'],   status: 'coming-soon', groups: [] },
   { id: 'l1-6',  bookNumber: '1.6',  title: 'Fox Fell Off!',         focusSounds: ['f', 'l', 'ff', 'll'], status: 'coming-soon', groups: [] },
