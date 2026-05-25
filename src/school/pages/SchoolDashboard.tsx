@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, Globe2, ListChecks } from 'lucide-react';
+import { ArrowRight, BookOpen, Camera, FileText, Globe2, ListChecks } from 'lucide-react';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { SCHOOL_BOOKS } from '../data/bookCatalog';
+import { SOUND_BOOK_TOTAL } from '../data/soundBooks';
+import { BLENDING_BOOK_TOTAL } from '../data/blendingBooks';
 
 export default function SchoolDashboard() {
-  const totalBooks = SCHOOL_BOOKS.length;
+  const totalStorybooks = SCHOOL_BOOKS.length;
+  const totalBooks = totalStorybooks + SOUND_BOOK_TOTAL + BLENDING_BOOK_TOTAL;
 
   return (
     <div className="space-y-8">
@@ -34,11 +37,22 @@ export default function SchoolDashboard() {
         </div>
       </section>
 
+      {/* Resource totals at a glance. */}
+      <section>
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Resources planned</h2>
+        <div className="grid gap-3 sm:grid-cols-4">
+          <StatCard icon={<BookOpen className="w-5 h-5" />} value={totalStorybooks} label="Storybooks"     hint="illustrated narratives" />
+          <StatCard icon={<Camera className="w-5 h-5" />}   value={SOUND_BOOK_TOTAL} label="Sound Books"   hint="real-photo, 1 per GPC" />
+          <StatCard icon={<FileText className="w-5 h-5" />} value={BLENDING_BOOK_TOTAL} label="Blending Books" hint="A6 pre-storybook practice" />
+          <StatCard icon={<ListChecks className="w-5 h-5" />} value={totalBooks} label="Books total" hint="across 8 levels" />
+        </div>
+      </section>
+
       {/* Nav cards. */}
       <section className="grid gap-3 sm:grid-cols-3">
-        <NavCard to="/school/levels" icon={<ListChecks className="w-5 h-5" />} title="Levels" body={`${SCHOOL_LEVELS.length} levels with GPCs, tricky words, sentence-length bands.`} />
-        <NavCard to="/school/library" icon={<BookOpen className="w-5 h-5" />} title="Library" body={`${totalBooks} books grouped under the new structure.`} />
-        <NavCard to="/school/mapping" icon={<Globe2 className="w-5 h-5" />} title="Curriculum mapping" body="UK L&S, UK RWI, UK Year, Australia, US CC, IB PYP." />
+        <NavCard to="/school/levels"  icon={<ListChecks className="w-5 h-5" />} title="Levels"             body={`${SCHOOL_LEVELS.length} levels with GPCs, tricky words, full resource plan.`} />
+        <NavCard to="/school/library" icon={<BookOpen className="w-5 h-5" />}   title="Library"            body={`${totalStorybooks} storybooks grouped under the new structure.`} />
+        <NavCard to="/school/mapping" icon={<Globe2 className="w-5 h-5" />}     title="Curriculum mapping" body="Per-level resource plan, worksheet lifecycle, international equivalents." />
       </section>
 
       <section className="bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -47,6 +61,16 @@ export default function SchoolDashboard() {
           The parent-facing site at <code className="text-xs">/library</code> and <code className="text-xs">/assessment</code> still runs the original 6-level structure, untouched.
         </p>
       </section>
+    </div>
+  );
+}
+
+function StatCard({ icon, value, label, hint }: { icon: React.ReactNode; value: number; label: string; hint: string }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl p-4">
+      <div className="flex items-center gap-2 text-slate-500 mb-1">{icon}<span className="text-xs font-bold uppercase tracking-wider">{label}</span></div>
+      <div className="text-3xl font-extrabold text-slate-900">{value}</div>
+      <div className="text-xs text-slate-500 mt-1">{hint}</div>
     </div>
   );
 }
