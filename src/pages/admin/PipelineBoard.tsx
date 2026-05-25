@@ -9,12 +9,51 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAdminPipeline, type PipelineContact } from '@/hooks/useAdminPipeline';
 import { useQueryClient } from '@tanstack/react-query';
-import { RefreshCw, Mail } from 'lucide-react';
-import { useMemo } from 'react';
+import { RefreshCw, Mail, Gift, Banknote, Users, Sparkles } from 'lucide-react';
+import { useMemo, useState } from 'react';
+
+// Visual treatment per acquisition type — distinct colours so cards in
+// the same column can be skimmed by funding source at a glance.
+const ACQUISITION = {
+  paid:     { label: 'Paid',     icon: Banknote, className: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
+  voucher:  { label: 'Voucher',  icon: Gift,     className: 'bg-amber-100 text-amber-800 border-amber-200' },
+  referral: { label: 'Referral', icon: Users,    className: 'bg-blue-100 text-blue-800 border-blue-200' },
+  trial:    { label: 'Trial',    icon: Sparkles, className: 'bg-violet-100 text-violet-800 border-violet-200' },
+  none:     null,
+} as const;
+
+type AcquisitionFilter = 'all' | 'paid' | 'voucher' | 'referral' | 'trial';
 
 export default function PipelineBoard() {
   const { data, isLoading, isFetching } = useAdminPipeline();
   const queryClient = useQueryClient();
+  const [filter, setFilter] = useState<AcquisitionFilter>('all');
+
+  // Counts by acquisition for the summary strip — computed before the
+  // filter is applied so the chip labels stay honest even after click.
+  const totals = useMemo(() => {
+    const t = { all: 0, paid: 0, voucher: 0, referral: 0, trial: 0 };
+    if (!data) return t;
+    for (const c of data.contacts) {
+      t.all++;
+      if (c.acquisition !== 'none') t[c.acquisition]++;
+    }
+    return t;
+  }, [data]);
+
+  // Sum revenue from paid contacts only (excludes vouchers / trials).
+  const paidRevenuePence = useMemo(() => {
+    if (!data) return 0;
+    return data.contacts
+      .filter(c => c.acquisition === 'paid' || c.acquisition === 'referral')
+      .reduce((s, c) => s + c.lifetime_value_pence, 0);
+  }, [data]);
+
+  const filteredContacts = useMemo(() => {
+    if (!data) return [];
+    if (filter === 'all') return data.contacts;
+    return data.contacts.filter(c => c.acquisition === filter);
+  }, [data, filter]);
 
   const contactsByStage = useMemo(() => {
     const map = new Map<string, PipelineContact[]>();
@@ -22,7 +61,7 @@ export default function PipelineBoard() {
     data.stages.forEach(s => map.set(s.id, []));
     // Sort contacts within each column by last activity desc — most recent
     // movers at the top so churn / new trials are immediately visible.
-    const sorted = [...data.contacts].sort((a, b) => {
+    const sorted = [...filteredContacts].sort((a, b) => {
       const ta = a.last_activity_at ?? '';
       const tb = b.last_activity_at ?? '';
       return tb.localeCompare(ta);
@@ -33,22 +72,21 @@ export default function PipelineBoard() {
       }
     }
     return map;
-  }, [data]);
+  }, [data, filteredContacts]);
 
   if (isLoading || !data) {
     return <div className="text-muted-foreground">Loading pipeline...</div>;
   }
 
   const { stages } = data;
-  const totalContacts = data.contacts.length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Pipeline</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Auto-derived from purchases &amp; assessments — {totalContacts} contacts. Updates the moment a customer moves.
+            Auto-derived from purchases &amp; assessments. Updates the moment a customer moves.
           </p>
         </div>
         <Button
@@ -61,6 +99,46 @@ export default function PipelineBoard() {
           <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
+      </div>
+
+      {/* Segmentation strip — click a chip to filter the board. Makes
+          revenue vs comp immediately visible without scanning every card. */}
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-card p-3">
+        <FilterChip label="All" count={totals.all} active={filter === 'all'} onClick={() => setFilter('all')} />
+        <FilterChip
+          label="Paid"
+          count={totals.paid}
+          active={filter === 'paid'}
+          onClick={() => setFilter('paid')}
+          tone="emerald"
+        />
+        <FilterChip
+          label="Voucher"
+          count={totals.voucher}
+          active={filter === 'voucher'}
+          onClick={() => setFilter('voucher')}
+          tone="amber"
+        />
+        <FilterChip
+          label="Referral"
+          count={totals.referral}
+          active={filter === 'referral'}
+          onClick={() => setFilter('referral')}
+          tone="blue"
+        />
+        <FilterChip
+          label="Trial"
+          count={totals.trial}
+          active={filter === 'trial'}
+          onClick={() => setFilter('trial')}
+          tone="violet"
+        />
+        <div className="ml-auto text-sm text-muted-foreground">
+          Revenue (paid + referral):{' '}
+          <span className="font-semibold text-foreground">
+            £{(paidRevenuePence / 100).toFixed(2)}
+          </span>
+        </div>
       </div>
 
       {/* Kanban Board */}
@@ -99,21 +177,36 @@ export default function PipelineBoard() {
 function ContactCard({ contact }: { contact: PipelineContact }) {
   const name = contact.profile?.full_name || contact.profile?.email || 'Unknown';
   const email = contact.profile?.email ?? '';
+  const acq = ACQUISITION[contact.acquisition];
+  const AcqIcon = acq?.icon;
   return (
     <Card>
       <CardContent className="p-3">
-        <p className="truncate text-sm font-medium">{name}</p>
+        <div className="flex items-start justify-between gap-2">
+          <p className="truncate text-sm font-medium">{name}</p>
+          {acq && AcqIcon && (
+            <span
+              className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${acq.className}`}
+              title={`Acquisition: ${acq.label}`}
+            >
+              <AcqIcon className="h-2.5 w-2.5" />
+              {acq.label}
+            </span>
+          )}
+        </div>
         {email && email !== name && (
           <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-muted-foreground">
             <Mail className="h-3 w-3 shrink-0" />
             <span className="truncate">{email}</span>
           </p>
         )}
-        {contact.lifetime_value_pence > 0 && (
+        {contact.lifetime_value_pence > 0 ? (
           <p className="mt-1 text-xs font-medium text-green-600">
             £{(contact.lifetime_value_pence / 100).toFixed(2)}
           </p>
-        )}
+        ) : contact.acquisition === 'voucher' ? (
+          <p className="mt-1 text-xs italic text-muted-foreground">£0 — voucher</p>
+        ) : null}
         {contact.last_activity_at && (
           <p className="mt-1 text-[10px] text-muted-foreground">
             {new Date(contact.last_activity_at).toLocaleDateString()}
@@ -121,5 +214,39 @@ function ContactCard({ contact }: { contact: PipelineContact }) {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function FilterChip({
+  label,
+  count,
+  active,
+  tone,
+  onClick,
+}: {
+  label: string;
+  count: number;
+  active: boolean;
+  tone?: 'emerald' | 'amber' | 'blue' | 'violet';
+  onClick: () => void;
+}) {
+  const toneClasses: Record<string, string> = {
+    emerald: 'border-emerald-300 bg-emerald-50 text-emerald-900',
+    amber: 'border-amber-300 bg-amber-50 text-amber-900',
+    blue: 'border-blue-300 bg-blue-50 text-blue-900',
+    violet: 'border-violet-300 bg-violet-50 text-violet-900',
+  };
+  const base = tone ? toneClasses[tone] : 'border-border bg-muted text-foreground';
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold transition-all ${base} ${
+        active ? 'ring-2 ring-offset-1 ring-foreground/30' : 'opacity-70 hover:opacity-100'
+      }`}
+    >
+      {label}
+      <Badge variant="secondary" className="h-4 px-1.5 text-[10px]">{count}</Badge>
+    </button>
   );
 }

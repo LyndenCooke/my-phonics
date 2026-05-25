@@ -36,6 +36,9 @@ export interface PipelineContact {
   source: string | null;
   tags: string[];
   lifetime_value_pence: number;
+  // How they got their entitlement — matters for marketing because a
+  // £0 voucher user is not the same lead-quality signal as a real buyer.
+  acquisition: 'paid' | 'voucher' | 'trial' | 'referral' | 'none';
   last_activity_at: string | null;
   created_at: string | null;
   profile?: { email: string; full_name: string | null };
@@ -56,32 +59,37 @@ type PurchaseRow = {
   status: string | null;
   subscription_state: string | null;
   stripe_subscription_id: string | null;
+  stripe_session_id: string | null;
   amount_paid: number | null;
   completed_at: string | null;
   created_at: string;
 };
 type ProfileRow = { id: string; email: string; full_name: string | null; created_at: string | null };
 type AssessmentRow = { user_id: string; completed_at: string | null };
+type ReferralRow = { buyer_user_id: string | null; ref_code: string | null };
 
 export function useAdminPipeline() {
   return useQuery({
     queryKey: ['admin-pipeline'],
     queryFn: async () => {
-      const [stagesRes, profilesRes, purchasesRes, assessmentsRes] = await Promise.all([
+      const [stagesRes, profilesRes, purchasesRes, assessmentsRes, referralsRes] = await Promise.all([
         supabase.from('crm_pipeline_stages').select('*').order('sort_order'),
         supabase.from('profiles').select('id, email, full_name, created_at'),
         supabase
           .from('purchases')
-          .select('user_id, status, subscription_state, stripe_subscription_id, amount_paid, completed_at, created_at')
+          .select('user_id, status, subscription_state, stripe_subscription_id, stripe_session_id, amount_paid, completed_at, created_at')
           .order('created_at', { ascending: false }),
         supabase.from('assessment_results').select('user_id, completed_at'),
+        // Referral attributions tell us a contact came in via an affiliate
+        // code — useful for marketing to attribute revenue to a campaign.
+        supabase.from('referral_attributions').select('buyer_user_id, ref_code'),
       ]);
 
       if (stagesRes.error) throw stagesRes.error;
       if (profilesRes.error) throw profilesRes.error;
       if (purchasesRes.error) throw purchasesRes.error;
-      // assessment_results may not be readable under all RLS configs — ignore
-      // the error and treat missing data as "no assessment" rather than crash.
+      // assessment_results / referral_attributions may not be readable under
+      // all RLS configs — ignore errors and treat as empty.
 
       const stages = stagesRes.data as PipelineStage[];
       const stageByName = new Map(stages.map(s => [s.name, s] as const));
@@ -97,6 +105,10 @@ export function useAdminPipeline() {
       for (const a of (assessmentsRes.data ?? []) as AssessmentRow[]) {
         assessedUsers.add(a.user_id);
       }
+      const referredUsers = new Set<string>();
+      for (const r of (referralsRes.data ?? []) as ReferralRow[]) {
+        if (r.buyer_user_id) referredUsers.add(r.buyer_user_id);
+      }
 
       const contacts: PipelineContact[] = [];
       for (const profile of (profilesRes.data ?? []) as ProfileRow[]) {
@@ -107,8 +119,25 @@ export function useAdminPipeline() {
         const trialing = myPurchases.find(p => p.subscription_state === 'trialing');
         const active = myPurchases.find(p => p.subscription_state === 'active');
         const cancelled = myPurchases.find(p => p.subscription_state === 'cancelled');
+        // Any completed one-time purchase (paid Lifetime OR voucher
+        // redemption). The previous version required amount_paid > 0 and
+        // silently dropped voucher users out of the Purchased column.
         const oneTimeCompleted = myPurchases.find(
-          p => p.status === 'completed' && !p.stripe_subscription_id && (p.amount_paid ?? 0) > 0
+          p => p.status === 'completed' && !p.stripe_subscription_id
+        );
+        const paidOneTime = myPurchases.find(
+          p =>
+            p.status === 'completed' &&
+            !p.stripe_subscription_id &&
+            (p.amount_paid ?? 0) > 0 &&
+            !!p.stripe_session_id
+        );
+        const voucherRedeemed = myPurchases.find(
+          p =>
+            p.status === 'completed' &&
+            !p.stripe_subscription_id &&
+            (p.amount_paid ?? 0) === 0 &&
+            !p.stripe_session_id
         );
 
         let stageName: string;
@@ -118,6 +147,15 @@ export function useAdminPipeline() {
         else if (cancelled) stageName = STAGE.CHURNED;
         else if (assessedUsers.has(profile.id)) stageName = STAGE.ASSESSED;
         else stageName = STAGE.NEW_LEAD;
+
+        // Acquisition channel — drives the Voucher / Referral / Paid /
+        // Trial badge on the card so marketing can spot which contacts
+        // are revenue and which are comp at a glance.
+        let acquisition: PipelineContact['acquisition'] = 'none';
+        if (active || trialing) acquisition = 'trial';
+        else if (referredUsers.has(profile.id) && paidOneTime) acquisition = 'referral';
+        else if (paidOneTime) acquisition = 'paid';
+        else if (voucherRedeemed) acquisition = 'voucher';
 
         // Sum amount_paid across COMPLETED rows for a rough lifetime value.
         // Pending/failed rows don't count.
@@ -140,6 +178,7 @@ export function useAdminPipeline() {
           source: null,
           tags: [],
           lifetime_value_pence: ltv,
+          acquisition,
           last_activity_at: lastActivity,
           created_at: profile.created_at,
           profile: { email: profile.email, full_name: profile.full_name },
