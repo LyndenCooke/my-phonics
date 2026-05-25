@@ -7,6 +7,7 @@ import {
   CheckSquare,
   BarChart3,
   ArrowLeft,
+  Inbox,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +15,7 @@ const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/admin/customers', icon: Users, label: 'Customers' },
   { to: '/admin/pipeline', icon: Kanban, label: 'Pipeline' },
+  { to: '/admin/recovery', icon: Inbox, label: 'Recovery' },
   { to: '/admin/deals', icon: Handshake, label: 'Deals' },
   { to: '/admin/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
