@@ -92,6 +92,41 @@ Deno.serve(async (req) => {
       }
     }
 
+    // ─── Helper: fetch Stripe subscription (for trialing-status checks) ───
+    async function fetchStripeSubscription(subscriptionId: string): Promise<any | null> {
+      try {
+        const res = await fetch(
+          `https://api.stripe.com/v1/subscriptions/${subscriptionId}`,
+          { headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}` } }
+        );
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (err) {
+        console.error("fetchStripeSubscription failed:", err);
+        return null;
+      }
+    }
+
+    // ─── Helper: resolve buyer email from a Stripe customer ID ───
+    // For subscription.* events we don't get an email in the payload, only
+    // a customer ID. Walk it back through our purchases table (which stores
+    // stripe_customer_id) to the profiles row.
+    async function emailForCustomer(customerId: string): Promise<{ userId: string | null; email: string | null }> {
+      const { data: purchases } = await supabaseAdmin
+        .from("purchases")
+        .select("user_id")
+        .eq("stripe_customer_id", customerId)
+        .limit(1);
+      const userId = purchases?.[0]?.user_id ?? null;
+      if (!userId) return { userId: null, email: null };
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("email")
+        .eq("id", userId)
+        .single();
+      return { userId, email: profile?.email ?? null };
+    }
+
     // ─── Helper: resolve or create user from session ───
     async function resolveUser(session: any): Promise<string | null> {
       let userId = session.client_reference_id;
@@ -307,8 +342,11 @@ Deno.serve(async (req) => {
         }
       }
 
-      // GHL sync — fire contact.purchased so the CRM tags / pipelines
-      // update on the buyer's contact. Best-effort.
+      // GHL sync — distinguish trial starts from real purchases. Trials
+      // carry amount_total: 0 today (the first charge happens at trial end),
+      // so contact.purchased would be the wrong signal for the CRM. We fetch
+      // the subscription to check its actual status rather than inferring
+      // from amount/product type — Stripe is the source of truth.
       const buyerEmail = session.customer_email || session.metadata?.guest_email || null;
       if (buyerEmail) {
         const { data: productRow } = await supabaseAdmin
@@ -316,7 +354,18 @@ Deno.serve(async (req) => {
           .select("name, product_type")
           .eq("id", productId ?? "")
           .single();
-        await syncGHL("contact.purchased", {
+
+        let isTrialStart = false;
+        let trialEnd: number | null = null;
+        if (session.subscription) {
+          const sub = await fetchStripeSubscription(session.subscription);
+          if (sub?.status === "trialing") {
+            isTrialStart = true;
+            trialEnd = sub.trial_end ?? null;
+          }
+        }
+
+        const ghlPayload: Record<string, unknown> = {
           email: buyerEmail,
           user_id: userId,
           product_id: productId,
@@ -325,11 +374,64 @@ Deno.serve(async (req) => {
           amount_pence: session.amount_total ?? 0,
           currency: session.currency ?? "gbp",
           stripe_session_id: session.id,
-        });
+          stripe_customer_id: session.customer ?? null,
+          stripe_subscription_id: session.subscription ?? null,
+        };
+
+        if (isTrialStart) {
+          await syncGHL("contact.free_trial", { ...ghlPayload, trial_end: trialEnd });
+        } else {
+          await syncGHL("contact.purchased", ghlPayload);
+        }
+      }
+
+    } else if (event.type === "customer.subscription.updated") {
+      // Detect trial → active transition (first paid charge after the 7-day
+      // trial). Stripe sends previous_attributes.status when status changes,
+      // so we only fire the CRM event on the actual flip, not on every
+      // subscription update (which includes things like card-on-file changes).
+      const subscription = event.data.object;
+      const previous = event.data.previous_attributes ?? {};
+      const wasTrialing = previous.status === "trialing";
+      const nowActive = subscription.status === "active";
+
+      if (wasTrialing && nowActive) {
+        const { userId, email } = await emailForCustomer(subscription.customer);
+        if (email) {
+          // Pull product info off the subscription's first item.price.product
+          // so the CRM knows which plan converted. Best-effort — if it fails
+          // we still fire the event with what we have.
+          let productName: string | null = null;
+          let productType: string | null = null;
+          try {
+            const { data: purchaseRow } = await supabaseAdmin
+              .from("purchases")
+              .select("product_id, products(name, product_type)")
+              .eq("stripe_subscription_id", subscription.id)
+              .limit(1)
+              .single();
+            productName = (purchaseRow as any)?.products?.name ?? null;
+            productType = (purchaseRow as any)?.products?.product_type ?? null;
+          } catch {
+            // ignore — we still send what we have
+          }
+
+          await syncGHL("contact.trial_converted", {
+            email,
+            user_id: userId,
+            product_name: productName,
+            product_type: productType,
+            stripe_customer_id: subscription.customer,
+            stripe_subscription_id: subscription.id,
+          });
+        }
       }
 
     } else if (event.type === "customer.subscription.deleted") {
       // Subscription cancelled — remove subscription-sourced book access
+      // AND notify GHL so the contact's free-trial / active tag is replaced
+      // with cancelled. Without this step the CRM thinks every churned
+      // customer is still on trial forever.
       const subscription = event.data.object;
       const customerId = subscription.customer;
 
@@ -340,8 +442,9 @@ Deno.serve(async (req) => {
         .eq("stripe_customer_id", customerId)
         .limit(1);
 
+      let userId: string | null = null;
       if (purchases && purchases.length > 0) {
-        const userId = purchases[0].user_id;
+        userId = purchases[0].user_id;
 
         // Remove subscription-sourced books (keep purchased ones)
         await supabaseAdmin
@@ -355,6 +458,25 @@ Deno.serve(async (req) => {
           .from("purchases")
           .update({ status: "cancelled" })
           .eq("stripe_subscription_id", subscription.id);
+      }
+
+      // Resolve email for GHL — even if no purchase row matched, walk
+      // through to keep the CRM in sync.
+      const { email } = await emailForCustomer(customerId);
+      if (email) {
+        // cancelled_during_trial lets GHL automation distinguish a "tried
+        // the product and bounced" contact from a "paid then cancelled"
+        // contact — different nurture flows.
+        const cancelledDuringTrial = subscription.status === "canceled" &&
+          (subscription.trial_end ?? 0) * 1000 > Date.now();
+        await syncGHL("contact.cancelled", {
+          email,
+          user_id: userId,
+          stripe_customer_id: customerId,
+          stripe_subscription_id: subscription.id,
+          cancelled_during_trial: cancelledDuringTrial,
+          cancellation_reason: subscription.cancellation_details?.reason ?? null,
+        });
       }
 
     } else if (event.type === "invoice.payment_failed") {

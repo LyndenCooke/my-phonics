@@ -295,6 +295,64 @@ serve(async (req) => {
         break;
       }
 
+      case 'contact.trial_converted': {
+        // Trial ended and Stripe collected the first charge. Replace the
+        // free-trial tag with a paid one so GHL automation can switch
+        // from trial-nurture to onboarding/retention flows.
+        ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'trial-converted', 'purchased'],
+          });
+        }
+        if (ghlContactId) {
+          const productName = data?.product_name ?? null;
+          const productType = data?.product_type ?? null;
+          await addTags(ghlContactId, [
+            'trial-converted',
+            'purchased',
+            ...(productType ? [`product-type:${productType}`] : []),
+            ...(productName ? [`product:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
+          ]);
+        }
+        break;
+      }
+
+      case 'contact.cancelled': {
+        // Subscription cancelled — either during trial (didn't convert) or
+        // after one or more paid cycles. We tag both states so GHL workflows
+        // can branch (e.g. only send a win-back to paid-then-cancelled, not
+        // to trial-bouncers who are usually wrong-fit).
+        ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          // Edge case — we shouldn't be cancelling a contact we've never
+          // seen, but create defensively rather than dropping the event.
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'cancelled'],
+          });
+        }
+        if (ghlContactId) {
+          const cancelledDuringTrial = Boolean(data?.cancelled_during_trial);
+          const tags = [
+            'cancelled',
+            cancelledDuringTrial ? 'cancelled-during-trial' : 'cancelled-after-paid',
+          ];
+          if (typeof data?.cancellation_reason === 'string' && data.cancellation_reason) {
+            tags.push(`cancel-reason:${data.cancellation_reason}`);
+          }
+          await addTags(ghlContactId, tags);
+        }
+        break;
+      }
+
       case 'contact.stage_changed': {
         ghlContactId = await findContact(email);
         if (ghlContactId && data?.stage) {

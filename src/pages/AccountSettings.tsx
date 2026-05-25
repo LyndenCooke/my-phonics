@@ -13,8 +13,9 @@ import { useProfile, useChildren } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Save, Mail, Lock } from 'lucide-react';
+import { ArrowLeft, Save, Mail, Lock, CreditCard, ExternalLink } from 'lucide-react';
 import PasswordSetup from '@/components/PasswordSetup';
+import { useQuery } from '@tanstack/react-query';
 
 export default function AccountSettings() {
   const { user } = useAuth();
@@ -29,6 +30,25 @@ export default function AccountSettings() {
   const [childName, setChildName] = useState('');
   const [childDob, setChildDob] = useState('');
   const [saving, setSaving] = useState(false);
+  const [openingPortal, setOpeningPortal] = useState(false);
+
+  // Show the Manage Subscription button only for users who have a Stripe
+  // customer (i.e. have ever bought or started a trial). Lifetime-only
+  // buyers still get the button because they may want to update their
+  // payment method or pull invoices.
+  const { data: hasStripeCustomer } = useQuery({
+    queryKey: ['has-stripe-customer', user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('purchases')
+        .select('stripe_customer_id')
+        .eq('user_id', user!.id)
+        .not('stripe_customer_id', 'is', null)
+        .limit(1);
+      return (data?.length ?? 0) > 0;
+    },
+  });
 
   // Hydrate once data lands. We track changed-vs-loaded with a separate
   // ref-style guard via the loaded values themselves — simpler than a
@@ -75,6 +95,28 @@ export default function AccountSettings() {
       });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    setOpeningPortal(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-portal-session', {
+        body: {},
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.location.href = data.url as string;
+        return;
+      }
+      throw new Error(data?.error || 'Could not open billing portal');
+    } catch (err) {
+      toast({
+        title: 'Could not open billing portal',
+        description: (err as Error).message ?? 'Try again in a moment.',
+        variant: 'destructive',
+      });
+      setOpeningPortal(false);
     }
   };
 
@@ -164,6 +206,27 @@ export default function AccountSettings() {
             <Lock className="w-4 h-4" /> Send password reset email instead
           </button>
         </section>
+
+        {/* Billing — only rendered for users who have ever bought or
+            trialed. Stripe Customer Portal owns the cancel/update UX so
+            we don't have to. */}
+        {hasStripeCustomer && (
+          <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Billing</p>
+            <p className="text-sm text-muted-foreground">
+              Update your card, view invoices, or cancel your subscription.
+            </p>
+            <button
+              onClick={handleManageSubscription}
+              disabled={openingPortal}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted/50 transition-colors disabled:opacity-60"
+            >
+              <CreditCard className="w-4 h-4" />
+              {openingPortal ? 'Opening…' : 'Manage subscription'}
+              {!openingPortal && <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />}
+            </button>
+          </section>
+        )}
 
         {/* Child details */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-4">
