@@ -13,8 +13,19 @@ export function useAdminCustomerDetail(profileId: string | undefined) {
         supabase.from('purchases').select('*, products(name, product_type)').eq('user_id', profileId).order('created_at', { ascending: false }),
         supabase.from('user_books').select('*, books(title, level, sub_level)').eq('user_id', profileId),
         supabase.from('assessment_results').select('*').eq('user_id', profileId).order('completed_at', { ascending: false }),
-        supabase.from('crm_notes').select('*').eq('contact_id', profileId).order('created_at', { ascending: false }),
-        supabase.from('crm_tasks').select('*').eq('contact_id', profileId).order('due_date'),
+        // Notes/tasks now key off profile_id directly. The contact_id
+        // path is kept for the small number of legacy rows that pre-date
+        // the migration — combining both queries here avoids losing them.
+        supabase
+          .from('crm_notes')
+          .select('*')
+          .or(`profile_id.eq.${profileId},contact_id.eq.${profileId}`)
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('crm_tasks')
+          .select('*')
+          .or(`profile_id.eq.${profileId},contact_id.eq.${profileId}`)
+          .order('due_date'),
         supabase.from('crm_contacts').select('*, crm_pipeline_stages(name, colour)').eq('profile_id', profileId).maybeSingle(),
       ]);
 

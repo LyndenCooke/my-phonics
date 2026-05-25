@@ -11,6 +11,7 @@ import { useAdminPipeline, type PipelineContact } from '@/hooks/useAdminPipeline
 import { useQueryClient } from '@tanstack/react-query';
 import { RefreshCw, Mail, Gift, Banknote, Users, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Visual treatment per acquisition type — distinct colours so cards in
 // the same column can be skimmed by funding source at a glance.
@@ -180,40 +181,45 @@ function ContactCard({ contact }: { contact: PipelineContact }) {
   const acq = ACQUISITION[contact.acquisition];
   const AcqIcon = acq?.icon;
   return (
-    <Card>
-      <CardContent className="p-3">
-        <div className="flex items-start justify-between gap-2">
-          <p className="truncate text-sm font-medium">{name}</p>
-          {acq && AcqIcon && (
-            <span
-              className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${acq.className}`}
-              title={`Acquisition: ${acq.label}`}
-            >
-              <AcqIcon className="h-2.5 w-2.5" />
-              {acq.label}
-            </span>
+    <Link
+      to={`/admin/customers/${contact.profile_id}`}
+      className="block hover:opacity-90 transition-opacity"
+    >
+      <Card>
+        <CardContent className="p-3">
+          <div className="flex items-start justify-between gap-2">
+            <p className="truncate text-sm font-medium">{name}</p>
+            {acq && AcqIcon && (
+              <span
+                className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${acq.className}`}
+                title={`Acquisition: ${acq.label}`}
+              >
+                <AcqIcon className="h-2.5 w-2.5" />
+                {acq.label}
+              </span>
+            )}
+          </div>
+          {email && email !== name && (
+            <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-muted-foreground">
+              <Mail className="h-3 w-3 shrink-0" />
+              <span className="truncate">{email}</span>
+            </p>
           )}
-        </div>
-        {email && email !== name && (
-          <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-muted-foreground">
-            <Mail className="h-3 w-3 shrink-0" />
-            <span className="truncate">{email}</span>
-          </p>
-        )}
-        {contact.lifetime_value_pence > 0 ? (
-          <p className="mt-1 text-xs font-medium text-green-600">
-            £{(contact.lifetime_value_pence / 100).toFixed(2)}
-          </p>
-        ) : contact.acquisition === 'voucher' ? (
-          <p className="mt-1 text-xs italic text-muted-foreground">£0 — voucher</p>
-        ) : null}
-        {contact.last_activity_at && (
-          <p className="mt-1 text-[10px] text-muted-foreground">
-            {new Date(contact.last_activity_at).toLocaleDateString()}
-          </p>
-        )}
-      </CardContent>
-    </Card>
+          {contact.lifetime_value_pence > 0 ? (
+            <p className="mt-1 text-xs font-medium text-green-600">
+              £{(contact.lifetime_value_pence / 100).toFixed(2)}
+            </p>
+          ) : contact.acquisition === 'voucher' ? (
+            <p className="mt-1 text-xs italic text-muted-foreground">£0 — voucher</p>
+          ) : null}
+          {contact.last_activity_at && (
+            <p className="mt-1 text-[10px] text-muted-foreground">
+              {new Date(contact.last_activity_at).toLocaleDateString()}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
