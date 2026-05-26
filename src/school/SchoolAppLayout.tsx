@@ -1,5 +1,5 @@
 import { Link, NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Loader2, LogOut, Sparkles, LayoutDashboard, Users, BookOpen } from 'lucide-react';
+import { Loader2, LogOut, Sparkles, LayoutDashboard, Users, BookOpen, Layers } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSchoolMemberships } from './hooks/useSchool';
 import './school.css';
@@ -57,8 +57,9 @@ export default function SchoolAppLayout() {
         </div>
         <nav className="max-w-6xl mx-auto px-4 flex gap-1 overflow-x-auto pb-1">
           <SchoolAppNavLink to="/school/app" end icon={<LayoutDashboard className="w-4 h-4" />}>Dashboard</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/groups" icon={<Layers className="w-4 h-4" />}>Phonics groups</SchoolAppNavLink>
           <SchoolAppNavLink to="/school/app/classrooms" icon={<Users className="w-4 h-4" />}>Classrooms</SchoolAppNavLink>
-          <SchoolAppNavLink to="/school/preview" icon={<BookOpen className="w-4 h-4" />}>Curriculum</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/library" icon={<BookOpen className="w-4 h-4" />}>Library</SchoolAppNavLink>
         </nav>
       </header>
       <main className="max-w-6xl mx-auto px-4 py-8">
