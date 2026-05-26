@@ -197,32 +197,41 @@ export default function ClassroomDetail() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {students.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 font-semibold">{s.first_name} {s.last_name ?? ''}</td>
-                    <td className="px-4 py-3">
-                      {s.current_level
-                        ? <span className="px-2 py-1 rounded-full bg-slate-100 text-xs font-semibold">{s.current_level}</span>
-                        : <span className="text-slate-400">—</span>}
-                    </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {s.last_assessment
-                        ? <>
-                            {new Date(s.last_assessment.created_at).toLocaleDateString()}
-                            {s.last_assessment.recommended_level && <> · {s.last_assessment.recommended_level}</>}
-                          </>
-                        : <span className="text-slate-400">Not assessed yet</span>}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <Link
-                        to={`/school/app/students/${s.id}/assess`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-pink-600 text-white text-xs font-semibold rounded-lg hover:bg-pink-700"
-                      >
-                        <ClipboardCheck className="w-3.5 h-3.5" /> Assess
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                {students.map((s) => {
+                  const needsAssessment = !s.current_level && !s.last_assessment;
+                  return (
+                    <tr key={s.id} className={needsAssessment ? 'hover:bg-amber-50 bg-amber-50/40' : 'hover:bg-slate-50'}>
+                      <td className="px-4 py-3 font-semibold">{s.first_name} {s.last_name ?? ''}</td>
+                      <td className="px-4 py-3">
+                        {s.current_level
+                          ? <span className="px-2 py-1 rounded-full bg-slate-100 text-xs font-semibold">{s.current_level}</span>
+                          : <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase">Needs assessment</span>}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {s.last_assessment
+                          ? <>
+                              {new Date(s.last_assessment.created_at).toLocaleDateString()}
+                              {s.last_assessment.recommended_level && <> · {s.last_assessment.recommended_level}</>}
+                            </>
+                          : <span className="text-slate-400">—</span>}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <Link
+                          to={`/school/app/students/${s.id}/assess`}
+                          className={[
+                            'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg',
+                            needsAssessment
+                              ? 'bg-pink-600 text-white hover:bg-pink-700'
+                              : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
+                          ].join(' ')}
+                        >
+                          <ClipboardCheck className="w-3.5 h-3.5" />
+                          {needsAssessment ? 'Assess now' : 'Re-assess'}
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -232,10 +241,10 @@ export default function ClassroomDetail() {
       <section className="bg-slate-100 border border-slate-200 rounded-2xl p-5 flex items-start gap-3">
         <BookOpen className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" />
         <div>
-          <h3 className="font-bold mb-1">Library access</h3>
+          <h3 className="font-bold mb-1">Books for this class</h3>
           <p className="text-sm text-slate-600">
-            Use your school login on the <Link to="/library" className="font-semibold text-pink-600 hover:underline">main library</Link> to read every book.
-            Each student inherits their classroom's level — re-assess any child above to set their level.
+            Browse all 33 storybooks + worksheets in the <Link to="/school/app/library" className="font-semibold text-pink-600 hover:underline">school library</Link>.
+            Use <Link to="/school/app/groups" className="font-semibold text-pink-600 hover:underline">Phonics groups</Link> to organise this class by ability level.
           </p>
         </div>
       </section>
