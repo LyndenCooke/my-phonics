@@ -50,9 +50,9 @@ export default function SchoolDashboard() {
 
       {/* Nav cards. */}
       <section className="grid gap-3 sm:grid-cols-3">
-        <NavCard to="/school/levels"  icon={<ListChecks className="w-5 h-5" />} title="Levels"             body={`${SCHOOL_LEVELS.length} levels with GPCs, tricky words, full resource plan.`} />
-        <NavCard to="/school/library" icon={<BookOpen className="w-5 h-5" />}   title="Library"            body={`${totalStorybooks} storybooks grouped under the new structure.`} />
-        <NavCard to="/school/mapping" icon={<Globe2 className="w-5 h-5" />}     title="Curriculum mapping" body="Per-level resource plan, worksheet lifecycle, international equivalents." />
+        <NavCard to="/school/preview/levels"  icon={<ListChecks className="w-5 h-5" />}  title="Levels"             body={`${SCHOOL_LEVELS.length} levels with GPCs, tricky words, full resource plan.`} />
+        <NavCard to="/school/preview/library" icon={<BookOpen className="w-5 h-5" />}    title="Library"            body={`${totalStorybooks} storybooks grouped under the new structure.`} />
+        <NavCard to="/school/preview/mapping" icon={<Globe2 className="w-5 h-5" />}      title="Curriculum mapping" body="Per-level resource plan, worksheet lifecycle, international equivalents." />
       </section>
 
       <section className="bg-amber-50 border border-amber-200 rounded-xl p-4">

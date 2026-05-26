@@ -1,0 +1,244 @@
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { ArrowLeft, Loader2, Plus, ClipboardCheck, BookOpen } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useSchoolMemberships } from '../hooks/useSchool';
+import { schoolDb, type ClassroomRow, type SchoolStudentRow } from '../lib/schoolClient';
+
+type Student = {
+  id: string;
+  first_name: string;
+  last_name: string | null;
+  date_of_birth: string | null;
+  current_level: string | null;
+  last_assessment?: {
+    created_at: string;
+    recommended_level: string | null;
+  } | null;
+};
+
+type Classroom = {
+  id: string;
+  name: string;
+  year_group: string | null;
+  school_id: string;
+};
+
+export default function ClassroomDetail() {
+  const { id } = useParams<{ id: string }>();
+  const { toast } = useToast();
+  const { memberships } = useSchoolMemberships();
+  const school = memberships[0]?.school;
+
+  const [classroom, setClassroom] = useState<Classroom | null>(null);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dob, setDob] = useState('');
+  const [adding, setAdding] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      setLoading(true);
+      const { data: cls, error: clsErr } = await schoolDb
+        .classrooms()
+        .select('id, name, year_group, school_id')
+        .eq('id', id)
+        .single();
+      if (clsErr) {
+        toast({ title: 'Classroom not found', description: (clsErr as { message?: string }).message, variant: 'destructive' });
+        setLoading(false);
+        return;
+      }
+      setClassroom(cls as Pick<ClassroomRow, 'id' | 'name' | 'year_group' | 'school_id'>);
+
+      const { data: rows } = await schoolDb
+        .students()
+        .select('id, first_name, last_name, date_of_birth, current_level')
+        .eq('classroom_id', id)
+        .order('first_name', { ascending: true });
+
+      const rowList = (rows ?? []) as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level'>[];
+      const studentIds = rowList.map((r) => r.id);
+      const assessmentByStudent: Record<string, { created_at: string; recommended_level: string | null }> = {};
+      if (studentIds.length > 0) {
+        const { data: ass } = await schoolDb
+          .assessments()
+          .select('student_id, created_at, recommended_level')
+          .in('student_id', studentIds)
+          .order('created_at', { ascending: false });
+        for (const a of (ass ?? []) as { student_id: string; created_at: string; recommended_level: string | null }[]) {
+          if (!assessmentByStudent[a.student_id]) {
+            assessmentByStudent[a.student_id] = { created_at: a.created_at, recommended_level: a.recommended_level };
+          }
+        }
+      }
+      setStudents(rowList.map((r) => ({ ...r, last_assessment: assessmentByStudent[r.id] ?? null })));
+      setLoading(false);
+    })();
+  }, [id, toast]);
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!classroom || !school || !firstName.trim()) return;
+    setAdding(true);
+    const { data, error } = await schoolDb
+      .students()
+      .insert({
+        school_id: school.id,
+        classroom_id: classroom.id,
+        first_name: firstName.trim(),
+        last_name: lastName.trim() || null,
+        date_of_birth: dob || null,
+      })
+      .select('id, first_name, last_name, date_of_birth, current_level')
+      .single();
+    setAdding(false);
+    if (error) {
+      toast({ title: 'Could not add student', description: (error as { message?: string }).message, variant: 'destructive' });
+      return;
+    }
+    const created = data as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level'>;
+    setStudents((prev) => [...prev, { ...created, last_assessment: null }].sort((a, b) => a.first_name.localeCompare(b.first_name)));
+    setFirstName('');
+    setLastName('');
+    setDob('');
+    toast({ title: `${created.first_name} added` });
+  };
+
+  if (loading) {
+    return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>;
+  }
+  if (!classroom) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-600 mb-4">Classroom not found.</p>
+        <Link to="/school/app" className="text-pink-600 font-semibold hover:underline">← Back to dashboard</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      <header>
+        <Link to="/school/app" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 mb-2">
+          <ArrowLeft className="w-4 h-4" /> All classrooms
+        </Link>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight">{classroom.name}</h1>
+        <p className="text-slate-600">{classroom.year_group ?? '—'} · {students.length} student{students.length === 1 ? '' : 's'}</p>
+      </header>
+
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">Students</h2>
+          <button
+            onClick={() => setShowAddForm((v) => !v)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
+          >
+            <Plus className="w-4 h-4" /> Add student
+          </button>
+        </div>
+
+        {showAddForm && (
+          <form onSubmit={handleAdd} className="bg-white border border-slate-200 rounded-2xl p-4 mb-4 grid sm:grid-cols-[1fr,1fr,auto,auto] gap-3 items-end">
+            <label className="block">
+              <span className="block text-xs font-bold text-slate-600 mb-1">First name</span>
+              <input
+                required
+                autoFocus
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none"
+              />
+            </label>
+            <label className="block">
+              <span className="block text-xs font-bold text-slate-600 mb-1">Last name</span>
+              <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none"
+              />
+            </label>
+            <label className="block">
+              <span className="block text-xs font-bold text-slate-600 mb-1">Date of birth</span>
+              <input
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                className="w-40 px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none"
+              />
+            </label>
+            <button
+              type="submit"
+              disabled={adding}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-60"
+            >
+              {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add'}
+            </button>
+          </form>
+        )}
+
+        {students.length === 0 ? (
+          <div className="bg-white border border-slate-200 border-dashed rounded-2xl p-10 text-center">
+            <p className="text-slate-600">No students yet. Add your first one above.</p>
+          </div>
+        ) : (
+          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-slate-600 text-xs font-bold uppercase tracking-wider">
+                <tr>
+                  <th className="text-left px-4 py-3">Student</th>
+                  <th className="text-left px-4 py-3">Current level</th>
+                  <th className="text-left px-4 py-3">Last assessment</th>
+                  <th className="text-right px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {students.map((s) => (
+                  <tr key={s.id} className="hover:bg-slate-50">
+                    <td className="px-4 py-3 font-semibold">{s.first_name} {s.last_name ?? ''}</td>
+                    <td className="px-4 py-3">
+                      {s.current_level
+                        ? <span className="px-2 py-1 rounded-full bg-slate-100 text-xs font-semibold">{s.current_level}</span>
+                        : <span className="text-slate-400">—</span>}
+                    </td>
+                    <td className="px-4 py-3 text-slate-600">
+                      {s.last_assessment
+                        ? <>
+                            {new Date(s.last_assessment.created_at).toLocaleDateString()}
+                            {s.last_assessment.recommended_level && <> · {s.last_assessment.recommended_level}</>}
+                          </>
+                        : <span className="text-slate-400">Not assessed yet</span>}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        to={`/school/app/students/${s.id}/assess`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-pink-600 text-white text-xs font-semibold rounded-lg hover:bg-pink-700"
+                      >
+                        <ClipboardCheck className="w-3.5 h-3.5" /> Assess
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <section className="bg-slate-100 border border-slate-200 rounded-2xl p-5 flex items-start gap-3">
+        <BookOpen className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" />
+        <div>
+          <h3 className="font-bold mb-1">Library access</h3>
+          <p className="text-sm text-slate-600">
+            Use your school login on the <Link to="/library" className="font-semibold text-pink-600 hover:underline">main library</Link> to read every book.
+            Each student inherits their classroom's level — re-assess any child above to set their level.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}

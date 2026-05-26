@@ -167,10 +167,11 @@ function RoutesWithTransition() {
                 <Route path="/admin/tasks" element={<Suspense fallback={<AdminFallback />}><TasksList /></Suspense>} />
                 <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><AnalyticsDashboard /></Suspense>} />
               </Route>
-              {/* School preview (8-level RWI version, in development).
-                  Lives outside AdminLayout so it brings its own chrome. */}
-              <Route path="/school/*" element={<Suspense fallback={<AdminFallback />}><AppSchool /></Suspense>} />
             </Route>
+            {/* School-facing product — public marketing + signup + authenticated
+                school admin/teacher app. Auth is enforced inside the layouts under
+                src/school/, not via AdminGuard. */}
+            <Route path="/school/*" element={<Suspense fallback={<AdminFallback />}><AppSchool /></Suspense>} />
             <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatedRoutes>

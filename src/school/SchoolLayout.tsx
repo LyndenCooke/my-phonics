@@ -21,17 +21,17 @@ export default function SchoolLayout() {
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
-          <Link to="/school" className="flex items-center gap-2">
+          <Link to="/school/preview" className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-pink-500" />
-            <span className="font-extrabold text-lg">MyPhonicsBooks <span className="text-slate-500 font-medium">/ Schools</span></span>
+            <span className="font-extrabold text-lg">MyPhonicsBooks <span className="text-slate-500 font-medium">/ Schools preview</span></span>
           </Link>
         </header>
 
         <nav className="flex gap-1 mb-6 overflow-x-auto pb-1">
-          <SchoolNavLink to="/school" end icon={<LayoutDashboard className="w-4 h-4" />}>Overview</SchoolNavLink>
-          <SchoolNavLink to="/school/levels" icon={<ListChecks className="w-4 h-4" />}>Levels</SchoolNavLink>
-          <SchoolNavLink to="/school/library" icon={<BookOpen className="w-4 h-4" />}>Library</SchoolNavLink>
-          <SchoolNavLink to="/school/mapping" icon={<Globe2 className="w-4 h-4" />}>Curriculum mapping</SchoolNavLink>
+          <SchoolNavLink to="/school/preview" end icon={<LayoutDashboard className="w-4 h-4" />}>Overview</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/levels" icon={<ListChecks className="w-4 h-4" />}>Levels</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/library" icon={<BookOpen className="w-4 h-4" />}>Library</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/mapping" icon={<Globe2 className="w-4 h-4" />}>Curriculum mapping</SchoolNavLink>
         </nav>
 
         <main>
