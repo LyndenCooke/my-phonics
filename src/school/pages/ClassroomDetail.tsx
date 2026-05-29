@@ -4,6 +4,13 @@ import { ArrowLeft, Loader2, Plus, ClipboardCheck, BookOpen } from 'lucide-react
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type ClassroomRow, type SchoolStudentRow } from '../lib/schoolClient';
+import { StudentPathwayStatus } from '../components/LearnerStatus';
+
+function parseLevelNum(s: string | null): number | null {
+  if (!s) return null;
+  const m = /([1-8])/.exec(s);
+  return m ? Number(m[1]) : null;
+}
 
 type Student = {
   id: string;
@@ -186,54 +193,26 @@ export default function ClassroomDetail() {
             <p className="text-slate-600">No students yet. Add your first one above.</p>
           </div>
         ) : (
-          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-slate-600 text-xs font-bold uppercase tracking-wider">
-                <tr>
-                  <th className="text-left px-4 py-3">Student</th>
-                  <th className="text-left px-4 py-3">Current level</th>
-                  <th className="text-left px-4 py-3">Last assessment</th>
-                  <th className="text-right px-4 py-3"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {students.map((s) => {
-                  const needsAssessment = !s.current_level && !s.last_assessment;
-                  return (
-                    <tr key={s.id} className={needsAssessment ? 'hover:bg-amber-50 bg-amber-50/40' : 'hover:bg-slate-50'}>
-                      <td className="px-4 py-3 font-semibold">{s.first_name} {s.last_name ?? ''}</td>
-                      <td className="px-4 py-3">
-                        {s.current_level
-                          ? <span className="px-2 py-1 rounded-full bg-slate-100 text-xs font-semibold">{s.current_level}</span>
-                          : <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase">Needs assessment</span>}
-                      </td>
-                      <td className="px-4 py-3 text-slate-600">
-                        {s.last_assessment
-                          ? <>
-                              {new Date(s.last_assessment.created_at).toLocaleDateString()}
-                              {s.last_assessment.recommended_level && <> · {s.last_assessment.recommended_level}</>}
-                            </>
-                          : <span className="text-slate-400">—</span>}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <Link
-                          to={`/school/app/students/${s.id}/assess`}
-                          className={[
-                            'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg',
-                            needsAssessment
-                              ? 'bg-pink-600 text-white hover:bg-pink-700'
-                              : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
-                          ].join(' ')}
-                        >
-                          <ClipboardCheck className="w-3.5 h-3.5" />
-                          {needsAssessment ? 'Assess now' : 'Re-assess'}
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {students.map((s) => {
+              const level = parseLevelNum(s.current_level);
+              const needsAssessment = !level && !s.last_assessment;
+              return (
+                <div key={s.id} className={['rounded-2xl border p-4 flex flex-col justify-between gap-3', needsAssessment ? 'bg-amber-50/50 border-amber-200' : 'bg-white border-slate-200'].join(' ')}>
+                  <StudentPathwayStatus name={`${s.first_name} ${s.last_name ?? ''}`.trim()} level={level} seed={s.id} />
+                  <Link
+                    to={`/school/app/students/${s.id}/assess`}
+                    className={[
+                      'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg',
+                      needsAssessment ? 'bg-pink-600 text-white hover:bg-pink-700' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
+                    ].join(' ')}
+                  >
+                    <ClipboardCheck className="w-3.5 h-3.5" />
+                    {needsAssessment ? 'Assess now' : 'Re-assess'}
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         )}
       </section>

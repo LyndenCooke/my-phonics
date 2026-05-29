@@ -5,8 +5,23 @@ import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type SchoolStudentRow } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
+import { getBlocks } from '../data/pathway';
 
 const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.name]));
+
+// First teaching block focus + the level's first storybook — a sensible
+// "what this group is working towards" line for the column header.
+function GroupFocusLine({ level }: { level: number }) {
+  const block = getBlocks(level).find((b) => !b.isReview);
+  if (!block) return null;
+  const story = block.steps.find((s) => s.kind === 'storybook');
+  return (
+    <div className="px-3 py-1.5 bg-slate-50 border-b border-slate-100 text-[11px] text-slate-500">
+      <span className="font-semibold text-slate-600">Block {block.blockNumber} of {block.totalTeachingBlocks}:</span> {block.focusLabel}
+      {story && <> · <span className="text-slate-400">towards</span> {story.title}</>}
+    </div>
+  );
+}
 
 type Student = Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'current_level' | 'classroom_id' | 'school_id'>;
 
@@ -189,9 +204,10 @@ export default function PhonicsGroups() {
                 <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
                 <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{list.length}</span>
               </header>
+              {list.length > 0 && <GroupFocusLine level={level} />}
               {mixedYears > 1 && (
                 <div className="px-3 py-1 bg-slate-50 border-b border-slate-100 text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
-                  Mixed: {[...(yearSpreadByLevel[String(level)] ?? [])].sort().join(' · ')}
+                  Mixed years: {[...(yearSpreadByLevel[String(level)] ?? [])].sort().join(' · ')}
                 </div>
               )}
               <div className="p-3 min-h-[120px] flex flex-wrap gap-1.5 content-start">
