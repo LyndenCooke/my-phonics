@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, CalendarCheck, ClipboardCheck, Loader2, User, Users, X } from 'lucide-react';
+import { ArrowRight, CalendarCheck, ClipboardCheck, Loader2, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type SchoolStudentRow } from '../lib/schoolClient';
@@ -48,10 +48,6 @@ function parseLevel(s: string | null | undefined): Level | typeof UNASSIGNED {
   return m ? (Number(m[1]) as Level) : UNASSIGNED;
 }
 
-function levelLabel(l: Level | typeof UNASSIGNED): string {
-  return l === UNASSIGNED ? 'Not assessed' : `Level ${l}`;
-}
-
 export default function PhonicsGroups() {
   const { memberships } = useSchoolMemberships();
   const { toast } = useToast();
@@ -62,11 +58,22 @@ export default function PhonicsGroups() {
   const [classrooms, setClassrooms] = useState<ClassroomLite[]>([]);
   const [classroomFilter, setClassroomFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
-  const [moveTarget, setMoveTarget] = useState<Student | null>(null);
   const [registerLevel, setRegisterLevel] = useState<Level | null>(null);
   const [saving, setSaving] = useState(false);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null); // level number as string, or UNASSIGNED
 
   const openProfile = (id: string) => navigate(`/school/app/students/${id}`);
+
+  const handleDrop = (target: Level | typeof UNASSIGNED) => {
+    const id = draggedId;
+    setDraggedId(null);
+    setDragOver(null);
+    if (!id) return;
+    const current = students.find((s) => s.id === id);
+    if (!current || parseLevel(current.current_level) === target) return; // no-op if same group
+    moveStudent(id, target);
+  };
 
   useEffect(() => {
     if (!school) return;
@@ -122,7 +129,6 @@ export default function PhonicsGroups() {
       .update({ current_level: newValue, updated_at: new Date().toISOString() })
       .eq('id', studentId);
     setSaving(false);
-    setMoveTarget(null);
     if (error) {
       setStudents(previous);
       toast({ title: 'Could not move student', description: (error as { message?: string }).message, variant: 'destructive' });
@@ -148,6 +154,7 @@ export default function PhonicsGroups() {
             <> <span className="text-amber-700 font-semibold">{unassessedCount} not yet assessed.</span></>
           )}
         </p>
+        <p className="text-xs text-slate-400 mt-1">Drag a name into another group to move them · click a name to open their profile.</p>
       </header>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -175,9 +182,15 @@ export default function PhonicsGroups() {
         ))}
       </div>
 
-      {/* Unassigned bucket — surfaces students who still need an initial assessment. */}
+      {/* Unassigned bucket — surfaces students who still need an initial assessment.
+          Also a drop target: drag a child here to clear their level. */}
       {byLevel[UNASSIGNED].length > 0 && (
-        <section className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+        <section
+          onDragOver={(e) => { if (draggedId) { e.preventDefault(); setDragOver(UNASSIGNED); } }}
+          onDragLeave={() => setDragOver((d) => (d === UNASSIGNED ? null : d))}
+          onDrop={(e) => { e.preventDefault(); handleDrop(UNASSIGNED); }}
+          className={['border rounded-2xl p-4 transition-colors', dragOver === UNASSIGNED ? 'bg-amber-100 border-amber-400 ring-2 ring-amber-300' : 'bg-amber-50 border-amber-200'].join(' ')}
+        >
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="font-bold text-amber-900 flex items-center gap-1.5">
@@ -188,22 +201,26 @@ export default function PhonicsGroups() {
           </div>
           <div className="flex flex-wrap gap-2">
             {byLevel[UNASSIGNED].map((s) => (
-              <StudentChip key={s.id} student={s} variant="amber" year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} onOpenProfile={() => openProfile(s.id)} />
+              <StudentChip key={s.id} student={s} variant="amber" year={yearByClassroom[s.classroom_id]} onOpenProfile={() => openProfile(s.id)} onDragStart={() => setDraggedId(s.id)} onDragEnd={() => { setDraggedId(null); setDragOver(null); }} />
             ))}
           </div>
         </section>
       )}
 
-      {/* 8-level grid. Click a chip → modal to move. */}
+      {/* 8-level grid. Drag a chip into a column to move; click a chip for profile. */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {LEVELS.map((level) => {
           const list = byLevel[String(level)];
           const mixedYears = yearSpreadByLevel[String(level)]?.size ?? 0;
+          const isDropTarget = dragOver === String(level);
           return (
             <div
               key={level}
               data-school-level={level}
-              className="bg-white border border-slate-200 rounded-2xl overflow-hidden"
+              onDragOver={(e) => { if (draggedId) { e.preventDefault(); setDragOver(String(level)); } }}
+              onDragLeave={() => setDragOver((d) => (d === String(level) ? null : d))}
+              onDrop={(e) => { e.preventDefault(); handleDrop(level); }}
+              className={['bg-white border rounded-2xl overflow-hidden transition-all', isDropTarget ? 's-border ring-2 s-ring' : 'border-slate-200'].join(' ')}
             >
               <header className="s-bg-level text-white px-4 py-2 flex items-center justify-between gap-2">
                 <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
@@ -228,10 +245,12 @@ export default function PhonicsGroups() {
               )}
               <div className="p-3 min-h-[120px] flex flex-wrap gap-1.5 content-start">
                 {list.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic w-full text-center py-6">No students at this level yet.</p>
+                  <p className={['text-xs italic w-full text-center py-6', isDropTarget ? 's-text-ink font-semibold' : 'text-slate-400'].join(' ')}>
+                    {isDropTarget ? 'Drop to move here' : 'No students at this level yet.'}
+                  </p>
                 ) : (
                   list.map((s) => (
-                    <StudentChip key={s.id} student={s} variant="solid" level={level} year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} onOpenProfile={() => openProfile(s.id)} />
+                    <StudentChip key={s.id} student={s} variant="solid" level={level} year={yearByClassroom[s.classroom_id]} onOpenProfile={() => openProfile(s.id)} onDragStart={() => setDraggedId(s.id)} onDragEnd={() => { setDraggedId(null); setDragOver(null); }} />
                   ))
                 )}
               </div>
@@ -251,61 +270,6 @@ export default function PhonicsGroups() {
           >
             Go to classrooms <ArrowRight className="w-4 h-4" />
           </Link>
-        </div>
-      )}
-
-      {/* Move modal */}
-      {moveTarget && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setMoveTarget(null)}>
-          <div className="bg-white rounded-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="font-bold text-xl">{moveTarget.first_name} {moveTarget.last_name ?? ''}</h3>
-                <p className="text-sm text-slate-500">Currently at <span className="font-semibold">{levelLabel(parseLevel(moveTarget.current_level))}</span></p>
-              </div>
-              <button onClick={() => setMoveTarget(null)} className="text-slate-400 hover:text-slate-900"><X className="w-5 h-5" /></button>
-            </div>
-            <Link
-              to={`/school/app/students/${moveTarget.id}`}
-              className="inline-flex items-center gap-1.5 mb-4 px-3 py-2 w-full justify-center bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
-            >
-              <User className="w-4 h-4" /> View profile &amp; report
-            </Link>
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Move to a different group</p>
-            <div className="grid grid-cols-4 gap-2 mb-3">
-              {LEVELS.map((l) => (
-                <button
-                  key={l}
-                  disabled={saving}
-                  onClick={() => moveStudent(moveTarget.id, l)}
-                  data-school-level={l}
-                  className={[
-                    'rounded-xl p-3 text-center font-bold text-sm transition-all',
-                    parseLevel(moveTarget.current_level) === l
-                      ? 's-bg-level text-white s-ring'
-                      : 's-bg-tint s-text-ink hover:opacity-80',
-                  ].join(' ')}
-                >
-                  L{l}
-                </button>
-              ))}
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                disabled={saving}
-                onClick={() => moveStudent(moveTarget.id, UNASSIGNED)}
-                className="px-3 py-2 rounded-lg border border-slate-300 text-sm font-semibold hover:bg-slate-50"
-              >
-                Mark unassigned
-              </button>
-              <Link
-                to={`/school/app/students/${moveTarget.id}/assess`}
-                className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-pink-600 text-white text-sm font-semibold rounded-lg hover:bg-pink-700"
-              >
-                <ClipboardCheck className="w-4 h-4" /> Run assessment
-              </Link>
-            </div>
-          </div>
         </div>
       )}
 
@@ -329,28 +293,33 @@ function StudentChip({
   variant,
   level,
   year,
-  onMove,
   onOpenProfile,
+  onDragStart,
+  onDragEnd,
 }: {
   student: Student;
   variant: 'solid' | 'amber';
   level?: Level;
   year?: string;
-  onMove: () => void;
   onOpenProfile: () => void;
+  onDragStart: () => void;
+  onDragEnd: () => void;
 }) {
-  const baseClasses = 'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer';
+  const baseClasses = 'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-grab active:cursor-grabbing select-none';
   const variantClasses =
     variant === 'amber'
       ? 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
       : 'bg-white/95 backdrop-blur text-slate-900 hover:bg-white shadow-sm';
   return (
     <button
+      type="button"
+      draggable
       data-school-level={level}
-      onClick={onMove}
-      onDoubleClick={(e) => { e.stopPropagation(); onOpenProfile(); }}
+      onClick={onOpenProfile}
+      onDragStart={(e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', student.id); onDragStart(); }}
+      onDragEnd={onDragEnd}
       className={[baseClasses, variantClasses].join(' ')}
-      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — click to move, double-click for profile`}
+      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — drag to move, click for profile`}
     >
       {year && (
         <span className="inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 rounded-full bg-slate-900 text-white text-[10px]">{year}</span>
