@@ -155,8 +155,9 @@ export default function SchoolMapping() {
               <tr>
                 <Th>Level</Th>
                 <Th>UK Letters &amp; Sounds</Th>
-                <Th>UK Read Write Inc</Th>
                 <Th>UK Year</Th>
+                <Th>Saudi / Gulf</Th>
+                <Th>Pakistan</Th>
                 <Th>Australia</Th>
                 <Th>US Common Core</Th>
                 <Th>IB PYP</Th>
@@ -172,8 +173,9 @@ export default function SchoolMapping() {
                     </div>
                   </Td>
                   <Td>{m.ukLetterSounds}</Td>
-                  <Td>{m.ukRwi}</Td>
                   <Td>{m.ukYearGroup}</Td>
+                  <Td className="font-semibold">{m.saudiGulf}</Td>
+                  <Td className="font-semibold">{m.pakistan}</Td>
                   <Td>{m.australia}</Td>
                   <Td>{m.usCommonCore}</Td>
                   <Td>{m.ibPyp}</Td>
