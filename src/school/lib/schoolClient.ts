@@ -14,6 +14,25 @@ export type SchoolRow = {
   subscription_tier: string;
   created_by: string | null;
   created_at: string;
+  join_code: string | null;
+  academic_year: string | null;
+};
+
+export type AttendanceStatus = 'present' | 'absent' | 'late';
+
+export type AttendanceRow = {
+  id: string;
+  school_id: string;
+  student_id: string;
+  session_date: string;
+  lesson: string;
+  context_type: 'group' | 'class';
+  group_level: number | null;
+  classroom_id: string | null;
+  status: AttendanceStatus;
+  recorded_by: string | null;
+  note: string | null;
+  created_at: string;
 };
 
 export type ClassroomRow = {
@@ -69,6 +88,7 @@ export const schoolDb = {
   classrooms: () => untyped.from('classrooms'),
   students: () => untyped.from('school_students'),
   assessments: () => untyped.from('school_assessment_results'),
+  attendance: () => untyped.from('attendance'),
 };
 
 export type CreateSchoolResponse =
@@ -87,4 +107,22 @@ export async function rpcCreateSchoolWithAdmin(args: {
     'create_school_with_admin',
     args,
   );
+}
+
+export type JoinSchoolResponse =
+  | { ok: true; school_id: string; school_name: string }
+  | { ok: false; reason: string };
+
+export async function rpcJoinSchoolWithCode(code: string): Promise<{ data: JoinSchoolResponse | null; error: unknown }> {
+  return (supabase.rpc as unknown as (
+    fn: string, args: Record<string, unknown>,
+  ) => Promise<{ data: JoinSchoolResponse | null; error: unknown }>)('join_school_with_code', { p_code: code });
+}
+
+export type RegenerateCodeResponse = { ok: boolean; join_code?: string; reason?: string };
+
+export async function rpcRegenerateJoinCode(schoolId: string): Promise<{ data: RegenerateCodeResponse | null; error: unknown }> {
+  return (supabase.rpc as unknown as (
+    fn: string, args: Record<string, unknown>,
+  ) => Promise<{ data: RegenerateCodeResponse | null; error: unknown }>)('regenerate_join_code', { p_school_id: schoolId });
 }

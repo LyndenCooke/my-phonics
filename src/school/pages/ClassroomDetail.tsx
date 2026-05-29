@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Loader2, Plus, ClipboardCheck, BookOpen } from 'lucide-react';
+import { ArrowLeft, CalendarCheck, Loader2, Plus, ClipboardCheck, BookOpen, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type ClassroomRow, type SchoolStudentRow } from '../lib/schoolClient';
 import { StudentPathwayStatus } from '../components/LearnerStatus';
+import RegisterDialog from '../components/RegisterDialog';
 
 function parseLevelNum(s: string | null): number | null {
   if (!s) return null;
@@ -45,6 +46,7 @@ export default function ClassroomDetail() {
   const [lastName, setLastName] = useState('');
   const [dob, setDob] = useState('');
   const [adding, setAdding] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -141,12 +143,22 @@ export default function ClassroomDetail() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">Students</h2>
-          <button
-            onClick={() => setShowAddForm((v) => !v)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
-          >
-            <Plus className="w-4 h-4" /> Add student
-          </button>
+          <div className="flex gap-2">
+            {students.length > 0 && (
+              <button
+                onClick={() => setShowRegister(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"
+              >
+                <CalendarCheck className="w-4 h-4" /> Take register
+              </button>
+            )}
+            <button
+              onClick={() => setShowAddForm((v) => !v)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
+            >
+              <Plus className="w-4 h-4" /> Add student
+            </button>
+          </div>
         </div>
 
         {showAddForm && (
@@ -200,16 +212,24 @@ export default function ClassroomDetail() {
               return (
                 <div key={s.id} className={['rounded-2xl border p-4 flex flex-col justify-between gap-3', needsAssessment ? 'bg-amber-50/50 border-amber-200' : 'bg-white border-slate-200'].join(' ')}>
                   <StudentPathwayStatus name={`${s.first_name} ${s.last_name ?? ''}`.trim()} level={level} seed={s.id} />
-                  <Link
-                    to={`/school/app/students/${s.id}/assess`}
-                    className={[
-                      'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg',
-                      needsAssessment ? 'bg-pink-600 text-white hover:bg-pink-700' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
-                    ].join(' ')}
-                  >
-                    <ClipboardCheck className="w-3.5 h-3.5" />
-                    {needsAssessment ? 'Assess now' : 'Re-assess'}
-                  </Link>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <Link
+                      to={`/school/app/students/${s.id}`}
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
+                    >
+                      <User className="w-3.5 h-3.5" /> View report
+                    </Link>
+                    <Link
+                      to={`/school/app/students/${s.id}/assess`}
+                      className={[
+                        'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg',
+                        needsAssessment ? 'bg-pink-600 text-white hover:bg-pink-700' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
+                      ].join(' ')}
+                    >
+                      <ClipboardCheck className="w-3.5 h-3.5" />
+                      {needsAssessment ? 'Assess' : 'Re-assess'}
+                    </Link>
+                  </div>
                 </div>
               );
             })}
@@ -227,6 +247,17 @@ export default function ClassroomDetail() {
           </p>
         </div>
       </section>
+
+      {showRegister && school && (
+        <RegisterDialog
+          open
+          onClose={() => setShowRegister(false)}
+          schoolId={school.id}
+          title={`${classroom.name} — class register`}
+          students={students.map((s) => ({ id: s.id, first_name: s.first_name, last_name: s.last_name }))}
+          context={{ type: 'class', classroomId: classroom.id }}
+        />
+      )}
     </div>
   );
 }
