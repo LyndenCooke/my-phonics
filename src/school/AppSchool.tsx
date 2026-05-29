@@ -15,6 +15,9 @@ import PhonicsGroups from './pages/PhonicsGroups';
 import SchoolLibraryAccess from './pages/SchoolLibraryAccess';
 import SchoolPathway from './pages/SchoolPathway';
 import SchoolMapping from './pages/SchoolMapping';
+import AssessmentWindows from './pages/AssessmentWindows';
+import SchoolReports from './pages/SchoolReports';
+import SchoolSettings from './pages/SchoolSettings';
 
 // Internal preview (still admin-only, mounted at /school/preview/*).
 import SchoolLayout from './SchoolLayout';
@@ -49,9 +52,12 @@ export default function AppSchool() {
         <Route path="app/classrooms" element={<SchoolAppHome />} />
         <Route path="app/classrooms/:id" element={<ClassroomDetail />} />
         <Route path="app/groups" element={<PhonicsGroups />} />
+        <Route path="app/assessment-windows" element={<AssessmentWindows />} />
         <Route path="app/pathway" element={<SchoolPathway />} />
         <Route path="app/mapping" element={<SchoolMapping />} />
         <Route path="app/library" element={<SchoolLibraryAccess />} />
+        <Route path="app/reports" element={<SchoolReports />} />
+        <Route path="app/settings" element={<SchoolSettings />} />
         <Route path="app/students/:id/assess" element={<StudentAssess />} />
       </Route>
 

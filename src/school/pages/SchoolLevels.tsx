@@ -36,7 +36,7 @@ export default function SchoolLevels() {
               </header>
 
               <div className="p-5 grid gap-4 md:grid-cols-2">
-                <Field label="RWI band">{lvl.rwiBand}</Field>
+                <Field label="Decodable rule" full>{lvl.decodableRule}</Field>
                 <Field label="Sentence length">{lvl.sentenceLength}</Field>
 
                 <Field label="GPCs taught" full>

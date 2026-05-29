@@ -12,10 +12,10 @@ export default function SchoolDashboard() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-2">School preview</h1>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-2">The 8-level curriculum</h1>
         <p className="text-slate-600 max-w-2xl">
-          RWI-aligned 8-level curriculum, in development.
-          Source-of-truth: <code className="px-1.5 py-0.5 bg-slate-200 rounded text-xs">myphonics_books/output/worksheet_plan/CURRICULUM_LEDGER.md</code>
+          A British phonics progression in a Letters and Sounds style structure — eight levels of
+          Sound Books, Blending Books and Storybooks with matched worksheets, sound mats and tricky word cards.
         </p>
       </header>
 

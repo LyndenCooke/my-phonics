@@ -1,5 +1,5 @@
 import { Link, NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Loader2, LogOut, LayoutDashboard, Users, BookOpen, Layers, Route as RouteIcon, Globe2 } from 'lucide-react';
+import { Loader2, LogOut, LayoutDashboard, Users, BookOpen, Layers, Route as RouteIcon, ClipboardCheck, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSchoolMemberships } from './hooks/useSchool';
 import './school.css';
@@ -57,11 +57,13 @@ export default function SchoolAppLayout() {
         </div>
         <nav className="max-w-6xl mx-auto px-4 flex gap-1 overflow-x-auto pb-1">
           <SchoolAppNavLink to="/school/app" end icon={<LayoutDashboard className="w-4 h-4" />}>Dashboard</SchoolAppNavLink>
-          <SchoolAppNavLink to="/school/app/groups" icon={<Layers className="w-4 h-4" />}>Phonics groups</SchoolAppNavLink>
-          <SchoolAppNavLink to="/school/app/classrooms" icon={<Users className="w-4 h-4" />}>Classrooms</SchoolAppNavLink>
-          <SchoolAppNavLink to="/school/app/pathway" icon={<RouteIcon className="w-4 h-4" />}>Pathway</SchoolAppNavLink>
-          <SchoolAppNavLink to="/school/app/mapping" icon={<Globe2 className="w-4 h-4" />}>Curriculum</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/assessment-windows" icon={<ClipboardCheck className="w-4 h-4" />}>Assessment Windows</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/classrooms" icon={<Users className="w-4 h-4" />}>Classes &amp; Pupils</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/groups" icon={<Layers className="w-4 h-4" />}>Phonics Groups</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/pathway" icon={<RouteIcon className="w-4 h-4" />}>Learning Pathway</SchoolAppNavLink>
           <SchoolAppNavLink to="/school/app/library" icon={<BookOpen className="w-4 h-4" />}>Library</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/reports" icon={<BarChart3 className="w-4 h-4" />}>Reports</SchoolAppNavLink>
+          <SchoolAppNavLink to="/school/app/settings" icon={<SettingsIcon className="w-4 h-4" />}>Settings</SchoolAppNavLink>
         </nav>
       </header>
       <main className="max-w-6xl mx-auto px-4 py-8">
