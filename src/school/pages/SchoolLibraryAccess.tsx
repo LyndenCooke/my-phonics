@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { BookOpen, Camera, Download, FileText, Loader2 } from 'lucide-react';
+import { BookOpen, Download, FileText, Loader2 } from 'lucide-react';
 import { SCHOOL_BOOKS, type SchoolBook } from '../data/bookCatalog';
 import { SOUND_BOOKS, SOUND_BOOK_TOTAL } from '../data/soundBooks';
 import { BLENDING_BOOKS, BLENDING_BOOK_TOTAL } from '../data/blendingBooks';
@@ -18,6 +18,14 @@ function pdfUrl(parent6SubLevel: string, format: 'a4' | 'a5'): string {
 function worksheetUrl(parent6SubLevel: string): string {
   const base = import.meta.env.VITE_SUPABASE_URL as string;
   return `${base}/storage/v1/object/public/worksheet-pdfs/${storageKey(parent6SubLevel)}.pdf`;
+}
+
+// Sound book id "SD-L1.01" -> storage key "1_01". Files live in the public
+// sound-book-pdfs bucket (published by scripts/publish_sound_books.mjs).
+function soundBookUrl(id: string): string {
+  const base = import.meta.env.VITE_SUPABASE_URL as string;
+  const key = id.replace(/^SD-L/, '').replace('.', '_');
+  return `${base}/storage/v1/object/public/sound-book-pdfs/${key}.pdf`;
 }
 
 function coverUrl(parent6SubLevel: string): string {
@@ -59,6 +67,13 @@ export default function SchoolLibraryAccess() {
     const url = kind === 'ws' ? worksheetUrl(parent6) : pdfUrl(parent6, kind);
     const suffix = kind === 'a4' ? '(A5 Booklet)' : kind === 'a5' ? '(A4 Sheets)' : '— Worksheets';
     const result = await downloadBlob(url, `${title} ${suffix}.pdf`);
+    setBusy(null);
+    if (!result.ok) toast({ title: 'Download failed', description: result.error, variant: 'destructive' });
+  };
+
+  const handleSoundDownload = async (bookId: string, title: string) => {
+    setBusy(`snd-${bookId}`);
+    const result = await downloadBlob(soundBookUrl(bookId), `${title}.pdf`);
     setBusy(null);
     if (!result.ok) toast({ title: 'Download failed', description: result.error, variant: 'destructive' });
   };
@@ -117,15 +132,20 @@ export default function SchoolLibraryAccess() {
       {tab === 'sound' && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {soundBooks.map((b) => (
-            <article key={b.id} className="bg-white border border-slate-200 rounded-2xl p-4" data-school-level={b.level}>
+            <article key={b.id} className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col" data-school-level={b.level}>
               <div className="flex items-center justify-between gap-2 mb-1">
                 <h3 className="font-bold leading-tight">{b.title}</h3>
                 <LevelBadge level={b.level} />
               </div>
               <p className="text-xs text-slate-500 mb-3">e.g. {b.sampleWords.slice(0, 3).join(', ')}</p>
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-500 text-[11px] font-semibold">
-                <Camera className="w-3 h-3" /> Coming soon
-              </span>
+              <button
+                type="button"
+                onClick={() => handleSoundDownload(b.id, b.title)}
+                disabled={busy === `snd-${b.id}`}
+                className="mt-auto inline-flex items-center justify-center gap-1 px-2 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-60"
+              >
+                {busy === `snd-${b.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />} Download PDF
+              </button>
             </article>
           ))}
         </div>
