@@ -10,7 +10,16 @@ const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map(
 
 type Student = Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'current_level' | 'classroom_id' | 'school_id'>;
 
-type ClassroomLite = { id: string; name: string };
+type ClassroomLite = { id: string; name: string; year_group: string | null };
+
+// "Year 2 Cedar" / year_group "Year 2" → "Y2"; "Reception" → "R".
+function shortYear(yearGroup: string | null): string {
+  if (!yearGroup) return '';
+  const t = yearGroup.trim();
+  if (/^reception/i.test(t) || /^fs/i.test(t) || /\bR\b/.test(t)) return 'R';
+  const m = /(\d+)/.exec(t);
+  return m ? `Y${m[1]}` : t.slice(0, 3);
+}
 
 const LEVELS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 type Level = (typeof LEVELS)[number];
@@ -44,7 +53,7 @@ export default function PhonicsGroups() {
     (async () => {
       setLoading(true);
       const [{ data: rooms }, { data: rows }] = await Promise.all([
-        schoolDb.classrooms().select('id, name').eq('school_id', school.id).order('name'),
+        schoolDb.classrooms().select('id, name, year_group').eq('school_id', school.id).order('name'),
         schoolDb.students().select('id, first_name, last_name, current_level, classroom_id, school_id').eq('school_id', school.id).order('first_name'),
       ]);
       setClassrooms((rooms ?? []) as ClassroomLite[]);
@@ -67,6 +76,21 @@ export default function PhonicsGroups() {
     }
     return groups;
   }, [filtered]);
+
+  const yearByClassroom = useMemo(() => {
+    const m: Record<string, string> = {};
+    for (const c of classrooms) m[c.id] = shortYear(c.year_group);
+    return m;
+  }, [classrooms]);
+
+  // How many distinct year groups feed each level — used to flag mixed-age groups.
+  const yearSpreadByLevel = useMemo(() => {
+    const spread: Record<string, Set<string>> = {};
+    for (const [key, list] of Object.entries(byLevel)) {
+      spread[key] = new Set(list.map((s) => yearByClassroom[s.classroom_id]).filter(Boolean));
+    }
+    return spread;
+  }, [byLevel, yearByClassroom]);
 
   const moveStudent = async (studentId: string, newLevel: Level | typeof UNASSIGNED) => {
     setSaving(true);
@@ -99,7 +123,7 @@ export default function PhonicsGroups() {
       <header>
         <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">Phonics groups</h1>
         <p className="text-slate-600">
-          {totalStudents} student{totalStudents === 1 ? '' : 's'} grouped by current level.
+          {totalStudents} student{totalStudents === 1 ? '' : 's'} grouped by current level — across year groups, the way schools actually teach phonics.
           {unassessedCount > 0 && (
             <> <span className="text-amber-700 font-semibold">{unassessedCount} not yet assessed.</span></>
           )}
@@ -144,7 +168,7 @@ export default function PhonicsGroups() {
           </div>
           <div className="flex flex-wrap gap-2">
             {byLevel[UNASSIGNED].map((s) => (
-              <StudentChip key={s.id} student={s} variant="amber" onMove={() => setMoveTarget(s)} />
+              <StudentChip key={s.id} student={s} variant="amber" year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} />
             ))}
           </div>
         </section>
@@ -154,6 +178,7 @@ export default function PhonicsGroups() {
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {LEVELS.map((level) => {
           const list = byLevel[String(level)];
+          const mixedYears = yearSpreadByLevel[String(level)]?.size ?? 0;
           return (
             <div
               key={level}
@@ -164,12 +189,17 @@ export default function PhonicsGroups() {
                 <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
                 <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{list.length}</span>
               </header>
+              {mixedYears > 1 && (
+                <div className="px-3 py-1 bg-slate-50 border-b border-slate-100 text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
+                  Mixed: {[...(yearSpreadByLevel[String(level)] ?? [])].sort().join(' · ')}
+                </div>
+              )}
               <div className="p-3 min-h-[120px] flex flex-wrap gap-1.5 content-start">
                 {list.length === 0 ? (
                   <p className="text-xs text-slate-400 italic w-full text-center py-6">No students at this level yet.</p>
                 ) : (
                   list.map((s) => (
-                    <StudentChip key={s.id} student={s} variant="solid" level={level} onMove={() => setMoveTarget(s)} />
+                    <StudentChip key={s.id} student={s} variant="solid" level={level} year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} />
                   ))
                 )}
               </div>
@@ -248,15 +278,16 @@ function StudentChip({
   student,
   variant,
   level,
+  year,
   onMove,
 }: {
   student: Student;
   variant: 'solid' | 'amber';
   level?: Level;
+  year?: string;
   onMove: () => void;
 }) {
-  const initials = `${student.first_name.charAt(0)}${(student.last_name ?? '').charAt(0)}`.toUpperCase();
-  const baseClasses = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer';
+  const baseClasses = 'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer';
   const variantClasses =
     variant === 'amber'
       ? 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
@@ -266,9 +297,11 @@ function StudentChip({
       data-school-level={level}
       onClick={onMove}
       className={[baseClasses, variantClasses].join(' ')}
-      title={`${student.first_name} ${student.last_name ?? ''} — click to move`}
+      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — click to move`}
     >
-      <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-900 text-white text-[10px]">{initials || '?'}</span>
+      {year && (
+        <span className="inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 rounded-full bg-slate-900 text-white text-[10px]">{year}</span>
+      )}
       <span>{student.first_name}{student.last_name ? ` ${student.last_name.charAt(0)}.` : ''}</span>
     </button>
   );

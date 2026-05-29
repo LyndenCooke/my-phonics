@@ -40,28 +40,21 @@ type ClassSpec = {
   unassessed: number; // how many to leave with null level
 };
 
+// Two-form entry primary: 2 classes per year group. The level weights overlap
+// heavily across year groups on purpose — schools group by phonics level, not
+// by age — so the "all classes" view in Phonics Groups shows e.g. a Level 1
+// group made up of mostly Reception, a few Year 1s, and the odd struggling
+// Year 2. Likewise advanced Reception children sit in groups with Year 1s.
 const CLASSES: ClassSpec[] = [
-  {
-    name: 'Year R Oak',
-    yearGroup: 'Reception',
-    count: 24,
-    levelWeights: { 1: 5, 2: 6, 3: 5, 4: 2, 5: 1 },
-    unassessed: 3,
-  },
-  {
-    name: 'Year 1 Willow',
-    yearGroup: 'Year 1',
-    count: 28,
-    levelWeights: { 2: 1, 3: 5, 4: 7, 5: 6, 6: 2 },
-    unassessed: 3,
-  },
-  {
-    name: 'Year 2 Cedar',
-    yearGroup: 'Year 2',
-    count: 26,
-    levelWeights: { 4: 1, 5: 5, 6: 7, 7: 6, 8: 2 },
-    unassessed: 2,
-  },
+  // Reception — beginning readers, but a few are already racing ahead.
+  { name: 'Reception Oak',   yearGroup: 'Reception', count: 26, levelWeights: { 1: 9, 2: 8, 3: 4, 4: 1 },                         unassessed: 3 },
+  { name: 'Reception Maple', yearGroup: 'Reception', count: 25, levelWeights: { 1: 9, 2: 8, 3: 4, 4: 1 },                         unassessed: 2 },
+  // Year 1 — centre of mass mid-programme, with a struggling tail down to L1.
+  { name: 'Year 1 Willow',   yearGroup: 'Year 1',    count: 28, levelWeights: { 1: 2, 2: 3, 3: 6, 4: 7, 5: 4, 6: 1 },             unassessed: 2 },
+  { name: 'Year 1 Birch',    yearGroup: 'Year 1',    count: 27, levelWeights: { 1: 2, 2: 3, 3: 6, 4: 7, 5: 4, 6: 1 },             unassessed: 2 },
+  // Year 2 — mostly fluent, but a real tail of children still on early levels.
+  { name: 'Year 2 Cedar',    yearGroup: 'Year 2',    count: 27, levelWeights: { 1: 1, 2: 2, 3: 2, 4: 3, 5: 6, 6: 7, 7: 4, 8: 1 }, unassessed: 2 },
+  { name: 'Year 2 Rowan',    yearGroup: 'Year 2',    count: 26, levelWeights: { 1: 1, 2: 2, 3: 2, 4: 3, 5: 6, 6: 7, 7: 4, 8: 1 }, unassessed: 2 },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
