@@ -12,6 +12,8 @@ export type SchoolMembership = {
     country: string | null;
     seat_count: number;
     subscription_tier: string;
+    join_code: string | null;
+    academic_year: string | null;
   };
 };
 
@@ -29,7 +31,7 @@ export function useSchoolMemberships() {
     setLoading(true);
     const { data, error } = await schoolDb
       .memberships()
-      .select('id, school_id, role, school:schools(id, name, country, seat_count, subscription_tier)')
+      .select('id, school_id, role, school:schools(id, name, country, seat_count, subscription_tier, join_code, academic_year)')
       .eq('user_id', user.id);
     if (error) {
       console.warn('useSchoolMemberships:', (error as { message?: string }).message);

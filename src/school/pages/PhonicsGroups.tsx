@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, ClipboardCheck, Loader2, Users, X } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, CalendarCheck, ClipboardCheck, Loader2, User, Users, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type SchoolStudentRow } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { getBlocks } from '../data/pathway';
+import RegisterDialog from '../components/RegisterDialog';
 
 const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.name]));
 
@@ -54,6 +55,7 @@ function levelLabel(l: Level | typeof UNASSIGNED): string {
 export default function PhonicsGroups() {
   const { memberships } = useSchoolMemberships();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const school = memberships[0]?.school;
 
   const [students, setStudents] = useState<Student[]>([]);
@@ -61,7 +63,10 @@ export default function PhonicsGroups() {
   const [classroomFilter, setClassroomFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [moveTarget, setMoveTarget] = useState<Student | null>(null);
+  const [registerLevel, setRegisterLevel] = useState<Level | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const openProfile = (id: string) => navigate(`/school/app/students/${id}`);
 
   useEffect(() => {
     if (!school) return;
@@ -183,7 +188,7 @@ export default function PhonicsGroups() {
           </div>
           <div className="flex flex-wrap gap-2">
             {byLevel[UNASSIGNED].map((s) => (
-              <StudentChip key={s.id} student={s} variant="amber" year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} />
+              <StudentChip key={s.id} student={s} variant="amber" year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} onOpenProfile={() => openProfile(s.id)} />
             ))}
           </div>
         </section>
@@ -202,7 +207,18 @@ export default function PhonicsGroups() {
             >
               <header className="s-bg-level text-white px-4 py-2 flex items-center justify-between gap-2">
                 <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
-                <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{list.length}</span>
+                <span className="flex items-center gap-1.5 flex-shrink-0">
+                  {list.length > 0 && (
+                    <button
+                      onClick={() => setRegisterLevel(level)}
+                      title="Take the register for this group"
+                      className="inline-flex items-center gap-1 bg-white/25 hover:bg-white/40 rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors"
+                    >
+                      <CalendarCheck className="w-3 h-3" /> Register
+                    </button>
+                  )}
+                  <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5">{list.length}</span>
+                </span>
               </header>
               {list.length > 0 && <GroupFocusLine level={level} />}
               {mixedYears > 1 && (
@@ -215,7 +231,7 @@ export default function PhonicsGroups() {
                   <p className="text-xs text-slate-400 italic w-full text-center py-6">No students at this level yet.</p>
                 ) : (
                   list.map((s) => (
-                    <StudentChip key={s.id} student={s} variant="solid" level={level} year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} />
+                    <StudentChip key={s.id} student={s} variant="solid" level={level} year={yearByClassroom[s.classroom_id]} onMove={() => setMoveTarget(s)} onOpenProfile={() => openProfile(s.id)} />
                   ))
                 )}
               </div>
@@ -249,7 +265,13 @@ export default function PhonicsGroups() {
               </div>
               <button onClick={() => setMoveTarget(null)} className="text-slate-400 hover:text-slate-900"><X className="w-5 h-5" /></button>
             </div>
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Move to</p>
+            <Link
+              to={`/school/app/students/${moveTarget.id}`}
+              className="inline-flex items-center gap-1.5 mb-4 px-3 py-2 w-full justify-center bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
+            >
+              <User className="w-4 h-4" /> View profile &amp; report
+            </Link>
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Move to a different group</p>
             <div className="grid grid-cols-4 gap-2 mb-3">
               {LEVELS.map((l) => (
                 <button
@@ -286,6 +308,18 @@ export default function PhonicsGroups() {
           </div>
         </div>
       )}
+
+      {/* Register dialog for a level group */}
+      {registerLevel !== null && school && (
+        <RegisterDialog
+          open
+          onClose={() => setRegisterLevel(null)}
+          schoolId={school.id}
+          title={`L${registerLevel} ${LEVEL_NAME[registerLevel]} — phonics group`}
+          students={filtered.filter((s) => parseLevel(s.current_level) === registerLevel).map((s) => ({ id: s.id, first_name: s.first_name, last_name: s.last_name }))}
+          context={{ type: 'group', level: registerLevel }}
+        />
+      )}
     </div>
   );
 }
@@ -296,12 +330,14 @@ function StudentChip({
   level,
   year,
   onMove,
+  onOpenProfile,
 }: {
   student: Student;
   variant: 'solid' | 'amber';
   level?: Level;
   year?: string;
   onMove: () => void;
+  onOpenProfile: () => void;
 }) {
   const baseClasses = 'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer';
   const variantClasses =
@@ -312,8 +348,9 @@ function StudentChip({
     <button
       data-school-level={level}
       onClick={onMove}
+      onDoubleClick={(e) => { e.stopPropagation(); onOpenProfile(); }}
       className={[baseClasses, variantClasses].join(' ')}
-      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — click to move`}
+      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — click to move, double-click for profile`}
     >
       {year && (
         <span className="inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 rounded-full bg-slate-900 text-white text-[10px]">{year}</span>

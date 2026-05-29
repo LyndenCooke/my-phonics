@@ -161,6 +161,36 @@ export async function seedDemoSchool(schoolId: string): Promise<SeedResult> {
       if (assessmentRows.length > 0) {
         await schoolDb.assessments().insert(assessmentRows);
       }
+
+      // Attendance: the last ~12 weekday phonics sessions, ~90% present.
+      const sessionDates: string[] = [];
+      for (let d = 1; sessionDates.length < 12 && d < 40; d++) {
+        const day = new Date();
+        day.setDate(day.getDate() - d);
+        const dow = day.getDay();
+        if (dow === 0 || dow === 6) continue; // skip weekends
+        sessionDates.push(day.toISOString().slice(0, 10));
+      }
+      const attendanceRows = insertedList.flatMap((s) => {
+        const lvl = Number((s.current_level ?? 'L0').replace('L', '')) || null;
+        return sessionDates.map((date) => {
+          const r = Math.random();
+          const status = r < 0.88 ? 'present' : r < 0.94 ? 'late' : 'absent';
+          return {
+            school_id: schoolId,
+            student_id: s.id,
+            session_date: date,
+            lesson: 'Phonics group',
+            context_type: 'group' as const,
+            group_level: lvl,
+            status,
+          };
+        });
+      });
+      // Insert in chunks to stay well under payload limits.
+      for (let i = 0; i < attendanceRows.length; i += 500) {
+        await schoolDb.attendance().insert(attendanceRows.slice(i, i + 500));
+      }
     }
 
     return { ok: true, classrooms: CLASSES.length, students: totalStudents };
