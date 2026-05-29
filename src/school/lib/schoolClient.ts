@@ -55,6 +55,9 @@ export type SchoolStudentRow = {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  pathway_completed: number | null;
+  teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null;
+  teacher_note: string | null;
 };
 
 export type SchoolMembershipRow = {

@@ -71,7 +71,7 @@ export default function StudentAssess() {
     }
     const { error: updErr } = await schoolDb
       .students()
-      .update({ current_level: level, updated_at: new Date().toISOString() })
+      .update({ current_level: level, pathway_completed: 0, updated_at: new Date().toISOString() })
       .eq('id', student.id);
     if (updErr) {
       toast({ title: 'Could not update level', description: (updErr as { message?: string }).message, variant: 'destructive' });

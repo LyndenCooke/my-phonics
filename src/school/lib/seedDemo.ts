@@ -11,6 +11,22 @@
  * few unassessed children so the dashboard's "needs assessment" alert fires.
  */
 import { schoolDb } from './schoolClient';
+import { getTeachingSequence } from '../data/teachingSequence';
+
+type Judgement = 'continue' | 'ready_soon' | 'needs_support';
+
+// Fixed half-termly windows for the demo academic year.
+const HISTORY_WINDOWS = [
+  { date: '2025-12-05' }, // Autumn 2
+  { date: '2026-02-06' }, // Spring 1
+];
+
+function clampLevel(n: number): number { return Math.max(1, Math.min(8, n)); }
+
+function pickJudgement(): Judgement {
+  const r = Math.random();
+  return r < 0.1 ? 'needs_support' : r < 0.22 ? 'ready_soon' : 'continue';
+}
 
 const FIRST_NAMES = [
   // Arabic / Gulf
@@ -113,53 +129,67 @@ export async function seedDemoSchool(schoolId: string): Promise<SeedResult> {
       }
       const classroomId = (room as { id: string }).id;
 
-      // 3. Build the student rows.
+      // 3. Build the student rows — with a mid-level pathway position + judgement.
       const studentRows = [];
       for (let i = 0; i < spec.count; i++) {
         const nm = names[nameCursor++ % names.length];
         const assessed = i >= spec.unassessed; // first `unassessed` are left null
         const level = assessed ? weightedLevel(spec.levelWeights) : null;
+        const stepCount = level ? getTeachingSequence(level).length : 0;
+        const completed = stepCount ? Math.floor(Math.random() * stepCount) : 0; // somewhere mid-level
         studentRows.push({
           school_id: schoolId,
           classroom_id: classroomId,
           first_name: nm.first,
           last_name: nm.last,
           current_level: level === null ? null : `L${level}`,
-          __assessed: assessed,
-          __level: level,
+          pathway_completed: completed,
+          teacher_judgement: level ? pickJudgement() : null,
         });
       }
 
-      // 4. Insert students, get their IDs back to attach assessments.
-      const insertPayload = studentRows.map(({ __assessed, __level, ...row }) => row);
+      // 4. Insert students, get their IDs back to attach history.
       const { data: inserted, error: stuErr } = await schoolDb
         .students()
-        .insert(insertPayload)
-        .select('id, first_name, last_name, current_level');
+        .insert(studentRows)
+        .select('id, current_level');
       if (stuErr) {
         return { ok: false, classrooms: 0, students: 0, error: (stuErr as { message?: string }).message };
       }
       totalStudents += (inserted ?? []).length;
 
-      // 5. Assessment results for the assessed students.
+      // 5. Assessment history — a couple of earlier windows ramping up to the
+      // current level, plus a current-window assessment for ~80% (so the
+      // assessment-window page shows realistic partial completion).
       const insertedList = (inserted ?? []) as { id: string; current_level: string | null }[];
-      const assessmentRows = insertedList
-        .filter((s) => s.current_level)
-        .map((s) => {
-          const lvl = Number(s.current_level!.replace('L', ''));
-          return {
-            student_id: s.id,
-            classroom_id: classroomId,
-            school_id: schoolId,
-            recommended_level: s.current_level,
-            score_total: Math.min(lvl + Math.floor(Math.random() * 2), 6),
-            score_max: 6,
-            payload: { method: 'screener', seeded: true },
-            created_at: daysAgo(7 + Math.floor(Math.random() * 45)),
-          };
+      const assessmentRows: Record<string, unknown>[] = [];
+      for (const s of insertedList) {
+        if (!s.current_level) continue;
+        const lvl = Number(s.current_level.replace('L', ''));
+        const startLvl = clampLevel(lvl - 1);
+        // earlier windows
+        HISTORY_WINDOWS.forEach((w, idx) => {
+          assessmentRows.push({
+            student_id: s.id, classroom_id: classroomId, school_id: schoolId,
+            recommended_level: `L${idx === 0 ? startLvl : lvl}`,
+            score_total: Math.min(lvl + Math.floor(Math.random() * 2), 6), score_max: 6,
+            payload: { method: 'window', seeded: true, note: idx === 0 ? 'Initial placement' : 'Whole-school window' },
+            created_at: new Date(w.date).toISOString(),
+          });
         });
-      if (assessmentRows.length > 0) {
-        await schoolDb.assessments().insert(assessmentRows);
+        // current-window assessment for most pupils
+        if (Math.random() < 0.8) {
+          assessmentRows.push({
+            student_id: s.id, classroom_id: classroomId, school_id: schoolId,
+            recommended_level: s.current_level,
+            score_total: Math.min(lvl + Math.floor(Math.random() * 2), 6), score_max: 6,
+            payload: { method: 'window', seeded: true, note: 'Whole-school window' },
+            created_at: daysAgo(7 + Math.floor(Math.random() * 14)),
+          });
+        }
+      }
+      for (let i = 0; i < assessmentRows.length; i += 500) {
+        await schoolDb.assessments().insert(assessmentRows.slice(i, i + 500));
       }
 
       // Attendance: the last ~12 weekday phonics sessions, ~90% present.
