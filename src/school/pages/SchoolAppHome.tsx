@@ -159,15 +159,21 @@ export default function SchoolAppHome() {
     toast({ title: 'Demo data seeded', description: `${result.classrooms} classrooms, ${result.students} students.` });
   };
 
+  // Show the seed control when explicitly requested (?seed=true) or when the
+  // school is empty (fresh signup) — so a demo never has to know the secret URL.
+  const showSeed = seedMode || (!loading && classrooms.length === 0);
+
   return (
     <div className="space-y-8">
-      {seedMode && (
+      {showSeed && (
         <div className="bg-slate-900 text-white rounded-2xl p-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Database className="w-5 h-5" />
             <div>
-              <div className="font-bold text-sm">Demo seed mode</div>
-              <p className="text-xs text-slate-300">Replaces this school's classrooms with a realistic demo set (Al Noor-style). Idempotent.</p>
+              <div className="font-bold text-sm">Set up a demo school</div>
+              <p className="text-xs text-slate-300">
+                Fills this school with a realistic two-form-entry set — 6 classes, ~160 pupils grouped by level across year groups. Replaces any existing classrooms.
+              </p>
             </div>
           </div>
           <button
