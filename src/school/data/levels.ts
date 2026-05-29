@@ -131,7 +131,8 @@ export const SCHOOL_LEVELS: SchoolLevel[] = [
     rwiBand: 'Grey 12–13',
     phaseLabel: 'Phase 6 (suffix morphology)',
     gpcs: ['-ous', '-cious', '-tious', '-able', '-ible'],
-    trickyWordsNew: ['hour', 'move', 'prove', 'improve', 'sure', 'sugar', 'eye', 'could', 'should', 'would', 'who', 'whole', 'any', 'many', 'clothes', 'busy', 'people', 'water', 'again', 'half', 'money', 'Mr', 'Mrs', 'parents', 'Christmas'],
+    // 'could', 'people', 'Mr', 'Mrs' deduped — introduced at L6.
+    trickyWordsNew: ['hour', 'move', 'prove', 'improve', 'sure', 'sugar', 'eye', 'should', 'would', 'who', 'whole', 'any', 'many', 'clothes', 'busy', 'water', 'again', 'half', 'money', 'parents', 'Christmas'],
     decodableRule: 'Full Phase 5 GPC repertoire plus Phase 6 morphology. Suffix and root changes are explicit teaching points.',
     sentenceLength: 'Varied, including sentence-variety techniques',
     bookCount: 4,

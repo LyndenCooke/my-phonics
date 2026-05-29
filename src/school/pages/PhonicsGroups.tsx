@@ -4,6 +4,9 @@ import { ArrowRight, ClipboardCheck, Loader2, Users, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb, type SchoolStudentRow } from '../lib/schoolClient';
+import { SCHOOL_LEVELS } from '../data/levels';
+
+const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.name]));
 
 type Student = Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'current_level' | 'classroom_id' | 'school_id'>;
 
@@ -157,9 +160,9 @@ export default function PhonicsGroups() {
               data-school-level={level}
               className="bg-white border border-slate-200 rounded-2xl overflow-hidden"
             >
-              <header className="s-bg-level text-white px-4 py-2 flex items-center justify-between">
-                <span className="font-bold text-sm">Level {level}</span>
-                <span className="text-xs font-semibold opacity-90">{list.length}</span>
+              <header className="s-bg-level text-white px-4 py-2 flex items-center justify-between gap-2">
+                <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
+                <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{list.length}</span>
               </header>
               <div className="p-3 min-h-[120px] flex flex-wrap gap-1.5 content-start">
                 {list.length === 0 ? (

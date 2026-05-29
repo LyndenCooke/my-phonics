@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, ClipboardCheck, Users, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BookOpen, ClipboardCheck, Users, ShieldCheck, Globe2, GraduationCap } from 'lucide-react';
 import { SCHOOL_LEVELS } from '../data/levels';
 
 export default function SchoolMarketing() {
@@ -14,8 +14,9 @@ export default function SchoolMarketing() {
           A complete phonics library, ready for your classroom on day one.
         </h1>
         <p className="text-slate-600 mt-5 max-w-2xl mx-auto text-lg">
-          33 decodable storybooks, worksheets for every level, and a built-in assessment for every child —
-          aligned to Letters & Sounds and the Phonics Screening Check.
+          118 decodable books across 8 levels — Sound Books, Blending Books and Storybooks —
+          with worksheets, interactive readers and a built-in assessment for every child.
+          Aligned to Letters &amp; Sounds and the Phonics Screening Check.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3 mt-7">
           <Link
@@ -34,7 +35,7 @@ export default function SchoolMarketing() {
       </section>
 
       {/* What you get */}
-      <section className="grid sm:grid-cols-3 gap-4">
+      <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <FeatureCard
           icon={<Users className="w-5 h-5" />}
           title="Classrooms & students"
@@ -47,14 +48,19 @@ export default function SchoolMarketing() {
         />
         <FeatureCard
           icon={<BookOpen className="w-5 h-5" />}
-          title="Full library access"
-          body="33 storybooks + worksheets across 8 levels. Print, project, or read on screen."
+          title="118 books + worksheets"
+          body="Sound Books, Blending Books and Storybooks across 8 levels. Print, project, or read on screen."
+        />
+        <FeatureCard
+          icon={<Globe2 className="w-5 h-5" />}
+          title="International alignment"
+          body="Mapped to UK, Australian, US Common Core and IB PYP curricula. Works in any school following the British curriculum."
         />
       </section>
 
       {/* Level palette */}
       <section>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 text-center">8-level RWI-aligned progression</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 text-center">8-level Letters and Sounds progression</h2>
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 max-w-3xl mx-auto">
           {SCHOOL_LEVELS.map((lvl) => (
             <div
@@ -82,6 +88,10 @@ export default function SchoolMarketing() {
         >
           Get started <ArrowRight className="w-4 h-4" />
         </Link>
+        <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+          <GraduationCap className="w-4 h-4 text-slate-600" />
+          Built by a British primary teacher with QTS
+        </div>
       </section>
     </div>
   );

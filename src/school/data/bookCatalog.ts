@@ -1,13 +1,23 @@
 /**
  * 33-book catalogue for the school-8 structure.
  *
+ * DISPLAY-ONLY SUMMARY. This file mirrors level/title/sub_level/focus_sounds
+ * from the production storybook files (`myphonics_books/data/*_story_*.py`).
+ * Tricky-word / story-word arrays are kept lean here for UI cards; the full
+ * lists live in the per-book Python files. Treat the Python files as
+ * authoritative when content disagrees.
+ *
  * Mapping from production (parent-6) sub_levels per rwi_aligned_proposal.md
  * section 5. Titles are taken from the production catalogue verbatim.
+ *
+ * Canonical ID: `SB-L{level}.{n}` (e.g. SB-L4.1). One-digit `n` matches the
+ * sub-level numbering used inside each level (L4 has storybooks 1-6).
  */
 
 export interface SchoolBook {
+  id: string;                // SB-L{level}.{n} — canonical, URL-safe
   level: number;
-  subLevel: string;          // school-8 ID, e.g. "L3.1"
+  subLevel: string;          // school-8 pedagogy ID, e.g. "L3.1"
   parent6SubLevel: string;   // original ID, e.g. "L1.3" — for looking up shipped PDF + interactive pages
   title: string;
   slug: string;
@@ -18,7 +28,7 @@ export interface SchoolBook {
   isFreeSample: boolean;
 }
 
-export const SCHOOL_BOOKS: SchoolBook[] = [
+const _RAW_BOOKS: Omit<SchoolBook, 'id'>[] = [
   // ── L1 Ditties ──────────────────────────────────────────────
   { level: 1, subLevel: 'L1.1', parent6SubLevel: 'L1.1', title: 'Tap! Tap! Tap!',                slug: 'tap-tap-tap',                focusSounds: ['s','a','t','p','i','n'],                                              trickyWords: ['the','I'],                       storyWords: [],                                                                  sortOrder: 11, isFreeSample: true  },
   { level: 1, subLevel: 'L1.2', parent6SubLevel: 'L1.2', title: 'The Mud on the Dog',            slug: 'the-mud-on-the-dog',         focusSounds: ['m','d','g','o'],                                                       trickyWords: ['the','I'],                       storyWords: [],                                                                  sortOrder: 12, isFreeSample: false },
@@ -52,7 +62,7 @@ export const SCHOOL_BOOKS: SchoolBook[] = [
 
   // ── L6 Building Fluency (was old L4) ────────────────────────
   { level: 6, subLevel: 'L6.1', parent6SubLevel: 'L4.1', title: 'The Purple Purse',              slug: 'the-purple-purse',           focusSounds: ['ur','er'],                                                              trickyWords: ['saw','watch','their'],           storyWords: [],                                                                  sortOrder: 61, isFreeSample: true  },
-  { level: 6, subLevel: 'L6.2', parent6SubLevel: 'L4.2', title: 'The Brown Owl',                 slug: 'the-brown-owl',              focusSounds: ['are','ow'],                                                             trickyWords: ['where','were','small'],          storyWords: [],                                                                  sortOrder: 62, isFreeSample: false },
+  { level: 6, subLevel: 'L6.2', parent6SubLevel: 'L4.2', title: 'The Brown Owl',                 slug: 'the-brown-owl',              focusSounds: ['are','ow (brown)'],                                                     trickyWords: ['where','were','small'],          storyWords: [],                                                                  sortOrder: 62, isFreeSample: false },
   { level: 6, subLevel: 'L6.3', parent6SubLevel: 'L4.3', title: 'The New Glue',                  slug: 'the-new-glue',               focusSounds: ['ew','ue'],                                                              trickyWords: ['school','who','brother'],        storyWords: [],                                                                  sortOrder: 63, isFreeSample: false },
   { level: 6, subLevel: 'L6.4', parent6SubLevel: 'L4.4', title: 'The Cheeky Monkey',             slug: 'the-cheeky-monkey',          focusSounds: ['ur','er','are','ow','ew','ue'],                                         trickyWords: ['any','tall','fall'],             storyWords: [],                                                                  sortOrder: 64, isFreeSample: false },
 
@@ -69,6 +79,68 @@ export const SCHOOL_BOOKS: SchoolBook[] = [
   { level: 8, subLevel: 'L8.4', parent6SubLevel: 'L6.4', title: 'The Incredible Bush Walk',      slug: 'the-incredible-bush-walk',   focusSounds: ['-ous','-able','-ible','-cious','-tious'],                               trickyWords: ['everyone','walk','talk'],        storyWords: [],                                                                  sortOrder: 84, isFreeSample: false },
 ];
 
+/**
+ * Story content (story_words, tricky_words_used, read_words) extracted from
+ * the per-book Python source files under `myphonics_books/data/*_story_*.py`.
+ * Keyed by parent-6 sub-level. If a book file changes upstream, regenerate
+ * via the extractor that produced `book_story_words_extracted.json`.
+ */
+interface StoryContent {
+  storyWords: string[];
+  trickyWordsUsed: string[];
+  readWords?: string[];
+}
+
+const STORY_CONTENT_BY_PARENT6: Record<string, StoryContent> = {
+  'L1.1':  { storyWords: ['sit','mat','tap','rat','bat','pat','cat','fat','naps'],                                 trickyWordsUsed: ['I','the'],                                                                                                                                       readWords: ['sat','pat','tap','nap'] },
+  'L1.2':  { storyWords: ['dog','mud','mop','mum','mess','got','big','tub'],                                       trickyWordsUsed: ['I','the','no','me'],                                                                                                                             readWords: ['dog','mud','mop','mum'] },
+  'L1.3':  { storyWords: ['fish','tank','wish','bag','cup','sad'],                                                  trickyWordsUsed: ['I','a','the','no','go','is'],                                                                                                                   readWords: ['fish','tank','wish','bag'] },
+  'L1.4':  { storyWords: ['socks','check','red','bed','hen','pen','pecks','kick'],                                  trickyWordsUsed: ['I','the','no'],                                                                                                                                  readWords: ['sock','red','kick','peck'] },
+  'L1.5':  { storyWords: ['run','pup','hut','bush','tub','rub','hug','hid'],                                        trickyWordsUsed: ['I','the'],                                                                                                                                       readWords: ['hub','rub','hut','bug'] },
+  'L1.6':  { storyWords: ['fox','fell','off','log','rock','hill','slip','mat'],                                     trickyWordsUsed: ['I','the'],                                                                                                                                       readWords: ['fill','fell','huff','doll'] },
+  'L1.7':  { storyWords: ['jam','jug','van','wet','win','rug','fig','dip','vat'],                                   trickyWordsUsed: ['I','the','no'],                                                                                                                                  readWords: ['jug','van','web','wig'] },
+  'L1.8':  { storyWords: ['yak','box','six','zip','fix','fig','hut','set','top'],                                   trickyWordsUsed: ['I','the','no'],                                                                                                                                  readWords: ['fox','yak','zip','mix'] },
+  'L1.9':  { storyWords: ['chop','chip','thin','thick','this','that','pan','hot','dip','dish'],                     trickyWordsUsed: ['I','the'],                                                                                                                                       readWords: ['chop','chin','this','that'] },
+  'L1.10': { storyWords: ['buzz','sing','song','long','hiss','quick','log','bug','and'],                            trickyWordsUsed: ['I','the','no','go'],                                                                                                                             readWords: ['ring','buzz','hiss','king'] },
+  'L2.1':  { storyWords: ['high','day','sigh','need','light','see','way','night','say','yay'],                      trickyWordsUsed: ['the','I'],                                                                                                                                       readWords: ['high','day','sigh','light','see','way','night'] },
+  'L2.2':  { storyWords: ['zoo','cow','owl','moo','hoop','cool'],                                                    trickyWordsUsed: ['the','I','to','no','my','me','go'],                                                                                                              readWords: ['zoo','owl','cool','hoop'] },
+  'L2.3':  { storyWords: ['farm','barn','corn','torch','dark','morning'],                                            trickyWordsUsed: ['the','I','we','go','to','my','her'],                                                                                                             readWords: ['farm','barn','torch','morning','dark','corn'] },
+  'L2.4':  { storyWords: ['fair','air','pair','hair','sir','fir'],                                                   trickyWordsUsed: ['the','I','my','to','no','said','go','put','he'],                                                                                                 readWords: ['fair','pair','chair','fir'] },
+  'L2.5':  { storyWords: ['around','loud','out','shouted','found','toy','joy','zoomed'],                             trickyWordsUsed: ['I','my','we','she','said','you','to','the','me','no'],                                                                                           readWords: ['out','shout','round','toy'] },
+  'L2.6':  { storyWords: ['night','fair','cool','moon','drum','corn','bird','shout','way','day'],                    trickyWordsUsed: ['the','I','to','we','go','my','me','he'],                                                                                                         readWords: ['night','fair','shout','moon'] },
+  'L3.1':  { storyWords: ['ride','bike','gate','lake','made','brave'],                                               trickyWordsUsed: ['the','I','to','my','she','said','me','go','what'],                                                                                               readWords: ['shine','prize','plate','flame','wave','pine'] },
+  'L3.2':  { storyWords: ['close','huge','stone','bright','noodle'],                                                 trickyWordsUsed: ['the','to','I','was','we','me','you','are','so','go','she','said'],                                                                              readWords: ['close','spoke','huge','stone'] },
+  'L3.3':  { storyWords: ['clean','team','reach','feast','tries','spies'],                                           trickyWordsUsed: ['the','to','I','she','her','we','he','your','me','go','one','said','what','are','so'],                                                            readWords: ['clean','team','reach','feast'] },
+  'L3.4':  { storyWords: ['saw','hawk','claws','coin','soil','pointed','paw','jaw'],                                  trickyWordsUsed: ['the','I','her','no','all','to','want','said','she','he','are','so','they','was','what','you'],                                                  readWords: ['saw','hawk','claw','coin','soil','point'] },
+  'L3.5':  { storyWords: ['rain','sail','snail','boat','coat','road'],                                               trickyWordsUsed: ['said','he','they','to','the','into','I'],                                                                                                         readWords: ['sail','snail','boat','coat'] },
+  'L4.1':  { storyWords: ['purple','purse','turned','ferns','herbs','never'],                                        trickyWordsUsed: ['the','to','I','you','her','your','go','no','so','old','put','was','where','said','what','she','my'],                                              readWords: ['church','burst','seller','corner'] },
+  'L4.2':  { storyWords: ['owl','stared','brown','dare','howl','care'],                                              trickyWordsUsed: ['the','to','I','we','my','go','me','her','saw','there','want','said','was','what','were','she','all'],                                            readWords: ['howl','bare','brown','stared'] },
+  'L4.3':  { storyWords: ['glue','blue','new','drew','threw','grew'],                                                trickyWordsUsed: ['the','to','he','her','you','me','they','fall','said','was','she','all','so','into'],                                                              readWords: ['chewed','rescued','flew','true'] },
+  'L4.4':  { storyWords: ['brown','furry','down','now','how','new'],                                                 trickyWordsUsed: ['they','he','what','into','she','there','so','said','was','the','to','I','her','you','where'],                                                     readWords: ['stare','turn','true','glow'] },
+  'L5.1':  { storyWords: ['shore','stone','before','wire','more','fire'],                                            trickyWordsUsed: ['the','to','he','was','said','once','they','we','you','so','put','go','I','me','one','some','would'],                                              readWords: ['shore','stone','before','explore'] },
+  'L5.2':  { storyWords: ['hear','near','door','floor','ear','dear','fear','clear','poor'],                          trickyWordsUsed: ['I','the','to','my','said','you','do','what','he','was','one','some','where','saw','there','were','eyes','into','could','heart'],                  readWords: ['hear','near','door','floor','dear','clear'] },
+  'L5.3':  { storyWords: ['pure','instruction','attention','section','action','direction'],                          trickyWordsUsed: ['the','said','you','they','was','over','people','she','he','we','I','to','into','are','all','one','two','there','through','heart','again','her','done','eyes','want'], readWords: ['sure','pure','section','action'] },
+  'L5.4':  { storyWords: ['shore','more','explore','door','fear','near','clear','pure','section','direction','attention','tired'], trickyWordsUsed: ['the','to','I','was','said','where','people','anyone','he','she','could','there','my','are','any','again','knew','sure'],                          readWords: ['shore','explore','section','direction','pure','attention'] },
+  'L6.1':  { storyWords: ['marvellous','glorious','enormous','famous','fabulous','joyous'],                          trickyWordsUsed: ['the','said','my','you','all','whole','neighbourhood','so'],                                                                                       readWords: ['marvellous','enormous','glorious','fabulous'] },
+  'L6.2':  { storyWords: ['sensible','possible','terrible','horrible','visible','incredible','responsible','predictable'], trickyWordsUsed: ['the','said','was','you','her','their','people','thought'],                                                                                    readWords: ['sensible','possible','terrible','incredible'] },
+  'L6.3':  { storyWords: ['delicious','suspicious','cautious','precious','nutritious','scrumptious','gracious','ambitious'], trickyWordsUsed: ['the','said','was','you','what','do','could','ever','whole','people','love'],                                                                  readWords: ['delicious','suspicious','cautious','nutritious'] },
+  'L6.4':  { storyWords: ['incredible','enormous','cautious','gorgeous','remarkable','precious','capable','glorious','famous','visible'], trickyWordsUsed: ['the','to','she','he','said','was','her','they','all','some','what','were','could','would','over','through','everyone','walk','brother','whole'], readWords: ['incredible','cautious','gorgeous','remarkable'] },
+};
+
+export const SCHOOL_BOOKS: SchoolBook[] = _RAW_BOOKS.map((b) => {
+  const content = STORY_CONTENT_BY_PARENT6[b.parent6SubLevel];
+  return {
+    ...b,
+    id: `SB-${b.subLevel}`,
+    storyWords: content?.storyWords ?? b.storyWords,
+    trickyWords: content?.trickyWordsUsed ?? b.trickyWords,
+  };
+});
+
 export function getSchoolBooksByLevel(level: number): SchoolBook[] {
   return SCHOOL_BOOKS.filter((b) => b.level === level);
+}
+
+export function getSchoolBookById(id: string): SchoolBook | undefined {
+  return SCHOOL_BOOKS.find((b) => b.id === id);
 }
