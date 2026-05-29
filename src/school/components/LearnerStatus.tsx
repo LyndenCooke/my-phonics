@@ -6,6 +6,8 @@ import {
   JUDGEMENT_LABEL,
   type TeacherJudgement,
 } from '../data/pathway';
+
+export type { TeacherJudgement };
 import { getTeachingSequence } from '../data/teachingSequence';
 import { ResourceTypeBadge } from './PathwayPieces';
 
@@ -27,11 +29,15 @@ export function StudentPathwayStatus({
   level,
   seed,
   compact = false,
+  completedCount,
+  judgement,
 }: {
   name: string;
   level: number | null;
   seed: string;
   compact?: boolean;
+  completedCount?: number | null;
+  judgement?: TeacherJudgement | null;
 }) {
   if (!level) {
     return (
@@ -44,7 +50,7 @@ export function StudentPathwayStatus({
     );
   }
 
-  const pos = learnerPosition(level, seed);
+  const pos = learnerPosition(level, seed, { completedCount, judgement });
   return (
     <div className="text-sm">
       <div className="font-bold text-slate-900">{name}</div>

@@ -126,7 +126,7 @@ export default function PhonicsGroups() {
     setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, current_level: newValue } : s)));
     const { error } = await schoolDb
       .students()
-      .update({ current_level: newValue, updated_at: new Date().toISOString() })
+      .update({ current_level: newValue, pathway_completed: 0, updated_at: new Date().toISOString() })
       .eq('id', studentId);
     setSaving(false);
     if (error) {

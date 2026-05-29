@@ -321,31 +321,98 @@ export interface LearnerPosition {
   block: { blockNumber: number; totalTeachingBlocks: number; focusLabel: string; isReview: boolean } | null;
   current?: ResolvedStep;
   next?: ResolvedStep;
+  completed: number;
   totalSteps: number;
   judgement: TeacherJudgement;
 }
 
 /**
- * Derive a stable pathway position for a learner from their level + a seed
- * (use the student id). We store current_level but not per-step progress, so
- * this gives the dashboard a consistent, realistic block/step/next-resource
- * for demos. Deterministic: the same student always shows the same position.
+ * Pathway position for a learner. Prefers REAL stored progress when given
+ * (`opts.completedCount` = steps completed in the current level, `opts.judgement`
+ * = teacher's recorded judgement). Falls back to a stable id-seeded derivation
+ * when those aren't available, so older surfaces still render sensibly.
  */
-export function learnerPosition(level: number, seed: string): LearnerPosition {
+export function learnerPosition(
+  level: number,
+  seed: string,
+  opts?: { completedCount?: number | null; judgement?: TeacherJudgement | null },
+): LearnerPosition {
   const steps = getTeachingSequence(level).map(resolveStep);
   if (steps.length === 0) {
-    return { level, block: null, totalSteps: 0, judgement: 'continue' };
+    return { level, block: null, completed: 0, totalSteps: 0, judgement: opts?.judgement ?? 'continue' };
   }
-  const h = hashString(seed);
-  const idx = h % steps.length;
+
+  let idx: number;
+  if (opts?.completedCount != null) {
+    idx = Math.max(0, Math.min(opts.completedCount, steps.length - 1));
+  } else {
+    idx = hashString(seed) % steps.length;
+  }
   const current = steps[idx];
   const next = steps[idx + 1];
-  const block = blockOfStep(level, current.step.order);
-  // Judgement: late in level → ready soon; a small stable slice → needs support.
-  const frac = idx / steps.length;
-  const judgement: TeacherJudgement =
-    h % 7 === 0 ? 'needs_support' : frac > 0.8 ? 'ready_soon' : 'continue';
-  return { level, block, current, next, totalSteps: steps.length, judgement };
+  const block = current ? blockOfStep(level, current.step.order) : null;
+
+  let judgement: TeacherJudgement;
+  if (opts?.judgement) {
+    judgement = opts.judgement;
+  } else {
+    const frac = idx / steps.length;
+    judgement = hashString(seed) % 7 === 0 ? 'needs_support' : frac > 0.8 ? 'ready_soon' : 'continue';
+  }
+  return { level, block, current, next, completed: idx, totalSteps: steps.length, judgement };
+}
+
+/* ─── Per-pupil step status (real progress) ───────────────────────────────── */
+
+export type StepStatus = 'complete' | 'in_progress' | 'next' | 'upcoming';
+export interface PupilStep extends ResolvedStep { status: StepStatus; }
+
+export function levelStepStatus(level: number, completedCount: number): {
+  steps: PupilStep[];
+  completed: number;
+  total: number;
+  current?: ResolvedStep;
+  next?: ResolvedStep;
+  isLevelComplete: boolean;
+} {
+  const resolved = getTeachingSequence(level).map(resolveStep);
+  const total = resolved.length;
+  const c = Math.max(0, Math.min(completedCount, total));
+  const steps = resolved.map((s, i): PupilStep => ({
+    ...s,
+    status: i < c ? 'complete' : i === c ? 'in_progress' : i === c + 1 ? 'next' : 'upcoming',
+  }));
+  return { steps, completed: c, total, current: resolved[c], next: resolved[c + 1], isLevelComplete: c >= total && total > 0 };
+}
+
+export interface ResourceTally {
+  soundBooks: number; blendingBooks: number; storybooks: number;
+  interactive: number; worksheetPacks: number; certificates: number;
+}
+
+/** Resources completed = all of levels below + the first `completedCount` steps of `level`. */
+export function completedResourceTally(level: number, completedCount: number): ResourceTally {
+  const tally: ResourceTally = { soundBooks: 0, blendingBooks: 0, storybooks: 0, interactive: 0, worksheetPacks: 0, certificates: 0 };
+  const add = (s: ResolvedStep) => {
+    if (s.kind === 'sound_book') tally.soundBooks++;
+    else if (s.kind === 'blending_book') tally.blendingBooks++;
+    else { tally.storybooks++; tally.interactive++; tally.worksheetPacks++; tally.certificates++; }
+  };
+  for (let lv = 1; lv < level; lv++) getTeachingSequence(lv).map(resolveStep).forEach(add);
+  getTeachingSequence(level).map(resolveStep).slice(0, Math.max(0, completedCount)).forEach(add);
+  return tally;
+}
+
+/** Half-termly assessment window label for a date (UK academic calendar, approximate). */
+export function assessmentWindowForDate(d: Date | string): string {
+  const date = typeof d === 'string' ? new Date(d) : d;
+  const m = date.getMonth() + 1;
+  if (m >= 9 && m <= 10) return 'Autumn 1';
+  if (m === 11 || m === 12) return 'Autumn 2';
+  if (m === 1 || m === 2) return 'Spring 1';
+  if (m === 3 || m === 4) return 'Spring 2';
+  if (m === 5) return 'Summer 1';
+  return 'Summer 2';
 }
 
 export function programmeTotals(): ProgrammeTotals {

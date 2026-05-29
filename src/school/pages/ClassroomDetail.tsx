@@ -19,6 +19,8 @@ type Student = {
   last_name: string | null;
   date_of_birth: string | null;
   current_level: string | null;
+  pathway_completed: number | null;
+  teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null;
   last_assessment?: {
     created_at: string;
     recommended_level: string | null;
@@ -66,11 +68,11 @@ export default function ClassroomDetail() {
 
       const { data: rows } = await schoolDb
         .students()
-        .select('id, first_name, last_name, date_of_birth, current_level')
+        .select('id, first_name, last_name, date_of_birth, current_level, pathway_completed, teacher_judgement')
         .eq('classroom_id', id)
         .order('first_name', { ascending: true });
 
-      const rowList = (rows ?? []) as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level'>[];
+      const rowList = (rows ?? []) as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level' | 'pathway_completed' | 'teacher_judgement'>[];
       const studentIds = rowList.map((r) => r.id);
       const assessmentByStudent: Record<string, { created_at: string; recommended_level: string | null }> = {};
       if (studentIds.length > 0) {
@@ -111,7 +113,7 @@ export default function ClassroomDetail() {
       return;
     }
     const created = data as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level'>;
-    setStudents((prev) => [...prev, { ...created, last_assessment: null }].sort((a, b) => a.first_name.localeCompare(b.first_name)));
+    setStudents((prev) => [...prev, { ...created, pathway_completed: 0, teacher_judgement: null, last_assessment: null }].sort((a, b) => a.first_name.localeCompare(b.first_name)));
     setFirstName('');
     setLastName('');
     setDob('');
@@ -211,7 +213,7 @@ export default function ClassroomDetail() {
               const needsAssessment = !level && !s.last_assessment;
               return (
                 <div key={s.id} className={['rounded-2xl border p-4 flex flex-col justify-between gap-3', needsAssessment ? 'bg-amber-50/50 border-amber-200' : 'bg-white border-slate-200'].join(' ')}>
-                  <StudentPathwayStatus name={`${s.first_name} ${s.last_name ?? ''}`.trim()} level={level} seed={s.id} />
+                  <StudentPathwayStatus name={`${s.first_name} ${s.last_name ?? ''}`.trim()} level={level} seed={s.id} completedCount={s.pathway_completed} judgement={s.teacher_judgement} />
                   <div className="grid grid-cols-2 gap-1.5">
                     <Link
                       to={`/school/app/students/${s.id}`}
