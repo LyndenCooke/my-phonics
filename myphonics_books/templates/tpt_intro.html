@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ pack_title }}</title>
+  <style>
+    @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_italic }}') format('truetype'); font-weight: 400; font-style: italic; }
+
+    :root {
+      --level-color: {{ level_colour }};
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+    }
+
+    @page { size: 210mm 297mm; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: 'Andika', sans-serif; color: var(--ink);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm; height: 297mm; position: relative; overflow: hidden;
+      page-break-after: always; background: #ffffff;
+    }
+    .page:last-child { page-break-after: avoid; }
+
+    /* === TOP BRAND BAND === */
+    .top-band {
+      height: 28mm; background: var(--level-color); color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0 18mm; text-align: center;
+    }
+    .top-brand {
+      font-size: 11pt; font-weight: 700; letter-spacing: 1.8px;
+      text-transform: uppercase; opacity: 0.95;
+    }
+    .top-tagline {
+      font-size: 10pt; margin-top: 2mm; opacity: 0.92; font-style: italic;
+    }
+
+    /* === MAIN BODY === */
+    .body-inner {
+      padding: 9mm 18mm 0; text-align: center;
+    }
+    .eyebrow {
+      font-size: 9.5pt; color: var(--level-color); font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3mm;
+    }
+    h1.title {
+      font-size: 26pt; font-weight: 700; line-height: 1.1;
+      margin-bottom: 3mm; color: var(--ink);
+    }
+    .lead {
+      font-size: 11.5pt; line-height: 1.5; color: #333;
+      max-width: 150mm; margin: 0 auto 6mm;
+    }
+
+    /* === VOUCHER CARD === */
+    .voucher {
+      margin: 2mm auto 0; max-width: 158mm;
+      background: linear-gradient(135deg, var(--level-color) 0%, #b8336a 100%);
+      color: #fff; border-radius: 5mm; padding: 7mm 10mm;
+      text-align: center;
+    }
+    .voucher-eyebrow {
+      font-size: 9.5pt; letter-spacing: 1.5px; text-transform: uppercase;
+      opacity: 0.95; margin-bottom: 3mm;
+    }
+    .voucher-code-block {
+      display: inline-block; padding: 4mm 12mm; margin: 0 0 3mm;
+      background: rgba(255,255,255,0.18);
+      border: 1.5pt dashed rgba(255,255,255,0.85);
+      border-radius: 4mm;
+    }
+    .voucher-code-label {
+      font-size: 9pt; letter-spacing: 1.3px; text-transform: uppercase;
+      opacity: 0.92; margin-bottom: 1.5mm;
+    }
+    .voucher-code {
+      font-size: 22pt; font-weight: 700; letter-spacing: 2.5px;
+    }
+    .voucher-url {
+      font-size: 13pt; font-weight: 700; margin-top: 1mm;
+    }
+    .voucher-url-sub {
+      font-size: 9pt; opacity: 0.9; margin-top: 1mm;
+    }
+    .qr-wrap {
+      display: flex; justify-content: center; margin: 3mm 0 0;
+    }
+    .qr-card {
+      background: #fff; padding: 2.5mm; border-radius: 2mm;
+    }
+    .qr-card img { width: 22mm; height: 22mm; display: block; }
+
+    /* === STEPS === */
+    .steps {
+      display: flex; gap: 4mm; margin: 5mm auto 0; max-width: 158mm;
+    }
+    .step {
+      flex: 1; padding: 4mm 3mm; text-align: center;
+      border: 1pt solid #eaeaea; border-radius: 3mm; background: #fff;
+    }
+    .step-num {
+      width: 8mm; height: 8mm; border-radius: 50%;
+      background: var(--level-color); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11pt; font-weight: 700; margin-bottom: 1.5mm;
+    }
+    .step-title { font-size: 10.5pt; font-weight: 700; margin-bottom: 1mm; }
+    .step-text { font-size: 9pt; color: #555; line-height: 1.3; }
+
+    /* === WHAT YOU GET === */
+    .perks {
+      margin: 5mm auto 0; max-width: 165mm;
+      padding: 4.5mm 7mm; background: #f7f7f7; border-radius: 4mm;
+      border-left: 4pt solid var(--level-color);
+    }
+    .perks-title {
+      font-size: 10pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 2mm;
+    }
+    .perks-list {
+      list-style: none; padding: 0; display: grid;
+      grid-template-columns: 1fr 1fr; gap: 1.5mm 6mm;
+    }
+    .perks-list li {
+      font-size: 9.5pt; line-height: 1.35; padding-left: 5mm; position: relative;
+    }
+    .perks-list li::before {
+      content: "✓"; color: var(--level-color); font-weight: 700;
+      position: absolute; left: 0; top: 0; font-size: 10pt;
+    }
+
+    /* === BOTTOM BAND === */
+    .bottom-band {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 4mm 18mm 5mm; border-top: 1pt solid #eee;
+      display: flex; justify-content: space-between; align-items: center; gap: 6mm;
+      font-size: 8.5pt; color: var(--muted); background: #fff;
+    }
+    .bottom-band b { color: var(--ink); }
+    .bottom-band-terms {
+      font-style: italic; flex: 1; line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="top-band">
+    <div class="top-brand">MyPhonicsBooks · Teacher Access</div>
+    <div class="top-tagline">Decodable phonics books for ages 4–8</div>
+  </div>
+
+  <div class="body-inner">
+    <div class="eyebrow">Thank you for purchasing your teacher pass from Teachers Pay Teachers</div>
+    <h1 class="title">Your teacher pass.</h1>
+    <div class="lead">One code unlocks <b>every book, every worksheet, every level</b> in the MyPhonicsBooks library — plus everything new we release. Yours to use across your classroom, for as long as you teach.</div>
+
+    <div class="voucher">
+      <div class="voucher-eyebrow">Your teacher code</div>
+      <div class="voucher-code-block">
+        <div class="voucher-code-label">Enter this code at the portal</div>
+        <div class="voucher-code">{{ voucher_code }}</div>
+      </div>
+      <div class="voucher-url">{{ teacher_access_url }}</div>
+      <div class="voucher-url-sub">Or scan the QR code below with your phone.</div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="{{ qr_image }}" alt="QR code to teacher portal">
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Visit the portal</div>
+        <div class="step-text">Open the link above or scan the QR code on any device.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Enter your code</div>
+        <div class="step-text">Type the code on the portal page. No email, no sign-up.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Use everything</div>
+        <div class="step-text">Read online, project on the smart board, download worksheets and books.</div>
+      </div>
+    </div>
+
+    <div class="perks">
+      <div class="perks-title">What your code unlocks</div>
+      <ul class="perks-list">
+        <li>Every decodable book — Levels 1 to 6</li>
+        <li>Every printable phonics worksheet</li>
+        <li>Read-aloud audio &amp; tap-to-hear sounds</li>
+        <li>Print-ready A5 storybook PDFs</li>
+        <li>A4 print-and-fold booklet versions</li>
+        <li>Every new book we release — automatically</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-band">
+    <div class="bottom-band-terms"><b>For one teacher.</b> Print as many copies as you need for the children you teach. Please don't share the code — if a colleague wants in, send them the TPT listing (it's free for them too).</div>
+    <div>hello@myphonicsbooks.co.uk</div>
+  </div>
+
+</div>
+
+</body>
+</html>

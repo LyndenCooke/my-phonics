@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ pack_title }}</title>
+  <style>
+    @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; font-style: normal; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; font-style: normal; }
+    @font-face { font-family: 'Andika'; src: url('{{ font_italic }}') format('truetype'); font-weight: 400; font-style: italic; }
+
+    :root {
+      --level-color: {{ level_colour }};
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --line: #cfcfcf;
+      --soft-fill: #f6f6f6;
+    }
+
+    @page { size: 210mm 297mm; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: 'Andika', sans-serif;
+      color: var(--ink);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm; height: 297mm; position: relative; overflow: hidden;
+      page-break-after: always; background: #ffffff;
+    }
+    .page:last-child { page-break-after: avoid; }
+    .page-inner { width: 100%; height: 100%; padding: 18mm 16mm; display: flex; flex-direction: column; }
+
+    /* Header strip used on every non-cover page */
+    .strip {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 4mm; border-bottom: 1.5pt solid var(--level-color);
+      margin-bottom: 8mm;
+    }
+    .strip-brand { font-size: 10pt; font-weight: 700; color: var(--level-color); letter-spacing: 0.4px; text-transform: uppercase; }
+    .strip-meta { font-size: 9pt; color: var(--muted); }
+
+    .footer {
+      position: absolute; bottom: 8mm; left: 16mm; right: 16mm;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 8.5pt; color: var(--muted);
+    }
+
+    h1.section-title {
+      font-size: 26pt; font-weight: 700; color: var(--ink);
+      line-height: 1.15; margin-bottom: 3mm;
+    }
+    h2.subhead {
+      font-size: 14pt; color: var(--level-color); font-weight: 700;
+      margin-bottom: 6mm; letter-spacing: 0.2px;
+    }
+    p.lead {
+      font-size: 12pt; line-height: 1.55; color: #333;
+      max-width: 165mm;
+    }
+
+    /* ============ COVER ============ */
+    .cover { padding: 0; }
+    .cover-top {
+      background: var(--level-color); height: 50mm;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      color: #fff; text-align: center; padding: 0 18mm;
+    }
+    .cover-top-brand { font-size: 11pt; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; opacity: 0.95; }
+    .cover-top-tag { font-size: 10pt; margin-top: 3mm; opacity: 0.92; }
+
+    .cover-mid {
+      flex: 1; padding: 22mm 22mm 0; display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .cover-eyebrow {
+      font-size: 10pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 1.6px; margin-bottom: 8mm;
+    }
+    .cover-title {
+      font-size: 44pt; font-weight: 700; line-height: 1.05;
+      color: var(--ink); margin-bottom: 6mm;
+    }
+    .cover-sub {
+      font-size: 16pt; color: #444; font-style: italic; margin-bottom: 14mm;
+      line-height: 1.35; max-width: 150mm;
+    }
+    .cover-img-wrap {
+      width: 130mm; height: 88mm; border-radius: 6mm; overflow: hidden;
+      box-shadow: 0 4mm 12mm rgba(0,0,0,0.10);
+      background: var(--soft-fill); display: flex; align-items: center; justify-content: center;
+    }
+    .cover-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cover-bottom {
+      background: var(--level-color); height: 28mm;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      color: #fff; text-align: center; padding: 0 18mm;
+    }
+    .cover-bottom-line { font-size: 12pt; font-weight: 700; letter-spacing: 0.4px; }
+    .cover-bottom-url { font-size: 10pt; opacity: 0.95; margin-top: 2mm; }
+
+    .cover { display: flex; flex-direction: column; }
+
+    /* ============ WELCOME ============ */
+    .welcome-card {
+      border: 1.5pt solid var(--level-color); border-radius: 4mm;
+      padding: 10mm 12mm; margin-top: 4mm;
+    }
+    .welcome-list { list-style: none; padding: 0; margin: 6mm 0 0; }
+    .welcome-list li {
+      padding: 4mm 0 4mm 12mm; position: relative;
+      font-size: 12pt; line-height: 1.45;
+      border-bottom: 1pt dashed #e5e5e5;
+    }
+    .welcome-list li:last-child { border-bottom: none; }
+    .welcome-list li::before {
+      content: "✓"; position: absolute; left: 0; top: 4mm;
+      color: var(--level-color); font-weight: 700; font-size: 14pt;
+    }
+
+    .badge-row {
+      display: flex; gap: 6mm; margin-top: 10mm;
+    }
+    .badge {
+      flex: 1; border-radius: 4mm; padding: 6mm; text-align: center;
+      background: var(--soft-fill);
+    }
+    .badge-num {
+      font-size: 22pt; font-weight: 700; color: var(--level-color);
+      line-height: 1; margin-bottom: 2mm;
+    }
+    .badge-label { font-size: 10pt; color: #444; line-height: 1.3; }
+
+    /* ============ HOW TO USE ============ */
+    .step {
+      display: flex; gap: 6mm; margin-bottom: 7mm; align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0; width: 12mm; height: 12mm; border-radius: 50%;
+      background: var(--level-color); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14pt; font-weight: 700;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-size: 13pt; font-weight: 700; margin-bottom: 1.5mm; color: var(--ink); }
+    .step-text { font-size: 11pt; line-height: 1.5; color: #333; }
+
+    /* ============ WORKSHEETS ============ */
+    .ws-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      border-bottom: 1.5pt solid var(--level-color);
+      padding-bottom: 4mm; margin-bottom: 7mm;
+    }
+    .ws-title { font-size: 22pt; font-weight: 700; line-height: 1.1; }
+    .ws-pill {
+      font-size: 9pt; padding: 1.5mm 4mm; border-radius: 20mm;
+      background: var(--level-color); color: #fff; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .ws-instructions {
+      font-size: 11pt; color: #333; margin-bottom: 6mm; line-height: 1.5;
+      padding: 4mm 6mm; background: var(--soft-fill); border-radius: 3mm;
+      border-left: 4pt solid var(--level-color);
+    }
+
+    /* Worksheet 1: SATPIN quadrants */
+    .ws1-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5mm;
+      flex: 1; align-content: stretch;
+    }
+    .ws1-cell {
+      border: 1.5pt solid var(--ink); border-radius: 3mm; padding: 5mm;
+      display: flex; flex-direction: column;
+    }
+    .ws1-letter {
+      font-size: 64pt; font-weight: 700; line-height: 1;
+      color: var(--level-color); text-align: center; margin-bottom: 2mm;
+    }
+    .ws1-keyword {
+      font-size: 14pt; text-align: center; color: #333; margin-bottom: 3mm;
+    }
+    .ws1-keyword b { color: var(--level-color); }
+    .ws1-draw {
+      flex: 1; border: 1pt dashed #999; border-radius: 2mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9pt; color: #999; font-style: italic; text-align: center; padding: 2mm;
+    }
+    .ws1-draw .sound {
+      font-style: normal; font-weight: 700; color: var(--level-color);
+      margin-left: 1mm;
+    }
+
+    /* Worksheet 2: Blend and Read - word + draw box pairs */
+    .ws2-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 8mm;
+      flex: 1;
+    }
+    .ws2-row {
+      display: flex; align-items: center; gap: 4mm; padding: 2mm 0;
+    }
+    .ws2-word {
+      font-size: 22pt; font-weight: 700; min-width: 28mm;
+      color: var(--ink); letter-spacing: 0.5px;
+    }
+    .ws2-arrow { color: var(--level-color); font-size: 16pt; font-weight: 700; }
+    .ws2-box {
+      flex: 1; height: 22mm; border: 1.2pt solid var(--ink);
+      border-radius: 2mm; background: #fff;
+    }
+
+    /* Worksheet 3: Tricky words sentence frame */
+    .ws3-sentence {
+      font-size: 26pt; font-weight: 700; text-align: center;
+      letter-spacing: 0.5px; margin: 8mm 0 6mm; line-height: 1.4;
+    }
+    .ws3-tricky { color: var(--level-color); }
+    .ws3-blank {
+      display: inline-block; min-width: 35mm; border-bottom: 2pt solid var(--ink);
+      vertical-align: bottom; margin: 0 2mm;
+    }
+    .ws3-options {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; margin-top: 6mm;
+      flex: 1;
+    }
+    .ws3-opt {
+      border: 1.5pt solid var(--ink); border-radius: 3mm;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 4mm;
+    }
+    .ws3-opt-word { font-size: 20pt; font-weight: 700; color: var(--ink); }
+    .ws3-opt-draw {
+      width: 100%; flex: 1; border: 1pt dashed #999; border-radius: 2mm;
+      margin-top: 3mm;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8pt; color: #999; font-style: italic;
+    }
+
+    /* Worksheet 4: Letter formation */
+    .ws4-row {
+      margin-bottom: 3.5mm;
+    }
+    .ws4-row:last-child { margin-bottom: 0; }
+    .ws4-letter-head {
+      display: flex; align-items: baseline; gap: 6mm; margin-bottom: 2mm;
+    }
+    .ws4-letter-big { font-size: 28pt; font-weight: 700; color: var(--level-color); line-height: 1; }
+    .ws4-letter-note { font-size: 10pt; color: #555; font-style: italic; }
+
+    /* Trace row — 8 ghost cells with 4-line guides */
+    .ws4-trace-row {
+      display: flex; gap: 2mm; margin-bottom: 1.5mm;
+    }
+    .ws4-cell {
+      flex: 1; position: relative; height: 15mm;
+      background: #fff;
+      border: 0.25mm solid #e5e5e5; border-radius: 1mm;
+    }
+    /* 4-line guides: ascender (top), x-height (mid-top), baseline (bottom), descender line below baseline omitted */
+    .ws4-cell::before { /* ascender line */
+      content: ""; position: absolute; left: 1.5mm; right: 1.5mm; top: 1.5mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.5);
+    }
+    .ws4-cell .ws4-mid { /* x-height line */
+      position: absolute; left: 1.5mm; right: 1.5mm; top: 7.5mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.4);
+    }
+    .ws4-cell::after { /* baseline */
+      content: ""; position: absolute; left: 1.5mm; right: 1.5mm; bottom: 2.5mm;
+      border-top: 0.4mm solid rgba(80,130,180,0.7);
+    }
+    .ws4-ghost {
+      position: absolute; left: 0; right: 0; bottom: 2.1mm;
+      text-align: center; line-height: 1;
+      font-size: 20pt; font-weight: 700;
+      color: transparent; -webkit-text-stroke: 0.35mm #b6b6b6;
+    }
+
+    /* Blank write row — three horizontal 4-line guides only, no cells */
+    .ws4-write {
+      position: relative; height: 11mm;
+    }
+    .ws4-write .ws4-w-top    { position: absolute; left: 0; right: 0; top: 0.5mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.5); }
+    .ws4-write .ws4-w-mid    { position: absolute; left: 0; right: 0; top: 5.5mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.35); }
+    .ws4-write .ws4-w-base   { position: absolute; left: 0; right: 0; bottom: 2mm;
+      border-top: 0.4mm solid rgba(80,130,180,0.7); }
+    .ws4-write-label {
+      position: absolute; left: 0; bottom: -3mm; font-size: 7.5pt;
+      color: #999; text-transform: uppercase; letter-spacing: 0.6px;
+    }
+
+    /* Worksheet 5: Story sequence */
+    .ws5-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; flex: 1;
+    }
+    .ws5-cell {
+      border: 1.5pt solid var(--ink); border-radius: 3mm; padding: 4mm;
+      display: flex; flex-direction: column;
+    }
+    .ws5-num {
+      width: 9mm; height: 9mm; border-radius: 50%;
+      background: var(--level-color); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 11pt; margin-bottom: 2mm;
+    }
+    .ws5-draw {
+      flex: 1; border: 1pt dashed #aaa; border-radius: 2mm; margin-bottom: 3mm;
+    }
+    .ws5-caption {
+      font-size: 11pt; line-height: 1.4; color: #333;
+      padding: 1mm 0; text-align: center;
+    }
+
+    /* Sound Buttons — each letter stacked vertically over its sound button */
+    .wsb-list { display: flex; flex-direction: column; gap: 3mm; margin-top: 1mm; }
+    .wsb-row {
+      display: flex; align-items: center; gap: 6mm;
+      padding: 2mm 4mm; border: 1pt solid #eaeaea; border-radius: 3mm;
+      background: #fff;
+    }
+    .wsb-stacks { display: flex; gap: 3mm; }
+    .wsb-stack {
+      display: flex; flex-direction: column; align-items: center; gap: 1.5mm;
+      width: 13mm;
+    }
+    .wsb-letter {
+      font-size: 22pt; font-weight: 700; color: var(--ink); line-height: 1;
+    }
+    .wsb-button {
+      width: 9mm; height: 9mm; border-radius: 50%;
+      border: 1.2pt solid var(--level-color); background: #fff;
+    }
+    .wsb-arrow {
+      font-size: 22pt; color: var(--level-color); font-weight: 700;
+      padding: 0 2mm;
+    }
+    .wsb-blend {
+      font-size: 18pt; font-weight: 700; color: var(--ink); letter-spacing: 0.5px;
+    }
+    .wsb-blend-label {
+      font-size: 9pt; color: #888; font-style: italic; margin-top: 1mm;
+    }
+    .wsb-blend-cell { display: flex; flex-direction: column; align-items: flex-start; }
+
+    /* Alien Words — fun boxes with nonsense words + tick column */
+    .wsa-intro {
+      display: flex; align-items: center; gap: 5mm; margin: 2mm 0 6mm;
+      padding: 5mm 6mm; background: var(--soft-fill); border-radius: 3mm;
+      border-left: 4pt solid var(--level-color);
+      font-size: 11pt; line-height: 1.45; color: #333;
+    }
+    .wsa-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm 5mm;
+      flex: 1; align-content: start;
+    }
+    .wsa-cell {
+      border: 1.5pt solid var(--ink); border-radius: 4mm;
+      padding: 6mm 3mm 4mm; text-align: center; background: #fff;
+      display: flex; flex-direction: column; gap: 3mm; align-items: center;
+      position: relative;
+    }
+    .wsa-cell::before {
+      content: ""; position: absolute; top: 2mm; right: 2mm;
+      width: 5mm; height: 5mm; border-radius: 50%;
+      background: var(--level-color); opacity: 0.18;
+    }
+    .wsa-word {
+      font-size: 24pt; font-weight: 700; color: var(--ink); line-height: 1;
+    }
+    .wsa-tick {
+      width: 9mm; height: 9mm; border: 1.5pt solid var(--ink); border-radius: 2mm;
+      margin-top: 1mm;
+    }
+
+    /* Read the Sentences — 4 sentence cards each with draw box */
+    .wss-grid { display: flex; flex-direction: column; gap: 5mm; flex: 1; }
+    .wss-row {
+      display: flex; gap: 5mm; align-items: stretch;
+      border: 1.5pt solid var(--ink); border-radius: 3mm; padding: 4mm 5mm;
+    }
+    .wss-num {
+      flex-shrink: 0; width: 10mm; height: 10mm; border-radius: 50%;
+      background: var(--level-color); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12pt; font-weight: 700;
+    }
+    .wss-text {
+      flex: 1; align-self: center;
+      font-size: 22pt; font-weight: 700; line-height: 1.3;
+      color: var(--ink); padding-left: 3mm; letter-spacing: 0.5px;
+    }
+    .wss-tricky { color: var(--level-color); }
+    .wss-draw {
+      flex-shrink: 0; width: 50mm; border: 1pt dashed #999;
+      border-radius: 2mm; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8.5pt; font-style: italic; color: #aaa;
+    }
+
+    /* Write CVC Words / Tricky Word Writing — reuses ws4 mechanics, scoped */
+    .wsw-row { margin-bottom: 5mm; }
+    .wsw-row:last-child { margin-bottom: 0; }
+    .wsw-head {
+      display: flex; align-items: baseline; gap: 6mm; margin-bottom: 2.5mm;
+    }
+    .wsw-word-big {
+      font-size: 32pt; font-weight: 700; color: var(--level-color);
+      line-height: 1; letter-spacing: 1mm;
+    }
+    .wsw-note { font-size: 10pt; color: #555; font-style: italic; }
+    .wsw-trace-row { display: flex; gap: 3mm; margin-bottom: 2mm; }
+    .wsw-cell {
+      flex: 1; position: relative; height: 18mm;
+      background: #fff;
+      border: 0.25mm solid #e5e5e5; border-radius: 1mm;
+    }
+    .wsw-cell::before {
+      content: ""; position: absolute; left: 1.5mm; right: 1.5mm; top: 2mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.5);
+    }
+    .wsw-cell .wsw-mid {
+      position: absolute; left: 1.5mm; right: 1.5mm; top: 9.5mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.4);
+    }
+    .wsw-cell::after {
+      content: ""; position: absolute; left: 1.5mm; right: 1.5mm; bottom: 3mm;
+      border-top: 0.4mm solid rgba(80,130,180,0.7);
+    }
+    .wsw-ghost {
+      position: absolute; left: 0; right: 0; bottom: 2.6mm;
+      text-align: center; line-height: 1;
+      font-size: 22pt; font-weight: 700; letter-spacing: 0.8mm;
+      color: transparent; -webkit-text-stroke: 0.4mm #b6b6b6;
+    }
+    .wsw-write { position: relative; height: 12mm; }
+    .wsw-write .wsw-w-top { position: absolute; left: 0; right: 0; top: 1mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.5); }
+    .wsw-write .wsw-w-mid { position: absolute; left: 0; right: 0; top: 6mm;
+      border-top: 0.25mm dashed rgba(80,130,180,0.35); }
+    .wsw-write .wsw-w-base { position: absolute; left: 0; right: 0; bottom: 2mm;
+      border-top: 0.4mm solid rgba(80,130,180,0.7); }
+
+    /* ============ FOLD INSTRUCTIONS ============ */
+    .fold-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-top: 4mm;
+    }
+    .fold-block {
+      background: var(--soft-fill); border-radius: 4mm; padding: 6mm;
+    }
+    .fold-block h3 {
+      font-size: 13pt; color: var(--level-color); margin-bottom: 3mm; font-weight: 700;
+    }
+    .fold-block ol {
+      padding-left: 5mm; font-size: 10.5pt; line-height: 1.55; color: #333;
+    }
+    .fold-block ol li { margin-bottom: 1.5mm; }
+
+    .printer-tip {
+      margin-top: 8mm; padding: 5mm 7mm; border: 1.5pt dashed var(--level-color);
+      border-radius: 3mm; font-size: 10.5pt; line-height: 1.5; color: #333;
+    }
+    .printer-tip b { color: var(--level-color); }
+
+    /* ============ TEACHER BONUS ============ */
+    .bonus-card {
+      margin-top: 3mm; padding: 8mm 9mm;
+      background: linear-gradient(135deg, var(--level-color) 0%, #b8336a 100%);
+      color: #fff; border-radius: 5mm; text-align: center;
+    }
+    .bonus-eyebrow {
+      font-size: 9.5pt; text-transform: uppercase; letter-spacing: 1.6px;
+      opacity: 0.95; margin-bottom: 3mm;
+    }
+    .bonus-title { font-size: 22pt; font-weight: 700; line-height: 1.1; margin-bottom: 3.5mm; }
+    .bonus-body { font-size: 11.5pt; line-height: 1.45; max-width: 140mm; margin: 0 auto 5mm; }
+
+    .bonus-code-block {
+      display: inline-block; padding: 4mm 10mm;
+      background: rgba(255,255,255,0.18); border: 1.5pt dashed rgba(255,255,255,0.8);
+      border-radius: 4mm; margin-bottom: 4mm;
+    }
+    .bonus-code-label { font-size: 9pt; opacity: 0.9; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 1.5mm; }
+    .bonus-code { font-size: 20pt; font-weight: 700; letter-spacing: 2.5px; font-family: 'Andika', monospace; }
+
+    .bonus-url { font-size: 13pt; font-weight: 700; margin-top: 1mm; }
+    .bonus-url-sub { font-size: 9.5pt; opacity: 0.9; margin-top: 1mm; }
+
+    .bonus-howto {
+      margin-top: 5mm; display: flex; gap: 5mm; justify-content: center;
+    }
+    .bonus-step {
+      flex: 1; max-width: 46mm; background: rgba(255,255,255,0.12);
+      border-radius: 3mm; padding: 3mm; text-align: center;
+    }
+    .bonus-step-num { font-size: 14pt; font-weight: 700; margin-bottom: 0.5mm; }
+    .bonus-step-text { font-size: 9pt; line-height: 1.3; }
+
+    /* ============ TERMS ============ */
+    .terms-block {
+      font-size: 11pt; line-height: 1.6; color: #333;
+    }
+    .terms-block h3 {
+      font-size: 13pt; color: var(--level-color); margin: 6mm 0 2mm; font-weight: 700;
+    }
+    .terms-allow { color: #2c8a4b; font-weight: 700; }
+    .terms-deny { color: #b83a3a; font-weight: 700; }
+
+    /* ============ BACK COVER ============ */
+    .back-cover { padding: 0; display: flex; flex-direction: column; }
+    .back-top {
+      flex: 1; padding: 30mm 18mm; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .back-logo-line {
+      font-size: 11pt; letter-spacing: 1.8px; text-transform: uppercase;
+      color: var(--level-color); font-weight: 700; margin-bottom: 6mm;
+    }
+    .back-title { font-size: 28pt; font-weight: 700; color: var(--ink); line-height: 1.1; margin-bottom: 8mm; }
+    .back-body { font-size: 13pt; color: #444; line-height: 1.55; max-width: 150mm; margin-bottom: 12mm; }
+    .back-cta {
+      padding: 5mm 14mm; background: var(--level-color); color: #fff;
+      font-size: 14pt; font-weight: 700; border-radius: 3mm;
+    }
+    .back-bottom-band {
+      height: 50mm; background: var(--level-color); display: flex;
+      flex-direction: column; justify-content: center; align-items: center;
+      color: #fff; text-align: center; padding: 0 18mm;
+    }
+    .back-bottom-brand { font-size: 22pt; font-weight: 700; }
+    .back-bottom-tag { font-size: 11pt; margin-top: 3mm; opacity: 0.95; font-style: italic; }
+    .back-bottom-url { font-size: 11pt; margin-top: 8mm; letter-spacing: 0.5px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== PAGE 1: COVER ===== -->
+<div class="page cover">
+  <div class="cover-top">
+    <div class="cover-top-brand">MyPhonicsBooks · Teacher Pack</div>
+    <div class="cover-top-tag">Decodable phonics books for ages 4–8</div>
+  </div>
+  <div class="cover-mid">
+    <div class="cover-eyebrow">Free Sampler · SATPIN · Level 1</div>
+    <h1 class="cover-title">{{ pack_title }}</h1>
+    <div class="cover-sub">Ten printable worksheets, a fully decodable storybook, and a teacher code that unlocks every Level 1 book online — all for the price of nothing.</div>
+    <div class="cover-img-wrap">
+      {% if cover_image %}<img src="{{ cover_image }}" alt="Sample book cover">{% else %}<div style="font-size:18pt;color:var(--level-color);font-weight:700;">Tap! Tap! Tap!</div>{% endif %}
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-bottom-line">For Reception / Pre-K & Kindergarten teachers</div>
+    <div class="cover-bottom-url">{{ site_url }}</div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: WELCOME / WHAT'S INSIDE ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">MyPhonicsBooks · Teacher Pack</div>
+      <div class="strip-meta">SATPIN · Level 1.1</div>
+    </div>
+    <h1 class="section-title">Welcome, teachers.</h1>
+    <h2 class="subhead">What's in this free pack</h2>
+    <p class="lead">This is a sampler of the MyPhonicsBooks scheme — fully decodable phonics stories where every word is built from the sounds the child has been taught. Everything below is yours to use in your classroom or 1:1 reading sessions.</p>
+    <div class="welcome-card">
+      <ul class="welcome-list">
+        <li><b>10 printable worksheets</b> — sound recognition, blending, decoding, sentence reading, tricky words, handwriting, and comprehension</li>
+        <li><b>The full decodable book "Tap! Tap! Tap!"</b> — supplied as a single-page read-aloud PDF</li>
+        <li><b>A4 print-and-fold booklet version</b> of the same book — staple once and your class has A5 booklets</li>
+        <li><b>Your TPT teacher code</b> — unlocks free online access to every Level 1 interactive book (see page 15)</li>
+        <li><b>Teacher fold instructions, printing tips and full terms of use</b></li>
+      </ul>
+    </div>
+    <div class="badge-row">
+      <div class="badge"><div class="badge-num">10</div><div class="badge-label">Worksheets</div></div>
+      <div class="badge"><div class="badge-num">1</div><div class="badge-label">Full Book</div></div>
+      <div class="badge"><div class="badge-num">2</div><div class="badge-label">Print Formats</div></div>
+      <div class="badge"><div class="badge-num">∞</div><div class="badge-label">Reprints (your class)</div></div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Teacher Pack</span>
+      <span>2</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 3: HOW TO USE THIS PACK ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">How to Use This Pack</div>
+      <div class="strip-meta">A 4-step teaching sequence</div>
+    </div>
+    <h1 class="section-title">A short teaching sequence.</h1>
+    <p class="lead" style="margin-bottom:10mm;">The worksheets and book are designed to be used in this order. Each step builds on the last, taking children from sound recognition through to comprehension.</p>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Warm up the sounds (Worksheets 1–3)</div>
+        <div class="step-text">Recap SATPIN, push the sound buttons under each phoneme, and blend simple CVC words. Builds the phonemic awareness children need before reading the book.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Read "Tap! Tap! Tap!" together (Storybook)</div>
+        <div class="step-text">Read the included book aloud, then have children read it independently. Every word is decodable from SATPIN plus the tricky words "I" and "the".</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Decode and read (Worksheets 4–6)</div>
+        <div class="step-text">Tackle alien (nonsense) words to check pure decoding, read short decodable sentences, and reinforce the tricky words "I" and "the" in context.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Write the sounds and words (Worksheets 7–9)</div>
+        <div class="step-text">Form the tricky words, practise letter formation for s, a, t, p, then apply those letters in real CVC words from the story.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Check comprehension (Worksheet 10)</div>
+        <div class="step-text">Children sequence the story in their own drawings — a quick, low-stakes comprehension check that doubles as creative practice.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">★</div>
+      <div class="step-body">
+        <div class="step-title">Unlock the online books with your teacher code</div>
+        <div class="step-text">Your TPT teacher code (page 15) unlocks the interactive online version of every Level 1 book — free for as long as you teach. Enter it once at our teacher portal and you're in.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Teacher Pack</span>
+      <span>3</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 4: WORKSHEET 1 — SOUND IT OUT ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 1 of 10</div>
+      <div class="strip-meta">Before reading · Sound recognition</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Sound It Out!</div>
+      <div class="ws-pill">s · a · t · p</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Say each sound aloud.</b> Read the keyword. Then draw one more thing that starts with the same sound.
+    </div>
+    <div class="ws1-grid">
+      <div class="ws1-cell">
+        <div class="ws1-letter">s</div>
+        <div class="ws1-keyword"><b>s</b> for <i>sit</i></div>
+        <div class="ws1-draw">your turn — draw something that starts with <span class="sound">s</span></div>
+      </div>
+      <div class="ws1-cell">
+        <div class="ws1-letter">a</div>
+        <div class="ws1-keyword"><b>a</b> for <i>at</i></div>
+        <div class="ws1-draw">your turn — draw something with the sound <span class="sound">a</span></div>
+      </div>
+      <div class="ws1-cell">
+        <div class="ws1-letter">t</div>
+        <div class="ws1-keyword"><b>t</b> for <i>tap</i></div>
+        <div class="ws1-draw">your turn — draw something that starts with <span class="sound">t</span></div>
+      </div>
+      <div class="ws1-cell">
+        <div class="ws1-letter">p</div>
+        <div class="ws1-keyword"><b>p</b> for <i>pat</i></div>
+        <div class="ws1-draw">your turn — draw something that starts with <span class="sound">p</span></div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 1</span>
+      <span>4</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 5: WORKSHEET 2 — SOUND BUTTONS ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 2 of 10</div>
+      <div class="strip-meta">Before reading · Phoneme segmentation</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Push the Sound Buttons</div>
+      <div class="ws-pill">say · blend</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Press each circle</b> as you say the sound. Then sweep your finger across and blend the sounds into a word.
+    </div>
+    <div class="wsb-list">
+      {% for word in ['sit','mat','tap','pat','cat','nap'] %}
+      <div class="wsb-row">
+        <div class="wsb-stacks">
+          {% for letter in word %}
+          <div class="wsb-stack">
+            <div class="wsb-letter">{{ letter }}</div>
+            <div class="wsb-button"></div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="wsb-arrow">&rarr;</div>
+        <div class="wsb-blend-cell">
+          <div class="wsb-blend">{{ word }}</div>
+          <div class="wsb-blend-label">read it</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 2</span>
+      <span>5</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 6: WORKSHEET 3 — BLEND AND DRAW ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 3 of 10</div>
+      <div class="strip-meta">Before reading · Blending CVC words</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Blend and Draw</div>
+      <div class="ws-pill">CVC words</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Sound out each word</b> — say each sound, then blend them together. Read the word, then draw a picture of it in the box.
+    </div>
+    <div class="ws2-grid">
+      <div class="ws2-row"><div class="ws2-word">sit</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">mat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">tap</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">rat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">bat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">pat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">cat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+      <div class="ws2-row"><div class="ws2-word">fat</div><div class="ws2-arrow">&rarr;</div><div class="ws2-box"></div></div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 3</span>
+      <span>6</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 7: WORKSHEET 4 — ALIEN WORDS ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 4 of 10</div>
+      <div class="strip-meta">Decoding check · Nonsense words</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Alien Words</div>
+      <div class="ws-pill">pure decoding</div>
+    </div>
+    <div class="wsa-intro">
+      <b>Aliens speak funny!</b>&nbsp; These words aren't real — they're made up. Sound out each one and blend it. Tick the box if you can read it. <span style="color:var(--level-color); font-weight:700;">(Hint: only SATPIN sounds!)</span>
+    </div>
+    <div class="wsa-grid">
+      {% for w in ['sap','tas','pim','nit','tib','pag','nat','sib','pis','tup','sut','nas'] %}
+      <div class="wsa-cell"><div class="wsa-word">{{ w }}</div><div class="wsa-tick"></div></div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:6mm; font-size:10pt; color:#555; font-style: italic; text-align: center;">
+      Why nonsense words? Children can't memorise these — they have to sound them out. It's the best test of pure decoding.
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 4</span>
+      <span>7</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 8: WORKSHEET 5 — READ THE SENTENCES ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 5 of 10</div>
+      <div class="strip-meta">Reading · Sentence-level practice</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Read the Sentences</div>
+      <div class="ws-pill">read · draw</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Read each sentence aloud.</b> Sound out the new words. Then draw what you read in the box.
+    </div>
+    <div class="wss-grid">
+      <div class="wss-row">
+        <div class="wss-num">1</div>
+        <div class="wss-text"><span class="wss-tricky">I</span> sit on <span class="wss-tricky">the</span> mat.</div>
+        <div class="wss-draw">draw it</div>
+      </div>
+      <div class="wss-row">
+        <div class="wss-num">2</div>
+        <div class="wss-text">Tap, tap, tap!</div>
+        <div class="wss-draw">draw it</div>
+      </div>
+      <div class="wss-row">
+        <div class="wss-num">3</div>
+        <div class="wss-text">It is <span class="wss-tricky">the</span> fat cat.</div>
+        <div class="wss-draw">draw it</div>
+      </div>
+      <div class="wss-row">
+        <div class="wss-num">4</div>
+        <div class="wss-text"><span class="wss-tricky">I</span> pat <span class="wss-tricky">the</span> cat.</div>
+        <div class="wss-draw">draw it</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 5</span>
+      <span>8</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 9: WORKSHEET 6 — I SEE THE ___ ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 6 of 10</div>
+      <div class="strip-meta">During reading · Tricky words in context</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">I See the ___</div>
+      <div class="ws-pill">tricky: I · the</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Read the sentence.</b> Choose a word from the boxes below. Write it on the line, then draw what you see.
+    </div>
+    <div class="ws3-sentence">
+      <span class="ws3-tricky">I</span> see <span class="ws3-tricky">the</span> <span class="ws3-blank">&nbsp;</span>.
+    </div>
+    <div class="ws3-options">
+      <div class="ws3-opt"><div class="ws3-opt-word">rat</div><div class="ws3-opt-draw">draw it</div></div>
+      <div class="ws3-opt"><div class="ws3-opt-word">bat</div><div class="ws3-opt-draw">draw it</div></div>
+      <div class="ws3-opt"><div class="ws3-opt-word">cat</div><div class="ws3-opt-draw">draw it</div></div>
+      <div class="ws3-opt"><div class="ws3-opt-word">mat</div><div class="ws3-opt-draw">draw it</div></div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 6</span>
+      <span>9</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 10: WORKSHEET 7 — TRICKY WORD WRITING ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 7 of 10</div>
+      <div class="strip-meta">Writing · Tricky words</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Write the Tricky Words</div>
+      <div class="ws-pill">I · the</div>
+    </div>
+    <div class="ws-instructions">
+      <b>These are tricky words.</b> You can't sound them out — you just have to remember them. Trace the ghost letters, then write your own.
+    </div>
+
+    {% for w, note in [
+      ('I', 'Always a capital. One straight line down — top to bottom.'),
+      ('the', 'Say the whole word as you write it: <b>the</b>.')
+    ] %}
+    <div class="wsw-row">
+      <div class="wsw-head">
+        <div class="wsw-word-big">{{ w | safe }}</div>
+        <div class="wsw-note">{{ note | safe }}</div>
+      </div>
+      <div class="wsw-trace-row">
+        {% for _ in range(6) %}
+        <div class="wsw-cell"><div class="wsw-mid"></div><div class="wsw-ghost">{{ w | safe }}</div></div>
+        {% endfor %}
+      </div>
+      <div class="wsw-write">
+        <div class="wsw-w-top"></div><div class="wsw-w-mid"></div><div class="wsw-w-base"></div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="wsw-row">
+      <div class="wsw-head">
+        <div class="wsw-word-big" style="font-size: 22pt;">I see the cat.</div>
+        <div class="wsw-note">Now put them together. Trace then write the whole sentence.</div>
+      </div>
+      <div class="wsw-write" style="height: 14mm;">
+        <div class="wsw-w-top"></div><div class="wsw-w-mid"></div><div class="wsw-w-base"></div>
+      </div>
+      <div class="wsw-write" style="height: 14mm; margin-top: 3mm;">
+        <div class="wsw-w-top"></div><div class="wsw-w-mid"></div><div class="wsw-w-base"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 7</span>
+      <span>10</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 11: WORKSHEET 8 — WRITE THE SOUNDS ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 8 of 10</div>
+      <div class="strip-meta">Writing · Letter formation</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Write the Sounds</div>
+      <div class="ws-pill">forming s · a · t · p</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Say each sound</b> as you write it. Start where the arrow shows. Trace the dotted letters, then write your own on the empty lines.
+    </div>
+
+    {% for L, note in [
+      ('s', 'Start at the top. Curve round, then back.'),
+      ('a', 'Around the apple, down and flick.'),
+      ('t', 'Down the body, then across the top.'),
+      ('p', 'Down the tail, up and round the head.')
+    ] %}
+    <div class="ws4-row">
+      <div class="ws4-letter-head">
+        <div class="ws4-letter-big">{{ L }}</div>
+        <div class="ws4-letter-note">{{ note }}</div>
+      </div>
+      <div class="ws4-trace-row">
+        {% for _ in range(8) %}
+        <div class="ws4-cell"><div class="ws4-mid"></div><div class="ws4-ghost">{{ L }}</div></div>
+        {% endfor %}
+      </div>
+      <div class="ws4-write">
+        <div class="ws4-w-top"></div>
+        <div class="ws4-w-mid"></div>
+        <div class="ws4-w-base"></div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 8</span>
+      <span>11</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 12: WORKSHEET 9 — WRITE CVC WORDS ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 9 of 10</div>
+      <div class="strip-meta">Writing · CVC words from the story</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">Write the Story Words</div>
+      <div class="ws-pill">sat · pat · tap · nap</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Now put your sounds together.</b> Say each sound as you trace the word. Then write the word on the empty lines.
+    </div>
+
+    {% for w, note in [
+      ('sat', '<b>s</b> ... <b>a</b> ... <b>t</b> &nbsp;&rarr;&nbsp; sat'),
+      ('pat', '<b>p</b> ... <b>a</b> ... <b>t</b> &nbsp;&rarr;&nbsp; pat'),
+      ('tap', '<b>t</b> ... <b>a</b> ... <b>p</b> &nbsp;&rarr;&nbsp; tap'),
+      ('nap', '<b>n</b> ... <b>a</b> ... <b>p</b> &nbsp;&rarr;&nbsp; nap'),
+    ] %}
+    <div class="wsw-row">
+      <div class="wsw-head">
+        <div class="wsw-word-big">{{ w }}</div>
+        <div class="wsw-note">{{ note | safe }}</div>
+      </div>
+      <div class="wsw-trace-row">
+        {% for _ in range(6) %}
+        <div class="wsw-cell"><div class="wsw-mid"></div><div class="wsw-ghost">{{ w }}</div></div>
+        {% endfor %}
+      </div>
+      <div class="wsw-write">
+        <div class="wsw-w-top"></div><div class="wsw-w-mid"></div><div class="wsw-w-base"></div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 9</span>
+      <span>12</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 13: WORKSHEET 10 — STORY SEQUENCE ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Worksheet 10 of 10</div>
+      <div class="strip-meta">After reading · Comprehension</div>
+    </div>
+    <div class="ws-header">
+      <div class="ws-title">What Happened?</div>
+      <div class="ws-pill">retell · sequence</div>
+    </div>
+    <div class="ws-instructions">
+      <b>Draw what happens</b> in each part of the story. Use your pictures to retell <i>Tap! Tap! Tap!</i> to a friend.
+    </div>
+    <div class="ws5-grid">
+      <div class="ws5-cell">
+        <div class="ws5-num">1</div>
+        <div class="ws5-draw"></div>
+        <div class="ws5-caption">First, the child sits on a mat and hears something.</div>
+      </div>
+      <div class="ws5-cell">
+        <div class="ws5-num">2</div>
+        <div class="ws5-draw"></div>
+        <div class="ws5-caption">Next, the child wonders: is it a rat? Is it a bat?</div>
+      </div>
+      <div class="ws5-cell">
+        <div class="ws5-num">3</div>
+        <div class="ws5-draw"></div>
+        <div class="ws5-caption">Then, the tapping stops and a surprise appears.</div>
+      </div>
+      <div class="ws5-cell">
+        <div class="ws5-num">4</div>
+        <div class="ws5-draw"></div>
+        <div class="ws5-caption">At the end, the child pats the cat — and the cat naps.</div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Worksheet 10</span>
+      <span>13</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 14: PRINTING & FOLDING INSTRUCTIONS ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Printing the Storybook</div>
+      <div class="strip-meta">Two formats included</div>
+    </div>
+    <h1 class="section-title">Printing &amp; folding.</h1>
+    <p class="lead" style="margin-bottom:6mm;">Two book PDFs are included so you can use whichever fits your printer setup. Both contain the same story.</p>
+
+    <div class="fold-grid">
+      <div class="fold-block">
+        <h3>Option A · Read-aloud (A5)</h3>
+        <ol>
+          <li>Open <i>Tap Tap Tap — Read Aloud.pdf</i>.</li>
+          <li>Print on A5 paper, or print on A4 and select <b>Fit to page</b>.</li>
+          <li>Pages come out in story order — great for reading on the carpet or 1:1.</li>
+          <li>Staple along the left edge if you want a simple booklet.</li>
+        </ol>
+      </div>
+      <div class="fold-block">
+        <h3>Option B · Print &amp; Fold Booklet (A4)</h3>
+        <ol>
+          <li>Open <i>Tap Tap Tap — Print &amp; Fold Booklet.pdf</i>.</li>
+          <li>Print on A4 paper. Select <b>Print on both sides — Flip on short edge</b>.</li>
+          <li>Fold each sheet in half so the pages line up.</li>
+          <li>Staple twice along the fold to make a saddle-stitched A5 booklet.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="printer-tip">
+      <b>Printer tip:</b> If you don't have access to A5 paper, both PDFs print fine on A4 — your printer will scale them. Look for the <b>Fit / Scale to page</b> option in your print dialog. Greyscale printing is supported, but the cover looks best in colour.
+    </div>
+
+    <div class="printer-tip" style="margin-top:6mm;">
+      <b>Classroom copies:</b> You are licensed to print as many copies as you need for the children in your own classroom. Please don't share the files with other teachers — send them this listing instead. (See page 16 for full terms.)
+    </div>
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Printing guide</span>
+      <span>14</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 15: TPT TEACHER PORTAL ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Your TPT Teacher Portal</div>
+      <div class="strip-meta">Unlock everything with one code</div>
+    </div>
+    <h1 class="section-title">Your teacher portal.</h1>
+    <p class="lead" style="margin-bottom:4mm;">Inside the printable pack is a code that gives you and your class free access to the online interactive versions of every Level 1 book. Use it on any device — at home, in class, or on the smart board.</p>
+
+    <div class="bonus-card">
+      <div class="bonus-eyebrow">Teacher access · TPT only</div>
+      <div class="bonus-title">Unlock all 10 Level 1 books online</div>
+      <div class="bonus-body">Read-aloud audio. Animated pages. Tap any word to hear the sound. Project for whole-class reading or use 1:1 with a child. The code below unlocks everything — for as long as you teach.</div>
+
+      <div class="bonus-code-block">
+        <div class="bonus-code-label">Your teacher code</div>
+        <div class="bonus-code">{{ voucher_code }}</div>
+      </div>
+
+      <div class="bonus-url">{{ teacher_access_url }}</div>
+      <div class="bonus-url-sub">Or scan the QR code below.</div>
+
+      <div style="display: flex; justify-content: center; margin-top: 3mm;">
+        <div style="background: #ffffff; padding: 3mm; border-radius: 3mm;">
+          <img src="{{ free_read_qr }}" alt="QR code to teacher portal" style="width: 25mm; height: 25mm; display: block;">
+        </div>
+      </div>
+
+      <div class="bonus-howto" style="margin-top: 4mm;">
+        <div class="bonus-step">
+          <div class="bonus-step-num">1</div>
+          <div class="bonus-step-text">Visit the teacher portal link</div>
+        </div>
+        <div class="bonus-step">
+          <div class="bonus-step-num">2</div>
+          <div class="bonus-step-text">Enter the code above</div>
+        </div>
+        <div class="bonus-step">
+          <div class="bonus-step-num">3</div>
+          <div class="bonus-step-text">Read every Level 1 book online</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:10.5pt; color:var(--muted); margin-top:6mm; line-height:1.5; text-align: center;">
+      <b>One code per teacher.</b> The portal works on phones, tablets, laptops and smart boards. If the code stops working, email <b>hello@myphonicsbooks.co.uk</b> with your TPT order number.
+    </p>
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Teacher portal</span>
+      <span>15</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 16: TERMS OF USE ===== -->
+<div class="page">
+  <div class="page-inner">
+    <div class="strip">
+      <div class="strip-brand">Terms of Use</div>
+      <div class="strip-meta">For teachers and classrooms</div>
+    </div>
+    <h1 class="section-title">Terms of use.</h1>
+    <div class="terms-block">
+      <h3>What you can do <span class="terms-allow">&check;</span></h3>
+      <p>Print as many copies as you need for the children in your own classroom. Use the printables and the online books for teaching, 1:1 reading, intervention groups, parent meetings, and assessment. Keep the original PDFs on your school computer or personal teacher device.</p>
+
+      <h3>What you can't do <span class="terms-deny">&cross;</span></h3>
+      <p>Please don't share the PDF files with other teachers, post them online, upload them to file-sharing or AI-training sites, or include them in paid resources. Don't resell or redistribute the materials. If a colleague wants the pack, please send them the TPT listing — it's free for them too.</p>
+
+      <h3>The online books &amp; your teacher code</h3>
+      <p>Your TPT teacher code (page 15) unlocks the interactive online books for one teacher. Use it on any device you teach with — class smart board, your laptop, your phone, a tablet. Please don't share the code with other teachers or post it online; if a colleague wants the books, send them the TPT listing — they get their own code that way.</p>
+
+      <h3>Credit &amp; questions</h3>
+      <p>If you share photos of the pack in use on social, tagging <b>@myphonicsbooks</b> makes our day. Found a typo or have a request? Email <b>hello@myphonicsbooks.co.uk</b> — we read every message.</p>
+
+      <h3>Made with care in the UK</h3>
+      <p>British English spelling throughout. The font is Andika (a free open-source font designed for early readers — single-storey a and g). The decodable text follows the Letters &amp; Sounds progression.</p>
+    </div>
+
+    <div class="footer">
+      <span>myphonicsbooks.co.uk · Terms</span>
+      <span>16</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE 17: BACK COVER ===== -->
+<div class="page back-cover">
+  <div class="back-top">
+    <div class="back-logo-line">MyPhonicsBooks</div>
+    <div class="back-title">Where every word can be read.</div>
+    <div class="back-body">
+      Ten Level 1 books. Six full levels. Every book is fully decodable and every story takes children somewhere new — a quiet bedroom in Lagos, a market in Hanoi, a corner shop in Birmingham. Reading should open windows, not close them.
+    </div>
+    <div class="back-cta">Your teacher code is inside — unlock all 10 books online</div>
+  </div>
+  <div class="back-bottom-band">
+    <div class="back-bottom-brand">MyPhonicsBooks</div>
+    <div class="back-bottom-tag">Decodable phonics that reads like a story.</div>
+    <div class="back-bottom-url">{{ site_url }}</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -271,9 +271,9 @@ export default function Profile() {
           />
           <ProfileLink
             to="/profile/referrals"
-            icon={Users}
-            label="Referrals"
-            sub="Invite friends & earn rewards"
+            icon={Gift}
+            label="Refer & Earn"
+            sub="Earn 50% commission — share your link"
           />
         </section>
 

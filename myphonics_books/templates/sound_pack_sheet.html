@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>{{ banner_title }} — Level {{ level }}</title>
+<!--
+================================================================================
+SOUND-PACK WORKSHEET — A4 PORTRAIT (210 mm × 297 mm)
+
+Print-first, fixed-coordinate layout. Every major block is absolutely positioned
+in millimetres. Content never flows or pushes other blocks. Tweak the spec
+below to relayout; the template body just references these regions.
+
+LAYOUT SPEC (all values in mm, origin = top-left of .page)
+--------------------------------------------------------------------------------
+Block               x      y      w      h     notes
+--------------------------------------------------------------------------------
+PAGE              0      0    210    297    A4 portrait
+PAGE_INSET        8      6    194    285    safe printable area
+BANNER            8      6    194     22    coral pill
+  badge          12      9     16     16    white circle + sound letter
+  title          (centered in banner area)
+  chip 1        170      8     24      6    Level N
+  chip 2        170     16     24      6    Sound · x
+SECTION 1        8     32    194     38    Trace the Letter
+  s1 num         8     32      7      7    coral circle "1"
+  s1 title      17     32    150      7
+  s1 hint       17     40    150      4
+  s1 box         8     46    194     24    bordered, baseline guides + dots
+SECTION 2        8     74    194    112    Trace the Words
+  s2 num         8     74      7      7
+  s2 title      17     74    150      7
+  s2 hint       17     82    150      4
+  s2 box         8     88    194     98    5 rows of 19.6 mm each
+SECTION 3        8    190    194     94    Write the Missing
+  s3 num         8    190      7      7
+  s3 title      17    190    150      7
+  s3 hint       17    198    150      4
+  s3 box         8    204    194     80    4 columns of 47 mm each
+FOOTER           8    288    194      4
+--------------------------------------------------------------------------------
+Row math:
+  PAGE_INSET h        = 285
+  banner              =  22
+  gap                 =   4 (32-28)
+  sec1 head+hint+box  =  14 + 24 = 38  (y 32..70)
+  gap                 =   4
+  sec2 head+hint+box  =  14 + 98 = 112 (y 74..186)
+  gap                 =   4
+  sec3 head+hint+box  =  14 + 80 =  94 (y 190..284)
+  footer              =   4               (y 288..292)
+  total ≤ 285 OK
+================================================================================
+-->
+<style>
+  @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; }
+  @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { font-family: 'Andika', 'Trebuchet MS', sans-serif; color: #1f1f1f; background: #fff; }
+
+  .page {
+    position: relative;
+    width: 210mm; height: 297mm;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  /* --- Banner ----------------------------------------------------------- */
+  .banner {
+    position: absolute;
+    left: 8mm; top: 6mm; width: 194mm; height: 22mm;
+    background: {{ level_color }};
+    border-radius: 5mm;
+    color: #fff;
+  }
+  .badge {
+    position: absolute;
+    left: 4mm; top: 3mm; width: 16mm; height: 16mm;
+    border-radius: 50%;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .badge-letter {
+    font-weight: 700;
+    font-size: 30pt;
+    color: {{ level_color }};
+    line-height: 1;
+    transform: translateY(-0.5mm);
+  }
+  .banner-title {
+    position: absolute;
+    left: 24mm; top: 0; width: 146mm; height: 22mm;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    line-height: 1.05;
+  }
+  .chip {
+    position: absolute;
+    width: 24mm; height: 6mm;
+    background: {{ chip_bg }};
+    color: {{ level_color }};
+    font-weight: 700;
+    font-size: 9pt;
+    border-radius: 3mm;
+    display: flex; align-items: center; justify-content: center;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+  }
+  .chip-1 { right: 5mm; top: 4mm; }
+  .chip-2 { right: 5mm; top: 12mm; }
+
+  /* --- Section heads (shared) ------------------------------------------ */
+  .sec-num {
+    position: absolute;
+    width: 7mm; height: 7mm; border-radius: 50%;
+    background: {{ level_color }}; color: #fff;
+    font-weight: 700; font-size: 12pt;
+    display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
+  .sec-title {
+    position: absolute;
+    height: 7mm;
+    display: flex; align-items: center;
+    font-size: 15pt; font-weight: 700; color: #1f1f1f;
+    white-space: nowrap;
+  }
+  .sec-hint {
+    position: absolute;
+    height: 4mm;
+    display: flex; align-items: center;
+    font-size: 9pt; color: #6b6b6b;
+  }
+  .sec-box {
+    position: absolute;
+    border: 1.4pt solid {{ level_color }};
+    border-radius: 4mm;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  /* Section 1 positions */
+  .s1-num   { left: 8mm;  top: 32mm; }
+  .s1-title { left: 17mm; top: 32mm; }
+  .s1-hint  { left: 17mm; top: 40mm; }
+  .s1-box   { left: 8mm;  top: 46mm; width: 194mm; height: 24mm; padding: 2mm 4mm; }
+
+  /* Section 2 positions */
+  .s2-num   { left: 8mm;  top: 74mm; }
+  .s2-title { left: 17mm; top: 74mm; }
+  .s2-hint  { left: 17mm; top: 82mm; }
+  .s2-box   { left: 8mm;  top: 88mm; width: 194mm; height: 98mm; }
+
+  /* Section 3 positions */
+  .s3-num   { left: 8mm;  top: 190mm; }
+  .s3-title { left: 17mm; top: 190mm; }
+  .s3-hint  { left: 17mm; top: 198mm; }
+  .s3-box   { left: 8mm;  top: 204mm; width: 194mm; height: 80mm; padding: 4mm 4mm; }
+
+  /* --- Section 2: word rows (absolute within s2-box) ------------------- */
+  .word-row {
+    position: absolute;
+    left: 0; width: 100%;
+    height: 19.6mm;
+    /* row borders sit above the box's bottom-border so the last row's stripe is hidden */
+    border-bottom: 0.6pt solid #fbe2ec;
+  }
+  .word-row:last-child { border-bottom: 0; }
+  .word-pic {
+    position: absolute;
+    left: 4mm; top: 1.5mm; width: 18mm; height: 16mm;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .word-pic img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .word-pic svg { width: 100%; height: 100%; }
+  .word-trace {
+    position: absolute;
+    left: 26mm; top: 1.5mm; width: 82mm; height: 16mm;
+  }
+  .word-blank {
+    position: absolute;
+    left: 112mm; top: 1.5mm; width: 78mm; height: 16mm;
+  }
+
+  /* --- Section 3: missing-letter columns (absolute within s3-box) ------ */
+  .miss-card {
+    position: absolute;
+    width: 44mm; height: 72mm;
+  }
+  .miss-pic {
+    position: absolute;
+    left: 0; top: 0; width: 44mm; height: 50mm;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .miss-pic img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .miss-pic svg { width: 100%; height: 100%; }
+  .miss-word {
+    position: absolute;
+    left: 0; top: 52mm; width: 44mm; height: 18mm;
+  }
+
+  /* --- Footer ---------------------------------------------------------- */
+  .footer {
+    position: absolute;
+    left: 8mm; top: 288mm; width: 194mm; height: 4mm;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 9pt; color: #6b6b6b;
+  }
+  .footer .brand { font-weight: 700; color: {{ level_color }}; }
+
+  /* SVG inside cells fills 100% of the parent */
+  .trace-svg { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================ BANNER ============================ -->
+  <header class="banner">
+    <div class="badge">
+      <span class="badge-letter">{{ sound }}</span>
+    </div>
+    <h1 class="banner-title">{{ banner_title }}</h1>
+    <span class="chip chip-1">Level {{ level }}</span>
+    <span class="chip chip-2">Sound &middot; {{ sound }}</span>
+  </header>
+
+  <!-- ============================ SECTION 1 ============================ -->
+  <span class="sec-num s1-num">1</span>
+  <h2 class="sec-title s1-title">Trace the Letter {{ sound }}</h2>
+  <p class="sec-hint s1-hint">Trace the letter. Then write some on your own.</p>
+  <div class="sec-box s1-box">
+    {{ trace_letter_svg | safe }}
+  </div>
+
+  <!-- ============================ SECTION 2 ============================ -->
+  <span class="sec-num s2-num">2</span>
+  <h2 class="sec-title s2-title">Trace the Words</h2>
+  <p class="sec-hint s2-hint">Trace each word. Then write it on your own.</p>
+  <div class="sec-box s2-box">
+    {% for w in trace_words %}
+    <div class="word-row" style="top: {{ loop.index0 * 19.6 }}mm;">
+      <div class="word-pic">{{ w.pic | safe }}</div>
+      <div class="word-trace">{{ w.trace_svg | safe }}</div>
+      <div class="word-blank">{{ w.blank_svg | safe }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ============================ SECTION 3 ============================ -->
+  <span class="sec-num s3-num">3</span>
+  <h2 class="sec-title s3-title">Write the Missing {{ sound }}</h2>
+  <p class="sec-hint s3-hint">What letter is missing? Write the {{ sound }}.</p>
+  <div class="sec-box s3-box">
+    {% for m in missing_words %}
+    <div class="miss-card" style="left: {{ loop.index0 * 47 }}mm;">
+      <div class="miss-pic">{{ m.pic | safe }}</div>
+      <div class="miss-word">{{ m.svg | safe }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <span><span class="brand">MyPhonicsBooks</span> &middot; decodable phonics practice</span>
+    <span>Single Sound &middot; {{ sound }}</span>
+  </footer>
+
+</div>
+</body>
+</html>

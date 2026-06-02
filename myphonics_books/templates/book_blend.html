@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>{{ book_title }}</title>
+<style>
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_regular }}') format('truetype');
+  font-weight: 400; font-style: normal;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_bold }}') format('truetype');
+  font-weight: 700; font-style: normal;
+}
+@page {
+  size: 105mm 148mm;
+  margin: 0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  font-family: 'Andika', sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.page {
+  width: 105mm;
+  height: 148mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: #ffffff;
+}
+.page:last-child { page-break-after: avoid; }
+
+/* ---------- COVER ---------- */
+.cover {
+  background: {{ level_colour }};
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8mm 6mm;
+}
+.cover-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+.cover-book-num {
+  background: rgba(255,255,255,0.25);
+  padding: 1.5mm 3mm;
+  border-radius: 1.5mm;
+}
+.cover-brand {
+  font-weight: 700;
+}
+.cover-image-wrap {
+  width: 78mm; height: 78mm;
+  border-radius: 4mm;
+  background: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4mm 8mm rgba(0,0,0,0.15);
+}
+.cover-image-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.cover-title-area {
+  width: 100%;
+  text-align: center;
+  padding: 0 2mm;
+}
+.cover-title {
+  font-size: 28pt;
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 2mm;
+}
+.cover-subtitle {
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+.cover-graphemes {
+  display: flex;
+  gap: 1.5mm;
+  margin-top: 3mm;
+}
+.cover-grapheme {
+  background: rgba(255,255,255,0.95);
+  color: {{ level_colour }};
+  width: 8mm; height: 8mm;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13pt; font-weight: 700;
+}
+
+/* ---------- CONTENT PAGE ---------- */
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 6mm 6mm 8mm 6mm;
+}
+.content-image-wrap {
+  flex: 1;
+  border: 1.5mm solid {{ level_colour }};
+  border-radius: 3mm;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: #fafafa;
+}
+.content-image-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.content-word {
+  margin-top: 5mm;
+  text-align: center;
+  font-size: 40pt;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+}
+.content-word.long {
+  font-size: 30pt;
+}
+.page-num {
+  position: absolute;
+  bottom: 2.5mm;
+  width: 6mm; height: 6mm;
+  background: {{ level_colour }};
+  color: #ffffff;
+  font-size: 7pt; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.page-num-left  { left: 3mm; }
+.page-num-right { right: 3mm; }
+
+/* ---------- BACK COVER ---------- */
+.back-cover {
+  background: {{ level_colour }};
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8mm 8mm;
+  text-align: center;
+}
+.back-title {
+  font-size: 16pt;
+  font-weight: 700;
+  margin-bottom: 4mm;
+}
+.back-blurb {
+  font-size: 9pt;
+  line-height: 1.5;
+  opacity: 0.95;
+  margin-bottom: 6mm;
+}
+.back-graphemes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm;
+  justify-content: center;
+  margin-bottom: 4mm;
+}
+.back-grapheme {
+  background: rgba(255,255,255,0.95);
+  color: {{ level_colour }};
+  min-width: 9mm; height: 9mm; padding: 0 2mm;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12pt; font-weight: 700;
+}
+.back-url {
+  margin-top: auto;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="page cover">
+  <div class="cover-top">
+    <span class="cover-book-num">Blend Book {{ book_number }}</span>
+    <span class="cover-brand">MyPhonicsBooks</span>
+  </div>
+  <div class="cover-image-wrap">
+    {% if cover_image %}<img src="{{ cover_image }}" alt="">{% endif %}
+  </div>
+  <div class="cover-title-area">
+    <div class="cover-title">{{ book_title }}</div>
+    <div class="cover-subtitle">{{ subtitle }}</div>
+    <div class="cover-graphemes">
+      {% for g in cumulative_graphemes %}<div class="cover-grapheme">{{ g }}</div>{% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTENT PAGES ===== -->
+{% for p in pages %}
+<div class="page content">
+  <div class="content-image-wrap">
+    {% if p.image %}<img src="{{ p.image }}" alt="">{% endif %}
+  </div>
+  <div class="content-word {% if p.word|length > 10 %}long{% endif %}">{{ p.word }}</div>
+  <div class="page-num {% if loop.index % 2 == 1 %}page-num-right{% else %}page-num-left{% endif %}">{{ loop.index + 1 }}</div>
+</div>
+{% endfor %}
+
+<!-- ===== BACK COVER ===== -->
+<div class="page back-cover">
+  <div class="back-title">Sounds in this book</div>
+  <div class="back-graphemes">
+    {% for g in cumulative_graphemes %}<div class="back-grapheme">{{ g }}</div>{% endfor %}
+  </div>
+  <div class="back-blurb">
+    A Blend Book from MyPhonicsBooks &mdash; the first step on the path to reading.
+    Sound out each letter, then blend the sounds together.
+  </div>
+  <div class="back-url">myphonicsbooks.co.uk</div>
+</div>
+
+</body>
+</html>

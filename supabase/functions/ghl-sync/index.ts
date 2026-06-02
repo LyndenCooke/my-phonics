@@ -133,6 +133,43 @@ async function addTags(contactId: string, tags: string[]): Promise<boolean> {
   return res.ok;
 }
 
+// Pipeline stage names — must match public.crm_pipeline_stages.name and
+// the STAGES constant in ghl-opportunity-sync. One per lifecycle event.
+type PipelineStage = 'New Lead' | 'Assessed' | 'Free Trial' | 'Purchased' | 'Subscribed' | 'Churned';
+
+/**
+ * Fire opportunity sync to mirror the contact lifecycle into the GHL
+ * pipeline. Best-effort: pipeline sync failures are logged but don't fail
+ * the contact sync. The opportunity function is self-bootstrapping
+ * (discovers + caches pipeline IDs on first call).
+ */
+async function fireOpportunitySync(args: {
+  email: string;
+  fullName: string;
+  stage: PipelineStage;
+  monetaryValue?: number;
+  source?: string | null;
+}): Promise<void> {
+  try {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+    const { error } = await supabase.functions.invoke('ghl-opportunity-sync', {
+      body: {
+        email: args.email,
+        full_name: args.fullName,
+        stage: args.stage,
+        monetary_value: args.monetaryValue,
+        source: args.source ?? null,
+      },
+    });
+    if (error) console.error('opportunity sync failed:', error.message);
+  } catch (err) {
+    console.error('opportunity sync threw:', (err as Error).message);
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
@@ -196,8 +233,13 @@ serve(async (req) => {
 
     switch (event) {
       case 'contact.created': {
-        // Try to find existing, create if not found
+        // Try to find existing, create if not found. We track whether the
+        // contact was genuinely new so we only fire the New Lead opportunity
+        // sync for first-time signups — otherwise every login (AuthContext
+        // re-fires contact.created on each session) would drag an existing
+        // opportunity back to New Lead, overwriting Free Trial / Purchased.
         ghlContactId = await findContact(email);
+        const wasNewContact = !ghlContactId;
         if (!ghlContactId) {
           ghlContactId = await createContact({
             email,
@@ -209,6 +251,9 @@ serve(async (req) => {
         }
         if (ghlContactId && data?.source) {
           await addTags(ghlContactId, [`source:${data.source}`]);
+        }
+        if (ghlContactId && wasNewContact) {
+          await fireOpportunitySync({ email, fullName, stage: 'New Lead', source: data?.source ?? null });
         }
         break;
       }
@@ -249,6 +294,7 @@ serve(async (req) => {
             tags.push(`source:${data.source}`);
           }
           await addTags(ghlContactId, tags);
+          await fireOpportunitySync({ email, fullName, stage: 'Assessed', source: data?.source ?? null });
         }
         break;
       }
@@ -266,6 +312,7 @@ serve(async (req) => {
         }
         if (ghlContactId) {
           await addTags(ghlContactId, ['free-trial']);
+          await fireOpportunitySync({ email, fullName, stage: 'Free Trial' });
         }
         break;
       }
@@ -291,6 +338,17 @@ serve(async (req) => {
             ...(productType ? [`product-type:${productType}`] : []),
             ...(productName ? [`product:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
           ]);
+          // amount_paid_pence comes through on Stripe-driven calls; convert
+          // to GBP for the opportunity card. Voucher rows pass 0 / null and
+          // the opportunity is created without a monetary value.
+          const pence = typeof data?.amount_paid_pence === 'number' ? data.amount_paid_pence : null;
+          await fireOpportunitySync({
+            email,
+            fullName,
+            stage: 'Purchased',
+            monetaryValue: pence !== null ? pence / 100 : undefined,
+            source: productName ? `product:${productName}` : null,
+          });
         }
         break;
       }
@@ -318,6 +376,14 @@ serve(async (req) => {
             ...(productType ? [`product-type:${productType}`] : []),
             ...(productName ? [`product:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
           ]);
+          const pence = typeof data?.amount_paid_pence === 'number' ? data.amount_paid_pence : null;
+          await fireOpportunitySync({
+            email,
+            fullName,
+            stage: 'Subscribed',
+            monetaryValue: pence !== null ? pence / 100 : undefined,
+            source: productName ? `product:${productName}` : null,
+          });
         }
         break;
       }
@@ -349,6 +415,7 @@ serve(async (req) => {
             tags.push(`cancel-reason:${data.cancellation_reason}`);
           }
           await addTags(ghlContactId, tags);
+          await fireOpportunitySync({ email, fullName, stage: 'Churned' });
         }
         break;
       }

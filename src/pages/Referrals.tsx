@@ -9,8 +9,12 @@
  */
 import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import { ArrowLeft, Gift } from 'lucide-react';
+import { ArrowLeft, Gift, ExternalLink, Image, FileText } from 'lucide-react';
 import { ReferralPanel } from '@/components/profile/ReferralPanel';
+
+/** External URL where affiliate creatives are hosted (Google Drive, Notion, etc.).
+ *  Update this when the folder is ready. */
+const CREATIVES_URL = 'https://drive.google.com/drive/folders/REPLACE_ME';
 
 export default function Referrals() {
   return (
@@ -36,9 +40,29 @@ export default function Referrals() {
             <h2 className="font-display text-xl font-extrabold">Invite friends, earn rewards</h2>
           </div>
           <p className="text-sm text-white/90 leading-relaxed">
-            Share MyPhonicsBooks and earn 50% on every Founders Club spot you bring in. Friends get a free book,
-            you get credit — everyone wins.
+            Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in, monthly recurring or lifetime.
+            Friends get a free trial, you get paid. Everyone wins.
           </p>
+        </div>
+
+        {/* Marketing resources card */}
+        <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
+          <h3 className="text-sm font-bold text-foreground mb-1 flex items-center gap-2">
+            <Image className="w-4 h-4 text-primary" /> Marketing Resources
+          </h3>
+          <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+            Ready-made social media graphics, captions and swipe copy. Download what you need and start sharing.
+          </p>
+          <a
+            href={CREATIVES_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2.5 rounded-xl bg-foreground text-background text-sm font-bold shadow-button active:scale-[0.97] transition-transform flex items-center justify-center gap-2"
+          >
+            <FileText className="w-4 h-4" />
+            Open creative library
+            <ExternalLink className="w-3.5 h-3.5 opacity-60" />
+          </a>
         </div>
 
         {/* Lift the existing panel — has Stripe-backed stats + share buttons */}

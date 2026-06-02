@@ -142,11 +142,14 @@ Deno.serve(async (req) => {
           userId = existingUser.id;
         } else {
           const tempPassword = crypto.randomUUID() + "Aa1!";
+          // Pass ref_code in user_metadata so the handle_new_user_referral
+          // trigger can set recruited_by for Tier 2 tracking.
+          const guestRefCode = session.metadata?.ref_code || "";
           const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
             email: guestEmail,
             password: tempPassword,
             email_confirm: true,
-            user_metadata: { full_name: "" },
+            user_metadata: { full_name: "", ...(guestRefCode ? { ref_code: guestRefCode } : {}) },
           });
 
           if (createError || !newUser?.user) {
@@ -174,9 +177,12 @@ Deno.serve(async (req) => {
     }
 
     // ─── Helper: record affiliate attribution if metadata.ref_code present ───
-    // 50% commission on the gross amount paid (in pence). Adjust here if
-    // we want different rates per product type later.
-    const COMMISSION_RATE = 0.5;
+    // Two-tier commission:
+    //   Tier 1: 50% to the direct referrer
+    //   Tier 2: 10% to whoever recruited that referrer (if anyone)
+    const TIER1_RATE = 0.5;
+    const TIER2_RATE = 0.1;
+
     async function recordAttribution(session: any, buyerUserId: string | null, productId?: string) {
       const refCode = session.metadata?.ref_code;
       if (!refCode) return;
@@ -199,9 +205,10 @@ Deno.serve(async (req) => {
       }
 
       const amount_pence = session.amount_total || 0;
-      const commission_pence = Math.round(amount_pence * COMMISSION_RATE);
+      const tier1_commission = Math.round(amount_pence * TIER1_RATE);
 
-      const { error: insertErr } = await supabaseAdmin.from("referral_attributions").insert({
+      // ── Tier 1 attribution ──
+      const { error: t1Err } = await supabaseAdmin.from("referral_attributions").insert({
         referrer_user_id: referrer.user_id,
         buyer_user_id: buyerUserId,
         buyer_email: session.customer_email || session.metadata?.guest_email || null,
@@ -209,38 +216,166 @@ Deno.serve(async (req) => {
         stripe_session_id: session.id,
         product_id: productId || null,
         amount_pence,
-        commission_pence,
+        commission_pence: tier1_commission,
+        tier: 1,
       });
 
-      if (insertErr) {
-        // Unique violation on stripe_session_id is fine — webhook may retry
-        if (insertErr.code !== "23505") {
-          console.error("Attribution insert failed:", insertErr);
+      if (t1Err) {
+        if (t1Err.code !== "23505") {
+          console.error("Tier 1 attribution insert failed:", t1Err);
         }
-        return;
+        return; // duplicate — skip both tiers
       }
 
-      // Bump rollup counters on the referrer row
+      // Bump Tier 1 rollup counters
       await supabaseAdmin.rpc("increment_referral_stats", {
         p_user_id: referrer.user_id,
-        p_commission: commission_pence,
+        p_commission: tier1_commission,
       }).then(() => {}, async () => {
-        // Fallback if the RPC isn't deployed: update directly
         const { data: cur } = await supabaseAdmin
           .from("referrals")
           .select("total_conversions, total_earnings_pence")
           .eq("user_id", referrer.user_id)
           .single();
         if (cur) {
-          await supabaseAdmin
-            .from("referrals")
-            .update({
-              total_conversions: (cur.total_conversions || 0) + 1,
-              total_earnings_pence: (cur.total_earnings_pence || 0) + commission_pence,
-            })
-            .eq("user_id", referrer.user_id);
+          await supabaseAdmin.from("referrals").update({
+            total_conversions: (cur.total_conversions || 0) + 1,
+            total_earnings_pence: (cur.total_earnings_pence || 0) + tier1_commission,
+          }).eq("user_id", referrer.user_id);
         }
       });
+
+      // ── Tier 2 attribution ──
+      // Who recruited the direct referrer?
+      const { data: recruiterResult } = await supabaseAdmin
+        .rpc("get_recruiter_of", { p_user_id: referrer.user_id });
+
+      const recruiterId: string | null = recruiterResult ?? null;
+
+      if (recruiterId && recruiterId !== buyerUserId) {
+        const tier2_commission = Math.round(amount_pence * TIER2_RATE);
+
+        const { error: t2Err } = await supabaseAdmin.from("referral_attributions").insert({
+          referrer_user_id: recruiterId,
+          buyer_user_id: buyerUserId,
+          buyer_email: session.customer_email || session.metadata?.guest_email || null,
+          ref_code: refCode,
+          stripe_session_id: session.id,
+          product_id: productId || null,
+          amount_pence,
+          commission_pence: tier2_commission,
+          tier: 2,
+        });
+
+        if (t2Err && t2Err.code !== "23505") {
+          console.error("Tier 2 attribution insert failed:", t2Err);
+        } else if (!t2Err) {
+          await supabaseAdmin.rpc("increment_tier2_stats", {
+            p_user_id: recruiterId,
+            p_commission: tier2_commission,
+          }).then(() => {}, () => {});
+        }
+      }
+    }
+
+    // ─── Helper: record recurring commission on invoice.paid ───
+    // For monthly subscribers, every successful renewal triggers Tier 1 + Tier 2
+    // commissions. We look up the original attribution (from checkout) to find
+    // the referrer, then create new attribution rows keyed to the invoice ID.
+    async function recordRecurringCommission(invoice: any) {
+      if (!invoice.subscription) return;
+      const invoiceId = invoice.id;
+      const amount_pence = invoice.amount_paid || 0;
+      if (amount_pence <= 0) return;
+
+      // Find the original Tier 1 attribution for this subscription's checkout
+      const { data: purchase } = await supabaseAdmin
+        .from("purchases")
+        .select("stripe_session_id, user_id")
+        .eq("stripe_subscription_id", invoice.subscription)
+        .limit(1)
+        .single();
+
+      if (!purchase?.stripe_session_id) return;
+
+      const { data: originalAttr } = await supabaseAdmin
+        .from("referral_attributions")
+        .select("referrer_user_id, ref_code, product_id")
+        .eq("stripe_session_id", purchase.stripe_session_id)
+        .eq("tier", 1)
+        .single();
+
+      if (!originalAttr) return; // no referral on the original checkout
+
+      const buyerUserId = purchase.user_id;
+      const tier1_commission = Math.round(amount_pence * TIER1_RATE);
+
+      // Resolve buyer email for the attribution row
+      let buyerEmail: string | null = null;
+      if (buyerUserId) {
+        const { data: profile } = await supabaseAdmin
+          .from("profiles")
+          .select("email")
+          .eq("id", buyerUserId)
+          .single();
+        buyerEmail = profile?.email ?? null;
+      }
+
+      // Tier 1 recurring
+      const { error: t1Err } = await supabaseAdmin.from("referral_attributions").insert({
+        referrer_user_id: originalAttr.referrer_user_id,
+        buyer_user_id: buyerUserId,
+        buyer_email: buyerEmail,
+        ref_code: originalAttr.ref_code,
+        stripe_session_id: invoiceId, // use invoice ID as the unique key
+        product_id: originalAttr.product_id,
+        amount_pence,
+        commission_pence: tier1_commission,
+        tier: 1,
+      });
+
+      if (t1Err) {
+        if (t1Err.code !== "23505") {
+          console.error("Recurring Tier 1 attribution failed:", t1Err);
+        }
+        return;
+      }
+
+      await supabaseAdmin.rpc("increment_referral_stats", {
+        p_user_id: originalAttr.referrer_user_id,
+        p_commission: tier1_commission,
+      }).then(() => {}, () => {});
+
+      // Tier 2 recurring
+      const { data: recruiterResult } = await supabaseAdmin
+        .rpc("get_recruiter_of", { p_user_id: originalAttr.referrer_user_id });
+
+      const recruiterId: string | null = recruiterResult ?? null;
+
+      if (recruiterId && recruiterId !== buyerUserId) {
+        const tier2_commission = Math.round(amount_pence * TIER2_RATE);
+
+        const { error: t2Err } = await supabaseAdmin.from("referral_attributions").insert({
+          referrer_user_id: recruiterId,
+          buyer_user_id: buyerUserId,
+          buyer_email: buyerEmail,
+          ref_code: originalAttr.ref_code,
+          stripe_session_id: invoiceId,
+          product_id: originalAttr.product_id,
+          amount_pence,
+          commission_pence: tier2_commission,
+          tier: 2,
+        });
+
+        if (t2Err && t2Err.code !== "23505") {
+          console.error("Recurring Tier 2 attribution failed:", t2Err);
+        } else if (!t2Err) {
+          await supabaseAdmin.rpc("increment_tier2_stats", {
+            p_user_id: recruiterId,
+            p_commission: tier2_commission,
+          }).then(() => {}, () => {});
+        }
+      }
     }
 
     // ─── Handle events ───
@@ -560,6 +695,23 @@ Deno.serve(async (req) => {
           stripe_subscription_id: subscription.id,
           cancelled_during_trial: cancelledDuringTrial,
           cancellation_reason: subscription.cancellation_details?.reason ?? null,
+        });
+      }
+
+    } else if (event.type === "invoice.paid") {
+      // ─── Recurring subscription payment succeeded ───
+      // Fire recurring affiliate commissions for every renewal AFTER the
+      // initial checkout. The first invoice is billing_reason "subscription_create"
+      // — we skip it because the checkout.session.completed handler already
+      // attributed that payment. Subsequent renewals are "subscription_cycle".
+      const invoice = event.data.object;
+      if (
+        invoice.billing_reason === "subscription_cycle" &&
+        invoice.subscription &&
+        (invoice.amount_paid ?? 0) > 0
+      ) {
+        await recordRecurringCommission(invoice).catch((err: any) => {
+          console.error("recordRecurringCommission failed:", err);
         });
       }
 

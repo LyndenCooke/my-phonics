@@ -12,14 +12,14 @@
  *   4. The Stripe webhook reads metadata.ref_code on completion and writes
  *      an attribution row crediting the referrer.
  *
- * 60-day TTL matches the typical affiliate cookie window.
+ * 90-day TTL — generous affiliate cookie window.
  */
 
 import { supabase } from '@/integrations/supabase/client';
 
 const KEY = 'mpb_ref_code';
 const KEY_TS = 'mpb_ref_code_ts';
-const TTL_MS = 60 * 24 * 60 * 60 * 1000; // 60 days
+const TTL_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
 
 /** Call once on app boot (e.g. in App.tsx or LandingPage). Idempotent. */
 export function captureRefFromUrl(): void {
@@ -83,9 +83,9 @@ export function buildShareUrl(code: string, origin?: string): string {
 export function buildWhatsappMessage(code: string, origin?: string): string {
   const url = buildShareUrl(code, origin);
   return [
-    `Hey! 📚 We've been using MyPhonicsBooks with our little one and they're loving it — every book is decodable, beautifully illustrated, and set somewhere different in the world.`,
+    `Hey! We've been using MyPhonicsBooks with our little one and they're loving it. Every book is phonics-aligned, beautifully illustrated and set somewhere different in the world.`,
     ``,
-    `They're running a £1 Founders Club offer right now (lifetime access to all 33 books). Thought of you:`,
+    `It's just £4.99/month (with a free trial) or £39 for lifetime access to all 33 books. Thought of you:`,
     ``,
     url,
   ].join('\n');
@@ -96,9 +96,9 @@ export function buildWhatsappMessage(code: string, origin?: string): string {
 export function buildFacebookMessage(code: string, origin?: string): string {
   const url = buildShareUrl(code, origin);
   return [
-    `If you've got a 4–8 year old learning to read, MyPhonicsBooks is wonderful — 33 phonics-aligned books with stories from around the world, tap-any-word audio, and parent progress tracking.`,
+    `If you've got a 4 to 8 year old learning to read, MyPhonicsBooks is brilliant. 33 phonics-aligned books with stories from around the world, tap-any-word audio and parent progress tracking.`,
     ``,
-    `They're running a £1 Founders Club offer for their launch:`,
+    `Free 7-day trial, then £4.99/month or £39 lifetime:`,
     url,
   ].join('\n');
 }

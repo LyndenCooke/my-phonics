@@ -636,9 +636,13 @@ def render_book_html(book_data: dict) -> str:
         autoescape=False,
     )
 
-    # v2 template kicks in when page_count is set (16/20/24).
-    use_v2 = book_data.get("page_count") in (16, 20, 24)
-    template_name = get_template_name(book_data.get("level", 1), use_v2=use_v2)
+    # Sound Books use their own simple template (cover / sound / words / read-all / back).
+    if book_data.get("book_type") == "sound_book":
+        template_name = "sound_book.html"
+    else:
+        # v2 template kicks in when page_count is set (16/20/24).
+        use_v2 = book_data.get("page_count") in (16, 20, 24)
+        template_name = get_template_name(book_data.get("level", 1), use_v2=use_v2)
     template = env.get_template(template_name)
 
     # Embed fonts as base64 data URIs so Playwright's Chromium loads them
