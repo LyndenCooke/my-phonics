@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { syncSourceToCRM } from '@/hooks/useFunnelTracker';
 import { syncToGHL } from '@/lib/ghlClient';
+import { getStoredRefCode } from '@/lib/referral';
 
 interface AuthContextType {
   user: User | null;
@@ -38,6 +39,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               : 'direct',
           }).catch(() => {});
 
+          // Tier 2 affiliate: if this user logged in via a referral link
+          // but wasn't originally referred (recruited_by is NULL), claim
+          // the relationship now. First-touch only — no overwriting.
+          const storedRef = getStoredRefCode();
+          if (storedRef) {
+            supabase.rpc('claim_recruited_by', { p_ref_code: storedRef }).then(
+              () => {},
+              () => {},
+            );
+          }
+
           // Self-heal book unlocks once per session. Idempotent — only
           // inserts user_books rows that don't already exist for this
           // user's completed purchases. Belt-and-braces guarantee for
@@ -60,11 +72,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string, fullName?: string) => {
+    // Pass stored referral code in user_metadata so the DB trigger can
+    // set recruited_by on the new user's referrals row (Tier 2 tracking).
+    const refCode = getStoredRefCode();
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName },
+        data: { full_name: fullName, ...(refCode ? { ref_code: refCode } : {}) },
         emailRedirectTo: window.location.origin,
       },
     });

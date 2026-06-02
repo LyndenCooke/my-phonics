@@ -1,0 +1,235 @@
+{
+  "pack": "MyPhonicsBooks Set 1 Clipart",
+  "level": 1,
+  "level_name": "Starting Stories",
+  "level_colour": "#E84B8A",
+  "model": "gemini-2.5-flash-image",
+  "style_reference": "myphonics_books/output/images/L2_6_B1/object_ref_bird.png",
+  "generated_at": "2026-04-24T23:42:18+00:00",
+  "items": [
+    {
+      "sound": "m",
+      "word": "mouse",
+      "object": "a small friendly grey mouse with round ears, pink nose, tiny dot eyes, and a long curly tail, sitting on its haunches",
+      "filename": "m_mouse.png",
+      "prompt": "Create a clean isolated children's book illustration of a small friendly grey mouse with round ears, pink nose, tiny dot eyes, and a long curly tail, sitting on its haunches. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "size_kb": 298.6
+    },
+    {
+      "sound": "a",
+      "word": "apple",
+      "object": "a single shiny red apple with a short brown stem and one small bright green leaf",
+      "filename": "a_apple.png",
+      "prompt": "Create a clean isolated children's book illustration of a single shiny red apple with a short brown stem and one small bright green leaf. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:33:16+00:00",
+      "size_kb": 393.6
+    },
+    {
+      "sound": "s",
+      "word": "sun",
+      "object": "a cheerful bright yellow sun with a soft round body and short rounded rays around it",
+      "filename": "s_sun.png",
+      "prompt": "Create a clean isolated children's book illustration of a cheerful bright yellow sun with a soft round body and short rounded rays around it. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:33:37+00:00",
+      "size_kb": 411.7
+    },
+    {
+      "sound": "d",
+      "word": "drum",
+      "object": "a small toy drum with a tan top skin, a red and yellow striped side band, and two short wooden drumsticks crossed in front",
+      "filename": "d_drum.png",
+      "prompt": "Create a clean isolated children's book illustration of a small toy drum with a tan top skin, a red and yellow striped side band, and two short wooden drumsticks crossed in front. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:34:16+00:00",
+      "size_kb": 428.8
+    },
+    {
+      "sound": "t",
+      "word": "tie",
+      "object": "a folded silk necktie with a navy blue and red diagonal stripe pattern, knot at the top",
+      "filename": "t_tie.png",
+      "prompt": "Create a clean isolated children's book illustration of a folded silk necktie with a navy blue and red diagonal stripe pattern, knot at the top. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:34:52+00:00",
+      "size_kb": 865.5
+    },
+    {
+      "sound": "i",
+      "word": "ink",
+      "object": "a small clear glass ink bottle with a black tapered stopper, filled with dark navy ink, with a tiny plain blank label on the front",
+      "filename": "i_ink.png",
+      "prompt": "Create a clean isolated children's book illustration of a small clear glass ink bottle with a black tapered stopper, filled with dark navy ink, with a tiny plain blank label on the front. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:35:16+00:00",
+      "size_kb": 326.0
+    },
+    {
+      "sound": "n",
+      "word": "nest",
+      "object": "a round woven twig bird's nest holding three small pale blue speckled eggs",
+      "filename": "n_nest.png",
+      "prompt": "Create a clean isolated children's book illustration of a round woven twig bird's nest holding three small pale blue speckled eggs. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:35:36+00:00",
+      "size_kb": 472.6
+    },
+    {
+      "sound": "p",
+      "word": "plant",
+      "object": "a small leafy houseplant with bright green rounded leaves growing out of a warm terracotta plant pot",
+      "filename": "p_plant.png",
+      "prompt": "Create a clean isolated children's book illustration of a small leafy houseplant with bright green rounded leaves growing out of a warm terracotta plant pot. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:36:00+00:00",
+      "size_kb": 433.9
+    },
+    {
+      "sound": "g",
+      "word": "gate",
+      "object": "a small wooden garden gate painted pale sage green, with vertical slats, a curved top, and a simple metal latch",
+      "filename": "g_gate.png",
+      "prompt": "Create a clean isolated children's book illustration of a small wooden garden gate painted pale sage green, with vertical slats, a curved top, and a simple metal latch. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:36:24+00:00",
+      "size_kb": 379.9
+    },
+    {
+      "sound": "o",
+      "word": "orange",
+      "object": "a single bright orange fruit with a small dimpled stem and one bright green leaf attached",
+      "filename": "o_orange.png",
+      "prompt": "Create a clean isolated children's book illustration of a single bright orange fruit with a small dimpled stem and one bright green leaf attached. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:36:49+00:00",
+      "size_kb": 371.6
+    },
+    {
+      "sound": "c",
+      "word": "cat",
+      "object": "a sitting friendly ginger tabby cat with tiny solid black dot eyes, white paws and chest, and a curled tail at its side",
+      "filename": "c_cat.png",
+      "prompt": "Create a clean isolated children's book illustration of a sitting friendly ginger tabby cat with tiny solid black dot eyes, white paws and chest, and a curled tail at its side. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:37:13+00:00",
+      "size_kb": 321.3
+    },
+    {
+      "sound": "k",
+      "word": "kite",
+      "object": "a colourful diamond-shaped kite with red, yellow, and blue panels, a long ribbon tail with little bows, and a string",
+      "filename": "k_kite.png",
+      "prompt": "Create a clean isolated children's book illustration of a colourful diamond-shaped kite with red, yellow, and blue panels, a long ribbon tail with little bows, and a string. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:37:29+00:00",
+      "size_kb": 168.7
+    },
+    {
+      "sound": "u",
+      "word": "umbrella",
+      "object": "an open umbrella with red and white alternating panels and a curved wooden handle, viewed from a slight three-quarter angle",
+      "filename": "u_umbrella.png",
+      "prompt": "Create a clean isolated children's book illustration of an open umbrella with red and white alternating panels and a curved wooden handle, viewed from a slight three-quarter angle. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:37:53+00:00",
+      "size_kb": 297.4
+    },
+    {
+      "sound": "b",
+      "word": "broom",
+      "object": "a tall traditional straw broom with a long wooden handle and pale yellow straw bristles tied with a brown band",
+      "filename": "b_broom.png",
+      "prompt": "Create a clean isolated children's book illustration of a tall traditional straw broom with a long wooden handle and pale yellow straw bristles tied with a brown band. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:38:09+00:00",
+      "size_kb": 201.5
+    },
+    {
+      "sound": "f",
+      "word": "fish",
+      "object": "a single bright orange goldfish with flowing fins, viewed in side profile, with a tiny solid black dot eye",
+      "filename": "f_fish.png",
+      "prompt": "Create a clean isolated children's book illustration of a single bright orange goldfish with flowing fins, viewed in side profile, with a tiny solid black dot eye. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:38:31+00:00",
+      "size_kb": 351.7
+    },
+    {
+      "sound": "e",
+      "word": "egg",
+      "object": "a single plain white chicken egg with very soft pale grey shading on one side",
+      "filename": "e_egg.png",
+      "prompt": "Create a clean isolated children's book illustration of a single plain white chicken egg with very soft pale grey shading on one side. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:38:54+00:00",
+      "size_kb": 337.0
+    },
+    {
+      "sound": "l",
+      "word": "leaf",
+      "object": "a single bright green leaf with a pointed tip and clearly visible darker green veins",
+      "filename": "l_leaf.png",
+      "prompt": "Create a clean isolated children's book illustration of a single bright green leaf with a pointed tip and clearly visible darker green veins. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:39:16+00:00",
+      "size_kb": 270.1
+    },
+    {
+      "sound": "h",
+      "word": "hat",
+      "object": "a wide-brimmed straw sun hat with a soft coral pink ribbon band tied in a small bow",
+      "filename": "h_hat.png",
+      "prompt": "Create a clean isolated children's book illustration of a wide-brimmed straw sun hat with a soft coral pink ribbon band tied in a small bow. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:39:40+00:00",
+      "size_kb": 395.6
+    },
+    {
+      "sound": "r",
+      "word": "rat",
+      "object": "a friendly small grey rat in side profile, with round pink ears, a pink nose, tiny solid black dot eye, and a long pink tail",
+      "filename": "r_rat.png",
+      "prompt": "Create a clean isolated children's book illustration of a friendly small grey rat in side profile, with round pink ears, a pink nose, tiny solid black dot eye, and a long pink tail. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:39:55+00:00",
+      "size_kb": 188.1
+    },
+    {
+      "sound": "j",
+      "word": "jam",
+      "object": "a clear glass jar of red strawberry jam with a small white-and-red gingham cloth tied over the lid with string",
+      "filename": "j_jam.png",
+      "prompt": "Create a clean isolated children's book illustration of a clear glass jar of red strawberry jam with a small white-and-red gingham cloth tied over the lid with string. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:40:20+00:00",
+      "size_kb": 604.8
+    },
+    {
+      "sound": "v",
+      "word": "van",
+      "object": "a small classic camper van in side profile, painted soft cream and red with round headlights and round windows",
+      "filename": "v_van.png",
+      "prompt": "Create a clean isolated children's book illustration of a small classic camper van in side profile, painted soft cream and red with round headlights and round windows. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:40:45+00:00",
+      "size_kb": 364.5
+    },
+    {
+      "sound": "y",
+      "word": "yoyo",
+      "object": "a wooden yoyo with a red and yellow striped pattern across the side, with a length of white string attached and looping down",
+      "filename": "y_yoyo.png",
+      "prompt": "Create a clean isolated children's book illustration of a wooden yoyo with a red and yellow striped pattern across the side, with a length of white string attached and looping down. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:41:11+00:00",
+      "size_kb": 232.2
+    },
+    {
+      "sound": "w",
+      "word": "watch",
+      "object": "a round silver wristwatch with a brown leather strap, a clear pale face, and simple black hour markers (no numbers)",
+      "filename": "w_watch.png",
+      "prompt": "Create a clean isolated children's book illustration of a round silver wristwatch with a brown leather strap, a clear pale face, and simple black hour markers (no numbers). MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:41:31+00:00",
+      "size_kb": 278.8
+    },
+    {
+      "sound": "z",
+      "word": "zebra",
+      "object": "a small friendly black-and-white striped zebra standing in side profile with tiny solid black dot eyes and a short upright black mane",
+      "filename": "z_zebra.png",
+      "prompt": "Create a clean isolated children's book illustration of a small friendly black-and-white striped zebra standing in side profile with tiny solid black dot eyes and a short upright black mane. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:41:54+00:00",
+      "size_kb": 311.9
+    },
+    {
+      "sound": "x",
+      "word": "box",
+      "object": "a small open cardboard box with the four top flaps slightly open, viewed from a slight three-quarter angle",
+      "filename": "x_box.png",
+      "prompt": "Create a clean isolated children's book illustration of a small open cardboard box with the four top flaps slightly open, viewed from a slight three-quarter angle. MyPhonicsBooks interior illustration style: smooth dark vector-like outlines, soft flat colours with gentle shading, subtle paper grain texture inside the object only, gentle modern children's book look, simple recognisable silhouette, friendly and warm. Single isolated object centred in frame on a plain pure white background (no scene, no characters, no other objects, no shadow on the floor, no border, no frame). STRICTLY NO text, no letters, no numbers, no words anywhere in the image. STRICTLY NOT: watercolour wash, pencil sketch, classroom clipart, Jolly Phonics style, Read Write Inc style, photorealism, 3D render, anime, manga. The reference image shows the EXACT style, line weight, texture, and palette feel I want \u2014 match it closely.",
+      "generated_at": "2026-04-24T23:42:15+00:00",
+      "size_kb": 583.0
+    }
+  ]
+}

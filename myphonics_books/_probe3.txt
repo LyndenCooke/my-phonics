@@ -1,0 +1,11 @@
+pdftoppm => 1
+pdftotext => 1
+mutool => 1
+gs => 1
+gswin64c => 1
+magick => 1
+node => 0
+npm => 0
+npx => 0
+pwsh => 1
+7z => 0

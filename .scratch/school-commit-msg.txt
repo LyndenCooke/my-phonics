@@ -1,0 +1,25 @@
+feat(school): add Sound Books, Blending Books, worksheet plan to preview
+
+Surfaces the full curriculum resource plan in the school admin preview.
+Source-of-truth: myphonics_books/output/worksheet_plan/curriculum_resource_plan.md
+and data/sound_books/inventory.py.
+
+New data files (all under src/school/data/):
+- soundBooks.ts    -- 73 books, one per GPC, real-photo format
+- blendingBooks.ts -- 12 A6 illustrated books, pre-storybook blending
+                      practice (the "pre-ditties")
+- worksheets.ts    -- 7-row Curriculum Ledger lifecycle table
+                      (Core/Intro/Light/Recap/none) + 4 pack types
+
+Page updates:
+- SchoolLevels: each level card now shows storybook/Sound Book/
+  Blending Book counts and lists, plus per-level worksheet lifecycle.
+- SchoolMapping: new Resources-per-level totals table and
+  worksheet-lifecycle matrix at the top of the page.
+- SchoolDashboard: stat cards for the three book types
+  (33 + 73 + 12 = 118 books planned across the 8-level curriculum).
+
+Still zero touches to production code paths. Main bundle stays at
+649.75 KB; everything lives in the lazy AppSchool chunk.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>

@@ -1,0 +1,24 @@
+{
+  "sound": "c",
+  "level": 2,
+  "level_color": "#E63971",
+  "chip_bg": "#FFF1C8",
+  "banner_title": "The Sound  c",
+  "trace_letter": {
+    "letter": "c",
+    "count": 10
+  },
+  "trace_words": [
+    {"word": "cat",  "image": "cat.png"},
+    {"word": "can",  "image": null},
+    {"word": "cap",  "image": "cap.png"},
+    {"word": "cot",  "image": null},
+    {"word": "cod",  "image": null}
+  ],
+  "missing_words": [
+    {"answer": "car",    "tail": "ar",    "image": "car.png"},
+    {"answer": "cake",   "tail": "ake",   "image": "cake.png"},
+    {"answer": "cup",    "tail": "up",    "image": "cup.png"},
+    {"answer": "camera", "tail": "amera", "image": null}
+  ]
+}

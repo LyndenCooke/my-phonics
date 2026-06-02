@@ -45,6 +45,13 @@ CHAR_REF_FILES_L1_3 = [
     ROOT / "output" / "images" / "L1_3_B1" / "hero_reference.png",
     ROOT / "output" / "images" / "L1_3_B1" / "page5.png",
 ]
+# L1.4 book character set: Black British girl with twin afro pigtails (yellow & orange
+# hair clips), yellow open cardigan over white t-shirt, blue jeans, white sneakers.
+# Companion (story): a brown speckled hen. From 'The Red Socks'.
+CHAR_REF_FILES_L1_4 = [
+    ROOT / "output" / "images" / "L1_4_B1" / "hero_reference.png",
+    ROOT / "output" / "images" / "L1_4_B1" / "page5.png",
+]
 
 OUT_DIR = REPO / "marketing-mockups" / "worksheet images" / "v2"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -1339,17 +1346,35 @@ VISUAL DICTIONARY:
 #   §3 Write the Missing — 4 pictures with the initial letter blanked
 # ============================================================
 
+# New-ledger level colours — every artefact at level N must use this hex
+# (see memory: mpb-level-colours; source: v2.0 Curriculum Ledger).
+LEVEL_COLOURS: dict[int, str] = {
+    1: "#E84B8A",  # Pink — Ditties
+    2: "#F97066",  # Coral — First Sounds
+    3: "#F59E0B",  # Amber — Special Friends
+    4: "#22C55E",  # Green — Longer Sounds
+    5: "#3B82F6",  # Blue — New Spellings
+    6: "#6366F1",  # Indigo — Building Fluency
+    7: "#8B5CF6",  # Purple — Reading Together
+    8: "#14B8A6",  # Teal — Reading Champion
+}
+
+
 def build_sound_prompt(
     letter: str,
     sound_name: str,           # e.g. "/m/ (as in 'man')" — used in the writing-focus note
     s2_words: list[tuple[str, str]],   # 5 entries: (word, picture description for dictionary)
     s3_words: list[tuple[str, str]],   # 4 entries: (word, picture description)
     letter_specific_rule: str = "",    # extra constraint for tricky letters (e.g. g descender)
-    position: str = "start",   # "start" for s/m/sh-prefix words, "end" for nk/ng-suffix words
+    position: str = "start",   # "start", "end", or "middle" (for medial vowels like 'e')
+    level: int = 1,            # new-ledger reading level for the banner chip (L1-L8)
+    level_colour: str | None = None,   # override; default looked up from LEVEL_COLOURS
 ) -> str:
+    if level_colour is None:
+        level_colour = LEVEL_COLOURS.get(level, "#E84B8A")
     assert len(s2_words) == 5 and len(s3_words) == 4
-    assert position in ("start", "end")
-    plen = len(letter)  # 1 for single letters, 2 for digraphs (sh, nk, ch, th, ng, qu)
+    assert position in ("start", "end", "middle")
+    plen = len(letter)
     s2_rows = "\n".join(
         f"    Row {i+1}:  [{w} picture]   {w}   [empty strip]"
         for i, (w, _) in enumerate(s2_words)
@@ -1359,9 +1384,19 @@ def build_sound_prompt(
             f"    Cell {i+1}:  [{w} picture]   _{w[plen:]}    ←   child writes \"{letter}\" to make \"{w}\""
             for i, (w, _) in enumerate(s3_words)
         )
-    else:  # "end" — blank at the end of the word
+    elif position == "end":
         s3_cells = "\n".join(
             f"    Cell {i+1}:  [{w} picture]   {w[:-plen]}_    ←   child writes \"{letter}\" to make \"{w}\""
+            for i, (w, _) in enumerate(s3_words)
+        )
+    else:  # "middle" — locate the letter inside the word and replace with blank
+        def middle_blank(word: str) -> str:
+            idx = word.find(letter)
+            if idx == -1:
+                idx = 1  # fallback to position 1 (typical for CVC medial vowel)
+            return word[:idx] + "_" + word[idx + plen:]
+        s3_cells = "\n".join(
+            f"    Cell {i+1}:  [{w} picture]   {middle_blank(w)}    ←   child writes \"{letter}\" to make \"{w}\""
             for i, (w, _) in enumerate(s3_words)
         )
     dictionary = "\n".join(f"  {w} = {desc}" for w, desc in s2_words + s3_words)
@@ -1369,7 +1404,7 @@ def build_sound_prompt(
     s3_fragments = ", ".join(f"_{w[1:]}" for w, _ in s3_words)
     extra_rule = f"\n   {letter_specific_rule}" if letter_specific_rule else ""
     return f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks — single-sound page.
-Title: "The Sound  {letter}"   Left chip: "Level 1"   Right chip: "Sound · {letter}"
+Title: "The Sound  {letter}"   Left chip: "Level {level}"   Right chip: "Sound · {letter}"
 
 ATTACHED REFERENCE IMAGES:
 - Images 1-5: prior worksheet pack — STYLE ONLY (pink banner, pastel boxes, grey footer).
@@ -1397,11 +1432,12 @@ FIVE RULES — follow all five:
 4. NO cartoon faces or characters on this page beyond the simple object pictures listed
    below. Any animal in the visual dictionary gets TWO SMALL PURE BLACK SOLID DOT EYES
    only — no whites, no pupils, no sparkles. Nothing else has eyes.
-5. Top banner pink (#E84B8A) with title "The Sound  {letter}" and two small chips
-   top-right: "Level 1" and "Sound · {letter}". On the left of the banner: one small
-   white circular badge containing a clean lowercase "{letter}" in pink — no arrows,
-   no dots, just the letter. Footer left (grey, 9pt): "MyPhonicsBooks · decodable
-   phonics practice". Footer right (grey, 9pt): "Single Sound · {letter}".
+5. Top banner solid colour {level_colour} with title "The Sound  {letter}" and two
+   small chips top-right: "Level {level}" and "Sound · {letter}". On the left of the
+   banner: one small white circular badge containing a clean lowercase "{letter}" in
+   {level_colour} — no arrows, no dots, just the letter. Footer left (grey, 9pt):
+   "MyPhonicsBooks · decodable phonics practice". Footer right (grey, 9pt):
+   "Single Sound · {letter}".
 
 LAYOUT:
 
@@ -1431,14 +1467,21 @@ LAYOUT:
     FOUR cells in a single horizontal row across the section. The four pictures in §3
     MUST be different from the five pictures in §2. Each cell contains:
       - ONE small picture from the visual dictionary at the top of the cell
-      - BELOW the picture, a SHORT 3-zone handwriting strip with the word printed but
-        the initial {letter} REPLACED by a blank space the same width as a letter. The
-        rest of the word is solid black. The blank space is just empty ruled lines
-        (NOT a dotted {letter}, NOT an underscore — just empty) where the child writes
-        the {letter}.
+      - BELOW the picture, a wide 3-zone handwriting strip showing the word with the
+        '{letter}' position blanked out (see exact per-cell layout below). The
+        printed letters are solid black; the blank is empty ruled space the SAME
+        width as a '{letter}' (NOT a dotted '{letter}', NOT an underscore).
+      - LAYOUT INSIDE THE STRIP: the printed-letter fragment must start at the LEFT
+        edge of the strip and use roughly the LEFT HALF of the strip width — leaving
+        the RIGHT HALF of the strip as visible 3-zone ruled space so the child can
+        write a generously sized '{letter}' in the blank without cramping. The
+        blank itself is roughly one letter-width and continues seamlessly into the
+        ruled space to its right; for END-position graphemes (e.g. ng, nk, ck, ss,
+        ll, ff, x, zz) this means the printed fragment hugs the left, the blank
+        sits in the middle, and there is generous ruled space to the right.
 {s3_cells}
     All four cells the same size. All four blanks the same width. The 3-zone guide
-    lines run continuously through the blank and under the rest of the word.
+    lines run continuously through the blank and across the rest of the strip.
 
 VISUAL DICTIONARY (use exactly these meanings):
 {dictionary}
@@ -1753,6 +1796,359 @@ SOUND_G_PROMPT = build_sound_prompt(
     ),
 )
 
+# ============================================================
+# LEVEL 1.4 — 'The Red Socks' (focus c, k, ck, e)
+# Character set: Black British girl with twin afro pigtails (yellow + orange
+# clips), yellow cardigan, white tee, blue jeans. Companion: brown speckled hen.
+# Skill-only pack — story scaffold lives in the book.
+# ============================================================
+
+L14_RULES_HEADER = """ATTACHED REFERENCE IMAGES:
+- Images 1-5: prior worksheet pack — STYLE ONLY (pink banner, pastel boxes, cute
+  cartoons, grey footer). Match this overall look. Do not copy their content.
+- Image 6: tracing-strip reference for the 3-zone handwriting guide style.
+- Images 7-8: CHARACTER references — the Black British girl with twin afro pigtails
+  (small yellow and orange hair clips on each puff), open yellow cardigan over a
+  plain white t-shirt, blue jeans, white sneakers — and her brown speckled hen.
+  ANY appearance of the girl or the hen on this page MUST match these refs.
+  EYE STYLE on every face: TWO SMALL PURE BLACK SOLID DOTS only.
+
+UNIVERSAL RULES:
+- Banner pink (#E84B8A) with title left, TWO small chips top-right:
+  "Level 1 · c k ck e" and "The Red Socks". Small roundel top-left of the BANNER
+  showing the girl with twin pigtails + the speckled hen.
+- Footer left (grey, 9pt): "MyPhonicsBooks · decodable phonics practice".
+  Footer right (grey, 9pt): "Worksheet N of 5".
+- NO reward stars on the sections. NO bottom "colour the stars" strip. NO row of stars.
+- Strict letter inventory for L1.4: lowercase s a t p i n m d g o + DIGRAPHS sh, nk +
+  c, k + DIGRAPH ck + e may appear in printed words. Tricky words allowed: the, to, I,
+  no, go, into. NO 'b', 'f', 'h', 'j', 'l', 'r', 'u', 'v', 'w', 'x', 'y', 'z', 'q' as
+  standalone letters in printed words. (Pictures may show anything from the visual
+  dictionary — pictures are not read.)
+- All printed letters lowercase, single-storey 'a', no serifs. Letters sit ON the
+  baseline. The 'sh', 'nk', 'ck' digraphs are written as a two-letter pair (never
+  split). Letter 'c' in c-words sounds /k/ as in "cat" (not soft /s/).
+"""
+
+WORKSHEET_1_L14_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "1. Sound Hunt: c k ck e"
+
+{L14_RULES_HEADER}
+
+LAYOUT:
+
+[1] "Say and Find" — "Circle the picture that matches the sound."
+    FOUR columns side by side, equal width: c | k | ck | e.
+    Each column has the sound printed at the top in a small pink rounded square,
+    then THREE small pictures stacked beneath. The child circles the one matching
+    the column's sound. Vary the position of the correct picture across columns.
+
+    Column c (chip: c, /k/-sound at start):
+      pictures top-to-bottom:  pin | cat | mop      (correct: cat = MIDDLE)
+    Column k (chip: k, /k/-sound at start):
+      pictures top-to-bottom:  kid | dog | tin      (correct: kid = TOP)
+    Column ck (chip: ck, /k/-sound at end):
+      pictures top-to-bottom:  ant | ink | sock     (correct: sock = BOTTOM)
+    Column e (chip: e, /e/-sound):
+      pictures top-to-bottom:  egg | mat | ship     (correct: egg = TOP)
+
+    All twelve pictures cleanly drawn, well-spaced, unambiguous.
+
+[2] "My New Sounds" — "Read each sound. Then say a word that uses it."
+    A short horizontal pink-outlined strip below §1, containing the four NEW sounds
+    laid out as tiles, left to right: c | k | ck | e. Each tile contains one solid
+    dark lowercase chip-letter sitting ON a baseline guide line. NO tracing dots —
+    just clean model letters.
+
+VISUAL DICTIONARY:
+  pin   = red drawing pin/push pin.
+  cat   = simple cartoon cat sitting upright, tabby pattern, side view, PURE BLACK
+          DOT EYES.
+  mop   = string-headed mop with wooden handle, head down.
+  kid   = a cartoon child standing in profile, plain t-shirt and trousers, PURE
+          BLACK DOT EYES, friendly smile.
+  dog   = golden retriever sitting upright, PURE BLACK DOT EYES.
+  tin   = a tin can, side view, blank label.
+  ant   = cartoon ant with three body segments, antennae on the HEAD, six legs,
+          friendly smile, PURE BLACK DOT EYES.
+  ink   = small open ink pot, blue ink inside.
+  sock  = a single child's sock, side view, colourful stripe pattern.
+  egg   = a single white chicken egg upright, no face, simple cartoon.
+  mat   = striped rectangular floor mat, viewed from above.
+  ship  = small cartoon sailing ship, side view, white sails, blue hull.
+"""
+
+WORKSHEET_2_L14_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "2. Trace and Write: c k ck e"
+
+{L14_RULES_HEADER}
+
+This worksheet is WRITING-FOCUSED. Two long handwriting strips fill most of the page.
+The child traces the new sounds and example words.
+
+LAYOUT:
+
+Two long horizontal handwriting strips spanning the full width of the page below
+the banner. "1" label left of strip 1, "2" label left of strip 2.
+
+Strip 1 — sounds c and k:
+  Left half: ONE solid dark "c" + 4 dotted "c" trace copies, then ONE solid dark "k"
+  + 4 dotted "k" trace copies. So: c c c c c   k k k k k.
+  Right half of the same strip: TWO dotted trace words — "cat" then "kid" — for the
+  child to trace. (Strip continues with 3-zone guide lines throughout.)
+
+Strip 2 — sounds ck and e:
+  Left half: ONE solid dark "ck" pair + 4 dotted "ck" trace copies, then ONE solid
+  dark "e" + 4 dotted "e" trace copies. So: ck ck ck ck ck   e e e e e.
+  Right half: TWO dotted trace words — "sock" then "egg" — for the child to trace.
+
+Both strips use full 3-zone guide lines (solid BASELINE, dashed MIDLINE, faint
+dotted TOPLINE). BASELINE COMPLIANCE: every letter body sits flush ON the baseline.
+The 'k' ascender rises above the midline. The 'c' and 'e' are pure x-height. The
+'ck' digraph is ALWAYS joined as a single two-letter unit.
+
+Below strip 2, ONE small pink-outlined empty box about 30mm tall × 130mm wide,
+centred, labelled in small text "My best sound". Empty inside.
+"""
+
+WORKSHEET_3_L14_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "3. Read and Do"
+
+{L14_RULES_HEADER}
+
+LAYOUT:
+
+[1] "Read and Do" — "Read each sentence. Do the action! Then tick the box."
+    Four rows. Each row: girl-picture (left), sentence (middle), tick-box (right).
+
+    Row 1:  [girl gently petting a cat on its head]              "Pet the cat."   ☐
+    Row 2:  [girl miming kicking a striped sock with her foot]   "Kick the sock." ☐
+    Row 3:  [girl holding up a pen between thumb and finger]     "Get the pen."   ☐
+    Row 4:  [girl nodding her head toward another small cartoon
+             child standing beside her]                          "Nod at the kid." ☐
+
+    Sentences EXACTLY as written above — full stops only, no commas or exclamations.
+
+[2] "Word and Picture Match" — "Read each word. Tick the box under the right picture."
+    Four rows. Each row: word (left, large lowercase), TWO picture options (right)
+    with one empty tick-box below each picture.
+
+    Row 1:  "sock"  →  [sock picture] ☐    [pan picture]  ☐
+    Row 2:  "cat"   →  [dog picture]  ☐    [cat picture]  ☐
+    Row 3:  "egg"   →  [ink picture]  ☐    [egg picture]  ☐
+    Row 4:  "kick"  →  [mop picture]  ☐    [kicking-foot picture] ☐
+
+    Vary the correct position (sometimes left, sometimes right). All tick-boxes and
+    picture-boxes same sizes.
+
+VISUAL DICTIONARY:
+  girl     = the L1.4 character (twin afro pigtails with yellow + orange clips,
+             yellow cardigan, white tee, blue jeans, white sneakers); PURE BLACK
+             DOT EYES.
+  cat      = friendly tabby cat sitting upright; PURE BLACK DOT EYES.
+  sock     = striped child's sock, side view.
+  pen      = a single ballpoint pen with a coloured barrel.
+  kid      = another small cartoon child (different from the girl) standing in
+             profile, plain t-shirt and trousers, PURE BLACK DOT EYES.
+  pan      = cooking pan with a black handle.
+  dog      = golden retriever sitting upright; PURE BLACK DOT EYES.
+  ink      = small open ink pot with blue ink.
+  egg      = a single white chicken egg upright.
+  mop      = string-headed mop with wooden handle.
+  kicking-foot = a single shoe kicking a small striped sock through the air, motion
+             arcs around the foot, side view, no whole body shown.
+"""
+
+WORKSHEET_4_L14_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "4. Alien Word Mission"
+
+{L14_RULES_HEADER}
+
+The page theme is OUTER-SPACE fun: friendly cartoon aliens (purple, teal, lime,
+pink, orange, blue blob bodies, two stubby legs, antennae topped with balls, PURE
+BLACK DOT EYES, simple smile). Aliens sit beside each alien word.
+
+WORDS ON THE PAGE (strict — only these, plus titles/instructions/footer):
+  Real (decodable at L1.4):  cat, kick, sock, pen
+  Alien (decodable nonsense at L1.4 using c, k, ck, e):  kep, cek, dack, mick, nect, pock
+
+LAYOUT:
+
+[1] "Read the Alien Words" — "Read each alien word out loud."
+    Six alien cards in a 3-cols × 2-rows grid. Each card: one cute cartoon alien
+    on the LEFT (different colour each), the ALIEN WORD large in lowercase on the
+    centre/right.
+    Card 1: alien + word  kep
+    Card 2: alien + word  cek
+    Card 3: alien + word  dack
+    Card 4: alien + word  mick
+    Card 5: alien + word  nect
+    Card 6: alien + word  pock
+
+[2] "Real or Alien?" — "Read each word. Tick Real or Alien."
+    Table: Word | Real | Alien header, six body rows with two empty tick-boxes each.
+
+      Row 1:  cat   | ☐ | ☐
+      Row 2:  kep   | ☐ | ☐
+      Row 3:  kick  | ☐ | ☐
+      Row 4:  dack  | ☐ | ☐
+      Row 5:  sock  | ☐ | ☐
+      Row 6:  nect  | ☐ | ☐
+"""
+
+WORKSHEET_5_L14_PROMPT = f"""Printable A4 portrait phonics worksheet for MyPhonicsBooks.
+Title: "5. Sound Sort: /k/ or /e/?"
+
+{L14_RULES_HEADER}
+
+This is a SOUND-SORTING drill. The child reads eight words and writes each one in
+the correct column based on the sound it features. No drawing, no story prompt.
+Pure phonics-skill practice.
+
+LAYOUT:
+
+[1] "Word Bank" — small pink-outlined strip near the top with EIGHT words in two
+    rows of four:
+      Row A:  cat · kid · egg · sock
+      Row B:  pen · kick · ten · peg
+
+[2] "Sort by Sound" — TWO large columns side by side, equal width, filling most of
+    the page below the word bank.
+      Left column header (small pink banner): "has the /k/ sound (c, k, ck)"
+      Right column header (small pink banner): "has the /e/ sound"
+    Inside each column, EIGHT empty 3-zone handwriting rows stacked vertically for
+    the child to write the words. NO model words pre-printed inside the columns.
+
+[3] "Check Your Work" — tiny pink-outlined bottom strip (~15mm tall): "say each
+    word to a grown-up." Nothing else.
+
+NO PICTURES of the girl or the hen in §1, §2, or §3 — banner roundel only. Pure
+sound discrimination + handwriting practice.
+"""
+
+SOUND_C_PROMPT = build_sound_prompt(
+    letter="c",
+    sound_name='/k/ sound spelled c (as in "cat", "cap")',
+    s2_words=[
+        ("cat",  "simple cartoon cat sitting upright, tabby/orange stripes, side view, PURE BLACK DOT EYES, small smile"),
+        ("can",  "a tin can, side view, blank label."),
+        ("cap",  "a baseball cap, side view, plain colour, no logo or text."),
+        ("cot",  "a baby's cot/crib, side view, plain wooden frame, no baby inside."),
+        ("cod",  "small cartoon cod fish, side view, grey body with darker spots, PURE BLACK DOT EYES, small smile."),
+    ],
+    s3_words=[
+        ("cap",  "(same as §2; pictured separately if needed)"),  # NOTE: replaced below
+        ("cot",  "(same as §2)"),
+        ("cod",  "(same as §2)"),
+        ("can",  "(same as §2)"),
+    ],
+    letter_specific_rule=(
+        "Lowercase c is pure x-height (no ascender, no descender) — same size as o, "
+        "sits ON the baseline. Sounds /k/ here (hard c as in 'cat', not soft /s/)."
+    ),
+)
+
+# Replace the placeholder §3 with proper different-from-§2 words:
+SOUND_C_PROMPT = build_sound_prompt(
+    letter="c",
+    sound_name='/k/ sound spelled c (as in "cat", "cap")',
+    s2_words=[
+        ("cat",  "simple cartoon cat sitting upright, tabby/orange stripes, side view, PURE BLACK DOT EYES, small smile"),
+        ("can",  "a tin can, side view, blank label"),
+        ("cap",  "a baseball cap, side view, plain colour, no logo or text"),
+        ("cot",  "a baby's cot/crib, side view, plain wooden frame, no baby inside"),
+        ("cod",  "small cartoon cod fish, side view, grey body with darker spots, PURE BLACK DOT EYES, small smile"),
+    ],
+    s3_words=[
+        ("car",     "small cartoon car, side view, red body, four wheels, no face"),
+        ("cake",    "a single iced birthday cake, side view, pink frosting and two candles, no plate"),
+        ("cup",     "a single white teacup on a saucer, side view, no liquid visible"),
+        ("camera",  "a small cartoon film camera, front view, with a single round lens and a tiny flash on top, no person holding it"),
+    ],
+    letter_specific_rule=(
+        "Lowercase c is pure x-height (no ascender, no descender) — same size as o, "
+        "sits ON the baseline. Sounds /k/ here (hard c as in 'cat', not soft /s/)."
+    ),
+    level=2,
+)
+
+SOUND_K_PROMPT = build_sound_prompt(
+    letter="k",
+    sound_name='/k/ sound spelled k (as in "kid", "key")',
+    s2_words=[
+        ("kid",  "a cartoon child standing in profile, plain t-shirt and trousers, PURE BLACK DOT EYES, friendly smile"),
+        ("kit",  "a small open toolkit/tool box with a hammer and screwdriver visible inside, side view"),
+        ("kin",  "two small cartoon stick figures (a child and an adult) standing side by side holding hands, simple silhouettes representing FAMILY"),
+        ("keg",  "a small cartoon barrel/keg, side view, brown wood with two metal bands, no liquid spilling"),
+        ("kink", "a single garden hose with one clear kink/bend in the middle, side view, no water spraying"),
+    ],
+    s3_words=[
+        ("key",      "a single brass-coloured house key, side view, simple silhouette"),
+        ("king",     "small cartoon king figure standing in profile, simple gold crown, red cloak, PURE BLACK DOT EYES"),
+        ("kite",     "a single diamond-shaped kite in the sky, colourful, long ribbon tail trailing below"),
+        ("kangaroo", "small cartoon kangaroo standing upright on hind feet, brown body, small front paws, PURE BLACK DOT EYES, small smile"),
+    ],
+    letter_specific_rule=(
+        "Lowercase k has an ASCENDER — the vertical stick rises above the midline "
+        "toward the topline. The lower diagonals of k start at the midline and angle "
+        "out, ending on the baseline. Same /k/ sound as 'c' — these letters share a "
+        "phoneme."
+    ),
+    level=2,
+)
+
+SOUND_CK_PROMPT = build_sound_prompt(
+    letter="ck",
+    sound_name='/k/ sound spelled ck (as in "sock", "kick") — always at the END',
+    s2_words=[
+        ("sock", "a single child's sock, side view, colourful stripe pattern"),
+        ("neck", "a giraffe's long neck with just the head at the top, brown spots, side view, PURE BLACK DOT EYES"),
+        ("deck", "a single playing-card-deck of cards stacked together, side view, with one card slightly fanned out showing a small heart symbol"),
+        ("pack", "a small school backpack standing upright, blue body with a single strap, no logo or text"),
+        ("kick", "a single shoe kicking a small ball through the air, motion arcs around the foot, side view, no whole body"),
+    ],
+    s3_words=[
+        ("tick", "a single black tick/checkmark inside a small white box, clear cartoon style"),
+        ("peck", "a small cartoon bird (sparrow size) pecking at one tiny seed on the ground, motion arcs near beak, side view, PURE BLACK DOT EYES"),
+        ("tack", "a single red thumbtack with the pointed end down, side view"),
+        ("sack", "a small brown burlap/hessian sack tied at the top with a thin string, full and round at the bottom"),
+    ],
+    letter_specific_rule=(
+        "The 'ck' digraph is ALWAYS at the END of these words and ALWAYS written as "
+        "a joined two-letter unit (lowercase c and k together, no underline, no "
+        "accent, no space). The 'k' ascender rises above the midline; the 'c' is "
+        "pure x-height."
+    ),
+    position="end",
+    level=2,
+)
+
+SOUND_E_PROMPT = build_sound_prompt(
+    letter="e",
+    sound_name='short /e/ sound (as in "egg", "pen")',
+    s2_words=[
+        ("egg",  "a single white chicken egg upright, no face, simple cartoon"),
+        ("end",  "a small finish-line ribbon stretched between two posts with the word 'END' written above it — wait do NOT include the word END as text. Show only a finish-line ribbon between two posts as a concept symbol"),
+        ("pen",  "a single ballpoint pen with a coloured barrel and a small clip at one end"),
+        ("ten",  "the numeral '10' drawn LARGE and friendly in pink (this represents the WORD 'ten')"),
+        ("peg",  "a single wooden clothes peg, side view, plain wood, no laundry"),
+    ],
+    s3_words=[
+        ("net",  "a small hand net with a wooden handle and a blue hoop with mesh"),
+        ("met",  "two small cartoon stick figures shaking hands in the middle of the picture (representing 'met')"),
+        ("hen",  "small brown speckled cartoon hen standing in profile, simple cartoon, PURE BLACK DOT EYES"),
+        ("bed",  "a single small cartoon bed, side view, headboard at one end, plain pillow and a folded blanket on top, no person sleeping"),
+    ],
+    letter_specific_rule=(
+        "Lowercase e is pure x-height (no ascender, no descender), sits ON the "
+        "baseline. The §3 drill places the blank in the MIDDLE of each three-letter "
+        "word — child writes 'e' to complete a consonant-vowel-consonant word."
+    ),
+    position="middle",
+    level=2,
+)
+
+
 SOUND_SH_PROMPT = build_sound_prompt(
     letter="sh",
     sound_name='/sh/ (as in "ship", "fish")',
@@ -1774,6 +2170,7 @@ SOUND_SH_PROMPT = build_sound_prompt(
         "and h together, no underline, no accent, no space between). The 'h' ascender "
         "rises above the midline toward the topline; the 's' is pure x-height."
     ),
+    level=3,
 )
 
 SOUND_NK_PROMPT = build_sound_prompt(
@@ -1784,11 +2181,11 @@ SOUND_NK_PROMPT = build_sound_prompt(
         ("ink",   "a small open ink pot with blue ink visible at the top, classic round bottle shape"),
         ("sink",  "a kitchen sink, front view, two taps, water dripping from one"),
         ("pink",  "a single pink-coloured heart-shaped balloon with a thin string trailing down, no face, the WORD-CONCEPT 'pink'"),
-        ("monk",  "small cartoon monk in a brown robe with a hood, hands clasped together, friendly face, PURE BLACK DOT EYES"),
+        ("drink", "a tall clear glass of orange juice with a single yellow striped straw, no hand holding it"),
     ],
     s3_words=[
         ("bank",  "a small piggy bank, side view, pink ceramic body, small slot on top, no face"),
-        ("honk",  "a single yellow car-horn (the bulb-and-trumpet hand-honk style) with two motion lines and a small 'Honk!' tag — purely the horn, no car around it"),
+        ("honk",  "a single bulb-and-trumpet hand-horn (the yellow squeeze-bulb style) with two motion lines coming from the trumpet — purely the horn, no car around it, ABSOLUTELY NO TEXT OR WORDS BAKED INTO THE IMAGE"),
         ("wink",  "a small cartoon child's face winking — one eye closed (a small curve), one eye an open PURE BLACK SOLID DOT, small smile, no body just the head"),
         ("junk",  "a small pile of cartoon objects (a tin can, a broken toy, a crumpled paper) representing junk, on a flat ground line, no people"),
     ],
@@ -1800,6 +2197,7 @@ SOUND_NK_PROMPT = build_sound_prompt(
         "§3 word ends in nk."
     ),
     position="end",
+    level=3,
 )
 
 
@@ -1854,6 +2252,15 @@ PROMPTS = {
     "5_l13": {"file": "l13_worksheet_05_sound_sort_v1.png",     "prompt": WORKSHEET_5_L13_PROMPT, "char_refs": CHAR_REF_FILES_L1_3},
     "sh": {"file": "sound_sh_v1.png", "prompt": SOUND_SH_PROMPT, "char_refs": False},
     "nk": {"file": "sound_nk_v1.png", "prompt": SOUND_NK_PROMPT, "char_refs": False},
+    "1_l14": {"file": "l14_worksheet_01_sound_hunt_v1.png",      "prompt": WORKSHEET_1_L14_PROMPT, "char_refs": CHAR_REF_FILES_L1_4},
+    "2_l14": {"file": "l14_worksheet_02_trace_and_write_v1.png", "prompt": WORKSHEET_2_L14_PROMPT, "char_refs": CHAR_REF_FILES_L1_4},
+    "3_l14": {"file": "l14_worksheet_03_read_and_do_v1.png",     "prompt": WORKSHEET_3_L14_PROMPT, "char_refs": CHAR_REF_FILES_L1_4},
+    "4_l14": {"file": "l14_worksheet_04_alien_words_v1.png",     "prompt": WORKSHEET_4_L14_PROMPT, "char_refs": CHAR_REF_FILES_L1_4},
+    "5_l14": {"file": "l14_worksheet_05_sound_sort_v1.png",      "prompt": WORKSHEET_5_L14_PROMPT, "char_refs": CHAR_REF_FILES_L1_4},
+    "c":  {"file": "sound_c_v1.png",  "prompt": SOUND_C_PROMPT,  "char_refs": False},
+    "k":  {"file": "sound_k_v1.png",  "prompt": SOUND_K_PROMPT,  "char_refs": False},
+    "ck": {"file": "sound_ck_v1.png", "prompt": SOUND_CK_PROMPT, "char_refs": False},
+    "e":  {"file": "sound_e_v1.png",  "prompt": SOUND_E_PROMPT,  "char_refs": False},
 }
 
 

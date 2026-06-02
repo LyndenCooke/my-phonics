@@ -1,0 +1,18 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 1E59-475B
+
+ Directory of C:\Python314
+
+23/02/2026  16:35    <DIR>          .
+24/01/2026  23:11    <DIR>          DLLs
+23/02/2026  16:35    <DIR>          Lib
+05/12/2025  16:18            35,407 LICENSE.txt
+05/12/2025  16:31         2,207,799 NEWS.txt
+05/12/2025  16:17           106,328 python.exe
+05/12/2025  16:17            74,072 python3.dll
+05/12/2025  16:17         6,760,792 python314.dll
+05/12/2025  16:17           104,792 pythonw.exe
+05/12/2025  16:18           120,400 vcruntime140.dll
+05/12/2025  16:18            49,776 vcruntime140_1.dll
+               8 File(s)      9,459,366 bytes
+               3 Dir(s)  33,425,784,832 bytes free

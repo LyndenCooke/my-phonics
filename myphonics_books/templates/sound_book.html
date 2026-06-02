@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ book_title }}</title>
+<style>
+/* ── Fonts (Andika, base64 embedded) ── */
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_regular }}') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_bold }}') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_italic }}') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_bold_italic }}') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* ── Page setup: A5 portrait ── */
+@page {
+  size: 148mm 210mm;
+  margin: 0;
+}
+
+:root {
+  --level-color: {{ level_colour }};
+  --level-color-light: {{ level_colour }}22;
+  --level-color-mid: {{ level_colour }}66;
+  --text-dark: #1a1a2e;
+  --text-body: #2d2d44;
+  --bg-cream: #fefcf8;
+  --bg-white: #ffffff;
+  --page-w: 148mm;
+  --page-h: 210mm;
+  --pad: 10mm;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Andika', 'Comic Sans MS', sans-serif;
+  color: var(--text-body);
+  background: var(--bg-white);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── Page container ── */
+.page {
+  width: var(--page-w);
+  height: var(--page-h);
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  background: var(--bg-white);
+}
+
+.page:last-child {
+  page-break-after: avoid;
+}
+
+.page-inner {
+  width: 100%;
+  height: 100%;
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════
+   COVER PAGE
+   ═══════════════════════════════════════ */
+.cover {
+  background: var(--bg-cream);
+}
+
+.cover .page-inner {
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cover-top-band {
+  width: 100%;
+  height: 18mm;
+  background: var(--level-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-level-label {
+  font-size: 11pt;
+  font-weight: normal;
+  color: #ffffff;
+  letter-spacing: 0.8pt;
+  text-transform: uppercase;
+}
+
+.cover-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6mm;
+  padding: 8mm 12mm;
+  text-align: center;
+}
+
+.cover-title {
+  font-size: 22pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.cover-sound-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4mm 0;
+}
+
+.cover-sound-text {
+  font-size: 64pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  letter-spacing: 1pt;
+  line-height: 1;
+}
+
+/* Combined sound books: show multiple sounds */
+.cover-sounds-row {
+  display: flex;
+  gap: 8mm;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 4mm 0;
+}
+
+.cover-sounds-row .cover-sound-text {
+  font-size: 52pt;
+}
+
+.cover-sounds-divider {
+  font-size: 36pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  opacity: 0.4;
+}
+
+.cover-child-name {
+  font-size: 13pt;
+  color: var(--text-body);
+  font-style: italic;
+}
+
+.cover-series-label {
+  font-size: 9pt;
+  color: var(--text-body);
+  opacity: 0.7;
+  letter-spacing: 0.5pt;
+}
+
+.cover-bottom-band {
+  width: 100%;
+  height: 10mm;
+  background: var(--level-color);
+}
+
+/* ═══════════════════════════════════════
+   SOUND PAGE
+   ═══════════════════════════════════════ */
+.sound-page .page-inner {
+  justify-content: center;
+  align-items: center;
+  gap: 8mm;
+  text-align: center;
+}
+
+.sound-page-heading {
+  font-size: 14pt;
+  font-weight: normal;
+  color: var(--text-dark);
+}
+
+.sound-large-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4mm 0;
+}
+
+.sound-large-text {
+  font-size: 96pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  letter-spacing: 1pt;
+  line-height: 1;
+}
+
+.sound-button-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1mm;
+  margin-top: 2mm;
+}
+
+.sound-button-dot {
+  width: 3mm;
+  height: 3mm;
+  border-radius: 50%;
+  background: var(--level-color);
+}
+
+.sound-button-dash {
+  width: 8mm;
+  height: 3mm;
+  border-radius: 1.5mm;
+  background: var(--level-color);
+}
+
+.sound-instruction {
+  font-size: 12pt;
+  color: var(--text-body);
+  max-width: 110mm;
+  line-height: 1.5;
+}
+
+/* Comparison sounds (L5+) */
+.comparison-section {
+  margin-top: 6mm;
+  padding-top: 4mm;
+  border-top: 0.5mm dashed var(--level-color-mid);
+  width: 100%;
+  max-width: 120mm;
+}
+
+.comparison-label {
+  font-size: 9pt;
+  color: var(--text-body);
+  opacity: 0.7;
+  margin-bottom: 3mm;
+}
+
+.comparison-sounds-row {
+  display: flex;
+  gap: 4mm;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.comparison-chip {
+  padding: 2mm 5mm;
+  border-radius: 4mm;
+  border: 0.4mm solid var(--level-color-mid);
+  font-size: 11pt;
+  font-weight: normal;
+  color: var(--level-color);
+  background: var(--level-color-light);
+}
+
+/* ═══════════════════════════════════════
+   WORD PAGE — picture book layout:
+   photo is the full-bleed hero, word sits in a band at the bottom.
+   ═══════════════════════════════════════ */
+.word-page .page-inner {
+  padding: 0;
+  gap: 0;
+  position: relative;
+}
+
+.word-photo-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.word-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.word-photo-placeholder {
+  font-size: 10pt;
+  color: #999;
+  text-align: center;
+  padding: 5mm;
+}
+
+.word-display {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 7mm 10mm 8mm;
+  text-align: center;
+  background: #ffffff;
+  z-index: 2;
+}
+
+.word-text {
+  font-size: 36pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  letter-spacing: 1pt;
+  line-height: 1.0;
+}
+
+/* Page number — small, muted, sits below the word in the band */
+.word-page .page-number {
+  margin-top: 4mm;
+  font-size: 9pt;
+  color: var(--text-body);
+  opacity: 0.55;
+  letter-spacing: 0.5pt;
+}
+
+/* Page number on full-page content (sound page, read-all page) */
+.content-page-number {
+  position: absolute;
+  bottom: 6mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9pt;
+  color: var(--text-body);
+  opacity: 0.55;
+  letter-spacing: 0.5pt;
+}
+
+/* ═══════════════════════════════════════
+   READ THEM ALL PAGE
+   ═══════════════════════════════════════ */
+.read-all-page .page-inner {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5mm;
+  padding-top: 14mm;
+}
+
+.read-all-heading {
+  font-size: 16pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.read-all-instruction {
+  font-size: 10pt;
+  color: var(--text-body);
+  text-align: center;
+  margin-bottom: 4mm;
+}
+
+.read-all-list {
+  width: 100%;
+  max-width: 110mm;
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.read-all-item {
+  display: flex;
+  align-items: center;
+  gap: 4mm;
+  padding: 3mm 5mm;
+  border-radius: 3mm;
+  background: var(--level-color-light);
+}
+
+.read-all-tick-box {
+  width: 7mm;
+  height: 7mm;
+  border: 0.5mm solid var(--level-color);
+  border-radius: 1.5mm;
+  flex-shrink: 0;
+}
+
+.read-all-word {
+  font-size: 20pt;
+  font-weight: normal;
+  color: var(--text-dark);
+}
+
+.read-all-sound-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1mm;
+  margin-left: auto;
+}
+
+.read-all-grown-up {
+  margin-top: 6mm;
+  padding: 4mm 6mm;
+  border-radius: 4mm;
+  background: var(--level-color-light);
+  border-left: 2mm solid var(--level-color);
+  font-size: 9pt;
+  color: var(--text-body);
+  line-height: 1.4;
+  max-width: 110mm;
+}
+
+/* ═══════════════════════════════════════
+   BACK COVER
+   ═══════════════════════════════════════ */
+.back-cover {
+  background: var(--bg-cream);
+}
+
+.back-cover .page-inner {
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-top-band {
+  width: 100%;
+  height: 10mm;
+  background: var(--level-color);
+}
+
+.back-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8mm;
+  padding: 10mm;
+  text-align: center;
+}
+
+.back-well-done {
+  font-size: 18pt;
+  font-weight: normal;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+
+.back-sticker-space {
+  width: 40mm;
+  height: 40mm;
+  border-radius: 50%;
+  border: 1mm dashed var(--level-color-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-sticker-label {
+  font-size: 9pt;
+  color: var(--text-body);
+  opacity: 0.6;
+}
+
+.back-sounds-learned {
+  font-size: 10pt;
+  color: var(--text-body);
+}
+
+.back-sounds-chips {
+  display: flex;
+  gap: 3mm;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.back-sound-chip {
+  padding: 2mm 5mm;
+  border-radius: 3mm;
+  background: var(--level-color);
+  color: #ffffff;
+  font-size: 12pt;
+  font-weight: normal;
+}
+
+.back-bottom-band {
+  width: 100%;
+  height: 18mm;
+  background: var(--level-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-brand {
+  font-size: 9pt;
+  color: #ffffff;
+  opacity: 0.8;
+  letter-spacing: 0.5pt;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1: COVER
+     ═══════════════════════════════════════ -->
+<div class="page cover">
+  <div class="page-inner">
+    <div class="cover-top-band">
+      <span class="cover-level-label">{{ level_name }}</span>
+    </div>
+
+    <div class="cover-body">
+      <div class="cover-series-label">MyPhonicsBooks — Sound Book</div>
+
+      <div class="cover-title">{{ book_title }}</div>
+
+      {% if sounds | length == 1 %}
+        <div class="cover-sound-display">
+          <span class="cover-sound-text">{{ sounds[0].grapheme }}</span>
+        </div>
+      {% else %}
+        <div class="cover-sounds-row">
+          {% for s in sounds %}
+            {% if not loop.first %}
+              <span class="cover-sounds-divider">+</span>
+            {% endif %}
+            <div class="cover-sound-display">
+              <span class="cover-sound-text">{{ s.grapheme }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if child_name %}
+        <div class="cover-child-name">This book belongs to {{ child_name }}</div>
+      {% endif %}
+    </div>
+
+    <div class="cover-bottom-band"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SOUND + WORD PAGES (per sound group)
+     Page numbers tracked via Jinja namespace (cover = 1, not shown)
+     ═══════════════════════════════════════ -->
+{% set ns = namespace(p=1) %}
+{% for sound in sounds %}
+
+  <!-- Sound introduction page -->
+  {% set ns.p = ns.p + 1 %}
+  <div class="page sound-page">
+    <div class="page-inner">
+      <div class="sound-page-heading">Today we are learning</div>
+
+      <div class="sound-large-display">
+        <span class="sound-large-text">{{ sound.grapheme }}</span>
+      </div>
+
+      <div class="sound-instruction">
+        {{ sound.instruction | default("Say the sound. Can you think of a word with this sound?") }}
+      </div>
+
+      {% if comparison_sounds and comparison_sounds | length > 0 %}
+        <div class="comparison-section">
+          <div class="comparison-label">This sound can also be spelled:</div>
+          <div class="comparison-sounds-row">
+            {% for cs in comparison_sounds %}
+              {% if cs != sound.grapheme %}
+                <span class="comparison-chip">{{ cs }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="content-page-number">{{ ns.p }}</div>
+  </div>
+
+  <!-- Word pages for this sound -->
+  {% for word in sound.words %}
+    {% set ns.p = ns.p + 1 %}
+    <div class="page word-page">
+      <div class="page-inner">
+        <div class="word-photo-frame">
+          {% if word.photo %}
+            <img src="{{ word.photo }}" alt="{{ word.word }}">
+          {% else %}
+            <div class="word-photo-placeholder">
+              Photo: {{ word.word }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="word-display">
+          <div class="word-text">{{ word.word_html | safe }}</div>
+          <div class="page-number">{{ ns.p }}</div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endfor %}
+
+<!-- ═══════════════════════════════════════
+     READ THEM ALL PAGE
+     ═══════════════════════════════════════ -->
+{% set ns.p = ns.p + 1 %}
+<div class="page read-all-page">
+  <div class="page-inner">
+    <div class="read-all-heading">Read Them All!</div>
+
+    <div class="read-all-list">
+      {% for sound in sounds %}
+        {% for word in sound.words %}
+          <div class="read-all-item">
+            <div class="read-all-tick-box"></div>
+            <span class="read-all-word">{{ word.word_html | safe }}</span>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="content-page-number">{{ ns.p }}</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     BACK COVER
+     ═══════════════════════════════════════ -->
+<div class="page back-cover">
+  <div class="page-inner">
+    <div class="back-top-band"></div>
+
+    <div class="back-body">
+      <div class="back-well-done">
+        Well done!<br>
+        {% if sounds | length == 1 %}
+          You can read <em>{{ sounds[0].grapheme }}</em> words!
+        {% else %}
+          You can read
+          {% for s in sounds %}
+            {% if loop.last and not loop.first %} and {% elif not loop.first %}, {% endif %}
+            <em>{{ s.grapheme }}</em>
+          {% endfor %}
+          words!
+        {% endif %}
+      </div>
+
+      <div class="back-sounds-learned">Sounds in this book:</div>
+      <div class="back-sounds-chips">
+        {% for s in sounds %}
+          <span class="back-sound-chip">{{ s.grapheme }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="back-bottom-band">
+      <span class="back-brand">MyPhonicsBooks</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

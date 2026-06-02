@@ -1,0 +1,6 @@
+
+[notice] A new release of pip is available: 25.0.1 -> 26.1.1
+[notice] To update, run: C:\Users\ASUS\myphonicsbooks\myphonics_books\venv\Scripts\python.exe -m pip install --upgrade pip
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AttributeError: module 'pypdfium2' has no attribute '__version__'
