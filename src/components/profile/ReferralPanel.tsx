@@ -116,8 +116,8 @@ export function ReferralPanel() {
             </div>
             <p className="text-xs text-white/85 leading-snug">
               {expanded
-                ? 'Share MyPhonicsBooks and earn 50% on every Founders Club spot you bring in.'
-                : `Earn 50% per Founders Club referral · ${row.total_clicks} clicks · ${row.total_conversions} sales`}
+                ? 'Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in.'
+                : `Earn 50% per referral · ${row.total_clicks} clicks · ${row.total_conversions} sales`}
             </p>
           </div>
           <ChevronDown className={`w-5 h-5 shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} />

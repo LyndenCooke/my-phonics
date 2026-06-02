@@ -31,7 +31,7 @@ const FAQS: Array<{ q: string; a: string }> = [
   },
   {
     q: 'How do refunds work?',
-    a: "Subscriptions can be cancelled any time from your account — you keep access until the period ends. For one-time purchases (Founders Club, full bundle), email us within 14 days for a full refund.",
+    a: "Subscriptions can be cancelled any time from your account — you keep access until the period ends. For one-time purchases (e.g. the full bundle or lifetime access), email us within 14 days for a full refund.",
   },
   {
     q: 'Why does my widget / home-screen app look out of date?',

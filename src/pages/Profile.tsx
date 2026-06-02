@@ -9,8 +9,6 @@
  *  5. Account list: Download History / Account Settings / Help & Support / Sign Out
  *
  * Existing widgets we keep because they're load-bearing:
- *  - FoundersReviewPrompt (24h / 1week feedback gate, pinned at top)
- *  - FoundersClubBanner (countdown for the limited-spots offer)
  *  - ChildProgress (heat map + sound coverage — moved into Parent View)
  */
 import { useState } from 'react';
@@ -29,7 +27,6 @@ import {
 import { LEVELS } from '@/lib/types';
 import { getUnreadMessageCount } from '@/lib/nudges';
 import { useNotifications } from '@/hooks/useNotifications';
-import FoundersClubBanner from '@/components/FoundersClubBanner';
 
 // Notification icon → Lucide component. New kinds added here as the
 // store grows; default falls back to Sparkles so a missing mapping
@@ -134,9 +131,6 @@ export default function Profile() {
             <Settings className="w-4 h-4 text-foreground" />
           </Link>
         </div>
-
-        {/* (Founders Club review prompt now pops up as a global modal —
-            mounted in Layout. No inline slot here.) */}
 
         {/* 2. Child card */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
@@ -245,8 +239,6 @@ export default function Profile() {
             </div>
           </section>
         )}
-
-        <FoundersClubBanner variant="inline" />
 
         {/* 4. Parent controls */}
         <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">

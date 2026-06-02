@@ -1,10 +1,10 @@
 /**
  * AddToHomeScreenPrompt — fires at the highest-conversion moment (right
- * after a Founders Club purchase) to lock in the daily-use habit by
+ * after a purchase) to lock in the daily-use habit by
  * getting the customer to put the app on their home screen.
  *
  * Why now and not later:
- *   - They've just paid £1. Commitment is at its peak.
+ *   - They've just paid. Commitment is at its peak.
  *   - If they don't install, they'll forget the URL by tomorrow.
  *   - Once on the home screen, opening it is one tap. The kid never
  *     has to type a URL.
