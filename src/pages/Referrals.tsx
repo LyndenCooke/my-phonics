@@ -36,8 +36,8 @@ export default function Referrals() {
             <h2 className="font-display text-xl font-extrabold">Invite friends, earn rewards</h2>
           </div>
           <p className="text-sm text-white/90 leading-relaxed">
-            Share MyPhonicsBooks and earn 50% on every Founders Club spot you bring in. Friends get a free book,
-            you get credit — everyone wins.
+            Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in —
+            recurring monthly, or one-time on lifetime. Everyone wins.
           </p>
         </div>
 

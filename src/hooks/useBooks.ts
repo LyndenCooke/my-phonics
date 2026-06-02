@@ -126,8 +126,8 @@ export function useBookPages(bookId: string | null) {
 
 /**
  * Returns the user's purchase history with derived flags so callers don't
- * have to repeat membership-checking logic. The Founders Club banner /
- * shop sort order / "upgrade" CTAs all key off these flags.
+ * have to repeat membership-checking logic. Shop sort order / "upgrade"
+ * CTAs all key off these flags.
  */
 export function usePurchases() {
   const { user } = useAuth();

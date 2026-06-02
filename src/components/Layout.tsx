@@ -1,15 +1,10 @@
-import { ReactNode, lazy, Suspense } from 'react';
+import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, ClipboardList, Tag, User, LogIn, Home } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
-
-// Founders feedback modal — auto-pops globally when a review is due.
-// Component handles all gating internally (returns null when nothing to
-// show, when snoozed, or when the user is signed-out).
-const FoundersReviewPrompt = lazy(() => import('@/components/FoundersReviewPrompt'));
 
 // Top nav (and mobile bottom-nav) — 5 tabs. Resources merged into Library
 // as a Books/Worksheets sub-toggle, freeing the slot for Assess + Pricing.
@@ -134,12 +129,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         </nav>,
         document.body
       )}
-
-      {/* Global founders-feedback modal. Handles its own gating internally
-       *  (signed-out, snoozed, no review due → renders null). */}
-      <Suspense fallback={null}>
-        <FoundersReviewPrompt />
-      </Suspense>
     </div>
   );
 }
