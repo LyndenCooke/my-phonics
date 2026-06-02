@@ -1,3 +1,6 @@
+# Claude Code local state (worktrees, plans, etc. — never commit)
+.claude/
+
 # Logs
 logs
 *.log
