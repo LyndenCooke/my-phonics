@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, Star, ChevronRight, Volume2, Trophy, GraduationCap } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
-import FoundersClubBanner from '@/components/FoundersClubBanner';
 
 /* ─── Book cover data for hero carousel ─── */
 const SHOWCASE_BOOKS = [
@@ -148,13 +147,6 @@ function HeroSection({ onAssess, onFreeBook }: { onAssess: () => void; onFreeBoo
               </button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">3-minute check or pick a level — your choice. No card required.</p>
-
-            {/* Founders Club banner — sits below the primary CTAs so the
-             *  free-assessment path is the main attraction, but the £1
-             *  offer is impossible to miss. Hides itself once expired. */}
-            <div className="mt-6">
-              <FoundersClubBanner variant="hero" />
-            </div>
           </div>
 
           {/* Book carousel */}
