@@ -1,5 +1,6 @@
-# Claude Code local state (worktrees, plans, etc. — never commit)
-.claude/
+# Claude Code transient worktrees (embedded git repos — never commit).
+# Other .claude/ content (skills, guidelines) stays tracked intentionally.
+.claude/worktrees/
 
 # Logs
 logs
