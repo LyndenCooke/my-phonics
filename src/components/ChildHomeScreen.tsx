@@ -152,12 +152,13 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   // bottom — adults reach Parent Dashboard via the Profile tab.
   return (
     <div
-      className="px-3 lg:px-6 pt-2 pb-3 max-w-xl lg:max-w-5xl mx-auto h-full flex flex-col gap-2.5 lg:h-auto lg:grid lg:grid-cols-2 lg:gap-5 lg:items-start"
+      className="px-3 lg:px-10 xl:px-14 pt-2 lg:pt-8 pb-3 lg:pb-10 max-w-xl lg:max-w-6xl mx-auto h-full flex flex-col gap-2.5 lg:min-h-[calc(100vh-4rem)] lg:h-auto lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-8 lg:items-stretch lg:content-center"
       style={{ fontFamily: "'Andika', sans-serif", background: '#fff8fb' }}
     >
       {/* Left column on laptop: level card + current book stacked. On mobile
-          this is just the normal vertical flow. */}
-      <div className="flex flex-col gap-2.5 lg:gap-5 shrink-0">
+          this is just the normal vertical flow. On laptop the column stretches
+          full height and the hero grows to fill it (no stranded top block). */}
+      <div className="flex flex-col gap-2.5 lg:gap-6 shrink-0 lg:h-full">
       {/* ── 1. Level card — compact ─────────────────────────────── */}
       <section className="rounded-2xl bg-gradient-to-b from-white to-pink-50 border border-pink-200/60 px-3 py-2.5 shadow-[0_8px_20px_rgba(23,23,23,0.04)] shrink-0">
         <div className="flex items-center gap-3">
@@ -209,14 +210,18 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         </div>
       </section>
 
-      {/* ── 2. Current book card — compact, side-by-side ─────────── */}
+      {/* ── 2. Current book card — compact, side-by-side ───────────
+          Mobile keeps its warm pink card. On laptop (lg+) we drop the
+          heavy pink glow + flower decoration for a clean, refined white
+          card (subtle border + shadow-card) and let it grow to fill the
+          remaining column height so the layout reads as balanced. */}
       <section
-        className="rounded-2xl bg-gradient-to-b from-white to-pink-50/80 border-2 border-primary/35 p-3 shadow-[0_14px_30px_rgba(232,61,131,0.14)] shrink-0"
+        className="rounded-2xl bg-gradient-to-b from-white to-pink-50/80 border-2 border-primary/35 p-3 shadow-[0_14px_30px_rgba(232,61,131,0.14)] shrink-0 lg:flex-1 lg:flex lg:flex-col lg:justify-center lg:bg-card lg:bg-none lg:border lg:border-border lg:shadow-card lg:rounded-3xl lg:p-6"
       >
-        <div className="flex gap-3 items-stretch">
+        <div className="flex gap-3 items-stretch lg:gap-5">
           {/* Real PDF cover, big */}
           {coverUrl && (
-            <div className="w-[40%] aspect-[3/4] rounded-xl overflow-hidden ring-2 ring-white shadow-[0_8px_18px_rgba(0,0,0,0.12)] shrink-0">
+            <div className="w-[40%] lg:w-[44%] aspect-[3/4] rounded-xl lg:rounded-2xl overflow-hidden ring-2 ring-white lg:ring-1 lg:ring-border shadow-[0_8px_18px_rgba(0,0,0,0.12)] lg:shadow-card shrink-0">
               <img src={coverUrl} alt={heroBook.title} className="w-full h-full object-cover" />
             </div>
           )}
@@ -224,10 +229,10 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
           <div className="flex-1 min-w-0 flex flex-col justify-between">
             {/* Top: YOUR BOOK + title + reads */}
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary-ink flex items-center gap-1">
-                <span aria-hidden>✿</span> Your Book <span aria-hidden>✿</span>
+              <p className="text-[10px] lg:text-[11px] font-extrabold uppercase tracking-[0.18em] text-primary flex items-center gap-1">
+                <span aria-hidden className="lg:hidden">✿</span> Your Book <span aria-hidden className="lg:hidden">✿</span>
               </p>
-              <h2 className="font-display text-lg font-extrabold text-foreground leading-tight mt-0.5 line-clamp-2">
+              <h2 className="font-display text-lg lg:text-2xl font-extrabold text-foreground leading-tight mt-0.5 lg:mt-1 line-clamp-2">
                 {heroBook.title}
               </h2>
 
@@ -281,14 +286,17 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
       </section>
       </div>
 
-      {/* ── 3. Reading Path — compact ───────────────────────────── */}
+      {/* ── 3. Reading Path — compact ───────────────────────────────
+          On laptop this becomes the right column: a clean white panel
+          that fills the column height and lays the books out in a tidy,
+          uniform grid (instead of a stranded scroll strip). */}
       {totalInLevel > 0 && (
-        <section className="flex-1 min-h-0 flex flex-col">
-          <div className="flex items-center gap-2 px-1 mb-1.5 shrink-0">
+        <section className="flex-1 min-h-0 flex flex-col lg:h-full lg:min-h-0 lg:bg-card lg:border lg:border-border lg:shadow-card lg:rounded-3xl lg:p-6">
+          <div className="flex items-center gap-2 px-1 mb-1.5 lg:mb-4 shrink-0">
             <span aria-hidden>🗺️</span>
-            <h3 className="font-display text-sm font-extrabold text-foreground">Your Reading Path</h3>
+            <h3 className="font-display text-sm lg:text-xl font-extrabold text-foreground">Your Reading Path</h3>
           </div>
-          <div className="flex gap-2 overflow-x-auto -mx-3 px-3 pb-1 snap-x scroll-smooth no-scrollbar lg:flex-wrap lg:overflow-x-visible lg:mx-0 lg:px-0">
+          <div className="flex gap-2 overflow-x-auto -mx-3 px-3 pb-1 snap-x scroll-smooth no-scrollbar lg:grid lg:grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] lg:gap-4 lg:overflow-x-visible lg:mx-0 lg:px-0 lg:content-start">
             {levelBooks.map((entry, i) => {
               const { book, state, stamps: s } = entry;
               const cover = getCoverImageUrl(book.subLevel, book.coverImageUrl);
@@ -304,7 +312,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                       : isCurrent ? `${book.title} — current book`
                       : `${book.title} — locked, finish your current book first`
                   }
-                  className={`relative w-24 snap-start text-left rounded-xl bg-white p-1.5 transition-all duration-200 shrink-0 ${
+                  className={`relative w-24 lg:w-auto snap-start text-left rounded-xl lg:rounded-2xl bg-white p-1.5 lg:p-2 transition-all duration-200 shrink-0 lg:shrink ${
                     isCurrent
                       ? 'border-2 border-primary shadow-[0_8px_18px_rgba(232,61,131,0.18)]'
                       : isMastered

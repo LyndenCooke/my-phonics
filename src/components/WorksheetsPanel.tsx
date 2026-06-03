@@ -2,6 +2,42 @@ import { SoundMatsResources } from '@/components/SoundMatsResources';
 import { LEVELS } from '@/lib/types';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
+import { toast } from 'sonner';
+
+// Force a real PDF file save instead of letting the browser navigate to the
+// URL. A plain `<a href="/worksheets/…​.pdf" target="_blank">` is unreliable:
+// on the installed PWA / mobile the SPA navigation (and Vercel's index.html
+// catch-all) can intercept the request and hand back the app's HTML shell
+// instead of the PDF — which is exactly the "opens as HTML, not PDF" bug.
+// Fetching the file as a blob and clicking a hidden <a download> mirrors how
+// book PDFs are saved in Index.tsx and guarantees the actual binary.
+async function downloadPdf(href: string, filename: string) {
+  try {
+    const res = await fetch(href);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const type = res.headers.get('content-type') ?? '';
+    const blob = await res.blob();
+    // If the catch-all served the SPA shell, we got text/html, not a PDF.
+    if (type.includes('text/html') || blob.type.includes('text/html')) {
+      throw new Error('not a pdf');
+    }
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  } catch {
+    toast.error("That worksheet couldn't be downloaded. Please try again.");
+  }
+}
+
+function pdfFilename(title: string): string {
+  const base = title.replace(/[^\w\s-]/g, '').trim() || 'worksheet';
+  return `${base}.pdf`;
+}
 
 const CATEGORIES = [
   { id: 'sound-mats', label: 'Sound mats' },
@@ -143,12 +179,10 @@ const L1_BOOKS: BookFolder[] = [
 
 function SheetCard({ sheet }: { sheet: Sheet }) {
   return (
-    <a
-      href={sheet.href}
-      download
-      target="_blank"
-      rel="noopener"
-      className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col"
+    <button
+      type="button"
+      onClick={() => downloadPdf(sheet.href, pdfFilename(sheet.title))}
+      className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-left w-full"
     >
       <div className="aspect-[1/1.4142] overflow-hidden bg-muted">
         {sheet.thumb ? (
@@ -170,7 +204,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
         <p className="text-[11px] font-bold text-foreground truncate flex-1">{sheet.title}</p>
         <Download className="w-3 h-3 text-muted-foreground opacity-60 group-hover:opacity-100 shrink-0" />
       </div>
-    </a>
+    </button>
   );
 }
 
@@ -221,16 +255,14 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) 
                 <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
                   <p className="text-xs font-bold text-foreground uppercase tracking-wider">{g.label}</p>
                   {g.bundleHref && (
-                    <a
-                      href={g.bundleHref}
-                      download
-                      target="_blank"
-                      rel="noopener"
+                    <button
+                      type="button"
+                      onClick={() => downloadPdf(g.bundleHref!, pdfFilename(`${book.title} - ${g.label}`))}
                       className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 active:scale-[0.97] transition-all"
                     >
                       <Download className="w-3.5 h-3.5" />
                       {g.bundleLabel ?? 'Download all'}
-                    </a>
+                    </button>
                   )}
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -258,9 +290,17 @@ export default function WorksheetsPanel() {
         Free printable phonics resources for parents and teachers. Sound mats, posters, and worksheets — all aligned with the UK Letters and Sounds curriculum.
       </p>
 
+      {/* Category jump bar. Sticks directly under the app header on mobile
+       *  (header ~64px) and tablet (~68px). On lg+ there is NO top header
+       *  (the chrome is a left sidebar), so it must pin to the very top of
+       *  the viewport — otherwise it floats ~68px down with page content
+       *  scrolling through the gap above it (the "half-stuck strip" bug).
+       *  The negative margins are matched to each breakpoint's container
+       *  padding (px-4 on mobile/tablet, lg:px-8) so the blurred strip spans
+       *  the full content width instead of leaving an inset edge. */}
       <nav
         aria-label="Resource categories"
-        className="flex gap-2 overflow-x-auto pb-1 mb-8 scrollbar-hide sticky top-[60px] md:top-[68px] z-30 bg-background/85 backdrop-blur-md -mx-4 px-4 py-2 border-b border-border"
+        className="flex gap-2 overflow-x-auto pb-1 mb-8 scrollbar-hide sticky top-[64px] md:top-[68px] lg:top-0 z-30 bg-background/85 backdrop-blur-md -mx-4 px-4 lg:-mx-8 lg:px-8 py-2 border-b border-border"
       >
         {CATEGORIES.map((c) => (
           <a
