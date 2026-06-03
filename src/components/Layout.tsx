@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, ClipboardList, Tag, User, LogIn, Home } from 'lucide-react';
+import { BookOpen, ClipboardList, Tag, User, LogIn, Home, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -18,6 +18,19 @@ const NAV = [
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const },
 ];
 
+// Persists the desktop (lg+) sidebar collapsed/expanded preference across
+// reloads. Guarded for SSR / private-mode storage exceptions.
+const SIDEBAR_COLLAPSED_KEY = 'mpb:sidebar-collapsed';
+
+function readSidebarCollapsed(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { user } = useAuth();
@@ -26,6 +39,22 @@ export default function Layout({ children }: { children: ReactNode }) {
   // (download ready, etc.). Per-user localStorage; once a server-side
   // parent_messages table lands, merge its count in here too.
   const { unreadCount: unreadMessages } = useNotifications();
+
+  // Desktop sidebar collapse state (lg+ only). Mobile/tablet chromes ignore
+  // this. Persisted so the rail/full choice survives reloads.
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(readSidebarCollapsed);
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed((prev) => {
+      const next = !prev;
+      try {
+        window.localStorage.setItem(SIDEBAR_COLLAPSED_KEY, next ? '1' : '0');
+      } catch {
+        /* ignore storage errors (private mode, quota) */
+      }
+      return next;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -89,7 +118,11 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Main content. pb clears the mobile bottom-nav (on iOS the nav adds
        *  its own safe-area padding, so content only needs the 80px height);
        *  lg:pl-60 clears the fixed desktop sidebar. */}
-      <main className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4 lg:pl-60">
+      <main
+        className={`flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4 transition-[padding] duration-300 ease-in-out ${
+          sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-60'
+        }`}
+      >
         {children}
       </main>
 
@@ -99,22 +132,48 @@ export default function Layout({ children }: { children: ReactNode }) {
        *  transformed ancestor instead of the viewport — the sidebar would
        *  otherwise scroll with the page. Rendering onto body sidesteps it. */}
       {typeof document !== 'undefined' && createPortal(
-        <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-card border-r border-border no-select">
-          <Link
-            to="/library"
-            className="flex items-center gap-2.5 px-5 py-5 hover:opacity-80 transition-opacity shrink-0"
-            aria-label="Go to Learning Hub home"
-          >
-            <img
-              src="/logo/mpb-mark-transparent.png"
-              alt=""
-              className="w-9 h-9 object-contain"
-              draggable={false}
-            />
-            <span className="font-display text-lg font-extrabold text-foreground tracking-tight">
-              My<span className="text-primary-ink">Phonics</span>Books
-            </span>
-          </Link>
+        <aside
+          className={`hidden lg:flex fixed inset-y-0 left-0 z-40 flex-col bg-card border-r border-border no-select transition-[width] duration-300 ease-in-out ${
+            sidebarCollapsed ? 'w-16' : 'w-60'
+          }`}
+        >
+          {/* Logo + collapse toggle. When collapsed the wordmark is hidden and
+           *  the logo mark centres in the rail; the toggle sits beneath it. */}
+          <div className={`flex shrink-0 ${sidebarCollapsed ? 'flex-col items-center gap-2 px-2 py-4' : 'items-center justify-between pl-5 pr-3 py-5'}`}>
+            <Link
+              to="/library"
+              className={`flex items-center gap-2.5 hover:opacity-80 transition-opacity min-w-0 ${sidebarCollapsed ? 'justify-center' : ''}`}
+              aria-label="Go to Learning Hub home"
+              title={sidebarCollapsed ? 'MyPhonicsBooks — Home' : undefined}
+            >
+              <img
+                src="/logo/mpb-mark-transparent.png"
+                alt=""
+                className="w-9 h-9 object-contain shrink-0"
+                draggable={false}
+              />
+              {!sidebarCollapsed && (
+                <span className="font-display text-lg font-extrabold text-foreground tracking-tight truncate">
+                  My<span className="text-primary-ink">Phonics</span>Books
+                </span>
+              )}
+            </Link>
+
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              aria-expanded={!sidebarCollapsed}
+              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            >
+              {sidebarCollapsed ? (
+                <PanelLeftOpen className="w-5 h-5" strokeWidth={2} />
+              ) : (
+                <PanelLeftClose className="w-5 h-5" strokeWidth={2} />
+              )}
+            </button>
+          </div>
 
           <nav className="flex-1 px-3 mt-1 space-y-1">
             {NAV.map(({ path, label, icon: Icon, badgeKey }) => {
@@ -124,7 +183,11 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Link
                   key={path}
                   to={path}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                  aria-label={sidebarCollapsed ? label : undefined}
+                  title={sidebarCollapsed ? label : undefined}
+                  className={`flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                    sidebarCollapsed ? 'justify-center px-0' : 'px-3'
+                  } ${
                     isActive
                       ? 'bg-primary/10 text-primary-ink'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
@@ -138,20 +201,24 @@ export default function Layout({ children }: { children: ReactNode }) {
                       </span>
                     )}
                   </span>
-                  {label}
+                  {!sidebarCollapsed && label}
                 </Link>
               );
             })}
           </nav>
 
           {!user && (
-            <div className="p-3">
+            <div className={sidebarCollapsed ? 'p-2' : 'p-3'}>
               <Link
                 to="/auth"
-                className="flex items-center justify-center gap-1.5 text-sm font-bold text-white gradient-primary px-3 py-2.5 rounded-xl shadow-button hover:opacity-90 transition-opacity"
+                aria-label="Sign in"
+                title={sidebarCollapsed ? 'Sign in' : undefined}
+                className={`flex items-center justify-center gap-1.5 text-sm font-bold text-white gradient-primary rounded-xl shadow-button hover:opacity-90 transition-opacity ${
+                  sidebarCollapsed ? 'px-0 py-2.5' : 'px-3 py-2.5'
+                }`}
               >
-                <LogIn className="w-4 h-4" />
-                Sign In
+                <LogIn className="w-4 h-4 shrink-0" />
+                {!sidebarCollapsed && 'Sign In'}
               </Link>
             </div>
           )}

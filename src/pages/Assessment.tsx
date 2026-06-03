@@ -706,85 +706,95 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   if (stage === 'welcome') {
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
-          <h2 className="font-display text-[28px] font-extrabold text-foreground mb-2 tracking-tight">
-            Phonics Assessment
-          </h2>
-          <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-xs mx-auto">
-            Find your child's reading level. Pick a quick check or a full test below.
-          </p>
+        {/* On lg+ the welcome reflows into a two-column layout: the intro +
+            "how it works" + "what you'll get" sit on the left, and the test
+            chooser sits on the right so it's visible without scrolling. Below
+            lg the original single centred column is preserved untouched. */}
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-5xl mx-auto text-center lg:text-left lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:items-start lg:pt-12">
+          {/* ── Left column: intro + info ── */}
+          <div>
+            <h2 className="font-display text-[28px] lg:text-[40px] lg:leading-[1.1] font-extrabold text-foreground mb-2 tracking-tight">
+              Phonics Assessment
+            </h2>
+            <p className="text-sm lg:text-base text-muted-foreground mb-6 leading-relaxed max-w-xs lg:max-w-md mx-auto lg:mx-0">
+              Find your child's reading level. Pick a quick check or a full test.
+            </p>
 
-          <div className="bg-tint-pink rounded-2xl p-5 mb-6 text-left">
-            <p className="text-sm font-bold text-foreground mb-3">How it works</p>
-            <div className="space-y-2.5">
-              {[
-                { icon: '1', label: 'A few quick questions', desc: 'Tell us about your child' },
-                { icon: '2', label: 'Quick check', desc: 'Tick which words your child can read' },
-                { icon: '3', label: 'Sound test', desc: 'We test every sound at their level' },
-                { icon: '4', label: 'Results', desc: 'See which sounds they know and need to learn' },
-              ].map(({ icon, label, desc }, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-level-1 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{icon}</span>
-                  <div>
-                    <span className="text-xs font-bold text-foreground">{label}</span>
-                    <span className="text-xs text-muted-foreground ml-1">— {desc}</span>
+            <div className="bg-tint-pink rounded-2xl p-5 mb-6 text-left">
+              <p className="text-sm font-bold text-foreground mb-3">How it works</p>
+              <div className="space-y-2.5">
+                {[
+                  { icon: '1', label: 'A few quick questions', desc: 'Tell us about your child' },
+                  { icon: '2', label: 'Quick check', desc: 'Tick which words your child can read' },
+                  { icon: '3', label: 'Sound test', desc: 'We test every sound at their level' },
+                  { icon: '4', label: 'Results', desc: 'See which sounds they know and need to learn' },
+                ].map(({ icon, label, desc }, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-level-1 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{icon}</span>
+                    <div>
+                      <span className="text-xs font-bold text-foreground">{label}</span>
+                      <span className="text-xs text-muted-foreground ml-1">— {desc}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left">
+              <p className="text-xs font-bold text-foreground mb-2">What you'll get at the end</p>
+              <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <li className="flex gap-2"><span>✓</span><span>Your child's reading level (L1–L6)</span></li>
+                <li className="flex gap-2"><span>✓</span><span>One free book matched to that level</span></li>
+                <li className="flex gap-2"><span>✓</span><span>A simple "next steps" plan</span></li>
+              </ul>
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left">
-            <p className="text-xs font-bold text-foreground mb-2">What you'll get at the end</p>
-            <ul className="space-y-1.5 text-xs text-muted-foreground">
-              <li className="flex gap-2"><span>✓</span><span>Your child's reading level (L1–L6)</span></li>
-              <li className="flex gap-2"><span>✓</span><span>One free book matched to that level</span></li>
-              <li className="flex gap-2"><span>✓</span><span>A simple "next steps" plan</span></li>
-            </ul>
-          </div>
+          {/* ── Right column: test chooser (sticky on lg so it stays in view) ── */}
+          <div className="lg:sticky lg:top-12">
+            <p className="text-xs text-muted-foreground mb-4 lg:mb-5">
+              Sit with your child. No credit card needed. 3 to 10 minutes depending on the test you pick.
+            </p>
 
-          <p className="text-xs text-muted-foreground mb-4">
-            Sit with your child. No credit card needed. 3 to 10 minutes depending on the test you pick.
-          </p>
-
-          {/* Two-button mode picker — see AssessmentMode type. The Level
-              Check entry (?level=N) bypasses this picker entirely. */}
-          <p className="text-xs font-bold text-foreground mb-3 text-left">Choose a test:</p>
-          <div className="space-y-3">
-            <button
-              onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
-              className="w-full p-4 rounded-2xl border-2 border-primary bg-card text-left active:scale-[0.98] transition-transform duration-200 shadow-card"
-            >
-              <div className="flex items-start gap-3">
-                <Zap className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-extrabold text-foreground">Quick Check · 3 min</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Adaptive sound test to find your child's level fast.
-                  </p>
+            {/* Two-button mode picker — see AssessmentMode type. The Level
+                Check entry (?level=N) bypasses this picker entirely. */}
+            <p className="text-xs font-bold text-foreground mb-3 text-left">Choose a test:</p>
+            <div className="space-y-3">
+              <button
+                onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
+                className="w-full p-4 lg:p-5 rounded-2xl border-2 border-primary bg-card text-left active:scale-[0.98] lg:hover:shadow-button transition-all duration-200 shadow-card"
+              >
+                <div className="flex items-start gap-3">
+                  <Zap className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm lg:text-base font-extrabold text-foreground">Quick Check · 3 min</p>
+                    <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
+                      Adaptive sound test to find your child's level fast.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </button>
-            <button
-              onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
-              className="w-full p-4 rounded-2xl border-2 border-border bg-card text-left active:scale-[0.98] transition-transform duration-200 shadow-card"
-            >
-              <div className="flex items-start gap-3">
-                <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <p className="text-sm font-extrabold text-foreground">Full Test · ~10 min</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Tests sounds, real words, alien words and tricky words at every level.
-                  </p>
+              </button>
+              <button
+                onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
+                className="w-full p-4 lg:p-5 rounded-2xl border-2 border-border bg-card text-left active:scale-[0.98] lg:hover:border-primary/50 lg:hover:shadow-card transition-all duration-200 shadow-card"
+              >
+                <div className="flex items-start gap-3">
+                  <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm lg:text-base font-extrabold text-foreground">Full Test · ~10 min</p>
+                    <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
+                      Tests sounds, real words, alien words and tricky words at every level.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </button>
-          </div>
+              </button>
+            </div>
 
-          <p className="mt-4 text-[10px] text-muted-foreground">
-            Your answers are private. See our{' '}
-            <a href="/privacy" className="underline">privacy policy</a>.
-          </p>
+            <p className="mt-4 text-[10px] text-muted-foreground">
+              Your answers are private. See our{' '}
+              <a href="/privacy" className="underline">privacy policy</a>.
+            </p>
+          </div>
         </div>
       </Wrap>
     );
@@ -825,7 +835,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-lg mx-auto lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
           {/* Progress */}
           <div className="flex items-center gap-2 mb-1">
             <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground">
@@ -1035,11 +1045,11 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
-          <h2 className="text-xl font-extrabold text-foreground mb-2 tracking-tight">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-xl mx-auto text-center lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
+          <h2 className="text-xl lg:text-3xl font-extrabold text-foreground mb-2 tracking-tight">
             Quick Check
           </h2>
-          <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          <p className="text-sm lg:text-base text-muted-foreground mb-6 leading-relaxed">
             Which of these words can your child read aloud?<br />
             Tap the speaker to hear each word, then tick the ones they know.
           </p>
@@ -1048,10 +1058,10 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             {SCREENING_WORDS.map(({ level, word }) => (
               <div
                 key={level}
-                className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer ${
+                className={`flex items-center gap-3 p-4 lg:p-5 rounded-xl border-2 transition-all cursor-pointer ${
                   screeningChecks[level]
                     ? `${LEVEL_BORDERS[level]} bg-green-50 dark:bg-green-950/20`
-                    : 'border-border bg-card'
+                    : 'border-border bg-card lg:hover:border-primary/40'
                 }`}
                 onClick={() => setScreeningChecks(prev => ({ ...prev, [level]: !prev[level] }))}
               >
@@ -1060,7 +1070,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 }`}>
                   {screeningChecks[level] && <CheckCircle2 className="w-4 h-4 text-white" />}
                 </div>
-                <span className="font-child text-2xl font-bold text-foreground flex-1 text-left">{word}</span>
+                <span className="font-child text-2xl lg:text-3xl font-bold text-foreground flex-1 text-left">{word}</span>
                 <div onClick={e => e.stopPropagation()}>
                   <WordPlayer word={word} size="md" />
                 </div>
@@ -1073,7 +1083,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
           <button
             onClick={handleScreeningContinue}
-            className="w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2"
+            className="w-full py-4 lg:py-5 rounded-xl gradient-primary text-primary-foreground font-bold text-base lg:text-lg shadow-button active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2"
           >
             Continue <ArrowRight className="w-4 h-4" />
           </button>
@@ -1122,13 +1132,16 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
+        {/* On lg+ the quiz is vertically centred in the viewport and sits in a
+            comfortably-sized column so the question card uses the space without
+            feeling stretched. Below lg the original top-aligned column stays. */}
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-xl mx-auto text-center lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
           {/* Header */}
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-xs font-bold uppercase tracking-wide ${LEVEL_TEXT[currentLevel]}`}>
+            <span className={`text-xs lg:text-sm font-bold uppercase tracking-wide ${LEVEL_TEXT[currentLevel]}`}>
               Level {currentLevel}
             </span>
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
+            <span className="text-xs lg:text-sm font-bold text-muted-foreground uppercase tracking-wide">
               {stageLabel}
             </span>
           </div>
@@ -1140,7 +1153,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <p className="text-[10px] text-muted-foreground mb-4">
+          <p className="text-[10px] lg:text-xs text-muted-foreground mb-4">
             {testIdx + 1} of {testItems.length}
             {stage === 'probe-up' && (
               <span className="ml-1 text-blue-500">
@@ -1150,16 +1163,16 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           </p>
 
           {/* Instruction */}
-          <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+          <p className="text-xs lg:text-sm text-muted-foreground mb-4 leading-relaxed">
             {stageInstruction}
           </p>
 
           {/* Item card */}
-          <div className={`bg-card border-2 ${LEVEL_BORDERS[currentLevel]} rounded-2xl p-10 mb-6 shadow-card`}>
-            <p className="font-child text-5xl font-bold text-foreground">
+          <div className={`bg-card border-2 ${LEVEL_BORDERS[currentLevel]} rounded-2xl p-10 lg:p-14 mb-6 shadow-card`}>
+            <p className="font-child text-5xl lg:text-7xl font-bold text-foreground">
               {currentItem.item}
             </p>
-            <div className="mt-6 flex justify-center">
+            <div className="mt-6 lg:mt-8 flex justify-center">
               {isSoundRound ? (
                 <PhonemePlayer grapheme={getSoundKey(currentItem.item)} size="lg" />
               ) : (
@@ -1167,24 +1180,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               )}
             </div>
             {isAlienRound && (
-              <p className="mt-3 text-xs text-muted-foreground italic">(made-up word)</p>
+              <p className="mt-3 text-xs lg:text-sm text-muted-foreground italic">(made-up word)</p>
             )}
           </div>
 
           {/* Mark buttons */}
-          <p className="text-xs text-muted-foreground mb-3">Did they get it right?</p>
+          <p className="text-xs lg:text-sm text-muted-foreground mb-3">Did they get it right?</p>
           <div className="flex gap-3">
             <button
               onClick={() => handleMark(false)}
-              className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl bg-tint-orange border border-border text-foreground font-bold text-base active:scale-95 transition-transform duration-200"
+              className="flex-1 flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl bg-tint-orange border border-border text-foreground font-bold text-base lg:text-lg active:scale-95 lg:hover:brightness-95 transition-all duration-200"
             >
-              <XCircle className="w-5 h-5 text-destructive" /> Not yet
+              <XCircle className="w-5 h-5 lg:w-6 lg:h-6 text-destructive" /> Not yet
             </button>
             <button
               onClick={() => handleMark(true)}
-              className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl bg-tint-green border border-border text-foreground font-bold text-base active:scale-95 transition-transform duration-200"
+              className="flex-1 flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl bg-tint-green border border-border text-foreground font-bold text-base lg:text-lg active:scale-95 lg:hover:brightness-95 transition-all duration-200"
             >
-              <CheckCircle2 className="w-5 h-5 text-level-3" /> Correct
+              <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6 text-level-3" /> Correct
             </button>
           </div>
 
@@ -1206,16 +1219,16 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   if (stage === 'level-passed') {
     return (
       <Wrap>
-        <div className="px-4 pt-12 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
-          <div className={`${LEVEL_COLORS[currentLevel]} text-white rounded-2xl p-8 mb-6 shadow-card`}>
-            <Trophy className="w-12 h-12 mx-auto mb-3 opacity-90" />
-            <p className="text-3xl font-extrabold mb-1">Level {currentLevel} Passed!</p>
-            <p className="text-sm opacity-80">{LEVEL_NAMES[currentLevel].name}</p>
+        <div className="px-4 pt-12 pb-4 max-w-md lg:max-w-lg mx-auto text-center lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:pt-12">
+          <div className={`${LEVEL_COLORS[currentLevel]} text-white rounded-2xl p-8 lg:p-12 mb-6 shadow-card`}>
+            <Trophy className="w-12 h-12 lg:w-16 lg:h-16 mx-auto mb-3 opacity-90" />
+            <p className="text-3xl lg:text-4xl font-extrabold mb-1">Level {currentLevel} Passed!</p>
+            <p className="text-sm lg:text-base opacity-80">{LEVEL_NAMES[currentLevel].name}</p>
           </div>
 
           <button
             onClick={advanceToNextLevel}
-            className={`w-full py-4 rounded-xl ${LEVEL_COLORS[Math.min(currentLevel + 1, 6)]} text-white font-bold text-base shadow-sm active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2`}
+            className={`w-full py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[Math.min(currentLevel + 1, 6)]} text-white font-bold text-base lg:text-lg shadow-sm active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2`}
           >
             Continue to Level {currentLevel + 1} <ArrowRight className="w-4 h-4" />
           </button>
@@ -1262,8 +1275,8 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-8 max-w-md lg:max-w-2xl mx-auto text-center">
-          <h2 className="text-[28px] font-extrabold text-foreground mb-1 tracking-tight">
+        <div className="px-4 pt-6 pb-8 max-w-md lg:max-w-xl mx-auto text-center lg:pt-10">
+          <h2 className="text-[28px] lg:text-4xl font-extrabold text-foreground mb-1 tracking-tight">
             Assessment Complete
           </h2>
           <p className="text-sm text-muted-foreground mb-1">
@@ -1623,20 +1636,20 @@ interface BookRevealFullPageProps {
 function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFullPageProps) {
   const levelInfo = LEVELS.find(l => l.level === level);
   return (
-    <div className="px-4 pt-6 pb-10 max-w-md lg:max-w-2xl mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 shadow-card`}>
+    <div className="px-4 pt-6 pb-10 max-w-md lg:max-w-lg mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500 lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
+      <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 lg:p-10 lg:pb-10 shadow-card`}>
         <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full mb-4">
           <Sparkles className="w-4 h-4" />
           <span className="text-xs font-bold uppercase tracking-wide">Book Unlocked!</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1">
           Your free book is ready
         </h2>
-        <p className="text-sm opacity-90 mb-5">
+        <p className="text-sm lg:text-base opacity-90 mb-5">
           Level {level} — {levelInfo?.name}
         </p>
 
-        <div className="relative rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-white mx-auto max-w-[220px]">
+        <div className="relative rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-white mx-auto max-w-[220px] lg:max-w-[260px]">
           {coverUrl ? (
             <img src={coverUrl} alt={title} className="w-full aspect-[3/4] object-cover" />
           ) : (
@@ -1645,15 +1658,15 @@ function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFu
             </div>
           )}
         </div>
-        <p className="font-bold text-white text-lg mt-4">{title}</p>
-        <p className="text-xs opacity-90 mt-1">
+        <p className="font-bold text-white text-lg lg:text-xl mt-4">{title}</p>
+        <p className="text-xs lg:text-sm opacity-90 mt-1">
           Based on your results, you've unlocked this free book.
         </p>
       </div>
 
       <button
         onClick={onContinue}
-        className={`mt-6 w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[level]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
+        className={`mt-6 w-full flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[level]} text-white font-bold text-base lg:text-lg shadow-button active:scale-[0.97] transition-transform duration-200`}
       >
         Continue to my results <ChevronRight className="w-5 h-5" />
       </button>
