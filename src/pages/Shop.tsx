@@ -254,7 +254,7 @@ export default function Shop() {
 
   return (
     <Layout>
-      <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
+      <div className="px-4 lg:px-8 pt-5 pb-8 max-w-lg lg:max-w-5xl mx-auto">
         {/* Header — softer mobile-app style. Matches the new Profile/Home
          *  visual language: pink accent on key word, generous spacing. */}
         <div className="text-center mb-8 px-2">
@@ -300,13 +300,13 @@ export default function Shop() {
         )}
 
         {isLoading ? (
-          <div className="space-y-4">
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-5">
             {Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="h-64 rounded-2xl bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-5 lg:items-start">
             {/* Subscription card — Monthly / Yearly toggle inside one card.
              *  Same feature list either way; only the price + cadence
              *  suffix change. */}

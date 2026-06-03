@@ -706,7 +706,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   if (stage === 'welcome') {
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
           <h2 className="font-display text-[28px] font-extrabold text-foreground mb-2 tracking-tight">
             Phonics Assessment
           </h2>
@@ -825,7 +825,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md mx-auto">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto">
           {/* Progress */}
           <div className="flex items-center gap-2 mb-1">
             <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground">
@@ -1035,7 +1035,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
           <h2 className="text-xl font-extrabold text-foreground mb-2 tracking-tight">
             Quick Check
           </h2>
@@ -1122,7 +1122,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-4 max-w-md mx-auto text-center">
+        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
           {/* Header */}
           <div className="flex justify-between items-center mb-2">
             <span className={`text-xs font-bold uppercase tracking-wide ${LEVEL_TEXT[currentLevel]}`}>
@@ -1206,7 +1206,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   if (stage === 'level-passed') {
     return (
       <Wrap>
-        <div className="px-4 pt-12 pb-4 max-w-md mx-auto text-center">
+        <div className="px-4 pt-12 pb-4 max-w-md lg:max-w-2xl mx-auto text-center">
           <div className={`${LEVEL_COLORS[currentLevel]} text-white rounded-2xl p-8 mb-6 shadow-card`}>
             <Trophy className="w-12 h-12 mx-auto mb-3 opacity-90" />
             <p className="text-3xl font-extrabold mb-1">Level {currentLevel} Passed!</p>
@@ -1262,7 +1262,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     return (
       <Wrap>
-        <div className="px-4 pt-6 pb-8 max-w-md mx-auto text-center">
+        <div className="px-4 pt-6 pb-8 max-w-md lg:max-w-2xl mx-auto text-center">
           <h2 className="text-[28px] font-extrabold text-foreground mb-1 tracking-tight">
             Assessment Complete
           </h2>
@@ -1623,7 +1623,7 @@ interface BookRevealFullPageProps {
 function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFullPageProps) {
   const levelInfo = LEVELS.find(l => l.level === level);
   return (
-    <div className="px-4 pt-6 pb-10 max-w-md mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="px-4 pt-6 pb-10 max-w-md lg:max-w-2xl mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 shadow-card`}>
         <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full mb-4">
           <Sparkles className="w-4 h-4" />

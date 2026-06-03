@@ -89,7 +89,7 @@ export default function Profile() {
   if (!user) {
     return (
       <Layout>
-        <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
+        <div className="px-4 lg:px-8 pt-5 pb-8 max-w-lg lg:max-w-3xl mx-auto">
           <h1 className="font-display text-2xl font-extrabold text-foreground mb-6 tracking-tight">Profile</h1>
           <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
             <div className="flex items-center gap-4 mb-5">
@@ -119,7 +119,7 @@ export default function Profile() {
   // ─── Signed-in state ──────────────────────────────────────────
   return (
     <Layout>
-      <div className="px-4 pt-5 pb-8 max-w-lg mx-auto space-y-5">
+      <div className="px-4 lg:px-8 pt-5 pb-8 max-w-lg lg:max-w-5xl mx-auto space-y-5">
         {/* 1. Header */}
         <div className="flex items-center justify-between">
           <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">Profile</h1>
@@ -132,6 +132,10 @@ export default function Profile() {
           </Link>
         </div>
 
+        {/* Cards — single column on mobile, two columns on laptop so the
+            page fills the width like the Library grid instead of sitting in
+            a narrow centred strip. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:items-start">
         {/* 2. Child card */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
           {child ? (
@@ -285,6 +289,7 @@ export default function Profile() {
             </div>
           </button>
         </section>
+        </div>
 
         <p className="text-[10px] text-muted-foreground text-center pt-2">
           {profile?.email}
