@@ -519,7 +519,7 @@ export default function Index() {
         />
       )}
 
-      <div className="px-4 pt-5 pb-2 max-w-2xl mx-auto">
+      <div className="px-4 lg:px-8 pt-5 pb-2 max-w-2xl lg:max-w-6xl mx-auto">
         <div className="mb-5">
           <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
           <p className="text-sm text-muted-foreground mt-1">
@@ -615,13 +615,13 @@ export default function Index() {
         )}
 
         {booksLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="aspect-[3/4] rounded-xl bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {books.map((book) => (
               <BookCard
                 key={book.id}

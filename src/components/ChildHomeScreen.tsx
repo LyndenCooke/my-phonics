@@ -101,7 +101,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   // ─── Empty state ────────────────────────────────────────────
   if (levelBooks.length === 0) {
     return (
-      <div className="px-4 pt-6 pb-24 max-w-xl mx-auto text-center">
+      <div className="px-4 pt-6 pb-24 max-w-xl lg:max-w-3xl mx-auto text-center">
         <div className="bg-card rounded-3xl border border-border p-8 shadow-card">
           <Sparkles className="w-10 h-10 text-primary mx-auto mb-3" />
           <h2 className="font-display text-xl font-extrabold text-foreground">No books yet!</h2>
@@ -152,9 +152,12 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   // bottom — adults reach Parent Dashboard via the Profile tab.
   return (
     <div
-      className="px-3 pt-2 pb-3 max-w-xl mx-auto h-full flex flex-col gap-2.5"
+      className="px-3 lg:px-6 pt-2 pb-3 max-w-xl lg:max-w-5xl mx-auto h-full flex flex-col gap-2.5 lg:h-auto lg:grid lg:grid-cols-2 lg:gap-5 lg:items-start"
       style={{ fontFamily: "'Andika', sans-serif", background: '#fff8fb' }}
     >
+      {/* Left column on laptop: level card + current book stacked. On mobile
+          this is just the normal vertical flow. */}
+      <div className="flex flex-col gap-2.5 lg:gap-5 shrink-0">
       {/* ── 1. Level card — compact ─────────────────────────────── */}
       <section className="rounded-2xl bg-gradient-to-b from-white to-pink-50 border border-pink-200/60 px-3 py-2.5 shadow-[0_8px_20px_rgba(23,23,23,0.04)] shrink-0">
         <div className="flex items-center gap-3">
@@ -276,6 +279,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 : 'Finish this book to unlock the next one!'}
         </p>
       </section>
+      </div>
 
       {/* ── 3. Reading Path — compact ───────────────────────────── */}
       {totalInLevel > 0 && (
@@ -284,7 +288,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
             <span aria-hidden>🗺️</span>
             <h3 className="font-display text-sm font-extrabold text-foreground">Your Reading Path</h3>
           </div>
-          <div className="flex gap-2 overflow-x-auto -mx-3 px-3 pb-1 snap-x scroll-smooth no-scrollbar">
+          <div className="flex gap-2 overflow-x-auto -mx-3 px-3 pb-1 snap-x scroll-smooth no-scrollbar lg:flex-wrap lg:overflow-x-visible lg:mx-0 lg:px-0">
             {levelBooks.map((entry, i) => {
               const { book, state, stamps: s } = entry;
               const cover = getCoverImageUrl(book.subLevel, book.coverImageUrl);
