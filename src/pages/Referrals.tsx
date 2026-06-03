@@ -40,8 +40,8 @@ export default function Referrals() {
             <h2 className="font-display text-xl font-extrabold">Invite friends, earn rewards</h2>
           </div>
           <p className="text-sm text-white/90 leading-relaxed">
-            Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in, monthly recurring or lifetime.
-            Friends get a free trial, you get paid. Everyone wins.
+            Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in —
+            recurring monthly, or one-time on lifetime. Everyone wins.
           </p>
         </div>
 
