@@ -9,6 +9,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
+import FeedbackPrompt from "@/components/FeedbackPrompt";
 import { Loader2 } from "lucide-react";
 import NotFound from "./pages/NotFound";
 
@@ -92,6 +93,7 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <FeedbackPrompt />
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
           <RoutesWithTransition />
