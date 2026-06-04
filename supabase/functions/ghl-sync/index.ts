@@ -483,16 +483,20 @@ serve(async (req) => {
         }
         if (ghlContactId) {
           const rating = Number(data?.rating) || 0;
-          const text = typeof data?.feedback === 'string' ? data.feedback.trim() : '';
+          // `feedback` = what they loved (featurable); `improvement` = private.
+          const loved = typeof data?.feedback === 'string' ? data.feedback.trim() : '';
+          const improvement = typeof data?.improvement === 'string' ? data.improvement.trim() : '';
           const consentMarketing = Boolean(data?.consent_marketing);
           const consentNamed = Boolean(data?.consent_named);
           const stars = rating > 0 ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '(no rating)';
 
           const noteLines = [
             `App feedback ${stars} (${rating}/5)`,
-            text ? `\n"${text}"` : '\n(no written feedback)',
             '',
-            `Use as testimonial: ${consentMarketing ? 'YES' : 'no'}`,
+            `💛 Loved: ${loved ? `"${loved}"` : '(none given)'}`,
+            `🔧 Could be better: ${improvement ? `"${improvement}"` : '(none given)'}`,
+            '',
+            `Feature "Loved" as testimonial: ${consentMarketing ? 'YES' : 'no'}`,
             `Use first name: ${consentNamed ? 'YES' : 'no'}`,
             data?.source ? `Source: ${data.source}` : null,
           ].filter((l) => l !== null);
