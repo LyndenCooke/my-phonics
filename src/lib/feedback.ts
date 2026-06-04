@@ -22,8 +22,9 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 export interface FeedbackInput {
   rating: number;          // 1-5
-  feedback: string;        // free text (may be empty)
-  consentMarketing: boolean; // OK to feature as a testimonial
+  loved: string;           // what they loved — the testimonial text (may be empty)
+  improvement: string;     // what could be better — private, never featured (may be empty)
+  consentMarketing: boolean; // OK to feature the "loved" text as a testimonial
   consentNamed: boolean;     // OK to attribute with first name
   source: string;          // 'profile' | 'returning_popup'
 }
@@ -42,7 +43,9 @@ export async function submitFeedback(input: FeedbackInput): Promise<void> {
     prompted_at: now,
     submitted_at: now,
     rating: input.rating,
-    feedback: input.feedback.trim() || null,
+    // `feedback` holds the featurable praise; `improvement` is private.
+    feedback: input.loved.trim() || null,
+    improvement: input.improvement.trim() || null,
     consent_marketing: input.consentMarketing,
     consent_named: input.consentNamed,
   });
@@ -54,7 +57,8 @@ export async function submitFeedback(input: FeedbackInput): Promise<void> {
   // so a CRM hiccup never blocks the parent's "thank you".
   await syncToGHL('contact.feedback', {
     rating: input.rating,
-    feedback: input.feedback.trim(),
+    feedback: input.loved.trim(),
+    improvement: input.improvement.trim(),
     consent_marketing: input.consentMarketing,
     consent_named: input.consentNamed,
     source: input.source,

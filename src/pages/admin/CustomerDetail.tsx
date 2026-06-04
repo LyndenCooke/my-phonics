@@ -271,7 +271,16 @@ export default function CustomerDetail() {
                           {r.submitted_at ? format(parseISO(r.submitted_at), 'dd/MM/yyyy') : '-'}
                         </span>
                       </div>
-                      {r.feedback && <p className="text-sm">{r.feedback}</p>}
+                      {r.feedback && (
+                        <p className="text-sm">
+                          <span className="font-semibold text-emerald-600">Loved: </span>{r.feedback}
+                        </p>
+                      )}
+                      {r.improvement && (
+                        <p className="text-sm">
+                          <span className="font-semibold text-amber-600">Could be better: </span>{r.improvement}
+                        </p>
+                      )}
                       <div className="flex flex-wrap gap-2 pt-1">
                         {r.consent_marketing && (
                           <Badge variant="default">OK as testimonial</Badge>
