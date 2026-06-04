@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Mail, Calendar, Baby, PoundSterling, BookOpen } from 'lucide-react';
+import { ArrowLeft, Mail, Calendar, Baby, PoundSterling, BookOpen, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,7 @@ export default function CustomerDetail() {
     return <div className="text-muted-foreground">Loading customer...</div>;
   }
 
-  const { profile, children, purchases, userBooks, assessments, notes, tasks, contact } = data;
+  const { profile, children, purchases, userBooks, assessments, notes, tasks, contact, reviews } = data;
   const totalSpent = purchases
     .filter(p => p.status === 'completed')
     .reduce((sum, p) => sum + p.amount_paid, 0);
@@ -96,6 +96,9 @@ export default function CustomerDetail() {
           <TabsTrigger value="purchases">Purchases</TabsTrigger>
           <TabsTrigger value="reading">Reading</TabsTrigger>
           <TabsTrigger value="assessments">Assessments</TabsTrigger>
+          <TabsTrigger value="feedback">
+            Feedback{reviews.length > 0 ? ` (${reviews.length})` : ''}
+          </TabsTrigger>
           <TabsTrigger value="notes">Notes & Tasks</TabsTrigger>
         </TabsList>
 
@@ -240,6 +243,50 @@ export default function CustomerDetail() {
                     ))}
                   </TableBody>
                 </Table>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="feedback">
+          <Card>
+            <CardContent className="pt-6">
+              {reviews.length === 0 ? (
+                <p className="text-muted-foreground">No feedback submitted yet</p>
+              ) : (
+                <div className="space-y-4">
+                  {reviews.map((r: any) => (
+                    <div key={r.id} className="rounded-lg border p-4 space-y-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map(n => (
+                            <Star
+                              key={n}
+                              className={`h-4 w-4 ${r.rating >= n ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/30'}`}
+                            />
+                          ))}
+                          <span className="ml-2 text-sm font-medium">{r.rating ?? '-'}/5</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {r.submitted_at ? format(parseISO(r.submitted_at), 'dd/MM/yyyy') : '-'}
+                        </span>
+                      </div>
+                      {r.feedback && <p className="text-sm">{r.feedback}</p>}
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {r.consent_marketing && (
+                          <Badge variant="default">OK as testimonial</Badge>
+                        )}
+                        {r.consent_named && (
+                          <Badge variant="secondary">OK to name</Badge>
+                        )}
+                        {r.kind && r.kind !== 'general' && (
+                          <Badge variant="outline">{r.kind}</Badge>
+                        )}
+                        {r.source && <Badge variant="outline">{r.source}</Badge>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </CardContent>
           </Card>
