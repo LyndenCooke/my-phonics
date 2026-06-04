@@ -8,6 +8,9 @@ import StatCard from '@/components/admin/StatCard';
 import { useAdminFeedback } from '@/hooks/useAdminFeedback';
 import { MessageSquare, ThumbsUp, Quote } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
 
 function Stars({ rating }: { rating: number | null }) {
   return (
@@ -28,6 +31,19 @@ export default function FeedbackList() {
   const { data: feedback, isLoading } = useAdminFeedback();
   const [filter, setFilter] = useState<Filter>('all');
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  // Promote/retire a review on the public testimonials wall. Only consented
+  // reviews actually surface (the public view also checks consent_marketing).
+  const toggleFeatured = async (id: string, next: boolean) => {
+    const { error } = await (supabase as unknown as {
+      from: (t: string) => { update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
+    }).from('reviews').update({ featured: next }).eq('id', id);
+    if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
+    toast({ title: next ? 'Featured on the site 💛' : 'Removed from the site' });
+    queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+  };
 
   const stats = useMemo(() => {
     const rows = feedback ?? [];
@@ -88,6 +104,7 @@ export default function FeedbackList() {
                   <TableHead>Could be better</TableHead>
                   <TableHead>Customer</TableHead>
                   <TableHead>Consent</TableHead>
+                  <TableHead>On site</TableHead>
                   <TableHead className="text-right">Date</TableHead>
                 </TableRow>
               </TableHeader>
@@ -119,6 +136,22 @@ export default function FeedbackList() {
                         {r.kind && r.kind !== 'general' && <Badge variant="outline" className="text-[10px]">{r.kind}</Badge>}
                       </div>
                     </TableCell>
+                    <TableCell>
+                      {r.consent_marketing && r.loved ? (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleFeatured(r.id, !r.featured); }}
+                          className={`text-[11px] font-bold px-2.5 py-1 rounded-full border transition-colors ${
+                            r.featured
+                              ? 'bg-amber-100 border-amber-300 text-amber-800 hover:bg-amber-200'
+                              : 'bg-background border-border text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {r.featured ? '★ Featured' : 'Feature'}
+                        </button>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground">needs consent</span>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
                       {r.submitted_at ? format(parseISO(r.submitted_at), 'dd/MM/yyyy') : '—'}
                     </TableCell>
@@ -126,7 +159,7 @@ export default function FeedbackList() {
                 ))}
                 {rows.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center text-muted-foreground">
                       No feedback yet
                     </TableCell>
                   </TableRow>
