@@ -6,7 +6,7 @@ import { schoolDb } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { learnerPosition } from '../data/pathway';
 
-type Student = { id: string; classroom_id: string; first_name: string; last_name: string | null; current_level: string | null; teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null };
+type Student = { id: string; classroom_id: string; first_name: string; last_name: string | null; current_level: string | null; pathway_completed: number | null; teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null };
 type Classroom = { id: string; name: string; year_group: string | null };
 type Assessment = { student_id: string; created_at: string };
 
@@ -43,7 +43,7 @@ export default function AssessmentWindows() {
       setLoading(true);
       const [{ data: rooms }, { data: stu }, { data: ass }] = await Promise.all([
         schoolDb.classrooms().select('id, name, year_group').eq('school_id', school.id).order('name'),
-        schoolDb.students().select('id, classroom_id, first_name, last_name, current_level, teacher_judgement').eq('school_id', school.id),
+        schoolDb.students().select('id, classroom_id, first_name, last_name, current_level, pathway_completed, teacher_judgement').eq('school_id', school.id),
         schoolDb.assessments().select('student_id, created_at').eq('school_id', school.id),
       ]);
       setClassrooms((rooms ?? []) as Classroom[]);
@@ -72,7 +72,7 @@ export default function AssessmentWindows() {
       const lvl = parseLevel(s.current_level);
       if (!lvl) { unassessed++; continue; }
       levelDist[lvl] = (levelDist[lvl] ?? 0) + 1;
-      const j = learnerPosition(lvl, s.id, { judgement: s.teacher_judgement }).judgement;
+      const j = learnerPosition(lvl, s.id, { completedCount: s.pathway_completed, judgement: s.teacher_judgement }).judgement;
       if (j === 'ready_soon') readyUp++;
       else if (j === 'needs_support') intervention++;
       else staying++;

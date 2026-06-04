@@ -6,7 +6,7 @@ import { schoolDb } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { learnerPosition, programmeTotals } from '../data/pathway';
 
-type Student = { id: string; classroom_id: string; current_level: string | null; teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null };
+type Student = { id: string; classroom_id: string; current_level: string | null; pathway_completed: number | null; teacher_judgement: 'continue' | 'ready_soon' | 'needs_support' | null };
 type Classroom = { id: string; name: string };
 
 const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.name]));
@@ -31,7 +31,7 @@ export default function SchoolReports() {
     (async () => {
       setLoading(true);
       const [{ data: stu }, { data: rooms }] = await Promise.all([
-        schoolDb.students().select('id, classroom_id, current_level, teacher_judgement').eq('school_id', school.id),
+        schoolDb.students().select('id, classroom_id, current_level, pathway_completed, teacher_judgement').eq('school_id', school.id),
         schoolDb.classrooms().select('id, name').eq('school_id', school.id),
       ]);
       setStudents((stu ?? []) as Student[]);
@@ -48,7 +48,7 @@ export default function SchoolReports() {
       if (!lvl) continue;
       assessed++;
       dist[lvl] = (dist[lvl] ?? 0) + 1;
-      const j = learnerPosition(lvl, s.id, { judgement: s.teacher_judgement }).judgement;
+      const j = learnerPosition(lvl, s.id, { completedCount: s.pathway_completed, judgement: s.teacher_judgement }).judgement;
       if (j === 'ready_soon') readyUp++;
       else if (j === 'needs_support') intervention++;
     }
