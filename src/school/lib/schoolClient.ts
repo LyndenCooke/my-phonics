@@ -122,6 +122,47 @@ export async function rpcJoinSchoolWithCode(code: string): Promise<{ data: JoinS
   ) => Promise<{ data: JoinSchoolResponse | null; error: unknown }>)('join_school_with_code', { p_code: code });
 }
 
+/**
+ * Download a school resource (storybook PDF / worksheet pack / sound book)
+ * via the `school-download` edge function: it verifies the caller's school
+ * membership, mints a short-lived signed URL from the PRIVATE buckets, and
+ * logs the download. We then fetch the signed URL as a blob so the file
+ * saves with a friendly name. Buckets are never public.
+ */
+export async function downloadSchoolResource(params: {
+  resourceType: 'storybook' | 'worksheet_pack' | 'sound_book';
+  resourceKey: string;            // storage key stem, e.g. '1_1'
+  format?: 'a4' | 'a5';
+  filename: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  const { data, error } = await supabase.functions.invoke('school-download', {
+    body: {
+      resource_type: params.resourceType,
+      resource_key: params.resourceKey,
+      format: params.format ?? null,
+    },
+  });
+  if (error) return { ok: false, error: error.message };
+  const signed = (data as { signed_url?: string; error?: string } | null)?.signed_url;
+  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? 'Download unavailable' };
+
+  try {
+    const res = await fetch(signed);
+    if (!res.ok) return { ok: false, error: `Not found (${res.status})` };
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = params.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+}
+
 export type RegenerateCodeResponse = { ok: boolean; join_code?: string; reason?: string };
 
 export async function rpcRegenerateJoinCode(schoolId: string): Promise<{ data: RegenerateCodeResponse | null; error: unknown }> {

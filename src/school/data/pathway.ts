@@ -299,15 +299,6 @@ export interface ProgrammeTotals {
 
 /* ─── Per-learner position ────────────────────────────────────────────────── */
 
-function hashString(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return Math.abs(h);
-}
-
 export type TeacherJudgement = 'continue' | 'ready_soon' | 'needs_support';
 
 export const JUDGEMENT_LABEL: Record<TeacherJudgement, string> = {
@@ -327,38 +318,34 @@ export interface LearnerPosition {
 }
 
 /**
- * Pathway position for a learner. Prefers REAL stored progress when given
- * (`opts.completedCount` = steps completed in the current level, `opts.judgement`
- * = teacher's recorded judgement). Falls back to a stable id-seeded derivation
- * when those aren't available, so older surfaces still render sensibly.
+ * Pathway position for a learner from REAL stored progress only:
+ *   `opts.completedCount` = steps completed in the current level,
+ *   `opts.judgement`      = teacher's recorded judgement.
+ * When progress hasn't been recorded yet we report an HONEST default
+ * (start of the level / 'continue') rather than fabricating a position —
+ * earlier this id-hashed a fake position + judgement, which made Reports
+ * and the windows view show synthetic "ready to move up / intervention"
+ * numbers. The `seed` param is retained for call-site compatibility.
  */
 export function learnerPosition(
   level: number,
   seed: string,
   opts?: { completedCount?: number | null; judgement?: TeacherJudgement | null },
 ): LearnerPosition {
+  void seed;
   const steps = getTeachingSequence(level).map(resolveStep);
   if (steps.length === 0) {
     return { level, block: null, completed: 0, totalSteps: 0, judgement: opts?.judgement ?? 'continue' };
   }
 
-  let idx: number;
-  if (opts?.completedCount != null) {
-    idx = Math.max(0, Math.min(opts.completedCount, steps.length - 1));
-  } else {
-    idx = hashString(seed) % steps.length;
-  }
+  const idx = opts?.completedCount != null
+    ? Math.max(0, Math.min(opts.completedCount, steps.length - 1))
+    : 0;
   const current = steps[idx];
   const next = steps[idx + 1];
   const block = current ? blockOfStep(level, current.step.order) : null;
+  const judgement: TeacherJudgement = opts?.judgement ?? 'continue';
 
-  let judgement: TeacherJudgement;
-  if (opts?.judgement) {
-    judgement = opts.judgement;
-  } else {
-    const frac = idx / steps.length;
-    judgement = hashString(seed) % 7 === 0 ? 'needs_support' : frac > 0.8 ? 'ready_soon' : 'continue';
-  }
   return { level, block, current, next, completed: idx, totalSteps: steps.length, judgement };
 }
 
