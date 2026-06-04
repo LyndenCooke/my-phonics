@@ -8,6 +8,7 @@ import {
   BarChart3,
   ArrowLeft,
   Inbox,
+  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -19,6 +20,7 @@ const navItems = [
   { to: '/admin/deals', icon: Handshake, label: 'Deals' },
   { to: '/admin/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
+  { to: '/admin/feedback', icon: Star, label: 'Feedback' },
 ];
 
 export default function AdminSidebar() {
