@@ -21,6 +21,11 @@ verify_jwt = false
 [functions.guest-assessment-signup]
 verify_jwt = false
 
+[functions.school-download]
+# Require a valid signed-in JWT — the function authorises the caller's
+# school membership before minting a signed URL from the private buckets.
+verify_jwt = true
+
 [functions.ghl-sync]
 verify_jwt = false
 

@@ -6,42 +6,21 @@ import { BLENDING_BOOKS, BLENDING_BOOK_TOTAL, type BlendingBook } from '../data/
 import { SCHOOL_LEVELS } from '../data/levels';
 import { blockForResource, programmeTotals } from '../data/pathway';
 import { useToast } from '@/hooks/use-toast';
+import { downloadSchoolResource } from '../lib/schoolClient';
+
+type DLResource =
+  | { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }
+  | { resourceType: 'worksheet_pack'; resourceKey: string }
+  | { resourceType: 'sound_book'; resourceKey: string };
 
 function storageKey(subLevel: string): string {
   return subLevel.replace(/^L/, '').replace('.', '_');
 }
-function pdfUrl(parent6: string, format: 'a4' | 'a5'): string {
-  const base = import.meta.env.VITE_SUPABASE_URL as string;
-  return `${base}/storage/v1/object/public/book-pdfs/${format}/${storageKey(parent6)}.pdf`;
-}
-function worksheetPackUrl(parent6: string): string {
-  const base = import.meta.env.VITE_SUPABASE_URL as string;
-  return `${base}/storage/v1/object/public/worksheet-pdfs/${storageKey(parent6)}.pdf`;
-}
-function soundBookUrl(id: string): string {
-  const base = import.meta.env.VITE_SUPABASE_URL as string;
-  return `${base}/storage/v1/object/public/sound-book-pdfs/${id.replace(/^SD-L/, '').replace('.', '_')}.pdf`;
+function soundBookKey(id: string): string {
+  return id.replace(/^SD-L/, '').replace('.', '_');
 }
 function coverUrl(parent6: string): string {
   return `/covers/${storageKey(parent6)}_cover.jpg`;
-}
-
-async function downloadBlob(url: string, filename: string): Promise<{ ok: boolean; error?: string }> {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) return { ok: false, error: `Not found (${res.status})` };
-    const blob = await res.blob();
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    return { ok: true };
-  } catch (err) {
-    return { ok: false, error: (err as Error).message };
-  }
 }
 
 const HEX: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.hex]));
@@ -64,9 +43,9 @@ export default function SchoolLibraryAccess() {
   const storybooks = useMemo(() => SCHOOL_BOOKS.filter((b) => matchesLevel(b.level)), [levelFilter]);
   const levels = useMemo(() => SCHOOL_LEVELS.filter((l) => matchesLevel(l.level)), [levelFilter]);
 
-  const run = async (key: string, url: string, filename: string) => {
+  const run = async (key: string, resource: DLResource, filename: string) => {
     setBusy(key);
-    const r = await downloadBlob(url, filename);
+    const r = await downloadSchoolResource({ ...resource, filename });
     setBusy(null);
     if (!r.ok) toast({ title: 'Download failed', description: r.error, variant: 'destructive' });
   };
@@ -167,7 +146,7 @@ function SoundBookCard({ book, busy, run }: { book: SoundBook; busy: string | nu
       <p className="text-xs text-slate-500 mt-1 mb-2">Focus: {book.graphemes.join(' / ')}{book.sampleWords.length ? ` · e.g. ${book.sampleWords.slice(0, 3).join(', ')}` : ''}</p>
       <div className="text-[11px] text-slate-500 mb-3">Companion: <span className="font-semibold">Sound Book worksheet</span></div>
       <div className="mt-auto grid grid-cols-2 gap-1.5">
-        <DownloadBtn primary label="Print booklet" loading={busy === `snd-${book.id}`} onClick={() => run(`snd-${book.id}`, soundBookUrl(book.id), `${book.title}.pdf`)} />
+        <DownloadBtn primary label="Print booklet" loading={busy === `snd-${book.id}`} onClick={() => run(`snd-${book.id}`, { resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, `${book.title}.pdf`)} />
         <ComingSoon icon={<FileText className="w-3 h-3" />} label="Worksheet soon" />
       </div>
     </Shell>
@@ -217,9 +196,9 @@ function StorybookCard({ book, busy, run }: { book: SchoolBook; busy: string | n
       <div className="text-[11px] text-slate-500 mb-3">Companions: built-in practice · 5-page worksheet pack · interactive version</div>
       <div className="mt-auto grid grid-cols-2 gap-1.5">
         <a href={`/library?book=${book.slug}`} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-1 px-2 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800"><BookOpen className="w-3.5 h-3.5" /> Read online</a>
-        <DownloadBtn label="A5 booklet" loading={busy === `${p6}-a4`} onClick={() => run(`${p6}-a4`, pdfUrl(p6, 'a4'), `${book.title} (A5 Booklet).pdf`)} />
-        <DownloadBtn label="A4 sheets" loading={busy === `${p6}-a5`} onClick={() => run(`${p6}-a5`, pdfUrl(p6, 'a5'), `${book.title} (A4 Sheets).pdf`)} />
-        <DownloadBtn label="Worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, worksheetPackUrl(p6), `${book.title} — Worksheets.pdf`)} />
+        <DownloadBtn label="A5 booklet" loading={busy === `${p6}-a4`} onClick={() => run(`${p6}-a4`, { resourceType: 'storybook', resourceKey: storageKey(p6), format: 'a4' }, `${book.title} (A5 Booklet).pdf`)} />
+        <DownloadBtn label="A4 sheets" loading={busy === `${p6}-a5`} onClick={() => run(`${p6}-a5`, { resourceType: 'storybook', resourceKey: storageKey(p6), format: 'a5' }, `${book.title} (A4 Sheets).pdf`)} />
+        <DownloadBtn label="Worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} />
       </div>
     </Shell>
   );
@@ -245,7 +224,7 @@ function StoryPackCard({ book, busy, run }: { book: SchoolBook; busy: string | n
       <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title} — pack</h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
       <p className="text-xs text-slate-500 mt-1 mb-3">5-page A4 pack: sound hunt, trace and write, read and do, alien words, story-and-draw.</p>
-      <div className="mt-auto"><DownloadBtn primary label="Print worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, worksheetPackUrl(p6), `${book.title} — Worksheets.pdf`)} /></div>
+      <div className="mt-auto"><DownloadBtn primary label="Print worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} /></div>
     </Shell>
   );
 }
