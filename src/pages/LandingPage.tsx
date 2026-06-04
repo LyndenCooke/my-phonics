@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, Star, ChevronRight, Volume2, Trophy, GraduationCap } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
+import LandingTestimonials from '@/components/LandingTestimonials';
 
 /* ─── Book cover data for hero carousel ─── */
 const SHOWCASE_BOOKS = [
@@ -31,16 +32,6 @@ const LEVEL_EXAMPLES: Record<number, string> = {
 
 const BOOK_COUNTS: Record<number, number> = { 1: 10, 2: 5, 3: 5, 4: 4, 5: 4, 6: 4 };
 
-const CULTURAL_COVERS = [
-  { key: '2_1', country: 'Japan' },
-  { key: '2_3', country: 'Kenya' },
-  { key: '3_2', country: 'Morocco' },
-  { key: '3_1', country: 'France' },
-  { key: '4_1', country: 'Turkey' },
-  { key: '4_3', country: 'Mexico' },
-  { key: '5_1', country: 'London' },
-  { key: '6_1', country: 'Egypt' },
-];
 
 /* ─── Scroll-reveal hook ─── */
 function useReveal() {
@@ -73,9 +64,9 @@ export default function LandingPage() {
       <main id="main">
       <HeroSection onAssess={() => navigate('/assessment')} onFreeBook={() => navigate('/free-book')} />
       <HowItWorks />
+      <LandingTestimonials />
       <FeatureShowcase />
       <LevelProgression />
-      <CulturalDiversity />
       <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/shop')} />
       <FooterCTA onAssess={() => navigate('/assessment')} />
       </main>
@@ -358,38 +349,6 @@ function LevelProgression() {
               <p className="text-xs text-muted-foreground">
                 <span className="font-semibold text-foreground">{BOOK_COUNTS[lv.level]} books</span> in this level
               </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── CULTURAL DIVERSITY ─── */
-function CulturalDiversity() {
-  const r = useReveal();
-
-  return (
-    <section className="py-12 md:py-16">
-      <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            Every Book Is a{' '}
-            <span className="text-primary">Window Into the World</span>
-          </h2>
-          <p className="mt-3 text-muted-foreground text-lg max-w-2xl mx-auto">
-            Simple phonics text, rich cultural settings. Each story transports your child to a different country — sparking curiosity about the people and places they share the world with.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {CULTURAL_COVERS.map(c => (
-            <div key={c.key} className="group relative rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all">
-              <img src={`/illustrations/${c.key}/cover.png`} alt={c.country} className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent pt-10 pb-3 px-3">
-                <p className="text-white text-sm font-bold">{c.country}</p>
-              </div>
             </div>
           ))}
         </div>
