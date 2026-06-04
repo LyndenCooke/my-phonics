@@ -103,7 +103,12 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
             My<span className="text-primary-ink">Phonics</span>Books
           </span>
         </Link>
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <Link to="/school" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap inline-flex items-center gap-1">
+            <GraduationCap className="w-4 h-4" />
+            <span className="hidden xs:inline">For Schools</span>
+            <span className="xs:hidden">Schools</span>
+          </Link>
           <button onClick={onBrowse} className="text-xs sm:text-sm font-bold text-white gradient-primary px-3 sm:px-4 py-2 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap">
             <span className="sm:hidden">Explore</span>
             <span className="hidden sm:inline">Explore Books</span>
@@ -127,6 +132,19 @@ function HeroSection({ onAssess, onFreeBook }: { onAssess: () => void; onFreeBoo
         <div className="grid md:grid-cols-2 gap-10 items-center">
           {/* Text */}
           <div className="text-center md:text-left">
+            {/* Audience switch — parents stay here; schools/nurseries jump
+                to their own product. Parent is the active state. */}
+            <div className="inline-flex items-center gap-1 p-1 mb-5 rounded-full bg-card border border-border shadow-sm">
+              <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-white">
+                For Parents
+              </span>
+              <Link
+                to="/school"
+                className="px-3 py-1.5 rounded-full text-xs font-bold text-muted-foreground hover:text-primary-ink transition-colors inline-flex items-center gap-1"
+              >
+                <GraduationCap className="w-3.5 h-3.5" /> For Schools
+              </Link>
+            </div>
             <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" /> UK Phonics Curriculum Aligned
             </div>
