@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
-import { schoolDb, type AttendanceRow } from '../lib/schoolClient';
+import { schoolDb, downloadSchoolResource, type AttendanceRow } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { getSchoolBookById, type SchoolBook } from '../data/bookCatalog';
 import {
@@ -31,12 +31,6 @@ function parseLevel(s: string | null): number | null {
   return m ? Number(m[1]) : null;
 }
 function storageKey(subLevel: string): string { return subLevel.replace(/^L/, '').replace('.', '_'); }
-function bookPdfUrl(p6: string, fmt: 'a4' | 'a5'): string {
-  return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/book-pdfs/${fmt}/${storageKey(p6)}.pdf`;
-}
-function worksheetPackUrl(p6: string): string {
-  return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/worksheet-pdfs/${storageKey(p6)}.pdf`;
-}
 
 const SUGGESTED_ACTION: Record<TeacherJudgement, string> = {
   continue: 'Continue through the current block',
@@ -49,6 +43,13 @@ export default function StudentProfile() {
   const { toast } = useToast();
   const { memberships } = useSchoolMemberships();
   const isAdminOrTeacher = !!memberships[0];
+
+  // Downloads go through the school-download edge function (signed URL +
+  // membership check + logging); buckets stay private.
+  const dl = async (resource: Parameters<typeof downloadSchoolResource>[0]) => {
+    const r = await downloadSchoolResource(resource);
+    if (!r.ok) toast({ title: 'Download failed', description: r.error, variant: 'destructive' });
+  };
 
   const [student, setStudent] = useState<Student | null>(null);
   const [classroom, setClassroom] = useState<Classroom | null>(null);
@@ -182,8 +183,8 @@ export default function StudentProfile() {
               {nextStorybook && (
                 <>
                   <a href={`/library?book=${nextStorybook.slug}`} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-4 h-4" /> Open interactive book</a>
-                  <a href={bookPdfUrl(nextStorybook.parent6SubLevel, 'a4')} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print A5 booklet</a>
-                  <a href={worksheetPackUrl(nextStorybook.parent6SubLevel)} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><FileText className="w-4 h-4" /> Print worksheet pack</a>
+                  <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (A5 Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print A5 booklet</button>
+                  <button onClick={() => dl({ resourceType: 'worksheet_pack', resourceKey: storageKey(nextStorybook.parent6SubLevel), filename: `${nextStorybook.title} — Worksheets.pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><FileText className="w-4 h-4" /> Print worksheet pack</button>
                 </>
               )}
               <button onClick={markStepComplete} disabled={status.isLevelComplete} className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50"><CheckCircle2 className="w-4 h-4" /> Mark current step complete</button>
@@ -335,7 +336,7 @@ export default function StudentProfile() {
           <div className="flex flex-wrap gap-2">
             <button onClick={() => { navigator.clipboard?.writeText(`${window.location.origin}/library?book=${nextStorybook.slug}`); toast({ title: 'Parent reading link copied' }); }}
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Copy className="w-4 h-4" /> Copy parent link</button>
-            <a href={bookPdfUrl(nextStorybook.parent6SubLevel, 'a4')} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print home booklet</a>
+            <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (Home Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print home booklet</button>
           </div>
           <p className="text-xs text-slate-400 mt-2">Shared with parents through the school so home practice matches class teaching.</p>
         </section>
