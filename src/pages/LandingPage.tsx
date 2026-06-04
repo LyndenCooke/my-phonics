@@ -76,7 +76,6 @@ export default function LandingPage() {
       <FeatureShowcase />
       <LevelProgression />
       <CulturalDiversity />
-      <Testimonials />
       <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/shop')} />
       <FooterCTA onAssess={() => navigate('/assessment')} />
       </main>
@@ -228,17 +227,17 @@ function HeroSection({ onAssess, onFreeBook }: { onAssess: () => void; onFreeBoo
 function HowItWorks() {
   const r = useReveal();
   const steps = [
-    { icon: GraduationCap, title: 'Take the Free Assessment', desc: 'A child-friendly quiz finds their exact reading level in under 5 minutes.', color: 'bg-primary/10 text-primary' },
-    { icon: BookOpen, title: 'Get Matched Books', desc: 'Phonics books at exactly the right difficulty — every word is carefully chosen.', color: 'bg-[hsl(var(--level-3))]/10 text-[hsl(var(--level-3))]' },
-    { icon: Volume2, title: 'Read & Learn', desc: 'Tap any word to hear it sounded out. Track progress. Build confidence.', color: 'bg-[hsl(var(--level-4))]/10 text-[hsl(var(--level-4))]' },
+    { icon: GraduationCap, title: 'Find their level — free', desc: 'A 3-minute check pinpoints exactly where your child is reading. No guessing, no card.', color: 'bg-primary/10 text-primary' },
+    { icon: BookOpen, title: 'Read the right books', desc: 'Beautiful decodable books at their exact level — every page is a win, never a struggle.', color: 'bg-[hsl(var(--level-3))]/10 text-[hsl(var(--level-3))]' },
+    { icon: Volume2, title: 'Watch confidence grow', desc: 'Tap any word to hear it, take the quizzes, and see real progress build week after week.', color: 'bg-[hsl(var(--level-4))]/10 text-[hsl(var(--level-4))]' },
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-card">
+    <section className="py-12 md:py-16 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-12">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">How It Works</h2>
-          <p className="mt-3 text-muted-foreground text-lg">Three simple steps to confident reading</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">How it works</h2>
+          <p className="mt-3 text-muted-foreground text-lg">From “I can’t” to “I read it myself” — in three steps.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -273,7 +272,7 @@ function FeatureShowcase() {
   ];
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16">
       <div ref={r.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -333,7 +332,7 @@ function LevelProgression() {
   const r = useReveal();
 
   return (
-    <section className="py-16 md:py-24 bg-card">
+    <section className="py-12 md:py-16 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">6 Levels, One Clear Path</h2>
@@ -372,7 +371,7 @@ function CulturalDiversity() {
   const r = useReveal();
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
@@ -399,54 +398,12 @@ function CulturalDiversity() {
   );
 }
 
-/* ─── TRUST STRIP ─── */
-// TODO: once we have real opted-in parent reviews, replace this
-// factual trust strip with a `Testimonials` component. Do not ship
-// invented quotes — ASA rules + investor-review integrity.
-function Testimonials() {
-  const r = useReveal();
-  const pillars = [
-    {
-      title: 'UK Letters and Sounds',
-      body: 'Every grapheme, every tricky word, mapped to the public-domain progression schools use.',
-    },
-    {
-      title: 'Built with a phonics specialist',
-      body: 'Levels and assessment designed alongside a trained primary literacy teacher.',
-    },
-    {
-      title: 'A window into the world',
-      body: 'Each book is set in a different contemporary culture, illustrated with real reference — not clip-art stereotypes.',
-    },
-  ];
-
-  return (
-    <section className="py-16 md:py-24 bg-card">
-      <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Why parents trust us</h2>
-          <p className="mt-3 text-muted-foreground text-lg">Grounded in the UK curriculum, made by a teacher, set in the real world.</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-5">
-          {pillars.map((p, i) => (
-            <div key={i} className="bg-background rounded-2xl p-6 border border-border">
-              <p className="text-sm font-bold text-foreground mb-2">{p.title}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ─── PRICING ─── */
 function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void }) {
   const r = useReveal();
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16">
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Simple, Fair Pricing</h2>
