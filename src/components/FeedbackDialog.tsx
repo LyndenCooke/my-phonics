@@ -31,13 +31,14 @@ export default function FeedbackDialog({
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [feedback, setFeedback] = useState('');
+  const [loved, setLoved] = useState('');
+  const [improvement, setImprovement] = useState('');
   const [consentMarketing, setConsentMarketing] = useState(false);
   const [consentNamed, setConsentNamed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const reset = () => {
-    setRating(0); setHover(0); setFeedback('');
+    setRating(0); setHover(0); setLoved(''); setImprovement('');
     setConsentMarketing(false); setConsentNamed(false); setSubmitting(false);
   };
 
@@ -54,7 +55,7 @@ export default function FeedbackDialog({
     }
     setSubmitting(true);
     try {
-      await submitFeedback({ rating, feedback, consentMarketing, consentNamed, source });
+      await submitFeedback({ rating, loved, improvement, consentMarketing, consentNamed, source });
       toast({ title: 'Thank you! 💛', description: 'Your feedback has been sent to our team.' });
       onSubmitted?.();
       reset();
@@ -99,14 +100,32 @@ export default function FeedbackDialog({
           })}
         </div>
 
-        {/* Written feedback */}
-        <Textarea
-          placeholder="What did you love? What could be better? (optional)"
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          rows={4}
-          className="resize-none rounded-xl"
-        />
+        {/* What they loved — this is the testimonial-worthy text, kept
+            separate so it can be featured publicly on its own. */}
+        <div className="space-y-1.5">
+          <label className="text-sm font-bold text-foreground">What did you love? 💛</label>
+          <Textarea
+            placeholder="The bit your child (or you) loved most…"
+            value={loved}
+            onChange={(e) => setLoved(e.target.value)}
+            rows={3}
+            className="resize-none rounded-xl"
+          />
+        </div>
+
+        {/* What could be better — private, never shown publicly even with
+            testimonial consent. Only the "loved" text is featurable. */}
+        <div className="space-y-1.5">
+          <label className="text-sm font-bold text-foreground">What could be better?</label>
+          <Textarea
+            placeholder="Anything that frustrated you or you'd change (just for our team)"
+            value={improvement}
+            onChange={(e) => setImprovement(e.target.value)}
+            rows={3}
+            className="resize-none rounded-xl"
+          />
+          <p className="text-[11px] text-muted-foreground">Only our team sees this — it's never shown publicly.</p>
+        </div>
 
         {/* Consent — required before anything is shown publicly. */}
         <div className="space-y-3 rounded-xl bg-muted/40 p-3">
@@ -117,7 +136,7 @@ export default function FeedbackDialog({
               className="mt-0.5"
             />
             <span className="text-sm text-foreground leading-snug">
-              You can feature my comment as a testimonial on your website &amp; socials.
+              You can feature what I loved as a testimonial on your website &amp; socials.
             </span>
           </label>
           <label className={`flex items-start gap-3 ${consentMarketing ? 'cursor-pointer' : 'opacity-50'}`}>
