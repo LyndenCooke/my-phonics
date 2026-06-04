@@ -450,17 +450,15 @@ function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void })
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Simple, Fair Pricing</h2>
-          <p className="mt-3 text-muted-foreground text-lg">Start free. Upgrade when you're ready.</p>
+          <p className="mt-3 text-muted-foreground text-lg">Start free. Go unlimited from £4.99.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+        <div className="grid sm:grid-cols-3 gap-5">
           {/* Free */}
-          <div className="bg-card rounded-2xl p-6 border border-border">
-            <h3 className="text-lg font-bold text-foreground">Free Starter</h3>
-            <div className="mt-2 mb-5">
-              <span className="text-4xl font-extrabold text-foreground">Free</span>
-            </div>
-            <ul className="space-y-3 mb-6">
+          <div className="bg-card rounded-2xl p-6 border border-border flex flex-col">
+            <h3 className="text-lg font-bold text-foreground">Free</h3>
+            <div className="mt-2 mb-5"><span className="text-4xl font-extrabold text-foreground">£0</span></div>
+            <ul className="space-y-3 mb-6 flex-1">
               {['Full phonics assessment', '2 Level 1 sample books', 'Interactive reading', 'Progress tracking'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(var(--level-3))] shrink-0" /> {f}
@@ -468,28 +466,49 @@ function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void })
               ))}
             </ul>
             <button onClick={onFree} className="w-full py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-colors">
-              Get Started Free
+              Get started free
             </button>
           </div>
 
-          {/* Full */}
-          <div className="bg-card rounded-2xl p-6 border-2 border-primary relative overflow-hidden">
+          {/* Monthly */}
+          <div className="bg-card rounded-2xl p-6 border border-border flex flex-col">
+            <h3 className="text-lg font-bold text-foreground">Monthly</h3>
+            <div className="mt-2 mb-5">
+              <span className="text-4xl font-extrabold text-foreground">£4.99</span>
+              <span className="text-sm text-muted-foreground font-semibold">/mo</span>
+            </div>
+            <ul className="space-y-3 mb-6 flex-1">
+              {['All 33 books across 6 levels', 'All comprehension quizzes', 'Full progress dashboard', 'New books added regularly', 'Cancel anytime'].map(f => (
+                <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
+                </li>
+              ))}
+            </ul>
+            <button onClick={onFull} className="w-full py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-colors">
+              Start monthly
+            </button>
+          </div>
+
+          {/* Yearly */}
+          <div className="bg-card rounded-2xl p-6 border-2 border-primary relative overflow-hidden flex flex-col">
             <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">
               BEST VALUE
             </div>
-            <h3 className="text-lg font-bold text-foreground">Full Access</h3>
-            <div className="mt-2 mb-5">
-              <span className="text-4xl font-extrabold text-foreground">All Levels</span>
+            <h3 className="text-lg font-bold text-foreground">Yearly</h3>
+            <div className="mt-2 mb-1">
+              <span className="text-4xl font-extrabold text-foreground">£29.99</span>
+              <span className="text-sm text-muted-foreground font-semibold">/yr</span>
             </div>
-            <ul className="space-y-3 mb-6">
-              {['All 33 books across 6 levels', 'All comprehension quizzes', 'Full progress dashboard', 'New books added regularly', 'Certificate on completion'].map(f => (
+            <p className="text-xs font-bold text-primary-ink mb-4">Save 50% — under £2.50/mo</p>
+            <ul className="space-y-3 mb-6 flex-1">
+              {['Everything in Monthly', 'All 6 levels, all books', 'All comprehension quizzes', 'New books added regularly', 'Cancel anytime'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
                 </li>
               ))}
             </ul>
             <button onClick={onFull} className="w-full py-3 rounded-xl gradient-primary text-white font-bold text-sm shadow-button hover:opacity-90 transition-opacity">
-              View Pricing
+              Start yearly
             </button>
           </div>
         </div>
