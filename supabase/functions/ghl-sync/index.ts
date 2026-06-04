@@ -133,6 +133,24 @@ async function addTags(contactId: string, tags: string[]): Promise<boolean> {
   return res.ok;
 }
 
+/** Add a free-text note to a GHL contact's timeline. */
+async function addNote(contactId: string, body: string): Promise<boolean> {
+  const res = await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${GHL_API_KEY}`,
+      Version: '2021-07-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ body }),
+  });
+  if (!res.ok) {
+    console.error('GHL note failed:', await res.text());
+    return false;
+  }
+  return true;
+}
+
 // Pipeline stage names — must match public.crm_pipeline_stages.name and
 // the STAGES constant in ghl-opportunity-sync. One per lifecycle event.
 type PipelineStage = 'New Lead' | 'Assessed' | 'Free Trial' | 'Purchased' | 'Subscribed' | 'Churned';
@@ -443,6 +461,49 @@ serve(async (req) => {
             ...(productType ? [`abandoned-product:${productType}`] : []),
             ...(productName ? [`abandoned:${String(productName).toLowerCase().replace(/\s+/g, '-')}`] : []),
           ]);
+        }
+        break;
+      }
+
+      case 'contact.feedback': {
+        // A parent submitted a star rating + written feedback (from the
+        // Profile feedback card or the returning-user pop-up). We attach a
+        // note to their GHL timeline and tag them so the user can triage:
+        //   - testimonial-candidate → consented, good rating → website
+        //   - feedback-negative → an issue to address
+        ghlContactId = await findContact(email);
+        if (!ghlContactId) {
+          ghlContactId = await createContact({
+            email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            name: fullName || undefined,
+            tags: ['myphonicsbooks', 'gave-feedback'],
+          });
+        }
+        if (ghlContactId) {
+          const rating = Number(data?.rating) || 0;
+          const text = typeof data?.feedback === 'string' ? data.feedback.trim() : '';
+          const consentMarketing = Boolean(data?.consent_marketing);
+          const consentNamed = Boolean(data?.consent_named);
+          const stars = rating > 0 ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '(no rating)';
+
+          const noteLines = [
+            `App feedback ${stars} (${rating}/5)`,
+            text ? `\n"${text}"` : '\n(no written feedback)',
+            '',
+            `Use as testimonial: ${consentMarketing ? 'YES' : 'no'}`,
+            `Use first name: ${consentNamed ? 'YES' : 'no'}`,
+            data?.source ? `Source: ${data.source}` : null,
+          ].filter((l) => l !== null);
+          await addNote(ghlContactId, noteLines.join('\n'));
+
+          const tags = ['gave-feedback', `rating:${rating}`];
+          if (consentMarketing && rating >= 4) tags.push('testimonial-candidate');
+          if (consentMarketing) tags.push('marketing-consent');
+          if (rating > 0 && rating <= 2) tags.push('feedback-negative');
+          else if (rating >= 4) tags.push('feedback-positive');
+          await addTags(ghlContactId, tags);
         }
         break;
       }

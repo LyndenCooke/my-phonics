@@ -22,8 +22,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   User, Baby, LogOut, Download, Settings, ChevronRight, Plus,
   LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle, Sparkles, X,
-  Shield,
+  Shield, Star,
 } from 'lucide-react';
+import FeedbackDialog from '@/components/FeedbackDialog';
 import { LEVELS } from '@/lib/types';
 import { getUnreadMessageCount } from '@/lib/nudges';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -50,6 +51,7 @@ export default function Profile() {
   const [editingChild, setEditingChild] = useState(false);
   const [childName, setChildName] = useState('');
   const [childDob, setChildDob] = useState('');
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const child = children?.[0];
   const childLevel = child?.current_level ?? 1;
@@ -132,29 +134,34 @@ export default function Profile() {
           </Link>
         </div>
 
-        {/* Cards — single column on mobile, two columns on laptop so the
-            page fills the width like the Library grid instead of sitting in
-            a narrow centred strip. */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:items-start">
-        {/* 2. Child card */}
-        <section className="bg-card rounded-3xl border border-border p-5 shadow-card">
+        {/* 2. Child hero — full-width banner so the child anchors the page
+            on laptop instead of being squashed into a grid cell. */}
+        <section className="bg-gradient-to-br from-tint-pink via-card to-card rounded-3xl border border-border p-5 lg:p-6 shadow-card">
           {child ? (
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-tint-pink flex items-center justify-center shrink-0">
-                <Baby className="w-7 h-7 text-primary" />
+            <div className="flex items-center gap-4 lg:gap-5">
+              <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-3xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+                <Baby className="w-8 h-8 lg:w-10 lg:h-10 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-display text-lg font-extrabold text-foreground leading-tight">{child.name}</p>
-                <p className={`text-xs font-semibold ${levelInfo?.colorClass ?? 'text-muted-foreground'} mt-0.5`}>
+                <p className="font-display text-xl lg:text-2xl font-extrabold text-foreground leading-tight truncate">{child.name}</p>
+                <span className={`inline-flex items-center mt-1.5 px-2.5 py-1 rounded-full bg-white/70 text-xs font-bold ${levelInfo?.colorClass ?? 'text-muted-foreground'}`}>
                   Level {childLevel} · {levelInfo?.name ?? ''}
-                </p>
+                </span>
               </div>
-              <button
-                onClick={() => setEditingChild(true)}
-                className="text-xs font-bold text-primary-ink hover:underline shrink-0"
-              >
-                Switch Child
-              </button>
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                <Link
+                  to="/profile/parent-dashboard"
+                  className="text-xs font-bold text-white gradient-primary px-3 py-1.5 rounded-xl shadow-button hover:opacity-90 transition-opacity whitespace-nowrap"
+                >
+                  Parent View
+                </Link>
+                <button
+                  onClick={() => setEditingChild(true)}
+                  className="text-xs font-bold text-primary-ink hover:underline shrink-0"
+                >
+                  Switch Child
+                </button>
+              </div>
             </div>
           ) : editingChild ? (
             <div className="space-y-3">
@@ -185,6 +192,12 @@ export default function Profile() {
             </button>
           )}
         </section>
+
+        {/* Lists — two balanced columns on laptop, single stack on mobile.
+            Left = alerts + feedback + parent controls; right = account. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:items-start">
+        {/* Left column */}
+        <div className="space-y-5">
 
         {/* 3. For You — unread notifications (download ready, etc.). Each
             card dismisses on tap; the CTA navigates. The section vanishes
@@ -244,6 +257,25 @@ export default function Profile() {
           </section>
         )}
 
+        {/* 3b. Share feedback — opens the rating + testimonial dialog. */}
+        <section className="bg-gradient-to-br from-tint-pink to-card rounded-3xl border border-primary/15 p-5 shadow-card">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-sm shrink-0">
+              <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-display text-base font-extrabold text-foreground leading-tight">Share your feedback</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Rate the app & help us improve</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setFeedbackOpen(true)}
+            className="mt-4 w-full py-2.5 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button active:scale-[0.97] transition-transform duration-200"
+          >
+            Leave a review
+          </button>
+        </section>
+
         {/* 4. Parent controls */}
         <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
           <ProfileLink
@@ -272,7 +304,10 @@ export default function Profile() {
             sub="Earn 50% commission — share your link"
           />
         </section>
+        </div>
 
+        {/* Right column */}
+        <div className="space-y-5">
         {/* 5. Account */}
         <section className="bg-card rounded-3xl border border-border divide-y divide-border shadow-card overflow-hidden">
           <ProfileLink to="/profile/downloads" icon={Download} label="Download History" />
@@ -289,12 +324,15 @@ export default function Profile() {
             </div>
           </button>
         </section>
+          </div>
         </div>
 
         <p className="text-[10px] text-muted-foreground text-center pt-2">
           {profile?.email}
         </p>
       </div>
+
+      <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} source="profile" />
     </Layout>
   );
 }
