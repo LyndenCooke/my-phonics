@@ -8,14 +8,14 @@ import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import FeedbackPrompt from "@/components/FeedbackPrompt";
 import { Loader2 } from "lucide-react";
 import NotFound from "./pages/NotFound";
 
-// All traffic — web, PWA, native — lands directly in the library. The
-// marketing landing page stays available at /landing for ad campaigns that
-// want to send to it, but is no longer the default at /.
+// Signed-in users + installed PWA/native launches land directly in the
+// library (see RootRedirect). Fresh signed-out web visitors get the
+// marketing landing page at /landing, where they choose Parent vs School.
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Learn = lazy(() => import("./pages/Learn"));
 const Index = lazy(() => import("./pages/Index"));
@@ -83,6 +83,22 @@ function PageFallback() {
   );
 }
 
+/**
+ * Root entry. Preserves the deliberate "app launches straight into the
+ * library" behaviour for signed-in users and installed PWA/native apps,
+ * while sending fresh signed-out web visitors to the marketing landing
+ * page — where they pick Parent vs School.
+ */
+function RootRedirect() {
+  const { user, loading } = useAuth();
+  if (loading) return <PageFallback />;
+  const standalone =
+    window.matchMedia?.('(display-mode: standalone)').matches ||
+    (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+  if (user || standalone) return <Navigate to="/library" replace />;
+  return <Navigate to="/landing" replace />;
+}
+
 const App = () => {
   // Capture ?ref=CODE the first time a visitor lands. Stored in localStorage
   // for 60 days so the credit survives sign-up + Stripe redirect.
@@ -122,7 +138,7 @@ function RoutesWithTransition() {
   return (
     <AnimatedRoutes>
       <Routes location={location}>
-            <Route path="/" element={<Navigate to="/library" replace />} />
+            <Route path="/" element={<RootRedirect />} />
             <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
             <Route path="/learn" element={<Suspense fallback={<AdminFallback />}><Learn /></Suspense>} />
             <Route path="/library" element={<Index />} />
