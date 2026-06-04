@@ -148,6 +148,11 @@ export default function SchoolAppHome() {
 
   const handleSeed = async () => {
     if (!school) return;
+    // Destructive: seeding REPLACES all classrooms/pupils. Guard against a
+    // real admin wiping live data — explicit confirmation required.
+    if (!window.confirm(
+      'Seed demo data?\n\nThis DELETES every classroom and pupil in this school and replaces them with a demo set. This cannot be undone.\n\nOnly do this on a demo/test school.'
+    )) return;
     setSeeding(true);
     const result = await seedDemoSchool(school.id);
     setSeeding(false);
@@ -159,9 +164,11 @@ export default function SchoolAppHome() {
     toast({ title: 'Demo data seeded', description: `${result.classrooms} classrooms, ${result.students} students.` });
   };
 
-  // Show the seed control when explicitly requested (?seed=true) or when the
-  // school is empty (fresh signup) — so a demo never has to know the secret URL.
-  const showSeed = seedMode || (!loading && classrooms.length === 0);
+  // Seed control is opt-in via ?seed=true ONLY. It used to auto-show on any
+  // empty school, which exposed a destructive "replace all data" button to
+  // real fresh-signup admins. Fresh schools now get the normal "create your
+  // first classroom" empty state instead.
+  const showSeed = seedMode;
 
   return (
     <div className="space-y-8">
