@@ -49,8 +49,8 @@ export default function LandingTestimonials() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-end justify-between gap-4 mb-8">
           <div>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Loved by parents</h2>
-            <p className="mt-2 text-muted-foreground text-lg">Real words from families using MyPhonicsBooks.</p>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">What our customers say</h2>
+            <p className="mt-2 text-muted-foreground text-lg">Real words from the families and teachers using MyPhonicsBooks.</p>
           </div>
           {items.length > 1 && (
             <div className="hidden sm:flex gap-2 shrink-0">
