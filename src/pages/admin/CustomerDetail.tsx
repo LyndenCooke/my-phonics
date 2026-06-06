@@ -1,13 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Mail, Calendar, Baby, PoundSterling, BookOpen, Star } from 'lucide-react';
+import { ArrowLeft, Mail, Calendar, Baby, PoundSterling, BookOpen, Star, Trash2, Plus, CheckCircle2, Circle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { useAdminCustomerDetail } from '@/hooks/useAdminCustomerDetail';
-import { useCreateNote } from '@/hooks/useAdminNotes';
+import { useCreateNote, useDeleteNote } from '@/hooks/useAdminNotes';
+import { useCreateTask, useToggleTask, useDeleteTask, usePipelineStages, useUpdateStage } from '@/hooks/useAdminTasks';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 
@@ -16,7 +18,15 @@ export default function CustomerDetail() {
   const navigate = useNavigate();
   const { data, isLoading } = useAdminCustomerDetail(id);
   const createNote = useCreateNote();
+  const deleteNote = useDeleteNote();
+  const createTask = useCreateTask();
+  const toggleTask = useToggleTask();
+  const deleteTask = useDeleteTask();
+  const updateStage = useUpdateStage();
+  const { data: stages } = usePipelineStages();
   const [noteContent, setNoteContent] = useState('');
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDue, setTaskDue] = useState('');
 
   if (isLoading || !data) {
     return <div className="text-muted-foreground">Loading customer...</div>;
@@ -31,6 +41,19 @@ export default function CustomerDetail() {
     if (!noteContent.trim() || !profile?.id) return;
     await createNote.mutateAsync({ profile_id: profile.id, content: noteContent });
     setNoteContent('');
+  };
+
+  const handleAddTask = async () => {
+    if (!taskTitle.trim() || !profile?.id) return;
+    await createTask.mutateAsync({ profile_id: profile.id, title: taskTitle.trim(), due_date: taskDue || undefined });
+    setTaskTitle('');
+    setTaskDue('');
+  };
+
+  const replyByEmail = () => {
+    if (!profile?.email) return;
+    const greeting = profile.full_name ? `Hi ${profile.full_name.split(' ')[0]},` : 'Hi there,';
+    window.location.href = `mailto:${profile.email}?body=${encodeURIComponent(greeting + '\n\n')}`;
   };
 
   return (
@@ -51,11 +74,23 @@ export default function CustomerDetail() {
             </span>
           </div>
         </div>
-        {contact && (
-          <Badge style={{ backgroundColor: (contact as any).crm_pipeline_stages?.colour ?? '#6366f1' }} className="text-white">
-            {(contact as any).crm_pipeline_stages?.name ?? 'Unknown Stage'}
-          </Badge>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {profile?.email && (
+            <Button variant="outline" size="sm" onClick={replyByEmail} className="gap-1.5">
+              <Mail className="h-4 w-4" /> Reply
+            </Button>
+          )}
+          {contact && (
+            <select
+              value={(contact as any).stage_id ?? ''}
+              onChange={(e) => profile?.id && updateStage.mutate({ profile_id: profile.id, stage_id: e.target.value })}
+              className="rounded-md border border-input bg-background px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
+              title="Pipeline stage"
+            >
+              {(stages ?? []).map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+          )}
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -323,30 +358,42 @@ export default function CustomerDetail() {
             </Card>
 
             {/* Tasks */}
-            {tasks.length > 0 && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Tasks</CardTitle>
-                </CardHeader>
-                <CardContent>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Tasks</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Input placeholder="New task…" value={taskTitle} onChange={e => setTaskTitle(e.target.value)} className="flex-1" />
+                  <Input type="date" value={taskDue} onChange={e => setTaskDue(e.target.value)} className="sm:w-44" />
+                  <Button onClick={handleAddTask} disabled={!taskTitle.trim() || createTask.isPending} className="gap-1.5">
+                    <Plus className="h-4 w-4" /> Add
+                  </Button>
+                </div>
+                {tasks.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No tasks yet</p>
+                ) : (
                   <div className="space-y-2">
                     {tasks.map(t => (
                       <div key={t.id} className="flex items-center gap-3 rounded-md border p-3">
-                        <div className={`h-2 w-2 rounded-full ${t.is_completed ? 'bg-green-500' : 'bg-amber-500'}`} />
+                        <button onClick={() => toggleTask.mutate({ id: t.id, is_completed: !t.is_completed })} title={t.is_completed ? 'Mark incomplete' : 'Mark complete'}>
+                          {t.is_completed ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Circle className="h-5 w-5 text-muted-foreground" />}
+                        </button>
                         <div className="flex-1">
-                          <p className="text-sm font-medium">{t.title}</p>
+                          <p className={`text-sm font-medium ${t.is_completed ? 'line-through text-muted-foreground' : ''}`}>{t.title}</p>
                           {t.due_date && (
-                            <p className="text-xs text-muted-foreground">
-                              Due: {format(parseISO(t.due_date), 'dd/MM/yyyy')}
-                            </p>
+                            <p className="text-xs text-muted-foreground">Due: {format(parseISO(t.due_date), 'dd/MM/yyyy')}</p>
                           )}
                         </div>
+                        <button onClick={() => deleteTask.mutate(t.id)} title="Delete task" className="text-muted-foreground hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
-            )}
+                )}
+              </CardContent>
+            </Card>
 
             {/* Notes */}
             <Card>
@@ -359,11 +406,16 @@ export default function CustomerDetail() {
                 ) : (
                   <div className="space-y-3">
                     {notes.map(n => (
-                      <div key={n.id} className="rounded-md border p-3">
-                        <p className="text-sm">{n.content}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {n.created_at ? format(parseISO(n.created_at), 'dd/MM/yyyy HH:mm') : '-'}
-                        </p>
+                      <div key={n.id} className="rounded-md border p-3 flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm whitespace-pre-wrap">{n.content}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {n.created_at ? format(parseISO(n.created_at), 'dd/MM/yyyy HH:mm') : '-'}
+                          </p>
+                        </div>
+                        <button onClick={() => deleteNote.mutate(n.id)} title="Delete note" className="text-muted-foreground hover:text-destructive shrink-0">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     ))}
                   </div>

@@ -52,6 +52,7 @@ export function useCreateTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: {
+      profile_id?: string;
       contact_id?: string;
       deal_id?: string;
       assigned_to?: string;
@@ -64,6 +65,7 @@ export function useCreateTask() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-customer'] });
     },
   });
 }
@@ -83,6 +85,53 @@ export function useToggleTask() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-customer'] });
+    },
+  });
+}
+
+export function useDeleteTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('crm_tasks').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-customer'] });
+    },
+  });
+}
+
+export interface PipelineStage { id: string; name: string; colour: string | null; sort_order: number | null; }
+
+export function usePipelineStages() {
+  return useQuery({
+    queryKey: ['crm-pipeline-stages'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('crm_pipeline_stages')
+        .select('id, name, colour, sort_order')
+        .order('sort_order', { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as PipelineStage[];
+    },
+  });
+}
+
+export function useUpdateStage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ profile_id, stage_id }: { profile_id: string; stage_id: string }) => {
+      const { error } = await supabase.from('crm_contacts')
+        .update({ stage_id, updated_at: new Date().toISOString() })
+        .eq('profile_id', profile_id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-customer'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-pipeline'] });
     },
   });
 }
