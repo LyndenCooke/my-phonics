@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import StatCard from '@/components/admin/StatCard';
 import { useAdminFeedback } from '@/hooks/useAdminFeedback';
-import { MessageSquare, ThumbsUp, Quote } from 'lucide-react';
+import { MessageSquare, ThumbsUp, Quote, Mail, Trash2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
@@ -43,6 +43,27 @@ export default function FeedbackList() {
     if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
     toast({ title: next ? 'Featured on the site 💛' : 'Removed from the site' });
     queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+  };
+
+  // Permanently delete a review (spam, test rows, retired quotes).
+  const deleteReview = async (id: string) => {
+    if (!window.confirm('Delete this feedback permanently? This cannot be undone.')) return;
+    const { error } = await (supabase as unknown as {
+      from: (t: string) => { delete: () => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
+    }).from('reviews').delete().eq('id', id);
+    if (error) { toast({ title: 'Could not delete', description: error.message, variant: 'destructive' }); return; }
+    toast({ title: 'Feedback deleted' });
+    queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+  };
+
+  // Reply by email — opens the user's mail client, prefilled.
+  const replyTo = (email: string | null, firstName: string | null, loved: string | null) => {
+    if (!email) { toast({ title: 'No email on file for this parent' }); return; }
+    const subject = encodeURIComponent('Thanks for your MyPhonicsBooks feedback');
+    const greeting = firstName ? `Hi ${firstName},` : 'Hi there,';
+    const ref = loved ? `\n\nYou said: “${loved}”` : '';
+    const body = encodeURIComponent(`${greeting}\n\nThank you so much for taking the time to share your feedback — it really helps us.${ref}\n\n`);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   const stats = useMemo(() => {
@@ -106,6 +127,7 @@ export default function FeedbackList() {
                   <TableHead>Consent</TableHead>
                   <TableHead>On site</TableHead>
                   <TableHead className="text-right">Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -155,11 +177,29 @@ export default function FeedbackList() {
                     <TableCell className="text-right text-xs text-muted-foreground">
                       {r.submitted_at ? format(parseISO(r.submitted_at), 'dd/MM/yyyy') : '—'}
                     </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); replyTo(r.email, r.full_name, r.loved); }}
+                          title="Reply by email"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                        >
+                          <Mail className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); deleteReview(r.id); }}
+                          title="Delete feedback"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
                 {rows.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground">
                       No feedback yet
                     </TableCell>
                   </TableRow>
