@@ -11,6 +11,7 @@ export interface AdminFeedback {
   kind: string | null;
   consent_marketing: boolean;
   consent_named: boolean;
+  featured: boolean;
   submitted_at: string | null;
   full_name: string | null;
   email: string | null;
@@ -29,7 +30,7 @@ export function useAdminFeedback() {
     queryFn: async (): Promise<AdminFeedback[]> => {
       const { data: reviews, error } = await (supabase as any)
         .from('reviews')
-        .select('id, user_id, rating, feedback, improvement, source, kind, consent_marketing, consent_named, submitted_at')
+        .select('id, user_id, rating, feedback, improvement, source, kind, consent_marketing, consent_named, featured, submitted_at')
         .not('submitted_at', 'is', null)
         .order('submitted_at', { ascending: false });
       if (error) throw error;
@@ -55,6 +56,7 @@ export function useAdminFeedback() {
         kind: r.kind,
         consent_marketing: !!r.consent_marketing,
         consent_named: !!r.consent_named,
+        featured: !!r.featured,
         submitted_at: r.submitted_at,
         full_name: profileMap.get(r.user_id)?.full_name ?? null,
         email: profileMap.get(r.user_id)?.email ?? null,
