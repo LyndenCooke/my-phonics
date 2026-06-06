@@ -11,6 +11,7 @@ import { format, parseISO } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
+import ManualTestimonialsManager from '@/components/admin/ManualTestimonialsManager';
 
 function Stars({ rating }: { rating: number | null }) {
   return (
@@ -111,6 +112,8 @@ export default function FeedbackList() {
           </button>
         ))}
       </div>
+
+      <ManualTestimonialsManager />
 
       {isLoading ? (
         <div className="text-muted-foreground">Loading feedback...</div>
