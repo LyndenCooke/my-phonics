@@ -27,12 +27,23 @@ test('Persona A — cold landing → hits primary CTA', async ({ page }, testInf
   const blocked: string[] = [];
 
   await page.goto('/');
+  // `/` does a client-side redirect to /landing for signed-out visitors, then
+  // hydrates. On slower (mobile) emulation the CTA isn't in the DOM the instant
+  // goto resolves, so wait for the landing URL before looking for the button.
+  await page.waitForURL(/\/landing/, { timeout: 10_000 }).catch(() => {
+    /* may already be on a marketing route; fall through and check the CTA */
+  });
   // Landing hero CTA that starts the free assessment. Match the current
   // label ("Find their reading level") plus older wording for resilience.
   const cta = page
     .getByRole('button', { name: /find their reading level|free assessment|find their level/i })
     .first();
-  if ((await cta.count()) === 0) blocked.push('No assessment CTA found on landing');
+  // Wait for it to render rather than checking instantly (avoids a hydration race).
+  const ctaVisible = await cta
+    .waitFor({ state: 'visible', timeout: 10_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!ctaVisible) blocked.push('No assessment CTA found on landing');
   else {
     await cta.click();
     await page.waitForURL(/\/assess/, { timeout: 10_000 }).catch(() => {
