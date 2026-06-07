@@ -5,7 +5,7 @@ import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Force a real PDF file save instead of letting the browser navigate to the
-// URL. A plain `<a href="/worksheets/…​.pdf" target="_blank">` is unreliable:
+// URL. A plain `<a href="/worksheets/….pdf" target="_blank">` is unreliable:
 // on the installed PWA / mobile the SPA navigation (and Vercel's index.html
 // catch-all) can intercept the request and hand back the app's HTML shell
 // instead of the PDF — which is exactly the "opens as HTML, not PDF" bug.
