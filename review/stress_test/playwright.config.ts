@@ -45,7 +45,11 @@ export default defineConfig({
     },
     {
       name: 'mobile-chromium',
-      use: { ...devices['iPhone 12'] },
+      // iPhone 12 gives us a mobile viewport / touch / UA, but the device
+      // descriptor defaults to WebKit. We only install Chromium in CI (and
+      // the project is named *-chromium), so force the Chromium engine —
+      // mobile-emulated Chromium, not WebKit.
+      use: { ...devices['iPhone 12'], defaultBrowserType: 'chromium' },
       testMatch: ['**/personas.spec.ts'], // mobile persona only
     },
   ],
