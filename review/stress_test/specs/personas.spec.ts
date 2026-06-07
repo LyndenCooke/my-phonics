@@ -27,8 +27,12 @@ test('Persona A — cold landing → hits primary CTA', async ({ page }, testInf
   const blocked: string[] = [];
 
   await page.goto('/');
-  const cta = page.getByRole('button', { name: /free assessment/i }).first();
-  if ((await cta.count()) === 0) blocked.push('No "free assessment" CTA found');
+  // Landing hero CTA that starts the free assessment. Match the current
+  // label ("Find their reading level") plus older wording for resilience.
+  const cta = page
+    .getByRole('button', { name: /find their reading level|free assessment|find their level/i })
+    .first();
+  if ((await cta.count()) === 0) blocked.push('No assessment CTA found on landing');
   else {
     await cta.click();
     await page.waitForURL(/\/assess/, { timeout: 10_000 }).catch(() => {
