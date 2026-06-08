@@ -218,53 +218,154 @@
       font-size: 9.5pt; color: #444; line-height: 1.5;
     }
 
+    /* Page 3 content is centred vertically so the whitespace above Focus
+       Sounds and below the Tricky Words box stays balanced, rather than all
+       the slack collecting at one end. */
+    .sw-inner { justify-content: center; }
+
     .sw-section-title {
-      font-size: 11pt; font-weight: 700; color: #1a1a1a;
+      font-size: 12pt; font-weight: 700; color: #1a1a1a;
       margin-bottom: 1mm;
-      margin-top: 3mm;
+      margin-top: 0;
     }
+    /* Story Words title needs to clear the circle row above it; Focus Sounds
+       (first child) sits flush so the page centres symmetrically. */
+    .sw-section-title + .sw-section-desc { margin-bottom: 4mm; }
     .sw-section-desc {
-      font-size: 8pt; color: #777; margin-bottom: 2mm;
+      font-size: 8pt; color: #888; margin-bottom: 4mm;
     }
 
+    /* Focus Sounds — quick warm-up.  Larger, evenly-spaced level-colour
+       circles so the row reads as an intentional warm-up strip.  Equal
+       margins above/below centre the row between its two text labels.
+       The letter is the focus, so it fills most of the circle. */
     .sw-sound-row {
-      display: flex; flex-wrap: wrap; gap: 2.5mm;
-      margin-bottom: 4mm;
+      display: flex; flex-wrap: wrap; gap: 3.5mm;
+      justify-content: center;
+      margin-top: 1mm; margin-bottom: 4mm;
     }
     .sw-sound-circle {
-      width: 12mm; height: 12mm; border-radius: 50%;
+      width: 17mm; height: 17mm; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 12pt; font-weight: 700;
+      font-size: 19pt; font-weight: 700; line-height: 1;
       background: var(--level-color); color: #ffffff;
+      box-shadow: 0 0.4mm 1mm rgba(0,0,0,0.10);
     }
-    .sw-sound-circle-multi { font-size: 8pt; padding: 0 1mm; text-align: center; }
+    .sw-sound-circle-multi { font-size: 12pt; padding: 0 1mm; text-align: center; }
+
+    /* ================================================================
+       DEDICATED SOUNDS PAGE (page 2) — FULL-LEVEL SOUND CHART.
+       Every grapheme taught at this book's level is shown (RWI speed-sound
+       wall-chart style).  The book's focus sounds — "today's sounds" — are
+       highlighted in the level colour and enlarged; the rest sit muted so
+       the child can see the whole journey and spot what's new.  The chart
+       is vertically centred between the intro and a slim grown-up footer.
+       ================================================================ */
+    .snd-title {
+      font-size: 18pt; font-weight: 700; color: #1a1a1a;
+      margin-bottom: 1.5mm;
+    }
+    .snd-intro {
+      font-size: 9pt; color: #777; line-height: 1.5;
+    }
+    /* Legend chip showing what the highlighted colour means. */
+    .snd-legend {
+      display: flex; align-items: center; justify-content: center; gap: 2.5mm;
+      font-size: 8.5pt; color: #888; margin-top: 2.5mm;
+    }
+    .snd-legend-dot {
+      width: 4mm; height: 4mm; border-radius: 50%;
+      background: var(--level-color); flex: 0 0 auto;
+    }
+    .snd-grid-wrap {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* ---- Sound table (RWI speed-sound style) -------------------------------
+       Every grapheme — single OR double/digraph (s, ss, ch, igh, tion) — sits
+       in its own square cell of a tidy bordered table the child reads across
+       before the story.  Column count + cell size are set inline per table
+       (via --cell / --fs custom props + repeat() ) from the total count, so
+       6 sounds or 45 both fit A5's 124mm printable width.  Today's NEW sounds
+       repeat in a smaller highlighted table directly below. */
+    /* Centres the two sound tables vertically in the page space below the
+       heading (the footer guidance was removed, so they float to the middle). */
+    .snd-body {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+    }
+    .snd-table-wrap { display: flex; justify-content: center; margin: 0 0 1mm; }
+    .snd-table {
+      display: grid;
+      border-top: 0.25mm solid #d9dce2;
+      border-left: 0.25mm solid #d9dce2;
+      border-radius: 1.8mm;
+      overflow: hidden;
+      background: #fff;
+    }
+    .snd-cell {
+      width: var(--cell); height: var(--cell);
+      display: flex; align-items: center; justify-content: center;
+      border-right: 0.25mm solid #d9dce2;
+      border-bottom: 0.25mm solid #d9dce2;
+      font-size: var(--fs); font-weight: 700; line-height: 1; color: #4b5563;
+      background: #fff;
+    }
+    /* Two-letter graphemes (ss, ck, ng …) read at full single-letter size — a
+       square cell has room for two letters.  Only 3- and 4-letter graphemes
+       (igh, tion) step down so they don't crowd the smaller dense-tier cells. */
+    .snd-cell-d3 { font-size: calc(var(--fs) * 0.82); letter-spacing: -0.2px; }
+    .snd-cell-d4 { font-size: calc(var(--fs) * 0.62); letter-spacing: -0.3px; }
+    .snd-cell-empty { background: #fafbfc; }
+    /* Today's NEW sound — filled with the level colour, white letter. */
+    .snd-cell-focus { background: var(--level-color); color: #ffffff; }
+    /* Section labels above each table. */
+    .snd-section-label {
+      font-size: 8.5pt; font-weight: 700; letter-spacing: 0.6px;
+      text-transform: uppercase; color: #9aa0aa;
+      text-align: center; margin: 0 0 2.5mm;
+    }
+    .snd-section-label-focus { color: var(--level-color); margin-top: 5mm; }
+    .snd-footer {
+      font-size: 8.5pt; color: #999; text-align: center; line-height: 1.5;
+      border-top: 0.3mm solid #eee; padding-top: 4mm;
+    }
+    .snd-footer strong { color: #666; font-weight: 700; }
 
     /* Sound-buttoned word list — proper SSP arc + dot notation rendered
        inline as SVG so dots and arcs line up with character widths.
        Each character is a fixed-width span; SVG sits below (or above for
        split digraphs) at exact horizontal positions. */
+    /* Story Words — the main practice on the page, so each word sits in its
+       own soft rounded card (pale fill, light border) on a 3-column grid with
+       generous spacing.  The words are the hero element: large enough for a
+       child to point to each sound and blend. */
     .sw-words-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 3mm 4mm;
-      margin-bottom: 3mm;
+      gap: 4.5mm 4mm;
+      margin-bottom: 4mm;
     }
     .sw-word-cell {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 0.5mm 0;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 19mm;
+      padding: 3mm 2mm;
+      background: #fcfcfd;
+      border: 0.35mm solid #e7e7ee;
+      border-radius: 3mm;
       overflow: hidden;
       min-width: 0;
     }
-    /* Long sound-buttoned words at L5/L6 ("instruction", "neighbourhood")
-       overflow the 1/3 column.  Scale the SVG to fit while preserving the
-       letter geometry. */
+    /* Let the vector word scale up to fill the card (capped) so short CVC
+       words read large; long L5/L6 words ("instruction") scale down to fit
+       while preserving the letter + sound-button geometry. */
     .sw-word-cell .sb-word {
-      max-width: 100%;
+      width: 100%;
+      max-width: 30mm;
     }
     .sw-word-cell .sb-word svg {
       width: 100%;
       height: auto;
-      max-width: 38mm;
+      max-width: none;
     }
     /* All-SVG sound-buttoned word.  Letters AND marks share the same
        coordinate system, so dots/lines/arcs always sit dead-centre under
@@ -289,23 +390,31 @@
       fill: #1a1a1a;
     }
 
+    /* Tricky Words — a small parent reminder in soft purple.  Each word sits
+       in its own white card inside the lavender box so "I" / "the" stay
+       visible.  Sits at the end of the (vertically-centred) content stack. */
     .sw-tricky-strip {
-      margin-top: 3mm;
-      padding: 3mm 4mm;
-      background: #fffbe6;
-      border: 0.4mm solid #f5deb3;
-      border-radius: 2mm;
+      margin-top: 5mm;
+      padding: 4mm 5mm;
+      background: #f4effb;
+      border: 0.4mm solid #ddd0f0;
+      border-radius: 3mm;
     }
     .sw-tricky-label {
-      font-size: 8pt; color: #b8860b; font-weight: 700;
+      font-size: 8pt; color: #7c3aed; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 2mm;
+      text-align: center;
+      margin-bottom: 3mm;
     }
     .sw-tricky-words {
-      display: flex; flex-wrap: wrap; gap: 2mm 5mm;
+      display: flex; flex-wrap: wrap; gap: 3mm; justify-content: center;
     }
     .sw-tricky-word {
-      font-size: 13pt; font-style: italic; color: #1a1a1a;
+      font-size: 15pt; font-weight: 600; color: #2a2240;
+      background: #ffffff;
+      border: 0.35mm solid #d8c9f0;
+      border-radius: 2mm;
+      padding: 1.5mm 6mm;
     }
 
     /* Pronunciation note (e.g. soft-c in "race" at L3.1).  Small parent
@@ -368,9 +477,9 @@
        paper inside the A5 page-inner (186mm).  Formation letter sits on
        the left; rhyme is BELOW the letter inside the same column. */
     .tf-row {
-      display: flex; align-items: center; gap: 3mm;
-      margin-bottom: 3mm;
-      padding: 2mm 3mm;
+      display: flex; align-items: center; gap: 4mm;
+      margin-bottom: 4mm;
+      padding: 2.5mm 3mm;
       background: #fafafa;
       border: 0.4mm solid #eee;
       border-radius: 3mm;
@@ -378,20 +487,19 @@
     .tf-formation-block {
       flex: 0 0 24mm;
       display: flex; flex-direction: column; align-items: center;
+      justify-content: center;
     }
+    /* Focus letter: large, black, centred — no coloured box, no stroke
+       number (keeps the page clean and low on pink). */
     .tf-formation-letter {
-      width: 18mm; height: 18mm;
-      border: 0.4mm solid var(--level-color);
-      border-radius: 2mm;
-      background: #ffffff;
+      width: 100%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 28pt; font-weight: 700;
-      color: var(--level-color);
+      font-size: 36pt; font-weight: 700;
+      color: #1a1a1a;
       line-height: 1;
-      position: relative;
-      margin-bottom: 1mm;
+      margin-bottom: 1.5mm;
     }
-    .tf-formation-letter-multi { font-size: 18pt; }
+    .tf-formation-letter-multi { font-size: 22pt; }
     .tf-stroke-num {
       position: absolute; top: -1.5mm; left: -1.5mm;
       width: 5mm; height: 5mm; border-radius: 50%;
@@ -411,9 +519,14 @@
        "trace me" without being a full filled letter. */
     .tf-trace-block {
       flex: 1;
-      display: flex; gap: 3mm;
-      align-items: stretch;
+      display: flex;
+      align-items: center;
     }
+    /* Worksheet-style handwriting band (see hw_band macro): SVG holds both
+       the four-zone guide and the outline trace letters. */
+    .hw-svg { display: block; width: 100%; height: auto; overflow: hidden; }
+    .tf-trace-block { overflow: hidden; }
+    .tf-hw-band { margin-bottom: 1.5mm; }
     /* Trace cell — letter is anchored to the BASELINE (bottom guide)
        not centred in the box.  Ascenders rise to top guide, x-height
        letters sit between baseline and mid-line, descenders dip below. */
@@ -638,8 +751,16 @@
       min-height: 0;
     }
     .spot-stack .spot-card { min-height: 0; }
-    .spot-stack .spot-photo { min-height: 26mm; }
-    .spot-stack .spot-word { font-size: 14pt; padding: 1.5mm 2mm; }
+    /* Photo flexes (shrinks first); word is a fixed footer so it can never be
+       clipped by the card's overflow:hidden — fixes the cut-off labels. */
+    .spot-stack .spot-photo { min-height: 0; flex: 1 1 auto; padding: 1mm; }
+    .spot-stack .spot-word {
+      font-size: 12.5pt; padding: 1mm 1.5mm; flex: 0 0 auto;
+      line-height: 1.05;
+    }
+    /* Zoom the clipart to fill the card (crops the white margins) instead of
+       floating small in the middle. */
+    .spot-stack .spot-photo img { object-fit: cover; transform: scale(1.18); }
 
     /* ================================================================
        READ WORDS / NONSENSE WORDS / READ+NONSENSE COMBINED (L1)
@@ -705,7 +826,7 @@
     }
     .rw-write-row {
       display: flex; align-items: center; gap: 4mm;
-      margin-bottom: 4mm;
+      margin-bottom: 5mm;
     }
     .rw-write-trace {
       width: 28mm;
@@ -718,7 +839,6 @@
     .rw-write-paper {
       flex: 1;
       position: relative;
-      height: 12mm;
     }
 
     /* Nonsense / Alien word styling (PSC-flavoured) */
@@ -915,6 +1035,18 @@
       object-fit: contain;
       background: #ffffff;
     }
+    /* 3×2 large variant — used at L5/L6 (24pp) where the ordering grid is the
+       only thing on the page; the six scenes grow to fill it instead of
+       sitting small with a void below. */
+    .ordering-grid-6-large {
+      flex: 1 1 auto;
+      min-height: 0;
+      gap: 3mm;
+    }
+    .ordering-grid-6-large .ordering-cell {
+      height: auto;
+      min-height: 0;
+    }
 
     .ordering-cell {
       position: relative;
@@ -989,7 +1121,7 @@
       content: attr(data-starter);
       position: absolute;
       left: 0;
-      bottom: 0.5mm;
+      bottom: -0.9mm;          /* baseline sits ON the writing line, not above it */
       font-size: 11pt;
       color: #1a1a1a;
       font-weight: 400;
@@ -1017,7 +1149,7 @@
       content: attr(data-starter);
       position: absolute;
       left: 0;
-      bottom: 0.5mm;
+      bottom: -0.9mm;          /* baseline sits ON the writing line */
       font-size: 10.5pt;
       color: #1a1a1a;
     }
@@ -1267,10 +1399,10 @@
     }
     .gs-writing-prompt {
       font-size: 9.5pt; color: #444; line-height: 1.4;
-      margin-bottom: 3mm;
+      margin-bottom: 5.5mm;   /* clear gap before the first line (big handwriting) */
     }
     .gs-writing-lines {
-      display: flex; flex-direction: column; gap: 6mm;
+      display: flex; flex-direction: column; gap: 2.5mm;
     }
     .gs-writing-line {
       border-bottom: 0.4mm solid #888;
@@ -1423,11 +1555,17 @@
       gap: 5mm 6mm;
       margin-bottom: 6mm;
     }
-    /* Listen-and-Write variant: numbered rows, no picture */
+    /* Listen-and-Write variant: numbered rows, no picture.  Grows to fill the
+       space above the (bottom-pinned) grown-up panel and spreads the rows so
+       there's no dead gap in the middle of the page. */
     .bw-grid-listen {
       grid-template-columns: 1fr;
       gap: 4mm;
+      flex: 1 1 auto;
+      align-content: space-evenly;
+      margin-bottom: 5mm;
     }
+    .bw-grid-listen .bw-row-num { width: 9mm; height: 9mm; font-size: 12pt; }
     .bw-cell {
       display: flex; flex-direction: column;
       align-items: center;
@@ -1787,6 +1925,7 @@
     .pp-rows {
       display: flex; flex-direction: column;
       gap: 4mm; flex: 1 1 auto;
+      justify-content: space-between;   /* spread rows to fill the page */
     }
     .pp-row {
       display: flex; align-items: center; gap: 2.5mm;
@@ -1852,21 +1991,22 @@
     .ss-rows {
       display: flex; flex-direction: column;
       gap: 4mm; flex: 1 1 auto;
+      justify-content: space-between;   /* spread rows to fill the page */
     }
     .ss-row {
-      padding: 2.5mm 3mm;
+      padding: 3mm 3.5mm;
       background: #fafafa;
       border: 0.4mm solid #e5e5e5;
       border-radius: 2mm;
       display: grid;
       grid-template-columns: 7mm 1fr;
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto;
       column-gap: 2.5mm;
-      row-gap: 1.5mm;
+      row-gap: 2.5mm;
       align-items: center;
     }
     .ss-row-num {
-      grid-row: 1 / span 3;
+      grid-row: 1 / span 2;
       grid-column: 1;
       width: 7mm; height: 7mm;
       border-radius: 50%;
@@ -1874,14 +2014,15 @@
       font-size: 11pt; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
     }
+    /* Stem + connector chips share one line so two writing lines fit below. */
+    .ss-head {
+      grid-row: 1; grid-column: 2;
+      display: flex; align-items: center; gap: 3mm; flex-wrap: wrap;
+    }
     .ss-stem {
-      grid-row: 1;
-      grid-column: 2;
       font-size: 11pt; color: #1a1a1a; font-weight: 600;
     }
     .ss-connectors {
-      grid-row: 2;
-      grid-column: 2;
       display: flex; gap: 2mm; flex-wrap: wrap;
     }
     .ss-choice {
@@ -1892,10 +2033,9 @@
       font-size: 9pt; color: var(--level-color); font-weight: 600;
     }
     .ss-write {
-      grid-row: 3;
+      grid-row: 2;
       grid-column: 2;
-      display: flex; flex-direction: column; gap: 4mm;
-      margin-top: 1mm;
+      display: flex; flex-direction: column; gap: 2.5mm;
     }
     .ss-line {
       width: 100%;
@@ -1945,8 +2085,6 @@
   {# Letter band height: leave 8mm for cap+descender. Marks below at +9..+12. #}
   {% set letter_y = 6.5 %}     {# baseline y inside the SVG #}
   {% set under_y = 10.0 %}     {# y for under dots / line #}
-  {% set vb_top = -3.5 %}      {# top of viewBox (room for over-arc) #}
-  {% set vb_h   = 14.5 %}      {# total viewBox height #}
   {# Font size in mm — chosen to match previous 18pt visual size (18pt ≈ 6.35mm). #}
   {% set font_mm = 6.35 %}
 
@@ -1955,6 +2093,18 @@
     {% set ns.over_first = m.indices[0] %}
     {% set ns.over_last = m.indices[-1] %}
   {% endif %}{% endfor %}
+
+  {# ViewBox height: only reserve the top band for the over-arc when a split
+     digraph actually needs it.  For plain words (under-dots / under-lines)
+     trim that empty top band so the letters + sound buttons sit vertically
+     centred inside their card instead of hugging the top edge. #}
+  {% if ns.over_first >= 0 %}
+    {% set vb_top = -3.5 %}    {# room for over-arc #}
+    {% set vb_h   = 14.5 %}
+  {% else %}
+    {% set vb_top = 0.7 %}     {# balanced margins above letters / below dots #}
+    {% set vb_h   = 11.0 %}
+  {% endif %}
 
   <div class="sb-word" style="--sb-natural-w: {{ total_w }}mm;">
     <svg viewBox="0 {{ vb_top }} {{ total_w }} {{ vb_h }}"
@@ -2001,6 +2151,59 @@
   </div>
 {% endmacro %}
 
+{# ----------------------------------------------------------------
+   Handwriting / tracing band — matches the "Trace the sounds"
+   worksheet.  A single SVG holds two SOLID guide lines (x-height +
+   baseline — no dotted top line) AND the letters, so glyphs sit
+   exactly on the lines.  When a grapheme is given, the first few
+   copies are drawn as SOLID light-grey letters at the START of the
+   line (visible to trace); the rest of the line is left empty for
+   the child to practise on their own.  `copies` = how many grey
+   letters; `vw` sets the viewBox width (wider → shorter band).
+   ---------------------------------------------------------------- #}
+{% macro hw_band(grapheme=None, x_height=8, width_mm=89, copies=3) %}
+  {# Gold-standard worksheet handwriting guide — a 1:1 port of the
+     worksheet-engine (src/components/TraceLine.tsx + design/handwriting.ts).
+     Four ruled guidelines computed from Andika's REAL measured metrics so
+     every glyph seats exactly on the baseline:
+       ascender (top)  — solid faint grey         (top of h, b, d, l)
+       x-height (mid)  — DASHED, in the book's level colour (top of x, o, a)
+       baseline        — solid dark grey          (where the letter SITS)
+       descender (low) — dashed faint grey        (tails of y, g, p, j)
+     Grey trace copies sit at the start of the line; the rest is left blank
+     for the child to carry on.  Sized in real mm (viewBox units == mm) with
+     preserveAspectRatio="none" so the vertical scale is locked to mm. #}
+  {% set asc_r = 0.7813 %}{% set xh_r = 0.5078 %}{% set desc_r = 0.2393 %}
+  {% set pad = 1.5 %}
+  {% set fs = x_height / xh_r %}
+  {% set base_y = pad + fs * asc_r %}
+  {% set xh_y = base_y - x_height %}
+  {% set desc_y = base_y + fs * desc_r %}
+  {% set h = desc_y + pad %}
+  <svg class="hw-svg" width="100%" height="{{ '%.2f'|format(h) }}mm"
+       viewBox="0 0 {{ width_mm }} {{ '%.2f'|format(h) }}"
+       preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    {# ascender — solid faint grey #}
+    <line x1="0" x2="{{ width_mm }}" y1="{{ '%.2f'|format(pad) }}" y2="{{ '%.2f'|format(pad) }}"
+          stroke="#e0e0e0" stroke-width="0.3"/>
+    {# x-height — dashed, in the book's level colour #}
+    <line x1="0" x2="{{ width_mm }}" y1="{{ '%.2f'|format(xh_y) }}" y2="{{ '%.2f'|format(xh_y) }}"
+          stroke="var(--level-color)" stroke-opacity="0.6" stroke-width="0.4" stroke-dasharray="1.6 1.4"/>
+    {# baseline — solid dark grey (the letter sits here) #}
+    <line x1="0" x2="{{ width_mm }}" y1="{{ '%.2f'|format(base_y) }}" y2="{{ '%.2f'|format(base_y) }}"
+          stroke="#9a9a9a" stroke-width="0.5"/>
+    {# descender — dashed faint grey #}
+    <line x1="0" x2="{{ width_mm }}" y1="{{ '%.2f'|format(desc_y) }}" y2="{{ '%.2f'|format(desc_y) }}"
+          stroke="#e0e0e0" stroke-width="0.3" stroke-dasharray="1.6 1.4"/>
+    {% if grapheme %}
+      <text x="3" y="{{ '%.2f'|format(base_y) }}"
+            font-family="Andika, 'Trebuchet MS', sans-serif"
+            font-size="{{ '%.2f'|format(fs) }}" font-weight="400"
+            fill="#b3b3b3" word-spacing="4" xml:space="preserve">{{ ((grapheme ~ ' ') * copies) | trim }}</text>
+    {% endif %}
+  </svg>
+{% endmacro %}
+
   <!-- ============================================================
        PAGE 1 — FRONT COVER (matches library covers in /public/covers/)
        ============================================================ -->
@@ -2025,58 +2228,59 @@
   </div>
 
   <!-- ============================================================
-       PAGE 2 — GUIDE FOR GROWN-UPS (during + after only)
+       PAGE 2 — SOUNDS  (RWI speed-sound style table).  Top table = every
+       sound the child has met so far (read across as a warm-up); table
+       below = just THIS book's new sounds, filled in the level colour.
+       The child reads through all known sounds, then meets today's.
        ============================================================ -->
+  {# Renders one bordered sound table.  `cell`/`fs` are mm/pt sizes chosen by
+     count; empty trailing cells pad the last row so the border stays a clean
+     rectangle.  `is_focus` fills every cell with the level colour. #}
+  {% macro sound_table(items, cols, cell, fs, is_focus) %}
+  {% set n = items | length %}
+  {% set pad = (cols - (n % cols)) % cols %}
+  <div class="snd-table-wrap">
+    <div class="snd-table" style="--cell: {{ cell }}mm; --fs: {{ fs }}pt; grid-template-columns: repeat({{ cols }}, var(--cell));">
+      {% for g in items %}
+      <div class="snd-cell {% if g|length == 3 %}snd-cell-d3{% elif g|length >= 4 %}snd-cell-d4{% endif %} {% if is_focus %}snd-cell-focus{% endif %}">{{ g }}</div>
+      {% endfor %}
+      {% for _ in range(pad) %}<div class="snd-cell snd-cell-empty"></div>{% endfor %}
+    </div>
+  </div>
+  {% endmacro %}
   <div class="page">
     <div class="page-inner">
-      <div class="guide-title">For Grown-Ups</div>
-      <div class="guide-intro">
-        Your child reads. You sit close and help when stuck. The full how-to
-        lives in our short videos — this page is the at-a-glance reminder.
-      </div>
+      <div class="snd-title">Our Sounds</div>
+      <div class="snd-intro">Read every sound out loud before you start the story. Then meet this book&rsquo;s new sounds &mdash; they&rsquo;re in colour.</div>
+      {% set _chart = chart_graphemes if chart_graphemes else focus_graphemes %}
+      {% set _chart_n = _chart | length %}
+      {# All-sounds table: column count + cell size step down as the set grows. #}
+      {% if _chart_n <= 6 %}{% set _c=3 %}{% set _w=20 %}{% set _f=22 %}
+      {% elif _chart_n <= 12 %}{% set _c=4 %}{% set _w=19 %}{% set _f=20 %}
+      {% elif _chart_n <= 20 %}{% set _c=5 %}{% set _w=16.5 %}{% set _f=18 %}
+      {% elif _chart_n <= 35 %}{% set _c=6 %}{% set _w=14.5 %}{% set _f=16 %}
+      {% elif _chart_n <= 49 %}{% set _c=7 %}{% set _w=12.8 %}{% set _f=14 %}
+      {% else %}{% set _c=8 %}{% set _w=11 %}{% set _f=11.5 %}{% endif %}
+      {# Centre both tables vertically in the space below the heading. #}
+      <div class="snd-body">
+        <div class="snd-section-label">All our sounds so far</div>
+        {{ sound_table(_chart, _c, _w, _f, false) }}
 
-      <div class="guide-section">
-        <div class="guide-section-title">When They Get Stuck</div>
-        <div class="guide-script-line">
-          <strong>Decodable word:</strong> "Sound it out:
-          {% if guide_blend_example %}
-            {{ guide_blend_example.phoneme_str }}. Now blend it: <em>{{ guide_blend_example.word }}</em>."
-          {% else %}
-            sound out each letter, then blend."
-          {% endif %}
-        </div>
-        <div class="guide-script-line">
-          <strong>Tricky word:</strong> Tell them straight away: "That one says <em>the</em>."  Don&rsquo;t try to sound out tricky words.
-        </div>
-      </div>
-
-      {% if grammar_spotlight and grammar_spotlight.grownups_tip %}
-      <div class="writing-tip">
-        <div class="writing-tip-label">Writing Focus This Book &mdash; <strong>{{ grammar_spotlight.focus_skill }}</strong></div>
-        <div class="writing-tip-body">{{ grammar_spotlight.grownups_tip }}</div>
-      </div>
-      {% endif %}
-
-      <div class="guide-quote">
-        Watch the parent video at <strong>myphonicsbooks.com/guide</strong> for the full how-to.  Re-read each book three to five times — that&rsquo;s where fluency comes from.
+        {# Today's new sounds — highlighted, one row when ≤6 (the usual case). #}
+        {% set _fn = focus_graphemes | length %}
+        <div class="snd-section-label snd-section-label-focus">Today&rsquo;s new sounds</div>
+        {{ sound_table(focus_graphemes, (_fn if _fn <= 6 else 6), 20, 19, true) }}
       </div>
     </div>
     <div class="page-num page-num-left">2</div>
   </div>
 
   <!-- ============================================================
-       PAGE 3 — SOUNDS + STORY WORDS (with before-script + sound buttons)
+       PAGE 3 — STORY WORDS + TRICKY WORDS (sound-buttoned cards).
+       Focus sounds now live on their own page (page 2).
        ============================================================ -->
   <div class="page">
-    <div class="page-inner">
-      <div class="sw-section-title">Focus Sounds</div>
-      <div class="sw-section-desc">Practise these before reading.</div>
-      <div class="sw-sound-row">
-        {% for g in focus_graphemes %}
-        <div class="sw-sound-circle {% if g|length > 1 %}sw-sound-circle-multi{% endif %}">{{ g }}</div>
-        {% endfor %}
-      </div>
-
+    <div class="page-inner sw-inner">
       <div class="sw-section-title">Story Words</div>
       <div class="sw-section-desc">Sound out each phoneme, then blend. Dashes mark digraphs.</div>
       <div class="sw-words-grid">
@@ -2087,27 +2291,11 @@
         {% endfor %}
       </div>
 
-      {% if tricky_words %}
-      <div class="sw-tricky-strip">
-        <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
-        <div class="sw-tricky-words">
-          {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
-        </div>
-      </div>
-      {% endif %}
-
-      {# Writing tip is shown ONLY when the book has no pronunciation notes —
-         otherwise the Watch Out panel needs the vertical space, and the
-         same focus_skill is already surfaced on the Word Workshop page
-         (Grammar Spotlight badge).  No information is lost when this is
-         hidden, just deduplicated. #}
-      {% if grammar_spotlight and grammar_spotlight.reference_tip and not pronunciation_notes %}
-      <div class="writing-tip">
-        <div class="writing-tip-label">Writing Tip</div>
-        <div class="writing-tip-body">{{ grammar_spotlight.reference_tip }}</div>
-      </div>
-      {% endif %}
-
+      {# Pronunciation notes ("Watch Out" for alternative pronunciations the
+         focus-sound table doesn't surface) sit above the Tricky Words box so
+         the Tricky reminder stays pinned to the bottom of the page.
+         The old Writing Tip panel has been removed: this page now focuses on
+         Focus Sounds, Story Words and Tricky Words only. #}
       {% for note in pronunciation_notes %}
       <div class="sw-pron-note">
         <div class="sw-pron-note-label">{{ note.title }}</div>
@@ -2126,6 +2314,15 @@
         {% endif %}
       </div>
       {% endfor %}
+
+      {% if tricky_words %}
+      <div class="sw-tricky-strip">
+        <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
+        <div class="sw-tricky-words">
+          {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
+        </div>
+      </div>
+      {% endif %}
     </div>
     <div class="page-num page-num-right">3</div>
   </div>
@@ -2140,63 +2337,22 @@
     <div class="page-inner">
       <div class="tf-title">Trace &amp; Form the Sounds</div>
       <div class="tf-instruction">
-        Trace the outline letters with your finger, then with a pencil. Say the sound as you write.
+        Trace the grey letters, then carry on along the line yourself. Say the sound as you write.
       </div>
 
-      <div class="tf-section-label">Form &mdash; Trace</div>
-
-      {% for f in formation_drills[:4] %}
+      {% for f in formation_drills[:6] %}
       <div class="tf-row">
         <div class="tf-formation-block">
-          <div class="tf-formation-letter {% if f.grapheme|length > 1 %}tf-formation-letter-multi{% endif %}">
-            <span class="tf-stroke-num">1</span>{{ f.grapheme }}
-          </div>
+          <div class="tf-formation-letter {% if f.grapheme|length > 1 %}tf-formation-letter-multi{% endif %}">{{ f.grapheme }}</div>
           <div class="tf-formation-rhyme">{{ f.rhyme }}</div>
         </div>
         <div class="tf-trace-block">
-          {% for _ in range(3) %}
-          <div class="tf-trace-cell">
-            <span class="tf-trace-mid"></span>
-            <span class="tf-trace-ghost {% if f.grapheme|length > 1 %}tf-trace-ghost-multi{% endif %}">{{ f.grapheme }}</span>
-          </div>
-          {% endfor %}
+          {# Trace copies scale down with grapheme length so multi-letter sounds
+             (ous, tion) don't run off the line — one clean example is enough. #}
+          {{ hw_band(f.grapheme, copies=(3 if f.grapheme|length == 1 else (2 if f.grapheme|length == 2 else 1))) }}
         </div>
       </div>
       {% endfor %}
-
-      {# Level-aware writing area.  L1-L2 form individual letters on the
-         4-line baseline; L3-L4 write the focus sounds and short words; L5-L6
-         move to plain ruled lines and write a sentence using a focus sound.
-         Line count grows with level to encourage writing fluency. #}
-      {% set _writing_lines = {1: 2, 2: 2, 3: 4, 4: 4, 5: 5, 6: 6}.get(level, 4) %}
-      <div class="tf-write-row">
-        <div class="tf-write-label">
-          {%- if level <= 2 %}Now you try
-          {%- elif level <= 4 %}Now write the sounds &mdash; then a word
-          {%- else %}Now write a sentence
-          {%- endif %}
-        </div>
-        <div class="tf-write-prompt">
-          {%- if level <= 2 -%}
-            Form each letter on the lines below. Say the sound as you write.
-          {%- elif level <= 4 -%}
-            Write each focus sound, then have a go at a word that uses one.
-          {%- else -%}
-            Write a sentence using one of the focus sounds from this book.
-          {%- endif -%}
-        </div>
-        {% for _ in range(_writing_lines) %}
-          {% if level <= 4 %}
-          <div class="tf-hw-paper">
-            <div class="tf-hw-line tf-hw-top"></div>
-            <div class="tf-hw-line tf-hw-mid"></div>
-            <div class="tf-hw-line tf-hw-base"></div>
-          </div>
-          {% else %}
-          <div class="tf-hw-plain"></div>
-          {% endif %}
-        {% endfor %}
-      </div>
     </div>
     <div class="page-num page-num-left">4</div>
   </div>
@@ -2323,9 +2479,7 @@
         <div class="rw-write-row">
           <div class="rw-write-trace">{{ w.word }}</div>
           <div class="rw-write-paper">
-            <div class="tf-hw-line tf-hw-top"></div>
-            <div class="tf-hw-line tf-hw-mid"></div>
-            <div class="tf-hw-line tf-hw-base"></div>
+            {{ hw_band(x_height=4.5) }}
           </div>
         </div>
         {% endfor %}
@@ -2420,7 +2574,7 @@
         {% if page_count >= 20 %}Then retell the story below.{% endif %}
       </div>
 
-      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6{% elif level >= 3 %}ordering-grid-compact{% elif page_count == 16 %}ordering-grid-4 ordering-grid-4-large{% else %}ordering-grid-4{% endif %}">
+      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6{% if page_count >= 24 %} ordering-grid-6-large{% endif %}{% elif level >= 3 %}ordering-grid-compact{% elif page_count == 16 %}ordering-grid-4 ordering-grid-4-large{% else %}ordering-grid-4{% endif %}">
         {% for item in ordering_items %}
         <div class="ordering-cell">
           {% if item.image %}
@@ -2830,14 +2984,16 @@
          uses one of their new words in a sentence that retells a moment from
          the story.  This turns dead vertical space into a meaningful
          "apply-the-skill" beat without adding a page. #}
-      {% set _writing_prompt = (grammar_spotlight.writing_prompt if grammar_spotlight.writing_prompt else "Now tell part of the story.  Write a sentence using one of your new words.") %}
-      {% set _writing_lines = (grammar_spotlight.writing_lines if grammar_spotlight.writing_lines else (4 if level >= 4 else 3)) %}
+      {# Align the apply-the-skill prompt to THIS book's grammar spotlight
+         (e.g. "use speech with inverted commas"), not a generic "new words". #}
+      {% set _writing_prompt = (grammar_spotlight.writing_prompt if grammar_spotlight.writing_prompt else ("Now write a sentence about part of the story. Try to use " ~ _spot.skill|lower ~ "." if _spot.skill else "Now write a sentence about part of the story, using one of your new words.")) %}
+      {% set _writing_lines = (grammar_spotlight.writing_lines if grammar_spotlight.writing_lines else 3) %}
       <div class="gs-writing">
         <div class="gs-writing-label">Write About the Story</div>
         <div class="gs-writing-prompt">{{ _writing_prompt }}</div>
         <div class="gs-writing-lines">
           {% for _ in range(_writing_lines) %}
-          <div class="gs-writing-line"></div>
+          {{ hw_band(x_height=4.5) }}
           {% endfor %}
         </div>
       </div>
@@ -3006,15 +3162,19 @@
         {% for stem in _stretch_stems %}
         <div class="ss-row">
           <div class="ss-row-num">{{ loop.index }}</div>
-          <div class="ss-stem">{{ stem }}</div>
-          <div class="ss-connectors">
-            <span class="ss-choice">because</span>
-            <span class="ss-choice">when</span>
-            <span class="ss-choice">if</span>
+          <div class="ss-head">
+            <span class="ss-stem">{{ stem }}</span>
+            <span class="ss-connectors">
+              <span class="ss-choice">because</span>
+              <span class="ss-choice">when</span>
+              <span class="ss-choice">if</span>
+            </span>
           </div>
           <div class="ss-write">
-            <div class="ss-line"></div>
-            <div class="ss-line"></div>
+            {# Gold-standard 4-zone handwriting guide (same as page 4), not a
+               thin single rule — two proper lines to write on. #}
+            {{ hw_band(x_height=4.5) }}
+            {{ hw_band(x_height=4.5) }}
           </div>
         </div>
         {% endfor %}
@@ -3062,7 +3222,7 @@
       </div>
 
       <div class="back-footer">
-        <div class="back-footer-brand">myphonicsbooks.com</div>
+        <div class="back-footer-brand">myphonicsbooks.co.uk</div>
         <div class="back-footer-url">Decodable phonics stories from around the world</div>
       </div>
     </div>

@@ -436,6 +436,19 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     # be in long-term memory and don't need re-testing.
     tricky_words_new = tricky_entry.get("new_tricky_words", [])
 
+    # Tricky words to FLAG on page 3 ("tell your child these straight away"):
+    # only those used in this story that the child hasn't already been taught in
+    # an earlier level.  Tricky words are introduced level-by-level, so once a
+    # level is passed they're assumed known — re-flagging "the/said/my/you" in a
+    # Level 6 book is pointless and overflows the box.  Level 1 has no prior
+    # level, so all of its tricky words still show.
+    _used_tricky = story_dict.get("tricky_words_used", tricky_words)
+    _prior_tricky = (
+        set(tricky_data.get(f"level_{level - 1}", {}).get("cumulative", []))
+        if level > 1 else set()
+    )
+    tricky_words_display = [w for w in _used_tricky if w not in _prior_tricky]
+
     # Cover sounds — first 8
     cover_sounds = all_graphemes[:8] if len(all_graphemes) >= 8 else all_graphemes
 
@@ -503,7 +516,7 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         "story_pages": story_pages,
         "story_words": story_dict.get("story_words", []),
         "read_words": story_dict.get("read_words", []),
-        "tricky_words": story_dict.get("tricky_words_used", tricky_words),
+        "tricky_words": tricky_words_display,
         "tricky_words_new": tricky_words_new,
         "nonsense_words": story_dict.get("nonsense_words", []),
         "questions": questions,
@@ -544,6 +557,25 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     for lv in range(1, level + 1):
         lv_entry = graphemes_data.get(f"level_{lv}", {})
         cumulative.extend(lv_entry.get("graphemes", []))
+
+    # Sound chart for page 2 (RWI speed-sound style): a relevant warm-up read,
+    # NOT the child's entire history.  We show the IMMEDIATELY PREVIOUS level in
+    # full plus this level's graphemes up to this book's furthest focus sound.
+    # A Level 6 child reviews Level 5 + Level 6 sounds — never Set 1 (satpin),
+    # which is long mastered and just wastes the page.  Level 1 has no previous
+    # level, so it shows all of Level 1 so far (the alphabet read-through).
+    _focus = story_dict.get("focus_graphemes", [])
+    _prev_levels = (
+        graphemes_data.get(f"level_{level - 1}", {}).get("graphemes", [])
+        if level > 1 else []
+    )
+    _cur_order = graphemes_data.get(f"level_{level}", {}).get("graphemes", [])
+    _last_idx = -1
+    for g in _focus:
+        if g in _cur_order:
+            _last_idx = max(_last_idx, _cur_order.index(g))
+    _cur_upto = _cur_order[: _last_idx + 1] if _last_idx >= 0 else list(_focus)
+    book_data["chart_graphemes"] = _prev_levels + _cur_upto
 
     button_source = (
         story_dict.get("story_words")
