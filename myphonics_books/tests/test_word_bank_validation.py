@@ -190,8 +190,10 @@ class TestWordBankLoading:
     def test_load_tricky_words(self):
         tricky = load_tricky_words(1)
         assert "the" in tricky
-        assert "to" in tricky
         assert "I" in tricky or "i" in tricky
+        # Under the 8-level ledger, L1 introduces only I/the; "to" now arrives
+        # at L2 (was L1 in the old 6-level scheme).
+        assert "to" in load_tricky_words(2)
 
     def test_tricky_words_cumulative(self):
         tricky_l1 = load_tricky_words(1)
