@@ -6,7 +6,7 @@ import { BLENDING_BOOKS, BLENDING_BOOK_TOTAL, type BlendingBook } from '../data/
 import { SCHOOL_LEVELS } from '../data/levels';
 import { blockForResource, programmeTotals } from '../data/pathway';
 import { useToast } from '@/hooks/use-toast';
-import { downloadSchoolResource } from '../lib/schoolClient';
+import { downloadSchoolResource, viewSchoolResource } from '../lib/schoolClient';
 
 type DLResource =
   | { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }
@@ -21,6 +21,15 @@ function soundBookKey(id: string): string {
 }
 function coverUrl(parent6: string): string {
   return `/covers/${storageKey(parent6)}_cover.jpg`;
+}
+// 8-level realignment: storybook assets (PDFs + covers) are staged under a
+// SCHOOL-ONLY key prefix so they never collide with the public site's files.
+// e.g. school sub-level "L3.1" -> "s8_3_1".
+function s8Key(subLevel: string): string {
+  return `s8_${subLevel.replace(/^L/, '').replace('.', '_')}`;
+}
+function s8CoverUrl(subLevel: string): string {
+  return `/covers/${s8Key(subLevel)}_cover.jpg`;
 }
 
 const HEX: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.hex]));
@@ -48,6 +57,16 @@ export default function SchoolLibraryAccess() {
     const r = await downloadSchoolResource({ ...resource, filename });
     setBusy(null);
     if (!r.ok) toast({ title: 'Download failed', description: r.error, variant: 'destructive' });
+  };
+
+  // Open a storybook PDF in a new tab for viewing / screen-recording.
+  const view = async (key: string, resource: DLResource) => {
+    const w = window.open('', '_blank');   // open synchronously to dodge popup blockers
+    setBusy(key);
+    const r = await viewSchoolResource(resource);
+    setBusy(null);
+    if (r.ok && r.url && w) { w.location.href = r.url; }
+    else { w?.close(); toast({ title: 'Could not open', description: r.error, variant: 'destructive' }); }
   };
 
   const CATS: { id: Category; label: string; count: number }[] = [
@@ -101,7 +120,7 @@ export default function SchoolLibraryAccess() {
         {cat === 'sound_books' && soundBooks.map((b) => <SoundBookCard key={b.id} book={b} busy={busy} run={run} />)}
         {cat === 'sound_worksheets' && soundBooks.map((b) => <SoundWorksheetCard key={b.id} book={b} />)}
         {cat === 'blending_books' && blendingBooks.map((b) => <BlendingCard key={b.id} book={b} />)}
-        {cat === 'storybooks' && storybooks.map((b) => <StorybookCard key={b.id} book={b} busy={busy} run={run} />)}
+        {cat === 'storybooks' && storybooks.map((b) => <StorybookCard key={b.id} book={b} busy={busy} run={run} view={view} />)}
         {cat === 'interactive' && storybooks.map((b) => <InteractiveCard key={b.id} book={b} />)}
         {cat === 'story_packs' && storybooks.map((b) => <StoryPackCard key={b.id} book={b} busy={busy} run={run} />)}
         {cat === 'sound_mats' && levels.map((l) => <LevelResourceCard key={l.level} level={l.level} kind="mat" />)}
@@ -175,14 +194,15 @@ function BlendingCard({ book }: { book: BlendingBook }) {
   );
 }
 
-function StorybookCard({ book, busy, run }: { book: SchoolBook; busy: string | null; run: (k: string, u: string, f: string) => void }) {
+function StorybookCard({ book, busy, run, view }: { book: SchoolBook; busy: string | null; run: (k: string, u: string, f: string) => void; view: (k: string, r: { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }) => void }) {
   const [imgOk, setImgOk] = useState(true);
   const p6 = book.parent6SubLevel;
+  const sk = s8Key(book.subLevel);   // school-only key for the new 8-level assets
   return (
     <Shell level={book.level}>
       <div className="flex gap-3 mb-2">
         {imgOk ? (
-          <img src={coverUrl(p6)} alt="" onError={() => setImgOk(false)} className="w-14 h-14 rounded-lg object-cover flex-shrink-0 bg-slate-100" draggable={false} />
+          <img src={s8CoverUrl(book.subLevel)} alt="" onError={() => setImgOk(false)} className="w-14 h-14 rounded-lg object-cover flex-shrink-0 bg-slate-100" draggable={false} />
         ) : (
           <div className="w-14 h-14 rounded-lg s-bg-tint flex items-center justify-center flex-shrink-0"><BookOpen className="w-5 h-5 s-text-ink" /></div>
         )}
@@ -192,12 +212,13 @@ function StorybookCard({ book, busy, run }: { book: SchoolBook; busy: string | n
           <BlockLine id={book.id} />
         </div>
       </div>
-      <div className="text-[11px] text-slate-500 mb-2">Focus: {book.focusSounds.join(', ')}</div>
-      <div className="text-[11px] text-slate-500 mb-3">Companions: built-in practice · 5-page worksheet pack · interactive version</div>
+      <div className="text-[11px] text-slate-500 mb-2">Focus: {book.focusSounds.join(', ')} · <span className="font-mono">was {p6}</span></div>
       <div className="mt-auto grid grid-cols-2 gap-1.5">
-        <a href={`/library?book=${book.slug}`} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-1 px-2 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800"><BookOpen className="w-3.5 h-3.5" /> Read online</a>
-        <DownloadBtn label="A5 booklet" loading={busy === `${p6}-a4`} onClick={() => run(`${p6}-a4`, { resourceType: 'storybook', resourceKey: storageKey(p6), format: 'a4' }, `${book.title} (A5 Booklet).pdf`)} />
-        <DownloadBtn label="A4 sheets" loading={busy === `${p6}-a5`} onClick={() => run(`${p6}-a5`, { resourceType: 'storybook', resourceKey: storageKey(p6), format: 'a5' }, `${book.title} (A4 Sheets).pdf`)} />
+        <button onClick={() => view(`${sk}-view`, { resourceType: 'storybook', resourceKey: sk, format: 'a5' })} disabled={busy === `${sk}-view`} className="inline-flex items-center justify-center gap-1 px-2 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50">
+          {busy === `${sk}-view` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BookOpen className="w-3.5 h-3.5" />} View book
+        </button>
+        <DownloadBtn label="A5 booklet" loading={busy === `${sk}-a4`} onClick={() => run(`${sk}-a4`, { resourceType: 'storybook', resourceKey: sk, format: 'a4' }, `${book.title} (A5 Booklet).pdf`)} />
+        <DownloadBtn label="A4 sheets" loading={busy === `${sk}-a5`} onClick={() => run(`${sk}-a5`, { resourceType: 'storybook', resourceKey: sk, format: 'a5' }, `${book.title} (A4 Sheets).pdf`)} />
         <DownloadBtn label="Worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} />
       </div>
     </Shell>

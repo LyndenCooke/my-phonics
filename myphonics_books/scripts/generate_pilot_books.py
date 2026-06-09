@@ -156,20 +156,44 @@ LEVEL_KEYS = {
     "6.4": "L6_4_B1",
 }
 
+# ── 8-level Curriculum Ledger v2.1 realignment (2026-06-08) ──────────────────
+# New public level.book id  ->  the book's ORIGINAL (6-level) id, which still
+# keys its story (via LEVEL_KEYS) and its image assets (output/images/L{old}_B1).
+# Old "Level 1" (10 books) splits into new L1/L2/L3; old L2-L6 shift to L4-L8.
+NEW_TO_OLD = {
+    "1.1": "1.1", "1.2": "1.2",                                  # L1 Ditties
+    "2.1": "1.4", "2.2": "1.5", "2.3": "1.6", "2.4": "1.7", "2.5": "1.8",  # L2 First Sounds
+    "3.1": "1.3", "3.2": "1.9", "3.3": "1.10",                   # L3 Special Friends
+    "4.1": "2.1", "4.2": "2.2", "4.3": "2.3", "4.4": "2.4", "4.5": "2.5", "4.6": "2.6",  # L4 Longer Sounds
+    "5.1": "3.1", "5.2": "3.2", "5.3": "3.3", "5.4": "3.4", "5.5": "3.5",  # L5 New Spellings
+    "6.1": "4.1", "6.2": "4.2", "6.3": "4.3", "6.4": "4.4",      # L6 Building Fluency
+    "7.1": "5.1", "7.2": "5.2", "7.3": "5.3", "7.4": "5.4",      # L7 Reading Together
+    "8.1": "6.1", "8.2": "6.2", "8.3": "6.3", "8.4": "6.4",      # L8 Reading Champion
+}
+
 
 async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
     """Generate a single pilot book PDF."""
     stories = get_pilot_stories()
-    key = LEVEL_KEYS[level]
+
+    # 8-level realignment: a new public id (e.g. "3.1") resolves its story and
+    # images via the book's ORIGINAL id ("1.3"), but renders/outputs under the
+    # NEW level (colour, name, folder, filename).
+    new_id = str(level)
+    old_id = NEW_TO_OLD.get(new_id, new_id)
+    key = LEVEL_KEYS[old_id] if old_id in LEVEL_KEYS else LEVEL_KEYS[level]
     story = stories[key]
+    if "." in new_id:
+        story["level"] = int(new_id.split(".")[0])   # override to the new (8-level) level
 
-    # Handle both integer (1) and string ("1.1") level keys for directory names
-    level_str = str(level).replace(".", "_")
+    # Output dir name uses the NEW id; image assets use the OLD id.
+    level_str = new_id.replace(".", "_")
+    old_str = old_id.replace(".", "_")
 
-    # Image directory
+    # Image directory (keyed by the book's original id, where the PNGs live)
     image_dir = None
     if use_images:
-        candidate = IMAGE_BASE_DIR / f"L{level_str}_B1"
+        candidate = IMAGE_BASE_DIR / f"L{old_str}_B1"
         if candidate.exists() and any(candidate.glob("*.png")):
             image_dir = candidate
         else:

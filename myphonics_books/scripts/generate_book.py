@@ -27,46 +27,51 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ─── Level Data ──────────────────────────────────────────────────
+# 8-level Curriculum Ledger v2.1 scheme (realigned 2026-06-08).
 LEVEL_COLOURS = {
-    1: "#E84B8A",
-    2: "#F59E0B",
-    3: "#22C55E",
-    4: "#3B82F6",
-    5: "#8B5CF6",
-    6: "#14B8A6",
+    1: "#E84B8A",  # Ditties - Pink
+    2: "#F97066",  # First Sounds - Coral
+    3: "#F59E0B",  # Special Friends - Amber
+    4: "#22C55E",  # Longer Sounds - Green
+    5: "#3B82F6",  # New Spellings - Blue
+    6: "#6366F1",  # Building Fluency - Indigo
+    7: "#8B5CF6",  # Reading Together - Purple
+    8: "#14B8A6",  # Reading Champion - Teal
 }
 
 LEVEL_NAMES = {
-    1: "Starting Stories",
-    2: "Longer Sounds",
-    3: "New Spellings",
-    4: "Building Fluency",
-    5: "Reading Together",
-    6: "Reading Champion",
+    1: "Ditties",
+    2: "First Sounds",
+    3: "Special Friends",
+    4: "Longer Sounds",
+    5: "New Spellings",
+    6: "Building Fluency",
+    7: "Reading Together",
+    8: "Reading Champion",
 }
 
-# Font size per level (decreases as reading ability grows)
+# Font size per level (decreases as reading ability grows).  L1-L3 share the
+# large Reception size (old single-sound ditties, now split into 3 levels).
 STORY_FONT_SIZES = {
-    1: 36,  # Reception — VERY large, clear (this is a READING book)
-    2: 28,
-    3: 24,
-    4: 20,
-    5: 18,
-    6: 16,  # Year 3+ — approaching standard book text
+    1: 36, 2: 36, 3: 36,
+    4: 28, 5: 24, 6: 20,
+    7: 18, 8: 16,
 }
 
 # Age ranges and year groups
 LEVEL_AGE_RANGES = {
-    1: "4\u20135", 2: "4\u20135", 3: "5\u20136",
-    4: "5\u20137", 5: "6\u20137", 6: "6\u20138",
+    1: "4\u20135", 2: "4\u20135", 3: "4\u20135", 4: "4\u20136",
+    5: "5\u20136", 6: "5\u20137", 7: "6\u20137", 8: "6\u20138",
 }
 LEVEL_YEAR_GROUPS = {
-    1: "Reception / Year 1",
-    2: "Reception / Year 1",
-    3: "Year 1",
-    4: "Year 1 / Year 2",
-    5: "Year 2",
-    6: "Year 2 / Year 3",
+    1: "Reception",
+    2: "Reception",
+    3: "Reception",
+    4: "Reception / Year 1",
+    5: "Year 1",
+    6: "Year 1 / Year 2",
+    7: "Year 2",
+    8: "Year 2 / Year 3",
 }
 
 # Series overview (used on back cover)

@@ -163,6 +163,28 @@ export async function downloadSchoolResource(params: {
   }
 }
 
+/**
+ * Like downloadSchoolResource but returns the short-lived signed URL instead of
+ * downloading — so the caller can open the PDF in a new tab for viewing.
+ */
+export async function viewSchoolResource(params: {
+  resourceType: 'storybook' | 'worksheet_pack' | 'sound_book';
+  resourceKey: string;
+  format?: 'a4' | 'a5';
+}): Promise<{ ok: boolean; url?: string; error?: string }> {
+  const { data, error } = await supabase.functions.invoke('school-download', {
+    body: {
+      resource_type: params.resourceType,
+      resource_key: params.resourceKey,
+      format: params.format ?? null,
+    },
+  });
+  if (error) return { ok: false, error: error.message };
+  const signed = (data as { signed_url?: string; error?: string } | null)?.signed_url;
+  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? 'Unavailable' };
+  return { ok: true, url: signed };
+}
+
 export type RegenerateCodeResponse = { ok: boolean; join_code?: string; reason?: string };
 
 export async function rpcRegenerateJoinCode(schoolId: string): Promise<{ data: RegenerateCodeResponse | null; error: unknown }> {
