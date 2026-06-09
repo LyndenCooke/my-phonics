@@ -387,12 +387,9 @@ def build_ordering_items(story_pages: list, count: int = 4, seed: int = 42) -> l
 # ─── Page count selection ────────────────────────────────────────
 
 DEFAULT_PAGE_COUNT = {
-    1: 16,
-    2: 20,
-    3: 20,
-    4: 20,
-    5: 24,
-    6: 24,
+    1: 16, 2: 16, 3: 16,   # old L1 books (now split L1-L3) — 16pp
+    4: 20, 5: 20, 6: 20,   # old L2-L4 books — 20pp
+    7: 24, 8: 24,          # old L5-L6 books — 24pp
 }
 
 
