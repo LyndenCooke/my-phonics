@@ -21,19 +21,31 @@ import { FlowyPage, FootArt, footArtSlot } from '@/components/workbook/WorkbookC
 type Theme = ReturnType<typeof getLevelTheme>;
 const INK_LINE = '#1A1A1A';
 
-function TickItem({ item, theme }: { item: SwykItem; theme: Theme }) {
-  const u = getGrammarUnitByCode(item.sourceUnit);
-  const text = u?.format === 'tickgrid' ? u.tickgrid.rows[item.rowRef]?.text ?? '' : '';
-  const tick: React.CSSProperties = { width: mm(5), height: mm(5), border: `0.4mm solid ${INK_LINE}`, borderRadius: mm(1) };
+function TickItems({ items, theme }: { items: SwykItem[]; theme: Theme }) {
+  const tick: React.CSSProperties = { width: mm(6), height: mm(6), border: `0.4mm solid ${INK_LINE}`, borderRadius: mm(1) };
+  const cols = `1fr repeat(${TICKGRID_CATEGORIES.length}, 30mm)`;
+  const sep = `0.3mm solid ${theme.primary}1F`;
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: `1fr repeat(${TICKGRID_CATEGORIES.length}, 27mm)`, alignItems: 'center', minHeight: mm(10) }}>
-      <span style={{ color: INK.text, ...gType('body') }}>{text}</span>
-      {TICKGRID_CATEGORIES.map((cat) => (
-        <span key={cat} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mm(0.5) }}>
-          <span style={{ color: theme.accentText, ...gType('footer') }}>{cat}</span>
-          <span style={tick} />
-        </span>
-      ))}
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* one header row of category words, like the unit tickgrid */}
+      <div style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'end', paddingBottom: mm(1) }}>
+        <span />
+        {TICKGRID_CATEGORIES.map((c) => (
+          <span key={c} style={{ textAlign: 'center', whiteSpace: 'nowrap', color: theme.accentText, ...gType('instruction') }}>{c}</span>
+        ))}
+      </div>
+      {items.map((item, i) => {
+        const u = getGrammarUnitByCode(item.sourceUnit);
+        const text = u?.format === 'tickgrid' ? u.tickgrid.rows[item.rowRef]?.text ?? '' : '';
+        return (
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'center', minHeight: mm(11), borderTop: sep }}>
+            <span style={{ color: INK.text, ...gType('body') }}>{text}</span>
+            {TICKGRID_CATEGORIES.map((c) => (
+              <span key={c} style={{ display: 'flex', justifyContent: 'center' }}><span style={tick} /></span>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -132,7 +144,7 @@ function BlockBody({ items, theme }: { items: SwykItem[]; theme: Theme }) {
       {ticks.length > 0 && (
         <div>
           <div style={{ color: theme.accentText, marginBottom: mm(1), ...gType('instruction') }}>Tick the kind</div>
-          {ticks.map((it, i) => <TickItem key={i} item={it} theme={theme} />)}
+          <TickItems items={ticks} theme={theme} />
         </div>
       )}
       {matches.length > 0 && (

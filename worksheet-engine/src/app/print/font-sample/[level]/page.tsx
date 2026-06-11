@@ -43,18 +43,22 @@ export default function FontSample({ params }: { params: { level: string } }) {
         handwriting practice sheets. Model x-height 6 mm on the standard tramlines.
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', paddingTop: mm(2) }}>
-        {ROWS.map((r) => (
+        {ROWS.map((r, i) => (
           <div key={r.label} style={{ display: 'flex', flexDirection: 'column', gap: mm(1.5) }}>
             <div style={{ ...gType('instruction'), color: theme.accentText }}>{r.label}</div>
-            <TraceLine
-              text={r.text}
-              xHeightMm={6}
-              widthMm={198}
-              metrics={JOINED_METRICS}
-              color={INK.trace}
-              midlineColor={theme.primary}
-              joined
-            />
+            {/* the first block shows the grey trace treatment; the rest show
+                the black model so the page stays one A4 */}
+            {i === 0 && (
+              <TraceLine
+                text={r.text}
+                xHeightMm={6}
+                widthMm={198}
+                metrics={JOINED_METRICS}
+                color={INK.trace}
+                midlineColor={theme.primary}
+                joined
+              />
+            )}
             <TraceLine
               model={r.text}
               modelWeight={400}

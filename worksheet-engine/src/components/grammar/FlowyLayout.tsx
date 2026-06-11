@@ -284,7 +284,7 @@ export function FlowyLayout({
                     sits exactly one --write-line-gap below the prompt. */}
                 <WriteLine lines={applyLines} color={INK_LINE} />
               </div>
-              {railKey && <ApplyRail imageKey={railKey} />}
+              {railKey && <ApplyRail imageKey={railKey} heightMm={unit.illustration?.railHeightMm} />}
             </div>
           )}
 

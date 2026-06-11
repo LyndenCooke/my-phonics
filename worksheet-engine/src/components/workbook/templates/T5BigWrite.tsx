@@ -32,7 +32,7 @@ export default function T5BigWrite({ pool, page }: { pool: PoolObject; page: num
       {/* the improve-step weak/strong pair — authoring dependency slot */}
       {c.pairPlaceholder && (
         <div style={{ flex: '0 0 auto', marginTop: mm(3) }}>
-          <DependencySlot label="the moment to make better — to come" heightMm={18} theme={theme} />
+          <DependencySlot label="the moment to make better (to come)" heightMm={18} theme={theme} />
         </div>
       )}
 
