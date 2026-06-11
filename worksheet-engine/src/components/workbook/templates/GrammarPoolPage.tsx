@@ -24,7 +24,10 @@ function illustrationFor(art: ArtSlot[] | undefined, fallback?: PageIllustration
   const slot = (art ?? []).find((a) => a.placement === 'perch' || a.placement === 'grounded-foot');
   if (!slot) return fallback;
   const pattern = (slot.sizeMm ?? 0) >= 30 ? 'footScene' : 'applyRail';
-  return { pattern, assets: [slot.key], relatesTo: `workbook plan slot: ${slot.key} ${slot.placement}` };
+  // Cap the rail at the plan's stated size (+ shadow margin) so it can never
+  // reach above the apply block into the full-width body lines.
+  const railHeightMm = pattern === 'applyRail' ? Math.min(36, Math.max(22, (slot.sizeMm ?? 24) + 8)) : undefined;
+  return { pattern, assets: [slot.key], relatesTo: `workbook plan slot: ${slot.key} ${slot.placement}`, railHeightMm };
 }
 
 export default function GrammarPoolPage({ pool, page }: { pool: PoolObject; page: number }) {

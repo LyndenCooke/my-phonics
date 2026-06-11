@@ -61,7 +61,7 @@ function closingSections(level: number): AnswerSection[] {
   const entries: AnswerEntry[] = [];
   for (const p of pool.filter((x) => x.strand === 'SWYK')) {
     const c = p.content as T6Content;
-    const answers = c.blocks.flatMap((b) => b.items.map((it) => it.answer));
+    const answers = c.blocks.flatMap((b) => b.items.map((it) => it.answer.replace(/\.$/, '')));
     entries.push({ heading: `Show what you know (${p.id.endsWith('A') ? 'first page' : 'second page'})`, body: answers.join('; ') + '.' });
   }
   const stht = pool.find((x) => x.id.endsWith('ST-HT'));

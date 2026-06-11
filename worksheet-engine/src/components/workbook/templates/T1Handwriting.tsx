@@ -51,7 +51,7 @@ export default function T1Handwriting({ pool, page }: { pool: PoolObject; page: 
     <FlowyPage theme={theme} title={pool.title} page={page}>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', paddingTop: mm(2) }}>
         {sets.map((set, i) => (
-          <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: mm(3) }}>
+          <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: mm(6) }}>
             {/* model row — grey joined model to trace (withheld while the
                 joined font awaits approval; the tramlines are complete) */}
             <div style={{ display: 'flex', alignItems: 'flex-end' }}>

@@ -60,14 +60,14 @@ export function FootSceneBand({ illustration }: { illustration: PageIllustration
 /** The reserved apply rail: a fixed-width clipped column rendered as a flex
  *  SIBLING of the apply lines column, so the lines end where the rail begins.
  *  One grounded character or small scene, bottom-aligned on a ground shadow. */
-export function ApplyRail({ imageKey }: { imageKey: string }) {
+export function ApplyRail({ imageKey, heightMm = 36 }: { imageKey: string; heightMm?: number }) {
   return (
     <div
       style={{
         flex: `0 0 ${mm(APPLY_RAIL_MM)}`,
         width: mm(APPLY_RAIL_MM),
         alignSelf: 'flex-end',
-        height: mm(36),
+        height: mm(heightMm),
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',

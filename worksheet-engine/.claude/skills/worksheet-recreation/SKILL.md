@@ -42,5 +42,8 @@ The engine is `worksheet-engine/` (Next.js + React/SVG → Puppeteer PDF). Code 
 5. **Visual QA** — `npm run dev`, `npm run pdf <book> <sheet>`, compare to the reference; run the QA checklist.
 6. **Lock** — once approved, freeze the layout; per level only the colour + data change. One template → all 8 levels.
 
+## Image-processing rule (permanent)
+Never use a chroma-key marker colour (magenta or any saturated marker) in any image-processing step that PRECEDES a resize: resize interpolation bleeds the marker into edges and thin lines pick up false colour. Fill removed regions with transparent white and binarise AFTER the resize. Verify by MEASURING saturated pixel counts in the rendered art regions (e.g. sharp/PIL over the rasterised page), never by eye — thin lines alias to false colour at viewing scale.
+
 ## Golden rule
 The reference image is the source of truth. Reproduce the layout first; content second. Do not move on to more pages until the master page is visually approved. Treat the user's visual feedback as authoritative and convert it into precise mm/ratio rules.

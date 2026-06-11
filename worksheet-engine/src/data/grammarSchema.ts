@@ -78,6 +78,11 @@ export interface PageIllustration {
   assets: string[];
   /** short note tying the art to the page content. */
   relatesTo: string;
+  /** applyRail only: the reserved rail height in mm (default 36). The workbook
+   *  pool sets this from its plan sizes so the rail can never reach above the
+   *  apply block into full-width body lines; booklet units omit it, so the
+   *  benchmark renders are unchanged. */
+  railHeightMm?: number;
 }
 
 export type CheckItem = 'capitalLetter' | 'fingerSpaces' | 'fullStop';
