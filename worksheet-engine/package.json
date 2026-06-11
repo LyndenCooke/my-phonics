@@ -1,0 +1,27 @@
+{
+  "name": "mpb-worksheet-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MyPhonicsBooks worksheet engine — locked layout, level-themed, deterministic, code-generated (no AI image-gen).",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "pdf": "node scripts/generate-pdf.mjs",
+    "validate": "tsx scripts/validate-all.ts",
+    "check:fonts": "node scripts/check-grammar-fonts.mjs"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.0",
+    "@types/react": "18.3.3",
+    "puppeteer": "22.12.1",
+    "tsx": "4.16.2",
+    "typescript": "5.5.3"
+  }
+}
