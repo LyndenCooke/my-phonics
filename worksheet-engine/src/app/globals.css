@@ -1,0 +1,86 @@
+/* ------------------------------------------------------------------ FONTS */
+
+/* Child-facing body font (single-storey a/g). Drop Andika-Regular.ttf /
+   Andika-Bold.ttf into /public/fonts (they already exist in the Python repo at
+   myphonics_books/assets/fonts). Falls back to Trebuchet MS if absent. */
+@font-face {
+  font-family: 'Andika';
+  src: url('/fonts/Andika-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('/fonts/Andika-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* SCHOOL PRINT HANDWRITING FONT — EduQLDBeginner (SIL OFL, free for commercial
+   embed). Plain unjoined infant PRINT: single-storey a/g, NO pre-cursive
+   entry/lead-in strokes (unlike the Victorian-cursive Edu faces). Used for both
+   the trace glyphs (rendered light grey) and the black model letters / word
+   cards. Its REAL glyph metrics are measured by scripts/measure-font.mjs and
+   live in src/design/handwriting.ts so SVG trace letters seat exactly on the
+   baseline. (SA/NSW are drop-in alternatives — just swap the file + re-measure.) */
+@font-face {
+  font-family: 'SchoolPrint';
+  src: url('/fonts/EduQLDBeginner.ttf') format('truetype');
+  font-weight: 400 700;
+  font-display: block;
+}
+
+/* JOINED HANDWRITING FONT — Playwrite GB J ("Playwrite England Joined",
+   TypeTogether via Google Fonts, SIL OFL). UK joined modern cursive built from
+   the Primarium research model: letters join with diagonal/horizontal exits and
+   NO lead-in entry strokes by default — exactly the L6 "first joins" spec. Used
+   ONLY for the grey joined model rows on T1 handwriting practice sheets, gated
+   behind Lynden's font-sample approval (pool data `pendingFont`). Joins need
+   contextual alternates, which the global ligature kill-switch below disables —
+   TraceLine re-enables calt/liga ON THE MODEL TEXT ONLY (scoped, so decodable
+   body text keeps its protection). Metrics measured by measure-font.mjs live in
+   handwriting.ts (JOINED_METRICS). */
+@font-face {
+  font-family: 'SchoolJoined';
+  src: url('/fonts/PlaywriteGBJ-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: block;
+}
+
+/* ------------------------------------------------------------------ RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* LIGATURES OFF (non-negotiable for a decodable product). f-ligatures (fi, fl,
+   ff, ffi, ffl) can substitute to a missing glyph and eat letters — "first" ->
+   "rst", "off" -> "o", "fluffy" -> "uy", "flew" -> "ew". A child must never see
+   "o" where the book says "off". Disable every discretionary feature globally;
+   the PDF script also awaits document.fonts.ready before printing. */
+* {
+  font-variant-ligatures: none;
+  -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
+  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
+  text-rendering: optimizeSpeed;
+}
+html, body { background: #e9e9ee; }
+
+/* ----------------------------------------------------------------- A4 PAGE */
+.page {
+  position: relative;
+  margin: 0 auto;
+  background: #fff;
+}
+
+/* Screen preview: drop shadow + gap between pages. */
+@media screen {
+  body { padding: 12mm 0; }
+  .page { box-shadow: 0 2mm 8mm rgba(0, 0, 0, 0.18); margin-bottom: 12mm; }
+}
+
+/* Print / PDF: exact A4, no browser margins. */
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; }
+  body { padding: 0; }
+  .page { box-shadow: none; margin: 0; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+}

@@ -1,0 +1,313 @@
+[
+  {
+    "key": "cover_scene",
+    "file": "_pending/cover_scene.png",
+    "category": "panel",
+    "treatment": "book colour art, curated (the hook)",
+    "source": "myphonics_books\\output\\images\\L4_2_B1\\page6.png",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:33.401280+00:00"
+  },
+  {
+    "key": "scene_owl_branch",
+    "file": "_pending/scene_owl_branch.png",
+    "colourSource": "_pending/colour/scene_owl_branch.png",
+    "category": "scene",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_2_B1\\owl_ref_icon.png"
+    ],
+    "colourPrompt": "The exact brown tawny owl from the reference image perched on a single long bare winter oak branch with textured bark, facing slightly left: a large tawny owl with rich dark brown feathers, lighter cream-brown chest markings, a round facial disc, small solid black dot eyes, and a sharp curved beak. Just the owl and the branch, grouped as one wide composition. CRITICAL EYE RULE, the most important rule: the eyes are TINY round solid black filled dots, exactly like the reference image \u2014 small like a teddy bear's eyes. NOT large, NOT almond-shaped, NOT oval, NO white around or inside them, NO iris, NO shine. If the eyes are big, the image is wrong. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:34.965776+00:00"
+  },
+  {
+    "key": "scene_cup_rug_glue",
+    "file": "_pending/scene_cup_rug_glue.png",
+    "colourSource": "_pending/colour/scene_cup_rug_glue.png",
+    "category": "scene",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\glue.png",
+    "references": [],
+    "colourPrompt": "A small still life grouped as one moment, wide composition: a plain blue ceramic cup tipped over on its side with a small run of spilt tea, lying on a bright woven striped rug from a Mexican home, with a plain UNLABELLED pot of bright blue glue standing upright beside it. Nothing else. The objects are plain inanimate objects, NOT characters: absolutely NO face, NO eyes, NO mouth, NO cheeks, NO expression on any object. ABSOLUTELY NO text, NO letters, NO words, NO label, NO writing anywhere in the image. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. These are inanimate objects: NO eyes, NO face, NO added dots or spots of any kind - draw only the object's own outlines. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:37.545193+00:00"
+  },
+  {
+    "key": "scene_owl_owlets_moon",
+    "file": "_pending/scene_owl_owlets_moon.png",
+    "colourSource": "_pending/colour/scene_owl_owlets_moon.png",
+    "category": "scene",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_2_B1\\owl_ref_icon.png",
+      "worksheet-engine\\public\\clipart\\_pending\\colour\\owlets.png"
+    ],
+    "colourPrompt": "The exact brown tawny owl from the reference image (a large tawny owl with rich dark brown feathers, lighter cream-brown chest markings, a round facial disc, small solid black dot eyes, and a sharp curved beak) and two small fluffy baby owlets with pale brown downy feathers, darker brown markings, round faces like miniature versions of the mother owl, and small solid black dot eyes perched close together on a single long bare winter oak branch. There are exactly THREE birds: the large mother owl and TWO separate small owlets, both owlets snuggled side by side at the mother owl's side. A small warm crescent moon floats just above and to the right of them. One grouped moment, wide composition. CRITICAL EYE RULE, the most important rule: the eyes are TINY round solid black filled dots, exactly like the reference image \u2014 small like a teddy bear's eyes. NOT large, NOT almond-shaped, NOT oval, NO white around or inside them, NO iris, NO shine. If the eyes are big, the image is wrong. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:40.431898+00:00"
+  },
+  {
+    "key": "scene_review",
+    "file": "_pending/scene_review.png",
+    "colourSource": "_pending/colour/scene_review.png",
+    "category": "scene",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_4_B1\\monkey_reference.png"
+    ],
+    "colourPrompt": "A cartoon brown long-tailed macaque monkey. Pale pinkish-tan face, warm brown fur on body and limbs, long curved tail. Bright cheeky mischievous expression with a wide grin. Small rounded ears. Light tan chest/belly. Solid black dot eyes \u2014 ZERO white. It sits contentedly on a low grey stone garden wall, holding a small open snack packet in its paws and calmly eating from it \u2014 the snack it cheekily stole in the story. One grouped moment, wide composition. The objects are plain inanimate objects, NOT characters: absolutely NO face, NO eyes, NO mouth, NO cheeks, NO expression on any object. No flowers, no plants, no coloured wash anywhere \u2014 only the monkey, the wall and the snack packet. ABSOLUTELY NO text, NO letters on the packet. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:43.193420+00:00"
+  },
+  {
+    "key": "hero_purse_standing",
+    "file": "_pending/hero_purse_standing.png",
+    "colourSource": "_pending/colour/hero_purse_standing.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_1_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon girl character, about 7 years old, with light olive skin and dark brown wavy hair tied in a ponytail. She wears a purple jumper with a small gold star pattern, a light blue zip-up jacket over the top, dark navy jeans, and white trainers. She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, a warm determined expression, and rosy cheeks. Standing in a neutral pose, facing the viewer, full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. Plain light warm cream solid-colour background (no scenery, no objects, no patterns).Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:45.539829+00:00"
+  },
+  {
+    "key": "hero_purse_action",
+    "file": "_pending/hero_purse_action.png",
+    "colourSource": "_pending/colour/hero_purse_action.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_1_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon girl character, about 7 years old, with light olive skin and dark brown wavy hair tied in a ponytail. She wears a purple jumper with a small gold star pattern, a light blue zip-up jacket over the top, dark navy jeans, and white trainers. She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, a warm determined expression, and rosy cheeks. Standing in a neutral pose, facing the viewer, full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. Plain light warm cream solid-colour background (no scenery, no objects, no patterns). POSE CHANGE: instead of the neutral standing pose, she holds up a small purple velvet purse with a gold clasp in one hand, beaming with relief and joy. Everything else about the character stays exactly identical.Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. Her jeans and jacket are WHITE with black outlines only \u2014 no grey or tinted fill anywhere.",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:48.166057+00:00"
+  },
+  {
+    "key": "hero_owl_standing",
+    "file": "_pending/hero_owl_standing.png",
+    "colourSource": "_pending/colour/hero_owl_standing.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_2_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon girl character, about 6 years old, with medium brown skin (hex #8B6B4A) and curly dark brown hair in two puffs tied with navy blue hair bobbles. She wears a navy blue duffle coat with wooden toggle buttons, dark grey joggers, and brown lace-up boots. She has tiny solid black filled circle eyes (NO white, NO iris \u2014 just small dark dots). Friendly cheerful expression. Standing in a neutral pose, facing the viewer, full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. Plain light grey solid-colour background.Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:50.639061+00:00"
+  },
+  {
+    "key": "hero_glue_standing",
+    "file": "_pending/hero_glue_standing.png",
+    "colourSource": "_pending/colour/hero_glue_standing.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_3_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon girl character, about 7 years old, with medium brown skin and long straight dark hair in two braids. Round face, rosy cheeks. She wears a yellow t-shirt and blue denim dungarees with silver buckles, and white trainers. She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, a cheerful mischievous expression. Standing in a neutral pose, facing the viewer, full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. Plain light warm cream solid-colour background (no scenery, no objects, no patterns).Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:53.035845+00:00"
+  },
+  {
+    "key": "hero_glue_action",
+    "file": "_pending/hero_glue_action.png",
+    "colourSource": "_pending/colour/hero_glue_action.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_3_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon girl character, about 7 years old, with medium brown skin and long straight dark hair in two braids. Round face, rosy cheeks. She wears a yellow t-shirt and blue denim dungarees with silver buckles, and white trainers. She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, a cheerful mischievous expression. Standing in a neutral pose, facing the viewer, full body visible from head to toe. Arms slightly away from body, feet shoulder-width apart. Plain light warm cream solid-colour background (no scenery, no objects, no patterns). POSE CHANGE: instead of the neutral standing pose, she holds a white handmade card with a blue bird drawing in both hands, a small dollop of bright blue glue on its front, with a cheeky caught-in-the-act grin. Everything else about the character stays exactly identical.Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:55.409099+00:00"
+  },
+  {
+    "key": "hero_monkey_action",
+    "file": "_pending/hero_monkey_action.png",
+    "colourSource": "_pending/colour/hero_monkey_action.png",
+    "category": "character",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_4_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A cartoon boy, about 5 years old, Malaysian, with medium brown skin (hex #8B6B4A). Short neat black hair (hex #0D0D0D). He wears small round glasses with thin dark frames. Bright orange cotton t-shirt, blue cotton TROUSERS (full-length, NOT shorts), simple brown sandals. Solid black dot eyes behind the glasses \u2014 ZERO white. Bright curious excited expression. NO rosy cheeks, NO blush marks. Standing neutral pose, full body, plain light cream background. POSE CHANGE: instead of the neutral standing pose, he runs forward mid-stride, one hand reaching out, laughing as he chases something just out of frame. Everything else about the character stays exactly identical.Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. His glasses are THIN empty circles; the eyes BEHIND them are tiny solid black dots exactly as in the input \u2014 the lenses must NOT be filled and the eyes must NOT grow into large ovals.",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:49:58.211177+00:00"
+  },
+  {
+    "key": "cat",
+    "file": "_pending/cat.png",
+    "colourSource": "_pending/colour/cat.png",
+    "category": "creature",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_3_B1\\cat_reference.png"
+    ],
+    "colourPrompt": "A medium-sized ginger tabby cat with orange stripes, white chest, white paws, and white-tipped tail, sitting upright with its tail curled neatly around its front paws, facing slightly left. Tiny solid black filled circle dot eyes - NO white, NO iris, NO pupil detail, NO shine. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:00.859004+00:00"
+  },
+  {
+    "key": "owlets",
+    "file": "_pending/owlets.png",
+    "colourSource": "_pending/colour/owlets.png",
+    "category": "creature",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_2_B1\\owl_ref_icon.png"
+    ],
+    "colourPrompt": "Two small fluffy baby owlets with pale brown downy feathers, darker brown markings, round faces like miniature versions of the mother owl, and small solid black dot eyes huddled side by side as one little pair. CRITICAL EYE RULE, the most important rule: the eyes are TINY round solid black filled dots, exactly like the reference image \u2014 small like a teddy bear's eyes. NOT large, NOT almond-shaped, NOT oval, NO white around or inside them, NO iris, NO shine. If the eyes are big, the image is wrong. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:03.607303+00:00"
+  },
+  {
+    "key": "owl",
+    "file": "_pending/owl.png",
+    "colourSource": "_pending/colour/owl.png",
+    "category": "creature",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_2_B1\\owl_ref_icon.png"
+    ],
+    "colourPrompt": "The exact brown tawny owl from the reference image, perched upright, full body, facing slightly left: a large tawny owl with rich dark brown feathers, lighter cream-brown chest markings, a round facial disc, small solid black dot eyes, and a sharp curved beak. CRITICAL EYE RULE, the most important rule: the eyes are TINY round solid black filled dots, exactly like the reference image \u2014 small like a teddy bear's eyes. NOT large, NOT almond-shaped, NOT oval, NO white around or inside them, NO iris, NO shine. If the eyes are big, the image is wrong. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:06.311300+00:00"
+  },
+  {
+    "key": "purse",
+    "file": "purse.png (live, approved)",
+    "category": "object",
+    "treatment": "existing approved line art retained (manifest status ok)",
+    "status": "approved"
+  },
+  {
+    "key": "glue",
+    "file": "glue.png (live, approved)",
+    "category": "object",
+    "treatment": "existing approved line art retained (manifest status ok)",
+    "status": "approved"
+  },
+  {
+    "key": "branch",
+    "file": "branch.png (live, approved)",
+    "category": "object",
+    "treatment": "existing approved line art retained (manifest status ok)",
+    "status": "approved"
+  },
+  {
+    "key": "leaf",
+    "file": "leaf.png (live, approved)",
+    "category": "object",
+    "treatment": "existing approved line art retained (manifest status ok)",
+    "status": "approved"
+  },
+  {
+    "key": "moon",
+    "file": "moon.png (live, approved)",
+    "category": "object",
+    "treatment": "existing approved line art retained (manifest status ok)",
+    "status": "approved"
+  },
+  {
+    "key": "cup",
+    "file": "_pending/cup.png",
+    "colourSource": "_pending/colour/cup.png",
+    "category": "object",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\glue.png",
+    "references": [],
+    "colourPrompt": "A plain blue ceramic cup, simple, three-quarter view. The objects are plain inanimate objects, NOT characters: absolutely NO face, NO eyes, NO mouth, NO cheeks, NO expression on any object. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. These are inanimate objects: NO eyes, NO face, NO added dots or spots of any kind - draw only the object's own outlines. ",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:08.916571+00:00"
+  },
+  {
+    "key": "card",
+    "file": "_pending/card.png",
+    "colourSource": "_pending/colour/card.png",
+    "category": "object",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\glue.png",
+    "references": [],
+    "colourPrompt": "A white handmade greeting card standing slightly open, with a child's drawing of a small blue bird on the front. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. These are inanimate objects: NO eyes, NO face, NO added dots or spots of any kind - draw only the object's own outlines. The main subject is the CARD. The bird is only a small simple child's drawing ON the card's front \u2014 keep it small and on the card; it may keep its one tiny dot eye.",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:11.568634+00:00"
+  },
+  {
+    "key": "bird",
+    "file": "_pending/bird.png",
+    "colourSource": "_pending/colour/bird.png",
+    "category": "creature",
+    "treatment": "line-art (workbook)",
+    "model": "gemini-2.5-flash-image",
+    "billing": "vertex/iron-entropy-496317-q9/global",
+    "styleRef": "worksheet-engine\\public\\clipart\\monkey.png",
+    "references": [
+      "myphonics_books\\output\\images\\L4_1_B1\\hero_reference.png"
+    ],
+    "colourPrompt": "A small round friendly blue bird, like a child's drawing of a bluebird, perched, side view. Tiny solid black filled circle dot eyes - NO white, NO iris, NO pupil detail, NO shine. Whimsical children's book illustration. Hand-drawn cartoon style with soft watercolour textured backgrounds and clean black-outlined characters. CRITICAL EYE RULE: Every character (human, animal, everyone) MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen. NO white around the black, NO iris, NO pupil, NO highlight, NO detail whatsoever. Just small simple black dots - cute and friendly like a teddy bear's eyes. Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. Simple rounded shapes, gentle lighting. Professional picture book quality. No text, words, letters, or numbers in the image. Consistent medium black outline line weight on every shape. Plain pure white background ONLY - no scenery, no backdrop, no floor, no ground, no shadows, no patterns, no vignette. The whole subject sits fully inside the frame with a clear margin on every side, nothing cropped at the edges.",
+    "lineartPrompt": "Convert the INPUT ILLUSTRATION (the second image) into clean black LINE ART for a children's phonics workbook, matching the line-art treatment of the FIRST image. The first image is ONLY a style reference \u2014 do NOT draw its subject. PURE BLACK AND WHITE: no colour anywhere, no grey fills, no tints, no watercolour wash, no hatching - just clean confident black outline strokes on a plain pure white background, with minimal interior detail lines. Keep the EXACT same subject, pose and composition as the INPUT illustration. Consistent medium line weight. No text, words, letters or numbers. Preserve each creature's tiny solid black filled dot eyes exactly as in the input - same tiny size, never bigger. The output must be strictly BLACK AND WHITE outline only \u2014 the bird must NOT stay blue or keep any colour.",
+    "status": "pending-approval",
+    "generatedAt": "2026-06-11T18:50:14.338928+00:00"
+  }
+]

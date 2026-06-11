@@ -1,0 +1,9 @@
+node_modules/
+.next/
+output/
+*.tsbuildinfo
+next-env.d.ts
+
+# Licensed assets — never commit
+public/fonts/*.ttf
+public/fonts/*.otf
