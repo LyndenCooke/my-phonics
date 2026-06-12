@@ -142,10 +142,16 @@ export function StoryScene({ src, heightMm, pos = '50% 30%', alt = '' }: { src: 
   );
 }
 
-/** A single plain write line. Its height IS the handwriting band: the child
- *  writes at the practised size on every line in the booklet. */
+/** A single plain write line at the universal pitch. Drawn as a
+ *  pixel-snapped SVG stroke, NOT a CSS border: borders land on fractional
+ *  device pixels and rasterise alternately thick and thin down a page;
+ *  crispEdges snapping keeps every line identical. */
 export function Line({ heightMm = WRITE_PITCH_MM }: { heightMm?: number }) {
-  return <div style={{ height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }} />;
+  return (
+    <svg width="100%" height={mm(heightMm)} viewBox={`0 0 100 ${heightMm}`} preserveAspectRatio="none" style={{ display: 'block' }}>
+      <line x1={0} x2={100} y1={heightMm - 0.25} y2={heightMm - 0.25} stroke={INK.text} strokeWidth={0.5} shapeRendering="crispEdges" />
+    </svg>
+  );
 }
 
 /** The book's Sound Spotlight badge: level-colour circle, white sound. */
@@ -177,10 +183,14 @@ export function SoundBadge({ sound, theme, sizeMm = 11 }: { sound: string; theme
  *  the translate pulls the baseline down onto the rule.) */
 export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM }: { text: string; color: string; heightMm?: number }) {
   return (
-    <div style={{ position: 'relative', height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }}>
+    <div style={{ position: 'relative', height: mm(heightMm) }}>
       <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.example, color, lineHeight: 1, transform: 'translateY(10%)', whiteSpace: 'nowrap' }}>
         {text}
       </span>
+      {/* the same pixel-snapped rule as every other write line */}
+      <svg width="100%" height={mm(1)} viewBox="0 0 100 1" preserveAspectRatio="none" style={{ display: 'block', position: 'absolute', left: 0, bottom: 0 }}>
+        <line x1={0} x2={100} y1={0.75} y2={0.75} stroke={INK.text} strokeWidth={0.5} shapeRendering="crispEdges" />
+      </svg>
     </div>
   );
 }
