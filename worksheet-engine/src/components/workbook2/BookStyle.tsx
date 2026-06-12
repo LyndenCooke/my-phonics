@@ -2,6 +2,7 @@ import React from 'react';
 import { getLevelTheme } from '@/design/levelThemes';
 import { FONT, INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
+import { SCHOOL_PRINT_METRICS } from '@/design/handwriting';
 
 // ---------------------------------------------------------------------------
 // BookStyle — the workbook redesign's design system, taken from the SHIPPED
@@ -23,14 +24,28 @@ export const WB2 = {
   contentWmm: 182,
 } as const;
 
-// THE LOCKED SCALE — four sizes only on a child-facing page (plus the page
-// number, which is furniture). No size below `label` may appear in content.
-// Sized for five-to-seven-year-olds: child-facing text errs big.
+// THE HANDWRITING ROW IS THE MASTER (Lynden, 2026-06-12). Its x-height is
+// 5.5 mm; everything else derives from it so reading size, writing size and
+// line spacing are ONE system:
+//   - `word`/`example` (all child task text) = the handwriting glyph size,
+//     so the child reads at the size they are expected to write.
+//   - WRITE_PITCH (every plain write line) = the tramline's solid-to-solid
+//     band (ascender line to baseline). The dotted guides are invisible on
+//     plain lines but the spacing is identical, so the writing comes out the
+//     same size everywhere.
+export const HW_X_MM = 5.5;
+const M = SCHOOL_PRINT_METRICS;
+/** the handwriting glyph size (font size whose x-height is HW_X_MM). */
+const HW_FONT_MM = HW_X_MM / M.xHeight; // ≈ 10.83mm ≈ 30.7pt
+/** baseline-to-ascender-line distance of the handwriting row — the universal
+ *  write-line pitch, so the child writes at the practised size everywhere. */
+export const WRITE_PITCH_MM = Math.round((HW_FONT_MM * M.ascender) * 10) / 10; // ≈ 8.5mm
+
 export const TYPE2 = {
   heading: '21pt',
-  example: '20pt', // worked answers written on lines — the model the child copies
-  word: '17pt', // child-facing words, sentences, prompts
-  body: '14pt', // instructions and answers
+  example: '24pt', // worked answers on lines — midway between body text and the handwriting model
+  word: '24pt', // child task text — the same middle size, big without breaking layouts
+  body: '14pt', // instructions and numbers
   label: '11pt', // small-caps section labels and column heads
   small: '9pt', // page number ONLY
 } as const;
@@ -125,8 +140,9 @@ export function StoryScene({ src, heightMm, pos = '50% 30%', alt = '' }: { src: 
   );
 }
 
-/** A single plain write line (book ink, one rule weight everywhere). */
-export function Line({ heightMm = 11 }: { heightMm?: number }) {
+/** A single plain write line. Its height IS the handwriting band: the child
+ *  writes at the practised size on every line in the booklet. */
+export function Line({ heightMm = WRITE_PITCH_MM }: { heightMm?: number }) {
   return <div style={{ height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }} />;
 }
 
@@ -157,13 +173,33 @@ export function SoundBadge({ sound, theme, sizeMm = 11 }: { sound: string; theme
  *  descenders dip below it, like real handwriting on the line. (CSS line
  *  boxes float text above the border because of the font's internal leading;
  *  the translate pulls the baseline down onto the rule.) */
-export function SeatedText({ text, color, heightMm = 11 }: { text: string; color: string; heightMm?: number }) {
+export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM }: { text: string; color: string; heightMm?: number }) {
   return (
     <div style={{ position: 'relative', height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }}>
       <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.example, color, lineHeight: 1, transform: 'translateY(10%)', whiteSpace: 'nowrap' }}>
         {text}
       </span>
     </div>
+  );
+}
+
+/** A long worked answer seated across TWO ruled lines (anything past ~34
+ *  characters cannot sit on one 182mm line at the handwriting size). The
+ *  split balances at a word boundary, like real writing flowing on. */
+export function SeatedTextLines({ text, color }: { text: string; color: string }) {
+  if (text.length <= 44) return <SeatedText text={text} color={color} />;
+  const words = text.split(' ');
+  let first = '';
+  for (const w of words) {
+    if ((first + ' ' + w).trim().length > text.length / 2) break;
+    first = (first + ' ' + w).trim();
+  }
+  const rest = text.slice(first.length).trim();
+  return (
+    <>
+      <SeatedText text={first} color={color} />
+      <SeatedText text={rest} color={color} />
+    </>
   );
 }
 

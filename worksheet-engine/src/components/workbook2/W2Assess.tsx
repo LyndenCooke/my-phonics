@@ -51,7 +51,7 @@ export function SwykAPage({ page, theme }: { page: number; theme: Theme }) {
   const tick: React.CSSProperties = { width: mm(6.5), height: mm(6.5), border: `0.45mm solid ${INK.text}`, borderRadius: mm(1.2) };
   const chip: React.CSSProperties = {
     border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), display: 'flex', alignItems: 'center',
-    width: mm(44), padding: `0 ${mm(3.5)}`, height: mm(12), color: INK.text, fontSize: TYPE2.word,
+    width: mm(56), padding: `0 ${mm(3.5)}`, height: mm(16), color: INK.text, fontSize: TYPE2.word,
   };
   const dot: React.CSSProperties = { width: mm(2.6), height: mm(2.6), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
   const bankChip: React.CSSProperties = { border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(0.5)} ${mm(3.5)}`, fontSize: TYPE2.word, color: INK.text };
@@ -109,7 +109,7 @@ export function SwykAPage({ page, theme }: { page: number; theme: Theme }) {
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: mm(4) }}>
             <span style={{ flex: '0 0 auto', color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{b.base}</span>
             <span style={{ flex: '0 0 auto', color: theme.primary, fontSize: TYPE2.word, paddingBottom: mm(1) }}>→</span>
-            <div style={{ flex: 1 }}><Line heightMm={10} /></div>
+            <div style={{ flex: 1 }}><Line /></div>
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export function SwykBPage({ page, theme }: { page: number; theme: Theme }) {
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.8)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
               {rewriteRow(r).text}
             </div>
-            <Line heightMm={11} />
+            <Line />
           </div>
         ))}
       </div>
@@ -155,9 +155,9 @@ export function SwykBPage({ page, theme }: { page: number; theme: Theme }) {
 
       <SectionLabel text="Now you write" theme={theme} />
       <div style={{ fontSize: TYPE2.word, color: INK.text, marginBottom: mm(1) }}>{s.writeTask}</div>
-      <Line heightMm={12} />
-      <Line heightMm={12} />
-      <Line heightMm={12} />
+      <Line />
+      <Line />
+      <Line />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>
@@ -171,7 +171,7 @@ export function SwykBPage({ page, theme }: { page: number; theme: Theme }) {
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-end', gap: mm(3) }}>
               <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right' }}>{n}.</span>
-              <div style={{ flex: 1 }}><Line heightMm={9} /></div>
+              <div style={{ flex: 1 }}><Line /></div>
             </div>
           );
         })}
@@ -242,7 +242,7 @@ export function SpellingWordsPage({ page, theme }: { page: number; theme: Theme 
         {W2_L6_SPELLINGS.map((s) => (
           <div key={s.title}>
             <SectionLabel text={s.title} theme={theme} />
-            <div style={{ fontSize: TYPE2.word, color: INK.text, lineHeight: 1.6 }}>
+            <div style={{ fontSize: '17pt', color: INK.text, lineHeight: 1.6 }}>
               {s.words.join(' · ')}
             </div>
           </div>

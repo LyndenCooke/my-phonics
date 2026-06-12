@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { getLevelTheme } from '@/design/levelThemes';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
@@ -75,7 +75,7 @@ export function SpellItPage({
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-end', gap: mm(3) }}>
               <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right' }}>{n}.</span>
-              <div style={{ flex: 1 }}><Line heightMm={10} /></div>
+              <div style={{ flex: 1 }}><Line /></div>
             </div>
           );
         })}
@@ -112,7 +112,7 @@ export function SentencesPage({
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(2)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
               {s}
             </div>
-            <Line heightMm={11} />
+            <Line />
           </div>
         ))}
       </div>
@@ -126,10 +126,10 @@ export function SentencesPage({
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {Array.from({ length: listenSlots }).map((_, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: mm(3) }}>
-            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(14) }}>{i + 1}.</span>
+            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(9) }}>{i + 1}.</span>
             <div style={{ flex: 1 }}>
-              <Line heightMm={13} />
-              <Line heightMm={14} />
+              <Line />
+              <Line />
             </div>
           </div>
         ))}
