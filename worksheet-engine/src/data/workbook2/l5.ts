@@ -35,7 +35,16 @@ const BOOKS: W2BookData[] = [
     listen: ['I felt so small.', 'I did not let go.'],
     questions: [null, null, null],
     useGrammar: { chips: ['when', 'there', 'huge', 'close', 'stone'], scene: '/storyart/l5_2/page2.png', pos: '50% 50%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l5_2/page7.png', pos: '50% 45%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
+      scene: '/storyart/l5_2/page7.png',
+      scenes: [
+        { src: '/storyart/l5_2/page5.png' },
+        { src: '/storyart/l5_2/page1.png' },
+        { src: '/storyart/l5_2/page8.png' },
+        { src: '/storyart/l5_2/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'u-e', word: 'huge', sentence: 'It was huge!' },
       { sound: 'o-e', word: 'stone', sentence: 'Mum must be close!' },
@@ -65,7 +74,16 @@ const BOOKS: W2BookData[] = [
     listen: ['Min was so glad.', 'Min looked up.'],
     questions: [null, null, null],
     useGrammar: { chips: ['saw', 'coin', 'soil', 'hawk', 'paw'], scene: '/storyart/l5_4/page3.png', pos: '50% 50%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l5_4/page6.png', pos: '50% 40%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
+      scene: '/storyart/l5_4/page6.png',
+      scenes: [
+        { src: '/storyart/l5_4/page5.png' },
+        { src: '/storyart/l5_4/page1.png' },
+        { src: '/storyart/l5_4/page8.png' },
+        { src: '/storyart/l5_4/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'aw', word: 'saw', sentence: 'Min was so glad.' },
       { sound: 'oi', word: 'coin', sentence: 'Min still had her coin.' },

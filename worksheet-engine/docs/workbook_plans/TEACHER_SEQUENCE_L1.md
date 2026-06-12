@@ -1,58 +1,53 @@
-# Teaching Sequence — Level 1 Ditties (website copy) — v2
+# Teaching Sequence — Level 1 Ditties (website copy) — v3
 
-For the website only. Nothing here appears inside a workbook or book. The
-website emits one page per edition from this source: Edition B (Keepable)
-uses the workbook column; Edition A (Classic) uses its column, where some
-activities live in the book's own back pages.
+For the website. Level 1 is where it all starts: the first ten sounds and
+the first two books. The whole level uses ONE workbook alongside the Level 1
+sound books. The workbook asks for about FIVE MINUTES a day — one page,
+after the day's sound book or reading. Each book runs about three weeks;
+sound confidence comes before the book.
 
-## The two kinds of day
+## What is in the six weeks
 
-- **Reading day**: the full 30-minute phonics lesson (speed sounds, green
-  words, tricky words, partner read), then ONE short page, 8-10 minutes. At
-  this level the handwriting page happens inside the lesson, because forming
-  the new sound's letters is the sound work.
-- **Workout day**: a 5-8 minute warm-up (quick sounds, quick green words,
-  quick tricky words), then one longer task: the sentence task, the spelling
-  test or the big write.
+- Two reading books: Tap! Tap! Tap! (s a t p i) · The Mud on the Dog
+  (n m d g o).
+- Ten sound books, one per sound, in curriculum order — each one the day
+  before or the same day as its workbook sound page.
+- One workbook: per book the pages WEAVE one sound page, then one writing
+  page — The sound s · grammar · The sound a · Sentences · The sound t ·
+  Spell it · The sound p · Big write · The sound i · Handwriting.
+- Week 6 closes with the assessment event: Show what you know (both
+  pages) and the half-term spelling test.
 
-## The six-week block
+## Tap! Tap! Tap! — days 1-13
 
-| Weeks | Book |
-|---|---|
-| 1-3 | Tap! Tap! Tap! (core fortnight + a padding week of sound books, ditties and blending games) |
-| 4-6 | The Mud on the Dog (same shape) |
-| End of week 6 | Assessment: Show what you know + half-term spelling test (6 words) + listen to your child read The Mud on the Dog (reading check) |
+| Day | Reading and sound work | Workbook page (~5 min) |
+|---|---|---|
+| 1 | Sound book s | The sound s |
+| 2 | Blending practice | What is a word? |
+| 3 | Sound book a | The sound a |
+| 4 | Read pages 1-3 | Sentences |
+| 5 | Sound book t | The sound t |
+| 6 | Read pages 4-6 | Spell it (practise half) |
+| 7 | Sound book p | The sound p |
+| 8 | Re-read for fluency | Spelling test, then Big write |
+| 9 | Sound book i | The sound i |
+| 10-13 | Re-read and blending | Handwriting in the handwriting slot |
 
-## Book 1 — Tap! Tap! Tap! (core fortnight)
+## The Mud on the Dog — days 14-26
 
-| Day | Type | After the lesson / warm-up | Edition B (workbook) | Edition A |
-|---|---|---|---|---|
-| W1-D1 | Reading | handwriting, in the lesson | Letters s a t i | Book back pages (writing practice) |
-| W1-D2 | Reading | spelling | Look Cover Write Check | Workbook |
-| W1-D3 | Reading | grammar | Count the words | Workbook |
-| W1-D4 | Reading | handwriting, in the lesson | Letters p n + first words | Book back pages |
-| W1-D5 | Workout | sentence task | Copy a caption | Book back pages (activity page) |
-| W2-D1 | Reading | dictation | Listen and write | Workbook |
-| W2-D2 | Reading | tricky-word re-read | no page | no page |
-| W2-D3 | Reading | free re-read | no page | no page |
-| W2-D4 | Workout | spelling test (4 words — list below) | Spelling test | Workbook |
-| W2-D5 | Workout | big write | Big write: Tap! Tap! Tap! | Workbook |
-| Week 3 | padding | sound books, ditties, blending repetition | no pages | no pages |
+Same weave with n m d g o: The sound n · Say a sentence · The sound m ·
+Sentences · The sound d · Finger spaces · The sound g · Spell it · The
+sound o · Big write (the sequencing page: number the four pictures in
+story order, then write) · Handwriting.
 
-## Book 2 — The Mud on the Dog (weeks 4-6, same map)
+## Days 27-30 — the assessment event
 
-W1-D1 Letters m d g o · W1-D2 LCWC · W1-D3 Say it first · W1-D4 Words from
-the book · W1-D5 (Workout) Finger spaces · W2-D1 Listen and write ·
-W2-D4 (Workout) Spelling test · W2-D5 (Workout) Big write. Week 6 padding
-days give way to the assessment event on the final two days.
+Show what you know pages A and B (page B carries the half-term spelling
+test). Secure here means the first ten sounds are automatic and your child
+is ready for Level 2.
 
 ## Spelling test words
 
-Drawn from the book's focus sounds and tricky words, from the approved L1
-lists only. The word lists are finalised at build and published here, never
-printed in the workbook.
-
-## Week-6 reading check
-
-Listen to your child read the block's final book. Check: says each sound,
-blends without help, notices the tricky words, points to each word.
+Four per book from its focus sounds plus the tricky words I and the; the
+half-term list draws across both books. The words are printed on the
+Spelling words page at the back of the workbook.

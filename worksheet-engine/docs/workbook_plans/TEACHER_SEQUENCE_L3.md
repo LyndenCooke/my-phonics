@@ -1,47 +1,36 @@
-# Teaching Sequence — Level 3 Special Friends (website copy) — v2
+# Teaching Sequence — Level 3 Special Friends (website copy) — v3
 
-For the website only. One page per edition is emitted from this source.
+For the website. Level 3 brings the special friends: two letters, one
+sound. Three books over the six weeks, so each book gets a fortnight.
+About FIVE MINUTES of workbook a day.
 
-## The two kinds of day
+## What is in the six weeks
 
-Reading days = full 30-minute phonics lesson + one short page (handwriting
-inside the lesson at this level). Workout days = short warm-up + one longer
-task.
+- Three reading books: The Fish in the Tank (sh nk) · Chop, Chop, Chop!
+  (ch th) · Buzz and Sing! (ng qu zz).
+- Seven sound books, one per special friend, each before or with its
+  workbook sound page.
+- One workbook: each book WEAVES one sound page, then one writing page —
+  The sound sh · grammar · The sound nk · Sentences · Answer it · Spell it
+  · Big write · Handwriting.
+- Grammar steps up: capital letters for names · question marks · statement
+  or question? · question words. Answer it in a sentence begins here.
+- Big writes vary: book 2 uses the sequencing page (number the four story
+  pictures in order, then write); the others use one big scene.
 
-## The six-week block
+## The fortnights, book by book
 
-| Weeks | Book |
-|---|---|
-| 1-2 | The Fish in the Tank |
-| 3-4 | Chop, Chop, Chop! |
-| 5-6 | Buzz and Sing! → end of week 6: Show what you know + half-term spelling test (10 words) + reading check |
+| Weeks | Book | Sounds | Grammar pages |
+|---|---|---|---|
+| 1-2 | The Fish in the Tank | sh nk | Capital letters for names |
+| 3-4 | Chop, Chop, Chop! | ch th | Question marks |
+| 5-6 | Buzz and Sing! | ng qu zz | Statement or question? · Question words |
 
-## The fortnight, every book
-
-| Day | Type | After the lesson / warm-up | Edition B (workbook) | Edition A |
-|---|---|---|---|---|
-| W1-D1 | Reading | handwriting, in the lesson | Digraph formation | Book back pages (writing practice) |
-| W1-D2 | Reading | spelling | Look Cover Write Check | Workbook |
-| W1-D3 | Reading | grammar | Grammar page (below) | Workbook |
-| W1-D4 | Reading | handwriting, in the lesson | Cluster words on the line | Book back pages |
-| W1-D5 | Workout | sentence task | Finish the sentence | Book back pages (activity page) |
-| W2-D1 | Reading | dictation | Listen and write | Workbook |
-| W2-D2 | Reading | grammar 2 (Book 3 only) / re-read | Question words (Book 3) · else no page | Workbook (Book 3) |
-| W2-D3 | Reading | free re-read | no page | no page |
-| W2-D4 | Workout | spelling test (8 words) | Spelling test | Workbook |
-| W2-D5 | Workout | big write | Big write | Workbook |
-
-Grammar pages: 1 The Fish in the Tank — Capitals for names · 2 Chop, Chop,
-Chop! — Question marks · 3 Buzz and Sing! — Statement or question? (W1-D3)
-and Question words (W2-D2).
+Week 6 ends with the assessment event: Show what you know A and B (page B
+carries the half-term spelling test).
 
 ## Spelling test words
 
-Eight per fortnight from the book's digraphs, cluster words and tricky
-words (approved lists only); finalised at build and published here.
-
-## Week-6 reading check
-
-Listen to your child read Buzz and Sing! Check: reads sh, ch, th, ng, nk,
-qu at sight, blends cluster words (stop, frog), reads the twelve tricky
-words.
+Eight per book from its focus sounds plus the Level 3 tricky words (he,
+she, we, me, be); the half-term list draws across all three books. The
+words are printed on the Spelling words page at the back.

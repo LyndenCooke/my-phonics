@@ -282,6 +282,13 @@ export function AnswersPage({ page, data, theme }: { page: number; data: W2Level
     if (b.listen.length) {
       entries.push({ heading: 'Listen and write', body: b.listen.map((s, i) => `${i + 1}. ${s}`).join(' ') });
     }
+    if (b.bigWrite.scenes) {
+      // the display order is authored shuffled; the key is the number the
+      // child writes in each box, reading the grid left to right
+      const pages = b.bigWrite.scenes.map((s) => Number(s.src.match(/page(\d+)/)?.[1] ?? 0));
+      const sorted = [...pages].sort((x, y) => x - y);
+      entries.push({ heading: 'Big write order', body: pages.map((p) => sorted.indexOf(p) + 1).join(', ') + '.' });
+    }
     return { title: b.title, entries };
   });
   return (

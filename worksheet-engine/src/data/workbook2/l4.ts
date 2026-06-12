@@ -38,7 +38,16 @@ const BOOKS: W2BookData[] = [
     listen: ['I look up.', 'The owl bows at me.'],
     questions: [null, null, null],
     useGrammar: { chips: ['and', 'zoo', 'owl', 'cool', 'moo'], scene: '/storyart/l4_2/page4.png', pos: '50% 50%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l4_2/page7.png', pos: '50% 40%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write what happens, in order.',
+      scene: '/storyart/l4_2/page7.png',
+      scenes: [
+        { src: '/storyart/l4_2/page5.png' },
+        { src: '/storyart/l4_2/page1.png' },
+        { src: '/storyart/l4_2/page8.png' },
+        { src: '/storyart/l4_2/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'oo', word: 'zoo', sentence: 'I see a cool pool.' },
       { sound: 'ow', word: 'cow', sentence: 'The owl bows at me.' },
@@ -68,7 +77,16 @@ const BOOKS: W2BookData[] = [
     listen: ['I go to the fair!', 'I sit in a chair.'],
     questions: [null, null, null],
     useGrammar: { chips: ['and', 'fair', 'air', 'pair', 'hair'], scene: '/storyart/l4_4/page2.png', pos: '50% 45%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l4_4/page5.png', pos: '50% 40%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write what happens, in order.',
+      scene: '/storyart/l4_4/page5.png',
+      scenes: [
+        { src: '/storyart/l4_4/page5.png' },
+        { src: '/storyart/l4_4/page1.png' },
+        { src: '/storyart/l4_4/page8.png' },
+        { src: '/storyart/l4_4/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'air', word: 'fair', sentence: 'I go to the fair!' },
       { sound: 'ir', word: 'sir', sentence: 'I sit in a chair.' },
@@ -103,7 +121,16 @@ const BOOKS: W2BookData[] = [
       { kind: 'tick', label: 'Choose the end mark', refs: [{ sourceUnit: 'G-L4.2', rowRef: 0 }, { sourceUnit: 'G-L4.2', rowRef: 1 }] },
       { kind: 'match', label: 'One and more than one', refs: [{ sourceUnit: 'G-L4.4', rowRef: 0 }, { sourceUnit: 'G-L4.4', rowRef: 2 }] },
     ],
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l4_6/page7.png', pos: '50% 45%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write what happens, in order.',
+      scene: '/storyart/l4_6/page7.png',
+      scenes: [
+        { src: '/storyart/l4_6/page5.png' },
+        { src: '/storyart/l4_6/page1.png' },
+        { src: '/storyart/l4_6/page8.png' },
+        { src: '/storyart/l4_6/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'igh', word: 'night', sentence: 'It is night!' },
       { sound: 'oo', word: 'moon', sentence: 'The air is cool.' },
