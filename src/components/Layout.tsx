@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, ClipboardList, Tag, User, LogIn, Home, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { BookOpen, ClipboardList, Tag, User, LogIn, Home, Heart, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -11,11 +11,14 @@ import { useNotifications } from '@/hooks/useNotifications';
 // three responsive chromes: the mobile bottom-nav, the tablet top-nav, and
 // the desktop left sidebar.
 const NAV = [
-  { path: '/learn', label: 'Learn', icon: Home, badgeKey: null as 'messages' | null },
-  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null },
-  { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null },
-  { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null },
-  { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const },
+  { path: '/learn', label: 'Learn', icon: Home, badgeKey: null as 'messages' | null, desktopOnly: false },
+  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null, desktopOnly: false },
+  { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null, desktopOnly: false },
+  { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null, desktopOnly: false },
+  { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
+  // Wall of Love lives in the desktop side panel only — the mobile bottom
+  // bar stays at five tabs (it's reachable from Profile + Pricing there).
+  { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },
 ];
 
 // Persists the desktop (lg+) sidebar collapsed/expanded preference across
@@ -82,7 +85,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         {/* Tablet top-nav — shows on md..lg (between the mobile bottom-nav
          *  and the desktop sidebar). */}
         <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
-          {NAV.map(({ path, label, icon: Icon }) => {
+          {NAV.filter(i => !i.desktopOnly).map(({ path, label, icon: Icon }) => {
             const isActive = pathname === path;
             return (
               <Link
@@ -236,7 +239,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {typeof document !== 'undefined' && createPortal(
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
           <div className="flex items-center justify-around py-2 px-2">
-            {NAV.map(({ path, label, icon: Icon, badgeKey }) => {
+            {NAV.filter(i => !i.desktopOnly).map(({ path, label, icon: Icon, badgeKey }) => {
               const isActive = pathname === path;
               const badgeCount = badgeKey === 'messages' ? unreadMessages : 0;
               return (

@@ -48,10 +48,18 @@ export default function SchoolMarketing() {
               resources across an {t.teachingSteps}-step, 8-level pathway. No book stock. No planning from scratch.
             </p>
             <div className="flex flex-wrap items-center gap-3 mt-7">
-              <Link to="/school/signup" className="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 shadow-lg shadow-slate-900/10 transition-colors">
+              <Link
+                to="/school/signup"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-900 text-white font-display font-extrabold rounded-2xl transition-all active:translate-y-[3px]"
+                style={{ boxShadow: '0 4px 0 #0f172a, 0 14px 28px -10px rgba(15,23,42,0.45)' }}
+              >
                 Start a free 30-day trial <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/school/preview" className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-slate-200 text-slate-800 font-bold rounded-xl hover:border-slate-300 transition-colors">
+              <Link
+                to="/school/preview"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-slate-800 font-display font-extrabold rounded-2xl transition-all active:translate-y-[2px]"
+                style={{ boxShadow: '0 3px 0 rgba(15,23,42,0.10), 0 8px 20px rgba(15,23,42,0.08)', border: '1px solid rgba(15,23,42,0.08)' }}
+              >
                 See the curriculum
               </Link>
             </div>
@@ -217,7 +225,11 @@ export default function SchoolMarketing() {
         <p className="text-white/90 max-w-xl mx-auto mb-6">
           No card required. Set up your classes, place your pupils and open your first assessment window in minutes.
         </p>
-        <Link to="/school/signup" className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-100 transition-colors shadow-lg">
+        <Link
+          to="/school/signup"
+          className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-slate-900 font-display font-extrabold rounded-2xl transition-all active:translate-y-[3px]"
+          style={{ boxShadow: '0 4px 0 rgba(255,255,255,0.45), 0 14px 28px -10px rgba(0,0,0,0.25)' }}
+        >
           Get your school started <ArrowRight className="w-4 h-4" />
         </Link>
       </section>

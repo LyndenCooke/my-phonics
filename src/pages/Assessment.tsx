@@ -704,25 +704,41 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   // WELCOME SCREEN
   // ═══════════════════════════════════════════════════════════
   if (stage === 'welcome') {
+    const STICKER_SHADOW = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
     return (
       <Wrap>
-        {/* On lg+ the welcome reflows into a two-column layout: the intro +
-            "how it works" + "what you'll get" sit on the left, and the test
-            chooser sits on the right so it's visible without scrolling. Below
-            lg the original single centred column is preserved untouched. */}
-        <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-5xl mx-auto text-center lg:text-left lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:gap-10 lg:items-start lg:pt-12">
-          {/* ── Left column: intro + info ── */}
-          <div>
+        {/* Landscape layout: a full-width centred header, then three sibling
+            cards in one row — How it works · Choose a test · What you'll get —
+            so the page reads as one balanced spread instead of a tall info
+            column with a short chooser column beside it. The chooser sits in
+            the middle as the visual anchor. Below lg everything stacks in the
+            original mobile order (info first, chooser last). */}
+        <div className="px-4 pt-6 pb-8 lg:pt-12 max-w-md lg:max-w-6xl mx-auto">
+          {/* ── Header — centred at every size ── */}
+          <div className="text-center max-w-2xl mx-auto">
+            <span
+              className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 text-primary-ink mb-4"
+              style={{ boxShadow: STICKER_SHADOW, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
+            >
+              Free · no card · 3–10 minutes
+            </span>
             <h2 className="font-display text-[28px] lg:text-[40px] lg:leading-[1.1] font-extrabold text-foreground mb-2 tracking-tight">
-              Phonics Assessment
+              Find your child's reading level
             </h2>
-            <p className="text-sm lg:text-base text-muted-foreground mb-6 leading-relaxed max-w-xs lg:max-w-md mx-auto lg:mx-0">
-              Find your child's reading level. Pick a quick check or a full test.
+            <p className="text-sm lg:text-base text-muted-foreground leading-relaxed max-w-xs lg:max-w-md mx-auto">
+              Sit together, tap through a few sounds, and we'll find the exact right books — no guessing.
             </p>
+          </div>
 
-            <div className="bg-tint-pink rounded-2xl p-5 mb-6 text-left">
-              <p className="text-sm font-bold text-foreground mb-3">How it works</p>
-              <div className="space-y-2.5">
+          {/* ── Three cards, one row on lg ── */}
+          <div className="mt-7 lg:mt-10 grid gap-4 lg:gap-6 lg:grid-cols-[1fr_1.15fr_1fr] lg:items-stretch">
+            {/* How it works */}
+            <div
+              className="order-1 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-left"
+              style={{ boxShadow: STICKER_SHADOW, border: '1px solid rgba(40,30,40,0.05)' }}
+            >
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">How it works</p>
+              <div className="space-y-2.5 lg:space-y-4">
                 {[
                   { icon: '1', label: 'A few quick questions', desc: 'Tell us about your child' },
                   { icon: '2', label: 'Quick check', desc: 'Tick which words your child can read' },
@@ -730,70 +746,77 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                   { icon: '4', label: 'Results', desc: 'See which sounds they know and need to learn' },
                 ].map(({ icon, label, desc }, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-level-1 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{icon}</span>
+                    <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{icon}</span>
                     <div>
-                      <span className="text-xs font-bold text-foreground">{label}</span>
-                      <span className="text-xs text-muted-foreground ml-1">— {desc}</span>
+                      <span className="text-xs lg:text-sm font-bold text-foreground">{label}</span>
+                      <span className="block text-xs lg:text-[13px] text-muted-foreground mt-0.5">{desc}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left">
-              <p className="text-xs font-bold text-foreground mb-2">What you'll get at the end</p>
-              <ul className="space-y-1.5 text-xs text-muted-foreground">
-                <li className="flex gap-2"><span>✓</span><span>Your child's reading level (L1–L6)</span></li>
-                <li className="flex gap-2"><span>✓</span><span>One free book matched to that level</span></li>
-                <li className="flex gap-2"><span>✓</span><span>A simple "next steps" plan</span></li>
+            {/* Choose a test — centre stage on lg, after the info on mobile.
+                The Level Check entry (?level=N) bypasses this picker. */}
+            <div
+              className="order-3 lg:order-2 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 flex flex-col"
+              style={{ boxShadow: STICKER_SHADOW, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
+            >
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground text-center mb-1">Choose a test</p>
+              <p className="text-xs text-muted-foreground text-center mb-4">
+                Sit with your child — 3 to 10 minutes depending on the test you pick.
+              </p>
+              <div className="space-y-3 flex-1 flex flex-col justify-center">
+                <button
+                  onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
+                  className="w-full p-4 lg:p-5 rounded-[1.5rem] text-left transition-all active:translate-y-[3px]"
+                  style={{ background: '#E84B8A', boxShadow: '0 4px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
+                >
+                  <div className="flex items-start gap-3">
+                    <Zap className="w-6 h-6 text-white shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm lg:text-base font-display font-extrabold text-white">Quick Check · 3 min</p>
+                      <p className="text-[11px] lg:text-xs text-white/80 mt-0.5">
+                        Adaptive sound test to find your child's level fast.
+                      </p>
+                    </div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
+                  className="w-full p-4 lg:p-5 rounded-[1.5rem] bg-white text-left transition-all active:translate-y-[2px]"
+                  style={{ boxShadow: '0 3px 0 rgba(40,30,40,0.08), 0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', border: '1px solid rgba(40,30,40,0.06)' }}
+                >
+                  <div className="flex items-start gap-3">
+                    <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm lg:text-base font-display font-extrabold text-foreground">Full Test · ~10 min</p>
+                      <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
+                        Tests sounds, real words, alien words and tricky words at every level.
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <p className="mt-4 text-[10px] text-muted-foreground text-center">
+                Your answers are private. See our{' '}
+                <a href="/privacy" className="underline">privacy policy</a>.
+              </p>
+            </div>
+
+            {/* What you'll get */}
+            <div
+              className="order-2 lg:order-3 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-left"
+              style={{ boxShadow: STICKER_SHADOW, border: '1px solid rgba(40,30,40,0.05)' }}
+            >
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">What you'll get at the end</p>
+              <ul className="space-y-2 lg:space-y-3.5 text-xs lg:text-[13px] text-muted-foreground">
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Your child's reading level on the 8-level journey</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>A sound-by-sound map of what they know</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>One free book matched to that level</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>A simple "next steps" plan</span></li>
               </ul>
             </div>
-          </div>
-
-          {/* ── Right column: test chooser (sticky on lg so it stays in view) ── */}
-          <div className="lg:sticky lg:top-12">
-            <p className="text-xs text-muted-foreground mb-4 lg:mb-5">
-              Sit with your child. No credit card needed. 3 to 10 minutes depending on the test you pick.
-            </p>
-
-            {/* Two-button mode picker — see AssessmentMode type. The Level
-                Check entry (?level=N) bypasses this picker entirely. */}
-            <p className="text-xs font-bold text-foreground mb-3 text-left">Choose a test:</p>
-            <div className="space-y-3">
-              <button
-                onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
-                className="w-full p-4 lg:p-5 rounded-2xl border-2 border-primary bg-card text-left active:scale-[0.98] lg:hover:shadow-button transition-all duration-200 shadow-card"
-              >
-                <div className="flex items-start gap-3">
-                  <Zap className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                  <div className="flex-1">
-                    <p className="text-sm lg:text-base font-extrabold text-foreground">Quick Check · 3 min</p>
-                    <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
-                      Adaptive sound test to find your child's level fast.
-                    </p>
-                  </div>
-                </div>
-              </button>
-              <button
-                onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
-                className="w-full p-4 lg:p-5 rounded-2xl border-2 border-border bg-card text-left active:scale-[0.98] lg:hover:border-primary/50 lg:hover:shadow-card transition-all duration-200 shadow-card"
-              >
-                <div className="flex items-start gap-3">
-                  <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
-                  <div className="flex-1">
-                    <p className="text-sm lg:text-base font-extrabold text-foreground">Full Test · ~10 min</p>
-                    <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
-                      Tests sounds, real words, alien words and tricky words at every level.
-                    </p>
-                  </div>
-                </div>
-              </button>
-            </div>
-
-            <p className="mt-4 text-[10px] text-muted-foreground">
-              Your answers are private. See our{' '}
-              <a href="/privacy" className="underline">privacy policy</a>.
-            </p>
           </div>
         </div>
       </Wrap>

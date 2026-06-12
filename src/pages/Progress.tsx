@@ -2,13 +2,16 @@ import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProgressData } from '@/hooks/useBooks';
 import { useNavigate } from 'react-router-dom';
-import { LEVELS } from '@/lib/types';
-import { Flame } from 'lucide-react';
+import { JOURNEY_LEVELS, journeyLevelOf, getJourneyLevel } from '@/lib/levels8';
+import { Flame, Star } from 'lucide-react';
 
-const levelBgs: Record<number, string> = {
-  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-  4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
-};
+// Assessment results still store legacy parent-6 levels; map to the 8-level
+// journey for display (first journey level of each legacy band — same
+// mapping as Profile.tsx and Index.tsx).
+const LEGACY_TO_JOURNEY: Record<number, number> = { 1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
+
+/** Sticker shadow — white border + soft drop, same as /learn and /library. */
+const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function Progress() {
   const { user } = useAuth();
@@ -18,10 +21,14 @@ export default function Progress() {
   if (!user) {
     return (
       <Layout>
-        <div className="px-4 pt-8 pb-4 max-w-md mx-auto text-center">
+        <div className="px-4 pt-10 pb-4 max-w-md mx-auto text-center">
           <h2 className="font-display text-2xl font-extrabold text-foreground mb-3">Progress</h2>
           <p className="text-sm text-muted-foreground mb-6">Sign in to track your child's reading progress.</p>
-          <button onClick={() => navigate('/auth')} className="py-3 px-8 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button">
+          <button
+            onClick={() => navigate('/auth')}
+            className="py-3 px-8 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
+            style={{ background: '#E84B8A', boxShadow: '0 4px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
+          >
             Sign In
           </button>
         </div>
@@ -46,11 +53,16 @@ export default function Progress() {
     return count;
   })();
 
-  const levelProgress = LEVELS.map(level => {
-    const booksAtLevel = data?.allBooks.filter(b => b.level === level.level) ?? [];
+  // Books are tagged with legacy parent-6 sub_levels in Supabase; place each
+  // on the 8-level journey at render time (same mapping as /learn + /library).
+  const journeyLevelOfBook = (book: { sub_level?: string | null; level: number }) =>
+    book.sub_level ? journeyLevelOf(book.sub_level) : book.level;
+
+  const levelProgress = JOURNEY_LEVELS.map(level => {
+    const booksAtLevel = data?.allBooks.filter(b => journeyLevelOfBook(b) === level.level) ?? [];
     const completedAtLevel = data?.userBooks.filter(ub => {
       const book = data?.allBooks.find(b => b.id === ub.book_id);
-      return book?.level === level.level && ub.completed_at;
+      return book && journeyLevelOfBook(book) === level.level && ub.completed_at;
     }).length ?? 0;
     return { ...level, total: booksAtLevel.length, completed: completedAtLevel };
   });
@@ -61,24 +73,31 @@ export default function Progress() {
 
   return (
     <Layout>
-      <div className="px-4 pt-5 pb-8 max-w-md mx-auto">
-        <h2 className="font-display text-2xl font-extrabold text-foreground mb-5 tracking-tight">Progress</h2>
+      <div className="px-4 pt-6 lg:pt-12 pb-8 max-w-md lg:max-w-4xl mx-auto">
+        <div className="text-center lg:text-left mb-6">
+          <h2 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground tracking-tight">Progress</h2>
+          <p className="text-sm text-muted-foreground mt-1">The whole reading journey, level by level.</p>
+        </div>
 
         {isLoading ? (
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-24 rounded-xl bg-muted animate-pulse" />
+              <div key={i} className="h-24 rounded-[1.75rem] bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
           <>
-            <div className="bg-card rounded-2xl border border-border p-6 mb-5 shadow-card flex items-center gap-6">
+            {/* ── Headline card: books read + streak ── */}
+            <div
+              className="rounded-[1.75rem] bg-white p-6 mb-6 flex items-center gap-6"
+              style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
+            >
               <div className="relative w-24 h-24 shrink-0">
                 <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96">
-                  <circle cx="48" cy="48" r="42" fill="none" strokeWidth="6" className="stroke-muted" />
+                  <circle cx="48" cy="48" r="42" fill="none" strokeWidth="7" className="stroke-muted" />
                   <circle
-                    cx="48" cy="48" r="42" fill="none" strokeWidth="6"
-                    className="stroke-primary"
+                    cx="48" cy="48" r="42" fill="none" strokeWidth="7"
+                    stroke="#E84B8A"
                     strokeLinecap="round"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}
@@ -86,56 +105,81 @@ export default function Progress() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-extrabold text-foreground">{completedCount}</span>
-                  <span className="text-[10px] text-muted-foreground">of {totalBooks}</span>
+                  <span className="font-display text-2xl font-extrabold text-foreground">{completedCount}</span>
+                  <span className="text-[10px] font-bold text-muted-foreground">of {totalBooks}</span>
                 </div>
               </div>
               <div>
-                <p className="font-bold text-foreground text-lg">Books Completed</p>
+                <p className="font-display font-extrabold text-foreground text-lg">Books completed</p>
                 <p className="text-xs text-muted-foreground mt-1">Keep reading to unlock more!</p>
                 {streakDays > 0 && (
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <Flame className="w-4 h-4 text-amber-500" />
-                    <span className="text-sm font-bold text-foreground">{streakDays} day streak</span>
-                  </div>
+                  <span
+                    className="inline-flex items-center gap-1.5 mt-3 rounded-full bg-white px-3 py-1.5 text-xs font-extrabold -rotate-1 text-amber-700"
+                    style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #F59E0B30' }}
+                  >
+                    <Flame className="w-4 h-4 text-amber-500" /> {streakDays} day streak
+                  </span>
                 )}
               </div>
             </div>
 
-            <div className="space-y-3">
-              {levelProgress.map((lp) => (
-                <div key={lp.level} className="bg-card rounded-xl border border-border p-4 shadow-card">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-3 h-3 rounded-full ${levelBgs[lp.level]}`} />
-                      <span className="text-sm font-bold text-foreground">Level {lp.level}: {lp.name}</span>
+            {/* ── The 8 journey levels ── */}
+            <div className="space-y-3 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-4">
+              {levelProgress.map((lp) => {
+                const done = lp.total > 0 && lp.completed === lp.total;
+                return (
+                  <div
+                    key={lp.level}
+                    className="rounded-[1.5rem] bg-white p-4 lg:p-5"
+                    style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span
+                          className="w-7 h-7 rounded-full text-white text-xs font-extrabold flex items-center justify-center shrink-0"
+                          style={{ background: lp.hex }}
+                        >
+                          {lp.level}
+                        </span>
+                        <span className="text-sm font-bold text-foreground truncate">{lp.name}</span>
+                        {done && <Star className="w-4 h-4 shrink-0" style={{ color: lp.hex, fill: lp.hex }} strokeWidth={0} />}
+                      </div>
+                      {lp.total > 0 ? (
+                        <span className="text-xs font-bold tabular-nums" style={{ color: lp.inkHex }}>
+                          {lp.completed}/{lp.total}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-bold">Coming soon</span>
+                      )}
                     </div>
-                    {lp.total > 0 ? (
-                      <span className="text-xs text-muted-foreground">{lp.completed}/{lp.total}</span>
-                    ) : (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">Coming soon</span>
+                    {lp.total > 0 && (
+                      <div className="h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{ width: `${(lp.completed / lp.total) * 100}%`, background: lp.hex }}
+                        />
+                      </div>
                     )}
                   </div>
-                  {lp.total > 0 && (
-                    <div className="h-2 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full ${levelBgs[lp.level]} rounded-full transition-all duration-500`}
-                        style={{ width: `${lp.total > 0 ? (lp.completed / lp.total) * 100 : 0}%` }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {data?.latestAssessment && (
-              <div className="bg-card rounded-xl border border-border p-4 mt-5 shadow-card">
-                <p className="text-sm font-bold text-foreground mb-1">Latest Assessment</p>
-                <p className="text-xs text-muted-foreground">
-                  Recommended Level {data.latestAssessment.recommended_level} · {new Date(data.latestAssessment.completed_at!).toLocaleDateString()}
-                </p>
-              </div>
-            )}
+            {data?.latestAssessment && (() => {
+              const journeyRec = LEGACY_TO_JOURNEY[data.latestAssessment.recommended_level] ?? data.latestAssessment.recommended_level;
+              const recInfo = getJourneyLevel(journeyRec);
+              return (
+                <div
+                  className="rounded-[1.5rem] bg-white p-4 mt-6"
+                  style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
+                >
+                  <p className="text-sm font-bold text-foreground mb-1">Latest Level Check</p>
+                  <p className="text-xs text-muted-foreground">
+                    Recommended Level {journeyRec}{recInfo ? ` · ${recInfo.name}` : ''} · {new Date(data.latestAssessment.completed_at!).toLocaleDateString()}
+                  </p>
+                </div>
+              );
+            })()}
           </>
         )}
       </div>

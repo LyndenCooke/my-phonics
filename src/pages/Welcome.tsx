@@ -4,14 +4,13 @@ import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBooks, useUserBooks } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
-import { Sparkles, ChevronRight, Loader2, BookOpen, Mail, Download } from 'lucide-react';
-import { LEVELS } from '@/lib/types';
+import { ChevronRight, Loader2, BookOpen, Mail, Download } from 'lucide-react';
+import { getJourneyLevel, journeyLevelOf, JOURNEY_LEVELS } from '@/lib/levels8';
 import PasswordSetup from '@/components/PasswordSetup';
 
-const LEVEL_COLORS: Record<number, string> = {
-  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-  4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
-};
+/** Sticker shadow — white border + soft drop, same as the rest of the
+ *  paper-and-stickers surfaces. */
+const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -72,11 +71,14 @@ export default function Welcome() {
     return (
       <Layout>
         <div className="px-4 pt-12 pb-8 max-w-md mx-auto text-center">
-          <div className="bg-card border border-border rounded-3xl p-8 shadow-card">
+          <div
+            className="rounded-[1.75rem] bg-white p-8"
+            style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
+          >
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-tint-pink flex items-center justify-center">
               <Mail className="w-7 h-7 text-primary" />
             </div>
-            <h1 className="text-2xl font-extrabold text-foreground mb-2">
+            <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">
               Check your inbox
             </h1>
             <p className="text-sm text-muted-foreground mb-1">
@@ -112,8 +114,14 @@ export default function Welcome() {
     );
   }
 
-  const level = unlockedBook?.level ?? 1;
-  const levelInfo = LEVELS.find(l => l.level === level);
+  // Books in Supabase are tagged with legacy parent-6 sub_levels; place this
+  // one on the 8-level journey for naming and colour.
+  const journeyLevel = unlockedBook?.sub_level
+    ? journeyLevelOf(unlockedBook.sub_level)
+    : (unlockedBook?.level ?? 1);
+  const levelInfo = getJourneyLevel(journeyLevel) ?? JOURNEY_LEVELS[0];
+  const hex = levelInfo.hex;
+  const ink = levelInfo.inkHex;
 
   // Some seeded book rows don't have `cover_image_url` set, which dropped
   // parents onto a big BookOpen-icon placeholder after submitting their
@@ -126,108 +134,143 @@ export default function Welcome() {
 
   return (
     <Layout>
-      <div className="px-4 pt-8 pb-8 max-w-md mx-auto text-center">
-        <div className="mb-5">
-          <div className="inline-flex items-center gap-2 bg-tint-pink px-3 py-1.5 rounded-full mb-3">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-xs font-bold text-primary uppercase tracking-wide">
-              You're in!
-            </span>
-          </div>
-          <h1 className="text-3xl font-extrabold text-foreground tracking-tight">
+      <div className="px-4 pt-8 lg:pt-12 pb-8 max-w-md lg:max-w-4xl mx-auto text-center">
+        {/* ── Header — centred at every size ── */}
+        <div className="mb-7 lg:mb-10">
+          <span
+            className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 mb-4"
+            style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}
+          >
+            You're in! 🎉
+          </span>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">
             Your free book is ready
           </h1>
-          <p className="text-sm text-muted-foreground mt-2">
+          <p className="text-sm lg:text-base text-muted-foreground mt-2">
             We've unlocked a book at your child's level. Tap to start reading.
           </p>
         </div>
 
         {unlockedBook ? (
-          <div className="mb-6">
-            <button
-              onClick={() => navigate('/library', { state: { filterLevel: level, openBookId: unlockedBook.id } })}
-              className="group block mx-auto w-full max-w-[220px]"
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-card bg-card border-2 border-primary transition-transform duration-200 group-active:scale-[0.97]">
-                {coverUrl ? (
-                  <img
-                    src={coverUrl}
-                    alt={unlockedBook.title}
-                    className="w-full aspect-[3/4] object-cover"
-                  />
-                ) : (
-                  <div className={`w-full aspect-[3/4] flex items-center justify-center ${LEVEL_COLORS[level]} text-white`}>
-                    <BookOpen className="w-12 h-12 opacity-70" />
-                  </div>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Level {level} — {levelInfo?.name}
-              </p>
-              <p className="font-bold text-base text-foreground">
-                {unlockedBook.title}
-              </p>
-            </button>
+          // Landscape: the book object on the left, actions on the right —
+          // one balanced spread. Mobile keeps the single centred column.
+          <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:text-left">
+            {/* The book as a physical object */}
+            <div className="relative mb-6 lg:mb-0">
+              <div
+                aria-hidden
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[20rem] h-[20rem] rounded-full blur-3xl opacity-[0.16] pointer-events-none"
+                style={{ background: hex }}
+              />
+              <button
+                onClick={() => navigate('/library', { state: { filterLevel: unlockedBook.level, openBookId: unlockedBook.id } })}
+                aria-label={`Open ${unlockedBook.title}`}
+                className="relative block mx-auto w-[58%] max-w-[15rem] press-scale"
+                style={{ rotate: '-2deg' }}
+              >
+                {/* page edges */}
+                <span aria-hidden className="absolute top-[3px] -right-[5px] bottom-[1px] w-[10px] rounded-r-md bg-[#f3ead9] ring-1 ring-black/10" />
+                <span aria-hidden className="absolute top-[6px] -right-[9px] bottom-[3px] w-[10px] rounded-r-md bg-[#e9dfc8] ring-1 ring-black/10" />
+                <span className="relative block aspect-[3/4] rounded-lg rounded-r-md overflow-hidden ring-1 ring-black/15 shadow-[0_24px_45px_-18px_rgba(40,30,40,0.45)]">
+                  {coverUrl ? (
+                    <img src={coverUrl} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="w-full h-full flex items-center justify-center" style={{ background: hex }}>
+                      <BookOpen className="w-12 h-12 text-white opacity-80" />
+                    </span>
+                  )}
+                  {/* spine shading */}
+                  <span aria-hidden className="absolute inset-y-0 left-0 w-[7%] bg-gradient-to-r from-black/25 to-transparent" />
+                </span>
+                {/* ground shadow */}
+                <span aria-hidden className="absolute -bottom-4 left-[8%] right-[8%] h-4 rounded-[100%] bg-black/15 blur-md" />
+              </button>
+            </div>
 
-            {/* Download buttons — A5 (one-page-per-sheet) for screen/standard
-                print, A4 booklet for fold-and-staple home printing. PDFs live
-                in the public Supabase Storage `book-pdfs` bucket; the same
-                URLs are used by the post-assessment marketing email. */}
-            {unlockedBook.sub_level && (() => {
-              const slug = unlockedBook.sub_level.replace(/^L/, '').replace('.', '_');
-              const BUCKET = 'https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs';
-              return (
-                <div className="mt-3 flex flex-col gap-2">
-                  <a
-                    href={`${BUCKET}/a5/${slug}.pdf`}
-                    download={`${unlockedBook.title}.pdf`}
-                    target="_blank"
-                    rel="noopener"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
-                  >
-                    <Download className="w-4 h-4" /> Read on screen / print A5
-                  </a>
-                  <a
-                    href={`${BUCKET}/a4/${slug}.pdf`}
-                    download={`${unlockedBook.title} (Printable Booklet).pdf`}
-                    target="_blank"
-                    rel="noopener"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-card border-2 border-border font-bold text-sm text-foreground shadow-card active:scale-[0.97] transition-transform duration-200 hover:border-primary"
-                  >
-                    <Download className="w-4 h-4" /> Print and fold (A4 booklet)
-                  </a>
-                </div>
-              );
-            })()}
+            {/* Title + level + actions */}
+            <div className="lg:pr-4">
+              <p className="text-xs font-extrabold uppercase tracking-wide" style={{ color: ink }}>
+                Level {journeyLevel} · {levelInfo.name}
+              </p>
+              <h2 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground mt-1">
+                {unlockedBook.title}
+              </h2>
+
+              {/* Download buttons — A5 (one-page-per-sheet) for screen/standard
+                  print, A4 booklet for fold-and-staple home printing. PDFs live
+                  in the public Supabase Storage `book-pdfs` bucket; the same
+                  URLs are used by the post-assessment marketing email. */}
+              {unlockedBook.sub_level && (() => {
+                const slug = unlockedBook.sub_level.replace(/^L/, '').replace('.', '_');
+                const BUCKET = 'https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs';
+                return (
+                  <div className="mt-5 flex flex-col gap-2.5">
+                    <a
+                      href={`${BUCKET}/a5/${slug}.pdf`}
+                      download={`${unlockedBook.title}.pdf`}
+                      target="_blank"
+                      rel="noopener"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-white font-bold text-sm text-foreground transition-all active:translate-y-[2px]"
+                      style={{ boxShadow: `0 3px 0 rgba(40,30,40,0.08), ${STICKER}`, border: '1px solid rgba(40,30,40,0.06)' }}
+                    >
+                      <Download className="w-4 h-4" /> Read on screen / print A5
+                    </a>
+                    <a
+                      href={`${BUCKET}/a4/${slug}.pdf`}
+                      download={`${unlockedBook.title} (Printable Booklet).pdf`}
+                      target="_blank"
+                      rel="noopener"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-white font-bold text-sm text-foreground transition-all active:translate-y-[2px]"
+                      style={{ boxShadow: `0 3px 0 rgba(40,30,40,0.08), ${STICKER}`, border: '1px solid rgba(40,30,40,0.06)' }}
+                    >
+                      <Download className="w-4 h-4" /> Print and fold (A4 booklet)
+                    </a>
+                  </div>
+                );
+              })()}
+
+              <button
+                onClick={() => navigate('/library', {
+                  // No level filter on purpose — show the whole library so the
+                  // unlocked book sits among all the locked ones the parent
+                  // could unlock next. scrollToBookId centres their book in view.
+                  state: { scrollToBookId: unlockedBook.id },
+                })}
+                className="mt-4 w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2 transition-all active:translate-y-[4px]"
+                style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
+              >
+                Continue to Library <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="mb-6 p-6 bg-card border border-border rounded-2xl">
-            <p className="text-sm text-muted-foreground">
-              Your book is being prepared. Head to the library to browse what's available.
-            </p>
-          </div>
+          <>
+            <div
+              className="mb-6 p-6 rounded-[1.75rem] bg-white"
+              style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
+            >
+              <p className="text-sm text-muted-foreground">
+                Your book is being prepared. Head to the library to browse what's available.
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/library')}
+              className="w-full max-w-md mx-auto h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2 transition-all active:translate-y-[4px]"
+              style={{ background: '#E84B8A', boxShadow: '0 5px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
+            >
+              Continue to Library <ChevronRight className="w-5 h-5" />
+            </button>
+          </>
         )}
 
-        <button
-          onClick={() => navigate('/library', {
-            // No level filter on purpose — show the whole library so the
-            // unlocked book sits among all the locked ones the parent
-            // could unlock next. scrollToBookId centres their book in view.
-            state: unlockedBook ? { scrollToBookId: unlockedBook.id } : undefined,
-          })}
-          className="w-full flex items-center justify-center gap-2 py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200"
-        >
-          Continue to Library <ChevronRight className="w-4 h-4" />
-        </button>
-
         {/* Password creation for magic-link users */}
-        <PasswordSetup />
-
-        <p className="text-xs text-muted-foreground mt-4">
-          Your progress is saved. Come back anytime to pick up where you left off.
-        </p>
+        <div className="max-w-md mx-auto">
+          <PasswordSetup />
+          <p className="text-xs text-muted-foreground mt-4">
+            Your progress is saved. Come back anytime to pick up where you left off.
+          </p>
+        </div>
       </div>
     </Layout>
   );
 }
-
