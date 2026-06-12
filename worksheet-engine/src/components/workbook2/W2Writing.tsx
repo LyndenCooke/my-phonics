@@ -80,11 +80,15 @@ function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
           <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.5)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
             {r.text}
           </div>
-          {i === 0 ? (
-            <SeatedTextLines text={r.answer} color={theme.accentText} />
-          ) : (
-            <Line />
-          )}
+          {/* clear air between the prompt strip and the writing — the line
+              is the main thing in the block */}
+          <div style={{ marginTop: mm(4) }}>
+            {i === 0 ? (
+              <SeatedTextLines text={r.answer} color={theme.accentText} />
+            ) : (
+              <Line />
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -303,8 +307,11 @@ export function AnswerItPage({
                 {q ?? 'Question to come.'}
               </div>
             </div>
-            <Line />
-            <Line />
+            {/* the writing is the focus: clear air after the question card */}
+            <div style={{ marginTop: mm(5) }}>
+              <Line />
+              <Line />
+            </div>
           </div>
         ))}
       </div>
