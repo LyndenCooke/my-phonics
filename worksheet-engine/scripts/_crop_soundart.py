@@ -85,39 +85,119 @@ def word_text_top(sheet: Image.Image, x0: int, x1: int, y0: int, y1: int) -> int
     return top if top > 0.85 * sheet.height else None
 
 
+def _is_bg(p: tuple) -> bool:
+    """Background = near-white or the pale pink panel fill. The box border
+    and clipart pinks are far more saturated and stay."""
+    r, g, b = p[0], p[1], p[2]
+    return (r > 235 and g > 235 and b > 235) or (r > 240 and g > 205 and b > 215)
+
+
 def trim(im: Image.Image) -> Image.Image:
-    g = im.convert("L")
-    px = g.load()
-    w, h = g.size
-    # row/column content profile
-    row_has = [any(px[x, y] < 243 for x in range(w)) for y in range(h)]
-    if not any(row_has):
-        return im
-    # strip a thin trace-line sliver at the bottom: a content band of a few
-    # px separated from the artwork above by a clear white gap
-    bottom = max(y for y in range(h) if row_has[y])
-    band_top = bottom
-    while band_top > 0 and row_has[band_top - 1]:
-        band_top -= 1
-    gap = 0
-    y = band_top - 1
-    while y >= 0 and not row_has[y]:
-        gap += 1
-        y -= 1
-    # a line sliver is thin AND spans most of the crop width — artwork parts
-    # (a chin, a dot) are narrow, so they survive
-    band_h = bottom - band_top + 1
-    if 0 < band_h <= 70 and gap >= 6 and y >= 0:
-        cols = sum(1 for x in range(w) if any(px[x, yy] < 243 for yy in range(band_top, bottom + 1)))
-        if cols >= 0.55 * w:
-            bottom = max(yy for yy in range(y + 1) if row_has[yy])
-    top = min(y for y in range(h) if row_has[y])
-    left = min(x for x in range(w) if any(px[x, y] < 243 for y in range(top, bottom + 1)))
-    right = max(x for x in range(w) if any(px[x, y] < 243 for y in range(top, bottom + 1)))
-    if right <= left or bottom <= top:
-        return im
-    pad = 8
-    return im.crop((max(0, left - pad), max(0, top - pad), min(w, right + pad), min(h, bottom + pad)))
+    """Make the background transparent (flood from the edges), then delete
+    page furniture as connected components — the pink rounded-box border (a
+    huge, thin, pink outline) and any trace line (a wide flat band) — and
+    finally crop tight to the artwork."""
+    out = im.convert("RGBA")
+    opx = out.load()
+    w, h = out.size
+
+    # 1. background flood from the edges (whites inside artwork stay opaque)
+    def flood(seeds):
+        seen = [[False] * w for _ in range(h)]
+        stack = list(seeds)
+        while stack:
+            x, y = stack.pop()
+            if x < 0 or y < 0 or x >= w or y >= h or seen[y][x]:
+                continue
+            seen[y][x] = True
+            if not _is_bg(opx[x, y]):
+                continue
+            opx[x, y] = (255, 255, 255, 0)
+            stack.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
+
+    flood([(x, 0) for x in range(w)] + [(x, h - 1) for x in range(w)]
+          + [(0, y) for y in range(h)] + [(w - 1, y) for y in range(h)])
+
+    # an unbroken box border SEALS the flood out, leaving the whole interior
+    # opaque — re-seed just inside the border (walk each corner diagonal:
+    # cross the flooded panel, cross the border, land on interior white)
+    opaque = sum(1 for y in range(h) for x in range(w) if opx[x, y][3] > 0)
+    if opaque > 0.5 * w * h:
+        seeds = []
+        for cx, cy, dx, dy in ((0, 0, 1, 1), (w - 1, 0, -1, 1), (0, h - 1, 1, -1), (w - 1, h - 1, -1, -1)):
+            x, y = cx, cy
+            crossed = False
+            while 0 <= x < w and 0 <= y < h:
+                p = opx[x, y]
+                if p[3] > 0 and not _is_bg(p):
+                    crossed = True
+                elif crossed and p[3] > 0 and _is_bg(p):
+                    seeds.append((x, y))
+                    break
+                x += dx
+                y += dy
+        if seeds:
+            flood(seeds)
+
+    # 2. connected components of what is left
+    comp = [[0] * w for _ in range(h)]
+    comps = []
+    for y0 in range(h):
+        for x0 in range(w):
+            if opx[x0, y0][3] == 0 or comp[y0][x0]:
+                continue
+            cid = len(comps) + 1
+            q = deque([(x0, y0)])
+            comp[y0][x0] = cid
+            minx, miny, maxx, maxy, n = x0, y0, x0, y0, 0
+            rs = gs = bs = 0
+            while q:
+                x, y = q.popleft()
+                p = opx[x, y]
+                rs += p[0]; gs += p[1]; bs += p[2]
+                n += 1
+                minx, miny = min(minx, x), min(miny, y)
+                maxx, maxy = max(maxx, x), max(maxy, y)
+                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)):
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < w and 0 <= ny < h and not comp[ny][nx] and opx[nx, ny][3] > 0:
+                        comp[ny][nx] = cid
+                        q.append((nx, ny))
+            comps.append({"id": cid, "box": (minx, miny, maxx, maxy), "n": n,
+                          "mean": (rs / n, gs / n, bs / n)})
+
+    def kill(c):
+        x0c, y0c, x1c, y1c = c["box"]
+        for y in range(y0c, y1c + 1):
+            for x in range(x0c, x1c + 1):
+                if comp[y][x] == c["id"]:
+                    opx[x, y] = (255, 255, 255, 0)
+
+    for c in comps:
+        x0c, y0c, x1c, y1c = c["box"]
+        bw, bh = x1c - x0c + 1, y1c - y0c + 1
+        density = c["n"] / (bw * bh)
+        r, gm, b = c["mean"]
+        pinkish = r > 195 and r - gm > 22 and b > gm
+        at_edge = x0c <= 2 or y0c <= 2 or x1c >= w - 3 or y1c >= h - 3
+        # the box border and its anti-alias halos: pink and touching the
+        # expanded crop edge (artwork is always centred), or a huge hollow
+        if pinkish and ((at_edge and density < 0.35) or (bw * bh > 0.45 * w * h and density < 0.18)):
+            kill(c)
+        # a trace line: wide and flat
+        elif bh <= 34 and bw > 0.55 * w:
+            kill(c)
+        # specks and dotted-line fragments
+        elif c["n"] < 110:
+            kill(c)
+
+    # 3. crop tight to the surviving artwork
+    xs = [x for x in range(w) if any(opx[x, y][3] > 0 for y in range(h))]
+    ys = [y for y in range(h) if any(opx[x, y][3] > 0 for x in range(w))]
+    if not xs or not ys:
+        return out
+    pad = 6
+    return out.crop((max(0, xs[0] - pad), max(0, ys[0] - pad), min(w, xs[-1] + pad), min(h, ys[-1] + pad)))
 
 
 def crop_sheet(g: str, contact: bool = False) -> bool:
@@ -241,14 +321,19 @@ def finish(g: str, sheet: Image.Image, rows, cards, data, contact: bool) -> bool
     outdir = OUTROOT / g
     outdir.mkdir(parents=True, exist_ok=True)
     tiles = []
-    inset = 10
-    for (x0, y0, x1, y1, _), word in zip(rows, data["trace_words"]):
-        im = trim(sheet.crop((x0 + inset, y0 + inset, x1 - inset, y1 - inset)))
+    # EXPAND the crop past the box bounds — artwork that touches or overflows
+    # its box must never be shaved; trim() strips the borders and panel that
+    # come along for the ride
+    grow = 18
+    for i, ((x0, y0, x1, y1, _), word) in enumerate(zip(rows, data["trace_words"])):
+        # the last row sits just above the section-3 header — don't grow into it
+        gd = 4 if i == len(rows) - 1 else grow
+        im = trim(sheet.crop((max(0, x0 - grow), max(0, y0 - grow), x1 + grow, y1 + gd)))
         im.save(outdir / f"{word.replace(' ', '_')}.png")
         tiles.append(im)
     for (x0, y0, x1, y1, _), miss in zip(cards, data["missing"]):
-        # extra bottom inset keeps the card's write line out of the crop
-        im = trim(sheet.crop((x0 + inset, y0 + inset, x1 - inset, y1 - 30)))
+        # never grow DOWN into the card's word text
+        im = trim(sheet.crop((max(0, x0 - grow), max(0, y0 - grow), x1 + grow, y1 - 30)))
         im.save(outdir / f"{miss['word'].replace(' ', '_')}.png")
         tiles.append(im)
 
@@ -257,7 +342,7 @@ def finish(g: str, sheet: Image.Image, rows, cards, data, contact: bool) -> bool
         ch = max(t.height for t in tiles) + 10
         board = Image.new("RGB", (cw * len(tiles), ch), "white")
         for i, t in enumerate(tiles):
-            board.paste(t, (i * cw + 5, 5))
+            board.paste(t, (i * cw + 5, 5), t)
         board.save(PACKS / f"contact_{g}.png")
         print("contact sheet:", PACKS / f"contact_{g}.png")
     return True

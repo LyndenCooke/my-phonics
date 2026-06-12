@@ -243,8 +243,8 @@ function MissingCard({ data, grapheme, theme, xMm, widthMm }: { data: { word: st
   const hidden = data.word.slice(before.length, data.word.length - after.length || undefined);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mm(2) }}>
-      <div style={{ height: mm(22), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {data.img && <SoundArt grapheme={grapheme} word={data.word} heightMm={22} />}
+      <div style={{ height: mm(25), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {data.img && <SoundArt grapheme={grapheme} word={data.word} heightMm={25} />}
       </div>
       <TraceLine
         segments={[
@@ -287,15 +287,15 @@ export function SoundPage({
       <SectionLabel text="Trace the words" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {data.trace.map((t) => (
-          <div key={t.word} style={{ display: 'flex', alignItems: 'center', gap: mm(4) }}>
-            <div style={{ width: mm(18), height: mm(18), display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>
-              {t.img && <SoundArt grapheme={g} word={t.word} heightMm={18} />}
+          <div key={t.word} style={{ display: 'flex', alignItems: 'center', gap: mm(3) }}>
+            <div style={{ width: mm(22), height: mm(22), display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>
+              {t.img && <SoundArt grapheme={g} word={t.word} heightMm={22} />}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <TraceLine
                 text={`${t.word} ${t.word}`}
                 xHeightMm={hwX}
-                widthMm={160}
+                widthMm={157}
                 color={INK.trace}
                 midlineColor={theme.border}
                 startXMm={3}
