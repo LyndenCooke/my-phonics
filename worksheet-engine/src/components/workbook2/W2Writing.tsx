@@ -150,6 +150,50 @@ export function AnswerItPage({
   );
 }
 
+// ---- use your grammar ---------------------------------------------------------
+// The learn-to-use bridge (RWI Get Writing's move): the fortnight's grammar
+// comes back as WORDS TO USE in the child's own sentences about the story.
+// Every chip word is reused verbatim from the approved units (contractions
+// from G-L6.6, corrected past-tense verbs from G-L6.7) — no new content.
+
+export function GrammarUsePage({
+  page,
+  sceneSrc,
+  chips,
+  lines,
+  theme,
+}: {
+  page: number;
+  sceneSrc: string;
+  /** approved words to use, by pointer (unit answers, verbatim). */
+  chips: string[];
+  lines: number;
+  theme: Theme;
+}) {
+  return (
+    <WbPage page={page}>
+      <Heading title="Use your grammar" />
+      <div style={{ fontSize: TYPE2.word, color: INK.text, margin: `0 0 ${mm(3.5)}` }}>
+        Write about the story. Use these words in your sentences.
+      </div>
+      <div style={{ display: 'flex', gap: mm(4), flexWrap: 'wrap', marginBottom: mm(4) }}>
+        {chips.map((w) => (
+          <span key={w} style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(1)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
+            {w}
+          </span>
+        ))}
+      </div>
+      <StoryScene src={sceneSrc} heightMm={48} />
+      <div style={{ margin: `${mm(3.5)} 0` }}>
+        <GoalChips theme={theme} />
+      </div>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={12.5} />)}
+      </div>
+    </WbPage>
+  );
+}
+
 // ---- big write ----------------------------------------------------------------
 // One colour story scene in a framed panel, the writing goals, then the
 // lines. A paragraph variant takes two scenes with four lines each.

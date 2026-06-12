@@ -25,9 +25,10 @@ export const WB2 = {
 
 // THE LOCKED SCALE — four sizes only on a child-facing page (plus the page
 // number, which is furniture). No size below `label` may appear in content.
+// Sized for five-to-seven-year-olds: child-facing text errs big.
 export const TYPE2 = {
-  heading: '20pt',
-  word: '16pt', // child-facing words, sentences, prompts
+  heading: '21pt',
+  word: '17pt', // child-facing words, sentences, prompts, worked examples
   body: '14pt', // instructions and answers
   label: '11pt', // small-caps section labels and column heads
   small: '9pt', // page number ONLY
@@ -83,23 +84,27 @@ export function DottedDivider() {
   return <div style={{ borderTop: `0.4mm dotted ${INK.rule}`, margin: `${mm(4.5)} 0` }} />;
 }
 
-/** The book's writing-goal chips (p16 "WRITING GOALS"): tick-box + mark +
- *  label. Replaces the old check strip (no caret glyph). */
-const GOALS: { mark: string; label: string }[] = [
-  { mark: 'Aa', label: 'Capital at the start' },
-  { mark: '␣', label: 'Finger spaces' },
-  { mark: '. ? !', label: 'Correct end mark' },
-];
-export function GoalChips({ theme, goals = GOALS }: { theme: Theme; goals?: { mark: string; label: string }[] }) {
+/** The drawn finger-space mark: a clear ⊔ between two word strokes — big
+ *  enough for a six-year-old to read at arm's length (no tiny ␣ glyph). */
+function FingerSpaceMark({ theme }: { theme: Theme }) {
   return (
-    <div style={{ display: 'flex', gap: mm(8), flexWrap: 'wrap', alignItems: 'center' }}>
-      {goals.map((g) => (
-        <span key={g.label} style={{ display: 'inline-flex', alignItems: 'center', gap: mm(2.5), fontSize: TYPE2.body, color: INK.text }}>
-          <span style={{ width: mm(6), height: mm(6), border: `0.45mm solid ${INK.ruleStrong}`, borderRadius: mm(1.2), flex: '0 0 auto' }} />
-          <span style={{ color: theme.accentText, fontWeight: 700 }}>{g.mark}</span>
-          {g.label}
-        </span>
-      ))}
+    <svg width={mm(9)} height={mm(6)} viewBox="0 0 9 6" style={{ flex: '0 0 auto' }}>
+      <path d="M0.6,1 L0.6,4.6 M3,4.6 L3,2.4 M3,4.6 L6,4.6 M6,4.6 L6,2.4 M8.4,1 L8.4,4.6" stroke={theme.accentText} strokeWidth={0.8} fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** The book's writing-goal chips (p16 "WRITING GOALS"): tick-box + a BIG
+ *  mark + label. Replaces the old check strip (no caret glyph). */
+export function GoalChips({ theme }: { theme: Theme }) {
+  const box: React.CSSProperties = { width: mm(6.5), height: mm(6.5), border: `0.45mm solid ${INK.ruleStrong}`, borderRadius: mm(1.2), flex: '0 0 auto' };
+  const mark: React.CSSProperties = { color: theme.accentText, fontWeight: 700, fontSize: TYPE2.word, lineHeight: 1 };
+  const item: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: mm(2), fontSize: TYPE2.body, color: INK.text, whiteSpace: 'nowrap' };
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <span style={item}><span style={box} /><span style={mark}>Aa</span>Capital at the start</span>
+      <span style={item}><span style={box} /><FingerSpaceMark theme={theme} />Finger spaces</span>
+      <span style={item}><span style={box} /><span style={mark}>. ? !</span>End mark</span>
     </div>
   );
 }
