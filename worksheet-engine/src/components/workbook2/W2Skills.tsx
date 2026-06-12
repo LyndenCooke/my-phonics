@@ -3,7 +3,7 @@ import { getLevelTheme } from '@/design/levelThemes';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
 import TraceLine from '@/components/TraceLine';
-import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, WordCard, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
+import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, WordCard, SoundBadge, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
 // W2 skills pages — Spell it (practise + test on ONE page), Sentences (hold +
@@ -104,13 +104,15 @@ export function SentencesPage({
     <WbPage page={page}>
       <Heading title="Sentences" sub="Read it, say it, hide it, then write it from memory." />
       <SectionLabel text="Hold the sentence" theme={theme} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(4) }}>
+      {/* each block = the sentence strip with ITS line tucked close beneath;
+          a clear, definite gap separates one block from the next */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(12) }}>
         {hold.map((s, i) => (
           <div key={i}>
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(2)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
               {s}
             </div>
-            <Line heightMm={12} />
+            <Line heightMm={11} />
           </div>
         ))}
       </div>
@@ -141,47 +143,74 @@ export function SentencesPage({
 }
 
 // ---- Handwriting ------------------------------------------------------------
-// A grey model starts EVERY row; the child traces it and continues along the
-// same row to the end. Uniform row pitch — no orphan blank pairs. Two
-// sections (patterns and words · phrases), models on every line.
+// The ladder: SOUND → WORD → SENTENCE, six lines, one thing per line. The
+// grey model starts every row and the child continues to the end. The sound
+// rows carry the book's Sound Spotlight badge so the page reads as part of
+// the same world as the book's sound pages.
 
-function HwRow({ model, theme }: { model: string; theme: Theme }) {
+function HwRow({ model, theme, badge }: { model: string; theme: Theme; badge?: string }) {
   return (
-    <TraceLine
-      text={model}
-      xHeightMm={5.5}
-      widthMm={182}
-      color={INK.trace}
-      midlineColor={theme.border}
-      startXMm={3}
-    />
+    <div style={{ display: 'flex', alignItems: 'center', gap: mm(4) }}>
+      <span style={{ width: mm(15), display: 'flex', justifyContent: 'center' }}>
+        {badge && <SoundBadge sound={badge} theme={theme} />}
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <TraceLine
+          text={model}
+          xHeightMm={5.5}
+          widthMm={163}
+          color={INK.trace}
+          midlineColor={theme.border}
+          startXMm={3}
+        />
+      </div>
+    </div>
   );
+}
+
+export interface HwLadder {
+  sound: string;
+  word: string;
+  sentence: string;
 }
 
 export function HandwritingPage({
   page,
-  patterns,
-  phrases,
+  ladders,
   theme,
 }: {
   page: number;
-  patterns: string[];
-  phrases: string[];
+  /** one ladder per focus sound (two at L6): sound row, word row, sentence row. */
+  ladders: HwLadder[];
   theme: Theme;
 }) {
   return (
     <WbPage page={page}>
-      <Heading title="Handwriting" sub="Trace the grey words, then keep writing them to the end of the line." />
-      <SectionLabel text="Patterns and words" theme={theme} />
-      <div style={{ flex: 1.1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-        {patterns.map((m) => <HwRow key={m} model={m} theme={theme} />)}
+      <Heading title="Handwriting" sub="Trace the grey writing, then keep going to the end of the line." />
+
+      <SectionLabel text="Sounds" theme={theme} />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+        {ladders.map((l) => (
+          <HwRow key={l.sound} model={`${l.sound} ${l.sound} ${l.sound}`} badge={l.sound} theme={theme} />
+        ))}
       </div>
 
       <DottedDivider />
 
-      <SectionLabel text="Phrases" theme={theme} />
+      <SectionLabel text="Words" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-        {phrases.map((m) => <HwRow key={m} model={m} theme={theme} />)}
+        {ladders.map((l) => (
+          <HwRow key={l.word} model={`${l.word} ${l.word}`} theme={theme} />
+        ))}
+      </div>
+
+      <DottedDivider />
+
+      <SectionLabel text="Sentences" theme={theme} />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+        {ladders.map((l) => (
+          <HwRow key={l.sentence} model={l.sentence} theme={theme} />
+        ))}
       </div>
     </WbPage>
   );

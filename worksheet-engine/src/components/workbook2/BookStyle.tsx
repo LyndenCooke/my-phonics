@@ -121,6 +121,43 @@ export function Line({ heightMm = 11 }: { heightMm?: number }) {
   return <div style={{ height: mm(heightMm), borderBottom: `0.4mm solid ${INK.text}` }} />;
 }
 
+/** The book's Sound Spotlight badge: level-colour circle, white sound. */
+export function SoundBadge({ sound, theme, sizeMm = 11 }: { sound: string; theme: Theme; sizeMm?: number }) {
+  return (
+    <span
+      style={{
+        width: mm(sizeMm),
+        height: mm(sizeMm),
+        borderRadius: '50%',
+        background: theme.primary,
+        color: '#fff',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: TYPE2.body,
+        fontWeight: 700,
+        flex: '0 0 auto',
+      }}
+    >
+      {sound}
+    </span>
+  );
+}
+
+/** Printed text SEATED ON a write line: the baseline sits on the rule and
+ *  descenders dip below it, like real handwriting on the line. (CSS line
+ *  boxes float text above the border because of the font's internal leading;
+ *  the translate pulls the baseline down onto the rule.) */
+export function SeatedText({ text, color, heightMm = 11 }: { text: string; color: string; heightMm?: number }) {
+  return (
+    <div style={{ position: 'relative', height: mm(heightMm), borderBottom: `0.4mm solid ${INK.text}` }}>
+      <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.word, color, lineHeight: 1, transform: 'translateY(18%)', whiteSpace: 'nowrap' }}>
+        {text}
+      </span>
+    </div>
+  );
+}
+
 /** The word card (thin level-colour border, like "Can You Read These?"). */
 export function WordCard({ word, theme, widthMm }: { word: string; theme: Theme; widthMm?: number }) {
   return (

@@ -65,8 +65,10 @@ export default function PrintWorkbook2({ params }: { params: { spec: string } })
       <HandwritingPage
         page={9}
         theme={theme}
-        patterns={['ur er ur er', 'purse purple turn', 'her fern never', 'church burst hurt']}
-        phrases={['the soft purple purse', 'their oh could']}
+        ladders={[
+          { sound: 'ur', word: 'purse', sentence: 'My purple purse was gone!' },
+          { sound: 'er', word: 'fern', sentence: 'I searched in the ferns.' },
+        ]}
       />
     </>
   );
