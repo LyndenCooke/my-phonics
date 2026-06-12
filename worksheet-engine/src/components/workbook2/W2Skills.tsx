@@ -3,6 +3,7 @@ import { getLevelTheme } from '@/design/levelThemes';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
 import TraceLine from '@/components/TraceLine';
+import type { SoundPageData } from '@/data/workbook2/levels';
 import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, WordCard, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
@@ -217,78 +218,110 @@ export function HandwritingPage({
   );
 }
 
-// ---- Sounds (L1-L3) ----------------------------------------------------------
-// The sound_a pattern in the book style: trace the sound, trace the words
-// (approved clipart beside a word only where it exists), then write the
-// missing sound. Everything traces — all content comes from the book's
-// approved word lists; the trace glyphs are the writing model.
+// ---- The sound X (L1-L3) ------------------------------------------------------
+// ONE sound per page — the approved Sound Pack sheet pattern (trace the
+// letter, trace the words with a picture cue beside each, write the missing
+// sound with a picture cue on every card) in the W2 book style. Words and
+// clipart come from the approved sheets; a word without approved art keeps
+// an EMPTY picture slot (house rule), never substitute art.
 
-function MissingCard({ word, hide, theme, xMm }: { word: string; hide: string; theme: Theme; xMm: number }) {
-  const at = word.indexOf(hide);
-  const before = at >= 0 ? word.slice(0, at) : word;
-  const after = at >= 0 ? word.slice(at + hide.length) : '';
+function SoundArt({ grapheme, word, heightMm }: { grapheme: string; word: string; heightMm: number }) {
   return (
-    <div style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(2)} ${mm(2)}`, display: 'flex', alignItems: 'flex-end' }}>
-      <div style={{ width: '100%' }}>
-        <TraceLine
-          segments={[
-            { text: before, fill: INK.text },
-            { text: hide, fill: 'transparent' },
-            { text: after, fill: INK.text },
-          ]}
-          xHeightMm={xMm}
-          widthMm={54}
-          align="middle"
-          midlineColor={theme.border}
-        />
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/soundart/${grapheme}/${word.replace(/ /g, '_')}.png`}
+      alt=""
+      style={{ height: mm(heightMm), width: mm(heightMm), objectFit: 'contain', flex: '0 0 auto' }}
+    />
+  );
+}
+
+function MissingCard({ data, grapheme, theme, xMm, widthMm }: { data: { word: string; shown: string; img: boolean }; grapheme: string; theme: Theme; xMm: number; widthMm: number }) {
+  const gap = data.shown.indexOf('_');
+  const before = gap >= 0 ? data.shown.slice(0, gap) : '';
+  const after = gap >= 0 ? data.shown.slice(gap + 1) : data.shown;
+  const hidden = data.word.slice(before.length, data.word.length - after.length || undefined);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: mm(2) }}>
+      <div style={{ height: mm(22), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {data.img && <SoundArt grapheme={grapheme} word={data.word} heightMm={22} />}
       </div>
+      <TraceLine
+        segments={[
+          { text: before, fill: INK.text },
+          { text: hidden, fill: 'transparent' },
+          { text: after, fill: INK.text },
+        ]}
+        xHeightMm={xMm}
+        widthMm={widthMm}
+        align="middle"
+        midlineColor={theme.border}
+      />
     </div>
   );
 }
 
-export function SoundsPage({
+export function SoundPage({
   page,
-  graphemes,
-  words,
-  missing,
+  data,
   theme,
   hwX = 7,
 }: {
   page: number;
-  graphemes: string[];
-  words: string[];
-  missing: { word: string; hide: string }[];
+  data: SoundPageData;
   theme: Theme;
   hwX?: number;
 }) {
+  const g = data.grapheme;
   return (
     <WbPage page={page}>
-      <Heading title="Sounds" sub="Trace the sounds and the words, then write in the missing sound." />
+      <Heading title={`The sound ${g}`} sub="Trace the sound and the words, then write in the missing sound." />
 
-      <SectionLabel text="Trace the sounds" theme={theme} />
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-        {graphemes.map((g) => (
-          <HwRow key={g} model={Array.from({ length: 4 }).map(() => g).join(' ')} theme={theme} xMm={hwX} />
-        ))}
+      <SectionLabel text={`Trace the sound ${g}`} theme={theme} />
+      <div style={{ flex: '0 0 auto', paddingTop: mm(2) }}>
+        <HwRow model={Array.from({ length: 4 }).map(() => g).join(' ')} theme={theme} xMm={hwX} />
       </div>
 
       <DottedDivider />
 
       <SectionLabel text="Trace the words" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
-        {words.map((w) => (
-          <HwRow key={w} model={`${w} ${w}`} theme={theme} xMm={hwX} />
+        {data.trace.map((t) => (
+          <div key={t.word} style={{ display: 'flex', alignItems: 'center', gap: mm(4) }}>
+            <div style={{ width: mm(18), height: mm(18), display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto' }}>
+              {t.img && <SoundArt grapheme={g} word={t.word} heightMm={18} />}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <TraceLine
+                text={`${t.word} ${t.word}`}
+                xHeightMm={hwX}
+                widthMm={160}
+                color={INK.trace}
+                midlineColor={theme.border}
+                startXMm={3}
+              />
+            </div>
+          </div>
         ))}
       </div>
 
       <DottedDivider />
 
-      <SectionLabel text="Write the missing sound" theme={theme} />
-      <div style={{ flex: '0 0 auto', display: 'grid', gridTemplateColumns: `repeat(${Math.min(missing.length, 3)}, 1fr)`, gap: mm(5), paddingBottom: mm(2) }}>
-        {missing.map((c) => (
-          <MissingCard key={c.word} word={c.word} hide={c.hide} theme={theme} xMm={Math.min(hwX, 7)} />
-        ))}
-      </div>
+      <SectionLabel text={`Write the missing ${g}`} theme={theme} />
+      {/* the word size is uniform across the page's cards and shrinks so the
+          LONGEST word fits its card (glyph advance ~1.06 x the x-height) */}
+      {(() => {
+        const cardW = data.missing.length <= 3 ? 52 : 40;
+        const maxLen = Math.max(...data.missing.map((c) => c.word.length));
+        const xMm = Math.min(hwX, 6.5, (cardW - 2) / (1.06 * maxLen));
+        return (
+          <div style={{ flex: '0 0 auto', display: 'grid', gridTemplateColumns: `repeat(${data.missing.length}, 1fr)`, gap: mm(5), paddingBottom: mm(2) }}>
+            {data.missing.map((c) => (
+              <MissingCard key={c.word} data={c} grapheme={g} theme={theme} xMm={xMm} widthMm={cardW} />
+            ))}
+          </div>
+        );
+      })()}
     </WbPage>
   );
 }

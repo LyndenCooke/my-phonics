@@ -40,14 +40,17 @@ export const W2_LEVEL_SPECS: Record<number, W2LevelSpec> = {
 
 // --- generalised book + closing data shapes ----------------------------------
 
-/** A Sounds page (L1-L3): trace the sound(s), trace words, write the missing
- *  sound. All trace content comes from the book's approved word lists. */
-export interface SoundsData {
-  graphemes: string[];
-  /** trace words (clipart drawn beside a word only when approved art exists). */
-  words: string[];
-  /** missing-sound cards: the word with its hidden grapheme. */
-  missing: { word: string; hide: string }[];
+/** ONE single-sound page (L1-L3), the approved Sound Pack sheet pattern in
+ *  the W2 skin: trace the sound, trace the words (image cue beside each word
+ *  when approved art exists), write the missing sound (image cue on every
+ *  card). Words and art come from the approved Sound Pack sheets (Drive/TPT)
+ *  or, for the five unsheeted L3 sounds, from approved pools. */
+export interface SoundPageData {
+  grapheme: string;
+  /** trace rows; img=false leaves the picture slot empty (house rule). */
+  trace: { word: string; img: boolean }[];
+  /** missing-sound cards: shown uses _ for the hidden letters ("_nake"). */
+  missing: { word: string; shown: string; img: boolean }[];
 }
 
 export interface W2BookData {
@@ -60,9 +63,12 @@ export interface W2BookData {
   /** dictation sentences (never printed on the page; Answers only). */
   listen: string[];
   questions?: (string | null)[];
-  sounds?: SoundsData;
+  /** single-sound pages, woven through the book section in curriculum order. */
+  soundPages?: SoundPageData[];
   useGrammar?: { chips: string[]; scene: string; pos?: string };
-  bigWrite: { prompt: string; scene: string; pos?: string };
+  /** single-scene big write, OR the sequencing variant when `scenes` (4, in
+   *  story order as authored; the child numbers a SHUFFLED display order). */
+  bigWrite: { prompt: string; scene: string; pos?: string; scenes?: { src: string; pos?: string }[] };
   ladders: HwLadder[];
   /** a revisit book closes with pointer-reused items instead of new grammar. */
   revisit?: SwykGroup[];

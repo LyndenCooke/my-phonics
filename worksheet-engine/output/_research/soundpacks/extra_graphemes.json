@@ -1,0 +1,46 @@
+{
+  "_note": "The five L3 graphemes with no approved Sound Pack sheet. Trace words are selections from the approved word banks/book texts; picture words are selections from the consultant-authored sound-book lists (myphonics_books/data/sound_books/inventory.py).",
+  "ch": {
+    "trace_words": ["chop", "chip", "chin", "chat"],
+    "missing": [
+      { "word": "chicken", "shown": "_icken" },
+      { "word": "cheese", "shown": "_eese" },
+      { "word": "cherry", "shown": "_erry" },
+      { "word": "chair", "shown": "_air" }
+    ]
+  },
+  "th": {
+    "trace_words": ["thin", "thick", "this", "that"],
+    "missing": [
+      { "word": "thumb", "shown": "_umb" },
+      { "word": "tooth", "shown": "too_" },
+      { "word": "throne", "shown": "_rone" },
+      { "word": "thorn", "shown": "_orn" }
+    ]
+  },
+  "ng": {
+    "trace_words": ["sing", "song", "long", "ring"],
+    "missing": [
+      { "word": "king", "shown": "ki_" },
+      { "word": "wing", "shown": "wi_" },
+      { "word": "swing", "shown": "swi_" },
+      { "word": "spring", "shown": "spri_" }
+    ]
+  },
+  "qu": {
+    "trace_words": ["quick", "quiz", "quit", "quack"],
+    "missing": [
+      { "word": "queen", "shown": "_een" },
+      { "word": "quilt", "shown": "_ilt" },
+      { "word": "quail", "shown": "_ail" }
+    ]
+  },
+  "zz": {
+    "trace_words": ["buzz", "fizz", "jazz"],
+    "missing": [
+      { "word": "puzzle", "shown": "pu_le" },
+      { "word": "blizzard", "shown": "bli_ard" },
+      { "word": "muzzle", "shown": "mu_le" }
+    ]
+  }
+}

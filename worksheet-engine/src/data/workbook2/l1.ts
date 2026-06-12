@@ -9,6 +9,7 @@
 
 import type { W2LevelData, W2BookData } from '@/data/workbook2/levels';
 import { W2_LEVEL_SPECS } from '@/data/workbook2/levels';
+import { soundPagesFor } from '@/data/workbook2/soundPages';
 
 const BOOKS: W2BookData[] = [
   {
@@ -24,15 +25,8 @@ const BOOKS: W2BookData[] = [
       'Is it a rat?',
       'I pat the cat.',
     ],
-    sounds: {
-      graphemes: ['s', 'a', 't'],
-      words: ['sat', 'tap', 'pat'],
-      missing: [
-        { word: 'sat', hide: 's' },
-        { word: 'tap', hide: 'a' },
-        { word: 'pat', hide: 't' },
-      ],
-    },
+    // one page per sound, curriculum order (graphemes_by_level level_1)
+    soundPages: soundPagesFor('s', 'a', 't', 'p', 'i'),
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l1_1/page5.png', pos: '50% 40%' },
     ladders: [
       { sound: 's', word: 'sit', sentence: 'I sit at a mat.' },
@@ -52,16 +46,19 @@ const BOOKS: W2BookData[] = [
       'I got a dog.',
       'Mud is on the dog.',
     ],
-    sounds: {
-      graphemes: ['m', 'd', 'g'],
-      words: ['mud', 'dog', 'got'],
-      missing: [
-        { word: 'mud', hide: 'm' },
-        { word: 'dog', hide: 'd' },
-        { word: 'got', hide: 'g' },
+    soundPages: soundPagesFor('n', 'm', 'd', 'g', 'o'),
+    // sequencing variant: scenes authored in a SHUFFLED display order; the
+    // child numbers them 1-4 (key on the Answers page)
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write about the story.',
+      scene: '/storyart/l1_2/page2.png',
+      scenes: [
+        { src: '/storyart/l1_2/page4.png' },
+        { src: '/storyart/l1_2/page1.png' },
+        { src: '/storyart/l1_2/page6.png' },
+        { src: '/storyart/l1_2/page2.png' },
       ],
     },
-    bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l1_2/page2.png', pos: '50% 50%' },
     ladders: [
       { sound: 'm', word: 'mum', sentence: 'Mud is on me!' },
       { sound: 'd', word: 'dog', sentence: 'I got a dog.' },

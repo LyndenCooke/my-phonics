@@ -8,24 +8,17 @@
 
 import type { W2LevelData, W2BookData } from '@/data/workbook2/levels';
 import { W2_LEVEL_SPECS } from '@/data/workbook2/levels';
+import { soundPagesFor } from '@/data/workbook2/soundPages';
 
 const BOOKS: W2BookData[] = [
   {
     num: 1,
+    soundPages: soundPagesFor('c', 'k', 'ck', 'e'),
     title: 'The Red Socks',
     spellPractise: ['sock', 'red', 'kick', 'peck', 'no'],
     grammar: ['g-l2-1'],
     hold: ['I check the bed.', 'The hen has red socks!'],
     listen: ['I get the socks.', 'I can kick!'],
-    sounds: {
-      graphemes: ['c', 'k', 'ck'],
-      words: ['kick', 'sock', 'peck'],
-      missing: [
-        { word: 'sock', hide: 'ck' },
-        { word: 'kick', hide: 'k' },
-        { word: 'red', hide: 'e' },
-      ],
-    },
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l2_1/page4.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ck', word: 'sock', sentence: 'I get a sock.' },
@@ -34,21 +27,22 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 2,
+    soundPages: soundPagesFor('u', 'r', 'h', 'b'),
     title: 'Run, Pup, Run!',
     spellPractise: ['run', 'pup', 'hut', 'rub', 'go'],
     grammar: ['g-l2-2'],
     hold: ['I have a pup.', 'The pup can run!'],
     listen: ['I rub the pup.', 'A big hug!'],
-    sounds: {
-      graphemes: ['u', 'r', 'h'],
-      words: ['run', 'hut', 'rub'],
-      missing: [
-        { word: 'run', hide: 'u' },
-        { word: 'hut', hide: 'h' },
-        { word: 'rub', hide: 'r' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write about the story.',
+      scene: '/storyart/l2_2/page4.png',
+      scenes: [
+        { src: '/storyart/l2_2/page4.png' },
+        { src: '/storyart/l2_2/page1.png' },
+        { src: '/storyart/l2_2/page6.png' },
+        { src: '/storyart/l2_2/page2.png' },
       ],
     },
-    bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l2_2/page4.png', pos: '50% 45%' },
     ladders: [
       { sound: 'u', word: 'pup', sentence: 'Run, pup, run!' },
       { sound: 'b', word: 'tub', sentence: 'I rub the pup.' },
@@ -56,20 +50,12 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 3,
+    soundPages: soundPagesFor('f', 'ff', 'l', 'll'),
     title: 'Fox Fell Off!',
     spellPractise: ['fox', 'fell', 'off', 'hill', 'no'],
     grammar: ['g-l2-3'],
     hold: ['Fox is on a log.', 'Fox fell off the log!'],
     listen: ['Fox is on the mat!', 'I hug Fox!'],
-    sounds: {
-      graphemes: ['f', 'ff', 'll'],
-      words: ['fox', 'off', 'fell'],
-      missing: [
-        { word: 'off', hide: 'ff' },
-        { word: 'fell', hide: 'll' },
-        { word: 'fox', hide: 'f' },
-      ],
-    },
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l2_3/page2.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ff', word: 'off', sentence: 'Fox fell off the log!' },
@@ -78,21 +64,22 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 4,
+    soundPages: soundPagesFor('ss', 'j', 'v', 'w'),
     title: 'The Jam Jug',
     spellPractise: ['jam', 'jug', 'van', 'wet', 'to'],
     grammar: ['g-l2-4'],
     hold: ['Dad has a van.', 'Jam on the rug!'],
     listen: ['I dip in a jug.', 'I mop it up.'],
-    sounds: {
-      graphemes: ['j', 'v', 'w'],
-      words: ['jam', 'van', 'wet'],
-      missing: [
-        { word: 'jam', hide: 'j' },
-        { word: 'van', hide: 'v' },
-        { word: 'wet', hide: 'w' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write about the story.',
+      scene: '/storyart/l2_4/page4.png',
+      scenes: [
+        { src: '/storyart/l2_4/page4.png' },
+        { src: '/storyart/l2_4/page1.png' },
+        { src: '/storyart/l2_4/page6.png' },
+        { src: '/storyart/l2_4/page2.png' },
       ],
     },
-    bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l2_4/page4.png', pos: '50% 50%' },
     ladders: [
       { sound: 'j', word: 'jug', sentence: 'I dip in a jug.' },
       { sound: 'w', word: 'wet', sentence: 'I get a wet rag.' },
@@ -100,20 +87,12 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 5,
+    soundPages: soundPagesFor('x', 'y', 'z'),
     title: 'The Yak and the Box',
     spellPractise: ['yak', 'box', 'six', 'zip', 'into'],
     grammar: [],
     hold: ['The yak is big!', 'I fix the box.'],
     listen: ['I get a box.', 'I zip it up.'],
-    sounds: {
-      graphemes: ['x', 'y', 'z'],
-      words: ['box', 'yak', 'zip'],
-      missing: [
-        { word: 'box', hide: 'x' },
-        { word: 'yak', hide: 'y' },
-        { word: 'zip', hide: 'z' },
-      ],
-    },
     revisit: [
       { kind: 'rewrite', label: 'Write it with a capital letter', refs: [{ sourceUnit: 'G-L2.1', rowRef: 2 }] },
       { kind: 'rewrite', label: 'Write it with a full stop', refs: [{ sourceUnit: 'G-L2.2', rowRef: 1 }] },
