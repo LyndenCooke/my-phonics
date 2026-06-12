@@ -3,7 +3,7 @@ import { getLevelTheme } from '@/design/levelThemes';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
 import TraceLine from '@/components/TraceLine';
-import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, WordCard, SoundBadge, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
+import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, WordCard, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
 // W2 skills pages — Spell it (practise + test on ONE page), Sentences (hold +
@@ -144,27 +144,19 @@ export function SentencesPage({
 
 // ---- Handwriting ------------------------------------------------------------
 // The ladder: SOUND → WORD → SENTENCE, six lines, one thing per line. The
-// grey model starts every row and the child continues to the end. The sound
-// rows carry the book's Sound Spotlight badge so the page reads as part of
-// the same world as the book's sound pages.
+// grey model starts every row and the child continues to the end. Every row
+// runs the FULL content width — no badges or furniture stealing line space.
 
-function HwRow({ model, theme, badge }: { model: string; theme: Theme; badge?: string }) {
+function HwRow({ model, theme }: { model: string; theme: Theme }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: mm(4) }}>
-      <span style={{ width: mm(15), display: 'flex', justifyContent: 'center' }}>
-        {badge && <SoundBadge sound={badge} theme={theme} />}
-      </span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <TraceLine
-          text={model}
-          xHeightMm={5.5}
-          widthMm={163}
-          color={INK.trace}
-          midlineColor={theme.border}
-          startXMm={3}
-        />
-      </div>
-    </div>
+    <TraceLine
+      text={model}
+      xHeightMm={5.5}
+      widthMm={182}
+      color={INK.trace}
+      midlineColor={theme.border}
+      startXMm={3}
+    />
   );
 }
 
@@ -191,7 +183,7 @@ export function HandwritingPage({
       <SectionLabel text="Sounds" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {ladders.map((l) => (
-          <HwRow key={l.sound} model={`${l.sound} ${l.sound} ${l.sound}`} badge={l.sound} theme={theme} />
+          <HwRow key={l.sound} model={`${l.sound} ${l.sound} ${l.sound}`} theme={theme} />
         ))}
       </div>
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { getLevelTheme } from '@/design/levelThemes';
 import { getGrammarUnit } from '@/lib/grammarRegistry';
 import { SpellItPage, SentencesPage, HandwritingPage } from '@/components/workbook2/W2Skills';
-import { GrammarPage, AnswerItPage, BigWritePage } from '@/components/workbook2/W2Writing';
+import { GrammarPage, GrammarUsePage, AnswerItPage, BigWritePage } from '@/components/workbook2/W2Writing';
 
 // ---------------------------------------------------------------------------
 // WORKBOOK REDESIGN EXEMPLAR — one fortnight (The Purple Purse) in the book
@@ -55,15 +55,22 @@ export default function PrintWorkbook2({ params }: { params: { spec: string } })
       />
       <AnswerItPage page={6} theme={theme} questions={[null, null, null]} />
       <GrammarPage page={7} unit={tense} theme={theme} />
-      <BigWritePage
+      <GrammarUsePage
         page={8}
+        theme={theme}
+        sceneSrc="/storyart/l6_1/page8.png"
+        chips={["it's", "didn't", "can't", 'stuck', 'ran', 'gave']}
+        lines={6}
+      />
+      <BigWritePage
+        page={9}
         theme={theme}
         prompt="Look at this moment from the book. Write what happens next."
         sceneSrc="/storyart/l6_1/page6.png"
         lines={10}
       />
       <HandwritingPage
-        page={9}
+        page={10}
         theme={theme}
         ladders={[
           { sound: 'ur', word: 'purse', sentence: 'My purple purse was gone!' },
