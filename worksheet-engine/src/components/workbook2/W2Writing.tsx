@@ -156,7 +156,7 @@ function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
             <span style={{ position: 'relative', display: 'inline-block', minWidth: mm(30), height: '1em', borderBottom: `${RULE_W} solid ${INK.text}`, margin: `0 ${mm(3)}` }}>
               {/* the worked answer SITS ON the gap line, at the example size */}
               {i === 0 && (
-                <span style={{ position: 'absolute', left: '50%', bottom: 0, transform: 'translate(-50%, 10%)', fontSize: TYPE2.example, lineHeight: 1, color: theme.accentText, whiteSpace: 'nowrap' }}>{r.answer}</span>
+                <span style={{ position: 'absolute', left: '50%', bottom: 0, transform: 'translate(-50%, 4%)', fontSize: TYPE2.example, lineHeight: 1, color: theme.accentText, whiteSpace: 'nowrap' }}>{r.answer}</span>
               )}
             </span>
             <span>{r.after}</span>
@@ -185,7 +185,7 @@ function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
             <span style={{ flex: '0 0 auto', width: mm(62), color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{r.base}</span>
             <span style={{ flex: '0 0 auto', color: theme.primary, fontSize: TYPE2.word, paddingBottom: mm(1) }}>→</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} /> : <Line />}
+              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} widthMm={105} /> : <Line />}
             </div>
           </div>
         ))}

@@ -181,25 +181,31 @@ export function SoundBadge({ sound, theme, sizeMm = 11 }: { sound: string; theme
  *  descenders dip below it, like real handwriting on the line. (CSS line
  *  boxes float text above the border because of the font's internal leading;
  *  the translate pulls the baseline down onto the rule.) */
-export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM }: { text: string; color: string; heightMm?: number }) {
+/** TYPE2.example in millimetres, for SVG text sizing. */
+const EXAMPLE_FONT_MM = 22 * 25.4 / 72; // ≈ 7.76mm
+
+export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM, widthMm = 182 }: { text: string; color: string; heightMm?: number; widthMm?: number }) {
+  // SVG places the alphabetic BASELINE exactly where we say (the same
+  // guarantee the handwriting rows rely on): baseline on the rule's top
+  // edge, so letter bottoms and the full stop touch the line, fully
+  // visible, with only descenders dipping below.
+  const ruleY = heightMm - 0.25; // stroke centre
+  const baselineY = heightMm - 0.5; // the rule's top edge
   return (
-    <div style={{ position: 'relative', height: mm(heightMm) }}>
-      <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.example, color, lineHeight: 1, transform: 'translateY(10%)', whiteSpace: 'nowrap' }}>
+    <svg width="100%" height={mm(heightMm)} viewBox={`0 0 ${widthMm} ${heightMm}`} preserveAspectRatio="xMinYMid meet" style={{ display: 'block', overflow: 'visible' }}>
+      <line x1={0} x2={widthMm} y1={ruleY} y2={ruleY} stroke={INK.text} strokeWidth={0.5} shapeRendering="crispEdges" />
+      <text x={0} y={baselineY} fontFamily={FONT.body} fontSize={EXAMPLE_FONT_MM} fill={color}>
         {text}
-      </span>
-      {/* the same pixel-snapped rule as every other write line */}
-      <svg width="100%" height={mm(1)} viewBox="0 0 100 1" preserveAspectRatio="none" style={{ display: 'block', position: 'absolute', left: 0, bottom: 0 }}>
-        <line x1={0} x2={100} y1={0.75} y2={0.75} stroke={INK.text} strokeWidth={0.5} shapeRendering="crispEdges" />
-      </svg>
-    </div>
+      </text>
+    </svg>
   );
 }
 
 /** A long worked answer seated across TWO ruled lines (anything past ~34
  *  characters cannot sit on one 182mm line at the handwriting size). The
  *  split balances at a word boundary, like real writing flowing on. */
-export function SeatedTextLines({ text, color }: { text: string; color: string }) {
-  if (text.length <= 46) return <SeatedText text={text} color={color} />;
+export function SeatedTextLines({ text, color, widthMm }: { text: string; color: string; widthMm?: number }) {
+  if (text.length <= 46) return <SeatedText text={text} color={color} widthMm={widthMm} />;
   const words = text.split(' ');
   let first = '';
   for (const w of words) {
@@ -209,8 +215,8 @@ export function SeatedTextLines({ text, color }: { text: string; color: string }
   const rest = text.slice(first.length).trim();
   return (
     <>
-      <SeatedText text={first} color={color} />
-      <SeatedText text={rest} color={color} />
+      <SeatedText text={first} color={color} widthMm={widthMm} />
+      <SeatedText text={rest} color={color} widthMm={widthMm} />
     </>
   );
 }
