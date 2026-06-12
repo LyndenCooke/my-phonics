@@ -2,7 +2,7 @@ import React from 'react';
 import type { GrammarUnit, MatchUnit, RewriteUnit } from '@/data/grammarSchema';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
-import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
+import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
 // W2 writing pages — grammar (NO Watch-first box: the FIRST ITEM is shown
@@ -33,9 +33,10 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   };
   const dot: React.CSSProperties = { width: mm(2.6), height: mm(2.6), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
 
+  // dot CENTRES, exactly: chip padding 3.5 + dot radius 1.3
   const yOf = (row: number) => row * (ROW_H + ROW_GAP) + ROW_H / 2;
-  const x1 = CHIP_W - 3.5; // the left chips' dots
-  const x2 = 182 - CHIP_W + 3.5; // the right chips' dots
+  const x1 = CHIP_W - 3.5 - 1.3; // the left chips' dot centres
+  const x2 = 182 - CHIP_W + 3.5 + 1.3; // the right chips' dot centres
 
   return (
     <div style={{ position: 'relative' }}>
@@ -63,19 +64,19 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
 // sentence in the accent colour — the example sits on the line itself.
 
 function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
+  // each block = source strip + ITS write line tucked close beneath; a clear,
+  // definite gap separates the blocks. The worked answer SITS ON its line.
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(4.5) }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(11) }}>
       {unit.rewrite.rows.map((r, i) => (
         <div key={i}>
           <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.8)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
             {r.text}
           </div>
           {i === 0 ? (
-            <div style={{ height: mm(12), borderBottom: `0.4mm solid ${INK.text}`, display: 'flex', alignItems: 'flex-end', paddingBottom: mm(0.5), color: theme.accentText, fontSize: TYPE2.word }}>
-              {r.answer}
-            </div>
+            <SeatedText text={r.answer} color={theme.accentText} heightMm={11} />
           ) : (
-            <Line heightMm={12} />
+            <Line heightMm={11} />
           )}
         </div>
       ))}
