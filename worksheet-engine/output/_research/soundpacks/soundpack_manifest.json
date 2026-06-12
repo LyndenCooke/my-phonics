@@ -1,0 +1,1211 @@
+{
+  "a": {
+    "grapheme": "a",
+    "trace_words": [
+      "cat",
+      "mat",
+      "hat",
+      "bag",
+      "pan"
+    ],
+    "trace_images": [
+      "cat",
+      "mat",
+      "hat",
+      "bag",
+      "pan"
+    ],
+    "missing": [
+      {
+        "shown": "nt",
+        "word": "ant",
+        "image": "ant"
+      },
+      {
+        "shown": "xe",
+        "word": "axe",
+        "image": "axe"
+      },
+      {
+        "shown": "r t",
+        "word": "rat",
+        "image": "rat"
+      },
+      {
+        "shown": "j m",
+        "word": "jam",
+        "image": "jam"
+      }
+    ]
+  },
+  "b": {
+    "grapheme": "b",
+    "trace_words": [
+      "bat",
+      "bag",
+      "bed",
+      "bin",
+      "bus"
+    ],
+    "trace_images": [
+      "bat",
+      "bag",
+      "bed",
+      "bin",
+      "bus"
+    ],
+    "missing": [
+      {
+        "shown": "un",
+        "word": "bun",
+        "image": "bun"
+      },
+      {
+        "shown": "ib",
+        "word": "bib",
+        "image": "bib"
+      },
+      {
+        "shown": "ud",
+        "word": "bud",
+        "image": "bud"
+      },
+      {
+        "shown": "at",
+        "word": "bat",
+        "image": "bat"
+      }
+    ]
+  },
+  "c": {
+    "grapheme": "c",
+    "trace_words": [
+      "cat",
+      "can",
+      "cap",
+      "cot",
+      "cod"
+    ],
+    "trace_images": [
+      "cat",
+      "can",
+      "cap",
+      "cot",
+      "cod"
+    ],
+    "missing": [
+      {
+        "shown": "_ar",
+        "word": "car",
+        "image": "car"
+      },
+      {
+        "shown": "_ake",
+        "word": "cake",
+        "image": "cake"
+      },
+      {
+        "shown": "_up",
+        "word": "cup",
+        "image": "cup"
+      },
+      {
+        "shown": "_amera",
+        "word": "camera",
+        "image": "camera"
+      }
+    ]
+  },
+  "ck": {
+    "grapheme": "ck",
+    "trace_words": [
+      "sock",
+      "neck",
+      "deck",
+      "pack",
+      "kick"
+    ],
+    "trace_images": [
+      "sock",
+      "giraffe",
+      "cards",
+      "backpack",
+      "soccer ball"
+    ],
+    "missing": [
+      {
+        "shown": "ti_",
+        "word": "tick",
+        "image": "check mark"
+      },
+      {
+        "shown": "pe_",
+        "word": "peck",
+        "image": "bird"
+      },
+      {
+        "shown": "ta_",
+        "word": "tack",
+        "image": "thumbtack"
+      },
+      {
+        "shown": "sa_",
+        "word": "sack",
+        "image": "bag"
+      }
+    ]
+  },
+  "d": {
+    "grapheme": "d",
+    "trace_words": [
+      "dog",
+      "duck",
+      "drum",
+      "doll",
+      "dot"
+    ],
+    "trace_images": [
+      "dog",
+      "duck",
+      "drum",
+      "doll",
+      "dot"
+    ],
+    "missing": [
+      {
+        "shown": "_eer",
+        "word": "deer",
+        "image": "deer"
+      },
+      {
+        "shown": "_onut",
+        "word": "donut",
+        "image": "donut"
+      },
+      {
+        "shown": "_inosaur",
+        "word": "dinosaur",
+        "image": "dinosaur"
+      },
+      {
+        "shown": "_onkey",
+        "word": "donkey",
+        "image": "donkey"
+      }
+    ]
+  },
+  "e": {
+    "grapheme": "e",
+    "trace_words": [
+      "egg",
+      "end",
+      "pen",
+      "ten",
+      "peg"
+    ],
+    "trace_images": [
+      "egg",
+      "barrier",
+      "pen",
+      "ten",
+      "peg"
+    ],
+    "missing": [
+      {
+        "shown": "n_t",
+        "word": "net",
+        "image": "net"
+      },
+      {
+        "shown": "m_t",
+        "word": "met",
+        "image": "meet"
+      },
+      {
+        "shown": "h_n",
+        "word": "hen",
+        "image": "hen"
+      },
+      {
+        "shown": "b_d",
+        "word": "bed",
+        "image": "bed"
+      }
+    ]
+  },
+  "f": {
+    "grapheme": "f",
+    "trace_words": [
+      "fan",
+      "fox",
+      "fig",
+      "fin",
+      "fog"
+    ],
+    "trace_images": [
+      "fan",
+      "fox",
+      "fig",
+      "fin",
+      "fog"
+    ],
+    "missing": [
+      {
+        "shown": "_un",
+        "word": "fun",
+        "image": "children"
+      },
+      {
+        "shown": "_at",
+        "word": "fat",
+        "image": "cat"
+      },
+      {
+        "shown": "_ern",
+        "word": "fern",
+        "image": "fern"
+      },
+      {
+        "shown": "_it",
+        "word": "fit",
+        "image": "boy"
+      }
+    ]
+  },
+  "ff": {
+    "grapheme": "ff",
+    "trace_words": [
+      "off",
+      "puff",
+      "cuff",
+      "cliff",
+      "sniff"
+    ],
+    "trace_images": [
+      "off",
+      "puff",
+      "cuff",
+      "cliff",
+      "sniff"
+    ],
+    "missing": [
+      {
+        "shown": "hu_",
+        "word": "huff",
+        "image": "huff"
+      },
+      {
+        "shown": "flu_",
+        "word": "fluff",
+        "image": "fluff"
+      },
+      {
+        "shown": "mu_",
+        "word": "muff",
+        "image": "muff"
+      },
+      {
+        "shown": "scu_",
+        "word": "scuff",
+        "image": "scuff"
+      }
+    ]
+  },
+  "g": {
+    "grapheme": "g",
+    "trace_words": [
+      "gate",
+      "goat",
+      "gum",
+      "girl",
+      "ghost"
+    ],
+    "trace_images": [
+      "gate",
+      "goat",
+      "gum",
+      "girl",
+      "ghost"
+    ],
+    "missing": [
+      {
+        "shown": "_arden",
+        "word": "garden",
+        "image": "garden"
+      },
+      {
+        "shown": "_rape",
+        "word": "grape",
+        "image": "grape"
+      },
+      {
+        "shown": "_lass",
+        "word": "glass",
+        "image": "glass"
+      },
+      {
+        "shown": "_uitar",
+        "word": "guitar",
+        "image": "guitar"
+      }
+    ]
+  },
+  "h": {
+    "grapheme": "h",
+    "trace_words": [
+      "hat",
+      "hen",
+      "hug",
+      "hot",
+      "hop"
+    ],
+    "trace_images": [
+      "hat",
+      "hen",
+      "hug",
+      "cup",
+      "rabbit"
+    ],
+    "missing": [
+      {
+        "shown": "_am",
+        "word": "ham",
+        "image": "ham"
+      },
+      {
+        "shown": "_og",
+        "word": "hog",
+        "image": "pig"
+      },
+      {
+        "shown": "_ut",
+        "word": "hut",
+        "image": "hut"
+      },
+      {
+        "shown": "_ip",
+        "word": "hip",
+        "image": "boy"
+      }
+    ]
+  },
+  "i": {
+    "grapheme": "i",
+    "trace_words": [
+      "pig",
+      "bib",
+      "sit",
+      "lid",
+      "six"
+    ],
+    "trace_images": [
+      "pig",
+      "bib",
+      "sit",
+      "lid",
+      "six"
+    ],
+    "missing": [
+      {
+        "shown": "b_n",
+        "word": "bin",
+        "image": "bin"
+      },
+      {
+        "shown": "f_n",
+        "word": "fin",
+        "image": "fin"
+      },
+      {
+        "shown": "k_t",
+        "word": "kit",
+        "image": "kit"
+      },
+      {
+        "shown": "tw_g",
+        "word": "twig",
+        "image": "twig"
+      }
+    ]
+  },
+  "j": {
+    "grapheme": "j",
+    "trace_words": [
+      "jam",
+      "jet",
+      "jug",
+      "job",
+      "jog"
+    ],
+    "trace_images": [
+      "jam",
+      "jet",
+      "jug",
+      "job",
+      "jog"
+    ],
+    "missing": [
+      {
+        "shown": "_ay",
+        "word": "jay",
+        "image": "bird"
+      },
+      {
+        "shown": "_aw",
+        "word": "jaw",
+        "image": "face"
+      },
+      {
+        "shown": "_ig",
+        "word": "jig",
+        "image": "dance"
+      },
+      {
+        "shown": "_ot",
+        "word": "jot",
+        "image": "writing"
+      }
+    ]
+  },
+  "k": {
+    "grapheme": "k",
+    "trace_words": [
+      "kid",
+      "kit",
+      "kin",
+      "keg",
+      "kink"
+    ],
+    "trace_images": [
+      "kid",
+      "kit",
+      "kin",
+      "keg",
+      "kink"
+    ],
+    "missing": [
+      {
+        "shown": "_ey",
+        "word": "key",
+        "image": "key"
+      },
+      {
+        "shown": "_ing",
+        "word": "king",
+        "image": "king"
+      },
+      {
+        "shown": "_ite",
+        "word": "kite",
+        "image": "kite"
+      },
+      {
+        "shown": "_angaroo",
+        "word": "kangaroo",
+        "image": "kangaroo"
+      }
+    ]
+  },
+  "l": {
+    "grapheme": "l",
+    "trace_words": [
+      "lip",
+      "log",
+      "leg",
+      "lid",
+      "lap"
+    ],
+    "trace_images": [
+      "lips",
+      "log",
+      "leg",
+      "lid",
+      "lap"
+    ],
+    "missing": [
+      {
+        "shown": "_it",
+        "word": "lit",
+        "image": "candle"
+      },
+      {
+        "shown": "_ad",
+        "word": "lad",
+        "image": "boy"
+      },
+      {
+        "shown": "_ug",
+        "word": "lug",
+        "image": "suitcase"
+      },
+      {
+        "shown": "_ob",
+        "word": "lob",
+        "image": "ball"
+      }
+    ]
+  },
+  "ll": {
+    "grapheme": "ll",
+    "trace_words": [
+      "bell",
+      "doll",
+      "hill",
+      "well",
+      "full"
+    ],
+    "trace_images": [
+      "bell",
+      "doll",
+      "hill",
+      "well",
+      "glass"
+    ],
+    "missing": [
+      {
+        "shown": "ta",
+        "word": "tall",
+        "image": "tree"
+      },
+      {
+        "shown": "fa",
+        "word": "fall",
+        "image": "boy"
+      },
+      {
+        "shown": "gu",
+        "word": "gull",
+        "image": "bird"
+      },
+      {
+        "shown": "bu",
+        "word": "bull",
+        "image": "bull"
+      }
+    ]
+  },
+  "m": {
+    "grapheme": "m",
+    "trace_words": [
+      "man",
+      "mat",
+      "mug",
+      "moon",
+      "milk"
+    ],
+    "trace_images": [
+      "man",
+      "mat",
+      "mug",
+      "moon",
+      "milk"
+    ],
+    "missing": [
+      {
+        "shown": "_onkey",
+        "word": "monkey",
+        "image": "monkey"
+      },
+      {
+        "shown": "_ouse",
+        "word": "mouse",
+        "image": "mouse"
+      },
+      {
+        "shown": "_ushroom",
+        "word": "mushroom",
+        "image": "mushroom"
+      },
+      {
+        "shown": "_ountain",
+        "word": "mountain",
+        "image": "mountain"
+      }
+    ]
+  },
+  "n": {
+    "grapheme": "n",
+    "trace_words": [
+      "net",
+      "nap",
+      "nut",
+      "pen",
+      "can"
+    ],
+    "trace_images": [
+      "net",
+      "nap",
+      "nut",
+      "pen",
+      "can"
+    ],
+    "missing": [
+      {
+        "shown": "_at",
+        "word": "ant",
+        "image": "ant"
+      },
+      {
+        "shown": "su_",
+        "word": "sun",
+        "image": "sun"
+      },
+      {
+        "shown": "te_",
+        "word": "ten",
+        "image": "ten"
+      },
+      {
+        "shown": "fa_",
+        "word": "fan",
+        "image": "fan"
+      }
+    ]
+  },
+  "nk": {
+    "grapheme": "nk",
+    "trace_words": [
+      "tank",
+      "ink",
+      "sink",
+      "pink",
+      "monk"
+    ],
+    "trace_images": [
+      "fish tank",
+      "ink",
+      "sink",
+      "balloon",
+      "monk"
+    ],
+    "missing": [
+      {
+        "shown": "ba_",
+        "word": "bank",
+        "image": "pig"
+      },
+      {
+        "shown": "ho_",
+        "word": "honk",
+        "image": "horn"
+      },
+      {
+        "shown": "wi_",
+        "word": "wink",
+        "image": "boy"
+      },
+      {
+        "shown": "ju_",
+        "word": "junk",
+        "image": "trash"
+      }
+    ]
+  },
+  "o": {
+    "grapheme": "o",
+    "trace_words": [
+      "octopus",
+      "ox",
+      "owl",
+      "orange",
+      "otter"
+    ],
+    "trace_images": [
+      "octopus",
+      "ox",
+      "owl",
+      "orange",
+      "otter"
+    ],
+    "missing": [
+      {
+        "shown": "ven",
+        "word": "oven",
+        "image": "oven"
+      },
+      {
+        "shown": "live",
+        "word": "olive",
+        "image": "olive"
+      },
+      {
+        "shown": "strich",
+        "word": "ostrich",
+        "image": "ostrich"
+      },
+      {
+        "shown": "melette",
+        "word": "omelette",
+        "image": "omelette"
+      }
+    ]
+  },
+  "p": {
+    "grapheme": "p",
+    "trace_words": [
+      "pan",
+      "pen",
+      "pin",
+      "cup",
+      "map"
+    ],
+    "trace_images": [
+      "pan",
+      "pen",
+      "pin",
+      "cup",
+      "map"
+    ],
+    "missing": [
+      {
+        "shown": "_ig",
+        "word": "pig",
+        "image": "pig"
+      },
+      {
+        "shown": "ca_",
+        "word": "cap",
+        "image": "cap"
+      },
+      {
+        "shown": "mo_",
+        "word": "mop",
+        "image": "mop"
+      },
+      {
+        "shown": "li_",
+        "word": "lip",
+        "image": "lip"
+      }
+    ]
+  },
+  "r": {
+    "grapheme": "r",
+    "trace_words": [
+      "rat",
+      "rug",
+      "ram",
+      "rod",
+      "rib"
+    ],
+    "trace_images": [
+      "rat",
+      "rug",
+      "ram",
+      "rod",
+      "rib"
+    ],
+    "missing": [
+      {
+        "shown": "_ip",
+        "word": "rip",
+        "image": "rip"
+      },
+      {
+        "shown": "_ag",
+        "word": "rag",
+        "image": "rag"
+      },
+      {
+        "shown": "im_",
+        "word": "rim",
+        "image": "rim"
+      },
+      {
+        "shown": "_ed",
+        "word": "red",
+        "image": "red"
+      }
+    ]
+  },
+  "s": {
+    "grapheme": "s",
+    "trace_words": [
+      "sun",
+      "sit",
+      "sock",
+      "six",
+      "soap"
+    ],
+    "trace_images": [
+      "sun",
+      "sit",
+      "sock",
+      "six",
+      "soap"
+    ],
+    "missing": [
+      {
+        "shown": "_nake",
+        "word": "snake",
+        "image": "snake"
+      },
+      {
+        "shown": "_tar",
+        "word": "star",
+        "image": "star"
+      },
+      {
+        "shown": "_eal",
+        "word": "seal",
+        "image": "seal"
+      },
+      {
+        "shown": "_pider",
+        "word": "spider",
+        "image": "spider"
+      }
+    ]
+  },
+  "sh": {
+    "grapheme": "sh",
+    "trace_words": [
+      "ship",
+      "shop",
+      "sheep",
+      "shoe",
+      "shark"
+    ],
+    "trace_images": [
+      "ship",
+      "shop",
+      "sheep",
+      "shoe",
+      "shark"
+    ],
+    "missing": [
+      {
+        "shown": "_ed",
+        "word": "shed",
+        "image": "shed"
+      },
+      {
+        "shown": "_ell",
+        "word": "shell",
+        "image": "shell"
+      },
+      {
+        "shown": "_orts",
+        "word": "shorts",
+        "image": "shorts"
+      },
+      {
+        "shown": "_rimp",
+        "word": "shrimp",
+        "image": "shrimp"
+      }
+    ]
+  },
+  "ss": {
+    "grapheme": "ss",
+    "trace_words": [
+      "kiss",
+      "boss",
+      "hiss",
+      "miss",
+      "pass"
+    ],
+    "trace_images": [
+      "kiss",
+      "boss",
+      "snake",
+      "dartboard",
+      "soccer"
+    ],
+    "missing": [
+      {
+        "shown": "me__",
+        "word": "mess",
+        "image": "bedroom"
+      },
+      {
+        "shown": "mo__",
+        "word": "moss",
+        "image": "rock"
+      },
+      {
+        "shown": "fu__",
+        "word": "fuss",
+        "image": "crying"
+      },
+      {
+        "shown": "to__",
+        "word": "toss",
+        "image": "coin"
+      }
+    ]
+  },
+  "t": {
+    "grapheme": "t",
+    "trace_words": [
+      "tap",
+      "ten",
+      "tin",
+      "pot",
+      "nut"
+    ],
+    "trace_images": [
+      "tap",
+      "ten",
+      "tin",
+      "pot",
+      "nut"
+    ],
+    "missing": [
+      {
+        "shown": "_op",
+        "word": "top",
+        "image": "top"
+      },
+      {
+        "shown": "ha_",
+        "word": "hat",
+        "image": "hat"
+      },
+      {
+        "shown": "ma_",
+        "word": "mat",
+        "image": "mat"
+      },
+      {
+        "shown": "ne_",
+        "word": "net",
+        "image": "net"
+      }
+    ]
+  },
+  "u": {
+    "grapheme": "u",
+    "trace_words": [
+      "cup",
+      "sun",
+      "mud",
+      "bug",
+      "hut"
+    ],
+    "trace_images": [
+      "cup",
+      "sun",
+      "mud",
+      "bug",
+      "hut"
+    ],
+    "missing": [
+      {
+        "shown": "p _ p",
+        "word": "pup",
+        "image": "dog"
+      },
+      {
+        "shown": "r _ n",
+        "word": "run",
+        "image": "running"
+      },
+      {
+        "shown": "t _ b",
+        "word": "tub",
+        "image": "bathtub"
+      },
+      {
+        "shown": "b _ s",
+        "word": "bus",
+        "image": "bus"
+      }
+    ]
+  },
+  "v": {
+    "grapheme": "v",
+    "trace_words": [
+      "van",
+      "vet",
+      "vase",
+      "vest",
+      "vine"
+    ],
+    "trace_images": [
+      "van",
+      "vet",
+      "vase",
+      "vest",
+      "vine"
+    ],
+    "missing": [
+      {
+        "shown": "_iolin",
+        "word": "violin",
+        "image": "violin"
+      },
+      {
+        "shown": "_olcano",
+        "word": "volcano",
+        "image": "volcano"
+      },
+      {
+        "shown": "_acuum",
+        "word": "vacuum",
+        "image": "vacuum"
+      },
+      {
+        "shown": "_eil",
+        "word": "veil",
+        "image": "veil"
+      }
+    ]
+  },
+  "w": {
+    "grapheme": "w",
+    "trace_words": [
+      "wet",
+      "wig",
+      "web",
+      "win",
+      "wax"
+    ],
+    "trace_images": [
+      "umbrella",
+      "wig",
+      "web",
+      "trophy",
+      "candle"
+    ],
+    "missing": [
+      {
+        "shown": "_ag",
+        "word": "wag",
+        "image": "dog"
+      },
+      {
+        "shown": "_ok",
+        "word": "wok",
+        "image": "wok"
+      },
+      {
+        "shown": "_and",
+        "word": "wand",
+        "image": "wand"
+      },
+      {
+        "shown": "_all",
+        "word": "wall",
+        "image": "wall"
+      }
+    ]
+  },
+  "x": {
+    "grapheme": "x",
+    "trace_words": [
+      "fox",
+      "box",
+      "six",
+      "mix",
+      "fix"
+    ],
+    "trace_images": [
+      "fox",
+      "box",
+      "six",
+      "bowl",
+      "wrench"
+    ],
+    "missing": [
+      {
+        "shown": "wa_",
+        "word": "wax",
+        "image": "candle"
+      },
+      {
+        "shown": "_o",
+        "word": "ox",
+        "image": "ox"
+      },
+      {
+        "shown": "sa_",
+        "word": "sax",
+        "image": "saxophone"
+      },
+      {
+        "shown": "fa_",
+        "word": "fax",
+        "image": "fax"
+      }
+    ]
+  },
+  "y": {
+    "grapheme": "y",
+    "trace_words": [
+      "yes",
+      "yak",
+      "yam",
+      "yawn",
+      "yarn"
+    ],
+    "trace_images": [
+      "thumb",
+      "yak",
+      "yam",
+      "yawn",
+      "yarn"
+    ],
+    "missing": [
+      {
+        "shown": "_ap",
+        "word": "yap",
+        "image": "dog"
+      },
+      {
+        "shown": "_ell",
+        "word": "yell",
+        "image": "shout"
+      },
+      {
+        "shown": "_olk",
+        "word": "yolk",
+        "image": "egg"
+      },
+      {
+        "shown": "_oga",
+        "word": "yoga",
+        "image": "yoga"
+      }
+    ]
+  },
+  "z": {
+    "grapheme": "z",
+    "trace_words": [
+      "zip",
+      "zap",
+      "zoo",
+      "zebra",
+      "zigzag"
+    ],
+    "trace_images": [
+      "zipper",
+      "lightning",
+      "zoo",
+      "zebra",
+      "zigzag"
+    ],
+    "missing": [
+      {
+        "shown": "_ero",
+        "word": "zero",
+        "image": "zero"
+      },
+      {
+        "shown": "_oom",
+        "word": "zoom",
+        "image": "rocket"
+      },
+      {
+        "shown": "_est",
+        "word": "zest",
+        "image": "grater"
+      },
+      {
+        "shown": "_one",
+        "word": "zone",
+        "image": "sign"
+      }
+    ]
+  }
+}

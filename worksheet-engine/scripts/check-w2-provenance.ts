@@ -22,6 +22,20 @@ const tricky = JSON.parse(
   fs.readFileSync('C:/Users/ASUS/myphonicsbooks/myphonics_books/data/tricky_words_by_level.json', 'utf8'),
 ) as Record<string, { cumulative: string[] }>;
 
+// the approved per-sound sources for the single-sound pages: the transcribed
+// Sound Pack sheets (Drive/TPT) and the extra-grapheme authoring file
+const packManifest = JSON.parse(fs.readFileSync('output/_research/soundpacks/soundpack_manifest.json', 'utf8')) as Record<
+  string, { trace_words: string[]; missing: { word: string }[] }
+>;
+const extraGraphemes = JSON.parse(fs.readFileSync('output/_research/soundpacks/extra_graphemes.json', 'utf8')) as Record<
+  string, { trace_words: string[]; missing: { word: string }[] }
+>;
+function soundSource(g: string): Set<string> | null {
+  const src = packManifest[g] ?? (g.startsWith('_') ? null : extraGraphemes[g]);
+  if (!src || !src.trace_words) return null;
+  return new Set([...src.trace_words, ...src.missing.map((m) => m.word)].map((w) => w.toLowerCase()));
+}
+
 // every approved word-bank word (the banks are keyed by the OLD levels; all
 // of them are approved selection sources — see L6_SELECTIONS.md remap note)
 const bankWords = new Set<string>();
@@ -80,6 +94,19 @@ for (const level of w2Levels()) {
       }
     };
 
+    for (const sp of book.soundPages ?? []) {
+      const ok = soundSource(sp.grapheme);
+      if (!ok) {
+        fail(`${story.title} sound page "${sp.grapheme}" has no approved sheet or authoring`);
+        continue;
+      }
+      for (const t of sp.trace) {
+        if (!ok.has(t.word.toLowerCase())) fail(`${story.title} sound "${sp.grapheme}" trace word not on the approved sheet: "${t.word}"`);
+      }
+      for (const m of sp.missing) {
+        if (!ok.has(m.word.toLowerCase())) fail(`${story.title} sound "${sp.grapheme}" missing word not on the approved sheet: "${m.word}"`);
+      }
+    }
     for (const s of book.hold) checkSentence(s, 'hold');
     for (const s of book.listen) checkSentence(s, 'listen');
     for (const l of book.ladders) {

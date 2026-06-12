@@ -7,25 +7,18 @@
 
 import type { W2LevelData, W2BookData } from '@/data/workbook2/levels';
 import { W2_LEVEL_SPECS } from '@/data/workbook2/levels';
+import { soundPagesFor } from '@/data/workbook2/soundPages';
 
 const BOOKS: W2BookData[] = [
   {
     num: 1,
+    soundPages: soundPagesFor('sh', 'nk'),
     title: 'The Fish in the Tank',
     spellPractise: ['fish', 'tank', 'wish', 'bag', 'she', 'we'],
     grammar: ['g-l3-1'],
     hold: ['It is in a bag.', 'The fish can go in!'],
     listen: ['I get a tank.', 'The fish is sad.'],
     questions: [null, null, null],
-    sounds: {
-      graphemes: ['sh', 'nk'],
-      words: ['fish', 'tank', 'wish'],
-      missing: [
-        { word: 'fish', hide: 'sh' },
-        { word: 'tank', hide: 'nk' },
-        { word: 'wish', hide: 'sh' },
-      ],
-    },
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l3_1/page5.png', pos: '50% 45%' },
     ladders: [
       { sound: 'sh', word: 'fish', sentence: 'I have a fish!' },
@@ -34,22 +27,23 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 2,
+    soundPages: soundPagesFor('ch', 'th'),
     title: 'Chop, Chop, Chop!',
     spellPractise: ['chop', 'chip', 'thin', 'thick', 'this', 'that'],
     grammar: ['g-l3-2'],
     hold: ['Nan chops it thin.', 'That chip is thick!'],
     listen: ['I got a chip.', 'This is fun!'],
     questions: [null, null, null],
-    sounds: {
-      graphemes: ['ch', 'th'],
-      words: ['chop', 'thin', 'that'],
-      missing: [
-        { word: 'chop', hide: 'ch' },
-        { word: 'thin', hide: 'th' },
-        { word: 'that', hide: 'th' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write what happens.',
+      scene: '/storyart/l3_2/page5.png',
+      scenes: [
+        { src: '/storyart/l3_2/page4.png' },
+        { src: '/storyart/l3_2/page1.png' },
+        { src: '/storyart/l3_2/page6.png' },
+        { src: '/storyart/l3_2/page2.png' },
       ],
     },
-    bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l3_2/page5.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ch', word: 'chip', sentence: 'I got a chip.' },
       { sound: 'th', word: 'that', sentence: 'This is fun!' },
@@ -57,21 +51,13 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 3,
+    soundPages: soundPagesFor('ng', 'qu', 'zz'),
     title: 'Buzz and Sing!',
     spellPractise: ['buzz', 'sing', 'song', 'hiss', 'quick', 'long'],
     grammar: ['g-l3-3', 'g-l3-4'],
     hold: ['I sit on a big log.', 'I sing and sing!'],
     listen: ['The bugs go!', 'I sing with the bugs!'],
     questions: [null, null, null],
-    sounds: {
-      graphemes: ['ng', 'ss', 'zz'],
-      words: ['sing', 'hiss', 'buzz'],
-      missing: [
-        { word: 'sing', hide: 'ng' },
-        { word: 'hiss', hide: 'ss' },
-        { word: 'buzz', hide: 'zz' },
-      ],
-    },
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l3_3/page3.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ng', word: 'song', sentence: 'I sing and sing!' },
