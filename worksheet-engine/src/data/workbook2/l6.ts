@@ -119,6 +119,18 @@ export const W2_L6_BOOKS: W2Book[] = [
   },
 ];
 
+/** The spelling test word lists, read aloud by the grown-up (back-matter
+ *  page; the child's test pages never show them). Selected from the books'
+ *  approved word lists, the word banks that carry the L6 GPCs, and the L6
+ *  tricky words — recorded in L6_SELECTIONS.md, awaiting approval. */
+export const W2_L6_SPELLINGS: { title: string; words: string[] }[] = [
+  { title: 'The Purple Purse', words: ['purse', 'purple', 'turn', 'fur', 'church', 'her', 'fern', 'never', 'their', 'oh'] },
+  { title: 'The Brown Owl', words: ['care', 'dare', 'stare', 'bare', 'owl', 'brown', 'down', 'people', 'Mr', 'Mrs'] },
+  { title: 'The New Glue', words: ['new', 'flew', 'drew', 'grew', 'blue', 'glue', 'true', 'looked', 'called', 'asked'] },
+  { title: 'The Cheeky Monkey', words: ['how', 'now', 'town', 'furry', 'turn', 'stare', 'blue', 'drew', 'their', 'could'] },
+  { title: 'Half-term test', words: ['purse', 'her', 'bare', 'owl', 'down', 'new', 'glue', 'true', 'people', 'could'] },
+];
+
 /** Show-what-you-know item pointers (approved rows by pointer only). */
 export const W2_L6_SWYK = {
   ticks: [

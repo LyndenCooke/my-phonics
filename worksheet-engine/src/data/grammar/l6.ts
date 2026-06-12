@@ -77,7 +77,9 @@ const units: GrammarUnit[] = [
     rowArt: ['glue', 'purse', 'branch', 'owlets'],
     watchArt: ['owl'],
     check: { items: ['capitalLetter', 'fingerSpaces', 'fullStop'] },
-    s1: { prompt: 'the owl', answer: 'the big brown owl', exampleLayout: 'inline' },
+    // Comma between the two adjectives per Lynden's amendment 2026-06-12
+    // (Y2 convention for expanded noun phrases).
+    s1: { prompt: 'the owl', answer: 'the big, brown owl', exampleLayout: 'inline' },
     weDoCount: 1,
     apply: { prompt: 'Now you write a big noun phrase about an owl.' },
     format: 'build',
@@ -85,10 +87,10 @@ const units: GrammarUnit[] = [
       wordBank: ['brown', 'new', 'blue', 'bare', 'soft', 'fluffy', 'big', 'purple'],
       rowWriteLines: 1,
       rows: [
-        { base: 'the glue', answer: 'the new blue glue', icon: 'glue' },
-        { base: 'the purse', answer: 'the soft purple purse', icon: 'purse' },
-        { base: 'the branch', answer: 'the bare brown branch', icon: 'branch' },
-        { base: 'the owlets', answer: 'the soft fluffy owlets', icon: 'owlets' },
+        { base: 'the glue', answer: 'the new, blue glue', icon: 'glue' },
+        { base: 'the purse', answer: 'the soft, purple purse', icon: 'purse' },
+        { base: 'the branch', answer: 'the bare, brown branch', icon: 'branch' },
+        { base: 'the owlets', answer: 'the soft, fluffy owlets', icon: 'owlets' },
       ],
     },
   },
@@ -289,7 +291,7 @@ const units: GrammarUnit[] = [
     review: {
       items: [
         { sourceUnit: 'G-L6.1', task: 'Tick the kind', rowRef: 3, answer: 'Exclamation' },
-        { sourceUnit: 'G-L6.2', task: 'Grow the noun phrase', rowRef: 1, answer: 'the soft purple purse' },
+        { sourceUnit: 'G-L6.2', task: 'Grow the noun phrase', rowRef: 1, answer: 'the soft, purple purse' },
         { sourceUnit: 'G-L6.3', task: 'Choose the joining word', rowRef: 2, answer: 'or' },
         { sourceUnit: 'G-L6.5', task: 'Circle and underline', rowRef: 1, answer: 'new and fast' },
         { sourceUnit: 'G-L6.6', task: 'Match the short form', rowRef: 2, answer: "didn't" },

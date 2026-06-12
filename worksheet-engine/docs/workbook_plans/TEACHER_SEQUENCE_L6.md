@@ -23,14 +23,17 @@ writing days land about a week apart.
 
 ## The Purple Purse — days 1-7
 
+Spelling sits at the END of the book's run: practise the day before the
+test, test the day before the big write closes the book.
+
 | Day | Reading and sound work | Workbook page (~5 min) |
 |---|---|---|
-| 1 | Sound book ur | Spell it (practise half) |
-| 2 | Read pages 1-3 | Apostrophes for contractions |
-| 3 | Sound book er | Sentences |
+| 1 | Sound book ur | Apostrophes for contractions |
+| 2 | Read pages 1-3 | Sentences |
+| 3 | Sound book er | Keep the tense the same |
 | 4 | Read pages 4-6 | Answer it in a sentence |
-| 5 | Read pages 7-8 | Keep the tense the same |
-| 6 | Re-read for fluency | Use your grammar · Handwriting in the handwriting slot |
+| 5 | Read pages 7-8 | Use your grammar |
+| 6 | Re-read for fluency | Spell it (practise half) · Handwriting in the handwriting slot |
 | 7 | Quick re-read | Spelling test (Spell it page, bottom half), then the Big write |
 
 ## The Brown Owl — days 8-14

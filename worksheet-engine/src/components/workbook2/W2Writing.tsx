@@ -4,7 +4,7 @@ import { TICKGRID_CATEGORIES } from '@/data/grammarSchema';
 import { resolveReviewText } from '@/lib/grammarRegistry';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
-import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
+import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, Line, TYPE2, RULE_W, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
 // W2 writing pages — grammar (NO Watch-first box: the FIRST ITEM is shown
@@ -36,6 +36,10 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   const dot: React.CSSProperties = { width: mm(2.6), height: mm(2.6), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
 
   // dot CENTRES, exactly: chip padding 3.5 + dot radius 1.3
+  // NON-NEGOTIABLE: the example line runs dot centre to dot centre. The SVG
+  // viewBox must equal the REAL column height (rows + gaps, no trailing gap)
+  // or the line scales short of the dots.
+  const columnH = pairs.length * ROW_H + (pairs.length - 1) * ROW_GAP;
   const yOf = (row: number) => row * (ROW_H + ROW_GAP) + ROW_H / 2;
   const x1 = CHIP_W - 3.5 - 1.3; // the left chips' dot centres
   const x2 = 182 - CHIP_W + 3.5 + 1.3; // the right chips' dot centres
@@ -52,8 +56,9 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
       </div>
       {/* the worked example: pair 1 joined for the child, accent colour */}
       <svg
-        viewBox={`0 0 182 ${pairs.length * (ROW_H + ROW_GAP)}`}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+        viewBox={`0 0 182 ${columnH}`}
+        preserveAspectRatio="none"
+        style={{ position: 'absolute', left: 0, top: 0, width: mm(182), height: mm(columnH), pointerEvents: 'none' }}
       >
         <line x1={x1} y1={yOf(0)} x2={x2} y2={yOf(exampleRightRow)} stroke={theme.accentText} strokeWidth={0.8} strokeLinecap="round" />
       </svg>
@@ -126,18 +131,21 @@ function TickBody({ unit, theme }: { unit: TickGridUnit; theme: Theme }) {
 
 function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(2) }}>
-      <div style={{ display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(5) }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: '0 0 auto', display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(4) }}>
         {unit.cloze.wordBank.map((w) => (
           <span key={w} style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(1)} ${mm(5)}`, fontSize: TYPE2.word, color: INK.text }}>{w}</span>
         ))}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(9) }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {unit.cloze.rows.map((r, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', color: INK.text, fontSize: TYPE2.word, lineHeight: 1.6 }}>
             <span>{r.before}</span>
-            <span style={{ display: 'inline-flex', alignItems: 'baseline', justifyContent: 'center', minWidth: mm(26), borderBottom: `0.4mm solid ${INK.text}`, margin: `0 ${mm(3)}`, color: theme.accentText }}>
-              {i === 0 ? r.answer : ' '}
+            <span style={{ position: 'relative', display: 'inline-block', minWidth: mm(30), height: '1em', borderBottom: `${RULE_W} solid ${INK.text}`, margin: `0 ${mm(3)}` }}>
+              {/* the worked answer SITS ON the gap line, at the example size */}
+              {i === 0 && (
+                <span style={{ position: 'absolute', left: '50%', bottom: 0, transform: 'translate(-50%, 10%)', fontSize: TYPE2.example, lineHeight: 1, color: theme.accentText, whiteSpace: 'nowrap' }}>{r.answer}</span>
+              )}
             </span>
             <span>{r.after}</span>
           </div>
@@ -153,8 +161,8 @@ function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
 
 function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(6) }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: '0 0 auto', display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(4) }}>
         {unit.build.wordBank.map((w) => (
           <span key={w} style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(1)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>{w}</span>
         ))}
@@ -179,7 +187,7 @@ function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
 
 function CircleBody({ unit, theme }: { unit: CircleUnit; theme: Theme }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(11) }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
       {unit.circle.rows.map((r, i) => {
         if (i !== 0) {
           return <div key={i} style={{ color: INK.text, fontSize: TYPE2.word }}>{r.text}</div>;
@@ -230,7 +238,11 @@ export function GrammarPage({ page, unit, theme }: { page: number; unit: Grammar
   return (
     <WbPage page={page}>
       <Heading title={unit.name} sub={worked ? `${instruction}. The first one is done for you.` : `${instruction}.`} />
-      <div style={{ flex: '0 0 auto', paddingTop: mm(2) }}>
+      {/* the activity fills the page: stretching formats (cloze, circle,
+          build) spread their rows down it; fixed-geometry formats (match,
+          tickgrid, rewrite, review) sit with even cushions — either way the
+          write section lands at the foot with no dead space */}
+      <div style={{ flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', paddingTop: mm(2) }}>
         {unit.format === 'match' && <MatchBody unit={unit} theme={theme} />}
         {unit.format === 'rewrite' && <RewriteBody unit={unit} theme={theme} />}
         {unit.format === 'tickgrid' && <TickBody unit={unit} theme={theme} />}
@@ -250,8 +262,6 @@ export function GrammarPage({ page, unit, theme }: { page: number; unit: Grammar
       <div style={{ marginTop: mm(3.5) }}>
         <GoalChips theme={theme} />
       </div>
-      {/* remaining white space lives at the foot, book-style */}
-      <div style={{ flex: 1 }} />
     </WbPage>
   );
 }
@@ -332,7 +342,7 @@ export function GrammarUsePage({
           </span>
         ))}
       </div>
-      <StoryScene src={sceneSrc} pos={scenePos} heightMm={48} />
+      <StoryScene src={sceneSrc} pos={scenePos} heightMm={94} />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>
@@ -367,7 +377,7 @@ export function BigWritePage({
       <Heading title="Big write" />
       {/* the task itself is the biggest text on the page after the heading */}
       <div style={{ fontSize: TYPE2.word, color: INK.text, margin: `0 0 ${mm(3.5)}` }}>{prompt}</div>
-      <StoryScene src={sceneSrc} pos={scenePos} heightMm={62} />
+      <StoryScene src={sceneSrc} pos={scenePos} heightMm={88} />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>

@@ -100,18 +100,20 @@ Rows and answers:
 - anchorBook: The New Glue, The Purple Purse, The Brown Owl
 - soundsRevisited: ew or ue (new, blue, glue), ur (purse, purple), ow (owl,
   brown), are (bare)
-- Watch first (inline): "the owl" -> "the big brown owl"
+- Watch first (inline): "the owl" -> "the big, brown owl"
 - doInstruction: "Write each noun phrase again, grown bigger"
 - wordBank: brown, new, blue, bare, soft, fluffy, big, purple
+- AMENDED 2026-06-12 (Lynden): comma between the two adjectives (Y2
+  convention for expanded noun phrases).
 
 Rows and answers:
 
 | Base phrase | Answer |
 | --- | --- |
-| the glue | the new blue glue |
-| the purse | the soft purple purse |
-| the branch | the bare brown branch |
-| the owlets | the soft fluffy owlets |
+| the glue | the new, blue glue |
+| the purse | the soft, purple purse |
+| the branch | the bare, brown branch |
+| the owlets | the soft, fluffy owlets |
 
 - Row icons (line-art, inline with each row): glue, purse, branch, owlets
 - apply: "Now you write a big noun phrase about an owl."
