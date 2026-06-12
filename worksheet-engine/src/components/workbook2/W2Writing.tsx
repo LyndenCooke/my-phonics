@@ -4,7 +4,7 @@ import { TICKGRID_CATEGORIES } from '@/data/grammarSchema';
 import { resolveReviewText } from '@/lib/grammarRegistry';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
-import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, Line, TYPE2, RULE_W, type Theme } from '@/components/workbook2/BookStyle';
+import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, SeatedTextLines, Line, TYPE2, RULE_W, type Theme } from '@/components/workbook2/BookStyle';
 
 // ---------------------------------------------------------------------------
 // W2 writing pages — grammar (NO Watch-first box: the FIRST ITEM is shown
@@ -20,9 +20,9 @@ import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, Se
 
 // Narrow chips at the page edges with the join dots tight against the words,
 // leaving the whole middle of the page as the child's drawing space.
-const ROW_H = 14;
-const ROW_GAP = 17;
-const CHIP_W = 44;
+const ROW_H = 16;
+const ROW_GAP = 15;
+const CHIP_W = 56;
 
 function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   const pairs = unit.match.pairs;
@@ -71,19 +71,19 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
 // sentence in the accent colour — the example sits on the line itself.
 
 function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
-  // each block = source strip + ITS write line tucked close beneath; a clear,
-  // definite gap separates the blocks. The worked answer SITS ON its line.
+  // each block = source strip + ITS write line tucked close beneath; the
+  // blocks spread evenly down the page. The worked answer SITS ON its lines.
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(11) }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', gap: mm(8) }}>
       {unit.rewrite.rows.map((r, i) => (
         <div key={i}>
-          <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.8)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
+          <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.5)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
             {r.text}
           </div>
           {i === 0 ? (
-            <SeatedText text={r.answer} color={theme.accentText} heightMm={11} />
+            <SeatedTextLines text={r.answer} color={theme.accentText} />
           ) : (
-            <Line heightMm={11} />
+            <Line />
           )}
         </div>
       ))}
@@ -95,34 +95,42 @@ function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
 // One header row of category words; the first row's correct box carries the
 // worked tick in accent.
 
-function TickBody({ unit, theme }: { unit: TickGridUnit; theme: Theme }) {
+function TickRows({ unit, theme, from, to }: { unit: TickGridUnit; theme: Theme; from: number; to: number }) {
   const cats = unit.tickgrid.categories ?? unit.tickgrid.columns;
   const cols = `1fr repeat(${cats.length}, 28mm)`;
   const sep = `0.3mm solid ${theme.primary}1F`;
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'end', paddingBottom: mm(1.5) }}>
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: '0 0 auto', display: 'grid', gridTemplateColumns: cols, alignItems: 'end', paddingBottom: mm(1.5) }}>
         <span />
         {cats.map((c) => (
           <span key={c} style={{ textAlign: 'center', whiteSpace: 'nowrap', color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700 }}>{c}</span>
         ))}
       </div>
-      {unit.tickgrid.rows.map((r, i) => (
-        <div key={i} style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'center', minHeight: mm(13.5), borderTop: sep }}>
-          <span style={{ color: INK.text, fontSize: TYPE2.word, padding: `${mm(1)} 0` }}>{r.text}</span>
-          {cats.map((c) => (
-            <span key={c} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <span style={{ width: mm(6.5), height: mm(6.5), border: `0.45mm solid ${INK.text}`, borderRadius: mm(1.2), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {i === 0 && r.answer === c && (
-                  <svg width={mm(5)} height={mm(5)} viewBox="0 0 5 5"><path d="M0.8,2.6 L2,3.9 L4.3,1" stroke={theme.accentText} strokeWidth={0.7} fill="none" strokeLinecap="round" /></svg>
-                )}
+      {unit.tickgrid.rows.slice(from, to).map((r, idx) => {
+        const i = from + idx;
+        return (
+          <div key={i} style={{ flex: 1, display: 'grid', gridTemplateColumns: cols, alignItems: 'center', borderTop: sep }}>
+            <span style={{ color: INK.text, fontSize: TYPE2.word, padding: `${mm(1)} 0`, lineHeight: 1.35 }}>{r.text}</span>
+            {cats.map((c) => (
+              <span key={c} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <span style={{ width: mm(6.5), height: mm(6.5), border: `0.45mm solid ${INK.text}`, borderRadius: mm(1.2), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {i === 0 && r.answer === c && (
+                    <svg width={mm(5)} height={mm(5)} viewBox="0 0 5 5"><path d="M0.8,2.6 L2,3.9 L4.3,1" stroke={theme.accentText} strokeWidth={0.7} fill="none" strokeLinecap="round" /></svg>
+                  )}
+                </span>
               </span>
-            </span>
-          ))}
-        </div>
-      ))}
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
+}
+
+/** One page at the 24pt middle size: all six rows. */
+function TickBody({ unit, theme }: { unit: TickGridUnit; theme: Theme }) {
+  return <TickRows unit={unit} theme={theme} from={0} to={unit.tickgrid.rows.length} />;
 }
 
 // ---- grammar: cloze (joining words) -------------------------------------------
@@ -170,10 +178,10 @@ function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: mm(9) }}>
         {unit.build.rows.map((r, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-end', gap: mm(4) }}>
-            <span style={{ flex: '0 0 auto', width: mm(38), color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{r.base}</span>
+            <span style={{ flex: '0 0 auto', width: mm(62), color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{r.base}</span>
             <span style={{ flex: '0 0 auto', color: theme.primary, fontSize: TYPE2.word, paddingBottom: mm(1) }}>→</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} heightMm={10} /> : <Line heightMm={10} />}
+              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} /> : <Line />}
             </div>
           </div>
         ))}
@@ -225,7 +233,7 @@ function ReviewBody({ unit, theme }: { unit: ReviewUnit; theme: Theme }) {
             <span style={{ flex: '0 0 auto', color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{it.task}</span>
             <span style={{ color: INK.text, fontSize: TYPE2.word }}>{resolveReviewText(it.sourceUnit, it.rowRef)}</span>
           </div>
-          <Line heightMm={9.5} />
+          <Line />
         </div>
       ))}
     </div>
@@ -256,9 +264,9 @@ export function GrammarPage({ page, unit, theme }: { page: number; unit: Grammar
 
       <SectionLabel text="Now you write" theme={theme} />
       {unit.apply && <div style={{ color: INK.text, fontSize: TYPE2.body, marginBottom: mm(1) }}>{unit.apply.prompt}</div>}
-      <Line heightMm={12} />
-      <Line heightMm={12} />
-      <Line heightMm={12} />
+      <Line />
+      <Line />
+      <Line />
       <div style={{ marginTop: mm(3.5) }}>
         <GoalChips theme={theme} />
       </div>
@@ -295,8 +303,8 @@ export function AnswerItPage({
                 {q ?? 'Question to come.'}
               </div>
             </div>
-            <Line heightMm={12} />
-            <Line heightMm={12} />
+            <Line />
+            <Line />
           </div>
         ))}
       </div>
@@ -347,7 +355,7 @@ export function GrammarUsePage({
         <GoalChips theme={theme} />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={12.5} />)}
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} />)}
       </div>
     </WbPage>
   );
@@ -382,7 +390,7 @@ export function BigWritePage({
         <GoalChips theme={theme} />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={12.5} />)}
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} />)}
       </div>
     </WbPage>
   );
@@ -408,7 +416,7 @@ export function BigWriteParagraphPage({
           <div key={i}>
             <StoryScene src={src} heightMm={46} />
             <div style={{ marginTop: mm(1) }}>
-              {Array.from({ length: 4 }).map((_, j) => <Line key={j} heightMm={12} />)}
+              {Array.from({ length: 4 }).map((_, j) => <Line key={j} />)}
             </div>
           </div>
         ))}

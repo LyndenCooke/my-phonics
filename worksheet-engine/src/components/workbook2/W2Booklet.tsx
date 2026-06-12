@@ -79,7 +79,7 @@ function ContentsPage({ lines, theme }: { lines: ContentsLine[]; theme: Theme })
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {lines.map((l, i) => (
           <div key={i}>
-            <div style={{ display: 'flex', alignItems: 'baseline', color: INK.text, fontSize: TYPE2.word }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', color: INK.text, fontSize: '17pt' }}>
               <span>{l.label}</span>
               <span style={{ flex: 1, margin: `0 ${mm(3)}`, borderBottom: `0.3mm dotted ${INK.rule}`, transform: 'translateY(-1mm)' }} />
               <span style={{ color: theme.accentText }}>{l.pages}</span>
