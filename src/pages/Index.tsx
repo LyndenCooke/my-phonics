@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Book } from '@/lib/types';
 import { LEVELS } from '@/lib/types';
+import { JOURNEY_LEVELS, getJourneyLevel, journeyLevelOf, journeySortKey } from '@/lib/levels8';
 import {
   Dialog,
   DialogContent,
@@ -30,10 +31,15 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
+// Inbound nav state still passes legacy catalogue levels (1–6); the filter
+// rail speaks journey levels (1–8). Map via each legacy level's first
+// journey placement.
+const LEGACY_TO_JOURNEY: Record<number, number> = { 1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
+
 export default function Index() {
   const location = useLocation();
   const navState = location.state as { filterLevel?: number; scrollToBookId?: string; from?: string } | null;
-  const initialLevel = navState?.filterLevel ?? null;
+  const initialLevel = navState?.filterLevel ? LEGACY_TO_JOURNEY[navState.filterLevel] ?? null : null;
   const scrollToBookId = navState?.scrollToBookId ?? null;
   // Sub-tab inside /library: 'books' (default grid) vs 'worksheets'
   // (sound mats + printable resources, formerly the /resources page).
@@ -72,7 +78,9 @@ export default function Index() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data: booksData, isLoading: booksLoading } = useBooks(selectedLevel);
+  // Always fetch the full catalogue — level filtering happens client-side
+  // on journey levels (the DB only knows legacy levels).
+  const { data: booksData, isLoading: booksLoading } = useBooks(null);
   const { data: userBooksData } = useUserBooks();
   const { data: pagesData } = useBookPages(activeBookId);
   const { data: quizData } = useQuizQuestions(activeBookId);
@@ -157,7 +165,13 @@ export default function Index() {
           }))
         : [],
     };
-  });
+  }).sort((a, b) => journeySortKey(a.subLevel) - journeySortKey(b.subLevel));
+
+  // Shelves: books grouped along the 8-level journey. When a level chip is
+  // selected, only that shelf renders.
+  const shelves = JOURNEY_LEVELS
+    .map(l => ({ level: l, items: books.filter(b => journeyLevelOf(b.subLevel) === l.level) }))
+    .filter(s => s.items.length > 0 && (selectedLevel === null || s.level.level === selectedLevel));
 
   const activeBook = activeBookId ? books.find(b => b.id === activeBookId) ?? null : null;
 
@@ -494,11 +508,6 @@ export default function Index() {
     }
   }
 
-  const levelBgs: Record<number, string> = {
-    1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-    4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
-  };
-
   const formatPrice = (pence: number) => {
     if (pence === 0) return 'Free';
     return `£${(pence / 100).toFixed(2)}`;
@@ -519,43 +528,47 @@ export default function Index() {
         />
       )}
 
-      <div className="px-4 lg:px-8 pt-5 pb-2 max-w-2xl lg:max-w-6xl mx-auto">
-        <div className="mb-5">
-          <h2 className="font-display text-2xl font-extrabold text-foreground tracking-tight">My Library</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {libraryTab === 'books' ? 'Tap a book to start reading' : 'Free printable sound mats and worksheets'}
-          </p>
-        </div>
+      <div className="px-4 lg:px-8 pt-6 lg:pt-9 pb-2 max-w-2xl lg:max-w-6xl mx-auto">
+        <div className="mb-6 flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Library</h2>
+            <p className="text-sm text-muted-foreground mt-1.5">
+              {libraryTab === 'books'
+                ? `${books.length || ''} little books, eight levels — tap one to start reading`
+                : 'Free printable sound mats and worksheets'}
+            </p>
+          </div>
 
-        {/* Books / Worksheets sub-tab toggle. Replaces the separate
-         *  /resources top-nav slot — keeps the parent nav at 5 buttons. */}
-        <div className="mb-5 inline-flex rounded-xl border border-border bg-card p-1 shadow-card">
-          <button
-            type="button"
-            onClick={() => setLibraryTab('books')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
-              libraryTab === 'books'
-                ? 'bg-primary/10 text-primary-ink'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-            aria-pressed={libraryTab === 'books'}
-          >
-            <BookOpen className="w-4 h-4" />
-            Books
-          </button>
-          <button
-            type="button"
-            onClick={() => setLibraryTab('worksheets')}
-            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${
-              libraryTab === 'worksheets'
-                ? 'bg-primary/10 text-primary-ink'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-            aria-pressed={libraryTab === 'worksheets'}
-          >
-            <FileText className="w-4 h-4" />
-            Worksheets
-          </button>
+          {/* Books / Worksheets sub-tab toggle. Replaces the separate
+           *  /resources top-nav slot — keeps the parent nav at 5 buttons. */}
+          <div className="inline-flex rounded-full border border-border bg-card p-1 shadow-card">
+            <button
+              type="button"
+              onClick={() => setLibraryTab('books')}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold transition-colors ${
+                libraryTab === 'books'
+                  ? 'bg-foreground text-background'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              aria-pressed={libraryTab === 'books'}
+            >
+              <BookOpen className="w-4 h-4" />
+              Books
+            </button>
+            <button
+              type="button"
+              onClick={() => setLibraryTab('worksheets')}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold transition-colors ${
+                libraryTab === 'worksheets'
+                  ? 'bg-foreground text-background'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              aria-pressed={libraryTab === 'worksheets'}
+            >
+              <FileText className="w-4 h-4" />
+              Worksheets
+            </button>
+          </div>
         </div>
 
         {libraryTab === 'worksheets' ? (
@@ -615,21 +628,69 @@ export default function Index() {
         )}
 
         {booksLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="aspect-[3/4] rounded-xl bg-muted animate-pulse" />
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-[3/4] rounded-2xl bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {books.map((book) => (
-              <BookCard
-                key={book.id}
-                book={book}
-                onSelect={handleBookSelect}
-                onDownload={handleDownloadBook}
-              />
-            ))}
+          <div className="space-y-6 lg:space-y-8">
+            {shelves.map(({ level, items }) => {
+              const readCount = items.filter(b => b.completed).length;
+              return (
+                <section
+                  key={level.level}
+                  aria-label={`Level ${level.level} — ${level.name}`}
+                  className="relative overflow-hidden rounded-[1.75rem] lg:rounded-[2rem] p-5 lg:p-7"
+                  style={{ background: `${level.hex}0D`, border: `1px solid ${level.hex}26` }}
+                >
+                  {/* Giant watermark numeral */}
+                  <span
+                    aria-hidden
+                    className="absolute -top-12 -right-3 font-display font-extrabold leading-none select-none pointer-events-none text-[9rem] lg:text-[12rem]"
+                    style={{ color: level.hex, opacity: 0.10 }}
+                  >
+                    {level.level}
+                  </span>
+
+                  {/* World header */}
+                  <div className="relative flex items-end justify-between gap-4 mb-5">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.2em]" style={{ color: level.inkHex }}>
+                        Level {level.level}
+                      </p>
+                      <h3 className="font-display text-xl lg:text-2xl font-extrabold text-foreground leading-tight mt-0.5">
+                        {level.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-1 truncate">{level.focus}</p>
+                    </div>
+                    {/* One dot per book — filled when read */}
+                    <div className="flex items-center gap-1.5 shrink-0 pb-1" aria-label={`${readCount} of ${items.length} read`}>
+                      {items.map(b => (
+                        <span
+                          key={b.id}
+                          className="w-2.5 h-2.5 rounded-full"
+                          style={b.completed
+                            ? { background: level.hex }
+                            : { background: 'transparent', border: `2px solid ${level.hex}55` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="relative grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-3 gap-y-5 lg:gap-x-5">
+                    {items.map((book) => (
+                      <BookCard
+                        key={book.id}
+                        book={book}
+                        onSelect={handleBookSelect}
+                        onDownload={handleDownloadBook}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
 
@@ -650,7 +711,7 @@ export default function Index() {
       <Dialog open={!!upsellBook} onOpenChange={(open) => !open && setUpsellBook(null)}>
         <DialogContent className="max-w-sm mx-auto rounded-2xl">
           {upsellBook && (() => {
-            const levelInfo = LEVELS.find(l => l.level === upsellBook.level);
+            const journeyInfo = getJourneyLevel(journeyLevelOf(upsellBook.subLevel));
             const product = getProductForLevel(upsellBook.level);
             return (
               <>
@@ -660,13 +721,13 @@ export default function Index() {
                     {upsellBook.title}
                   </DialogTitle>
                   <DialogDescription className="text-sm text-muted-foreground">
-                    This book is part of Level {upsellBook.level}: {levelInfo?.name}
+                    This book is part of Level {journeyInfo?.level}: {journeyInfo?.name}
                   </DialogDescription>
                 </DialogHeader>
 
-                <div className={`${levelBgs[upsellBook.level]} text-white rounded-xl p-4 text-center`}>
-                  <p className="text-2xl font-extrabold">Level {upsellBook.level}</p>
-                  <p className="text-sm opacity-90">{levelInfo?.name}</p>
+                <div className="text-white rounded-xl p-4 text-center" style={{ background: journeyInfo?.hex }}>
+                  <p className="text-2xl font-extrabold">Level {journeyInfo?.level}</p>
+                  <p className="text-sm opacity-90">{journeyInfo?.name}</p>
                   {product && (
                     <p className="text-lg font-extrabold mt-2">
                       {formatPrice(product.price_pence)}

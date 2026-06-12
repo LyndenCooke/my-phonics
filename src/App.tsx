@@ -24,6 +24,7 @@ const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const Shop = lazy(() => import("./pages/Shop"));
+const WallOfLove = lazy(() => import("./pages/WallOfLove"));
 const Progress = lazy(() => import("./pages/Progress"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Messages = lazy(() => import("./pages/Messages"));
@@ -147,6 +148,7 @@ function RoutesWithTransition() {
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
             <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
             <Route path="/pricing" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
+            <Route path="/love" element={<Suspense fallback={<AdminFallback />}><WallOfLove /></Suspense>} />
             <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><PaymentSuccess /></Suspense>} />
             <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><Progress /></Suspense>} />
             <Route path="/profile" element={<Suspense fallback={<AdminFallback />}><Profile /></Suspense>} />

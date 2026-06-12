@@ -301,7 +301,7 @@ export function useProgressData() {
 
       const [userBooksRes, booksRes, quizRes, assessmentRes, streakRes] = await Promise.all([
         supabase.from('user_books').select('*').eq('user_id', user.id),
-        supabase.from('books').select('id, level, title'),
+        supabase.from('books').select('id, level, sub_level, title'),
         supabase.from('quiz_attempts').select('*').eq('user_id', user.id),
         supabase.from('assessment_results').select('*').eq('user_id', user.id).order('completed_at', { ascending: false }).limit(1),
         supabase.from('reading_streaks').select('*').eq('user_id', user.id).order('activity_date', { ascending: false }).limit(30),

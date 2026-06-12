@@ -4,7 +4,64 @@ import { useProducts, usePurchases } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Loader2, Check, Crown, Ticket, Sparkles, Lock } from 'lucide-react';
+import { Loader2, Check, Crown, Ticket, Sparkles, Lock, Star, Heart, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+/** Sticker shadow — shared "paper & stickers" token. */
+const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
+
+/** Tiny Wall-of-Love teaser under the plans — real consented quotes only. */
+function LoveTeaser() {
+  const [quotes, setQuotes] = useState<{ id: string; quote: string; first_name: string | null; rating: number | null }[]>([]);
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const { data } = await (supabase as unknown as {
+        from: (t: string) => {
+          select: (c: string) => { order: (k: string, o: { ascending: boolean }) => { limit: (n: number) => Promise<{ data: { id: string; quote: string; first_name: string | null; rating: number | null }[] | null }> } };
+        };
+      })
+        .from('public_testimonials')
+        .select('id, quote, first_name, rating')
+        .order('submitted_at', { ascending: false })
+        .limit(3);
+      if (alive) setQuotes(data ?? []);
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  if (quotes.length === 0) return null;
+  return (
+    <section className="mt-10">
+      <div className="grid sm:grid-cols-3 gap-3">
+        {quotes.map((q, i) => (
+          <figure
+            key={q.id}
+            className="rounded-3xl bg-white p-4"
+            style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)', rotate: `${[-1, 0.8, -0.6][i]}deg` }}
+          >
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map(n => (
+                <Star key={n} className={`w-3.5 h-3.5 ${(q.rating ?? 5) >= n ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/25'}`} />
+              ))}
+            </div>
+            <blockquote className="text-[13px] text-foreground leading-relaxed mt-2 line-clamp-3">“{q.quote}”</blockquote>
+            <figcaption className="text-xs font-display font-extrabold text-primary-ink mt-2">— {q.first_name ?? 'A parent'}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div className="text-center mt-5">
+        <Link
+          to="/love"
+          className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-display font-extrabold text-primary-ink press-scale"
+          style={{ boxShadow: STICKER }}
+        >
+          <Heart className="w-4 h-4 fill-current" /> Read our Wall of Love <ChevronRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { getStoredRefCode } from '@/lib/referral';
@@ -38,7 +95,7 @@ function reasonToMessage(reason: string): string {
 // All books, everything — features shared by both the monthly/annual sub
 // card and the lifetime card. The lifetime card appends "future books".
 const SUB_FEATURES = [
-  'All 33 books across 6 levels — downloadable',
+  'All 33 books across 8 levels — downloadable',
   'Every printable worksheet',
   'All sound mats and TPT printables',
   'Full assessments and progress reports',
@@ -255,14 +312,19 @@ export default function Shop() {
   return (
     <Layout>
       <div className="px-4 lg:px-8 pt-5 pb-8 max-w-lg lg:max-w-5xl mx-auto">
-        {/* Header — softer mobile-app style. Matches the new Profile/Home
-         *  visual language: pink accent on key word, generous spacing. */}
-        <div className="text-center mb-8 px-2">
-          <h1 className="font-display text-3xl font-extrabold text-foreground tracking-tight leading-tight">
-            Choose Your <span className="text-primary-ink">Plan</span>
+        {/* Header — "paper & stickers" language shared with Home/Library. */}
+        <div className="text-center mb-9 px-2">
+          <span
+            className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold rotate-1 text-primary-ink"
+            style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
+          >
+            Simple pricing · cancel anytime
+          </span>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight leading-tight mt-4">
+            One plan. Every book.
           </h1>
-          <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-            Unlock all books, assessments and rewards.
+          <p className="text-sm lg:text-base text-muted-foreground mt-2 leading-relaxed">
+            All 33 books, eight levels, every worksheet and assessment.
           </p>
         </div>
 
@@ -311,18 +373,20 @@ export default function Shop() {
              *  Same feature list either way; only the price + cadence
              *  suffix change. */}
             {monthly && annual && !purchases?.hasActiveSubscription && !purchases?.hasFullBundle && (
-              <div className="rounded-3xl overflow-hidden shadow-card border border-border">
-                <div className="bg-gradient-to-r from-pink-500 to-rose-600 px-5 py-4 text-white">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
+              <div className="rounded-[2rem] bg-white" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.06)' }}>
+                <div className="px-5 pt-5 lg:px-6 lg:pt-6">
+                  <div className="flex items-center gap-3">
+                    <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shrink-0" style={{ background: '#E84B8A', boxShadow: '0 6px 14px -4px #E84B8A80' }}>
                       <Sparkles className="w-5 h-5" />
-                      <h3 className="font-bold text-lg">All books, everything</h3>
+                    </span>
+                    <div>
+                      <h3 className="font-display font-extrabold text-lg text-foreground leading-tight">All books, everything</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">Read, download, repeat.</p>
                     </div>
                   </div>
-                  <p className="text-sm text-white/85 mt-1">Every book, every worksheet — read, download, repeat.</p>
                 </div>
 
-                <div className="bg-card px-5 py-4">
+                <div className="px-5 py-4 lg:px-6">
                   {/* Cadence toggle */}
                   <div className="inline-flex rounded-xl border border-border bg-muted/30 p-1 mb-4">
                     <button
@@ -349,7 +413,7 @@ export default function Shop() {
                   </div>
 
                   <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                    <span className="text-3xl font-extrabold text-foreground">
+                    <span className="font-display text-4xl font-extrabold text-foreground tabular-nums">
                       {formatPrice(activeSub?.price_pence ?? 0)}
                     </span>
                     <span className="text-sm text-muted-foreground">
@@ -375,7 +439,8 @@ export default function Shop() {
                   <button
                     onClick={() => activeSub && handleBuyClick(activeSub.id)}
                     disabled={!!checkoutLoading || !activeSub}
-                    className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg"
+                    className="w-full h-13 py-3.5 rounded-2xl font-display font-extrabold text-base text-white transition-all active:translate-y-[4px] disabled:opacity-60"
+                    style={{ background: '#E84B8A', boxShadow: '0 5px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
                   >
                     {checkoutLoading === activeSub?.id ? (
                       <Loader2 className="w-4 h-4 animate-spin mx-auto" />
@@ -389,21 +454,33 @@ export default function Shop() {
 
             {/* Lifetime — one-off card with the friends & family voucher */}
             {lifetime && !purchases?.hasFullBundle && (
-              <div className="rounded-3xl overflow-hidden shadow-card ring-2 ring-indigo-500">
-                <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 text-white">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
+              <div
+                className="relative rounded-[2rem] bg-white"
+                style={{ boxShadow: STICKER, border: '2px solid #4F46E5', outline: '4px solid #4F46E520' }}
+              >
+                {/* Best Value sticker */}
+                <span
+                  className="absolute -top-3 right-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-indigo-700"
+                  style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #4F46E540' }}
+                >
+                  Best value
+                </span>
+
+                <div className="px-5 pt-5 lg:px-6 lg:pt-6">
+                  <div className="flex items-center gap-3">
+                    <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shrink-0" style={{ background: '#4F46E5', boxShadow: '0 6px 14px -4px #4F46E580' }}>
                       <Crown className="w-5 h-5" />
-                      <h3 className="font-bold text-lg">Lifetime — Everything Forever</h3>
+                    </span>
+                    <div>
+                      <h3 className="font-display font-extrabold text-lg text-foreground leading-tight">Lifetime — everything forever</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">Pay once. Every book, now and in the future.</p>
                     </div>
-                    <span className="text-[11px] bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full font-bold">Best Value</span>
                   </div>
-                  <p className="text-sm text-white/85 mt-1">Pay once. Every book — now and in the future.</p>
                 </div>
 
-                <div className="bg-card px-5 py-4">
+                <div className="px-5 py-4 lg:px-6">
                   <div className="flex items-baseline gap-2 mb-1 flex-wrap">
-                    <span className="text-3xl font-extrabold text-foreground">
+                    <span className="font-display text-4xl font-extrabold text-foreground tabular-nums">
                       {formatPrice(lifetime.price_pence)}
                     </span>
                     <span className="text-sm text-muted-foreground">one-time</span>
@@ -422,7 +499,8 @@ export default function Shop() {
                   <button
                     onClick={handleLifetimeClick}
                     disabled={!!checkoutLoading}
-                    className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 active:scale-[0.97] disabled:opacity-60 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg"
+                    className="w-full h-13 py-3.5 rounded-2xl font-display font-extrabold text-base text-white transition-all active:translate-y-[4px] disabled:opacity-60"
+                    style={{ background: '#4F46E5', boxShadow: '0 5px 0 #3730A3, 0 14px 28px -10px #4F46E580' }}
                   >
                     {checkoutLoading === lifetime.id ? (
                       <Loader2 className="w-4 h-4 animate-spin mx-auto" />
@@ -448,7 +526,10 @@ export default function Shop() {
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground text-center mt-6 leading-relaxed">
+        {/* Social proof — real quotes + link to the Wall of Love */}
+        <LoveTeaser />
+
+        <p className="text-xs text-muted-foreground text-center mt-8 leading-relaxed">
           Secure checkout. Cancel anytime. All prices in GBP.
         </p>
       </div>
