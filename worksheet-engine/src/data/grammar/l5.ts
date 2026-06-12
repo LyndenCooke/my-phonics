@@ -92,6 +92,7 @@ const units: GrammarUnit[] = [
       "prompt": "Write a sentence with an un- word."
     },
     "match": {
+      "rightShuffled": ["unzip", "unpack", "unkind", "unplug", "unlock"],
       "pairs": [
         {
           "left": "kind",

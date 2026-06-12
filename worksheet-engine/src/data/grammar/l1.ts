@@ -17,14 +17,17 @@ const units: GrammarUnit[] = [
     ],
     "anchorBook": "Level 1 readers",
     "s1": {
-      "prompt": "I pat a dog",
-      "answer": "I | pat | a | dog",
+      "prompt": "I pat the cat.",
+      "answer": "I | pat | the | cat",
       "note": "Each word is one unit."
     },
     "weDoCount": 1,
     "apply": {
-      "prompt": "Circle each word in the sentence."
+      "prompt": "Say your own sentence, write it, then circle each word."
     },
+    // Rows replaced 2026-06-12: the draft rows were invented and had no end
+    // marks. These are VERBATIM Tap! Tap! Tap! sentences (this unit sits in
+    // book 1's week) — no new words.
     "format": "circle",
     "circle": {
       "targets": [
@@ -35,35 +38,10 @@ const units: GrammarUnit[] = [
       ],
       "rows": [
         {
-          "text": "I sit in a pit",
+          "text": "It is not a rat.",
           "finds": [
             {
-              "word": "I",
-              "target": "word"
-            },
-            {
-              "word": "sit",
-              "target": "word"
-            },
-            {
-              "word": "in",
-              "target": "word"
-            },
-            {
-              "word": "a",
-              "target": "word"
-            },
-            {
-              "word": "pit",
-              "target": "word"
-            }
-          ]
-        },
-        {
-          "text": "Pat is in a pan",
-          "finds": [
-            {
-              "word": "Pat",
+              "word": "It",
               "target": "word"
             },
             {
@@ -71,7 +49,7 @@ const units: GrammarUnit[] = [
               "target": "word"
             },
             {
-              "word": "in",
+              "word": "not",
               "target": "word"
             },
             {
@@ -79,45 +57,62 @@ const units: GrammarUnit[] = [
               "target": "word"
             },
             {
-              "word": "pan",
+              "word": "rat",
               "target": "word"
             }
           ]
         },
         {
-          "text": "The dog sat",
+          "text": "Is it a bat?",
           "finds": [
             {
-              "word": "The",
+              "word": "Is",
               "target": "word"
             },
             {
-              "word": "dog",
+              "word": "it",
               "target": "word"
             },
             {
-              "word": "sat",
+              "word": "a",
+              "target": "word"
+            },
+            {
+              "word": "bat",
               "target": "word"
             }
           ]
         },
         {
-          "text": "I got a map",
+          "text": "I am happy!",
           "finds": [
             {
               "word": "I",
               "target": "word"
             },
             {
-              "word": "got",
+              "word": "am",
               "target": "word"
             },
             {
-              "word": "a",
+              "word": "happy",
+              "target": "word"
+            }
+          ]
+        },
+        {
+          "text": "The cat naps.",
+          "finds": [
+            {
+              "word": "The",
               "target": "word"
             },
             {
-              "word": "map",
+              "word": "cat",
+              "target": "word"
+            },
+            {
+              "word": "naps",
               "target": "word"
             }
           ]
@@ -149,31 +144,34 @@ const units: GrammarUnit[] = [
     ],
     "anchorBook": "Level 1 readers",
     "s1": {
-      "prompt": "I sit in a pit",
-      "answer": "I sit in a pit"
+      "prompt": "It is a big dog.",
+      "answer": "It is a big dog."
     },
     "weDoCount": 1,
     "apply": {
       "prompt": "Say and write a new sentence."
     },
+    // Rows replaced 2026-06-12: the draft rows were invented and had no end
+    // marks. These are VERBATIM The Mud on the Dog sentences (this unit sits
+    // in book 2's week), avoiding the hold/listen and G-L1.3 picks.
     "format": "rewrite",
     "rewrite": {
       "rows": [
         {
-          "text": "I pat a dog",
-          "answer": "I pat a dog"
+          "text": "The dog ran in the mud.",
+          "answer": "The dog ran in the mud."
         },
         {
-          "text": "The cat sat",
-          "answer": "The cat sat"
+          "text": "The dog is a mess!",
+          "answer": "The dog is a mess!"
         },
         {
-          "text": "I got a map",
-          "answer": "I got a map"
+          "text": "Mum got a tub.",
+          "answer": "Mum got a tub."
         },
         {
-          "text": "Pat is in a pan",
-          "answer": "Pat is in a pan"
+          "text": "The dog sat in it.",
+          "answer": "The dog sat in it."
         }
       ]
     },
@@ -211,24 +209,28 @@ const units: GrammarUnit[] = [
     "apply": {
       "prompt": "Write the sentence with finger spaces."
     },
+    // Rows replaced 2026-06-12: the draft rows were not real sentences
+    // ("The sat cat", "Pat in in pit"). These are VERBATIM book sentences
+    // (Tap! Tap! Tap! and The Mud on the Dog) with the spaces removed — a
+    // mechanical squash of approved text, no new words.
     "format": "rewrite",
     "rewrite": {
       "rows": [
         {
-          "text": "Thesatcat",
-          "answer": "The sat cat"
+          "text": "Ipatthecat.",
+          "answer": "I pat the cat."
         },
         {
-          "text": "Igottopan",
-          "answer": "I got to pan"
+          "text": "Thecatnaps.",
+          "answer": "The cat naps."
         },
         {
-          "text": "Patininpit",
-          "answer": "Pat in in pit"
+          "text": "Igotadog.",
+          "answer": "I got a dog."
         },
         {
-          "text": "Dogonmat",
-          "answer": "Dog on mat"
+          "text": "Igetamop.",
+          "answer": "I get a mop."
         }
       ]
     },

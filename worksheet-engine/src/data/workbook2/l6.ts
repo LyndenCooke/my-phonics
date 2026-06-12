@@ -10,30 +10,10 @@
 // test word lists remain authoring dependencies (L6_DEPENDENCIES.md).
 // ---------------------------------------------------------------------------
 
-import type { HwLadder } from '@/components/workbook2/W2Skills';
+import type { W2LevelData, W2BookData } from '@/data/workbook2/levels';
+import { W2_LEVEL_SPECS } from '@/data/workbook2/levels';
 
-export interface W2Book {
-  num: number;
-  title: string;
-  /** six practise words for the Spell it page (sound + tricky mix). */
-  spellPractise: string[];
-  /** grammar unit ids in teaching order (1-3 per book). */
-  grammar: string[];
-  /** two hold-the-sentence items, verbatim book text. */
-  hold: string[];
-  /** two dictation sentences (NEVER printed on the page; Answers only). */
-  listen: string[];
-  /** Answer-it page: 3 approved questions, or null while awaited. Absent =
-   *  no Answer-it page (the review book). */
-  questions?: (string | null)[];
-  /** Use your grammar: approved words by pointer + a story scene. `pos` is
-   *  the crop focus (CSS object-position) so the scene's ACTION shows. */
-  useGrammar: { chips: string[]; scene: string; pos?: string };
-  bigWrite: { prompt: string; scene: string; pos?: string };
-  ladders: HwLadder[];
-}
-
-export const W2_L6_BOOKS: W2Book[] = [
+const BOOKS: W2BookData[] = [
   {
     num: 1,
     title: 'The Purple Purse',
@@ -119,36 +99,40 @@ export const W2_L6_BOOKS: W2Book[] = [
   },
 ];
 
-/** The spelling test word lists, read aloud by the grown-up (back-matter
- *  page; the child's test pages never show them). Selected from the books'
- *  approved word lists, the word banks that carry the L6 GPCs, and the L6
- *  tricky words — recorded in L6_SELECTIONS.md, awaiting approval. */
-export const W2_L6_SPELLINGS: { title: string; words: string[] }[] = [
-  { title: 'The Purple Purse', words: ['purse', 'purple', 'turn', 'fur', 'church', 'her', 'fern', 'never', 'their', 'oh'] },
-  { title: 'The Brown Owl', words: ['care', 'dare', 'stare', 'bare', 'owl', 'brown', 'down', 'people', 'Mr', 'Mrs'] },
-  { title: 'The New Glue', words: ['new', 'flew', 'drew', 'grew', 'blue', 'glue', 'true', 'looked', 'called', 'asked'] },
-  { title: 'The Cheeky Monkey', words: ['how', 'now', 'town', 'furry', 'turn', 'stare', 'blue', 'drew', 'their', 'could'] },
-  { title: 'Half-term test', words: ['purse', 'her', 'bare', 'owl', 'down', 'new', 'glue', 'true', 'people', 'could'] },
-];
-
-/** Show-what-you-know item pointers (approved rows by pointer only). */
-export const W2_L6_SWYK = {
-  ticks: [
-    { sourceUnit: 'G-L6.1', rowRef: 0 },
-    { sourceUnit: 'G-L6.1', rowRef: 2 },
+export const L6_DATA: W2LevelData = {
+  spec: W2_LEVEL_SPECS[6],
+  books: BOOKS,
+  swykA: [
+    { kind: 'tick', label: 'Tick the kind', refs: [{ sourceUnit: 'G-L6.1', rowRef: 0 }, { sourceUnit: 'G-L6.1', rowRef: 2 }] },
+    { kind: 'match', label: 'Draw a line to join each pair to its short form', refs: [{ sourceUnit: 'G-L6.6', rowRef: 0 }, { sourceUnit: 'G-L6.6', rowRef: 3 }] },
+    { kind: 'build', label: 'Write the noun phrase again, grown bigger', refs: [{ sourceUnit: 'G-L6.2', rowRef: 2 }] },
+    { kind: 'cloze', label: 'Write the best joining word in each gap', refs: [{ sourceUnit: 'G-L6.3', rowRef: 1 }, { sourceUnit: 'G-L6.4', rowRef: 0 }] },
   ],
-  matches: [
-    { sourceUnit: 'G-L6.6', rowRef: 0 },
-    { sourceUnit: 'G-L6.6', rowRef: 3 },
+  swykB: {
+    groups: [
+      { kind: 'rewrite', label: 'Rewrite each one all in the past tense', refs: [{ sourceUnit: 'G-L6.7', rowRef: 2 }, { sourceUnit: 'G-L6.7', rowRef: 3 }] },
+    ],
+    writeTask: 'Write three sentences about the monkey. Use a joining word and a noun phrase.',
+    writeLines: 3,
+  },
+  swykAnswers: "Statement; Command; I'm; we're; the bare, brown branch; and; if; gave; slipped.",
+  // Selected from the books' approved word lists, the word banks that carry
+  // the L6 GPCs, and the L6 tricky words — recorded in L6_SELECTIONS.md.
+  spellings: [
+    { title: 'The Purple Purse', words: ['purse', 'purple', 'turn', 'fur', 'church', 'her', 'fern', 'never', 'their', 'oh'] },
+    { title: 'The Brown Owl', words: ['care', 'dare', 'stare', 'bare', 'owl', 'brown', 'down', 'people', 'Mr', 'Mrs'] },
+    { title: 'The New Glue', words: ['new', 'flew', 'drew', 'grew', 'blue', 'glue', 'true', 'looked', 'called', 'asked'] },
+    { title: 'The Cheeky Monkey', words: ['how', 'now', 'town', 'furry', 'turn', 'stare', 'blue', 'drew', 'their', 'could'] },
+    { title: 'Half-term test', words: ['purse', 'her', 'bare', 'owl', 'down', 'new', 'glue', 'true', 'people', 'could'] },
   ],
-  build: { sourceUnit: 'G-L6.2', rowRef: 2 },
-  clozes: [
-    { sourceUnit: 'G-L6.3', rowRef: 1 },
-    { sourceUnit: 'G-L6.4', rowRef: 0 },
+  grownUps: [
+    { title: 'Little and often', body: 'One page a day, about five minutes, after the day\'s reading or sound book. Never push on to a second page.' },
+    { title: 'The order matters', body: 'Each book\'s pages run in teaching order: grammar, Sentences, Answer it, more grammar, Use your grammar, Spell it, Big write, then Handwriting in its own slot.' },
+    { title: 'Spell it works twice', body: 'Practise the words the day before the test. On test day, cover the top half and read the words from the Spelling words page.' },
+    { title: 'The first one is done', body: 'On grammar pages the first item is completed in purple. Talk it through together before the child does the rest.' },
+    { title: 'Listen and write', body: 'Read the sentence aloud twice. The child says it back, taps a finger per word, then writes it. The sentences are in the Answers.' },
+    { title: 'The big write is the win', body: 'The picture is the prompt. Spelling mistakes are fine here; ideas first, then check against the writing goals together.' },
+    { title: 'Handwriting', body: 'The child traces the grey writing and keeps going to the end of each line. Little and neat beats lots and rushed.' },
+    { title: 'The last week', body: 'Show what you know and the half-term test are a check, not an exam. Secure here means ready for Level 7.' },
   ],
-  rewrites: [
-    { sourceUnit: 'G-L6.7', rowRef: 2 },
-    { sourceUnit: 'G-L6.7', rowRef: 3 },
-  ],
-  writeTask: 'Now you write three sentences about the monkey. Use a joining word and a noun phrase.',
 };

@@ -211,6 +211,7 @@ const units: GrammarUnit[] = [
     },
     "format": "match",
     "match": {
+      "rightShuffled": ["It is hot at noon.", "Sam has a dog.", "Nan is in the hut.", "The cat is on the mat.", "Jack can hop."],
       "pairs": [
         {
           "left": "Who is in the hut?",

@@ -26,12 +26,22 @@ const CHIP_W = 56;
 
 function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   const pairs = unit.match.pairs;
-  const rights = unit.match.rightShuffled ?? pairs.map((p) => p.right);
+  // a unit without an authored shuffle must never render pre-solved — rotate
+  // the answers by one as a deterministic fallback
+  const rights = unit.match.rightShuffled ?? [...pairs.slice(1), pairs[0]].map((p) => p.right);
   const exampleRightRow = rights.indexOf(pairs[0].right);
+
+  // sentence-length pairs (L3 question words) need wider, two-line chips; the
+  // size is UNIFORM across the page so the dot geometry below stays exact
+  const maxLen = Math.max(...pairs.map((p) => p.left.length), ...rights.map((r) => r.length));
+  const chipW = maxLen > 12 ? 72 : CHIP_W;
+  const lines = Math.max(1, ...[...pairs.map((p) => p.left), ...rights].map((t) => Math.ceil(t.length / 14)));
+  const chipH = ROW_H + (lines - 1) * 9;
+  const rowGap = lines > 1 ? 10 : ROW_GAP;
 
   const chip: React.CSSProperties = {
     border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), display: 'flex', alignItems: 'center',
-    width: mm(CHIP_W), padding: `0 ${mm(3.5)}`, height: mm(ROW_H), color: INK.text, fontSize: TYPE2.word, background: '#fff',
+    width: mm(chipW), padding: `0 ${mm(3.5)}`, height: mm(chipH), color: INK.text, fontSize: TYPE2.word, lineHeight: 1.2, background: '#fff',
   };
   const dot: React.CSSProperties = { width: mm(2.6), height: mm(2.6), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
 
@@ -39,14 +49,14 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   // NON-NEGOTIABLE: the example line runs dot centre to dot centre. The SVG
   // viewBox must equal the REAL column height (rows + gaps, no trailing gap)
   // or the line scales short of the dots.
-  const columnH = pairs.length * ROW_H + (pairs.length - 1) * ROW_GAP;
-  const yOf = (row: number) => row * (ROW_H + ROW_GAP) + ROW_H / 2;
-  const x1 = CHIP_W - 3.5 - 1.3; // the left chips' dot centres
-  const x2 = 182 - CHIP_W + 3.5 + 1.3; // the right chips' dot centres
+  const columnH = pairs.length * chipH + (pairs.length - 1) * rowGap;
+  const yOf = (row: number) => row * (chipH + rowGap) + chipH / 2;
+  const x1 = chipW - 3.5 - 1.3; // the left chips' dot centres
+  const x2 = 182 - chipW + 3.5 + 1.3; // the right chips' dot centres
 
   return (
     <div style={{ position: 'relative' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(ROW_GAP) }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(rowGap) }}>
         {pairs.map((p, i) => (
           <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ ...chip, justifyContent: 'space-between' }}><span>{p.left}</span><span style={dot} /></div>
@@ -70,23 +80,31 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
 // Source strip + one line per row; row 1's line carries the corrected
 // sentence in the accent colour — the example sits on the line itself.
 
-function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
+function RewriteBody({ unit, theme, pitch }: { unit: RewriteUnit; theme: Theme; pitch: number }) {
   // each block = source strip + ITS write line tucked close beneath; the
   // blocks spread evenly down the page. The worked answer SITS ON its lines.
+  // Multi-sentence recount units need two lines per row, which only fits
+  // three blocks — worked plus two practice — so the page never overflows.
+  const twoLine = unit.rewrite.rows.some((r) => r.answer.length > 46);
+  const rows = twoLine ? unit.rewrite.rows.slice(0, 3) : unit.rewrite.rows;
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', gap: mm(8) }}>
-      {unit.rewrite.rows.map((r, i) => (
+      {rows.map((r, i) => (
         <div key={i}>
           <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(1.5)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
             {r.text}
           </div>
           {/* clear air between the prompt strip and the writing — the line
-              is the main thing in the block */}
+              is the main thing in the block. A row whose answer cannot fit
+              one line (the multi-sentence recounts) gets the lines the child
+              actually needs, not just one. */}
           <div style={{ marginTop: mm(4) }}>
             {i === 0 ? (
-              <SeatedTextLines text={r.answer} color={theme.accentText} />
+              <SeatedTextLines text={r.answer} color={theme.accentText} heightMm={pitch} />
             ) : (
-              <Line />
+              Array.from({ length: Math.min(Math.ceil(r.answer.length / 46), 2) }).map((_, j) => (
+                <Line key={j} heightMm={pitch} />
+              ))
             )}
           </div>
         </div>
@@ -141,6 +159,11 @@ function TickBody({ unit, theme }: { unit: TickGridUnit; theme: Theme }) {
 // Word-bank chips, then sentences with a write-in gap; the first gap carries
 // its answer in accent, seated on the gap line.
 
+/** Some draft levels embed the gap marker in the text; the gap is OURS. */
+export function stripGap(s: string): string {
+  return s.replace(/_{2,}/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -152,14 +175,14 @@ function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {unit.cloze.rows.map((r, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', color: INK.text, fontSize: TYPE2.word, lineHeight: 1.6 }}>
-            <span>{r.before}</span>
+            <span>{stripGap(r.before)}</span>
             <span style={{ position: 'relative', display: 'inline-block', minWidth: mm(30), height: '1em', borderBottom: `${RULE_W} solid ${INK.text}`, margin: `0 ${mm(3)}` }}>
               {/* the worked answer SITS ON the gap line, at the example size */}
               {i === 0 && (
                 <span style={{ position: 'absolute', left: '50%', bottom: 0, transform: 'translate(-50%, 4%)', fontSize: TYPE2.example, lineHeight: 1, color: theme.accentText, whiteSpace: 'nowrap' }}>{r.answer}</span>
               )}
             </span>
-            <span>{r.after}</span>
+            <span>{stripGap(r.after)}</span>
           </div>
         ))}
       </div>
@@ -171,7 +194,7 @@ function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
 // Word-bank chips, then base phrase → write line; the first row's grown
 // phrase is written on its line in accent.
 
-function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
+function BuildBody({ unit, theme, pitch }: { unit: BuildUnit; theme: Theme; pitch: number }) {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: '0 0 auto', display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(4) }}>
@@ -185,7 +208,7 @@ function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
             <span style={{ flex: '0 0 auto', width: mm(62), color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{r.base}</span>
             <span style={{ flex: '0 0 auto', color: theme.primary, fontSize: TYPE2.word, paddingBottom: mm(1) }}>→</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} widthMm={105} /> : <Line />}
+              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} widthMm={105} heightMm={pitch} /> : <Line heightMm={pitch} />}
             </div>
           </div>
         ))}
@@ -194,26 +217,27 @@ function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
   );
 }
 
-// ---- grammar: circle (adjectives and adverbs) -----------------------------------
-// The first row is marked for the child: adjective circled, adverb underlined.
+// ---- grammar: circle (mark the target word classes) ------------------------------
+// The first row is marked for the child, each find drawn with its target's mark.
 
 function CircleBody({ unit, theme }: { unit: CircleUnit; theme: Theme }) {
+  const markOf = new Map(unit.circle.targets.map((t) => [t.label, t.mark]));
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
       {unit.circle.rows.map((r, i) => {
         if (i !== 0) {
           return <div key={i} style={{ color: INK.text, fontSize: TYPE2.word }}>{r.text}</div>;
         }
-        const adj = r.finds.find((f) => f.target === 'adjective')?.word;
-        const adv = r.finds.find((f) => f.target === 'adverb')?.word;
         return (
           <div key={i} style={{ color: INK.text, fontSize: TYPE2.word, lineHeight: 1.5 }}>
             {r.text.split(/(\s+)/).map((tk, j) => {
               const bare = tk.replace(/[.,!?]/g, '');
-              if (adj && bare === adj) {
+              const find = r.finds.find((f) => f.word === bare);
+              const mark = find ? markOf.get(find.target) : undefined;
+              if (mark === 'circle') {
                 return <span key={j} style={{ border: `0.6mm solid ${theme.accentText}`, borderRadius: '50%', padding: `0 ${mm(2)}`, color: theme.accentText }}>{tk}</span>;
               }
-              if (adv && bare === adv) {
+              if (mark === 'underline') {
                 return <span key={j} style={{ borderBottom: `0.8mm solid ${theme.accentText}`, color: theme.accentText }}>{tk}</span>;
               }
               return <span key={j}>{tk}</span>;
@@ -228,7 +252,7 @@ function CircleBody({ unit, theme }: { unit: CircleUnit; theme: Theme }) {
 // ---- grammar: review (fix and answer, B4) ----------------------------------------
 // One of each skill, items reused by pointer; task label + item + write line.
 
-function ReviewBody({ unit, theme }: { unit: ReviewUnit; theme: Theme }) {
+function ReviewBody({ unit, theme, pitch }: { unit: ReviewUnit; theme: Theme; pitch: number }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: mm(7) }}>
       {unit.review.items.map((it, i) => (
@@ -237,16 +261,24 @@ function ReviewBody({ unit, theme }: { unit: ReviewUnit; theme: Theme }) {
             <span style={{ flex: '0 0 auto', color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{it.task}</span>
             <span style={{ color: INK.text, fontSize: TYPE2.word }}>{resolveReviewText(it.sourceUnit, it.rowRef)}</span>
           </div>
-          <Line />
+          <Line heightMm={pitch} />
         </div>
       ))}
     </div>
   );
 }
 
-export function GrammarPage({ page, unit, theme }: { page: number; unit: GrammarUnit; theme: Theme }) {
+/** Structural-copy normalisation for the draft levels' prompts: capitalise
+ *  the first letter and end on a full stop. Never touches the words. */
+function tidy(prompt: string): string {
+  const p = prompt.trim();
+  const capped = p.charAt(0).toUpperCase() + p.slice(1);
+  return /[.!?]$/.test(capped) ? capped : `${capped}.`;
+}
+
+export function GrammarPage({ page, unit, theme, pitch = 11 }: { page: number; unit: GrammarUnit; theme: Theme; pitch?: number }) {
   const worked = unit.format !== 'review';
-  const instruction = unit.doInstruction.replace(/\.$/, '');
+  const instruction = tidy(unit.doInstruction).replace(/\.$/, '');
   return (
     <WbPage page={page}>
       <Heading title={unit.name} sub={worked ? `${instruction}. The first one is done for you.` : `${instruction}.`} />
@@ -256,21 +288,21 @@ export function GrammarPage({ page, unit, theme }: { page: number; unit: Grammar
           write section lands at the foot with no dead space */}
       <div style={{ flex: '1 1 auto', minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', paddingTop: mm(2) }}>
         {unit.format === 'match' && <MatchBody unit={unit} theme={theme} />}
-        {unit.format === 'rewrite' && <RewriteBody unit={unit} theme={theme} />}
+        {unit.format === 'rewrite' && <RewriteBody unit={unit} theme={theme} pitch={pitch} />}
         {unit.format === 'tickgrid' && <TickBody unit={unit} theme={theme} />}
         {unit.format === 'cloze' && <ClozeBody unit={unit} theme={theme} />}
-        {unit.format === 'build' && <BuildBody unit={unit} theme={theme} />}
+        {unit.format === 'build' && <BuildBody unit={unit} theme={theme} pitch={pitch} />}
         {unit.format === 'circle' && <CircleBody unit={unit} theme={theme} />}
-        {unit.format === 'review' && <ReviewBody unit={unit} theme={theme} />}
+        {unit.format === 'review' && <ReviewBody unit={unit} theme={theme} pitch={pitch} />}
       </div>
 
       <DottedDivider />
 
       <SectionLabel text="Now you write" theme={theme} />
-      {unit.apply && <div style={{ color: INK.text, fontSize: TYPE2.body, marginBottom: mm(1) }}>{unit.apply.prompt}</div>}
-      <Line />
-      <Line />
-      <Line />
+      {unit.apply && <div style={{ color: INK.text, fontSize: TYPE2.body, marginBottom: mm(1) }}>{tidy(unit.apply.prompt)}</div>}
+      <Line heightMm={pitch} />
+      <Line heightMm={pitch} />
+      <Line heightMm={pitch} />
       <div style={{ marginTop: mm(3.5) }}>
         <GoalChips theme={theme} />
       </div>
@@ -287,11 +319,13 @@ export function AnswerItPage({
   page,
   questions,
   theme,
+  pitch = 11,
 }: {
   page: number;
   /** approved question text, or null while the set is awaited. */
   questions: (string | null)[];
   theme: Theme;
+  pitch?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -309,8 +343,8 @@ export function AnswerItPage({
             </div>
             {/* the writing is the focus: clear air after the question card */}
             <div style={{ marginTop: mm(5) }}>
-              <Line />
-              <Line />
+              <Line heightMm={pitch} />
+              <Line heightMm={pitch} />
             </div>
           </div>
         ))}
@@ -335,6 +369,7 @@ export function GrammarUsePage({
   chips,
   lines,
   theme,
+  pitch = 11,
 }: {
   page: number;
   sceneSrc: string;
@@ -343,6 +378,7 @@ export function GrammarUsePage({
   chips: string[];
   lines: number;
   theme: Theme;
+  pitch?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -362,7 +398,7 @@ export function GrammarUsePage({
         <GoalChips theme={theme} />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-        {Array.from({ length: lines }).map((_, i) => <Line key={i} />)}
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={pitch} />)}
       </div>
     </WbPage>
   );
@@ -379,6 +415,7 @@ export function BigWritePage({
   scenePos,
   lines,
   theme,
+  pitch = 11,
 }: {
   page: number;
   prompt: string;
@@ -386,6 +423,7 @@ export function BigWritePage({
   scenePos?: string;
   lines: number;
   theme: Theme;
+  pitch?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -397,7 +435,7 @@ export function BigWritePage({
         <GoalChips theme={theme} />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-        {Array.from({ length: lines }).map((_, i) => <Line key={i} />)}
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={pitch} />)}
       </div>
     </WbPage>
   );

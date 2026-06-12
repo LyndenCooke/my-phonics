@@ -201,6 +201,7 @@ const units: GrammarUnit[] = [
     },
     "format": "match",
     "match": {
+      "rightShuffled": ["wishes", "chips", "dogs", "foxes", "ducks"],
       "pairs": [
         {
           "left": "dog",

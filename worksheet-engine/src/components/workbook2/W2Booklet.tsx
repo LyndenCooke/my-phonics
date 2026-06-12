@@ -4,36 +4,42 @@ import { getGrammarUnit } from '@/lib/grammarRegistry';
 import type { GrammarUnit } from '@/data/grammarSchema';
 import { FONT, INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
-import { WbPage, Heading, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
-import { SpellItPage, SentencesPage, HandwritingPage } from '@/components/workbook2/W2Skills';
+import { WbPage, Heading, type Theme } from '@/components/workbook2/BookStyle';
+import { SpellItPage, SentencesPage, HandwritingPage, SoundsPage } from '@/components/workbook2/W2Skills';
 import { GrammarPage, GrammarUsePage, AnswerItPage, BigWritePage } from '@/components/workbook2/W2Writing';
-import { SwykAPage, SwykBPage, AnswersPage, SpellingWordsPage, GrownUpsPage } from '@/components/workbook2/W2Assess';
-import { W2_L6_BOOKS, type W2Book } from '@/data/workbook2/l6';
+import { SwykAPage, SwykBPage, AnswersPage, SpellingWordsPage, GrownUpsPage, RevisitPage } from '@/components/workbook2/W2Assess';
+import { getW2Level } from '@/data/workbook2/registry';
+import type { W2BookData, W2LevelSpec } from '@/data/workbook2/levels';
 
 // ---------------------------------------------------------------------------
-// W2Booklet — the whole-level workbook, one booklet that lives with the child
-// for all of Level 6: four book sections in teaching order, the week-6
-// assessment (Show what you know A/B with the half-term test), then the
-// grown-up back matter (Answers · Spelling words · For grown-ups — three
-// pages, so a parent never needs a separate teacher booklet). Page numbers
-// and the contents lines are computed here, never stored.
+// W2Booklet — the whole-level workbook for ANY level: book sections in
+// teaching order, the week-6 assessment (Show what you know A/B with the
+// half-term test), then the grown-up back matter (Answers · Spelling words ·
+// For grown-ups). Page numbers and contents lines are computed here, never
+// stored.
 //
 // Per-book page order (one ~5-minute page per day; spelling sits at the END
 // of the book's run — practise, then the test the day before the big write):
-//   grammar A · Sentences · [Answer it] · grammar B · [grammar C]
-//   · Use your grammar · Spell it · Big write · Handwriting
+//   [Sounds] · grammar A · Sentences · [Answer it] · grammar B · [grammar C]
+//   · [Use your grammar] · [Fix and answer] · Spell it · Big write · Handwriting
+// Square-bracketed pages appear per the level spec and the book's data.
 // ---------------------------------------------------------------------------
 
-function bookPages(book: W2Book): string[] {
-  const pages = ['gr0', 'sentences'];
-  if (book.questions) pages.push('answerit');
+function bookPages(book: W2BookData, spec: W2LevelSpec): string[] {
+  const pages: string[] = [];
+  if (spec.soundsPage && book.sounds) pages.push('sounds');
+  if (book.grammar.length > 0) pages.push('gr0');
+  pages.push('sentences');
+  if (spec.answerIt && book.questions) pages.push('answerit');
   for (let i = 1; i < book.grammar.length; i += 1) pages.push(`gr${i}`);
-  pages.push('usegrammar', 'spell', 'bigwrite', 'handwriting');
+  if (book.useGrammar) pages.push('usegrammar');
+  if (book.revisit) pages.push('revisit');
+  pages.push('spell', 'bigwrite', 'handwriting');
   return pages;
 }
 
-/** The B4 revisit unit renders under its sequence-doc title. */
-function unitFor(book: W2Book, idx: number): GrammarUnit {
+/** A revisit unit renders under its sequence-doc title. */
+function unitFor(book: W2BookData, idx: number): GrammarUnit {
   const unit = getGrammarUnit(book.grammar[idx]);
   if (!unit) throw new Error(`Unknown grammar unit ${book.grammar[idx]}`);
   if (unit.format === 'review') {
@@ -43,18 +49,20 @@ function unitFor(book: W2Book, idx: number): GrammarUnit {
 }
 
 /** Child-facing page name per kind, for the contents sub-lines. */
-function pageName(book: W2Book, kind: string): string {
+function pageName(book: W2BookData, kind: string): string {
+  if (kind === 'sounds') return 'Sounds';
   if (kind === 'spell') return 'Spell it';
   if (kind === 'sentences') return 'Sentences';
   if (kind === 'answerit') return 'Answer it in a sentence';
   if (kind === 'usegrammar') return 'Use your grammar';
+  if (kind === 'revisit') return 'Fix and answer';
   if (kind === 'bigwrite') return 'Big write';
   if (kind === 'handwriting') return 'Handwriting';
   if (kind.startsWith('gr')) return unitFor(book, Number(kind.slice(2))).name;
   return '';
 }
 
-function CoverPlaceholder({ theme }: { theme: Theme }) {
+function CoverPlaceholder({ theme, level }: { theme: Theme; level: number }) {
   return (
     <div
       className="page"
@@ -65,7 +73,7 @@ function CoverPlaceholder({ theme }: { theme: Theme }) {
       }}
     >
       <div style={{ color: '#fff', fontSize: '44pt', fontWeight: 700 }}>Workbook</div>
-      <div style={{ color: '#fff', fontSize: TYPE2.heading }}>Level 6 · Building Fluency</div>
+      <div style={{ color: '#fff', fontSize: '21pt' }}>Level {level} · {theme.name}</div>
     </div>
   );
 }
@@ -97,14 +105,15 @@ function ContentsPage({ lines, theme }: { lines: ContentsLine[]; theme: Theme })
 }
 
 export default function W2Booklet({ level }: { level: number }) {
-  if (level !== 6) throw new Error(`W2 booklet data exists for level 6 only (got ${level}).`);
+  const data = getW2Level(level);
+  const spec = data.spec;
   const theme = getLevelTheme(level);
 
   // assembly: compute page numbers
   let page = 3;
-  const sections: { book: W2Book; start: number; pages: string[] }[] = [];
-  for (const book of W2_L6_BOOKS) {
-    const pages = bookPages(book);
+  const sections: { book: W2BookData; start: number; pages: string[] }[] = [];
+  for (const book of data.books) {
+    const pages = bookPages(book, spec);
     sections.push({ book, start: page, pages });
     page += pages.length;
   }
@@ -128,28 +137,30 @@ export default function W2Booklet({ level }: { level: number }) {
 
   return (
     <>
-      <CoverPlaceholder theme={theme} />
+      <CoverPlaceholder theme={theme} level={level} />
       <ContentsPage lines={contents} theme={theme} />
       {sections.map(({ book, start, pages }) => (
         <React.Fragment key={book.num}>
           {pages.map((kind, i) => {
             const p = start + i;
-            if (kind === 'spell') return <SpellItPage key={kind} page={p} practise={book.spellPractise} theme={theme} />;
-            if (kind === 'sentences') return <SentencesPage key={kind} page={p} hold={book.hold} listenSlots={2} theme={theme} />;
-            if (kind === 'answerit') return <AnswerItPage key={kind} page={p} questions={book.questions!} theme={theme} />;
-            if (kind.startsWith('gr')) return <GrammarPage key={kind} page={p} unit={unitFor(book, Number(kind.slice(2)))} theme={theme} />;
-            if (kind === 'usegrammar') return <GrammarUsePage key={kind} page={p} sceneSrc={book.useGrammar.scene} scenePos={book.useGrammar.pos} chips={book.useGrammar.chips} lines={6} theme={theme} />;
-            if (kind === 'bigwrite') return <BigWritePage key={kind} page={p} prompt={book.bigWrite.prompt} sceneSrc={book.bigWrite.scene} scenePos={book.bigWrite.pos} lines={9} theme={theme} />;
-            if (kind === 'handwriting') return <HandwritingPage key={kind} page={p} ladders={book.ladders} theme={theme} />;
+            if (kind === 'sounds') return <SoundsPage key={kind} page={p} graphemes={book.sounds!.graphemes} words={book.sounds!.words} missing={book.sounds!.missing} theme={theme} hwX={spec.hwXMm} />;
+            if (kind === 'spell') return <SpellItPage key={kind} page={p} practise={book.spellPractise} theme={theme} pitch={spec.pitchMm} testWords={spec.testWords} />;
+            if (kind === 'sentences') return <SentencesPage key={kind} page={p} hold={book.hold} listenSlots={2} theme={theme} pitch={spec.pitchMm} />;
+            if (kind === 'answerit') return <AnswerItPage key={kind} page={p} questions={book.questions!} theme={theme} pitch={spec.pitchMm} />;
+            if (kind === 'revisit') return <RevisitPage key={kind} page={p} groups={book.revisit!} theme={theme} pitch={spec.pitchMm} />;
+            if (kind.startsWith('gr')) return <GrammarPage key={kind} page={p} unit={unitFor(book, Number(kind.slice(2)))} theme={theme} pitch={spec.pitchMm} />;
+            if (kind === 'usegrammar') return <GrammarUsePage key={kind} page={p} sceneSrc={book.useGrammar!.scene} scenePos={book.useGrammar!.pos} chips={book.useGrammar!.chips} lines={6} theme={theme} pitch={spec.pitchMm} />;
+            if (kind === 'bigwrite') return <BigWritePage key={kind} page={p} prompt={book.bigWrite.prompt} sceneSrc={book.bigWrite.scene} scenePos={book.bigWrite.pos} lines={spec.bigWriteLines} theme={theme} pitch={spec.pitchMm} />;
+            if (kind === 'handwriting') return <HandwritingPage key={kind} page={p} ladders={book.ladders} theme={theme} hwX={spec.hwXMm} />;
             return null;
           })}
         </React.Fragment>
       ))}
-      <SwykAPage page={swykA} theme={theme} />
-      <SwykBPage page={swykB} theme={theme} />
-      <AnswersPage page={answers} theme={theme} />
-      <SpellingWordsPage page={spellings} theme={theme} />
-      <GrownUpsPage page={grownUps} theme={theme} />
+      <SwykAPage page={swykA} data={data} theme={theme} />
+      <SwykBPage page={swykB} data={data} theme={theme} />
+      <AnswersPage page={answers} data={data} theme={theme} />
+      <SpellingWordsPage page={spellings} data={data} theme={theme} />
+      <GrownUpsPage page={grownUps} data={data} theme={theme} />
     </>
   );
 }

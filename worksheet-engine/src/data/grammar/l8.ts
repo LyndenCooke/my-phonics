@@ -327,7 +327,7 @@ const units: GrammarUnit[] = [
         {
           "before": "We sat ___",
           "after": " the tree.",
-          "answer": "under"
+          "answer": "outside"
         },
         {
           "before": "___",
