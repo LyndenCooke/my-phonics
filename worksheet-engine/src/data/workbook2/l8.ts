@@ -41,7 +41,16 @@ const BOOKS: W2BookData[] = [
     listen: ['She stopped.', 'His family is searching for him.'],
     questions: [null, null, null],
     useGrammar: { chips: ['sensible', 'possible', 'terrible', 'visible', 'incredible'], scene: '/storyart/l8_2/page3.png', pos: '50% 45%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l8_2/page6.png', pos: '50% 45%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Start a sentence with a fronted adverbial.',
+      scene: '/storyart/l8_2/page6.png',
+      scenes: [
+        { src: '/storyart/l8_2/page5.png' },
+        { src: '/storyart/l8_2/page1.png' },
+        { src: '/storyart/l8_2/page8.png' },
+        { src: '/storyart/l8_2/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'ible', word: 'incredible', sentence: 'She stopped.' },
       { sound: 'able', word: 'predictable', sentence: 'She did not give up.' },
@@ -76,7 +85,16 @@ const BOOKS: W2BookData[] = [
       { kind: 'rewrite', label: 'Change the opener', refs: [{ sourceUnit: 'G-L8.4', rowRef: 0 }] },
       { kind: 'rewrite', label: 'Be a proofreader', refs: [{ sourceUnit: 'G-L8.6', rowRef: 0 }] },
     ],
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l8_4/page4.png', pos: '50% 50%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Start a sentence with a fronted adverbial.',
+      scene: '/storyart/l8_4/page4.png',
+      scenes: [
+        { src: '/storyart/l8_4/page5.png' },
+        { src: '/storyart/l8_4/page1.png' },
+        { src: '/storyart/l8_4/page8.png' },
+        { src: '/storyart/l8_4/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'ible', word: 'incredible', sentence: 'Mia was ambitious.' },
       { sound: 'ous', word: 'gorgeous', sentence: 'He stopped walking and listened.' },

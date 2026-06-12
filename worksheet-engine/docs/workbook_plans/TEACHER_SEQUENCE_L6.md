@@ -40,7 +40,9 @@ test, test the day before the big write closes the book.
 
 Same shape: sound books are and ow on days 8 and 10; grammar pages are Four
 kinds of sentence and Joining with when, if, that, because; the spelling
-test and big write close day 14.
+test and big write close day 14. The big write here is the sequencing page:
+number the four story pictures in order, then write the story with a
+joining word in each sentence.
 
 ## The New Glue — days 15-23 (the long share)
 
@@ -54,7 +56,8 @@ big write day 23.
 
 Sound books mb/gn and ph/wh. Day 24 Spell it (practise) · 25 Fix and answer
 · 26 Sentences · 27 Use your grammar + Handwriting slot · 28 spelling test,
-then the Big write closes the level.
+then the Big write closes the level — the sequencing page: number the four
+story pictures in order, then retell the story in writing.
 
 ## Days 29-30 — the assessment event
 

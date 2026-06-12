@@ -39,7 +39,16 @@ const BOOKS: W2BookData[] = [
     listen: ['I kept still.', 'I spoke clear and slow.'],
     questions: [null, null, null],
     useGrammar: { chips: ['their', 'there', 'here', 'hear', 'near'], scene: '/storyart/l7_2/page3.png', pos: '50% 50%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l7_2/page7.png', pos: '50% 45%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
+      scene: '/storyart/l7_2/page7.png',
+      scenes: [
+        { src: '/storyart/l7_2/page5.png' },
+        { src: '/storyart/l7_2/page1.png' },
+        { src: '/storyart/l7_2/page8.png' },
+        { src: '/storyart/l7_2/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'ear', word: 'near', sentence: 'I crept near.' },
       { sound: 'oor', word: 'door', sentence: 'I spoke soft and clear.' },
@@ -69,7 +78,16 @@ const BOOKS: W2BookData[] = [
     listen: ['I looked left.', 'I was alone.'],
     questions: [null, null, null],
     useGrammar: { chips: ['near', 'fear', 'sure', 'section', 'direction'], scene: '/storyart/l7_4/page4.png', pos: '50% 45%' },
-    bigWrite: { prompt: PROMPT, scene: '/storyart/l7_4/page8.png', pos: '50% 45%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
+      scene: '/storyart/l7_4/page8.png',
+      scenes: [
+        { src: '/storyart/l7_4/page5.png' },
+        { src: '/storyart/l7_4/page1.png' },
+        { src: '/storyart/l7_4/page8.png' },
+        { src: '/storyart/l7_4/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'ear', word: 'fear', sentence: 'I felt a fear in my chest.' },
       { sound: 'tion', word: 'direction', sentence: 'He knew the direction to go.' },

@@ -50,7 +50,16 @@ const BOOKS: W2BookData[] = [
     ],
     questions: [null, null, null],
     useGrammar: { chips: ['when', 'if', 'that', 'because', 'bare', 'brown'], scene: '/storyart/l6_2/page2.png', pos: '50% 45%' },
-    bigWrite: { prompt: 'Look at this moment from the book. Write what happens next.', scene: '/storyart/l6_2/page7.png' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use a joining word in your sentences.',
+      scene: '/storyart/l6_2/page7.png',
+      scenes: [
+        { src: '/storyart/l6_2/page5.png' },
+        { src: '/storyart/l6_2/page1.png' },
+        { src: '/storyart/l6_2/page8.png' },
+        { src: '/storyart/l6_2/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'are', word: 'bare', sentence: 'The owl sat on a bare branch.' },
       { sound: 'ow', word: 'down', sentence: 'The owl stared down at me.' },
@@ -91,7 +100,16 @@ const BOOKS: W2BookData[] = [
       'The boy sat down with Mum by the water.',
     ],
     useGrammar: { chips: ['could', "didn't", 'and', 'but', 'brown', 'furry'], scene: '/storyart/l6_4/page6.png', pos: '50% 62%' },
-    bigWrite: { prompt: 'Look at this moment from the book. Write what happens next.', scene: '/storyart/l6_4/page4.png', pos: '50% 68%' },
+    bigWrite: {
+      prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use a joining word in your sentences.',
+      scene: '/storyart/l6_4/page4.png',
+      scenes: [
+        { src: '/storyart/l6_4/page5.png' },
+        { src: '/storyart/l6_4/page1.png' },
+        { src: '/storyart/l6_4/page8.png' },
+        { src: '/storyart/l6_4/page3.png' },
+      ],
+    },
     ladders: [
       { sound: 'ow', word: 'down', sentence: 'Round and round!' },
       { sound: 'ue', word: 'true', sentence: 'She had a true glow.' },

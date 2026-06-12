@@ -441,6 +441,53 @@ export function BigWritePage({
   );
 }
 
+/** The sequencing variant (variety, per Lynden 2026-06-12): four square story
+ *  scenes in a 2x2 grid, each with an empty number box — the child orders the
+ *  story 1 to 4, then writes it. The books are losing their printed text, so
+ *  the workbook carries the ordering work. */
+export function BigWriteSequencePage({
+  page,
+  prompt,
+  scenes,
+  lines,
+  theme,
+  pitch = 11,
+}: {
+  page: number;
+  prompt: string;
+  scenes: { src: string; pos?: string }[];
+  lines: number;
+  theme: Theme;
+  pitch?: number;
+}) {
+  // the grid flexes so the write lines always keep their full pitch
+  const imgH = Math.max(36, Math.min(52, (180 - lines * pitch) / 2));
+  const numBox: React.CSSProperties = {
+    position: 'absolute', top: mm(2), left: mm(2), width: mm(9), height: mm(9),
+    background: '#fff', border: `0.5mm solid ${theme.primary}`, borderRadius: mm(1.5),
+  };
+  return (
+    <WbPage page={page}>
+      <Heading title="Big write" />
+      <div style={{ fontSize: TYPE2.word, color: INK.text, margin: `0 0 ${mm(3.5)}`, lineHeight: 1.3 }}>{prompt}</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: mm(4) }}>
+        {scenes.slice(0, 4).map((s, i) => (
+          <div key={i} style={{ position: 'relative' }}>
+            <StoryScene src={s.src} pos={s.pos} heightMm={imgH} />
+            <div style={numBox} />
+          </div>
+        ))}
+      </div>
+      <div style={{ margin: `${mm(3.5)} 0` }}>
+        <GoalChips theme={theme} />
+      </div>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        {Array.from({ length: lines }).map((_, i) => <Line key={i} heightMm={pitch} />)}
+      </div>
+    </WbPage>
+  );
+}
+
 /** The paragraph variant: scene + four lines, then scene + four lines. */
 export function BigWriteParagraphPage({
   page,
