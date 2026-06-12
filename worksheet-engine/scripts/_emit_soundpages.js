@@ -14,8 +14,10 @@ function hasArt(g, word) {
   return fs.existsSync(path.join(artRoot, g, `${word.replace(/ /g, '_')}.png`));
 }
 
-function shownFor(g, word, given) {
-  if (given && given.includes('_')) return given.replace(/_+/g, '_');
+// ALWAYS derive the gap from the word itself (first occurrence of the
+// grapheme) — the vision transcription's gap strings proved unreliable
+// ("_at" for ant, "im_" for rim).
+function shownFor(g, word) {
   const i = word.indexOf(g);
   if (i < 0) return `_${word.slice(1)}`;
   return `${word.slice(0, i)}_${word.slice(i + g.length)}`;
@@ -28,7 +30,7 @@ for (const [g, data] of Object.entries(manifest)) {
     trace: data.trace_words.slice(0, 4).map((w) => ({ word: w, img: hasArt(g, w) })),
     missing: data.missing.map((m) => ({
       word: m.word,
-      shown: shownFor(g, m.word, m.shown),
+      shown: shownFor(g, m.word),
       img: hasArt(g, m.word),
     })),
   };
