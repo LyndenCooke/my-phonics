@@ -112,11 +112,11 @@ export function GoalChips({ theme }: { theme: Theme }) {
 /** A colour story scene in a properly cropped, framed panel (book p16 style):
  *  rounded corners, hairline border, object-fit cover — the art fills the
  *  frame with no clipped-off edges poking out and can never float. */
-export function StoryScene({ src, heightMm, alt = '' }: { src: string; heightMm: number; alt?: string }) {
+export function StoryScene({ src, heightMm, pos = '50% 30%', alt = '' }: { src: string; heightMm: number; pos?: string; alt?: string }) {
   return (
     <div style={{ width: '100%', height: mm(heightMm), borderRadius: mm(3), border: `0.4mm solid ${INK.rule}`, overflow: 'hidden' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 30%', display: 'block' }} />
+      <img src={src} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: pos, display: 'block' }} />
     </div>
   );
 }
