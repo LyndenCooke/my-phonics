@@ -16,8 +16,11 @@ import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, Li
 // Two chip columns; the first pair is pre-joined with an accent line so the
 // example lives inside the task itself.
 
-const ROW_H = 13;
-const ROW_GAP = 6;
+// Narrow chips at the page edges with the join dots tight against the words,
+// leaving the whole middle of the page as the child's drawing space.
+const ROW_H = 14;
+const ROW_GAP = 17;
+const CHIP_W = 44;
 
 function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
   const pairs = unit.match.pairs;
@@ -26,22 +29,21 @@ function MatchBody({ unit, theme }: { unit: MatchUnit; theme: Theme }) {
 
   const chip: React.CSSProperties = {
     border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), display: 'flex', alignItems: 'center',
-    padding: `0 ${mm(4)}`, height: mm(ROW_H), color: INK.text, fontSize: TYPE2.word, background: '#fff',
+    width: mm(CHIP_W), padding: `0 ${mm(3.5)}`, height: mm(ROW_H), color: INK.text, fontSize: TYPE2.word, background: '#fff',
   };
-  const dot: React.CSSProperties = { width: mm(2.2), height: mm(2.2), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
+  const dot: React.CSSProperties = { width: mm(2.6), height: mm(2.6), borderRadius: '50%', background: theme.primary, flex: '0 0 auto' };
 
   const yOf = (row: number) => row * (ROW_H + ROW_GAP) + ROW_H / 2;
-  const x1 = 71; // just right of the left chips' dots
-  const x2 = 111; // just left of the right chips' dots
+  const x1 = CHIP_W - 3.5; // the left chips' dots
+  const x2 = 182 - CHIP_W + 3.5; // the right chips' dots
 
   return (
     <div style={{ position: 'relative' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: mm(ROW_GAP) }}>
         {pairs.map((p, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '76mm 30mm 76mm', alignItems: 'center' }}>
+          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ ...chip, justifyContent: 'space-between' }}><span>{p.left}</span><span style={dot} /></div>
-            <div />
-            <div style={{ ...chip, gap: mm(3) }}><span style={dot} /><span>{rights[i]}</span></div>
+            <div style={{ ...chip, gap: mm(2.5) }}><span style={dot} /><span>{rights[i]}</span></div>
           </div>
         ))}
       </div>
@@ -128,10 +130,10 @@ export function AnswerItPage({
         {questions.map((q, i) => (
           <div key={i}>
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(2.5)} ${mm(4)}` }}>
-              <div style={{ color: theme.accentText, fontSize: TYPE2.small, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: mm(1) }}>
+              <div style={{ color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: mm(1) }}>
                 Question {i + 1}
               </div>
-              <div style={{ fontSize: TYPE2.body, color: q ? INK.text : INK.faint }}>
+              <div style={{ fontSize: TYPE2.word, color: q ? INK.text : INK.faint }}>
                 {q ?? 'Question to come.'}
               </div>
             </div>
@@ -166,8 +168,10 @@ export function BigWritePage({
 }) {
   return (
     <WbPage page={page}>
-      <Heading title="Big write" sub={prompt} />
-      <StoryScene src={sceneSrc} heightMm={64} />
+      <Heading title="Big write" />
+      {/* the task itself is the biggest text on the page after the heading */}
+      <div style={{ fontSize: TYPE2.word, color: INK.text, margin: `0 0 ${mm(3.5)}` }}>{prompt}</div>
+      <StoryScene src={sceneSrc} heightMm={62} />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>

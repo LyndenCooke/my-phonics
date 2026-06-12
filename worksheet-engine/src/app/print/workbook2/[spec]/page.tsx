@@ -65,7 +65,7 @@ export default function PrintWorkbook2({ params }: { params: { spec: string } })
       <HandwritingPage
         page={9}
         theme={theme}
-        patterns={['ur er ur er', 'purse purple turn', 'her fern never']}
+        patterns={['ur er ur er', 'purse purple turn', 'her fern never', 'church burst hurt']}
         phrases={['the soft purple purse', 'their oh could']}
       />
     </>

@@ -25,7 +25,7 @@ function ColHeads() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '44mm 1fr 1fr 30mm', columnGap: mm(4), marginBottom: mm(1.5) }}>
       {COL_HEADS.map((h) => (
-        <span key={h} style={{ color: INK.muted, fontSize: TYPE2.small, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textAlign: h === '1. Look' ? 'left' : 'center' }}>{h}</span>
+        <span key={h} style={{ color: INK.muted, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', textAlign: h === '1. Look' ? 'left' : 'center' }}>{h}</span>
       ))}
     </div>
   );
@@ -65,7 +65,7 @@ export function SpellItPage({
       <DottedDivider />
 
       <SectionLabel text="Spelling test — a grown-up reads the words" theme={theme} />
-      <div style={{ color: INK.muted, fontSize: TYPE2.sub, marginBottom: mm(2) }}>
+      <div style={{ color: INK.muted, fontSize: TYPE2.body, marginBottom: mm(2) }}>
         Cover the practise words first. Write each word your grown-up reads.
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: mm(12), alignContent: 'space-evenly' }}>
@@ -118,25 +118,24 @@ export function SentencesPage({
       <DottedDivider />
 
       <SectionLabel text="Listen and write — a grown-up reads the sentence" theme={theme} />
-      <div style={{ color: INK.muted, fontSize: TYPE2.sub, marginBottom: mm(2) }}>
+      <div style={{ color: INK.muted, fontSize: TYPE2.body, marginBottom: mm(2) }}>
         Say it back, tap the words, then write it.
       </div>
-      <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: mm(7), paddingTop: mm(2) }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {Array.from({ length: listenSlots }).map((_, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: mm(3) }}>
-            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(13) }}>{i + 1}.</span>
+            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(14) }}>{i + 1}.</span>
             <div style={{ flex: 1 }}>
-              <Line heightMm={12} />
               <Line heightMm={13} />
+              <Line heightMm={14} />
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ flex: '0 0 auto', marginTop: mm(6) }}>
+      <div style={{ flex: '0 0 auto', marginTop: mm(5) }}>
         <GoalChips theme={theme} />
       </div>
-      <div style={{ flex: 1 }} />
     </WbPage>
   );
 }
@@ -174,14 +173,14 @@ export function HandwritingPage({
     <WbPage page={page}>
       <Heading title="Handwriting" sub="Trace the grey words, then keep writing them to the end of the line." />
       <SectionLabel text="Patterns and words" theme={theme} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(6) }}>
+      <div style={{ flex: 1.1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {patterns.map((m) => <HwRow key={m} model={m} theme={theme} />)}
       </div>
 
       <DottedDivider />
 
       <SectionLabel text="Phrases" theme={theme} />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(6) }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {phrases.map((m) => <HwRow key={m} model={m} theme={theme} />)}
       </div>
     </WbPage>
