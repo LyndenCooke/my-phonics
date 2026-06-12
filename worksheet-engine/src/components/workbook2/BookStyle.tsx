@@ -28,11 +28,15 @@ export const WB2 = {
 // Sized for five-to-seven-year-olds: child-facing text errs big.
 export const TYPE2 = {
   heading: '21pt',
-  word: '17pt', // child-facing words, sentences, prompts, worked examples
+  example: '20pt', // worked answers written on lines — the model the child copies
+  word: '17pt', // child-facing words, sentences, prompts
   body: '14pt', // instructions and answers
   label: '11pt', // small-caps section labels and column heads
   small: '9pt', // page number ONLY
 } as const;
+
+/** ONE rule weight for every write line (0.4mm rasterised inconsistently). */
+export const RULE_W = '0.5mm';
 
 /** The root page: white, margins, tiny corner page number (book style). */
 export function WbPage({ page, children }: { page: number; children: React.ReactNode }) {
@@ -121,9 +125,9 @@ export function StoryScene({ src, heightMm, pos = '50% 30%', alt = '' }: { src: 
   );
 }
 
-/** A single plain write line (book ink, 0.4mm). */
+/** A single plain write line (book ink, one rule weight everywhere). */
 export function Line({ heightMm = 11 }: { heightMm?: number }) {
-  return <div style={{ height: mm(heightMm), borderBottom: `0.4mm solid ${INK.text}` }} />;
+  return <div style={{ height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }} />;
 }
 
 /** The book's Sound Spotlight badge: level-colour circle, white sound. */
@@ -155,8 +159,8 @@ export function SoundBadge({ sound, theme, sizeMm = 11 }: { sound: string; theme
  *  the translate pulls the baseline down onto the rule.) */
 export function SeatedText({ text, color, heightMm = 11 }: { text: string; color: string; heightMm?: number }) {
   return (
-    <div style={{ position: 'relative', height: mm(heightMm), borderBottom: `0.4mm solid ${INK.text}` }}>
-      <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.word, color, lineHeight: 1, transform: 'translateY(18%)', whiteSpace: 'nowrap' }}>
+    <div style={{ position: 'relative', height: mm(heightMm), borderBottom: `${RULE_W} solid ${INK.text}` }}>
+      <span style={{ position: 'absolute', left: 0, bottom: 0, fontSize: TYPE2.example, color, lineHeight: 1, transform: 'translateY(10%)', whiteSpace: 'nowrap' }}>
         {text}
       </span>
     </div>

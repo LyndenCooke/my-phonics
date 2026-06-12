@@ -1,5 +1,18 @@
 # L6 workbook — content selections (AWAITING LYNDEN'S APPROVAL)
 
+> **Spelling test word lists (selected 2026-06-12, published on the
+> Spelling words back page per Lynden):** B1 purse, purple, turn, fur,
+> church, her, fern, never, their, oh · B2 care, dare, stare, bare, owl,
+> brown, down, people, Mr, Mrs · B3 new, flew, drew, grew, blue, glue,
+> true, looked, called, asked · B4 how, now, town, furry, turn, stare,
+> blue, drew, their, could · Half-term purse, her, bare, owl, down, new,
+> glue, true, people, could. Sources: word banks carrying the L6 GPCs
+> (old L6/L3), book writing_words, Tricky L6.
+>
+> **Content amendment (Lynden, 2026-06-12):** comma between the two
+> adjectives in every G-L6.2 noun phrase ("the new, blue glue" etc) —
+> applied to the unit data and everywhere derived.
+
 > **v3 note (book-style booklet, workbook2):** the live build is the
 > book-style booklet (`npm run pdf workbook2 6`, data in
 > `src/data/workbook2/l6.ts`). It SELECTS FROM the lists below plus these
