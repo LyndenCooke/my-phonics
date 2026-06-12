@@ -112,7 +112,7 @@ export function SentencesPage({
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(2)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
               {s}
             </div>
-            <Line />
+            <div style={{ marginTop: mm(4) }}><Line /></div>
           </div>
         ))}
       </div>

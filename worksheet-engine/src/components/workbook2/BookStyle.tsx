@@ -37,14 +37,16 @@ export const HW_X_MM = 5.5;
 const M = SCHOOL_PRINT_METRICS;
 /** the handwriting glyph size (font size whose x-height is HW_X_MM). */
 const HW_FONT_MM = HW_X_MM / M.xHeight; // ≈ 10.83mm ≈ 30.7pt
-/** baseline-to-ascender-line distance of the handwriting row — the universal
- *  write-line pitch, so the child writes at the practised size everywhere. */
-export const WRITE_PITCH_MM = Math.round((HW_FONT_MM * M.ascender) * 10) / 10; // ≈ 8.5mm
+/** The universal write-line pitch. Calibrated by Lynden 2026-06-12: the
+ *  WRITING is the focus of every page, so the lines are roomy and prominent
+ *  (the handwriting band of 8.5mm read as cramped; 11mm gives the child
+ *  space while keeping one consistent rhythm booklet-wide). */
+export const WRITE_PITCH_MM = 11;
 
 export const TYPE2 = {
   heading: '21pt',
-  example: '24pt', // worked answers on lines — midway between body text and the handwriting model
-  word: '24pt', // child task text — the same middle size, big without breaking layouts
+  example: '22pt', // worked answers on lines — one size for every example
+  word: '22pt', // child task text — one size everywhere
   body: '14pt', // instructions and numbers
   label: '11pt', // small-caps section labels and column heads
   small: '9pt', // page number ONLY
@@ -187,7 +189,7 @@ export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM }: { text: s
  *  characters cannot sit on one 182mm line at the handwriting size). The
  *  split balances at a word boundary, like real writing flowing on. */
 export function SeatedTextLines({ text, color }: { text: string; color: string }) {
-  if (text.length <= 44) return <SeatedText text={text} color={color} />;
+  if (text.length <= 46) return <SeatedText text={text} color={color} />;
   const words = text.split(' ');
   let first = '';
   for (const w of words) {
