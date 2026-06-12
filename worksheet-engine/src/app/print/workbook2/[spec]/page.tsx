@@ -4,6 +4,7 @@ import { getLevelTheme } from '@/design/levelThemes';
 import { getGrammarUnit } from '@/lib/grammarRegistry';
 import { SpellItPage, SentencesPage, HandwritingPage } from '@/components/workbook2/W2Skills';
 import { GrammarPage, GrammarUsePage, AnswerItPage, BigWritePage } from '@/components/workbook2/W2Writing';
+import W2Booklet from '@/components/workbook2/W2Booklet';
 
 // ---------------------------------------------------------------------------
 // WORKBOOK REDESIGN EXEMPLAR — one fortnight (The Purple Purse) in the book
@@ -21,7 +22,7 @@ import { GrammarPage, GrammarUsePage, AnswerItPage, BigWritePage } from '@/compo
 // ---------------------------------------------------------------------------
 
 export function generateStaticParams() {
-  return [{ spec: '6b1' }];
+  return [{ spec: '6b1' }, { spec: '6' }];
 }
 
 // Dictation sentences for this fortnight live in the pool data and Answers;
@@ -30,6 +31,8 @@ export function generateStaticParams() {
 //   2. We walked up and down the street. (Book L6.1 p2)
 
 export default function PrintWorkbook2({ params }: { params: { spec: string } }) {
+  // '6' = the full level booklet; '6b1' = the approved one-book exemplar.
+  if (params.spec === '6') return <W2Booklet level={6} />;
   if (params.spec !== '6b1') notFound();
   const theme = getLevelTheme(6);
   const contractions = getGrammarUnit('g-l6-6');

@@ -1,4 +1,29 @@
-# L6 Edition B workbook — content selections (AWAITING LYNDEN'S APPROVAL)
+# L6 workbook — content selections (AWAITING LYNDEN'S APPROVAL)
+
+> **v3 note (book-style booklet, workbook2):** the live build is the
+> book-style booklet (`npm run pdf workbook2 6`, data in
+> `src/data/workbook2/l6.ts`). It SELECTS FROM the lists below plus these
+> additions, all by the same source rules:
+> - Spell it practise sets (6 per book, sound + tricky mix): B1 purple,
+>   purse, church, fern, their, oh · B2 care, dare, owl, brown, down,
+>   people · B3 new, glue, blue, drew, looked, asked · B4 could, furry,
+>   now, stare, blue, their.
+> - Hold/Listen pairs: the first two of each book's three pilot selections.
+> - Handwriting ladders (sound → word → sentence, all sentences verbatim):
+>   B1 ur/purse/"My purple purse was gone!" (p1) + er/fern/"I searched in
+>   the ferns." (p3) · B2 are/bare/"The owl sat on a bare branch."
+>   (G-L6.1 row) + ow/down/"The owl stared down at me." (G-L6.1 row) ·
+>   B3 ew/drew/"She drew a bird on a card." (p1) + ue/glue/"The new glue
+>   stuck fast." (G-L6.5 row) · B4 ow/down/"Round and round!" (p5) +
+>   ue/true/"She had a true glow." (p7).
+> - Use your grammar chips (verbatim unit answers/banks): B1 it's, didn't,
+>   can't (G-L6.6) + stuck, ran, gave (G-L6.7) · B2 when, if, that,
+>   because (G-L6.4 bank) + bare, brown (G-L6.2 bank) · B3 and, but, or,
+>   so (G-L6.3 bank) + new, blue (G-L6.2 bank) · B4 could (tricky) +
+>   didn't (G-L6.6) + and, but (G-L6.3 bank) + brown, furry (Book L6.4
+>   writing_words).
+> - Story scenes: shipped book art (output/images via NEW_TO_OLD), framed
+>   and cropped per page; pointers in `src/data/workbook2/l6.ts`.
 
 Every selected word, sentence and list in the pilot, with its source pointer.
 Selection only — nothing here is invented. Data lives in

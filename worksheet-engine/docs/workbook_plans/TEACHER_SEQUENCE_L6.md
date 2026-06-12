@@ -1,72 +1,72 @@
-# Teaching Sequence — Level 6 Building Fluency (website copy) — v2
+# Teaching Sequence — Level 6 Building Fluency (website copy) — v3
 
-For the website only. One page per edition is emitted from this source.
-Level 6 is where children meet the full Year 2 expectations, and where
-handwriting begins to join.
+For the website. Level 6 is where children meet the full Year 2
+expectations. The whole level uses ONE workbook: it lives with the child for
+all four reading books and the assessment, alongside the Level 6 sound
+books. The workbook asks for about FIVE MINUTES a day — one page, after the
+day's reading or sound work. The big write closes each book, so the longer
+writing days land about a week apart.
 
-## The two kinds of day
+## What is in the six weeks
 
-Reading days = full 30-minute phonics lesson + one short page. Workout
-days = short warm-up + one longer task. Handwriting (first joins) sits
-outside the phonics lesson, two sessions per book in the handwriting slot.
+- Four reading books: The Purple Purse (ur er) · The Brown Owl (are ow) ·
+  The New Glue (ew ue) · The Cheeky Monkey (review).
+- Nine sound books: ur · er · are · ow · ew/ue before or with their reading
+  book, then the consonant alternatives (wr/kn · ge/dge · mb/gn · ph/wh)
+  spread across weeks 4-6. Consonant alternatives live in the sound books
+  only — the workbook stays on the reading-book sounds.
+- One workbook (this document's pages): per book — Spell it · grammar ·
+  Sentences · Answer it in a sentence · more grammar · Use your grammar ·
+  Big write · Handwriting.
+- Week 6 closes with the assessment event: Show what you know (both
+  pages), the half-term spelling test and the reading check.
 
-## The six-week block
+## The Purple Purse — days 1-7
 
-Four books share one block, so each runs a compressed fortnight; The New
-Glue carries three grammar skills and takes the longest share.
+| Day | Reading and sound work | Workbook page (~5 min) |
+|---|---|---|
+| 1 | Sound book ur | Spell it (practise half) |
+| 2 | Read pages 1-3 | Apostrophes for contractions |
+| 3 | Sound book er | Sentences |
+| 4 | Read pages 4-6 | Answer it in a sentence |
+| 5 | Read pages 7-8 | Keep the tense the same |
+| 6 | Re-read for fluency | Use your grammar · Handwriting in the handwriting slot |
+| 7 | Quick re-read | Spelling test (Spell it page, bottom half), then the Big write |
 
-| Days | Book |
-|---|---|
-| 1-7 | The Purple Purse |
-| 8-14 | The Brown Owl |
-| 15-23 | The New Glue |
-| 24-28 | The Cheeky Monkey |
-| 29-30 | Assessment: Show what you know (both pages) + half-term spelling test (10 words) + reading check |
+## The Brown Owl — days 8-14
 
-## The Purple Purse and The Brown Owl (7 days each)
+Same shape: sound books are and ow on days 8 and 10; grammar pages are Four
+kinds of sentence and Joining with when, if, that, because; the spelling
+test and big write close day 14.
 
-| Day | Type | After the lesson / warm-up | Edition B (workbook) | Edition A |
-|---|---|---|---|---|
-| D1 | Reading | spelling | Look Cover Write Check (sound words) | Workbook |
-| D2 | Reading | grammar 1 | Purse: Contractions · Owl: Four kinds of sentence | Workbook |
-| D3 | Reading | sentence | Hold the sentence | Book back pages (activity page) |
-| D4 | Reading | dictation | Listen and write | Workbook |
-| D5 | Workout | comprehension writing | Answer it in a sentence | Workbook |
-| D6 | Reading | grammar 2 + spelling | Purse: Keep the tense · Owl: When, if, that, because (the LCWC tricky page moves to the warm-up) | Workbook |
-| D7 | Workout | spelling test, then big write across the afternoon session where the timetable allows; otherwise the big write takes the first day of the next book's week | Spelling test · Big write | Workbook |
-| HW slot | outside phonics lesson | two sessions | First joins · Joined words | Book back pages (writing practice) · Workbook |
+## The New Glue — days 15-23 (the long share)
 
-## The New Glue (9 days)
+Sound book ew/ue on day 15; consonant-alternative sound books begin here
+(wr/kn, ge/dge). Three grammar pages (Make the noun phrase grow · Joining
+with and, but, or, so · Adjectives and adverbs) spread across days 16-21
+with reading days between; Use your grammar day 21, spelling test day 22,
+big write day 23.
 
-| Day | Type | Edition B (workbook) | Edition A |
-|---|---|---|---|
-| D1 | Reading | Look Cover Write Check | Workbook |
-| D2 | Reading | Grow the noun phrase | Workbook |
-| D3 | Reading | Hold the sentence | Book back pages |
-| D4 | Reading | Listen and write | Workbook |
-| D5 | Workout | Answer it in a sentence | Workbook |
-| D6 | Reading | And, but, or, so | Workbook |
-| D7 | Reading | Adjectives and adverbs | Workbook |
-| D8 | Workout | Spelling test | Workbook |
-| D9 | Workout | Big write | Workbook |
-| HW slot | outside lesson | Joins · Joined words | Book back pages · Workbook |
+## The Cheeky Monkey — days 24-28 (review book)
 
-## The Cheeky Monkey (5 days, review book)
+Sound books mb/gn and ph/wh. Day 24 Spell it (practise) · 25 Fix and answer
+· 26 Sentences · 27 Use your grammar + Handwriting slot · 28 spelling test,
+then the Big write closes the level.
 
-D1 Reading: Look Cover Write Check · D2 Reading: Fix and answer (revisit) ·
-D3 Reading: Hold the sentence · D4 Reading: Listen and write · D5 Workout:
-Spelling test, then Big write closes the level. One handwriting-slot
-session: joined phrases from all four books.
+## Days 29-30 — the assessment event
+
+Show what you know pages A and B (page B carries the half-term spelling
+test) and the reading check below. Secure here means the Year 2
+expectations are met and your child is ready for Level 7.
 
 ## Spelling test words
 
-Ten per fortnight from the book's focus sounds and the level's tricky words
-(oh, their, people, Mr, Mrs, looked, called, asked, could); finalised at
-build and published here. The half-term test draws across all four books.
+Ten per book from its focus sounds and the Level 6 tricky words (oh, their,
+people, Mr, Mrs, looked, called, asked, could); the half-term list draws
+across all four books. Final lists are published here when approved.
 
-## Week-6 reading check
+## Reading check
 
 Listen to your child read The Cheeky Monkey. Check: reads the alternative
 spellings (ur, er, are, ow, ew, ue) at sight, multi-syllable words with
-suffixes, reads with expression. Secure here means the Year 2 expectations
-are met.
+suffixes, reads with expression.

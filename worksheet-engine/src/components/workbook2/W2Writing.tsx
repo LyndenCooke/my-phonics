@@ -1,5 +1,7 @@
 import React from 'react';
-import type { GrammarUnit, MatchUnit, RewriteUnit } from '@/data/grammarSchema';
+import type { GrammarUnit, MatchUnit, RewriteUnit, TickGridUnit, ClozeUnit, BuildUnit, CircleUnit, ReviewUnit } from '@/data/grammarSchema';
+import { TICKGRID_CATEGORIES } from '@/data/grammarSchema';
+import { resolveReviewText } from '@/lib/grammarRegistry';
 import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
 import { WbPage, Heading, SectionLabel, DottedDivider, GoalChips, StoryScene, SeatedText, Line, TYPE2, type Theme } from '@/components/workbook2/BookStyle';
@@ -84,13 +86,158 @@ function RewriteBody({ unit, theme }: { unit: RewriteUnit; theme: Theme }) {
   );
 }
 
+// ---- grammar: tickgrid (four kinds of sentence) -------------------------------
+// One header row of category words; the first row's correct box carries the
+// worked tick in accent.
+
+function TickBody({ unit, theme }: { unit: TickGridUnit; theme: Theme }) {
+  const cats = unit.tickgrid.categories ?? unit.tickgrid.columns;
+  const cols = `1fr repeat(${cats.length}, 28mm)`;
+  const sep = `0.3mm solid ${theme.primary}1F`;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'end', paddingBottom: mm(1.5) }}>
+        <span />
+        {cats.map((c) => (
+          <span key={c} style={{ textAlign: 'center', whiteSpace: 'nowrap', color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700 }}>{c}</span>
+        ))}
+      </div>
+      {unit.tickgrid.rows.map((r, i) => (
+        <div key={i} style={{ display: 'grid', gridTemplateColumns: cols, alignItems: 'center', minHeight: mm(13.5), borderTop: sep }}>
+          <span style={{ color: INK.text, fontSize: TYPE2.word, padding: `${mm(1)} 0` }}>{r.text}</span>
+          {cats.map((c) => (
+            <span key={c} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <span style={{ width: mm(6.5), height: mm(6.5), border: `0.45mm solid ${INK.text}`, borderRadius: mm(1.2), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {i === 0 && r.answer === c && (
+                  <svg width={mm(5)} height={mm(5)} viewBox="0 0 5 5"><path d="M0.8,2.6 L2,3.9 L4.3,1" stroke={theme.accentText} strokeWidth={0.7} fill="none" strokeLinecap="round" /></svg>
+                )}
+              </span>
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ---- grammar: cloze (joining words) -------------------------------------------
+// Word-bank chips, then sentences with a write-in gap; the first gap carries
+// its answer in accent, seated on the gap line.
+
+function ClozeBody({ unit, theme }: { unit: ClozeUnit; theme: Theme }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(2) }}>
+      <div style={{ display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(5) }}>
+        {unit.cloze.wordBank.map((w) => (
+          <span key={w} style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(1)} ${mm(5)}`, fontSize: TYPE2.word, color: INK.text }}>{w}</span>
+        ))}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(9) }}>
+        {unit.cloze.rows.map((r, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', color: INK.text, fontSize: TYPE2.word, lineHeight: 1.6 }}>
+            <span>{r.before}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', justifyContent: 'center', minWidth: mm(26), borderBottom: `0.4mm solid ${INK.text}`, margin: `0 ${mm(3)}`, color: theme.accentText }}>
+              {i === 0 ? r.answer : ' '}
+            </span>
+            <span>{r.after}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ---- grammar: build (grow the noun phrase) -------------------------------------
+// Word-bank chips, then base phrase → write line; the first row's grown
+// phrase is written on its line in accent.
+
+function BuildBody({ unit, theme }: { unit: BuildUnit; theme: Theme }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', gap: mm(4), flexWrap: 'wrap', justifyContent: 'center', marginBottom: mm(6) }}>
+        {unit.build.wordBank.map((w) => (
+          <span key={w} style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(1)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>{w}</span>
+        ))}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: mm(9) }}>
+        {unit.build.rows.map((r, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'flex-end', gap: mm(4) }}>
+            <span style={{ flex: '0 0 auto', width: mm(38), color: INK.text, fontSize: TYPE2.word, paddingBottom: mm(1) }}>{r.base}</span>
+            <span style={{ flex: '0 0 auto', color: theme.primary, fontSize: TYPE2.word, paddingBottom: mm(1) }}>→</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {i === 0 ? <SeatedText text={r.answer} color={theme.accentText} heightMm={10} /> : <Line heightMm={10} />}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ---- grammar: circle (adjectives and adverbs) -----------------------------------
+// The first row is marked for the child: adjective circled, adverb underlined.
+
+function CircleBody({ unit, theme }: { unit: CircleUnit; theme: Theme }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(11) }}>
+      {unit.circle.rows.map((r, i) => {
+        if (i !== 0) {
+          return <div key={i} style={{ color: INK.text, fontSize: TYPE2.word }}>{r.text}</div>;
+        }
+        const adj = r.finds.find((f) => f.target === 'adjective')?.word;
+        const adv = r.finds.find((f) => f.target === 'adverb')?.word;
+        return (
+          <div key={i} style={{ color: INK.text, fontSize: TYPE2.word, lineHeight: 1.5 }}>
+            {r.text.split(/(\s+)/).map((tk, j) => {
+              const bare = tk.replace(/[.,!?]/g, '');
+              if (adj && bare === adj) {
+                return <span key={j} style={{ border: `0.6mm solid ${theme.accentText}`, borderRadius: '50%', padding: `0 ${mm(2)}`, color: theme.accentText }}>{tk}</span>;
+              }
+              if (adv && bare === adv) {
+                return <span key={j} style={{ borderBottom: `0.8mm solid ${theme.accentText}`, color: theme.accentText }}>{tk}</span>;
+              }
+              return <span key={j}>{tk}</span>;
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ---- grammar: review (fix and answer, B4) ----------------------------------------
+// One of each skill, items reused by pointer; task label + item + write line.
+
+function ReviewBody({ unit, theme }: { unit: ReviewUnit; theme: Theme }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: mm(7) }}>
+      {unit.review.items.map((it, i) => (
+        <div key={i}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: mm(4), marginBottom: mm(0.5) }}>
+            <span style={{ flex: '0 0 auto', color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{it.task}</span>
+            <span style={{ color: INK.text, fontSize: TYPE2.word }}>{resolveReviewText(it.sourceUnit, it.rowRef)}</span>
+          </div>
+          <Line heightMm={9.5} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function GrammarPage({ page, unit, theme }: { page: number; unit: GrammarUnit; theme: Theme }) {
+  const worked = unit.format !== 'review';
+  const instruction = unit.doInstruction.replace(/\.$/, '');
   return (
     <WbPage page={page}>
-      <Heading title={unit.name} sub={`${unit.doInstruction}. The first one is done for you.`} />
+      <Heading title={unit.name} sub={worked ? `${instruction}. The first one is done for you.` : `${instruction}.`} />
       <div style={{ flex: '0 0 auto', paddingTop: mm(2) }}>
         {unit.format === 'match' && <MatchBody unit={unit} theme={theme} />}
         {unit.format === 'rewrite' && <RewriteBody unit={unit} theme={theme} />}
+        {unit.format === 'tickgrid' && <TickBody unit={unit} theme={theme} />}
+        {unit.format === 'cloze' && <ClozeBody unit={unit} theme={theme} />}
+        {unit.format === 'build' && <BuildBody unit={unit} theme={theme} />}
+        {unit.format === 'circle' && <CircleBody unit={unit} theme={theme} />}
+        {unit.format === 'review' && <ReviewBody unit={unit} theme={theme} />}
       </div>
 
       <DottedDivider />
@@ -159,12 +306,14 @@ export function AnswerItPage({
 export function GrammarUsePage({
   page,
   sceneSrc,
+  scenePos,
   chips,
   lines,
   theme,
 }: {
   page: number;
   sceneSrc: string;
+  scenePos?: string;
   /** approved words to use, by pointer (unit answers, verbatim). */
   chips: string[];
   lines: number;
@@ -183,7 +332,7 @@ export function GrammarUsePage({
           </span>
         ))}
       </div>
-      <StoryScene src={sceneSrc} heightMm={48} />
+      <StoryScene src={sceneSrc} pos={scenePos} heightMm={48} />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>
@@ -202,12 +351,14 @@ export function BigWritePage({
   page,
   prompt,
   sceneSrc,
+  scenePos,
   lines,
   theme,
 }: {
   page: number;
   prompt: string;
   sceneSrc: string;
+  scenePos?: string;
   lines: number;
   theme: Theme;
 }) {
@@ -216,7 +367,7 @@ export function BigWritePage({
       <Heading title="Big write" />
       {/* the task itself is the biggest text on the page after the heading */}
       <div style={{ fontSize: TYPE2.word, color: INK.text, margin: `0 0 ${mm(3.5)}` }}>{prompt}</div>
-      <StoryScene src={sceneSrc} heightMm={62} />
+      <StoryScene src={sceneSrc} pos={scenePos} heightMm={62} />
       <div style={{ margin: `${mm(3.5)} 0` }}>
         <GoalChips theme={theme} />
       </div>
