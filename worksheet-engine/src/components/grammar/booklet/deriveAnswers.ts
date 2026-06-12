@@ -33,18 +33,33 @@ export function deriveAnswers(unit: GrammarUnit): string {
       return unit.build.rows.map((r) => r.answer).join('; ') + '.';
     case 'cloze':
       return unit.cloze.rows.map((r) => r.answer).join('; ') + '.';
-    case 'circle':
-      return unit.circle.rows
-        .map((r) => {
-          const adj = r.finds.find((f) => f.target === 'adjective')?.word ?? '';
-          const adv = r.finds.find((f) => f.target === 'adverb')?.word ?? '';
-          return adj && adv ? `${adj} and ${adv}` : [adj, adv].filter(Boolean).join(' ');
-        })
-        .join('; ') + '.';
+    case 'circle': {
+      // A row that finds every word (L1 "What is a word?") has no useful
+      // word-by-word key; say so once instead of printing empty slots.
+      const rowAns = unit.circle.rows.map((r) => {
+        const words = r.text.split(/\s+/).filter(Boolean);
+        if (r.finds.length >= words.length) return 'every word';
+        return r.finds.map((f) => f.word).join(' and ');
+      });
+      if (rowAns.every((a) => a === 'every word')) return 'Every word in each sentence is circled.';
+      return rowAns.join('; ') + '.';
+    }
     case 'match':
       return unit.match.pairs.map((p) => `${p.left} is ${p.right}`).join('; ') + '.';
-    case 'rewrite':
-      return unit.rewrite.rows.map((r) => diffWords(r.text, r.answer)).join('; ') + '.';
+    case 'rewrite': {
+      // Multi-sentence recount units print only three rows (see RewriteBody);
+      // the key must list the same rows.
+      const rows = unit.rewrite.rows.some((r) => r.answer.length > 46)
+        ? unit.rewrite.rows.slice(0, 3)
+        : unit.rewrite.rows;
+      // Pure copy rows (L1 "Say a sentence") have no diff; the key would be
+      // empty slots, so say what the task is instead.
+      const parts = rows.map((r) => diffWords(r.text, r.answer));
+      if (parts.every((p) => !p)) return 'Each sentence is copied as it is shown.';
+      // A diff that rewrites most of the sentence reads as word salad in the
+      // key; print the full corrected sentence instead.
+      return parts.map((p, i) => (p && p.length < rows[i].answer.length * 0.6 ? p : rows[i].answer)).join('; ') + '.';
+    }
     case 'review':
       // Just the answers, in order — concise, matching the printed key.
       return unit.review.items.map((it) => it.answer).join('; ') + '.';

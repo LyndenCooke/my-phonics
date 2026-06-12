@@ -204,8 +204,8 @@ export function SeatedText({ text, color, heightMm = WRITE_PITCH_MM, widthMm = 1
 /** A long worked answer seated across TWO ruled lines (anything past ~34
  *  characters cannot sit on one 182mm line at the handwriting size). The
  *  split balances at a word boundary, like real writing flowing on. */
-export function SeatedTextLines({ text, color, widthMm }: { text: string; color: string; widthMm?: number }) {
-  if (text.length <= 46) return <SeatedText text={text} color={color} widthMm={widthMm} />;
+export function SeatedTextLines({ text, color, widthMm, heightMm }: { text: string; color: string; widthMm?: number; heightMm?: number }) {
+  if (text.length <= 46) return <SeatedText text={text} color={color} widthMm={widthMm} heightMm={heightMm} />;
   const words = text.split(' ');
   let first = '';
   for (const w of words) {
@@ -215,8 +215,8 @@ export function SeatedTextLines({ text, color, widthMm }: { text: string; color:
   const rest = text.slice(first.length).trim();
   return (
     <>
-      <SeatedText text={first} color={color} widthMm={widthMm} />
-      <SeatedText text={rest} color={color} widthMm={widthMm} />
+      <SeatedText text={first} color={color} widthMm={widthMm} heightMm={heightMm} />
+      <SeatedText text={rest} color={color} widthMm={widthMm} heightMm={heightMm} />
     </>
   );
 }

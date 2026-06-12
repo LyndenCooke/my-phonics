@@ -48,10 +48,14 @@ export function SpellItPage({
   page,
   practise,
   theme,
+  pitch = 11,
+  testWords = 10,
 }: {
   page: number;
   practise: string[];
   theme: Theme;
+  pitch?: number;
+  testWords?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -69,13 +73,14 @@ export function SpellItPage({
         Cover the practise words first. Write each word your grown-up reads.
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: mm(12), alignContent: 'space-evenly' }}>
-        {Array.from({ length: 10 }).map((_, i) => {
-          // column-major order: 1-5 down the left, 6-10 down the right
-          const n = (i % 2) * 5 + Math.floor(i / 2) + 1;
+        {Array.from({ length: testWords }).map((_, i) => {
+          // column-major order: down the left column, then down the right
+          const half = Math.ceil(testWords / 2);
+          const n = (i % 2) * half + Math.floor(i / 2) + 1;
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-end', gap: mm(3) }}>
               <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right' }}>{n}.</span>
-              <div style={{ flex: 1 }}><Line /></div>
+              <div style={{ flex: 1 }}><Line heightMm={pitch} /></div>
             </div>
           );
         })}
@@ -94,11 +99,13 @@ export function SentencesPage({
   hold,
   listenSlots,
   theme,
+  pitch = 11,
 }: {
   page: number;
   hold: string[];
   listenSlots: number;
   theme: Theme;
+  pitch?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -112,7 +119,7 @@ export function SentencesPage({
             <div style={{ background: '#F6F6F8', borderLeft: `1mm solid ${theme.primary}`, borderRadius: mm(1.5), padding: `${mm(2)} ${mm(4)}`, fontSize: TYPE2.word, color: INK.text }}>
               {s}
             </div>
-            <div style={{ marginTop: mm(4) }}><Line /></div>
+            <div style={{ marginTop: mm(4) }}><Line heightMm={pitch} /></div>
           </div>
         ))}
       </div>
@@ -126,10 +133,10 @@ export function SentencesPage({
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {Array.from({ length: listenSlots }).map((_, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: mm(3) }}>
-            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(9) }}>{i + 1}.</span>
+            <span style={{ color: theme.accentText, fontSize: TYPE2.body, fontWeight: 700, width: mm(7), textAlign: 'right', alignSelf: 'flex-end', paddingBottom: mm(pitch - 2) }}>{i + 1}.</span>
             <div style={{ flex: 1 }}>
-              <Line />
-              <Line />
+              <Line heightMm={pitch} />
+              <Line heightMm={pitch} />
             </div>
           </div>
         ))}
@@ -147,11 +154,11 @@ export function SentencesPage({
 // grey model starts every row and the child continues to the end. Every row
 // runs the FULL content width — no badges or furniture stealing line space.
 
-function HwRow({ model, theme }: { model: string; theme: Theme }) {
+function HwRow({ model, theme, xMm = 5.5 }: { model: string; theme: Theme; xMm?: number }) {
   return (
     <TraceLine
       text={model}
-      xHeightMm={5.5}
+      xHeightMm={xMm}
       widthMm={182}
       color={INK.trace}
       midlineColor={theme.border}
@@ -170,11 +177,13 @@ export function HandwritingPage({
   page,
   ladders,
   theme,
+  hwX = 5.5,
 }: {
   page: number;
   /** one ladder per focus sound (two at L6): sound row, word row, sentence row. */
   ladders: HwLadder[];
   theme: Theme;
+  hwX?: number;
 }) {
   return (
     <WbPage page={page}>
@@ -183,7 +192,7 @@ export function HandwritingPage({
       <SectionLabel text="Sounds" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {ladders.map((l) => (
-          <HwRow key={l.sound} model={`${l.sound} ${l.sound} ${l.sound}`} theme={theme} />
+          <HwRow key={l.sound} model={`${l.sound} ${l.sound} ${l.sound}`} theme={theme} xMm={hwX} />
         ))}
       </div>
 
@@ -192,7 +201,7 @@ export function HandwritingPage({
       <SectionLabel text="Words" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {ladders.map((l) => (
-          <HwRow key={l.word} model={`${l.word} ${l.word}`} theme={theme} />
+          <HwRow key={l.word} model={`${l.word} ${l.word}`} theme={theme} xMm={hwX} />
         ))}
       </div>
 
@@ -201,7 +210,83 @@ export function HandwritingPage({
       <SectionLabel text="Sentences" theme={theme} />
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
         {ladders.map((l) => (
-          <HwRow key={l.sentence} model={l.sentence} theme={theme} />
+          <HwRow key={l.sentence} model={l.sentence} theme={theme} xMm={hwX} />
+        ))}
+      </div>
+    </WbPage>
+  );
+}
+
+// ---- Sounds (L1-L3) ----------------------------------------------------------
+// The sound_a pattern in the book style: trace the sound, trace the words
+// (approved clipart beside a word only where it exists), then write the
+// missing sound. Everything traces — all content comes from the book's
+// approved word lists; the trace glyphs are the writing model.
+
+function MissingCard({ word, hide, theme, xMm }: { word: string; hide: string; theme: Theme; xMm: number }) {
+  const at = word.indexOf(hide);
+  const before = at >= 0 ? word.slice(0, at) : word;
+  const after = at >= 0 ? word.slice(at + hide.length) : '';
+  return (
+    <div style={{ border: `0.5mm solid ${theme.primary}`, borderRadius: mm(2.5), padding: `${mm(2)} ${mm(2)}`, display: 'flex', alignItems: 'flex-end' }}>
+      <div style={{ width: '100%' }}>
+        <TraceLine
+          segments={[
+            { text: before, fill: INK.text },
+            { text: hide, fill: 'transparent' },
+            { text: after, fill: INK.text },
+          ]}
+          xHeightMm={xMm}
+          widthMm={54}
+          align="middle"
+          midlineColor={theme.border}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function SoundsPage({
+  page,
+  graphemes,
+  words,
+  missing,
+  theme,
+  hwX = 7,
+}: {
+  page: number;
+  graphemes: string[];
+  words: string[];
+  missing: { word: string; hide: string }[];
+  theme: Theme;
+  hwX?: number;
+}) {
+  return (
+    <WbPage page={page}>
+      <Heading title="Sounds" sub="Trace the sounds and the words, then write in the missing sound." />
+
+      <SectionLabel text="Trace the sounds" theme={theme} />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+        {graphemes.map((g) => (
+          <HwRow key={g} model={Array.from({ length: 4 }).map(() => g).join(' ')} theme={theme} xMm={hwX} />
+        ))}
+      </div>
+
+      <DottedDivider />
+
+      <SectionLabel text="Trace the words" theme={theme} />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}>
+        {words.map((w) => (
+          <HwRow key={w} model={`${w} ${w}`} theme={theme} xMm={hwX} />
+        ))}
+      </div>
+
+      <DottedDivider />
+
+      <SectionLabel text="Write the missing sound" theme={theme} />
+      <div style={{ flex: '0 0 auto', display: 'grid', gridTemplateColumns: `repeat(${Math.min(missing.length, 3)}, 1fr)`, gap: mm(5), paddingBottom: mm(2) }}>
+        {missing.map((c) => (
+          <MissingCard key={c.word} word={c.word} hide={c.hide} theme={theme} xMm={Math.min(hwX, 7)} />
         ))}
       </div>
     </WbPage>
