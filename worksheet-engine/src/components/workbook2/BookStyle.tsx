@@ -23,13 +23,14 @@ export const WB2 = {
   contentWmm: 182,
 } as const;
 
+// THE LOCKED SCALE — four sizes only on a child-facing page (plus the page
+// number, which is furniture). No size below `label` may appear in content.
 export const TYPE2 = {
   heading: '20pt',
-  sub: '10.5pt',
-  label: '10pt',
-  body: '13pt',
-  word: '16pt',
-  small: '9pt',
+  word: '16pt', // child-facing words, sentences, prompts
+  body: '14pt', // instructions and answers
+  label: '11pt', // small-caps section labels and column heads
+  small: '9pt', // page number ONLY
 } as const;
 
 /** The root page: white, margins, tiny corner page number (book style). */
@@ -56,12 +57,14 @@ export function WbPage({ page, children }: { page: number; children: React.React
   );
 }
 
-/** Bold black left heading + one grey instruction line (book back matter). */
+/** Bold black left heading + one instruction line (book back matter). The
+ *  instruction is BODY size in ink — it is what the child must read, so it is
+ *  never small or grey-faint. */
 export function Heading({ title, sub }: { title: string; sub?: string }) {
   return (
     <div style={{ flex: '0 0 auto', marginBottom: mm(5) }}>
       <div style={{ fontWeight: 700, fontSize: TYPE2.heading, color: INK.text, lineHeight: 1.1 }}>{title}</div>
-      {sub && <div style={{ marginTop: mm(1.5), color: INK.muted, fontSize: TYPE2.sub }}>{sub}</div>}
+      {sub && <div style={{ marginTop: mm(2), color: INK.muted, fontSize: TYPE2.body }}>{sub}</div>}
     </div>
   );
 }
@@ -69,7 +72,7 @@ export function Heading({ title, sub }: { title: string; sub?: string }) {
 /** Small-caps accent section label ("NOW WRITE EACH WORD"). */
 export function SectionLabel({ text, theme }: { text: string; theme: Theme }) {
   return (
-    <div style={{ color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: mm(2.5) }}>
+    <div style={{ color: theme.accentText, fontSize: TYPE2.label, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: mm(3) }}>
       {text}
     </div>
   );
@@ -89,10 +92,10 @@ const GOALS: { mark: string; label: string }[] = [
 ];
 export function GoalChips({ theme, goals = GOALS }: { theme: Theme; goals?: { mark: string; label: string }[] }) {
   return (
-    <div style={{ display: 'flex', gap: mm(6), flexWrap: 'wrap', alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: mm(8), flexWrap: 'wrap', alignItems: 'center' }}>
       {goals.map((g) => (
-        <span key={g.label} style={{ display: 'inline-flex', alignItems: 'center', gap: mm(1.8), fontSize: TYPE2.sub, color: INK.text }}>
-          <span style={{ width: mm(4.5), height: mm(4.5), border: `0.4mm solid ${INK.ruleStrong}`, borderRadius: mm(1), flex: '0 0 auto' }} />
+        <span key={g.label} style={{ display: 'inline-flex', alignItems: 'center', gap: mm(2.5), fontSize: TYPE2.body, color: INK.text }}>
+          <span style={{ width: mm(6), height: mm(6), border: `0.45mm solid ${INK.ruleStrong}`, borderRadius: mm(1.2), flex: '0 0 auto' }} />
           <span style={{ color: theme.accentText, fontWeight: 700 }}>{g.mark}</span>
           {g.label}
         </span>
