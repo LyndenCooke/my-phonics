@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { syncToGHL } from '@/lib/ghlClient';
 
 export default function CustomerDetail() {
   const { id } = useParams();
@@ -35,10 +36,14 @@ export default function CustomerDetail() {
 
   // Manually grant/withdraw review consent — for parents who said yes in
   // person but never ticked the box. Mirrors FeedbackList.toggleConsent.
-  const toggleConsent = async (reviewId: string, field: 'consent_marketing' | 'consent_named', next: boolean) => {
+  const toggleConsent = async (
+    r: { id: string; consent_marketing?: boolean; consent_named?: boolean; rating?: number | null },
+    field: 'consent_marketing' | 'consent_named',
+    next: boolean,
+  ) => {
     const { error } = await (supabase as unknown as {
       from: (t: string) => { update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
-    }).from('reviews').update({ [field]: next }).eq('id', reviewId);
+    }).from('reviews').update({ [field]: next }).eq('id', r.id);
     if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
     toast({
       title: next ? 'Permission marked as given' : 'Permission withdrawn',
@@ -46,6 +51,17 @@ export default function CustomerDetail() {
     });
     queryClient.invalidateQueries({ queryKey: ['admin-customer', id] });
     queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+    // Mirror onto the GHL contact (note + marketing-consent tag) so the
+    // GHL CRM doesn't go stale. Best-effort and non-blocking.
+    if (data?.profile?.email) {
+      void syncToGHL('contact.consent_updated', {
+        email: data.profile.email,
+        full_name: data.profile.full_name ?? '',
+        consent_marketing: field === 'consent_marketing' ? next : !!r.consent_marketing,
+        consent_named: field === 'consent_named' ? next : !!r.consent_named,
+        rating: r.rating ?? 0,
+      });
+    }
   };
 
   if (isLoading || !data) {
@@ -340,7 +356,7 @@ export default function CustomerDetail() {
                           manually when the parent gave permission in person. */}
                       <div className="flex flex-wrap gap-2 pt-1">
                         <button
-                          onClick={() => toggleConsent(r.id, 'consent_marketing', !r.consent_marketing)}
+                          onClick={() => toggleConsent(r, 'consent_marketing', !r.consent_marketing)}
                           title={r.consent_marketing ? 'Withdraw testimonial permission' : 'Mark testimonial permission as given (in person / by message)'}
                           className={`text-xs font-bold px-2.5 py-1 rounded-full border transition-colors ${
                             r.consent_marketing
@@ -351,7 +367,7 @@ export default function CustomerDetail() {
                           {r.consent_marketing ? '✓ OK as testimonial' : '+ OK as testimonial'}
                         </button>
                         <button
-                          onClick={() => toggleConsent(r.id, 'consent_named', !r.consent_named)}
+                          onClick={() => toggleConsent(r, 'consent_named', !r.consent_named)}
                           title={r.consent_named ? 'Withdraw permission to use their name' : 'Mark name permission as given (in person / by message)'}
                           className={`text-xs font-bold px-2.5 py-1 rounded-full border transition-colors ${
                             r.consent_named

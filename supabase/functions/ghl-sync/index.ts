@@ -133,6 +133,20 @@ async function addTags(contactId: string, tags: string[]): Promise<boolean> {
   return res.ok;
 }
 
+/** Remove tags from a GHL contact (e.g. when consent is withdrawn). */
+async function removeTags(contactId: string, tags: string[]): Promise<boolean> {
+  const res = await fetch(`${GHL_BASE}/contacts/${contactId}/tags`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${GHL_API_KEY}`,
+      Version: '2021-07-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ tags }),
+  });
+  return res.ok;
+}
+
 /** Add a free-text note to a GHL contact's timeline. */
 async function addNote(contactId: string, body: string): Promise<boolean> {
   const res = await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
@@ -508,6 +522,35 @@ serve(async (req) => {
           if (rating > 0 && rating <= 2) tags.push('feedback-negative');
           else if (rating >= 4) tags.push('feedback-positive');
           await addTags(ghlContactId, tags);
+        }
+        break;
+      }
+
+      case 'contact.consent_updated': {
+        // An admin manually granted/withdrew review consent in the in-app
+        // CRM (the parent said yes in person but never ticked the box).
+        // Mirror the new state onto the GHL contact so the CRM mirror
+        // doesn't go stale: a timeline note for the audit trail, plus the
+        // marketing-consent / testimonial-candidate tags kept in step with
+        // the rules contact.feedback uses.
+        ghlContactId = await findContact(email);
+        if (ghlContactId) {
+          const consentMarketing = Boolean(data?.consent_marketing);
+          const consentNamed = Boolean(data?.consent_named);
+          const rating = Number(data?.rating) || 0;
+          await addNote(ghlContactId, [
+            'Review consent updated manually by admin (permission given in person / by message):',
+            '',
+            `Feature feedback as testimonial: ${consentMarketing ? 'YES' : 'no'}`,
+            `Use first name: ${consentNamed ? 'YES' : 'no'}`,
+          ].join('\n'));
+          if (consentMarketing) {
+            const tags = ['marketing-consent'];
+            if (rating >= 4) tags.push('testimonial-candidate');
+            await addTags(ghlContactId, tags);
+          } else {
+            await removeTags(ghlContactId, ['marketing-consent', 'testimonial-candidate']);
+          }
         }
         break;
       }

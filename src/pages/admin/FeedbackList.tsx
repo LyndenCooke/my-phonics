@@ -12,6 +12,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import ManualTestimonialsManager from '@/components/admin/ManualTestimonialsManager';
+import { syncToGHL } from '@/lib/ghlClient';
+import type { AdminFeedback } from '@/hooks/useAdminFeedback';
 
 function Stars({ rating }: { rating: number | null }) {
   return (
@@ -49,10 +51,10 @@ export default function FeedbackList() {
   // Manually grant/withdraw consent — for parents who gave permission in
   // person (or by message) but never ticked the box in the app. Same
   // admin-update RLS path as toggleFeatured.
-  const toggleConsent = async (id: string, field: 'consent_marketing' | 'consent_named', next: boolean) => {
+  const toggleConsent = async (r: AdminFeedback, field: 'consent_marketing' | 'consent_named', next: boolean) => {
     const { error } = await (supabase as unknown as {
       from: (t: string) => { update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
-    }).from('reviews').update({ [field]: next }).eq('id', id);
+    }).from('reviews').update({ [field]: next }).eq('id', r.id);
     if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
     const label = field === 'consent_marketing' ? 'testimonial permission' : 'permission to use their name';
     toast({
@@ -60,6 +62,17 @@ export default function FeedbackList() {
       description: next ? 'Only grant this when the parent has told you directly.' : undefined,
     });
     queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+    // Mirror onto the GHL contact (note + marketing-consent tag) so the
+    // GHL CRM doesn't go stale. Best-effort and non-blocking.
+    if (r.email) {
+      void syncToGHL('contact.consent_updated', {
+        email: r.email,
+        full_name: r.full_name ?? '',
+        consent_marketing: field === 'consent_marketing' ? next : r.consent_marketing,
+        consent_named: field === 'consent_named' ? next : r.consent_named,
+        rating: r.rating ?? 0,
+      });
+    }
   };
 
   // Permanently delete a review (spam, test rows, retired quotes).
@@ -175,7 +188,7 @@ export default function FeedbackList() {
                           but never ticked the box in the app. */}
                       <div className="flex flex-wrap gap-1">
                         <button
-                          onClick={(e) => { e.stopPropagation(); toggleConsent(r.id, 'consent_marketing', !r.consent_marketing); }}
+                          onClick={(e) => { e.stopPropagation(); toggleConsent(r, 'consent_marketing', !r.consent_marketing); }}
                           title={r.consent_marketing ? 'Withdraw testimonial permission' : 'Mark testimonial permission as given (in person / by message)'}
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors ${
                             r.consent_marketing
@@ -186,7 +199,7 @@ export default function FeedbackList() {
                           {r.consent_marketing ? '✓ Testimonial' : '+ Testimonial'}
                         </button>
                         <button
-                          onClick={(e) => { e.stopPropagation(); toggleConsent(r.id, 'consent_named', !r.consent_named); }}
+                          onClick={(e) => { e.stopPropagation(); toggleConsent(r, 'consent_named', !r.consent_named); }}
                           title={r.consent_named ? 'Withdraw permission to use their name' : 'Mark name permission as given (in person / by message)'}
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors ${
                             r.consent_named
