@@ -2,23 +2,30 @@
 Publish freshly-rendered PDFs to every surface the web app and the
 public bucket expect.
 
-Pipeline per book (level, sub_level):
+8-LEVEL REALIGNMENT NOTE: rendered files in output/books/ are named by
+their NEW (8-level ledger) ids, but the web app + Supabase rows are still
+keyed by the LEGACY parent-6 sub_levels. Every published destination is
+therefore translated through NEW_TO_OLD — publishing new "2_1 The Red
+Socks.pdf" lands at the legacy key 1_4, NOT at 2_1 (which legacy-means
+The Night Light). Never publish by raw folder id.
+
+Pipeline per book (new id {L}.{n} -> legacy id {l}.{m}):
 
   output/books/Level{L}/{L}_{n} TITLE.pdf                 (A5, what readers buy)
   output/books/Level{L}/{L}_{n} TITLE - Printable Booklet.pdf  (A4 saddle-stitch)
       |
-      |--> public/book-pdfs/{L}_{n}.pdf            (A5 only — local dev / Vercel)
-      |--> public/covers/{L}_{n}_cover.jpg          (cover from A5 page 1)
-      |--> Supabase Storage  book-pdfs/a5/{L}_{n}.pdf
-      |--> Supabase Storage  book-pdfs/a4/{L}_{n}.pdf
+      |--> public/book-pdfs/{l}_{m}.pdf             (A5 only — local dev / Vercel)
+      |--> public/covers/{l}_{m}_cover.jpg          (cover from A5 page 1)
+      |--> Supabase Storage  book-pdfs/a5/{l}_{m}.pdf
+      |--> Supabase Storage  book-pdfs/a4/{l}_{m}.pdf
 
-Idempotent: MD5-hashes each PDF and skips upload when the remote copy
-already matches. Use --force to push everything regardless.
+Idempotent: compares remote byte size and skips upload when the remote
+copy already matches. Use --force to push everything regardless.
 
 Run:
-    py -3.12 scripts/publish_books.py                # all levels
-    py -3.12 scripts/publish_books.py 2 3            # just L2 + L3
-    py -3.12 scripts/publish_books.py --force        # ignore hash check
+    py -3.12 scripts/publish_books.py                # all levels (1-8, new ids)
+    py -3.12 scripts/publish_books.py 2 3            # just new L2 + L3
+    py -3.12 scripts/publish_books.py --force        # ignore size check
     py -3.12 scripts/publish_books.py --dry-run      # plan only, no writes
 
 Reads SUPABASE_URL + SUPABASE_SERVICE_KEY from myphonics_books/.env.
@@ -40,6 +47,19 @@ DST_PDFS = ROOT / "public" / "book-pdfs"
 DST_COVERS = ROOT / "public" / "covers"
 BUCKET = "book-pdfs"
 COVER_ZOOM = 875 / 148 * 25.4 / 72            # ~2.085 -> 875x1240 px
+
+# New (8-level) id -> original/legacy app id. Mirror of NEW_TO_OLD in
+# generate_pilot_books.py - keep in sync.
+NEW_TO_OLD = {
+    "1.1": "1.1", "1.2": "1.2",
+    "2.1": "1.4", "2.2": "1.5", "2.3": "1.6", "2.4": "1.7", "2.5": "1.8",
+    "3.1": "1.3", "3.2": "1.9", "3.3": "1.10",
+    "4.1": "2.1", "4.2": "2.2", "4.3": "2.3", "4.4": "2.4", "4.5": "2.5", "4.6": "2.6",
+    "5.1": "3.1", "5.2": "3.2", "5.3": "3.3", "5.4": "3.4", "5.5": "3.5",
+    "6.1": "4.1", "6.2": "4.2", "6.3": "4.3", "6.4": "4.4",
+    "7.1": "5.1", "7.2": "5.2", "7.3": "5.3", "7.4": "5.4",
+    "8.1": "6.1", "8.2": "6.2", "8.3": "6.3", "8.4": "6.4",
+}
 
 
 def load_env() -> dict[str, str]:
@@ -126,9 +146,16 @@ def publish_level(level: int, env: dict[str, str], *, force: bool, dry_run: bool
             print(f"  L{level}.{n}: A5 missing, skipping")
             continue
 
+        # All destinations are keyed by the LEGACY id the app requests.
+        old_id = NEW_TO_OLD.get(f"{level}.{n}")
+        if not old_id:
+            print(f"  L{level}.{n}: not in NEW_TO_OLD, skipping (won't publish unmapped books)")
+            continue
+        old_key = old_id.replace(".", "_")
+
         # 1) local: web-app copy
-        dst_pdf = DST_PDFS / f"{level}_{n}.pdf"
-        dst_cover = DST_COVERS / f"{level}_{n}_cover.jpg"
+        dst_pdf = DST_PDFS / f"{old_key}.pdf"
+        dst_cover = DST_COVERS / f"{old_key}_cover.jpg"
         if dry_run:
             print(f"  L{level}.{n}: would copy {a5.name} -> {dst_pdf.name}")
         else:
@@ -145,7 +172,7 @@ def publish_level(level: int, env: dict[str, str], *, force: bool, dry_run: bool
             if not src:
                 print(f"  L{level}.{n} {fmt}: source missing, skipping upload")
                 continue
-            remote = f"{fmt}/{level}_{n}.pdf"
+            remote = f"{fmt}/{old_key}.pdf"
             local_size = src.stat().st_size
             if not force:
                 rsize = remote_size(f"{public_base}/{remote}")
@@ -176,7 +203,7 @@ def main() -> int:
         print("Missing SUPABASE_SERVICE_KEY in .env", file=sys.stderr)
         return 1
 
-    levels = args.levels or [1, 2, 3, 4, 5, 6]
+    levels = args.levels or [1, 2, 3, 4, 5, 6, 7, 8]
     total = 0
     for lvl in levels:
         print(f"--- L{lvl} ---")
