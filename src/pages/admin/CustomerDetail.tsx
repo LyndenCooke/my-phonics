@@ -12,6 +12,9 @@ import { useCreateNote, useDeleteNote } from '@/hooks/useAdminNotes';
 import { useCreateTask, useToggleTask, useDeleteTask, usePipelineStages, useUpdateStage } from '@/hooks/useAdminTasks';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CustomerDetail() {
   const { id } = useParams();
@@ -27,6 +30,23 @@ export default function CustomerDetail() {
   const [noteContent, setNoteContent] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDue, setTaskDue] = useState('');
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  // Manually grant/withdraw review consent — for parents who said yes in
+  // person but never ticked the box. Mirrors FeedbackList.toggleConsent.
+  const toggleConsent = async (reviewId: string, field: 'consent_marketing' | 'consent_named', next: boolean) => {
+    const { error } = await (supabase as unknown as {
+      from: (t: string) => { update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
+    }).from('reviews').update({ [field]: next }).eq('id', reviewId);
+    if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
+    toast({
+      title: next ? 'Permission marked as given' : 'Permission withdrawn',
+      description: next ? 'Only grant this when the parent has told you directly.' : undefined,
+    });
+    queryClient.invalidateQueries({ queryKey: ['admin-customer', id] });
+    queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+  };
 
   if (isLoading || !data) {
     return <div className="text-muted-foreground">Loading customer...</div>;
@@ -316,13 +336,31 @@ export default function CustomerDetail() {
                           <span className="font-semibold text-amber-600">Could be better: </span>{r.improvement}
                         </p>
                       )}
+                      {/* Consent chips are TOGGLES — click to grant/withdraw
+                          manually when the parent gave permission in person. */}
                       <div className="flex flex-wrap gap-2 pt-1">
-                        {r.consent_marketing && (
-                          <Badge variant="default">OK as testimonial</Badge>
-                        )}
-                        {r.consent_named && (
-                          <Badge variant="secondary">OK to name</Badge>
-                        )}
+                        <button
+                          onClick={() => toggleConsent(r.id, 'consent_marketing', !r.consent_marketing)}
+                          title={r.consent_marketing ? 'Withdraw testimonial permission' : 'Mark testimonial permission as given (in person / by message)'}
+                          className={`text-xs font-bold px-2.5 py-1 rounded-full border transition-colors ${
+                            r.consent_marketing
+                              ? 'bg-emerald-100 border-emerald-300 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-background border-dashed border-border text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {r.consent_marketing ? '✓ OK as testimonial' : '+ OK as testimonial'}
+                        </button>
+                        <button
+                          onClick={() => toggleConsent(r.id, 'consent_named', !r.consent_named)}
+                          title={r.consent_named ? 'Withdraw permission to use their name' : 'Mark name permission as given (in person / by message)'}
+                          className={`text-xs font-bold px-2.5 py-1 rounded-full border transition-colors ${
+                            r.consent_named
+                              ? 'bg-emerald-100 border-emerald-300 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-background border-dashed border-border text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {r.consent_named ? '✓ OK to name' : '+ OK to name'}
+                        </button>
                         {r.kind && r.kind !== 'general' && (
                           <Badge variant="outline">{r.kind}</Badge>
                         )}

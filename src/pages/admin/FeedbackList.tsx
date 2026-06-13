@@ -46,6 +46,22 @@ export default function FeedbackList() {
     queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
   };
 
+  // Manually grant/withdraw consent — for parents who gave permission in
+  // person (or by message) but never ticked the box in the app. Same
+  // admin-update RLS path as toggleFeatured.
+  const toggleConsent = async (id: string, field: 'consent_marketing' | 'consent_named', next: boolean) => {
+    const { error } = await (supabase as unknown as {
+      from: (t: string) => { update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: { message: string } | null }> } };
+    }).from('reviews').update({ [field]: next }).eq('id', id);
+    if (error) { toast({ title: 'Could not update', description: error.message, variant: 'destructive' }); return; }
+    const label = field === 'consent_marketing' ? 'testimonial permission' : 'permission to use their name';
+    toast({
+      title: next ? `Marked ${label} as given` : `${label[0].toUpperCase()}${label.slice(1)} withdrawn`,
+      description: next ? 'Only grant this when the parent has told you directly.' : undefined,
+    });
+    queryClient.invalidateQueries({ queryKey: ['admin-feedback'] });
+  };
+
   // Permanently delete a review (spam, test rows, retired quotes).
   const deleteReview = async (id: string) => {
     if (!window.confirm('Delete this feedback permanently? This cannot be undone.')) return;
@@ -154,9 +170,32 @@ export default function FeedbackList() {
                       <div className="text-xs text-muted-foreground">{r.email || '—'}</div>
                     </TableCell>
                     <TableCell>
+                      {/* Consent chips are TOGGLES: click to grant/withdraw
+                          manually when a parent gave permission in person
+                          but never ticked the box in the app. */}
                       <div className="flex flex-wrap gap-1">
-                        {r.consent_marketing && <Badge variant="default" className="text-[10px]">Testimonial</Badge>}
-                        {r.consent_named && <Badge variant="secondary" className="text-[10px]">Name</Badge>}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleConsent(r.id, 'consent_marketing', !r.consent_marketing); }}
+                          title={r.consent_marketing ? 'Withdraw testimonial permission' : 'Mark testimonial permission as given (in person / by message)'}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors ${
+                            r.consent_marketing
+                              ? 'bg-emerald-100 border-emerald-300 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-background border-dashed border-border text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {r.consent_marketing ? '✓ Testimonial' : '+ Testimonial'}
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleConsent(r.id, 'consent_named', !r.consent_named); }}
+                          title={r.consent_named ? 'Withdraw permission to use their name' : 'Mark name permission as given (in person / by message)'}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition-colors ${
+                            r.consent_named
+                              ? 'bg-emerald-100 border-emerald-300 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-background border-dashed border-border text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {r.consent_named ? '✓ Name' : '+ Name'}
+                        </button>
                         {r.source && <Badge variant="outline" className="text-[10px]">{r.source}</Badge>}
                         {r.kind && r.kind !== 'general' && <Badge variant="outline" className="text-[10px]">{r.kind}</Badge>}
                       </div>
@@ -174,7 +213,9 @@ export default function FeedbackList() {
                           {r.featured ? '★ Featured' : 'Feature'}
                         </button>
                       ) : (
-                        <span className="text-[10px] text-muted-foreground">needs consent</span>
+                        <span className="text-[10px] text-muted-foreground">
+                          {r.loved ? 'grant ✓ Testimonial first' : 'no quote to feature'}
+                        </span>
                       )}
                     </TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
