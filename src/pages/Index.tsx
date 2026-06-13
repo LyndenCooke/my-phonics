@@ -189,9 +189,19 @@ export default function Index() {
     const match = books.find((b) => b.subLevel === wanted);
     if (match && match.unlocked) {
       setActiveBookId(match.id);
-      const url = new URL(window.location.href);
-      url.searchParams.delete('book');
-      window.history.replaceState({}, '', url.toString());
+      // Strip ?book through the ROUTER, not window.history.replaceState.
+      // replaceState changes the address bar but react-router's location
+      // object keeps the old search string, so when the reader closed and
+      // this effect re-ran it found ?book again and instantly reopened the
+      // book — the "X button does nothing" bug. navigate(replace) updates
+      // the router's location so the effect stays consumed. location.state
+      // is passed through so the teachers deep-link flow keeps `from`.
+      const params = new URLSearchParams(location.search);
+      params.delete('book');
+      navigate(
+        { pathname: location.pathname, search: params.toString() },
+        { replace: true, state: location.state },
+      );
     } else if (fromTeachers) {
       navigate('/teachers/library', { replace: true });
     }
