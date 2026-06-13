@@ -67,7 +67,7 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Analytics</h1>
+      <h1 className="font-display text-3xl font-extrabold tracking-tight">Analytics</h1>
 
       {/* Live traffic tools — qualitative dropoff insight lives in these
        *  external dashboards, not in our internal Supabase KPIs. */}

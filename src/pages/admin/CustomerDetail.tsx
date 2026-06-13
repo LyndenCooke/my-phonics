@@ -101,7 +101,7 @@ export default function CustomerDetail() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{profile.full_name || 'Unnamed'}</h1>
+          <h1 className="font-display text-3xl font-extrabold tracking-tight">{profile.full_name || 'Unnamed'}</h1>
           <div className="mt-1 flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1"><Mail className="h-3 w-3" /> {profile.email}</span>
             <span className="flex items-center gap-1">

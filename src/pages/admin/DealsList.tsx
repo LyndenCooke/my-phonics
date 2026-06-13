@@ -46,7 +46,7 @@ export default function DealsList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Deals</h1>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight">Deals</h1>
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2"><Plus className="h-4 w-4" /> New Deal</Button>

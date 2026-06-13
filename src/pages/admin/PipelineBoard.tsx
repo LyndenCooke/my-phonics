@@ -85,7 +85,7 @@ export default function PipelineBoard() {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Pipeline</h1>
+          <h1 className="font-display text-3xl font-extrabold tracking-tight">Pipeline</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Auto-derived from purchases &amp; assessments. Updates the moment a customer moves.
           </p>
@@ -104,7 +104,10 @@ export default function PipelineBoard() {
 
       {/* Segmentation strip — click a chip to filter the board. Makes
           revenue vs comp immediately visible without scanning every card. */}
-      <div className="flex flex-wrap items-center gap-2 rounded-lg border bg-card p-3">
+      <div
+        className="flex flex-wrap items-center gap-2 rounded-2xl bg-white p-3"
+        style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.08), 0 8px 20px rgba(40,30,40,0.08)', border: '1px solid rgba(40,30,40,0.05)' }}
+      >
         <FilterChip label="All" count={totals.all} active={filter === 'all'} onClick={() => setFilter('all')} />
         <FilterChip
           label="Paid"
@@ -151,14 +154,17 @@ export default function PipelineBoard() {
               <div className="mb-3 flex items-center gap-2">
                 <div
                   className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: stage.colour ?? '#6366f1' }}
+                  style={{ backgroundColor: stage.colour ?? '#E84B8A' }}
                 />
-                <h3 className="text-sm font-semibold">{stage.name}</h3>
-                <Badge variant="secondary" className="ml-auto text-xs">
+                <h3 className="font-display text-sm font-extrabold">{stage.name}</h3>
+                <Badge variant="secondary" className="ml-auto text-xs tabular-nums">
                   {stageContacts.length}
                 </Badge>
               </div>
-              <div className="min-h-[200px] space-y-2 rounded-lg bg-muted/40 p-2">
+              <div
+                className="min-h-[200px] space-y-2 rounded-2xl p-2"
+                style={{ background: `${stage.colour ?? '#E84B8A'}0D`, border: `1px solid ${stage.colour ?? '#E84B8A'}26` }}
+              >
                 {stageContacts.length === 0 ? (
                   <p className="px-2 py-4 text-center text-xs text-muted-foreground">No contacts</p>
                 ) : (

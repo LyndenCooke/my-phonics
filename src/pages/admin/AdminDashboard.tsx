@@ -22,7 +22,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <div>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight">Dashboard</h1>
+        <p className="mt-1 text-sm text-muted-foreground">How MyPhonicsBooks is doing today.</p>
+      </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -49,7 +52,7 @@ export default function AdminDashboard() {
                 <XAxis dataKey="day" tickFormatter={v => v ? format(parseISO(v), 'dd/MM') : ''} fontSize={12} />
                 <YAxis allowDecimals={false} fontSize={12} />
                 <Tooltip labelFormatter={v => v ? format(parseISO(v as string), 'dd/MM/yyyy') : ''} />
-                <Bar dataKey="signup_count" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="signup_count" fill="#E84B8A" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
