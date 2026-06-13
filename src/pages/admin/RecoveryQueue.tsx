@@ -76,7 +76,7 @@ export default function RecoveryQueue() {
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Recovery</h1>
+          <h1 className="font-display text-3xl font-extrabold tracking-tight">Recovery</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Stripe checkouts started &gt;30 min ago without completing. Fire a recovery email to tag the
             contact in GHL — your GHL workflow sends the actual message.

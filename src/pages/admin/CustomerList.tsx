@@ -15,8 +15,8 @@ export default function CustomerList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Customers</h1>
-        <span className="text-sm text-muted-foreground">
+        <h1 className="font-display text-3xl font-extrabold tracking-tight">Customers</h1>
+        <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-extrabold text-primary-ink tabular-nums">
           {customers?.length ?? 0} total
         </span>
       </div>
@@ -27,14 +27,17 @@ export default function CustomerList() {
           placeholder="Search by name or email..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="pl-10"
+          className="pl-10 rounded-xl bg-white"
         />
       </div>
 
       {isLoading ? (
         <div className="text-muted-foreground">Loading customers...</div>
       ) : (
-        <div className="rounded-md border">
+        <div
+          className="overflow-hidden rounded-2xl bg-white"
+          style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.08), 0 8px 20px rgba(40,30,40,0.08)', border: '1px solid rgba(40,30,40,0.05)' }}
+        >
           <Table>
             <TableHeader>
               <TableRow>

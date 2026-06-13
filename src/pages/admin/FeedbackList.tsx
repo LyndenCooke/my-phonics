@@ -114,7 +114,7 @@ export default function FeedbackList() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Feedback</h1>
+      <h1 className="font-display text-3xl font-extrabold tracking-tight">Feedback</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Total reviews" value={stats.total} icon={MessageSquare} />
