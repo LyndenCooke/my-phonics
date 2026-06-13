@@ -42,13 +42,26 @@ if (!fs.existsSync(SENTENCES_FILE)) {
 const SENTENCES = JSON.parse(fs.readFileSync(SENTENCES_FILE, 'utf8'));
 if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
+/**
+ * The text sent to ElevenLabs gets an explicit pause after each sentence-
+ * ending mark — without it George runs straight through full stops, which
+ * parents flagged ("doesn't pause at full stops"). The sidecar .txt keeps
+ * the ORIGINAL canonical text so drift detection still compares apples to
+ * apples; only the API payload is transformed.
+ */
+function withSentencePauses(text) {
+  return text.replace(/([.!?])\s+/g, '$1 <break time="0.5s" /> ');
+}
+
 function generateAudio(key, text) {
   return new Promise((resolve, reject) => {
     const outPath = path.join(OUTPUT_DIR, `${key}.mp3`);
     const body = JSON.stringify({
-      text,
-      model_id: 'eleven_monolingual_v1',
-      voice_settings: { stability: 0.75, similarity_boost: 0.75, speed: 0.85 },
+      text: withSentencePauses(text),
+      // multilingual_v2 with lower stability + style reads with warmth and
+      // intonation; monolingual_v1 @ 0.75 stability was flat ("no emotion").
+      model_id: 'eleven_multilingual_v2',
+      voice_settings: { stability: 0.4, similarity_boost: 0.75, style: 0.35, speed: 0.9 },
     });
 
     const options = {

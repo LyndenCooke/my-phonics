@@ -213,9 +213,36 @@ export function buildTrickyRounds(levels: JourneyLevel[], level: JourneyLevel, c
   return rounds;
 }
 
-/** Say a word aloud via the Web Speech API (best-effort; silent no-op
- *  where unsupported). Prefers a British English voice. */
+/**
+ * Say a word aloud. Prefers the pre-recorded ElevenLabs (George) MP3 in
+ * /sounds/words/ — the same voice the book reader narrates with — and only
+ * falls back to browser TTS when the file is missing. Unlike the reader
+ * (silent-on-miss for brand consistency), the games DO fall back: in
+ * "Hear it, find it" the audio IS the gameplay, so a wrong-voice round
+ * beats an unplayable one.
+ */
+let currentWordAudio: HTMLAudioElement | null = null;
+
 export function speakWord(word: string): void {
+  const key = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (key) {
+    try {
+      currentWordAudio?.pause();
+      const audio = new Audio(`/sounds/words/${key}.mp3`);
+      currentWordAudio = audio;
+      audio.onerror = () => speakWordTTS(word);
+      audio.play().catch(() => speakWordTTS(word));
+      return;
+    } catch {
+      /* fall through to TTS */
+    }
+  }
+  speakWordTTS(word);
+}
+
+/** Web Speech API fallback (best-effort; silent no-op where unsupported).
+ *  Prefers a British English voice. */
+function speakWordTTS(word: string): void {
   try {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
