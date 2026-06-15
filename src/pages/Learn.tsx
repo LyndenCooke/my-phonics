@@ -19,6 +19,7 @@ import { useBooks, useUserBooks } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import type { Book } from '@/lib/types';
+import { journeyLevelOf } from '@/lib/levels8';
 
 export default function Learn() {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export default function Learn() {
     } else {
       // Send the parent to the library on the relevant level so the
       // upsell + locked-book interaction fires there.
-      navigate('/library', { state: { filterLevel: book.level } });
+      navigate('/library', { state: { filterLevel: journeyLevelOf(book.subLevel) } });
     }
   };
 

@@ -428,7 +428,7 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
           </button>
         </div>
         {/* level is held by the caller for the celebration accent; we don't
-            need to pass it to checkout — full bundle unlocks all 6 levels. */}
+            need to pass it to checkout — full bundle unlocks all 8 levels. */}
         <input type="hidden" value={level} readOnly />
       </form>
     </div>

@@ -185,8 +185,8 @@ export default function ParentDashboard() {
   const masteredInLevel = levelBooks.filter(b => b.mastered).length;
   const allMastered = levelBooks.length > 0 && masteredInLevel === levelBooks.length;
   const currentBook = levelBooks.find(b => b.unlocked && !b.mastered) ?? levelBooks[levelBooks.length - 1];
-  // The assessment route still speaks legacy parent-6 levels.
-  const legacyAssessLevel = currentBook ? parseSubLevel(currentBook.legacySubLevel)?.level ?? 1 : 1;
+  // The assessment route speaks journey-8 levels.
+  const assessLevel = currentBook ? currentBook.journeyLevel : 1;
 
   const levelRollup = useMemo<LevelRollup[]>(() => JOURNEY_LEVELS.map(li => {
     const inLevel = books.filter(b => b.journeyLevel === li.level);
@@ -648,7 +648,7 @@ export default function ParentDashboard() {
               </div>
               {allMastered ? (
                 <Link
-                  to={`/assess?level=${legacyAssessLevel}`}
+                  to={`/assess?level=${assessLevel}`}
                   className="shrink-0 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-extrabold text-white press-scale"
                   style={{ background: levelInfo.hex, boxShadow: `0 12px 36px -8px ${levelInfo.hex}AA` }}
                 >

@@ -4,7 +4,7 @@
  *
  *   - Greater Depth (top ~20% of UK pupils)
  *   - UK Expected (national average)
- *   - International average (IEA PIRLS 2021 reference, mapped to our 1-6
+ *   - International average (IEA PIRLS 2021 reference, mapped to our 1-8
  *     phonics-level scale)
  *
  * Designed for the assessment results screen: tells the parent at a glance
@@ -17,13 +17,13 @@
  *   - NFER reading benchmarks by year group
  *   - IEA PIRLS 2021 reading literacy international comparison
  *
- * Mapping rationale (our internal levels 1-6 to age):
- *   L1 ≈ Phases 2-3   (Reception, end of age 5)
- *   L2 ≈ Phases 4-5   (Year 1, age 6 — phonics screening pass)
- *   L3 ≈ Phase 5+     (Year 1/2 alternative spellings)
- *   L4 ≈ Phase 5/6    (Year 2, age 7 fluency)
- *   L5 ≈ Phase 6      (Year 2/3, age 8 complex spellings)
- *   L6 ≈ Post-phonics (Year 3+, age 9 morphology / suffixes)
+ * Mapping rationale (our internal journey levels 1-8 to age):
+ *   L1–L3 ≈ Phases 2-3 (Reception, end of age 5 — Set 1 sounds → special friends)
+ *   L4    ≈ Phases 3-4 (Year 1, age 6 — longer vowel sounds, screening pass)
+ *   L5    ≈ Phase 5    (Year 1/2 new spellings, split digraphs)
+ *   L6    ≈ Phase 5/6  (Year 2, age 7 fluency, alternative spellings)
+ *   L7    ≈ Phase 6    (Year 2/3, age 8 trigraphs and -tion)
+ *   L8    ≈ Post-phonics (Year 3+, age 9 morphology / suffixes)
  *
  * The chart is interpretation, not raw data — the disclaimer makes that
  * explicit and the parent can drill into their assessment for specifics.
@@ -34,7 +34,7 @@ import { Info } from 'lucide-react';
 interface Props {
   /** Child's age in months at time of test. */
   ageMonths: number;
-  /** Recommended phonics level from the assessment (1-6). */
+  /** Recommended phonics level from the assessment (1-8). */
   childLevel: number;
   /** Optional 2-letter country code for context line ("you live in MY") —
    *  doesn't change the curves; future work could swap the international
@@ -42,13 +42,15 @@ interface Props {
   countryCode?: string | null;
 }
 
-// Reference curves. X axis is age in years (4-10), Y axis is our level
-// (0-6, where 6 is "post-phonics fluent reader"). Values chosen to match
-// public DfE + PIRLS data, smoothed to a 7-point curve.
+// Reference curves. X axis is age in years (4-10), Y axis is our journey level
+// (0-8, where 8 is "post-phonics fluent reader"). Values chosen to match
+// public DfE + PIRLS data, smoothed to a 7-point curve. The legacy 1-6 curves
+// were rescaled onto the 8-level journey: the old L1 band spans journey L1-L3
+// (value v ≤ 1 → v × 3) and old L2-L6 map to journey L4-L8 (v → v + 2).
 const AGE_POINTS = [4, 5, 6, 7, 8, 9, 10];
-const UK_GREATER_DEPTH = [1.0, 2.0, 3.5, 5.0, 6.0, 6.0, 6.0];
-const UK_EXPECTED      = [0.5, 1.0, 2.0, 4.0, 5.5, 6.0, 6.0];
-const INTERNATIONAL    = [0.2, 0.7, 1.5, 3.0, 4.5, 5.5, 6.0];
+const UK_GREATER_DEPTH = [3.0, 4.0, 5.5, 7.0, 8.0, 8.0, 8.0];
+const UK_EXPECTED      = [1.5, 3.0, 4.0, 6.0, 7.5, 8.0, 8.0];
+const INTERNATIONAL    = [0.6, 2.1, 3.5, 5.0, 6.5, 7.5, 8.0];
 
 // SVG layout
 const W = 360;
@@ -60,7 +62,7 @@ const PLOT_H = H - PADDING.top - PADDING.bottom;
 const X_MIN = 4;
 const X_MAX = 10;
 const Y_MIN = 0;
-const Y_MAX = 6;
+const Y_MAX = 8;
 
 function xScale(age: number) {
   return PADDING.left + ((age - X_MIN) / (X_MAX - X_MIN)) * PLOT_W;
@@ -119,7 +121,7 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
       {/* Chart */}
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" aria-label="Phonics level by age comparison chart">
         {/* Y-axis grid lines */}
-        {[0, 1, 2, 3, 4, 5, 6].map((y) => (
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((y) => (
           <g key={y}>
             <line x1={PADDING.left} x2={W - PADDING.right} y1={yScale(y)} y2={yScale(y)} stroke="hsl(0, 0%, 90%)" strokeWidth={1} strokeDasharray={y === 0 ? '0' : '2 3'} />
             <text x={PADDING.left - 6} y={yScale(y) + 3} textAnchor="end" fontSize={9} fill="hsl(0, 0%, 50%)">L{y}</text>
@@ -174,7 +176,7 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
         <p className="text-[10px] text-muted-foreground leading-relaxed">
           Reference data: UK DfE Phonics Screening Check 2024 (national pass rate ≈80% at end of Year&nbsp;1)
           + NFER reading benchmarks. International line interpolated from IEA PIRLS 2021 reading literacy
-          (UK 558 vs international avg 520). Phonics levels are mapped to our 1–6 curriculum, not standardised test scores.
+          (UK 558 vs international avg 520). Phonics levels are mapped to our 1–8 curriculum, not standardised test scores.
           Your child is a snapshot, not a label — talk to their teacher for the full picture.
           {countryCode ? ` Country context: ${countryCode}.` : ''}
         </p>

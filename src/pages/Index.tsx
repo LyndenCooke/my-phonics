@@ -31,15 +31,12 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-// Inbound nav state still passes legacy catalogue levels (1–6); the filter
-// rail speaks journey levels (1–8). Map via each legacy level's first
-// journey placement.
-const LEGACY_TO_JOURNEY: Record<number, number> = { 1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
-
 export default function Index() {
   const location = useLocation();
   const navState = location.state as { filterLevel?: number; scrollToBookId?: string; from?: string } | null;
-  const initialLevel = navState?.filterLevel ? LEGACY_TO_JOURNEY[navState.filterLevel] ?? null : null;
+  // filterLevel arrives on the journey-8 scale (the assessment, /welcome and
+  // /learn all emit journey levels), matching the journey filter rail.
+  const initialLevel = navState?.filterLevel ?? null;
   const scrollToBookId = navState?.scrollToBookId ?? null;
   // Sub-tab inside /library: 'books' (default grid) vs 'worksheets'
   // (sound mats + printable resources, formerly the /resources page).

@@ -810,55 +810,40 @@ INVENTORY = [
             {"word": "education", "query": "classroom education scene"},
         ])
     ]),
-    _b(8, 1, 1, "Sound Book: -ous", [
+    # Combined suffix books — these abstract spelling patterns share the same
+    # job and have few image-able words, so they're grouped. 3-sound book = 9
+    # examples (3 each); 2-sound book = 8 examples (4 each). Cover photos come
+    # from the image-able query hints (cake, salad, jewellery, rainbow…).
+    _b(8, 1, 1, "Sound Book: -ous, -cious & -tious", [
         _s("ous", "Say the sound: ous. Ending found on adjectives — 'full of'. ous!", [
             {"word": "famous", "query": "famous landmark"},
             {"word": "dangerous", "query": "dangerous cliff edge"},
-            {"word": "curious", "query": "curious child exploring"},
-            {"word": "nervous", "query": "nervous child before performance"},
             {"word": "fabulous", "query": "fabulous fireworks display"},
-            {"word": "marvellous", "query": "spectacular fireworks"},
-        ])
-    ]),
-    _b(8, 2, 1, "Sound Book: -cious", [
+        ]),
         _s("cious", "Say the sound: cious. Spelt c-i-o-u-s, sounds like 'shus'. cious!", [
-            {"word": "precious", "query": "precious gem in hand"},
-            {"word": "vicious", "query": "vicious dog barking"},
             {"word": "delicious", "query": "delicious cake on plate"},
-            {"word": "conscious", "query": "conscious child waking up"},
+            {"word": "precious", "query": "precious gem in hand"},
             {"word": "spacious", "query": "spacious living room"},
-            {"word": "gracious", "query": "gracious host welcoming guests"},
-        ])
-    ]),
-    _b(8, 3, 1, "Sound Book: -tious", [
+        ]),
         _s("tious", "Say the sound: tious. Spelt t-i-o-u-s, sounds like 'shus'. tious!", [
-            {"word": "ambitious", "query": "ambitious child reaching goal"},
-            {"word": "cautious", "query": "cautious child crossing street"},
             {"word": "nutritious", "query": "nutritious salad on plate"},
             {"word": "scrumptious", "query": "scrumptious chocolate cupcakes"},
-            {"word": "fictitious", "query": "fairy tale castle in clouds"},
-            {"word": "superstitious", "query": "black cat and four leaf clover"},
-        ])
+            {"word": "cautious", "query": "cautious child crossing street"},
+        ]),
     ]),
-    _b(8, 4, 1, "Sound Book: -able", [
+    _b(8, 2, 1, "Sound Book: -able & -ible", [
         _s("able", "Say the sound: able. Ending — means 'can be'. able!", [
             {"word": "comfortable", "query": "comfortable sofa in living room"},
             {"word": "reliable", "query": "reliable car on road"},
-            {"word": "enjoyable", "query": "enjoyable picnic in park"},
             {"word": "valuable", "query": "valuable jewellery in box"},
-            {"word": "affordable", "query": "affordable house for sale"},
-            {"word": "adaptable", "query": "adaptable child in new environment"},
-        ])
-    ]),
-    _b(8, 5, 1, "Sound Book: -ible", [
+            {"word": "enjoyable", "query": "enjoyable picnic in park"},
+        ]),
         _s("ible", "Say the sound: ible. Ending — also means 'can be'. ible!", [
             {"word": "visible", "query": "visible rainbow in sky"},
             {"word": "edible", "query": "edible mushrooms in basket"},
             {"word": "flexible", "query": "flexible gymnast performing"},
             {"word": "incredible", "query": "incredible fireworks display"},
-            {"word": "sensible", "query": "sensible child making decision"},
-            {"word": "possible", "query": "possible solutions on board"},
-        ])
+        ]),
     ]),
 ]
 

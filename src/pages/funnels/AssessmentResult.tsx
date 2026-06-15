@@ -1,13 +1,9 @@
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { JOURNEY_LEVELS } from '@/lib/levels8';
 
-const LEVEL_CONFIG: Record<number, { colour: string; name: string; books: number }> = {
-  1: { colour: '#E84B8A', name: 'Starting Stories', books: 10 },
-  2: { colour: '#F5A623', name: 'Longer Sounds', books: 6 },
-  3: { colour: '#4ABD6D', name: 'New Spellings', books: 5 },
-  4: { colour: '#5B9EFF', name: 'Building Fluency', books: 4 },
-  5: { colour: '#A78EFF', name: 'Reading Together', books: 4 },
-  6: { colour: '#2B8A6E', name: 'Reading Champion', books: 4 },
-};
+// Journey-8 name + colour per level, sourced from the journey source of truth.
+const LEVEL_CONFIG: Record<number, { colour: string; name: string }> =
+  Object.fromEntries(JOURNEY_LEVELS.map((l) => [l.level, { colour: l.hex, name: l.name }]));
 
 interface AssessmentResultProps {
   childName: string;

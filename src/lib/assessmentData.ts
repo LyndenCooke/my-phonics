@@ -1,5 +1,15 @@
-// Complete assessment item bank from MyPhonicsBooks Assessment Sheet
-// 346 items across 6 levels, 5-6 categories each
+// Assessment item bank — aligned to the 8-level reading journey.
+//
+// Levels 1–3 are written around the Set 1 progression in src/lib/levels8.ts and
+// reuse the items from the school bank (src/school/data/assessmentItems.ts) so
+// the parent and school assessments agree. Levels 4–8 lift the old parent
+// Level 2–6 item sets verbatim with a level re-tag (same content, new number):
+// old L2 → L4, old L3 → L5, old L4 → L6, old L5 → L7, old L6 → L8.
+//
+// Every real and alien word is decodable using only the graphemes taught up to
+// and including its level (see JOURNEY_LEVELS in levels8.ts).
+
+import { JOURNEY_LEVELS } from './levels8';
 
 export type Category = 'sound_recognition' | 'word_reading' | 'alien_words' | 'tricky_words' | 'speedy_reading' | 'fluency';
 
@@ -16,7 +26,7 @@ export interface PassCriteria {
   words: number;
   alien: number;
   tricky: number;
-  fluency?: number; // wpm threshold, L4+ only
+  fluency?: number; // wpm threshold, L6+ only
 }
 
 export interface AgeExpectation {
@@ -31,28 +41,36 @@ export const PASS_CRITERIA: Record<number, PassCriteria> = {
   1: { sounds: 90, words: 85, alien: 75, tricky: 70 },
   2: { sounds: 90, words: 85, alien: 75, tricky: 70 },
   3: { sounds: 90, words: 85, alien: 75, tricky: 70 },
-  4: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 90 },
-  5: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 100 },
-  6: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 110 },
+  4: { sounds: 90, words: 85, alien: 75, tricky: 70 },
+  5: { sounds: 90, words: 85, alien: 75, tricky: 70 },
+  6: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 90 },
+  7: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 100 },
+  8: { sounds: 90, words: 85, alien: 75, tricky: 70, fluency: 110 },
 };
 
+// Age expectations read against the 8-level journey. Age buckets match
+// getAgeRangeFromDob in Assessment.tsx; levels reference the ranges in
+// JOURNEY_LEVELS (Reception → Year 3).
 export const AGE_EXPECTATIONS: AgeExpectation[] = [
   { age: '4–4.5', yearGroup: 'Reception (Autumn)', expectedLevel: 'Level 1', belowExpectations: 'N/A (starting point)', aboveExpectations: 'Level 2' },
   { age: '4.5–5', yearGroup: 'Reception (Spring/Summer)', expectedLevel: 'Level 1–2', belowExpectations: 'Still on early Level 1', aboveExpectations: 'Level 3' },
   { age: '5–5.5', yearGroup: 'Year 1 (Autumn)', expectedLevel: 'Level 2–3', belowExpectations: 'Level 1', aboveExpectations: 'Level 4' },
   { age: '5.5–6', yearGroup: 'Year 1 (Spring/Summer)', expectedLevel: 'Level 3–4', belowExpectations: 'Level 1–2', aboveExpectations: 'Level 5' },
-  { age: '6–7', yearGroup: 'Year 2', expectedLevel: 'Level 4–5', belowExpectations: 'Level 1–3', aboveExpectations: 'Level 6' },
-  { age: '7–8', yearGroup: 'Year 3', expectedLevel: 'Level 5–6', belowExpectations: 'Level 1–4', aboveExpectations: 'Beyond Level 6' },
+  { age: '6–7', yearGroup: 'Year 2', expectedLevel: 'Level 4–6', belowExpectations: 'Level 1–3', aboveExpectations: 'Level 7' },
+  { age: '7–8', yearGroup: 'Year 3', expectedLevel: 'Level 6–8', belowExpectations: 'Level 1–5', aboveExpectations: 'Beyond Level 8' },
 ];
 
-export const LEVEL_NAMES: Record<number, { name: string; colour: string; phase: string }> = {
-  1: { name: 'Starting Stories', colour: 'Pink', phase: 'Phase 2–3' },
-  2: { name: 'Longer Sounds', colour: 'Amber', phase: 'Phase 3' },
-  3: { name: 'New Spellings', colour: 'Green', phase: 'Phase 4–5' },
-  4: { name: 'Building Fluency', colour: 'Blue', phase: 'Phase 5' },
-  5: { name: 'Reading Together', colour: 'Purple', phase: 'Phase 5–6' },
-  6: { name: 'Reading Champion', colour: 'Teal', phase: 'Phase 6' },
+// Names, colours and phases sourced from JOURNEY_LEVELS (levels8.ts) so the
+// assessment never drifts from the journey source of truth.
+const PHASE_BY_LEVEL: Record<number, string> = {
+  1: 'Phase 2', 2: 'Phase 2–3', 3: 'Phase 3', 4: 'Phase 3–4',
+  5: 'Phase 5', 6: 'Phase 5', 7: 'Phase 5–6', 8: 'Phase 6',
 };
+
+export const LEVEL_NAMES: Record<number, { name: string; colour: string; phase: string }> =
+  Object.fromEntries(
+    JOURNEY_LEVELS.map((l) => [l.level, { name: l.name, colour: l.colourName, phase: PHASE_BY_LEVEL[l.level] ?? '' }]),
+  );
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   sound_recognition: 'Sounds',
@@ -72,198 +90,142 @@ export const CATEGORY_INSTRUCTIONS: Record<Category, string> = {
   fluency: 'Use a Level book passage. Time 1 minute. Count words read correctly.',
 };
 
-// All 346 items from the Excel Item Bank
+// ─── Item bank ────────────────────────────────────────────────
+// Built level by level so a single running counter gives every item a stable
+// sortOrder. Plain strings become sound/word/etc. items; for sounds the string
+// is also the target grapheme unless an explicit { item, grapheme } is given.
+
+interface ItemBlock {
+  category: Category;
+  items: Array<string | { item: string; grapheme?: string }>;
+}
+
 let order = 0;
+function makeLevel(level: number, blocks: ItemBlock[]): AssessmentItem[] {
+  const out: AssessmentItem[] = [];
+  for (const block of blocks) {
+    for (const raw of block.items) {
+      const item = typeof raw === 'string' ? raw : raw.item;
+      const grapheme = typeof raw === 'string' ? raw : (raw.grapheme ?? raw.item);
+      out.push({
+        level,
+        category: block.category,
+        item,
+        targetGrapheme: block.category === 'sound_recognition' ? grapheme : undefined,
+        sortOrder: ++order,
+      });
+    }
+  }
+  return out;
+}
+
 export const ASSESSMENT_ITEMS: AssessmentItem[] = [
   // ═══════════════════════════════════════
-  // LEVEL 1 — Starting Stories (Pink)
+  // LEVEL 1 — Ditties (Pink) · s a t p i n m d g o
   // ═══════════════════════════════════════
-
-  // Sound Recognition (36 sounds)
-  ...[
-    's', 'a', 't', 'p', 'i', 'n', 'm', 'd', 'g', 'o',
-    'c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff',
-    'l', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z', 'zz',
-    'qu', 'ch', 'sh', 'th', 'ng', 'nk',
-  ].map(s => ({ level: 1, category: 'sound_recognition' as Category, item: s, targetGrapheme: s, sortOrder: ++order })),
-
-  // Real Words (12)
-  ...['sat', 'pin', 'dig', 'mop', 'cup', 'hug', 'check', 'fish', 'shop', 'thin', 'ring', 'quack']
-    .map(w => ({ level: 1, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (12)
-  ...['teg', 'mip', 'fod', 'gub', 'hin', 'jat', 'zog', 'vum', 'cheb', 'shog', 'thep', 'quab']
-    .map(w => ({ level: 1, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (6)
-  ...['the', 'to', 'I', 'no', 'go', 'into']
-    .map(w => ({ level: 1, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (12)
-  ...['in', 'am', 'red', 'bin', 'yes', 'and', 'get', 'him', 'not', 'but', 'big', 'had']
-    .map(w => ({ level: 1, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  ...makeLevel(1, [
+    { category: 'sound_recognition', items: ['s', 'a', 't', 'p', 'i', 'n', 'm', 'd', 'g', 'o'] },
+    { category: 'word_reading', items: ['sat', 'pin', 'dog', 'mop', 'dig', 'nit', 'tap', 'tip', 'nip', 'pan'] },
+    { category: 'alien_words', items: ['pid', 'gom', 'sot', 'nid', 'mig', 'tog', 'dap', 'nop', 'gip', 'sim'] },
+    { category: 'tricky_words', items: ['I', 'the'] },
+  ]),
 
   // ═══════════════════════════════════════
-  // LEVEL 2 — Longer Sounds (Amber)
+  // LEVEL 2 — First Sounds (Coral) · c k ck e u r h b f ff l ll ss j v w x y z
   // ═══════════════════════════════════════
-
-  // Sound Recognition (13 sounds)
-  ...[
-    { item: 'ay', grapheme: 'ay' },
-    { item: 'ee', grapheme: 'ee' },
-    { item: 'igh', grapheme: 'igh' },
-    { item: 'ow (blow)', grapheme: 'ow (blow)' },
-    { item: 'ow (cow)', grapheme: 'ow (cow)' },
-    { item: 'oo (moon)', grapheme: 'oo (moon)' },
-    { item: 'oo (look)', grapheme: 'oo (look)' },
-    { item: 'ar', grapheme: 'ar' },
-    { item: 'or', grapheme: 'or' },
-    { item: 'air', grapheme: 'air' },
-    { item: 'ir', grapheme: 'ir' },
-    { item: 'ou', grapheme: 'ou' },
-    { item: 'oy', grapheme: 'oy' },
-  ].map(s => ({ level: 2, category: 'sound_recognition' as Category, item: s.item, targetGrapheme: s.grapheme, sortOrder: ++order })),
-
-  // Real Words (13)
-  ...['day', 'jeep', 'sight', 'low', 'cow', 'moon', 'look', 'park', 'fork', 'fair', 'fir', 'shout', 'boy']
-    .map(w => ({ level: 2, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (13)
-  ...['tay', 'deeg', 'migh', 'gow', 'yow', 'hoond', 'jook', 'narp', 'mork', 'gair', 'zir', 'fout', 'noy']
-    .map(w => ({ level: 2, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (12)
-  ...['he', 'she', 'we', 'me', 'be', 'my', 'you', 'her', 'said', 'your', 'are', 'put']
-    .map(w => ({ level: 2, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (12)
-  ...['with', 'off', 'thin', 'will', 'his', 'them', 'that', 'have', 'long', 'this', 'back', 'much']
-    .map(w => ({ level: 2, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  ...makeLevel(2, [
+    { category: 'sound_recognition', items: ['c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff', 'l', 'll', 'ss'] },
+    { category: 'word_reading', items: ['duck', 'bell', 'huff', 'jet', 'web', 'fox', 'cup', 'red', 'log', 'kiss'] },
+    { category: 'alien_words', items: ['veck', 'zuff', 'rell', 'hib', 'lub', 'fick', 'joss', 'wug', 'yat', 'beff'] },
+    { category: 'tricky_words', items: ['no', 'go', 'to', 'into', 'is'] },
+  ]),
 
   // ═══════════════════════════════════════
-  // LEVEL 3 — New Spellings (Green)
+  // LEVEL 3 — Special Friends (Amber) · sh nk ch th ng qu zz
   // ═══════════════════════════════════════
-
-  // Sound Recognition (10 sounds)
-  ...[
-    { item: 'ea', grapheme: 'ea' },
-    { item: 'a-e', grapheme: 'a-e' },
-    { item: 'i-e', grapheme: 'i-e' },
-    { item: 'o-e', grapheme: 'o-e' },
-    { item: 'u-e', grapheme: 'u-e' },
-    { item: 'oi', grapheme: 'oi' },
-    { item: 'aw', grapheme: 'aw' },
-    { item: 'ai', grapheme: 'ai' },
-    { item: 'oa', grapheme: 'oa' },
-    { item: 'ie', grapheme: 'ie' },
-  ].map(s => ({ level: 3, category: 'sound_recognition' as Category, item: s.item, targetGrapheme: s.grapheme, sortOrder: ++order })),
-
-  // Real Words (10)
-  ...['cake', 'bike', 'stone', 'flute', 'coin', 'straw', 'snail', 'boat', 'pie', 'reach']
-    .map(w => ({ level: 3, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (10)
-  ...['grafe', 'stime', 'broak', 'cloi', 'frawl', 'snaid', 'bleam', 'dripe', 'joap', 'spie']
-    .map(w => ({ level: 3, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (14)
-  ...['all', 'like', 'want', 'call', 'some', 'what', 'they', 'do', 'old', 'was', 'so', 'one', 'two', 'again']
-    .map(w => ({ level: 3, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (12)
-  ...['lots', 'black', 'went', 'stop', 'green', 'tree', 'make', 'came', 'play', 'round', 'feel', 'about']
-    .map(w => ({ level: 3, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  ...makeLevel(3, [
+    { category: 'sound_recognition', items: ['sh', 'ch', 'th', 'ng', 'nk', 'qu', 'zz'] },
+    { category: 'word_reading', items: ['ship', 'chop', 'thin', 'ring', 'bank', 'quick', 'buzz', 'fish', 'rush', 'much'] },
+    { category: 'alien_words', items: ['shog', 'chib', 'thup', 'ning', 'zonk', 'quab', 'theng', 'shuck', 'chid', 'nunk'] },
+    { category: 'tricky_words', items: ['he', 'she', 'we', 'me', 'be'] },
+  ]),
 
   // ═══════════════════════════════════════
-  // LEVEL 4 — Building Fluency (Blue)
+  // LEVEL 4 — Longer Sounds (Green) · lifted from old parent Level 2
   // ═══════════════════════════════════════
-
-  // Sound Recognition (5 sounds)
-  ...[
-    { item: 'are', grapheme: 'are' },
-    { item: 'ur', grapheme: 'ur' },
-    { item: 'er', grapheme: 'er' },
-    { item: 'ew', grapheme: 'ew' },
-    { item: 'ue', grapheme: 'ue' },
-  ].map(s => ({ level: 4, category: 'sound_recognition' as Category, item: s.item, targetGrapheme: s.grapheme, sortOrder: ++order })),
-
-  // Real Words (9)
-  ...['stare', 'turn', 'fern', 'chew', 'true', 'brown', 'turnip', 'market', 'flower']
-    .map(w => ({ level: 4, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (10)
-  ...['skare', 'clurn', 'blert', 'brewn', 'plue', 'jown', 'norp', 'pight', 'clow', 'zair']
-    .map(w => ({ level: 4, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (15)
-  ...['saw', 'watch', 'their', 'school', 'where', 'were', 'small', 'who', 'tall', 'brother', 'any', 'there', 'eyes', 'done', 'move']
-    .map(w => ({ level: 4, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (12)
-  ...['rest', 'smell', 'soft', 'stay', 'which', 'first', 'your', 'down', 'house', 'after', 'every', 'other']
-    .map(w => ({ level: 4, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  ...makeLevel(4, [
+    {
+      category: 'sound_recognition',
+      items: [
+        'ay', 'ee', 'igh',
+        { item: 'ow (blow)', grapheme: 'ow (blow)' },
+        { item: 'ow (cow)', grapheme: 'ow (cow)' },
+        { item: 'oo (moon)', grapheme: 'oo (moon)' },
+        { item: 'oo (look)', grapheme: 'oo (look)' },
+        'ar', 'or', 'air', 'ir', 'ou', 'oy',
+      ],
+    },
+    { category: 'word_reading', items: ['day', 'jeep', 'sight', 'low', 'cow', 'moon', 'look', 'park', 'fork', 'fair', 'fir', 'shout', 'boy'] },
+    { category: 'alien_words', items: ['tay', 'deeg', 'migh', 'gow', 'yow', 'hoond', 'jook', 'narp', 'mork', 'gair', 'zir', 'fout', 'noy'] },
+    { category: 'tricky_words', items: ['he', 'she', 'we', 'me', 'be', 'my', 'you', 'her', 'said', 'your', 'are', 'put'] },
+    { category: 'speedy_reading', items: ['with', 'off', 'thin', 'will', 'his', 'them', 'that', 'have', 'long', 'this', 'back', 'much'] },
+  ]),
 
   // ═══════════════════════════════════════
-  // LEVEL 5 — Reading Together (Purple)
+  // LEVEL 5 — New Spellings (Blue) · lifted from old parent Level 3
   // ═══════════════════════════════════════
-
-  // Sound Recognition (9 sounds)
-  ...[
-    { item: 'ore', grapheme: 'ore' },
-    { item: 'oor', grapheme: 'oor' },
-    { item: 'ire', grapheme: 'ire' },
-    { item: 'ear', grapheme: 'ear' },
-    { item: 'ure', grapheme: 'ure' },
-    { item: 'tion', grapheme: 'tion' },
-    { item: 'ph', grapheme: 'ph' },
-    { item: 'kn', grapheme: 'kn' },
-    { item: 'wr', grapheme: 'wr' },
-  ].map(s => ({ level: 5, category: 'sound_recognition' as Category, item: s.item, targetGrapheme: s.grapheme, sortOrder: ++order })),
-
-  // Real Words (9)
-  ...['shore', 'floor', 'fire', 'near', 'sure', 'station', 'phone', 'knee', 'write']
-    .map(w => ({ level: 5, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (9)
-  ...['blore', 'gloor', 'brire', 'snear', 'plure', 'tration', 'phest', 'knib', 'wrop']
-    .map(w => ({ level: 5, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (13)
-  ...['does', 'could', 'would', 'anyone', 'over', 'through', 'once', 'whole', 'people', 'water', 'though', 'knew', 'woman']
-    .map(w => ({ level: 5, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (12)
-  ...['thing', 'right', 'night', 'sleep', 'know', 'quick', 'little', 'think', 'smart', 'more', 'before', 'people']
-    .map(w => ({ level: 5, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  ...makeLevel(5, [
+    {
+      category: 'sound_recognition',
+      items: ['ea', 'a-e', 'i-e', 'o-e', 'u-e', 'oi', 'aw', 'ai', 'oa', 'ie'],
+    },
+    { category: 'word_reading', items: ['cake', 'bike', 'stone', 'flute', 'coin', 'straw', 'snail', 'boat', 'pie', 'reach'] },
+    { category: 'alien_words', items: ['grafe', 'stime', 'broak', 'cloi', 'frawl', 'snaid', 'bleam', 'dripe', 'joap', 'spie'] },
+    { category: 'tricky_words', items: ['all', 'like', 'want', 'call', 'some', 'what', 'they', 'do', 'old', 'was', 'so', 'one', 'two', 'again'] },
+    { category: 'speedy_reading', items: ['lots', 'black', 'went', 'stop', 'green', 'tree', 'make', 'came', 'play', 'round', 'feel', 'about'] },
+  ]),
 
   // ═══════════════════════════════════════
-  // LEVEL 6 — Reading Champion (Teal)
+  // LEVEL 6 — Building Fluency (Indigo) · lifted from old parent Level 4
   // ═══════════════════════════════════════
+  ...makeLevel(6, [
+    {
+      category: 'sound_recognition',
+      items: ['are', 'ur', 'er', 'ew', 'ue'],
+    },
+    { category: 'word_reading', items: ['stare', 'turn', 'fern', 'chew', 'true', 'brown', 'turnip', 'market', 'flower'] },
+    { category: 'alien_words', items: ['skare', 'clurn', 'blert', 'brewn', 'plue', 'jown', 'norp', 'pight', 'clow', 'zair'] },
+    { category: 'tricky_words', items: ['saw', 'watch', 'their', 'school', 'where', 'were', 'small', 'who', 'tall', 'brother', 'any', 'there', 'eyes', 'done', 'move'] },
+    { category: 'speedy_reading', items: ['rest', 'smell', 'soft', 'stay', 'which', 'first', 'your', 'down', 'house', 'after', 'every', 'other'] },
+  ]),
 
-  // Sound Recognition (5 sounds)
-  ...[
-    { item: 'ous', grapheme: 'ous' },
-    { item: 'cious', grapheme: 'cious' },
-    { item: 'tious', grapheme: 'tious' },
-    { item: 'able', grapheme: 'able' },
-    { item: 'ible', grapheme: 'ible' },
-  ].map(s => ({ level: 6, category: 'sound_recognition' as Category, item: s.item, targetGrapheme: s.grapheme, sortOrder: ++order })),
+  // ═══════════════════════════════════════
+  // LEVEL 7 — Reading Together (Purple) · lifted from old parent Level 5
+  // ═══════════════════════════════════════
+  ...makeLevel(7, [
+    {
+      category: 'sound_recognition',
+      items: ['ore', 'oor', 'ire', 'ear', 'ure', 'tion', 'ph', 'kn', 'wr'],
+    },
+    { category: 'word_reading', items: ['shore', 'floor', 'fire', 'near', 'sure', 'station', 'phone', 'knee', 'write'] },
+    { category: 'alien_words', items: ['blore', 'gloor', 'brire', 'snear', 'plure', 'tration', 'phest', 'knib', 'wrop'] },
+    { category: 'tricky_words', items: ['does', 'could', 'would', 'anyone', 'over', 'through', 'once', 'whole', 'people', 'water', 'though', 'knew', 'woman'] },
+    { category: 'speedy_reading', items: ['thing', 'right', 'night', 'sleep', 'know', 'quick', 'little', 'think', 'smart', 'more', 'before', 'people'] },
+  ]),
 
-  // Real Words (7)
-  ...['famous', 'precious', 'cautious', 'readable', 'terrible', 'incredible', 'suspicious']
-    .map(w => ({ level: 6, category: 'word_reading' as Category, item: w, sortOrder: ++order })),
-
-  // Alien Words (7)
-  ...['parvous', 'fricious', 'bontious', 'strable', 'plendible', 'marcious', 'gantible']
-    .map(w => ({ level: 6, category: 'alien_words' as Category, item: w, sortOrder: ++order })),
-
-  // Tricky Words (17)
-  ...['should', 'many', 'above', 'father', 'son', 'mother', 'buy', 'bought', 'great', 'caught', 'worse', 'love', 'wear', 'thought', 'everyone', 'walk', 'talk']
-    .map(w => ({ level: 6, category: 'tricky_words' as Category, item: w, sortOrder: ++order })),
-
-  // Speedy Reading (10)
-  ...['comfortable', 'invisible', 'operation', 'tomorrow', 'serious', 'remember', 'enormous', 'beautiful', 'different', 'important']
-    .map(w => ({ level: 6, category: 'speedy_reading' as Category, item: w, sortOrder: ++order })),
+  // ═══════════════════════════════════════
+  // LEVEL 8 — Reading Champion (Teal) · lifted from old parent Level 6
+  // ═══════════════════════════════════════
+  ...makeLevel(8, [
+    {
+      category: 'sound_recognition',
+      items: ['-ous', '-cious', '-tious', '-able', '-ible'],
+    },
+    { category: 'word_reading', items: ['famous', 'precious', 'cautious', 'readable', 'terrible', 'incredible', 'suspicious'] },
+    { category: 'alien_words', items: ['parvous', 'fricious', 'bontious', 'strable', 'plendible', 'marcious', 'gantible'] },
+    { category: 'tricky_words', items: ['should', 'many', 'above', 'father', 'son', 'mother', 'buy', 'bought', 'great', 'caught', 'worse', 'love', 'wear', 'thought', 'everyone', 'walk', 'talk'] },
+    { category: 'speedy_reading', items: ['comfortable', 'invisible', 'operation', 'tomorrow', 'serious', 'remember', 'enormous', 'beautiful', 'different', 'important'] },
+  ]),
 ];
 
 // Helper: get items for a specific level and category
@@ -274,6 +236,6 @@ export function getItems(level: number, category: Category): AssessmentItem[] {
 // Categories in display order (per level)
 export function getCategoriesForLevel(level: number): Category[] {
   const cats: Category[] = ['sound_recognition', 'word_reading', 'alien_words', 'tricky_words', 'speedy_reading'];
-  if (level >= 4) cats.push('fluency');
+  if (level >= 6) cats.push('fluency');
   return cats;
 }

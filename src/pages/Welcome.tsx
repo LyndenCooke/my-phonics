@@ -163,7 +163,7 @@ export default function Welcome() {
                 style={{ background: hex }}
               />
               <button
-                onClick={() => navigate('/library', { state: { filterLevel: unlockedBook.level, openBookId: unlockedBook.id } })}
+                onClick={() => navigate('/library', { state: { filterLevel: journeyLevel, openBookId: unlockedBook.id } })}
                 aria-label={`Open ${unlockedBook.title}`}
                 className="relative block mx-auto w-[58%] max-w-[15rem] press-scale"
                 style={{ rotate: '-2deg' }}

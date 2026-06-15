@@ -5,11 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { JOURNEY_LEVELS, journeyLevelOf, getJourneyLevel } from '@/lib/levels8';
 import { Flame, Star } from 'lucide-react';
 
-// Assessment results still store legacy parent-6 levels; map to the 8-level
-// journey for display (first journey level of each legacy band — same
-// mapping as Profile.tsx and Index.tsx).
-const LEGACY_TO_JOURNEY: Record<number, number> = { 1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
-
 /** Sticker shadow — white border + soft drop, same as /learn and /library. */
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
@@ -166,7 +161,8 @@ export default function Progress() {
             </div>
 
             {data?.latestAssessment && (() => {
-              const journeyRec = LEGACY_TO_JOURNEY[data.latestAssessment.recommended_level] ?? data.latestAssessment.recommended_level;
+              // recommended_level is stored on the journey-8 scale.
+              const journeyRec = data.latestAssessment.recommended_level;
               const recInfo = getJourneyLevel(journeyRec);
               return (
                 <div

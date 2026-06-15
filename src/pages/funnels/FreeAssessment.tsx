@@ -8,17 +8,13 @@ import BundleUpsell from './BundleUpsell';
 import MonthlyDownsell from './MonthlyDownsell';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
+import { JOURNEY_LEVELS, journeyLevelOf } from '@/lib/levels8';
 
 const HUB_URL = import.meta.env.VITE_HUB_URL || '/library';
 
-const LEVEL_CONFIG: Record<number, { colour: string; name: string }> = {
-  1: { colour: '#E84B8A', name: 'Starting Stories' },
-  2: { colour: '#F5A623', name: 'Longer Sounds' },
-  3: { colour: '#4ABD6D', name: 'New Spellings' },
-  4: { colour: '#5B9EFF', name: 'Building Fluency' },
-  5: { colour: '#A78EFF', name: 'Reading Together' },
-  6: { colour: '#2B8A6E', name: 'Reading Champion' },
-};
+// Journey-8 name + colour per level, sourced from the journey source of truth.
+const LEVEL_CONFIG: Record<number, { colour: string; name: string }> =
+  Object.fromEntries(JOURNEY_LEVELS.map((l) => [l.level, { colour: l.hex, name: l.name }]));
 
 type Step = 'assessment' | 'capture' | 'upsell' | 'downsell' | 'unlocked';
 
@@ -92,7 +88,7 @@ export default function FreeAssessment() {
   }
 
   // unlocked — celebrate the free book and route to library
-  const firstBook = BOOK_CATALOG.find(b => b.level === level);
+  const firstBook = BOOK_CATALOG.find(b => journeyLevelOf(b.sub_level) === level);
   const coverUrl = firstBook
     ? `/covers/${firstBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
     : null;

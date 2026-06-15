@@ -9,7 +9,7 @@ Decodable phonics books for children aged 4-8. Every book is an open window to a
 ## Quick Start
 
 ```
-/create-book L3.4
+/create-book L5.4
 ```
 
 This runs the full 9-step workflow. See `.claude/skills/workflow-orchestrator/SKILL.md`.
@@ -46,18 +46,24 @@ Character consistency comes from injecting a hero reference image into every sce
 
 ---
 
-## Reading Levels
+## Reading Levels (8-level Curriculum Ledger v2.1, realigned 2026-06-08)
 
-| Level | Name | Colour | Books | Key Feature |
-|-------|------|--------|-------|-------------|
-| L1 | Starting Stories | `#E84B8A` Pink | 10 | Set 1 graphemes. NO clusters. 6 story pages. |
-| L2 | Longer Sounds | `#F59E0B` Amber | 5 | Long vowels. NO clusters. 8 pages. |
-| L3 | New Spellings | `#22C55E` Green | 5 | Split digraphs. Clusters unlocked. 8 pages. |
-| L4 | Building Fluency | `#3B82F6` Blue | 4 | Complex vowels. Multi-syllable. 8 pages. |
-| L5 | Reading Together | `#8B5CF6` Purple | 4 | Final Set 3. Comprehension focus. 8 pages. |
-| L6 | Reading Champion | `#14B8A6` Teal | 4 | Suffixes. Independent reading. 8 pages. |
+| Level | Name | Colour | Books | Maps to | Year Group |
+|-------|------|--------|-------|---------|------------|
+| L1 | Ditties | `#E84B8A` Pink | 2 | Phase 2 sets 1-2 | Reception |
+| L2 | First Sounds | `#F97066` Coral | 5 | Phase 2 sets 3-5 | Reception |
+| L3 | Special Friends | `#F59E0B` Amber | 3 | Phase 3 consonant digraphs + Phase 4 | Reception |
+| L4 | Longer Sounds | `#22C55E` Green | 6 | Phase 3 vowel digraphs | Reception / Year 1 |
+| L5 | New Spellings | `#3B82F6` Blue | 5 | Phase 5 split digraphs + first alternatives | Year 1 |
+| L6 | Building Fluency | `#6366F1` Indigo | 4 | Phase 5 more alternatives | Year 1 / Year 2 |
+| L7 | Reading Together | `#8B5CF6` Purple | 4 | Late Phase 5 trigraphs | Year 2 |
+| L8 | Reading Champion | `#14B8A6` Teal | 4 | Phase 6 suffix morphology | Year 2 / Year 3 |
 
-Font sizes: L1=26pt, L2=22pt, L3=20pt, L4=18pt, L5=16pt, L6=14pt
+Story font sizes: L1-L3=36pt, L4=28pt, L5=24pt, L6=20pt, L7=18pt, L8=16pt (see `STORY_FONT_SIZES` in `scripts/generate_book.py` — the single source of truth for level names, colours, ages and year groups).
+
+**Positioning:** L6 is the target for meeting Year 2 expectations; L7-L8 are greater depth/stretch for high achievers.
+
+**Asset remap:** old Level 1 (10 books) split into new L1/L2/L3; old L2-L6 shifted to L4-L8. Stories and image folders are still keyed by ORIGINAL ids — see `NEW_TO_OLD` in `scripts/generate_pilot_books.py`. Never regenerate images just because the public level number changed.
 
 **Full curriculum ladder:** `docs/curriculum_ladder.md`
 **Remaining book plans:** `PRODUCTION_CHECKLIST.md` + `data/story_summaries.json`
@@ -77,6 +83,8 @@ Page 14   Nonsense Words Challenge
 Page 15   Reading Star Certificate
 Page 16   Back Cover
 ```
+
+**Two editions (decided 2026-06-11):** readers fork into a Classroom edition (reusable: write-on pages p12 draw / p13 writing / p15 certificate replaced with talk-based activities — discussion questions, Sound Spotlight, oral retell, word hunts) and a Home edition (unchanged, keeps writing pages for printed PDFs). All writing and handwriting tasks live in the companion workbooks. Handwriting ladder across workbook levels: L1-2 print formation, L3-4 line placement and size, L5 pre-cursive flicks, L6 first diagonal/horizontal joins (no lead-in strokes), L7 consistent joining, L8 fluent joined writing. Join pages need a precursive font (Andika cannot join).
 
 ---
 

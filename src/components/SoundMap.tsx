@@ -22,26 +22,30 @@ const STATUS_STYLES = {
 
 const LEVEL_BORDER_COLORS: Record<number, string> = {
   1: 'border-pink-300',
-  2: 'border-amber-300',
-  3: 'border-green-300',
-  4: 'border-blue-300',
-  5: 'border-purple-300',
-  6: 'border-teal-300',
+  2: 'border-orange-300',
+  3: 'border-amber-300',
+  4: 'border-green-300',
+  5: 'border-blue-300',
+  6: 'border-indigo-300',
+  7: 'border-purple-300',
+  8: 'border-teal-300',
 };
 
 const LEVEL_BG_COLORS: Record<number, string> = {
   1: 'bg-pink-50',
-  2: 'bg-amber-50',
-  3: 'bg-green-50',
-  4: 'bg-blue-50',
-  5: 'bg-purple-50',
-  6: 'bg-teal-50',
+  2: 'bg-orange-50',
+  3: 'bg-amber-50',
+  4: 'bg-green-50',
+  5: 'bg-blue-50',
+  6: 'bg-indigo-50',
+  7: 'bg-purple-50',
+  8: 'bg-teal-50',
 };
 
 const CATEGORY_ORDER: Category[] = ['sound_recognition', 'word_reading', 'alien_words', 'tricky_words'];
 
 export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
-  const levels = [1, 2, 3, 4, 5, 6];
+  const levels = [1, 2, 3, 4, 5, 6, 7, 8];
 
   // Group sounds by level
   const groupedSounds = levels.map(level => ({

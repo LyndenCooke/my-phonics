@@ -2,7 +2,7 @@ import React from 'react';
 import { getLevelTheme } from '@/design/levelThemes';
 import { getGrammarUnit } from '@/lib/grammarRegistry';
 import type { GrammarUnit } from '@/data/grammarSchema';
-import { FONT, INK } from '@/design/tokens';
+import { INK } from '@/design/tokens';
 import { mm } from '@/components/SheetShell';
 import { WbPage, Heading, type Theme } from '@/components/workbook2/BookStyle';
 import { SpellItPage, SentencesPage, HandwritingPage, SoundPage } from '@/components/workbook2/W2Skills';
@@ -74,18 +74,23 @@ function pageName(book: W2BookData, kind: string): string {
   return '';
 }
 
-function CoverPlaceholder({ theme, level }: { theme: Theme; level: number }) {
+/** Full-bleed generated cover art (scripts/generate_w2_covers.py), already
+ *  cropped to the A4 ratio; the level colour backs any sub-pixel edge gap. */
+function CoverPage({ theme, level }: { theme: Theme; level: number }) {
   return (
     <div
       className="page"
       style={{
         position: 'relative', width: mm(210), height: mm(297), background: theme.primary,
-        overflow: 'hidden', fontFamily: FONT.body, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', gap: mm(6),
+        overflow: 'hidden',
       }}
     >
-      <div style={{ color: '#fff', fontSize: '44pt', fontWeight: 700 }}>Workbook</div>
-      <div style={{ color: '#fff', fontSize: '21pt' }}>Level {level} · {theme.name}</div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/covers/w2/l${level}.png`}
+        alt=""
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+      />
     </div>
   );
 }
@@ -149,7 +154,7 @@ export default function W2Booklet({ level }: { level: number }) {
 
   return (
     <>
-      <CoverPlaceholder theme={theme} level={level} />
+      <CoverPage theme={theme} level={level} />
       <ContentsPage lines={contents} theme={theme} />
       {sections.map(({ book, start, pages }) => (
         <React.Fragment key={book.num}>

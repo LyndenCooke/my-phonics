@@ -634,12 +634,230 @@ def fetch_photo_gemini(word: str, query: str, repick: bool = False) -> Path | No
     return None
 
 
+# ─── Cover centre letter tiles (Gemini via Vertex AI) ───────────
+LETTER_CACHE = OUTPUT_DIR / "_letter_cache"
+LETTER_CACHE.mkdir(parents=True, exist_ok=True)
+
+# The standalone Gemini API key is billing-depleted, so letter tiles go through
+# Vertex AI using the gcloud user's OAuth token (scope cloud-platform). Token is
+# cached for the process lifetime (gcloud tokens last ~1 hour).
+VERTEX_REGION = "us-central1"
+VERTEX_IMAGE_MODEL = "gemini-2.5-flash-image"
+_vertex_auth: dict[str, str] = {}
+
+
+def _vertex_token_and_project() -> tuple[str | None, str | None]:
+    if _vertex_auth.get("token") and _vertex_auth.get("project"):
+        return _vertex_auth["token"], _vertex_auth["project"]
+    import subprocess
+    try:
+        tok = subprocess.run(["gcloud", "auth", "print-access-token"],
+                             capture_output=True, text=True, shell=True).stdout.strip()
+        proj = subprocess.run(["gcloud", "config", "get-value", "project"],
+                              capture_output=True, text=True, shell=True).stdout.strip()
+        if tok and proj:
+            _vertex_auth["token"], _vertex_auth["project"] = tok, proj
+            return tok, proj
+    except Exception as e:
+        print(f"   [vertex-auth-error] {e}")
+    return None, None
+
+
+ANDIKA_BOLD = BASE_DIR / "assets" / "fonts" / "Andika-Bold.ttf"
+
+
+def fetch_letter_tile(grapheme: str, colour: str, repick: bool = False) -> Path | None:
+    """Render the centre-cell tile: the focus grapheme as a white letterform on
+    the level colour, using the actual Andika teaching font (single-storey a/g).
+
+    Rendered with PIL — NOT AI-generated — so the letterform is exactly the font
+    children are taught with. Cached per (grapheme, colour).
+    """
+    safe = re.sub(r"[^a-z0-9]+", "_", f"{grapheme}__{colour}".lower()).strip("_")
+    out = LETTER_CACHE / f"{safe}.jpg"
+    if not repick and out.exists() and out.stat().st_size > 0:
+        return out
+
+    from PIL import Image, ImageDraw, ImageFont
+
+    S = 600  # square tile, supersampled for crisp edges
+    img = Image.new("RGB", (S, S), colour)
+    draw = ImageDraw.Draw(img)
+
+    # Fit the glyph(s) to ~68% of the tile (width and height).
+    target = int(S * 0.68)
+    size = S
+    font = ImageFont.truetype(str(ANDIKA_BOLD), size)
+    while size > 10:
+        font = ImageFont.truetype(str(ANDIKA_BOLD), size)
+        l, t, r, b = draw.textbbox((0, 0), grapheme, font=font)
+        if (r - l) <= target and (b - t) <= target:
+            break
+        size -= 6
+
+    l, t, r, b = draw.textbbox((0, 0), grapheme, font=font)
+    x = (S - (r - l)) / 2 - l
+    y = (S - (b - t)) / 2 - t
+    draw.text((x, y), grapheme, font=font, fill=_on_color(colour))
+
+    img.save(out, format="JPEG", quality=92, optimize=True)
+    print(f"   [letter-andika] {grapheme!r}")
+    return out
+
+
+def get_letter_tile_uri(grapheme: str, colour: str, repick: bool = False) -> str | None:
+    path = fetch_letter_tile(grapheme, colour, repick=repick)
+    if path and path.exists():
+        return image_to_data_uri(path)
+    return None
+
+
+# ─── Page 2 "All about" mouth/articulation images ───────────────
+MOUTH_CACHE = OUTPUT_DIR / "_mouth_cache"
+MOUTH_CACHE.mkdir(parents=True, exist_ok=True)
+
+
+def get_mouth_uri(grapheme: str) -> str | None:
+    """Return a data URI for the cached mouth/articulation image for this
+    sound, or None if one hasn't been generated yet. Generated separately
+    (Vertex) and dropped into _mouth_cache/{grapheme}.jpg.
+    """
+    safe = re.sub(r"[^a-z0-9]+", "_", grapheme.lower()).strip("_") or "x"
+    path = MOUTH_CACHE / f"{safe}.jpg"
+    if path.exists() and path.stat().st_size > 0:
+        return image_to_data_uri(path)
+    return None
+
+
+# ─── Articulation map (page 2 mouth cutaway) ────────────────────
+# Each phoneme is placed at its place of articulation as a (left%, top%)
+# position over the shared cutaway image (_base_cutaway.jpg), plus a
+# child-friendly cue. Percentages tuned to that illustration.
+ARTIC_ZONES: dict[str, tuple[float, float, str]] = {
+    "bilabial":     (27, 52, "Your lips press together."),
+    "labiodental":  (30, 48, "Your top teeth touch your bottom lip."),
+    "dental":       (33, 56, "Your tongue peeps between your teeth."),
+    "alveolar":     (41, 45, "Your tongue taps behind your top teeth."),
+    "postalveolar": (49, 44, "Your tongue lifts to the bumpy ridge."),
+    "palatal":      (55, 46, "Your tongue rises to the roof."),
+    "velar":        (62, 51, "The back of your tongue lifts up."),
+    "glottal":      (67, 57, "A little puff comes from your throat."),
+    "vowel":        (46, 55, "Your mouth opens and the sound flows out."),
+}
+
+ZONE_BY_GRAPHEME: dict[str, str] = {
+    "p": "bilabial", "b": "bilabial", "m": "bilabial", "w": "bilabial",
+    "wh": "bilabial", "mb": "bilabial",
+    "f": "labiodental", "v": "labiodental", "ph": "labiodental", "ff": "labiodental",
+    "th": "dental",
+    "t": "alveolar", "d": "alveolar", "n": "alveolar", "s": "alveolar",
+    "z": "alveolar", "l": "alveolar", "ss": "alveolar", "zz": "alveolar",
+    "ll": "alveolar", "kn": "alveolar", "gn": "alveolar",
+    "ous": "alveolar", "able": "alveolar", "ible": "alveolar",
+    "sh": "postalveolar", "ch": "postalveolar", "j": "postalveolar",
+    "r": "postalveolar", "wr": "postalveolar", "dge": "postalveolar",
+    "ge": "postalveolar", "tion": "postalveolar", "cious": "postalveolar",
+    "tious": "postalveolar",
+    "y": "palatal",
+    "k": "velar", "c": "velar", "g": "velar", "ng": "velar", "nk": "velar",
+    "ck": "velar", "qu": "velar", "x": "velar",
+    "h": "glottal",
+}
+
+
+def artic_for(grapheme: str) -> dict:
+    """Map a grapheme to its articulation marker position + cue. Vowels and
+    vowel digraphs/split digraphs default to the open-mouth cavity."""
+    key = grapheme.lower().replace("-", "")
+    zone = ZONE_BY_GRAPHEME.get(key, "vowel")
+    left, top, cue = ARTIC_ZONES[zone]
+    return {"left": left, "top": top, "cue": cue, "zone": zone}
+
+
+# Shared cutaway base illustration (one friendly child-head profile reused for
+# every sound; the level-coloured marker is overlaid at the articulation point).
+def get_cutaway_uri() -> str | None:
+    path = MOUTH_CACHE / "_base_cutaway.jpg"
+    if path.exists() and path.stat().st_size > 0:
+        return image_to_data_uri(path)
+    return None
+
+
+# ─── Page 2 "Sound Facts" ───────────────────────────────────────
+# Word endings — abstract suffix patterns that aren't cleanly vowel/consonant.
+SUFFIX_ENDINGS = {"ous", "cious", "tious", "able", "ible", "tion"}
+
+# Sounds with a clear positional tendency (tag, example word). Default = anywhere.
+POSITION_BY_GRAPHEME: dict[str, tuple[str, str]] = {
+    "qu": ("start", "queen"), "wh": ("start", "wheel"),
+    "wr": ("start", "write"), "kn": ("start", "knee"),
+    "ng": ("end", "ring"), "nk": ("end", "pink"), "ck": ("end", "duck"),
+    "ff": ("end", "cliff"), "ll": ("end", "bell"), "ss": ("end", "grass"),
+    "zz": ("end", "buzz"), "dge": ("end", "bridge"), "ge": ("end", "cage"),
+    "mb": ("end", "lamb"), "gn": ("end", "sign"), "tion": ("end", "station"),
+    "cious": ("end", "delicious"), "tious": ("end", "nutritious"),
+    "ous": ("end", "famous"), "able": ("end", "table"), "ible": ("end", "visible"),
+}
+
+
+def sound_facts(grapheme: str) -> dict:
+    """Build the adaptive fact list for page 2. Returns is_single + a list of
+    (tag, text) facts: letter-type, vowel/consonant, and typical position."""
+    key = grapheme.lower()
+    is_single = len(grapheme) == 1
+    is_split = "-" in grapheme
+    n = len(grapheme.replace("-", ""))
+
+    if is_split:
+        type_tag, type_text = "Split digraph", "a vowel split by another letter (a–e)."
+    elif n == 1:
+        type_tag, type_text = "Single letter", "one letter making one sound."
+    elif n == 2:
+        type_tag, type_text = "Digraph", "two letters that make one sound."
+    elif n == 3:
+        type_tag, type_text = "Trigraph", "three letters that make one sound."
+    else:
+        type_tag, type_text = f"{n} letters", "several letters making one sound."
+
+    if artic_for(grapheme)["zone"] == "vowel":
+        cat_tag, cat_text = "Vowel sound", "open your mouth and let it flow."
+    else:
+        cat_tag, cat_text = "Consonant sound", "shape it with your lips, teeth or tongue."
+
+    pos, example = POSITION_BY_GRAPHEME.get(key, ("anywhere", ""))
+    if pos == "start":
+        pos_tag, pos_text = "At the start", f"often begins a word, like “{example}”."
+    elif pos == "end":
+        pos_tag, pos_text = "At the end", f"often ends a word, like “{example}”."
+    else:
+        pos_tag, pos_text = "Anywhere", "can appear anywhere in a word."
+
+    if key in SUFFIX_ENDINGS:
+        # A suffix IS a word ending — "Trigraph + Word ending" was redundant, so
+        # collapse to one Suffix fact plus its position.
+        facts = [
+            {"tag": "Suffix", "text": f"a word ending made of {n} letters."},
+            {"tag": pos_tag, "text": pos_text},
+        ]
+    else:
+        facts = [
+            {"tag": type_tag, "text": type_text},
+            {"tag": cat_tag, "text": cat_text},
+            {"tag": pos_tag, "text": pos_text},
+        ]
+
+    return {"is_single": is_single, "facts": facts}
+
+
 def fetch_photo_unsplash(word: str, query: str) -> Path | None:
-    cache = _cache_path(word, query + "__unsplash")
+    key = os.environ.get("UNSPLASH_ACCESS_KEY", "").strip()
+    if not key:
+        return None
+
+    cache = _picked_path(word, query + "__unsplash")
     if cache.exists() and cache.stat().st_size > 0:
         return cache
 
-    key = os.environ.get("UNSPLASH_ACCESS_KEY", "").strip()
     if not key:
         return None
 
@@ -722,6 +940,16 @@ def get_photo_uri(
 
 
 # ─── Build a single book ─────────────────────────────────────────
+def _on_color(hex_colour: str) -> str:
+    """Pick a readable text colour (near-black or white) to sit ON the given
+    level colour. Light levels (e.g. amber) get dark text — white-on-amber
+    reads badly."""
+    h = hex_colour.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    yiq = (r * 299 + g * 587 + b * 114) / 1000
+    return "#1a1a2e" if yiq >= 150 else "#ffffff"
+
+
 def build_book_data(
     entry: dict,
     skip_photos: bool = False,
@@ -752,6 +980,8 @@ def build_book_data(
             })
         enriched_sounds.append({
             "grapheme": focus,
+            "capital": focus[0].upper() + focus[1:] if focus else focus,
+            "facts": sound_facts(focus),
             "instruction": sound.get("instruction") or "Say the sound. Can you think of a word with this sound?",
             "words": words_out,
         })
@@ -760,6 +990,31 @@ def build_book_data(
     total_words = sum(len(s["words"]) for s in enriched_sounds)
     page_count = 1 + len(enriched_sounds) + total_words + 1 + 1
 
+    # ── Cover 3x3 grid tiles ──
+    # Centre cell holds the grapheme(s); the 8 surrounding cells show the
+    # book's own word photos. Single-sound books carry only 6 photos, so we top
+    # up with decorative cover-only extras for that sound (see COVER_EXTRA_WORDS);
+    # any still-spare cells become on-brand accent tiles on a balanced diagonal.
+    # Combined-sound books (12/18 photos) already fill all 8.
+    extra_photos: list[str] = []
+    cover_centre_img: str | None = None
+    if len(enriched_sounds) == 1 and not skip_photos:
+        focus = enriched_sounds[0]["grapheme"]
+        # AI-generated centre letter tile (skip split digraphs like "a-e").
+        if "-" not in focus:
+            cover_centre_img = get_letter_tile_uri(focus, colour, repick=repick)
+        # Top up the grid to 8 cells. Fetch only as many extras as needed.
+        book_id = f"L{level}.{entry['sub_level']}"
+        have = sum(1 for s in enriched_sounds for w in s["words"] if w.get("photo"))
+        need = max(0, 8 - have)
+        for extra_word in COVER_EXTRA_WORDS.get(book_id, []):
+            if len(extra_photos) >= need:
+                break
+            uri = get_photo_uri(extra_word, None, skip_photos, repick=repick, engine=engine)
+            if uri:
+                extra_photos.append(uri)
+    cover_tiles = _build_cover_tiles(enriched_sounds, extra_photos)
+
     return {
         "book_type": "sound_book",
         "level": level,
@@ -767,13 +1022,151 @@ def build_book_data(
         "book_number": entry["book_number"],
         "book_title": entry["title"],
         "level_colour": colour,
+        "level_on_color": _on_color(colour),
         "level_name": level_name,
         "page_count": page_count,
         "comparison_sounds": entry.get("comparison_sounds", []),
         "sounds": enriched_sounds,
+        "cover_tiles": cover_tiles,
+        "cover_centre_img": cover_centre_img,
         # No personalisation by default
         "child_name": None,
     }
+
+
+# The 8 surround cells in reading order (centre is rendered separately):
+#   0(TL) 1(TM) 2(TR)
+#   3(ML)  ··   4(MR)
+#   5(BL) 6(BM) 7(BR)
+# When fewer than 8 photos exist, accent tiles fill the corners first
+# (TL, BR, TR, BL) so the spares sit on a balanced diagonal.
+_ACCENT_PRIORITY = [0, 7, 2, 5, 1, 6, 3, 4]
+
+
+# Extra image-able words used ONLY to top up the cover grid to 8 cells on
+# single-sound books (which carry just 6 word photos). These never appear on an
+# inside page — they are decorative cover fill, so they don't have to be
+# decodable, just strongly photographable AND containing the target sound, and
+# NOT already in that book's six word pages. Keyed by book id ("L{level}.{sub}")
+# so the two "oo" books (long vs short) get the right words. Ordered best-first;
+# only as many as needed (usually 2) are fetched. A few abstract suffix sounds
+# (-ous/-cious/-tious/-ible) have no concrete image-able words, so those keep
+# their accent tiles.
+COVER_EXTRA_WORDS: dict[str, list[str]] = {
+    "L1.1": ["seal", "snail", "scissors"],
+    "L1.2": ["avocado", "acorn", "arrow"],
+    "L1.3": ["tomato", "tractor", "telephone"],
+    "L1.4": ["panda", "pineapple", "parachute"],
+    "L1.5": ["ink", "inchworm", "inkpot"],
+    "L1.6": ["nut", "needle", "nail"],
+    "L1.7": ["mug", "map", "magnet"],
+    "L1.8": ["doll", "donut", "diamond"],
+    "L1.9": ["gift", "gorilla", "glasses"],
+    "L1.10": ["olive", "otter", "ox"],
+    "L2.1": ["cake", "cup", "crab"],
+    "L2.2": ["ketchup", "kiwi", "kayak"],
+    "L2.3": ["truck", "brick", "chick"],
+    "L2.4": ["elbow", "elf", "eggplant"],
+    "L2.5": ["umpire", "umbrellabird"],
+    "L2.6": ["ring", "rope", "rug"],
+    "L2.7": ["hand", "honey", "hippo"],
+    "L2.8": ["bus", "bell", "bicycle"],
+    "L2.9": ["fox", "fan", "fork"],
+    "L2.10": ["leg", "lock", "log"],
+    "L2.13": ["jar", "jam", "jug"],
+    "L3.1": ["shrimp", "shed", "brush"],
+    "L3.2": ["skunk", "blanket", "ankle"],
+    "L3.3": ["cheetah", "church", "peach"],
+    "L3.4": ["thimble", "moth", "bath"],
+    "L3.5": ["finger", "fang", "gong"],
+    "L3.6": ["squirrel", "squid", "square"],
+    "L4.1": ["crayon", "spray", "subway"],
+    "L4.2": ["queen", "green", "knee"],
+    "L4.3": ["knight", "lightning", "highway"],
+    "L4.4": ["rainbow", "pillow", "elbow"],
+    "L4.5": ["igloo", "boot", "broom"],
+    "L4.6": ["cookie", "hood", "brook"],
+    "L4.7": ["arm", "barn", "scarf"],
+    "L4.8": ["horn", "fort", "thorn"],
+    "L4.9": ["airplane", "eclair", "staircase"],
+    "L4.10": ["girl", "circle", "squirrel"],
+    "L4.11": ["mountain", "fountain", "scout"],
+    "L4.12": ["oyster", "cowboy", "joystick"],
+    "L5.1": ["whale", "flame", "skateboard"],
+    "L5.2": ["knife", "dice", "vine"],
+    "L5.3": ["phone", "cone", "dome"],
+    "L5.4": ["costume", "perfume"],
+    "L5.5": ["peanut", "teapot", "seahorse"],
+    "L5.6": ["cookie", "genie", "zombie"],
+    "L5.7": ["oil", "toilet", "coil"],
+    "L5.8": ["strawberry", "hawk", "prawn"],
+    "L5.9": ["sailboat", "braid", "nail"],
+    "L5.10": ["soap", "toast", "coach"],
+    "L6.1": ["turtle", "hamburger", "curtain"],
+    "L6.2": ["ladder", "finger", "sticker"],
+    "L6.3": ["square", "mare", "hardware"],
+    "L6.4": ["clown", "brownie", "flower"],
+    "L7.1": ["campfire", "vampire", "bonfire"],
+    "L7.2": ["seashore", "scoreboard"],
+    "L7.3": ["earring", "beard", "spear"],
+    "L7.4": ["doormat", "doorbell", "doorknob"],
+    "L7.5": ["treasure", "sculpture", "furniture"],
+    "L7.6": ["potion", "lotion", "dictionary"],
+    # L8 books are combined (multi-sound), so they fill all 8 cells from their
+    # own words and need no extras.
+}
+
+
+def _build_cover_tiles(
+    enriched_sounds: list[dict],
+    extra_photos: list[str] | None = None,
+) -> list[dict]:
+    """Return exactly 8 tile dicts for the cover surround.
+
+    Each tile is either {"photo": <data-uri>} or {"accent": True}. Photos are
+    gathered round-robin across the book's sounds (so combined books show a
+    spread of both sounds), then topped up with `extra_photos` (decorative
+    cover-only images), capped at 8. Any still-empty cells fall back to accent
+    tiles at balanced corner positions.
+    """
+    # Round-robin across sounds for variety on combined books.
+    per_sound = [[w["photo"] for w in s["words"] if w.get("photo")]
+                 for s in enriched_sounds]
+    photos: list[str] = []
+    i = 0
+    while len(photos) < 8 and any(i < len(p) for p in per_sound):
+        for p in per_sound:
+            if i < len(p):
+                photos.append(p[i])
+                if len(photos) >= 8:
+                    break
+        i += 1
+
+    # Top up short books with decorative extras before falling back to accents.
+    for extra in (extra_photos or []):
+        if len(photos) >= 8:
+            break
+        if extra and extra not in photos:
+            photos.append(extra)
+
+    # Drop any accidental duplicate photos (e.g. an extra word that resolved to
+    # a photo already shown) so the grid never repeats the same image.
+    photos = list(dict.fromkeys(photos))
+
+    tiles: list[dict | None] = [None] * 8
+    # Accent positions are the surround slots NOT taken by photos.
+    n_accent = max(0, 8 - len(photos))
+    accent_slots = set(_ACCENT_PRIORITY[:n_accent])
+    pi = 0
+    for slot in range(8):
+        if slot in accent_slots:
+            tiles[slot] = {"accent": True}
+        elif pi < len(photos):
+            tiles[slot] = {"photo": photos[pi]}
+            pi += 1
+        else:
+            tiles[slot] = {"accent": True}
+    return tiles  # type: ignore[return-value]
 
 
 def book_filename(entry: dict) -> Path:

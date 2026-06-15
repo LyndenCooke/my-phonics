@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect, useRef, ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
+// LEVELS (legacy 6-level) is no longer used for assessment naming — the
+// journey scale comes from getJourneyLevel below.
 import { PhonemePlayer } from '@/components/PhonemePlayer';
 import { WordPlayer } from '@/components/WordPlayer';
 import { SoundMap } from '@/components/SoundMap';
@@ -9,7 +11,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useChildren } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
 import PhonicsAveragesChart from '@/components/PhonicsAveragesChart';
-import { LEVELS } from '@/lib/types';
 import {
   AGE_EXPECTATIONS,
   LEVEL_NAMES,
@@ -30,6 +31,11 @@ import {
 import { CheckCircle2, XCircle, ChevronRight, RotateCcw, ArrowRight, Trophy, AlertTriangle, Star, Zap, Search, Baby, School, Languages, BookOpen, Heart, Lightbulb, Clock, MessageCircle, Sparkles } from 'lucide-react';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
+import { getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
+
+// The assessment runs entirely on the 8-level journey scale: screening,
+// adaptive testing, the recommended level we store, and every label shown.
+const JOURNEY_LEVEL_MAX = 8;
 
 // ─── Onboarding ──────────────────────────────────────────────
 
@@ -242,16 +248,16 @@ type AssessmentMode = 'rapid' | 'full';
 
 // ─── Constants ────────────────────────────────────────────────
 const LEVEL_COLORS: Record<number, string> = {
-  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-  4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
+  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3', 4: 'bg-level-4',
+  5: 'bg-level-5', 6: 'bg-level-6', 7: 'bg-level-7', 8: 'bg-level-8',
 };
 const LEVEL_BORDERS: Record<number, string> = {
-  1: 'border-level-1', 2: 'border-level-2', 3: 'border-level-3',
-  4: 'border-level-4', 5: 'border-level-5', 6: 'border-level-6',
+  1: 'border-level-1', 2: 'border-level-2', 3: 'border-level-3', 4: 'border-level-4',
+  5: 'border-level-5', 6: 'border-level-6', 7: 'border-level-7', 8: 'border-level-8',
 };
 const LEVEL_TEXT: Record<number, string> = {
-  1: 'text-level-1', 2: 'text-level-2', 3: 'text-level-3',
-  4: 'text-level-4', 5: 'text-level-5', 6: 'text-level-6',
+  1: 'text-level-1', 2: 'text-level-2', 3: 'text-level-3', 4: 'text-level-4',
+  5: 'text-level-5', 6: 'text-level-6', 7: 'text-level-7', 8: 'text-level-8',
 };
 
 function getSoundKey(grapheme: string): string {
@@ -294,8 +300,10 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   // ?level=N, we test only level N's content and update the child's
   // current_level on pass. lockedLevel == null means a normal full
   // adaptive assessment.
+  // ?level=N is a journey level (1–8); the child dashboard passes the
+  // journey level of the hero book when launching a Level Check.
   const lockedLevelParam = searchParams.get('level');
-  const lockedLevel = lockedLevelParam && /^[1-6]$/.test(lockedLevelParam)
+  const lockedLevel = lockedLevelParam && /^[1-8]$/.test(lockedLevelParam)
     ? Number(lockedLevelParam)
     : null;
 
@@ -422,7 +430,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     if (soundCeiling !== null) return soundCeiling;
     const passedLevels = levelScores.filter(s => s.passed).map(s => s.level);
     if (passedLevels.length === 0) return startLevel;
-    return Math.min(Math.max(...passedLevels) + 1, 6);
+    return Math.min(Math.max(...passedLevels) + 1, JOURNEY_LEVEL_MAX);
   };
 
   const getAgeComparison = () => {
@@ -548,7 +556,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
       case 'clear-pass':
         // Passed! Record and do 6 alien words to confirm, then advance
         recordLevelScore(level, [catResult], true);
-        if (level >= 6 || lockedLevel !== null) {
+        if (level >= JOURNEY_LEVEL_MAX || lockedLevel !== null) {
           // Locked-level (Level Check) mode: still run the alien check at
           // this level for completeness, but don't probe higher.
           if (lockedLevel !== null) {
@@ -613,7 +621,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     }
 
     // Otherwise this level passed — show celebration and advance
-    if (level >= 6) {
+    if (level >= JOURNEY_LEVEL_MAX) {
       setStage('final-results');
     } else {
       setStage('level-passed');
@@ -676,7 +684,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
         const pct = Math.round((newCorrect / newTotal) * 100);
         if (pct >= 80) {
           // They can handle the next level too
-          setSoundCeiling(currentLevel + 1 <= 6 ? currentLevel + 1 : null);
+          setSoundCeiling(currentLevel + 1 <= JOURNEY_LEVEL_MAX ? currentLevel + 1 : null);
           recordLevelScore(currentLevel, [{
             category: 'sound_recognition',
             correct: newCorrect, total: newTotal,
@@ -1251,7 +1259,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
           <button
             onClick={advanceToNextLevel}
-            className={`w-full py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[Math.min(currentLevel + 1, 6)]} text-white font-bold text-base lg:text-lg shadow-sm active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2`}
+            className={`w-full py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[Math.min(currentLevel + 1, JOURNEY_LEVEL_MAX)]} text-white font-bold text-base lg:text-lg shadow-sm active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2`}
           >
             Continue to Level {currentLevel + 1} <ArrowRight className="w-4 h-4" />
           </button>
@@ -1265,7 +1273,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
   // ═══════════════════════════════════════════════════════════
   if (stage === 'final-results') {
     const recommendedLevel = getRecommendedLevel();
-    const levelInfo = LEVELS.find(l => l.level === recommendedLevel);
+    const levelInfo = getJourneyLevel(recommendedLevel);
     const ageComparison = getAgeComparison();
     const soundMap = buildSoundMap(answers, levelScores, startLevel);
     const resultsMap = buildResultsMap(answers, levelScores);
@@ -1275,7 +1283,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
     // Book reveal celebration for funnelMode — shown on top of the
     // dimmed results page. Parent clicks Continue to see the breakdown.
-    const revealBook = funnelMode ? BOOK_CATALOG.find(b => b.level === recommendedLevel) : null;
+    const revealBook = funnelMode ? BOOK_CATALOG.find(b => journeyLevelOf(b.sub_level) === recommendedLevel) : null;
     const revealCoverUrl = revealBook
       ? `/covers/${revealBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
       : null;
@@ -1605,7 +1613,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           )}
 
           {!user && guestSubmitted && (() => {
-            const firstBook = BOOK_CATALOG.find(b => b.level === recommendedLevel);
+            const firstBook = BOOK_CATALOG.find(b => journeyLevelOf(b.sub_level) === recommendedLevel);
             const coverUrl = firstBook
               ? `/covers/${firstBook.sub_level.replace(/^L/, '').replace('.', '_')}_cover.jpg`
               : null;
@@ -1657,7 +1665,7 @@ interface BookRevealFullPageProps {
 }
 
 function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFullPageProps) {
-  const levelInfo = LEVELS.find(l => l.level === level);
+  const levelInfo = getJourneyLevel(level);
   return (
     <div className="px-4 pt-6 pb-10 max-w-md lg:max-w-lg mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500 lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
       <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 lg:p-10 lg:pb-10 shadow-card`}>
