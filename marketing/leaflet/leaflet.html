@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks — A5 Library Leaflet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #E84B8A;
+    --navy: #27344A;
+    --ink: #1f2937;
+    --cream: #FFF9EC;
+    --l1: #E84B8A; --l2: #F97066; --l3: #F59E0B; --l4: #22C55E;
+    --l5: #3B82F6; --l6: #6366F1; --l7: #8B5CF6; --l8: #14B8A6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Plus Jakarta Sans", sans-serif; color: var(--ink); }
+  .page {
+    width: 148mm; height: 210mm;
+    position: relative; overflow: hidden;
+    background: #fff;
+    page-break-after: always;
+    display: flex; flex-direction: column;
+  }
+  h1, h2, h3 { font-family: "Outfit", sans-serif; }
+
+  /* ---------- FRONT ---------- */
+  .front { background: linear-gradient(180deg, #fff 0%, #FFF4F8 55%, #FFEFF5 100%); }
+  .front-header { padding: 8mm 10mm 0; text-align: center; }
+  .front-header img.lockup { width: 74mm; display: block; margin: 0 auto; }
+  .front h1 {
+    font-size: 23pt; font-weight: 800; color: var(--navy);
+    line-height: 1.12; margin-top: 5.5mm; letter-spacing: -0.3pt;
+  }
+  .front h1 .hl { color: var(--pink); }
+  .front .sub {
+    font-size: 10.5pt; line-height: 1.45; color: #4b5563;
+    margin: 4mm 8mm 0; font-weight: 500;
+  }
+  /* book covers row */
+  .covers { display: flex; justify-content: center; align-items: flex-end; gap: 1.6mm; margin-top: 6mm; padding: 0 5mm; }
+  .bookcard { text-align: center; }
+  .bookcard img {
+    width: 14.8mm; border-radius: 1mm; display: block;
+    box-shadow: 0 1mm 2.5mm rgba(39,52,74,.28), -0.6mm 0 0 0 rgba(39,52,74,.10);
+  }
+  .bookcard:nth-child(odd) img { transform: rotate(-2deg); }
+  .bookcard:nth-child(even) img { transform: rotate(2deg); }
+  .lvlpill {
+    display: inline-block; margin-top: 2.2mm; font-family: "Outfit", sans-serif;
+    font-weight: 700; font-size: 7pt; color: #fff; padding: 0.8mm 2.6mm;
+    border-radius: 4mm;
+  }
+  /* journey bar */
+  .journey { margin: 5.5mm 10mm 0; }
+  .journey-bar { display: flex; height: 5.2mm; border-radius: 3mm; overflow: hidden; }
+  .journey-bar span {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: "Outfit", sans-serif; font-weight: 800; font-size: 8pt; color: #fff;
+  }
+  .journey-labels { display: flex; justify-content: space-between; margin-top: 2mm; }
+  .journey-labels div {
+    font-family: "Outfit", sans-serif; font-weight: 700; font-size: 8.5pt; color: var(--navy);
+  }
+  .journey-labels div small { display: block; font-family: "Plus Jakarta Sans"; font-weight: 500; font-size: 7pt; color: #6b7280; }
+  /* two ways strip */
+  .twoways { margin: 5mm 10mm 5mm; display: flex; gap: 4mm; align-items: stretch; }
+  .way {
+    flex: 1; background: #fff; border-radius: 3mm; padding: 3mm;
+    box-shadow: 0 0.8mm 2.5mm rgba(39,52,74,.12); text-align: center;
+  }
+  .way .mockwrap { height: 25mm; display: flex; align-items: center; justify-content: center; }
+  .way .mockwrap img { max-height: 25mm; max-width: 100%; display: block; }
+  .way h4 { font-family: "Outfit"; font-weight: 800; font-size: 9.5pt; color: var(--navy); margin-top: 2.4mm; }
+  .way p { font-size: 7.6pt; color: #6b7280; font-weight: 500; margin-top: 0.8mm; line-height: 1.35; }
+  /* QR strip */
+  .front-qr {
+    margin-top: auto; background: var(--navy); color: #fff;
+    display: flex; align-items: center; gap: 6mm; padding: 4.5mm 10mm;
+  }
+  .front-qr .qrbox { background: #fff; border-radius: 2mm; padding: 1.6mm; flex: 0 0 auto; }
+  .front-qr .qrbox img { width: 20mm; display: block; }
+  .front-qr h3 { font-size: 13pt; font-weight: 800; }
+  .front-qr p { font-size: 9pt; opacity: .85; margin-top: 1mm; }
+  .front-qr .url { font-family: "Outfit", sans-serif; font-weight: 700; color: #FFD166; font-size: 10.5pt; margin-top: 1.4mm; }
+
+  /* ---------- BACK ---------- */
+  .back { background: var(--cream); }
+  .back-header { padding: 8mm 10mm 4mm; text-align: center; }
+  .back-header h2 { font-size: 17pt; font-weight: 800; color: var(--navy); }
+  .back-header h2 .hl { color: var(--pink); }
+  .steps { padding: 0 9mm; display: flex; flex-direction: column; gap: 4.5mm; }
+  .step {
+    display: flex; gap: 4.5mm; align-items: center;
+    background: #fff; border-radius: 3mm; padding: 3.6mm;
+    box-shadow: 0 0.8mm 2.5mm rgba(39,52,74,.10);
+  }
+  .step .shot {
+    flex: 0 0 44mm; height: 31mm; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .step .shot img { max-width: 100%; max-height: 100%; display: block; }
+  .step .txt h3 { font-size: 11pt; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 2mm; }
+  .stepnum {
+    width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--pink); color: #fff;
+    font-size: 9pt; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+  }
+  .step .txt p { font-size: 8.6pt; line-height: 1.4; color: #4b5563; margin-top: 1.4mm; }
+  /* what's inside */
+  .inside { margin: 5mm 9mm 0; }
+  .inside h3 { font-size: 11.5pt; font-weight: 800; color: var(--navy); margin-bottom: 2.5mm; }
+  .inside ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.8mm 4mm; }
+  .inside li { font-size: 8.6pt; font-weight: 600; color: #374151; display: flex; gap: 1.8mm; align-items: baseline; }
+  .inside li::before { content: "✓"; color: var(--pink); font-weight: 800; }
+  /* footer */
+  .back-footer {
+    margin-top: auto; display: flex; align-items: center; gap: 5mm;
+    background: #fff; border-top: 0.6mm solid #f3e9d8; padding: 5mm 10mm;
+  }
+  .back-footer .qrbox { background: #fff; border: 0.5mm solid #e5e7eb; border-radius: 2mm; padding: 1.4mm; }
+  .back-footer .qrbox img { width: 17mm; display: block; }
+  .back-footer .ftxt h3 { font-size: 11pt; font-weight: 800; color: var(--navy); }
+  .back-footer .ftxt p { font-size: 8.6pt; color: #4b5563; margin-top: 1mm; }
+  .back-footer .ftxt .url { font-family: "Outfit"; font-weight: 700; color: var(--pink); font-size: 10pt; margin-top: 1mm; }
+  .back-footer img.mark { width: 16mm; margin-left: auto; }
+</style>
+</head>
+<body>
+
+<!-- ================= FRONT ================= -->
+<div class="page front">
+  <div class="front-header">
+    <img class="lockup" src="../../public/logo/mpb-lockup.png" alt="my phonics books">
+    <h1>From first sounds<br>to <span class="hl">confident reader</span></h1>
+    <p class="sub">Story books your child can actually read — matched to the exact sounds they know, every step of the way.</p>
+  </div>
+
+  <div class="covers">
+    <div class="bookcard"><img src="assets/cover_L1.png"></div>
+    <div class="bookcard"><img src="assets/cover_L2.png"></div>
+    <div class="bookcard"><img src="assets/cover_L3.png"></div>
+    <div class="bookcard"><img src="assets/cover_L4.png"></div>
+    <div class="bookcard"><img src="assets/cover_L5.png"></div>
+    <div class="bookcard"><img src="assets/cover_L6.png"></div>
+    <div class="bookcard"><img src="assets/cover_L7.png"></div>
+    <div class="bookcard"><img src="assets/cover_L8.png"></div>
+  </div>
+
+  <div class="journey">
+    <div class="journey-bar">
+      <span style="background:var(--l1)">1</span><span style="background:var(--l2)">2</span>
+      <span style="background:var(--l3)">3</span><span style="background:var(--l4)">4</span>
+      <span style="background:var(--l5)">5</span><span style="background:var(--l6)">6</span>
+      <span style="background:var(--l7)">7</span><span style="background:var(--l8)">8</span>
+    </div>
+    <div class="journey-labels">
+      <div>First sounds<small>s · a · t · p</small></div>
+      <div style="text-align:right">Reading champion<small>fluent, confident reading</small></div>
+    </div>
+  </div>
+
+  <div class="twoways">
+    <div class="way">
+      <div class="mockwrap"><img src="assets/mock_tablet_trim.png"></div>
+      <h4>Read on screen</h4>
+      <p>Interactive books that read aloud — tap any word to hear it.</p>
+    </div>
+    <div class="way">
+      <div class="mockwrap"><img src="assets/mock_stack_trim.png"></div>
+      <h4>Or print at home</h4>
+      <p>Every story as a ready-to-print A5 booklet to keep.</p>
+    </div>
+  </div>
+
+  <div class="front-qr">
+    <div class="qrbox"><img src="assets/qr_site.png" alt="QR code"></div>
+    <div>
+      <h3>Try it free today</h3>
+      <p>Scan for a free phonics check and free books at your child's level. No card needed.</p>
+      <div class="url">myphonicsbooks.co.uk</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= BACK ================= -->
+<div class="page back">
+  <div class="back-header">
+    <h2>How it <span class="hl">works</span></h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="shot"><img src="assets/mock_phone_trim.png"></div>
+      <div class="txt">
+        <h3><span class="stepnum">1</span> Check</h3>
+        <p>A free 3-minute phonics check finds exactly which sounds your child knows — and which come next.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="shot"><img src="assets/mock_laptop_trim.png"></div>
+      <div class="txt">
+        <h3><span class="stepnum">2</span> Match</h3>
+        <p>They start at just the right level — books built only from sounds they've already learned, so reading feels easy.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="shot"><img src="assets/mock_tablet_trim.png"></div>
+      <div class="txt">
+        <h3><span class="stepnum">3</span> Read</h3>
+        <p>Read together on a phone or tablet — tap any word to hear it — or print the books as little A5 booklets to keep.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="inside">
+    <h3>What's inside</h3>
+    <ul>
+      <li>30+ decodable story books</li>
+      <li>8 levels, first sounds to fluency</li>
+      <li>Tap-to-hear read-along audio</li>
+      <li>Printable booklets &amp; worksheets</li>
+      <li>Free phonics assessment</li>
+      <li>Works on phone, tablet &amp; computer</li>
+    </ul>
+  </div>
+
+  <div class="back-footer">
+    <div class="qrbox"><img src="assets/qr_site.png" alt="QR code"></div>
+    <div class="ftxt">
+      <h3>Start free</h3>
+      <p>Free books &amp; the phonics check cost nothing.</p>
+      <div class="url">myphonicsbooks.co.uk</div>
+    </div>
+    <img class="mark" src="../../public/logo/mpb-mark-transparent.png" alt="">
+  </div>
+</div>
+
+</body>
+</html>

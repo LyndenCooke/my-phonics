@@ -10,34 +10,40 @@
 
 import type { Category } from './assessmentData';
 import { ASSESSMENT_ITEMS, PASS_CRITERIA, getItems } from './assessmentData';
+import { JOURNEY_LEVELS } from './levels8';
 
 // ─── Screening ───────────────────────────────────────────────
 
+// One clearly-decodable real word per journey level (drawn from the level's
+// own word bank in assessmentData.ts).
 export const SCREENING_WORDS = [
-  { level: 1, word: 'fish' },
-  { level: 2, word: 'park' },
-  { level: 3, word: 'cake' },
-  { level: 4, word: 'flower' },
-  { level: 5, word: 'station' },
-  { level: 6, word: 'incredible' },
+  { level: 1, word: 'pin' },
+  { level: 2, word: 'duck' },
+  { level: 3, word: 'fish' },
+  { level: 4, word: 'park' },
+  { level: 5, word: 'cake' },
+  { level: 6, word: 'chew' },
+  { level: 7, word: 'station' },
+  { level: 8, word: 'famous' },
 ];
 
 /**
  * Determine starting level from screening ticks.
- * Returns the highest consecutive ticked level (min 1, max 5).
- * If all ticked → start at L5 (still verify top).
+ * Returns the highest consecutive ticked level (min 1, max 7).
+ * We cap at 7 so there is always a level above to verify — the assessment
+ * starts AT the highest ticked level to confirm it, then probes upward.
  */
 export function calculateStartLevel(checks: Record<number, boolean>): number {
   let highest = 0;
-  for (let level = 1; level <= 6; level++) {
+  for (let level = 1; level <= 8; level++) {
     if (checks[level]) {
       highest = level;
     } else {
       break; // Gap found — stop at the gap
     }
   }
-  // Start AT the highest passed level (to confirm it), cap at 5
-  return Math.max(1, Math.min(highest, 5));
+  // Start AT the highest passed level (to confirm it), cap at 7
+  return Math.max(1, Math.min(highest, 7));
 }
 
 // ─── Tranche Logic ───────────────────────────────────────────
@@ -257,18 +263,15 @@ export function buildResultsMap(
 
 export const LEVEL_COLORS: Record<number, string> = {
   1: 'bg-pink-500',
-  2: 'bg-amber-500',
-  3: 'bg-green-500',
-  4: 'bg-blue-500',
-  5: 'bg-purple-500',
-  6: 'bg-teal-500',
+  2: 'bg-orange-500',
+  3: 'bg-amber-500',
+  4: 'bg-green-500',
+  5: 'bg-blue-500',
+  6: 'bg-indigo-500',
+  7: 'bg-purple-500',
+  8: 'bg-teal-500',
 };
 
-export const LEVEL_NAMES_SHORT: Record<number, string> = {
-  1: 'Starting Stories',
-  2: 'Longer Sounds',
-  3: 'New Spellings',
-  4: 'Building Fluency',
-  5: 'Reading Together',
-  6: 'Reading Champion',
-};
+export const LEVEL_NAMES_SHORT: Record<number, string> = Object.fromEntries(
+  JOURNEY_LEVELS.map((l) => [l.level, l.name]),
+);

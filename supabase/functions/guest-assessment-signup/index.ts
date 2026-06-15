@@ -50,9 +50,15 @@ Deno.serve(async (req) => {
     }
     const recommended_level =
       typeof recommended_level_raw === "number" ? Math.floor(recommended_level_raw) : NaN;
-    if (!Number.isInteger(recommended_level) || recommended_level < 1 || recommended_level > 6) {
-      return badRequest("recommended_level must be an integer 1-6");
+    if (!Number.isInteger(recommended_level) || recommended_level < 1 || recommended_level > 8) {
+      return badRequest("recommended_level must be an integer 1-8");
     }
+
+    // The books table is still tagged with legacy parent-6 levels. Collapse the
+    // journey-8 recommended level back onto its legacy band to find the free
+    // sample book (journey L1–L3 → legacy L1, L4→2, L5→3, L6→4, L7→5, L8→6).
+    const JOURNEY_TO_LEGACY: Record<number, number> = { 1: 1, 2: 1, 3: 1, 4: 2, 5: 3, 6: 4, 7: 5, 8: 6 };
+    const legacy_level = JOURNEY_TO_LEGACY[recommended_level] ?? recommended_level;
 
     const email = emailRaw;
 
@@ -100,7 +106,7 @@ Deno.serve(async (req) => {
     const { data: books } = await supabaseAdmin
       .from("books")
       .select("id, title, sub_level")
-      .eq("level", recommended_level)
+      .eq("level", legacy_level)
       .order("sort_order", { ascending: true })
       .limit(1);
 
@@ -125,7 +131,7 @@ Deno.serve(async (req) => {
         { onConflict: "user_id,book_id" }
       );
       bookTitle = books[0].title ?? bookTitle;
-      const subSlug = (books[0].sub_level ?? `L${recommended_level}.1`)
+      const subSlug = (books[0].sub_level ?? `L${legacy_level}.1`)
         .replace(/^L/, "")
         .replace(".", "_");
       bookPdfUrl = `${STORAGE_PUBLIC}/a5/${subSlug}.pdf`;

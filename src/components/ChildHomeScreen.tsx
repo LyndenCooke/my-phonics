@@ -30,7 +30,7 @@ import FinishWordGame from '@/components/FinishWordGame';
 import TrickyWordGame from '@/components/TrickyWordGame';
 import type { Book } from '@/lib/types';
 import { getAllStamps, isReadyToMoveUp, MAX_STAMPS, type BookStamps } from '@/lib/stamps';
-import { getJourneyLevel, journeyLevelOf, journeySortKey, parseSubLevel, JOURNEY_LEVELS } from '@/lib/levels8';
+import { getJourneyLevel, journeyLevelOf, journeySortKey, JOURNEY_LEVELS } from '@/lib/levels8';
 import { getCoverImageUrl } from '@/lib/imageResolver';
 import { useChildren } from '@/hooks/useBooks';
 
@@ -153,8 +153,8 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   const heroStamps = currentEntry?.stamps.count ?? MAX_STAMPS;
   const heroMastered = currentEntry?.mastered ?? true;
   const coverUrl = getCoverImageUrl(heroBook.subLevel, heroBook.coverImageUrl);
-  // The assessment route still speaks legacy parent-6 levels.
-  const legacyAssessLevel = parseSubLevel(heroBook.subLevel)?.level ?? 1;
+  // The assessment route speaks journey-8 levels; place the hero book.
+  const assessLevel = journeyLevelOf(heroBook.subLevel);
 
   // CTA + sub-message state machine — child-tested copy.
   let ctaLabel: string;
@@ -163,7 +163,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   if (allMastered) {
     ctaLabel = 'Start Level Check';
     ctaSub = "You've finished all your books!";
-    primaryAction = () => navigate(`/assess?level=${legacyAssessLevel}`);
+    primaryAction = () => navigate(`/assess?level=${assessLevel}`);
   } else if (heroMastered) {
     ctaLabel = 'Next Book';
     ctaSub = 'Next book unlocked!';
@@ -421,7 +421,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 style={{ left: `${pt.x}%`, top: `${pt.y}%` }}
               >
                 <motion.button
-                  onClick={() => allMastered && navigate(`/assess?level=${legacyAssessLevel}`)}
+                  onClick={() => allMastered && navigate(`/assess?level=${assessLevel}`)}
                   disabled={!allMastered}
                   aria-label={allMastered ? 'Start your Level Check' : 'Level Check — finish your books first'}
                   className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center press-scale"

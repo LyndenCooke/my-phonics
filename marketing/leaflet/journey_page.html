@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks — Reading Journey end page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #E84B8A; --navy: #27344A; --ink: #1f2937;
+    --l1: #E84B8A; --l2: #F97066; --l3: #F59E0B; --l4: #22C55E;
+    --l5: #3B82F6; --l6: #6366F1; --l7: #8B5CF6; --l8: #14B8A6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Plus Jakarta Sans", sans-serif; color: var(--ink); }
+  .page {
+    width: 148mm; height: 210mm; position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #fff 0%, #FFF4F8 60%, #FFEFF5 100%);
+    display: flex; flex-direction: column; text-align: center;
+  }
+  h1, h2 { font-family: "Outfit", sans-serif; }
+  .header { padding: 9mm 10mm 0; }
+  .header img.lockup { width: 60mm; display: block; margin: 0 auto; }
+  h1 { font-size: 20pt; font-weight: 800; color: var(--navy); margin-top: 6mm; letter-spacing: -0.3pt; }
+  h1 .hl { color: var(--pink); }
+  .sub { font-size: 10pt; color: #4b5563; font-weight: 500; margin: 3mm 10mm 0; line-height: 1.45; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(4, auto); justify-content: center;
+    gap: 5mm 4mm; margin-top: 8mm;
+  }
+  .cell img {
+    width: 24mm; border-radius: 1.2mm; display: block;
+    box-shadow: 0 1.2mm 3mm rgba(39,52,74,.25);
+  }
+  .cell .lvl {
+    display: inline-block; margin-top: 2mm; font-family: "Outfit"; font-weight: 800;
+    font-size: 8pt; color: #fff; padding: 0.8mm 3mm; border-radius: 4mm;
+  }
+
+  .journey { margin: 8mm 12mm 0; }
+  .journey-bar { display: flex; height: 5.2mm; border-radius: 3mm; overflow: hidden; }
+  .journey-bar span {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: "Outfit"; font-weight: 800; font-size: 8pt; color: #fff;
+  }
+  .journey-labels { display: flex; justify-content: space-between; margin-top: 1.8mm; }
+  .journey-labels div { font-family: "Outfit"; font-weight: 700; font-size: 8.5pt; color: var(--navy); }
+
+  .footer {
+    margin-top: auto; background: var(--navy); color: #fff;
+    display: flex; align-items: center; gap: 6mm; padding: 5mm 12mm; text-align: left;
+  }
+  .footer .qrbox { background: #fff; border-radius: 2mm; padding: 1.5mm; flex: 0 0 auto; }
+  .footer .qrbox img { width: 18mm; display: block; }
+  .footer h2 { font-size: 12pt; font-weight: 800; }
+  .footer p { font-size: 8.6pt; opacity: .85; margin-top: 1mm; }
+  .footer .url { font-family: "Outfit"; font-weight: 700; color: #FFD166; font-size: 10pt; margin-top: 1.2mm; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <img class="lockup" src="../../public/logo/mpb-lockup.png" alt="my phonics books">
+    <h1>The journey <span class="hl">continues…</span></h1>
+    <p class="sub">Eight levels take your child from their very first sounds all the way to confident, fluent reading.</p>
+  </div>
+
+  <div class="grid">
+    <div class="cell"><img src="assets/cover_L1.png"><span class="lvl" style="background:var(--l1)">Level 1</span></div>
+    <div class="cell"><img src="assets/cover_L2.png"><span class="lvl" style="background:var(--l2)">Level 2</span></div>
+    <div class="cell"><img src="assets/cover_L3.png"><span class="lvl" style="background:var(--l3)">Level 3</span></div>
+    <div class="cell"><img src="assets/cover_L4.png"><span class="lvl" style="background:var(--l4)">Level 4</span></div>
+    <div class="cell"><img src="assets/cover_L5.png"><span class="lvl" style="background:var(--l5)">Level 5</span></div>
+    <div class="cell"><img src="assets/cover_L6.png"><span class="lvl" style="background:var(--l6)">Level 6</span></div>
+    <div class="cell"><img src="assets/cover_L7.png"><span class="lvl" style="background:var(--l7)">Level 7</span></div>
+    <div class="cell"><img src="assets/cover_L8.png"><span class="lvl" style="background:var(--l8)">Level 8</span></div>
+  </div>
+
+  <div class="journey">
+    <div class="journey-bar">
+      <span style="background:var(--l1)">1</span><span style="background:var(--l2)">2</span>
+      <span style="background:var(--l3)">3</span><span style="background:var(--l4)">4</span>
+      <span style="background:var(--l5)">5</span><span style="background:var(--l6)">6</span>
+      <span style="background:var(--l7)">7</span><span style="background:var(--l8)">8</span>
+    </div>
+    <div class="journey-labels">
+      <div>First sounds</div>
+      <div>Reading champion</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="qrbox"><img src="assets/qr_site.png" alt="QR code"></div>
+    <div>
+      <h2>Find their next book</h2>
+      <p>Free phonics check &amp; free books at your child's level.</p>
+      <div class="url">myphonicsbooks.co.uk</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

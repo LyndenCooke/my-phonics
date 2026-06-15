@@ -33,10 +33,6 @@ import { useNotifications } from '@/hooks/useNotifications';
 
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
-// children.current_level still stores legacy parent-6 levels; map to the
-// 8-level journey for display (first journey level of each legacy band).
-const LEGACY_TO_JOURNEY: Record<number, number> = { 1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
-
 // Notification icon → Lucide component. New kinds added here as the
 // store grows; default falls back to Sparkles so a missing mapping
 // doesn't render an empty circle.
@@ -62,7 +58,8 @@ export default function Profile() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const child = children?.[0];
-  const journeyLevel = LEGACY_TO_JOURNEY[child?.current_level ?? 1] ?? 1;
+  // current_level is stored on the journey-8 scale.
+  const journeyLevel = child?.current_level ?? 1;
   const levelInfo = getJourneyLevel(journeyLevel);
   const unreadMessages = getUnreadMessageCount();
   const { notifications, dismiss: dismissNotification } = useNotifications();

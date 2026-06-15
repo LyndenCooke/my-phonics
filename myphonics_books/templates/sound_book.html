@@ -40,6 +40,7 @@
   --level-color: {{ level_colour }};
   --level-color-light: {{ level_colour }}22;
   --level-color-mid: {{ level_colour }}66;
+  --on-level: {{ level_on_color | default('#ffffff') }};
   --text-dark: #1a1a2e;
   --text-body: #2d2d44;
   --bg-cream: #fefcf8;
@@ -86,171 +87,285 @@ html, body {
 }
 
 /* ═══════════════════════════════════════
-   COVER PAGE
+   COVER PAGE — 3x3 photo grid, sound in the middle
    ═══════════════════════════════════════ */
 .cover {
-  background: var(--bg-cream);
+  background: #0e0e12;
 }
 
 .cover .page-inner {
-  padding: 0;
-  justify-content: space-between;
+  padding: 12mm 10mm;
+  justify-content: center;
   align-items: center;
+  gap: 10mm;
 }
 
-.cover-top-band {
+/* Top: series label + level name */
+.cover-header {
   width: 100%;
-  height: 18mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2mm;
+  text-align: center;
+}
+
+.cover-series-label {
+  font-size: 8.5pt;
+  color: #ffffff;
+  opacity: 0.55;
+  letter-spacing: 2pt;
+  text-transform: uppercase;
+}
+
+.cover-level-label {
+  font-size: 10pt;
+  font-weight: normal;
+  color: var(--level-color);
+  letter-spacing: 1.5pt;
+  text-transform: uppercase;
+}
+
+/* The 3x3 grid — square, fills the page width */
+.cover-grid {
+  width: 128mm;
+  height: 128mm;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2.4mm;
+}
+
+.cover-cell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2.5mm;
+  background: #1a1a22;
+}
+
+.cover-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-centre-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Spare cells on single-sound books — on-brand colour accent */
+.cover-cell.accent {
   background: var(--level-color);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.cover-level-label {
-  font-size: 11pt;
-  font-weight: normal;
-  color: #ffffff;
-  letter-spacing: 0.8pt;
-  text-transform: uppercase;
+.cover-cell.accent::after {
+  content: "";
+  width: 9mm;
+  height: 9mm;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
 }
 
-.cover-body {
-  flex: 1;
+/* Centre cell — the focus sound on the level colour */
+.cover-cell.centre {
+  background: var(--level-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 0.8mm #0e0e12, 0 0 0 1.6mm rgba(255,255,255,0.12);
+}
+
+.cover-sound-text {
+  font-size: 60pt;
+  font-weight: normal;
+  color: var(--on-level);
+  letter-spacing: 0.5pt;
+  line-height: 1;
+}
+
+/* Combined sound books: stack the sounds smaller in the centre cell */
+.cover-sounds-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6mm;
-  padding: 8mm 12mm;
+  line-height: 1.05;
+}
+
+.cover-sounds-stack .cover-sound-text {
+  font-size: 34pt;
+}
+
+.cover-sounds-stack .cover-sounds-divider {
+  font-size: 14pt;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Bottom: title + ownership */
+.cover-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5mm;
   text-align: center;
 }
 
 .cover-title {
-  font-size: 22pt;
+  font-size: 20pt;
   font-weight: normal;
-  color: var(--text-dark);
-  line-height: 1.2;
-}
-
-.cover-sound-display {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4mm 0;
-}
-
-.cover-sound-text {
-  font-size: 64pt;
-  font-weight: normal;
-  color: var(--text-dark);
-  letter-spacing: 1pt;
-  line-height: 1;
-}
-
-/* Combined sound books: show multiple sounds */
-.cover-sounds-row {
-  display: flex;
-  gap: 8mm;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 4mm 0;
-}
-
-.cover-sounds-row .cover-sound-text {
-  font-size: 52pt;
-}
-
-.cover-sounds-divider {
-  font-size: 36pt;
-  font-weight: normal;
-  color: var(--text-dark);
-  opacity: 0.4;
+  color: #ffffff;
+  line-height: 1.15;
 }
 
 .cover-child-name {
-  font-size: 13pt;
-  color: var(--text-body);
+  font-size: 11pt;
+  color: #ffffff;
+  opacity: 0.6;
   font-style: italic;
 }
 
-.cover-series-label {
-  font-size: 9pt;
-  color: var(--text-body);
-  opacity: 0.7;
-  letter-spacing: 0.5pt;
-}
-
-.cover-bottom-band {
-  width: 100%;
-  height: 10mm;
-  background: var(--level-color);
-}
-
 /* ═══════════════════════════════════════
-   SOUND PAGE
+   SOUND PAGE — "All about" reference (page 2 per sound):
+   letterforms (capital + lowercase), how the mouth makes it, how to say it.
    ═══════════════════════════════════════ */
 .sound-page .page-inner {
   justify-content: center;
   align-items: center;
-  gap: 8mm;
+  gap: 7mm;
   text-align: center;
 }
 
-.sound-page-heading {
-  font-size: 14pt;
+.aa-heading {
+  font-size: 17pt;
   font-weight: normal;
   color: var(--text-dark);
 }
 
-.sound-large-display {
+.aa-heading .aa-sound {
+  color: var(--level-color);
+}
+
+/* Letterforms — soft flash-cards (shadow, not borders → less form-like) */
+.aa-letters {
   display: flex;
-  align-items: center;
+  gap: 9mm;
+  align-items: stretch;
   justify-content: center;
-  padding: 4mm 0;
 }
 
-.sound-large-text {
-  font-size: 96pt;
-  font-weight: normal;
-  color: var(--text-dark);
-  letter-spacing: 1pt;
+.aa-letter-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2mm;
+  width: 40mm;
+  padding: 6mm 4mm 4mm;
+  border-radius: 7mm;
+  background: #ffffff;
+  box-shadow: 0 1.6mm 4.5mm rgba(40, 30, 40, 0.10);
+}
+
+.aa-letter-big {
+  font-size: 56pt;
   line-height: 1;
+  color: var(--level-color);
 }
 
-.sound-button-row {
+.aa-letter-label {
+  font-size: 8.5pt;
+  color: var(--text-body);
+  opacity: 0.55;
+  letter-spacing: 1.5pt;
+  text-transform: uppercase;
+}
+
+/* Single hero card for digraphs/trigraphs (no capital form) */
+.aa-hero-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1mm;
-  margin-top: 2mm;
+  min-width: 70mm;
+  padding: 7mm 12mm;
+  border-radius: 7mm;
+  background: #ffffff;
+  box-shadow: 0 1.6mm 4.5mm rgba(40, 30, 40, 0.10);
 }
 
-.sound-button-dot {
+/* Sound facts — one soft editorial card with a clean list (no pill chips) */
+.aa-facts {
+  width: 100%;
+  max-width: 116mm;
+  display: flex;
+  flex-direction: column;
+  padding: 3mm 7mm;
+  border-radius: 6mm;
+  background: var(--level-color-light);
+}
+
+.aa-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 4mm;
+  padding: 3mm 0;
+  text-align: left;
+}
+
+.aa-fact + .aa-fact {
+  border-top: 0.3mm solid var(--level-color-mid);
+}
+
+.aa-fact-dot {
+  flex-shrink: 0;
   width: 3mm;
   height: 3mm;
   border-radius: 50%;
   background: var(--level-color);
+  transform: translateY(0.2mm);
 }
 
-.sound-button-dash {
-  width: 8mm;
-  height: 3mm;
-  border-radius: 1.5mm;
-  background: var(--level-color);
-}
-
-.sound-instruction {
-  font-size: 12pt;
+.aa-fact-line {
+  font-size: 11pt;
   color: var(--text-body);
-  max-width: 110mm;
-  line-height: 1.5;
+  line-height: 1.4;
+}
+
+.aa-fact-key {
+  color: var(--text-dark);
+  font-style: italic;
+}
+
+/* Say-the-sound — quiet quote line, not a coloured bar */
+.aa-say {
+  display: flex;
+  align-items: flex-start;
+  gap: 2mm;
+  max-width: 116mm;
+  padding: 0 4mm;
+}
+
+.aa-say-mark {
+  font-size: 24pt;
+  line-height: 0.7;
+  color: var(--level-color);
+}
+
+.aa-say-text {
+  font-size: 11pt;
+  color: var(--text-body);
+  font-style: italic;
+  line-height: 1.45;
+  text-align: left;
 }
 
 /* Comparison sounds (L5+) */
 .comparison-section {
-  margin-top: 6mm;
+  margin-top: 2mm;
   padding-top: 4mm;
   border-top: 0.5mm dashed var(--level-color-mid);
   width: 100%;
@@ -458,37 +573,37 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8mm;
+  gap: 4mm;
   padding: 10mm;
   text-align: center;
 }
 
-.back-well-done {
-  font-size: 18pt;
-  font-weight: normal;
+.back-wordmark {
+  font-size: 22pt;
   color: var(--text-dark);
-  line-height: 1.3;
+  line-height: 1;
 }
 
-.back-sticker-space {
-  width: 40mm;
-  height: 40mm;
-  border-radius: 50%;
-  border: 1mm dashed var(--level-color-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.back-series {
+  font-size: 12pt;
+  color: var(--level-color);
+  letter-spacing: 1pt;
+  margin-bottom: 4mm;
 }
 
-.back-sticker-label {
-  font-size: 9pt;
+.back-tagline {
+  font-size: 11pt;
   color: var(--text-body);
-  opacity: 0.6;
+  font-style: italic;
+  margin-bottom: 8mm;
 }
 
 .back-sounds-learned {
-  font-size: 10pt;
+  font-size: 9pt;
   color: var(--text-body);
+  opacity: 0.7;
+  letter-spacing: 0.5pt;
+  text-transform: uppercase;
 }
 
 .back-sounds-chips {
@@ -502,7 +617,7 @@ html, body {
   padding: 2mm 5mm;
   border-radius: 3mm;
   background: var(--level-color);
-  color: #ffffff;
+  color: var(--on-level);
   font-size: 12pt;
   font-weight: normal;
 }
@@ -518,7 +633,7 @@ html, body {
 
 .back-brand {
   font-size: 9pt;
-  color: #ffffff;
+  color: var(--on-level);
   opacity: 0.8;
   letter-spacing: 0.5pt;
 }
@@ -531,38 +646,53 @@ html, body {
      ═══════════════════════════════════════ -->
 <div class="page cover">
   <div class="page-inner">
-    <div class="cover-top-band">
-      <span class="cover-level-label">{{ level_name }}</span>
+    <div class="cover-header">
+      <div class="cover-series-label">MyPhonicsBooks · Sound Book</div>
+      <div class="cover-level-label">{{ level_name }}</div>
     </div>
 
-    <div class="cover-body">
-      <div class="cover-series-label">MyPhonicsBooks — Sound Book</div>
-
-      <div class="cover-title">{{ book_title }}</div>
-
-      {% if sounds | length == 1 %}
-        <div class="cover-sound-display">
-          <span class="cover-sound-text">{{ sounds[0].grapheme }}</span>
-        </div>
+    {# Surround tile: a word photo, or an on-brand accent for spare cells #}
+    {% macro tile_cell(tile) %}
+      {% if tile and tile.photo %}
+        <div class="cover-cell"><img src="{{ tile.photo }}" alt=""></div>
       {% else %}
-        <div class="cover-sounds-row">
-          {% for s in sounds %}
-            {% if not loop.first %}
-              <span class="cover-sounds-divider">+</span>
-            {% endif %}
-            <div class="cover-sound-display">
-              <span class="cover-sound-text">{{ s.grapheme }}</span>
-            </div>
-          {% endfor %}
-        </div>
+        <div class="cover-cell accent"></div>
       {% endif %}
+    {% endmacro %}
 
-      {% if child_name %}
-        <div class="cover-child-name">This book belongs to {{ child_name }}</div>
-      {% endif %}
+    <div class="cover-grid">
+      {# Row 1 #}
+      {{ tile_cell(cover_tiles[0]) }}
+      {{ tile_cell(cover_tiles[1]) }}
+      {{ tile_cell(cover_tiles[2]) }}
+      {# Row 2 — centre cell holds the focus sound #}
+      {{ tile_cell(cover_tiles[3]) }}
+      <div class="cover-cell centre">
+        {% if cover_centre_img %}
+          <img class="cover-centre-img" src="{{ cover_centre_img }}" alt="{{ sounds[0].grapheme }}">
+        {% elif sounds | length == 1 %}
+          <span class="cover-sound-text">{{ sounds[0].grapheme }}</span>
+        {% else %}
+          <div class="cover-sounds-stack">
+            {% for s in sounds %}
+              {% if not loop.first %}<span class="cover-sounds-divider">+</span>{% endif %}
+              <span class="cover-sound-text">{{ s.grapheme }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      {{ tile_cell(cover_tiles[4]) }}
+      {# Row 3 #}
+      {{ tile_cell(cover_tiles[5]) }}
+      {{ tile_cell(cover_tiles[6]) }}
+      {{ tile_cell(cover_tiles[7]) }}
     </div>
 
-    <div class="cover-bottom-band"></div>
+    {% if child_name %}
+      <div class="cover-footer">
+        <div class="cover-child-name">This book belongs to {{ child_name }}</div>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -577,14 +707,37 @@ html, body {
   {% set ns.p = ns.p + 1 %}
   <div class="page sound-page">
     <div class="page-inner">
-      <div class="sound-page-heading">Today we are learning</div>
+      <div class="aa-heading">All about <span class="aa-sound">{{ sound.grapheme }}</span></div>
 
-      <div class="sound-large-display">
-        <span class="sound-large-text">{{ sound.grapheme }}</span>
+      {% if sound.facts.is_single %}
+        <div class="aa-letters">
+          <div class="aa-letter-box">
+            <span class="aa-letter-big">{{ sound.capital }}</span>
+            <span class="aa-letter-label">Capital</span>
+          </div>
+          <div class="aa-letter-box">
+            <span class="aa-letter-big">{{ sound.grapheme }}</span>
+            <span class="aa-letter-label">lowercase</span>
+          </div>
+        </div>
+      {% else %}
+        <div class="aa-hero-card">
+          <span class="aa-letter-big">{{ sound.grapheme }}</span>
+        </div>
+      {% endif %}
+
+      <div class="aa-facts">
+        {% for f in sound.facts.facts %}
+          <div class="aa-fact">
+            <span class="aa-fact-dot"></span>
+            <span class="aa-fact-line"><span class="aa-fact-key">{{ f.tag }}</span> — {{ f.text }}</span>
+          </div>
+        {% endfor %}
       </div>
 
-      <div class="sound-instruction">
-        {{ sound.instruction | default("Say the sound. Can you think of a word with this sound?") }}
+      <div class="aa-say">
+        <span class="aa-say-mark">“</span>
+        <span class="aa-say-text">{{ sound.instruction | default("Say the sound. Can you think of a word with this sound?") }}</span>
       </div>
 
       {% if comparison_sounds and comparison_sounds | length > 0 %}
@@ -658,21 +811,11 @@ html, body {
     <div class="back-top-band"></div>
 
     <div class="back-body">
-      <div class="back-well-done">
-        Well done!<br>
-        {% if sounds | length == 1 %}
-          You can read <em>{{ sounds[0].grapheme }}</em> words!
-        {% else %}
-          You can read
-          {% for s in sounds %}
-            {% if loop.last and not loop.first %} and {% elif not loop.first %}, {% endif %}
-            <em>{{ s.grapheme }}</em>
-          {% endfor %}
-          words!
-        {% endif %}
-      </div>
+      <div class="back-wordmark">MyPhonicsBooks</div>
+      <div class="back-series">Sound Books</div>
+      <div class="back-tagline">A picture book for every sound.</div>
 
-      <div class="back-sounds-learned">Sounds in this book:</div>
+      <div class="back-sounds-learned">In this book:</div>
       <div class="back-sounds-chips">
         {% for s in sounds %}
           <span class="back-sound-chip">{{ s.grapheme }}</span>
@@ -681,7 +824,7 @@ html, body {
     </div>
 
     <div class="back-bottom-band">
-      <span class="back-brand">MyPhonicsBooks</span>
+      <span class="back-brand">myphonicsbooks.co.uk</span>
     </div>
   </div>
 </div>

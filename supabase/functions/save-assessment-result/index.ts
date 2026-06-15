@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
     }
 
     let highestLevelPassed = 0;
-    for (let lvl = 1; lvl <= 6; lvl++) {
+    for (let lvl = 1; lvl <= 8; lvl++) {
       const score = levelScores[lvl];
       if (!score) break;
       if (score.correct / score.total >= 0.7) {
@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    let recommendedLevel = Math.min(highestLevelPassed + 1, 6);
+    let recommendedLevel = Math.min(highestLevelPassed + 1, 8);
     
     // If child got <50% of Level 1 sounds, recommend Level 1
     const lvl1Sounds = detailedAnswers.filter(

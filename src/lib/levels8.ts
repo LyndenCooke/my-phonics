@@ -97,6 +97,36 @@ export const JOURNEY_SUBLEVEL_BY_LEGACY: Record<string, string> = {
   'L6.1': 'L8.1', 'L6.2': 'L8.2', 'L6.3': 'L8.3', 'L6.4': 'L8.4',
 };
 
+/**
+ * Legacy parent-6 level ↔ journey-8 level conversion. The book catalogue in
+ * Supabase is still tagged with legacy levels, so a handful of surfaces store
+ * or receive legacy level numbers. These maps are the single source of truth
+ * for crossing between the two scales; prefer them over inline copies.
+ *
+ *  - LEGACY → JOURNEY uses the FIRST journey level of each legacy band (the
+ *    legacy L1 band split into journey L1–L3 resolves to L1 — Ditties).
+ *  - JOURNEY → LEGACY collapses the journey L1–L3 split back onto legacy L1.
+ *
+ * Keep in step with `JOURNEY_SUBLEVEL_BY_LEGACY` above.
+ */
+export const LEGACY_TO_JOURNEY_LEVEL: Record<number, number> = {
+  1: 1, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8,
+};
+
+export const JOURNEY_TO_LEGACY_LEVEL: Record<number, number> = {
+  1: 1, 2: 1, 3: 1, 4: 2, 5: 3, 6: 4, 7: 5, 8: 6,
+};
+
+/** Journey level (1–8) for a stored legacy parent-6 level. */
+export function journeyLevelOfLegacy(legacyLevel: number): number {
+  return LEGACY_TO_JOURNEY_LEVEL[legacyLevel] ?? legacyLevel;
+}
+
+/** Legacy parent-6 level for a journey level (1–8), for legacy-tagged data. */
+export function legacyLevelOfJourney(journeyLevel: number): number {
+  return JOURNEY_TO_LEGACY_LEVEL[journeyLevel] ?? journeyLevel;
+}
+
 /** Parse "L4.3" → { level: 4, index: 3 }. Returns null for unknown shapes. */
 export function parseSubLevel(subLevel: string): { level: number; index: number } | null {
   const m = /^L(\d+)\.(\d+)$/.exec(subLevel);
