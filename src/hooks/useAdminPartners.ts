@@ -64,8 +64,16 @@ export function useCreatePartner() {
     mutationFn: async (input: { code: string; email: string; partner_name?: string }) => {
       const { data, error } = await supabase.functions.invoke('create-partner', { body: input });
       if (error) {
-        // Edge functions return the JSON error body on non-2xx; surface it.
-        const msg = (data as { error?: string } | null)?.error || error.message;
+        // On a non-2xx, supabase-js puts the Response in error.context; the real
+        // message is in its JSON body, not error.message (which is generic).
+        let msg = error.message;
+        try {
+          const ctx = (error as unknown as { context?: Response }).context;
+          if (ctx && typeof ctx.json === 'function') {
+            const body = await ctx.json();
+            if (body?.error) msg = body.error;
+          }
+        } catch { /* keep generic message */ }
         throw new Error(msg);
       }
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
