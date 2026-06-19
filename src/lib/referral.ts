@@ -65,6 +65,23 @@ export function getStoredRefCode(): string | null {
   }
 }
 
+/**
+ * Store a code the customer TYPED in (e.g. a partner code printed on a poster),
+ * as opposed to one captured from a ?ref= link. Same storage slot, so it flows
+ * to checkout identically. Returns the normalised code, or null if invalid.
+ */
+export function setRefCode(code: string): string | null {
+  if (typeof window === 'undefined') return null;
+  const clean = code.trim().toUpperCase().slice(0, 12);
+  if (!/^[A-Z0-9]{4,12}$/.test(clean)) return null;
+  try {
+    window.localStorage.setItem(KEY, clean);
+    window.localStorage.setItem(KEY_TS, String(Date.now()));
+    supabase.rpc('track_referral_click', { p_code: clean }).then(() => {}, () => {});
+  } catch { /* private mode — ignore */ }
+  return clean;
+}
+
 export function clearStoredRefCode(): void {
   try {
     window.localStorage.removeItem(KEY);

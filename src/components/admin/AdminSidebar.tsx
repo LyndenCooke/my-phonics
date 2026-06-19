@@ -9,6 +9,7 @@ import {
   ArrowLeft,
   Inbox,
   Star,
+  Ticket,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -18,6 +19,7 @@ const navItems = [
   { to: '/admin/pipeline', icon: Kanban, label: 'Pipeline' },
   { to: '/admin/recovery', icon: Inbox, label: 'Recovery' },
   { to: '/admin/deals', icon: Handshake, label: 'Deals' },
+  { to: '/admin/partners', icon: Ticket, label: 'Partners' },
   { to: '/admin/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/admin/feedback', icon: Star, label: 'Feedback' },

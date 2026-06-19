@@ -65,6 +65,7 @@ function LoveTeaser() {
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { getStoredRefCode } from '@/lib/referral';
+import PartnerCodeField from '@/components/PartnerCodeField';
 import {
   Dialog,
   DialogContent,
@@ -327,6 +328,10 @@ export default function Shop() {
             All 33 books, eight levels, every worksheet and assessment.
           </p>
         </div>
+
+        {/* Partner / discount code entry — a code from a poster gives the
+         *  customer their discount and credits the partner at checkout. */}
+        <PartnerCodeField />
 
         {/* Current plan — signed-in users see their entitlement status up
          *  top so they can tell at a glance what they already have before
