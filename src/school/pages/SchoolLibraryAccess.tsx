@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BookOpen, Download, FileText, Grid3x3, KeySquare, Layers, Loader2, Sparkles } from 'lucide-react';
 import { SCHOOL_BOOKS, type SchoolBook } from '../data/bookCatalog';
 import { SOUND_BOOKS, SOUND_BOOK_TOTAL, type SoundBook } from '../data/soundBooks';
@@ -232,7 +233,7 @@ function InteractiveCard({ book }: { book: SchoolBook }) {
       <BlockLine id={book.id} />
       <p className="text-xs text-slate-500 mt-1 mb-3">Tappable words, phoneme pop-ups, audio, spelling, story ordering, comprehension{book.level >= 2 ? ', grammar word-order' : ''} and writing practice.</p>
       <div className="mt-auto">
-        <a href={`/library?book=${book.slug}`} target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-violet-600 text-white text-xs font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-3.5 h-3.5" /> Open interactive</a>
+        <Link to={`/school/app/read/${book.parent6SubLevel}`} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-violet-600 text-white text-xs font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-3.5 h-3.5" /> Open interactive</Link>
       </div>
     </Shell>
   );
