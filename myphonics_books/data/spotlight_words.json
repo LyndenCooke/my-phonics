@@ -23,7 +23,7 @@
     "decodable_at": 1,
     "words": [
       {"word": "tin", "search": "tin can food"},
-      {"word": "tap", "search": "water tap faucet"},
+      {"word": "tap", "search": "hand finger tapping a surface"},
       {"word": "ten", "search": "number ten"},
       {"word": "tub", "search": "bathtub"}
     ]
@@ -104,8 +104,8 @@
     "decodable_at": 1,
     "words": [
       {"word": "kit", "search": "first aid kit"},
-      {"word": "kid", "search": "happy kid"},
-      {"word": "keg", "search": "wooden barrel keg"},
+      {"word": "desk", "search": "wooden school desk"},
+      {"word": "milk", "search": "glass of milk"},
       {"word": "kip", "search": "child sleeping"}
     ]
   },
