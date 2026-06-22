@@ -182,7 +182,7 @@ export default function StudentProfile() {
             <div className="flex flex-wrap gap-2">
               {nextStorybook && (
                 <>
-                  <a href={`/library?book=${nextStorybook.slug}`} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-4 h-4" /> Open interactive book</a>
+                  <Link to={`/school/app/read/${nextStorybook.parent6SubLevel}`} className="inline-flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-4 h-4" /> Open interactive book</Link>
                   <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (A5 Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print A5 booklet</button>
                   <button onClick={() => dl({ resourceType: 'worksheet_pack', resourceKey: storageKey(nextStorybook.parent6SubLevel), filename: `${nextStorybook.title} — Worksheets.pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><FileText className="w-4 h-4" /> Print worksheet pack</button>
                 </>
