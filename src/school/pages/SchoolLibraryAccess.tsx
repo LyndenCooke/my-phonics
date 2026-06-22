@@ -9,6 +9,8 @@ import { blockForResource, programmeTotals } from '../data/pathway';
 import { useToast } from '@/hooks/use-toast';
 import { downloadSchoolResource, viewSchoolResource } from '../lib/schoolClient';
 import PdfPresenter, { type PresentResource } from '../components/PdfPresenter';
+import SoundBookSlides from '../components/SoundBookSlides';
+import { SOUND_BOOK_INTERACTIVE_IDS } from '@/lib/soundBookInteractiveData';
 
 type DLResource =
   | { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }
@@ -49,6 +51,7 @@ export default function SchoolLibraryAccess() {
   const [busy, setBusy] = useState<string | null>(null);
   const [presenting, setPresenting] = useState<{ resource: PresentResource; title: string } | null>(null);
   const onPresent = (resource: PresentResource, title: string) => setPresenting({ resource, title });
+  const [slideBook, setSlideBook] = useState<SoundBook | null>(null);
 
   const matchesLevel = (lvl: number) => levelFilter === 'all' || lvl === levelFilter;
   const soundBooks = useMemo(() => SOUND_BOOKS.filter((b) => matchesLevel(b.level)), [levelFilter]);
@@ -121,7 +124,7 @@ export default function SchoolLibraryAccess() {
 
       {/* Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {cat === 'sound_books' && soundBooks.map((b) => <SoundBookCard key={b.id} book={b} busy={busy} run={run} onPresent={onPresent} />)}
+        {cat === 'sound_books' && soundBooks.map((b) => <SoundBookCard key={b.id} book={b} busy={busy} run={run} onPresent={onPresent} onPlay={setSlideBook} />)}
         {cat === 'sound_worksheets' && soundBooks.map((b) => <SoundWorksheetCard key={b.id} book={b} />)}
         {cat === 'blending_books' && blendingBooks.map((b) => <BlendingCard key={b.id} book={b} />)}
         {cat === 'storybooks' && storybooks.map((b) => <StorybookCard key={b.id} book={b} busy={busy} run={run} view={view} />)}
@@ -133,6 +136,9 @@ export default function SchoolLibraryAccess() {
 
       {presenting && (
         <PdfPresenter resource={presenting.resource} title={presenting.title} onClose={() => setPresenting(null)} />
+      )}
+      {slideBook && (
+        <SoundBookSlides book={slideBook} onClose={() => setSlideBook(null)} />
       )}
     </div>
   );
@@ -165,7 +171,8 @@ function ComingSoon({ icon, label }: { icon: React.ReactNode; label: string }) {
   return <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-100 text-slate-500 text-[11px] font-semibold">{icon} {label}</span>;
 }
 
-function SoundBookCard({ book, busy, run, onPresent }: { book: SoundBook; busy: string | null; run: (k: string, u: string, f: string) => void; onPresent: (r: PresentResource, title: string) => void }) {
+function SoundBookCard({ book, busy, run, onPresent, onPlay }: { book: SoundBook; busy: string | null; run: (k: string, u: string, f: string) => void; onPresent: (r: PresentResource, title: string) => void; onPlay: (b: SoundBook) => void }) {
+  const interactive = SOUND_BOOK_INTERACTIVE_IDS.has(book.id);
   return (
     <Shell level={book.level}>
       <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
@@ -174,10 +181,17 @@ function SoundBookCard({ book, busy, run, onPresent }: { book: SoundBook; busy: 
       <div className="text-[11px] text-slate-500 mb-3">Companion: <span className="font-semibold">Sound Book worksheet</span></div>
       <div className="mt-auto space-y-1.5">
         <div className="grid grid-cols-2 gap-1.5">
-          <button type="button" onClick={() => onPresent({ resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, book.title)}
-            className="inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700">
-            <MonitorPlay className="w-3.5 h-3.5" /> On screen
-          </button>
+          {interactive ? (
+            <button type="button" onClick={() => onPlay(book)}
+              className="inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700">
+              <Sparkles className="w-3.5 h-3.5" /> Play slides
+            </button>
+          ) : (
+            <button type="button" onClick={() => onPresent({ resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, book.title)}
+              className="inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700">
+              <MonitorPlay className="w-3.5 h-3.5" /> On screen
+            </button>
+          )}
           <DownloadBtn label="Print booklet" loading={busy === `snd-${book.id}`} onClick={() => run(`snd-${book.id}`, { resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, `${book.title}.pdf`)} />
         </div>
         <ComingSoon icon={<FileText className="w-3 h-3" />} label="Worksheet soon" />
