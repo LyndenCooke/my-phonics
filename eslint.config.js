@@ -21,6 +21,11 @@ export default tseslint.config(
       "marketing-mockups/**",
       "marketing/**",
       "leadgen/**",
+      // The worksheet-engine is a Next.js app with its own toolchain
+      // (next lint). The root flat config has no @next plugin, so its
+      // `@next/next/*` eslint-disable directives error here and every Next
+      // file trips react-refresh. Lint it via its own next lint instead.
+      "worksheet-engine/**",
       // Build / generation scripts (often plain Node, not React).
       "scripts/**",
       // Local scratch directory.
