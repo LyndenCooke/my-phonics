@@ -1,42 +1,15 @@
-import { lazy, Suspense } from 'react';
-import type { Book } from '@/lib/types';
-import { INTERACTIVE_BOOKS } from '@/lib/interactiveBookData';
-import { SOUND_BOOK_DECKS } from '@/lib/soundBookInteractiveData';
 import type { SoundBook } from '../data/soundBooks';
-
-const InteractiveBookReader = lazy(() => import('@/components/InteractiveBookReader'));
-
-// Register the sound-book decks into the reader's lookup once, at module load,
-// so InteractiveBookReader[book.subLevel] resolves. Mutates the (const) object.
-Object.assign(INTERACTIVE_BOOKS, SOUND_BOOK_DECKS);
+import { SOUND_BOOK_CONTENT } from './soundbook/engine';
+import SoundBookExperience from './soundbook/SoundBookExperience';
 
 /**
- * SoundBookSlides — plays a Sound Book as interactive on-screen slides using the
- * exact same reader as the storybooks. Builds a synthetic Book whose subLevel is
- * the SoundBook id (the deck key). The id is prefixed `local-` so the reader's
- * reading-progress write no-ops (no DB rows for sound books); stamps are
- * localStorage-only, so there are no server side-effects.
+ * SoundBookSlides — launches the bespoke, animated interactive Sound Book
+ * experience (NOT the storybook reader) for a given Sound Book. Content is keyed
+ * by the SoundBook id. Cards only show "Play slides" when content exists
+ * (SOUND_BOOK_CONTENT_IDS), so a missing entry shouldn't happen, but we guard.
  */
 export default function SoundBookSlides({ book, onClose }: { book: SoundBook; onClose: () => void }) {
-  const synthetic: Book = {
-    id: `local-${book.id}`,
-    level: book.level,
-    subLevel: book.id,
-    title: book.title,
-    slug: book.id,
-    focusSounds: book.graphemes,
-    trickyWords: [],
-    storyWords: [],
-    pageCount: 0,
-    sortOrder: 0,
-    unlocked: true,
-    completed: false,
-    lastPageRead: 0,
-    pages: [],
-  };
-  return (
-    <Suspense fallback={<div className="fixed inset-0 z-[9999] bg-slate-900" />}>
-      <InteractiveBookReader book={synthetic} onClose={onClose} onFinish={onClose} />
-    </Suspense>
-  );
+  const content = SOUND_BOOK_CONTENT[book.id];
+  if (!content) { onClose(); return null; }
+  return <SoundBookExperience content={content} onClose={onClose} />;
 }

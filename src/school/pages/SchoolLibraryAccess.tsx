@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { downloadSchoolResource, viewSchoolResource } from '../lib/schoolClient';
 import PdfPresenter, { type PresentResource } from '../components/PdfPresenter';
 import SoundBookSlides from '../components/SoundBookSlides';
-import { SOUND_BOOK_INTERACTIVE_IDS } from '@/lib/soundBookInteractiveData';
+import { SOUND_BOOK_CONTENT_IDS } from '../components/soundbook/engine';
 
 type DLResource =
   | { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }
@@ -172,7 +172,7 @@ function ComingSoon({ icon, label }: { icon: React.ReactNode; label: string }) {
 }
 
 function SoundBookCard({ book, busy, run, onPresent, onPlay }: { book: SoundBook; busy: string | null; run: (k: string, u: string, f: string) => void; onPresent: (r: PresentResource, title: string) => void; onPlay: (b: SoundBook) => void }) {
-  const interactive = SOUND_BOOK_INTERACTIVE_IDS.has(book.id);
+  const interactive = SOUND_BOOK_CONTENT_IDS.has(book.id);
   return (
     <Shell level={book.level}>
       <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
