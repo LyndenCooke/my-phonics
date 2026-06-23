@@ -46,7 +46,7 @@ export default function SchoolAppLayout() {
             </span>
           </Link>
           <div className="flex items-center gap-1 text-sm">
-            <span className="hidden sm:inline text-slate-500 px-2">{user.email}</span>
+            <span className="hidden sm:inline text-slate-500 px-2">{(user.user_metadata?.full_name as string | undefined) || 'Administrator'}</span>
             <button
               onClick={handleSignOut}
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-semibold"

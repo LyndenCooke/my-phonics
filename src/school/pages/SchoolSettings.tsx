@@ -151,7 +151,7 @@ export default function SchoolSettings() {
 
       <div className="rounded-2xl border border-slate-200 bg-white p-5">
         <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Your account</div>
-        <div className="text-sm text-slate-700">{user?.email}</div>
+        <div className="text-sm text-slate-700">{(user?.user_metadata?.full_name as string | undefined) || 'Administrator'}</div>
         <div className="text-xs text-slate-500 mt-0.5">Role: {membership?.role}</div>
       </div>
     </div>
