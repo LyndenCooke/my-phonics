@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, BookOpen, Camera, CheckCircle2, ClipboardCheck, GraduationCap, Layers,
-  Printer, Sparkles, Users, Grid3x3, Repeat, ListChecks,
+  Printer, Sparkles, Users, Grid3x3, Repeat, ListChecks, PlayCircle,
 } from 'lucide-react';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { programmeTotals } from '../data/pathway';
@@ -93,6 +93,32 @@ export default function SchoolMarketing() {
           </div>
         </div>
         <style>{`@keyframes floaty { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-7px) } }`}</style>
+      </section>
+
+      {/* ── VIDEO TOUR ── */}
+      <section>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-50 text-pink-700 text-xs font-bold uppercase tracking-wider mb-3">
+            <PlayCircle className="w-3.5 h-3.5" /> Watch the tour
+          </div>
+          <h2 className="font-display text-3xl font-extrabold tracking-tight">See the platform in action</h2>
+          <p className="text-slate-600 mt-2 max-w-2xl mx-auto">
+            A quick walkthrough of how your school assesses, groups and teaches with My Phonics Books.
+          </p>
+        </div>
+        <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-900/10 bg-slate-900">
+          <video
+            controls
+            preload="metadata"
+            playsInline
+            poster="/videos/school-intro-poster.jpg"
+            className="w-full aspect-video block"
+          >
+            <source src="/videos/school-intro.mp4" type="video/mp4" />
+            Your browser doesn’t support embedded video.
+            <a href="/videos/school-intro.mp4" className="underline">Watch the tour</a> instead.
+          </video>
+        </div>
       </section>
 
       {/* ── THE 8-LEVEL JOURNEY ── */}
