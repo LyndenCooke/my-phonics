@@ -114,6 +114,7 @@ export default function SchoolMarketing() {
             poster="/videos/school-intro-poster.jpg"
             className="w-full aspect-video block"
           >
+            <source src="/videos/school-intro.webm" type="video/webm" />
             <source src="/videos/school-intro.mp4" type="video/mp4" />
             Your browser doesn’t support embedded video.
             <a href="/videos/school-intro.mp4" className="underline">Watch the tour</a> instead.
