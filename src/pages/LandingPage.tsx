@@ -15,7 +15,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, ChevronRight, Volume2,
-  Trophy, GraduationCap, Printer, Heart, ClipboardList,
+  Trophy, GraduationCap, Printer, Heart, ClipboardList, PlayCircle,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
@@ -94,6 +94,7 @@ export default function LandingPage() {
 
       <main id="main">
         <HeroSection onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
+        <PlatformVideo />
         <ThreeThings
           onAssess={() => navigate('/assessment')}
           onBrowse={() => navigate('/library')}
@@ -106,6 +107,46 @@ export default function LandingPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+/* ─── PLATFORM VIDEO ─── */
+function PlatformVideo() {
+  return (
+    <section className="py-12 md:py-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-6">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3"
+            style={{ background: 'rgba(232,75,138,0.10)', color: PINK_INK }}
+          >
+            <PlayCircle className="w-3.5 h-3.5" /> Watch the tour
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
+            See how it works
+          </h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
+            A quick walkthrough of the all-in-one English learning platform — books, levels and progress, all in one place.
+          </p>
+        </div>
+        <div
+          className="max-w-4xl mx-auto rounded-3xl overflow-hidden bg-slate-900"
+          style={{ boxShadow: STICKER }}
+        >
+          <video
+            controls
+            preload="metadata"
+            playsInline
+            poster="/videos/platform-tour-poster.jpg"
+            className="w-full aspect-video block"
+          >
+            <source src="/videos/platform-tour.mp4" type="video/mp4" />
+            Your browser doesn’t support embedded video.{' '}
+            <a href="/videos/platform-tour.mp4" className="underline">Watch the tour</a> instead.
+          </video>
+        </div>
+      </div>
+    </section>
   );
 }
 
