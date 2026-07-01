@@ -1015,10 +1015,16 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
   // grid (instead of split hero / grid). Card grid uses a "challenge mat"
   // feel — each card is a flashcard with a glow on tap.
   const n = page.words.length;
-  const cols = n <= 3 ? 'grid-cols-1 md:grid-cols-3'
-             : n <= 4 ? 'grid-cols-2 md:grid-cols-4'
-             : n <= 6 ? 'grid-cols-2 md:grid-cols-3'
-             : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+  // Column count considers word LENGTH as well as count: upper-level words
+  // like "remarkable" are wider than a quarter-width card and overflow into
+  // their neighbours, so long-word pages cap at 2 columns for wide cards.
+  const longest = Math.max(...page.words.map(w => w.display.length));
+  const cols = longest >= 8
+    ? (n <= 4 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 md:grid-cols-3')
+    : n <= 3 ? 'grid-cols-1 md:grid-cols-3'
+    : n <= 4 ? 'grid-cols-2 md:grid-cols-4'
+    : n <= 6 ? 'grid-cols-2 md:grid-cols-3'
+    : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
 
   return (
     <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-3 md:py-5 overflow-hidden">
@@ -1043,7 +1049,7 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
               key={i}
               className={`flex items-center justify-center rounded-3xl border-2 border-slate-200 bg-gradient-to-br from-white to-slate-50 ${theme.cardHoverBorder} hover:shadow-lg hover:scale-[1.02] transition-all duration-200 py-5 md:py-7 lg:py-9 px-3 shadow-sm min-h-0`}
             >
-              <TappableWord wordData={w} focusSounds={focusSounds} size="large" showAnnotations={true} />
+              <TappableWord wordData={w} focusSounds={focusSounds} size={longest >= 8 && n > 4 ? 'medium' : 'large'} showAnnotations={true} />
             </div>
           ))}
         </div>
@@ -1320,23 +1326,43 @@ function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 
       </div>
 
       {/* ── RIGHT — slots + tile bank ── */}
-      <div className="flex flex-col items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-10 lg:p-12 gap-6 md:gap-8 lg:gap-10">
-        {/* Letter slots */}
-        <div className="flex gap-3 md:gap-4 lg:gap-5 flex-wrap justify-center">
-          {placed.map((letter, si) => (
-            <button
-              key={si}
-              onClick={() => handleSlotTap(si)}
-              className={`w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-[3px] flex items-center justify-center text-4xl md:text-5xl lg:text-6xl font-bold transition-all duration-200 shadow-sm
-                ${letter
-                  ? (isCorrect
-                      ? 'border-green-400 bg-green-50 text-green-700 scale-[1.02]'
-                      : `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} ${theme.heroText}`)
-                  : 'border-dashed border-slate-300 bg-white text-slate-300'}`}
-            >
-              {letter || '?'}
-            </button>
-          ))}
+      <div className="flex flex-col items-center justify-center md:w-3/5 lg:w-1/2 p-6 md:p-8 lg:p-10 gap-5 md:gap-6 lg:gap-8">
+        {/* Letter slots — single row, never wraps. Slot width is weighted by
+         *  its target grapheme length (phoneme-frame style: 'ible' gets a
+         *  wider box than 'c') so every slot shares one height and one font
+         *  size instead of cramming chunks into squares. */}
+        <div className="flex items-center justify-center w-full">
+          {placed.map((letter, si) => {
+            const weight = 1 + (w.letters[si].length - 1) * 0.6;
+            const contentLen = (letter || '?').length;
+            const isFirst = si === 0;
+            const isLast = si === placed.length - 1;
+            return (
+              <button
+                key={si}
+                onClick={() => handleSlotTap(si)}
+                style={{
+                  flexGrow: weight,
+                  flexBasis: 0,
+                  maxWidth: `${weight * 7}rem`,
+                  containerType: 'size',
+                  // Adjacent boxes share one border line, like a printed sound grid
+                  marginLeft: isFirst ? 0 : -3,
+                }}
+                className={`min-w-0 h-20 md:h-24 lg:h-28 border-[3px] flex items-center justify-center font-bold transition-colors duration-200
+                  ${isFirst ? 'rounded-l-xl md:rounded-l-2xl' : ''} ${isLast ? 'rounded-r-xl md:rounded-r-2xl' : ''}
+                  ${letter
+                    ? (isCorrect
+                        ? 'relative z-10 border-green-400 bg-green-50 text-green-700'
+                        : `relative z-10 ${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} ${theme.heroText}`)
+                    : 'border-dashed border-slate-300 bg-white text-slate-300'}`}
+              >
+                <span style={{ fontSize: `min(52cqh, ${Math.floor(130 / contentLen)}cqw)`, lineHeight: 1 }}>
+                  {letter || '?'}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         <div className="h-px w-full max-w-md bg-slate-200" />
@@ -1347,7 +1373,7 @@ function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 
             <button
               key={li}
               onClick={() => handleLetterTap(letter, li)}
-              className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-amber-100 border-2 border-amber-300 text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 hover:bg-amber-200 hover:scale-105 transition-all duration-200 shadow-md"
+              className="min-w-16 h-16 md:min-w-20 md:h-20 lg:min-w-24 lg:h-24 px-3 rounded-2xl bg-amber-100 border-2 border-amber-300 text-3xl md:text-4xl lg:text-5xl font-bold text-amber-800 hover:bg-amber-200 hover:scale-105 transition-all duration-200 shadow-md"
             >
               {letter}
             </button>
