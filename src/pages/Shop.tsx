@@ -612,7 +612,7 @@ export default function Shop() {
             <button
               onClick={() => {
                 setGuestDialog({ open: false, productId: null });
-                navigate('/auth', { state: { returnTo: '/shop' } });
+                navigate('/auth', { state: { returnTo: '/pricing' } });
               }}
               className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg transition-all duration-200 active:scale-[0.97]"
             >
@@ -621,7 +621,7 @@ export default function Shop() {
             <button
               onClick={() => {
                 setGuestDialog({ open: false, productId: null });
-                navigate('/auth', { state: { returnTo: '/shop', tab: 'register' } });
+                navigate('/auth', { state: { returnTo: '/pricing', tab: 'register' } });
               }}
               className="w-full py-3 rounded-xl font-bold text-sm border-2 border-primary text-primary bg-card transition-all duration-200 active:scale-[0.97]"
             >

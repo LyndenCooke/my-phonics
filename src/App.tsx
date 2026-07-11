@@ -24,6 +24,7 @@ const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const Shop = lazy(() => import("./pages/Shop"));
+const PhysicalShop = lazy(() => import("./pages/PhysicalShop"));
 const WallOfLove = lazy(() => import("./pages/WallOfLove"));
 const Progress = lazy(() => import("./pages/Progress"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -38,6 +39,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Prototype = lazy(() => import("./pages/Prototype"));
+const JourneyMapDemo = lazy(() => import("./pages/JourneyMapDemo"));
 const Teachers = lazy(() => import("./pages/Teachers"));
 const TeachersLibrary = lazy(() => import("./pages/TeachersLibrary"));
 
@@ -147,7 +149,8 @@ function RoutesWithTransition() {
             <Route path="/resources" element={<Suspense fallback={<AdminFallback />}><Resources /></Suspense>} />
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><Welcome /></Suspense>} />
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
-            <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
+            {/* /shop = the physical product catalogue; the digital plans page stays at /pricing */}
+            <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><PhysicalShop /></Suspense>} />
             <Route path="/pricing" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
             <Route path="/love" element={<Suspense fallback={<AdminFallback />}><WallOfLove /></Suspense>} />
             <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><PaymentSuccess /></Suspense>} />
@@ -164,6 +167,7 @@ function RoutesWithTransition() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/prototype" element={<Suspense fallback={<AdminFallback />}><Prototype /></Suspense>} />
+            <Route path="/prototype/journey" element={<Suspense fallback={<AdminFallback />}><JourneyMapDemo /></Suspense>} />
             {/* TPT teacher pass — single shared code unlocks the whole library
                 with no email/signup. See migration 20260518000000_teacher_codes.sql */}
             <Route path="/teachers" element={<Suspense fallback={<AdminFallback />}><Teachers /></Suspense>} />
