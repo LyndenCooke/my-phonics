@@ -15,7 +15,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, ChevronRight, Volume2,
-  Trophy, GraduationCap, Printer, Heart, ClipboardList, PlayCircle,
+  Trophy, GraduationCap, Printer, Heart, ClipboardList, PlayCircle, ShoppingBag,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
@@ -102,7 +102,7 @@ export default function LandingPage() {
         <LandingTestimonials />
         <LevelJourney />
         <FeatureShowcase />
-        <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/shop')} />
+        <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/pricing')} />
         <FooterCTA onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
       </main>
       <Footer />
@@ -169,6 +169,9 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <Link to="/shop" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
+            <ShoppingBag className="w-4 h-4" /> Shop
+          </Link>
           <Link to="/love" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
             <Heart className="w-4 h-4" /> Wall of Love
           </Link>
@@ -623,6 +626,7 @@ function Footer() {
           <span className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
+          <Link to="/shop" className="hover:text-trust-ink transition-colors">Shop</Link>
           <Link to="/love" className="hover:text-trust-ink transition-colors">Wall of Love</Link>
           <a href="/privacy" className="hover:text-trust-ink transition-colors">Privacy</a>
           <a href="/terms" className="hover:text-trust-ink transition-colors">Terms</a>
