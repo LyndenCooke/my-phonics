@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, ClipboardList, Tag, User, LogIn, Home, Heart, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { BookOpen, ClipboardList, Tag, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -16,9 +16,10 @@ const NAV = [
   { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null, desktopOnly: false },
   { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null, desktopOnly: false },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
-  // Wall of Love lives in the desktop side panel only — the mobile bottom
-  // bar stays at five tabs (it's reachable from Profile + Pricing there).
+  // Wall of Love and Shop live in the desktop side panel only — the mobile
+  // bottom bar stays at five tabs (Shop is reachable from Pricing there).
   { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },
+  { path: '/shop', label: 'Shop', icon: ShoppingBag, badgeKey: null, desktopOnly: true },
 ];
 
 // Persists the desktop (lg+) sidebar collapsed/expanded preference across
