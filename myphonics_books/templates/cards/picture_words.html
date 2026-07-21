@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Sound Cards — Picture Word Cards (L1-L2)</title>
+{% import "cards/_shared.html" as shared with context %}
+<style>
+{{ shared.font_faces() }}
+
+@page {
+  size: {{ sheet_w }}mm {{ sheet_h }}mm;
+  margin: 0;
+}
+
+{{ shared.shared_css() }}
+
+.sheet {
+  width: {{ sheet_w }}mm;
+  height: {{ sheet_h }}mm;
+  position: relative;
+  page-break-after: always;
+  page-break-inside: avoid;
+  background: #ffffff;
+}
+.sheet:last-child { page-break-after: avoid; }
+
+.trim-card {
+  position: absolute;
+  width: {{ card_w }}mm;
+  height: {{ card_h }}mm;
+  overflow: hidden;
+}
+
+/* Interior cut guides only, one line per boundary (2026-07-10 fix —
+   every card used to draw its own full dashed border, which put a
+   line on the sheet's outer edge — pointless, that's already the
+   paper edge — and doubled up on interior boundaries where two
+   cards' borders overlapped). Light grey, not black, since it's a
+   guide for the parent's scissors, not a design element. */
+.cut-line-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 0.3mm dashed #cbd5e1;
+  z-index: 10;
+}
+.cut-line-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 0.3mm dashed #cbd5e1;
+  z-index: 10;
+}
+
+/* Landscape, double-sided: front = picture, back = word — flip the
+   card to check, classic flashcard style (no more "cover the word
+   with a hand", since the two now live on separate faces). Landscape
+   gives ~40% more width than the old portrait single-face design,
+   which is what lets every word share ONE fixed size instead of
+   shrinking per word. */
+.pw-front, .pw-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5mm 6mm;
+}
+.pw-image {
+  width: 52mm;
+  height: 52mm;
+  border-radius: 3mm;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(33, 54, 73, 0.06);
+}
+.pw-image img { width: 100%; height: 100%; object-fit: cover; }
+.img-placeholder {
+  font-family: 'Andika', sans-serif;
+  font-size: 3mm;
+  color: #94a3b8;
+  border: 0.3mm dashed #cbd5e1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3mm;
+}
+.pw-word { max-width: 100%; }
+</style>
+</head>
+<body>
+{% for sheet in sheets %}
+<div class="sheet">
+  <div class="cut-line-v" style="left:{{ cut_line_x }}mm;"></div>
+  {% for y in cut_line_ys %}
+  <div class="cut-line-h" style="top:{{ y }}mm;"></div>
+  {% endfor %}
+  {% for cell in sheet.cells %}
+  <div class="trim-card" style="left:{{ positions[loop.index0][0] }}mm; top:{{ positions[loop.index0][1] }}mm; background:{{ cell.tint if cell else '#ffffff' }};">
+    {% if cell %}
+      {{ shared.corner_strip(cell.level_colour) }}
+      {% if sheet.side == 'front' %}
+        <div class="pw-front">
+          <div class="pw-image">
+            {% if cell.image_data %}
+              <img src="{{ cell.image_data }}" alt="">
+            {% else %}
+              <div class="img-placeholder">image</div>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="pw-back">
+          <div class="fit-text nowrap pw-word" data-w-ratio="0.92" data-h-ratio="0.7" data-max-px="{{ pw_word_target_px }}">{{ cell.word }}</div>
+        </div>
+      {% endif %}
+      {{ shared.logo_mark(9, 0.15) }}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+{{ shared.fit_text_script() }}
+</body>
+</html>

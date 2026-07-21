@@ -1,77 +1,39 @@
 """
-The Fair in the Air — Level 2.4 Focus Story
-Written 2026-03-07
+The Fair in the Air — Level 2.4 Focus Story (new-scheme 4.4)
+REWRITTEN 2026-07-15 (Lynden: old text didn't make sense — "gush", a hat that
+isn't in the art, "I say" tags. Whole story rewritten against the EXISTING
+images, no regen needed.)
+
 Focus sounds: air, ir
-Setting: British village fair on a breezy day
+Setting: British village fair on a windy day
 
-CREATIVE DIRECTION: Classic British village fair — bunting, stalls, balloons,
-a warm breezy afternoon. A child wins a pair of toy ducks at a stall, but the
-wind blows them away! A kind sir (fair worker) helps the child find them
-near a big fir tree. Joy, tension, resolution.
+SCENE MAP (text written to match the existing art in output/images/L2_4_B1):
+  p1 boy arrives at the fair — stalls, bunting, breeze
+  p2 wind whips his big curly hair up, hands on head, laughing (NO hat)
+  p3 at the toy stall with the stall man — a pair of yellow ducks to win
+  p4 boy jumping for joy holding the two ducks, man clapping
+  p5 the wind lifts the pair up into the air, boy chasing
+  p6 boy runs to the older fair man, pointing — ducks stuck up a tall fir
+  p7 the man climbs and gets the pair from the top of the fir
+  p8 boy in a folding chair hugging both ducks, calm golden evening
 
-Character: CHAR-E (Mixed heritage boy, ~6yo) adapted for fair setting —
-          orange jacket, green cargo trousers, brown boots.
+Taught window at new-4.4 (L1-L3 in full + L4 up to focus): all singles and
+consonant digraphs, Phase 4 clusters (L3), and ay, ee, igh, ow(snow), oo,
+ar, or, air, ir.  NOT yet taught: ou, oy (so no "toy", no "down", no "now"),
+er, ur, are, ew, ue (L4 later books), split digraphs (L5).
+No -ed words used (ed lands L7; 4.4 keeps its Future Sounds band clean).
 
-CULTURAL BRIEF: Generic British countryside → SKIP (no cultural research needed)
+RULINGS APPLIED (2026-07-15): no "gush", no hat, no "I say" tags anywhere.
+Dialogue is either untagged or uses decodable "says".
 
-Engagement hooks:
-  - Emotional stakes from page 1 (excitement at the fair)
-  - Pattern with variation: things going "in the air" (hair, balloon, toys)
-  - Page-turn hooks: "Oh no!" moment when pair blows away
-  - Curiosity gap: Will the child get the pair back?
-  - Sensory details: wind, fair sounds, colours
-  - Satisfying resolution: kind sir helps, pair found by fir tree
-
-Word validation (L2 cumulative graphemes + tricky words):
-  ALL words verified against cumulative L2 graphemes (47 total).
-  NO consonant clusters used (forbidden at L2).
-
-  Level 2 cumulative graphemes:
-    s, a, t, p, i, n, m, d, g, o, c, k, ck, e, u, r, h, b, f, ff, l, ll,
-    ss, j, v, w, x, y, z, zz, qu, ch, sh, th, ng, nk,
-    ay, ee, igh, ow, oo, ar, or, air, ir, ou, oy
-
-  Cumulative tricky words (18):
-    the, to, I, no, go, into, he, she, we, me, be, my, you, her, said,
-    your, are, put
-
-  Focus sound words used:
-    air: air(×5), fair(×4), hair(×2), pair(×7), chair(×1) = 19 tokens
-    ir:  sir(×2), fir(×3) = 5 tokens
-    Total: 24 focus-sound tokens across ~115 words (~21% density)
-
-  Tricky words used: the, I, my, to, no, said, you, your, he, me, are
-  All from L2 cumulative list.
-
-  WORD-BY-WORD VALIDATION:
-  Page 1: I(tricky) go(tricky) to(tricky) the(tricky) fair(f+air)
-          the(tricky) air(air) is(i+s) cool(c+oo+l)
-          I(tricky) can(c+a+n) see(s+ee) the(tricky) big(b+i+g) fair(f+air)
-  Page 2: the(tricky) air(air) is(i+s) in(i+n) my(tricky) hair(h+air)
-          it(i+t) is(i+s) so(s+o) windy — WAIT "windy" = w+i+n+d+y — no cluster? w-i-n-d-y, "nd" is a final cluster → FORBIDDEN
-          → Replace with: "it is a gush" → g+u+sh ✓ or "it is a big huff" → h+u+ff ✓
-          → Better: use "my hair is up in the air. It is a big gush!"
-          Revised: my(tricky) hair(h+air) is(i+s) up(u+p) in(i+n) the(tricky) air(air)
-                   it(i+t) is(i+s) a(a) big(b+i+g) gush(g+u+sh)
-  Page 3: I(tricky) see(s+ee) a(a) pair(p+air) of — WAIT "of" = o+f... is "of" decodable?
-          o → taught, f → taught. o+f = "of" — the vowel is schwa, not standard 'o'.
-          "of" is not in tricky word list. Let me use a different construction.
-          → "I see a pair! Toy ducks! I win the pair!" — avoids "of"
-          Revised: I(tricky) see(s+ee) a(a) pair(p+air) a(a) pair(p+air)
-                   of — actually let me check... "of" is pronounced /ov/ not /of/,
-                   so it's NOT decodable. Not in tricky words list either.
-                   → Restructure to avoid "of"
-  Page 4: I(tricky) hug(h+u+g) my(tricky) pair(p+air) they(tricky — L3!) NO
-          → "they" is L3 tricky word. FORBIDDEN.
-          → Use "the pair" or "it" instead
-  Page 5: oh(o+h — wait, is this decodable? o+h, both taught) — yes ✓ but "oh" has silent h
-          Actually "oh" — it's an interjection. Not a standard decodable word. Add to tricky if needed.
-          → Better to restructure
-  Page 6: kind(k+i+n+d) — "nd" is a final cluster → FORBIDDEN at L2
-          → Use "a good sir" instead
-  Page 7: ran(r+a+n) ✓ but "to" is tricky ✓
-
-  Let me rewrite more carefully now with full validation...
+WORD CHECK (non-tricky): fair(f-air) air(air) hair(h-air) pair(p-air)
+  sir(s-ir) fir(f-ir) swirls(s-w-ir-l-s) wind(w-i-n-d) win(w-i-n)
+  stand(s-t-a-n-d) ducks(d-u-ck-s) man(m-a-n) says(s-ay-s) claps(c-l-a-p-s)
+  jump(j-u-m-p) high(h-igh) lifts(l-i-f-t-s) lands(l-a-n-d-s) tree(t-r-ee)
+  quick(qu-i-ck) top(t-o-p) from(f-r-o-m) soft(s-o-f-t) chair(ch-air)
+  best(b-e-s-t) day(d-ay) see(s-ee) big(b-i-g) cool(c-oo-l) stop(s-t-o-p)
+  run(r-u-n) sit(s-i-t) can(c-a-n) it(i-t) is(i-s) in(i-n) up(u-p)
+Tricky: the, I, my, to, no, go, he, me, into (+ a/is/of auto-detected).
 """
 
 FAIR_AIR_STORY_BOOK1 = {
@@ -87,41 +49,41 @@ FAIR_AIR_STORY_BOOK1 = {
 
         "story_pages": [
             {
-                "text": "I go to the fair! I can see it. The air is cool. The fair is so big!",
+                "text": "I go to the fair. The fair is so big! The air is cool on my chin.",
                 "image": None,
             },
             {
-                "text": "The air is in my hair! It is such a gush! I put my hat on.",
+                "text": "A big wind swirls in. It picks up my hair! My hair is up in the air!",
                 "image": None,
             },
             {
-                "text": "Look! Toy ducks, a pair! \"I can win!\" I say.",
+                "text": "I stop at a stand. A pair of ducks! The man says I can win the pair.",
                 "image": None,
             },
             {
-                "text": "\"Yes!\" I say. I win the pair! I hug my pair. My pair is so good!",
+                "text": "I win! I win the pair! I jump up high and the man claps for me.",
                 "image": None,
             },
             {
-                "text": "A gush in the air! My pair shoots up, up, up! No! My pair!",
+                "text": "But the wind swirls back! It lifts my pair up into the air. No, no! My pair!",
                 "image": None,
             },
             {
-                "text": "\"Sir! Sir! My pair is in the air!\" The sir said, \"I can see it! By the fir!\"",
+                "text": "My pair lands up in a fir tree. I run to the man. \"Sir! Sir! My pair is in the fir!\"",
                 "image": None,
             },
             {
-                "text": "The sir ran to a big fir. My pair is in the fir! He got my pair down!",
+                "text": "The man is quick. Up the fir he goes! He gets my pair from the top.",
                 "image": None,
             },
             {
-                "text": "I hug my pair. I sit in a chair. The fair is fun! My pair is back!",
+                "text": "The wind is soft. I sit in a chair with my pair. It is the best day at the fair!",
                 "image": None,
             },
         ],
 
-        "story_words": ["fair", "air", "pair", "hair", "sir", "fir"],
-        "tricky_words_used": ["the", "I", "my", "to", "no", "said", "go", "put", "he"],  # 'so', 'two', 'by' removed via rewrites; sir noun replaced with 'man'
+        "story_words": ["fair", "air", "pair", "hair", "sir", "fir", "wind"],
+        "tricky_words_used": ["the", "I", "my", "to", "no", "go", "he", "me", "into"],  # 'a'/'is'/'of' auto-detected from the master list
         "read_words": ["fair", "pair", "chair", "fir"],
         "nonsense_words": [
             "dair", "jair", "vair", "tair",     # air combinations (vair replaces real word 'lair')

@@ -25,9 +25,9 @@ TAP_STORY_BOOK1 = {
         "tricky_words_used": ["I", "the"],  # 'a' and 'is' and 'it' are decodable from SATPIN. 'on' uses 'o' which is taught.
         "read_words": ["sat", "pat", "tap", "nap"],  # SATPIN focus for activity
         "nonsense_words": [
-            "sap", "tas", "pim", "nit",  # SATPIN only
-            "tib", "pag", "nas", "sib",  # SATPIN + simple
-            "nat", "pis", "tup", "sut",  # Mixed SATPIN
+            "tas", "nas", "pas", "sas",  # SATPIN only, CVC
+            "nat", "nis", "tis", "sant",  # SATPIN only, CVC/CVCC
+            "stip", "snat", "nast", "tasp",  # SATPIN only, blends
         ],
         "questions": [
             {"category": "Finding", "text": "What was making the tap sound?"},

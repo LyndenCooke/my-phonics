@@ -41,16 +41,16 @@ YAK_BOX_STORY_BOOK1 = {
             {"text": "I get a box. Six figs in the box. I zip it up.", "image": None},
             {"text": "The yak sat on the box! No, no!", "image": None},
             {"text": "I fix the box. I set it on top of the hut.", "image": None},
-            {"text": "The yak cannot get it! I will get the six figs.", "image": None},
+            {"text": "The yak can't get it! I will get the six figs.", "image": None},
             {"text": "I toss a fig. The big yak gets a fig. Yum!", "image": None},
         ],
         "story_words": ["yak", "box", "six", "zip", "fix", "fig", "hut", "set", "top"],
-        "tricky_words_used": ["I", "the", "no"],  # 'a' treated as decodable; 'have', 'oh' removed via rewrites
+        "tricky_words_used": ["I", "the", "no"],  # 'with' de-listed (Lynden 2026-07-15: not tricky — th previewed on the Future Sounds band); "can't" replaces "cannot" (2026-07-15, apostrophe is spelling not a sound); 'a' treated as decodable; 'have', 'oh' removed via rewrites
         "read_words": ["fox", "yak", "zip", "mix"],  # Focus on x, y, z
         "nonsense_words": [
-            "yob", "yud", "yem", "yig",  # y onset
-            "zod", "zem", "zub", "zig",  # z onset
-            "dex", "nox", "vix", "tux",  # x in coda
+            "yad", "yud", "yem", "yig",  # y onset
+            "zod", "zem", "zub", "zeg",  # z onset
+            "dex", "nox", "vix", "vux",  # x in coda
         ],
         "questions": [
             {"category": "Finding", "text": "What was in the box?"},

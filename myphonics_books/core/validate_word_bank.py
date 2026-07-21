@@ -143,7 +143,7 @@ def validate_word(word: str, level: int) -> Dict:
 
     Args:
         word: Word to validate
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         Validation result dict
@@ -190,7 +190,7 @@ def validate_story_text(
 
     Args:
         text: Full story text (all pages)
-        level: Reading level 1-6
+        level: Reading level 1-8
         strict: If True (default), failed words block validation. If False,
             failed words are demoted to warnings and ``valid`` stays True —
             useful when the pitch-level fit matters more than exact
@@ -203,8 +203,8 @@ def validate_story_text(
     Returns:
         ValidationResult with pass/fail status and details
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     words = extract_words(text)
     sentences = extract_sentences(text)
@@ -332,7 +332,7 @@ def get_replacement_suggestions(
 
     Args:
         failed_word: The word that failed validation
-        level: Reading level 1-6
+        level: Reading level 1-8
         context_sentence: The sentence containing the word
 
     Returns:

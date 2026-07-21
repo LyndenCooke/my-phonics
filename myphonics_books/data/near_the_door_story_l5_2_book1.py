@@ -98,10 +98,10 @@ NEAR_THE_DOOR_STORY_BOOK1 = {
         ],
         "cover_prompt": "Magical winter discovery scene for the book cover. Astrid (Swedish girl, 5 years old, long blonde hair in two braids, cream wool hat with Nordic snowflake pattern, red hand-knitted wool jumper under a thick dark blue winter coat, red wool scarf, dark blue mittens, brown leather winter boots, light skin with rosy cheeks from the cold, tiny solid black dot eyes) stands in the centre of a snowy Swedish forest clearing, looking around with wonder and delight. Around her, peeking out from behind different snow-covered pine trees and rocks: a red fox (bright orange-red fur, white chest, black-tipped pointed ears, bushy tail) peeks from behind a pine on the left; a pure white snow hare with long black-tipped ears peers from beside a grey rock in the foreground; a majestic red deer stag (thick brown coat, tall branching antlers) is visible between the dark pines in the background. Soft snow falls gently. Warm golden winter light filters through the trees. Portrait orientation. Warm children's book cover illustration style, inviting and full of quiet magic.",
         "story_words": ["hear", "near", "door", "floor", "ear", "dear", "fear", "clear", "poor"],
-        "tricky_words_used": ["I", "the", "to", "my", "said", "you", "do", "what", "he", "was", "one", "some", "where", "saw", "there", "were", "eyes", "into", "could", "heart"],
+        "tricky_words_used": ["I", "the", "to", "my", "said", "you", "do", "what", "he", "was", "one", "some", "where", "there", "were", "eyes", "into", "could", "heart"],  # 'saw' removed 2026-07-13 — s+aw decodable since L5
         "read_words": ["hear", "near", "door", "floor", "dear", "clear"],
         "nonsense_words": [
-            "blear", "snear", "drear", "twear", "frear",
+            "glear", "snear", "chear", "twear", "frear",
             "ploor", "smoor", "gloor", "troor", "choor",
         ],
         "questions": [

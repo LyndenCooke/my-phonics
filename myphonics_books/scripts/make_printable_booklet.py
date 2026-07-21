@@ -48,6 +48,30 @@ def saddle_stitch_order(n_pages: int) -> list[tuple[int, int]]:
     return pairs
 
 
+def _bleed_clip(page, cell_w: float, cell_h: float):
+    """Clip rect that crops a bleed page to the half-sheet's aspect ratio.
+
+    Marketing booklets carry 3mm bleed (154x216mm).  show_pdf_page fits the
+    whole page into the cell preserving aspect, so the mismatch letterboxes
+    every page with ~1mm white strips top/bottom.  Cropping the source
+    symmetrically to the cell's aspect (only ever eating into the bleed)
+    makes each page fill its half exactly.  Consumer books are plain A5
+    (148x210 = exactly the cell aspect) — their clip is a no-op.
+    """
+    r = page.rect
+    cell_aspect = cell_w / cell_h
+    src_aspect = r.width / r.height
+    if abs(src_aspect - cell_aspect) < 1e-4:
+        return r
+    if src_aspect > cell_aspect:      # too wide — crop left/right
+        new_w = r.height * cell_aspect
+        dx = (r.width - new_w) / 2
+        return fitz.Rect(r.x0 + dx, r.y0, r.x1 - dx, r.y1)
+    new_h = r.width / cell_aspect      # too tall — crop top/bottom
+    dy = (r.height - new_h) / 2
+    return fitz.Rect(r.x0, r.y0 + dy, r.x1, r.y1 - dy)
+
+
 def impose(input_pdf: Path, output_pdf: Path) -> int:
     src = fitz.open(str(input_pdf))
     try:
@@ -57,10 +81,13 @@ def impose(input_pdf: Path, output_pdf: Path) -> int:
         try:
             left_rect = fitz.Rect(0, 0, A4L_W_PT / 2, A4L_H_PT)
             right_rect = fitz.Rect(A4L_W_PT / 2, 0, A4L_W_PT, A4L_H_PT)
+            cell_w, cell_h = A4L_W_PT / 2, A4L_H_PT
             for left_pg, right_pg in order:
                 page = out.new_page(width=A4L_W_PT, height=A4L_H_PT)
-                page.show_pdf_page(left_rect, src, left_pg - 1)
-                page.show_pdf_page(right_rect, src, right_pg - 1)
+                page.show_pdf_page(left_rect, src, left_pg - 1,
+                                   clip=_bleed_clip(src[left_pg - 1], cell_w, cell_h))
+                page.show_pdf_page(right_rect, src, right_pg - 1,
+                                   clip=_bleed_clip(src[right_pg - 1], cell_w, cell_h))
             output_pdf.parent.mkdir(parents=True, exist_ok=True)
             out.save(str(output_pdf), garbage=4, deflate=True)
         finally:

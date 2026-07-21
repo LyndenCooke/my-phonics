@@ -12,6 +12,7 @@ Usage:
 import asyncio
 import base64
 import json
+import re
 import sys
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -75,14 +76,52 @@ LEVEL_YEAR_GROUPS = {
 }
 
 # Series overview (used on back cover)
+# The 8-level ledger journey shown on the back cover.  legacy_key is the
+# flagship (.1) book's original asset id — its cover thumb represents the
+# level on the journey grid.  (Replaced the stale pre-realignment 6-level
+# list 2026-07-12 — back covers were still printing "Starting Stories …
+# Reading Champion at 6".)
 SERIES_LEVELS = [
-    {"num": 1, "name": "Starting Stories"},
-    {"num": 2, "name": "Longer Sounds"},
-    {"num": 3, "name": "New Spellings"},
-    {"num": 4, "name": "Building Fluency"},
-    {"num": 5, "name": "Reading Together"},
-    {"num": 6, "name": "Reading Champion"},
+    {"num": 1, "name": "Ditties",           "colour": LEVEL_COLOURS[1], "legacy_key": "1_1"},
+    {"num": 2, "name": "First Sounds",      "colour": LEVEL_COLOURS[2], "legacy_key": "1_4"},
+    {"num": 3, "name": "Special Friends",   "colour": LEVEL_COLOURS[3], "legacy_key": "1_3"},
+    {"num": 4, "name": "Longer Sounds",     "colour": LEVEL_COLOURS[4], "legacy_key": "2_1"},
+    {"num": 5, "name": "New Spellings",     "colour": LEVEL_COLOURS[5], "legacy_key": "3_1"},
+    {"num": 6, "name": "Building Fluency",  "colour": LEVEL_COLOURS[6], "legacy_key": "4_1"},
+    {"num": 7, "name": "Reading Together",  "colour": LEVEL_COLOURS[7], "legacy_key": "5_1"},
+    {"num": 8, "name": "Reading Champion",  "colour": LEVEL_COLOURS[8], "legacy_key": "6_1"},
 ]
+
+_journey_thumb_cache: dict = {}
+
+
+def build_journey_levels() -> list:
+    """SERIES_LEVELS + a small base64 cover thumbnail per level for the back
+    cover journey grid.  Thumbs are downscaled to ~300px wide so 8 of them
+    add well under 300KB to a book.  Missing covers degrade to a colour
+    block (thumb=None) rather than failing the render."""
+    import base64
+    import io as _io
+    covers_dir = BASE_DIR.parent / "public" / "covers"
+    out = []
+    for lvl in SERIES_LEVELS:
+        key = lvl["legacy_key"]
+        if key not in _journey_thumb_cache:
+            thumb = None
+            src = covers_dir / f"{key}_cover.jpg"
+            if src.exists():
+                try:
+                    from PIL import Image
+                    img = Image.open(src)
+                    img.thumbnail((300, 425))
+                    buf = _io.BytesIO()
+                    img.convert("RGB").save(buf, "JPEG", quality=80)
+                    thumb = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+                except Exception as exc:
+                    print(f"  [journey thumb] {key}: {type(exc).__name__}: {exc}", file=sys.stderr)
+            _journey_thumb_cache[key] = thumb
+        out.append({**lvl, "thumb": _journey_thumb_cache[key]})
+    return out
 
 
 # ─── Hardcoded Level 1 Example Content ──────────────────────────
@@ -380,6 +419,113 @@ def image_to_data_uri(image_path: Path, max_dimension: int = 1600,
     return f"data:{mime};base64,{b64}"
 
 
+def build_extra_sound_rows(level: int, shifty_sounds: list, future_sounds: list,
+                           exclude: tuple = ()):
+    """Sound Detective activity rows for the Alien Words page at L4+
+    (Lynden 2026-07-19 v2): up to two shifty/additional sounds, each with
+    example words the child circles the grapheme in.  The future-sound
+    PREVIEW now lives on the Sound Spotlight page instead — a grapheme in
+    `exclude` (already previewed there) is skipped here."""
+    if level < 4:
+        return None
+    from v2_helpers import SHIFTY_COLOUR, _load_shifty_data
+
+    def _mark(word, g, colour):
+        i = word.lower().find(g.lower())
+        if i < 0:
+            return None
+        return (word[:i]
+                + f'<span class="est-hit" style="color:{colour};">{word[i:i + len(g)]}</span>'
+                + word[i + len(g):])
+
+    rows = []
+
+    for entry in shifty_sounds or []:
+        g = entry["grapheme"].lstrip("-")
+        examples = []
+        data = _load_shifty_data()
+        for card in data.get("new_spelling_cards", []):
+            if card["grapheme"].lstrip("-") == g and card.get("sound") == entry["sound"]:
+                examples = card.get("examples", [])
+        for card in data.get("alt_pronunciation_cards", []):
+            if card["grapheme"] == entry["grapheme"]:
+                for pron in card.get("pronunciations", []):
+                    if pron.get("sound") == entry["sound"]:
+                        examples = pron.get("examples", [])
+        words = [w for w in ([entry["example"]] + [e for e in examples if e != entry["example"]])
+                 if g.lower() in w.lower()][:3]
+        marked = [m for m in (_mark(w, g, SHIFTY_COLOUR) for w in words) if m]
+        if len(marked) >= 2:
+            rows.append({"kind": "shifty", "grapheme": entry["grapheme"],
+                         "colour": SHIFTY_COLOUR,
+                         "caption": f"says {entry['sound']} as in {entry['example']}",
+                         "words": marked})
+
+    spotlight_data = load_spotlight_words_data()
+    for entry in future_sounds or []:
+        g = entry["grapheme"]
+        if g in exclude:
+            continue
+        pool = [w["word"] if isinstance(w, dict) else w
+                for w in spotlight_data.get(g, {}).get("words", [])]
+        words = [entry["example"]] + [w for w in pool if w != entry["example"]]
+        words = [w for w in words if g.lower() in w.lower()][:3]
+        marked = [m for m in (_mark(w, g, entry["colour"]) for w in words) if m]
+        if len(marked) >= 3:
+            rows.append({"kind": "future", "grapheme": g, "colour": entry["colour"],
+                         "caption": f"in {entry['example']} — coming at Level {entry['level']}",
+                         "words": marked})
+
+    return rows[:2] or None
+
+
+def build_grow_code_chart():
+    """The FIXED Grow the Code sound chart (Lynden's curated content, from
+    data/grow_code_chart.json — the SVG he refined 2026-07-20).  Little
+    Wandle style, portrait: one narrow COLUMN per sound family, spellings
+    stacked in bordered cells (chart lines visible), no example words, no
+    colours.  Split into THREE stacked tables so A5 columns stay readable:
+    Consonants, then vowels in two halves.  Identical in every book."""
+    import json
+    chart = json.load(open(BASE_DIR / "data" / "grow_code_chart.json",
+                           encoding="utf-8"))
+
+    def _col(fam):
+        return {
+            "head": fam["head"],
+            "cue": fam.get("cue", ""),
+            "cells": [{"g": g, "long": len(g) >= 4} for g in fam["spellings"]],
+        }
+
+    cons = [_col(f) for f in chart["consonants"]]
+    vows = [_col(f) for f in chart["vowels"]]
+    half = (len(vows) + 1) // 2
+    return [
+        {"label": "Consonant sounds", "columns": cons},
+        {"label": "Vowel sounds", "columns": vows[:half]},
+        {"label": "Vowel sounds (continued)", "columns": vows[half:]},
+    ]
+
+
+def _qr_data_uri(url: str, box_size: int = 8) -> str:
+    import qrcode
+    from io import BytesIO
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,
+                       box_size=box_size, border=2)
+    qr.add_data(url)
+    qr.make(fit=True)
+    buf = BytesIO()
+    qr.make_image(fill_color="#1a1a1a", back_color="white").save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+
+
+def library_qr_data_uri(level: int) -> str:
+    """QR to the online library for the back-cover footer, as a data URI.
+    Tagged per level (src=book_L{n}) so scans are attributable, matching the
+    marketing booklets' ?src= convention."""
+    return _qr_data_uri(f"https://myphonicsbooks.co.uk/library?src=book_L{level}")
+
+
 def get_guide_content(level: int) -> dict:
     """Return level-appropriate parent guide tips."""
     before = [
@@ -406,7 +552,9 @@ def get_guide_content(level: int) -> dict:
 
 def build_book_data_from_story(story_dict: dict, child_name: str,
                                 friend_name: str, image_dir: Path = None,
-                                page_count: int = None) -> dict:
+                                page_count: int = None,
+                                edition: str = "home",
+                                book_id: str = None) -> dict:
     """Build a complete book_data dict from a pilot/all_stories entry.
 
     Args:
@@ -442,17 +590,65 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     tricky_words_new = tricky_entry.get("new_tricky_words", [])
 
     # Tricky words to FLAG on page 3 ("tell your child these straight away"):
-    # only those used in this story that the child hasn't already been taught in
-    # an earlier level.  Tricky words are introduced level-by-level, so once a
-    # level is passed they're assumed known — re-flagging "the/said/my/you" in a
-    # Level 6 book is pointless and overflows the box.  Level 1 has no prior
-    # level, so all of its tricky words still show.
-    _used_tricky = story_dict.get("tricky_words_used", tricky_words)
-    _prior_tricky = (
-        set(tricky_data.get(f"level_{level - 1}", {}).get("cumulative", []))
-        if level > 1 else set()
-    )
-    tricky_words_display = [w for w in _used_tricky if w not in _prior_tricky]
+    # detected AUTOMATICALLY by scanning the story text against the master
+    # tricky-word list (all levels), so hand-omissions in a story dict ("is",
+    # "a", "have") can never slip through.  A word is shown when it is new at
+    # this level, review from the IMMEDIATELY PREVIOUS level (mirrors the
+    # page-2 sound-chart window), or ahead of schedule (listed at a later
+    # level).  Words two or more levels old ("the" in a Level 6 book) are
+    # assumed mastered and stay hidden.  The story dict's tricky_words_used
+    # still rides along for book-specific tricky words ("bush", "with") that
+    # no level list carries.
+    _master_tricky = {}  # lower-case word -> (level introduced, canonical casing)
+    for _lv in range(1, 9):
+        for _w in tricky_data.get(f"level_{_lv}", {}).get("new_tricky_words", []):
+            _master_tricky.setdefault(_w.lower(), (_lv, _w))
+    _story_text = " ".join(p["text"] for p in story_dict["story_pages"])
+    tricky_words_display = []
+    for _tok in re.findall(r"[A-Za-z']+", _story_text):
+        _hit = _master_tricky.get(_tok.lower())
+        if _hit and _hit[0] >= level - 1 and _hit[1] not in tricky_words_display:
+            tricky_words_display.append(_hit[1])
+    _mastered = {
+        w.lower()
+        for _lv in range(1, level - 1)
+        for w in tricky_data.get(f"level_{_lv}", {}).get("new_tricky_words", [])
+    }
+    _shown = {w.lower() for w in tricky_words_display}
+    for _w in story_dict.get("tricky_words_used", []):
+        if _w.lower() not in _mastered and _w.lower() not in _shown:
+            tricky_words_display.append(_w)
+            _shown.add(_w.lower())
+    # A word the Watch Out box already sounds out (corniche, neighbourhood)
+    # must not ALSO appear in the Tricky Words strip on the same page — the
+    # box's part-by-part guidance supersedes the flat sight-word treatment.
+    _pron_covered = set()
+    for _note in story_dict.get("pronunciation_notes", []):
+        for _ex in _note.get("examples", []):
+            _pron_covered.add(_ex.split("→")[0].strip().lower())
+    tricky_words_display = [
+        w for w in tricky_words_display if w.lower() not in _pron_covered
+    ]
+
+    # GRADUATION FILTER (Lynden 2026-07-13, "Near the Door" catch): a word is
+    # never shown as tricky in a book whose taught window already HONESTLY
+    # decodes it.  door/floor sit at L7 on the master list, but the L7.2
+    # book itself teaches oor — showing them as tricky in that very book
+    # (while they're ALSO sound-buttoned Story Words on the same page) is a
+    # contradiction.  Same filter kills authored slips like "saw" listed
+    # tricky at L7 (aw is taught at L5).  Uses the HONEST predicate from
+    # audit_tricky_words (curated irregulars like "was" letter-parse but
+    # never graduate).  Belt-and-braces: anything in this book's own
+    # story_words / read_words is decodable-by-declaration and never tricky.
+    from v2_helpers import taught_graphemes as _tw
+    from audit_tricky_words import has_graduated as _grad
+    _win = _tw(graphemes_data, level, story_dict.get("focus_graphemes", []))
+    _declared_decodable = {str(w).lower() for w in story_dict.get("story_words", [])} \
+        | {str(w).lower() for w in story_dict.get("read_words", [])}
+    tricky_words_display = [
+        w for w in tricky_words_display
+        if w.lower() not in _declared_decodable and not _grad(w, _win)
+    ]
 
     # Cover sounds — first 8
     cover_sounds = all_graphemes[:8] if len(all_graphemes) >= 8 else all_graphemes
@@ -511,7 +707,9 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         "story_font_size": STORY_FONT_SIZES[level],
         "age_range": LEVEL_AGE_RANGES[level],
         "year_group": LEVEL_YEAR_GROUPS[level],
-        "series_levels": SERIES_LEVELS,
+        "series_levels": build_journey_levels(),
+        "library_qr": library_qr_data_uri(level),
+        "edition": edition,
         "cover_image": cover_img,
         "cover_background_image": cover_bg,
         "cover_sounds": cover_sounds,
@@ -556,6 +754,7 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         build_ordering_items, get_phase_label, get_page_count,
         pick_dictation_sentence, build_match_to_picture,
         build_initial_sounds, build_guide_blend_example,
+        build_special_friend_match,
     )
 
     cumulative = []
@@ -582,6 +781,111 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     _cur_upto = _cur_order[: _last_idx + 1] if _last_idx >= 0 else list(_focus)
     book_data["chart_graphemes"] = _prev_levels + _cur_upto
 
+    # Shifty Sounds band (L4+ only): GPCs the main ladder doesn't teach that
+    # this story actually uses.  Displayed in charcoal under the sound tables
+    # so the grown-up pre-teaches them before reading.
+    from v2_helpers import build_shifty_sounds, SHIFTY_COLOUR
+    _shifty_tokens = (
+        [t.lower() for t in re.findall(r"[A-Za-z']+", _story_text)]
+        + [w.lower() for w in story_dict.get("story_words", [])]
+    )
+    book_data["shifty_sounds"] = build_shifty_sounds(_shifty_tokens, level, cumulative)
+    book_data["shifty_colour"] = SHIFTY_COLOUR
+
+    # Future Sounds band (all levels): main-ladder graphemes this story's
+    # words use before they're formally taught — e.g. "mud" needing 'u' in
+    # a book that only teaches m/d/g/o so far.  Rather than rewriting the
+    # story, each one is previewed here, coloured to the level that
+    # genuinely teaches it, so the child/parent sees it's coming rather
+    # than the book silently using an undecodable sound.  Uses the exact
+    # same taught-window + segmentation logic as audit_decodability.py.
+    from v2_helpers import build_future_sounds, taught_graphemes, all_known_units
+    _book_taught = taught_graphemes(graphemes_data, level, _focus)
+    _known_units = all_known_units(graphemes_data)
+    _future_skip_tricky = set(_master_tricky.keys()) | {
+        w.lower() for w in story_dict.get("tricky_words_used", [])
+    }
+    book_data["future_sounds"] = build_future_sounds(
+        _shifty_tokens, level, _book_taught, _known_units, graphemes_data,
+        LEVEL_COLOURS, tricky_words=_future_skip_tricky,
+    )
+
+    # Future Sound preview row — joins the Sound Spotlight page at L4+
+    # (Lynden 2026-07-19: "future sounds spotlight should be with the
+    # sound spotlight").  First future sound with 3+ photo cards wins.
+    book_data["future_spotlight_row"] = None
+    if level >= 4:
+        for _f in book_data["future_sounds"]:
+            _rows = build_spotlight_pages([_f["grapheme"]], level, None)
+            if _rows and sum(1 for w in _rows[0]["words"] if w.get("photo")) >= 3:
+                book_data["future_spotlight_row"] = {
+                    **_rows[0], "colour": _f["colour"], "level_at": _f["level"],
+                }
+                break
+
+    # Sound Detective — Alien Words page bottom half at L4+ (shifty
+    # sounds first — soft c fires on "rice"-type story hits — then future
+    # sounds not already previewed on the Sound Spotlight page).
+    _exclude = ((book_data["future_spotlight_row"] or {}).get("grapheme"),)
+    book_data["extra_sound_task"] = (
+        build_extra_sound_rows(level, book_data["shifty_sounds"],
+                               book_data["future_sounds"], exclude=_exclude)
+        or build_extra_sound_rows(level, book_data["shifty_sounds"],
+                                  book_data["future_sounds"])
+    )
+
+    # Grow the Code chart — a whole page at L4-L6, replacing the
+    # Listen-and-Write spelling test.  FIXED sound chart, identical in
+    # every book, curated in data/grow_code_chart.json.
+    book_data["grow_code_chart"] = build_grow_code_chart()
+
+    # Library-edition onboarding page (2026-07-20): "Is this the right
+    # level?" sample boxes drawn from THIS book's own content, plus the
+    # worksheet + assessment QRs.  Only used when edition == 'library'.
+    _bid = book_id or f"{level}.{story_dict.get('sub_level', '')}".rstrip(".")
+    book_data["book_id"] = _bid
+    book_data["worksheet_qr"] = _qr_data_uri(
+        f"https://myphonicsbooks.co.uk/library?book={_bid}")
+    book_data["assessment_qr"] = _qr_data_uri(
+        f"https://myphonicsbooks.co.uk/assessment?src=book_L{level}")
+    # Library "Check, match, read" marketing page (replaces the Reading Star
+    # celebration filler — Lynden 2026-07-20 "that's just a waste").  Reuses
+    # the marketing booklet's how-it-works content + app screenshots.
+    if edition == "library":
+        _mock = BASE_DIR.parent / "marketing" / "leaflet" / "assets"
+        def _mock_uri(name):
+            p = _mock / name
+            return image_to_data_uri(p) if p.exists() else None
+        book_data["mkt_phone"] = _mock_uri("mock_phone_trim.png")
+        book_data["mkt_laptop"] = _mock_uri("mock_laptop_trim.png")
+        book_data["mkt_tablet"] = _mock_uri("mock_tablet_trim.png")
+
+    # "Is this the right level?" — a LEVEL check, not a book check (Lynden
+    # 2026-07-21): show ALL the sounds this LEVEL teaches, level words, level
+    # alien words and level tricky words.  Sounds only, no paired example.
+    _lvl_sounds = graphemes_data.get(f"level_{level}", {}).get("graphemes", [])
+    _lvl_tricky = tricky_data.get(f"level_{level}", {}).get("new_tricky_words", [])
+    _lvl_words = []
+    try:
+        _gw = json.load(open(BASE_DIR / "output" / "worksheet_plan"
+                             / "green_words.json", encoding="utf-8"))
+        _lvl_words = [w["word"] for w in _gw.get("words", [])
+                      if w.get("level") == level]
+    except Exception:
+        _lvl_words = []
+    # readable words: shortest first (clearest for a quick level check)
+    _lvl_words = sorted(set(_lvl_words), key=lambda w: (len(w), w))[:8]
+    book_data["right_level_boxes"] = [
+        {"n": 1, "title": "Say all these sounds", "items": _lvl_sounds},
+        {"n": 2, "title": "Read these words",
+         "items": _lvl_words or (story_dict.get("read_words")
+                                 or story_dict.get("story_words", []))[:8]},
+        {"n": 3, "title": "Sound out these alien words", "made_up": True,
+         "items": story_dict.get("nonsense_words", [])},
+        {"n": 4, "title": "Know these tricky words on sight",
+         "items": _lvl_tricky[:8]},
+    ]
+
     button_source = (
         story_dict.get("story_words")
         or story_dict.get("read_words")
@@ -591,8 +895,16 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
 
     book_data["page_count"] = get_page_count(level, page_count)
     book_data["phase_label"] = get_phase_label(level)
+    # Sound buttons also recognise this book's Future Sounds units, so a
+    # previewed digraph gets its one line/arc ("mess" = m-e-ss, not
+    # m-e-s-s) instead of dissolving into per-letter dots (Lynden
+    # 2026-07-15: ss is ONE sound).
+    _future_button_units = [
+        s["grapheme"] for s in book_data["future_sounds"]
+        if s["grapheme"] not in cumulative
+    ]
     book_data["sound_buttoned_words"] = build_sound_buttoned_words(
-        button_source, cumulative,
+        button_source, cumulative + _future_button_units,
     )
     book_data["formation_drills"] = build_formation_drills(
         story_dict.get("focus_graphemes", []),
@@ -601,6 +913,14 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         story_pages, count=ordering_count,
     )
     book_data["ordering_image_count"] = ordering_count
+    # Special-friend match — fills the bottom half of the Tell-the-Story page
+    # on 16pp digraph books (Level 3), where there is no retell scaffold.
+    # Returns None for single-letter focus books (L1/L2) so the grid just
+    # absorbs the whole page as before.
+    book_data["special_friend_match"] = build_special_friend_match(
+        story_dict.get("focus_graphemes", []),
+        story_dict.get("story_words", []),
+    )
     book_data["dictation_sentence"] = pick_dictation_sentence(story_pages)
     book_data["guide_blend_example"] = build_guide_blend_example(
         book_data["sound_buttoned_words"]

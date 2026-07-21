@@ -4,6 +4,8 @@ Decodable phonics books for children aged 4-8. Every book is an open window to a
 
 **CRITICAL CONSTRAINT:** Every word must be decodable at the given level OR be a listed tricky word. See `data/graphemes_by_level.json` and `data/tricky_words_by_level.json`.
 
+**BINDING PEDAGOGY RULES: read `PHONICS_PEDAGOGY.md` before touching ANY phonics data, marks, tricky words, Shifty/Future Sounds, alien words or level colours.** It records Lynden's rulings (tricky-vs-shifty doctrine, -se/-ve/-le/-ed final units, de-listed words that must never return, ve-not-a-grapheme, data ownership). The human-readable export of all of it is `output/worksheet_plan/MPB_WORD_LEDGER.xlsx` (regenerate with `py -3.12 scripts/build_word_ledger.py` — JSON is canonical, never hand-edit the xlsx). **Before ANY publish: `py -3.12 -X utf8 scripts/audit_release.py` must pass. Non-zero exit = do not ship.**
+
 ---
 
 ## Quick Start

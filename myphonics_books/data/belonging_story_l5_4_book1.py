@@ -135,7 +135,7 @@ BELONGING_STORY_BOOK1 = {
         "read_words": ["shore", "explore", "section", "direction", "pure", "attention"],
         "nonsense_words": [
             "blore", "snire", "flear", "thure", "ploor",
-            "grore", "twire", "spear", "chure", "drire",
+            "grore", "twire", "glear", "chure", "drire",
         ],
         "questions": [
             {"category": "Finding", "text": "Where did the boy lose his dad?"},

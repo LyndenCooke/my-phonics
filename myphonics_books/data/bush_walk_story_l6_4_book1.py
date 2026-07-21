@@ -278,14 +278,17 @@ BUSH_WALK_STORY_BOOK1 = {
             "Eyes: tiny solid black dots ONLY — no white, no highlights. "
             "No text in image. Portrait orientation (3:4)."
         ),
+        # "famous" removed from the practice lists (2026-07-03): the open-a
+        # /ai/ sound is never taught, so it is not decodable.  The story text
+        # still uses it, so it rides in tricky_words_used instead.
         "story_words": [
             "incredible", "enormous", "cautious", "gorgeous", "remarkable",
-            "precious", "capable", "glorious", "famous", "visible",
+            "precious", "capable", "glorious", "visible",
         ],
         "tricky_words_used": [
             "the", "to", "she", "he", "said", "was", "her", "they",
             "all", "some", "what", "were", "could", "would", "over",
-            "through", "everyone", "walk", "brother", "whole",
+            "through", "everyone", "walk", "brother", "whole", "famous",
         ],
         "read_words": ["incredible", "cautious", "gorgeous", "remarkable"],
         "nonsense_words": [
@@ -313,7 +316,7 @@ BUSH_WALK_STORY_BOOK1 = {
         "writing_graphemes": ["ous", "cious", "tious", "able", "ible"],
         "writing_words": [
             "incredible", "enormous", "cautious", "gorgeous", "remarkable",
-            "precious", "capable", "glorious", "famous", "visible",
+            "precious", "capable", "glorious", "visible",
             "gracious", "sensible", "adventurous", "admirable",
         ],
         "writing_starters": [

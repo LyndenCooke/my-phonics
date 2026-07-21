@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Sound Cards — Tier 1 (Premium)</title>
+{% import "cards/_shared.html" as shared with context %}
+<style>
+{{ shared.font_faces() }}
+
+@page {
+  size: {{ page_w }}mm {{ page_h }}mm;
+  margin: 0;
+}
+
+{{ shared.shared_css() }}
+
+/* One card per page: front, then its back immediately after. The page
+   is the bleed box plus a margin equal to the crop marks' reach, so
+   the marks land inside the PDF's page bounds instead of being
+   clipped — see the CARD_PAGE_* note in cards_data.py. */
+.page {
+  width: {{ page_w }}mm;
+  height: {{ page_h }}mm;
+  position: relative;
+  page-break-after: always;
+  page-break-inside: avoid;
+  background: #ffffff;
+}
+.page:last-child { page-break-after: avoid; }
+
+.bleed-box {
+  position: absolute;
+  left: {{ page_margin }}mm;
+  top: {{ page_margin }}mm;
+  width: {{ card_bleed_w }}mm;
+  height: {{ card_bleed_h }}mm;
+  overflow: visible;
+}
+.trim-safe {
+  position: absolute;
+  left: {{ bleed }}mm;
+  top: {{ bleed }}mm;
+  width: {{ card_trim_w }}mm;
+  height: {{ card_trim_h }}mm;
+  overflow: hidden;
+}
+
+/* ─── Front face ─── */
+.grapheme-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Back face: sound → example rows (all pronunciations of the
+   grapheme, main sound first, then its alternatives). Fixed sizes —
+   never auto-fit — so a 1-row back and a 4-row back use identical
+   type, consistent with the fixed-size fronts. ─── */
+.back-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4.5mm;
+  padding: 9mm 5mm;
+}
+.pron-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4mm;
+  width: 100%;
+}
+.pron-sound {
+  font-family: 'Andika', sans-serif;
+  font-weight: 700;
+  font-size: 8.5mm;
+  line-height: 1;
+  color: #213649;
+  min-width: 14mm;
+  text-align: right;
+}
+.pron-word {
+  font-family: 'Andika', sans-serif;
+  font-weight: 400;
+  font-size: 6mm;
+  line-height: 1;
+  color: #4b5b6b;
+  min-width: 26mm;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+{% for page in pages %}
+<div class="page">
+  <div class="bleed-box" style="background:{{ page.card.tint }};">
+    {{ shared.crop_marks() }}
+    <div class="trim-safe">
+      {{ shared.corner_strip(page.card.corner_colour) }}
+      {% if page.side == 'front' %}
+        <div class="grapheme-wrap">
+          <div class="fit-text nowrap" data-w-ratio="0.9" data-h-ratio="0.62" data-max-px="{{ grapheme_target_px }}">{{ page.card.grapheme }}</div>
+        </div>
+      {% else %}
+        <div class="back-content">
+          {% for p in page.card.pronunciations %}
+          <div class="pron-row">
+            <span class="pron-sound">{{ p.sound }}</span>
+            <span class="pron-word">{{ p.word }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {{ shared.logo_mark(9, 0.15) }}
+    </div>
+  </div>
+</div>
+{% endfor %}
+{{ shared.fit_text_script() }}
+</body>
+</html>

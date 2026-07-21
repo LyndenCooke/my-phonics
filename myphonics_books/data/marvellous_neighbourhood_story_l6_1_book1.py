@@ -218,8 +218,12 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             "Whimsical children's book illustration style, flat colour, soft texture. "
             "No text in image. Portrait orientation (3:4)."
         ),
-        "story_words": ["marvellous", "glorious", "enormous", "famous", "fabulous", "joyous"],
-        "tricky_words_used": ["the", "said", "my", "you", "all", "whole", "neighbourhood", "so"],
+        # "famous" removed from the practice lists (2026-07-03): f-a-m-ous
+        # needs the open-a /ai/ sound, which the ladder never teaches — it is
+        # not decodable, so it can't sit in a sound-out list.  The story text
+        # still uses it, so it rides in tricky_words_used instead.
+        "story_words": ["marvellous", "glorious", "enormous", "fabulous", "joyous"],
+        "tricky_words_used": ["the", "said", "my", "you", "all", "whole", "neighbourhood", "so", "famous"],
         "read_words": ["marvellous", "enormous", "glorious", "fabulous"],
         "nonsense_words": [
             "stamous", "grumous", "trainous", "floatous",
@@ -245,7 +249,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             },
         ],
         "writing_graphemes": ["ous"],
-        "writing_words": ["famous", "marvellous", "enormous", "glorious", "fabulous", "joyous"],
+        "writing_words": ["marvellous", "enormous", "glorious", "fabulous", "joyous"],
         "writing_starters": [
             "The most marvellous thing I have ever seen is...",
             "My neighbourhood is...",

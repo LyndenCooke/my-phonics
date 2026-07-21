@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Word Cards</title>
+<style>
+  @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; }
+  @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; }
+
+  @page { size: 210mm 297mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    font-family: 'Andika', sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    color: #1a1a1a;
+  }
+
+  .sheet {
+    width: 210mm; height: 297mm; position: relative;
+    page-break-after: always; background: #fff;
+    padding: 0;
+  }
+  .sheet:last-child { page-break-after: avoid; }
+
+  /* Full-bleed grid: the page edges ARE the outer cut lines, so only the
+     internal cuts need marking — dashed, scissor-style. */
+  .grid {
+    width: 210mm; height: 297mm;
+    display: grid;
+    grid-template-columns: 105mm 105mm;
+    grid-template-rows: repeat(4, 74.25mm);
+  }
+  .cell {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .cell:nth-child(odd) { border-right: 0.35mm dashed #a8a8a8; }   /* centre cut */
+  .cell:nth-child(-n+6) { border-bottom: 0.35mm dashed #a8a8a8; } /* row cuts  */
+
+  /* Sorting tag (level · sound · sheet) so cut piles can be re-matched */
+  .tag {
+    position: absolute; bottom: 4mm; right: 4.5mm;
+    font-size: 7pt; color: #b9b9b9; line-height: 1;
+  }
+
+  /* ---- sound card ---- */
+  .sound-cell { flex-direction: column; gap: 3mm; }
+  .sound-band {
+    position: absolute; top: 0; left: 0; right: 0; height: 7mm;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 8pt; font-weight: 700;
+    letter-spacing: 0.4px;
+  }
+  .sound-grapheme {
+    font-weight: 700; line-height: 1;
+  }
+  .g-s  { font-size: 88pt; }
+  .g-m  { font-size: 62pt; }
+  .g-l  { font-size: 40pt; }
+  .g-xl { font-size: 22pt; text-align: center; }
+  .sound-says { font-size: 15pt; color: #555; }
+  .sound-key  { font-size: 12pt; color: #999; font-style: italic; }
+
+  /* ---- word rendering ----
+     Sized for distance reading: the adult holds the card up, the child
+     reads from across the room. */
+  .word-row { display: flex; align-items: flex-end; }
+  .w-s  { font-size: 64pt; }
+  .w-m  { font-size: 46pt; }
+  .w-l  { font-size: 34pt; }
+  .w-xl { font-size: 26pt; }
+
+  .unit { display: flex; flex-direction: column; align-items: center; }
+  .unit .letters {
+    line-height: 1.05;
+    padding: 0 0.045em;
+    white-space: pre;
+  }
+  .unit.diamond-unit .letters { color: #475569; }
+  /* Marks are fixed em-sized CSS shapes so they scale with the word's
+     font size but can never widen the unit beyond its letters.
+     margin-top clears descenders (g, y, p) so dots never touch them. */
+  .unit .mark {
+    align-self: stretch;
+    display: flex; align-items: center; justify-content: center;
+    height: 0.26em; margin-top: 0.15em;
+  }
+  .ink-dot { width: 0.17em; height: 0.17em; background: #1a1a1a; border-radius: 50%; }
+  .ink-line { width: 62%; min-width: 0.4em; height: 0.075em; background: #1a1a1a; border-radius: 0.04em; }
+  .ink-diamond {
+    width: 0.30em; height: 0.18em; background: #475569;
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+
+  /* plain side: no mark row at all, word sits dead centre */
+  .plain .letters { line-height: 1.05; }
+
+  /* split digraph: curved arc over the whole group */
+  .arc-group { display: flex; align-items: flex-end; position: relative; }
+  .arc-over {
+    position: absolute; left: 4%; right: 4%;
+    top: -0.34em; height: 0.3em;
+  }
+  .arc-over svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+</style>
+</head>
+<body>
+
+{# ---- mark shapes (fixed em-sized CSS, see .ink-* rules) ---- #}
+{% macro mark_svg(mark) -%}
+  {%- if mark == 'dot' -%}<span class="ink-dot"></span>
+  {%- elif mark == 'line' -%}<span class="ink-line"></span>
+  {%- elif mark == 'diamond' -%}<span class="ink-diamond"></span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro unit_html(u) -%}
+  <span class="unit {% if u.mark == 'diamond' %}diamond-unit{% endif %}">
+    <span class="letters">{{ u.text }}</span>
+    <span class="mark">{{ mark_svg(u.mark) }}</span>
+  </span>
+{%- endmacro %}
+
+{% macro marked_word(back) -%}
+  <span class="word-row {{ back.size }}">
+    {%- for seg in back.segments -%}
+      {%- if seg.kind == 'arc' -%}
+        <span class="arc-group">
+          <span class="arc-over"><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M4,11 Q50,-3 96,11" fill="none" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/></svg></span>
+          {%- for u in seg.units %}{{ unit_html(u) }}{% endfor -%}
+        </span>
+      {%- else -%}
+        {{ unit_html(seg) }}
+      {%- endif -%}
+    {%- endfor -%}
+  </span>
+{%- endmacro %}
+
+{% macro g_class(g) -%}
+  {%- if g|length <= 2 %}g-s{% elif g|length <= 4 %}g-m{% elif g|length <= 8 %}g-l{% else %}g-xl{% endif -%}
+{%- endmacro %}
+
+{% macro sound_front(sheet) %}
+  <div class="cell sound-cell">
+    <div class="sound-band" style="background: {{ sheet.accent }};">{{ sheet.band }}</div>
+    <div class="sound-grapheme {{ g_class(sheet.grapheme) }}">{{ sheet.grapheme }}</div>
+    <span class="tag">L{{ sheet.level }} · {{ sheet.grapheme }} · {{ sheet.sheet_idx }}/{{ sheet.sheet_total }}</span>
+  </div>
+{% endmacro %}
+
+{% macro sound_back(sheet) %}
+  <div class="cell sound-cell">
+    <div class="sound-band" style="background: {{ sheet.accent }};">{{ sheet.band }}</div>
+    {% if sheet.g_mark == 'none' %}
+      <div class="sound-grapheme {{ g_class(sheet.grapheme) }}">{{ sheet.grapheme }}</div>
+    {% else %}
+      <span class="word-row w-s">
+        <span class="unit {% if sheet.g_mark == 'diamond' %}diamond-unit{% endif %}">
+          <span class="letters" style="font-weight:700;">{{ sheet.grapheme }}</span>
+          <span class="mark">{{ mark_svg(sheet.g_mark) }}</span>
+        </span>
+      </span>
+    {% endif %}
+    <div class="sound-says">says {{ sheet.says }}</div>
+    {% if sheet.key %}<div class="sound-key">as in {{ sheet.key }}</div>{% endif %}
+    <span class="tag">L{{ sheet.level }} · {{ sheet.grapheme }} · {{ sheet.sheet_idx }}/{{ sheet.sheet_total }}</span>
+  </div>
+{% endmacro %}
+
+{% for sheet in sheets %}
+  {# ---------- FRONT: plain words ---------- #}
+  <div class="sheet">
+    <div class="grid">
+      {{ sound_front(sheet) }}
+      {% for f in sheet.fronts %}
+        <div class="cell">
+          {% if f %}
+            <span class="word-row plain {{ f.size }}"><span class="unit"><span class="letters">{{ f.word }}</span></span></span>
+            <span class="tag">L{{ sheet.level }} · {{ sheet.grapheme }} · {{ sheet.sheet_idx }}/{{ sheet.sheet_total }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ---------- BACK: marked words, columns mirrored ---------- #}
+  {% set back_cells = [] %}
+  {% set _ = back_cells.append({'sound': true}) %}
+  {% for b in sheet.backs %}{% set _ = back_cells.append({'word': b}) %}{% endfor %}
+  <div class="sheet">
+    <div class="grid">
+      {# row-major mirror: 8 cells -> [1,0, 3,2, 5,4, 7,6] #}
+      {% set order = [1, 0, 3, 2, 5, 4, 7, 6] %}
+      {% for pos in order %}
+        {% set cell = back_cells[pos] %}
+        {% if cell.sound is defined %}
+          {{ sound_back(sheet) }}
+        {% else %}
+          <div class="cell">
+            {% if cell.word %}
+              {{ marked_word(cell.word) }}
+              <span class="tag">L{{ sheet.level }} · {{ sheet.grapheme }} · {{ sheet.sheet_idx }}/{{ sheet.sheet_total }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+
+</body>
+</html>

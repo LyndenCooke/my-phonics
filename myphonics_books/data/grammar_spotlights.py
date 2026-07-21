@@ -873,7 +873,7 @@ GRAMMAR_SPOTLIGHTS = {
             "Use a <strong>-ness</strong>, <strong>-ful</strong> or "
             "<strong>-less</strong> word in your sentence."
         ),
-        "writing_lines": 4,
+        "writing_lines": 2,  # was 4 — capped: only two hw bands fit the page (Lynden 2026-07-15)
     },
     "6.3": {
         "book": "L6.3",

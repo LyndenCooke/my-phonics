@@ -51,7 +51,7 @@ CHOP_CHOP_STORY_BOOK1 = {
         "read_words": ["chop", "chin", "this", "that"],  # Focus on ch, th
         "nonsense_words": [
             "chod", "chep", "chib", "chun",  # ch onset
-            "thob", "theb", "thud", "thig",  # th onset (theb replaces real word 'them')
+            "thob", "theb", "thop", "thig",  # th onset (theb replaces real word 'them')
             "dach", "mich", "foch", "luch",  # ch in coda
         ],
         "questions": [

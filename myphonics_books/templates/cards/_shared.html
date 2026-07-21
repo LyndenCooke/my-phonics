@@ -1,0 +1,111 @@
+{# ─── Shared macros for the Sound Cards render pipeline ───────────
+   Included by tier1.html, tier2.html and ough.html. Keeps the font
+   embedding, quiet logo mark, and crop-mark geometry in one place so
+   the three templates stay visually identical.
+#}
+
+{% macro font_faces() %}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_regular }}') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Andika';
+  src: url('{{ font_bold }}') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+{% endmacro %}
+
+{# Quiet maker's mark: the REAL mpb logo (the open book + star icon at
+   phonics-fun-hub/public/logo/mpb-mark-transparent.png), reduced to its
+   navy outline strokes only (fills dropped) by scripts/extract_logo_outline.py
+   — a single-tone treatment of the actual mark, not a hand-drawn stand-in. #}
+{% macro logo_mark(width_mm=10, opacity=0.15) %}
+<img class="mpb-mark" src="{{ logo_data_uri }}" style="width:{{ width_mm }}mm; height:auto; opacity:{{ opacity }};" alt="">
+{% endmacro %}
+
+{# Level corner strip, top-right. Solid fill in the level colour plus a
+   thin black outline so the strip's shape still reads on a greyscale
+   printer even if the colour fill drops out. #}
+{% macro corner_strip(level_colour) %}
+<div class="corner-strip" style="background:{{ level_colour }};"></div>
+{% endmacro %}
+
+{# 3mm-bleed crop marks for one card cell. Geometry assumes a bleed box
+   of CARD_BLEED_W x CARD_BLEED_H (80 x 111mm) with a 3mm bleed margin
+   on every edge (trim box 74 x 105mm, inset 3mm from each bleed edge).
+   Parent element MUST be position:relative and overflow:visible. #}
+{% macro crop_marks() %}
+<div class="cm cm-h" style="top:2.85mm; left:-6mm;"></div>
+<div class="cm cm-v" style="left:2.85mm; top:-6mm;"></div>
+<div class="cm cm-h" style="top:2.85mm; left:82mm;"></div>
+<div class="cm cm-v" style="left:76.85mm; top:-6mm;"></div>
+<div class="cm cm-h" style="top:107.85mm; left:-6mm;"></div>
+<div class="cm cm-v" style="left:2.85mm; top:113mm;"></div>
+<div class="cm cm-h" style="top:107.85mm; left:82mm;"></div>
+<div class="cm cm-v" style="left:76.85mm; top:113mm;"></div>
+{% endmacro %}
+
+{% macro shared_css() %}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  font-family: 'Andika', sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  color: #213649;
+}
+.corner-strip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10mm;
+  height: 4mm;
+  border: 0.3mm solid #000;
+  border-top: none;
+  border-right: none;
+}
+.mpb-mark {
+  position: absolute;
+  bottom: 3mm;
+  left: 3mm;
+}
+.fit-text {
+  font-family: 'Andika', sans-serif;
+  font-weight: 700;
+  color: #213649;
+  line-height: 1.15;
+}
+.fit-text.nowrap { white-space: nowrap; line-height: 1; }
+.cm { position: absolute; background: #000; }
+.cm-h { width: 4mm; height: 0.3mm; }
+.cm-v { width: 0.3mm; height: 4mm; }
+{% endmacro %}
+
+{# Client-side shrink-to-fit for hero grapheme/word text: starts at a
+   large font size and shrinks until the text fits within the given
+   box, so single letters ("s") and wide clusters ("through") both fill
+   their card sensibly without per-grapheme manual sizing. #}
+{% macro fit_text_script() %}
+<script>
+function fitText(el, maxWidthPx, maxHeightPx, startPx) {
+  let size = startPx;
+  el.style.fontSize = size + 'px';
+  while (size > 8 && (el.scrollWidth > maxWidthPx || el.scrollHeight > maxHeightPx)) {
+    size -= 2;
+    el.style.fontSize = size + 'px';
+  }
+}
+function fitAllGraphemes() {
+  document.querySelectorAll('.fit-text').forEach(function (el) {
+    const box = el.parentElement;
+    const maxW = box.clientWidth * (parseFloat(el.dataset.wRatio) || 0.86);
+    const maxH = box.clientHeight * (parseFloat(el.dataset.hRatio) || 0.62);
+    const start = parseFloat(el.dataset.maxPx) || 400;
+    fitText(el, maxW, maxH, start);
+  });
+}
+</script>
+{% endmacro %}

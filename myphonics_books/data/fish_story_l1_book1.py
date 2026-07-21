@@ -16,15 +16,15 @@ FISH_STORY_BOOK1 = {
             {"text": "I get a cup. No! It is not big.", "image": None},
             {"text": "I get a tank. Yes! The fish can go in!", "image": None},
             {"text": "Wish, wish! The fish is in the tank!", "image": None},
-            {"text": "The fish is not sad. I am happy!", "image": None},
+            {"text": "The fish is not sad. I am glad!", "image": None},
         ],
         "story_words": ["fish", "tank", "wish", "bag", "cup", "sad"],
         "tricky_words_used": ["I", "a", "the", "no", "go", "is"],  # Actually used in story (6 max for layout)
         "read_words": ["fish", "tank", "wish", "bag"],
         "nonsense_words": [
-            "shim", "fash", "nush", "gish",  # sh words
-            "tink", "donk", "bunk", "lenk",  # nk words
-            "thud", "chop", "thib", "quop",  # other digraphs
+            "shup", "fash", "nush", "gish",  # sh words (shim was a real word)
+            "zunk", "genk", "vonk", "lenk",  # nk words (tink/donk/bunk were real words)
+            "shud", "shib", "ponk", "nank",  # more sh/nk (th/ch/qu untaught yet)
         ],
         "questions": [
             {"category": "Finding", "text": "Where did the fish go?"},

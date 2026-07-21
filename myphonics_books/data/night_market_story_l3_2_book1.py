@@ -32,7 +32,7 @@ NIGHT_MARKET_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Then a man bumped me! I spun round and round. I cannot see Mum! I froze.",
+                "text": "Then a man bumped me! I spun round and round. I can't see Mum! I froze.",
                 "image": None,
             },
             {
@@ -72,5 +72,18 @@ NIGHT_MARKET_STORY_BOOK1 = {
         "writing_graphemes": ["o-e", "u-e"],
         "writing_words": [],
         "writing_starters": [],
+        # Lynden 2026-07-15: u-e says two things and this book leans on it —
+        # spell that out for the grown-up rather than leaving it implicit.
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — the u-e sound",
+                "body": (
+                    "u-e (u with a magic e) can say two things: /oo/ as in "
+                    "\"rude\", or /you/ as in \"cute\". Try /you/ first — if the "
+                    "word sounds wrong, flip to /oo/."
+                ),
+                "examples": ["rude → /oo/", "cute → /you/", "huge → /you/"],
+            },
+        ],
     }
 }

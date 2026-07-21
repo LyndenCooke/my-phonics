@@ -38,3 +38,8 @@ playwright==1.48.0         # HTML → PDF via Chromium (exact version for PDF co
 
 # Optional — alternative PDF engine
 # weasyprint>=62.0         # HTML/CSS → PDF (if preferred over ReportLab)
+
+# Paper assessment sheets (marketing/paper-assessment/generate.py)
+qrcode[pil]>=7.4           # QR codes for the printable Quick Level Check sheets
+PyMuPDF>=1.27              # fitz — merge per-level PDFs + rasterise for QA
+opencv-python>=4.10        # QR decode verification (cv2.QRCodeDetector)

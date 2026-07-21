@@ -158,7 +158,7 @@ LOUD_TOY_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": "But it ran too far! My toy! I looked around and around. I cannot see it!",
+                "text": "But it ran too far! My toy! I looked around and around. I can't see it!",
                 "image_prompt": (
                     "Show the character from the reference image standing in a snowy Reykjavik "
                     "street, looking panicked and upset, staring into the distance. His arms are "
@@ -177,7 +177,7 @@ LOUD_TOY_STORY_BOOK1 = {
             },
             {
                 "page_number": 4,
-                "text": 'I shouted out loud. "Mum! I need you! I cannot see my toy!"',
+                "text": 'I shouted out loud. "Mum! I need you! I can\'t see my toy!"',
                 "image_prompt": (
                     "Show the character from the reference image standing in the snowy street, "
                     "cupping his hands around his mouth and shouting. He looks upset and frustrated, "
@@ -307,6 +307,20 @@ LOUD_TOY_STORY_BOOK1 = {
         "writing_graphemes": ["ou", "oy"],
         "writing_words": ["out", "shout", "loud", "toy", "joy", "boy"],
         "writing_starters": [],
+        # Lynden 2026-07-15: the story leans on -ed past tense, which isn't a
+        # taught sound yet and says three different things — explain it in
+        # short rather than leaving the child to guess.
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — the -ed ending",
+                "body": (
+                    "-ed on the end of a word shows it already happened. "
+                    "It is not a new sound to stretch — it says /d/, /t/ or /id/. "
+                    "Read the word, then add the ending quickly."
+                ),
+                "examples": ["zoomed → zoom-d", "looked → look-t", "shouted → shout-id"],
+            },
+        ],
         "character": {
             "name": "Icelandic boy",
             "age": "5 years old",
