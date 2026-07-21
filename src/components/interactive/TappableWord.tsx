@@ -48,6 +48,9 @@ const MULTI_LETTER = new Set([
   'tion', 'cious', 'tious', 'able', 'ible', 'ous', 'sion',
   'dd', 'gg', 'mm', 'nn', 'pp', 'rr', 'tt', 'bb',
   'ed',  // past-tense suffix — pronounced /t/, /d/ or /ɪd/ depending on stem
+  'le',  // final stable syllable after a consonant — purple, little, middle
+  'se',  // word-final /s/ or /z/ with silent-e spelling — purse, house, cheese
+  've',  // word-final /v/ (no English word ends in v) — give, live, love
 ]);
 
 // ─── Phoneme-to-letter span builder ────────────────────────────────────

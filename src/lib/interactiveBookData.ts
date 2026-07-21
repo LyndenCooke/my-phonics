@@ -887,7 +887,7 @@ export const BOOK_L1_5_PAGES: InteractivePage[] = [
     ],
     storyWords: [
       cvc('run', 'run'), cvc('pup', 'pup'), cvc('hut', 'hut'),
-      { display: 'bush', word: 'bush', phonemes: ['b','u','sh'] },
+      tricky('bush', 'bush'),
       cvc('tub', 'tub'), cvc('rub', 'rub'),
       cvc('hug', 'hug'), cvc('hid', 'hid'),
     ],
@@ -898,7 +898,7 @@ export const BOOK_L1_5_PAGES: InteractivePage[] = [
     type: 'vocab_preview',
     words: [
       cvc('run', 'run'), cvc('pup', 'pup'), cvc('hut', 'hut'),
-      { display: 'bush', word: 'bush', phonemes: ['b','u','sh'] },
+      tricky('bush', 'bush'),
       cvc('tub', 'tub'), cvc('rub', 'rub'),
       cvc('hug', 'hug'), cvc('hid', 'hid'),
     ],
@@ -932,7 +932,7 @@ export const BOOK_L1_5_PAGES: InteractivePage[] = [
       cvc('Run,', 'run'), cvc('pup,', 'pup'), cvc('run!', 'run'),
       tricky('The', 'the'), cvc('pup', 'pup'), cvc('hid', 'hid'),
       { display: 'in', word: 'in', phonemes: ['i','n'] }, tricky('the', 'the'),
-      { display: 'bush.', word: 'bush', phonemes: ['b','u','sh'] },
+      tricky('bush.', 'bush'),
     ],
     imageUrl: '/illustrations/1_5/page3.png', audioUrl: '/sounds/sentences/L1_5_p3.mp3',
   },
@@ -1072,6 +1072,8 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
     type: 'story', sentences: ['I am with a fox.', 'Fox is on a log.'],
     words: [
       tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
+      // 'with' de-listed as tricky (Lynden 2026-07-15): decodable w-i-th,
+      // th previewed on the book's Future Sounds band.
       { display: 'with', word: 'with', phonemes: ['w','i','th'] }, tricky('a', 'a'),
       { display: 'fox.', word: 'fox', phonemes: ['f','o','x'] },
       { display: 'Fox', word: 'fox', phonemes: ['f','o','x'] }, tricky('is', 'is'),
@@ -1462,6 +1464,7 @@ export const BOOK_L1_8_PAGES: InteractivePage[] = [
     type: 'story', sentences: ['I am with a yak.', 'The yak is big!'],
     words: [
       tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
+      // 'with' de-listed as tricky (Lynden 2026-07-15): decodable w-i-th.
       { display: 'with', word: 'with', phonemes: ['w','i','th'] }, tricky('a', 'a'),
       { display: 'yak.', word: 'yak', phonemes: ['y','a','k'] },
       tricky('The', 'the'), { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
@@ -1510,12 +1513,15 @@ export const BOOK_L1_8_PAGES: InteractivePage[] = [
     ],
     imageUrl: '/illustrations/1_8/page4.png', audioUrl: '/sounds/sentences/L1_8_p4.mp3',
   },
-  // Page 5: "The yak cannot get it! I will get the six figs."
+  // Page 5: "The yak can't get it! I will get the six figs."
   {
-    type: 'story', sentences: ['The yak cannot get it!', 'I will get the six figs.'],
+    type: 'story', sentences: ["The yak can't get it!", 'I will get the six figs.'],
     words: [
       tricky('The', 'the'), { display: 'yak', word: 'yak', phonemes: ['y','a','k'] },
-      tricky('cannot', 'cannot'),
+      // "can't" replaces "cannot" (Lynden 2026-07-15) — decodable c-a-n-t,
+      // the apostrophe is spelling, not a sound. Audio key 'cant'
+      // (apostrophes don't belong in file names).
+      { display: "can't", word: 'cant', phonemes: ['c','a','n','t'] },
       { display: 'get', word: 'get', phonemes: ['g','e','t'] },
       { display: 'it!', word: 'it', phonemes: ['i','t'] },
       tricky('I', 'I'), tricky('will', 'will'),
