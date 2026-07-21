@@ -248,7 +248,7 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
             "delicious", "suspicious", "cautious", "precious",
             "nutritious", "scrumptious", "gracious", "ambitious"
         ],
-        "tricky_words_used": ["the", "said", "was", "you", "what", "do", "could", "ever", "whole", "people", "love"],
+        "tricky_words_used": ["the", "said", "was", "you", "what", "do", "could", "whole", "people", "love"],  # ever removed 2026-07-13 — ev+er decodable
         "read_words": ["delicious", "suspicious", "cautious", "nutritious"],
         "nonsense_words": [
             "fricious", "gricious", "stricious", "plicious", "blicious",

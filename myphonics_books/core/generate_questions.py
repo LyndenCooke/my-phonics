@@ -49,7 +49,7 @@ def build_questions_prompt(
     Args:
         story_pages: The 8 generated story pages
         personalisation: Personalisation variables
-        level: Reading level 1-6
+        level: Reading level 1-8
         template_id: Story template used
 
     Returns:
@@ -128,7 +128,7 @@ def generate_questions(
     Args:
         story_pages: The 8 generated story pages
         personalisation: Personalisation variables
-        level: Reading level 1-6
+        level: Reading level 1-8
         template_id: Story template used
 
     Returns:

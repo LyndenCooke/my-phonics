@@ -160,12 +160,12 @@ def generate_worksheet(
     Args:
         story_pages: The 8 story pages
         personalisation: Personalisation variables
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         WorksheetResult with content
     """
-    if level < 1 or level > 6:
+    if level < 1 or level > 8:
         return WorksheetResult(
             success=False,
             error=f"Invalid level: {level}"

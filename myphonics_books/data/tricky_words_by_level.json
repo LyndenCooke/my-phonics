@@ -4,11 +4,13 @@
     "maps_to": "RWI Early Set 1 / Phase 2 sets 1-2",
     "new_tricky_words": [
       "I",
-      "the"
+      "the",
+      "a"
     ],
     "cumulative": [
       "I",
-      "the"
+      "the",
+      "a"
     ]
   },
   "level_2": {
@@ -19,16 +21,21 @@
       "go",
       "to",
       "into",
-      "is"
+      "is",
+      "has",
+      "of"
     ],
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
-      "is"
+      "is",
+      "has",
+      "of"
     ]
   },
   "level_3": {
@@ -44,11 +51,14 @@
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -71,11 +81,14 @@
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -106,17 +119,19 @@
       "one",
       "do",
       "when",
-      "out",
       "what"
     ],
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -141,7 +156,6 @@
       "one",
       "do",
       "when",
-      "out",
       "what"
     ]
   },
@@ -162,11 +176,14 @@
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -191,7 +208,6 @@
       "one",
       "do",
       "when",
-      "out",
       "what",
       "oh",
       "their",
@@ -235,27 +251,19 @@
       "break",
       "steak",
       "pretty",
-      "beautiful",
-      "after",
-      "fast",
-      "last",
-      "past",
-      "father",
-      "class",
-      "grass",
-      "pass",
-      "plant",
-      "path",
-      "bath"
+      "beautiful"
     ],
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -280,7 +288,6 @@
       "one",
       "do",
       "when",
-      "out",
       "what",
       "oh",
       "their",
@@ -318,18 +325,7 @@
       "break",
       "steak",
       "pretty",
-      "beautiful",
-      "after",
-      "fast",
-      "last",
-      "past",
-      "father",
-      "class",
-      "grass",
-      "pass",
-      "plant",
-      "path",
-      "bath"
+      "beautiful"
     ]
   },
   "level_8": {
@@ -361,11 +357,14 @@
     "cumulative": [
       "I",
       "the",
+      "a",
       "no",
       "go",
       "to",
       "into",
       "is",
+      "has",
+      "of",
       "he",
       "she",
       "we",
@@ -390,7 +389,6 @@
       "one",
       "do",
       "when",
-      "out",
       "what",
       "oh",
       "their",
@@ -429,17 +427,6 @@
       "steak",
       "pretty",
       "beautiful",
-      "after",
-      "fast",
-      "last",
-      "past",
-      "father",
-      "class",
-      "grass",
-      "pass",
-      "plant",
-      "path",
-      "bath",
       "hour",
       "move",
       "prove",

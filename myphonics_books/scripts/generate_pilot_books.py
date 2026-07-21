@@ -172,8 +172,24 @@ NEW_TO_OLD = {
 }
 
 
-async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
-    """Generate a single pilot book PDF."""
+async def generate_pilot_pdf(level: int | str, use_images: bool = True,
+                             isbn_entry: dict | None = None,
+                             edition: str = "home") -> Path:
+    """Generate a single pilot book PDF.
+
+    edition: 'home' (digital/parent-print, keeps writing pages, no barcode)
+    or 'library' (physical reusable book: strips write-on pages, adds the
+    onboarding page + worksheet QR, carries the barcode).  A render with an
+    isbn_entry is ALWAYS the library edition — the barcode belongs on the
+    physical library book.
+
+    isbn_entry (classroom/library renders only): a row from the confirmed
+    classroom ISBN register (see scripts/isbn_barcodes.py).  Adds the EAN-13
+    barcode to the back cover and writes the PDF under
+    output/books/print_classroom/ instead of the digital masters — the home
+    edition PDFs must never carry the classroom ISBN."""
+    if isbn_entry is not None:
+        edition = "library"
     stories = get_pilot_stories()
 
     # 8-level realignment: a new public id (e.g. "3.1") resolves its story and
@@ -186,14 +202,16 @@ async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
     if "." in new_id:
         story["level"] = int(new_id.split(".")[0])   # override to the new (8-level) level
 
-    # Output dir name uses the NEW id; image assets use the OLD id.
+    # Output dir name and image assets both use the NEW (8-level) id —
+    # output/images/ was renamed to journey numbering on 2026-07-15 so it
+    # no longer needs the OLD-id indirection.
     level_str = new_id.replace(".", "_")
-    old_str = old_id.replace(".", "_")
+    old_str = old_id.replace(".", "_")  # still used for story/text lookup via LEVEL_KEYS
 
-    # Image directory (keyed by the book's original id, where the PNGs live)
+    # Image directory (keyed by the book's NEW journey id, where the PNGs now live)
     image_dir = None
     if use_images:
-        candidate = IMAGE_BASE_DIR / f"L{old_str}_B1"
+        candidate = IMAGE_BASE_DIR / f"L{level_str}_B1"
         if candidate.exists() and any(candidate.glob("*.png")):
             image_dir = candidate
         else:
@@ -201,19 +219,42 @@ async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
 
     # Build book data
     book_data = build_book_data_from_story(
-        story, CHILD_NAME, FRIEND_NAME, image_dir
+        story, CHILD_NAME, FRIEND_NAME, image_dir,
+        edition=edition, book_id=new_id,
     )
+
+    # Classroom ISBN barcode — only when an entry from the CONFIRMED register
+    # is passed in.  The title cross-check fails loudly rather than ever
+    # printing another book's ISBN.
+    if isbn_entry is not None:
+        from isbn_barcodes import barcode_context, normalise_title
+        if isbn_entry["book_id"] != new_id:
+            raise ValueError(
+                f"ISBN entry is for book {isbn_entry['book_id']}, rendering {new_id}")
+        if normalise_title(isbn_entry["title"]) != normalise_title(story["book_title"]):
+            raise ValueError(
+                f"ISBN register title '{isbn_entry['title']}' does not match "
+                f"story title '{story['book_title']}' for book {new_id}")
+        book_data.update(barcode_context(isbn_entry))
 
     # Render HTML
     html = render_book_html(book_data)
 
-    # Determine level folder (Level1, Level2, etc.)
+    # Determine level folder (Level1, Level2, etc.).  Library edition renders
+    # to a separate tree so it never overwrites the digital home masters:
+    # print_classroom/ when it carries a real ISBN, else library_preview/.
+    if isbn_entry is not None:
+        books_root = OUTPUT_DIR / "print_classroom"
+    elif edition == "library":
+        books_root = OUTPUT_DIR / "library_preview"
+    else:
+        books_root = OUTPUT_DIR
     if level == 1 or str(level).startswith("1."):
-        level_folder = OUTPUT_DIR / "Level1"
+        level_folder = books_root / "Level1"
         main_level = 1
     else:
         main_level = int(str(level).split(".")[0])
-        level_folder = OUTPUT_DIR / f"Level{main_level}"
+        level_folder = books_root / f"Level{main_level}"
     level_folder.mkdir(parents=True, exist_ok=True)
 
     # Save debug HTML in level folder
@@ -233,31 +274,44 @@ async def generate_pilot_pdf(level: int | str, use_images: bool = True) -> Path:
     return output_path
 
 
-async def generate_all_pilots(use_images: bool = True):
+async def generate_all_pilots(use_images: bool = True,
+                              isbn_register: dict | None = None):
     """Generate all pilot book PDFs (all sub-levels)."""
     print("MyPhonicsBooks — Pilot Book Generator")
     print("=" * 55)
     print(f"Child: {CHILD_NAME} | Friend: {FRIEND_NAME}")
     print(f"Images: {'Yes' if use_images else 'No (placeholders)'}")
+    if isbn_register is not None:
+        print("Classroom ISBN barcodes: ON -> output/books/print_classroom/")
     print()
 
     stories = get_pilot_stories()
     generated = 0
     failed = 0
 
-    # Generate every sub-level that has a story
-    for level_key, story_key in sorted(LEVEL_KEYS.items(), key=lambda x: str(x[0])):
+    # Generate every NEW-scheme book id (33 books). Iterating LEVEL_KEYS
+    # here is the old bug (fixed 2026-07-12, accidentally reintroduced by
+    # the 07-15 image-rename edit): it also renders the pre-split legacy
+    # Level-1 ids (1, 1.3-1.10) as duplicate PDFs into output/books/Level1.
+    for level_key in sorted(NEW_TO_OLD, key=lambda k: [int(p) for p in k.split(".")]):
+        story_key = LEVEL_KEYS.get(NEW_TO_OLD[level_key])
         if story_key not in stories:
             continue
 
         title = stories[story_key]["book_title"]
-        main_level = stories[story_key].get("level", 1)
+        main_level = int(level_key.split(".")[0])
 
         print(f"[L{level_key}] {LEVEL_NAMES.get(main_level, '?')}: \"{title}\"")
         print(f"  Rendering HTML...")
 
         try:
-            output_path = await generate_pilot_pdf(level_key, use_images)
+            isbn_entry = None
+            if isbn_register is not None:
+                isbn_entry = isbn_register.get(level_key)
+                if isbn_entry is None:
+                    raise ValueError(f"no classroom ISBN in register for {level_key}")
+            output_path = await generate_pilot_pdf(level_key, use_images,
+                                                   isbn_entry=isbn_entry)
             size_kb = output_path.stat().st_size / 1024
             print(f"  Done: {output_path.name} ({size_kb:.0f} KB)")
             generated += 1
@@ -269,6 +323,7 @@ async def generate_all_pilots(use_images: bool = True):
     print("=" * 55)
     print(f"Generated {generated} books ({failed} failed)")
     print(f"Output folder: {OUTPUT_DIR}")
+    return failed
 
 
 def _publish(level_arg):
@@ -312,6 +367,23 @@ if __name__ == "__main__":
     use_images = "--no-images" not in sys.argv
     do_publish = "--no-publish" not in sys.argv
 
+    # --isbn: classroom/print render with EAN-13 barcodes.  Requires the
+    # CONFIRMED register (data/isbn_classroom.csv) — load_register refuses the
+    # PROPOSED file.  Never published: these are print masters, not the
+    # digital home-edition PDFs.
+    isbn_register = None
+    if "--isbn" in sys.argv:
+        from isbn_barcodes import load_register
+        isbn_register = load_register()
+        do_publish = False
+
+    # --library: render the library edition WITHOUT barcodes (design preview
+    # → output/books/library_preview/).  The real barcoded library masters
+    # come from --isbn, which forces edition=library anyway.
+    edition = "library" if "--library" in sys.argv else "home"
+    if "--library" in sys.argv:
+        do_publish = False
+
     # Check for single level
     level_arg = None
     for arg in sys.argv[1:]:
@@ -326,9 +398,19 @@ if __name__ == "__main__":
 
     if level_arg:
         print(f"Generating Level {level_arg} pilot book...")
-        asyncio.run(generate_pilot_pdf(level_arg, use_images))
+        entry = isbn_register.get(str(level_arg)) if isbn_register else None
+        if isbn_register is not None and entry is None:
+            sys.exit(f"No classroom ISBN in register for {level_arg}")
+        asyncio.run(generate_pilot_pdf(level_arg, use_images, isbn_entry=entry,
+                                       edition=edition))
     else:
-        asyncio.run(generate_all_pilots(use_images))
+        n_failed = asyncio.run(
+            generate_all_pilots(use_images, isbn_register=isbn_register))
 
     if do_publish:
         _publish(level_arg)
+
+    # Non-zero exit when any book failed, so chained steps (print masters,
+    # verification) don't run against a half-regenerated fleet.
+    if not level_arg and n_failed:
+        sys.exit(1)

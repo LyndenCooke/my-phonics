@@ -54,8 +54,8 @@ BUZZ_SING_STORY_BOOK1 = {
         "tricky_words_used": ["I", "the", "no", "go"],  # 'a' decodable; 'go' used on p4 ("The bugs go!")
         "read_words": ["ring", "buzz", "hiss", "king"],  # Focus on ng, zz, ss, qu
         "nonsense_words": [
-            "rong", "bung", "ding", "mang",  # ng combinations
-            "quob", "quem", "quid", "quag",  # qu onset
+            "rong", "bung", "ning", "mang",  # ng combinations
+            "quob", "quem", "quep", "quag",  # qu onset
             "doss", "tuss", "giss", "nass",  # ss coda
             "mozz", "nuzz", "lizz", "dazz",  # zz coda
         ],

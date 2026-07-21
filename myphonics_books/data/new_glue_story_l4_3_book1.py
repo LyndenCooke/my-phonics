@@ -79,7 +79,7 @@ NEW_GLUE_STORY_BOOK1 = {
         "cover_prompt": "A girl in yellow dungarees holds a pot of blue glue with a mischievous grin. A ginger cat with blue glue stuck on its fur sits beside her. Colourful Mexican home interior with warm walls, terracotta tiles, and potted plants. Portrait orientation.",
         "story_words": ["glue", "blue", "new", "drew", "threw", "grew"],
         "tricky_words_used": ["the", "to", "he", "her", "you", "me", "they", "fall", "said", "was", "she", "all", "so", "into"],  # 'hall', 'wall', 'front', 'kitchen' removed via rewrites
-        "read_words": ["chewed", "rescued", "flew", "true"],
+        "read_words": ["chew", "rescue", "flew", "true"],  # -ed forms removed 2026-07-13 — ed says /d/, untaught until L7
         "nonsense_words": [
             "plew", "snew", "tew", "bew", "gew",
             "stue", "bue", "frue", "pue", "grue",

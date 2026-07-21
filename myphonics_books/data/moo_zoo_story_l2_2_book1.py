@@ -80,7 +80,7 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Wow! A big show. A shark can shoot a hoop! No owl.",
+                "text": "Wow! A big show. A seal can shoot a hoop! No owl.",
                 "image": None,
             },
             {
@@ -92,7 +92,7 @@ MOO_ZOO_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I am sad now. Then my dad shouts, \"Look up!\"",
+                "text": "I am sad now. Then my dad calls, \"Look up!\"",
                 "image": None,
             },
             {

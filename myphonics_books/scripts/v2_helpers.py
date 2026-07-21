@@ -65,15 +65,28 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
 
     out = []
     i = 0
-    # Detect past-tense -ed and reserve it as one phoneme button at the end.
-    # Phase-5 onwards children are taught the -ed morpheme rule, so we treat
-    # the final '-ed' as a single grapheme in past-tense forms (verb + ed).
-    has_ed_morpheme = (
-        len(lower) >= 4
+    # Reserve trailing units as ONE phoneme button (same rules as
+    # _compute_marks so buttons and marks never disagree):
+    #   -ed past tense (turned, jumped) — len>=5 skips shed/sled, and
+    #   magic-e stems (liked, named) keep their V-C-e split instead;
+    #   -le final stable syllable after a consonant (purple, little) —
+    #   defers to longer taught graphemes ending in le (able, ible).
+    suffix = None
+    if (
+        len(lower) >= 5
         and lower.endswith("ed")
         and lower[-3] not in "aeiou"  # avoid words like "need", "feed"
-    )
-    end = len(lower) - 2 if has_ed_morpheme else len(lower)
+        and not (lower[-4] in "aeiou" and (lower[-4], "e") in SPLIT_DIGRAPHS)
+    ):
+        suffix = "ed"
+    elif (
+        len(lower) >= 4
+        and lower.endswith("le")
+        and lower[-3] not in "aeiou"
+        and not any(g.endswith("le") and lower.endswith(g) for g in sorted_g)
+    ):
+        suffix = "le"
+    end = len(lower) - 2 if suffix else len(lower)
 
     available = set(sorted_g)
     while i < end:
@@ -106,8 +119,24 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
             out.append(lower[i])
             i += 1
 
-    if has_ed_morpheme:
-        out.append("ed")
+    if suffix:
+        out.append(suffix)
+
+    # Word-final -se / -ve = ONE grapheme unit (purse = p/ur/se, house =
+    # h/ou/se, give-style ve).  Lynden's ruling 2026-07-12: the final e is
+    # silent spelling convention, not a phoneme — a trailing s-dot + e-dot
+    # pair claims two sounds that aren't there.  Guard: only merge when the
+    # preceding vowel is already consumed by a multi-char grapheme (ur, ou,
+    # ee...) or the char before s/v is a consonant — a LONE vowel before
+    # the s/v (wave, five, home...) means magic-e, which keeps its V-C-e
+    # treatment and must never collapse into -ve.
+    if (
+        len(out) >= 3
+        and out[-1] == "e"
+        and out[-2] in ("s", "v")
+        and (len(out[-3]) >= 2 or out[-3] not in "aeiou")
+    ):
+        out[-2:] = [out[-2] + "e"]
     return out
 
 
@@ -165,7 +194,24 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
     lower = word.lower()
     i = 0
     used_indices = set()
-    end = len(lower)
+
+    # Reserve trailing morpheme/syllable units so they render as ONE sound:
+    #   -ed past tense (turned, jumped) — /d/ /t/ /id/
+    #   -le final stable syllable after a consonant (purple, little, apple)
+    # Guards: -ed skips short words (shed, sled) and magic-e stems (liked,
+    # named — the V-C-e pattern wins); -le defers to longer taught graphemes
+    # that end in le (able, ible) so 'table' still matches 'able' whole.
+    suffix = None
+    if (len(lower) >= 5 and lower.endswith("ed")
+            and lower[-3] not in "aeiou"
+            and not (lower[-4] in "aeiou" and (lower[-4], "e") in SPLIT_DIGRAPHS)):
+        suffix = "ed"
+    elif (len(lower) >= 4 and lower.endswith("le")
+            and lower[-3] not in "aeiou"
+            and not any(g.endswith("le") and lower.endswith(g) for g in sorted_g)):
+        suffix = "le"
+    end = len(lower) - 2 if suffix else len(lower)
+
     while i < end:
         matched = False
         for g in sorted_g:
@@ -193,6 +239,9 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
             used_indices.add(i)
             i += 1
 
+    if suffix:
+        marks.append({"type": "under_arc", "indices": [len(lower) - 2, len(lower) - 1]})
+
     # Detect split digraph: a single-vowel + single-consonant + final 'e'
     # where the vowel-e pair is in our split-digraph set, AND the level
     # has at least one split digraph in its taught set (so we don't apply
@@ -204,16 +253,26 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
     # Those are real graphemes that should keep their under-arc — they are
     # not magic-e split digraphs and the over-arc would be pedagogically wrong.
     has_split_digraphs = any("-" in g for g in cumulative_graphemes)
-    if has_split_digraphs and len(lower) >= 3 and lower[-1] == "e":
+    if has_split_digraphs and not suffix and len(lower) >= 3 and lower[-1] == "e":
         # Find the LAST vowel before the final 'e' that fits the pattern
         for v_idx in range(len(lower) - 2, -1, -1):
             v = lower[v_idx]
             if (v, "e") in SPLIT_DIGRAPHS:
-                # Check: between v_idx and final e there's exactly 1+
-                # consonant(s) — the silent-e magic-e pattern needs at
-                # least one consonant in the middle.
+                # A vowel that's already INSIDE a matched multi-char grapheme
+                # (the 'u' of 'ur' in "purple"/"purse") is spoken for — it is
+                # NOT a magic-e vowel. Overriding it deleted the correct 'ur'
+                # underline and drew a bogus over-arc across half the word.
+                in_multi = any(
+                    m["type"] == "under_arc" and v_idx in m["indices"]
+                    for m in marks
+                )
+                if in_multi:
+                    continue
+                # Magic-e needs EXACTLY ONE consonant in the middle (cake,
+                # bike, home). Longer spans (purse: u-rs-e, purple: u-rpl-e)
+                # are never split digraphs.
                 mid = lower[v_idx + 1:-1]
-                if mid and all(c not in "aeiou" for c in mid):
+                if len(mid) == 1 and mid not in "aeiou":
                     e_idx = len(lower) - 1
                     # If a single under_arc grapheme already spans [v_idx, e_idx]
                     # (e.g. "ore", "ure", "ire", "ear", "are", "able", "ible",
@@ -234,6 +293,25 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
                     new_marks.append({"type": "over_arc", "indices": list(range(v_idx, e_idx + 1))})
                     marks = sorted(new_marks, key=lambda m: m["indices"][0])
                     break
+
+    # Word-final -se / -ve = ONE under-arc unit (purse = p/ur/se), mirroring
+    # split_into_phonemes.  Runs AFTER magic-e detection: for wave/five the
+    # final e is already inside an over-arc so the two-trailing-dots
+    # precondition fails and magic-e keeps the word.  Only merge when the
+    # s/v and e are both still lone dots AND the char before the s/v is a
+    # consonant or a vowel already consumed by a multi-char grapheme.
+    if len(lower) >= 4 and lower[-1] == "e" and lower[-2] in ("s", "v"):
+        s_idx, e_idx = len(lower) - 2, len(lower) - 1
+        s_dot = next((m for m in marks if m["type"] == "dot" and m["indices"] == [s_idx]), None)
+        e_dot = next((m for m in marks if m["type"] == "dot" and m["indices"] == [e_idx]), None)
+        prev_ok = lower[-3] not in "aeiou" or any(
+            m["type"] == "under_arc" and (len(lower) - 3) in m["indices"]
+            for m in marks
+        )
+        if s_dot and e_dot and prev_ok:
+            marks = [m for m in marks if m is not s_dot and m is not e_dot]
+            marks.append({"type": "under_arc", "indices": [s_idx, e_idx]})
+            marks = sorted(marks, key=lambda m: m["indices"][0])
     return marks
 
 
@@ -343,13 +421,17 @@ def build_formation_drills(focus_graphemes: list) -> list:
 
 # ─── Phase label ─────────────────────────────────────────────────
 
+# 8-level ledger mapping (was the stale pre-realignment 6-level map, which
+# stamped e.g. "Phase 5" on a new-L3 Special Friends book — caught 2026-07-12).
 PHASE_LABELS = {
-    1: "Letters and Sounds Phase 2-3",
-    2: "Letters and Sounds Phase 3",
-    3: "Letters and Sounds Phase 5",
-    4: "Letters and Sounds Phase 5",
-    5: "Letters and Sounds Phase 5-6",
-    6: "Letters and Sounds Phase 6",
+    1: "Letters and Sounds Phase 2",
+    2: "Letters and Sounds Phase 2",
+    3: "Letters and Sounds Phase 3-4",
+    4: "Letters and Sounds Phase 3",
+    5: "Letters and Sounds Phase 5",
+    6: "Letters and Sounds Phase 5",
+    7: "Letters and Sounds Phase 5",
+    8: "Letters and Sounds Phase 6",
 }
 
 
@@ -384,12 +466,62 @@ def build_ordering_items(story_pages: list, count: int = 4, seed: int = 42) -> l
     return items
 
 
+# ─── Special-friend match (Tell-the-Story bottom half, 16pp books) ───
+# Small decodable word banks for the Level 3 "special friend" digraphs.
+# Every word uses only its focus digraph plus earlier single-letter sounds,
+# so it stays decodable on the Special Friends page (no untaught graphemes).
+SPECIAL_FRIEND_BANK = {
+    "sh": ["fish", "shop", "ship", "wish", "shed", "cash"],
+    "ch": ["chip", "chop", "rich", "chin", "chat", "much"],
+    "th": ["that", "this", "with", "moth", "thin", "bath"],
+    "ng": ["ring", "song", "king", "bang", "long", "wing"],
+    "nk": ["tank", "pink", "sink", "bank", "wink", "honk"],
+    "ck": ["sock", "duck", "kick", "rock", "back", "neck"],
+    "qu": ["quiz", "quit", "quick", "quack"],
+}
+
+
+def build_special_friend_match(focus_graphemes: list, story_words: list = None,
+                               per_friend: int = 3, seed: int = 11) -> dict | None:
+    """Build a 'draw a line from each word to its special friend' activity for
+    the bottom half of the Tell-the-Story page on 16pp digraph books.
+
+    Returns {"friends": ["sh", "nk"], "words": [{"word", "friend"}, ...]} or
+    None when fewer than two usable special friends are available (e.g. Level
+    1/2 books whose focus is single letters), in which case the page simply
+    shows the enlarged picture grid with no matching task below.
+    """
+    seen = []
+    for g in (focus_graphemes or []):
+        if len(g) >= 2 and g in SPECIAL_FRIEND_BANK and g not in seen:
+            seen.append(g)
+    if len(seen) < 2:
+        return None
+
+    friends = seen[:2]                       # two columns keeps 6 words tidy
+    rng = random.Random(seed)
+    story_set = {w.lower() for w in (story_words or [])}
+    words = []
+    for g in friends:
+        bank = SPECIAL_FRIEND_BANK[g]
+        preferred = [w for w in bank if w in story_set]      # reuse story words first
+        rest = [w for w in bank if w not in story_set]
+        rng.shuffle(rest)
+        for w in (preferred + rest)[:per_friend]:
+            words.append({"word": w, "friend": g})
+    rng.shuffle(words)
+    return {"friends": friends, "words": words}
+
+
 # ─── Page count selection ────────────────────────────────────────
 
 DEFAULT_PAGE_COUNT = {
     1: 16, 2: 16, 3: 16,   # old L1 books (now split L1-L3) — 16pp
     4: 20, 5: 20, 6: 20,   # old L2-L4 books — 20pp
-    7: 24, 8: 24,          # old L5-L6 books — 24pp
+    7: 20, 8: 20,          # slimmed 24→20 (2026-07-03): Word Workshop,
+                           # Listen and Write, Read & Match and Sentence
+                           # Stretch dropped; Writing Practice, Talk About
+                           # It and Prefix Power kept.
 }
 
 
@@ -543,3 +675,371 @@ def pick_dictation_sentence(story_pages: list, max_words: int = 8) -> str:
         return None
     candidates.sort(key=lambda x: x[0])
     return candidates[0][1] + "."
+
+
+# ─── Shifty Sounds ───────────────────────────────────────────────
+# The strand covering GPCs the main ladder doesn't teach directly
+# (alternative spellings like ph/tch/dge, alternative pronunciations like
+# y=/ee/).  A book at L4+ may display up to two in a small charcoal band
+# under the sound tables, which pre-teaches them before the story.
+# Data: data/shifty_sounds.json.  L1-L3 never show the band.
+
+SHIFTY_COLOUR = "#475569"           # locked 2026-07-03 — outside the level rainbow
+SHIFTY_MIN_LEVEL = 4                # L1-L3 stay clean
+SHIFTY_MAX_PER_BOOK = 2
+
+# (grapheme, sound) pairs that are in the data deck but NOT band-worthy:
+# the main ladder's own teaching already covers them, so banding them would
+# re-teach what the child knows.
+SHIFTY_EXCLUDE = {
+    ("th", "voiced /th/"),   # voiced/unvoiced th split isn't taught separately
+    ("ow", "/ow/"),          # ladder L4 'ow' IS /ow/ (owl, down); card base is /oa/
+}
+
+_shifty_cache = None
+_tricky_master_cache = None
+
+
+def _load_shifty_data():
+    global _shifty_cache
+    if _shifty_cache is None:
+        import json
+        path = Path(__file__).resolve().parent.parent / "data" / "shifty_sounds.json"
+        with open(path, encoding="utf-8") as f:
+            _shifty_cache = json.load(f)
+    return _shifty_cache
+
+
+def _tricky_word_levels() -> dict:
+    """lower-case tricky word -> level it is introduced at (master list)."""
+    global _tricky_master_cache
+    if _tricky_master_cache is None:
+        import json
+        path = Path(__file__).resolve().parent.parent / "data" / "tricky_words_by_level.json"
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        _tricky_master_cache = {}
+        for lv in range(1, 9):
+            for w in data.get(f"level_{lv}", {}).get("new_tricky_words", []):
+                _tricky_master_cache.setdefault(w.lower(), lv)
+    return _tricky_master_cache
+
+
+def build_shifty_sounds(story_tokens: list, level: int,
+                        cumulative_graphemes: list) -> list:
+    """Detect up to SHIFTY_MAX_PER_BOOK Shifty Sounds present in this book.
+
+    story_tokens: lower-cased words from the story text + story_words list.
+    Returns [{"grapheme", "sound", "example"}, ...] ordered by confidence.
+
+    Detection is deliberately conservative — this drives a printed teaching
+    band, so a false positive is worse than a miss:
+      - alternative SPELLINGS (ph, tch, eigh…) match when the letter string
+        appears in a story word AND the grapheme isn't already taught in the
+        main ladder at this level.  An exact hit on one of the card's own
+        example words counts as higher confidence than a bare substring.
+      - alternative PRONUNCIATIONS (y=/ee/, ea=/e/…) only match on an exact
+        story-word hit in the card's examples — a letter string can't tell
+        us how it is pronounced.
+    """
+    if level < SHIFTY_MIN_LEVEL:
+        return []
+    data = _load_shifty_data()
+    tricky_lv = _tricky_word_levels()
+    # A word already listed as a tricky word at or below this level is read on
+    # sight — banding its hidden sound ("the" = voiced th, "he" = open e) is
+    # noise on every book, not teaching.  Those graduations belong to the
+    # tricky-to-decodable engine work, not the printed band.
+    def _known_tricky(word):
+        return tricky_lv.get(word.lower(), 99) <= level
+    tokens = {t.lower().strip("'") for t in story_tokens if t}
+    taught = set(cumulative_graphemes)
+    candidates = []  # (confidence desc sort key, entry)
+
+    # Letter strings that map to MORE than one sound across the spelling cards
+    # ("ere" = /air/ there AND /ear/ here): a bare substring can't tell which,
+    # so those cards only ever fire on an exact example-word hit.
+    from collections import Counter
+    _g_counts = Counter(c["grapheme"].lstrip("-") for c in data.get("new_spelling_cards", []))
+
+    for card in data.get("new_spelling_cards", []):
+        g = card["grapheme"].lstrip("-")
+        if card.get("allowed_from_level", 99) > level or g in taught:
+            continue
+        if (g, card["sound"]) in SHIFTY_EXCLUDE:
+            continue
+        example_hits = [w for w in card.get("examples", [])
+                        if w.lower() in tokens and not _known_tricky(w)]
+        # Substring-only evidence is accepted only for unambiguous 3+ letter
+        # graphemes (tch, dge, eigh): a 2-letter string inside a word proves
+        # nothing ("ve" in "brave" is magic-e + v, not the ve ending), and an
+        # ambiguous string ("ere") can't reveal its sound.
+        substring_hits = [t for t in tokens if g in t and not _known_tricky(t)]
+        if not example_hits and (
+            len(g) < 3 or _g_counts[g] > 1 or not substring_hits
+        ):
+            continue
+        confidence = 2 if example_hits else 1
+        shown = example_hits[0] if example_hits else sorted(substring_hits)[0]
+        candidates.append((
+            (-confidence, card.get("allowed_from_level", 99), g),
+            {"grapheme": card["grapheme"], "sound": card["sound"], "example": shown},
+        ))
+
+    for card in data.get("alt_pronunciation_cards", []):
+        g = card["grapheme"]
+        # First pronunciation is the base (main-ladder) sound — skip it.
+        for pron in card.get("pronunciations", [])[1:]:
+            if pron.get("allowed_from_level", 99) > level:
+                continue
+            if (g, pron["sound"]) in SHIFTY_EXCLUDE:
+                continue
+            hits = [w for w in pron.get("examples", [])
+                    if w.lower() in tokens and not _known_tricky(w)]
+            if not hits:
+                continue
+            candidates.append((
+                (-3, pron.get("allowed_from_level", 99), g),
+                {"grapheme": g, "sound": pron["sound"], "example": hits[0]},
+            ))
+
+    candidates.sort(key=lambda c: c[0])
+    result, seen = [], set()
+    for _, entry in candidates:
+        dedupe_key = (entry["grapheme"], entry["sound"])
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+        result.append(entry)
+        if len(result) >= SHIFTY_MAX_PER_BOOK:
+            break
+    return result
+
+
+# ─── Decodability engine (shared with scripts/audit_decodability.py) ────
+# Moved here 2026-07-12 so the QA audit and the page-2 "Future Sounds"
+# preview band use the exact same segmentation logic — one source of
+# truth for "is this word decodable at this book's taught window".
+
+def taught_graphemes(graphemes_data: dict, level: int, focus: list) -> list:
+    """Prior levels in full + current level up to the furthest focus sound.
+
+    Suffix units (ed, ing, er… from a level's "suffixes" list) count as
+    taught from the START of their level — per the L7 morphology note, a
+    word is decodable at L7+ when its root decodes and the suffix is
+    taught.  Below that level, -ed words are NOT decodable (Lynden
+    2026-07-13: "shouted" isn't decodable — ed says /id/)."""
+    taught = []
+    for lv in range(1, level):
+        entry = graphemes_data.get(f"level_{lv}", {})
+        taught.extend(entry.get("graphemes", []))
+        taught.extend(s for s in entry.get("suffixes", []) if s not in taught)
+    entry = graphemes_data.get(f"level_{level}", {})
+    cur = entry.get("graphemes", [])
+    last_idx = -1
+    for g in focus:
+        if g in cur:
+            last_idx = max(last_idx, cur.index(g))
+    taught.extend(cur[: last_idx + 1] if last_idx >= 0 else list(focus))
+    taught.extend(s for s in entry.get("suffixes", []) if s not in taught)
+    for g in focus:
+        if g not in taught:
+            taught.append(g)
+    return taught
+
+
+def all_known_units(graphemes_data: dict) -> set:
+    """Every multi-letter contiguous grapheme in the whole scheme."""
+    units = set()
+    for lv in range(1, 9):
+        for g in graphemes_data.get(f"level_{lv}", {}).get("graphemes", []):
+            if len(g) >= 2 and "_" not in g and "-" not in g:
+                units.add(g)
+    return units
+
+
+def can_decode(word: str, taught: list, known_units: set,
+               forbid_single_e_at: int = -1) -> bool:
+    """DP segmentation of word into taught graphemes (incl. split digraphs).
+
+    A single-letter grapheme may NOT be used where an UNTAUGHT known unit
+    starts.  `forbid_single_e_at`: optional index where a LONE 'e' match is
+    disallowed — used by the -ed honesty check in missing_units to ask
+    "can this word decode WITHOUT reading the past-tense e as its own
+    phoneme?" (stared = st-are-d yes; shouted no).
+
+    NOTE (2026-07-12): split digraphs are stored as e.g. "a-e" (hyphen) in
+    graphemes_by_level.json, but this function's `splits` detection has
+    always matched on underscore ("_"), which never appears in the data —
+    so the dedicated split-digraph path below has been dead code all along
+    (CVCe words like "bike"/"gate" only ever passed because b/i/k/e are all
+    already-taught singles, not because this matched the split pattern).
+    Fixing the separator to "-" was tried and reverted: it makes the DP
+    falsely accept words like "river" as a false split match on "i_v_e"
+    (mid-word, not a real magic-e), silently hiding a real violation. Left
+    as "_" (i.e. splits inert) to preserve existing, audited behaviour
+    across the whole fleet. A correct fix needs the split match to respect
+    syllable/morpheme boundaries, not just the bare V-C-e letter pattern —
+    flagged for a future pass, not attempted here.
+    """
+    taught_set = set(taught)
+    singles = {g for g in taught_set if len(g) == 1}
+    splits = [g for g in taught_set if "_" in g and len(g) == 3]
+    contiguous = sorted((g for g in taught_set if "-" not in g), key=len, reverse=True)
+    untaught_units = [u for u in known_units if u not in taught_set]
+    n = len(word)
+    ok = [False] * (n + 1)
+    ok[n] = True
+    for i in range(n - 1, -1, -1):
+        blocked_single = any(word.startswith(u, i) for u in untaught_units)
+        for g in contiguous:
+            if len(g) == 1 and blocked_single:
+                continue
+            if len(g) == 1 and i == forbid_single_e_at and g == "e":
+                continue
+            if word.startswith(g, i) and ok[i + len(g)]:
+                ok[i] = True
+                break
+        if not ok[i]:
+            for g in splits:  # e.g. a-e matches "a<taught consonant>e"
+                if (
+                    i + 3 <= n
+                    and word[i] == g[0]
+                    and word[i + 2] == g[2]
+                    and word[i + 1] in singles
+                    and ok[i + 3]
+                ):
+                    ok[i] = True
+                    break
+    return ok[0]
+
+
+def missing_units(word: str, taught: list, known_units: set) -> set:
+    """Return the untaught letters/graphemes blocking `word`, or empty set
+    if it already decodes.  A word that fails for a structural reason (not
+    a bare untaught letter/unit) comes back as {word} — the whole word,
+    which callers should treat as "not a clean single sound to preview"."""
+    if can_decode(word, taught, known_units):
+        # -ed honesty (Lynden 2026-07-13): "shouted" letter-decodes but the
+        # ending says /id/ /t/ /d/ — an untaught sound until the ed suffix
+        # lands (L7).  Flag ONLY when the word cannot decode without a bare
+        # final e+d: "stared" passes once 'are' is taught (are+d), and
+        # short true-/ed/ words (bed, shed, need) are protected by the
+        # length guard and the DP itself.
+        if len(word) >= 5 and word.endswith("ed") and "ed" not in set(taught):
+            # magic-e stem + d (named = n+a-e+m+d, liked = l+i-e+k+d) is an
+            # honest parse when the split digraph is taught — Lynden's marks
+            # ruling already renders these as magic-e, never as an ed unit.
+            # Vowel-before guard stops "shouted" fake-matching as u-e.
+            import re as _re
+            m = _re.match(r"^(.*)([aeiou])([bcdfgklmnpstvz])ed$", word)
+            is_magic_e_stem = bool(
+                m and f"{m.group(2)}-e" in set(taught)
+                and (not m.group(1) or m.group(1)[-1] not in "aeiou")
+                and (not m.group(1) or can_decode(m.group(1), taught, known_units))
+            )
+            if not is_magic_e_stem and not can_decode(
+                    word, taught, known_units,
+                    forbid_single_e_at=len(word) - 2):
+                # r-family stems: "tired" is /t/ /ire/ /d/ (Lynden
+                # 2026-07-19) — when the letters before the final d ARE a
+                # roadmap unit (ire, ure, ear, are...), preview THAT unit,
+                # not a bogus 'ed'.  The d is an ordinary taught letter.
+                for u in sorted((x for x in known_units if x not in set(taught)),
+                                key=len, reverse=True):
+                    if word.endswith(u + "d"):
+                        stem = word[: -len(u) - 1]
+                        if not stem or can_decode(stem, taught, known_units):
+                            return {u}
+                return {"ed"}
+        return set()
+    taught_set = set(taught)
+    taught_letters = {ch for g in taught_set for ch in g if ch not in ("_", "-")}
+    missing = {ch for ch in word if ch.isalpha() and ch not in taught_letters}
+    present_untaught = {u for u in known_units if u not in taught_set and u in word}
+    if present_untaught:
+        # An untaught digraph is ONE future sound ('ss' in "mess"), not two
+        # stray letters (Lynden 2026-07-15) — report the unit itself and drop
+        # any missing letters the unit already accounts for, but keep letters
+        # missing in their own right ('e' in "mess" is still untaught).
+        missing = {ch for ch in missing if not any(ch in u for u in present_untaught)}
+        return missing | present_untaught
+    if missing:
+        return missing
+    return {word}
+
+
+def check_word(word: str, taught: list, known_units: set):
+    """Return None if fine, else a short human-readable reason string."""
+    missing = missing_units(word, taught, known_units)
+    if not missing:
+        return None
+    if missing == {word}:
+        return "not segmentable from taught sounds"
+    return "uses untaught " + ", ".join(f"'{m}'" for m in sorted(missing))
+
+
+def _grapheme_taught_level(unit: str, graphemes_data: dict):
+    """First level (1-8) whose OWN grapheme list (or suffixes list — 'ed'
+    lands at L7) introduces `unit`, or None if it isn't on the roadmap
+    anywhere (e.g. 'sion' currently has no L8 book that teaches it — a
+    curriculum gap, not something to mislabel)."""
+    for lv in range(1, 9):
+        entry = graphemes_data.get(f"level_{lv}", {})
+        if unit in entry.get("graphemes", []) or unit in entry.get("suffixes", []):
+            return lv
+    return None
+
+
+FUTURE_MAX_PER_BOOK = 8
+
+
+def build_future_sounds(story_tokens: list, level: int, taught: list,
+                         known_units: set, graphemes_data: dict,
+                         level_colours: dict, tricky_words: set = frozenset()) -> list:
+    """Sounds this story's words actually use that aren't taught yet AT
+    THIS BOOK — previewed honestly on the page-2 chart instead of quietly
+    smuggled through.  Each entry is tagged with the level that genuinely
+    teaches it (and that level's ledger colour), deduped by grapheme, one
+    example word per grapheme, capped at FUTURE_MAX_PER_BOOK and ordered
+    by how soon it's coming.
+
+    Whole-word "not segmentable" fallbacks are skipped — the chart previews
+    single sounds, not entire irregular words (those belong in a Watch Out
+    / pronunciation note instead).  Tricky words (read on sight, e.g. "the",
+    "have") are excluded from scanning entirely — they're read by sight, not
+    decoded, so a tricky word's letters shouldn't drive a Future Sounds
+    example (matches audit_decodability.py's own tricky-word skip).
+    """
+    found = {}  # unit -> example word (first one wins)
+    for tok in story_tokens:
+        w = tok.lower().strip("'")
+        if not w or w in tricky_words:
+            continue
+        # Contractions: apostrophe is spelling, not a sound — scan "can't"
+        # as c-a-n-t (mirrors audit_release's normalisation).
+        w = w.replace("'", "")
+        if not w.isalpha():
+            continue
+        for u in missing_units(w, taught, known_units):
+            if u == w:
+                continue  # not a clean single sound — skip
+            found.setdefault(u, w)
+
+    entries = []
+    for unit, example in found.items():
+        lv = _grapheme_taught_level(unit, graphemes_data)
+        # None = not on the roadmap anywhere (e.g. "sion") — nothing honest
+        # to preview.  lv == level is real too (a later BOOK within this
+        # same level teaches it, e.g. 'm' for an L1.1 book) — only lv < level
+        # would mean "already taught", which can't happen for a genuine miss.
+        if lv is None:
+            continue
+        entries.append({
+            "grapheme": unit,
+            "level": lv,
+            "colour": level_colours.get(lv, "#9aa0aa"),
+            "example": example,
+        })
+    entries.sort(key=lambda e: (e["level"], e["grapheme"]))
+    return entries[:FUTURE_MAX_PER_BOOK]

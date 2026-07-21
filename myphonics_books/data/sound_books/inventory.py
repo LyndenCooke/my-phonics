@@ -55,7 +55,7 @@ INVENTORY = [
             {"word": "sun", "query": "bright sun in the sky"},
             {"word": "snake", "query": "green snake on grass"},
             {"word": "sock", "query": "colourful striped knitted socks"},
-            {"word": "sandwich", "query": "ham sandwich on plate"},
+            {"word": "sandwich", "query": "cheese salad sandwich on plate"},
             {"word": "star", "query": "gold star ornament decoration"},
             {"word": "spoon", "query": "silver spoon on table"},
         ])
@@ -212,10 +212,10 @@ INVENTORY = [
     ]),
     _b(2, 7, 1, "Sound Book: h", [
         _s("h", "Say the sound: h. A puff of air. h-h-h!", [
-            {"word": "hat", "query": "straw hat on beach"},
+            {"word": "hat", "query": "colourful embroidered kufi cap hat"},
             {"word": "horse", "query": "brown horse in field"},
             {"word": "helicopter", "query": "helicopter flying in sky"},
-            {"word": "house", "query": "cottage house in countryside"},
+            {"word": "house", "query": "traditional round clay house"},
             {"word": "hedgehog", "query": "hedgehog in garden"},
             {"word": "hammer", "query": "hammer on workbench"},
         ])
@@ -260,7 +260,7 @@ INVENTORY = [
             {"word": "fluff", "query": "fluffy white cotton on white background"},
         ]),
         _s("ll", "Say the sound: ll. Double letter — two l's make one sound. ll!", [
-            {"word": "bell", "query": "church bell in tower"},
+            {"word": "bell", "query": "shiny golden hand bell"},
             {"word": "shell", "query": "seashell on beach"},
             {"word": "doll", "query": "rag doll on bed"},
             {"word": "jellyfish", "query": "single jellyfish in ocean"},
@@ -373,7 +373,7 @@ INVENTORY = [
     _b(3, 4, 1, "Sound Book: th", [
         _s("th", "Say the sound: th. Tongue between teeth, then breathe. th!", [
             {"word": "thumb", "query": "thumbs up gesture"},
-            {"word": "thunder", "query": "thunderstorm with lightning"},
+            {"word": "thunder", "query": "dark storm clouds gathering"},
             {"word": "throne", "query": "royal throne in palace"},
             {"word": "tooth", "query": "toothbrush with toothpaste"},
             {"word": "thermometer", "query": "thermometer showing temperature"},
@@ -474,7 +474,7 @@ INVENTORY = [
         _s("or", "Say the sound: or. Round your lips. orrr!", [
             {"word": "fork", "query": "silver fork on table"},
             {"word": "corn", "query": "corn on the cob"},
-            {"word": "storm", "query": "thunderstorm with lightning"},
+            {"word": "storm", "query": "huge waves in a sea storm"},
             {"word": "horse", "query": "brown horse in field"},
             {"word": "door", "query": "wooden door in house"},
             {"word": "floor", "query": "wooden floor in room"},
@@ -502,7 +502,7 @@ INVENTORY = [
     ]),
     _b(4, 11, 1, "Sound Book: ou", [
         _s("ou", "Say the sound: ou. Like 'ow' in 'cow'. ou!", [
-            {"word": "house", "query": "cottage house in countryside"},
+            {"word": "house", "query": "traditional round clay house"},
             {"word": "mouse", "query": "mouse on desk"},
             {"word": "cloud", "query": "fluffy cloud in sky"},
             {"word": "shout", "query": "child shouting outdoors"},
@@ -544,7 +544,7 @@ INVENTORY = [
         _s("o-e", "Say the sound: o-e. Split digraph — silent e makes the o say its name. o-e!", [
             {"word": "bone", "query": "dog bone on grass"},
             {"word": "stone", "query": "smooth stone on beach"},
-            {"word": "home", "query": "brick home with garden"},
+            {"word": "home", "query": "traditional adobe home with garden"},
             {"word": "nose", "query": "child's nose close-up"},
             {"word": "rope", "query": "coiled rope on dock"},
             {"word": "globe", "query": "world globe on desk"},
@@ -626,7 +626,7 @@ INVENTORY = [
             {"word": "nurse", "query": "nurse in hospital"},
             {"word": "purse", "query": "leather purse on table"},
             {"word": "burn", "query": "campfire burning"},
-            {"word": "church", "query": "stone church with steeple"},
+            {"word": "chimney", "query": "brick chimney on a rooftop"},
             {"word": "surf", "query": "surfer riding wave"},
         ])
     ], comparison=["ir", "er"]),
@@ -756,7 +756,7 @@ INVENTORY = [
             {"word": "tire", "query": "car tire on road"},
             {"word": "wire", "query": "copper wire coil"},
             {"word": "hire", "query": "hire sign in window"},
-            {"word": "spire", "query": "church spire against sky"},
+            {"word": "spire", "query": "tall castle tower spire against sky"},
             {"word": "inspire", "query": "teacher inspiring students"},
         ])
     ], comparison=["i-e", "igh"]),
@@ -806,7 +806,7 @@ INVENTORY = [
             {"word": "action", "query": "child in action pose"},
             {"word": "caution", "query": "caution sign on road"},
             {"word": "nation", "query": "flags of different nations"},
-            {"word": "vacation", "query": "family on vacation at beach"},
+            {"word": "vacation", "query": "packed suitcase ready for a holiday"},
             {"word": "education", "query": "classroom education scene"},
         ])
     ]),

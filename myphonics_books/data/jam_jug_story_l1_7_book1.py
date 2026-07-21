@@ -47,7 +47,7 @@ JAM_JUG_STORY_BOOK1 = {
         "tricky_words_used": ["I", "the", "no"],  # 'a' treated as decodable; 'oh' removed via rewrite
         "read_words": ["jug", "van", "web", "wig"],  # Focus on j, v, w
         "nonsense_words": [
-            "jod", "jev", "jup", "jig",  # j onset
+            "jod", "jev", "jup", "jof",  # j onset
             "vob", "vem", "vud", "vig",  # v onset
             "wob", "wem", "wud", "wib",  # w onset
         ],

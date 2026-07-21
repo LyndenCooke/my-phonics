@@ -32,13 +32,13 @@ def get_new_tricky_words(level: int) -> List[str]:
     Get only the NEW tricky words introduced at a specific level.
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         List of new tricky words for this level only
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     data = _load_tricky_words_data()
     level_key = f"level_{level}"
@@ -50,13 +50,13 @@ def get_cumulative_tricky_words(level: int) -> List[str]:
     Get all tricky words up to and including a specific level.
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         List of all tricky words permitted at this level
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     data = _load_tricky_words_data()
     level_key = f"level_{level}"
@@ -69,13 +69,13 @@ def is_tricky_word(word: str, level: int) -> bool:
 
     Args:
         word: The word to check
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         True if word is a tricky word at this level
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     word_lower = word.lower().strip()
     cumulative = get_cumulative_tricky_words(level)
@@ -87,7 +87,7 @@ def get_tricky_words_for_story(level: int, story_words: List[str]) -> List[str]:
     Filter a list of story words to find which ones are tricky words.
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
         story_words: List of words from the story
 
     Returns:

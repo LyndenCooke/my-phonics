@@ -1,8 +1,20 @@
-"""Rebuild graphemes_by_level.json + tricky_words_by_level.json from the v2.1
-Curriculum Ledger's 8-level scheme.  Backs up the existing 6-level files to
-*.6level.bak first.  Run once for the 6->8 level realignment (Phase 1)."""
+"""RETIRED one-time migration — DO NOT RE-RUN.
+
+Rebuilt graphemes_by_level.json + tricky_words_by_level.json from the v2.1
+Curriculum Ledger's 8-level scheme for the original 6->8 level realignment.
+Its hardcoded LEVELS/NEW_TRICKY dicts below are a SNAPSHOT from that one
+migration and have gone stale — the live data files have since been hand-
+edited multiple times (e.g. the 2026-07-03 tricky-word cleanup removing
+fast/last/past/after/father/class/grass/pass/plant/path/bath and out, and
+the 2026-07-12 Shifty->main-ladder promotions of wh/ph/ve). Re-running this
+script would silently overwrite those fixes with the old, wrong lists —
+that regression already happened once (caught 2026-07-12). Guarded below:
+refuses to run if the *.6level.bak marker from the original migration is
+already present.
+"""
 import json
 import shutil
+import sys
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent.parent / "data"
@@ -18,7 +30,7 @@ LEVELS = {
     4: dict(name="Longer Sounds", colour="#22C55E", maps_to="RWI Set 2 / Phase 3 vowel digraphs",
             graphemes=["ay","ee","igh","ow","oo","ar","or","air","ir","ou","oy"], font_size=28, story_pages=8, template_type="story"),
     5: dict(name="New Spellings", colour="#3B82F6", maps_to="RWI early Set 3 / Phase 5 split digraphs + first alternatives",
-            graphemes=["a-e","i-e","o-e","u-e","ea","ie","oi","aw","ai","oa"], font_size=24, story_pages=8, template_type="story"),
+            graphemes=["a-e","i-e","o-e","u-e","ea","ie","oi","aw","ai","oa","ve"], font_size=24, story_pages=8, template_type="story"),
     6: dict(name="Building Fluency", colour="#6366F1", maps_to="RWI Set 3 continued / Phase 5 more alternatives",
             graphemes=["ur","er","are","ow","ew","ue"], font_size=20, story_pages=8, template_type="story"),
     7: dict(name="Reading Together", colour="#8B5CF6", maps_to="RWI Grey 9-11 / late Phase 5 trigraphs",
@@ -51,6 +63,16 @@ def dedupe(seq):
 
 
 def main():
+    bak_marker = DATA / "tricky_words_by_level.6level.bak"
+    if bak_marker.exists() and "--force" not in sys.argv:
+        print(
+            "REFUSING TO RUN: this migration already happened once "
+            f"({bak_marker.name} exists) and its hardcoded word lists are "
+            "stale. Re-running would overwrite hand-made curriculum fixes. "
+            "Pass --force if you truly mean to reset from this snapshot."
+        )
+        sys.exit(1)
+
     # backup
     for fn in ("graphemes_by_level.json", "tricky_words_by_level.json"):
         src = DATA / fn

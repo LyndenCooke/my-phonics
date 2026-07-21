@@ -35,13 +35,13 @@ RUN_PUP_STORY_BOOK1 = {
             {"text": "I rub the pup. Rub, rub, rub!", "image": None},
             {"text": "The pup and me! A big hug!", "image": None},
         ],
-        "story_words": ["run", "pup", "hut", "bush", "tub", "rub", "hug", "hid"],
-        "tricky_words_used": ["I", "the"],  # 'a' treated as decodable at L1; off-list words removed
+        "story_words": ["run", "pup", "hut", "tub", "rub", "hug", "hid"],  # bush moved out 2026-07-13 — u says /uu/ + sh untaught: tricky only, never sound-buttoned
+        "tricky_words_used": ["I", "the", "bush"],  # 'bush' uses sh (untaught at L2.2) — flag it; 'a'/'is'/'have' auto-detected from the master list
         "read_words": ["hub", "rub", "hut", "bug"],  # Focus on u, r, h, b
         "nonsense_words": [
             "hup", "rud", "bup", "reb",  # u, r, h, b focus
-            "hib", "rup", "hab", "besh",  # mixed with focus sounds
-            "gub", "mub", "lub", "vub",  # u combinations
+            "hib", "rup", "hab", "bek",  # mixed with focus sounds
+            "gub", "mub", "kub", "dut",  # u combinations (l/v/sh untaught yet)
         ],
         "questions": [
             {"category": "Finding", "text": "Where did the pup hide?"},

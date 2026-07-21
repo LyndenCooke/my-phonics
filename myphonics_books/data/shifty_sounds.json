@@ -1,0 +1,2430 @@
+{
+  "_name": "Shifty Sounds",
+  "_description": "Master card deck: every grapheme with all its pronunciations (front/back card model) plus every extra spelling. Each entry carries the level it may first appear from, so the natural progression is protected. Powers the in-book Shifty Sounds section, the games and the decodability engine.",
+  "_rule": "A grapheme+sound pair is only decodable in a book at or above its allowed_from level. Below that level a word using it is tricky-for-now (pre-taught via its game).",
+  "_created": "2026-07-03",
+  "_band_colour": "#475569",
+  "_band_colour_name": "Charcoal/slate grey",
+  "_decisions": {
+    "band_colour": "LOCKED 2026-07-03 by Lynden: #475569 charcoal/slate grey. Deliberately outside the 8-level rainbow (see graphemes_by_level.json level colours) so it never reads as a 9th level.",
+    "main_ladder_promotions": "LOCKED 2026-07-03 by Lynden: confirmed all 8 as specialist-recommended, no additions. These 8 GPCs should be moved OUT of this Shifty Sounds data (or flagged non-shifty) and INTO data/graphemes_by_level.json at their natural level during the build: wh, ph, ve, -ed (3 sounds: /d/ /t/ /id/), y=/ee/, y=/igh/, soft c, soft g. The borderline extras (tch, dge, short oo, s=/z/, ea=/e/, au) STAY in the Shifty band, not promoted. IMPLEMENTED 2026-07-12: wh/ve/ph added to graphemes_by_level.json (levels 4/5/6); ed left as a suffix (already structurally present via level_7 suffixes, full suffix-aware decoding still pending); y=/igh/, y=/ee/, soft c, soft g pronunciation entries removed from this file (no longer shown as Shifty -- they need dedicated per-book Watch Out notes, not yet written). CORRECTION 2026-07-12: the ve promotion was attempted as a blanket grapheme in graphemes_by_level.json but reverted the same day -- it collided with ordinary magic-e words that happen to end in v (wave, five, drive, stove...), wrongly blocking them and innocent v-e-m style nonsense words. ve stays in the Shifty band for now; a real fix needs a curated exception-word list (have/give/live/love/above/glove/dove...), not a bare grapheme match, since the engine cannot tell short-vowel ve-words from long-vowel magic-e words that end in v. Flagged for the manual tricky/shifty pass, not resolved.",
+    "promoted_graphemes": [
+      "wh",
+      "ph",
+      "ve",
+      "-ed",
+      "y=/ee/",
+      "y=/igh/",
+      "soft c",
+      "soft g"
+    ],
+    "stays_in_band": [
+      "tch",
+      "dge",
+      "short oo",
+      "s=/z/",
+      "ea=/e/",
+      "au"
+    ]
+  },
+  "sound_cards": [
+    {
+      "sound": "/b/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "b",
+          "example": "bat",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "bb",
+          "example": "rabbit",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/d/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "d",
+          "example": "dog",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "dd",
+          "example": "add",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "-ed",
+          "example": "filled",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/k/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "c",
+          "example": "cat",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "k",
+          "example": "kit",
+          "allowed_from_level": 2,
+          "main": false
+        },
+        {
+          "grapheme": "ck",
+          "example": "duck",
+          "allowed_from_level": 2,
+          "main": false
+        },
+        {
+          "grapheme": "ch",
+          "example": "school",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "que",
+          "example": "unique",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/g/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "g",
+          "example": "got",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "gg",
+          "example": "egg",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/m/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "m",
+          "example": "map",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "mm",
+          "example": "hammer",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "mb",
+          "example": "lamb",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/n/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "n",
+          "example": "net",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "nn",
+          "example": "dinner",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "kn",
+          "example": "knee",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "gn",
+          "example": "gnat",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/p/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "p",
+          "example": "pig",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "pp",
+          "example": "happy",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/r/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "r",
+          "example": "rat",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "rr",
+          "example": "mirror",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "wr",
+          "example": "write",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/s/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "s",
+          "example": "sun",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "ss",
+          "example": "hiss",
+          "allowed_from_level": 2,
+          "main": false
+        },
+        {
+          "grapheme": "c",
+          "example": "city",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ce",
+          "example": "face",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "se",
+          "example": "mouse",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/t/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "t",
+          "example": "tap",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "tt",
+          "example": "butter",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "-ed",
+          "example": "jumped",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/v/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "v",
+          "example": "van",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "ve",
+          "example": "have",
+          "allowed_from_level": 5,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/w/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "w",
+          "example": "wet",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "wh",
+          "example": "when",
+          "allowed_from_level": 4,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/y/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "y",
+          "example": "yes",
+          "allowed_from_level": 2,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/z/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "z",
+          "example": "zip",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "zz",
+          "example": "buzz",
+          "allowed_from_level": 3,
+          "main": false
+        },
+        {
+          "grapheme": "s",
+          "example": "dogs, is",
+          "allowed_from_level": 4,
+          "main": false
+        },
+        {
+          "grapheme": "se",
+          "example": "cheese",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/sh/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "sh",
+          "example": "ship",
+          "allowed_from_level": 3,
+          "main": true
+        },
+        {
+          "grapheme": "ch",
+          "example": "chef",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ti",
+          "example": "station",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ci",
+          "example": "special",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "ssi",
+          "example": "mission",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "s",
+          "example": "sure",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ch/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "ch",
+          "example": "chip",
+          "allowed_from_level": 3,
+          "main": true
+        },
+        {
+          "grapheme": "tch",
+          "example": "catch",
+          "allowed_from_level": 5,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/th/ unvoiced",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "th",
+          "example": "thin",
+          "allowed_from_level": 3,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/th/ voiced",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "th",
+          "example": "then",
+          "allowed_from_level": 3,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/ng/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "ng",
+          "example": "ring",
+          "allowed_from_level": 3,
+          "main": true
+        },
+        {
+          "grapheme": "n",
+          "example": "think (nk)",
+          "allowed_from_level": 3,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/j/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "j",
+          "example": "jam",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "g",
+          "example": "gem",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ge",
+          "example": "cage",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "dge",
+          "example": "bridge",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/f/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "f",
+          "example": "fan",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "ff",
+          "example": "puff",
+          "allowed_from_level": 2,
+          "main": false
+        },
+        {
+          "grapheme": "ph",
+          "example": "phone",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "gh",
+          "example": "laugh",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/h/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "h",
+          "example": "hat",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "wh",
+          "example": "who",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/kw/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "qu",
+          "example": "quiz",
+          "allowed_from_level": 3,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/ks/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "x",
+          "example": "box",
+          "allowed_from_level": 2,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/zh/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Consonant",
+      "spellings": [
+        {
+          "grapheme": "s",
+          "example": "treasure",
+          "allowed_from_level": 8,
+          "main": true
+        },
+        {
+          "grapheme": "si",
+          "example": "vision",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/a/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "a",
+          "example": "ant",
+          "allowed_from_level": 1,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "/e/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "e",
+          "example": "egg",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "ea",
+          "example": "head",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/i/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "i",
+          "example": "ink",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "y",
+          "example": "gym",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/o/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "o",
+          "example": "ox",
+          "allowed_from_level": 1,
+          "main": true
+        },
+        {
+          "grapheme": "a",
+          "example": "was, want",
+          "allowed_from_level": 5,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/u/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "u",
+          "example": "up",
+          "allowed_from_level": 2,
+          "main": true
+        },
+        {
+          "grapheme": "o",
+          "example": "son, love",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ou",
+          "example": "touch",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ai/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ai",
+          "example": "rain",
+          "allowed_from_level": 5,
+          "main": true
+        },
+        {
+          "grapheme": "ay",
+          "example": "day",
+          "allowed_from_level": 4,
+          "main": false
+        },
+        {
+          "grapheme": "a-e",
+          "example": "cake",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "ey",
+          "example": "they",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "eigh",
+          "example": "eight",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ea",
+          "example": "great",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "a",
+          "example": "apron",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ee/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ee",
+          "example": "feet",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "ea",
+          "example": "sea",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "e-e",
+          "example": "these",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "y",
+          "example": "happy",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ey",
+          "example": "key",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ie",
+          "example": "field",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "e",
+          "example": "he",
+          "allowed_from_level": 3,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/igh/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "igh",
+          "example": "night",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "i-e",
+          "example": "kite",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "ie",
+          "example": "pie",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "y",
+          "example": "fly",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "i",
+          "example": "find",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/oa/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "oa",
+          "example": "boat",
+          "allowed_from_level": 5,
+          "main": true
+        },
+        {
+          "grapheme": "ow",
+          "example": "blow",
+          "allowed_from_level": 4,
+          "main": false
+        },
+        {
+          "grapheme": "o-e",
+          "example": "home",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "oe",
+          "example": "toe",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "o",
+          "example": "go, cold",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/oo/ long",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "oo",
+          "example": "moon",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "u-e",
+          "example": "rule",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "ew",
+          "example": "new",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ue",
+          "example": "blue",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ou",
+          "example": "soup",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ui",
+          "example": "fruit",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/oo/ short",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Short vowel",
+      "spellings": [
+        {
+          "grapheme": "oo",
+          "example": "book",
+          "allowed_from_level": 5,
+          "main": true
+        },
+        {
+          "grapheme": "u",
+          "example": "put",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "ou",
+          "example": "would",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ar/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ar",
+          "example": "car",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "a",
+          "example": "father, fast",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/or/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "or",
+          "example": "fork",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "aw",
+          "example": "saw",
+          "allowed_from_level": 5,
+          "main": false
+        },
+        {
+          "grapheme": "au",
+          "example": "author",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "augh",
+          "example": "caught",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ore",
+          "example": "more",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "oor",
+          "example": "door",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "oar",
+          "example": "board",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "our",
+          "example": "four",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ur/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ir",
+          "example": "bird",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "ur",
+          "example": "nurse",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "er",
+          "example": "her",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "or",
+          "example": "word",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ear",
+          "example": "learn",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ow/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ou",
+          "example": "out",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "ow",
+          "example": "cow",
+          "allowed_from_level": 6,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/oi/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "oy",
+          "example": "boy",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "oi",
+          "example": "coin",
+          "allowed_from_level": 5,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/air/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "air",
+          "example": "chair",
+          "allowed_from_level": 4,
+          "main": true
+        },
+        {
+          "grapheme": "are",
+          "example": "share",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ere",
+          "example": "there",
+          "allowed_from_level": 6,
+          "main": false
+        },
+        {
+          "grapheme": "ear",
+          "example": "bear",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ear/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ear",
+          "example": "dear",
+          "allowed_from_level": 7,
+          "main": true
+        },
+        {
+          "grapheme": "eer",
+          "example": "deer",
+          "allowed_from_level": 7,
+          "main": false
+        },
+        {
+          "grapheme": "ere",
+          "example": "here",
+          "allowed_from_level": 7,
+          "main": false
+        }
+      ]
+    },
+    {
+      "sound": "/ure/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Long vowel",
+      "spellings": [
+        {
+          "grapheme": "ure",
+          "example": "sure",
+          "allowed_from_level": 7,
+          "main": true
+        }
+      ]
+    },
+    {
+      "sound": "schwa /uh/",
+      "card_type": "sound_to_spelling",
+      "sound_type": "Weak vowel",
+      "spellings": [
+        {
+          "grapheme": "er",
+          "example": "farmer",
+          "allowed_from_level": 6,
+          "main": true
+        },
+        {
+          "grapheme": "a",
+          "example": "about",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "o",
+          "example": "lemon",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "our",
+          "example": "colour",
+          "allowed_from_level": 8,
+          "main": false
+        },
+        {
+          "grapheme": "re",
+          "example": "centre",
+          "allowed_from_level": 8,
+          "main": false
+        }
+      ]
+    }
+  ],
+  "alt_pronunciation_cards": [
+    {
+      "grapheme": "a",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/a/",
+          "examples": [
+            "ant",
+            "cat",
+            "tap"
+          ],
+          "allowed_from_level": 1,
+          "note": ""
+        },
+        {
+          "sound": "/o/",
+          "examples": [
+            "was",
+            "want",
+            "wash",
+            "what"
+          ],
+          "allowed_from_level": 5,
+          "note": "after w"
+        },
+        {
+          "sound": "/ai/",
+          "examples": [
+            "acorn",
+            "apron",
+            "paper"
+          ],
+          "allowed_from_level": 6,
+          "note": "open a"
+        },
+        {
+          "sound": "/ar/",
+          "examples": [
+            "father",
+            "fast",
+            "path",
+            "class"
+          ],
+          "allowed_from_level": 7,
+          "note": "long a (regional)"
+        },
+        {
+          "sound": "schwa /uh/",
+          "examples": [
+            "about",
+            "along",
+            "banana"
+          ],
+          "allowed_from_level": 8,
+          "note": "unstressed"
+        }
+      ]
+    },
+    {
+      "grapheme": "e",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/e/",
+          "examples": [
+            "egg",
+            "hen",
+            "bed"
+          ],
+          "allowed_from_level": 2,
+          "note": ""
+        },
+        {
+          "sound": "/ee/",
+          "examples": [
+            "he",
+            "me",
+            "we",
+            "she",
+            "be"
+          ],
+          "allowed_from_level": 3,
+          "note": "open e"
+        },
+        {
+          "sound": "schwa /uh/",
+          "examples": [
+            "the",
+            "taken",
+            "garden"
+          ],
+          "allowed_from_level": 8,
+          "note": "unstressed"
+        }
+      ]
+    },
+    {
+      "grapheme": "i",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/i/",
+          "examples": [
+            "ink",
+            "pin",
+            "sit"
+          ],
+          "allowed_from_level": 1,
+          "note": ""
+        },
+        {
+          "sound": "/igh/",
+          "examples": [
+            "find",
+            "kind",
+            "mind",
+            "child",
+            "wild"
+          ],
+          "allowed_from_level": 7,
+          "note": "before ld / nd"
+        }
+      ]
+    },
+    {
+      "grapheme": "o",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/o/",
+          "examples": [
+            "ox",
+            "dog",
+            "hot"
+          ],
+          "allowed_from_level": 1,
+          "note": ""
+        },
+        {
+          "sound": "/u/",
+          "examples": [
+            "son",
+            "some",
+            "come",
+            "love",
+            "mother"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        },
+        {
+          "sound": "/oa/",
+          "examples": [
+            "go",
+            "no",
+            "cold",
+            "most",
+            "old"
+          ],
+          "allowed_from_level": 7,
+          "note": "open o / before ld"
+        },
+        {
+          "sound": "/oo/",
+          "examples": [
+            "do",
+            "who",
+            "move",
+            "prove"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "u",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/u/",
+          "examples": [
+            "up",
+            "cup",
+            "mud"
+          ],
+          "allowed_from_level": 2,
+          "note": ""
+        },
+        {
+          "sound": "/oo/ short",
+          "examples": [
+            "put",
+            "full",
+            "push",
+            "bull",
+            "pull"
+          ],
+          "allowed_from_level": 5,
+          "note": ""
+        },
+        {
+          "sound": "/yoo/",
+          "examples": [
+            "unicorn",
+            "uniform",
+            "human",
+            "music"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "y",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant / vowel letter",
+      "pronunciations": [
+        {
+          "sound": "/y/",
+          "examples": [
+            "yes",
+            "yell",
+            "yak"
+          ],
+          "allowed_from_level": 2,
+          "note": "consonant"
+        },
+        {
+          "sound": "/i/",
+          "examples": [
+            "gym",
+            "crystal",
+            "mystery"
+          ],
+          "allowed_from_level": 7,
+          "note": "middle of word"
+        }
+      ]
+    },
+    {
+      "grapheme": "c",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant letter",
+      "pronunciations": [
+        {
+          "sound": "/k/",
+          "examples": [
+            "cat",
+            "cot",
+            "cup",
+            "clap"
+          ],
+          "allowed_from_level": 2,
+          "note": "hard c"
+        },
+        {
+          "sound": "/s/",
+          "examples": [
+            "rice",
+            "race",
+            "face",
+            "ice"
+          ],
+          "allowed_from_level": 5,
+          "note": "soft c - before e, i or y (matches the 5.1 Watch Out note, Lynden 2026-07-19)"
+        }
+      ]
+    },
+    {
+      "grapheme": "g",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant letter",
+      "pronunciations": [
+        {
+          "sound": "/g/",
+          "examples": [
+            "got",
+            "gap",
+            "dog",
+            "glad"
+          ],
+          "allowed_from_level": 1,
+          "note": "hard g"
+        }
+      ]
+    },
+    {
+      "grapheme": "s",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant letter",
+      "pronunciations": [
+        {
+          "sound": "/s/",
+          "examples": [
+            "sun",
+            "sit",
+            "bus"
+          ],
+          "allowed_from_level": 1,
+          "note": ""
+        },
+        {
+          "sound": "/z/",
+          "examples": [
+            "is",
+            "has",
+            "dogs",
+            "hens",
+            "was"
+          ],
+          "allowed_from_level": 4,
+          "note": ""
+        },
+        {
+          "sound": "/sh/",
+          "examples": [
+            "sure",
+            "sugar"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/zh/",
+          "examples": [
+            "treasure",
+            "measure",
+            "usual"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ow",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/oa/",
+          "examples": [
+            "blow",
+            "snow",
+            "low",
+            "window"
+          ],
+          "allowed_from_level": 4,
+          "note": ""
+        },
+        {
+          "sound": "/ow/",
+          "examples": [
+            "cow",
+            "now",
+            "down",
+            "owl"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "oo",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/oo/ long",
+          "examples": [
+            "moon",
+            "zoo",
+            "food",
+            "room"
+          ],
+          "allowed_from_level": 4,
+          "note": ""
+        },
+        {
+          "sound": "/oo/ short",
+          "examples": [
+            "book",
+            "good",
+            "look",
+            "foot",
+            "wood"
+          ],
+          "allowed_from_level": 5,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ea",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/ee/",
+          "examples": [
+            "sea",
+            "tea",
+            "read",
+            "eat",
+            "beach"
+          ],
+          "allowed_from_level": 5,
+          "note": ""
+        },
+        {
+          "sound": "/e/",
+          "examples": [
+            "head",
+            "bread",
+            "ready",
+            "weather",
+            "dead"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        },
+        {
+          "sound": "/ai/",
+          "examples": [
+            "great",
+            "break",
+            "steak"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ie",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/igh/",
+          "examples": [
+            "pie",
+            "tie",
+            "lie",
+            "cried",
+            "fried"
+          ],
+          "allowed_from_level": 5,
+          "note": ""
+        },
+        {
+          "sound": "/ee/",
+          "examples": [
+            "field",
+            "chief",
+            "thief",
+            "brief"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ou",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/ow/",
+          "examples": [
+            "out",
+            "loud",
+            "round",
+            "cloud",
+            "house"
+          ],
+          "allowed_from_level": 4,
+          "note": ""
+        },
+        {
+          "sound": "/oo/",
+          "examples": [
+            "soup",
+            "group",
+            "you",
+            "youth"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        },
+        {
+          "sound": "/oo/ short",
+          "examples": [
+            "would",
+            "could",
+            "should"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        },
+        {
+          "sound": "/u/",
+          "examples": [
+            "young",
+            "touch",
+            "double",
+            "trouble"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/oa/",
+          "examples": [
+            "shoulder",
+            "boulder"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ch",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant digraph",
+      "pronunciations": [
+        {
+          "sound": "/ch/",
+          "examples": [
+            "chip",
+            "chin",
+            "much",
+            "lunch"
+          ],
+          "allowed_from_level": 3,
+          "note": ""
+        },
+        {
+          "sound": "/k/",
+          "examples": [
+            "school",
+            "chorus",
+            "echo",
+            "Christmas"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        },
+        {
+          "sound": "/sh/",
+          "examples": [
+            "chef",
+            "chalet",
+            "machine"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "er",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel + r",
+      "pronunciations": [
+        {
+          "sound": "/ur/",
+          "examples": [
+            "her",
+            "herb",
+            "term",
+            "fern"
+          ],
+          "allowed_from_level": 6,
+          "note": "stressed"
+        },
+        {
+          "sound": "schwa /uh/",
+          "examples": [
+            "farmer",
+            "water",
+            "letter",
+            "better"
+          ],
+          "allowed_from_level": 6,
+          "note": "unstressed ending"
+        }
+      ]
+    },
+    {
+      "grapheme": "ey",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel digraph",
+      "pronunciations": [
+        {
+          "sound": "/ai/",
+          "examples": [
+            "they",
+            "grey",
+            "prey",
+            "obey"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        },
+        {
+          "sound": "/ee/",
+          "examples": [
+            "key",
+            "money",
+            "honey",
+            "valley",
+            "chimney"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ear",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel trigraph",
+      "pronunciations": [
+        {
+          "sound": "/ear/",
+          "examples": [
+            "hear",
+            "dear",
+            "near",
+            "year"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        },
+        {
+          "sound": "/air/",
+          "examples": [
+            "bear",
+            "pear",
+            "wear",
+            "tear (rip)"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        },
+        {
+          "sound": "/ur/",
+          "examples": [
+            "learn",
+            "earth",
+            "heard",
+            "pearl",
+            "search"
+          ],
+          "allowed_from_level": 7,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "wh",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant digraph",
+      "pronunciations": [
+        {
+          "sound": "/w/",
+          "examples": [
+            "when",
+            "which",
+            "wheel",
+            "white",
+            "why"
+          ],
+          "allowed_from_level": 4,
+          "note": ""
+        },
+        {
+          "sound": "/h/",
+          "examples": [
+            "who",
+            "whole",
+            "whose",
+            "whom"
+          ],
+          "allowed_from_level": 6,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "th",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant digraph",
+      "pronunciations": [
+        {
+          "sound": "unvoiced /th/",
+          "examples": [
+            "thin",
+            "thick",
+            "bath",
+            "moth"
+          ],
+          "allowed_from_level": 3,
+          "note": ""
+        },
+        {
+          "sound": "voiced /th/",
+          "examples": [
+            "the",
+            "then",
+            "this",
+            "that",
+            "mother"
+          ],
+          "allowed_from_level": 3,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "gh",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "consonant digraph",
+      "pronunciations": [
+        {
+          "sound": "silent",
+          "examples": [
+            "light",
+            "night",
+            "high",
+            "right"
+          ],
+          "allowed_from_level": 4,
+          "note": "taught inside igh"
+        },
+        {
+          "sound": "/f/",
+          "examples": [
+            "laugh",
+            "cough",
+            "rough",
+            "enough"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        }
+      ]
+    },
+    {
+      "grapheme": "ough",
+      "card_type": "alternative_pronunciation",
+      "letter_type": "vowel + gh",
+      "pronunciations": [
+        {
+          "sound": "/or/",
+          "examples": [
+            "bought",
+            "thought",
+            "ought"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/oa/",
+          "examples": [
+            "though",
+            "dough",
+            "although"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/oo/",
+          "examples": [
+            "through"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/ow/",
+          "examples": [
+            "plough",
+            "bough"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/uff/",
+          "examples": [
+            "rough",
+            "tough",
+            "enough"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        },
+        {
+          "sound": "/off/",
+          "examples": [
+            "cough",
+            "trough"
+          ],
+          "allowed_from_level": 8,
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "new_spelling_cards": [
+    {
+      "grapheme": "tch",
+      "card_type": "alternative_spelling",
+      "sound": "/ch/",
+      "examples": [
+        "catch",
+        "match",
+        "kitchen",
+        "witch"
+      ],
+      "allowed_from_level": 5,
+      "note": "after a short vowel"
+    },
+    {
+      "grapheme": "dge",
+      "card_type": "alternative_spelling",
+      "sound": "/j/",
+      "examples": [
+        "bridge",
+        "badge",
+        "edge",
+        "fudge"
+      ],
+      "allowed_from_level": 6,
+      "note": "after a short vowel"
+    },
+    {
+      "grapheme": "ge",
+      "card_type": "alternative_spelling",
+      "sound": "/j/",
+      "examples": [
+        "cage",
+        "large",
+        "orange",
+        "change"
+      ],
+      "allowed_from_level": 6,
+      "note": ""
+    },
+    {
+      "grapheme": "ce",
+      "card_type": "alternative_spelling",
+      "sound": "/s/",
+      "examples": [
+        "face",
+        "ice",
+        "dance",
+        "once"
+      ],
+      "allowed_from_level": 6,
+      "note": ""
+    },
+    {
+      "grapheme": "se",
+      "card_type": "alternative_spelling",
+      "sound": "/s/",
+      "examples": [
+        "mouse",
+        "house",
+        "purse"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "kn",
+      "card_type": "alternative_spelling",
+      "sound": "/n/",
+      "examples": [
+        "knee",
+        "knock",
+        "know",
+        "knife"
+      ],
+      "allowed_from_level": 6,
+      "note": "silent k"
+    },
+    {
+      "grapheme": "wr",
+      "card_type": "alternative_spelling",
+      "sound": "/r/",
+      "examples": [
+        "write",
+        "wrong",
+        "wrap",
+        "wrist"
+      ],
+      "allowed_from_level": 6,
+      "note": "silent w"
+    },
+    {
+      "grapheme": "mb",
+      "card_type": "alternative_spelling",
+      "sound": "/m/",
+      "examples": [
+        "lamb",
+        "climb",
+        "thumb",
+        "comb"
+      ],
+      "allowed_from_level": 7,
+      "note": "silent b"
+    },
+    {
+      "grapheme": "gn",
+      "card_type": "alternative_spelling",
+      "sound": "/n/",
+      "examples": [
+        "gnat",
+        "gnaw",
+        "sign",
+        "gnome"
+      ],
+      "allowed_from_level": 8,
+      "note": "silent g"
+    },
+    {
+      "grapheme": "eigh",
+      "card_type": "alternative_spelling",
+      "sound": "/ai/",
+      "examples": [
+        "eight",
+        "weigh",
+        "sleigh",
+        "neighbour"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "ei",
+      "card_type": "alternative_spelling",
+      "sound": "/ai/",
+      "examples": [
+        "vein",
+        "reign",
+        "veil"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "au",
+      "card_type": "alternative_spelling",
+      "sound": "/or/",
+      "examples": [
+        "author",
+        "sauce",
+        "haunt",
+        "August"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "augh",
+      "card_type": "alternative_spelling",
+      "sound": "/or/",
+      "examples": [
+        "caught",
+        "taught",
+        "naughty",
+        "daughter"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "oar",
+      "card_type": "alternative_spelling",
+      "sound": "/or/",
+      "examples": [
+        "board",
+        "roar",
+        "oar",
+        "soar"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "our",
+      "card_type": "alternative_spelling",
+      "sound": "/or/",
+      "examples": [
+        "four",
+        "pour",
+        "your",
+        "court"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "oe",
+      "card_type": "alternative_spelling",
+      "sound": "/oa/",
+      "examples": [
+        "toe",
+        "goes",
+        "hoe",
+        "foe"
+      ],
+      "allowed_from_level": 6,
+      "note": ""
+    },
+    {
+      "grapheme": "ui",
+      "card_type": "alternative_spelling",
+      "sound": "/oo/",
+      "examples": [
+        "fruit",
+        "juice",
+        "suit",
+        "cruise"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "ere",
+      "card_type": "alternative_spelling",
+      "sound": "/air/",
+      "examples": [
+        "there",
+        "where"
+      ],
+      "allowed_from_level": 6,
+      "note": ""
+    },
+    {
+      "grapheme": "ere",
+      "card_type": "alternative_spelling",
+      "sound": "/ear/",
+      "examples": [
+        "here",
+        "sphere",
+        "severe"
+      ],
+      "allowed_from_level": 7,
+      "note": "same letters, different sound"
+    },
+    {
+      "grapheme": "eer",
+      "card_type": "alternative_spelling",
+      "sound": "/ear/",
+      "examples": [
+        "deer",
+        "cheer",
+        "steer",
+        "beer"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "e-e",
+      "card_type": "alternative_spelling",
+      "sound": "/ee/",
+      "examples": [
+        "these",
+        "complete",
+        "theme",
+        "extreme"
+      ],
+      "allowed_from_level": 5,
+      "note": "split digraph"
+    },
+    {
+      "grapheme": "tion",
+      "card_type": "alternative_spelling",
+      "sound": "/shun/",
+      "examples": [
+        "station",
+        "action",
+        "nation"
+      ],
+      "allowed_from_level": 7,
+      "note": ""
+    },
+    {
+      "grapheme": "sion",
+      "card_type": "alternative_spelling",
+      "sound": "/shun/ /zhun/",
+      "examples": [
+        "television",
+        "mansion",
+        "division"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "ci",
+      "card_type": "alternative_spelling",
+      "sound": "/sh/",
+      "examples": [
+        "special",
+        "delicious",
+        "ancient"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "ti",
+      "card_type": "alternative_spelling",
+      "sound": "/sh/",
+      "examples": [
+        "patient",
+        "partial"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "ssi",
+      "card_type": "alternative_spelling",
+      "sound": "/sh/",
+      "examples": [
+        "mission",
+        "passion",
+        "discussion"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "si",
+      "card_type": "alternative_spelling",
+      "sound": "/zh/",
+      "examples": [
+        "vision",
+        "television",
+        "decision"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "-s / -es",
+      "card_type": "alternative_spelling",
+      "sound": "plural",
+      "examples": [
+        "cats",
+        "dogs",
+        "boxes",
+        "wishes"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "-ing / -er / -est / -ly",
+      "card_type": "alternative_spelling",
+      "sound": "suffix",
+      "examples": [
+        "running",
+        "faster",
+        "kindest",
+        "slowly"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "un- re- dis- pre-",
+      "card_type": "alternative_spelling",
+      "sound": "prefix",
+      "examples": [
+        "undo",
+        "redo",
+        "disagree",
+        "preview"
+      ],
+      "allowed_from_level": 8,
+      "note": ""
+    },
+    {
+      "grapheme": "double letters",
+      "card_type": "alternative_spelling",
+      "sound": "spelling",
+      "examples": [
+        "rabbit",
+        "dinner",
+        "happy",
+        "ladder"
+      ],
+      "allowed_from_level": 8,
+      "note": "bb dd gg mm nn pp rr tt"
+    },
+    {
+      "grapheme": "ve",
+      "card_type": "alternative_spelling",
+      "sound": "/v/",
+      "examples": [
+        "have",
+        "give",
+        "live",
+        "love",
+        "above"
+      ],
+      "allowed_from_level": 5,
+      "note": "no English word ends in v"
+    }
+  ]
+}

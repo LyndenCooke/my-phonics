@@ -33,11 +33,11 @@ DREAM_TEAM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "I kneel by each plant pot and clean the leaves. \"Let me help, Nana!\" I said. She tried to grin.",
+                "text": "I kneel by each plant pot and clean the leaves. \"Let me help, Nana!\" I said. But this is too much for just me.",
                 "image": None,
             },
             {
-                "text": "I run and find him. \"Please, can you help?\" I cried. \"We need to be a team!\"",
+                "text": "I need my best mate! I run and find him. \"Please, can you help?\" I cried. \"We need to be a team!\"",
                 "image": None,
             },
             {
@@ -49,7 +49,7 @@ DREAM_TEAM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "We clean each tin and line them up neat. Nana peeks in. \"What a dream team!\" she cried.",
+                "text": "We take the tins out to the yard. We clean each one and line them up neat. Nana peeks out. \"What a dream team!\" she cried.",
                 "image": None,
             },
             {
@@ -57,7 +57,7 @@ DREAM_TEAM_STORY_BOOK1 = {
                 "image": None,
             },
             {
-                "text": "Nana grins and grins. She brings us each a big feast — beans and rice with fried plantain! We beam. \"Thank you, Nana!\"",
+                "text": "Nana grins and grins. She brings us each a big feast — beans and rice with fried plantain! We cheer: \"Thank you, Nana!\"",
                 "image": None,
             },
         ],

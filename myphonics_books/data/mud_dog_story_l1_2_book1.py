@@ -23,11 +23,11 @@ MUD_DOG_STORY_BOOK1 = {
         ],
         "story_words": ["dog", "mud", "mop", "mum", "mess", "got", "big", "tub"],
         "tricky_words_used": ["I", "the", "no", "me"],  # 'me' added (high-utility, p5 keeps it); 'a'/'is' removed via rewrites
-        "read_words": ["dog", "mud", "mop", "mum"],  # Focus on m, d, g, o
+        "read_words": ["dog", "dig", "mop", "map"],  # Focus on m, d, g, o (u/b untaught yet)
         "nonsense_words": [
-            "mog", "dum", "gop", "dob",  # m, d, g, o focus
-            "mib", "gat", "dom", "mug",  # mixed
-            "dop", "gum", "mod", "gim",  # more combinations
+            "mog", "dag", "gop", "dat",  # m, d, g, o focus
+            "mip", "gat", "dom", "mos",  # mixed
+            "dop", "gid", "mod", "gim",  # more combinations
         ],
         "questions": [
             {"category": "Finding", "text": "What did the dog run in?"},

@@ -32,13 +32,16 @@
   .cover-sub { font-size: 10pt; margin-top: 2mm; opacity: .95; }
   .cover-art { flex: 1; display: flex; align-items: center; justify-content: center;
     overflow: hidden; background: #faf7f4; }
-  .cover-art img { width: 100%; height: 100%; object-fit: cover; }
+  .cover-art img { width: 100%; height: 100%; object-fit: {{ cover_fit | default('cover') }}; }
   .cover-foot { background: var(--level); color: #fff; flex-shrink: 0;
     padding: 4mm 8mm 5mm; display: flex; align-items: center; justify-content: center; gap: 4mm; }
   .sound-chips { display: flex; gap: 2.4mm; flex-wrap: wrap; justify-content: center; }
   .chip { background: #fff; color: var(--level); font-weight: 700; font-size: 12pt;
     width: 9mm; height: 9mm; border-radius: 50%; display: flex; align-items: center;
     justify-content: center; line-height: 1; }
+  /* multi-letter graphemes (sh, igh, a-e …) become pills, same height */
+  .chip.multi { width: auto; min-width: 9mm; padding: 0 2.2mm; border-radius: 4.5mm;
+    font-size: 10.5pt; }
 
   /* ---------- SOUNDS PAGE ---------- */
   .center-h { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -50,6 +53,8 @@
     justify-content: center; font-size: 19pt; font-weight: 700; line-height: 1; }
   .scard.new { background: var(--level); color: #fff; }
   .scard.known { background: #f1f1f1; color: #9aa0a6; }
+  /* 3+ character graphemes (igh, air, a-e …) widen instead of clipping */
+  .scard.wide { width: auto; min-width: 16mm; padding: 0 2.5mm; font-size: 16pt; }
   .sounds-note { font-size: 9pt; color: var(--muted); text-align: center; margin-top: 7mm; max-width: 78mm; }
 
   /* ---------- BLEND PAGE (presentation) ---------- */
@@ -65,6 +70,10 @@
   .tricky { font-size: 34pt; font-weight: 700; line-height: 1; color: #8a8f98;
     border: 1.4pt dashed #c4c8cf; border-radius: 2.4mm; padding: 0.4mm 2mm; }
   .punct { font-size: 40pt; font-weight: 700; color: #444; line-height: 1; }
+  /* split-digraph pages: whole word, split letters in the level colour */
+  .whole { font-size: 40pt; font-weight: 700; line-height: 1; color: #444;
+    letter-spacing: 0.5mm; }
+  .whole .f { color: var(--level); }
   .blend-hint { font-size: 8.5pt; color: #b0b4ba; text-align: center; }
 
   /* ---------- CHECK PAGE (confirmation) ---------- */
@@ -105,7 +114,7 @@
     </div>
     <div class="cover-art">{% if cover_image %}<img src="{{ cover_image }}">{% endif %}</div>
     <div class="cover-foot">
-      <div class="sound-chips">{% for g in cumulative_graphemes %}<span class="chip">{{ g }}</span>{% endfor %}</div>
+      <div class="sound-chips">{% for g in cumulative_graphemes %}<span class="chip{{ ' multi' if g|length > 1 else '' }}">{{ g }}</span>{% endfor %}</div>
     </div>
   </div>
 
@@ -117,7 +126,7 @@
         <div class="sounds-title">Say each sound</div>
         <div class="sounds-grid">
           {% for g in cumulative_graphemes %}
-          <div class="scard {{ 'new' if g in focus_graphemes else 'known' }}">{{ g }}</div>
+          <div class="scard {{ 'new' if g in focus_graphemes else 'known' }}{{ ' wide' if g|length > 2 else '' }}">{{ g }}</div>
           {% endfor %}
         </div>
         <div class="sounds-note">Point to each sound and say it out loud. The {{ focus_label }} {{ 'are' if focus_graphemes|length > 1 else 'is' }} new in this book.</div>
@@ -135,6 +144,8 @@
           <span class="word-group">
             {% for gr in tok.graphemes %}{% if not loop.first %}<span class="dot">&middot;</span>{% endif %}<span class="graph {{ 'focus' if gr in focus_graphemes else '' }}">{{ gr }}</span>{% endfor %}
           </span>
+          {% elif tok.kind == 'whole' %}
+          <span class="whole">{{ tok.html | safe }}</span>
           {% elif tok.kind == 'tricky' %}
           <span class="tricky">{{ tok.text }}</span>
           {% else %}

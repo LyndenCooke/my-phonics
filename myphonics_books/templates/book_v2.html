@@ -36,11 +36,20 @@
     .page:last-child { page-break-after: avoid; }
     .page-inner { width: 100%; height: 100%; padding: 12mm; display: flex; flex-direction: column; }
 
-    /* Page number badge */
+    /* Page number badge.  z-index keeps it above full-bleed art and the
+       story sound strip; .page-num-pill adds a white chip when the number
+       sits directly on artwork (story pages with no sound strip). */
     .page-num {
-      position: absolute; bottom: 4mm; font-size: 8pt; color: #999; font-weight: 700;
+      /* 6.5mm: Mixam safe zone is 5mm from trim for all furniture, and the
+         font's line box extends ~1.3mm below the CSS bottom edge. */
+      position: absolute; bottom: 6.5mm; font-size: 8pt; color: #999; font-weight: 700;
+      z-index: 6; line-height: 1;
     }
     .page-num-left { left: 5mm; } .page-num-right { right: 5mm; }
+    .page-num-pill {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1mm 1.8mm; border-radius: 2mm; color: #777;
+    }
 
     /* ================================================================
        COVER — matches the library covers in /public/covers/.
@@ -49,7 +58,9 @@
     .cover { padding: 0; display: flex; flex-direction: column; }
 
     .cover-top-band {
-      height: 14mm;
+      /* 16mm (was 14): keeps the centred 9pt text >= 5mm from the trim edge
+         (Mixam safe zone) — Andika's tall line box eats ~1mm each side. */
+      height: 16mm;
       background: var(--level-color);
       padding: 0 8mm;
       display: flex; justify-content: space-between; align-items: center;
@@ -126,7 +137,7 @@
        story page, tying the day's grammar feature to the story.       */
     .spot-it-bubble {
       position: absolute;
-      bottom: 16mm; left: 8mm; right: 8mm;
+      bottom: 8mm; left: 8mm; right: 8mm;
       padding: 2.5mm 3.5mm;
       background: rgba(255, 255, 255, 0.94);
       border: 0.4mm solid var(--level-color);
@@ -134,10 +145,6 @@
       display: flex; align-items: center; gap: 3mm;
       box-shadow: 0 0.5mm 1mm rgba(0, 0, 0, 0.06);
       z-index: 2;
-    }
-    /* On L5+ pages there's no GPC strip, so Spot It can sit lower. */
-    .story-page-no-gpc .spot-it-bubble {
-      bottom: 8mm;
     }
     .spot-it-badge {
       flex: 0 0 auto;
@@ -330,6 +337,50 @@
       border-top: 0.3mm solid #eee; padding-top: 4mm;
     }
     .snd-footer strong { color: #666; font-weight: 700; }
+    /* ---- Shifty Sounds band ------------------------------------------------
+       GPCs outside the main ladder that this story uses (ph, tch, y=/ee/ …).
+       Charcoal — deliberately OUTSIDE the level rainbow so it reads as
+       "different kind of thing", never a ninth level.  Max two per book;
+       L1-L3 books never show it.  Styled to match the two tables above:
+       an uppercase label, then the content — no divider, no footnote. */
+    .shifty-band { margin-top: 7mm; }
+    .shifty-label { color: #475569; }
+    .shifty-row {
+      display: flex; justify-content: center; gap: 10mm;
+    }
+    .shifty-item { display: flex; align-items: center; gap: 3.5mm; }
+    .shifty-cell {
+      min-width: 12mm; height: 12mm; padding: 0 2mm;
+      display: flex; align-items: center; justify-content: center;
+      background: #475569; color: #fff;
+      border-radius: 1.8mm;
+      font-size: 14pt; font-weight: 700; line-height: 1;
+    }
+    .shifty-caption { font-size: 9.5pt; color: #6b7280; line-height: 1.35; }
+    .shifty-caption strong { color: #475569; font-weight: 700; }
+
+    /* ---- Future Sounds band --------------------------------------------
+       Main-ladder sounds this story's words use before they're formally
+       taught (e.g. "mud" needing 'u' in an m/d/g/o book). Rather than
+       rewriting the story, we preview them honestly: each cell is coloured
+       to the LEVEL that actually teaches it (inline style, per-item —
+       unlike Shifty's fixed charcoal, this is deliberately a rainbow so a
+       glance tells you how far off each one is). Wraps onto a second row
+       when a book (mostly early L1/L2) has several. */
+    .future-band { margin-top: 6mm; }
+    .future-label { color: #6b7280; }
+    .future-row {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 4.5mm 7mm;
+    }
+    .future-item { display: flex; align-items: center; gap: 3mm; }
+    .future-cell {
+      min-width: 11mm; height: 11mm; padding: 0 1.8mm;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; border-radius: 1.8mm;
+      font-size: 13pt; font-weight: 700; line-height: 1;
+    }
+    .future-caption { font-size: 8.5pt; color: #6b7280; line-height: 1.3; }
+    .future-caption strong { font-weight: 700; }
 
     /* Sound-buttoned word list — proper SSP arc + dot notation rendered
        inline as SVG so dots and arcs line up with character widths.
@@ -355,12 +406,13 @@
       overflow: hidden;
       min-width: 0;
     }
-    /* Let the vector word scale up to fill the card (capped) so short CVC
-       words read large; long L5/L6 words ("instruction") scale down to fit
-       while preserving the letter + sound-button geometry. */
+    /* Uniform letter size across the grid: each word renders at its natural
+       width x a fixed scale, so "shore" and "stone" letters match exactly.
+       Only genuinely long words (wider than the card) shrink to fit —
+       preserving the letter + sound-button geometry either way. */
     .sw-word-cell .sb-word {
-      width: 100%;
-      max-width: 30mm;
+      width: calc(var(--sb-natural-w) * 1.15);
+      max-width: 100%;
     }
     .sw-word-cell .sb-word svg {
       width: 100%;
@@ -448,9 +500,10 @@
     .sw-pron-note-example {
       font-size: 10pt; color: #1a1a1a;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
+    /* Long entries (neighbourhood → nay · ber · hood) take the full row —
+       teaching content must never be ellipsized. */
+    .sw-pron-note-example-wide { grid-column: 1 / -1; }
     .sw-pron-note-example strong { font-weight: 700; }
     .sw-pron-note-example .arrow {
       color: #b86a30; margin: 0 1.5mm; font-weight: 700;
@@ -636,21 +689,6 @@
       display: flex; align-items: center; justify-content: center;
       color: #bbb; font-size: 10pt;
     }
-    /* Per-page focus-sound strip */
-    .story-gpc-strip {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 2mm 8mm;
-      background: rgba(255, 255, 255, 0.92);
-      display: flex; align-items: center; gap: 4mm;
-      border-top: 0.3mm solid #eee;
-    }
-    .story-gpc-label {
-      font-size: 7pt; color: #999;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .story-gpc-sound {
-      font-size: 11pt; font-weight: 700; color: var(--level-color);
-    }
 
     /* ================================================================
        SOUND SPOTLIGHT (upgraded — hero + 2x2 cards, sound highlighted in level colour)
@@ -688,24 +726,31 @@
       flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 3mm;
+      align-content: center;
+      gap: 4mm;
     }
     .spot-card {
       display: flex; flex-direction: column;
       border: 0.4mm solid #e0e0e0;
       border-radius: 3mm;
       overflow: hidden;
-      background: #fafafa;
+      background: #ffffff;
     }
+    /* Fixed-height photo box (not a stretched flex fill): the card hugs its
+       content instead of stretching to the page, so the art never floats in
+       a tall white void.  multiply blend melts any near-white clip-art
+       background square into the card. */
     .spot-photo {
-      flex: 1; min-height: 38mm;
+      height: 40mm;
       background: #ffffff;
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
       padding: 2mm;
     }
-    .spot-photo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .spot-photo img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      mix-blend-mode: multiply;
+    }
     .spot-photo-placeholder {
       color: #bbb; font-size: 9pt; font-style: italic;
     }
@@ -718,17 +763,20 @@
     }
     .spot-word .focus { color: var(--level-color); }
 
-    /* Multi-sound spotlight — stacked rows, one per focus grapheme */
+    /* Multi-sound spotlight — stacked rows, one per focus grapheme.
+       Rows hug their content and centre in the page (justify-content),
+       rather than stretching to fill it with tall empty cards. */
     .spot-stack {
       flex: 1;
       display: flex; flex-direction: column;
-      gap: 4mm;
+      justify-content: center;
+      gap: 9mm;
       min-height: 0;
     }
     .spot-row {
-      flex: 1;
+      flex: 0 0 auto;
       display: flex; gap: 4mm;
-      align-items: stretch;
+      align-items: center;
       min-height: 0;
     }
     .spot-row-hero {
@@ -750,17 +798,38 @@
       gap: 3mm;
       min-height: 0;
     }
-    .spot-stack .spot-card { min-height: 0; }
-    /* Photo flexes (shrinks first); word is a fixed footer so it can never be
+    .spot-stack .spot-card { min-height: 0; flex: 1; }
+    /* Fixed photo height per row; word is a fixed footer so it can never be
        clipped by the card's overflow:hidden — fixes the cut-off labels. */
-    .spot-stack .spot-photo { min-height: 0; flex: 1 1 auto; padding: 1mm; }
+    .spot-stack .spot-photo { height: 30mm; flex: 0 0 auto; padding: 1.5mm; }
     .spot-stack .spot-word {
-      font-size: 12.5pt; padding: 1mm 1.5mm; flex: 0 0 auto;
+      font-size: 12.5pt; padding: 1.5mm; flex: 0 0 auto;
       line-height: 1.05;
     }
-    /* Zoom the clipart to fill the card (crops the white margins) instead of
-       floating small in the middle. */
-    .spot-stack .spot-photo img { object-fit: cover; transform: scale(1.18); }
+    /* 5-6 focus sounds (e.g. L1.1's s/a/t/p/i/n): compact the rows so the
+       stack genuinely fits one A5 page — at the default sizes the centred
+       stack overflows past both the title and the bottom edge. */
+    .spot-stack-5 { gap: 5mm; }
+    .spot-stack-5 .spot-photo { height: 24mm; }
+    .spot-stack-6 { gap: 3.5mm; }
+    .spot-stack-6 .spot-photo { height: 19.5mm; }
+    .spot-stack-6 .spot-word { font-size: 11pt; padding: 1.2mm; }
+    .spot-stack-6 .spot-row-hero { flex: 0 0 20mm; }
+    .spot-stack-6 .spot-row-circle { width: 18mm; height: 18mm; font-size: 15pt; }
+    /* Future Sound preview row at the bottom of the Sound Spotlight page. */
+    .spot-future {
+      flex: 0 0 auto;
+      margin-top: 4mm; padding-top: 3.5mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .spot-future-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 2.5mm;
+    }
+    .spot-future .spot-row { display: flex; gap: 4mm; align-items: center; }
+    .spot-future .spot-photo { height: 26mm; flex: 0 0 auto; padding: 1.5mm; }
+    .spot-future .spot-word { font-size: 12pt; padding: 1.5mm; }
 
     /* ================================================================
        READ WORDS / NONSENSE WORDS / READ+NONSENSE COMBINED (L1)
@@ -801,13 +870,20 @@
        buttons stay visible inside the cell.  Without this the SVG fills
        the wide cell, computed height exceeds the cell, and overflow:hidden
        clips off the phonics buttons — exactly the buttons the subtitle
-       tells the child to use. */
+       tells the child to use.
+       Words WITH a magic-e over-arc carry a taller viewBox (14.5 vs 11.0
+       units), so they get a proportionally taller CSS height — otherwise a
+       fixed height renders their letters ~30% smaller than plain words'.
+       Both heights = viewBox height x 1.32, so the LETTERS match. */
     .read-cell .sb-word svg {
       display: block;
       margin: 0 auto;
-      height: 17mm;
+      height: 14.5mm;
       width: auto;
       max-width: 100%;
+    }
+    .read-cell .sb-word-arc svg {
+      height: 19.1mm;
     }
     .read-cell-word {
       font-size: 18pt; font-weight: 700; color: #1a1a1a;
@@ -896,15 +972,6 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 17pt; font-weight: 700; color: #1a1a1a;
     }
-    .nonsense-tip {
-      margin-top: auto;
-      padding: 4mm 5mm;
-      background: #f5f5f5;
-      border-radius: 2mm;
-      font-size: 8.5pt; color: #666;
-      line-height: 1.5;
-    }
-    .nonsense-tip strong { color: #1a1a1a; }
     .nw-write-section {
       margin-top: 3mm;
       padding-top: 4mm;
@@ -959,28 +1026,30 @@
     }
 
     /* Match the Word to the Picture (L2+ — Y1+): 3 words ↔ 3 pictures.
-       Each row is height-locked so the page never overflows regardless
-       of natural image aspect ratio. */
+       Small boxes pinned to the page edges — words hard left, pictures hard
+       right — leaving the whole middle clear for the child to draw the
+       matching lines.  Each row is height-locked so the page never
+       overflows regardless of natural image aspect ratio. */
     .mtp-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3mm 10mm;
+      display: flex;
+      justify-content: space-between;
     }
     .mtp-words, .mtp-pictures {
       display: flex; flex-direction: column;
-      gap: 3mm;
+      gap: 4mm;
+      flex: 0 0 34mm;
     }
     .mtp-word {
-      height: 16mm;
+      height: 15mm;
       display: flex; align-items: center; justify-content: center;
-      padding: 2mm 4mm;
+      padding: 2mm 3mm;
       background: #ffffff;
       border: 0.6mm solid var(--level-color);
       border-radius: 2.5mm;
-      font-size: 16pt; font-weight: 700; color: #1a1a1a;
+      font-size: 14pt; font-weight: 700; color: #1a1a1a;
     }
     .mtp-pic {
-      height: 16mm;
+      height: 15mm;
       background: #ffffff;
       border: 0.4mm solid #ddd;
       border-radius: 2.5mm;
@@ -1035,6 +1104,30 @@
       object-fit: contain;
       background: #ffffff;
     }
+    /* Special Friends match — bottom-half draw-a-line task on 16pp digraph
+       books.  The grid above absorbs the rest of the page, so this block keeps
+       its natural height and the pictures stay roughly half-page. */
+    .sf-match { flex: 0 0 auto; margin-top: 4mm; padding-top: 4mm; border-top: 0.4mm dashed #e0e0e0; }
+    .sf-match-title { font-size: 13pt; font-weight: 700; color: var(--level-color); margin-bottom: 0.5mm; }
+    .sf-match-instruction { font-size: 8.5pt; color: #777; margin-bottom: 4mm; }
+    /* Words pinned LEFT and snug (box hugs the word, dot right beside it),
+       friends pinned RIGHT — the whole middle stays open for line-drawing.
+       (Lynden 2026-07-12: boxes were full-width with the dot marooned at
+       the far end and no room to draw.) */
+    .sf-match-body { display: flex; align-items: center; justify-content: space-between; padding: 0 2mm; }
+    .sf-match-words { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2.5mm; }
+    .sf-word {
+      display: inline-flex; align-items: center; gap: 3mm;
+      background: #fafafa; border: 0.4mm solid #e2e2e2; border-radius: 2mm;
+      padding: 1.6mm 3mm 1.6mm 4mm; font-size: 13pt; font-weight: 600; color: #1a1a1a;
+    }
+    .sf-match-friends { flex: 0 0 auto; display: flex; flex-direction: column; gap: 9mm; justify-content: center; }
+    .sf-friend {
+      display: flex; align-items: center; gap: 3mm;
+      background: #ffffff; border: 0.6mm solid var(--level-color); border-radius: 2.5mm;
+      padding: 2.5mm 7mm; font-size: 18pt; font-weight: 700; color: var(--level-color);
+    }
+    .sf-node { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--level-color); flex: 0 0 auto; }
     /* 3×2 large variant — used at L5/L6 (24pp) where the ordering grid is the
        only thing on the page; the six scenes grow to fill it instead of
        sitting small with a void below. */
@@ -1068,6 +1161,89 @@
       border: 0.4mm solid var(--level-color);
       display: flex; align-items: center; justify-content: center;
       font-size: 8pt; color: var(--level-color); font-weight: 700;
+    }
+
+    /* 2026-07-19 restructure — ordering grid lives on the Read Words page
+       below L7.  Read cells compress to 3-up to make room; the grid then
+       absorbs the rest of the page so scenes render as big as possible. */
+    .read-grid-compact { grid-template-columns: 1fr 1fr 1fr; }
+    .read-grid-compact .read-cell { height: 19mm; }
+    .rw-order-section {
+      margin-top: 3mm;
+      padding-top: 3mm;
+      border-top: 0.4mm dashed #ddd;
+      flex: 1 1 auto; min-height: 0;
+      display: flex; flex-direction: column;
+    }
+    .rw-order-section .aw-instruction { margin-bottom: 2.5mm; }
+    .ordering-grid-embedded { flex: 1 1 auto; min-height: 0; margin-bottom: 0; }
+    .ordering-grid-embedded .ordering-cell { height: auto; min-height: 24mm; }
+    .ordering-grid-embedded .ordering-cell img { object-fit: contain; background: #ffffff; }
+    .ordering-grid-embedded.ordering-grid-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+
+    /* Shifty / Future Sound Spotlight task (L4+, replaces the old
+       match-word-to-picture block on the Alien Words page). */
+    .est-body { display: flex; align-items: center; gap: 6mm; margin-top: 2mm; }
+    .est-hero { flex: 0 0 30mm; display: flex; flex-direction: column; align-items: center; gap: 1.5mm; }
+    .est-circle {
+      width: 22mm; height: 22mm; border-radius: 50%;
+      color: #ffffff; display: flex; align-items: center; justify-content: center;
+      font-size: 17pt; font-weight: 700; line-height: 1;
+    }
+    .est-circle-multi { font-size: 12pt; }
+    .est-caption { font-size: 8pt; color: #777; text-align: center; line-height: 1.35; }
+    .est-words { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+    .est-body + .est-body { margin-top: 4mm; }
+
+    /* Shifty Sounds — Grow the Code: the FIXED full-code chart page
+       (replaced Listen and Write).  Tiles flow into 5 print columns;
+       each tile = base grapheme header (ladder colour) + its shifts,
+       each shift coloured by the level it arrives at. */
+    /* Grow the Code — plain-table form (Lynden 2026-07-19 final): no
+       colours, no boxes, no dots.  Two calm tables (consonant / vowel),
+       one slim row per sound family: "s — sun" then its spellings. */
+    /* Grow the Code — Little Wandle-style sound chart, portrait.  One
+       narrow column per sound family; graphemes stacked in bordered
+       cells (chart lines visible), main spelling on top, no words. */
+    .gc-zone-label {
+      font-size: 7.5pt; font-weight: 700; color: #888;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin: 1.8mm 0 0.8mm;
+      flex: 0 0 auto;
+    }
+    .gc-bank {
+      display: flex;
+      align-items: flex-start;
+      flex: 0 0 auto;
+    }
+    .gc-col {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column;
+      margin-right: -0.3mm;   /* collapse shared borders like a table */
+    }
+    .gc-cell {
+      border: 0.3mm solid #c9c9c9;
+      margin-top: -0.3mm;     /* collapse shared borders */
+      padding: 1.15mm 0.2mm;
+      text-align: center;
+      font-size: 9pt; color: #1a1a1a;
+      line-height: 1.05;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .gc-cell-long { font-size: 6.5pt; padding-top: 1.6mm; padding-bottom: 1.6mm; }
+    .gc-cell-head {
+      margin-top: 0;
+      font-weight: 700;
+      background: #f1eefb;   /* pale lilac header band, like the SVG */
+      display: flex; flex-direction: column; align-items: center;
+      line-height: 1;
+    }
+    .gc-cue { font-size: 4.8pt; font-weight: 400; color: #8b8f96; margin-top: 0.4mm; }
+    .est-word {
+      background: #ffffff; border: 0.5mm solid #e0e0e0; border-radius: 2.5mm;
+      padding: 3mm 2mm; text-align: center;
+      font-size: 15pt; font-weight: 700; color: #1a1a1a;
     }
 
     /* Retell strip — fills the remaining vertical space on the Tell-
@@ -1276,6 +1452,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 12pt;
     }
+    .talk-face svg { width: 6.8mm; height: 6.8mm; display: block; }
     .talk-faces-prompt {
       font-size: 9pt; color: #555;
       margin-right: 2mm;
@@ -1490,6 +1667,72 @@
     /* ================================================================
        SPELLING & WRITING (encoding hear-write + sentence dictation)
        ================================================================ */
+    /* --- Library edition onboarding page --------------------------- */
+    .ob-inner { display: flex; flex-direction: column; gap: 3mm; }
+    .ob-head { border-left: 2.4mm solid var(--level-color); padding-left: 3.5mm; }
+    .ob-eyebrow { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--level-color); }
+    .ob-title { font-size: 15pt; font-weight: 700; color: #1a1a1a; line-height: 1.12; margin-top: 0.6mm; }
+    .ob-sub { font-size: 8.5pt; color: #666; margin-top: 1mm; line-height: 1.35; }
+    .ob-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6mm; }
+    .ob-box { border: 0.3mm solid #e4e4e4; border-radius: 2.2mm; overflow: hidden; }
+    .ob-box-head { display: flex; align-items: center; gap: 2mm; padding: 1.6mm 2.4mm; background: #f7f7f9; border-bottom: 0.3mm solid #eee; }
+    .ob-box-n { width: 4.6mm; height: 4.6mm; border-radius: 50%; color: #fff; font-size: 8pt; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .ob-box-title { font-size: 8.5pt; font-weight: 700; color: #1a1a1a; line-height: 1.1; }
+    .ob-box-tag { font-size: 5.5pt; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; border: 0.3mm solid; border-radius: 1.4mm; padding: 0.2mm 1mm; margin-left: auto; }
+    .ob-chips { display: flex; flex-wrap: wrap; gap: 1.5mm; padding: 2.2mm 2.4mm; }
+    .ob-chip { font-weight: 700; font-size: 11pt; border: 0.3mm solid #e0e0e0; border-radius: 1.4mm; background: #fff; padding: 0.8mm 2mm; line-height: 1; min-width: 7mm; text-align: center; }
+    .ob-chip-alien { border-style: dashed; }
+    .ob-pairs { display: flex; flex-wrap: wrap; gap: 1.8mm 2.4mm; padding: 2.2mm 2.4mm; }
+    .ob-pair { display: inline-flex; flex-direction: column; align-items: center; border: 0.3mm solid #e0e0e0; border-radius: 1.6mm; padding: 1mm 2mm; min-width: 9mm; }
+    .ob-pair-sound { font-size: 11pt; font-weight: 700; line-height: 1.05; }
+    .ob-pair-word { font-size: 7pt; color: #777; margin-top: 0.4mm; }
+    .ob-result { font-size: 8pt; color: #555; background: #f7f7f9; border-radius: 2mm; padding: 2.4mm 3mm; line-height: 1.45; }
+    .ob-result strong { color: #1a1a1a; }
+    .ob-online { border-top: 0.4mm solid #eee; padding-top: 2.6mm; }
+    .ob-online-title { font-size: 10pt; font-weight: 700; color: #1a1a1a; margin-bottom: 2mm; }
+    .ob-steps { display: flex; flex-direction: column; gap: 1.8mm; }
+    .ob-step { display: flex; gap: 2.4mm; align-items: flex-start; font-size: 8.5pt; color: #555; line-height: 1.35; }
+    .ob-step strong { color: #1a1a1a; }
+    .ob-step-n { width: 4.6mm; height: 4.6mm; border-radius: 50%; color: #fff; font-size: 8pt; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-top: 0.3mm; }
+    .ob-qrs { display: flex; gap: 8mm; justify-content: center; margin-top: 3mm; }
+    .ob-qr { text-align: center; }
+    .ob-qr img { width: 22mm; height: 22mm; display: block; border: 0.3mm solid #e4e4e4; border-radius: 1.5mm; }
+    .ob-qr span { display: block; font-size: 7.5pt; font-weight: 700; color: #444; margin-top: 1.2mm; }
+
+    /* Library "Check, match, read" marketing page (from the booklet). */
+    .mkt-inner { display: flex; flex-direction: column; }
+    .mkt-eyebrow { font-size: 8pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--level-color); }
+    .mkt-title { font-size: 20pt; font-weight: 700; color: #1a1a1a; margin: 0.5mm 0 4mm; }
+    .mkt-steps { display: flex; flex-direction: column; gap: 4mm; }
+    .mkt-step { display: flex; gap: 5mm; align-items: center; }
+    .mkt-shot { flex: 0 0 34mm; height: 30mm; display: flex; align-items: center; justify-content: center; }
+    .mkt-shot img { max-width: 100%; max-height: 30mm; display: block; }
+    .mkt-txt { flex: 1; }
+    .mkt-h { font-size: 13pt; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 2.6mm; }
+    .mkt-num { width: 6mm; height: 6mm; border-radius: 50%; color: #fff; font-size: 9pt; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+    .mkt-txt p { font-size: 9pt; color: #555; line-height: 1.45; margin-top: 1.5mm; }
+    .mkt-inside { margin-top: auto; border-top: 0.4mm solid #e6e6e6; padding-top: 3.5mm; }
+    .mkt-inside-lab { font-size: 8pt; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 2.5mm; }
+    .mkt-inside-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 5mm; }
+    .mkt-inside-list li { font-size: 9pt; font-weight: 600; color: #374151; display: flex; gap: 2mm; align-items: baseline; }
+    .mkt-inside-list li::before { content: "\2713"; color: var(--level-color); font-weight: 700; }
+
+    /* Library filler: writing-worksheet preview + download QR */
+    .ws-inner { display: flex; flex-direction: column; }
+    .ws-eyebrow { font-size: 8pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--level-color); }
+    .ws-title { font-size: 17pt; font-weight: 700; color: #1a1a1a; margin: 0.5mm 0 1.5mm; }
+    .ws-sub { font-size: 8.5pt; color: #666; line-height: 1.4; margin-bottom: 4mm; }
+    .ws-preview { position: relative; border: 0.4mm dashed #cfcfcf; border-radius: 2.5mm; padding: 5mm 4mm 3mm; opacity: 0.6; }
+    .ws-sample-tag { position: absolute; top: -2.6mm; left: 4mm; color: #fff; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-radius: 1.4mm; padding: 0.6mm 2mm; opacity: 1; }
+    .ws-row { display: flex; align-items: center; gap: 4mm; margin-bottom: 3mm; }
+    .ws-letter { flex: 0 0 18mm; font-size: 20pt; font-weight: 700; color: #1a1a1a; text-align: center; }
+    .ws-letter.ws-word { font-size: 13pt; }
+    .ws-band { flex: 1; }
+    .ws-foot { margin-top: auto; display: flex; align-items: center; gap: 4mm; background: #f7f7f9; border-radius: 2.5mm; padding: 3.5mm 4mm; }
+    .ws-qr { width: 22mm; height: 22mm; flex: 0 0 auto; border: 0.3mm solid #e4e4e4; border-radius: 1.5mm; background: #fff; }
+    .ws-foot-text { font-size: 9pt; color: #555; line-height: 1.45; }
+    .ws-foot-text strong { color: #1a1a1a; }
+
     .sw2-title {
       font-size: 16pt; font-weight: 700; color: #1a1a1a;
       margin-bottom: 1mm;
@@ -1722,48 +1965,99 @@
       flex: 1; padding: 6mm 10mm;
       display: flex; flex-direction: column;
     }
-    .back-description {
-      font-size: 10pt; color: #444; line-height: 1.5;
-      margin-bottom: 4mm;
+    /* ---- The Journey grid (2026-07-12 redesign) ---------------------------
+       Mirrors the marketing "One book today. A whole journey to come." page,
+       minus testimonials: 8 real cover thumbnails in two rows of four, each
+       with its ledger-coloured level dot; this book's card is ringed in its
+       level colour with a YOUR BOOK tag.  Replaced the stale 6-level
+       "The Series" strip that still said Starting Stories -> Reading
+       Champion at 6. */
+    .back-journey-title {
+      font-size: 12.5pt; font-weight: 700; color: #1a1a1a;
+      margin-top: auto;   /* with the footer's margin-top:auto, centres the journey block */
+      margin-bottom: 1mm;
     }
-    .back-decodability {
-      padding: 3mm 4mm;
-      background: #f9f9f9;
-      border-left: 1mm solid var(--level-color);
-      border-radius: 0 2mm 2mm 0;
-      font-size: 9pt; color: #555; line-height: 1.5;
-      margin-bottom: 5mm;
+    .back-journey-stats {
+      font-size: 8.5pt; color: #777; margin-bottom: 3.5mm;
     }
-    .back-decodability strong { color: #1a1a1a; }
-    .back-series-label {
-      font-size: 8pt; color: #888;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 2.5mm;
+    .back-journey-stats strong { color: var(--level-color); }
+    .back-journey-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 3mm 3.5mm; margin-bottom: 4mm;
     }
-    .back-series-row {
-      display: grid; grid-template-columns: repeat(6, 1fr);
-      gap: 2mm; margin-bottom: 5mm;
+    .back-journey-card {
+      display: flex; flex-direction: column; align-items: center;
+      border-radius: 1.5mm; padding: 1mm;
     }
-    .back-series-box {
-      text-align: center; padding: 2mm 1mm;
-      border: 0.3mm solid #ddd; border-radius: 1.5mm;
+    .back-journey-card-active {
+      outline: 0.7mm solid var(--jl-colour);
+      outline-offset: 0.4mm;
+      border-radius: 2mm;
     }
-    .back-series-box-active {
-      background: var(--level-color);
-      border-color: var(--level-color);
-      color: #ffffff;
+    .back-journey-thumb {
+      width: 100%; aspect-ratio: 3 / 4.2; object-fit: cover;
+      border-radius: 1.2mm; display: block;
+      box-shadow: 0 0.4mm 1.2mm rgba(0,0,0,0.15);
     }
-    .back-series-num { font-size: 12pt; font-weight: 700; }
-    .back-series-name { font-size: 5pt; color: #888; margin-top: 0.3mm; }
-    .back-series-box-active .back-series-name { color: rgba(255, 255, 255, 0.8); }
+    .back-journey-thumb-blank { background: var(--jl-colour); opacity: 0.25; }
+    .back-journey-label {
+      display: flex; align-items: center; gap: 1.6mm;
+      font-size: 7.5pt; font-weight: 700; color: #444; margin-top: 1.6mm;
+    }
+    .back-journey-dot {
+      width: 2.6mm; height: 2.6mm; border-radius: 50%;
+      background: var(--jl-colour); flex: 0 0 auto;
+    }
+    .back-journey-yours {
+      font-size: 6pt; font-weight: 700; letter-spacing: 0.5px;
+      color: var(--jl-colour); margin-top: 0.6mm;
+    }
+    /* Full-bleed coloured footer band: QR to the library on the left, the
+       right side reserved for a future ISBN barcode (white box goes here
+       when it exists — keep the space clear).  Negative margins cancel
+       .back-body's padding so the band reaches the page edges. */
     .back-footer {
-      margin-top: auto;
-      background: #f5f5f5;
-      padding: 4mm 10mm;
-      text-align: center;
+      margin: auto -10mm -6mm;
+      background: var(--level-color);
+      /* 5mm vertical padding keeps the QR inside the Mixam safe zone. */
+      padding: 5mm 8mm;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 4mm;
     }
-    .back-footer-brand { font-size: 9pt; font-weight: 700; color: #888; }
-    .back-footer-url { font-size: 8pt; color: #aaa; margin-top: 0.3mm; }
+    /* Barcoded (library/print) editions: WHITE footer so the EAN-13 sits on
+       clean white — no level-colour ink anywhere near the barcode (K-only
+       CMYK separation + good print practice). */
+    .back-footer-print { background: #ffffff; border-top: 0.3mm solid #e6e6e6; }
+    .back-footer-print .back-footer-brand { color: #333333; }
+    .back-footer-print .back-footer-url { color: #888888; }
+    .back-footer-print .back-footer-qr-img { border: 0.3mm solid #dddddd; }
+    .back-footer-qr { display: flex; align-items: center; gap: 4mm; min-width: 0; }
+    .back-footer-qr-img {
+      width: 19mm; height: 19mm; display: block;
+      background: #ffffff; border-radius: 1.5mm;
+      flex: 0 0 auto;
+    }
+    .back-footer-brand { font-size: 10pt; font-weight: 700; color: #ffffff; }
+    .back-footer-url { font-size: 8pt; color: rgba(255, 255, 255, 0.85); margin-top: 0.5mm; }
+    .back-footer-isbn { width: 34mm; height: 19mm; flex: 0 0 auto; }
+    /* Classroom/print renders only: the EAN-13 barcode in a white box.
+       The SVG comes in at its native SC2 size (0.33mm modules, 22.85mm bars,
+       quiet zones baked in) — never scale or crop it, that breaks scanning.
+       margin-bottom + the band's 4mm padding keeps the box >= 5mm off the
+       bottom trim edge (Mixam safe zone); the band's 8mm side padding covers
+       the right edge. */
+    .back-footer-isbn-filled {
+      width: auto; height: auto;
+      background: #ffffff; border-radius: 1.5mm;
+      padding: 1.2mm 0.6mm 0.8mm;
+      margin: 1.2mm 0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .back-isbn-line {
+      font-size: 7pt; color: #000000;
+      letter-spacing: 0.3px; margin-bottom: 0.4mm;
+    }
+    .back-footer-isbn-filled svg { display: block; }
 
     /* ─────────────────────────────────────────────────────────────
        24-PAGE SECTIONS (L5/L6 only)
@@ -2106,7 +2400,7 @@
     {% set vb_h   = 11.0 %}
   {% endif %}
 
-  <div class="sb-word" style="--sb-natural-w: {{ total_w }}mm;">
+  <div class="sb-word {% if ns.over_first >= 0 %}sb-word-arc{% endif %}" style="--sb-natural-w: {{ total_w }}mm;">
     <svg viewBox="0 {{ vb_top }} {{ total_w }} {{ vb_h }}"
          preserveAspectRatio="xMidYMid meet"
          xmlns="http://www.w3.org/2000/svg">
@@ -2204,9 +2498,17 @@
   </svg>
 {% endmacro %}
 
+{# Running page counter (2026-07-20): replaces the old `after_X + N`
+   arithmetic so the home and library editions — which render different
+   page sets — both number correctly.  Call pnum(ns) INSIDE each page that
+   actually renders; skipped pages never increment.  pill=true for the
+   white number chip on story artwork. #}
+{% macro pnum(ns, pill=false) %}{% set ns.pg = ns.pg + 1 %}<div class="page-num {% if pill %}page-num-pill {% endif %}{% if ns.pg % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ ns.pg }}</div>{% endmacro %}
+
   <!-- ============================================================
        PAGE 1 — FRONT COVER (matches library covers in /public/covers/)
        ============================================================ -->
+  {% set ns = namespace(pg=1) %}
   <div class="page cover">
     <div class="cover-top-band">
       <div class="cover-top-level">Level {{ level }} &middot; {{ level_name }}</div>
@@ -2226,6 +2528,67 @@
       <div class="cover-subtitle">Level {{ level }} &middot; {{ level_name }}</div>
     </div>
   </div>
+
+  {% if edition == 'library' %}
+  <!-- ============================================================
+       LIBRARY EDITION — combined onboarding page (2026-07-20):
+       "Is this the right level?" (sample boxes from this book) + "How to
+       use online" (3 steps) + worksheet & assessment QRs.  Replaces the
+       write-on pages that a reusable library book can't keep.
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner ob-inner">
+      <div class="ob-head" style="--level-color: {{ level_colour }};">
+        <div class="ob-eyebrow">Start here &middot; Level {{ level }} &middot; {{ level_name }}</div>
+        <div class="ob-title">Is this the right level for your child?</div>
+        <div class="ob-sub">Sit together and try these from the book. Comfortable with most? This level fits.</div>
+      </div>
+
+      <div class="ob-boxes">
+        {% for box in right_level_boxes %}
+        <div class="ob-box">
+          <div class="ob-box-head">
+            <span class="ob-box-n" style="background: {{ level_colour }};">{{ box.n }}</span>
+            <span class="ob-box-title">{{ box.title }}</span>
+            {% if box.made_up %}<span class="ob-box-tag" style="color: {{ level_colour }}; border-color: {{ level_colour }};">made-up</span>{% endif %}
+          </div>
+          {% if box.pairs %}
+          <div class="ob-pairs">
+            {% for p in box.pairs %}
+            <div class="ob-pair"><span class="ob-pair-sound" style="color: {{ level_colour }};">{{ p.sound }}</span>{% if p.word %}<span class="ob-pair-word">{{ p.word }}</span>{% endif %}</div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="ob-chips">
+            {% for it in box['items'] %}<span class="ob-chip {% if box.made_up %}ob-chip-alien{% endif %}">{{ it }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="ob-result">
+        <strong>What the result means:</strong> comfortable with <strong>most</strong>? Level {{ level }} fits.
+        {% if level > 1 %}Struggling? Try Level {{ level - 1 }}.{% endif %}
+        {% if level < 8 %}Flying through? Try Level {{ level + 1 }}.{% endif %}
+      </div>
+
+      <div class="ob-online">
+        <div class="ob-online-title">How to use this book online</div>
+        <div class="ob-steps">
+          <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">1</span><div><strong>Read along.</strong> Open the book on a phone or tablet and tap any word to hear it read aloud.</div></div>
+          <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">2</span><div><strong>Print the worksheets.</strong> Scan the code to download and print matching practice sheets.</div></div>
+          <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">3</span><div><strong>Check the level.</strong> A free 3-minute phonics check finds the exact right level.</div></div>
+        </div>
+        <div class="ob-qrs">
+          <div class="ob-qr"><img src="{{ worksheet_qr }}" alt="Scan to download worksheets"><span>Worksheets to print</span></div>
+          <div class="ob-qr"><img src="{{ assessment_qr }}" alt="Scan for the free level check"><span>Free level check</span></div>
+        </div>
+      </div>
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
 
   <!-- ============================================================
        PAGE 2 — SOUNDS  (RWI speed-sound style table).  Top table = every
@@ -2270,9 +2633,37 @@
         {% set _fn = focus_graphemes | length %}
         <div class="snd-section-label snd-section-label-focus">Today&rsquo;s new sounds</div>
         {{ sound_table(focus_graphemes, (_fn if _fn <= 6 else 6), 20, 19, true) }}
+
+        {% if shifty_sounds %}
+        <div class="shifty-band">
+          <div class="snd-section-label shifty-label">Shifty Sounds</div>
+          <div class="shifty-row">
+            {% for s in shifty_sounds %}
+            <div class="shifty-item">
+              <div class="shifty-cell">{{ s.grapheme }}</div>
+              <div class="shifty-caption">says {{ s.sound }}<br>as in <strong>{{ s.example }}</strong></div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if future_sounds %}
+        <div class="shifty-band future-band">
+          <div class="snd-section-label future-label">Future Sounds</div>
+          <div class="shifty-row future-row">
+            {% for s in future_sounds %}
+            <div class="shifty-item future-item">
+              <div class="shifty-cell future-cell" style="background:{{ s.colour }};">{{ s.grapheme }}</div>
+              <div class="shifty-caption future-caption">in <strong style="color:{{ s.colour }};">{{ s.example }}</strong><br>Level {{ s.level }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
-    <div class="page-num page-num-left">2</div>
+    {{ pnum(ns) }}
   </div>
 
   <!-- ============================================================
@@ -2291,9 +2682,18 @@
         {% endfor %}
       </div>
 
+      {% if tricky_words %}
+      <div class="sw-tricky-strip">
+        <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
+        <div class="sw-tricky-words">
+          {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
       {# Pronunciation notes ("Watch Out" for alternative pronunciations the
-         focus-sound table doesn't surface) sit above the Tricky Words box so
-         the Tricky reminder stays pinned to the bottom of the page.
+         focus-sound table doesn't surface) sit UNDER the Tricky Words box —
+         Lynden's placement ruling 2026-07-15.
          The old Writing Tip panel has been removed: this page now focuses on
          Focus Sounds, Story Words and Tricky Words only. #}
       {% for note in pronunciation_notes %}
@@ -2304,64 +2704,30 @@
         <div class="sw-pron-note-examples">
           {% for ex in note.examples %}
             {% set _parts = ex.split('→') %}
+            {% set _wide = 'sw-pron-note-example-wide' if ex|length > 24 else '' %}
             {% if _parts|length == 2 %}
-            <span class="sw-pron-note-example"><strong>{{ _parts[0]|trim }}</strong><span class="arrow">&rarr;</span>{{ _parts[1]|trim }}</span>
+            <span class="sw-pron-note-example {{ _wide }}"><strong>{{ _parts[0]|trim }}</strong><span class="arrow">&rarr;</span>{{ _parts[1]|trim }}</span>
             {% else %}
-            <span class="sw-pron-note-example">{{ ex }}</span>
+            <span class="sw-pron-note-example {{ _wide }}">{{ ex }}</span>
             {% endif %}
           {% endfor %}
         </div>
         {% endif %}
       </div>
       {% endfor %}
-
-      {% if tricky_words %}
-      <div class="sw-tricky-strip">
-        <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
-        <div class="sw-tricky-words">
-          {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
-        </div>
-      </div>
-      {% endif %}
     </div>
-    <div class="page-num page-num-right">3</div>
+    {{ pnum(ns) }}
   </div>
 
-  <!-- ============================================================
-       PAGE 4 — SOUND TRACING + LETTER FORMATION
-       Per-grapheme row: formation letter w/ start-num + stroke rhyme,
-       three trace cells with ghost-letter outlines on a pale-blue
-       4-line baseline.  Free-write rows below.
-       ============================================================ -->
-  <div class="page">
-    <div class="page-inner">
-      <div class="tf-title">Trace &amp; Form the Sounds</div>
-      <div class="tf-instruction">
-        Trace the grey letters, then carry on along the line yourself. Say the sound as you write.
-      </div>
-
-      {% for f in formation_drills[:6] %}
-      <div class="tf-row">
-        <div class="tf-formation-block">
-          <div class="tf-formation-letter {% if f.grapheme|length > 1 %}tf-formation-letter-multi{% endif %}">{{ f.grapheme }}</div>
-          <div class="tf-formation-rhyme">{{ f.rhyme }}</div>
-        </div>
-        <div class="tf-trace-block">
-          {# Trace copies scale down with grapheme length so multi-letter sounds
-             (ous, tion) don't run off the line — one clean example is enough. #}
-          {{ hw_band(f.grapheme, copies=(3 if f.grapheme|length == 1 else (2 if f.grapheme|length == 2 else 1))) }}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="page-num page-num-left">4</div>
-  </div>
+  {# PAGE 4 (Trace & Form) MOVED after the Sound Spotlight — 2026-07-19
+     restructure: writing tasks now follow the reading, and the story
+     starts a page earlier. #}
 
   <!-- ============================================================
-       PAGES 5..N — STORY PAGES
+       PAGES 4..N — STORY PAGES
        ============================================================ -->
   {% for sp in story_pages %}
-  <div class="page story-page {% if level > 4 %}story-page-no-gpc{% endif %}">
+  <div class="page story-page">
     <div class="story-text-area">
       <div class="story-text">{{ sp.text }}</div>
     </div>
@@ -2372,22 +2738,15 @@
       <div class="story-illustration-placeholder">[ Scene {{ loop.index }} ]</div>
       {% endif %}
     </div>
-    {# GPC strip is a Reception/Y1 scaffold; drop at L5+ (Y2+) where it
-       reads as clutter against an immersive story page. #}
-    {% if level <= 4 %}
-    <div class="story-gpc-strip">
-      <span class="story-gpc-label">Sounds in this book:</span>
-      {% for g in focus_graphemes %}
-      <span class="story-gpc-sound">{{ g }}</span>
-      {% endfor %}
-    </div>
-    {% endif %}
-    {% set pnum = loop.index + 4 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {# No footer strip on story pages (Lynden 2026-07-02): just the page
+       number in its white pill on the artwork, outer corner, all levels —
+       the focus sounds already live on the page-2 chart. #}
+    {# Story starts on page 4 (2026-07-19 restructure): Trace & Form moved
+       AFTER the story so the child reaches the story a page sooner. #}
+    {{ pnum(ns, pill=true) }}
   </div>
   {% endfor %}
 
-  {% set after_story = story_pages|length + 4 %}
 
   <!-- ============================================================
        SOUND SPOTLIGHT
@@ -2425,7 +2784,7 @@
       </div>
       {% else %}
       {# Multi-sound stacked layout: one row per focus sound #}
-      <div class="spot-stack">
+      <div class="spot-stack spot-stack-{{ spotlights_to_show|length }}">
         {% for spot in spotlights_to_show %}
         <div class="spot-row">
           <div class="spot-row-hero">
@@ -2446,36 +2805,76 @@
         {% endfor %}
       </div>
       {% endif %}
+
+      {# Future Sound preview row (L4+, Lynden 2026-07-19): the coming-soon
+         sound previews here WITH the other spotlights.  The --level-color
+         override recolours the grapheme highlight to the future level's
+         ledger colour. #}
+      {% if future_spotlight_row %}
+      <div class="spot-future" style="--level-color: {{ future_spotlight_row.colour }};">
+        <div class="spot-future-label">Future Sound &mdash; coming at Level {{ future_spotlight_row.level_at }}</div>
+        <div class="spot-row">
+          <div class="spot-row-hero">
+            <div class="spot-row-circle {% if future_spotlight_row.grapheme_display|length > 1 %}spot-row-circle-multi{% endif %}" style="background: {{ future_spotlight_row.colour }};">{{ future_spotlight_row.grapheme_display }}</div>
+          </div>
+          <div class="spot-row-cards">
+            {% for entry in future_spotlight_row.words[:3] %}
+            <div class="spot-card">
+              <div class="spot-photo">
+                {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
+                {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
+              </div>
+              <div class="spot-word">{{ entry.word_html | safe }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
-    {% set pnum = after_story + 1 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
   {% endif %}
 
-  {% set after_spot = after_story + (1 if spotlights_to_show else 0) %}
 
+  {% if edition != 'library' %}
+  {# Trace & Form is write-on — dropped from the reusable library book. #}
   <!-- ============================================================
-       READ WORDS — always its own page
+       TRACE & FORM THE SOUNDS + WRITE THE WORDS (merged 2026-07-19)
+       Moved here from old page 4: reading first, writing after.  The
+       word-writing rows (formerly on Can You Read These) fill what used
+       to be this page's empty bottom half.  Word rows shrink as the
+       grapheme count grows so the page never overflows.
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
-      <div class="activity-title">Can You Read These?</div>
-      <div class="activity-subtitle">Sound out each word, then blend it. Use the buttons under each word.</div>
-      <div class="read-grid">
-        {% for w in sound_buttoned_words[:6] %}
-        <div class="read-cell">
-          {{ sb_word(w, 6) }}
-        </div>
-        {% endfor %}
+      <div class="tf-title">Trace &amp; Form the Sounds</div>
+      <div class="tf-instruction">
+        Trace the grey letters, then carry on along the line yourself. Say the sound as you write.
       </div>
 
-      {# Bottom half — handwriting trace+write rows.  Capped at 4 so the
-         page never overflows on A5 (per GPT-5 review).  The Read row
-         above still shows up to 6 words so the child reads more than
-         they hand-write. #}
+      {% for f in formation_drills[:6] %}
+      <div class="tf-row">
+        <div class="tf-formation-block">
+          <div class="tf-formation-letter {% if f.grapheme|length > 1 %}tf-formation-letter-multi{% endif %}">{{ f.grapheme }}</div>
+          <div class="tf-formation-rhyme">{{ f.rhyme }}</div>
+        </div>
+        <div class="tf-trace-block">
+          {# Trace copies scale down with grapheme length so multi-letter sounds
+             (ous, tion) don't run off the line — one clean example is enough. #}
+          {{ hw_band(f.grapheme, copies=(3 if f.grapheme|length == 1 else (2 if f.grapheme|length == 2 else 1))) }}
+        </div>
+      </div>
+      {% endfor %}
+
+      {% if level < 7 %}
+      {# Word rows fill whatever the grapheme rows leave: 2 sounds → 4 words,
+         4 sounds → 2 words, 6 sounds → none (the trace rows own the page). #}
+      {% set _word_rows = [4, 6 - formation_drills[:6]|length] | min %}
+      {% if _word_rows > 0 %}
       <div class="rw-write-section">
         <div class="rw-write-label">Now Write Each Word</div>
-        {% for w in sound_buttoned_words[:4] %}
+        {% for w in sound_buttoned_words[:_word_rows] %}
         <div class="rw-write-row">
           <div class="rw-write-trace">{{ w.word }}</div>
           <div class="rw-write-paper">
@@ -2484,13 +2883,18 @@
         </div>
         {% endfor %}
       </div>
+      {% endif %}
+      {% endif %}
     </div>
-    {% set pnum = after_spot + 1 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
+  {% endif %}
+
 
   <!-- ============================================================
-       NONSENSE WORDS — always its own page
+       NONSENSE WORDS — always its own page.  At L4+ the bottom half is
+       the Shifty/Future Sound Spotlight task (2026-07-19, replaces the
+       match-word-to-picture task).
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
@@ -2502,7 +2906,27 @@
         {% endfor %}
       </div>
 
-      {% if page_count == 16 and initial_sounds %}
+      {% if special_friend_match and level == 3 %}
+      {# L3: the Special Friends match moved here from Tell the Story
+         (2026-07-19) — the retell now owns that page, and initial-sounds
+         circling is below an L3 reader anyway. #}
+      <div class="nw-write-section">
+        <div class="nw-write-label">Match the Special Friend</div>
+        <div class="aw-instruction">Draw a line from each word to the special friend you can hear in it.</div>
+        <div class="sf-match-body">
+          <div class="sf-match-words">
+            {% for w in special_friend_match.words %}
+            <div class="sf-word"><span class="sf-word-text">{{ w.word }}</span><span class="sf-node"></span></div>
+            {% endfor %}
+          </div>
+          <div class="sf-match-friends">
+            {% for f in special_friend_match.friends %}
+            <div class="sf-friend"><span class="sf-node sf-node-left"></span><span class="sf-friend-text">{{ f }}</span></div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% elif page_count == 16 and initial_sounds %}
       <div class="nw-write-section">
         <div class="nw-write-label">Initial Sounds</div>
         <div class="aw-instruction">Circle the sound the picture starts with.</div>
@@ -2520,6 +2944,30 @@
           </div>
           {% endfor %}
         </div>
+      </div>
+      {% elif level >= 4 and extra_sound_task %}
+      <div class="nw-write-section">
+        <div class="nw-write-label">Sound Detective</div>
+        <div class="aw-instruction">
+          {% if extra_sound_task|length == 1 %}
+          Say the sound, then find and circle it in each word.
+          {% else %}
+          Say each sound, then find and circle it in its words.
+          {% endif %}
+        </div>
+        {% for row in extra_sound_task %}
+        <div class="est-body">
+          <div class="est-hero">
+            <div class="est-circle {% if row.grapheme|length > 2 %}est-circle-multi{% endif %}" style="background: {{ row.colour }};">{{ row.grapheme }}</div>
+            <div class="est-caption">{{ row.caption }}</div>
+          </div>
+          <div class="est-words">
+            {% for w in row.words %}
+            <div class="est-word">{{ w | safe }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
       </div>
       {% elif match_to_picture and match_to_picture.words|length == 3 %}
       <div class="nw-write-section">
@@ -2544,37 +2992,25 @@
       </div>
       {% endif %}
 
-      <div class="nonsense-tip">
-        {% if level <= 4 %}
-        <strong>Why this matters:</strong> The Year 1 Phonics Screening Check uses
-        made-up words to test pure decoding. If your child can read these, they
-        truly understand sound-letter mapping &mdash; they&rsquo;re not guessing from memory.
-        {% else %}
-        <strong>Why this matters:</strong> By Year 2/3 your child has met every common
-        spelling pattern. Made-up words are now used to check they can decode any
-        new word they encounter &mdash; including unfamiliar real ones &mdash; using
-        only their knowledge of sound-letter patterns.
-        {% endif %}
-      </div>
     </div>
-    {% set pnum = after_spot + 2 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
 
-  {% set after_read = after_spot + 2 %}
-
+  {% if level < 7 %}
   <!-- ============================================================
-       TELL THE STORY — Story Ordering (+ B/M/E retell at 20pp)
+       PUT THE STORY IN ORDER — full-page picture ordering (2026-07-19
+       v2: "Can You Read These" removed — the read words already live in
+       the story and on the Story Words page.  The ordering pictures get
+       the whole page instead, big.)
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
-      <div class="tell-title">Tell the Story</div>
+      <div class="tell-title">Put the Story in Order</div>
       <div class="tell-instruction">
         Number the pictures 1, 2, 3, 4{% if ordering_image_count == 6 %}, 5, 6{% endif %} in the order they happened.
-        {% if page_count >= 20 %}Then retell the story below.{% endif %}
+        Then use them to retell the story on the next page.
       </div>
-
-      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6{% if page_count >= 24 %} ordering-grid-6-large{% endif %}{% elif level >= 3 %}ordering-grid-compact{% elif page_count == 16 %}ordering-grid-4 ordering-grid-4-large{% else %}ordering-grid-4{% endif %}">
+      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6 ordering-grid-6-large{% else %}ordering-grid-4 ordering-grid-4-large{% endif %}">
         {% for item in ordering_items %}
         <div class="ordering-cell">
           {% if item.image %}
@@ -2586,12 +3022,86 @@
         </div>
         {% endfor %}
       </div>
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% else %}
+  <!-- L7/L8 keep the read + write-words page (their harder story words
+       merit standalone practice; page counts stay saddle-stitch safe). -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="activity-title">Can You Read These?</div>
+      <div class="activity-subtitle">Sound out each word, then blend it. Use the buttons under each word.</div>
+      <div class="read-grid">
+        {% for w in sound_buttoned_words[:6] %}
+        <div class="read-cell">
+          {{ sb_word(w, 6) }}
+        </div>
+        {% endfor %}
+      </div>
+      {% if edition != 'library' %}
+      <div class="rw-write-section">
+        <div class="rw-write-label">Now Write Each Word</div>
+        {% for w in sound_buttoned_words[:4] %}
+        <div class="rw-write-row">
+          <div class="rw-write-trace">{{ w.word }}</div>
+          <div class="rw-write-paper">
+            {{ hw_band(x_height=4.5) }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
 
-      {# At 20 pages, the retell scaffold + writing goals live on this page.
-         At 24 pages (L5/L6) the writing moves to its own dedicated
-         "Your Turn to Write" page so it isn't squashed against the
-         picture-ordering grid.  See block further down. #}
-      {% if page_count == 20 %}
+
+  {% if edition != 'library' %}
+  {# Tell the Story is a written retell — dropped from the library book;
+     the Put-the-Story-in-Order page (kept) covers oral sequencing. #}
+  <!-- ============================================================
+       TELL THE STORY — Story Ordering (+ B/M/E retell at 20pp)
+       ============================================================ -->
+  <div class="page">
+    <div class="page-inner">
+      <div class="tell-title">Tell the Story</div>
+      <div class="tell-instruction">
+        {% if level < 7 %}
+        Retell the story in your own words &mdash; the pictures you numbered on the last page will help you.
+        {% else %}
+        Number the pictures 1, 2, 3, 4{% if ordering_image_count == 6 %}, 5, 6{% endif %} in the order they happened.
+        Then retell the story out loud in your own words.
+        {% endif %}
+      </div>
+
+      {# L7+ keep the ordering grid here (their writing has its own page);
+         below L7 it moved to the Read Words page (2026-07-19) so this
+         page is a whole side of writing room. #}
+      {% if level >= 7 %}
+      <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6{% if page_count >= 24 or level >= 7 %} ordering-grid-6-large{% endif %}{% elif level >= 3 and page_count != 16 %}ordering-grid-compact{% elif page_count == 16 %}ordering-grid-4 ordering-grid-4-large{% else %}ordering-grid-4{% endif %}">
+        {% for item in ordering_items %}
+        <div class="ordering-cell">
+          {% if item.image %}
+          <img src="{{ item.image }}" alt="">
+          {% else %}
+          <div class="ordering-cell-placeholder">[ scene {{ loop.index }} ]</div>
+          {% endif %}
+          <div class="ordering-number-box"></div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Special Friends match moved to the Alien Words page (2026-07-19) —
+         the retell owns this whole page below L7. #}
+
+      {# Below L7 the retell scaffold + writing goals now get this whole
+         page, every page count — the ordering grid moved to the Read
+         Words page (2026-07-19).  L7/L8 keep their dedicated "Your Turn
+         to Write" page instead. #}
+      {% if level < 7 %}
       {# Retell scaffold MODELS the conventions it asks for:
          - First line of each step is printed with a sentence starter
            ("First, ") so the child sees a capital + comma + space.
@@ -2646,47 +3156,52 @@
       </div>
       {% endif %}
 
-      {% if grammar_spotlight and grammar_spotlight.retell_note %}
+      {# L4: note dropped — the 2-step scaffold needs the room (was overflowing). #}
+      {% if grammar_spotlight and grammar_spotlight.retell_note and level != 4 %}
       <div class="retell-note">{{ grammar_spotlight.retell_note }}</div>
       {% endif %}
 
       {# Per-level retell scaffold — modelled starters + ghost end marks. #}
+      {# Line counts sized for the FULL page (2026-07-19 restructure — the
+         ordering grid no longer shares this page). #}
       {% if level == 1 %}
         {% set retell_steps = [
-          {'label': 'Sentence 1', 'hint': 'Say it first. Count the words on your fingers.', 'starter': 'It ', 'lines': 2, 'ghost': '.'},
-          {'label': 'Sentence 2', 'hint': 'One more thing about the story.',                  'starter': 'It ', 'lines': 2, 'ghost': '.'},
+          {'label': 'Sentence 1', 'hint': 'Say it first. Count the words on your fingers.', 'starter': 'It ', 'lines': 3, 'ghost': '.'},
+          {'label': 'Sentence 2', 'hint': 'One more thing about the story.',                  'starter': 'It ', 'lines': 3, 'ghost': '.'},
         ] %}
       {% elif level == 2 %}
         {% set retell_steps = [
-          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 2, 'ghost': '.'},
-          {'label': 'Middle',    'hint': 'Then, …',       'starter': 'Then, ',       'lines': 2, 'ghost': '.'},
-          {'label': 'End',       'hint': 'At the end, …', 'starter': 'At the end, ', 'lines': 2, 'ghost': '.'},
+          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 3, 'ghost': '.'},
+          {'label': 'Middle',    'hint': 'Then, …',       'starter': 'Then, ',       'lines': 3, 'ghost': '.'},
+          {'label': 'End',       'hint': 'At the end, …', 'starter': 'At the end, ', 'lines': 3, 'ghost': '.'},
         ] %}
       {% elif level == 3 %}
         {% set retell_steps = [
-          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 2, 'ghost': '.'},
-          {'label': 'Next part', 'hint': 'Next, …',       'starter': 'Next, ',       'lines': 2, 'ghost': '.'},
-          {'label': 'End',       'hint': 'In the end, …', 'starter': 'In the end, ', 'lines': 2, 'ghost': '.'},
+          {'label': 'Beginning', 'hint': 'First, …',      'starter': 'First, ',      'lines': 3, 'ghost': '.'},
+          {'label': 'Next part', 'hint': 'Next, …',       'starter': 'Next, ',       'lines': 3, 'ghost': '.'},
+          {'label': 'End',       'hint': 'In the end, …', 'starter': 'In the end, ', 'lines': 3, 'ghost': '.'},
         ] %}
       {% elif level == 4 %}
+        {# Two steps only (Beginning + Then) — keeps the page uncluttered and
+           gives each line real writing room. #}
         {% set retell_steps = [
-          {'label': 'Beginning', 'hint': 'First, …',                'starter': 'First, ',      'lines': 3, 'ghost': '.'},
-          {'label': 'Add a join','hint': 'Use and or but once.',    'starter': 'Then, ',       'lines': 3, 'ghost': '.'},
-          {'label': 'End',       'hint': 'After that, …',           'starter': 'After that, ', 'lines': 3, 'ghost': '.'},
+          {'label': 'Beginning', 'hint': 'First, …',             'starter': 'First, ', 'lines': 4, 'ghost': '.'},
+          {'label': 'Then',      'hint': 'Use and or but once.', 'starter': 'Then, ',  'lines': 4, 'ghost': '.'},
         ] %}
       {% elif level == 5 %}
+        {# Two steps only (Lynden 2026-07-15): three squeezed the lines into
+           the labels and off the page bottom — two gives real writing room. #}
         {% set retell_steps = [
-          {'label': 'Set the scene', 'hint': 'At the start, …',                            'starter': 'At the start, ', 'lines': 3, 'ghost': '.'},
-          {'label': 'Tell why',      'hint': 'Use because to give a reason.',              'starter': 'Then, ',         'lines': 3, 'ghost': '.'},
-          {'label': 'Finish strong', 'hint': 'In the end, … (add one describing word)',   'starter': 'In the end, ',   'lines': 3, 'ghost': '.'},
+          {'label': 'Set the scene', 'hint': 'At the start, … (use because to give a reason)', 'starter': 'At the start, ', 'lines': 4, 'ghost': '.'},
+          {'label': 'Finish strong', 'hint': 'In the end, … (add one describing word)',        'starter': 'In the end, ',   'lines': 4, 'ghost': '.'},
         ] %}
       {% else %}
         {# L6 — paragraph block with margin starters at fixed line indices #}
         {% set retell_paragraph = {
           'label': 'Paragraph retell',
           'hint':  'Use these to guide your paragraph: At first, … Then, … In the end, …',
-          'lines': 8,
-          'margin_starters': {0: 'At first, ', 3: 'Then, ', 6: 'In the end, '},
+          'lines': 11,
+          'margin_starters': {0: 'At first, ', 4: 'Then, ', 8: 'In the end, '},
         } %}
       {% endif %}
 
@@ -2732,17 +3247,12 @@
       {% endif %}
       {% endif %}
     </div>
-    {% set pnum = after_read + 1 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
+  {% endif %}{# /Tell the Story (home only) #}
 
-  {% set after_tell = after_read + 1 %}
-  {# Page-count offset: at 24 pages a dedicated Writing Practice page sits
-     between Tell-the-Story and Talk-About-It, pushing every later page
-     number up by one. #}
-  {% set wp_off = 1 if page_count >= 24 else 0 %}
-
-  {% if page_count >= 24 %}
+  {# Writing Practice / Your Turn to Write — write-on, home edition only. #}
+  {% if (page_count >= 24 or level >= 7) and edition != 'library' %}
   <!-- ============================================================
        WRITING PRACTICE — full A5 page of writing lines, writing goals,
        and a level-appropriate retell prompt.  L5/L6 only (24-page).
@@ -2848,8 +3358,7 @@
       </div>
       {% endif %}
     </div>
-    {% set pnum = after_tell + 1 %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
   {% endif %}
 
@@ -2867,30 +3376,37 @@
       {% endfor %}
 
       <div class="talk-draw-section">
+        {% if edition != 'library' %}
         <div class="talk-draw-label">Draw Your Favourite Part</div>
         <div class="talk-draw-box"></div>
         <div class="talk-feeling-row">
           <span class="talk-feeling-stem">It made me feel</span>
           <div class="talk-feeling-stem-line"></div>
         </div>
+        {% else %}
+        <div class="talk-draw-label">Which part did you like best? Tell your grown-up why.</div>
+        {% endif %}
+        {# Hand-drawn faces, not emoji: house eye rule — solid black filled
+           ovals, no white sclera, no catchlight. #}
         <div class="talk-faces-row">
           <span class="talk-faces-prompt">Circle one:</span>
-          <div class="talk-face">&#x1F60A;</div>
-          <div class="talk-face">&#x1F61E;</div>
-          <div class="talk-face">&#x1F62E;</div>
-          <div class="talk-face">&#x1F914;</div>
+          <div class="talk-face"><svg viewBox="0 0 24 24"><ellipse cx="8.2" cy="9.5" rx="1.6" ry="2.2" fill="#1a1a1a"/><ellipse cx="15.8" cy="9.5" rx="1.6" ry="2.2" fill="#1a1a1a"/><path d="M7.5 15 Q12 19.5 16.5 15" fill="none" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="talk-face"><svg viewBox="0 0 24 24"><ellipse cx="8.2" cy="9.5" rx="1.6" ry="2.2" fill="#1a1a1a"/><ellipse cx="15.8" cy="9.5" rx="1.6" ry="2.2" fill="#1a1a1a"/><path d="M7.5 18 Q12 14 16.5 18" fill="none" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="talk-face"><svg viewBox="0 0 24 24"><ellipse cx="8.2" cy="9" rx="1.6" ry="2.2" fill="#1a1a1a"/><ellipse cx="15.8" cy="9" rx="1.6" ry="2.2" fill="#1a1a1a"/><ellipse cx="12" cy="16.5" rx="2" ry="2.6" fill="#1a1a1a"/></svg></div>
+          <div class="talk-face"><svg viewBox="0 0 24 24"><ellipse cx="8.2" cy="10" rx="1.6" ry="2.2" fill="#1a1a1a"/><ellipse cx="15.8" cy="10" rx="1.6" ry="2.2" fill="#1a1a1a"/><path d="M13.6 5.6 Q15.8 4.4 17.9 5.9" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/><path d="M8.5 17.2 L15 16.4" fill="none" stroke="#1a1a1a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         </div>
       </div>
     </div>
-    {% set pnum = after_tell + 1 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
 
-  {% if page_count >= 20 %}
+  {% if page_count >= 20 and level < 7 and edition != 'library' %}
   <!-- ============================================================
        WORD WORKSHOP — only new tricky words get LCWC; older tricky
        words are exercised via recognition (Hunt), not spelling.  The
        freed space hosts a Grammar Spotlight that scales by level.
+       (This and Listen-and-Write are dropped on the slimmed L7/L8
+       books — spelling drill lives in the companion workbooks.)
        ============================================================ -->
   {# Cap LCWC at 3 — even when many new tricky words land at this level,
      three rows is enough deliberate practice on one page; the rest
@@ -2987,7 +3503,10 @@
       {# Align the apply-the-skill prompt to THIS book's grammar spotlight
          (e.g. "use speech with inverted commas"), not a generic "new words". #}
       {% set _writing_prompt = (grammar_spotlight.writing_prompt if grammar_spotlight.writing_prompt else ("Now write a sentence about part of the story. Try to use " ~ _spot.skill|lower ~ "." if _spot.skill else "Now write a sentence about part of the story, using one of your new words.")) %}
-      {% set _writing_lines = (grammar_spotlight.writing_lines if grammar_spotlight.writing_lines else 3) %}
+      {# Exactly TWO handwriting bands (Lynden 2026-07-15): a third band's
+         baseline falls off the page bottom, leaving orphaned guide lines
+         the child can't write on. Authored writing_lines values are capped. #}
+      {% set _writing_lines = [(grammar_spotlight.writing_lines if grammar_spotlight.writing_lines else 2), 2] | min %}
       <div class="gs-writing">
         <div class="gs-writing-label">Write About the Story</div>
         <div class="gs-writing-prompt">{{ _writing_prompt }}</div>
@@ -2999,53 +3518,68 @@
       </div>
       {% endif %}
     </div>
-    {% set pnum = after_tell + 2 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
+  {% endif %}{# /Word Workshop (home, L4-L6) #}
 
+  {% if level == 4 %}
+  {# L4 keeps this slot as a reading page (the Grow the Code chart starts at
+     L5, Lynden 2026-07-20).  Reading, not writing — kept in BOTH editions,
+     so L4 stays 20pp saddle-stitch. #}
+  <div class="page">
+    <div class="page-inner">
+      <div class="activity-title">Can You Read These?</div>
+      <div class="activity-subtitle">Sound out each word, then blend it. Use the buttons under each word.</div>
+      <div class="read-grid">
+        {% for w in sound_buttoned_words[:6] %}
+        <div class="read-cell">{{ sb_word(w, 6) }}</div>
+        {% endfor %}
+      </div>
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
+
+  {% if level >= 5 %}
+  {# Grow the Code chart — L5-L8, BOTH editions (Lynden 2026-07-20). #}
   <!-- ============================================================
-       LISTEN AND WRITE — parent-led phoneme dictation.
-       The word is hidden from the child; only the grown-up sees it.
-       Child writes each sound in a box.  This forces encoding from
-       hearing, not copying.  Answer strip is rotated 180° at the
-       bottom edge so the child can't read it while writing.
+       SHIFTY SOUNDS — GROW THE CODE (replaced Listen-and-Write
+       dictation, Lynden 2026-07-19).  The FIXED full chart, Little
+       Wandle style but portrait + ledger-coloured: one tile per base
+       sound, every alternative pronunciation and spelling below it,
+       identical in every book so the child compares against the whole
+       code each time they read.
        ============================================================ -->
   <div class="page">
     <div class="page-inner">
-      <div class="sw2-title">Listen and Write</div>
-      <div class="sw2-subtitle">Your grown-up will say a word.  Listen carefully.  Write one sound or letter in each box.</div>
+      <div class="sw2-title">Shifty Sounds &mdash; Grow the Code</div>
+      <div class="sw2-subtitle">
+        Different spellings can make the same sound. Read down each column
+        &mdash; every spelling underneath makes the sound at the top. The
+        same chart is in every book, so you can watch the code grow!
+      </div>
 
-      <div class="bw-grid bw-grid-listen">
-        {% for w in sound_buttoned_words[:4] %}
-        <div class="bw-cell {% if w.phonemes|length >= 5 %}bw-cell-long{% endif %}">
-          <div class="bw-row-num">{{ loop.index }}</div>
-          <div class="bw-boxes">
-            {% for ph in w.phonemes %}
-            <div class="bw-box bw-box-len-{{ ph|length }}"></div>
-            {% endfor %}
-          </div>
+      {% if grow_code_chart %}
+      {# Little Wandle-style sound chart, portrait (Lynden 2026-07-19
+         final): one narrow COLUMN per sound family, graphemes stacked in
+         bordered cells — visible chart lines, no example words.  Main
+         spelling tops its column; the code grows downward. #}
+      {% for tbl in grow_code_chart %}
+      <div class="gc-zone-label">{{ tbl.label }}</div>
+      <div class="gc-bank">
+        {% for fam in tbl.columns %}
+        <div class="gc-col">
+          <div class="gc-cell gc-cell-head {% if fam.head|length >= 4 %}gc-cell-long{% endif %}">{{ fam.head }}{% if fam.cue %}<span class="gc-cue">{{ fam.cue }}</span>{% endif %}</div>
+          {% for c in fam.cells %}
+          <div class="gc-cell {% if c.long %}gc-cell-long{% endif %}">{{ c.g }}</div>
+          {% endfor %}
         </div>
         {% endfor %}
       </div>
-
-      <div class="bw-grownup-panel">
-        <div class="bw-grownup-header">
-          <span class="bw-grownup-title">Grown-Up Panel</span>
-          <span class="bw-grownup-flip-cue">&#x21bb; turn the book to read</span>
-        </div>
-        <div class="bw-grownup-words">
-          {% for w in sound_buttoned_words[:4] %}
-          <span class="bw-grownup-word"><strong>{{ loop.index }}.</strong> {{ w.word }}</span>
-          {% endfor %}
-        </div>
-        <div class="bw-grownup-tip">
-          <strong>How to dictate:</strong> Say each word slowly, stretching every sound &mdash;
-          <em>fff &mdash; iii &mdash; sh</em>.  Don&rsquo;t spell it for them.  Digraphs (two letters, one sound) sit in one box together.
-        </div>
-      </div>
+      {% endfor %}
+      {% endif %}
     </div>
-    {% set pnum = after_tell + 3 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
   {% endif %}
 
@@ -3088,10 +3622,16 @@
         {% endfor %}
       </div>
     </div>
-    {% set pnum = after_tell + 4 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
   </div>
+  {% endif %}
 
+  {# Prefix Power retired from L7/L8 (2026-07-20): the Grow the Code chart
+     now takes its 20pp slot on L7/L8 so the code chart reaches every L4-L8
+     book, both editions.  Only a (currently non-existent) 24pp book would
+     still show it.  Flagged for Lynden — prefixes still live in the story
+     + grammar spotlight. #}
+  {% if page_count >= 24 and edition != 'library' %}
   <!-- ============================================================
        PREFIX POWER — L5/L6 prefix challenge.  Replaces the prior
        Reading Star certificate (a celebration page that duplicated
@@ -3132,10 +3672,13 @@
         blending them.  Ask: <em>what changed in the meaning?</em>
       </div>
     </div>
-    {% set pnum = after_tell + 5 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {# On 24pp books Prefix Power is the 5th page after Tell; on the slimmed
+       20pp L7/L8 books it directly follows Talk About It (2nd). #}
+    {{ pnum(ns) }}
   </div>
+  {% endif %}
 
+  {% if page_count >= 24 %}
   <!-- ============================================================
        SENTENCE STRETCH — extend a short main clause with a
        subordinator (because / when / if) and finish the idea.
@@ -3185,8 +3728,85 @@
         each finished sentence aloud and check it makes sense.
       </div>
     </div>
-    {% set pnum = after_tell + 6 + wp_off %}
-    <div class="page-num {% if pnum % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ pnum }}</div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
+
+  {# Library edition padding (2026-07-20): reusable, non-writing pages that
+     fill the gap left by the dropped write-on pages so the book still hits
+     its saddle-stitch page count (16 early / 20 later).  Each renders only
+     while there's still a gap before the back cover. #}
+  {% if edition == 'library' and ns.pg < page_count - 1 %}
+  {# "Check, match, read" — the marketing booklet's how-it-works page,
+     reused in place of a celebration filler (Lynden 2026-07-20). #}
+  <div class="page">
+    <div class="page-inner mkt-inner" style="--level-color: {{ level_colour }};">
+      <div class="mkt-eyebrow">How it works</div>
+      <div class="mkt-title">Check, match, read</div>
+      <div class="mkt-steps">
+        <div class="mkt-step">
+          {% if mkt_phone %}<div class="mkt-shot"><img src="{{ mkt_phone }}" alt=""></div>{% endif %}
+          <div class="mkt-txt"><div class="mkt-h"><span class="mkt-num" style="background: {{ level_colour }};">1</span>Check</div>
+            <p>A free 3-minute phonics check finds exactly which sounds your child knows, and which come next.</p></div>
+        </div>
+        <div class="mkt-step">
+          {% if mkt_laptop %}<div class="mkt-shot"><img src="{{ mkt_laptop }}" alt=""></div>{% endif %}
+          <div class="mkt-txt"><div class="mkt-h"><span class="mkt-num" style="background: {{ level_colour }};">2</span>Match</div>
+            <p>They start at just the right level, with books built only from sounds they have already learned.</p></div>
+        </div>
+        <div class="mkt-step">
+          {% if mkt_tablet %}<div class="mkt-shot"><img src="{{ mkt_tablet }}" alt=""></div>{% endif %}
+          <div class="mkt-txt"><div class="mkt-h"><span class="mkt-num" style="background: {{ level_colour }};">3</span>Read</div>
+            <p>Read together on a phone or tablet, tap any word to hear it, or print the worksheets to keep.</p></div>
+        </div>
+      </div>
+      <div class="mkt-inside">
+        <div class="mkt-inside-lab" style="color: {{ level_colour }};">Every book comes with</div>
+        <ul class="mkt-inside-list" style="--level-color: {{ level_colour }};">
+          <li>Tap-to-hear read-along audio</li>
+          <li>Printable worksheets to keep</li>
+          <li>A free phonics assessment</li>
+          <li>Works on phone, tablet and computer</li>
+        </ul>
+      </div>
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
+
+  {% if edition == 'library' and ns.pg < page_count - 1 %}
+  {# Writing-worksheet PREVIEW (Lynden 2026-07-20): shows what the printable
+     worksheet offers (letter formation + writing lines) as a faded SAMPLE,
+     so the library book stays writing-free but the writing product is on
+     show — with a QR to download and print it. #}
+  <div class="page">
+    <div class="page-inner ws-inner" style="--level-color: {{ level_colour }};">
+      <div class="ws-eyebrow">Practise writing at home</div>
+      <div class="ws-title">There&rsquo;s a worksheet for this book</div>
+      <div class="ws-sub">This is a reading copy &mdash; please don&rsquo;t write in it. Scan the code to download and print the free worksheet, with letter formation, spelling and writing practice for every sound in this book.</div>
+
+      <div class="ws-preview">
+        <span class="ws-sample-tag" style="background: {{ level_colour }};">Worksheet sample</span>
+        {% for f in formation_drills[:3] %}
+        <div class="ws-row">
+          <div class="ws-letter">{{ f.grapheme }}</div>
+          <div class="ws-band">{{ hw_band(f.grapheme, copies=(3 if f.grapheme|length == 1 else 2)) }}</div>
+        </div>
+        {% endfor %}
+        {% for w in sound_buttoned_words[:2] %}
+        <div class="ws-row">
+          <div class="ws-letter ws-word">{{ w.word }}</div>
+          <div class="ws-band">{{ hw_band(x_height=4.5) }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="ws-foot">
+        <img class="ws-qr" src="{{ worksheet_qr }}" alt="Scan to download the worksheet">
+        <div class="ws-foot-text"><strong>Download the worksheet to write.</strong> Free to print at home &mdash; keeps this library copy clean for the next reader.</div>
+      </div>
+    </div>
+    {{ pnum(ns) }}
   </div>
   {% endif %}
 
@@ -3199,31 +3819,39 @@
       <div class="back-level-text">Level {{ level }} &middot; {{ level_name }} &middot; Ages {{ age_range }}</div>
     </div>
     <div class="back-body">
-      <div class="back-description">
-        <strong>{{ book_title }}</strong> &mdash; a fully decodable phonics story
-        set in a real, contemporary culture. Every word can be sounded out using
-        only the sounds taught up to Level {{ level }}, plus a small set of tricky
-        words listed inside.
-      </div>
-
-      <div class="back-decodability">
-        <strong>100% decodable.</strong> No guessing words from pictures.
-        Aligned to {{ phase_label }}.
-      </div>
-
-      <div class="back-series-label">The Series</div>
-      <div class="back-series-row">
+      <div class="back-journey-title">One book today. A whole journey to come.</div>
+      <div class="back-journey-stats"><strong>8 levels</strong> &middot; <strong>33 storybooks</strong> &middot; sound books &middot; worksheets &middot; games</div>
+      <div class="back-journey-grid">
         {% for lvl in series_levels %}
-        <div class="back-series-box {% if lvl.num == level %}back-series-box-active{% endif %}">
-          <div class="back-series-num">{{ lvl.num }}</div>
-          <div class="back-series-name">{{ lvl.name }}</div>
+        <div class="back-journey-card {% if lvl.num == level %}back-journey-card-active{% endif %}" style="--jl-colour: {{ lvl.colour }};">
+          {% if lvl.thumb %}
+          <img class="back-journey-thumb" src="{{ lvl.thumb }}" alt="">
+          {% else %}
+          <div class="back-journey-thumb back-journey-thumb-blank"></div>
+          {% endif %}
+          <div class="back-journey-label"><span class="back-journey-dot"></span>Level {{ lvl.num }}</div>
+          {% if lvl.num == level %}<div class="back-journey-yours">YOUR LEVEL</div>{% endif %}
         </div>
         {% endfor %}
       </div>
 
-      <div class="back-footer">
-        <div class="back-footer-brand">myphonicsbooks.co.uk</div>
-        <div class="back-footer-url">Decodable phonics stories from around the world</div>
+      <div class="back-footer {% if isbn_barcode_svg %}back-footer-print{% endif %}">
+        <div class="back-footer-qr">
+          {% if library_qr %}<img class="back-footer-qr-img" src="{{ library_qr }}" alt="">{% endif %}
+          <div class="back-footer-qr-text">
+            <div class="back-footer-brand">myphonicsbooks.co.uk</div>
+            <div class="back-footer-url">Scan to explore the full library</div>
+          </div>
+        </div>
+        {% if isbn_barcode_svg %}
+        <div class="back-footer-isbn back-footer-isbn-filled">
+          <div class="back-isbn-line">{{ isbn_display }}</div>
+          {{ isbn_barcode_svg | safe }}
+        </div>
+        {% else %}
+        {# Reserved for the ISBN barcode — keep this space clear. #}
+        <div class="back-footer-isbn"></div>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -70,7 +70,7 @@ BROWN_OWL_STORY_BOOK1 = {
             },
         ],
         "story_words": ["owl", "stared", "brown", "dare", "howl", "care"],
-        "tricky_words_used": ["the", "to", "I", "we", "my", "go", "me", "her", "saw", "there", "want", "said", "was", "what", "were", "she", "all"],
+        "tricky_words_used": ["the", "to", "I", "we", "my", "go", "me", "her", "there", "want", "said", "was", "what", "were", "she", "all"],  # saw removed 2026-07-13 — s+aw decodable since L5
         "tricky_words_all": ["the", "to", "I", "was", "what", "all", "were", "she", "me", "my", "said", "you", "do", "like", "want", "we", "go", "saw", "to", "her"],
         "read_words": ["howl", "bare", "brown", "stared"],
         "nonsense_words": [

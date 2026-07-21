@@ -41,11 +41,11 @@ FOX_FELL_STORY_BOOK1 = {
             {"text": "Fox is on the mat! Fox did not slip off! I hug Fox!", "image": None},
         ],
         "story_words": ["fox", "fell", "off", "log", "rock", "hill", "slip", "mat"],
-        "tricky_words_used": ["I", "the"],  # 'a' treated as decodable; 'have', 'oh', 'wall', 'fall' removed via rewrites
+        "tricky_words_used": ["I", "the"],  # 'with' de-listed (Lynden 2026-07-15: not tricky — w + th previewed on the Future Sounds band); 'a'/'is' auto-detected from the master list
         "read_words": ["fill", "fell", "huff", "doll"],  # Focus on f, l, ff, ll
         "nonsense_words": [
             "feg", "lod", "fep", "lig",  # f, l single letter focus
-            "hiff", "noff", "wiff", "deff",  # ff combinations
+            "hiff", "noff", "liff", "deff",  # ff combinations (w untaught yet)
             "mell", "sull", "nill", "boll",  # ll combinations
         ],
         "questions": [

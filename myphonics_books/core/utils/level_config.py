@@ -64,16 +64,16 @@ def get_level_config(level: int) -> LevelConfig:
     Get configuration for a specific reading level.
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         LevelConfig for the specified level
 
     Raises:
-        ValueError: If level is not 1-6
+        ValueError: If level is not 1-8
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     graphemes_data = load_graphemes_by_level()
     level_key = f"level_{level}"
@@ -114,13 +114,13 @@ def get_tricky_words(level: int) -> List[str]:
     and must be memorised (e.g., "the", "said", "was").
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         List of tricky words permitted at this level (cumulative)
     """
-    if level < 1 or level > 6:
-        raise ValueError(f"Level must be 1-6, got {level}")
+    if level < 1 or level > 8:
+        raise ValueError(f"Level must be 1-8, got {level}")
 
     tricky_data = load_tricky_words_by_level()
     level_key = f"level_{level}"
@@ -128,8 +128,8 @@ def get_tricky_words(level: int) -> List[str]:
 
 
 def get_all_level_configs() -> Dict[int, LevelConfig]:
-    """Get configuration for all 6 levels."""
-    return {level: get_level_config(level) for level in range(1, 7)}
+    """Get configuration for all 8 levels."""
+    return {level: get_level_config(level) for level in range(1, 9)}
 
 
 # Level descriptions for parent-friendly UI
@@ -139,14 +139,16 @@ LEVEL_DESCRIPTIONS = {
     3: "Reading short sentences with some longer sounds",
     4: "Reading sentences with blended sounds",
     5: "Reading longer sentences and simple stories",
-    6: "Reading independently with expression"
+    6: "Reading independently with expression",
+    7: "Reading longer stories with trigraphs and new endings",
+    8: "Reading confidently with suffixes and rich vocabulary"
 }
 
 
 def get_level_description(level: int) -> str:
     """Get parent-friendly description for a level."""
     if level not in LEVEL_DESCRIPTIONS:
-        raise ValueError(f"Level must be 1-6, got {level}")
+        raise ValueError(f"Level must be 1-8, got {level}")
     return LEVEL_DESCRIPTIONS[level]
 
 
@@ -181,6 +183,16 @@ WORKSHEET_CONFIG = {
         "type": "sentence_writing",
         "description": "Write sentences about the story using target vocabulary",
         "sentence_count": 3
+    },
+    7: {
+        "type": "sentence_writing",
+        "description": "Write sentences about the story using target vocabulary",
+        "sentence_count": 3
+    },
+    8: {
+        "type": "sentence_writing",
+        "description": "Write sentences about the story using target vocabulary",
+        "sentence_count": 4
     }
 }
 
@@ -188,5 +200,5 @@ WORKSHEET_CONFIG = {
 def get_worksheet_config(level: int) -> dict:
     """Get worksheet configuration for a level."""
     if level not in WORKSHEET_CONFIG:
-        raise ValueError(f"Level must be 1-6, got {level}")
+        raise ValueError(f"Level must be 1-8, got {level}")
     return WORKSHEET_CONFIG[level]

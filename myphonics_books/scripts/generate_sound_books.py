@@ -412,14 +412,27 @@ def pick_best_candidate(word: str, candidates: list[Path]) -> tuple[Path | None,
     if len(candidates) == 1:
         return candidates[0], 5  # unknown — assume middling
 
-    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
-    if not api_key or api_key.startswith("your_"):
-        return candidates[0]
-
-    try:
-        from openai import OpenAI
-    except Exception:
-        return candidates[0]
+    import requests
+    tok, proj = _vertex_token_and_project()
+    if not tok or not proj:
+        print(f"   [vision-pick] no Vertex auth — candidate 0 for {word!r}")
+        return candidates[0], 0
+    ETHOS = (
+        "\n\nABSOLUTE RULES for a Muslim / Islamic-ethos audience (UK + Gulf schools). "
+        "These OVERRIDE everything above: give any violating candidate score 0 and never "
+        "pick it unless EVERY candidate violates (then pick the least bad):\n"
+        "- HARAM: no alcohol / beer / wine / cocktails / bars; no pork / ham / bacon / pig "
+        "as food; no gambling.\n"
+        "- MODESTY: no exposed legs, thighs, midriff, shoulders, cleavage; no bare arms above "
+        "the elbow; no swimwear; no tight or revealing clothing — especially on women or girls. "
+        "Awrah must be covered.\n"
+        "- NO non-Islamic religious content: churches, crosses, temples, idols, statues of "
+        "deities or Buddha, other faiths' festivals.\n"
+        "PREFERENCE: where natural, favour culturally diverse, non-Western-default, modest "
+        "depictions (e.g. a taqiyah / kufi / embroidered cap over a Western beach hat; a domed "
+        "clay house / riad / yurt over a Western cottage; food and dress from around the world). "
+        "Do not force it — recognisability comes first."
+    )
 
     import base64
 
@@ -465,22 +478,45 @@ def pick_best_candidate(word: str, candidates: list[Path]) -> tuple[Path | None,
         content.append({"type": "text", "text": f"Candidate {i}:"})
         content.append({"type": "image_url", "image_url": {"url": _data_uri(p), "detail": "low"}})
 
+    content[0]["text"] += ETHOS
+    parts = []
+    for item in content:
+        if item.get("type") == "text":
+            parts.append({"text": item["text"]})
+        else:
+            b64 = item["image_url"]["url"].split(",", 1)[1]
+            parts.append({"inline_data": {"mime_type": "image/jpeg", "data": b64}})
+    url = (f"https://{VERTEX_REGION}-aiplatform.googleapis.com/v1/projects/{proj}"
+           f"/locations/{VERTEX_REGION}/publishers/google/models/gemini-2.5-flash:generateContent")
+    import time
     try:
-        client = OpenAI()
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": content}],
-            temperature=0,
-            max_tokens=20,
-        )
-        reply = (resp.choices[0].message.content or "").strip()
+        hdrs = {"Authorization": f"Bearer {tok}", "Content-Type": "application/json"}
+        body = {"contents": [{"role": "user", "parts": parts}],
+                "generationConfig": {"temperature": 0, "maxOutputTokens": 64,
+                                     "thinkingConfig": {"thinkingBudget": 0}}}
+        r = None
+        for attempt in range(6):
+            r = requests.post(url, headers=hdrs, json=body, timeout=120)
+            if r.status_code == 429:
+                wait = 20 + attempt * 12
+                print(f"   [vision-pick-429] {word!r}: wait {wait}s ({attempt+1}/6)")
+                time.sleep(wait)
+                continue
+            break
+        if r is None or r.status_code != 200:
+            print(f"   [vision-pick-http {getattr(r,'status_code','?')}] {word!r}: {(r.text[:120] if r is not None else '')}")
+            return candidates[0], 0
+        reply = ""
+        for c in r.json().get("candidates", []):
+            for prt in c.get("content", {}).get("parts", []):
+                reply += prt.get("text", "")
+        reply = reply.strip()
         m = re.search(r"(\d+)\s*,\s*(\d+)", reply)
         if m:
             idx, score = int(m.group(1)), int(m.group(2))
             if 0 <= idx < len(candidates):
                 print(f"   [vision-pick] {word!r} -> candidate {idx} (score {score}/10)")
                 return candidates[idx], score
-        # Single-number fallback (idx only) — score unknown, assume 5
         m = re.search(r"\d+", reply)
         if m:
             idx = int(m.group())

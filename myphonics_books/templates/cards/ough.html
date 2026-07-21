@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Sound Cards — "ough" Wildcard Insert</title>
+{% import "cards/_shared.html" as shared with context %}
+<style>
+{{ shared.font_faces() }}
+
+@page {
+  size: {{ page_w }}mm {{ page_h }}mm;
+  margin: 0;
+}
+
+{{ shared.shared_css() }}
+
+/* Page is the bleed box plus a margin equal to the crop marks' reach
+   (see the CARD_PAGE_* note in cards_data.py) — without it the marks
+   fall outside the PDF's page bounds and get silently clipped. */
+.page {
+  width: {{ page_w }}mm;
+  height: {{ page_h }}mm;
+  position: relative;
+  page-break-after: always;
+  page-break-inside: avoid;
+  background: #ffffff;
+}
+.page:last-child { page-break-after: avoid; }
+
+.bleed-box {
+  position: absolute;
+  left: {{ page_margin }}mm;
+  top: {{ page_margin }}mm;
+  width: {{ card_bleed_w }}mm;
+  height: {{ card_bleed_h }}mm;
+  overflow: visible;
+}
+
+.trim-safe {
+  position: absolute;
+  left: {{ bleed }}mm;
+  top: {{ bleed }}mm;
+  width: {{ card_trim_w }}mm;
+  height: {{ card_trim_h }}mm;
+  overflow: hidden;
+}
+
+.ough-tag {
+  position: absolute;
+  top: 3mm;
+  left: 3mm;
+  background: #475569;
+  color: #fff;
+  font-family: 'Andika', sans-serif;
+  font-weight: 700;
+  font-size: 3.4mm;
+  padding: 1mm 2.5mm;
+  border-radius: 2mm;
+}
+
+.hero-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
+</head>
+<body>
+{% for card in cards %}
+<div class="page">
+  <div class="bleed-box" style="background:{{ card.type_tint }};">
+    {{ shared.crop_marks() }}
+    <div class="trim-safe">
+      {{ shared.corner_strip(card.level_colour) }}
+      <div class="ough-tag">ough</div>
+      {% if card.type == 'wildcard_title' %}
+        <div class="hero-wrap">
+          <div class="fit-text nowrap" data-w-ratio="0.88" data-h-ratio="0.62" data-max-px="600">ough</div>
+        </div>
+      {% else %}
+        <div class="hero-wrap">
+          <div class="fit-text nowrap" data-w-ratio="0.86" data-h-ratio="0.62" data-max-px="500">{{ card.key_word }}</div>
+        </div>
+      {% endif %}
+      {{ shared.logo_mark(9, 0.15) }}
+    </div>
+  </div>
+</div>
+{% endfor %}
+{{ shared.fit_text_script() }}
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Sound Cards — Tier 2 (Free Printable)</title>
+{% import "cards/_shared.html" as shared with context %}
+<style>
+{{ shared.font_faces() }}
+
+@page {
+  size: {{ sheet_w }}mm {{ sheet_h }}mm;
+  margin: 0;
+}
+
+{{ shared.shared_css() }}
+
+.sheet {
+  width: {{ sheet_w }}mm;
+  height: {{ sheet_h }}mm;
+  position: relative;
+  page-break-after: always;
+  page-break-inside: avoid;
+  background: #ffffff;
+}
+.sheet:last-child { page-break-after: avoid; }
+
+.trim-card {
+  position: absolute;
+  width: {{ card_trim_w }}mm;
+  height: {{ card_trim_h }}mm;
+  border: 0.4mm dashed #000000;
+  overflow: hidden;
+}
+
+.grapheme-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── "How to cut" guide — page 1 only ───────────────────────────
+   Each sheet tiles 4x2 with zero gap (A7 divides A4 exactly), so all
+   8 cards separate with just 4 full-length straight cuts: 1 across,
+   then 3 down, each cut passing through both rows/all columns in one
+   continuous motion. Left to their own devices people trim around
+   each card individually (up to 16 short cuts) — this page makes the
+   4-cut method the obvious default instead. */
+.howto-title {
+  position: absolute;
+  top: 14mm;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Andika', sans-serif;
+  font-weight: 700;
+  font-size: 9mm;
+  color: #213649;
+}
+.howto-sub {
+  position: absolute;
+  top: 25mm;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Andika', sans-serif;
+  font-size: 4.3mm;
+  color: #4b5b6b;
+}
+.howto-diagram {
+  position: absolute;
+  left: 74.5mm;
+  top: 42mm;
+  width: 148mm;
+  height: 105mm;
+  border: 0.4mm solid #94a3b8;
+  background: #FAF7F1;
+}
+.howto-cell {
+  position: absolute;
+  width: 37mm;
+  height: 52.5mm;
+  border: 0.3mm dashed #cbd5e1;
+}
+.howto-cut {
+  position: absolute;
+  background: #E84B8A;
+}
+.howto-cut-h { width: 148mm; height: 1.2mm; left: 0; top: 51.9mm; }
+.howto-cut-v { width: 1.2mm; height: 105mm; top: 0; }
+.howto-badge {
+  position: absolute;
+  width: 8mm;
+  height: 8mm;
+  border-radius: 50%;
+  background: #213649;
+  color: #fff;
+  font-family: 'Andika', sans-serif;
+  font-weight: 700;
+  font-size: 4.5mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.howto-steps {
+  position: absolute;
+  top: 152mm;
+  left: 40mm;
+  right: 40mm;
+  text-align: center;
+  font-family: 'Andika', sans-serif;
+  font-size: 4.6mm;
+  line-height: 1.6;
+  color: #213649;
+}
+.howto-steps b { color: #E84B8A; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="howto-title">How to cut this sheet</div>
+  <div class="howto-sub">4 straight cuts separate all 8 cards &mdash; no need to trim around each one</div>
+  <div class="howto-diagram">
+    {% for r in range(2) %}{% for c in range(4) %}
+    <div class="howto-cell" style="left:{{ c * 37 }}mm; top:{{ r * 52.5 }}mm;"></div>
+    {% endfor %}{% endfor %}
+    <div class="howto-cut howto-cut-h"></div>
+    <div class="howto-badge" style="left:-4mm; top:47.9mm;">1</div>
+    {% for c in range(1, 4) %}
+    <div class="howto-cut howto-cut-v" style="left:{{ c * 37 - 0.6 }}mm;"></div>
+    <div class="howto-badge" style="left:{{ c * 37 - 4 }}mm; top:-4mm;">{{ c + 1 }}</div>
+    {% endfor %}
+  </div>
+  <div class="howto-steps">
+    <b>1</b> one cut, straight across &mdash; splits the sheet into two rows.<br>
+    <b>2 3 4</b> three cuts, straight down &mdash; each one goes through both rows at once.<br>
+    That's it: 4 cuts, 8 cards, done.
+  </div>
+</div>
+{% for sheet in sheets %}
+<div class="sheet">
+  {% for cell in sheet.cells %}
+  <div class="trim-card" style="left:{{ positions[loop.index0][0] }}mm; top:{{ positions[loop.index0][1] }}mm; background:{{ cell.tint if cell else '#ffffff' }};">
+    {% if cell %}
+      {{ shared.corner_strip(cell.corner_colour) }}
+      <div class="grapheme-wrap">
+        <div class="fit-text nowrap" data-w-ratio="0.9" data-h-ratio="0.62" data-max-px="{{ grapheme_target_px }}">{{ cell.grapheme }}</div>
+      </div>
+      {{ shared.logo_mark(9, 0.15) }}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+{{ shared.fit_text_script() }}
+</body>
+</html>

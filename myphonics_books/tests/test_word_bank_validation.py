@@ -175,10 +175,13 @@ class TestWordBankLoading:
     def test_load_word_bank_level_1(self):
         words = load_word_bank(1)
         assert len(words) > 0
-        # Check some expected words
+        # Check some expected words (L1 GPCs are s a t p i n m d g o —
+        # "cat" needs c, which arrives at L2 under the 8-level ledger)
         assert "sat" in words
         assert "mat" in words
-        assert "cat" in words
+        assert "dog" in words
+        assert "cat" not in words
+        assert "cat" in load_word_bank(2)
 
     def test_load_word_bank_cumulative(self):
         # Level 2 should include Level 1 words
@@ -202,10 +205,14 @@ class TestWordBankLoading:
         assert tricky_l1.issubset(tricky_l3)
 
     def test_invalid_level_raises(self):
+        # 8-level Curriculum Ledger v2.1: levels 1-8 are valid, 0 and 9 are not.
         with pytest.raises(ValueError):
             load_word_bank(0)
         with pytest.raises(ValueError):
-            load_word_bank(7)
+            load_word_bank(9)
+        # L7 and L8 must NOT raise (the old 6-level hard cap is gone)
+        assert len(load_word_bank(7)) > 0
+        assert len(load_word_bank(8)) > 0
 
 
 class TestWordBankStats:
@@ -252,6 +259,88 @@ class TestEdgeCases:
         result = validate_story_text(text, level=1)
         # Should only report "beautiful" once
         assert len(result.failed_words) == 1
+
+
+class TestEightLevelPhase0:
+    """Shifty Sounds Phase 0: full 8-level enforcement (no 6-level hard cap).
+
+    L7 (Reading Together) adds ire/ore/ear/oor/ure/tion + the Phase 6
+    suffixes; L8 (Reading Champion) adds -ous/-cious/-tious/-able/-ible/-sion
+    + the prefixes re-/dis-/mis-/sub- and the remaining Y2 CEWs as tricky
+    words (Curriculum Ledger v2.1).
+    """
+
+    def test_l7_l8_banks_load_and_are_cumulative(self):
+        w6, w7, w8 = load_word_bank(6), load_word_bank(7), load_word_bank(8)
+        assert w6 < w7 < w8  # strict supersets
+        assert "station" in w7
+        assert "adventure" in w7
+        assert "delicious" in w8
+        assert "incredible" in w8
+
+    def test_validate_story_text_runs_at_l7_and_l8(self):
+        # Phase 0 acceptance: no ValueError, correct pass/fail
+        r7 = validate_story_text("The station was full of adventure.", level=7)
+        assert r7.valid is True
+        r8 = validate_story_text("The delicious cake was remarkable.", level=8)
+        assert r8.valid is True
+        r6 = validate_story_text("The station was full of adventure.", level=6)
+        assert r6.valid is False
+
+    def test_l7_words_fail_at_l6_pass_at_l7(self):
+        # Trigraphs ire/ore/ure and tion are first taught at L7
+        for word in ("adventure", "station", "fire", "picture", "before"):
+            assert validate_word(word, level=6)["valid"] is False, word
+            assert validate_word(word, level=7)["valid"] is True, word
+
+    def test_l8_words_fail_at_l7_pass_at_l8(self):
+        # -cious / -ible / -sion morphology is L8
+        for word in ("delicious", "incredible", "invisible", "explosion"):
+            assert validate_word(word, level=7)["valid"] is False, word
+            assert validate_word(word, level=8)["valid"] is True, word
+
+    def test_suffix_aware_decodability_from_l7(self):
+        # Root decodable + Phase 6 suffix taught at L7 = decodable at L7:
+        # just-add (helpful, darkness, sadly, jumping), doubling (hopping),
+        # drop-e (making)
+        for word in ("jumping", "helpful", "darkness", "sadly", "hopping", "making"):
+            assert validate_word(word, level=6)["valid"] is False, word
+            result = validate_word(word, level=7)
+            assert result["valid"] is True, word
+            assert result["is_decodable"] is True, word
+
+    def test_y_to_i_root_reversal(self):
+        # y-to-i rule: happier -> happy (unit test; "happy" itself stays out
+        # of the banks until Phase 1 makes decodability phoneme-aware)
+        from core.utils.word_bank import _root_candidates
+        assert "happy" in _root_candidates("happier", "er")
+        assert "hop" in _root_candidates("hopping", "ing")     # doubling
+        assert "make" in _root_candidates("making", "ing")     # drop-e
+
+    def test_prefixes_arrive_at_l8_not_l7(self):
+        # re-/dis-/mis-/sub- are L8: root decodable, whole word not in a bank
+        for word in ("remake", "refill"):
+            assert validate_word(word, level=7)["valid"] is False, word
+            result = validate_word(word, level=8)
+            assert result["valid"] is True, word
+
+    def test_y2_cews_are_tricky_at_their_level(self):
+        # First Y2 CEW set lands at L7, remainder at L8 (ledger)
+        assert validate_word("beautiful", level=6)["valid"] is False
+        r7 = validate_word("beautiful", level=7)
+        assert r7["valid"] is True and r7["is_tricky"] is True
+        assert validate_word("sugar", level=7)["valid"] is False
+        r8 = validate_word("sugar", level=8)
+        assert r8["valid"] is True and r8["is_tricky"] is True
+
+    def test_l1_l6_unaffected_by_morphology(self):
+        # Morphology contributes nothing below L7
+        assert validate_word("jumping", level=3)["valid"] is False
+        assert validate_word("cat", level=2)["valid"] is True
+        assert validate_word("make", level=4)["valid"] is False  # waits for a-e at L5
+        assert validate_word("make", level=5)["valid"] is True
+        assert validate_word("care", level=5)["valid"] is False  # waits for are at L6
+        assert validate_word("care", level=6)["valid"] is True
 
 
 class TestValidationResult:

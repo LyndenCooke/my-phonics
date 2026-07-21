@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Joins font specimen — Playwrite GB (England)</title>
+<style>
+  @font-face {
+    font-family: "Playwrite GB J";
+    src: url("PlaywriteGBJ[wght].ttf") format("truetype");
+    font-weight: 100 400;
+  }
+  @font-face {
+    font-family: "Playwrite GB S";
+    src: url("PlaywriteGBS[wght].ttf") format("truetype");
+    font-weight: 100 400;
+  }
+  @font-face {
+    font-family: "Playwrite GB J Guides";
+    src: url("PlaywriteGBJGuides-Regular.ttf") format("truetype");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #1a1a2e;
+    padding: 36px 44px;
+    max-width: 210mm;
+    margin: 0 auto;
+  }
+  h1 { font-size: 20px; margin-bottom: 2px; }
+  .sub { font-size: 12px; color: #666; margin-bottom: 24px; }
+  .block { margin-bottom: 26px; }
+  .label {
+    font-size: 11px; font-weight: bold; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #fff; background: #4a4e8f;
+    display: inline-block; padding: 2px 8px; border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .label.l6 { background: #5b8def; }
+  .label.l7 { background: #7b5bd6; }
+  .label.l8 { background: #2a9d8f; }
+  .gbj { font-family: "Playwrite GB J"; font-weight: 400; }
+  .gbs { font-family: "Playwrite GB S"; font-weight: 400; }
+  .guides { font-family: "Playwrite GB J Guides"; }
+  .s28 { font-size: 28px; line-height: 2.1; }
+  .s22 { font-size: 22px; line-height: 2.1; }
+  .s18 { font-size: 18px; line-height: 2.1; }
+  .trace {
+    color: #b8b8c8;
+  }
+  .note { font-size: 11px; color: #888; margin-top: 4px; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 22px 0; }
+</style>
+</head>
+<body>
+  <h1>L6&ndash;L8 joining font specimen &mdash; Playwrite GB (England)</h1>
+  <div class="sub">OFL licence (free for commercial use) &middot; TypeTogether / Google Fonts &middot; no lead-in strokes &middot; joins render automatically</div>
+
+  <div class="block">
+    <div class="label l6">L6 first joins &mdash; Playwrite England SemiJoined (GB S)</div>
+    <div class="gbs s28">the quick brown fox jumps over the lazy dog</div>
+    <div class="gbs s28">jumping &nbsp; helped &nbsp; morning</div>
+    <div class="note">Semi-joined: baseline (diagonal) joins present, tricky joins left unjoined &mdash; matches "first joins, not everything joins yet".</div>
+  </div>
+
+  <hr>
+
+  <div class="block">
+    <div class="label l7">L7 consistent joining &mdash; Playwrite England Joined (GB J)</div>
+    <div class="gbj s28">the quick brown fox jumps over the lazy dog</div>
+    <div class="gbj s28">jumping &nbsp; helped &nbsp; morning</div>
+  </div>
+
+  <div class="block">
+    <div class="label l8">L8 fluent &mdash; GB J at smaller workbook sizes</div>
+    <div class="gbj s22">the quick brown fox jumps over the lazy dog</div>
+    <div class="gbj s18">the quick brown fox jumps over the lazy dog &mdash; jumping helped morning</div>
+  </div>
+
+  <hr>
+
+  <div class="block">
+    <div class="label">Tracing ideas (no separate dotted font needed)</div>
+    <div class="gbj s28 trace">jumping helped morning</div>
+    <div class="note">Grey trace-over version (light weight/colour). A true dotted outline can be produced per-word as SVG if wanted.</div>
+    <div class="guides s28" style="margin-top:10px;">jumping helped_morning</div>
+    <div class="note">Companion "Guides" font: same letterforms drawn on 4-line handwriting guides (underscore = blank guide).</div>
+  </div>
+
+  <div class="block">
+    <div class="label">Alphabet check &mdash; GB J</div>
+    <div class="gbj s22">abcdefghijklmnopqrstuvwxyz</div>
+    <div class="gbj s22">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div>
+  </div>
+</body>
+</html>

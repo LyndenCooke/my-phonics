@@ -47,12 +47,12 @@ SECRET_SHORE_STORY_BOOK1 = {
             },
             {
                 "page_number": 3,
-                "text": "Before the cold came, he went with Mum and Dad to the shore. The air was fresh and the sand soft. \"Come and explore with me!\" said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
+                "text": "Before the cold came, he went with Dad to the shore. The air was fresh and the sand soft. \"Come and explore with me!\" said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
                 "image_prompt": "FLASHBACK \u2014 warmer golden tones. The boy runs on a sandy British beach with Orthodox Jewish Dad (black hat, long coat, beard). Waves behind. Small campfire visible. British seaside with grassy dunes. Landscape orientation.",
             },
             {
                 "page_number": 4,
-                "text": "The next day, he explored the rock pools. He found more and more shells! Mum helped him put them on a wire. \"We can make a gift,\" she said. He twisted the wire with care. It looked so nice!",
+                "text": "The next day, he explored the rock pools. He found more and more shells! Dad helped him put them on a wire. \"We can make a gift,\" he said. He twisted the wire with care. It looked so nice!",
                 "image_prompt": "FLASHBACK \u2014 warmer golden tones. The boy crouches by a rock pool holding pink and white shells. Dad (black hat, long coat) kneels beside him helping thread shells onto wire. Rocky shore setting. Both smiling. Landscape orientation.",
             },
             {
@@ -67,22 +67,25 @@ SECRET_SHORE_STORY_BOOK1 = {
             },
             {
                 "page_number": 7,
-                "text": "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Mum — just like before.",
+                "text": "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Dad — just like before.",
                 "image_prompt": "The boy sits at a wooden table inside a cosy home. Two smooth amber stones with white stripes and thin wire on the table. He carefully bends wire to make loops. Family photos on wall behind. Concentrated expression. Landscape orientation.",
             },
             {
                 "page_number": 8,
-                "text": "He gave the stones to Mum. \"From the shore and from the park,\" he said. She smiled wide. \"I will keep them with me,\" she said. \"So I never forget.\" She wore them on her bag that day.",
+                "text": "He gave the stones to Dad. \"From the shore and from the park,\" he said. He smiled wide. \"I will keep them with me,\" he said. \"So I never forget.\" He wore them on his bag that day.",
                 "image_prompt": "Dad (black hat, long coat) receives the wire-and-stone gift from the boy. He holds up the two amber stones on wire, smiling warmly. The boy looks proud. Dad attaches them to his bag. Cosy home interior. Landscape orientation.",
             },
         ],
         "cover_prompt": "An Orthodox Jewish boy (kippah, white shirt, dark trousers, payot) sits on a park bench holding a smooth amber stone with a white stripe up to the light with wonder. Behind him, a split scene: London park with Victorian houses on one side, beach shore with waves on the other. Portrait orientation.",
-        "story_words": ["shore", "stone", "before", "wire", "more", "fire"],
-        "tricky_words_used": ["the", "to", "he", "was", "said", "once", "they", "we", "you", "so", "put", "go", "I", "me", "one", "some", "would"],
-        "read_words": ["shore", "stone", "before", "explore"],
+        # "before" removed from the practice lists (2026-07-03): the e after
+        # the B is the open /ee/ sound (be-fore), never taught — sounding it
+        # out gives "beffor".  It rides in tricky_words_used instead.
+        "story_words": ["shore", "stone", "wire", "more", "fire"],
+        "tricky_words_used": ["the", "to", "he", "was", "said", "once", "they", "we", "you", "so", "put", "go", "I", "me", "one", "some", "would", "before"],
+        "read_words": ["shore", "stone", "more", "explore"],
         "nonsense_words": [
             "blore", "snire", "flear", "thure", "ploor",
-            "grore", "twire", "spear", "chure", "drire",
+            "grore", "twire", "glear", "chure", "drire",
         ],
         "questions": [
             {"category": "Finding", "text": "Where did the boy go with Dad?"},
@@ -91,7 +94,7 @@ SECRET_SHORE_STORY_BOOK1 = {
             {"category": "What next", "text": "What do you think the boy will do with the next special stone he finds?"},
         ],
         "writing_graphemes": ["ire", "ore"],
-        "writing_words": ["shore", "fire", "wire", "more", "before", "explore"],
+        "writing_words": ["shore", "fire", "wire", "more", "explore"],
         "writing_starters": ["At the shore, I...", "The stone was..."],
         "character": {
             "name": "Orthodox Jewish boy",

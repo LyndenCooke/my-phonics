@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>MyPhonicsBooks Keep-Up Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Child-facing teaching font — bundled single-storey Andika, identical to the
+     printed books (myphonics_books/assets/fonts). */
+  @font-face { font-family: 'Andika'; src: url('{{ font_regular }}') format('truetype'); font-weight: 400; font-style: normal; }
+  @font-face { font-family: 'Andika'; src: url('{{ font_bold }}') format('truetype'); font-weight: 700; font-style: normal; }
+
+  :root {
+    --charcoal: #262b33;
+    --charcoal-2: #3a414c;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --paper: #f8fafc;
+    --safe: 12mm;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    font-family: "Plus Jakarta Sans", sans-serif; color: var(--text);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    -webkit-font-smoothing: antialiased;
+  }
+  @page { size: 210mm 297mm; margin: 0; }
+
+  .sheet {
+    width: 210mm; height: 297mm; position: relative; background: #fff;
+    overflow: hidden; display: flex; flex-direction: column;
+    page-break-after: always;
+  }
+  h1, h2, h3, h4 { font-family: "Outfit", sans-serif; }
+  .kid { font-family: "Andika", sans-serif; }
+
+  /* ---------- shared chrome ---------- */
+  .pagehead {
+    background: var(--charcoal); color: #fff;
+    padding: 8mm var(--safe) 6mm var(--safe);
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 8mm;
+  }
+  .pagehead .brand { font-size: 10.5pt; font-weight: 700; letter-spacing: .2pt; opacity: .85; }
+  .pagehead h1 { font-size: 24pt; font-weight: 900; line-height: 1.05; margin-top: 1.5mm; letter-spacing: -.3pt; }
+  .pagehead .kitbadge {
+    flex: 0 0 auto; text-align: center; background: rgba(255,255,255,.08);
+    border: 1.4pt solid rgba(255,255,255,.45); border-radius: 4mm;
+    padding: 2.6mm 5mm; min-width: 34mm;
+  }
+  .pagehead .kitbadge .lab { font-family: "Outfit"; font-size: 7.5pt; font-weight: 700; letter-spacing: 1.4pt; text-transform: uppercase; opacity: .85; }
+  .pagehead .kitbadge .nm { font-family: "Outfit"; font-size: 13pt; font-weight: 900; margin-top: .5mm; }
+  .rainbow { display: flex; height: 2.2mm; }
+  .rainbow span { flex: 1; }
+
+  .pagefoot {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+    padding: 4mm var(--safe) 7mm var(--safe); border-top: 1.2pt solid var(--line);
+    font-size: 8.2pt; color: var(--muted); font-weight: 500;
+  }
+  .pagefoot .url { font-family: "Outfit"; font-weight: 800; font-size: 10pt; color: var(--charcoal); }
+  .pagefoot .pg { font-family: "Outfit"; font-weight: 700; }
+
+  .body { flex: 1; padding: 6mm var(--safe) 0 var(--safe); display: flex; flex-direction: column; gap: 4mm; }
+
+  .sectionlab {
+    font-family: "Outfit"; font-size: 8pt; font-weight: 800; letter-spacing: 1.2pt;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .lead { font-size: 10.5pt; line-height: 1.55; color: var(--text); }
+  .lead b { color: var(--charcoal); }
+  p.small { font-size: 9pt; line-height: 1.5; color: var(--muted); }
+  p.small b { color: var(--text); }
+
+  .box { border: 1.2pt solid var(--line); border-radius: 3mm; overflow: hidden; }
+  .box-head {
+    padding: 2.6mm 4.5mm; background: var(--paper); border-bottom: 1pt solid var(--line);
+    font-family: "Outfit"; font-weight: 800; font-size: 11pt; color: var(--charcoal);
+  }
+  .box-body { padding: 3.5mm 4.5mm; font-size: 9.4pt; line-height: 1.5; }
+  .box-body b { color: var(--charcoal); }
+  .box-body ul { margin: 1mm 0 0 4.5mm; }
+  .box-body li { margin-bottom: 1.2mm; }
+
+  /* ---------- page 1 ---------- */
+  .who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .contents-list { list-style: none; }
+  .contents-list li {
+    display: flex; gap: 3mm; align-items: baseline; padding: 1.8mm 0;
+    border-bottom: 1pt dashed var(--line); font-size: 9.4pt; line-height: 1.45;
+  }
+  .contents-list li:last-child { border-bottom: none; }
+  .contents-list .dot { width: 2.6mm; height: 2.6mm; border-radius: 50%; flex: 0 0 auto; align-self: center; }
+  .contents-list b { color: var(--charcoal); }
+  .principle {
+    background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4.5mm 5.5mm;
+  }
+  .principle h3 { font-size: 12.5pt; font-weight: 800; margin-bottom: 1.5mm; }
+  .principle p { font-size: 9.6pt; line-height: 1.55; opacity: .92; }
+
+  /* ---------- page 2: the routine ---------- */
+  .steps { display: flex; flex-direction: column; gap: 3mm; }
+  .step { display: flex; gap: 4mm; border: 1.2pt solid var(--line); border-radius: 3mm; padding: 3.2mm 4mm; align-items: flex-start; }
+  .step .num {
+    font-family: "Outfit"; font-weight: 900; font-size: 13pt; color: #fff;
+    width: 8.5mm; height: 8.5mm; border-radius: 50%; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; margin-top: .5mm;
+  }
+  .step .mins {
+    font-family: "Outfit"; font-weight: 800; font-size: 8pt; letter-spacing: .5pt;
+    text-transform: uppercase; color: var(--muted); flex: 0 0 16mm; text-align: right; margin-top: 1.6mm;
+  }
+  .step h3 { font-size: 11.5pt; font-weight: 800; color: var(--charcoal); }
+  .step p { font-size: 9.2pt; line-height: 1.5; margin-top: .8mm; }
+  .step p b { color: var(--charcoal); }
+  .step .st-body { flex: 1; }
+
+  .twin { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+
+  /* ---------- page 3: routine card (photocopiable) ---------- */
+  .copyline {
+    display: flex; align-items: center; gap: 3mm; font-family: "Outfit";
+    font-size: 8pt; font-weight: 800; letter-spacing: 1.2pt; text-transform: uppercase; color: var(--muted);
+  }
+  .copyline::before, .copyline::after { content: ""; flex: 1; border-top: 1.6pt dashed #cbd5e1; }
+  .card-frame { border: 2pt solid var(--charcoal); border-radius: 4mm; overflow: hidden; flex: 1; display: flex; flex-direction: column; }
+  .card-head { background: var(--charcoal); color: #fff; padding: 4.5mm 6mm; display: flex; justify-content: space-between; align-items: center; }
+  .card-head h2 { font-size: 17pt; font-weight: 900; }
+  .card-head .tenmin {
+    font-family: "Outfit"; font-weight: 900; font-size: 12pt; background: #fff; color: var(--charcoal);
+    border-radius: 3mm; padding: 1.6mm 4mm;
+  }
+  .card-fill { display: flex; gap: 6mm; padding: 4mm 6mm; border-bottom: 1.2pt solid var(--line); background: var(--paper); }
+  .card-fill .f { flex: 1; display: flex; align-items: baseline; gap: 2.5mm; font-family: "Outfit"; font-weight: 700; font-size: 9.5pt; color: var(--charcoal); }
+  .card-fill .f .line { flex: 1; border-bottom: 1.4pt solid var(--charcoal-2); height: 6mm; }
+  .card-steps { flex: 1; display: flex; flex-direction: column; }
+  .card-step { flex: 1; display: flex; gap: 5mm; align-items: center; padding: 0 6mm; border-bottom: 1pt solid var(--line); }
+  .card-step:last-child { border-bottom: none; }
+  .card-step .cnum {
+    font-family: "Outfit"; font-weight: 900; font-size: 15pt; color: #fff;
+    width: 11mm; height: 11mm; border-radius: 50%; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-step .cmin { font-family: "Outfit"; font-weight: 800; font-size: 9pt; color: var(--muted); flex: 0 0 14mm; text-align: right; }
+  .card-step h3 { font-size: 13pt; font-weight: 800; color: var(--charcoal); }
+  .card-step p { font-size: 9.6pt; line-height: 1.45; color: var(--text); margin-top: .6mm; }
+  .card-step p b { color: var(--charcoal); }
+  .card-step .cs-body { flex: 1; padding: 3mm 0; }
+  .card-stop {
+    background: var(--paper); border-top: 1.6pt solid var(--charcoal);
+    padding: 3.5mm 6mm; font-size: 9.6pt; line-height: 1.5;
+  }
+  .card-stop b { color: var(--charcoal); }
+
+  /* ---------- page 4: log grid ---------- */
+  .log-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .log-table th, .log-table td { border: 1pt solid #9aa3af; padding: 1.6mm 1.8mm; font-size: 8.2pt; }
+  .log-table thead th {
+    background: var(--charcoal); color: #fff; font-family: "Outfit"; font-weight: 800;
+    font-size: 7.6pt; letter-spacing: .3pt; text-align: center;
+  }
+  .log-table thead th.left { text-align: left; }
+  .log-table td { height: 12.5mm; vertical-align: middle; }
+  .log-table td.day { text-align: center; }
+  .log-table .wk { background: var(--paper); font-family: "Outfit"; font-weight: 800; font-size: 7.2pt; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: .5pt; }
+  .log-key { display: flex; gap: 8mm; font-size: 9pt; color: var(--text); align-items: center; flex-wrap: wrap; }
+  .log-key b { font-family: "Outfit"; color: var(--charcoal); }
+  .keychip { display: inline-flex; align-items: center; gap: 2mm; }
+  .keychip .sq { width: 4.5mm; height: 4.5mm; border: 1.1pt solid #9aa3af; border-radius: 1mm; display: inline-flex; align-items: center; justify-content: center; font-size: 8pt; font-weight: 700; }
+
+  /* ---------- pages 5-6: resource index ---------- */
+  .lvlcard { border: 1.2pt solid var(--line); border-radius: 3mm; overflow: hidden; display: flex; }
+  .lvlcard .spine { flex: 0 0 3.2mm; }
+  .lvlcard .inner { flex: 1; padding: 3mm 4.5mm 3.4mm 4.5mm; }
+  .lvlcard .toprow { display: flex; align-items: center; gap: 3.5mm; margin-bottom: 2mm; }
+  .lvlcard .lvlbadge {
+    font-family: "Outfit"; font-weight: 900; font-size: 11pt; color: #fff;
+    border-radius: 2.5mm; padding: 1.2mm 3mm; flex: 0 0 auto;
+  }
+  .lvlcard .lvlname { font-family: "Outfit"; font-weight: 800; font-size: 11.5pt; color: var(--charcoal); }
+  .lvlcard .yr { margin-left: auto; font-size: 8.2pt; font-weight: 600; color: var(--muted); }
+  .gpcchips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-bottom: 2.4mm; }
+  .gpcchip {
+    font-family: "Andika", sans-serif; font-weight: 700; font-size: 10pt; line-height: 1;
+    border: 1pt solid var(--line); border-radius: 1.8mm; background: #fff; padding: 1.2mm 2.2mm;
+  }
+  .pulls { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 5mm; }
+  .pull { display: flex; gap: 2.2mm; font-size: 8.4pt; line-height: 1.42; }
+  .pull .plab { font-family: "Outfit"; font-weight: 800; font-size: 7.2pt; letter-spacing: .4pt; text-transform: uppercase; color: var(--muted); flex: 0 0 21mm; margin-top: .4mm; }
+  .pull .pval b { color: var(--charcoal); }
+  .idx-note { background: var(--paper); border: 1pt solid var(--line); border-radius: 3mm; padding: 3mm 4.5mm; font-size: 8.8pt; line-height: 1.5; color: var(--text); }
+  .idx-note b { color: var(--charcoal); }
+</style>
+</head>
+<body>
+
+{# =============================== PAGE 1 — what & who =============================== #}
+<div class="sheet">
+  <div class="pagehead">
+    <div>
+      <div class="brand">MyPhonicsBooks &middot; School Scheme</div>
+      <h1>The Keep-Up Kit</h1>
+    </div>
+    <div class="kitbadge"><div class="lab">Teacher Guide</div><div class="nm">Keep-up, not catch-up</div></div>
+  </div>
+  <div class="rainbow">{% for L in levels %}<span style="background: {{ L.hex }}"></span>{% endfor %}</div>
+
+  <div class="body">
+    <p class="lead">
+      In an effective phonics programme, no child is left to fall behind and "catch up later" —
+      the moment a sound is not secure, they get a little extra help <b>before the class moves on</b>.
+      The Keep-Up Kit is that help: a <b>10-minute daily one-to-one routine</b>, run with resources
+      your school already has, for any child who needs it. Ten minutes a day, one focus sound at a
+      time, until it sticks. The gap never gets the chance to grow.
+    </p>
+
+    <div class="who-grid">
+      <div class="box">
+        <div class="box-head">Who is it for?</div>
+        <div class="box-body">
+          <b>Any child not secure at the Day-5 "Prove it" check.</b>
+          <ul>
+            <li>They could not read the week's sound quickly, or</li>
+            <li>they could not blend it in words, or</li>
+            <li>they read the words but stumbled on the decodable book.</li>
+          </ul>
+          <p style="margin-top:2mm">It is not an intervention group, a label, or a "bottom table".
+          It is a short, warm, private top-up — most children need it for only a week or two,
+          a few times a year.</p>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-head">Who runs it, and when?</div>
+        <div class="box-body">
+          <b>Any trained adult:</b> teacher, teaching assistant, or a consistent volunteer.
+          <ul>
+            <li><b>Daily</b> — the routine works through frequency, not length.</li>
+            <li><b>10 minutes</b>, always the same five steps (page 2).</li>
+            <li>Best <b>before the next whole-class session</b>, so the child walks in already warmed up.</li>
+            <li>One focus sound at a time. Never stack several.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-head">What's in the kit? (all existing scheme resources — nothing new to buy)</div>
+      <div class="box-body">
+        <ul class="contents-list">
+          <li><span class="dot" style="background:#E84B8A"></span><span><b>This guide</b> — the routine (page 2), a photocopiable routine card (page 3) and a two-week keep-up log (page 4).</span></li>
+          <li><span class="dot" style="background:#F59E0B"></span><span><b>Sound cards</b> — the free-printable tier of the whole-programme deck, for the speed review and the focus sound.</span></li>
+          <li><span class="dot" style="background:#22C55E"></span><span><b>Picture-word cards</b> — 169 double-sided cards covering Levels 1–2, anchoring each early sound to a picture and a word.</span></li>
+          <li><span class="dot" style="background:#3B82F6"></span><span><b>Word cards</b> — one deck per level (plain front, marked back), for blending five words a day.</span></li>
+          <li><span class="dot" style="background:#8B5CF6"></span><span><b>Single-sound worksheets</b> — one sheet per sound (Levels 1–3), for the "write it" step and independent follow-up.</span></li>
+          <li><span class="dot" style="background:#14B8A6"></span><span><b>The child's decodable storybook</b> — the same book the class is reading, for the one-sentence read.</span></li>
+        </ul>
+        <p style="margin-top:2mm; font-size:8.6pt; color:var(--muted)">Pages 5–6 map every level to the exact resources to pull.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <h3>The principle: keep up, not catch up</h3>
+      <p>Catch-up starts after a gap has formed and has to close it. Keep-up starts the day the
+      Day-5 check flags a sound, so there is never a gap to close. A child on the routine stays with
+      their class, keeps their book, and keeps their confidence — they simply get ten extra minutes
+      until the focus sound is secure on <b>two days in a row</b>. Then the routine stops.</p>
+    </div>
+  </div>
+
+  <div class="pagefoot"><span class="url">myphonicsbooks.co.uk</span><span>Keep-Up Kit &middot; Teacher Guide</span><span class="pg">Page 1 of 6</span></div>
+</div>
+
+{# =============================== PAGE 2 — the routine =============================== #}
+<div class="sheet">
+  <div class="pagehead">
+    <div>
+      <div class="brand">MyPhonicsBooks &middot; Keep-Up Kit</div>
+      <h1>The 10-minute daily routine</h1>
+    </div>
+    <div class="kitbadge"><div class="lab">Every day</div><div class="nm">Same five steps</div></div>
+  </div>
+  <div class="rainbow">{% for L in levels %}<span style="background: {{ L.hex }}"></span>{% endfor %}</div>
+
+  <div class="body">
+    <p class="lead" style="font-size:9.8pt">
+      One adult, one child, one focus sound — the GPC flagged at the Day-5 check. Keep the pace
+      brisk and the tone light: this is a game-speed session, not a test. Model first ("my turn"),
+      then hand over ("your turn").
+    </p>
+
+    <div class="steps">
+      {% for s in routine %}
+      <div class="step">
+        <div class="num" style="background: {{ s.hex }}">{{ loop.index }}</div>
+        <div class="st-body">
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.detail }}</p>
+        </div>
+        <div class="mins">{{ s.mins }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="twin">
+      <div class="box">
+        <div class="box-head">What does "secure" look like?</div>
+        <div class="box-body">
+          On a secure day the child, without help:
+          <ul>
+            <li>says the focus sound <b>within two seconds</b> of seeing the card,</li>
+            <li>blends <b>at least 4 of the 5 words</b> first time,</li>
+            <li>writes both words with the focus sound spelt correctly,</li>
+            <li>reads the sentence without stopping at the focus word.</li>
+          </ul>
+          Tick the log (page 4) with a <b>&#10003;</b> on a secure day, a <b>&middot;</b> on a not-yet day.
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-head">When to stop — and when to step back</div>
+        <div class="box-body">
+          <b>Stop after 2 consecutive secure days</b> (two &#10003;s in a row on the log). Record the
+          secure date and return to normal practice.
+          <p style="margin-top:2mm"><b>Still not secure after 10 sessions?</b> The focus sound
+          probably is not the real gap. Re-run the level's Quick Level Check to find the earlier
+          sound that is wobbling, and restart the routine there. Tell the class teacher — never
+          simply keep going.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagefoot"><span class="url">myphonicsbooks.co.uk</span><span>Keep-Up Kit &middot; Teacher Guide</span><span class="pg">Page 2 of 6</span></div>
+</div>
+
+{# =============================== PAGE 3 — photocopiable routine card =============================== #}
+<div class="sheet">
+  <div class="body" style="padding-top: 8mm; gap: 3.5mm;">
+    <div class="copyline">Photocopiable &middot; keep one at the keep-up table</div>
+
+    <div class="card-frame">
+      <div class="card-head">
+        <h2>Keep-Up Routine Card</h2>
+        <div class="tenmin">10 minutes</div>
+      </div>
+      <div class="card-fill">
+        <div class="f">Child <span class="line"></span></div>
+        <div class="f">Focus sound <span class="line" style="max-width:26mm"></span></div>
+        <div class="f">Level <span class="line" style="max-width:16mm"></span></div>
+      </div>
+      <div class="card-steps">
+        {% for s in routine %}
+        <div class="card-step">
+          <div class="cnum" style="background: {{ s.hex }}">{{ loop.index }}</div>
+          <div class="cs-body">
+            <h3>{{ s.title }}</h3>
+            <p>{{ s.card }}</p>
+          </div>
+          <div class="cmin">{{ s.mins }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="card-stop">
+        <b>Secure today?</b> Sound in 2 seconds &middot; 4/5 words blended &middot; both words written &middot; sentence read.
+        Tick the log. <b>Two ticks in a row = routine complete.</b> Praise the child either way — effort first, always.
+      </div>
+    </div>
+
+    <p class="small" style="text-align:center">MyPhonicsBooks Keep-Up Kit &middot; page 3 of 6 &middot; photocopy freely within your school</p>
+  </div>
+</div>
+
+{# =============================== PAGE 4 — two-week log =============================== #}
+<div class="sheet">
+  <div class="body" style="padding-top: 8mm; gap: 3.5mm;">
+    <div class="copyline">Photocopiable &middot; one row per child</div>
+
+    <div>
+      <h2 style="font-size:17pt; font-weight:900; color:var(--charcoal)">Two-week Keep-Up Log</h2>
+      <p class="small" style="margin-top:1mm">Class ____________________ &nbsp;&middot;&nbsp; Adult running the routine ____________________ &nbsp;&middot;&nbsp; Week beginning ____________</p>
+    </div>
+
+    <div class="log-key">
+      <span class="keychip"><span class="sq">&#10003;</span> secure today</span>
+      <span class="keychip"><span class="sq">&middot;</span> not yet</span>
+      <span class="keychip"><span class="sq"></span> no session</span>
+      <span><b>Stop after two &#10003;s in a row</b> — write the secure date.</span>
+    </div>
+
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th class="left" style="width:24%" rowspan="2">Name</th>
+          <th style="width:11%" rowspan="2">Focus<br>sound</th>
+          <th colspan="5">Week 1</th>
+          <th colspan="5">Week 2</th>
+          <th style="width:11%" rowspan="2">Secure<br>date</th>
+        </tr>
+        <tr>
+          <th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th>
+          <th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for _ in range(12) %}
+        <tr>
+          <td></td><td class="day kid"></td>
+          <td class="day"></td><td class="day"></td><td class="day"></td><td class="day"></td><td class="day"></td>
+          <td class="day"></td><td class="day"></td><td class="day"></td><td class="day"></td><td class="day"></td>
+          <td class="day"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="idx-note">
+      <b>After two weeks:</b> secure children come off the routine. A child still on a
+      <b>&middot;</b> streak needs a different focus sound, not more of the same — re-run the
+      Quick Level Check, find the earlier gap, and restart there (see page 2).
+    </div>
+
+    <p class="small" style="text-align:center; margin-top:auto; padding-bottom:2mm">MyPhonicsBooks Keep-Up Kit &middot; page 4 of 6 &middot; photocopy freely within your school</p>
+  </div>
+</div>
+
+{# =============================== PAGES 5-6 — resource index =============================== #}
+{% for page in index_pages %}
+<div class="sheet">
+  <div class="pagehead">
+    <div>
+      <div class="brand">MyPhonicsBooks &middot; Keep-Up Kit</div>
+      <h1 style="font-size:20pt">Resource index &mdash; {{ 'Levels 1&ndash;4' if loop.first else 'Levels 5&ndash;8' }}</h1>
+    </div>
+    <div class="kitbadge"><div class="lab">Resource</div><div class="nm">Index</div></div>
+  </div>
+  <div class="rainbow">{% for L in levels %}<span style="background: {{ L.hex }}"></span>{% endfor %}</div>
+
+  <div class="body" style="gap: 3.2mm;">
+    {% if loop.first %}
+    <p class="small">Find the child's level, then gather the four things listed before the first
+    session. The focus sound is whichever GPC the Day-5 check flagged; the speed-review pile is
+    every card taught so far, <b>across all earlier levels too</b>.</p>
+    {% endif %}
+
+    {% for L in page %}
+    <div class="lvlcard">
+      <div class="spine" style="background: {{ L.hex }}"></div>
+      <div class="inner">
+        <div class="toprow">
+          <span class="lvlbadge" style="background: {{ L.hex }}">L{{ L.level }}</span>
+          <span class="lvlname">{{ L.name }}</span>
+          <span class="yr">{{ L.year }}</span>
+        </div>
+        <div class="gpcchips">{% for g in L.gpcs %}<span class="gpcchip">{{ g }}</span>{% endfor %}</div>
+        <div class="pulls">
+          <div class="pull"><span class="plab">Speed review</span><span class="pval">{{ L.speed }}</span></div>
+          <div class="pull"><span class="plab">Focus card</span><span class="pval">{{ L.focus }}</span></div>
+          <div class="pull"><span class="plab">Blend 5 words</span><span class="pval">{{ L.blend }}</span></div>
+          <div class="pull"><span class="plab">Write 2 words</span><span class="pval">{{ L.write }}</span></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if not loop.first %}
+    <div class="idx-note">
+      <b>A note on worksheets at Levels 4–8:</b> single-sound worksheets currently cover Levels 1–3;
+      the Level 4–8 sheets are on the scheme roadmap. Until they ship, the "write it" step at these
+      levels uses the matching formation/dictation page in the level's companion workbook plus the
+      word-card deck — the routine itself is unchanged. The sentence read always comes from the
+      child's current decodable storybook, at every level.
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="pagefoot"><span class="url">myphonicsbooks.co.uk</span><span>Keep-Up Kit &middot; Teacher Guide</span><span class="pg">Page {{ 5 if loop.first else 6 }} of 6</span></div>
+</div>
+{% endfor %}
+
+</body>
+</html>

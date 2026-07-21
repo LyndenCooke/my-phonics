@@ -34,7 +34,7 @@ def build_system_prompt(level: int) -> str:
     Build the system prompt for Claude with strict phonics constraints.
 
     Args:
-        level: Reading level 1-6
+        level: Reading level 1-8
 
     Returns:
         System prompt string
@@ -154,7 +154,7 @@ def generate_story(
     Args:
         template_id: Story template to use
         personalisation: Personalisation variables (NAME, FRIEND, etc.)
-        level: Reading level 1-6
+        level: Reading level 1-8
         max_retries: Maximum validation retries (default from config)
 
     Returns:
