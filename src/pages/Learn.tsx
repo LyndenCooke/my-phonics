@@ -28,7 +28,7 @@ export default function Learn() {
   const { data: booksData } = useBooks(null);
   const { data: userBooksData } = useUserBooks();
 
-  const isQaUser = user?.email?.toLowerCase() === 'qa@myphonicsbooks.com';
+  const isQaUser = user?.email?.toLowerCase() === 'hello@myphonicsbooks.co.uk';
   const userBooksMap = new Map((userBooksData ?? []).map(ub => [ub.book_id, ub]));
 
   // Same `Book` shape Index.tsx builds — minimal fields the hub needs

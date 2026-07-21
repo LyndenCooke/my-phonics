@@ -66,7 +66,7 @@ export default function Index() {
   // unlocked regardless of the books/user_books seed state. This only
   // unlocks reading — nothing else — and requires signing in as the
   // specific QA email.
-  const isQaUser = user?.email?.toLowerCase() === 'qa@myphonicsbooks.com';
+  const isQaUser = user?.email?.toLowerCase() === 'hello@myphonicsbooks.co.uk';
   // Teacher pass holders (TPT-TEACHERS code etc.) get read access to every
   // book without signing up — their entitlement lives in localStorage, not
   // auth.users, so the regular user_books gating doesn't see them.
@@ -391,12 +391,12 @@ export default function Index() {
   const handleBuyLevel = async (level: number) => {
     const product = getProductForLevel(level);
     if (!product) {
-      navigate('/shop');
+      navigate('/pricing');
       return;
     }
 
     if (!user) {
-      navigate('/shop');
+      navigate('/pricing');
       return;
     }
 
@@ -765,7 +765,7 @@ export default function Index() {
                   <button
                     onClick={() => {
                       setUpsellBook(null);
-                      navigate('/shop');
+                      navigate('/pricing');
                     }}
                     className="w-full py-3 rounded-xl font-bold text-sm border-2 border-primary text-primary bg-card transition-all duration-200 active:scale-[0.97]"
                   >
