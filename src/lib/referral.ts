@@ -91,7 +91,7 @@ export function clearStoredRefCode(): void {
 
 /** Build a shareable URL for the user's own referral code. */
 export function buildShareUrl(code: string, origin?: string): string {
-  const base = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://myphonicsbooks.com');
+  const base = origin || (typeof window !== 'undefined' ? window.location.origin : 'https://myphonicsbooks.co.uk');
   return `${base}/?ref=${code}`;
 }
 

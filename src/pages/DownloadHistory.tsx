@@ -214,7 +214,7 @@ export default function DownloadHistory() {
                   <p className="text-sm font-medium text-foreground">No purchases yet</p>
                   <p className="text-[11px] text-muted-foreground mt-1">Anything you buy will appear here.</p>
                   <Link
-                    to="/shop"
+                    to="/pricing"
                     className="inline-block mt-3 px-4 py-2 rounded-xl gradient-primary text-primary-foreground font-bold text-xs shadow-button"
                   >
                     Browse plans
