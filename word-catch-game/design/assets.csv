@@ -1,0 +1,20 @@
+id,role,type,description,size/ratio,style line ref,source
+cat,playable character (idle/pounce/cheer via procedural squash+tilt),sprite,chubby orange tabby cat from Tap! Tap! Tap!,360px 1:1,formula,repo:public/clipart/level_1/c_cat.png
+mascot,world 1 host (boy + Tab the cat),sprite,boy in green striped tee with orange tabby cat,420px,formula,repo:worksheet-engine/public/clipart/tap-mascot.png
+dog,world 2 host,sprite,golden retriever from The Mud on the Dog,340px,formula,repo:public/clipart/level_1/d_dog.png
+hen,world 3 host,sprite,brown hen,320px,formula,repo:public/clipart/level_1/e_hen.png
+fox,world 4 host,sprite,red fox,340px,formula,repo:public/clipart/level_1/o_fox.png
+tank,world 5 host,sprite,goldfish in tank from The Fish in the Tank,320px,formula,repo:public/clipart/level_1/nk_tank.png
+reader,world 6 host,sprite,boy sitting on striped rug,380px,formula,repo:public/clipart/level_1/s_sit.png
+logo,menu wordmark,ui,official myphonicsbooks wordmark,~1000px wide,brand,repo:public/logo/mpb-wordmark.png
+world_bg,per-world backdrop (sky gradient + clouds + hills + rug floor in level colour),background,procedural canvas layers per world colour,960x540,formula,procedural(code)
+bubble,grapheme sound bubble,sprite,translucent white bubble with grapheme text,r44-52,formula,procedural(code)
+tiles_confetti_stars,word tiles / confetti / star burst / hint bubble,ui,HUD and celebration elements,various,formula,procedural(code)
+phoneme_audio,grapheme pronunciation on catch,audio,48 recorded ElevenLabs phoneme clips,~7KB each,-,repo:public/sounds/*.mp3
+word_speech,target word spoken at start and completion,audio,browser speechSynthesis rate 0.8,-,-,webspeech(runtime)
+music_loop,background music,audio,gentle pentatonic glockenspiel generative loop,endless,-,webaudio(procedural)
+sfx_pop_boing_fanfare_star_click,feedback sounds,audio,synthesised one-shots,<1s,-,webaudio(procedural)
+thumbnail,marketplace cover 16:9 with baked title,image,brand pink cover with cat and sound bubbles,1280x720,formula,composited(design/thumbnail.png)
+favicon,catalog icon 1:1,image,Tab the cat face on brand pink rounded square,512x512,formula,composited(design/favicon.png)
+words_data,game word/grapheme data,data,120 decodable words in 6 levels from curriculum word banks,-,-,repo:myphonics_books/data (generated words.js)
+fonts,UI + canvas typography,font,Andika Regular/Bold (the book typeface),-,brand,repo:myphonics_books/assets/fonts
