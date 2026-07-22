@@ -71,7 +71,7 @@ L6: Reading champion; longer words with suffixes, reading independently
 ## Book Catalogue
 
 L1 (10 books): Tap! Tap! Tap!, The Mud on the Dog, The Fish in the Tank, The Red Socks, Run Pup Run!, Fox Fell Off!, The Jam Jug, The Yak and the Box, Chop Chop Chop!, Buzz and Sing!
-L2 (5 books): The Night Light (Japan), Moo at the Zoo, Morning on the Farm (Kenya), The Fair in the Air, Round and Round (Iceland)
+L2 (5 books): The Night Light (Japan), Hot Food, Cool Moon (England, revert family), Morning on the Farm (Kenya), The Fair in the Air, Round and Round (Iceland)
 L3 (3 of 5): The Big Bike Race (France), The Stone Flute (Morocco), Reach for the Treat! (Ghana)
 L4 (4 books): The Purple Purse (Istanbul), The Brown Owl, The New Glue (Mexico), How Now? (Malaysia)
 L5 (2 of 4): Before the Shore (North London), Near the Door (Stockholm)

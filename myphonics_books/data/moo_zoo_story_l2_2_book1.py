@@ -1,122 +1,155 @@
 """
-Moo at the Zoo — Level 2.2 Focus Story
-Written 2026-03-06
+Hot Food, Cool Moon — Level 2.2 Focus Story
+Written 2026-03-06 as "Moo at the Zoo". Rewritten 2026-07-22 (decodability
+bug), then fully re-set the same day (v3 — new setting, new story).
 Focus sounds: ow, oo
-Setting: A modern zoo — child visits with Dad, each page a DIFFERENT area
+Setting: A street-food night market, England — child visits with Mum
 
-CREATIVE DIRECTION: Journey/location-change story. Each page is set in a
-different part of the zoo, so AI image generation doesn't need to maintain
-background consistency across pages. Only the characters need to be consistent
-(handled by hero injection). Simple scenes: one child + one animal + one background.
+REWRITE HISTORY:
+  v1 (2026-03-06): "Moo at the Zoo" — searched for an "owl" and used "ow"
+    for owl/cow/wow/now/bow, the /aʊ/ pronunciation. Per shifty_sounds.json,
+    "ow" at this level ONLY teaches the /oʊ/ pronunciation (blow/snow/show);
+    /aʊ/ isn't taught until level 6. Lynden caught it.
+  v2 (2026-07-22): owl→fox fix, but every line was packed with extra
+    sound-matching words ("shark can shoot a hoop", "peep and peep", "my
+    own fox") until it stopped reading like real sentences — and "shark"
+    itself was a violation ("ar" isn't taught until L2.3). Lynden rejected
+    it as forced.
+  v3 (2026-07-22, this version): the zoo premise was scrapped entirely.
+    Ruling from Lynden: a sound target needs at least ~3 genuine words in
+    the story — do NOT force examples into every line; that is what makes
+    the text sound weird. Also: use the book as a lowkey window to another
+    place/demographic (the project mission), rather than a generic setting.
+    Demographic chosen by Lynden: white English revert (convert) Muslim
+    family — Malaysia is already covered elsewhere in the fleet.
 
-Character: A cheerful girl (~5yo) in a bright red cap, yellow t-shirt,
-blue denim dungarees, and white trainers. She has light brown skin and
-curly dark brown hair in two puffs.
-Dad: A man (~35yo) with light brown skin and short dark brown hair,
-wearing a green polo shirt and khaki trousers.
+CREATIVE DIRECTION: A British street-food night market (string lights,
+bunting, food stalls). The demographic is carried by the ILLUSTRATIONS —
+a white English revert (convert) Muslim family, both mum and daughter in
+hijab — while the text stays universal. Nothing in the story is "about"
+identity; it is simply ordinary life. The wok stall is a standard UK
+street-food vendor; the "mat" on page 8 is a picnic blanket on the
+market green. Dignity check: modern everyday scene, no stereotypes, no
+tokenism — hijab drawn as normal clothing, never remarked on.
 
-STORY STRUCTURE: Dear Zoo / search pattern — child wants to find the owl
-but keeps finding other animals instead. Building anticipation with
-"No owl." refrain. Payoff when owl is finally found.
+Character: A girl (~5yo) with light skin, wearing a soft pink hijab, a
+mustard-yellow long-sleeved tunic top, navy trousers, and white trainers.
+Mum: A white English woman (~30s) wearing a soft sage-green hijab and a
+long-sleeved cream cardigan over a long navy dress.
+(Eyes: solid black filled ovals, house rule.)
+
+STORY STRUCTURE: Small universal drama — the food is too hot to eat.
+Anticipation → wonder (wok show) → obstacle (too hot!) → frustration
+(huff and puff) → Mum's redirect (sit, watch the moon) → reward (food has
+cooled, dig in) → cosy closure. Teaches patience without preaching it.
 
 Engagement hooks:
-  - Search/quest pattern (Where is the owl?) — Dear Zoo style
-  - Repetition with variation: "No owl." refrain builds anticipation
-  - Onomatopoeia: Moo! Hoo! Wow! Ooh! Boo! (fun to read aloud)
-  - Page-turn hooks: "I will look on" → what will we see next?
-  - Emotional arc: excitement → searching → sadness → surprise → joy
-  - Satisfying climax: owl found at last, child and owl bow to each other
+  - Universal kid moment: blowing on food that will not cool down
+  - Onomatopoeia: Hiss! Pop! Huff! Puff! Yum! (fun to read aloud)
+  - Page-turn hooks: "Food shops in a row!" → what will they get?
+    "It is too hot!" → will he get to eat it?
+  - Emotional arc: excitement → wonder → frustration → calm → joy
+  - Quiet beat: sitting with Mum under a big yellow moon
 
 Word validation (L2.2 cumulative graphemes + tricky words):
   L2.2 cumulative graphemes: s,a,t,p,i,n,m,d,g,o,c,k,ck,e,u,r,h,b,f,ff,
-    l,ll,ss,j,v,w,x,y,z,zz,qu,ch,sh,th,ng,nk + ay,ee,igh + ow,oo
+    l,ll,ss,j,v,w,x,y,z,zz,qu,ch,sh,th,ng,nk + ay,ee,igh + ow(blow/snow
+    pronunciation only),oo(long/zoo pronunciation only)
+  NOTE: "ar" is NOT taught until L2.3 — no market/shark/star words.
   L2.2 cumulative tricky words: the,to,I,no,go,into,he,she,we,me,be,my,
-    you,her,said,your,are,put
-  Word structure: CVC + all digraphs + vowel digraphs (NO consonant clusters)
-  Adding -s for plurals/verbs is permitted.
+    you,her,said,your,are,put (+ "is", precedent from the shipped
+    interactive reader — voiced /z/ makes it a trap word)
+  Word structure: CVC + all digraphs + vowel digraphs (NO consonant
+  clusters). Adding -s for plurals/verbs is permitted. "and" permitted
+  by fleet precedent.
 
-ALL WORDS VERIFIED DECODABLE OR TRICKY — see word-by-word check below.
+ALL WORDS VERIFIED DECODABLE OR TRICKY — word-by-word check:
 
-Page 1: I(T) go(T) to(T) the(T) zoo(oo) with(th) my(T) dad. I(T) need(ee)
-         to(T) see(ee) the(T) owl(ow)!
-Page 2: I(T) look(oo) at the(T) cows(ow). Moo(oo)! Moo(oo)! No(T) owl(ow).
-         I(T) will(ll) look(oo) on.
-Page 3: Wow(ow)! A big show(ow). A seal(ee) can shoot(oo) a hoop(oo)!
-         No(T) owl(ow).
-Page 4: Ooh(oo)! I(T) see(ee) a cool(oo) pool(oo). Fish zoom(oo) in it.
-         No(T) owl(ow).
-Page 5: Boo(oo)! A big dim room(oo). I(T) see(ee) bats. No(T) owl(ow)!
-Page 6: I(T) am so sad now(ow). Then(th) my(T) dad calls, "Look(oo) up!"
-Page 7: Hoo(oo)! Hoo(oo)! I(T) look(oo) up. The(T) owl(ow)!
-         It is up high(igh)!
-Page 8: The(T) owl(ow) bows(ow) at me(T). I(T) bow(ow) too(oo).
-         The(T) zoo(oo) is so good(oo)!
+Page 1: The(T) sun dips low(ow). I(T) go(T) with(th) my(T) mum to(T)
+         get food(oo).
+Page 2: It is(T) night(igh). Food(oo) shops(sh) in a row(ow)! Yum!
+Page 3: I(T) see(ee) a man at a big wok. Hiss(ss)! Pop! The(T) food(oo)
+         hops!
+Page 4: Mum gets me(T) a bowl(ow). Ooh(oo)! It is(T) too(oo) hot!
+Page 5: I(T) huff(ff) and puff(ff) on it. Huff! Puff! This(th) is(T)
+         no(T) fun!
+Page 6: Mum said(T), "Sit with(th) me(T). See(ee) the(T) moon(oo)!"
+Page 7: The(T) moon(oo) is(T) big and yellow(ow)! Then(th) I(T) dig in.
+         It is(T) not hot! Yum, yum, yum!
+         (2026-07-22: was the bare fragment "Not hot!" — Lynden asked whether it
+         needed a subject. It does: a verbless exclamative is fine in speech but
+         these books model whole sentences, and the full form now mirrors p4's
+         "It is too hot!" so the payoff lands as a direct answer to it.)
+Page 8: We(T) sit low(ow) on the(T) mat. The(T) night(igh) is(T)
+         cool(oo). I(T) am with(th) my(T) mum. It is(T) fun!
 
-Focus sound density:
-  ow tokens: owl(p1), cows(p2), owl(p2), wow(p3), show(p3), owl(p3),
-             owl(p4), owl(p5), now(p6), owl(p7), owl(p8), bows(p8), bow(p8) = 13
-  oo tokens: zoo(p1), look(p2), moo(p2), moo(p2), look(p2), shoot(p3),
-             hoop(p3), ooh(p4), cool(p4), pool(p4), zoom(p4), boo(p5),
-             room(p5), look(p6), hoo(p7), hoo(p7), look(p7), too(p8),
-             zoo(p8), good(p8) = 20
-  Total: 33 focus sound tokens in 108 words = 31%
+Focus sound density (natural placement, not forced):
+  ow tokens (blow/snow pronunciation, all correct): low(p1), row(p2),
+             bowl(p4), yellow(p7), low(p8) = 5
+  oo tokens (long/zoo pronunciation, all correct): food(p1), food(p2),
+             food(p3), ooh(p4), too(p4), moon(p6), moon(p7), cool(p8) = 8
+  Both targets clear the 3-word minimum; no sentence carries a word it
+  would not carry in natural speech.
 """
 
+# Variable name kept as MOO_ZOO_STORY_BOOK1 (and filename unchanged) so
+# existing imports in generate_pilot_books.py et al. don't break.
+# The book itself is now "Hot Food, Cool Moon".
 MOO_ZOO_STORY_BOOK1 = {
     "L2_2_B1": {
         "level": 2,
         "sub_level": "L2.2",
         "book_number": 1,
-        "book_title": "Moo at the Zoo",
+        "book_title": "Hot Food, Cool Moon",
         "focus_graphemes": ["ow", "oo"],
-        "character_id": None,  # Custom character — girl in red cap
+        "character_id": None,  # Custom characters — boy + mum, pasar malam
         "story_pages": [
             {
-                "text": "I go to the zoo with my dad. I need to see the owl!",
+                "text": "The sun dips low. I go with my mum to get food.",
                 "image": None,
             },
             {
-                "text": "I look at the cow. Moo! Moo! No owl. I will look on.",
+                "text": "It is night. Food shops in a row! Yum!",
                 "image": None,
             },
             {
-                "text": "Wow! A big show. A seal can shoot a hoop! No owl.",
+                "text": "I see a man at a big wok. Hiss! Pop! The food hops!",
                 "image": None,
             },
             {
-                "text": "Ooh! I see a cool pool. Fish zoom in it. No owl.",
+                "text": "Mum gets me a bowl. Ooh! It is too hot!",
                 "image": None,
             },
             {
-                "text": "Boo! A big dim room. I see bats. No owl!",
+                "text": "I huff and puff on it. Huff! Puff! This is no fun!",
                 "image": None,
             },
             {
-                "text": "I am sad now. Then my dad calls, \"Look up!\"",
+                "text": "Mum said, \"Sit with me. See the moon!\"",
                 "image": None,
             },
             {
-                "text": "Hoo! Hoo! I look up. The owl! It is up high!",
+                "text": "The moon is big and yellow! Then I dig in. It is not hot! Yum, yum, yum!",
                 "image": None,
             },
             {
-                "text": "The owl bows at me. I bow too. The zoo is good!",
+                "text": "We sit low on the mat. The night is cool. I am with my mum. It is fun!",
                 "image": None,
             },
         ],
-        "story_words": ["zoo", "cow", "owl", "moo", "hoop", "cool"],
-        "tricky_words_used": ["the", "I", "to", "no", "my", "me", "go"],  # 'go' on p1; 'so'/'calls' removed via rewrites
-        "read_words": ["zoo", "owl", "cool", "hoop"],
+        "story_words": ["food", "moon", "wok", "bowl", "row", "low"],
+        "tricky_words_used": ["the", "I", "to", "my", "me", "we", "said"],
+        "read_words": ["food", "moon", "bowl", "low"],
         "nonsense_words": [
             "dow", "jow", "fow", "zow",
             "dool", "toof", "mool", "joom",
             "choom", "voot", "foom", "thook",
         ],
         "questions": [
-            {"text": "What did the child look for at the zoo?"},
-            {"text": "What sound does the cow make?"},
-            {"text": "Who saw the owl first?"},
-            {"text": "Did the child like the zoo?"},
+            {"text": "What did the child go to get with Mum?"},
+            {"text": "Why was the child sad?"},
+            {"text": "What did Mum say to look at?"},
+            {"text": "Was the food still hot at the end?"},
         ],
         "writing_graphemes": ["ow", "oo"],
     }
