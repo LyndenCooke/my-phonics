@@ -237,149 +237,158 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// L2.2  —  Moo at the Zoo  (Focus: ow, oo)
+// L2.2  —  Hot Food, Cool Moon  (Focus: ow, oo)
+// Was "Moo at the Zoo". Rewritten 2026-07-22 in three passes:
+//   v1 bug: used "ow" as /aʊ/ (owl/cow/wow) — that pronunciation isn't
+//   taught until level 6; this level only teaches /oʊ/ (blow/snow/show).
+//   v2 (owl→fox) was rejected as forced — sound-matching words packed into
+//   every line — and "shark" broke decodability anyway ("ar" is L2.3).
+//   v3 (this): new setting entirely — a British street-food night market,
+//   girl + mum (white English revert family, both in hijab — carried by the
+//   art, text universal; Malaysia already covered elsewhere in the fleet).
+//   Ruling: 3+ genuine words per target sound is enough; never pad lines.
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_2_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Moo at the Zoo', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_2/cover.png' },
+  { type: 'cover', title: 'Hot Food, Cool Moon', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_2/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ow', 'oo'], allSounds: L2_ALL_SOUNDS },
 
   { type: 'vocab_preview', words: [
-    pw('zoo', 'zoo', ['z','oo']), pw('cow', 'cow', ['c','ow']),
-    pw('owl', 'owl', ['ow','l']), pw('moo', 'moo', ['m','oo']),
-    pw('hoop', 'hoop', ['h','oo','p']), pw('cool', 'cool', ['c','oo','l']),
-    pw('wow', 'wow', ['w','ow']), pw('boo', 'boo', ['b','oo']),
+    pw('food', 'food', ['f','oo','d']), pw('moon', 'moon', ['m','oo','n']),
+    pw('wok', 'wok', ['w','o','k']), pw('bowl', 'bowl', ['b','ow','l']),
+    pw('cool', 'cool', ['c','oo','l']), pw('too', 'too', ['t','oo']),
+    pw('row', 'row', ['r','ow']), pw('low', 'low', ['l','ow']),
   ]},
 
   // Page 1
-  { type: 'story', sentences: ['I go to the zoo with my dad.', 'I need to see the owl!'],
+  { type: 'story', sentences: ['The sun dips low.', 'I go with my mum to get food.'],
     words: [
-      tricky('I', 'I'), tricky('go', 'go'), tricky('to', 'to'), tricky('the', 'the'),
-      pw('zoo', 'zoo', ['z','oo']),
-      pw('with', 'with', ['w','i','th']), tricky('my', 'my'), cvc('dad.', 'dad'),
-      tricky('I', 'I'), pw('need', 'need', ['n','ee','d']), tricky('to', 'to'),
-      pw('see', 'see', ['s','ee']), tricky('the', 'the'), pw('owl!', 'owl', ['ow','l']),
+      tricky('The', 'the'), cvc('sun', 'sun'), pw('dips', 'dip', ['d','i','p','s']),
+      pw('low.', 'low', ['l','ow']),
+      tricky('I', 'I'), tricky('go', 'go'), pw('with', 'with', ['w','i','th']),
+      tricky('my', 'my'), cvc('mum', 'mum'), tricky('to', 'to'),
+      cvc('get', 'get'), pw('food.', 'food', ['f','oo','d']),
     ],
     imageUrl: '/illustrations/2_2/page1.png', audioUrl: '/sounds/sentences/L2_2_p1.mp3' },
 
   // Page 2
-  { type: 'story', sentences: ['I look at the cow.', 'Moo! Moo! No owl.', 'I will look on.'],
+  { type: 'story', sentences: ['It is night.', 'Food shops in a row!', 'Yum!'],
     words: [
-      tricky('I', 'I'), pw('look', 'look', ['l','oo','k']),
-      pw('at', 'at', ['a','t']), tricky('the', 'the'),
-      pw('cow.', 'cow', ['c','ow']),
-      pw('Moo!', 'moo', ['m','oo']), pw('Moo!', 'moo', ['m','oo']),
-      tricky('No', 'no'), pw('owl.', 'owl', ['ow','l']),
-      tricky('I', 'I'), pw('will', 'will', ['w','i','ll']),
-      pw('look', 'look', ['l','oo','k']), pw('on.', 'on', ['o','n']),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), pw('night.', 'night', ['n','igh','t']),
+      pw('Food', 'food', ['f','oo','d']), pw('shops', 'shop', ['sh','o','p','s']),
+      pw('in', 'in', ['i','n']), tricky('a', 'a'), pw('row!', 'row', ['r','ow']),
+      cvc('Yum!', 'yum'),
     ],
     imageUrl: '/illustrations/2_2/page2.png', audioUrl: '/sounds/sentences/L2_2_p2.mp3' },
 
   // Page 3
-  { type: 'story', sentences: ['Wow! A big show.', 'A shark can shoot a hoop!', 'No owl.'],
+  { type: 'story', sentences: ['I see a man at a big wok.', 'Hiss! Pop! The food hops!'],
     words: [
-      pw('Wow!', 'wow', ['w','ow']), tricky('A', 'a'), cvc('big', 'big'),
-      pw('show.', 'show', ['sh','ow']),
-      tricky('A', 'a'), pw('shark', 'shark', ['sh','ar','k']), cvc('can', 'can'),
-      pw('shoot', 'shoot', ['sh','oo','t']), tricky('a', 'a'),
-      pw('hoop!', 'hoop', ['h','oo','p']),
-      tricky('No', 'no'), pw('owl.', 'owl', ['ow','l']),
+      tricky('I', 'I'), pw('see', 'see', ['s','ee']), tricky('a', 'a'),
+      cvc('man', 'man'), pw('at', 'at', ['a','t']), tricky('a', 'a'),
+      cvc('big', 'big'), cvc('wok.', 'wok'),
+      pw('Hiss!', 'hiss', ['h','i','ss']), cvc('Pop!', 'pop'),
+      tricky('The', 'the'), pw('food', 'food', ['f','oo','d']),
+      pw('hops!', 'hop', ['h','o','p','s']),
     ],
     imageUrl: '/illustrations/2_2/page3.png', audioUrl: '/sounds/sentences/L2_2_p3.mp3' },
 
   // Page 4
-  { type: 'story', sentences: ['Ooh! I see a cool pool.', 'Fish zoom in it. No owl.'],
+  { type: 'story', sentences: ['Mum gets me a bowl.', 'Ooh! It is too hot!'],
     words: [
-      pw('Ooh!', 'ooh', ['oo']), tricky('I', 'I'), pw('see', 'see', ['s','ee']),
-      tricky('a', 'a'), pw('cool', 'cool', ['c','oo','l']),
-      pw('pool.', 'pool', ['p','oo','l']),
-      pw('Fish', 'fish', ['f','i','sh']), pw('zoom', 'zoom', ['z','oo','m']),
-      pw('in', 'in', ['i','n']), pw('it.', 'it', ['i','t']),
-      tricky('No', 'no'), pw('owl.', 'owl', ['ow','l']),
+      cvc('Mum', 'mum'), pw('gets', 'get', ['g','e','t','s']), tricky('me', 'me'),
+      tricky('a', 'a'), pw('bowl.', 'bowl', ['b','ow','l']),
+      pw('Ooh!', 'ooh', ['oo']), pw('It', 'it', ['i','t']), tricky('is', 'is'),
+      pw('too', 'too', ['t','oo']), cvc('hot!', 'hot'),
     ],
     imageUrl: '/illustrations/2_2/page4.png', audioUrl: '/sounds/sentences/L2_2_p4.mp3' },
 
   // Page 5
-  { type: 'story', sentences: ['Boo! A big dim room.', 'I see bats. No owl!'],
+  { type: 'story', sentences: ['I huff and puff on it.', 'Huff! Puff! This is no fun!'],
     words: [
-      pw('Boo!', 'boo', ['b','oo']), tricky('A', 'a'), cvc('big', 'big'),
-      cvc('dim', 'dim'), pw('room.', 'room', ['r','oo','m']),
-      tricky('I', 'I'), pw('see', 'see', ['s','ee']),
-      pw('bats.', 'bat', ['b','a','t']), tricky('No', 'no'), pw('owl!', 'owl', ['ow','l']),
+      tricky('I', 'I'), pw('huff', 'huff', ['h','u','ff']),
+      pw('and', 'and', ['a','n','d']), pw('puff', 'puff', ['p','u','ff']),
+      pw('on', 'on', ['o','n']), pw('it.', 'it', ['i','t']),
+      pw('Huff!', 'huff', ['h','u','ff']), pw('Puff!', 'puff', ['p','u','ff']),
+      pw('This', 'this', ['th','i','s']), tricky('is', 'is'),
+      tricky('no', 'no'), cvc('fun!', 'fun'),
     ],
     imageUrl: '/illustrations/2_2/page5.png', audioUrl: '/sounds/sentences/L2_2_p5.mp3' },
 
   // Page 6
-  { type: 'story', sentences: ['I am sad now.', 'Then my dad shouts, "Look up!"'],
+  { type: 'story', sentences: ['Mum said, "Sit with me.', 'See the moon!"'],
     words: [
-      tricky('I', 'I'), pw('am', 'am', ['a','m']),
-      cvc('sad', 'sad'), pw('now.', 'now', ['n','ow']),
-      pw('Then', 'then', ['th','e','n']), tricky('my', 'my'), cvc('dad', 'dad'),
-      pw('shouts,', 'shouts', ['sh','ou','t','s']),
-      pw('"Look', 'look', ['l','oo','k']), pw('up!"', 'up', ['u','p']),
+      cvc('Mum', 'mum'), tricky('said,', 'said'),
+      cvc('"Sit', 'sit'), pw('with', 'with', ['w','i','th']), tricky('me.', 'me'),
+      pw('See', 'see', ['s','ee']), tricky('the', 'the'),
+      pw('moon!"', 'moon', ['m','oo','n']),
     ],
     imageUrl: '/illustrations/2_2/page6.png', audioUrl: '/sounds/sentences/L2_2_p6.mp3' },
 
   // Page 7
-  { type: 'story', sentences: ['Hoo! Hoo!', 'I look up. The owl!', 'It is up high!'],
+  { type: 'story', sentences: ['The moon is big and yellow!', 'Then I dig in. It is not hot!', 'Yum, yum, yum!'],
     words: [
-      pw('Hoo!', 'hoo', ['h','oo']), pw('Hoo!', 'hoo', ['h','oo']),
-      tricky('I', 'I'), pw('look', 'look', ['l','oo','k']),
-      pw('up.', 'up', ['u','p']), tricky('The', 'the'), pw('owl!', 'owl', ['ow','l']),
-      pw('It', 'it', ['i','t']), tricky('is', 'is'),
-      pw('up', 'up', ['u','p']), pw('high!', 'high', ['h','igh']),
+      tricky('The', 'the'), pw('moon', 'moon', ['m','oo','n']), tricky('is', 'is'),
+      cvc('big', 'big'), pw('and', 'and', ['a','n','d']),
+      pw('yellow!', 'yellow', ['y','e','ll','ow']),
+      pw('Then', 'then', ['th','e','n']), tricky('I', 'I'), cvc('dig', 'dig'),
+      pw('in.', 'in', ['i','n']), pw('It', 'it', ['i','t']), tricky('is', 'is'),
+      pw('not', 'not', ['n','o','t']), cvc('hot!', 'hot'),
+      cvc('Yum,', 'yum'), cvc('yum,', 'yum'), cvc('yum!', 'yum'),
     ],
     imageUrl: '/illustrations/2_2/page7.png', audioUrl: '/sounds/sentences/L2_2_p7.mp3' },
 
   // Page 8
-  { type: 'story', sentences: ['The owl bows at me.', 'I bow too.', 'The zoo is good!'],
+  { type: 'story', sentences: ['We sit low on the mat.', 'The night is cool.', 'I am with my mum. It is fun!'],
     words: [
-      tricky('The', 'the'), pw('owl', 'owl', ['ow','l']),
-      pw('bows', 'bow', ['b','ow']), pw('at', 'at', ['a','t']), tricky('me.', 'me'),
-      tricky('I', 'I'), pw('bow', 'bow', ['b','ow']), pw('too.', 'too', ['t','oo']),
-      tricky('The', 'the'), pw('zoo', 'zoo', ['z','oo']), tricky('is', 'is'),
-      pw('good!', 'good', ['g','oo','d']),
+      tricky('We', 'we'), cvc('sit', 'sit'), pw('low', 'low', ['l','ow']),
+      pw('on', 'on', ['o','n']), tricky('the', 'the'), cvc('mat.', 'mat'),
+      tricky('The', 'the'), pw('night', 'night', ['n','igh','t']), tricky('is', 'is'),
+      pw('cool.', 'cool', ['c','oo','l']),
+      tricky('I', 'I'), pw('am', 'am', ['a','m']), pw('with', 'with', ['w','i','th']),
+      tricky('my', 'my'), cvc('mum.', 'mum'),
+      pw('It', 'it', ['i','t']), tricky('is', 'is'), cvc('fun!', 'fun'),
     ],
     imageUrl: '/illustrations/2_2/page8.png', audioUrl: '/sounds/sentences/L2_2_p8.mp3' },
 
   { type: 'quiz', questions: [
-    { question: 'What was the child looking for?',
-      options: [{ label: 'an owl', isCorrect: true }, { label: 'a cow', isCorrect: false }, { label: 'a bat', isCorrect: false }] },
-    { question: 'What sound does the cow make?',
-      options: [{ label: 'Moo!', isCorrect: true }, { label: 'Boo!', isCorrect: false }, { label: 'Hoo!', isCorrect: false }] },
-    { question: 'Who spotted the owl first?',
-      options: [{ label: 'Dad', isCorrect: true }, { label: 'the child', isCorrect: false }, { label: 'a seal', isCorrect: false }] },
+    { question: 'What did the child go to get with Mum?',
+      options: [{ label: 'food', isCorrect: true }, { label: 'a pet', isCorrect: false }, { label: 'a hat', isCorrect: false }] },
+    { question: 'Why was the child sad?',
+      options: [{ label: 'The food was too hot', isCorrect: true }, { label: 'The shop was shut', isCorrect: false }, { label: 'It began to rain', isCorrect: false }] },
+    { question: 'What did Mum say to look at?',
+      options: [{ label: 'the moon', isCorrect: true }, { label: 'the wok', isCorrect: false }, { label: 'a bus', isCorrect: false }] },
   ]},
 
   { type: 'sound_spotlight', sound: 'ow', items: [
-    { word: 'cow', imageUrl: '/images/words/cow.png', focusIndex: 1 },
-    { word: 'owl', imageUrl: '/images/words/owl.png', focusIndex: 0 },
-    { word: 'now', imageUrl: '/images/words/now.png', focusIndex: 1 },
-    { word: 'down', imageUrl: '/images/words/down.png', focusIndex: 1 },
+    { word: 'show', imageUrl: '/images/words/show.png', focusIndex: 1 },
+    { word: 'own', imageUrl: '/images/words/own.png', focusIndex: 0 },
+    { word: 'row', imageUrl: '/images/words/row.png', focusIndex: 1 },
+    { word: 'low', imageUrl: '/images/words/low.png', focusIndex: 1 },
   ]},
   { type: 'sound_spotlight', sound: 'oo', items: [
-    { word: 'zoo', imageUrl: '/images/words/zoo.png', focusIndex: 1 },
+    { word: 'food', imageUrl: '/images/words/food.png', focusIndex: 1 },
     { word: 'moon', imageUrl: '/images/words/moon.png', focusIndex: 1 },
-    { word: 'look', imageUrl: '/images/words/look.png', focusIndex: 1 },
+    { word: 'room', imageUrl: '/images/words/room.png', focusIndex: 1 },
     { word: 'cool', imageUrl: '/images/words/cool.png', focusIndex: 1 },
   ]},
 
   { type: 'word_reading', words: [
-    pw('zoo', 'zoo', ['z','oo']), pw('owl', 'owl', ['ow','l']),
-    pw('cool', 'cool', ['c','oo','l']), pw('hoop', 'hoop', ['h','oo','p']),
+    pw('food', 'food', ['f','oo','d']), pw('moon', 'moon', ['m','oo','n']),
+    pw('bowl', 'bowl', ['b','ow','l']), pw('low', 'low', ['l','ow']),
   ]},
 
   { type: 'tricky_words', words: [
     tricky('the', 'the'), tricky('I', 'I'), tricky('to', 'to'),
-    tricky('no', 'no'), tricky('my', 'my'), tricky('me', 'me'),
+    tricky('me', 'me'), tricky('we', 'we'), tricky('said', 'said'),
   ]},
 
   { type: 'spelling', words: [
-    { word: 'zoo', imageUrl: '/images/words/zoo.png', letters: ['z','oo'] },
-    { word: 'owl', imageUrl: '/images/words/owl.png', letters: ['ow','l'] },
+    { word: 'food', imageUrl: '/images/words/food.png', letters: ['f','oo','d'] },
+    { word: 'moon', imageUrl: '/images/words/moon.png', letters: ['m','oo','n'] },
     { word: 'cool', imageUrl: '/images/words/cool.png', letters: ['c','oo','l'] },
-    { word: 'cow', imageUrl: '/images/words/cow.png', letters: ['c','ow'] },
+    { word: 'low', imageUrl: '/images/words/low.png', letters: ['l','ow'] },
   ]},
 
   { type: 'nonsense_words', words: [
@@ -394,23 +403,23 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
   { type: 'writing_practice', letters: ['ow', 'oo'] },
 
   { type: 'grammar', variant: 'word_order', title: 'Build the sentence!', items: [
-    { correctWords: ['I', 'see', 'the', 'owl.'], imageUrl: '/illustrations/2_2/page7.png' },
-    { correctWords: ['The', 'zoo', 'is', 'cool.'], imageUrl: '/illustrations/2_2/page4.png' },
+    { correctWords: ['I', 'see', 'the', 'moon.'], imageUrl: '/illustrations/2_2/page7.png' },
+    { correctWords: ['The', 'food', 'is', 'hot.'], imageUrl: '/illustrations/2_2/page4.png' },
   ]},
 
   { type: 'story_ordering', items: [
-    { imageUrl: '/illustrations/2_2/page1.png', label: 'I go to the zoo!', correctIndex: 0 },
-    { imageUrl: '/illustrations/2_2/page2.png', label: 'Cows! Moo! No owl.', correctIndex: 1 },
-    { imageUrl: '/illustrations/2_2/page3.png', label: 'A seal shoots hoops!', correctIndex: 2 },
-    { imageUrl: '/illustrations/2_2/page4.png', label: 'A cool pool. No owl.', correctIndex: 3 },
-    { imageUrl: '/illustrations/2_2/page5.png', label: 'Boo! Bats. No owl!', correctIndex: 4 },
-    { imageUrl: '/illustrations/2_2/page6.png', label: 'Dad calls, "Look up!"', correctIndex: 5 },
-    { imageUrl: '/illustrations/2_2/page7.png', label: 'The owl! Up high!', correctIndex: 6 },
-    { imageUrl: '/illustrations/2_2/page8.png', label: 'The zoo is so good!', correctIndex: 7 },
+    { imageUrl: '/illustrations/2_2/page1.png', label: 'We go to get food.', correctIndex: 0 },
+    { imageUrl: '/illustrations/2_2/page2.png', label: 'Food shops in a row!', correctIndex: 1 },
+    { imageUrl: '/illustrations/2_2/page3.png', label: 'Hiss! Pop! A big wok!', correctIndex: 2 },
+    { imageUrl: '/illustrations/2_2/page4.png', label: 'Ooh! It is too hot!', correctIndex: 3 },
+    { imageUrl: '/illustrations/2_2/page5.png', label: 'Huff! Puff!', correctIndex: 4 },
+    { imageUrl: '/illustrations/2_2/page6.png', label: 'Sit and see the moon.', correctIndex: 5 },
+    { imageUrl: '/illustrations/2_2/page7.png', label: 'I dig in. Yum!', correctIndex: 6 },
+    { imageUrl: '/illustrations/2_2/page8.png', label: 'The night is cool.', correctIndex: 7 },
   ]},
 
   { type: 'drawing', prompt: 'Draw Your Favourite Part' },
-  { type: 'certificate', bookTitle: 'Moo at the Zoo' },
+  { type: 'certificate', bookTitle: 'Hot Food, Cool Moon' },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════

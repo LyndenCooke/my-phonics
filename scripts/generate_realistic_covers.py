@@ -53,7 +53,7 @@ READERS = [
     (2, 1, "The Red Socks"), (2, 2, "Run, Pup, Run!"), (2, 3, "Fox Fell Off!"),
     (2, 4, "The Jam Jug"), (2, 5, "The Yak and the Box"),
     (3, 1, "The Fish in the Tank"), (3, 2, "Chop, Chop, Chop!"), (3, 3, "Buzz and Sing!"),
-    (4, 1, "The Night Light"), (4, 2, "Moo at the Zoo"), (4, 3, "Morning on the Farm"),
+    (4, 1, "The Night Light"), (4, 2, "Hot Food, Cool Moon"), (4, 3, "Morning on the Farm"),
     (4, 4, "The Fair in the Air"), (4, 5, "Round and Round"), (4, 6, "The Night Fair"),
     (5, 1, "The Big Bike Race"), (5, 2, "Lost at the Night Market"), (5, 3, "The Dream Team"),
     (5, 4, "What Min Saw"), (5, 5, "The Boat with the Red Sail"),
