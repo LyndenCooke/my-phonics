@@ -79,8 +79,8 @@ const DEMO_BOOKS: Book[] = [
     sortOrder: 21, unlocked: true, completed: false, lastPageRead: 0, pages: [],
   },
   {
-    id: 'prototype-l2-2', level: 2, subLevel: 'L2.2', title: 'Moo at the Zoo',
-    slug: 'moo-at-the-zoo', focusSounds: ['ow', 'oo'],
+    id: 'prototype-l2-2', level: 2, subLevel: 'L2.2', title: 'Hot Food, Cool Moon',
+    slug: 'hot-food-cool-moon', focusSounds: ['ow', 'oo'],
     trickyWords: ['the', 'I', 'to', 'no', 'my', 'me'], storyWords: [], pageCount: 28,
     sortOrder: 22, unlocked: true, completed: false, lastPageRead: 0, pages: [],
   },
