@@ -238,15 +238,14 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
 
 // ═══════════════════════════════════════════════════════════════════════════
 // L2.2  —  Hot Food, Cool Moon  (Focus: ow, oo)
-// Was "Moo at the Zoo". Rewritten 2026-07-22 in three passes:
-//   v1 bug: used "ow" as /aʊ/ (owl/cow/wow) — that pronunciation isn't
-//   taught until level 6; this level only teaches /oʊ/ (blow/snow/show).
-//   v2 (owl→fox) was rejected as forced — sound-matching words packed into
-//   every line — and "shark" broke decodability anyway ("ar" is L2.3).
-//   v3 (this): new setting entirely — a British street-food night market,
-//   girl + mum (white English revert family, both in hijab — carried by the
-//   art, text universal; Malaysia already covered elsewhere in the fleet).
-//   Ruling: 3+ genuine words per target sound is enough; never pad lines.
+// Written 2026-07-22, replacing the original story for this slot. Rules it
+// exists to honour — the replaced story broke all of them:
+//   "ow" here is ONLY /oʊ/ (blow/snow/show); /aʊ/ (owl/cow/wow) is level 6.
+//   3+ genuine words per target sound is enough — never pad lines with
+//   sound-matching words, and check each one's level ("ar" is L2.3).
+//   Setting is a lowkey window onto a community: a British street-food night
+//   market, girl + mum from a white English revert family, both in hijab —
+//   carried by the art, text universal.
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_2_PAGES: InteractivePage[] = [

@@ -194,7 +194,7 @@ SENTENCES = {
     'L2_1_p6': 'Dad can see I am sad. He hugs me in the light.',
     'L2_1_p7': 'I see my toy cat! Dad and I run to it.',
     'L2_1_p8': 'I hug my toy cat. "Yay, my toy!"',
-    # ── L2.2 "Hot Food, Cool Moon" (was "Moo at the Zoo"; re-set 2026-07-22) ──
+    # ── L2.2 "Hot Food, Cool Moon" (story written 2026-07-22) ──
     'L2_2_p1': 'The sun dips low. I go with my mum to get food.',
     'L2_2_p2': 'It is night. Food shops in a row! Yum!',
     'L2_2_p3': 'I see a man at a big wok. Hiss! Pop! The food hops!',

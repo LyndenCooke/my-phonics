@@ -10,7 +10,7 @@ You previously produced a Learning Journey plan for MyPhonicsBooks. This documen
 
 You presented every block as a clean three-step pattern. The actual teaching sequence is more nuanced:
 
-- Some storybooks depend directly on Sound Books without a Blending Book in between. For example, in L4 "Moo at the Zoo" depends directly on the ow and oo Sound Books. There is no Blending Book between them. Blending Book 9 comes after Moo at the Zoo.
+- Some storybooks depend directly on Sound Books without a Blending Book in between. For example, in L4 "Hot Food, Cool Moon" depends directly on the ow and oo Sound Books. There is no Blending Book between them. Blending Book 9 comes after Hot Food, Cool Moon.
 - From L6 onwards there are NO Blending Books at all. Children blend in context inside the storybooks. Your generic "Block structure" template implies every level has all three book types. It does not.
 
 The pathway visual must handle levels without Blending Books cleanly, not just footnote it.
@@ -236,7 +236,7 @@ These are the exact sequences with real dependency chains. Some storybooks come 
 6. Sound Book: ow (blow)
 7. Sound Book: oo (zoo)
 8. Sound Book: oo (look)
-9. Storybook: Moo at the Zoo (requires Sound Books 6–8 directly, NO Blending Book)
+9. Storybook: Hot Food, Cool Moon (requires Sound Books 6–8 directly, NO Blending Book)
 10. Sound Book: ar
 11. Sound Book: or
 12. Blending Book 9 (requires Sound Books 6–8, 10–11)

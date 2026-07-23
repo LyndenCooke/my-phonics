@@ -175,7 +175,7 @@ Each level introduces new sounds. Books at each level are numbered to ensure sys
 | Sub | Focus Sounds | Title | Status |
 |-----|--------------|-------|--------|
 | L2.1 | ay, ee, igh | The Night Light | ✅ |
-| L2.2 | ow, oo | Moo at the Zoo / The Shadow Show | ✅ |
+| L2.2 | ow, oo | Hot Food, Cool Moon / The Shadow Show | ✅ |
 | L2.3 | ar, or | | 🔄 In progress |
 | L2.4 | air, ir | The Fair in the Air | ✅ |
 | L2.5 | ou, oy | | 🔲 |

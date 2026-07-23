@@ -98,7 +98,7 @@ interface StoryWord {
 | L1.9 | Chop, Chop, Chop! | 1 — Starting Stories | ch, th | `public/illustrations/1_9/` |
 | L1.10 | Buzz and Sing! | 1 — Starting Stories | ss, zz, qu, ng | `public/illustrations/1_10/` |
 | L2.1 | The Night Light | 2 — Longer Sounds | ay, ee, igh | `public/illustrations/2_1/` |
-| L2.2 | Moo at the Zoo | 2 — Longer Sounds | ow, oo | `public/illustrations/2_2/` |
+| L2.2 | Hot Food, Cool Moon | 2 — Longer Sounds | ow, oo | `public/illustrations/2_2/` |
 | L2.3 | Morning on the Farm | 2 — Longer Sounds | ar, or | `public/illustrations/2_3/` |
 | L2.4 | The Fair in the Air | 2 — Longer Sounds | air, ir | `public/illustrations/2_4/` |
 | L2.5 | Round and Round | 2 — Longer Sounds | ou, oy | `public/illustrations/2_5/` |

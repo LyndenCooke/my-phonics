@@ -9,7 +9,7 @@ Theme: `getLevelTheme(4)`.
 GPCs new (RWI Set 2 primary): ay ee igh ow oo(zoo) oo(look) ar or air ir
 ou oy · tricky new: was, my, you, they, her, all, are (cum. 19) · two-
 syllable words introduced · band 4-8 words · Books: L4.1 The Night Light
-(ay ee igh) · L4.2 Moo at the Zoo (ow oo) · L4.3 Morning on the Farm
+(ay ee igh) · L4.2 Hot Food, Cool Moon (ow oo) · L4.3 Morning on the Farm
 (ar or) · L4.4 The Fair in the Air (air ir) · L4.5 Round and Round (ou oy)
 · L4.6 The Night Fair (review).
 
@@ -52,7 +52,7 @@ sentences). BW1: picture box ~45mm + 5 single lines, 12mm pitch; check
 strip + "did you use and?". Art: lantern grounded-box, moon perch —
 manifest: TO-CREATE (L4 world).
 
-**B2 Moo at the Zoo** — HW1 ow/oo sets + tricky you, they. GR1 = G-L4.2
+**B2 Hot Food, Cool Moon** — HW1 ow/oo sets + tricky you, they. GR1 = G-L4.2
 tick-one-of-three end marks (5 items, Book L4.2). Art: cow, gate —
 TO-CREATE.
 

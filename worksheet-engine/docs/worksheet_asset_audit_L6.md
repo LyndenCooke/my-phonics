@@ -79,7 +79,7 @@ Checked directly on disk 2026-06-10 under `myphonics_books/output/books/Level{n}
 | L1 | 2 | 1_1 Tap Tap Tap, 1_2 The Mud on the Dog |
 | L2 | 5 | 2_1 The Red Socks, 2_2 Run Pup Run, 2_3 Fox Fell Off, 2_4 The Jam Jug, 2_5 The Yak and the Box |
 | L3 | 3 | 3_1 The Fish in the Tank, 3_2 Chop Chop Chop, 3_3 Buzz and Sing |
-| L4 | 6 | 4_1 The Night Light, 4_2 Moo at the Zoo, 4_3 Morning on the Farm, 4_4 The Fair in the Air, 4_5 Round and Round, 4_6 The Night Fair |
+| L4 | 6 | 4_1 The Night Light, 4_2 Hot Food, Cool Moon, 4_3 Morning on the Farm, 4_4 The Fair in the Air, 4_5 Round and Round, 4_6 The Night Fair |
 | L5 | 5 | 5_1 The Big Bike Race, 5_2 Lost at the Night Market, 5_3 The Dream Team, 5_4 What Min Saw, 5_5 The Boat with the Red Sail |
 | L6 | 4 | 6_1 The Purple Purse, 6_2 The Brown Owl, 6_3 The New Glue, 6_4 The Cheeky Monkey |
 | L7 | 4 | 7_1 Before the Shore, 7_2 Near the Door, 7_3 Sure She Can, 7_4 A Place for Me |

@@ -7,7 +7,7 @@ the workbook concentrates on writing.
 
 ## What is in the six weeks
 
-- Six reading books: The Night Light (ay igh) · Moo at the Zoo (oo ow) ·
+- Six reading books: The Night Light (ay igh) · Hot Food, Cool Moon (oo ow) ·
   Morning on the Farm (ar or) · The Fair in the Air (air ir) · Round and
   Round (ou oy) · The Night Fair (review).
 - Eleven sound books, one per grapheme, before or with their reading book.
@@ -25,7 +25,7 @@ the workbook concentrates on writing.
 | Week | Book | Grammar page |
 |---|---|---|
 | 1 | The Night Light | Joining with and |
-| 2 | Moo at the Zoo | Choose the end mark |
+| 2 | Hot Food, Cool Moon | Choose the end mark |
 | 3 | Morning on the Farm | One and more than one |
 | 4 | The Fair in the Air | Capital letters for days |
 | 5 | Round and Round | Add -ing, -ed, -er |

@@ -1,27 +1,23 @@
 """
 Hot Food, Cool Moon — Level 2.2 Focus Story
-Written 2026-03-06 as "Moo at the Zoo". Rewritten 2026-07-22 (decodability
-bug), then fully re-set the same day (v3 — new setting, new story).
+Written 2026-07-22, replacing the original 2026-03-06 story for this slot.
 Focus sounds: ow, oo
 Setting: A street-food night market, England — child visits with Mum
 
-REWRITE HISTORY:
-  v1 (2026-03-06): "Moo at the Zoo" — searched for an "owl" and used "ow"
-    for owl/cow/wow/now/bow, the /aʊ/ pronunciation. Per shifty_sounds.json,
-    "ow" at this level ONLY teaches the /oʊ/ pronunciation (blow/snow/show);
-    /aʊ/ isn't taught until level 6. Lynden caught it.
-  v2 (2026-07-22): owl→fox fix, but every line was packed with extra
-    sound-matching words ("shark can shoot a hoop", "peep and peep", "my
-    own fox") until it stopped reading like real sentences — and "shark"
-    itself was a violation ("ar" isn't taught until L2.3). Lynden rejected
-    it as forced.
-  v3 (2026-07-22, this version): the zoo premise was scrapped entirely.
-    Ruling from Lynden: a sound target needs at least ~3 genuine words in
-    the story — do NOT force examples into every line; that is what makes
-    the text sound weird. Also: use the book as a lowkey window to another
-    place/demographic (the project mission), rather than a generic setting.
-    Demographic chosen by Lynden: white English revert (convert) Muslim
-    family — Malaysia is already covered elsewhere in the fleet.
+RULINGS THIS STORY EXISTS TO HONOUR (Lynden, 2026-07-22) — the story it
+replaced broke all three, so do not reintroduce them:
+  1. "ow" at this level teaches ONLY the /oʊ/ pronunciation (blow/snow/show).
+     The /aʊ/ sound (owl/cow/wow/now/bow) is NOT taught until level 6 — see
+     shifty_sounds.json. The old story was built around hunting an "owl".
+  2. A sound target needs ~3 genuine words in the story, and no more. Do NOT
+     force examples into every line: a redraft that packed each sentence with
+     sound-matching words stopped reading like real English and was rejected.
+     Check every added word against the level, too — one such patch used
+     "shark", but "ar" isn't taught until L2.3.
+  3. Use the book as a lowkey window onto another place or community (the
+     project mission) rather than a generic setting. Demographic chosen here:
+     a white English revert (convert) Muslim family — Malaysia is already
+     covered elsewhere in the fleet.
 
 CREATIVE DIRECTION: A British street-food night market (string lights,
 bunting, food stalls). The demographic is carried by the ILLUSTRATIONS —
@@ -92,10 +88,7 @@ Focus sound density (natural placement, not forced):
   would not carry in natural speech.
 """
 
-# Variable name kept as MOO_ZOO_STORY_BOOK1 (and filename unchanged) so
-# existing imports in generate_pilot_books.py et al. don't break.
-# The book itself is now "Hot Food, Cool Moon".
-MOO_ZOO_STORY_BOOK1 = {
+HOT_FOOD_COOL_MOON_STORY_BOOK1 = {
     "L2_2_B1": {
         "level": 2,
         "sub_level": "L2.2",
