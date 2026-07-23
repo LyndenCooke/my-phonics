@@ -112,7 +112,7 @@ Legend: `SOUND` single-sound sheet · `BLEND` word building · `ALIEN` nonsense 
 **Book L4.1 — "The Night Light" (ay ee igh)**
 5 SOUND ay · 6 SOUND ee · 7 SOUND igh · 8 BLEND (tray, week, light) · 9 SPELL (ay sound) · 10 ALIEN · 11 HAND (copy a sentence, size on lines) · 12 TRICKY (was, my) · 13 GRAMMAR (join with "and") · 14 SENTENCE (join two ideas with "and") · 15 BOOK (3 literal questions)
 
-**Book L4.2 — "Moo at the Zoo" (ow oo)**
+**Book L4.2 — "Hot Food, Cool Moon" (ow oo)**
 16 SOUND ow · 17 SOUND oo · 18 BLEND (snow, blow, zoo, book) · 19 SPELL (long oo vs short oo) · 20 ALIEN · 21 HAND · 22 TRICKY (you, they) · 23 GRAMMAR (choose . ? !) · 24 SENTENCE · 25 BOOK (vocabulary match)
 
 **Book L4.3 — "Morning on the Farm" (ar or)**

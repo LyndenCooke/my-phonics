@@ -35,7 +35,7 @@ These are places where the brief and the sources disagree, or where a source is 
 
 ### A0. Science strand decision (applies to all levels)
 
-Recommended default until Lynden confirms a scope: **Science is OUT of the booklet for v1**, because no source defines it and the decodable rule would heavily constrain any science vocabulary. If a cross-curricular page is wanted, the lowest-risk option is a single optional **"Word and World"** page per level that reuses each book's existing `cultural_brief_*` theme (e.g. L4 *Moo at the Zoo* → animals; L7/L8 *Incredible Bush Walk* → habitats), written to the level's decodable rule. Marked **TO-CONFIRM**; it does not block any template build.
+Recommended default until Lynden confirms a scope: **Science is OUT of the booklet for v1**, because no source defines it and the decodable rule would heavily constrain any science vocabulary. If a cross-curricular page is wanted, the lowest-risk option is a single optional **"Word and World"** page per level that reuses each book's existing `cultural_brief_*` theme (e.g. L4 *Hot Food, Cool Moon* → animals; L7/L8 *Incredible Bush Walk* → habitats), written to the level's decodable rule. Marked **TO-CONFIRM**; it does not block any template build.
 
 ---
 
@@ -132,7 +132,7 @@ New GPCs (11 graphemes; ledger counts 12 sounds — `oo` sheet covers long *zoo*
 | 23 | Back matter | `QuickCheck` | "and" joins ×3; end marks ×3 | mixed | — | |
 | 24 | Back matter | `Certificate` | L4 award | level, name | — | |
 
-**L4 totals:** 24 pages · 11 SingleSound · 2 Handwriting · 4 Grammar · Science 0 (candidate: animals, via *Moo at the Zoo* — TO-CONFIRM).
+**L4 totals:** 24 pages · 11 SingleSound · 2 Handwriting · 4 Grammar · Science 0 (candidate: animals, via *Hot Food, Cool Moon* — TO-CONFIRM).
 
 ---
 

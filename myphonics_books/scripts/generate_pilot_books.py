@@ -51,7 +51,7 @@ def get_pilot_stories() -> dict:
     from data.buzz_sing_story_l1_10_book1 import BUZZ_SING_STORY_BOOK1
     # L2-L6 sub-level stories
     from data.night_light_story_l2_1_book1 import NIGHT_LIGHT_STORY_BOOK1
-    from data.moo_zoo_story_l2_2_book1 import MOO_ZOO_STORY_BOOK1
+    from data.hot_food_cool_moon_story_l2_2_book1 import HOT_FOOD_COOL_MOON_STORY_BOOK1
     from data.bark_dark_story_l2_3_book1 import MORNING_FARM_STORY_BOOK1
     from data.fair_air_story_l2_4_book1 import FAIR_AIR_STORY_BOOK1
     from data.loud_toy_story_l2_5_book1 import LOUD_TOY_STORY_BOOK1
@@ -87,7 +87,7 @@ def get_pilot_stories() -> dict:
     stories["L1_10_B1"] = BUZZ_SING_STORY_BOOK1["L1_10_B1"]
     # L2-L6 sub-level stories
     stories["L2_1_B1"] = NIGHT_LIGHT_STORY_BOOK1["L2_1_B1"]
-    stories["L2_2_B1"] = MOO_ZOO_STORY_BOOK1["L2_2_B1"]
+    stories["L2_2_B1"] = HOT_FOOD_COOL_MOON_STORY_BOOK1["L2_2_B1"]
     stories["L2_3_B1"] = MORNING_FARM_STORY_BOOK1["L2_3_B1"]
     stories["L2_4_B1"] = FAIR_AIR_STORY_BOOK1["L2_4_B1"]
     stories["L2_5_B1"] = LOUD_TOY_STORY_BOOK1["L2_5_B1"]

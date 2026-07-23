@@ -199,7 +199,7 @@ Remap all 33 books. The complete mapping (from rwi_aligned_proposal.md Section 5
 | L1.9 | 1 | L3.2 | 3 | Chop, Chop, Chop! |
 | L1.10 | 1 | L3.3 | 3 | Buzz and Sing! |
 | L2.1 | 2 | L4.1 | 4 | The Night Light |
-| L2.2 | 2 | L4.2 | 4 | Moo at the Zoo |
+| L2.2 | 2 | L4.2 | 4 | Hot Food, Cool Moon |
 | L2.3 | 2 | L4.3 | 4 | Morning on the Farm |
 | L2.4 | 2 | L4.4 | 4 | The Fair in the Air |
 | L2.5 | 2 | L4.5 | 4 | Round and Round |

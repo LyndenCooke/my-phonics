@@ -1521,7 +1521,7 @@ SCENE_PROMPTS["2.1"] = {
 
 # ═══════════════════════════════════════════════════════════════════
 # LEVEL 2.2 — "Hot Food, Cool Moon" (UK street-food night market)
-# Re-set 2026-07-22 (was "Moo at the Zoo"). White English revert family:
+# Story written 2026-07-22. White English revert family:
 # girl in soft pink hijab (hero) + mum in sage-green hijab (side hero).
 # ═══════════════════════════════════════════════════════════════════
 # SETTING (use EXACT phrase): "a British street-food night market held in the

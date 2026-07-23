@@ -694,7 +694,7 @@ Theme: `getLevelTheme(4)`.
 GPCs new (RWI Set 2 primary): ay ee igh ow oo(zoo) oo(look) ar or air ir
 ou oy · tricky new: was, my, you, they, her, all, are (cum. 19) · two-
 syllable words introduced · band 4-8 words · Books: L4.1 The Night Light
-(ay ee igh) · L4.2 Moo at the Zoo (ow oo) · L4.3 Morning on the Farm
+(ay ee igh) · L4.2 Hot Food, Cool Moon (ow oo) · L4.3 Morning on the Farm
 (ar or) · L4.4 The Fair in the Air (air ir) · L4.5 Round and Round (ou oy)
 · L4.6 The Night Fair (review).
 
@@ -737,7 +737,7 @@ sentences). BW1: picture box ~45mm + 5 single lines, 12mm pitch; check
 strip + "did you use and?". Art: lantern grounded-box, moon perch —
 manifest: TO-CREATE (L4 world).
 
-**B2 Moo at the Zoo** — HW1 ow/oo sets + tricky you, they. GR1 = G-L4.2
+**B2 Hot Food, Cool Moon** — HW1 ow/oo sets + tricky you, they. GR1 = G-L4.2
 tick-one-of-three end marks (5 items, Book L4.2). Art: cow, gate —
 TO-CREATE.
 
@@ -1445,7 +1445,7 @@ the sound work). Workout days = short warm-up + one longer task.
 | Block | Weeks | Book |
 |---|---|---|
 | A | 1-2 | The Night Light |
-| A | 3-4 | Moo at the Zoo |
+| A | 3-4 | Hot Food, Cool Moon |
 | A | 5-6 | Morning on the Farm → end of week 6: half-term spelling test (10 words) + reading check |
 | B | 1-2 | The Fair in the Air |
 | B | 3-4 | Round and Round |
@@ -1466,7 +1466,7 @@ the sound work). Workout days = short warm-up + one longer task.
 | W2-D4 | Workout | spelling test (8 words) | Spelling test | Workbook |
 | W2-D5 | Workout | big write | Big write | Workbook |
 
-Grammar pages: 1 The Night Light — Joining with and · 2 Moo at the Zoo —
+Grammar pages: 1 The Night Light — Joining with and · 2 Hot Food, Cool Moon —
 Choose . ? ! · 3 Morning on the Farm — Plurals · 4 The Fair in the Air —
 Days of the week · 5 Round and Round — Suffixes -ing -ed -er · 6 The Night
 Fair — Fix the sentence (revisit).
