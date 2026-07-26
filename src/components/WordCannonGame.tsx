@@ -351,7 +351,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
     // ── input ──
     function aimAngle(x: number, y: number) {
       const cp = cannonPos();
-      let a = Math.atan2(y - cp.y, x - cp.x);
+      const a = Math.atan2(y - cp.y, x - cp.x);
       return Math.max(-2.2, Math.min(-0.15, a));
     }
     function onAim(e: PointerEvent) {
@@ -521,7 +521,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
 
     // ── drawing helpers ──
     function rr(x: number, y: number, w: number, h: number, r: number) { ctx!.beginPath(); ctx!.moveTo(x + r, y); ctx!.arcTo(x + w, y, x + w, y + h, r); ctx!.arcTo(x + w, y + h, x, y + h, r); ctx!.arcTo(x, y + h, x, y, r); ctx!.arcTo(x, y, x + w, y, r); ctx!.closePath(); }
-    function starPath(x: number, y: number, r: number) { ctx!.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 === 0 ? r : r * 0.45; const px = x + Math.cos(a) * rad, py = y + Math.sin(a) * rad; i === 0 ? ctx!.moveTo(px, py) : ctx!.lineTo(px, py); } ctx!.closePath(); }
+    function starPath(x: number, y: number, r: number) { ctx!.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 === 0 ? r : r * 0.45; const px = x + Math.cos(a) * rad, py = y + Math.sin(a) * rad; if (i === 0) ctx!.moveTo(px, py); else ctx!.lineTo(px, py); } ctx!.closePath(); }
     function cloud(x: number, y: number, s: number) { ctx!.beginPath(); ctx!.arc(x, y, 26 * s, 0, 7); ctx!.arc(x + 30 * s, y - 12 * s, 32 * s, 0, 7); ctx!.arc(x + 66 * s, y - 2 * s, 26 * s, 0, 7); ctx!.arc(x + 92 * s, y + 8 * s, 20 * s, 0, 7); ctx!.arc(x + 40 * s, y + 12 * s, 28 * s, 0, 7); ctx!.closePath(); ctx!.fill(); }
     function gull(x: number, y: number, t: number, s: number) {
       // The gulls get excited for a beat whenever a sound lands: they flap
@@ -601,7 +601,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
         const wy = sy0 + 14 + k * ((dy0 - sy0) / 3.2);
         ctx!.strokeStyle = 'rgba(255,255,255,' + (0.5 - k * 0.13) + ')'; ctx!.lineWidth = 3; ctx!.lineCap = 'round';
         ctx!.beginPath();
-        for (let x = -20; x <= W + 20; x += 8) { const y = wy + Math.sin(x * 0.025 + t * (1.2 + k * 0.3) + k * 2) * 4; x === -20 ? ctx!.moveTo(x, y) : ctx!.lineTo(x, y); }
+        for (let x = -20; x <= W + 20; x += 8) { const y = wy + Math.sin(x * 0.025 + t * (1.2 + k * 0.3) + k * 2) * 4; if (x === -20) ctx!.moveTo(x, y); else ctx!.lineTo(x, y); }
         ctx!.stroke();
       }
       const WOOD = '#C68B59', WOOD_D = '#9C6B3F';
@@ -704,7 +704,8 @@ export default function WordCannonGame({ level, onClose }: Props) {
       const bobY = drawPlank() || 0;
       for (let i = 0; i < state.slots.length; i++) {
         const s = state.slots[i];
-        let sz = s.size, x = s.x, y = s.y + bobY;
+        let sz = s.size, y = s.y + bobY;
+        const x = s.x;
         if (s.filled) { const lt = Math.min(1, (t - s.land) / 0.4); const k = Math.sin(lt * Math.PI) * (1 - lt) * 0.25; sz *= 1 + k; }
         if (state.wordWave > 0) { const wt = t - state.wordWave - i * 0.09; if (wt > 0 && wt < 0.6) y -= Math.sin(Math.min(1, wt / 0.6) * Math.PI) * 24; }
         const half = sz / 2;
