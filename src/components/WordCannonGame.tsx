@@ -251,17 +251,28 @@ export default function WordCannonGame({ level, onClose }: Props) {
     try { document.fonts.ready.then(() => { state.fontReady = true; }); } catch { state.fontReady = true; }
 
     // ── geometry ──
-    const ballR = () => Math.max(26, Math.min(38, state.W * 0.05));
-    const cardW = () => Math.min(140, state.W * 0.3, state.H * 0.24);
+    // A short landscape phone has very little room between the picture card
+    // and the plank, so the layout adapts rather than letting bubbles cover
+    // the slots: the card shrinks, the plank drops, and the bubbles size
+    // themselves from whatever band is left.
+    const short = () => state.H < 520;
+    const cardW = () => Math.min(140, state.W * 0.3, state.H * (short() ? 0.2 : 0.24));
     const cardY = () => state.H * 0.035;
-    const arenaTop = () => cardY() + cardW() + 40 + ballR();
-    const plankY = () => state.H * 0.64;
+    const plankY = () => state.H * (short() ? 0.7 : 0.64);
     const slotSize = () => Math.max(46, Math.min(70, state.W / (Math.max(3, state.slots.length) + 3.4)));
-    const arenaBot = () => {
-      const size = slotSize();
-      const plankTop = plankY() - size / 2 - size * 0.34;
-      return Math.max(arenaTop() + ballR(), plankTop - ballR() - 12);
+    const plankTop = () => plankY() - slotSize() / 2 - slotSize() * 0.34;
+
+    const ballR = () => {
+      const floor = state.W < 480 ? 21 : 26;
+      const byWidth = Math.max(floor, Math.min(38, state.W * 0.05));
+      // enough band for a bubble plus a little drift above and below
+      const byBand = (plankTop() - 10 - (cardY() + cardW() + 20)) / 2.6;
+      return Math.max(14, Math.min(38, byWidth, byBand));
     };
+    const arenaTop = () => cardY() + cardW() + 20 + ballR();
+    // Hard ceiling: never let the arena floor cross the plank, even if that
+    // leaves the band thinner than a bubble.
+    const arenaBot = () => Math.max(arenaTop(), plankTop() - ballR() - 10);
     const seaY = () => state.H * 0.56;
     const deckY = () => state.H * 0.8;
     const miloSize = () => Math.min(140, state.W * 0.26);
@@ -340,7 +351,8 @@ export default function WordCannonGame({ level, onClose }: Props) {
       const aT = arenaTop(), aB = arenaBot();
       state.balls = set.map((b, i) => ({
         g: b.g, id: b.id + '_' + qi, r: ballR(),
-        x: state.W * (0.14 + 0.72 * (i + 0.5) / set.length) + (Math.random() * 20 - 10),
+        x: Math.max(ballR() * 1.15 + 10, Math.min(state.W - ballR() * 1.15 - 10,
+             state.W * (0.14 + 0.72 * (i + 0.5) / set.length) + (Math.random() * 20 - 10))),
         y: aT + Math.random() * Math.max(10, aB - aT),
         vx: (Math.random() * 2 - 1) * 30, vy: (Math.random() * 2 - 1) * 24,
         state: 'float', t: 0, sx: 0, sy: 0, slot: -1, wrong: 0, born: -i * 0.09, ph: Math.random() * 7, spin: 0,
@@ -461,7 +473,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
           b.x += b.vx * dt; b.y += b.vy * dt;
           b.vx += (Math.random() * 2 - 1) * 8 * dt; b.vy += (Math.random() * 2 - 1) * 8 * dt;
           const sp = Math.hypot(b.vx, b.vy), MAX = 58; if (sp > MAX) { b.vx *= MAX / sp; b.vy *= MAX / sp; }
-          const L = b.r + 6, R = state.W - b.r - 6;
+          const L = b.r * 1.15 + 10, R = state.W - b.r * 1.15 - 10;
           if (b.x < L) { b.x = L; b.vx = Math.abs(b.vx); } if (b.x > R) { b.x = R; b.vx = -Math.abs(b.vx); }
           if (b.y < aT) { b.y = aT; b.vy = Math.abs(b.vy); } if (b.y > aB) { b.y = aB; b.vy = -Math.abs(b.vy); }
           for (const o of state.balls) {
@@ -543,6 +555,13 @@ export default function WordCannonGame({ level, onClose }: Props) {
     function drawWorld() {
       const W = state.W, H = state.H, t = state.t;
       const sy0 = seaY(), dy0 = deckY();
+      // The gradient always goes down first as a base. On a tall phone screen
+      // the painted image cannot reach both the top of the sky and the deck at
+      // once, and without this the uncovered band showed the page background.
+      const base = ctx!.createLinearGradient(0, 0, 0, sy0);
+      base.addColorStop(0, '#BFE5F2'); base.addColorStop(1, '#FDF3E7');
+      ctx!.fillStyle = base; ctx!.fillRect(0, 0, W, sy0 + 2);
+
       // Painted sky + sea if the art loaded, cover-fitted across the whole
       // area above the deck; otherwise the original gradients.
       if (ready('sea')) {
@@ -553,9 +572,12 @@ export default function WordCannonGame({ level, onClose }: Props) {
         const HZ = 0.55;
         const aspect = im.naturalWidth / im.naturalHeight;
         let ih = W / aspect;
-        // grow it if a narrow viewport would leave the deck edge uncovered
-        const needed = (dy0 + 4 - sy0) / (1 - HZ);
-        if (ih < needed) ih = needed;
+        // Grow it if a narrow viewport would leave the deck edge uncovered, and
+        // again if the sky above the horizon would come up short. On a phone the
+        // second case is what bites: the frame is far taller than 16:9.
+        const needBelow = (dy0 + 4 - sy0) / (1 - HZ);
+        const needAbove = sy0 / HZ;
+        ih = Math.max(ih, needBelow, needAbove);
         const iw = ih * aspect;
         ctx!.drawImage(im, (W - iw) / 2, sy0 - HZ * ih, iw, ih);
       } else {
