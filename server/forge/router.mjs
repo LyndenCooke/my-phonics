@@ -1,6 +1,6 @@
 // HTTP routes for the custom-book forge. Mounted at /api/forge by the Vite
 // dev-server plugin (dev/localhost only — never part of the production build).
-import { configReport } from "./env.mjs";
+import { cfg, configReport } from "./env.mjs";
 import { allLevels } from "./phonics.mjs";
 import * as db from "./db.mjs";
 import { createCheckout, verifySession, PRICES } from "./stripe.mjs";
@@ -123,6 +123,35 @@ export async function handleForge(req, res) {
 
     if (req.method === "POST" && p === "/checkout") {
       const b = await readBody(req);
+      // Private test voucher — redeems to a £0 paid order and skips Stripe
+      // entirely. Compared here on the server so the code is never shipped to
+      // the browser; an unset FORGE_VOUCHER_CODE accepts nothing (see env.mjs).
+      // Timing-safe-ish compare is overkill for a single private code, but the
+      // length check stops a blank/short guess matching by accident.
+      const supplied = String(b.voucher || "").trim();
+      const secret = cfg.FORGE_VOUCHER_CODE;
+      if (supplied && secret && supplied.length === secret.length && supplied === secret) {
+        if (b.kind === "book" && b.book_id) {
+          const book = await db.getBook(b.book_id);
+          if (!book) return send(res, 404, { error: "not found" });
+          await db.insertOrder({
+            book_id: b.book_id, email: b.email || book.email, kind: "book",
+            stripe_session_id: `voucher_${b.book_id.slice(0, 8)}`,
+            amount_pence: 0, status: "paid",
+          });
+          if (["awaiting_payment", "failed"].includes(book.status)) startGeneration(b.book_id);
+          return send(res, 200, { free: true, kind: "book", book_id: b.book_id });
+        }
+        if (b.kind === "world") {
+          await db.insertOrder({
+            email: b.email, kind: "world",
+            stripe_session_id: `voucher_world_${Date.now()}`,
+            amount_pence: 0, status: "paid",
+          });
+          return send(res, 200, { free: true, kind: "world" });
+        }
+      }
+      if (supplied) return send(res, 400, { error: "That code is not valid." });
       const session = await createCheckout({
         kind: b.kind, bookId: b.book_id, email: b.email, origin,
       });

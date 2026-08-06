@@ -45,6 +45,13 @@ export const cfg = {
   FAL_KEY: booksEnv.FAL_KEY || "",
   STRIPE_SECRET_KEY: booksEnv.STRIPE_SECRET_KEY || "",
   ELEVEN_LABS_API: booksEnv.ELEVEN_LABS_API || "",
+  // Private test voucher (Lynden 2026-08-06): makes Create-A-Book free so he
+  // can test the real flow without paying. Lives in myphonics_books/.env and is
+  // ONLY ever compared server-side — never sent to the browser, never in the
+  // client bundle, and .env is gitignored, so the code stays private. Unset
+  // means no voucher is accepted at all, which is the safe default: an empty
+  // string must never match an empty submission.
+  FORGE_VOUCHER_CODE: booksEnv.FORGE_VOUCHER_CODE || "",
   // Vertex AI fallback (gcloud OAuth) — the LLM path that is known-good on
   // this machine when no Anthropic key is configured.
   VERTEX_PROJECT: booksEnv.VERTEX_PROJECT || "iron-entropy-496317-q9",
