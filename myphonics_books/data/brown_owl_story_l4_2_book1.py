@@ -70,8 +70,30 @@ BROWN_OWL_STORY_BOOK1 = {
             },
         ],
         "story_words": ["owl", "stared", "brown", "dare", "howl", "care"],
-        "tricky_words_used": ["the", "to", "I", "we", "my", "go", "me", "her", "there", "want", "said", "was", "what", "were", "she", "all"],  # saw removed 2026-07-13 — s+aw decodable since L5
-        "tricky_words_all": ["the", "to", "I", "was", "what", "all", "were", "she", "me", "my", "said", "you", "do", "like", "want", "we", "go", "saw", "to", "her"],
+        # Cleaned 2026-07-25 (Lynden): every lower-level word was stripped —
+        # the, to, I, we, my, go, me, her, there, said, was, what, were, she,
+        # all are L1-L5 sight words a Level 6 child has known for a level or
+        # more, and generate_book.py hides them from the strip anyway.  What
+        # is left is genuinely tricky HERE: 'want' (the a says /o/, on no
+        # level list), plus 'together' and 'something', both now carried on
+        # the Level 6 master list.
+        "tricky_words_used": ["want", "together", "something"],
+        # 'branches' letter-maps as b-r-a-n-ch-e-s so nothing flags it, but the
+        # plural '-es' says /iz/ and is a Level 7 suffix — explained rather
+        # than left for the child to guess (Lynden 2026-07-25).
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — es says /iz/",
+                "body": (
+                    "When a word ends in ch, sh, s, x or z, we add '-es' to "
+                    "make it mean more than one — and the '-es' says /iz/, a "
+                    "whole extra beat.  In this story you'll meet 'branches': "
+                    "say branch, then add /iz/ — branch·iz.  '-es' is a Level "
+                    "7 sound, so just tell your child this one."
+                ),
+                "examples": ["branches"],
+            },
+        ],
         "read_words": ["howl", "bare", "brown", "stared"],
         "nonsense_words": [
             "zare", "gow", "mowl", "frow", "jare", "plown",

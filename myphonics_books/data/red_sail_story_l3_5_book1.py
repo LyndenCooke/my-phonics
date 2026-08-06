@@ -31,14 +31,14 @@ JOURNEY/RACE structure with CLUE TRAIL:
 - RELIEF (Page 5): Makes it to coast, red sail confirmed
 - CLUE 3 (Page 6): Man calls 'Kai! Kai!' — who knows his name?
 - REVEAL (Page 7): It is Dad! Reunion!
-- BOOKEND (Page 8): Walk home, snail still on trail
+- BOOKEND (Page 8): Walk home, snail reappears on the road — 'How did the snail get here?'
 
 ENGAGEMENT HOOKS:
 - Mystery: Dad not mentioned until page 7 reveal
 - Escalating obstacles: rain → snail blocks path → falls in mud
 - Time pressure: 'the boat will not wait!' (page 4)
 - Clue trail for teacher: red sail → recognition → fish → name → DAD!
-- Snail motif: blocks path page 3, still there page 8 ('I beat the snail!')
+- Snail motif: blocks path page 3, still there page 8 ('How did the snail get here?')
 
 ai appearances: Kai(×8), sail(×3), Rain(×1), main(×1), trail(×2),
                 snail(×4), rain(×2), drain(×1), sails(×1), wait(×1) = 24 total
@@ -96,12 +96,12 @@ RED_SAIL_STORY_BOOK1 = {
             },
             {
                 "page_number": 8,
-                "text": "They stroll back up the road with the fish. The snail is still on the trail! \u2018I beat the snail!\u2019 grins Kai.",
+                "text": "They stroll back up the road with the fish. Then Kai spots the snail! \u2018How did the snail get here?\u2019 he grins.",
                 "image": None,
             },
         ],
         "story_words": ["rain", "sail", "snail", "boat", "coat", "road"],
-        "tricky_words_used": ["said", "he", "they", "to", "the", "into", "I"],  # 'is' decodable; added 'into' and 'I'
+        "tricky_words_used": ["said", "he", "they", "to", "the", "into", "I", "here"],  # 'is' decodable; 'into'+'I' added; 'here' read on sight (p8)
         "read_words": ["sail", "snail", "boat", "coat"],
         "nonsense_words": [
             "straif", "blaip", "drail", "plaig", "snaim", "fraib",

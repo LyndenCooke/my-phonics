@@ -56,7 +56,7 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
                     "The morning sun streamed through the open window, and the bright "
                     "clifftop houses of the Amalfi Coast glowed pink and cream outside. "
                     "Nonna had set a big glass dish on the tiled bench, and inside it "
-                    "sat something green, something red, and something Luca did not trust. "
+                    "sat something green, something red and something Luca did not trust. "
                     "\"What is that?\" he asked, taking a cautious step back. "
                     "\"It looks suspicious.\""
                 ),
@@ -121,7 +121,7 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
                     "Next, Nonna filled a big pot with hot water and set it on the stove. "
                     "She tipped in long strands of fresh pasta and stirred them with a wooden spoon. "
                     "\"Pasta al limone,\" she announced. \"My mother's precious "
-                    "secret — lemon, cream, and a sprinkle of pepper.\" "
+                    "secret — lemon, cream and a sprinkle of pepper.\" "
                     "The steam that rose from the pot smelled absolutely delicious, "
                     "and Luca found himself stepping closer, even though he was still cautious. "
                     "\"I am not eating that,\" he said, but his feet did not step back."
@@ -141,9 +141,9 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
                 "text": (
                     "Nonna set the last dish on the kitchen table: a small glass cup "
                     "of pale yellow granita, topped with a thin slice of lemon and a mint leaf. "
-                    "\"Limoncello granita,\" she said. \"Frozen, sweet, and scrumptious. "
+                    "\"Limoncello granita,\" she said. \"Frozen, sweet and scrumptious. "
                     "This is the most delicious treat on the Amalfi Coast.\" "
-                    "Luca looked at the bruschetta, the pasta, and the granita. "
+                    "Luca looked at the bruschetta, the pasta and the granita. "
                     "All three smelled delicious, and he had to admit something: "
                     "he was not just cautious any more — he was also very, very hungry."
                 ),
@@ -166,7 +166,7 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
                     "His eyes went wide. It was delicious. "
                     "He took a bigger bite, and then another. The fresh tomato and lemon "
                     "burst across his mouth, and the crusty bread was perfect. "
-                    "He tried the pasta next. It was creamy, sharp, and absolutely scrumptious. "
+                    "He tried the pasta next. It was creamy, sharp and absolutely scrumptious. "
                     "\"Nonna,\" he said, and his voice was thick with feeling, \"this is the most "
                     "delicious thing I have ever tasted.\""
                 ),
@@ -248,6 +248,17 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
             "delicious", "suspicious", "cautious", "precious",
             "nutritious", "scrumptious", "gracious", "ambitious"
         ],
+        # Shifty diamonds (Lynden 2026-07-29). The diamond belongs on the VOWEL
+        # making one of its other sounds, never on the cious/tious — that is an
+        # alternative SPELLING of /sh/ and keeps its ordinary line, and it is
+        # this book's focus grapheme besides.
+        #   gracious / spacious  a = /ai/   (open a, ledger from L6)
+        #   nutritious           u = /yoo/  (ledger from L6)
+        "shifty_marks": {
+            "gracious": [{"index": 2, "says": "/ai/"}],
+            "spacious": [{"index": 2, "says": "/ai/"}],
+            "nutritious": [{"index": 1, "says": "/yoo/"}],
+        },
         "tricky_words_used": ["the", "said", "was", "you", "what", "do", "could", "whole", "people", "love"],  # ever removed 2026-07-13 — ev+er decodable
         "read_words": ["delicious", "suspicious", "cautious", "nutritious"],
         "nonsense_words": [
