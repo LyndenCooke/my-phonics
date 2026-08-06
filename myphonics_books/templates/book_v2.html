@@ -69,6 +69,15 @@
     .cover-top-level {
       font-size: 9pt; font-weight: 700; color: #ffffff;
       text-transform: uppercase; letter-spacing: 0.6px;
+      display: flex; align-items: center; gap: 2.5mm;
+    }
+    /* Library-edition book number pill (1.1, 1.2, ...).  Reversed out of the
+       level colour so it reads as a catalogue number, not part of the title. */
+    .cover-booknum {
+      background: #ffffff; color: var(--level-color);
+      font-size: 8.5pt; font-weight: 700; letter-spacing: 0.3px;
+      padding: 0.8mm 2.2mm; border-radius: 1.2mm;
+      flex: 0 0 auto;
     }
     .cover-top-brand {
       font-size: 9pt; color: #ffffff;
@@ -382,6 +391,7 @@
     .future-caption { font-size: 8.5pt; color: #6b7280; line-height: 1.3; }
     .future-caption strong { font-weight: 700; }
 
+
     /* Sound-buttoned word list — proper SSP arc + dot notation rendered
        inline as SVG so dots and arcs line up with character widths.
        Each character is a fixed-width span; SVG sits below (or above for
@@ -469,6 +479,73 @@
       padding: 1.5mm 6mm;
     }
 
+    /* ---- -ed showcase (Lynden 2026-07-25) ------------------------------
+       Sits under the Tricky Words strip and deliberately echoes it — below
+       L7 an -ed word is told, not sounded out, so it behaves like a sight
+       word.  Teal-on-white rather than the tricky strip's purple so the two
+       never blur together.  Apostrophe = no extra beat (turn'd, stop't);
+       hyphen = an extra beat (start-id) — the same distinction the sound
+       buttons make, per PHONICS_PEDAGOGY.md §7. */
+    .ed-band {
+      margin-top: 3mm;
+      padding: 2.5mm 3.5mm;
+      background: #f0fbfa;
+      border: 0.4mm solid #b8e6e1;
+      border-radius: 3mm;
+    }
+    .ed-label {
+      font-size: 8pt; color: #0d8a80; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-align: center; margin-bottom: 1.5mm;
+    }
+    .ed-intro {
+      font-size: 8pt; color: #6b7280; line-height: 1.35;
+      text-align: center; margin-bottom: 2.5mm;
+    }
+    .ed-intro strong { color: #0d8a80; font-weight: 700; }
+    /* Three fixed rows (id / d / t).  Word and respelling are column-aligned
+       so the three endings line up and the pattern is visible at a glance;
+       the reason sits to the right in lighter text. */
+    .ed-item {
+      display: flex; align-items: baseline; gap: 2mm;
+      padding: 1.2mm 0;
+    }
+    .ed-item + .ed-item { border-top: 0.25mm solid #d7efec; }
+    .ed-word {
+      font-size: 10.5pt; font-weight: 600; color: #2a2240;
+      min-width: 22mm; text-align: right;
+    }
+    .ed-arrow { font-size: 8pt; color: #6fc7bf; }
+    .ed-say {
+      font-size: 10.5pt; font-weight: 700; color: #0d8a80;
+      min-width: 24mm;
+    }
+    .ed-why { font-size: 8.5pt; color: #6b7280; }
+
+    /* Library edition only: the reusable book still shows activities that
+       normally invite a pencil (ordering, tricky-word hunts).  A quiet
+       footer note asks the reader not to write, so the invitation and the
+       rule don't contradict each other (Lynden 2026-07-26). */
+    .no-write-note {
+      margin-top: 3mm; padding-top: 2.5mm;
+      border-top: 0.3mm dashed #ddd;
+      font-size: 8pt; color: #999; text-align: center; font-style: italic;
+    }
+
+    /* The -ed band is worth ~25mm, and the densest page 3s (L5.4 has seven
+       story words AND nine tricky words) had only a few mm of slack.  Rather
+       than truncate the word list — every -ed word must be shown — the page
+       tightens itself when the band is present: same elements, same order,
+       just less air.  Only the 8 books that carry -ed words are affected. */
+    .sw-inner.has-ed .sw-words-grid { gap: 3mm 3mm; margin-bottom: 2.5mm; }
+    .sw-inner.has-ed .sw-word-cell { min-height: 15mm; padding: 2mm 1.5mm; }
+    .sw-inner.has-ed .sw-section-title + .sw-section-desc { margin-bottom: 2.5mm; }
+    .sw-inner.has-ed .sw-tricky-strip { margin-top: 3mm; padding: 3mm 4mm; }
+    .sw-inner.has-ed .sw-tricky-label { margin-bottom: 2mm; }
+    .sw-inner.has-ed .sw-tricky-words { gap: 2mm; }
+    .sw-inner.has-ed .sw-tricky-word { font-size: 12.5pt; padding: 1mm 4mm; }
+    .sw-inner.has-ed .sw-pron-note { margin-top: 3mm; padding: 2.5mm 3.5mm; }
+
     /* Pronunciation note (e.g. soft-c in "race" at L3.1).  Small parent
        callout so they know to pre-teach an alternative pronunciation
        that the focus-sound table doesn't surface. */
@@ -488,22 +565,25 @@
       font-size: 9pt; color: #5c4020; line-height: 1.5;
       margin-bottom: 2mm;
     }
-    /* Two-column grid: each example is "<word> → <pronunciation>" laid out
-       on one line.  Each cell keeps its arrow + pronunciation together;
-       cells wrap to a new row only when the column is full. */
+    /* Each example is "<word> → <pronunciation>" kept on ONE line, and the
+       lines PACK left-to-right, fitting as many per row as genuinely fit.
+       This used to be a fixed two-column grid where any entry longer than 24
+       characters claimed a whole row — but most entries are longer than that
+       ("remarkable -> ri-MARK-uh-bul" is 27), so 8.2 printed a ragged single
+       column with one stray pair (Lynden 2026-07-29: "its too much in one
+       column").  Packing has no threshold to mis-tune: an entry takes a full
+       line only when it truly cannot share one. */
     .sw-pron-note-examples {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5mm 6mm;
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 8mm;
+      row-gap: 1.5mm;
       margin-top: 1mm;
     }
     .sw-pron-note-example {
       font-size: 10pt; color: #1a1a1a;
       white-space: nowrap;
     }
-    /* Long entries (neighbourhood → nay · ber · hood) take the full row —
-       teaching content must never be ellipsized. */
-    .sw-pron-note-example-wide { grid-column: 1 / -1; }
     .sw-pron-note-example strong { font-weight: 700; }
     .sw-pron-note-example .arrow {
       color: #b86a30; margin: 0 1.5mm; font-weight: 700;
@@ -813,6 +893,19 @@
     .spot-stack-5 .spot-photo { height: 24mm; }
     .spot-stack-6 { gap: 3.5mm; }
     .spot-stack-6 .spot-photo { height: 19.5mm; }
+    /* Two-sound books get the whole page for two rows, so the row shows every
+       word it has rather than a flat three.  .spot-row-cards is a 3-column
+       grid, so the column count is what decides the shape: four words go
+       4-across on one line, five or six wrap onto two lines of three with a
+       shorter photo box so both lines fit. */
+    .spot-row-cards-4 { grid-template-columns: repeat(4, 1fr); }
+    /* Four to a line makes each card ~28mm, which clipped "comfortable". */
+    .spot-row-cards-4 .spot-word-long { font-size: 9pt; }
+    /* With only two rows on the page the default 30mm photo box left a third
+       of the page empty above and below the stack. */
+    .spot-stack-2 .spot-photo { height: 42mm; }
+    .spot-stack .spot-row-cards-2line .spot-photo { height: 19mm; }
+    .spot-stack .spot-row-cards-2line .spot-word { font-size: 10.5pt; padding: 1mm; }
     .spot-stack-6 .spot-word { font-size: 11pt; padding: 1.2mm; }
     .spot-stack-6 .spot-row-hero { flex: 0 0 20mm; }
     .spot-stack-6 .spot-row-circle { width: 18mm; height: 18mm; font-size: 15pt; }
@@ -890,6 +983,57 @@
       line-height: 1;
     }
     /* Read Words bottom half — handwriting trace+write rows */
+    /* "Read and Choose the Word" — the gap-fill that replaced the
+       duplicated write rows on Can You Read These? (2026-08-06). */
+    /* Sized so THREE gapped sentences plus their answer chips clear the page
+       under a full six-word read grid — at the first pass the third row's
+       chips fell off the bottom edge. */
+    .rsent-section {
+      margin-top: 3.5mm;
+      padding-top: 3mm;
+      border-top: 0.4mm dashed #ddd;
+    }
+    .rsent-label {
+      font-size: 9pt; font-weight: 700; color: var(--level-color);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 1mm;
+    }
+    .rsent-instruction {
+      font-size: 8.5pt; color: #777; margin-bottom: 2.5mm;
+    }
+    .rsent-item { margin-bottom: 2mm; }
+    .rsent-row {
+      font-size: 11.5pt; line-height: 1.45;
+      color: #1a1a1a;
+      padding: 1.8mm 3mm;
+      background: #fafafa;
+      border: 0.4mm solid #eee;
+      border-radius: 3mm;
+    }
+    /* The gap is a writing line, not a blank space: a child filling it in
+       needs somewhere to put the word. */
+    .rsent-gap {
+      display: inline-block;
+      width: 22mm;
+      border-bottom: 0.5mm solid #999;
+      margin: 0 0.5mm;
+      vertical-align: baseline;
+    }
+    .rsent-options {
+      display: flex; gap: 2.5mm; justify-content: center;
+      margin-top: 1mm;
+    }
+    /* Three answers, evenly weighted — no size or order cue as to which is
+       right (the order is shuffled per word in _sentence_options). */
+    .rsent-opt {
+      font-size: 10.5pt; font-weight: 700;
+      color: #1a1a1a;
+      padding: 1mm 2.8mm;
+      border: 0.4mm solid var(--level-color);
+      border-radius: 8mm;
+      background: #ffffff;
+    }
+
     .rw-write-section {
       margin-top: 4mm;
       padding-top: 4mm;
@@ -904,6 +1048,10 @@
       display: flex; align-items: center; gap: 4mm;
       margin-bottom: 5mm;
     }
+    /* Level 7-8 words (responsible, predictable) are twice the length of a
+       Level 4 one and overran the 28mm label column once the write rows were
+       switched on above Level 6. */
+    .rw-write-trace-long { font-size: 12.5pt; }
     .rw-write-trace {
       width: 28mm;
       font-size: 18pt; font-weight: 400;
@@ -1694,19 +1842,42 @@
     .ob-step { display: flex; gap: 2.4mm; align-items: flex-start; font-size: 8.5pt; color: #555; line-height: 1.35; }
     .ob-step strong { color: #1a1a1a; }
     .ob-step-n { width: 4.6mm; height: 4.6mm; border-radius: 50%; color: #fff; font-size: 8pt; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-top: 0.3mm; }
-    .ob-qrs { display: flex; gap: 8mm; justify-content: center; margin-top: 3mm; }
+    /* Three QRs now (Read / Worksheets / Level check), so the gap tightened
+       from 8mm — 3.3 Buzz and Sing already pushed this row's captions past
+       the bottom trim once with only two codes. */
+    .ob-qrs { display: flex; gap: 5mm; justify-content: center; margin-top: 2mm; }
+    .ob-pass {
+      text-align: center; font-size: 7.5pt; color: #555;
+      margin-top: 1.5mm; line-height: 1.35;
+    }
     .ob-qr { text-align: center; }
-    .ob-qr img { width: 22mm; height: 22mm; display: block; border: 0.3mm solid #e4e4e4; border-radius: 1.5mm; }
+    /* 17mm, down from 22mm (2026-08-06): a third QR plus the library pass
+       line pushed the block past the bottom trim — 2.1 The Red Socks landed
+       at 0.7mm, i.e. guillotined off.  These encode short /b/... URLs (~25
+       modules), so 17mm still gives ~0.65mm per module, well inside what a
+       phone camera reads.  Do NOT add a fourth code to this row without
+       re-running preflight_safe_margins.py against print_classroom. */
+    .ob-qr img { width: 17mm; height: 17mm; display: block; border: 0.3mm solid #e4e4e4; border-radius: 1.5mm; }
     .ob-qr span { display: block; font-size: 7.5pt; font-weight: 700; color: #444; margin-top: 1.2mm; }
 
     /* Library "Check, match, read" marketing page (from the booklet). */
     .mkt-inner { display: flex; flex-direction: column; }
     .mkt-eyebrow { font-size: 8pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--level-color); }
     .mkt-title { font-size: 20pt; font-weight: 700; color: #1a1a1a; margin: 0.5mm 0 4mm; }
-    .mkt-steps { display: flex; flex-direction: column; gap: 4mm; }
+    /* Sized for FOUR steps (Play added 2026-08-06), not three: at the old
+       30mm shot / 4mm gap a fourth step ran past the bottom trim.  4 x 26mm
+       + 3 x 3mm leaves room for the header and the "Every book comes with"
+       list.  preflight_safe_margins.py is the backstop if this drifts. */
+    .mkt-steps { display: flex; flex-direction: column; gap: 3mm; }
     .mkt-step { display: flex; gap: 5mm; align-items: center; }
-    .mkt-shot { flex: 0 0 34mm; height: 30mm; display: flex; align-items: center; justify-content: center; }
-    .mkt-shot img { max-width: 100%; max-height: 30mm; display: block; }
+    .mkt-shot { flex: 0 0 34mm; height: 26mm; display: flex; align-items: center; justify-content: center; }
+    .mkt-shot img { max-width: 100%; max-height: 26mm; display: block; }
+    /* The game shot is a raw browser capture, not a device mockup like its
+       three siblings, so it needs its own frame to read as a screen rather
+       than a floating rectangle. */
+    .mkt-shot-game img {
+      border: 0.3mm solid #dcdcdc; border-radius: 1.2mm;
+    }
     .mkt-txt { flex: 1; }
     .mkt-h { font-size: 13pt; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 2.6mm; }
     .mkt-num { width: 6mm; height: 6mm; border-radius: 50%; color: #fff; font-size: 9pt; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
@@ -2039,18 +2210,29 @@
     }
     .back-footer-brand { font-size: 10pt; font-weight: 700; color: #ffffff; }
     .back-footer-url { font-size: 8pt; color: rgba(255, 255, 255, 0.85); margin-top: 0.5mm; }
-    .back-footer-isbn { width: 34mm; height: 19mm; flex: 0 0 auto; }
-    /* Classroom/print renders only: the EAN-13 barcode in a white box.
-       The SVG comes in at its native SC2 size (0.33mm modules, 22.85mm bars,
-       quiet zones baked in) — never scale or crop it, that breaks scanning.
-       margin-bottom + the band's 4mm padding keeps the box >= 5mm off the
-       bottom trim edge (Mixam safe zone); the band's 8mm side padding covers
-       the right edge. */
+    /* Spacer that reserves the barcode corner in the footer flex row.  The
+       real barcode is absolutely positioned (below) and out of flow, so this
+       keeps the QR block sitting where it always has. */
+    .back-footer-isbn { width: 38.6mm; height: 19mm; flex: 0 0 auto; }
+    /* Classroom/print renders only: the EAN-13 barcode, anchored to
+       BOOKVAULT'S barcode corner — 6.35mm (0.25in) from the bottom trim edge
+       and 6.35mm from the spine, which on the back cover is the RIGHT edge.
+       Bookvault US/AU/CA stamps its own 38.1 x 25.4mm barcode at exactly
+       those offsets and cannot be opted out of; matching the anchor means the
+       overlay coincides with our symbol rather than colliding with it.  (In
+       the UK there is no overlay at all — untick "Add barcode to cover".)
+       6.35mm also clears the 5mm Mixam safe zone.
+
+       Positioned against .page (position: relative), NOT the footer band, so
+       the offsets are measured from the trim edge and cannot drift when the
+       band's padding or the QR block changes.  The SVG comes in at its native
+       SC2 size (0.33mm modules, 22.85mm bars, quiet zones baked in) — never
+       scale or crop it, that breaks scanning, and check_isbn_barcodes.py
+       fails the build if the module width moves off 0.33mm. */
     .back-footer-isbn-filled {
+      position: absolute; right: 6.35mm; bottom: 6.35mm; z-index: 7;
       width: auto; height: auto;
-      background: #ffffff; border-radius: 1.5mm;
-      padding: 1.2mm 0.6mm 0.8mm;
-      margin: 1.2mm 0;
+      background: #ffffff;
       display: flex; flex-direction: column; align-items: center;
     }
     .back-isbn-line {
@@ -2434,6 +2616,21 @@
         {% endif %}
       {% endif %}{% endfor %}
 
+      {# Shifty diamond — a taught letter making one of its OTHER sounds
+         (final y = /ee/ in furry, /igh/ in my).  Slate rhombus, matching the
+         Shifty Sounds band colour, so it reads as "different kind of thing"
+         next to the ordinary black dots (PHONICS_PEDAGOGY.md §5). #}
+      {% for m in w.marks %}{% if m.type == "diamond" %}
+        {# Centred across the WHOLE unit, not just its first letter, so a
+           two-letter shifty unit sits between its letters — Lynden 2026-08-06
+           on gorgeous: "don't worry about the line, just have the shifty sound
+           in between the two sounds, just showing that's a /j/". Identical to
+           the old maths for a single-letter diamond. #}
+        {% set cx = (m.indices[0] + m.indices[-1] + 1) * char_w / 2 %}
+        <polygon points="{{ cx }},{{ under_y - 0.9 }} {{ cx + 0.9 }},{{ under_y }} {{ cx }},{{ under_y + 0.9 }} {{ cx - 0.9 }},{{ under_y }}"
+                 fill="#475569"/>
+      {% endif %}{% endfor %}
+
       {# Digraph / trigraph: straight line under all letters in the cluster #}
       {% for m in w.marks %}{% if m.type == "under_arc" %}
         {% set x1 = m.indices[0] * char_w + char_w * 0.2 %}
@@ -2503,6 +2700,31 @@
    page sets — both number correctly.  Call pnum(ns) INSIDE each page that
    actually renders; skipped pages never increment.  pill=true for the
    white number chip on story artwork. #}
+{% macro rsent_block(items, limit=3) %}
+{# "Read and Choose the Word" — gapped story sentence + three answers.
+   Defined as a macro because the page that first carried it (Can You Read
+   These?) only exists at L4 and L7-L8; L1-L3, L5 and L6 render different
+   pages entirely, and Lynden asked for the activity in every book it fits
+   (2026-08-06).  `limit` is how many the host page has room for. #}
+{% if items %}
+<div class="rsent-section">
+  <div class="rsent-label">Read and Choose the Word</div>
+  <div class="rsent-instruction">Read each sentence. Which word fills the gap? Circle it.</div>
+  {% for s in items[:limit] %}
+  <div class="rsent-item">
+    <div class="rsent-row">{{ s.text_html | safe }}</div>
+    <div class="rsent-options">
+      {% for opt in s.options %}
+      <span class="rsent-opt">{{ opt }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
+
+
 {% macro pnum(ns, pill=false) %}{% set ns.pg = ns.pg + 1 %}<div class="page-num {% if pill %}page-num-pill {% endif %}{% if ns.pg % 2 == 0 %}page-num-left{% else %}page-num-right{% endif %}">{{ ns.pg }}</div>{% endmacro %}
 
   <!-- ============================================================
@@ -2511,7 +2733,13 @@
   {% set ns = namespace(pg=1) %}
   <div class="page cover">
     <div class="cover-top-band">
-      <div class="cover-top-level">Level {{ level }} &middot; {{ level_name }}</div>
+      {# Book number on the cover, library edition only (Lynden 2026-08-06):
+         level.position within the level, e.g. 1.1 is the first book of Level
+         1.  Same book_id the ISBN register is keyed on, so the printed number
+         and the printed barcode can never disagree. #}
+      <div class="cover-top-level">
+        {% if edition == 'library' and book_id %}<span class="cover-booknum">{{ book_id }}</span>{% endif %}Level {{ level }} &middot; {{ level_name }}
+      </div>
       <div class="cover-top-brand">MyPhonicsBooks</div>
     </div>
 
@@ -2576,14 +2804,24 @@
       <div class="ob-online">
         <div class="ob-online-title">How to use this book online</div>
         <div class="ob-steps">
-          <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">1</span><div><strong>Read along.</strong> Open the book on a phone or tablet and tap any word to hear it read aloud.</div></div>
+          <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">1</span><div><strong>Read along.</strong> Scan the first code to open this book on a phone or tablet, then tap any word to hear it read aloud.</div></div>
           <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">2</span><div><strong>Print the worksheets.</strong> Scan the code to download and print matching practice sheets.</div></div>
           <div class="ob-step"><span class="ob-step-n" style="background: {{ level_colour }};">3</span><div><strong>Check the level.</strong> A free 3-minute phonics check finds the exact right level.</div></div>
         </div>
+        {# Three QRs since 2026-08-06: "Read this book" is new and goes FIRST,
+           because it is the one a borrower holding the book actually wants.
+           All three encode locked /b/... redirects from
+           data/print_qr_registry.json — never a live app URL. #}
         <div class="ob-qrs">
+          <div class="ob-qr"><img src="{{ read_qr }}" alt="Scan to read this book online"><span>Read this book</span></div>
           <div class="ob-qr"><img src="{{ worksheet_qr }}" alt="Scan to download worksheets"><span>Worksheets to print</span></div>
           <div class="ob-qr"><img src="{{ assessment_qr }}" alt="Scan for the free level check"><span>Free level check</span></div>
         </div>
+        {# Library copies are handled by people with no account, so the pass
+           code is printed beside the codes.  Printed = public forever. #}
+        {% if library_pass_code %}
+        <div class="ob-pass">Borrowed this book? Enter code <strong>{{ library_pass_code }}</strong> to read it free — no sign-up.</div>
+        {% endif %}
       </div>
     </div>
     {{ pnum(ns) }}
@@ -2655,12 +2893,13 @@
             {% for s in future_sounds %}
             <div class="shifty-item future-item">
               <div class="shifty-cell future-cell" style="background:{{ s.colour }};">{{ s.grapheme }}</div>
-              <div class="shifty-caption future-caption">in <strong style="color:{{ s.colour }};">{{ s.example }}</strong><br>Level {{ s.level }}</div>
+              <div class="shifty-caption future-caption">{% if s.sound %}sounds like <strong>{{ s.sound }}</strong> {% endif %}in <strong style="color:{{ s.colour }};">{{ s.example }}</strong><br>Level {{ s.level }}</div>
             </div>
             {% endfor %}
           </div>
         </div>
         {% endif %}
+
       </div>
     </div>
     {{ pnum(ns) }}
@@ -2671,7 +2910,7 @@
        Focus sounds now live on their own page (page 2).
        ============================================================ -->
   <div class="page">
-    <div class="page-inner sw-inner">
+    <div class="page-inner sw-inner{% if ed_guide %} has-ed{% endif %}">
       <div class="sw-section-title">Story Words</div>
       <div class="sw-section-desc">Sound out each phoneme, then blend. Dashes mark digraphs.</div>
       <div class="sw-words-grid">
@@ -2691,6 +2930,27 @@
       </div>
       {% endif %}
 
+      {# -ed guide (Lynden 2026-07-25): below L7 the child can read NONE of this
+         story's -ed words, and the page-2 Future Sounds band can only carry ONE
+         'ed' cell with one example.  Rather than listing every -ed word, show
+         the THREE ways -ed is said and why — learn the three and the whole book
+         opens up.  Examples come from this book where it has them.  Apostrophe =
+         no extra beat, hyphen = an extra beat (PHONICS_PEDAGOGY.md §7). #}
+      {% if ed_guide %}
+      <div class="ed-band">
+        <div class="ed-label">-ed at the end &mdash; three ways to say it</div>
+        <div class="ed-intro">Don&rsquo;t sound <strong>-ed</strong> out letter by letter. Read the first part, then add the ending &mdash; which one depends on the letter just before it.</div>
+        {% for e in ed_guide %}
+        <div class="ed-item">
+          <span class="ed-word">{{ e.word }}</span>
+          <span class="ed-arrow">&rarr;</span>
+          <span class="ed-say">{{ e.spoken }}</span>
+          <span class="ed-why">{{ e.why }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       {# Pronunciation notes ("Watch Out" for alternative pronunciations the
          focus-sound table doesn't surface) sit UNDER the Tricky Words box —
          Lynden's placement ruling 2026-07-15.
@@ -2704,11 +2964,10 @@
         <div class="sw-pron-note-examples">
           {% for ex in note.examples %}
             {% set _parts = ex.split('→') %}
-            {% set _wide = 'sw-pron-note-example-wide' if ex|length > 24 else '' %}
             {% if _parts|length == 2 %}
-            <span class="sw-pron-note-example {{ _wide }}"><strong>{{ _parts[0]|trim }}</strong><span class="arrow">&rarr;</span>{{ _parts[1]|trim }}</span>
+            <span class="sw-pron-note-example"><strong>{{ _parts[0]|trim }}</strong><span class="arrow">&rarr;</span>{{ _parts[1]|trim }}</span>
             {% else %}
-            <span class="sw-pron-note-example {{ _wide }}">{{ ex }}</span>
+            <span class="sw-pron-note-example">{{ ex }}</span>
             {% endif %}
           {% endfor %}
         </div>
@@ -2790,14 +3049,22 @@
           <div class="spot-row-hero">
             <div class="spot-row-circle {% if spot.grapheme_display|length > 1 %}spot-row-circle-multi{% endif %}">{{ spot.grapheme_display }}</div>
           </div>
-          <div class="spot-row-cards">
-            {% for entry in spot.words[:3] %}
+          {# Two-sound books have a whole page for two rows, so they show
+             every word available (up to 6, wrapping 3-per-line) instead of a
+             flat 3: the page was printing 3 + 3 with a third of it blank even
+             though a 4th word and photo already existed for every grapheme
+             (Lynden 2026-08-06).  Three or more sounds keep 3 across — the
+             rows have to share the height. #}
+          {% set _spot_cap = 6 if spotlights_to_show|length <= 2 else 3 %}
+          {% set _n_cards = [spot.words|length, _spot_cap]|min %}
+          <div class="spot-row-cards{% if _spot_cap > 3 and _n_cards == 4 %} spot-row-cards-4{% elif _spot_cap > 3 and _n_cards > 4 %} spot-row-cards-2line{% endif %}">
+            {% for entry in spot.words[:_spot_cap] %}
             <div class="spot-card">
               <div class="spot-photo">
                 {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
                 {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
               </div>
-              <div class="spot-word">{{ entry.word_html | safe }}</div>
+              <div class="spot-word{% if entry.word|length > 9 %} spot-word-long{% endif %}">{{ entry.word_html | safe }}</div>
             </div>
             {% endfor %}
           </div>
@@ -2867,23 +3134,35 @@
       </div>
       {% endfor %}
 
-      {% if level < 7 %}
-      {# Word rows fill whatever the grapheme rows leave: 2 sounds → 4 words,
-         4 sounds → 2 words, 6 sounds → none (the trace rows own the page). #}
-      {% set _word_rows = [4, 6 - formation_drills[:6]|length] | min %}
+      {# Word rows fill whatever the grapheme rows leave.  Budgeted in mm
+         against the 186mm page-inner rather than guessed, because the guess
+         left most of this page blank (Lynden 2026-08-06: "the trace the
+         sounds page looks empty on all books"):
+             heading + instruction          ~14mm
+             each trace row                 ~26mm  (36pt letter + rhyme + pad)
+             write-section label + rule     ~13mm
+             each write row                 ~19mm  (hw band + margin,
+                                            costed high so the last row never
+                                            crowds the page number)
+         The old rule also switched the word rows off entirely above Level 6,
+         which is where the page is emptiest: an L8 book has just TWO focus
+         sounds (able, ible), so it printed two rows and two-thirds of a blank
+         page.  Long L7-L8 words are handled by .rw-write-trace-long below. #}
+      {% set _n_drills = formation_drills[:6]|length %}
+      {% set _avail = 186 - 14 - (26 * _n_drills) - 13 %}
+      {% set _word_rows = [[(_avail / 19)|int, 6]|min, sound_buttoned_words|length]|min %}
       {% if _word_rows > 0 %}
       <div class="rw-write-section">
         <div class="rw-write-label">Now Write Each Word</div>
         {% for w in sound_buttoned_words[:_word_rows] %}
         <div class="rw-write-row">
-          <div class="rw-write-trace">{{ w.word }}</div>
+          <div class="rw-write-trace {% if w.word|length > 8 %}rw-write-trace-long{% endif %}">{{ w.word }}</div>
           <div class="rw-write-paper">
             {{ hw_band(x_height=4.5) }}
           </div>
         </div>
         {% endfor %}
       </div>
-      {% endif %}
       {% endif %}
     </div>
     {{ pnum(ns) }}
@@ -2996,7 +3275,14 @@
     {{ pnum(ns) }}
   </div>
 
-  {% if level < 7 %}
+  {# Ordering page: every book below L7, AND every library book at L7+.
+     At L7+ the ordering grid normally rides on the Tell-the-Story page —
+     but that page is write-on and the library edition drops it, which left
+     L7/L8 library books with no sequencing activity at all and a
+     half-empty "Can You Read These?" page instead (Lynden 2026-07-26 on
+     7.1: "instead of can you read these words it should be order the
+     story").  So in library the ordering page takes that slot. #}
+  {% if level < 7 or edition == 'library' %}
   <!-- ============================================================
        PUT THE STORY IN ORDER — full-page picture ordering (2026-07-19
        v2: "Can You Read These" removed — the read words already live in
@@ -3007,8 +3293,14 @@
     <div class="page-inner">
       <div class="tell-title">Put the Story in Order</div>
       <div class="tell-instruction">
+        {% if edition == 'library' %}
+        Point to the pictures in the order they happened and say
+        &ldquo;first&rdquo;, &ldquo;next&rdquo;, &ldquo;then&rdquo;, &ldquo;last&rdquo;.
+        Then use them to retell the story out loud.
+        {% else %}
         Number the pictures 1, 2, 3, 4{% if ordering_image_count == 6 %}, 5, 6{% endif %} in the order they happened.
         Then use them to retell the story on the next page.
+        {% endif %}
       </div>
       <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6 ordering-grid-6-large{% else %}ordering-grid-4 ordering-grid-4-large{% endif %}">
         {% for item in ordering_items %}
@@ -3018,16 +3310,27 @@
           {% else %}
           <div class="ordering-cell-placeholder">[ scene {{ loop.index }} ]</div>
           {% endif %}
-          <div class="ordering-number-box"></div>
+          {# No write-in box in the reusable library book — the child points
+             and says the order instead. #}
+          {% if edition != 'library' %}<div class="ordering-number-box"></div>{% endif %}
         </div>
         {% endfor %}
       </div>
+      {% if edition == 'library' %}
+      <div class="no-write-note">This book is shared with other readers &mdash; please don&rsquo;t write in it.</div>
+      {% endif %}
+      {# 16pp books (L1-L3) render no "Can You Read These?" and no Word
+         Workshop, so this is the only page with room for the gap-fill —
+         one item, which is what the space under the sub-task allows. #}
+      {% if page_count == 16 %}{{ rsent_block(reading_sentences, 1) }}{% endif %}
     </div>
     {{ pnum(ns) }}
   </div>
   {% else %}
-  <!-- L7/L8 keep the read + write-words page (their harder story words
-       merit standalone practice; page counts stay saddle-stitch safe). -->
+  <!-- L7/L8 HOME keep the read + write-words page (their harder story words
+       merit standalone practice; page counts stay saddle-stitch safe).  The
+       library edition took the ordering page above instead — without the
+       write rows this page was half empty there anyway. -->
   <div class="page">
     <div class="page-inner">
       <div class="activity-title">Can You Read These?</div>
@@ -3039,19 +3342,7 @@
         </div>
         {% endfor %}
       </div>
-      {% if edition != 'library' %}
-      <div class="rw-write-section">
-        <div class="rw-write-label">Now Write Each Word</div>
-        {% for w in sound_buttoned_words[:4] %}
-        <div class="rw-write-row">
-          <div class="rw-write-trace">{{ w.word }}</div>
-          <div class="rw-write-paper">
-            {{ hw_band(x_height=4.5) }}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
+      {{ rsent_block(reading_sentences, 3) }}
     </div>
     {{ pnum(ns) }}
   </div>
@@ -3402,50 +3693,23 @@
 
   {% if page_count >= 20 and level < 7 and edition != 'library' %}
   <!-- ============================================================
-       WORD WORKSHOP — only new tricky words get LCWC; older tricky
-       words are exercised via recognition (Hunt), not spelling.  The
-       freed space hosts a Grammar Spotlight that scales by level.
-       (This and Listen-and-Write are dropped on the slimmed L7/L8
-       books — spelling drill lives in the companion workbooks.)
+       WORD WORKSHOP — a recognition Hunt (L1-3 only) plus a Grammar
+       Spotlight that scales by level.  The tricky-word SPELLING grid
+       (Look-Cover-Write-Check) was removed 2026-07-22 (Lynden): the
+       reader is for reading — deliberate spelling drill lives in the
+       companion workbooks, not here.  Dropped entirely on the slimmed
+       L7/L8 books.
        ============================================================ -->
-  {# Cap LCWC at 3 — even when many new tricky words land at this level,
-     three rows is enough deliberate practice on one page; the rest
-     surface again across the wider book series. #}
-  {% set lcwc_words = tricky_words_new[:3] %}
   <div class="page">
     <div class="page-inner">
       <div class="tricky-title">Word Workshop</div>
       <div class="tricky-subtitle">
-        {%- if lcwc_words and level <= 3 -%}
-        New tricky words to lock in &mdash; then a quick grammar challenge.
-        {%- elif lcwc_words -%}
-        New tricky words to lock in, then a grammar challenge.
-        {%- elif level <= 3 -%}
+        {%- if level <= 3 -%}
         Hunt for tricky words you already know, then try the grammar challenge.
         {%- else -%}
         A focused grammar challenge for this book.
         {%- endif -%}
       </div>
-
-      {% if lcwc_words %}
-      <div class="ww-section-label">New This Level &mdash; Look, Cover, Write, Check</div>
-      <div class="tricky-instructions">
-        <div>1. Look</div>
-        <div>2. Cover</div>
-        <div>3. Write</div>
-        <div>4. Check</div>
-      </div>
-      <div class="tricky-grid">
-        {% for tw in lcwc_words %}
-        <div class="tricky-row">
-          <div class="tricky-look">{{ tw }}</div>
-          <div class="tricky-cover"></div>
-          <div class="tricky-write"></div>
-          <div class="tricky-check"></div>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
 
       {# Tricky Word Hunt is a Reception/Y1 scaffold — by L4 (Y1 Phase 5a)
          children recognise tricky words at speed and the hunt becomes
@@ -3517,6 +3781,13 @@
         </div>
       </div>
       {% endif %}
+      {# L5-L6 books have no "Can You Read These?" page, so the gap-fill rides
+         here on the space under the writing bands.  L4 is excluded: it has
+         the read page and would otherwise print the activity twice.
+         ONE item only: the two handwriting bands above are SVG, so they cost
+         more height than a text measurement suggests, and two items ran
+         5_4 and 6_2 off the bottom of the page. #}
+      {% if level >= 5 %}{{ rsent_block(reading_sentences, 1) }}{% endif %}
     </div>
     {{ pnum(ns) }}
   </div>
@@ -3535,6 +3806,7 @@
         <div class="read-cell">{{ sb_word(w, 6) }}</div>
         {% endfor %}
       </div>
+      {{ rsent_block(reading_sentences, 3) }}
     </div>
     {{ pnum(ns) }}
   </div>
@@ -3759,6 +4031,14 @@
           <div class="mkt-txt"><div class="mkt-h"><span class="mkt-num" style="background: {{ level_colour }};">3</span>Read</div>
             <p>Read together on a phone or tablet, tap any word to hear it, or print the worksheets to keep.</p></div>
         </div>
+        {# Step 4 added 2026-08-06 (Lynden).  The shot is a real in-game
+           capture rather than a device mockup, so it is wider than its three
+           siblings — .mkt-shot keeps every step's image the same box. #}
+        <div class="mkt-step">
+          {% if mkt_game %}<div class="mkt-shot mkt-shot-game"><img src="{{ mkt_game }}" alt=""></div>{% endif %}
+          <div class="mkt-txt"><div class="mkt-h"><span class="mkt-num" style="background: {{ level_colour }};">4</span>Play</div>
+            <p>Practise the same sounds in the games — pop the sound you hear in Milo&rsquo;s Cannon, and keep the streak going.</p></div>
+        </div>
       </div>
       <div class="mkt-inside">
         <div class="mkt-inside-lab" style="color: {{ level_colour }};">Every book comes with</div>
@@ -3810,6 +4090,81 @@
   </div>
   {% endif %}
 
+  {% if profile %}
+  {# Meet the Star — custom Create-A-Book books only (profile is never set
+     for the standard library books). A full-page "passport" spread: the
+     child's hero portrait, their real flag, their city, fun facts and a
+     landmark from home painted in the house style — because these books
+     exist to bring the world together, one family at a time. #}
+  <div class="page">
+    <div class="page-inner" style="--level-color: {{ level_colour }}; display: flex; flex-direction: column;">
+
+      <div style="text-align: center; font-size: 9pt; font-weight: bold; letter-spacing: 2.5px; text-transform: uppercase; color: {{ level_colour }}; margin-top: 1mm;">Meet the Star</div>
+
+      {# Header row: hero portrait top-left · identity + flag right #}
+      <div style="display: flex; gap: 5mm; margin-top: 3mm; align-items: stretch;">
+        {% if profile.heroImage %}
+        <img src="{{ profile.heroImage }}" alt="" style="width: 34mm; height: 44mm; object-fit: cover; object-position: top; border-radius: 4mm; border: 1.2mm solid {{ level_colour }}; flex-shrink: 0;">
+        {% endif %}
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+          <div style="display: flex; align-items: center; gap: 3mm;">
+            <div style="font-size: 17pt; font-weight: bold; line-height: 1.1;">{{ profile.name }}{% if profile.age %}, age {{ profile.age }}{% endif %}</div>
+            {% if profile.flagImage %}
+            <img src="{{ profile.flagImage }}" alt="" style="height: 8mm; border-radius: 1mm; border: 0.3mm solid #ddd; margin-left: auto;">
+            {% endif %}
+          </div>
+          <div style="font-size: 11.5pt; margin-top: 1.5mm;">from <strong>{% if profile.city %}{{ profile.city }}, {% endif %}{{ profile.country }}</strong></div>
+          {% if profile.greeting %}
+          <div style="font-size: 10.5pt; margin-top: 2mm; color: #333; background: #fff8ec; border-radius: 10mm; padding: 1.8mm 4mm; display: inline-block; align-self: flex-start;">Say hello like {{ profile.name }}: <strong>{{ profile.greeting }}</strong></div>
+          {% endif %}
+          {% if profile.likes %}
+          <div style="font-size: 10pt; margin-top: 1.5mm; color: #555;">loves {{ profile.likes }}{% if profile.faith %} &middot; faith: {{ profile.faith }}{% endif %}</div>
+          {% elif profile.faith %}
+          <div style="font-size: 10pt; margin-top: 1.5mm; color: #555;">faith: {{ profile.faith }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# Landmark postcard — SQUARE image (the art is generated square; never
+         letterbox-crop a tall landmark), caption beside it. #}
+      {% if profile.landmark and profile.landmark.image %}
+      <div style="display: flex; gap: 4mm; margin-top: 4mm; align-items: center;">
+        <img src="{{ profile.landmark.image }}" alt="" style="width: 46mm; height: 46mm; object-fit: cover; border-radius: 4mm; border: 0.4mm solid #eee; flex-shrink: 0;">
+        <div style="flex: 1;">
+          <div style="font-size: 12pt; font-weight: bold; color: {{ level_colour }};">{{ profile.landmark.name }}</div>
+          {% if profile.landmark.fact %}
+          <div style="font-size: 10pt; color: #444; line-height: 1.45; margin-top: 1.5mm;">{{ profile.landmark.fact }}</div>
+          {% endif %}
+          <div style="font-size: 8.5pt; color: #999; margin-top: 2mm;">A wonder from {{ profile.name }}&rsquo;s home{% if profile.city %} in {{ profile.city }}{% endif %}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {# Did you know? #}
+      {% if profile.facts %}
+      <div style="margin-top: 4mm;">
+        <div style="font-size: 11pt; font-weight: bold; color: {{ level_colour }};">Did you know? {{ profile.country }} is amazing...</div>
+        {% for f in profile.facts %}
+        <div style="display: flex; gap: 2.5mm; margin-top: 2mm; font-size: 10pt; line-height: 1.4; color: #333;">
+          <span style="color: {{ level_colour }}; font-weight: bold;">&#9733;</span><span>{{ f }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# The family's own words #}
+      {% if profile.culture %}
+      <div style="margin-top: 4mm; font-size: 9.5pt; color: #555; line-height: 1.45; background: #f7f5f0; border-radius: 3mm; padding: 3mm 4mm;">
+        <strong style="color: #333;">In {{ profile.name }}&rsquo;s family&rsquo;s words:</strong> {{ profile.culture }}
+      </div>
+      {% endif %}
+
+      <div style="margin-top: auto; text-align: center; font-size: 8.5pt; color: #999; padding-bottom: 1mm;">Made with love by {{ profile.name }}&rsquo;s family &middot; one world, one story at a time &middot; myphonicsbooks.co.uk</div>
+    </div>
+    {{ pnum(ns) }}
+  </div>
+  {% endif %}
+
   <!-- ============================================================
        BACK COVER
        ============================================================ -->
@@ -3843,16 +4198,19 @@
             <div class="back-footer-url">Scan to explore the full library</div>
           </div>
         </div>
-        {% if isbn_barcode_svg %}
-        <div class="back-footer-isbn back-footer-isbn-filled">
-          <div class="back-isbn-line">{{ isbn_display }}</div>
-          {{ isbn_barcode_svg | safe }}
-        </div>
-        {% else %}
-        {# Reserved for the ISBN barcode — keep this space clear. #}
+        {# Reserved for the ISBN barcode — keep this space clear.  The barcode
+           itself is absolutely positioned against .page (see below), so this
+           spacer is rendered in BOTH editions to hold the corner. #}
         <div class="back-footer-isbn"></div>
-        {% endif %}
       </div>
+      {% if isbn_barcode_svg %}
+      {# Anchored to Bookvault's barcode corner: 6.35mm from bottom trim,
+         6.35mm from the spine.  Out of the footer's flex flow on purpose. #}
+      <div class="back-footer-isbn-filled">
+        <div class="back-isbn-line">{{ isbn_display }}</div>
+        {{ isbn_barcode_svg | safe }}
+      </div>
+      {% endif %}
     </div>
   </div>
 

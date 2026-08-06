@@ -1,0 +1,186 @@
+// Deterministic prose checks on the finished story text.
+//
+// Capitalisation and terminal punctuation are MECHANICAL — they need a
+// regex, not a language model. A decodability rewrite once returned a whole
+// book in lower case ("in the kitchen, she set dates...") and it shipped,
+// because nothing checked. Anything that can be fixed without judgement is
+// fixed here; anything that needs judgement is reported for the QA gate.
+
+const ABBREVIATIONS = ["Mr", "Mrs", "Ms", "Dr", "St"];
+
+// Family words are proper nouns when used AS a name ("First, Mum set a bowl",
+// "Nani sat with Amira, Mum, and the cups") and common nouns when they follow
+// a determiner ("her mum", "the nani"). Capital letters for names of people
+// are taught at Level 3, so a book printing "mum" as a name is teaching the
+// child the wrong thing (spotted in the Level 7 book, 2026-07-26).
+const FAMILY_WORDS = [
+  "mum", "mummy", "mam", "mama", "dad", "daddy", "papa", "baba",
+  "nani", "nana", "dadi", "dada", "granny", "grandma", "grandad", "grandpa",
+  "auntie", "aunty", "uncle", "bibi", "teta", "yaya",
+];
+const DETERMINERS = /\b(my|your|his|her|their|our|its|the|a|an|this|that|every|each)$/i;
+
+function capitaliseFamilyNames(text) {
+  return text.replace(new RegExp(`\\b(${FAMILY_WORDS.join("|")})\\b`, "gi"), (word, _w, offset) => {
+    const before = text.slice(Math.max(0, offset - 12), offset).trimEnd();
+    if (DETERMINERS.test(before)) return word.toLowerCase();
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+}
+
+// Split into sentences on terminal punctuation, keeping the punctuation.
+// Quotes are common in these books ("Oh no!" said Mum.) so a closing quote or
+// bracket may follow the terminator.
+function sentencesOf(text) {
+  const raw = String(text)
+    .split(/(?<=[.!?]["'”’)]?)\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  // Re-join speech attribution onto the speech it belongs to, so
+  // '"I can!" she said.' counts as ONE sentence rather than two — otherwise
+  // every line of dialogue inflates the sentence count and trips the
+  // lower-case check on "she".
+  const out = [];
+  for (const part of raw) {
+    const prev = out[out.length - 1];
+    if (prev && endsInQuote(prev) && ATTRIBUTION.test(part)) {
+      out[out.length - 1] = `${prev} ${part}`;
+    } else {
+      out.push(part);
+    }
+  }
+  return out;
+}
+
+// Speech attribution is NOT a new sentence. '"I can do it!" said Cerys.' is
+// one sentence: the ! belongs to the speech, and "said" stays lower case. The
+// splitter treats !" as a boundary, so without this the auto-capitaliser
+// produced '"I can do it!" Says Cerys.' — teaching the wrong thing on a page
+// about capital letters (spotted in the Wales book, 2026-07-26).
+const ATTRIBUTION = /^(said|says|say|asked|asks|called|calls|cried|cries|shouted|shouts|replied|replies|whispered|whispers|grinned|grins|smiled|smiles|laughed|laughs|he|she|they|we)\b/i;
+
+function endsInQuote(sentence) {
+  return /["'”’]\s*$/.test(sentence);
+}
+
+// First letter that can carry a capital, skipping opening quotes/brackets.
+function firstLetterIndex(sentence) {
+  for (let i = 0; i < sentence.length; i++) {
+    if (/[A-Za-z]/.test(sentence[i])) return i;
+    if (!/["'“”‘’(\s—-]/.test(sentence[i])) return -1;
+  }
+  return -1;
+}
+
+// Fix what is unambiguously formatting: sentence-initial capitals, the
+// pronoun I, and the child's name wherever it appears.
+export function fixMechanics(text, childName) {
+  const parts = sentencesOf(text);
+  let out = parts
+    .map((s, idx) => {
+      const i = firstLetterIndex(s);
+      if (i < 0) return s;
+      // Attribution after speech continues the sentence — lower case it.
+      if (idx > 0 && endsInQuote(parts[idx - 1]) && ATTRIBUTION.test(s.slice(i))) {
+        return s.slice(0, i) + s[i].toLowerCase() + s.slice(i + 1);
+      }
+      return s.slice(0, i) + s[i].toUpperCase() + s.slice(i + 1);
+    })
+    .join(" ");
+  out = out.replace(/\bi\b/g, "I");
+  out = capitaliseFamilyNames(out);
+  if (childName) {
+    const safe = childName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    out = out.replace(new RegExp(`\\b${safe}\\b`, "gi"), childName);
+  }
+  return out;
+}
+
+// Report what a regex can prove is wrong. `allowed` is the level's cumulative
+// punctuation list from reading_progression.json.
+export function checkProse({ pages, childName, level, progression }) {
+  const issues = [];
+  const allowed = progression?.punctuation || [];
+  const mayUseComma = allowed.some((p) => p.includes("comma"));
+  const mayUseApostrophe = allowed.some((p) => p.includes("apostrophe"));
+  const mayUseQuestion = allowed.includes("?");
+  const mayUseExclamation = allowed.includes("!");
+
+  const allSentences = [];
+  pages.forEach((text, idx) => {
+    const page = idx + 1;
+    const sentences = sentencesOf(text);
+    allSentences.push(...sentences);
+
+    for (const s of sentences) {
+      const i = firstLetterIndex(s);
+      if (i >= 0 && s[i] !== s[i].toUpperCase()) {
+        issues.push({ page, type: "capital", detail: `sentence starts lower case: "${s.slice(0, 40)}"` });
+      }
+      if (!/[.!?]["'”’)]?$/.test(s)) {
+        issues.push({ page, type: "terminator", detail: `sentence has no . ? or !: "${s.slice(0, 40)}"` });
+      }
+    }
+    if (!mayUseQuestion && text.includes("?")) {
+      issues.push({ page, type: "punctuation", detail: "question mark is not taught until Level 3" });
+    }
+    if (!mayUseExclamation && text.includes("!")) {
+      issues.push({ page, type: "punctuation", detail: "exclamation mark is not taught until Level 4" });
+    }
+    if (!mayUseComma && text.includes(",")) {
+      issues.push({ page, type: "punctuation", detail: `comma used at Level ${level}, before commas are taught` });
+    }
+    if (!mayUseApostrophe && /[''’]/.test(text)) {
+      issues.push({ page, type: "punctuation", detail: `apostrophe used at Level ${level}, before apostrophes are taught` });
+    }
+
+    if (progression) {
+      const [minS, maxS] = progression.sentences_per_page;
+      if (sentences.length < minS || sentences.length > maxS) {
+        issues.push({
+          page, type: "length",
+          detail: `${sentences.length} sentence(s); Level ${level} expects ${minS}-${maxS}`,
+        });
+      }
+      const [minW, maxW] = progression.words_per_sentence;
+      for (const s of sentences) {
+        const words = s.split(/\s+/).filter(Boolean).length;
+        if (words < Math.max(2, minW - 3) || words > maxW + 4) {
+          issues.push({
+            page, type: "length",
+            detail: `${words}-word sentence; Level ${level} expects about ${minW}-${maxW}`,
+          });
+        }
+      }
+    }
+  });
+
+  // Whole-book checks
+  const text = pages.join(" ");
+  if (childName) {
+    const lower = new RegExp(`(^|[^A-Za-z])${childName.toLowerCase()}\\b`);
+    if (lower.test(text) && !new RegExp(`\\b${childName}\\b`).test(text)) {
+      issues.push({ page: 0, type: "capital", detail: `the name ${childName} appears in lower case` });
+    }
+  }
+  const opener = (s) => (s.match(/[A-Za-z']+/) || [""])[0].toLowerCase();
+  if (allSentences.length >= 4) {
+    const counts = {};
+    for (const s of allSentences) counts[opener(s)] = (counts[opener(s)] || 0) + 1;
+    const [word, n] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    if (n > allSentences.length / 2) {
+      issues.push({
+        page: 0, type: "variety",
+        detail: `${n} of ${allSentences.length} sentences start with "${word}"`,
+      });
+    }
+  }
+  const tense = { past: 0, present: 0 };
+  if (/\b(was|were|had|said|went|got|made)\b/.test(text)) tense.past = 1;
+  if (/\b(is|are|has|says|goes|gets|makes)\b/.test(text)) tense.present = 1;
+  if (tense.past && tense.present) {
+    issues.push({ page: 0, type: "tense", detail: "past and present tense both used across the book" });
+  }
+
+  return issues;
+}

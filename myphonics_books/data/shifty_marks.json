@@ -1,0 +1,1017 @@
+{
+  "graphemes": {
+    "a": {
+      "base": "/a/",
+      "alts": [
+        {
+          "sound": "/o/",
+          "from_level": 5,
+          "examples": [
+            "was",
+            "want",
+            "wash",
+            "what"
+          ]
+        },
+        {
+          "sound": "/ai/",
+          "from_level": 6,
+          "examples": [
+            "acorn",
+            "apron",
+            "paper"
+          ]
+        },
+        {
+          "sound": "/ar/",
+          "from_level": 7,
+          "examples": [
+            "father",
+            "fast",
+            "path",
+            "class"
+          ]
+        },
+        {
+          "sound": "schwa /uh/",
+          "from_level": 8,
+          "examples": [
+            "about",
+            "along",
+            "banana"
+          ]
+        }
+      ]
+    },
+    "e": {
+      "base": "/e/",
+      "alts": [
+        {
+          "sound": "/ee/",
+          "from_level": 3,
+          "examples": [
+            "he",
+            "me",
+            "we",
+            "she",
+            "be"
+          ]
+        },
+        {
+          "sound": "schwa /uh/",
+          "from_level": 8,
+          "examples": [
+            "the",
+            "taken",
+            "garden"
+          ]
+        }
+      ]
+    },
+    "i": {
+      "base": "/i/",
+      "alts": [
+        {
+          "sound": "/igh/",
+          "from_level": 7,
+          "examples": [
+            "find",
+            "kind",
+            "mind",
+            "child",
+            "wild"
+          ]
+        },
+        {
+          "sound": "/ee/",
+          "from_level": 8,
+          "examples": [
+            "glorious",
+            "curious",
+            "obvious",
+            "radio"
+          ]
+        }
+      ]
+    },
+    "o": {
+      "base": "/o/",
+      "alts": [
+        {
+          "sound": "/u/",
+          "from_level": 6,
+          "examples": [
+            "son",
+            "some",
+            "come",
+            "love",
+            "mother"
+          ]
+        },
+        {
+          "sound": "/oa/",
+          "from_level": 7,
+          "examples": [
+            "go",
+            "no",
+            "cold",
+            "most",
+            "old"
+          ]
+        },
+        {
+          "sound": "/oo/",
+          "from_level": 8,
+          "examples": [
+            "do",
+            "who",
+            "move",
+            "prove"
+          ]
+        }
+      ]
+    },
+    "u": {
+      "base": "/u/",
+      "alts": [
+        {
+          "sound": "/oo/ short",
+          "from_level": 5,
+          "examples": [
+            "put",
+            "full",
+            "push",
+            "bull",
+            "pull"
+          ]
+        },
+        {
+          "sound": "/yoo/",
+          "from_level": 6,
+          "examples": [
+            "unicorn",
+            "uniform",
+            "human",
+            "music"
+          ]
+        }
+      ]
+    },
+    "y": {
+      "base": "/y/",
+      "alts": [
+        {
+          "sound": "/ee/",
+          "from_level": 6,
+          "examples": [
+            "happy",
+            "furry",
+            "cheeky",
+            "funny",
+            "very"
+          ]
+        },
+        {
+          "sound": "/igh/",
+          "from_level": 6,
+          "examples": [
+            "my",
+            "fly",
+            "try",
+            "sky",
+            "cry"
+          ]
+        },
+        {
+          "sound": "/i/",
+          "from_level": 7,
+          "examples": [
+            "gym",
+            "crystal",
+            "mystery"
+          ]
+        }
+      ]
+    },
+    "c": {
+      "base": "/k/",
+      "alts": [
+        {
+          "sound": "/s/",
+          "from_level": 5,
+          "examples": [
+            "rice",
+            "race",
+            "face",
+            "ice"
+          ]
+        }
+      ]
+    },
+    "g": {
+      "base": "/g/",
+      "alts": [
+        {
+          "sound": "/j/",
+          "from_level": 8,
+          "examples": [
+            "gem",
+            "giant",
+            "gentle",
+            "large",
+            "change"
+          ]
+        }
+      ]
+    },
+    "s": {
+      "base": "/s/",
+      "alts": [
+        {
+          "sound": "/z/",
+          "from_level": 4,
+          "examples": [
+            "is",
+            "has",
+            "dogs",
+            "hens",
+            "was"
+          ]
+        },
+        {
+          "sound": "/sh/",
+          "from_level": 8,
+          "examples": [
+            "sure",
+            "sugar"
+          ]
+        },
+        {
+          "sound": "/zh/",
+          "from_level": 8,
+          "examples": [
+            "treasure",
+            "measure",
+            "usual"
+          ]
+        }
+      ]
+    },
+    "ow": {
+      "base": "/oa/",
+      "alts": [
+        {
+          "sound": "/ow/",
+          "from_level": 6,
+          "examples": [
+            "cow",
+            "now",
+            "down",
+            "owl"
+          ]
+        }
+      ]
+    },
+    "oo": {
+      "base": "/oo/ long",
+      "alts": [
+        {
+          "sound": "/oo/ short",
+          "from_level": 5,
+          "examples": [
+            "book",
+            "good",
+            "look",
+            "foot",
+            "wood"
+          ]
+        }
+      ]
+    },
+    "ea": {
+      "base": "/ee/",
+      "alts": [
+        {
+          "sound": "/e/",
+          "from_level": 6,
+          "examples": [
+            "head",
+            "bread",
+            "ready",
+            "weather",
+            "dead"
+          ]
+        },
+        {
+          "sound": "/ai/",
+          "from_level": 7,
+          "examples": [
+            "great",
+            "break",
+            "steak"
+          ]
+        }
+      ]
+    },
+    "ie": {
+      "base": "/igh/",
+      "alts": [
+        {
+          "sound": "/ee/",
+          "from_level": 7,
+          "examples": [
+            "field",
+            "chief",
+            "thief",
+            "brief"
+          ]
+        }
+      ]
+    },
+    "ou": {
+      "base": "/ow/",
+      "alts": [
+        {
+          "sound": "/oo/",
+          "from_level": 7,
+          "examples": [
+            "soup",
+            "group",
+            "you",
+            "youth"
+          ]
+        },
+        {
+          "sound": "/oo/ short",
+          "from_level": 7,
+          "examples": [
+            "would",
+            "could",
+            "should"
+          ]
+        },
+        {
+          "sound": "/u/",
+          "from_level": 8,
+          "examples": [
+            "young",
+            "touch",
+            "double",
+            "trouble"
+          ]
+        },
+        {
+          "sound": "/oa/",
+          "from_level": 8,
+          "examples": [
+            "shoulder",
+            "boulder"
+          ]
+        }
+      ]
+    },
+    "ch": {
+      "base": "/ch/",
+      "alts": [
+        {
+          "sound": "/k/",
+          "from_level": 7,
+          "examples": [
+            "school",
+            "chorus",
+            "echo",
+            "christmas"
+          ]
+        },
+        {
+          "sound": "/sh/",
+          "from_level": 7,
+          "examples": [
+            "chef",
+            "chalet",
+            "machine"
+          ]
+        }
+      ]
+    },
+    "er": {
+      "base": "/ur/",
+      "alts": [
+        {
+          "sound": "schwa /uh/",
+          "from_level": 6,
+          "examples": [
+            "farmer",
+            "water",
+            "letter",
+            "better"
+          ]
+        }
+      ]
+    },
+    "ey": {
+      "base": "/ai/",
+      "alts": [
+        {
+          "sound": "/ee/",
+          "from_level": 7,
+          "examples": [
+            "key",
+            "money",
+            "honey",
+            "valley",
+            "chimney"
+          ]
+        }
+      ]
+    },
+    "ear": {
+      "base": "/ear/",
+      "alts": [
+        {
+          "sound": "/air/",
+          "from_level": 7,
+          "examples": [
+            "bear",
+            "pear",
+            "wear",
+            "tear (rip)"
+          ]
+        },
+        {
+          "sound": "/ur/",
+          "from_level": 7,
+          "examples": [
+            "learn",
+            "earth",
+            "heard",
+            "pearl",
+            "search"
+          ]
+        }
+      ]
+    },
+    "th": {
+      "base": "unvoiced /th/",
+      "alts": [
+        {
+          "sound": "voiced /th/",
+          "from_level": 3,
+          "examples": [
+            "the",
+            "then",
+            "this",
+            "that",
+            "mother"
+          ]
+        }
+      ]
+    },
+    "gh": {
+      "base": "silent",
+      "alts": [
+        {
+          "sound": "/f/",
+          "from_level": 8,
+          "examples": [
+            "laugh",
+            "cough",
+            "rough",
+            "enough"
+          ]
+        }
+      ]
+    },
+    "ough": {
+      "base": "/or/",
+      "alts": [
+        {
+          "sound": "/oa/",
+          "from_level": 8,
+          "examples": [
+            "though",
+            "dough",
+            "although"
+          ]
+        },
+        {
+          "sound": "/oo/",
+          "from_level": 8,
+          "examples": [
+            "through"
+          ]
+        },
+        {
+          "sound": "/ow/",
+          "from_level": 8,
+          "examples": [
+            "plough",
+            "bough"
+          ]
+        },
+        {
+          "sound": "/uff/",
+          "from_level": 8,
+          "examples": [
+            "rough",
+            "tough",
+            "enough"
+          ]
+        },
+        {
+          "sound": "/off/",
+          "from_level": 8,
+          "examples": [
+            "cough",
+            "trough"
+          ]
+        }
+      ]
+    }
+  },
+  "words": {
+    "was": {
+      "1": "/o/",
+      "2": "/z/"
+    },
+    "want": {
+      "1": "/o/"
+    },
+    "wash": {
+      "1": "/o/"
+    },
+    "what": {
+      "2": "/o/"
+    },
+    "acorn": {
+      "0": "/ai/"
+    },
+    "apron": {
+      "0": "/ai/"
+    },
+    "paper": {
+      "1": "/ai/"
+    },
+    "father": {
+      "1": "/ar/"
+    },
+    "fast": {
+      "1": "/ar/"
+    },
+    "path": {
+      "1": "/ar/"
+    },
+    "class": {
+      "2": "/ar/"
+    },
+    "about": {
+      "0": "schwa /uh/"
+    },
+    "along": {
+      "0": "schwa /uh/"
+    },
+    "banana": {
+      "1": "schwa /uh/"
+    },
+    "he": {
+      "1": "/ee/"
+    },
+    "me": {
+      "1": "/ee/"
+    },
+    "we": {
+      "1": "/ee/"
+    },
+    "she": {
+      "2": "/ee/"
+    },
+    "be": {
+      "1": "/ee/"
+    },
+    "the": {
+      "2": "schwa /uh/",
+      "0": "voiced /th/"
+    },
+    "taken": {
+      "3": "schwa /uh/"
+    },
+    "garden": {
+      "4": "schwa /uh/"
+    },
+    "find": {
+      "1": "/igh/"
+    },
+    "kind": {
+      "1": "/igh/"
+    },
+    "mind": {
+      "1": "/igh/"
+    },
+    "child": {
+      "2": "/igh/"
+    },
+    "wild": {
+      "1": "/igh/"
+    },
+    "glorious": {
+      "4": "/ee/"
+    },
+    "curious": {
+      "3": "/ee/"
+    },
+    "obvious": {
+      "3": "/ee/"
+    },
+    "radio": {
+      "3": "/ee/"
+    },
+    "son": {
+      "1": "/u/"
+    },
+    "some": {
+      "1": "/u/"
+    },
+    "come": {
+      "1": "/u/"
+    },
+    "love": {
+      "1": "/u/"
+    },
+    "mother": {
+      "1": "/u/",
+      "2": "voiced /th/"
+    },
+    "go": {
+      "1": "/oa/"
+    },
+    "no": {
+      "1": "/oa/"
+    },
+    "cold": {
+      "1": "/oa/"
+    },
+    "most": {
+      "1": "/oa/"
+    },
+    "old": {
+      "0": "/oa/"
+    },
+    "do": {
+      "1": "/oo/"
+    },
+    "who": {
+      "2": "/oo/"
+    },
+    "move": {
+      "1": "/oo/"
+    },
+    "prove": {
+      "2": "/oo/"
+    },
+    "put": {
+      "1": "/oo/ short"
+    },
+    "full": {
+      "1": "/oo/ short"
+    },
+    "push": {
+      "1": "/oo/ short"
+    },
+    "bull": {
+      "1": "/oo/ short"
+    },
+    "pull": {
+      "1": "/oo/ short"
+    },
+    "unicorn": {
+      "0": "/yoo/"
+    },
+    "uniform": {
+      "0": "/yoo/"
+    },
+    "human": {
+      "1": "/yoo/"
+    },
+    "music": {
+      "1": "/yoo/"
+    },
+    "happy": {
+      "4": "/ee/"
+    },
+    "furry": {
+      "4": "/ee/"
+    },
+    "cheeky": {
+      "5": "/ee/"
+    },
+    "funny": {
+      "4": "/ee/"
+    },
+    "very": {
+      "3": "/ee/"
+    },
+    "my": {
+      "1": "/igh/"
+    },
+    "fly": {
+      "2": "/igh/"
+    },
+    "try": {
+      "2": "/igh/"
+    },
+    "sky": {
+      "2": "/igh/"
+    },
+    "cry": {
+      "2": "/igh/"
+    },
+    "gym": {
+      "1": "/i/"
+    },
+    "crystal": {
+      "2": "/i/"
+    },
+    "mystery": {
+      "1": "/i/"
+    },
+    "rice": {
+      "2": "/s/"
+    },
+    "race": {
+      "2": "/s/"
+    },
+    "face": {
+      "2": "/s/"
+    },
+    "ice": {
+      "1": "/s/"
+    },
+    "gem": {
+      "0": "/j/"
+    },
+    "giant": {
+      "0": "/j/"
+    },
+    "gentle": {
+      "0": "/j/"
+    },
+    "large": {
+      "3": "/j/"
+    },
+    "change": {
+      "4": "/j/"
+    },
+    "is": {
+      "1": "/z/"
+    },
+    "has": {
+      "2": "/z/"
+    },
+    "dogs": {
+      "3": "/z/"
+    },
+    "hens": {
+      "3": "/z/"
+    },
+    "sure": {
+      "0": "/sh/"
+    },
+    "sugar": {
+      "0": "/sh/"
+    },
+    "treasure": {
+      "4": "/zh/"
+    },
+    "measure": {
+      "3": "/zh/"
+    },
+    "usual": {
+      "1": "/zh/"
+    },
+    "cow": {
+      "1": "/ow/"
+    },
+    "now": {
+      "1": "/ow/"
+    },
+    "down": {
+      "1": "/ow/"
+    },
+    "owl": {
+      "0": "/ow/"
+    },
+    "book": {
+      "1": "/oo/ short"
+    },
+    "good": {
+      "1": "/oo/ short"
+    },
+    "look": {
+      "1": "/oo/ short"
+    },
+    "foot": {
+      "1": "/oo/ short"
+    },
+    "wood": {
+      "1": "/oo/ short"
+    },
+    "head": {
+      "1": "/e/"
+    },
+    "bread": {
+      "2": "/e/"
+    },
+    "ready": {
+      "1": "/e/"
+    },
+    "weather": {
+      "1": "/e/"
+    },
+    "dead": {
+      "1": "/e/"
+    },
+    "great": {
+      "2": "/ai/"
+    },
+    "break": {
+      "2": "/ai/"
+    },
+    "steak": {
+      "2": "/ai/"
+    },
+    "field": {
+      "1": "/ee/"
+    },
+    "chief": {
+      "2": "/ee/"
+    },
+    "thief": {
+      "2": "/ee/"
+    },
+    "brief": {
+      "2": "/ee/"
+    },
+    "soup": {
+      "1": "/oo/"
+    },
+    "group": {
+      "2": "/oo/"
+    },
+    "you": {
+      "1": "/oo/"
+    },
+    "youth": {
+      "1": "/oo/"
+    },
+    "would": {
+      "1": "/oo/ short"
+    },
+    "could": {
+      "1": "/oo/ short"
+    },
+    "should": {
+      "2": "/oo/ short"
+    },
+    "young": {
+      "1": "/u/"
+    },
+    "touch": {
+      "1": "/u/"
+    },
+    "double": {
+      "1": "/u/"
+    },
+    "trouble": {
+      "2": "/u/"
+    },
+    "shoulder": {
+      "2": "/oa/"
+    },
+    "boulder": {
+      "1": "/oa/"
+    },
+    "school": {
+      "1": "/k/"
+    },
+    "chorus": {
+      "0": "/k/"
+    },
+    "echo": {
+      "1": "/k/"
+    },
+    "christmas": {
+      "0": "/k/"
+    },
+    "chef": {
+      "0": "/sh/"
+    },
+    "chalet": {
+      "0": "/sh/"
+    },
+    "machine": {
+      "2": "/sh/"
+    },
+    "farmer": {
+      "4": "schwa /uh/"
+    },
+    "water": {
+      "3": "schwa /uh/"
+    },
+    "letter": {
+      "4": "schwa /uh/"
+    },
+    "better": {
+      "4": "schwa /uh/"
+    },
+    "key": {
+      "1": "/ee/"
+    },
+    "money": {
+      "3": "/ee/"
+    },
+    "honey": {
+      "3": "/ee/"
+    },
+    "valley": {
+      "4": "/ee/"
+    },
+    "chimney": {
+      "5": "/ee/"
+    },
+    "bear": {
+      "1": "/air/"
+    },
+    "pear": {
+      "1": "/air/"
+    },
+    "wear": {
+      "1": "/air/"
+    },
+    "tear (rip)": {
+      "1": "/air/"
+    },
+    "learn": {
+      "1": "/ur/"
+    },
+    "earth": {
+      "0": "/ur/"
+    },
+    "heard": {
+      "1": "/ur/"
+    },
+    "pearl": {
+      "1": "/ur/"
+    },
+    "search": {
+      "1": "/ur/"
+    },
+    "then": {
+      "0": "voiced /th/"
+    },
+    "this": {
+      "0": "voiced /th/"
+    },
+    "that": {
+      "0": "voiced /th/"
+    },
+    "laugh": {
+      "3": "/f/"
+    },
+    "cough": {
+      "3": "/f/",
+      "1": "/off/"
+    },
+    "rough": {
+      "3": "/f/",
+      "1": "/uff/"
+    },
+    "enough": {
+      "4": "/f/",
+      "2": "/uff/"
+    },
+    "though": {
+      "2": "/oa/"
+    },
+    "dough": {
+      "1": "/oa/"
+    },
+    "although": {
+      "4": "/oa/"
+    },
+    "through": {
+      "3": "/oo/"
+    },
+    "plough": {
+      "2": "/ow/"
+    },
+    "bough": {
+      "1": "/ow/"
+    },
+    "tough": {
+      "1": "/uff/"
+    },
+    "trough": {
+      "2": "/off/"
+    }
+  }
+}
