@@ -75,15 +75,19 @@ const BASE_STYLE =
 
 // Approved printed-book art used as style references: hero for the eye/character
 // style, a real scene page for full-scene rendering, the cover for cover mood.
-const EYE_REF_PATH = path.join(
-  BOOKS_DIR, "output", "images", "L4_1_B1", "hero_reference.png",
-);
-const SCENE_REF_PATH = path.join(
-  BOOKS_DIR, "output", "images", "L4_1_B1", "page3.png",
-);
-const COVER_REF_PATH = path.join(
-  BOOKS_DIR, "output", "images", "L4_1_B1", "cover.png",
-);
+// VENDORED into server/forge/assets/ (2026-08-06): the originals live under
+// myphonics_books/output/, which is GITIGNORED — a Vercel deployment simply
+// does not contain them, and the style injection silently degrades to
+// text-only prompts. The output/ copies are still preferred locally so a
+// re-approved reference takes effect without re-vendoring.
+const ASSETS = path.join(path.dirname(fileURLToPath(import.meta.url)), "assets");
+function refPath(assetName, ...outputParts) {
+  const original = path.join(BOOKS_DIR, "output", "images", ...outputParts);
+  return fs.existsSync(original) ? original : path.join(ASSETS, assetName);
+}
+const EYE_REF_PATH = refPath("eye_ref.png", "L4_1_B1", "hero_reference.png");
+const SCENE_REF_PATH = refPath("scene_ref.png", "L4_1_B1", "page3.png");
+const COVER_REF_PATH = refPath("cover_ref.png", "L4_1_B1", "cover.png");
 
 // gpt-image-2 served by fal.ai (Lynden 2026-07-23: primary art engine — best
 // reference-following; bills the FAL key, so OpenAI's billing cap is
@@ -170,7 +174,10 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
   return Buffer.from(b64, "base64");
 }
 
-export const CUSTOM_BOOKS_DIR = path.join(REPO_ROOT, "public", "custom-books");
+// Storage moved to storage.mjs (2026-08-06): images must go to Supabase
+// Storage in production, where this filesystem is read-only. Re-exported so
+// old imports keep working.
+export { CUSTOM_BOOKS_DIR, saveImage } from "./storage.mjs";
 
 function toDataUri(buf, mime = "image/png") {
   return `data:${mime};base64,${buf.toString("base64")}`;
@@ -542,8 +549,8 @@ export async function generateCastMember({ member, child }) {
 // correct on generation, which is the only acceptable fix — painting a black
 // disc on afterwards reads as pasted-on and does not survive into the scenes.
 const ANIMAL_EYE_REFS = [
-  path.join(BOOKS_DIR, "output", "images", "L4_6_B1", "object_ref_bird.png"),
-  path.join(BOOKS_DIR, "output", "images", "L6_2_B1", "owl_reference.png"),
+  refPath("animal_bird_ref.png", "L4_6_B1", "object_ref_bird.png"),
+  refPath("animal_owl_ref.png", "L6_2_B1", "owl_reference.png"),
 ];
 
 export async function generateAnimal({ name, appearance }) {
@@ -733,9 +740,4 @@ export async function generateLandmark({ name, imageBrief, city, country }) {
   return generateWithEyeQA(gen, "landmark");
 }
 
-export function saveImage(bookId, name, buf) {
-  const dir = path.join(CUSTOM_BOOKS_DIR, bookId);
-  fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, name), buf);
-  return `/custom-books/${bookId}/${name}`;
-}
+

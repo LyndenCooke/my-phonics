@@ -2,6 +2,7 @@
 // phonics JSON in myphonics_books/data (the same source the book pipeline uses).
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { BOOKS_DIR } from "./env.mjs";
 
 const graphemes = JSON.parse(
@@ -105,16 +106,22 @@ export function pronunciationNoteFor(grapheme, level) {
 let greenWordsCache = null;
 export function greenWordsUpTo(level) {
   if (!greenWordsCache) {
-    try {
-      greenWordsCache = JSON.parse(
-        fs.readFileSync(
-          path.join(BOOKS_DIR, "output", "worksheet_plan", "green_words.json"),
-          "utf8",
-        ),
-      ).words;
-    } catch {
-      greenWordsCache = [];
+    // The ledger build artefact is preferred (regenerating the ledger takes
+    // effect immediately), but it lives under gitignored output/ and so does
+    // not exist in a deployment — the vendored copy in assets/ covers prod.
+    // No silent empty fallback: a story written with ZERO green words is
+    // garbage that still LOOKS like a book, which is worse than an error.
+    const candidates = [
+      path.join(BOOKS_DIR, "output", "worksheet_plan", "green_words.json"),
+      path.join(path.dirname(fileURLToPath(import.meta.url)), "assets", "green_words.json"),
+    ];
+    for (const p of candidates) {
+      try {
+        greenWordsCache = JSON.parse(fs.readFileSync(p, "utf8")).words;
+        break;
+      } catch { /* try next */ }
     }
+    if (!greenWordsCache?.length) throw new Error("green_words.json missing — cannot write a decodable story without the word bank");
   }
   return greenWordsCache.filter((w) => w.level <= level).map((w) => w.word);
 }
