@@ -75,6 +75,13 @@ export const forgeApi = {
   getBook: (id: string) => req<{ book: CustomBook }>(`/books/${id}`),
   // `voucher` redeems a private test code server-side. A successful redeem
   // returns { free: true } and no Stripe URL — the caller must handle both.
+  // Advance a generating book by one step. Production has no background
+  // worker — a serverless function cannot outlive its request — so the wizard
+  // drives the step machine itself by calling this until { done: true }.
+  // Under vite dev the in-process driver holds the lock and this returns
+  // { step: "busy" }, which the driver treats as "wait and poll".
+  step: (bookId: string) =>
+    req<{ done: boolean; step: string; status: string }>(`/books/${bookId}/step`, { method: "POST" }),
   checkout: (body: { kind: "book" | "world"; book_id?: string; email?: string; voucher?: string }) =>
     req<{ url?: string; free?: boolean }>("/checkout", { method: "POST", body: JSON.stringify(body) }),
   verify: (sessionId: string) =>

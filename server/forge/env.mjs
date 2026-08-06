@@ -27,8 +27,15 @@ function parseEnvFile(file) {
   return out;
 }
 
+// Sources, in priority order: real environment variables first (that is how
+// Vercel injects secrets in production — the .env files below are gitignored
+// and simply do not exist in a deployment), then the two repo .env files that
+// power local dev.
 const rootEnv = parseEnvFile(path.join(REPO_ROOT, ".env"));
-const booksEnv = parseEnvFile(path.join(BOOKS_DIR, ".env"));
+const fileEnv = parseEnvFile(path.join(BOOKS_DIR, ".env"));
+const booksEnv = new Proxy(fileEnv, {
+  get: (t, k) => process.env[k] ?? t[k],
+});
 
 // Only accept a real Anthropic key — the .env currently holds a placeholder
 // ("your_anthropic_key — ...") which would otherwise be sent as a header and
@@ -37,9 +44,9 @@ const rawAnthropic = booksEnv.ANTHROPIC_API_KEY || "";
 const anthropicKey = rawAnthropic.startsWith("sk-ant-") ? rawAnthropic : "";
 
 export const cfg = {
-  SUPABASE_URL: rootEnv.VITE_SUPABASE_URL || booksEnv.SUPABASE_URL || "",
+  SUPABASE_URL: process.env.VITE_SUPABASE_URL || rootEnv.VITE_SUPABASE_URL || booksEnv.SUPABASE_URL || "",
   SUPABASE_SERVICE_KEY: booksEnv.SUPABASE_SERVICE_KEY || "",
-  SUPABASE_ANON_KEY: rootEnv.VITE_SUPABASE_PUBLISHABLE_KEY || booksEnv.SUPABASE_ANON_KEY || "",
+  SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_PUBLISHABLE_KEY || rootEnv.VITE_SUPABASE_PUBLISHABLE_KEY || booksEnv.SUPABASE_ANON_KEY || "",
   ANTHROPIC_API_KEY: anthropicKey,
   OPENAI_API_KEY: booksEnv.OPENAI_API_KEY || "",
   FAL_KEY: booksEnv.FAL_KEY || "",

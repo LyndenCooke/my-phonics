@@ -109,12 +109,38 @@ export default function CreateBook() {
 
   useEffect(() => {
     forgeApi.levels().then((r) => setLevels(r.levels)).catch(() => setError(
-      "The Create-A-Book service isn't running. Start the app with `npm run dev` and open it on localhost.",
+      "The Create-A-Book service isn't reachable right now — give it a moment and refresh.",
     ));
+  }, []);
+
+  // Two loops share the work of "generating":
+  //   poll  — reads the book row for the progress bar (cheap, every 2.5s)
+  //   drive — POSTs /step so the machine actually advances. In production
+  //           there is NO background worker (serverless functions end with
+  //           their request), so if nobody drives, nothing happens. Under
+  //           vite dev the in-process driver holds the step lock and these
+  //           calls just come back "busy" — harmless.
+  const driveRef = useRef(false);
+  const startDriving = useCallback((bookId: string) => {
+    if (driveRef.current) return;
+    driveRef.current = true;
+    (async () => {
+      try {
+        for (;;) {
+          const r = await forgeApi.step(bookId).catch(() => ({ done: false, step: "error", status: "" }));
+          if (r.done || r.status === "failed") break;
+          // busy/error → the dev driver owns it or a blip; wait, then retry.
+          if (r.step === "busy" || r.step === "error") await new Promise((res) => setTimeout(res, 4000));
+        }
+      } finally {
+        driveRef.current = false;
+      }
+    })();
   }, []);
 
   const startPolling = useCallback((bookId: string) => {
     if (pollRef.current) window.clearInterval(pollRef.current);
+    startDriving(bookId);
     const tick = async () => {
       try {
         const { book: b } = await forgeApi.getBook(bookId);
@@ -131,7 +157,7 @@ export default function CreateBook() {
     };
     tick();
     pollRef.current = window.setInterval(tick, 2500);
-  }, []);
+  }, [startDriving]);
   useEffect(() => () => { if (pollRef.current) window.clearInterval(pollRef.current); }, []);
 
   // Handle return from Stripe (?paid=book|world&book=<id>&session_id=...)
@@ -294,8 +320,13 @@ export default function CreateBook() {
   const colour = selectedLevel?.colour || "#3B82F6";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-violet-50 via-white to-amber-50 pb-24">
-      <div className="mx-auto max-w-2xl px-4 pt-8">
+    <div className="relative min-h-screen overflow-hidden bg-[#faf6ee] pb-24 [font-family:Outfit,system-ui,sans-serif]">
+      {/* the atelier light — two slow colour fields, never in the way */}
+      <div aria-hidden className="pointer-events-none absolute -left-48 -top-32 h-[30rem] w-[30rem] rounded-full opacity-[0.14] blur-3xl"
+        style={{ background: "radial-gradient(circle, #8b5cf6, transparent 65%)" }} />
+      <div aria-hidden className="pointer-events-none absolute -right-48 top-64 h-[26rem] w-[26rem] rounded-full opacity-[0.12] blur-3xl"
+        style={{ background: "radial-gradient(circle, #f59e0b, transparent 65%)" }} />
+      <div className="relative mx-auto max-w-2xl px-4 pt-8">
         <div className="mb-6 flex items-center justify-between">
           <Link to="/library" className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700">
             <ArrowLeft className="h-4 w-4" /> Library
@@ -341,34 +372,43 @@ export default function CreateBook() {
                 <p className="mt-2 text-xs font-medium text-slate-400">
                   A whole MyPhonicsBooks story, cover to cover — tap or swipe to turn the pages
                 </p>
-                <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                  Create your child's{" "}
-                  <span className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">
-                    own phonics book
+                <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
+                  Your child,{" "}
+                  <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">
+                    the main character
                   </span>
                 </h1>
-                <p className="mx-auto mt-2 text-slate-500">
-                  A real decodable book, starring your child.
+                <p className="mx-auto mt-3 max-w-md text-lg leading-relaxed text-slate-500">
+                  A real, properly decodable phonics book — written, illustrated and
+                  checked for your child, in minutes.
                 </p>
                 <div className="mx-auto mt-6 grid max-w-md gap-3 text-left text-sm">
                   {[
-                    ["🎨", "Your child is the main character"],
-                    ["🔤", "Properly decodable at their level"],
-                    ["🌍", "'Meet the star' page at the back"],
-                    ["💝", "Share it to the World of Books"],
-                  ].map(([e, t]) => (
-                    <div key={t} className="flex items-start gap-3 rounded-xl bg-white p-3 shadow-sm">
-                      <span className="text-xl">{e}</span><span className="text-slate-700">{t}</span>
-                    </div>
+                    ["🎨", "Your child is the main character", "Drawn in our house style, dot eyes and all"],
+                    ["🔤", "Properly decodable at their level", "Every word checked against the sounds they know"],
+                    ["🌍", "'Meet the star' page at the back", "Their country, their culture, their landmark"],
+                    ["💝", "Share it to the World of Books", "A light on the globe with the family's blessing"],
+                  ].map(([e, t, d], i) => (
+                    <motion.div key={t} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 + i * 0.08 }}
+                      className="flex items-start gap-3.5 rounded-2xl bg-white/90 p-4 shadow-sm ring-1 ring-slate-900/5 backdrop-blur-sm transition hover:shadow-md">
+                      <span className="text-2xl">{e}</span>
+                      <span>
+                        <span className="block font-bold text-slate-800">{t}</span>
+                        <span className="block text-xs text-slate-400">{d}</span>
+                      </span>
+                    </motion.div>
                   ))}
                 </div>
-                <button
+                <motion.button
                   onClick={() => setStep("child")}
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-lg hover:bg-violet-700"
+                  whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
+                  className="group relative mt-9 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-10 py-4 text-lg font-black text-white shadow-xl shadow-violet-300/60"
                 >
-                  <Sparkles className="h-5 w-5" /> Start — £3
-                </button>
-                <p className="mt-2 text-xs text-slate-400">One book, yours to keep and print.</p>
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  <Sparkles className="h-5 w-5" /> Start their book — £3
+                </motion.button>
+                <p className="mt-2.5 text-xs text-slate-400">One book, yours to keep and print, forever.</p>
               </div>
             )}
 
@@ -376,10 +416,12 @@ export default function CreateBook() {
               <div>
                 <div className="flex items-start justify-between gap-3">
                   <h2 className="text-2xl font-extrabold text-slate-900">Who is the star? ⭐</h2>
-                  <button onClick={randomise} title="Fill every step with random test data"
-                    className="flex shrink-0 items-center gap-1.5 rounded-full border border-dashed border-violet-300 px-4 py-1.5 text-xs font-semibold text-violet-600 hover:bg-violet-50">
-                    <Dices className="h-4 w-4" /> Randomise (test)
-                  </button>
+                  {import.meta.env.DEV && (
+                    <button onClick={randomise} title="Fill every step with random test data"
+                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-dashed border-violet-300 px-4 py-1.5 text-xs font-semibold text-violet-600 hover:bg-violet-50">
+                      <Dices className="h-4 w-4" /> Randomise (test)
+                    </button>
+                  )}
                 </div>
                 <p className="mb-5 text-sm text-slate-500">This shapes the story, the pictures, and the profile page at the back.</p>
                 <div className="space-y-4">
@@ -606,22 +648,53 @@ export default function CreateBook() {
 
             {step === "generating" && (
               <div className="text-center">
-                <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 2 }}
-                  className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-600 shadow-lg">
-                  <Wand2 className="h-9 w-9 text-white" />
-                </motion.div>
-                <h2 className="mt-4 text-2xl font-extrabold text-slate-900">Making the magic ✨</h2>
-                <p className="mt-1 text-sm text-slate-500">This takes 2–4 minutes. Every page is written, illustrated and QA'd (yes, we check the eyes).</p>
-                <div className="mx-auto mt-6 max-w-sm">
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
-                    <motion.div className="h-full rounded-full" style={{ backgroundColor: colour }}
-                      animate={{ width: `${book?.progress?.pct ?? 3}%` }} transition={{ duration: 0.6 }} />
+                {/* the atelier at work — a slow halo, a steady hand */}
+                <div className="relative mx-auto h-28 w-28">
+                  <motion.div
+                    aria-hidden
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: `conic-gradient(from 0deg, ${colour}, #f59e0b, #ec4899, ${colour})` }}
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+                  />
+                  <div className="absolute inset-[5px] flex items-center justify-center rounded-full bg-[#faf6ee]">
+                    <motion.div animate={{ rotate: [0, 8, -8, 0] }} transition={{ repeat: Infinity, duration: 2.4 }}>
+                      <Wand2 className="h-10 w-10" style={{ color: colour }} />
+                    </motion.div>
                   </div>
-                  <p className="mt-3 min-h-[1.5rem] text-sm font-semibold text-slate-700">{book?.progress?.message || "Warming up..."}</p>
+                </div>
+                <h2 className="mt-6 text-3xl font-black tracking-tight text-slate-900">
+                  Painting {name.trim() || "your child"}'s book
+                </h2>
+                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
+                  Written, illustrated and checked page by page — yes, we check the eyes.
+                  Keep this page open; it takes a few minutes.
+                </p>
+                <div className="mx-auto mt-7 max-w-sm">
+                  <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-slate-200/80 shadow-inner">
+                    <motion.div className="relative h-full overflow-hidden rounded-full" style={{ backgroundColor: colour }}
+                      animate={{ width: `${book?.progress?.pct ?? 3}%` }} transition={{ duration: 0.6 }}>
+                      {/* shimmer riding the fill */}
+                      <motion.div
+                        className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                        animate={{ x: ["-100%", "260%"] }}
+                        transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                      />
+                    </motion.div>
+                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={book?.progress?.message || "warmup"}
+                      initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                      className="mt-3.5 min-h-[1.5rem] text-sm font-bold text-slate-700"
+                    >
+                      {book?.progress?.message || "Warming up the paints..."}
+                    </motion.p>
+                  </AnimatePresence>
                   {book?.status === "failed" && !book.generating && (
                     <button onClick={() => { forgeApi.retry(book.id); startPolling(book.id); }}
-                      className="mt-3 rounded-full bg-slate-800 px-6 py-2 text-sm font-bold text-white">
-                      Something hiccupped — try again (free)
+                      className="mt-4 rounded-full bg-slate-900 px-7 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
+                      Something hiccupped — pick up where it stopped (free)
                     </button>
                   )}
                 </div>
@@ -660,19 +733,21 @@ export default function CreateBook() {
                     <p className="mt-1 text-sm text-slate-600">
                       Read every book made by families around the world — and every one made after you. One payment, forever.
                     </p>
-                    <button onClick={async () => {
-                      const testEmail = email.trim() || book.email || "test@localhost";
-                      localStorage.setItem("forge_email", testEmail);
-                      await forgeApi.simulatePay({ kind: "world", email: testEmail });
-                      setWorldPaid(true);
-                    }}
-                      className="mt-3 w-full rounded-full bg-green-500 py-2.5 font-bold text-white hover:bg-green-600">
-                      🧪 Unlock free (test mode — no charge)
-                    </button>
                     <button onClick={payForWorld} disabled={busy}
-                      className="mt-2 w-full rounded-full border border-dashed border-amber-300 py-1.5 text-xs text-amber-600 disabled:opacity-50">
-                      {busy ? "..." : "Real payment: £10 via Stripe (LIVE — actually charges)"}
+                      className="mt-3 w-full rounded-full bg-slate-900 py-2.5 font-bold text-white shadow-md transition hover:bg-slate-800 disabled:opacity-50">
+                      {busy ? "..." : "Unlock the world — £10, once"}
                     </button>
+                    {import.meta.env.DEV && (
+                      <button onClick={async () => {
+                        const testEmail = email.trim() || book.email || "test@localhost";
+                        localStorage.setItem("forge_email", testEmail);
+                        await forgeApi.simulatePay({ kind: "world", email: testEmail });
+                        setWorldPaid(true);
+                      }}
+                        className="mt-2 w-full text-xs text-slate-400 underline-offset-2 hover:underline">
+                        🧪 dev: unlock free
+                      </button>
+                    )}
                   </div>
                 )}
                 {worldPaid && (

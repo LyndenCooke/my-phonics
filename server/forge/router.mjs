@@ -4,7 +4,8 @@ import { cfg, configReport } from "./env.mjs";
 import { allLevels } from "./phonics.mjs";
 import * as db from "./db.mjs";
 import { createCheckout, verifySession, PRICES } from "./stripe.mjs";
-import { startGeneration, stashPhoto, isRunning, renderPdf } from "./jobs.mjs";
+import { startGeneration, stashPhoto, isRunning, renderPdf, runNextStep } from "./jobs.mjs";
+import { IS_SERVERLESS } from "./storage.mjs";
 
 function readBody(req, limit = 25 * 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -102,7 +103,7 @@ export async function handleForge(req, res) {
       // Self-heal: a "generating" row with no live job is an orphan (the dev
       // server restarted mid-generation). Flip it to failed so the wizard
       // shows the free retry button instead of polling forever.
-      if (row.status === "generating" && !isRunning(row.id)) {
+      if (!IS_SERVERLESS && row.status === "generating" && !isRunning(row.id)) {
         row = await db.updateBook(row.id, {
           status: "failed",
           progress: { step: "failed", message: "The server restarted mid-generation — tap retry below (it's free).", pct: 0 },
@@ -111,9 +112,27 @@ export async function handleForge(req, res) {
       return send(res, 200, { book: { ...row, generating: isRunning(row.id) } });
     }
 
-    // Render (or fetch) the real book_v2 PDF for a finished book.
+    // Advance a generating book by ONE step. This is how production works:
+    // serverless functions cannot run a four-minute background job, so the
+    // wizard calls this in a loop until { done: true }. Harmless under vite
+    // too (the in-process driver holds the lock, so this returns busy).
+    const stepMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/step$/);
+    if (req.method === "POST" && stepMatch) {
+      const row = await db.getBook(stepMatch[1]);
+      if (!row) return send(res, 404, { error: "not found" });
+      if (!["generating"].includes(row.status)) {
+        return send(res, 200, { done: ["ready", "approved"].includes(row.status), status: row.status, step: "none" });
+      }
+      const r = await runNextStep(row.id);
+      return send(res, 200, r);
+    }
+
+    // Render (or fetch) the real book_v2 PDF for a finished book. In
+    // production this returns 501 and the frontend falls back to the
+    // interactive reader — typesetting needs Python + Playwright.
     const pdfMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/pdf$/);
     if (req.method === "POST" && pdfMatch) {
+      if (IS_SERVERLESS) return send(res, 501, { error: "PDF typesetting is not available online yet" });
       const row = await db.getBook(pdfMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!row.pages) return send(res, 400, { error: "book not generated yet" });
@@ -185,6 +204,7 @@ export async function handleForge(req, res) {
     // Dev-only helper: simulate a successful payment without Stripe. The forge
     // server only exists in `vite` dev, so this can never reach production.
     if (req.method === "POST" && p === "/dev/simulate-pay") {
+      if (IS_SERVERLESS) return send(res, 404, { error: "not available in production" });
       const b = await readBody(req);
       if (b.kind === "book" && b.book_id) {
         const book = await db.getBook(b.book_id);
