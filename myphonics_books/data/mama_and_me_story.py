@@ -64,13 +64,13 @@ MAMA_AND_ME_STORY = {
         },
         {
             "page_num": 4,
-            "text": "On the third day, they said I could come home. You, me, and Nano \u2014 three of us in one car. I was tiny. You held me so gently.",
+            "text": "On the third day, they said I could come home. You, me and Nano \u2014 three of us in one car. I was tiny. You held me so gently.",
             "scene": "Three generations in a car - Aisha in backseat holding tiny baby Safia wrapped in a blanket, Nano (Pakistani elder lady, darker skin, traditional dress, warm face) beside them smiling, driving away from hospital, warm golden light",
             "image": None,
         },
         {
             "page_num": 5,
-            "text": "For fifty days, you, Nano, and Dad looked after me. You fed me, sang to me, held me close. Our home was full of love.",
+            "text": "For fifty days, you, Nano and Dad looked after me. You fed me, sang to me, held me close. Our home was full of love.",
             "scene": "Cosy living room in Qatar home, Aisha holding baby Safia, Nano (Pakistani elder lady in traditional dress) bringing tea, Lynden (Dad) nearby looking lovingly, warm golden light, peaceful domestic scene",
             "image": None,
         },
@@ -165,7 +165,7 @@ MAMA_AND_ME_STORY = {
     "certificate": {
         "title": "Best Mama Award",
         "recipient": "Aisha",
-        "text": "This certificate is awarded for being the most amazing, brave, kind, and beautiful mama in the whole entire world.",
+        "text": "This certificate is awarded for being the most amazing, brave, kind and beautiful mama in the whole entire world.",
         "date": "Mother\u2019s Day 2026",
         "signed": "Safia xxx (and Dad helped)",
     },

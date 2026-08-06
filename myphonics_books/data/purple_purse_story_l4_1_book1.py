@@ -40,7 +40,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
             },
             {
                 "page_number": 2,
-                "text": "Dad came with me to search. We walked up and down the street. 'It must be here,' said Dad.",
+                "text": "Dad came with me to search. We walked up and down the street. \"It must be here,\" said Dad.",
                 "image_prompt": "A girl and her dad walk hand in hand down a modern city street with colourful buildings. She looks thoughtful. Landscape orientation.",
             },
             {
@@ -50,7 +50,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
             },
             {
                 "page_number": 4,
-                "text": "'A currant bun?' said the baker. But I had no coins to pay! I turned away, sad.",
+                "text": "\"A currant bun?\" said the baker. But I had no coins to pay! I turned away, sad.",
                 "image_prompt": "A girl stands at the counter of a small corner shop, asking the shopkeeper a question. The shopkeeper shakes his head. Landscape orientation.",
             },
             {
@@ -60,23 +60,52 @@ PURPLE_PURSE_STORY_BOOK1 = {
             },
             {
                 "page_number": 6,
-                "text": "Then a market lady held up a purple purse! 'I found this on the kerb. Is it yours?'",
+                "text": "Then a market lady held up a purple purse! \"I found this on the kerb. Is it yours?\"",
                 "image_prompt": "A smiling woman at a herb stall holds up a small purple purse. The girl reaches for it with delight while Dad watches. Herbs in wooden crates around the stall. Landscape orientation.",
             },
             {
                 "page_number": 7,
-                "text": "I turned the purse over. My coins were still in it! 'Thank you!' I burst out, smiling.",
+                "text": "I turned the purse over. My coins were still in it! \"Thank you!\" I burst out, smiling.",
                 "image_prompt": "A joyful girl holds a small purple purse close, examining it with a huge smile. Dad stands behind her smiling. Herb stall and modern street behind. Landscape orientation.",
             },
             {
                 "page_number": 8,
-                "text": "Dad and I walked home in the warm afternoon. I held the purse close to my chest. 'She was so kind,' I said.",
+                "text": "Dad and I walked home in the warm afternoon. I held the purse close to my chest. \"She was so kind,\" I said.",
                 "image_prompt": "A girl and her dad walk home along a modern street at golden hour. She clutches a small purple purse to her chest, looking happy and relieved. Landscape orientation.",
             },
         ],
         "cover_prompt": "A girl in a purple jumper stands on a colourful modern street, holding a small purple purse close to her chest with a smile. Green ferns and modern shops behind her. Portrait orientation.",
-        "story_words": ["purple", "purse", "turned", "ferns", "herbs", "never"],
-        "tricky_words_used": ["the", "to", "I", "you", "her", "your", "go", "no", "so", "old", "put", "was", "where", "said", "what", "she", "my"],  # 'by'/'stall'/'wall'/'when' removed via rewrites
+        "story_words": ["purple", "purse", "ferns", "herbs", "never"],  # 'turned' dropped: -ed not decodable at L6, showcased on page 2 instead
+        # Cleaned 2026-07-22: dropped stale/already-mastered entries that were
+        # cluttering the Tricky Words strip (your, old, put, where, go, no,
+        # what, was, you, her, she, my, the, to, I — all either mastered by L6
+        # or not in this story).  Lower-level tricky words no longer reach the
+        # strip at all: generate_book.py only shows words introduced at THIS
+        # level or later, so 'said'/'so' (L5) stay hidden in a Level 6 book.
+        "tricky_words_used": [],
+        # 'search'/'searched' letter-map as s-e-ar-ch, so the decodability
+        # engine never notices them — but the real unit is 'ear', which isn't
+        # taught until Level 7, and here it says /er/ rather than the usual
+        # /ear/.  Declared explicitly so it appears in the page-2 Future
+        # Sounds band as the Level 7 sound it is (Lynden 2026-07-25), with the
+        # Watch Out note below carrying the fuller explanation.
+        "future_sounds_extra": [
+            {"grapheme": "ear", "sound": "er", "example": "search"},
+        ],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — ear says /er/",
+                "body": (
+                    "'ear' is a Level 7 sound — it's coming later, so it's on "
+                    "the Future Sounds chart at the front.  Usually it says "
+                    "/ear/ (like 'hear'), but in a few words it says /er/ "
+                    "instead.  In this story you'll meet 'search' and "
+                    "'searched' — say s·ear·ch with the /er/ sound, like the "
+                    "'er' in 'her'."
+                ),
+                "examples": ["search", "searched"],
+            },
+        ],
         "read_words": ["church", "burst", "seller", "corner"],
         "nonsense_words": [
             "chur", "gern", "flur", "sperk", "thurn",

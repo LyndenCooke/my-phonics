@@ -39,6 +39,57 @@ Total word count: ~455 (target 380–500) ✓
 Sentences per page: 5–6 (target 5–6) ✓
 """
 
+# ---------------------------------------------------------------------------
+# LOCKED CHARACTER SPECS (added 2026-08-05 after the boy drifted across the
+# whole book).  The girl was always given her full spec in every page prompt;
+# the boy was only ever "the small boy with stuffed panda", so the generator
+# reinvented him page by page — three different haircuts, buttons and pocket
+# appearing and vanishing, shoes flipping between white, navy and black.
+#
+# Rule for this book: BOTH children get their full spec in EVERY prompt, and
+# BOTH reference images (hero_reference.png + boy_reference.png) get injected
+# into every scene.  Never shorten these to "the boy" or "the girl".
+# ---------------------------------------------------------------------------
+
+# The whole story happens on one night. Four pages drifted to daylight on the
+# 2026-08-05 re-render because the prompts said "lantern light" but never said
+# NIGHT — so this goes in every page prompt verbatim.
+NIGHT = (
+    "IT IS NIGHT — a dark blue-purple night sky full of stars, everything lit "
+    "only by the warm orange glow of the festival lanterns. Never daylight, "
+    "never a pale blue or cream daytime sky."
+)
+
+NO_LETTERING = (
+    "Do NOT draw any letters, words, numbers or Chinese characters anywhere in "
+    "the picture — not on signs, stalls, banners, lanterns, badges or paper. "
+    "Any signage must be blank or purely decorative shapes."
+)
+
+GIRL_SPEC = (
+    "the older girl (8–9 years old, Chinese, skin #D4A574, straight black hair "
+    "#1A1110 in two short plaits, bright red padded puffer jacket, dark navy "
+    "jeans, white trainers)"
+)
+
+# No button COUNT on purpose — the generator miscounts "N of something", so a
+# described row reads more reliably than a number.
+BOY_SPEC = (
+    "the little lost boy (a VERY YOUNG child of about THREE years old — small, "
+    "short and round, with a big round head, full round cheeks with soft pink "
+    "blush, and a NEAT SHORT BLACK BOWL CUT whose straight fringe sits well "
+    "above his eyebrows and whose sides are cut ABOVE HIS EARS so both ears are "
+    "clearly visible — never a long helmet of hair covering the ears. He wears "
+    "a navy blue mandarin-collar jacket fastened by a vertical row of round "
+    "BRIGHT GREEN buttons down the centre of his chest, with one small navy "
+    "patch pocket low on his right-hand side, navy trousers, and WHITE trainers "
+    "— the uppers are WHITE, with at most a thin blue stripe; NEVER navy, blue "
+    "or dark uppers. He clutches a plain black-and-white stuffed panda with no "
+    "collar, scarf or ribbon. He must read as a toddler: big head relative to "
+    "his body, short arms and legs, standing no higher than the older girl's "
+    "waist)"
+)
+
 REMARKABLE_STORY_BOOK1 = {
     "L6_2_B1": {
         "level": 6,
@@ -57,7 +108,7 @@ REMARKABLE_STORY_BOOK1 = {
                     "The Lantern Festival had filled the river park with golden light. "
                     "Hundreds of glowing lanterns drifted above the Li River, and the karst mountains "
                     "rose like dark peaks behind the city. "
-                    "The girl was watching a paper lantern float upward when she noticed something terrible. "
+                    "The girl was watching a paper lantern float upwards when she noticed something terrible. "
                     "A small boy sat alone on a stone step, clutching a stuffed panda, with tears on his face. "
                     "The people all around him walked past as if he were invisible. "
                     "She stopped."
@@ -66,14 +117,16 @@ REMARKABLE_STORY_BOOK1 = {
                     "Riverside festival park in Guilin, China, at night. Hundreds of red and gold paper "
                     "lanterns float above the Li River, with dramatic dark karst limestone mountains "
                     "silhouetted against a deep blue-purple sky. Modern city lights reflect in the river. "
-                    "Chinese girl (8–9 years old, skin #D4A574, straight black hair #1A1110 in two short "
-                    "plaits, bright red padded puffer jacket, dark navy jeans, white trainers) stands "
-                    "mid-path, having just stopped walking, looking down to one side with a concerned "
-                    "expression. On a stone step nearby, a small Chinese boy (3–4 years old, dark jacket "
-                    "with green buttons) clutches a black-and-white stuffed panda and cries, while crowds "
-                    "of festival-goers walk past him. "
+                    f"{GIRL_SPEC} stands mid-path, having just stopped walking, looking down to one side "
+                    "with a concerned expression. Sitting small and hunched on a low stone step nearby, "
+                    f"{BOY_SPEC} clutches his panda and cries, while crowds of festival-goers walk past "
+                    "him. He is SITTING and is much smaller than the girl — his seated head reaches only "
+                    "about her hip. He MUST be holding the black-and-white stuffed panda in both arms — "
+                    "the panda is essential and must be clearly visible. "
+                    "Draw the whole of both children, full length. "
                     "Warm golden lantern light. Whimsical children's book illustration style, flat colour "
-                    "with soft watercolour texture. Eyes: tiny solid black dots ONLY — no white, no "
+                    f"with soft watercolour texture. {NIGHT} {NO_LETTERING} "
+                    "Eyes: tiny solid black dots ONLY — no white, no "
                     "highlights. No text in image. Landscape orientation."
                 ),
             },
@@ -89,12 +142,14 @@ REMARKABLE_STORY_BOOK1 = {
                     "she was responsible for helping him, and it was possible to do it."
                 ),
                 "image_prompt": (
-                    "Close-up scene: Chinese girl (red padded jacket, dark jeans, black plaits) "
-                    "crouches down on the stone path to meet the eyes of a tiny Chinese boy "
-                    "(dark jacket, green buttons, stuffed black-and-white panda in his arms). "
-                    "The girl's expression is warm, gentle, and determined. "
-                    "The boy looks miserable — red-cheeked, tearful. "
-                    "Blurred festival-goers in warm lantern light behind them. "
+                    f"Close-up scene on a paved riverside path at night: {GIRL_SPEC} crouches down on "
+                    f"one knee to meet the eyes of {BOY_SPEC}, who stands facing her holding his panda. "
+                    "The girl's expression is warm, gentle and determined. "
+                    "The boy looks miserable — round red-cheeked face, tears on his cheeks. "
+                    "Even with the girl kneeling, the boy is only a little taller than she is. "
+                    "Draw the whole of both children, full length, including their shoes. "
+                    "Blurred festival-goers and floating river lanterns in warm lantern light behind them. "
+                    f"{NIGHT} {NO_LETTERING} "
                     "Eyes: tiny solid black dots. No text. Landscape orientation."
                 ),
             },
@@ -112,13 +167,16 @@ REMARKABLE_STORY_BOOK1 = {
                     "It was a sensible and responsible plan."
                 ),
                 "image_prompt": (
-                    "Chinese girl (red padded jacket, dark jeans, black plaits) kneels on the stone "
-                    "path, holding up a small white piece of paper in one hand — a handwritten note "
-                    "clearly visible with neat writing. The little boy with the stuffed panda sits "
-                    "beside her. Her face is calm and focused, her arm raised high to show the note "
-                    "to passing crowds. Warm lantern light. "
-                    "Eyes: tiny solid black dots. No text on illustrated signs, but show note paper "
-                    "being held aloft. Landscape orientation."
+                    f"{GIRL_SPEC} kneels on the stone path and holds a small white piece of paper up "
+                    "high in one hand. Her face is calm and focused, her arm raised to show the note to "
+                    f"the passing crowds. Beside her sits {BOY_SPEC}, cross-legged on the ground with "
+                    "his panda in his lap, looking up at her. Lantern stalls line the path either side. "
+                    "Warm lantern light. "
+                    "The note is a BLANK piece of white paper with only faint wavy pen strokes to "
+                    "suggest handwriting — do NOT draw any real or invented letters or Chinese "
+                    "characters anywhere in the picture. "
+                    f"{NIGHT} {NO_LETTERING} "
+                    "Eyes: tiny solid black dots. Landscape orientation."
                 ),
             },
             {
@@ -127,39 +185,55 @@ REMARKABLE_STORY_BOOK1 = {
                     "She took the boy's hand and walked towards the busy lantern stalls. "
                     "An elderly woman selling tangyuan shook her head when she saw the note, "
                     "but pointed further along the riverbank towards the bridge. "
-                    "A group of young people gathered, read the note, and looked around — "
+                    "A group of young people gathered, read the note and looked around — "
                     "but nobody recognised the child. "
                     "Each person was willing, but none were able to help. "
                     "She did not give up. "
                     "Giving up was not a reasonable or responsible option."
                 ),
                 "image_prompt": (
-                    "Chinese girl (red jacket, dark jeans) holds the small boy's hand and holds up "
-                    "the note to an elderly woman behind a lantern stall with steaming bowls of "
-                    "tangyuan (white glutinous rice balls in clear broth). "
+                    f"{GIRL_SPEC} holds the note up in one hand towards an elderly Chinese woman behind "
+                    "a lantern stall of steaming red bowls of tangyuan (white glutinous rice balls in "
+                    "clear broth), and holds the hand of "
+                    f"{BOY_SPEC} with her other hand. THE GIRL holds the note, not the boy — the boy's "
+                    "hands are busy with his panda and the girl's hand. "
                     "The elderly woman shakes her head with a kind expression and points along the "
                     "riverbank. Festival lanterns glow all around. Karst mountains visible in background. "
-                    "Eyes: tiny solid black dots. No text. Landscape orientation."
+                    "Draw the whole of both children, full length, including their shoes. "
+                    "The note is a BLANK piece of white paper — do NOT draw any real or invented letters "
+                    "or Chinese characters anywhere in the picture. "
+                    f"{NIGHT} {NO_LETTERING} "
+                    "Eyes: tiny solid black dots. Landscape orientation."
                 ),
             },
             {
                 "page_number": 5,
                 "text": (
                     "Near the entrance of the park, she spotted a security guard in a yellow jacket. "
-                    "She walked straight up to him, held out the note, and said clearly, "
+                    "She walked straight up to him, held out the note and said clearly, "
                     "\"This child is lost. He has been here for some time.\" "
-                    "The guard read the note carefully, nodded, and spoke into his radio. "
+                    "The guard read the note carefully, nodded and spoke into his radio. "
                     "He asked her to stay in one comfortable spot beside the red lantern at the bridge. "
                     "She sat with the boy and told him a quiet story about the panda in his arms. "
                     "He stopped crying and leaned against her shoulder."
                 ),
                 "image_prompt": (
-                    "Chinese girl (red jacket, dark jeans, black plaits) stands before a Chinese "
-                    "security guard (middle-aged man, yellow high-vis jacket, dark trousers) and "
-                    "holds out her handwritten note. The small boy with stuffed panda stands beside "
-                    "her, holding her hand. The guard reads the note seriously. "
-                    "A large bright red lantern hangs above the bridge arch behind them. "
-                    "Eyes: tiny solid black dots. No text. Landscape orientation."
+                    f"{GIRL_SPEC} stands before a Chinese security guard (middle-aged man, bright "
+                    "yellow high-visibility jacket, dark trousers) and holds out her note, which he "
+                    f"reads seriously. {BOY_SPEC} stands beside her holding HER hand, not the guard's — "
+                    "his head reaches only her waist and barely past the guard's knee. He MUST be "
+                    "holding the black-and-white stuffed panda in his other arm — the panda is "
+                    "essential and must be clearly visible. "
+                    "A large bright red paper lantern hangs above a stone arch behind them, with the "
+                    "lantern-lit river and karst mountains beyond. "
+                    "Fill the whole frame with the scene as a single continuous illustration — do NOT "
+                    "draw the scene as a framed picture or vignette floating on a blank background. "
+                    "Draw the whole of all three figures, full length, including their shoes. "
+                    "The boy's trainers MUST be WHITE — not navy, not dark. "
+                    "The note is a BLANK piece of white paper — do NOT draw any real or invented letters "
+                    "or Chinese characters anywhere in the picture. "
+                    f"{NIGHT} {NO_LETTERING} "
+                    "Eyes: tiny solid black dots. Landscape orientation."
                 ),
             },
             {
@@ -174,12 +248,15 @@ REMARKABLE_STORY_BOOK1 = {
                     "She held it carefully, and for the first time that evening, he smiled."
                 ),
                 "image_prompt": (
-                    "Night scene by the red lantern at the bridge. "
-                    "Chinese girl (red padded jacket, dark jeans, black plaits) sits on a low stone "
-                    "wall with the small boy beside her. He holds a warm roasted sweet potato in both "
-                    "hands, cheeks puffed, looking curious and calmer. He holds his stuffed black-and-"
-                    "white panda out towards the girl, who takes it gently with a warm smile. "
-                    "The large red lantern glows behind them, casting warm light. "
+                    "Night scene beside a stone bridge, with a large bright red paper lantern glowing "
+                    f"above and karst mountains behind. {GIRL_SPEC} sits on a low stone wall. Standing "
+                    f"in front of her is {BOY_SPEC}, looking curious and calmer. A split-open roasted "
+                    "sweet potato with orange flesh in its charred skin rests on the wall beside the "
+                    "girl. The boy holds his panda out towards her in both hands, offering it, and she "
+                    "reaches out to take it gently with a warm smile. Standing, the boy's head reaches "
+                    "only the seated girl's shoulder. "
+                    "Draw the whole of both children, full length, including their shoes. "
+                    f"{NIGHT} {NO_LETTERING} "
                     "Eyes: tiny solid black dots. No text. Landscape orientation."
                 ),
             },
@@ -197,13 +274,21 @@ REMARKABLE_STORY_BOOK1 = {
                     "she had ever seen, with something warm and steady building inside her."
                 ),
                 "image_prompt": (
-                    "Joyful reunion scene by the red lantern bridge. "
-                    "A Chinese woman in her 30s (grey winter coat, dark hair) kneels down, "
-                    "arms wrapped around the small boy with stuffed panda, both of them crying "
-                    "with joy. A Chinese man beside her grips the security guard's hand gratefully. "
-                    "The Chinese girl (red padded jacket, dark jeans, black plaits) stands slightly "
-                    "apart, watching the reunion with a warm, quiet smile on her face. "
-                    "Red lanterns glow behind the bridge, karst mountains in background. "
+                    "Joyful reunion scene by the lantern-lit river and stone bridge. "
+                    "A Chinese woman in her 30s (grey padded winter coat, long dark hair, dark "
+                    f"trousers) kneels down with her arms wrapped around {BOY_SPEC}, both of them "
+                    "crying with joy — his round cheeks are lifted in a big open smile. He MUST still be "
+                    "clutching his black-and-white stuffed panda, held out to one side so the whole "
+                    "panda is clearly visible and not hidden by the hug. Keep his bowl-cut hair, his "
+                    "green jacket buttons and his white trainers clearly visible past his mother's arms. "
+                    "His father — a Chinese man in his 30s in a dark winter coat — stands right beside "
+                    "them and MUST be in the picture. "
+                    "A Chinese man beside her grips the hand of the security guard, who is the SAME "
+                    "guard as earlier in the book and MUST still be wearing his bright yellow "
+                    "high-visibility jacket with dark trousers — never a navy or dark uniform. "
+                    f"{GIRL_SPEC} stands slightly apart, watching the reunion with a warm, quiet smile. "
+                    "Red lanterns glow above, karst mountains in the background. "
+                    f"{NIGHT} {NO_LETTERING} "
                     "Eyes: tiny solid black dots. No text. Landscape orientation."
                 ),
             },
@@ -221,13 +306,15 @@ REMARKABLE_STORY_BOOK1 = {
                     "when something terrible is visible, a responsible person does not walk past."
                 ),
                 "image_prompt": (
-                    "Night riverside festival scene. The Chinese mother (grey coat) kneels to look "
-                    "at the Chinese girl (red padded jacket, black plaits) face to face, holding "
-                    "both her hands warmly, speaking to her with tears of gratitude in her eyes. "
-                    "The small boy with stuffed panda stands close by, watching. "
+                    "Night riverside festival scene. The Chinese mother (grey padded winter coat, long "
+                    f"dark hair) kneels to look at {GIRL_SPEC} face to face, holding both her hands "
+                    "warmly and speaking to her with tears of gratitude in her eyes. The girl's "
+                    "expression is quietly proud and calm. Standing close by and watching is "
+                    f"{BOY_SPEC} — his head reaches only the girl's waist. "
+                    "Draw the whole of both children, full length, including their shoes. "
                     "Hundreds of glowing lanterns float above the Li River in the background, "
                     "with dramatic dark karst mountains silhouetted against the night sky. "
-                    "The girl's expression is quietly proud and calm. "
+                    f"{NIGHT} {NO_LETTERING} "
                     "Eyes: tiny solid black dots. No text. Landscape orientation."
                 ),
             },
@@ -241,7 +328,8 @@ REMARKABLE_STORY_BOOK1 = {
             "Dramatic dark karst limestone mountains rise behind the city lights. "
             "The girl looks calm, warm, and determined. "
             "Whimsical children's book illustration style, flat colour with soft watercolour texture. "
-            "Eyes: tiny solid black dots ONLY — no white, no highlights. "
+            f"{NIGHT} {NO_LETTERING} "
+                    "Eyes: tiny solid black dots ONLY — no white, no highlights. "
             "No text in image. Portrait orientation (3:4)."
         ),
         # Practice-page words: only CLOSED-SYLLABLE -able/-ible items where
@@ -254,6 +342,16 @@ REMARKABLE_STORY_BOOK1 = {
             "sensible", "possible", "terrible", "horrible",
             "visible", "incredible", "responsible", "predictable",
         ],
+        # The 's' in these two says /z/, not /s/ — a taught letter making one
+        # of its other sounds, so it takes the slate diamond (PEDAGOGY §5),
+        # not an ordinary dot.  Say them against their neighbours in the list:
+        # sensible, possible and responsible all keep a true /s/ and must NOT
+        # be marked, which is why this is per-word and not a rule about the
+        # -sible ending (Lynden 2026-08-06).
+        "shifty_marks": {
+            "visible": [{"index": 2, "says": "/z/"}],
+            "miserable": [{"index": 3, "says": "/z/"}],
+        },
         "tricky_words_used": ["the", "said", "was", "you", "her", "their", "people", "thought"],
         "read_words": ["sensible", "possible", "terrible", "incredible"],
         "nonsense_words": [
@@ -294,18 +392,24 @@ REMARKABLE_STORY_BOOK1 = {
         "pronunciation_notes": [
             {
                 "title": "Watch Out — How to Say",
+                # Six of the nine entries here were the SAME -able pattern
+                # (capable, remarkable, miserable, adorable, valuable,
+                # admirable), which filled the box and taught one rule six
+                # times over — Lynden 2026-07-29: "too much in one column and
+                # potentially too many words".  Same ruling as the -ed guide
+                # (2026-07-25): give the rule, then two examples that show
+                # what varies, not every word in the story.  Kept: the plain
+                # case (remarkable) and the one that drops a syllable
+                # (miserable), plus the three genuine one-offs.
                 "body": (
                     "These story words don't follow the normal sound rules.  "
-                    "Say them once before reading so your child hears the "
-                    "real word."
+                    "The ending -able always says 'uh-bul', however long the "
+                    "word looks.  Say each one once before reading so your "
+                    "child hears the real word."
                 ),
                 "examples": [
-                    "capable → KAY-puh-bul",
                     "remarkable → ri-MARK-uh-bul",
                     "miserable → MIZ-ruh-bul",
-                    "adorable → uh-DOR-uh-bul",
-                    "valuable → VAL-yoo-uh-bul",
-                    "admirable → AD-muh-ruh-bul",
                     "recognised → REK-og-nized",
                     "bridge → brij",
                     "tangyuan → tang · yoo · an",
@@ -338,12 +442,19 @@ REMARKABLE_STORY_BOOK1 = {
         "side_characters": {
             "lost_boy": {
                 "name": "Small boy (lost child)",
-                "appearance": (
-                    "3–4 years old. Chinese. Light-medium skin. Short black hair. "
-                    "Chubby, tearful face. Always clutching stuffed black-and-white panda."
+                "appearance": BOY_SPEC,
+                "outfit": (
+                    "Navy blue mandarin-collar jacket, vertical row of round bright green buttons "
+                    "down the centre front, one small navy patch pocket low on his right-hand side, "
+                    "navy trousers, WHITE trainers with blue trim."
                 ),
-                "outfit": "Dark navy jacket with distinctive green buttons.",
-                "notes": "The stuffed panda is his consistent visual identifier across all pages.",
+                "notes": (
+                    "Reference image: boy_reference.png — MUST be injected into every scene he "
+                    "appears in, exactly like the girl's hero_reference.png. Text description alone "
+                    "is not enough: it was tried for pages 1-8 and gave him three different haircuts "
+                    "and disappearing buttons (2026-08-05). His three fixed identifiers are the neat "
+                    "bowl cut with ears showing, the green button row, and the white trainers."
+                ),
             },
             "security_guard": {
                 "name": "Security guard",

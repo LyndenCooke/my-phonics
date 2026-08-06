@@ -253,8 +253,25 @@ SURE_SHE_CAN_STORY_BOOK1 = {
             "No text. Portrait orientation."
         ),
         "story_words": ["pure", "instruction", "attention", "section", "action", "direction"],
-        "tricky_words_used": ["the", "said", "you", "they", "was", "over", "people",
-                              "she", "he", "we", "I", "to", "into", "are", "all", "one", "two", "there", "through", "heart", "again", "her", "done", "eyes", "want"],
+        # Cut to the bone 2026-07-27 (Lynden: "7.3 too many tricky words
+        # again!!!!").  Everything removed was either already filtered at
+        # render or fails the tricky test in PHONICS_PEDAGOGY §4 — tricky means
+        # NOTHING ELSE explains the pronunciation:
+        #   the/said/you/they/was/people/she/he/we/I/to/into/are/all/one/there/
+        #   her/want  — all L1-L6 master words, mastered long before L7 and
+        #               never displayed anyway; they were dead weight.
+        #   eyes, heart — 7.2 Near the Door already pre-teaches both (dropped
+        #               2026-07-26; a same-level repeat no home level can fix).
+        #   again      — L8 on the master list, so it has no business being
+        #               flagged as new on a Level 7 page.
+        #   over       — the open-syllable o=/oa/ IS explained, by the L7 block
+        #               this book sits in (only/old/cold/gold/hold/told).
+        #   done       — o=/u/ with a silent e is exactly come/some, taught at
+        #               L5 and known by now.
+        # 'through', 'only' and 'great' are L7 master words and get auto-detected
+        # from the story text, so they need no entry here.  'two' stays: a silent
+        # w is explained by nothing at all.
+        "tricky_words_used": ["two"],
         "read_words": ["sure", "pure", "section", "action"],
         "nonsense_words": [
             "fure", "jure", "blure", "grure", "drure",
