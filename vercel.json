@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/forge/[[...path]].mjs": {
+    "api/forge/[...path].mjs": {
       "maxDuration": 300,
       "includeFiles": "{server/forge/assets/**,myphonics_books/data/**}"
     }
