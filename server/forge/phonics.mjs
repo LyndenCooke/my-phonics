@@ -5,11 +5,22 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { BOOKS_DIR } from "./env.mjs";
 
+// Every data read resolves through here: the live curriculum file first, the
+// vendored copy in assets/data second. The vendored copies are refreshed by
+// scripts/sync-forge-data.mjs on every build (npm prebuild), because the
+// serverless bundle cannot see myphonics_books/ at all — its includeFiles
+// glob never delivered them and the lambda ENOENT'd at cold start.
+const VENDORED = path.join(path.dirname(fileURLToPath(import.meta.url)), "assets", "data");
+function dataFile(name) {
+  const live = path.join(BOOKS_DIR, "data", name);
+  return fs.existsSync(live) ? live : path.join(VENDORED, name);
+}
+
 const graphemes = JSON.parse(
-  fs.readFileSync(path.join(BOOKS_DIR, "data", "graphemes_by_level.json"), "utf8"),
+  fs.readFileSync(dataFile("graphemes_by_level.json"), "utf8"),
 );
 const tricky = JSON.parse(
-  fs.readFileSync(path.join(BOOKS_DIR, "data", "tricky_words_by_level.json"), "utf8"),
+  fs.readFileSync(dataFile("tricky_words_by_level.json"), "utf8"),
 );
 
 export function getLevel(level) {
@@ -40,7 +51,7 @@ export function progressionFor(level) {
   if (!progressionCache) {
     try {
       progressionCache = JSON.parse(
-        fs.readFileSync(path.join(BOOKS_DIR, "data", "reading_progression.json"), "utf8"),
+        fs.readFileSync(dataFile("reading_progression.json"), "utf8"),
       ).levels;
     } catch {
       progressionCache = {};
@@ -74,7 +85,7 @@ export function pronunciationsFor(grapheme, level) {
   if (!pronCache) {
     try {
       pronCache = JSON.parse(
-        fs.readFileSync(path.join(BOOKS_DIR, "data", "pronunciations.json"), "utf8"),
+        fs.readFileSync(dataFile("pronunciations.json"), "utf8"),
       );
     } catch {
       pronCache = {};

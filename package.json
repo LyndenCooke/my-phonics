@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prebuild": "node scripts/sync-forge-data.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",
