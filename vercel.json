@@ -2,7 +2,7 @@
   "functions": {
     "api/forge/index.mjs": {
       "maxDuration": 300,
-      "includeFiles": "{server/forge/assets/**,myphonics_books/data/**}"
+      "includeFiles": "server/forge/**"
     }
   },
   "rewrites": [
