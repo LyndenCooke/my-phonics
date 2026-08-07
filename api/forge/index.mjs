@@ -3,10 +3,14 @@
 // In dev, server/forge/vitePlugin.mjs serves the same router at /api/forge on
 // the vite dev server. This file is the missing production half: a Vercel
 // Node function that strips the /api/forge prefix (connect did that for us in
-// dev) and hands the request to the identical router. NOTE the filename is
-// a [...path] catch-all, not [[...path]] — the optional form is a Next.js
-// convention that plain Vercel functions silently do not route, and every
-// /api/forge/* call then falls through the SPA rewrite to index.html. One router, two mounts,
+// dev) and hands the request to the identical router.
+//
+// ROUTING NOTE, learned the hard way: bracket filenames ([[...path]], then
+// [...path]) both BUILT as lambdas but never MATCHED requests on this project
+// — /api/forge/* fell through the SPA rewrite and returned index.html. So the
+// function is a plain static file at /api/forge and an explicit rewrite in
+// vercel.json ("/api/forge/:path*" -> "/api/forge", placed before the SPA
+// catch-all) delivers every subpath here with req.url intact. One router, two mounts,
 // zero behavioural drift.
 //
 // Secrets come from Vercel env vars (see DEPLOY.md at the repo root) — the

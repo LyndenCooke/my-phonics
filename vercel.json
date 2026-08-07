@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/forge/[...path].mjs": {
+    "api/forge/index.mjs": {
       "maxDuration": 300,
       "includeFiles": "{server/forge/assets/**,myphonics_books/data/**}"
     }
@@ -13,7 +13,7 @@
     { "source": "/sounds/:path*", "destination": "/sounds/:path*" },
     { "source": "/images/:path*", "destination": "/images/:path*" },
     { "source": "/worksheets/:path*", "destination": "/worksheets/:path*" },
-    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/api/forge/:path*", "destination": "/api/forge" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
