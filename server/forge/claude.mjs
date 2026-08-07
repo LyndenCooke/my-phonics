@@ -2,7 +2,6 @@
 // review, and the eye-rule vision QA on generated images. Costs are tracked
 // per call so each book gets a real cost breakdown.
 import { execFile } from "node:child_process";
-import Anthropic from "@anthropic-ai/sdk";
 import { cfg } from "./env.mjs";
 
 const MODEL = "claude-opus-4-8";
@@ -11,8 +10,16 @@ const PRICE_IN = 5.0;
 const PRICE_OUT = 25.0;
 
 let client = null;
-function getClient() {
-  if (!client) client = new Anthropic({ apiKey: cfg.ANTHROPIC_API_KEY });
+// Lazy dynamic import: the Anthropic path only runs when a real sk-ant- key is
+// configured, which it never is in production (OpenAI is the backend there).
+// A static import made the serverless bundle depend on a package the trace
+// didn't ship, and the whole function died at cold start with
+// ERR_MODULE_NOT_FOUND before serving a single request.
+async function getClient() {
+  if (!client) {
+    const { default: Anthropic } = await import("@anthropic-ai/sdk");
+    client = new Anthropic({ apiKey: cfg.ANTHROPIC_API_KEY });
+  }
   return client;
 }
 
@@ -275,7 +282,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
       maxTokens,
     });
   }
-  const response = await getClient().messages.create({
+  const response = await (await getClient()).messages.create({
     model: MODEL,
     max_tokens: maxTokens,
     system,
@@ -796,7 +803,7 @@ export async function findFaces(imageB64, mediaType = "image/jpeg") {
       maxTokens: 2000,
     });
   }
-  const response = await getClient().messages.create({
+  const response = await (await getClient()).messages.create({
     model: MODEL,
     max_tokens: 1000,
     system,
@@ -846,7 +853,7 @@ HOW TO ANSWER — do this in order, and do not skip step 1:
       maxTokens: 2000,
     });
   }
-  const response = await getClient().messages.create({
+  const response = await (await getClient()).messages.create({
     model: MODEL,
     max_tokens: 1000,
     system,
