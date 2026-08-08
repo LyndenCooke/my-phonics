@@ -11,10 +11,10 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
  * Earth at 420px in a children's product. They are decoration; the pins carry
  * the information, and those sit on real coordinates.
  *
- * Designed to float on the page's night-sky section: it draws its own star
- * field, an atmosphere halo, and it idles with a slow eastward spin (paused
- * while the user drags, zooms in, or has a pin selected — motion should never
- * fight attention).
+ * Styled for the site's warm daylight look (Lynden 2026-08-08: the earlier
+ * night-sky treatment "looks off" against the brand) — a toy planet with a
+ * soft sky halo that idles with a slow eastward spin, paused while the user
+ * drags, zooms in, or has a pin selected: motion never fights attention.
  */
 
 const COUNTRY_COORDS: Record<string, [number, number]> = {
@@ -27,6 +27,13 @@ const COUNTRY_COORDS: Record<string, [number, number]> = {
   Mexico: [-102.6, 23.6], France: [2.2, 46.2], Spain: [-3.7, 40.5], Italy: [12.6, 41.9],
   Germany: [10.5, 51.2], Ireland: [-8.2, 53.4], Australia: [133.8, -25.3],
   Somalia: [46.2, 5.2], Morocco: [-7.1, 31.8], Malaysia: [101.98, 4.2], Indonesia: [113.9, -0.8],
+  // The printed library's countries (see src/lib/libraryWorld.ts)
+  Nepal: [84.1, 28.4], "Trinidad and Tobago": [-61.2, 10.7], Iceland: [-19.0, 64.9],
+  Thailand: [100.99, 15.87], "South Korea": [127.8, 36.5], Sweden: [18.6, 60.1],
+  Colombia: [-74.3, 4.6],
+  // The Jam Jug's souk is a Middle Eastern market the story never pins to one
+  // country — the pin sits over the region rather than inventing a flag.
+  "Middle Eastern souk": [39.0, 31.0],
 };
 
 // Coarse continent blobs in [lon, lat]. Deliberately low-detail.
@@ -71,16 +78,6 @@ const LAND: Array<Array<[number, number]>> = [
 ];
 
 const DEG = Math.PI / 180;
-
-// A fixed star field. Seeded LCG rather than Math.random so the sky never
-// re-shuffles on re-render.
-const STARS = (() => {
-  let seed = 20260806;
-  const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
-  return Array.from({ length: 90 }, () => ({
-    x: rnd() * 460, y: rnd() * 460, r: 0.4 + rnd() * 1.1, o: 0.25 + rnd() * 0.6, tw: 2 + rnd() * 4,
-  }));
-})();
 
 export interface GlobePin {
   country: string;
@@ -211,28 +208,21 @@ export default function WorldGlobe({
           <radialGradient id="wg-ocean" cx="34%" cy="28%">
             <stop offset="0%" stopColor="#7dd3fc" />
             <stop offset="55%" stopColor="#38bdf8" />
-            <stop offset="100%" stopColor="#0369a1" />
+            <stop offset="100%" stopColor="#0ea5e9" />
           </radialGradient>
           <radialGradient id="wg-atmo" cx="50%" cy="50%">
             <stop offset="62%" stopColor="#7dd3fc" stopOpacity="0" />
-            <stop offset="82%" stopColor="#7dd3fc" stopOpacity="0.16" />
-            <stop offset="94%" stopColor="#a5b4fc" stopOpacity="0.34" />
-            <stop offset="100%" stopColor="#a5b4fc" stopOpacity="0" />
+            <stop offset="84%" stopColor="#bae6fd" stopOpacity="0.5" />
+            <stop offset="96%" stopColor="#e0f2fe" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#e0f2fe" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="wg-shade" cx="32%" cy="26%">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="0.28" />
             <stop offset="45%" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="88%" stopColor="#0c1a3a" stopOpacity="0" />
-            <stop offset="100%" stopColor="#0c1a3a" stopOpacity="0.42" />
+            <stop offset="88%" stopColor="#075985" stopOpacity="0" />
+            <stop offset="100%" stopColor="#075985" stopOpacity="0.2" />
           </radialGradient>
         </defs>
-
-        {/* Star field — part of the component so the sky travels with it. */}
-        {STARS.map((s, i) => (
-          <circle key={i} cx={s.x} cy={s.y} r={s.r} fill="#e0e7ff" opacity={s.o}>
-            <animate attributeName="opacity" values={`${s.o};${s.o * 0.25};${s.o}`} dur={`${s.tw}s`} repeatCount="indefinite" />
-          </circle>
-        ))}
 
         {/* Atmosphere halo */}
         <circle cx={cx} cy={cy} r={Math.min(R * 1.22, SIZE / 2)} fill="url(#wg-atmo)" />
@@ -246,7 +236,7 @@ export default function WorldGlobe({
         ))}
         {/* Day-side sheen + limb shadow give it the toy-planet roundness */}
         <circle cx={cx} cy={cy} r={R} fill="url(#wg-shade)" />
-        <circle cx={cx} cy={cy} r={R} fill="none" stroke="#bfdbfe" strokeOpacity={0.65} strokeWidth={1.4} />
+        <circle cx={cx} cy={cy} r={R} fill="none" stroke="#7dd3fc" strokeOpacity={0.8} strokeWidth={1.4} />
 
         {placed.filter((p) => p.q.front).map(({ pin, q }) => {
           const on = selected === pin.country;
@@ -270,17 +260,17 @@ export default function WorldGlobe({
 
       <div className="absolute right-1 top-8 flex flex-col gap-1.5">
         <button onClick={() => setZoom((z) => Math.min(3, z + 0.25))} aria-label="Zoom in"
-          className="rounded-full border border-white/15 bg-white/10 p-2 text-indigo-100 backdrop-blur-sm transition hover:bg-white/20"><Plus className="h-4 w-4" /></button>
+          className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><Plus className="h-4 w-4" /></button>
         <button onClick={() => setZoom((z) => Math.max(0.8, z - 0.25))} aria-label="Zoom out"
-          className="rounded-full border border-white/15 bg-white/10 p-2 text-indigo-100 backdrop-blur-sm transition hover:bg-white/20"><Minus className="h-4 w-4" /></button>
+          className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><Minus className="h-4 w-4" /></button>
         <button onClick={() => { setZoom(1); setRot([-10, -18]); onSelect(null); }} aria-label="Reset globe"
-          className="rounded-full border border-white/15 bg-white/10 p-2 text-indigo-100 backdrop-blur-sm transition hover:bg-white/20"><RotateCcw className="h-4 w-4" /></button>
+          className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><RotateCcw className="h-4 w-4" /></button>
       </div>
 
-      <p className="mt-1 text-center text-xs text-indigo-200/60">drag to spin · scroll to zoom · tap a light</p>
+      <p className="mt-1 text-center text-xs text-muted-foreground">drag to spin · scroll to zoom · tap a pin</p>
 
       {offGlobe.length > 0 && (
-        <p className="mt-1 text-center text-xs text-indigo-200/60">
+        <p className="mt-1 text-center text-xs text-muted-foreground">
           Also from {offGlobe.map((p) => `${p.flag} ${p.country}`).join(", ")}
         </p>
       )}
