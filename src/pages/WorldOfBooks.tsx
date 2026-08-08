@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { BookHeart, BookOpen, Globe2, Heart, Layers, Loader2, Lock, Sparkles } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BookHeart, BookOpen, Globe2, Heart, Layers, Loader2, Lock, Sparkles, X } from "lucide-react";
 import { forgeApi, type CustomBook, type CustomBookPage } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
-import WorldGlobe, { type GlobePin } from "@/components/WorldGlobe";
+import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
 // Level colours come from the ledger (src/lib/levels8.ts), never hand-copied
 // hexes — the chips must match the banner colour on the books themselves.
 import { getJourneyLevel } from "@/lib/levels8";
@@ -206,7 +206,68 @@ export default function WorldOfBooks() {
                 </div>
               </div>
 
-              {view === "globe" && <WorldGlobe pins={globePins} selected={country} onSelect={setCountry} />}
+              {view === "globe" && (
+                <div className="relative">
+                  <WorldGlobe pins={globePins} selected={country} onSelect={setCountry} />
+
+                  {/* Tap a flag → that country's books pop up right here, no
+                      hunting the shelf below (Lynden 2026-08-08). */}
+                  <AnimatePresence>
+                    {country && (
+                      <motion.div
+                        key={country}
+                        initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                        transition={{ duration: 0.22, ease: "easeOut" }}
+                        className="mx-auto mt-4 max-w-xl rounded-3xl border border-slate-200 bg-white p-4 text-left shadow-xl shadow-slate-200/70 sm:absolute sm:right-0 sm:top-10 sm:mt-0 sm:w-72"
+                      >
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 font-black text-slate-900">
+                            {flagUrl(country) && (
+                              <img src={flagUrl(country)!} alt="" className="h-4.5 w-6 rounded-[3px] object-cover ring-1 ring-slate-900/10" />
+                            )}
+                            <span className="truncate">{country}</span>
+                          </div>
+                          <button onClick={() => setCountry(null)} aria-label="Close"
+                            className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                        <div className="flex max-h-80 flex-col gap-2 overflow-y-auto pr-1">
+                          {shelf.filter((b) => b.country === country).map((b) => {
+                            const lvlColour = getJourneyLevel(b.level)?.hex || "#64748b";
+                            const locked = b.kind === "family" && !access;
+                            const row = (
+                              <>
+                                {b.cover ? (
+                                  <img src={b.cover} alt="" className={`h-16 w-12 shrink-0 rounded-lg object-cover ring-1 ring-slate-900/10 ${locked ? "blur-[2px]" : ""}`} />
+                                ) : (
+                                  <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100"><BookHeart className="h-5 w-5 text-slate-300" /></div>
+                                )}
+                                <div className="min-w-0 flex-1">
+                                  <div className="truncate text-sm font-extrabold text-slate-900">{b.title}</div>
+                                  <div className="truncate text-xs text-slate-500">{b.subtitle}</div>
+                                  <span className="mt-1 inline-block rounded-full px-2 py-px text-[10px] font-black text-white" style={{ backgroundColor: lvlColour }}>
+                                    Level {b.level}
+                                  </span>
+                                </div>
+                                {locked && <Lock className="h-4 w-4 shrink-0 self-center text-slate-300" />}
+                              </>
+                            );
+                            const rowClass = "flex w-full items-start gap-3 rounded-2xl p-2 text-left transition hover:bg-sky-50";
+                            return b.kind === "library" ? (
+                              <Link key={b.key} to={b.href!} className={rowClass}>{row}</Link>
+                            ) : (
+                              <button key={b.key} onClick={() => openFamilyBook(b.custom!)} className={rowClass}>{row}</button>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
 
               {view === "levels" && (
                 <div className="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 py-6">
