@@ -59,8 +59,11 @@ const PERSONAS = [
 // These come from the CURRENT published PDF, not from public/book-pages/
 // (a June-2026 render under the old level ids). Regenerate after re-publishing:
 //   py -3.12 scripts/make_create_book_demo.py [book_id]
+// 21 pages: the printed book (p1-p19), then the "Meet the Star" profile page
+// (p20) rendered through the real custom-book pipeline — parents need to SEE
+// that a profile page will be made for their child — then the back cover.
 const DEMO_BOOK_PAGES = Array.from(
-  { length: 20 },
+  { length: 21 },
   (_, i) => `/create-book-demo/p${i + 1}.jpg`,
 );
 
