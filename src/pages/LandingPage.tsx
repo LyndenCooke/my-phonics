@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, ChevronRight, ChevronLeft, Volume2,
   Trophy, GraduationCap, Printer, Heart, ClipboardList, PlayCircle, ShoppingBag,
+  Globe2,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
@@ -179,6 +180,12 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <Link to="/create-book" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap inline-flex items-center gap-1">
+            <Sparkles className="w-4 h-4" /> Create a Book
+          </Link>
+          <Link to="/world-of-books" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
+            <Globe2 className="w-4 h-4" /> World of Books
+          </Link>
           <Link to="/shop" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
             <ShoppingBag className="w-4 h-4" /> Shop
           </Link>
@@ -770,6 +777,8 @@ function Footer() {
           <span className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
+          <Link to="/create-book" className="hover:text-trust-ink transition-colors">Create a Book</Link>
+          <Link to="/world-of-books" className="hover:text-trust-ink transition-colors">World of Books</Link>
           <Link to="/shop" className="hover:text-trust-ink transition-colors">Shop</Link>
           <Link to="/love" className="hover:text-trust-ink transition-colors">Wall of Love</Link>
           <a href="/privacy" className="hover:text-trust-ink transition-colors">Privacy</a>
