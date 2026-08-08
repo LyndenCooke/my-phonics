@@ -59,11 +59,13 @@ const PERSONAS = [
 // These come from the CURRENT published PDF, not from public/book-pages/
 // (a June-2026 render under the old level ids). Regenerate after re-publishing:
 //   py -3.12 scripts/make_create_book_demo.py [book_id]
-// 21 pages: the printed book (p1-p19), then the "Meet the Star" profile page
-// (p20) rendered through the real custom-book pipeline — parents need to SEE
-// that a profile page will be made for their child — then the back cover.
+// 20 pages, matching the real retail book's page count exactly: the printed
+// story (p1-p19), then the "Meet the Star" profile page (p20) REPLACES the
+// generic back cover — parents need to SEE that a profile page will be made
+// for their child, and that's a stronger closing page for this marketing
+// demo than a level-grid back cover duplicated elsewhere on the site.
 const DEMO_BOOK_PAGES = Array.from(
-  { length: 21 },
+  { length: 20 },
   (_, i) => `/create-book-demo/p${i + 1}.jpg`,
 );
 
