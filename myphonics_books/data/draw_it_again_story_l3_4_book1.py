@@ -92,10 +92,26 @@ DRAW_IT_AGAIN_STORY_BOOK1 = {
                 "image": None,
             },
         ],
-        "story_words": ["saw", "hawk", "claws", "coin", "soil", "pointed", "paw", "jaw"],
+        "story_words": ["saw", "hawk", "claws", "coin", "soil", "paw", "jaw"],  # 'pointed' dropped: -ed not decodable at L5, taught via the note
         "tricky_words_used": ["the", "I", "her", "no", "all", "to", "want",
                               "said", "she", "he", "are", "so", "they", "was",
-                              "what", "you"],
+                              "what", "you",
+                              # 'oar' (=/or/) is off the grapheme roadmap, so
+                              # 'soared' can't be previewed as a Future Sound —
+                              # it's handled by the Watch Out note below instead.
+                              "soared"],
+        "pronunciation_notes": [
+            {
+                "title": "Watch Out — oar",
+                "body": (
+                    "The letters 'oar' work together to say /or/ — they are "
+                    "NOT the 'are' sound, even though the word has those letters. "
+                    "In this story you'll meet 'soared': sound it out s·oar·d, "
+                    "where 'oar' says /or/ (like the 'or' in 'for')."
+                ),
+                "examples": ["soared"],
+            },
+        ],
         "read_words": ["saw", "hawk", "claw", "coin", "soil", "point"],
         "nonsense_words": [
             "bloin", "froip", "snoik", "ploig", "troim", "groib",

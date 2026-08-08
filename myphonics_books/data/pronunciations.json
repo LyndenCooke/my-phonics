@@ -1,0 +1,1217 @@
+{
+  "a": {
+    "sounds": [
+      {
+        "sound": "/a/",
+        "examples": [
+          "ant",
+          "cat",
+          "tap"
+        ],
+        "from_level": 1
+      },
+      {
+        "sound": "/o/",
+        "examples": [
+          "was",
+          "want",
+          "wash",
+          "what"
+        ],
+        "from_level": 5
+      },
+      {
+        "sound": "/ai/",
+        "examples": [
+          "acorn",
+          "apron",
+          "paper"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/ar/",
+        "examples": [
+          "father",
+          "fast",
+          "path",
+          "class"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "schwa /uh/",
+        "examples": [
+          "about",
+          "along",
+          "banana"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "e": {
+    "sounds": [
+      {
+        "sound": "/e/",
+        "examples": [
+          "egg",
+          "hen",
+          "bed"
+        ],
+        "from_level": 2
+      },
+      {
+        "sound": "/ee/",
+        "examples": [
+          "he",
+          "me",
+          "we",
+          "she",
+          "be"
+        ],
+        "from_level": 3
+      },
+      {
+        "sound": "schwa /uh/",
+        "examples": [
+          "the",
+          "taken",
+          "garden"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "i": {
+    "sounds": [
+      {
+        "sound": "/i/",
+        "examples": [
+          "ink",
+          "pin",
+          "sit"
+        ],
+        "from_level": 1
+      },
+      {
+        "sound": "/igh/",
+        "examples": [
+          "find",
+          "kind",
+          "mind",
+          "child",
+          "wild"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "o": {
+    "sounds": [
+      {
+        "sound": "/o/",
+        "examples": [
+          "ox",
+          "dog",
+          "hot"
+        ],
+        "from_level": 1
+      },
+      {
+        "sound": "/u/",
+        "examples": [
+          "son",
+          "some",
+          "come",
+          "love",
+          "mother"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/oa/",
+        "examples": [
+          "go",
+          "no",
+          "cold",
+          "most",
+          "old"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/oo/",
+        "examples": [
+          "do",
+          "who",
+          "move",
+          "prove"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "u": {
+    "sounds": [
+      {
+        "sound": "/u/",
+        "examples": [
+          "up",
+          "cup",
+          "mud"
+        ],
+        "from_level": 2
+      },
+      {
+        "sound": "/oo/ short",
+        "examples": [
+          "put",
+          "full",
+          "push",
+          "bull",
+          "pull"
+        ],
+        "from_level": 5
+      },
+      {
+        "sound": "/yoo/",
+        "examples": [
+          "unicorn",
+          "uniform",
+          "human",
+          "music"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "y": {
+    "sounds": [
+      {
+        "sound": "/y/",
+        "examples": [
+          "yes",
+          "yell",
+          "yak"
+        ],
+        "from_level": 2
+      },
+      {
+        "sound": "/ee/",
+        "examples": [
+          "happy",
+          "furry",
+          "cheeky",
+          "funny",
+          "very"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/igh/",
+        "examples": [
+          "my",
+          "fly",
+          "try",
+          "sky",
+          "cry"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/i/",
+        "examples": [
+          "gym",
+          "crystal",
+          "mystery"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "c": {
+    "sounds": [
+      {
+        "sound": "/k/",
+        "examples": [
+          "cat",
+          "cot",
+          "cup",
+          "clap"
+        ],
+        "from_level": 2
+      },
+      {
+        "sound": "/s/",
+        "examples": [
+          "rice",
+          "race",
+          "face",
+          "ice"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "g": {
+    "sounds": [
+      {
+        "sound": "/g/",
+        "examples": [
+          "got",
+          "gap",
+          "dog",
+          "glad"
+        ],
+        "from_level": 1
+      }
+    ]
+  },
+  "s": {
+    "sounds": [
+      {
+        "sound": "/s/",
+        "examples": [
+          "sun",
+          "sit",
+          "bus"
+        ],
+        "from_level": 1
+      },
+      {
+        "sound": "/z/",
+        "examples": [
+          "is",
+          "has",
+          "dogs",
+          "hens",
+          "was"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/sh/",
+        "examples": [
+          "sure",
+          "sugar"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/zh/",
+        "examples": [
+          "treasure",
+          "measure",
+          "usual"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ow": {
+    "sounds": [
+      {
+        "sound": "/oa/",
+        "examples": [
+          "blow",
+          "snow",
+          "low",
+          "window"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/ow/",
+        "examples": [
+          "cow",
+          "now",
+          "down",
+          "owl"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "oo": {
+    "sounds": [
+      {
+        "sound": "/oo/ long",
+        "examples": [
+          "moon",
+          "zoo",
+          "food",
+          "room"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/oo/ short",
+        "examples": [
+          "book",
+          "good",
+          "look",
+          "foot",
+          "wood"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "ea": {
+    "sounds": [
+      {
+        "sound": "/ee/",
+        "examples": [
+          "sea",
+          "tea",
+          "read",
+          "eat",
+          "beach"
+        ],
+        "from_level": 5
+      },
+      {
+        "sound": "/e/",
+        "examples": [
+          "head",
+          "bread",
+          "ready",
+          "weather",
+          "dead"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/ai/",
+        "examples": [
+          "great",
+          "break",
+          "steak"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "ie": {
+    "sounds": [
+      {
+        "sound": "/igh/",
+        "examples": [
+          "pie",
+          "tie",
+          "lie",
+          "cried",
+          "fried"
+        ],
+        "from_level": 5
+      },
+      {
+        "sound": "/ee/",
+        "examples": [
+          "field",
+          "chief",
+          "thief",
+          "brief"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "ou": {
+    "sounds": [
+      {
+        "sound": "/ow/",
+        "examples": [
+          "out",
+          "loud",
+          "round",
+          "cloud",
+          "house"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/oo/",
+        "examples": [
+          "soup",
+          "group",
+          "you",
+          "youth"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/oo/ short",
+        "examples": [
+          "would",
+          "could",
+          "should"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/u/",
+        "examples": [
+          "young",
+          "touch",
+          "double",
+          "trouble"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/oa/",
+        "examples": [
+          "shoulder",
+          "boulder"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ch": {
+    "sounds": [
+      {
+        "sound": "/ch/",
+        "examples": [
+          "chip",
+          "chin",
+          "much",
+          "lunch"
+        ],
+        "from_level": 3
+      },
+      {
+        "sound": "/k/",
+        "examples": [
+          "school",
+          "chorus",
+          "echo",
+          "christmas"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/sh/",
+        "examples": [
+          "chef",
+          "chalet",
+          "machine"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "er": {
+    "sounds": [
+      {
+        "sound": "/ur/",
+        "examples": [
+          "her",
+          "herb",
+          "term",
+          "fern"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "schwa /uh/",
+        "examples": [
+          "farmer",
+          "water",
+          "letter",
+          "better"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "ey": {
+    "sounds": [
+      {
+        "sound": "/ai/",
+        "examples": [
+          "they",
+          "grey",
+          "prey",
+          "obey"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/ee/",
+        "examples": [
+          "key",
+          "money",
+          "honey",
+          "valley",
+          "chimney"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "ear": {
+    "sounds": [
+      {
+        "sound": "/ear/",
+        "examples": [
+          "hear",
+          "dear",
+          "near",
+          "year"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/air/",
+        "examples": [
+          "bear",
+          "pear",
+          "wear",
+          "tear (rip)"
+        ],
+        "from_level": 7
+      },
+      {
+        "sound": "/ur/",
+        "examples": [
+          "learn",
+          "earth",
+          "heard",
+          "pearl",
+          "search"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "wh": {
+    "sounds": [
+      {
+        "sound": "/w/",
+        "examples": [
+          "when",
+          "which",
+          "wheel",
+          "white",
+          "why"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/h/",
+        "examples": [
+          "who",
+          "whole",
+          "whose",
+          "whom"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "th": {
+    "sounds": [
+      {
+        "sound": "unvoiced /th/",
+        "examples": [
+          "thin",
+          "thick",
+          "bath",
+          "moth"
+        ],
+        "from_level": 3
+      },
+      {
+        "sound": "voiced /th/",
+        "examples": [
+          "the",
+          "then",
+          "this",
+          "that",
+          "mother"
+        ],
+        "from_level": 3
+      }
+    ]
+  },
+  "gh": {
+    "sounds": [
+      {
+        "sound": "silent",
+        "examples": [
+          "light",
+          "night",
+          "high",
+          "right"
+        ],
+        "from_level": 4
+      },
+      {
+        "sound": "/f/",
+        "examples": [
+          "laugh",
+          "cough",
+          "rough",
+          "enough"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ough": {
+    "sounds": [
+      {
+        "sound": "/or/",
+        "examples": [
+          "bought",
+          "thought",
+          "ought"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/oa/",
+        "examples": [
+          "though",
+          "dough",
+          "although"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/oo/",
+        "examples": [
+          "through"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/ow/",
+        "examples": [
+          "plough",
+          "bough"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/uff/",
+        "examples": [
+          "rough",
+          "tough",
+          "enough"
+        ],
+        "from_level": 8
+      },
+      {
+        "sound": "/off/",
+        "examples": [
+          "cough",
+          "trough"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "tch": {
+    "sounds": [
+      {
+        "sound": "/ch/",
+        "examples": [
+          "catch",
+          "match",
+          "kitchen",
+          "witch"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "dge": {
+    "sounds": [
+      {
+        "sound": "/j/",
+        "examples": [
+          "bridge",
+          "badge",
+          "edge",
+          "fudge"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "ge": {
+    "sounds": [
+      {
+        "sound": "/j/",
+        "examples": [
+          "cage",
+          "large",
+          "orange",
+          "change"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "ce": {
+    "sounds": [
+      {
+        "sound": "/s/",
+        "examples": [
+          "face",
+          "ice",
+          "dance",
+          "once"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "se": {
+    "sounds": [
+      {
+        "sound": "/s/",
+        "examples": [
+          "mouse",
+          "house",
+          "purse"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "kn": {
+    "sounds": [
+      {
+        "sound": "/n/",
+        "examples": [
+          "knee",
+          "knock",
+          "know",
+          "knife"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "wr": {
+    "sounds": [
+      {
+        "sound": "/r/",
+        "examples": [
+          "write",
+          "wrong",
+          "wrap",
+          "wrist"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "mb": {
+    "sounds": [
+      {
+        "sound": "/m/",
+        "examples": [
+          "lamb",
+          "climb",
+          "thumb",
+          "comb"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "gn": {
+    "sounds": [
+      {
+        "sound": "/n/",
+        "examples": [
+          "gnat",
+          "gnaw",
+          "sign",
+          "gnome"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "eigh": {
+    "sounds": [
+      {
+        "sound": "/ai/",
+        "examples": [
+          "eight",
+          "weigh",
+          "sleigh",
+          "neighbour"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "ei": {
+    "sounds": [
+      {
+        "sound": "/ai/",
+        "examples": [
+          "vein",
+          "reign",
+          "veil"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "au": {
+    "sounds": [
+      {
+        "sound": "/or/",
+        "examples": [
+          "author",
+          "sauce",
+          "haunt",
+          "august"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "augh": {
+    "sounds": [
+      {
+        "sound": "/or/",
+        "examples": [
+          "caught",
+          "taught",
+          "naughty",
+          "daughter"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "oar": {
+    "sounds": [
+      {
+        "sound": "/or/",
+        "examples": [
+          "board",
+          "roar",
+          "oar",
+          "soar"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "our": {
+    "sounds": [
+      {
+        "sound": "/or/",
+        "examples": [
+          "four",
+          "pour",
+          "your",
+          "court"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "oe": {
+    "sounds": [
+      {
+        "sound": "/oa/",
+        "examples": [
+          "toe",
+          "goes",
+          "hoe",
+          "foe"
+        ],
+        "from_level": 6
+      }
+    ]
+  },
+  "ui": {
+    "sounds": [
+      {
+        "sound": "/oo/",
+        "examples": [
+          "fruit",
+          "juice",
+          "suit",
+          "cruise"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "ere": {
+    "sounds": [
+      {
+        "sound": "/air/",
+        "examples": [
+          "there",
+          "where"
+        ],
+        "from_level": 6
+      },
+      {
+        "sound": "/ear/",
+        "examples": [
+          "here",
+          "sphere",
+          "severe"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "eer": {
+    "sounds": [
+      {
+        "sound": "/ear/",
+        "examples": [
+          "deer",
+          "cheer",
+          "steer",
+          "beer"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "e-e": {
+    "sounds": [
+      {
+        "sound": "/ee/",
+        "examples": [
+          "these",
+          "theme",
+          "even"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "tion": {
+    "sounds": [
+      {
+        "sound": "/shun/",
+        "examples": [
+          "station",
+          "action",
+          "nation"
+        ],
+        "from_level": 7
+      }
+    ]
+  },
+  "sion": {
+    "sounds": [
+      {
+        "sound": "/shun/ /zhun/",
+        "examples": [
+          "television",
+          "mansion",
+          "division"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ci": {
+    "sounds": [
+      {
+        "sound": "/sh/",
+        "examples": [
+          "special",
+          "delicious",
+          "ancient"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ti": {
+    "sounds": [
+      {
+        "sound": "/sh/",
+        "examples": [
+          "patient",
+          "partial"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ssi": {
+    "sounds": [
+      {
+        "sound": "/sh/",
+        "examples": [
+          "mission",
+          "passion",
+          "discussion"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "si": {
+    "sounds": [
+      {
+        "sound": "/zh/",
+        "examples": [
+          "vision",
+          "television",
+          "decision"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "-s / -es": {
+    "sounds": [
+      {
+        "sound": "plural",
+        "examples": [
+          "cats",
+          "dogs",
+          "boxes",
+          "wishes"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "-ing / -er / -est / -ly": {
+    "sounds": [
+      {
+        "sound": "suffix",
+        "examples": [
+          "running",
+          "faster",
+          "kindest",
+          "slowly"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "un- re- dis- pre-": {
+    "sounds": [
+      {
+        "sound": "prefix",
+        "examples": [
+          "undo",
+          "redo",
+          "disagree",
+          "preview"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "double letters": {
+    "sounds": [
+      {
+        "sound": "spelling",
+        "examples": [
+          "rabbit",
+          "dinner",
+          "happy",
+          "ladder"
+        ],
+        "from_level": 8
+      }
+    ]
+  },
+  "ve": {
+    "sounds": [
+      {
+        "sound": "/v/",
+        "examples": [
+          "have",
+          "give",
+          "live",
+          "love",
+          "above"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "a-e": {
+    "sounds": [
+      {
+        "sound": "/ai/",
+        "examples": [
+          "cake",
+          "name",
+          "gate",
+          "made"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "i-e": {
+    "sounds": [
+      {
+        "sound": "/igh/",
+        "examples": [
+          "bike",
+          "time",
+          "like",
+          "five"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "o-e": {
+    "sounds": [
+      {
+        "sound": "/oa/",
+        "examples": [
+          "bone",
+          "hope",
+          "home",
+          "note"
+        ],
+        "from_level": 5
+      }
+    ]
+  },
+  "u-e": {
+    "sounds": [
+      {
+        "sound": "/yoo/",
+        "examples": [
+          "cube",
+          "huge",
+          "use",
+          "cute",
+          "mule"
+        ],
+        "from_level": 5
+      },
+      {
+        "sound": "/oo/",
+        "examples": [
+          "flute",
+          "rule",
+          "June",
+          "prune"
+        ],
+        "from_level": 5
+      }
+    ]
+  }
+}

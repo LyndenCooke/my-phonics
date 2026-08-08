@@ -1,0 +1,217 @@
+{
+  "_README": [
+    "PRINTED QR TARGETS — every string below is on paper and can never be changed.",
+    "Locked 2026-08-06 alongside the classroom ISBN allocation.",
+    "These are IDENTIFIERS, not destinations: /b/<id> is a redirect we control,",
+    "so the app can move without breaking a single printed book.",
+    "To retarget a code, change where /b/<id> redirects — never edit this file."
+  ],
+  "locked": true,
+  "locked_on": "2026-08-06",
+  "base": "https://myphonicsbooks.co.uk",
+  "shared": {
+    "check": "https://myphonicsbooks.co.uk/b/check",
+    "library": "https://myphonicsbooks.co.uk/b/library",
+    "library_pass_code": "LIBRARY-READERS"
+  },
+  "books": {
+    "1.1": {
+      "title": "Tap! Tap! Tap!",
+      "isbn": "978-1-919114-00-2",
+      "read": "https://myphonicsbooks.co.uk/b/1.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/1.1/worksheets"
+    },
+    "1.2": {
+      "title": "The Mud on the Dog",
+      "isbn": "978-1-919114-01-9",
+      "read": "https://myphonicsbooks.co.uk/b/1.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/1.2/worksheets"
+    },
+    "2.1": {
+      "title": "The Red Socks",
+      "isbn": "978-1-919114-02-6",
+      "read": "https://myphonicsbooks.co.uk/b/2.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/2.1/worksheets"
+    },
+    "2.2": {
+      "title": "Run, Pup, Run!",
+      "isbn": "978-1-919114-03-3",
+      "read": "https://myphonicsbooks.co.uk/b/2.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/2.2/worksheets"
+    },
+    "2.3": {
+      "title": "Fox Fell Off!",
+      "isbn": "978-1-919114-04-0",
+      "read": "https://myphonicsbooks.co.uk/b/2.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/2.3/worksheets"
+    },
+    "2.4": {
+      "title": "The Jam Jug",
+      "isbn": "978-1-919114-05-7",
+      "read": "https://myphonicsbooks.co.uk/b/2.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/2.4/worksheets"
+    },
+    "2.5": {
+      "title": "The Yak and the Box",
+      "isbn": "978-1-919114-06-4",
+      "read": "https://myphonicsbooks.co.uk/b/2.5",
+      "worksheets": "https://myphonicsbooks.co.uk/b/2.5/worksheets"
+    },
+    "3.1": {
+      "title": "The Fish in the Tank",
+      "isbn": "978-1-919114-07-1",
+      "read": "https://myphonicsbooks.co.uk/b/3.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/3.1/worksheets"
+    },
+    "3.2": {
+      "title": "Chop, Chop, Chop!",
+      "isbn": "978-1-919114-08-8",
+      "read": "https://myphonicsbooks.co.uk/b/3.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/3.2/worksheets"
+    },
+    "3.3": {
+      "title": "Buzz and Sing!",
+      "isbn": "978-1-919114-09-5",
+      "read": "https://myphonicsbooks.co.uk/b/3.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/3.3/worksheets"
+    },
+    "4.1": {
+      "title": "The Night Light",
+      "isbn": "978-1-919114-10-1",
+      "read": "https://myphonicsbooks.co.uk/b/4.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.1/worksheets"
+    },
+    "4.2": {
+      "title": "Hot Food, Cool Moon",
+      "isbn": "978-1-919114-11-8",
+      "read": "https://myphonicsbooks.co.uk/b/4.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.2/worksheets"
+    },
+    "4.3": {
+      "title": "Morning on the Farm",
+      "isbn": "978-1-919114-12-5",
+      "read": "https://myphonicsbooks.co.uk/b/4.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.3/worksheets"
+    },
+    "4.4": {
+      "title": "The Fair in the Air",
+      "isbn": "978-1-919114-13-2",
+      "read": "https://myphonicsbooks.co.uk/b/4.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.4/worksheets"
+    },
+    "4.5": {
+      "title": "Round and Round",
+      "isbn": "978-1-919114-14-9",
+      "read": "https://myphonicsbooks.co.uk/b/4.5",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.5/worksheets"
+    },
+    "4.6": {
+      "title": "The Night Fair",
+      "isbn": "978-1-919114-15-6",
+      "read": "https://myphonicsbooks.co.uk/b/4.6",
+      "worksheets": "https://myphonicsbooks.co.uk/b/4.6/worksheets"
+    },
+    "5.1": {
+      "title": "The Big Bike Race",
+      "isbn": "978-1-919114-16-3",
+      "read": "https://myphonicsbooks.co.uk/b/5.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/5.1/worksheets"
+    },
+    "5.2": {
+      "title": "Lost at the Night Market",
+      "isbn": "978-1-919114-17-0",
+      "read": "https://myphonicsbooks.co.uk/b/5.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/5.2/worksheets"
+    },
+    "5.3": {
+      "title": "The Dream Team",
+      "isbn": "978-1-919114-18-7",
+      "read": "https://myphonicsbooks.co.uk/b/5.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/5.3/worksheets"
+    },
+    "5.4": {
+      "title": "What Min Saw",
+      "isbn": "978-1-919114-19-4",
+      "read": "https://myphonicsbooks.co.uk/b/5.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/5.4/worksheets"
+    },
+    "5.5": {
+      "title": "The Boat with the Red Sail",
+      "isbn": "978-1-919114-20-0",
+      "read": "https://myphonicsbooks.co.uk/b/5.5",
+      "worksheets": "https://myphonicsbooks.co.uk/b/5.5/worksheets"
+    },
+    "6.1": {
+      "title": "The Purple Purse",
+      "isbn": "978-1-919114-21-7",
+      "read": "https://myphonicsbooks.co.uk/b/6.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/6.1/worksheets"
+    },
+    "6.2": {
+      "title": "The Brown Owl",
+      "isbn": "978-1-919114-22-4",
+      "read": "https://myphonicsbooks.co.uk/b/6.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/6.2/worksheets"
+    },
+    "6.3": {
+      "title": "The New Glue",
+      "isbn": "978-1-919114-23-1",
+      "read": "https://myphonicsbooks.co.uk/b/6.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/6.3/worksheets"
+    },
+    "6.4": {
+      "title": "The Cheeky Monkey",
+      "isbn": "978-1-919114-24-8",
+      "read": "https://myphonicsbooks.co.uk/b/6.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/6.4/worksheets"
+    },
+    "7.1": {
+      "title": "Before the Shore",
+      "isbn": "978-1-919114-25-5",
+      "read": "https://myphonicsbooks.co.uk/b/7.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/7.1/worksheets"
+    },
+    "7.2": {
+      "title": "Near the Door",
+      "isbn": "978-1-919114-26-2",
+      "read": "https://myphonicsbooks.co.uk/b/7.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/7.2/worksheets"
+    },
+    "7.3": {
+      "title": "Sure She Can!",
+      "isbn": "978-1-919114-27-9",
+      "read": "https://myphonicsbooks.co.uk/b/7.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/7.3/worksheets"
+    },
+    "7.4": {
+      "title": "A Place for Me",
+      "isbn": "978-1-919114-28-6",
+      "read": "https://myphonicsbooks.co.uk/b/7.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/7.4/worksheets"
+    },
+    "8.1": {
+      "title": "The Marvellous Neighbourhood",
+      "isbn": "978-1-919114-29-3",
+      "read": "https://myphonicsbooks.co.uk/b/8.1",
+      "worksheets": "https://myphonicsbooks.co.uk/b/8.1/worksheets"
+    },
+    "8.2": {
+      "title": "You Are Remarkable",
+      "isbn": "978-1-919114-30-9",
+      "read": "https://myphonicsbooks.co.uk/b/8.2",
+      "worksheets": "https://myphonicsbooks.co.uk/b/8.2/worksheets"
+    },
+    "8.3": {
+      "title": "It Looks Suspicious!",
+      "isbn": "978-1-919114-31-6",
+      "read": "https://myphonicsbooks.co.uk/b/8.3",
+      "worksheets": "https://myphonicsbooks.co.uk/b/8.3/worksheets"
+    },
+    "8.4": {
+      "title": "The Incredible Bush Walk",
+      "isbn": "978-1-919114-32-3",
+      "read": "https://myphonicsbooks.co.uk/b/8.4",
+      "worksheets": "https://myphonicsbooks.co.uk/b/8.4/worksheets"
+    }
+  }
+}

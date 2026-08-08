@@ -154,7 +154,7 @@ AMI_BOOK_STORY = {
     "certificate": {
         "title": "World's Best Ami",
         "recipient": "Ami",
-        "text": "For feeding us, looking after us, loving us, and never ever stopping. The family would fall apart without you and we all know it.",
+        "text": "For feeding us, looking after us, loving us and never ever stopping. The family would fall apart without you and we all know it.",
         "date": "March 2026",
         "signed": "Lynden, Aisha & Safia",
     },

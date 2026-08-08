@@ -104,7 +104,11 @@ function needsRegen(key, text) {
   if (FORCE) return true;
   if (!fs.existsSync(mp3Path)) return true;
   if (!fs.existsSync(txtPath)) return true;
-  return fs.readFileSync(txtPath, 'utf8') !== text;
+  // Strip a leading BOM and trailing whitespace before comparing. Six sidecars
+  // were written with a BOM, which made this compare false on every run and
+  // would have re-billed ElevenLabs for audio that was already correct.
+  const onDisk = fs.readFileSync(txtPath, 'utf8').replace(/^﻿/, '').trim();
+  return onDisk !== text.trim();
 }
 
 async function main() {

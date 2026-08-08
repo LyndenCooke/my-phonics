@@ -28,6 +28,84 @@ BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
 OUTPUT_DIR = Path(__file__).parent.parent / "output" / "images"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+# ─── Image backend: direct Gemini key, else Vertex AI ────────────
+# The .env Gemini key is billing-dead — it answers 401/403 on every image
+# request.  Vertex AI serves the same model (gemini-2.5-flash-image) against
+# the gcloud OAuth token, so we fall back to it automatically and stay there
+# for the rest of the run.  Force one or the other with
+# MPB_IMAGE_BACKEND=vertex|gemini.  Vertex needs: gcloud auth login, and a
+# billing-enabled default project (gcloud config set project ...).
+VERTEX_REGION = "us-central1"
+VERTEX_MODEL = "gemini-2.5-flash-image"
+_backend = os.environ.get("MPB_IMAGE_BACKEND", "").strip().lower()
+USE_VERTEX = _backend == "vertex" or (_backend != "gemini" and not GEMINI_API_KEY)
+_vertex_auth_cache: dict[str, str] = {}
+
+
+def vertex_auth() -> tuple[str, str]:
+    """(access token, project id) from the local gcloud login."""
+    if _vertex_auth_cache:
+        return _vertex_auth_cache["tok"], _vertex_auth_cache["proj"]
+    import subprocess
+    def _gcloud(*args: str) -> str:
+        return subprocess.run(["gcloud", *args], capture_output=True,
+                              text=True, shell=True).stdout.strip()
+    tok = _gcloud("auth", "print-access-token")
+    proj = _gcloud("config", "get-value", "project")
+    if not tok or not proj:
+        raise RuntimeError("Vertex fallback needs gcloud: run `gcloud auth login` "
+                           "and `gcloud config set project <billing-enabled-project>`")
+    _vertex_auth_cache.update(tok=tok, proj=proj)
+    return tok, proj
+
+
+def image_endpoint() -> tuple[str, dict[str, str]]:
+    """(url, extra headers) for the image model on the active backend."""
+    if USE_VERTEX:
+        tok, proj = vertex_auth()
+        url = (f"https://{VERTEX_REGION}-aiplatform.googleapis.com/v1/projects/{proj}"
+               f"/locations/{VERTEX_REGION}/publishers/google/models/"
+               f"{VERTEX_MODEL}:generateContent")
+        return url, {"Authorization": f"Bearer {tok}"}
+    return (f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent"
+            f"?key={GEMINI_API_KEY}"), {}
+
+
+def switch_to_vertex(status: int) -> bool:
+    """Flip to Vertex after an auth failure on the direct key. True if flipped."""
+    global USE_VERTEX
+    if USE_VERTEX or status not in (401, 403):
+        return False
+    USE_VERTEX = True
+    print(f"    Gemini key rejected ({status}) — switching to Vertex AI for the rest of this run")
+    return True
+
+# ─── Old id -> journey (8-level) id ──────────────────────────────
+# SCENE_PROMPTS / HERO_PROMPTS are still keyed by each book's ORIGINAL id
+# ("2.2" = Hot Food, Cool Moon), but output/images/ was renamed to JOURNEY
+# numbering on 2026-07-15 — "2.2" now lives in L4_2_B1, while L2_2_B1 belongs
+# to a completely different book (Run, Pup, Run).  Writing to L{old_id}_B1
+# therefore overwrites the WRONG book's art: that is exactly what happened on
+# 2026-07-22, when this book's night-market pages landed on Run, Pup, Run and
+# had to be restored from a backup.  Always resolve the folder through here.
+# Mirrors NEW_TO_OLD in generate_pilot_books.py (inverted).
+OLD_TO_NEW = {
+    "1.1": "1.1", "1.2": "1.2",
+    "1.4": "2.1", "1.5": "2.2", "1.6": "2.3", "1.7": "2.4", "1.8": "2.5",
+    "1.3": "3.1", "1.9": "3.2", "1.10": "3.3",
+    "2.1": "4.1", "2.2": "4.2", "2.3": "4.3", "2.4": "4.4", "2.5": "4.5", "2.6": "4.6",
+    "3.1": "5.1", "3.2": "5.2", "3.3": "5.3", "3.4": "5.4", "3.5": "5.5",
+    "4.1": "6.1", "4.2": "6.2", "4.3": "6.3", "4.4": "6.4",
+    "5.1": "7.1", "5.2": "7.2", "5.3": "7.3", "5.4": "7.4",
+    "6.1": "8.1", "6.2": "8.2", "6.3": "8.3", "6.4": "8.4",
+}
+
+
+def book_dir_for(level) -> Path:
+    """Image folder for a SCENE_PROMPTS key, in JOURNEY numbering."""
+    journey_id = OLD_TO_NEW.get(str(level), str(level))
+    return OUTPUT_DIR / f"L{journey_id.replace('.', '_')}_B1"
+
 # Rate limiting
 REQUEST_DELAY = 3  # seconds between requests
 MAX_RETRIES = 3
@@ -267,22 +345,25 @@ HERO_PROMPTS = {
         "short": "the Japanese girl in the pink yukata with odango buns and pink ribbons",
     },
     "2.2": {
-        # Zoo girl — journey story visiting different zoo areas
+        # "Hot Food, Cool Moon" — white English girl in hijab (revert family),
+        # UK street-food night market. Re-set 2026-07-22 (was zoo girl).
         "description": (
-            "A cartoon girl character, about 5 years old, with light brown skin and "
-            "curly dark brown hair in two puffs. "
-            "She wears a bright red cap, a yellow t-shirt, blue denim dungarees, "
+            "A cartoon girl character, about 5 years old, with light peachy skin "
+            "(#F0D0B0 — white English). "
+            "She wears a soft pink hijab (headscarf neatly framing her face, no hair visible), "
+            "a mustard-yellow long-sleeved tunic top, navy blue trousers, "
             "and white trainers. "
             "ABSOLUTELY CRITICAL — HER EYES MUST BE TINY SOLID BLACK FILLED CIRCLES. "
             "Just two small black dots on the face like a teddy bear or ragdoll. "
             "There must be ZERO white in or around the eyes. NO pupils, NO iris, NO sclera, "
             "NO shine, NO highlights. Just plain tiny black filled dots. "
-            "She has a cheerful excited expression and rosy cheeks. Standing in a neutral pose, "
+            "She has a cheerful excited expression. "
+            "ABSOLUTELY NO rosy cheeks, NO blush marks. Standing in a neutral pose, "
             "facing the viewer, full body visible from head to toe. "
             "Arms slightly away from body, feet shoulder-width apart. "
             "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
         ),
-        "short": "the girl in the bright red cap, yellow t-shirt, and blue dungarees",
+        "short": "the girl in the soft pink hijab and mustard-yellow top",
     },
     "2.3": {
         # Kenyan highlands farm boy — journey story
@@ -582,22 +663,25 @@ SIDE_HERO_PROMPTS = {
         "filename": "side_hero_grandma.png",
     },
     "2.2": {
-        # Dad: man with light brown skin, green polo, khaki trousers
+        # Mum: white English revert, sage-green hijab. Re-set 2026-07-22 (was dad/zoo).
         "description": (
-            "A cartoon adult man character, about 35 years old, with light brown skin "
-            "and short dark brown hair. "
-            "He wears a green polo shirt, khaki trousers, and brown shoes. "
-            "ABSOLUTELY CRITICAL — HIS EYES MUST BE TINY SOLID BLACK FILLED CIRCLES. "
+            "A cartoon adult woman character, about 30 years old, with light peachy skin "
+            "(#F0D0B0 — white English). "
+            "She wears a soft sage-green hijab (headscarf neatly framing her face, no hair "
+            "visible), a long-sleeved cream cardigan over a long navy blue dress, "
+            "and comfortable flat shoes. "
+            "ABSOLUTELY CRITICAL — HER EYES MUST BE TINY SOLID BLACK FILLED CIRCLES. "
             "Just two small black dots on the face like a teddy bear or ragdoll. "
             "There must be ZERO white in or around the eyes. NO pupils, NO iris, NO sclera, "
             "NO shine, NO highlights. Just plain tiny black filled dots. "
-            "He has a warm, kind, fatherly smile with rosy cheeks. "
+            "She has a warm, kind, motherly smile. "
+            "ABSOLUTELY NO rosy cheeks, NO blush marks. "
             "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
             "Arms slightly away from body. "
             "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
         ),
-        "short": "the dad in the green polo shirt and khaki trousers",
-        "filename": "side_hero_dad.png",
+        "short": "the mum in the sage-green hijab and cream cardigan",
+        "filename": "side_hero_mum.png",
     },
     "2.3": {
         # Dad: Kenyan farmer dad — very dark skin, green shirt, brown trousers
@@ -1436,60 +1520,86 @@ SCENE_PROMPTS["2.1"] = {
 ]}
 
 # ═══════════════════════════════════════════════════════════════════
-# LEVEL 2.2 — "Moo at the Zoo" (Zoo visit — different location each page)
+# LEVEL 2.2 — "Hot Food, Cool Moon" (UK street-food night market)
+# Story written 2026-07-22. White English revert family:
+# girl in soft pink hijab (hero) + mum in sage-green hijab (side hero).
 # ═══════════════════════════════════════════════════════════════════
+# SETTING (use EXACT phrase): "a British street-food night market held in the
+#   cobbled market square of an English town — red-brick Victorian terraced
+#   buildings with grey slate roofs, sash windows and chimney pots line both
+#   sides, rows of food stalls under striped canopies stand on the grey
+#   cobblestones, triangular bunting and strings of warm glowing fairy lights
+#   are strung between the buildings, a black cast-iron Victorian lamppost
+#   glows nearby, and a dark blue evening sky sits above the rooftops"
+#   The word "British" on its own does NOT read as Britain — the first version
+#   (07-22) produced a generic placeless night market on bare sand, and only
+#   page 1 looked English because it happened to mention a town street and
+#   rooftops. Lynden's note: every spread must carry the architecture. Close-up
+#   pages restate the brick terraces / slate roofs / chimney pots / cobbles
+#   rather than just saying "market stalls behind her".
+# KEY OBJECTS (identical wording in every prompt where they appear):
+#   BOWL = "a white paper food bowl with a red rim, filled with a neat coiled
+#           nest of short golden noodles that sits down inside the bowl below
+#           the rim"  — and NO CHOPSTICKS anywhere in the book. Lynden, 07-22:
+#           "the noodles are so weird ... chopsticks float in the air in every
+#           picture". The prompts never asked for chopsticks; the model infers
+#           them from "noodles" and then draws them unattached. Every scene now
+#           bans them and requires any fork to be gripped in a closed hand.
+#   WOK  = "a large black steel wok with gentle steam rising (no dramatic flames)"
+#   MOON = "a big pale yellow full moon"
+#   MAT  = "a red-and-white checked picnic blanket"
 SCENE_PROMPTS["2.2"] = {
-    "title": "Moo at the Zoo",
-    # PROMPT RULES: Keep prompts SHORT. Hero injection handles character appearance.
-    # BASE_STYLE handles eyes + art style. Just describe the SCENE.
-    # One character + one subject + one simple background. No outfit descriptions.
+    "title": "Hot Food, Cool Moon",
     "scenes": [
     {
         # COVER
         "name": "cover",
-        "prompt": "BOOK COVER ILLUSTRATION. A cheerful girl stands at a colourful zoo entrance gate, arms raised in excitement. Sunny day, green trees, bright zoo arches behind her. Portrait orientation.",
+        "side_hero": True,
+        "prompt": "BOOK COVER ILLUSTRATION. Show the character from the reference image standing happily holding a white paper food bowl with a red rim, filled to the rim with a tidy rounded mound of curled golden noodles whose surface is UNBROKEN — absolutely no chopsticks, no fork and not one single noodle strand rising, lifting, standing up or dangling above the bowl, and nothing whatsoever floating unattached in the air above it, with her mum (from reference image 2) crouched warmly beside her. Behind them a British street-food night market held in the cobbled market square of an English town — red-brick Victorian terraced buildings with grey slate roofs, sash windows and chimney pots line both sides, rows of food stalls under striped canopies stand on the grey cobblestones, triangular bunting and strings of warm glowing fairy lights are strung between the buildings, a black cast-iron Victorian lamppost glows nearby, and a dark blue evening sky sits above the rooftops. A big pale yellow full moon glows above the stalls. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). The mum wears a soft sage-green hijab, cream cardigan, long navy dress. Cosy, glowing, joyful mood. The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever, no iris, no highlights. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Portrait orientation.",
     },
     {
-        # Page 1: "I go to the zoo with my dad. I need to see the owl!"
+        # Page 1: "The sun dips low. I go with my mum to get food."
         "name": "page1",
-        "prompt": "A girl and her dad walk hand-in-hand along a sunny zoo path. The girl points eagerly ahead. Green trees and a bright blue sky. Landscape orientation.",
         "side_hero": True,
+        "prompt": "SUNSET SCENE — warm orange-pink sky, the sun dipping low behind rooftops. Show the character from the reference image walking hand-in-hand with her mum (from reference image 2) along a British town street towards a street-food night market visible ahead — food stalls under striped canopies with strings of fairy lights just switching on. The girl skips slightly, excited. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). The mum wears a soft sage-green hijab, cream cardigan, long navy dress. ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
     {
-        # Page 2: "I look at the cows. Moo! Moo! No owl. I will look on."
+        # Page 2: "It is night. Food shops in a row! Yum!"
         "name": "page2",
-        "prompt": "A girl stands next to a wooden fence watching a big friendly cow moo. Green grassy field, wooden barn in the background. Landscape orientation.",
+        "prompt": "NIGHT SCENE. Show the character from the reference image standing in a British street-food night market held in the cobbled market square of an English town — red-brick Victorian terraced buildings with grey slate roofs, sash windows and chimney pots line both sides, rows of food stalls under striped canopies stand on the grey cobblestones, triangular bunting and strings of warm glowing fairy lights are strung between the buildings, a black cast-iron Victorian lamppost glows nearby, and a dark blue evening sky sits above the rooftops. The stalls stretch away in a neat row, each glowing warmly with different food. The girl looks along the row with delight, hands clasped. Every stall sign, price board and shop window MUST be completely BLANK — no letters, no words, no numbers, no scribbled writing anywhere in the picture (invented lettering confuses an early reader). The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
     {
-        # Page 3: "Wow! A big show. A seal can shoot a hoop! No owl."
+        # Page 3: "I see a man at a big wok. Hiss! Pop! The food hops!"
         "name": "page3",
-        "prompt": "A girl watches a grey seal balancing a colourful hoop on its nose in a blue pool. The girl claps with excitement. Landscape orientation.",
+        "prompt": "NIGHT SCENE at a food stall. Show the character from the reference image watching a friendly street-food chef in an apron tossing noodles in a large black steel wok with gentle steam rising (no dramatic flames). Little pieces of food hop up from the wok mid-toss. The girl watches wide with wonder, up on her tiptoes at the counter. A striped canopy above the stall, and behind it red-brick Victorian terraced buildings with grey slate roofs and chimney pots, triangular bunting and strings of warm fairy lights, grey cobblestones underfoot, dark blue evening sky. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever, including the chef. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
     {
-        # Page 4: "Ooh! I see a cool pool. Fish zoom in it. No owl."
+        # Page 4: "Mum gets me a bowl. Ooh! It is too hot!"
         "name": "page4",
-        "prompt": "A girl stands alone next to a big aquarium window. Colourful tropical fish swim in bright blue water behind the glass. She points at the fish, mouth open in wonder. Only one child in the scene. Landscape orientation.",
-    },
-    {
-        # Page 5: "Boo! A big dim room. I see bats. No owl!"
-        "name": "page5",
-        "prompt": "A girl stands in a dark zoo nocturnal animal exhibit. Dim blue-purple lighting. Small bats fly overhead. The girl looks a little spooked, hands near her face. Rocky cave walls around her. Landscape orientation.",
-    },
-    {
-        # Page 6: "I am so sad now. Then my dad calls, 'Look up!'"
-        "name": "page6",
-        "prompt": "A sad girl sits on a wooden bench while her dad stands beside her pointing up at the sky. Trees and a zoo path around them. Landscape orientation.",
         "side_hero": True,
+        "prompt": "NIGHT SCENE. Show the mum (from reference image 2) smiling and handing the character from the reference image a white paper food bowl with a red rim, filled to the rim with a tidy rounded mound of curled golden noodles whose surface is UNBROKEN — absolutely no chopsticks, no fork and not one single noodle strand rising, lifting, standing up or dangling above the bowl, and nothing whatsoever floating unattached in the air above it, with visible curly steam lines rising from it. The girl reaches up for it with both hands, mouth in a little 'ooh'. If the moon is visible it must be the same big pale yellow FULL moon as the rest of the book — never a crescent. The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. A striped-canopy food stall behind them, and beyond it red-brick Victorian terraced buildings with grey slate roofs and chimney pots, triangular bunting and strings of warm fairy lights, grey cobblestones underfoot, dark blue evening sky. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). The mum wears a soft sage-green hijab, cream cardigan, long navy dress. ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
     {
-        # Page 7: "Hoo! Hoo! I look up. The owl! It is up high!"
+        # Page 5: "I huff and puff on it. Huff! Puff! This is no fun!"
+        "name": "page5",
+        "prompt": "NIGHT SCENE. Show the character from the reference image holding a white paper food bowl with a red rim, filled to the rim with a tidy rounded mound of curled golden noodles whose surface is UNBROKEN — absolutely no chopsticks, no fork and not one single noodle strand rising, lifting, standing up or dangling above the bowl, and nothing whatsoever floating unattached in the air above it, cheeks puffed out BLOWING across the top of it — small curved puff-of-air lines from her mouth and curly steam lines still rising from the bowl. She is NOT eating: the food is far too hot, so she holds the bowl away from her face, there is NO food in her mouth and NO noodles touching or near her lips. Her eyebrows tilt in comic frustration. The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. She stands on the grey cobblestones beside a striped-canopy market stall. Behind her, red-brick Victorian terraced buildings with grey slate roofs and chimney pots, striped stall canopies, triangular bunting and strings of warm fairy lights, all standing on grey cobblestones. Dark blue evening sky. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
+    },
+    {
+        # Page 6: "Mum said, 'Sit with me. See the moon!'"
+        "name": "page6",
+        "side_hero": True,
+        "prompt": "NIGHT SCENE at the edge of the market square. Show the mum (from reference image 2) sitting on a red-and-white checked picnic blanket, patting the space beside her and pointing up at a big pale yellow full moon in the dark blue evening sky. The character from the reference image walks over to her, still carefully holding a white paper food bowl with a red rim, filled to the rim with a tidy rounded mound of curled golden noodles whose surface is UNBROKEN — absolutely no chopsticks, no fork and not one single noodle strand rising, lifting, standing up or dangling above the bowl, and nothing whatsoever floating unattached in the air above it. They are on a small grassy green at the edge of the cobbled market square, with red-brick Victorian terraced buildings with slate roofs and chimney pots and the glowing striped stalls behind them. Calm, gentle mood — but the market behind them is still open and staffed: a stallholder stands behind every stall and a few ordinary British shoppers of different ages and skin tones are still browsing; no stall is empty or unattended. The girl carries the bowl level in BOTH hands with NOTHING sticking out of it — no fork and no chopsticks standing up in the noodles. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). The mum wears a soft sage-green hijab, cream cardigan, long navy dress. ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
+    },
+    {
+        # Page 7: "The moon is big and yellow! Then I dig in. Not hot! Yum, yum, yum!"
         "name": "page7",
-        "prompt": "A girl looks up with joy at a barn owl perched on a high tree branch. Tall green tree, blue sky, dappled sunlight. The girl points up at the owl. The owl can have normal owl eyes. Landscape orientation.",
+        "prompt": "NIGHT SCENE. Show the character from the reference image sitting cross-legged on a red-and-white checked picnic blanket happily eating a forkful of noodles, a small wooden fork gripped firmly in her fist with her fingers closed around the handle, lifting it from a white paper food bowl with a red rim — NO steam rising now, the food has cooled. Above her a big pale yellow full moon fills the dark blue evening sky. She beams with joy mid-bite. The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. They are on a small grassy green at the edge of the cobbled market square, with red-brick Victorian terraced buildings with slate roofs and chimney pots and the glowing striped stalls behind them. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
     {
-        # Page 8: "The owl bows at me. I bow too. The zoo is so good!"
+        # Page 8: "We sit low on the mat. The night is cool. I am with my mum. It is fun!"
         "name": "page8",
-        "prompt": "A happy girl bows towards a barn owl sitting on a low wooden perch. The owl bows back. Colourful zoo garden behind them, warm afternoon sunlight. The owl can have normal owl eyes. Landscape orientation.",
+        "side_hero": True,
+        "prompt": "NIGHT SCENE, calm and cosy. Show the character from the reference image and her mum (from reference image 2) sitting together on a red-and-white checked picnic blanket, the girl leaning snugly against her mum's side, both looking up at a big pale yellow full moon in the dark blue evening sky. The empty white paper food bowl with a red rim sits on the blanket beside them. They are on a small grassy green at the edge of the cobbled market square, with red-brick Victorian terraced buildings with slate roofs and chimney pots and the glowing striped stalls behind them. A beautiful quiet family moment. The market is busy and staffed: a friendly stallholder stands behind EVERY stall serving customers, and ordinary shoppers browse between them — a mixed everyday British crowd of men, women, children, teenagers and older people, a range of skin tones and hair colours, in normal British clothes (coats, jumpers, jeans, caps, a pushchair, a dog on a lead). Only the girl and her mum wear a hijab — do NOT put hijabs or headscarves on the background women. No stall may be empty, bare or unattended. Same girl, same outfit (soft pink hijab, mustard-yellow long-sleeved top, navy trousers, white trainers). The mum wears a soft sage-green hijab, cream cardigan, long navy dress. ABSOLUTELY CRITICAL: ALL characters MUST have eyes that are ONLY tiny solid black filled circles — NO white whatsoever. Every stall sign, price board and shop window MUST be completely BLANK — no letters, words, numbers or scribbled writing anywhere (invented lettering confuses an early reader). ABSOLUTELY NO CHOPSTICKS anywhere in the picture. Nothing may stick up out of the bowl and nothing may float unattached in the air — no chopsticks, no cutlery standing in the food, no noodle strands hanging in mid-air. Any utensil must be a small wooden fork held firmly in a character's fingers, with the hand clearly closed around the handle. No text. Landscape orientation.",
     },
 ]}
 
@@ -2464,18 +2574,17 @@ async def generate_hero_image(session: aiohttp.ClientSession, level: int | str) 
         print(f"  No hero prompt for level {level}")
         return None
 
-    # Handle both integer (1) and string ("1.1") level keys
-    level_str = str(level).replace(".", "_")
-    book_dir = OUTPUT_DIR / f"L{level_str}_B1"
+    # Journey-numbered folder (see book_dir_for / OLD_TO_NEW)
+    book_dir = book_dir_for(level)
     book_dir.mkdir(parents=True, exist_ok=True)
     hero_path = book_dir / "hero_reference.png"
 
     full_prompt = f"{hero['description']} {BASE_STYLE}"
 
-    url = f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent?key={GEMINI_API_KEY}"
+    url, headers = image_endpoint()
 
     payload = {
-        "contents": [{"parts": [{"text": full_prompt}]}],
+        "contents": [{"role": "user", "parts": [{"text": full_prompt}]}],
         "generationConfig": {"responseModalities": ["IMAGE"]},
     }
 
@@ -2483,7 +2592,7 @@ async def generate_hero_image(session: aiohttp.ClientSession, level: int | str) 
 
     for attempt in range(MAX_RETRIES):
         try:
-            async with session.post(url, json=payload) as response:
+            async with session.post(url, json=payload, headers=headers) as response:
                 if response.status == 200:
                     result = await response.json()
                     candidates = result.get("candidates", [])
@@ -2502,6 +2611,9 @@ async def generate_hero_image(session: aiohttp.ClientSession, level: int | str) 
                     wait = BACKOFF_BASE * (2 ** attempt)
                     print(f"  [hero] Rate limited. Waiting {wait}s...")
                     await asyncio.sleep(wait)
+                    continue
+                elif switch_to_vertex(response.status):
+                    url, headers = image_endpoint()
                     continue
                 else:
                     text = await response.text()
@@ -2532,10 +2644,10 @@ async def generate_side_hero_image(
     """
     full_prompt = f"{side_hero_info['description']} {BASE_STYLE}"
 
-    url = f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent?key={GEMINI_API_KEY}"
+    url, headers = image_endpoint()
 
     payload = {
-        "contents": [{"parts": [{"text": full_prompt}]}],
+        "contents": [{"role": "user", "parts": [{"text": full_prompt}]}],
         "generationConfig": {"responseModalities": ["IMAGE"]},
     }
 
@@ -2543,7 +2655,7 @@ async def generate_side_hero_image(
 
     for attempt in range(MAX_RETRIES):
         try:
-            async with session.post(url, json=payload) as response:
+            async with session.post(url, json=payload, headers=headers) as response:
                 if response.status == 200:
                     result = await response.json()
                     candidates = result.get("candidates", [])
@@ -2562,6 +2674,9 @@ async def generate_side_hero_image(
                     wait = BACKOFF_BASE * (2 ** attempt)
                     print(f"  [side_hero] Rate limited. Waiting {wait}s...")
                     await asyncio.sleep(wait)
+                    continue
+                elif switch_to_vertex(response.status):
+                    url, headers = image_endpoint()
                     continue
                 else:
                     text = await response.text()
@@ -2595,7 +2710,7 @@ async def generate_scene_image(
 
     full_prompt = f"{prompt} {BASE_STYLE}"
 
-    url = f"{BASE_URL}/models/gemini-2.5-flash-image:generateContent?key={GEMINI_API_KEY}"
+    url, headers = image_endpoint()
 
     # Build parts list with labels so the model knows what each reference is
     parts = [
@@ -2611,13 +2726,13 @@ async def generate_scene_image(
     parts.append({"text": f"SCENE TO GENERATE: {full_prompt}"})
 
     payload = {
-        "contents": [{"parts": parts}],
+        "contents": [{"role": "user", "parts": parts}],
         "generationConfig": {"responseModalities": ["IMAGE"]},
     }
 
     for attempt in range(MAX_RETRIES):
         try:
-            async with session.post(url, json=payload) as response:
+            async with session.post(url, json=payload, headers=headers) as response:
                 if response.status == 200:
                     result = await response.json()
                     candidates = result.get("candidates", [])
@@ -2632,6 +2747,9 @@ async def generate_scene_image(
                     wait = BACKOFF_BASE * (2 ** attempt)
                     print(f"    Rate limited. Waiting {wait}s...")
                     await asyncio.sleep(wait)
+                    continue
+                elif switch_to_vertex(response.status):
+                    url, headers = image_endpoint()
                     continue
                 else:
                     text = await response.text()
@@ -2664,9 +2782,8 @@ async def generate_book_images(level: int | str, hero_only: bool = False):
         return []
 
     book = SCENE_PROMPTS[level]
-    # Handle both integer (1) and string ("1.1") level keys
-    level_str = str(level).replace(".", "_")
-    book_dir = OUTPUT_DIR / f"L{level_str}_B1"
+    # Journey-numbered folder (see book_dir_for / OLD_TO_NEW)
+    book_dir = book_dir_for(level)
     book_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"\n{'='*55}")
@@ -2803,10 +2920,12 @@ async def test_single():
 if __name__ == "__main__":
     import sys
 
-    if not GEMINI_API_KEY:
+    if not GEMINI_API_KEY and not USE_VERTEX:
         print("ERROR: GOOGLE_GEMINI_API_KEY not found in .env")
-        print("Set GOOGLE_GEMINI_API_KEY=your_key in .env")
+        print("Set GOOGLE_GEMINI_API_KEY=your_key in .env, or use the Vertex")
+        print("backend: gcloud auth login && MPB_IMAGE_BACKEND=vertex")
         sys.exit(1)
+    print(f"Image backend: {'Vertex AI (' + VERTEX_REGION + ')' if USE_VERTEX else 'Gemini API key'}")
 
     if len(sys.argv) > 1:
         arg = sys.argv[1].lower()
@@ -2829,14 +2948,15 @@ if __name__ == "__main__":
                 if second_arg == "hero":
                     asyncio.run(generate_book_images(level, hero_only=True))
                 elif second_arg.startswith("page") or second_arg == "cover":
-                    # Single page regeneration: delete existing and regenerate
-                    page_name = second_arg
-                    level_str = str(level).replace(".", "_")
-                    book_dir = OUTPUT_DIR / f"L{level_str}_B1"
-                    page_path = book_dir / f"{page_name}.png"
-                    if page_path.exists():
-                        page_path.unlink()
-                        print(f"Deleted {page_path} for regeneration")
+                    # Page regeneration: delete the named pages, then rerun the
+                    # book (existing pages are skipped, so only these regenerate).
+                    # Accepts several at once: ... L2.2 page2 page3 cover
+                    book_dir = book_dir_for(level)
+                    for page_name in (a.lower() for a in sys.argv[2:]):
+                        page_path = book_dir / f"{page_name}.png"
+                        if page_path.exists():
+                            page_path.unlink()
+                            print(f"Deleted {page_path} for regeneration")
                     asyncio.run(generate_book_images(level, hero_only=False))
                 else:
                     print("Usage: python generate_gemini_images.py L4.3 [hero|page1|page2|...|cover]")

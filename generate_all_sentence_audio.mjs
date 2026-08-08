@@ -22,15 +22,15 @@ const L2_SENTENCES = {
   "L2_1_p6": "Dad can see. I am sad.",
   "L2_1_p7": "My cat! I see it! Yay!",
   "L2_1_p8": "Day and night! I say Yay!",
-  // L2.2 Zoo Adventure
-  "L2_2_p1": "I go to the zoo with my dad. I need to see the owl!",
-  "L2_2_p2": "I look at the cows. Moo! Moo! No owl. I will look on.",
-  "L2_2_p3": "Wow! A big show. A seal can shoot a hoop! No owl.",
-  "L2_2_p4": "Ooh! I see a cool pool. Fish zoom in it. No owl.",
-  "L2_2_p5": "Boo! A big dim room. I see bats. No owl!",
-  "L2_2_p6": "I am so sad now. Then my dad calls, Look up!",
-  "L2_2_p7": "Hoo! Hoo! I look up. The owl! It is up high!",
-  "L2_2_p8": "The owl bows at me. I bow too. The zoo is so good!",
+  // L2.2 Hot Food, Cool Moon (night food market; story written 2026-07-22)
+  "L2_2_p1": "The sun dips low. I go with my mum to get food.",
+  "L2_2_p2": "It is night. Food shops in a row! Yum!",
+  "L2_2_p3": "I see a man at a big wok. Hiss! Pop! The food hops!",
+  "L2_2_p4": "Mum gets me a bowl. Ooh! It is too hot!",
+  "L2_2_p5": "I huff and puff on it. Huff! Puff! This is no fun!",
+  "L2_2_p6": "Mum said, Sit with me. See the moon!",
+  "L2_2_p7": "The moon is big and yellow! Then I dig in. It is not hot! Yum, yum, yum!",
+  "L2_2_p8": "We sit low on the mat. The night is cool. I am with my mum. It is fun!",
   // L2.3 Farm Visit
   "L2_3_p1": "We go far in the car. I can see a farm!",
   "L2_3_p2": "The farm is big! I see a yard with corn in a jar.",
@@ -204,7 +204,7 @@ function generateAudio(key, text) {
 
     const body = JSON.stringify({
       text,
-      model_id: 'eleven_monolingual_v1',
+      model_id: 'eleven_multilingual_v2',
       voice_settings: { stability: 0.75, similarity_boost: 0.75, speed: 0.85 },
     });
 

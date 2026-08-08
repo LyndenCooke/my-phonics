@@ -132,7 +132,7 @@ Sentences: 5-6 sentences per page
 
 **Level 1 (10 books complete):** Tap! Tap! Tap!, The Mud on the Dog, The Fish in the Tank, The Red Socks, Run Pup Run!, Fox Fell Off!, The Jam Jug, The Yak and the Box, Chop Chop Chop!, Buzz and Sing!
 
-**Level 2 (5 books):** The Night Light, Moo at the Zoo, Morning on the Farm, The Fair in the Air, Round and Round
+**Level 2 (5 books):** The Night Light, Hot Food, Cool Moon, Morning on the Farm, The Fair in the Air, Round and Round
 
 **Level 3 (2 complete):** The Big Bike Race, The Stone Flute
 

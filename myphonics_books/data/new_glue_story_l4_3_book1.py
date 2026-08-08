@@ -68,7 +68,13 @@ NEW_GLUE_STORY_BOOK1 = {
             {
                 "page_number": 7,
                 "text": '"That cat!" said Dad. They cleaned up all the glue and the mess. The girl wiped the blue stain off the desk. The cat just sat and chewed its fur clean.',
-                "image_prompt": "A girl and her dad clean up a messy bedroom with cloths and a bucket. The ginger cat sits licking blue glue off its fur. Colourful room with craft supplies on the desk. They look tired but amused. Landscape orientation.",
+                # SAME bedroom as page 1 — salmon-pink walls, cream/pink TILED
+                # floor, low patchwork bed (no headboard), curtained window,
+                # mountain picture, low light-wood craft table.  The canonical
+                # wording lives in GLUE_BEDROOM in generate_gemini_images.py;
+                # the two pages drifted into different rooms when this prompt
+                # said only "a messy bedroom" (Lynden 2026-07-26).
+                "image_prompt": "A girl and her dad clean up the blue glue mess on the low light-wood craft table with cloths. The ginger cat sits on the tiled floor licking blue glue off its fur. Same bedroom as page 1: salmon-pink walls, cream and dusty-pink tiled floor, low bed with cream/blue/orange patchwork quilt and no headboard, curtained window on the left, framed mountain picture. They look tired but amused. Landscape orientation.",
             },
             {
                 "page_number": 8,
@@ -79,6 +85,13 @@ NEW_GLUE_STORY_BOOK1 = {
         "cover_prompt": "A girl in yellow dungarees holds a pot of blue glue with a mischievous grin. A ginger cat with blue glue stuck on its fur sits beside her. Colourful Mexican home interior with warm walls, terracotta tiles, and potted plants. Portrait orientation.",
         "story_words": ["glue", "blue", "new", "drew", "threw", "grew"],
         "tricky_words_used": ["the", "to", "he", "her", "you", "me", "they", "fall", "said", "was", "she", "all", "so", "into"],  # 'hall', 'wall', 'front', 'kitchen' removed via rewrites
+        # -ed is left to the page-2 Future Sounds cell in THIS book (Lynden
+        # 2026-07-26: "just leave the ed sound as future sounds in this
+        # book").  So: no page-3 -ed guide, and no hand-authored "How -ed
+        # sounds at the end" note either — that note was retired 2026-07-25
+        # when the guide went fleet-wide, and the guide is now opted out.
+        "show_ed_guide": False,
+        "pronunciation_notes": [],
         "read_words": ["chew", "rescue", "flew", "true"],  # -ed forms removed 2026-07-13 — ed says /d/, untaught until L7
         "nonsense_words": [
             "plew", "snew", "tew", "bew", "gew",

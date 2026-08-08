@@ -64,6 +64,30 @@ as magic-e per the marks ruling) and words whose e is consumed by a taught
 grapheme (stared = st-are-d once 'are' lands, rescued = ue+d, need = ee+d).
 Implementation: the ed-honesty check in `missing_units` (v2_helpers).
 
+**-ed guide (Lynden 2026-07-25):** the Future Sounds band can only carry ONE
+`ed` cell with ONE example, but below L7 the child can read NONE of a story's
+-ed words. Page 3 therefore carries a fixed **three-row guide** under the
+Tricky Words strip — the three ways -ed is said, each with its reason:
+
+| | | |
+|---|---|---|
+| `started → start-id` | /id/ | an 'id' beat, after a t or d |
+| `turned → turn'd` | /d/ | a soft 'd', after a vowel or a soft sound |
+| `walked → walk't` | /t/ | a quick 't', after a sharp sound like p, k or ch |
+
+Apostrophe = no extra beat, hyphen = an extra beat — the same distinction
+§7's marks make. **Do NOT list every -ed word in the book** (built that way
+first and rejected: "dont put every word but give the 3 example of the
+different ways it can be said and why"). Learn the three rules and every -ed
+word opens up. Each row's example is drawn from THIS book where it uses one,
+else a stock word (wanted / played / jumped).
+
+Built by `build_ed_guide` (v2_helpers) and gated by `missing_units`, so it
+can never disagree with the band: the honest exceptions above (stared,
+smiled) are decodable and never used as examples, and tricky words (looked,
+asked, called) are told from the strip instead. Per-book hand-authored "How
+-ed sounds at the end" notes are retired — the guide supersedes them.
+
 ## 4. Tricky (red) words
 
 Doctrine: **tricky = a word whose pronunciation nothing else explains.**
@@ -81,6 +105,27 @@ tricky at all.
   master list (new at level, review from previous level, or ahead of
   schedule). Book-specific one-offs ("bush", "with", "souq") ride in the
   story dict's `tricky_words_used`.
+- **No ahead-of-schedule flagging from L7 (2026-07-26, Lynden on 7.2: "a lot
+  of the tricky words have be done so many times... they should already know
+  them").** Below L7 a word listed at a LATER level is still flagged — it
+  genuinely isn't decodable yet. From L7 only words introduced at THAT level
+  are pre-taught: a fluent Year-2 reader meets "again"/"water" constantly, and
+  flagging them as new on a Level 7 page is noise. Implemented as `_ahead_ok`
+  in generate_book.py.
+- **Book-specific tricky words must not repeat across books (2026-07-26).** A
+  word in a story dict's `tricky_words_used` with no level on the master list
+  can never graduate, so it is re-flagged in every book that lists it (`want`
+  fired in 5.4, 6.2 AND 7.3; `where` in 6.4, 7.2 AND 7.4). Fix in this order:
+  1. If the repeats span DIFFERENT levels, give the word a home level on the
+     master list = the level of the first book that introduces it (`want`→L5,
+     `where`→L6, `through`→L7). The graduation rule then hides it everywhere
+     later, for free.
+  2. If they repeat WITHIN one level (`eyes`/`heart` across two L7 books), no
+     home level can separate them — delete the word from the LATER book's
+     `tricky_words_used` instead.
+  Check the blast radius before homing: a master-listed word is auto-detected
+  from story TEXT in every book, so a common word can appear where it never
+  did before (`over`→L7 leaked into 6.1 and 7.2 and was backed out).
 - **Graduation on display (2026-07-13, "Near the Door" catch):** a word is
   never SHOWN as tricky in a book whose taught window honestly decodes it
   (`has_graduated` in `audit_tricky_words.py` — can_decode + curated
@@ -121,15 +166,43 @@ the rule.
   grapheme is never a magic-e vowel (purse's u belongs to ur).
 - **Final units — always ONE unit, never letter dots** (ruled 2026-07-12):
   - `-le` (purple, little) — defers to able/ible.
-  - `-ed` (turned = turn + ed) — /d/ /t/ /id/; guards: length ≥5, not a
-    magic-e stem (liked keeps i-e).
+  - `-ed` (turned = turn + ed) — ONE unit ONLY for the /d/ (turned) and /t/
+    (jumped) pronunciations; guards: length ≥5, not a magic-e stem (liked
+    keeps i-e).  **EXCEPTION (Lynden 2026-07-22): when the letter before -ed
+    is `t` or `d`, the ending says /id/ = TWO phonemes** (pointed = p-oi-n-t-i-d,
+    wanted, landed, needed) — mark it as an e-dot + d-dot, NOT one under-arc.
+    The page-2 Future Sounds caption for these reads "ed — sounds like 'id'
+    in <word>".
   - `-se` (purse, house, cheese) and `-ve` (give, love): the silent e NEVER
     gets its own dot. Merge only when the preceding vowel is consumed by a
     digraph or a consonant precedes s/v — a lone vowel before s/v means
     magic-e (close, wave, five).
+- **Shifty diamond in books (2026-07-26, Lynden on 6.4's "furry"):** a taught
+  letter making one of its OTHER sounds gets the slate `#475569` DIAMOND, not a
+  dot — "the y in cheeky is the /ee/ sound... it is a shifty sound and not a
+  original sound". Live for word-final y: /ee/ (furry, happy) and /igh/ (my,
+  fly). Never fires when the y belongs to a taught digraph — day/way/toy/joy
+  keep their `ay`/`oy` under-line. This brings books in line with the word
+  cards, which have diamond-marked alt pronunciations since the deck was built.
+  `y` = /ee/ and /igh/ were restored to `shifty_sounds.json` for it (they were
+  pulled 2026-07-03 pending "per-book Watch Out notes" — the diamond IS that
+  explanation). Only `alternative_pronunciation` cards may ever earn it (§5).
+- **A shifty unit may be MORE THAN ONE LETTER (Lynden 2026-08-06, on 8.4's
+  "gorgeous"):** "/ge/ is the shifty sound, it sounds like /j/, not just the g
+  on its own." So gorgeous reads g - or - **ge** - ous, the diamond is centred
+  BETWEEN the two letters, there is no under-line on the pair, and the e gets no
+  dot of its own. Note this is a deliberate exception to the "alternative
+  SPELLINGS keep their ordinary mark" line in §5 — ruled twice, so do not
+  "correct" it back. Implemented per-book via `extra_button_units` in the story
+  dict (8.4 declares `["ge"]`), NOT by adding ge to the grapheme ladder: the
+  ladder would re-segment large, change and village across all 33 books and add
+  a cell to every L8 sound chart. The diamond's x is the centre of the whole
+  unit in `book_v2.html`, so single-letter diamonds are unaffected.
 - Implementation: `split_into_phonemes` + `_compute_marks` in
   `v2_helpers.py`; interactive mirror: `TappableWord.tsx` `MULTI_LETTER`
   (includes le, ed, se, ve). Print and interactive must never disagree.
+  **The diamond is print-only so far — the interactive reader still dots a
+  final y. That is live 4-surface drift (§9), not a settled state.**
 
 ## 8. Alien (nonsense) words
 

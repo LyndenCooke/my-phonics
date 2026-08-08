@@ -56,7 +56,7 @@ BELONGING_STORY_BOOK1 = {
                     "Soon the market was full of people. "
                     "There was more to see than I had ever seen! "
                     "Dad went to explore the stands. "
-                    "'Wait at this stand,' he said. "
+                    "\"Wait at this stand,\" he said. "
                     "But then I could not see him."
                 ),
             },
@@ -74,9 +74,9 @@ BELONGING_STORY_BOOK1 = {
                 "text": (
                     "Then a boy appeared at my side. "
                     "He had a big grin on his face. "
-                    "'Are you lost?' he said. "
+                    "\"Are you lost?\" he said. "
                     "I nodded. "
-                    "'I will help you. We can spot him!'"
+                    "\"I will help you. We can spot him!\""
                 ),
             },
             {
@@ -85,7 +85,7 @@ BELONGING_STORY_BOOK1 = {
                     "We went from section to section. "
                     "He knew the direction to go. "
                     "He picked up a big yellow mango. "
-                    "'Pure sunshine!' he grinned. "
+                    "\"Pure sunshine!\" he grinned. "
                     "I could not help but smile back."
                 ),
             },
@@ -103,8 +103,8 @@ BELONGING_STORY_BOOK1 = {
                 "text": (
                     "Then the boy stopped. "
                     "He pointed down the street. "
-                    "'Dad must be near!' he said. "
-                    "'Let’s go, we can spot him fast!' "
+                    "\"Dad must be near!\" he said. "
+                    "\"Let’s go, we can spot him fast!\" "
                     "I felt a rush in my chest."
                 ),
             },
@@ -114,8 +114,8 @@ BELONGING_STORY_BOOK1 = {
                     "Dad picked me up and held me tight. "
                     "I had been so tired and scared. "
                     "But not any more. "
-                    "'This boy helped me,' I said. "
-                    "Dad smiled. 'Then he must see us again soon.'"
+                    "\"This boy helped me,\" I said. "
+                    "Dad smiled. \"Then he must see us again soon.\""
                 ),
             },
         ],

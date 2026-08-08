@@ -290,7 +290,7 @@ LOUD_TOY_STORY_BOOK1 = {
             "watercolour textured backgrounds, clean black-outlined characters. "
             "No text, words, or letters in the image. Portrait format."
         ),
-        "story_words": ["around", "loud", "out", "shouted", "found", "toy", "joy", "zoomed"],
+        "story_words": ["around", "loud", "out", "found", "toy", "joy"],  # 'shouted'/'zoomed' dropped: -ed not decodable here, taught via the note
         "tricky_words_used": ["I", "my", "we", "she", "said", "you", "to", "the", "me", "no"],
         "read_words": ["out", "shout", "round", "toy"],
         "nonsense_words": [
@@ -310,17 +310,11 @@ LOUD_TOY_STORY_BOOK1 = {
         # Lynden 2026-07-15: the story leans on -ed past tense, which isn't a
         # taught sound yet and says three different things — explain it in
         # short rather than leaving the child to guess.
-        "pronunciation_notes": [
-            {
-                "title": "Watch Out — the -ed ending",
-                "body": (
-                    "-ed on the end of a word shows it already happened. "
-                    "It is not a new sound to stretch — it says /d/, /t/ or /id/. "
-                    "Read the word, then add the ending quickly."
-                ),
-                "examples": ["zoomed → zoom-d", "looked → look-t", "shouted → shout-id"],
-            },
-        ],
+        # Retired 2026-07-25 — page 3 now builds this guide automatically for
+        # every book with untaught -ed words (build_ed_guide in v2_helpers),
+        # drawing the examples from the book itself.  This note's wording is
+        # the one it generalises from; keeping it printed the lesson twice.
+        "pronunciation_notes": [],
         "character": {
             "name": "Icelandic boy",
             "age": "5 years old",

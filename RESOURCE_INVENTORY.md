@@ -171,7 +171,7 @@ Use this document to understand every resource in the programme and how they con
 
 ### L4 — Longer Sounds (6 Storybooks)
 1. SB-L4.1 — The Night Light (focus: ay, ee, igh)
-2. SB-L4.2 — Moo at the Zoo (focus: ow, oo)
+2. SB-L4.2 — Hot Food, Cool Moon (focus: ow, oo)
 3. SB-L4.3 — Morning on the Farm (focus: ar, or)
 4. SB-L4.4 — The Fair in the Air (focus: air, ir)
 5. SB-L4.5 — Round and Round (focus: ou, oy)
@@ -373,7 +373,7 @@ Resources are grouped into blocks within each level. A block typically has 3–6
 6. Sound Book: ow (blow)
 7. Sound Book: oo (zoo)
 8. Sound Book: oo (look)
-9. **Storybook: Moo at the Zoo** (requires Sound Books 6–8)
+9. **Storybook: Hot Food, Cool Moon** (requires Sound Books 6–8)
 10. Sound Book: ar
 11. Sound Book: or
 12. **Blending Book 9** — ow oo ar or (requires Sound Books 6–8, 10–11)

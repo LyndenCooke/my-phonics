@@ -21,7 +21,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l4-1'],
     hold: ['I need a light.', 'I see my toy cat!'],
     listen: ['It is night.', 'I hug my toy cat.'],
-    questions: [null, null, null],
+    questions: ['What did I see at the end?', 'Did Dad help me look?', 'Was it night or day?'],
     useGrammar: { chips: ['and', 'day', 'night', 'see', 'light'], scene: '/storyart/l4_1/page3.png', pos: '50% 45%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l4_1/page7.png', pos: '50% 45%' },
     ladders: [
@@ -31,13 +31,13 @@ const BOOKS: W2BookData[] = [
   },
   {
     num: 2,
-    title: 'Moo at the Zoo',
-    spellPractise: ['zoo', 'cow', 'owl', 'moo', 'cool', 'you'],
+    title: 'Hot Food, Cool Moon',
+    spellPractise: ['food', 'moon', 'bowl', 'cool', 'low', 'you'],
     grammar: ['g-l4-2'],
-    hold: ['I look at the cow.', 'I see a cool pool.'],
-    listen: ['I look up.', 'The owl bows at me.'],
-    questions: [null, null, null],
-    useGrammar: { chips: ['and', 'zoo', 'owl', 'cool', 'moo'], scene: '/storyart/l4_2/page4.png', pos: '50% 50%' },
+    hold: ['I see a man at a big wok.', 'Mum gets me a bowl.'],
+    listen: ['It is too hot!', 'The night is cool.'],
+    questions: ['What did Mum get me?', 'Why did I huff and puff?', 'Was the moon big?'],
+    useGrammar: { chips: ['and', 'food', 'moon', 'cool', 'bowl'], scene: '/storyart/l4_2/page4.png', pos: '50% 50%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write what happens, in order.',
       scene: '/storyart/l4_2/page7.png',
@@ -49,8 +49,8 @@ const BOOKS: W2BookData[] = [
       ],
     },
     ladders: [
-      { sound: 'oo', word: 'zoo', sentence: 'I see a cool pool.' },
-      { sound: 'ow', word: 'cow', sentence: 'The owl bows at me.' },
+      { sound: 'oo', word: 'food', sentence: 'The night is cool.' },
+      { sound: 'ow', word: 'low', sentence: 'Food shops in a row!' },
     ],
   },
   {
@@ -60,7 +60,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l4-4'],
     hold: ['The farm is big!', 'I get a torch for the dark.'],
     listen: ['Now it is dark.', 'I can see a farm!'],
-    questions: [null, null, null],
+    questions: ['What did I get for the dark?', 'Did I find a kid in the barn?', 'Was the farm big?'],
     useGrammar: { chips: ['and', 'farm', 'barn', 'corn', 'dark'], scene: '/storyart/l4_3/page5.png', pos: '50% 50%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l4_3/page7.png', pos: '50% 50%' },
     ladders: [
@@ -75,7 +75,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l4-3'],
     hold: ['The air is cool.', 'I win the pair!'],
     listen: ['I go to the fair!', 'I sit in a chair.'],
-    questions: [null, null, null],
+    questions: ['What did I win at the fair?', 'Did the sir find my pair?', 'Was the fair fun?'],
     useGrammar: { chips: ['and', 'fair', 'air', 'pair', 'hair'], scene: '/storyart/l4_4/page2.png', pos: '50% 45%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write what happens, in order.',
@@ -99,7 +99,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l4-5'],
     hold: ['I went out with my toy car.', 'It got loud!'],
     listen: ['But it ran too far!', 'I shouted out loud.'],
-    questions: [null, null, null],
+    questions: ['What did I lose?', 'Did Mum help me look for my toy?', 'Did I shout when we found my toy?'],
     useGrammar: { chips: ['and', 'out', 'loud', 'toy', 'joy'], scene: '/storyart/l4_5/page2.png', pos: '50% 50%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l4_5/page7.png', pos: '50% 45%' },
     ladders: [
@@ -114,7 +114,6 @@ const BOOKS: W2BookData[] = [
     grammar: [],
     hold: ['I see lots of lamps.', 'The moon is low and round.'],
     listen: ['It is night!', 'The air is cool.'],
-    questions: [null, null, null],
     useGrammar: { chips: ['and', 'night', 'fair', 'moon', 'cool'], scene: '/storyart/l4_6/page3.png', pos: '50% 50%' },
     revisit: [
       { kind: 'rewrite', label: 'Join the two ideas with and', refs: [{ sourceUnit: 'G-L4.1', rowRef: 2 }] },
@@ -157,12 +156,12 @@ export const L4_DATA: W2LevelData = {
   swykAnswers: 'The cat is big and soft. I jump and sing. Tuesday. End marks: . ! ? . foxes; wishes; buzzing.',
   spellings: [
     { title: 'The Night Light', words: ['high', 'day', 'light', 'see', 'night', 'my', 'was', 'all'] },
-    { title: 'Moo at the Zoo', words: ['zoo', 'cow', 'owl', 'moo', 'cool', 'you', 'they', 'are'] },
+    { title: 'Hot Food, Cool Moon', words: ['food', 'moon', 'bowl', 'cool', 'low', 'you', 'they', 'are'] },
     { title: 'Morning on the Farm', words: ['farm', 'barn', 'corn', 'dark', 'torch', 'they', 'her', 'was'] },
     { title: 'The Fair in the Air', words: ['fair', 'air', 'pair', 'hair', 'sir', 'was', 'my', 'all'] },
     { title: 'Round and Round', words: ['out', 'shout', 'loud', 'toy', 'joy', 'boy', 'you', 'are'] },
     { title: 'The Night Fair', words: ['night', 'fair', 'cool', 'moon', 'corn', 'shout', 'her', 'they'] },
-    { title: 'Half-term test', words: ['light', 'zoo', 'farm', 'fair', 'out', 'moon', 'was', 'they'] },
+    { title: 'Half-term test', words: ['light', 'food', 'farm', 'fair', 'out', 'moon', 'was', 'they'] },
   ],
   grownUps: [
     { title: 'Little and often', body: 'One page a day, about five minutes, after the day\'s reading or sound book. Never push on to a second page.' },

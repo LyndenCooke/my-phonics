@@ -49,7 +49,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             {
                 "page_number": 1,
                 "text": (
-                    "Yusuf sat on the front steps of his apartment block and frowned at the street below. "
+                    "Yusuf sat on the front steps of his block of flats and frowned at the street below. "
                     "Rows of cream-coloured blocks lined the road, and cars honked in the hot afternoon heat. "
                     "From the market around the corner, he could hear the calls of vendors and the clatter of carts. "
                     "\"Nothing glorious or fabulous ever happens here,\" he muttered. \"This place is so ordinary.\" "
@@ -70,7 +70,7 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
                 "page_number": 2,
                 "text": (
                     "\"You look like somebody who thinks they have seen everything there is to see,\" said Uncle Tarek with a smile. "
-                    "Yusuf shrugged. \"I live here. It is just houses, traffic, and the same old market.\" "
+                    "Yusuf shrugged. \"I live here. It is just houses, traffic and the same old market.\" "
                     "His uncle had a luminous look in his eyes, as if he knew something tremendous. "
                     "\"I have spent my whole life travelling to marvellous places,\" he said, leaning forward. "
                     "\"And I am going to tell you something, Yusuf. This is one of the most glorious cities on Earth.\""

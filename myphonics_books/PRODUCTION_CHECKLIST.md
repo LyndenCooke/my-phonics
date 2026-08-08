@@ -89,7 +89,7 @@ This file tracks which books have been completed AND contains the master plan fo
 | Book | Title | Focus Sounds | Character | Culture | Theme | Status |
 |------|-------|--------------|-----------|---------|-------|--------|
 | L2.1 B1 | The Night Light | ay, ee, igh | Custom (East Asian, Japan) | Japanese garden | Overcoming fear of the dark / wonder | COMPLETE |
-| L2.2 B1 | Moo at the Zoo | ow, oo | Custom (girl in red cap) | Zoo (generic) | Patience / persistence | COMPLETE |
+| L2.2 B1 | Hot Food, Cool Moon | ow, oo | Custom (girl + mum, both in hijab, UK night market) | England (revert family) | Patience / persistence | COMPLETE (rewritten + re-illustrated 2026-07-22; PDF, interactive text/art/audio, L4 workbook all re-synced — not yet published to Supabase) |
 | L2.2 B1 | The Shadow Show | ow, oo | Custom | UK home | Creative play | COMPLETE |
 | L2.3 B1 | Morning on the Farm | ar, or | Custom (Kenyan highlands farm boy) | Kenyan highlands farm | Wonder at nature / aspiration | COMPLETE |
 | L2.4 B1 | The Fair in the Air | air, ir | CHAR-E (mixed heritage boy) | British village fair | Asking for help / gratitude | COMPLETE |

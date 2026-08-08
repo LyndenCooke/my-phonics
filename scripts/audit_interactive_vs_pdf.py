@@ -32,7 +32,7 @@ PY_FILES: dict[str, str] = {
     "L1.9":  "chop_chop_story_l1_9_book1",
     "L1.10": "buzz_sing_story_l1_10_book1",
     "L2.1":  "night_light_story_l2_1_book1",
-    "L2.2":  "moo_zoo_story_l2_2_book1",
+    "L2.2":  "hot_food_cool_moon_story_l2_2_book1",
     "L2.3":  "bark_dark_story_l2_3_book1",
     "L2.4":  "fair_air_story_l2_4_book1",
     "L2.5":  "loud_toy_story_l2_5_book1",

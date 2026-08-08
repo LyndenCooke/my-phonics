@@ -91,7 +91,7 @@ NEAR_THE_DOOR_STORY_BOOK1 = {
             },
             {
                 "page_number": 8,
-                "text": "Snow dusted my coat as I ran back to the door. Dad waited there, warm from the fire and keen to hear. \"I saw a fox, a rabbit, and a deer!\" We sat on the floor indoors and read at the fire.",
+                "text": "Snow dusted my coat as I ran back to the door. Dad waited there, warm from the fire and keen to hear. \"I saw a fox, a rabbit and a deer!\" We sat on the floor indoors and read at the fire.",
                 "perspective": "BOTH",
                 "image_prompt": "The open front door of the Scandinavian log cabin, late afternoon. Dad (Swedish man, short brown hair, slight stubble, grey wool sweater with Nordic pattern at the neckline) holds the wooden door wide open with a warm, welcoming smile. Astrid (same outdoor outfit: blonde braids, cream Nordic hat, red jumper, dark blue winter coat, red scarf, blue mittens, brown boots — now lightly dusted with snow on her coat and hat, extra rosy cheeks, happy smile) stands on the wooden threshold stepping inside. Warm orange firelight spills out onto the snowy step. Inside behind Dad: wooden armchair, wood-burning stove glowing, sheepskin rug, wooden floors. Outside: snow falling thickly in the soft late-afternoon light, snow-covered pines beyond the garden. Landscape orientation. Warm children's book illustration style.",
             },

@@ -59,7 +59,7 @@ GPCs taught (RWI Set 2 primary spellings): ay, ee, igh, ow (blow), oo (zoo), oo 
 | Book | Title | Focus sounds | Status |
 |---|---|---|---|
 | L4.1 | The Night Light | ay, ee, igh | PDF published (`Level4/4_1`) |
-| L4.2 | Moo at the Zoo | ow, oo | PDF published (`Level4/4_2`) |
+| L4.2 | Hot Food, Cool Moon | ow, oo | PDF published (`Level4/4_2`) |
 | L4.3 | Morning on the Farm | ar, or | PDF published (`Level4/4_3`) |
 | L4.4 | The Fair in the Air | air, ir | PDF published (`Level4/4_4`) |
 | L4.5 | Round and Round | ou, oy | PDF published (`Level4/4_5`) |
