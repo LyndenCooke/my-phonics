@@ -32,12 +32,11 @@ const COUNTRY_COORDS: Record<string, [number, number]> = {
   Nepal: [84.1, 28.4], "Trinidad and Tobago": [-61.2, 10.7], Iceland: [-19.0, 64.9],
   Thailand: [100.99, 15.87], "South Korea": [127.8, 36.5], Sweden: [18.6, 60.1],
   Colombia: [-74.3, 4.6],
-  // The Jam Jug's souk is a region the story never pins to one country.
-  "Middle Eastern souk": [39.0, 31.0],
 };
 
 // ISO-3166 alpha-2 for flag artwork. Anything absent renders a warm fallback
-// badge instead (the souk, deliberately).
+// badge instead — reserved for a future pin whose story genuinely names no
+// country (none currently do; the Jam Jug was the last one, now Saudi Arabia).
 const COUNTRY_ISO: Record<string, string> = {
   "United Kingdom": "gb", "United States": "us", "Saudi Arabia": "sa",
   "United Arab Emirates": "ae", Egypt: "eg", Pakistan: "pk", India: "in",

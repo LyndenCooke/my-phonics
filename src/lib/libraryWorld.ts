@@ -38,7 +38,10 @@ export const LIBRARY_WORLD: LibraryWorldBook[] = [
   { legacySub: "L5.1", title: "Before the Shore", slug: "before-the-shore", country: "United Kingdom", flag: "🇬🇧", setting: "A North London Jewish community" },
 
   // ── windows on the world ─────────────────────────────────────────
-  { legacySub: "L1.7", title: "The Jam Jug", slug: "the-jam-jug", country: "Middle Eastern souk", flag: "🏺", setting: "A jam stall in a bustling souk" },
+  // Given the Saudi flag by Lynden's ruling (2026-08-09) — the story itself
+  // only ever says "outdoor market (souk)" with no country named, so this
+  // was the one pin with no flag until he chose one explicitly.
+  { legacySub: "L1.7", title: "The Jam Jug", slug: "the-jam-jug", country: "Saudi Arabia", flag: "🇸🇦", setting: "A bustling souk" },
   { legacySub: "L1.8", title: "The Yak and the Box", slug: "the-yak-and-the-box", country: "Nepal", flag: "🇳🇵", setting: "A Himalayan village in Nepal" },
   { legacySub: "L1.9", title: "Chop, Chop, Chop!", slug: "chop-chop-chop", country: "Pakistan", flag: "🇵🇰", setting: "A family kitchen in Pakistan" },
   { legacySub: "L1.10", title: "Buzz and Sing!", slug: "buzz-and-sing", country: "Trinidad and Tobago", flag: "🇹🇹", setting: "A Caribbean garden in Trinidad" },
