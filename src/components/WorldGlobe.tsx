@@ -108,22 +108,37 @@ export default function WorldGlobe({
     };
   }, [rot, R, cx, cy]);
 
-  // Real coastlines. Rings are split at the limb: only front-facing runs are
-  // drawn, each closed as its own subpath so the fill stays inside the land.
-  const landPaths = useMemo(() => {
-    const out: string[] = [];
+  // Real coastlines with clean horizon handling. The first pass split each
+  // ring into front-facing runs and closed them individually — the implicit
+  // closing chords painted slivers along the limb and stray shapes near the
+  // horizon (Lynden 2026-08-08: "looks a bit glitchy"). Now every ring stays
+  // CLOSED: back-hemisphere points are pushed outward to the horizon circle
+  // in the direction they project, the whole path is clipped to the globe
+  // disc, and rings with no visible points are skipped entirely (otherwise a
+  // fully-hidden continent would wrap the rim and flood-fill the planet).
+  // fillRule="evenodd" makes hole rings real holes — the Caspian reads as
+  // water instead of vanishing into the land fill.
+  const landPath = useMemo(() => {
+    let d = "";
     for (const ring of WORLD_LAND) {
-      let d = "", open = false;
-      for (const [lon, lat] of ring) {
-        const q = project(lon, lat);
-        if (!q.front) { open = false; continue; }
-        d += `${open ? "L" : "M"}${q.x.toFixed(1)},${q.y.toFixed(1)} `;
-        open = true;
+      const pts = ring.map(([lon, lat]) => project(lon, lat));
+      if (!pts.some((q) => q.front)) continue;
+      let seg = "";
+      for (let i = 0; i < pts.length; i++) {
+        const q = pts[i];
+        let x = q.x, y = q.y;
+        if (!q.front) {
+          const dx = x - cx, dy = y - cy;
+          const len = Math.hypot(dx, dy) || 1;
+          x = cx + (dx / len) * R * 1.001;
+          y = cy + (dy / len) * R * 1.001;
+        }
+        seg += `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
       }
-      if (d) out.push(d);
+      d += seg + "Z";
     }
-    return out;
-  }, [project]);
+    return d;
+  }, [project, cx, cy, R]);
 
   const graticule = useMemo(() => {
     const out: string[] = [];
@@ -214,16 +229,19 @@ export default function WorldGlobe({
         {graticule.map((d, i) => (
           <path key={`g${i}`} d={d} fill="none" stroke="#ffffff" strokeOpacity={0.16} strokeWidth={0.5} />
         ))}
-        {landPaths.map((d, i) => (
+        <clipPath id="wg-globe-clip">
+          <circle cx={cx} cy={cy} r={R} />
+        </clipPath>
+        <g clipPath="url(#wg-globe-clip)">
           <path
-            key={`l${i}`}
-            d={`${d}Z`}
+            d={landPath}
             fill="#b6e3a0"
+            fillRule="evenodd"
             stroke="#7ec983"
             strokeWidth={0.6}
             strokeLinejoin="round"
           />
-        ))}
+        </g>
         <circle cx={cx} cy={cy} r={R} fill="url(#wg-shade)" />
         <circle cx={cx} cy={cy} r={R} fill="none" stroke="#7dd3fc" strokeOpacity={0.8} strokeWidth={1.2} />
 
@@ -254,6 +272,10 @@ export default function WorldGlobe({
                   <clipPath id={`wg-clip-${COUNTRY_ISO[pin.country]}`}>
                     <circle r={r} />
                   </clipPath>
+                  {/* under the image: never a blank white badge while the
+                      flag artwork is still loading (or blocked) */}
+                  <circle r={r} fill="#e2e8f0" />
+                  <text y={r * 0.38} textAnchor="middle" fontSize={r} opacity={0.9}>{pin.flag}</text>
                   <image
                     href={flag}
                     x={-r * 1.35} y={-r} width={r * 2.7} height={r * 2}

@@ -50,7 +50,10 @@ export const LIBRARY_WORLD: LibraryWorldBook[] = [
   { legacySub: "L3.2", title: "Lost at the Night Market", slug: "lost-at-the-night-market", country: "Thailand", flag: "🇹🇭", setting: "A Bangkok night market" },
   { legacySub: "L3.3", title: "Reach for the Treat!", slug: "reach-for-the-treat", country: "Ghana", flag: "🇬🇭", setting: "A residential compound in Accra" },
   { legacySub: "L3.4", title: "Draw It Again", slug: "draw-it-again", country: "South Korea", flag: "🇰🇷", setting: "An art room in Seoul" },
-  { legacySub: "L3.5", title: "The Boat with the Red Sail", slug: "the-boat-with-the-red-sail", country: "Spain", flag: "🇪🇸", setting: "A harbour on the Spanish coast" },
+  // NOT Spain: the story is set in Port of Spain, TRINIDAD (Gulf of Paria
+  // waterfront) — a grep for "of Spain" matched the city name and mis-pinned
+  // it to Europe until Lynden caught it (2026-08-08).
+  { legacySub: "L3.5", title: "The Boat with the Red Sail", slug: "the-boat-with-the-red-sail", country: "Trinidad and Tobago", flag: "🇹🇹", setting: "The Gulf of Paria waterfront, Port of Spain" },
   { legacySub: "L4.1", title: "The Purple Purse", slug: "the-purple-purse", country: "Turkey", flag: "🇹🇷", setting: "The streets of Istanbul" },
   { legacySub: "L4.3", title: "The New Glue", slug: "the-new-glue", country: "Mexico", flag: "🇲🇽", setting: "A family home in Oaxaca" },
   { legacySub: "L4.4", title: "The Cheeky Monkey", slug: "the-cheeky-monkey", country: "Malaysia", flag: "🇲🇾", setting: "Putrajaya, Malaysia" },
