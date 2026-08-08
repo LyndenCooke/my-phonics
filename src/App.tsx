@@ -19,6 +19,9 @@ import NotFound from "./pages/NotFound";
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Learn = lazy(() => import("./pages/Learn"));
 const Index = lazy(() => import("./pages/Index"));
+// Not lazy: these are printed QR landings, so they must resolve on the first
+// paint rather than after a chunk fetch. The component is a bare <Navigate>.
+import PrintRedirect from "./pages/PrintRedirect";
 const Resources = lazy(() => import("./pages/Resources"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
@@ -42,6 +45,13 @@ const Prototype = lazy(() => import("./pages/Prototype"));
 const JourneyMapDemo = lazy(() => import("./pages/JourneyMapDemo"));
 const Teachers = lazy(() => import("./pages/Teachers"));
 const TeachersLibrary = lazy(() => import("./pages/TeachersLibrary"));
+// Create-A-Book — custom family-made phonics books + community gallery.
+// Powered by the local forge API (dev server only for now).
+const CreateBook = lazy(() => import("./pages/CreateBook"));
+const WorldOfBooks = lazy(() => import("./pages/WorldOfBooks"));
+// Create-A-Worksheet — the worksheet-forge machine on the web (dev server only,
+// API at /api/worksheet-forge).
+const CreateWorksheet = lazy(() => import("./pages/CreateWorksheet"));
 
 // Lazy-loaded funnel pages
 const LinkTree = lazy(() => import("./pages/funnels/LinkTree"));
@@ -65,6 +75,7 @@ const PartnersList = lazy(() => import("./pages/admin/PartnersList"));
 const TasksList = lazy(() => import("./pages/admin/TasksList"));
 const AnalyticsDashboard = lazy(() => import("./pages/admin/AnalyticsDashboard"));
 const FeedbackList = lazy(() => import("./pages/admin/FeedbackList"));
+const CustomBooksQueue = lazy(() => import("./pages/admin/CustomBooksQueue"));
 // School preview — RWI-aligned 8-level system in development.
 // Admin-gated; entirely self-contained under src/school/.
 const AppSchool = lazy(() => import("./school/AppSchool"));
@@ -146,6 +157,15 @@ function RoutesWithTransition() {
             <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
             <Route path="/learn" element={<Suspense fallback={<AdminFallback />}><Learn /></Suspense>} />
             <Route path="/library" element={<Index />} />
+            {/* /b/* — permanent QR targets printed inside books. These paths
+                are frozen forever; only their destinations may change.
+                See src/pages/PrintRedirect.tsx and
+                myphonics_books/data/print_qr_registry.json. Order matters:
+                the literal paths must precede /b/:id. */}
+            <Route path="/b/check" element={<PrintRedirect target="check" />} />
+            <Route path="/b/library" element={<PrintRedirect target="library" />} />
+            <Route path="/b/:id/worksheets" element={<PrintRedirect target="worksheets" />} />
+            <Route path="/b/:id" element={<PrintRedirect target="book" />} />
             <Route path="/resources" element={<Suspense fallback={<AdminFallback />}><Resources /></Suspense>} />
             <Route path="/welcome" element={<Suspense fallback={<AdminFallback />}><Welcome /></Suspense>} />
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
@@ -170,6 +190,10 @@ function RoutesWithTransition() {
             <Route path="/prototype/journey" element={<Suspense fallback={<AdminFallback />}><JourneyMapDemo /></Suspense>} />
             {/* TPT teacher pass — single shared code unlocks the whole library
                 with no email/signup. See migration 20260518000000_teacher_codes.sql */}
+            {/* Create-A-Book + World of Books (custom family-made books) */}
+            <Route path="/create-book" element={<Suspense fallback={<AdminFallback />}><CreateBook /></Suspense>} />
+            <Route path="/world-of-books" element={<Suspense fallback={<AdminFallback />}><WorldOfBooks /></Suspense>} />
+            <Route path="/create-worksheet" element={<Suspense fallback={<AdminFallback />}><CreateWorksheet /></Suspense>} />
             <Route path="/teachers" element={<Suspense fallback={<AdminFallback />}><Teachers /></Suspense>} />
             <Route path="/teachers/library" element={<Suspense fallback={<AdminFallback />}><TeachersLibrary /></Suspense>} />
             {/* Funnels — clean URLs */}
@@ -194,6 +218,7 @@ function RoutesWithTransition() {
                 <Route path="/admin/tasks" element={<Suspense fallback={<AdminFallback />}><TasksList /></Suspense>} />
                 <Route path="/admin/analytics" element={<Suspense fallback={<AdminFallback />}><AnalyticsDashboard /></Suspense>} />
                 <Route path="/admin/feedback" element={<Suspense fallback={<AdminFallback />}><FeedbackList /></Suspense>} />
+                <Route path="/admin/custom-books" element={<Suspense fallback={<AdminFallback />}><CustomBooksQueue /></Suspense>} />
               </Route>
             </Route>
             {/* School-facing product — public marketing + signup + authenticated
