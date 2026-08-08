@@ -1,28 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { createPortal } from "react-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { BookHeart, BookOpen, Globe2, Heart, Layers, Loader2, Lock, Sparkles, X } from "lucide-react";
-import { forgeApi, type CustomBook, type CustomBookPage } from "@/lib/forgeApi";
+import { BookHeart, BookOpen, Globe2, Heart, Loader2, Lock, Printer, Sparkles, Star, X } from "lucide-react";
+import Layout from "@/components/Layout";
+import { supabase } from "@/integrations/supabase/client";
+import { forgeApi, type CustomBook } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
-// Level colours come from the ledger (src/lib/levels8.ts), never hand-copied
-// hexes — the chips must match the banner colour on the books themselves.
 import { getJourneyLevel } from "@/lib/levels8";
-import { LIBRARY_WORLD, libraryCoverUrl, libraryJourneyLevel } from "@/lib/libraryWorld";
+import { LIBRARY_WORLD, libraryCoverUrl, libraryJourneyLevel, type LibraryWorldBook } from "@/lib/libraryWorld";
 
 /**
- * The World of Books — every story's place on the planet.
+ * The World of Books — spin the globe, tap a flag, meet the books that live
+ * there.
  *
- * Two kinds of book share one globe and one shelf:
- *   · the PRINTED LIBRARY (src/lib/libraryWorld.ts) — Lynden's 33 books, each
- *     pinned to the country its story lives in (the early levels are mostly
- *     UK; the later fleet is the open-window-on-the-world strand), and
- *   · FAMILY-MADE books from Create-A-Book, admin-approved before they appear.
+ * Page shape (Lynden 2026-08-08): globe first, Wall of Love underneath, and
+ * NO book grid until a flag is tapped — then that country's shelf appears
+ * between them. Tapping a book never dumps you in the library: a small
+ * chooser offers "Read online" (deep-links /library?book=<id>, which
+ * auto-opens the interactive reader and respects unlocks) or "Print at home"
+ * (the A5 PDF). Lives inside <Layout> like every other app page, so the
+ * sidebar and bottom tabs stay.
  *
- * Styled to the site's own warm daylight look — cream paper, sky pastels,
- * brand pink accents (Lynden 2026-08-08: the night-sky version "looks off").
- * Motion stays: stagger-reveals, hover lifts, one shine sweep. Nothing dark,
- * nothing that reads as a different website.
+ * The Wall of Love here is the REAL one — the same `public_testimonials`
+ * view as /love and the landing carousel, consented quotes only, in the same
+ * paper-and-stickers style. Nothing invented.
  */
 
 interface ShelfBook {
@@ -34,33 +37,59 @@ interface ShelfBook {
   flag: string;
   cover: string | null;
   subtitle: string;
-  custom?: CustomBook; // family books keep their row for the reader/PDF
-  href?: string;       // library books link into the library
+  lib?: LibraryWorldBook;
+  custom?: CustomBook;
 }
 
+interface Testimonial {
+  id: string;
+  rating: number | null;
+  quote: string;
+  first_name: string | null;
+}
+
+const STICKER = "0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)";
+const TILTS = [-1.5, 1, -0.5, 1.5, -1, 0.5];
+const ACCENTS = ["#E84B8A", "#F59E0B", "#22C55E", "#3B82F6", "#8B5CF6", "#14B8A6"];
+
 export default function WorldOfBooks() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [access, setAccess] = useState(false);
   const [books, setBooks] = useState<CustomBook[]>([]);
-  const [wall, setWall] = useState<CustomBookPage[]>([]);
   const [reading, setReading] = useState<CustomBook | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [pdfBusyId, setPdfBusyId] = useState<string | null>(null);
-  const [view, setView] = useState<"globe" | "levels">("globe");
+  const [pdfBusy, setPdfBusy] = useState(false);
   const [country, setCountry] = useState<string | null>(null);
-  const [levelFilter, setLevelFilter] = useState<number | null>(null);
+  const [chooser, setChooser] = useState<ShelfBook | null>(null);
+  const [quotes, setQuotes] = useState<Testimonial[] | null>(null);
   const email = localStorage.getItem("forge_email");
 
-  const load = () => {
+  useEffect(() => {
     forgeApi
       .world(email)
-      .then((r) => { setAccess(r.access); setBooks(r.books); setWall(r.wall); })
+      .then((r) => { setAccess(r.access); setBooks(r.books); })
+      .catch(() => { /* world still renders with the library alone */ })
       .finally(() => setLoading(false));
-  };
-  useEffect(load, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // One shelf: the printed library first (it IS the world today), then the
-  // family-made books as they earn their place.
+  // Real testimonials — same view as /love; consented quotes only.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const { data } = await (supabase as unknown as {
+        from: (t: string) => {
+          select: (c: string) => { order: (k: string, o: { ascending: boolean }) => { limit: (n: number) => Promise<{ data: Testimonial[] | null }> } };
+        };
+      })
+        .from("public_testimonials")
+        .select("id, rating, quote, first_name")
+        .order("submitted_at", { ascending: false })
+        .limit(9);
+      if (alive) setQuotes(data ?? []);
+    })();
+    return () => { alive = false; };
+  }, []);
+
   const shelf: ShelfBook[] = useMemo(() => [
     ...LIBRARY_WORLD.map((b): ShelfBook => ({
       key: `lib-${b.legacySub}`,
@@ -71,7 +100,7 @@ export default function WorldOfBooks() {
       flag: b.flag,
       cover: libraryCoverUrl(b),
       subtitle: b.setting,
-      href: `/library?book=${b.slug}`,
+      lib: b,
     })),
     ...books.map((b): ShelfBook => ({
       key: `fam-${b.id}`,
@@ -81,7 +110,7 @@ export default function WorldOfBooks() {
       country: b.country || null,
       flag: b.country_flag || "🌍",
       cover: b.pages?.[0]?.imageUrl || b.cover || null,
-      subtitle: `${b.child_name}'s own book · "${b.focus_sound}"`,
+      subtitle: `${b.child_name}'s own book`,
       custom: b,
     })),
   ], [books]);
@@ -97,375 +126,297 @@ export default function WorldOfBooks() {
     return [...by.values()].sort((a, b) => b.count - a.count);
   }, [shelf]);
 
-  const levelCounts = useMemo(() => {
-    const by = new Map<number, number>();
-    for (const b of shelf) by.set(b.level, (by.get(b.level) || 0) + 1);
-    return [...by.entries()]
-      .sort((a, b) => a[0] - b[0])
-      .map(([level, count]) => ({ level, count, colour: getJourneyLevel(level)?.hex || "#64748b" }));
-  }, [shelf]);
-
-  const visibleBooks = useMemo(
-    () => shelf.filter((b) =>
-      (!country || b.country === country) &&
-      (levelFilter === null || b.level === levelFilter)),
-    [shelf, country, levelFilter],
+  const countryBooks = useMemo(
+    () => (country ? shelf.filter((b) => b.country === country) : []),
+    [shelf, country],
   );
 
-  const familyCount = books.length;
-
-  const unlock = async () => {
-    setBusy(true);
-    try {
-      const r = await forgeApi.checkout({ kind: "world", email: email || undefined });
-      if (r.url) window.location.href = r.url;
-      else setBusy(false);
-    } catch {
-      setBusy(false);
+  // "Read online": the library reader for printed books (deep link respects
+  // each family's unlocks), the custom reader for family-made ones.
+  const readOnline = (b: ShelfBook) => {
+    setChooser(null);
+    if (b.kind === "library") {
+      navigate(`/library?book=${b.lib!.legacySub}`);
+      return;
     }
+    if (b.custom?.pages && access) setReading(b.custom);
   };
 
-  const unlockFree = async () => {
-    setBusy(true);
-    try {
-      const testEmail = email || "test@localhost";
-      localStorage.setItem("forge_email", testEmail);
-      await forgeApi.simulatePay({ kind: "world", email: testEmail });
-      setAccess(true);
-      forgeApi.world(testEmail).then((r) => { setBooks(r.books); setWall(r.wall); });
-    } finally {
-      setBusy(false);
+  const printBook = async (b: ShelfBook) => {
+    setChooser(null);
+    if (b.kind === "library") {
+      window.open(`/book-pdfs/${b.lib!.legacySub.slice(1).replace(".", "_")}.pdf`, "_blank");
+      return;
     }
-  };
-
-  const openFamilyBook = async (b: CustomBook) => {
-    if (!access || !b.pages) return;
-    setPdfBusyId(b.id);
+    if (!b.custom || !access) return;
+    setPdfBusy(true);
     try {
-      const { url } = await forgeApi.pdf(b.id);
+      const { url } = await forgeApi.pdf(b.custom.id);
       window.open(url, "_blank");
     } catch {
-      setReading(b);
+      setReading(b.custom); // no PDF in prod → the online reader
     } finally {
-      setPdfBusyId(null);
+      setPdfBusy(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-[#FDF8F7] to-[#FDF8F7] pb-24 [font-family:Outfit,system-ui,sans-serif]">
-      {/* ------------------------------------------------ daylight hero --- */}
-      <div className="relative overflow-hidden pt-12">
-        {/* soft brand-colour fields, faint enough to stay paper */}
-        <div aria-hidden className="pointer-events-none absolute -left-40 -top-24 h-[26rem] w-[26rem] rounded-full opacity-[0.10] blur-3xl"
-          style={{ background: "radial-gradient(circle, #E84B8A, transparent 65%)" }} />
-        <div aria-hidden className="pointer-events-none absolute -right-40 top-16 h-[24rem] w-[24rem] rounded-full opacity-[0.12] blur-3xl"
-          style={{ background: "radial-gradient(circle, #38bdf8, transparent 65%)" }} />
+    <Layout>
+      <div className="mx-auto max-w-5xl px-4 pb-16">
+        {/* ---------------------------------------------------- header --- */}
+        <div className="pt-6 text-center sm:pt-10">
+          <div className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary-ink">
+            <Globe2 className="h-3.5 w-3.5" /> The World of Books
+          </div>
+          <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            Every book takes you somewhere
+          </h1>
+          <p className="mx-auto mt-2 max-w-lg text-muted-foreground">
+            Spin the globe and tap a flag to meet the books that live there — from our own
+            library, and made by families like yours.
+          </p>
+        </div>
 
-        <div className="relative mx-auto max-w-5xl px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-sky-600 shadow-sm">
-              <Globe2 className="h-3.5 w-3.5" /> Every story lives somewhere
-            </div>
-            <h1 className="mx-auto max-w-3xl text-4xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
-              The World{" "}
-              <span className="bg-gradient-to-r from-pink-500 via-rose-400 to-amber-400 bg-clip-text text-transparent">
-                of Books
-              </span>
-            </h1>
-            <p className="mx-auto mt-3 max-w-xl text-lg leading-relaxed text-slate-500">
-              Every pin is a real book and the place its story calls home — our own library from
-              Britain to the Blue Mountains, plus books made by families like yours.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to="/create-book"
-                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-violet-200 transition hover:shadow-xl"
-              >
-                <Sparkles className="h-4 w-4 transition group-hover:rotate-12" /> Put your child on the map — £3
-              </Link>
-            </div>
-          </motion.div>
-
+        {/* ----------------------------------------------------- globe --- */}
+        <div className="relative mt-6">
           {loading ? (
-            <div className="flex justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-sky-300" /></div>
+            <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground/40" /></div>
           ) : (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.6 }} className="mt-8">
-              <div className="mb-5 flex justify-center">
-                <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 shadow-sm">
-                  {([["globe", Globe2, "Globe"], ["levels", Layers, "Levels"]] as const).map(([v, Icon, label]) => (
-                    <button
-                      key={v}
-                      onClick={() => setView(v)}
-                      className={`inline-flex items-center gap-1.5 rounded-full px-5 py-1.5 text-sm font-bold transition ${
-                        view === v ? "bg-slate-900 text-white shadow" : "text-slate-500 hover:text-slate-800"
-                      }`}
-                    >
-                      <Icon className="h-3.5 w-3.5" /> {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <>
+              <WorldGlobe pins={globePins} selected={country} onSelect={setCountry} />
 
-              {view === "globe" && (
-                <div className="relative">
-                  <WorldGlobe pins={globePins} selected={country} onSelect={setCountry} />
-
-                  {/* Tap a flag → that country's books pop up right here, no
-                      hunting the shelf below (Lynden 2026-08-08). */}
-                  <AnimatePresence>
-                    {country && (
-                      <motion.div
-                        key={country}
-                        initial={{ opacity: 0, y: 14, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                        transition={{ duration: 0.22, ease: "easeOut" }}
-                        className="mx-auto mt-4 max-w-xl rounded-3xl border border-slate-200 bg-white p-4 text-left shadow-xl shadow-slate-200/70 sm:absolute sm:right-0 sm:top-10 sm:mt-0 sm:w-72"
-                      >
-                        <div className="mb-3 flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 font-black text-slate-900">
-                            {flagUrl(country) && (
-                              <img src={flagUrl(country)!} alt="" className="h-4.5 w-6 rounded-[3px] object-cover ring-1 ring-slate-900/10" />
-                            )}
-                            <span className="truncate">{country}</span>
-                          </div>
-                          <button onClick={() => setCountry(null)} aria-label="Close"
-                            className="rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
-                            <X className="h-4 w-4" />
-                          </button>
-                        </div>
-                        <div className="flex max-h-80 flex-col gap-2 overflow-y-auto pr-1">
-                          {shelf.filter((b) => b.country === country).map((b) => {
-                            const lvlColour = getJourneyLevel(b.level)?.hex || "#64748b";
-                            const locked = b.kind === "family" && !access;
-                            const row = (
-                              <>
-                                {b.cover ? (
-                                  <img src={b.cover} alt="" className={`h-16 w-12 shrink-0 rounded-lg object-cover ring-1 ring-slate-900/10 ${locked ? "blur-[2px]" : ""}`} />
-                                ) : (
-                                  <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100"><BookHeart className="h-5 w-5 text-slate-300" /></div>
-                                )}
-                                <div className="min-w-0 flex-1">
-                                  <div className="truncate text-sm font-extrabold text-slate-900">{b.title}</div>
-                                  <div className="truncate text-xs text-slate-500">{b.subtitle}</div>
-                                  <span className="mt-1 inline-block rounded-full px-2 py-px text-[10px] font-black text-white" style={{ backgroundColor: lvlColour }}>
-                                    Level {b.level}
-                                  </span>
-                                </div>
-                                {locked && <Lock className="h-4 w-4 shrink-0 self-center text-slate-300" />}
-                              </>
-                            );
-                            const rowClass = "flex w-full items-start gap-3 rounded-2xl p-2 text-left transition hover:bg-sky-50";
-                            return b.kind === "library" ? (
-                              <Link key={b.key} to={b.href!} className={rowClass}>{row}</Link>
-                            ) : (
-                              <button key={b.key} onClick={() => openFamilyBook(b.custom!)} className={rowClass}>{row}</button>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-
-              {view === "levels" && (
-                <div className="mx-auto flex max-w-2xl flex-wrap justify-center gap-2.5 py-6">
-                  <button
-                    onClick={() => setLevelFilter(null)}
-                    className={`rounded-full px-5 py-2 text-sm font-bold transition ${
-                      levelFilter === null
-                        ? "bg-slate-900 text-white shadow-md"
-                        : "border border-slate-200 bg-white text-slate-600 shadow-sm hover:border-slate-300"
-                    }`}
+              {/* Tap a flag → that country's books pop up beside the globe */}
+              <AnimatePresence>
+                {country && (
+                  <motion.div
+                    key={country}
+                    initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="mx-auto mt-4 max-w-xl rounded-3xl border border-border bg-white p-4 text-left shadow-lg sm:absolute sm:right-0 sm:top-6 sm:mt-0 sm:w-72"
                   >
-                    All levels
-                  </button>
-                  {levelCounts.map(({ level, colour, count }) => (
-                    <button
-                      key={level}
-                      onClick={() => setLevelFilter(levelFilter === level ? null : level)}
-                      style={levelFilter === level
-                        ? { backgroundColor: colour, boxShadow: `0 6px 18px ${colour}55` }
-                        : { borderColor: `${colour}66`, color: colour }}
-                      className={`rounded-full border px-5 py-2 text-sm font-bold transition ${
-                        levelFilter === level ? "border-transparent text-white" : "bg-white shadow-sm hover:shadow"
-                      }`}
-                    >
-                      Level {level} <span className="opacity-60">· {count}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </motion.div>
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 font-display font-extrabold text-foreground">
+                        {flagUrl(country) && (
+                          <img src={flagUrl(country)!} alt="" className="h-4 w-6 rounded-[3px] object-cover ring-1 ring-foreground/10" />
+                        )}
+                        <span className="truncate">{country}</span>
+                      </div>
+                      <button onClick={() => setCountry(null)} aria-label="Close"
+                        className="rounded-full p-1 text-muted-foreground transition hover:bg-muted">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <p className="mb-2 text-xs text-muted-foreground">Tap a book to read it online or print it at home.</p>
+                    <div className="flex max-h-72 flex-col gap-1.5 overflow-y-auto pr-1">
+                      {countryBooks.map((b) => (
+                        <button key={b.key} onClick={() => setChooser(b)}
+                          className="flex w-full items-start gap-3 rounded-2xl p-2 text-left transition hover:bg-primary/5">
+                          {b.cover ? (
+                            <img src={b.cover} alt="" className="h-16 w-12 shrink-0 rounded-lg object-cover ring-1 ring-foreground/10" />
+                          ) : (
+                            <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-muted"><BookHeart className="h-5 w-5 text-muted-foreground/40" /></div>
+                          )}
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-extrabold text-foreground">{b.title}</span>
+                            <span className="block truncate text-xs text-muted-foreground">{b.subtitle}</span>
+                            <span className="mt-1 inline-block rounded-full px-2 py-px text-[10px] font-extrabold text-white"
+                              style={{ backgroundColor: getJourneyLevel(b.level)?.hex || "#64748b" }}>
+                              Level {b.level}
+                            </span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
           )}
         </div>
-      </div>
 
-      {/* ------------------------------------------------------- shelf --- */}
-      <div className="relative mx-auto mt-8 max-w-5xl px-4">
-        {!loading && (
-          <>
-            {!access && familyCount > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                className="mb-8 flex flex-col items-center gap-3 rounded-3xl border border-amber-200 bg-amber-50/70 p-6 text-center shadow-sm"
-              >
-                <div className="flex items-center gap-2 text-lg font-black text-slate-900">
-                  <Lock className="h-5 w-5 text-amber-500" /> Unlock the family-made books
-                </div>
-                <p className="max-w-md text-sm leading-relaxed text-slate-600">
-                  £10, once — read all {familyCount} famil{familyCount === 1 ? "y" : "ies"}' book{familyCount === 1 ? "" : "s"} and
-                  every one made after you, forever. The library books are part of your MyPhonicsBooks membership as usual.
-                </p>
-                <button
-                  onClick={unlock}
-                  disabled={busy}
-                  className="rounded-full bg-slate-900 px-8 py-2.5 font-bold text-white shadow-md transition hover:bg-slate-800 disabled:opacity-50"
-                >
-                  {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : "Unlock — £10, once"}
-                </button>
-                {import.meta.env.DEV && (
-                  <button onClick={unlockFree} disabled={busy} className="text-xs text-slate-400 underline-offset-2 hover:underline">
-                    🧪 dev: unlock free
-                  </button>
-                )}
-              </motion.div>
-            )}
-
-            {(country || levelFilter !== null) && (
-              <div className="mb-5 flex items-center justify-center gap-2 text-sm text-slate-500">
-                <span>
-                  {visibleBooks.length} book{visibleBooks.length === 1 ? "" : "s"}
-                  {country ? ` from ${country}` : ""}
-                  {levelFilter !== null ? ` at Level ${levelFilter}` : ""}
-                </span>
-                <button
-                  onClick={() => { setCountry(null); setLevelFilter(null); }}
-                  className="rounded-full bg-slate-200 px-3 py-0.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-300"
-                >
-                  Clear
+        {/* ------------------------------------- shelf (only when tapped) --- */}
+        <AnimatePresence>
+          {country && countryBooks.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.3 }}
+              className="mt-10"
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-foreground">
+                  {flagUrl(country) && <img src={flagUrl(country)!} alt="" className="h-5 w-7 rounded-[3px] object-cover ring-1 ring-foreground/10" />}
+                  Books from {country}
+                </h2>
+                <button onClick={() => setCountry(null)}
+                  className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground transition hover:bg-border">
+                  Close
                 </button>
               </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
-              {visibleBooks.map((b, idx) => {
-                const lvlColour = getJourneyLevel(b.level)?.hex || "#64748b";
-                const locked = b.kind === "family" && !access;
-                const card = (
-                  <>
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+                {countryBooks.map((b, idx) => (
+                  <motion.button
+                    key={b.key}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05, duration: 0.35 }}
+                    whileHover={{ y: -6 }}
+                    onClick={() => setChooser(b)}
+                    className="group overflow-hidden rounded-2xl bg-white text-left shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
+                  >
                     <div className="relative overflow-hidden">
                       {b.cover ? (
-                        <img
-                          src={b.cover}
-                          alt=""
-                          loading="lazy"
-                          className={`aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.04] ${locked ? "blur-[3px] brightness-90" : ""}`}
-                        />
+                        <img src={b.cover} alt="" loading="lazy"
+                          className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
                       ) : (
-                        <div className="flex aspect-[3/4] w-full items-center justify-center bg-slate-100">
-                          <BookHeart className="h-8 w-8 text-slate-300" />
-                        </div>
+                        <div className="flex aspect-[3/4] w-full items-center justify-center bg-muted"><BookHeart className="h-8 w-8 text-muted-foreground/40" /></div>
                       )}
-                      <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                      <div
-                        className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[11px] font-black text-white shadow"
-                        style={{ backgroundColor: lvlColour }}
-                      >
+                      <div className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[11px] font-extrabold text-white shadow"
+                        style={{ backgroundColor: getJourneyLevel(b.level)?.hex || "#64748b" }}>
                         L{b.level}
                       </div>
                       {b.kind === "family" && (
-                        <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-violet-600 shadow-sm">
-                          <Heart className="mr-0.5 inline h-2.5 w-2.5 fill-violet-500 text-violet-500" /> family-made
-                        </div>
-                      )}
-                      {locked && (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="rounded-full bg-slate-900/50 p-2.5 backdrop-blur-sm"><Lock className="h-5 w-5 text-white" /></div>
-                        </div>
-                      )}
-                      {b.custom && pdfBusyId === b.custom.id && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/60">
-                          <Loader2 className="h-7 w-7 animate-spin text-violet-600" />
+                        <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
+                          <Heart className="mr-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> family-made
                         </div>
                       )}
                     </div>
-                    <div className="p-3 text-left">
-                      <div className="truncate text-sm font-extrabold text-slate-900">{b.title}</div>
-                      <div className="mt-0.5 truncate text-xs text-slate-500">{b.flag} {b.subtitle}</div>
+                    <div className="p-3">
+                      <div className="truncate text-sm font-extrabold text-foreground">{b.title}</div>
+                      <div className="mt-0.5 truncate text-xs text-muted-foreground">{b.subtitle}</div>
                     </div>
-                  </>
-                );
-                const shellClass =
-                  "group relative block overflow-hidden rounded-2xl bg-white text-left shadow-md shadow-slate-200/70 ring-1 ring-slate-900/5 transition-shadow hover:shadow-xl hover:shadow-slate-300/70";
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ------------------------------- read online / print chooser ---
+            Portalled to <body>: the route-transition wrapper carries a CSS
+            transform, which turns position:fixed into "fixed inside the
+            transformed box" — the card centred against the whole page height
+            and landed off-screen (same trap the shop modals hit; see
+            feedback_mpb memory "modals portal to body"). */}
+        {createPortal(<AnimatePresence>
+          {chooser && (
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 p-4 backdrop-blur-sm"
+              onClick={() => setChooser(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: 12 }}
+                transition={{ duration: 0.2 }}
+                className="w-full max-w-sm rounded-3xl bg-white p-5 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-start gap-3">
+                  {chooser.cover && <img src={chooser.cover} alt="" className="h-24 w-[4.5rem] rounded-xl object-cover ring-1 ring-foreground/10" />}
+                  <div className="min-w-0 flex-1">
+                    <div className="font-display text-lg font-extrabold leading-tight text-foreground">{chooser.title}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{chooser.subtitle}</div>
+                    <span className="mt-1.5 inline-block rounded-full px-2 py-px text-[10px] font-extrabold text-white"
+                      style={{ backgroundColor: getJourneyLevel(chooser.level)?.hex || "#64748b" }}>
+                      Level {chooser.level}
+                    </span>
+                  </div>
+                  <button onClick={() => setChooser(null)} aria-label="Close"
+                    className="rounded-full p-1 text-muted-foreground transition hover:bg-muted"><X className="h-4 w-4" /></button>
+                </div>
+                {chooser.kind === "family" && !access ? (
+                  <div className="mt-4 rounded-2xl bg-amber-50 p-4 text-center">
+                    <Lock className="mx-auto h-5 w-5 text-amber-500" />
+                    <p className="mt-1.5 text-sm text-muted-foreground">
+                      Family-made books unlock with World of Books access.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-4 grid grid-cols-2 gap-2.5">
+                    <button onClick={() => readOnline(chooser)}
+                      className="flex flex-col items-center gap-1.5 rounded-2xl bg-primary px-3 py-4 font-bold text-primary-foreground shadow-md transition hover:opacity-90">
+                      <BookOpen className="h-6 w-6" />
+                      <span className="text-sm">Read online</span>
+                    </button>
+                    <button onClick={() => printBook(chooser)} disabled={pdfBusy}
+                      className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-white px-3 py-4 font-bold text-foreground transition hover:border-foreground/30 disabled:opacity-50">
+                      {pdfBusy ? <Loader2 className="h-6 w-6 animate-spin" /> : <Printer className="h-6 w-6" />}
+                      <span className="text-sm">Print at home</span>
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>, document.body)}
+
+        {/* ---------------------------------------------- wall of love --- */}
+        {quotes && quotes.length > 0 && (
+          <div className="mt-14">
+            <div className="text-center">
+              <h2 className="inline-flex items-center gap-2 font-display text-2xl font-extrabold tracking-tight text-foreground">
+                <Heart className="h-6 w-6 fill-primary text-primary" /> Wall of Love
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">Real words from real families.</p>
+            </div>
+            <div className="mt-6 columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:_balance]">
+              {quotes.map((t, i) => {
+                const accent = ACCENTS[i % ACCENTS.length];
                 return (
-                  <motion.div
-                    key={b.key}
-                    initial={{ opacity: 0, y: 22, rotate: idx % 2 ? 1 : -1 }}
-                    whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ delay: (idx % 4) * 0.05, duration: 0.45, ease: "easeOut" }}
-                    whileHover={{ y: -7 }}
+                  <motion.figure
+                    key={t.id}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={{ duration: 0.4, delay: (i % 3) * 0.06 }}
+                    className="mb-4 break-inside-avoid rounded-3xl bg-white p-5"
+                    style={{ boxShadow: STICKER, border: "1px solid rgba(40,30,40,0.05)", rotate: `${TILTS[i % TILTS.length]}deg` }}
                   >
-                    {b.kind === "library" ? (
-                      <Link to={b.href!} className={shellClass}>{card}</Link>
-                    ) : (
-                      <button onClick={() => openFamilyBook(b.custom!)} className={`${shellClass} w-full`}>{card}</button>
-                    )}
-                  </motion.div>
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <Star key={n} className={`h-4 w-4 ${(t.rating ?? 5) >= n ? "fill-amber-400 text-amber-400" : "text-muted-foreground/25"}`} />
+                      ))}
+                    </div>
+                    <blockquote className="mt-3 text-[15px] leading-relaxed text-foreground">“{t.quote}”</blockquote>
+                    <figcaption className="mt-4 flex items-center gap-2">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold text-white"
+                        style={{ background: accent }}>
+                        {(t.first_name?.[0] ?? "❤").toUpperCase()}
+                      </span>
+                      <span className="font-display text-sm font-extrabold text-foreground">{t.first_name ?? "A parent"}</span>
+                    </figcaption>
+                  </motion.figure>
                 );
               })}
             </div>
-
-            {familyCount === 0 && (
-              <div className="mt-10 rounded-3xl border border-dashed border-violet-200 bg-white/70 p-8 text-center">
-                <BookOpen className="mx-auto mb-2 h-8 w-8 text-violet-300" />
-                <div className="font-bold text-slate-700">The next book on this globe could be your child's</div>
-                <p className="mt-1 text-sm text-slate-500">
-                  Families' books appear here once our team has read and approved them.
-                </p>
-                <Link to="/create-book" className="mt-4 inline-flex items-center gap-2 rounded-full bg-violet-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-violet-700">
-                  <Sparkles className="h-4 w-4" /> Create their book — £3
-                </Link>
-              </div>
-            )}
-
-            {wall.length > 0 && (
-              <div className="mt-16">
-                <motion.div initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
-                  <h2 className="inline-flex items-center gap-2.5 text-3xl font-black tracking-tight text-slate-900">
-                    <Heart className="h-7 w-7 fill-rose-500 text-rose-500" /> Wall of Love
-                  </h2>
-                  <p className="mt-1 text-sm text-slate-500">The stars behind the stories.</p>
-                </motion.div>
-                <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  {wall.map((p, idx) => (
-                    <motion.div
-                      key={`${p.name}-${idx}`}
-                      initial={{ opacity: 0, scale: 0.94 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true, margin: "-30px" }}
-                      transition={{ delay: (idx % 3) * 0.07 }}
-                      whileHover={{ y: -4 }}
-                      className="rounded-2xl bg-white p-4 text-center shadow-md shadow-slate-200/70 ring-1 ring-slate-900/5"
-                    >
-                      {p.heroUrl && <img src={p.heroUrl} alt="" loading="lazy" className="mx-auto h-28 w-24 rounded-xl object-cover" />}
-                      <div className="mt-2.5 font-extrabold text-slate-900">
-                        {p.name}{p.age ? `, ${p.age}` : ""} {p.countryFlag}
-                      </div>
-                      {p.country && <div className="text-xs text-slate-500">{p.country}</div>}
-                      {p.likes && <div className="mt-1 text-xs text-slate-600">loves {p.likes}</div>}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
+            <div className="mt-4 text-center">
+              <Link to="/love" className="text-sm font-semibold text-primary-ink underline-offset-4 hover:underline">
+                Read the whole wall →
+              </Link>
+            </div>
+          </div>
         )}
+
+        {/* ------------------------------------------------------- cta --- */}
+        <div className="mt-14 rounded-3xl border border-dashed border-primary/30 bg-white/70 p-8 text-center">
+          <Sparkles className="mx-auto mb-2 h-7 w-7 text-primary" />
+          <div className="font-display text-lg font-extrabold text-foreground">The next flag on this globe could be yours</div>
+          <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
+            Make a real decodable book starring your child — their name, their home, their story.
+          </p>
+          <Link to="/create-book"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md transition hover:opacity-90">
+            <Sparkles className="h-4 w-4" /> Create their book — £3
+          </Link>
+        </div>
       </div>
 
       {reading?.pages && <CustomBookReader pages={reading.pages} onClose={() => setReading(null)} />}
-    </div>
+    </Layout>
   );
 }
