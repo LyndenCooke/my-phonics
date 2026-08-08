@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, ClipboardList, Tag, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { BookOpen, BookHeart, ClipboardList, Tag, User, LogIn, Home, Heart, Printer, ShoppingBag, PanelLeftClose, PanelLeftOpen , Globe2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -20,6 +20,9 @@ const NAV = [
   // bottom bar stays at five tabs (Shop is reachable from Pricing there).
   { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },
   { path: '/shop', label: 'Shop', icon: ShoppingBag, badgeKey: null, desktopOnly: true },
+  { path: '/create-book', label: 'Create a Book', icon: BookHeart, badgeKey: null, desktopOnly: true },
+  { path: '/world-of-books', label: 'World of Books', icon: Globe2, badgeKey: null, desktopOnly: true },
+  { path: '/create-worksheet', label: 'Make a Worksheet', icon: Printer, badgeKey: null, desktopOnly: true },
 ];
 
 // Persists the desktop (lg+) sidebar collapsed/expanded preference across
