@@ -156,7 +156,16 @@ export async function handleForge(req, res) {
       const row = await db.getBook(pdfMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!row.pages) return send(res, 400, { error: "book not generated yet" });
-      const url = await renderPdf(row.id);
+      // The internal call to api/render-book-html MUST reuse the host this
+      // request actually arrived on (the real custom domain), not
+      // process.env.VERCEL_URL — VERCEL_URL always resolves to the
+      // per-deployment *.vercel.app hostname, which Vercel's Deployment
+      // Protection (SSO) blocks even in production; only custom domains are
+      // exempt. Verified live 2026-08-09: calling the production endpoint
+      // failed with "Protected deployment" until this fix.
+      const scheme = req.headers["x-forwarded-proto"] || "https";
+      const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
+      const url = await renderPdf(row.id, { origin: requestOrigin });
       return send(res, 200, { url });
     }
 

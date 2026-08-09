@@ -547,7 +547,7 @@ const pdfInFlight = new Map();
 
 export function renderPdf(bookId, opts = {}) {
   if (pdfInFlight.has(bookId)) return pdfInFlight.get(bookId);
-  const p = (IS_SERVERLESS ? renderPdfServerless(bookId) : renderPdfInner(bookId, opts))
+  const p = (IS_SERVERLESS ? renderPdfServerless(bookId, opts.origin) : renderPdfInner(bookId, opts))
     .finally(() => pdfInFlight.delete(bookId));
   pdfInFlight.set(bookId, p);
   return p;
@@ -626,13 +626,19 @@ function imageUrlsOf(book) {
 // finished book is emailed to whoever ordered it. See api/render-book-html.py
 // and pdf.mjs for why this is split this way (Playwright doesn't run on
 // Vercel's Python runtime).
-async function renderPdfServerless(bookId) {
+async function renderPdfServerless(bookId, origin) {
   const book = await getBook(bookId);
   if (!book?.pages) throw new Error("book has no pages yet");
 
   const spec = { ...buildPdfSpecCore(book), book_id: bookId, image_urls: imageUrlsOf(book) };
 
-  const origin = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
+  // MUST be the real custom-domain host the request arrived on (passed in
+  // by router.mjs), not process.env.VERCEL_URL — that always resolves to the
+  // per-deployment *.vercel.app hostname, which Vercel's Deployment
+  // Protection blocks even in production (custom domains are exempt).
+  // Verified live 2026-08-09: this fetch 401'd with "Protected deployment"
+  // until callers started passing the request's own origin through.
+  if (!origin) throw new Error("renderPdfServerless needs the request's origin (VERCEL_URL is blocked by deployment protection)");
   const htmlRes = await fetch(`${origin}/api/render-book-html`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
