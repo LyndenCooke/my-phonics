@@ -823,6 +823,82 @@ export async function findFaces(imageB64, mediaType = "image/jpeg") {
 }
 
 // The non-negotiable MPB eye rule: every eye is a solid black filled oval.
+const SCENE_QA_SCHEMA = {
+  type: "object",
+  properties: {
+    // Describe-before-judge, same discipline as the eye rule (SKILL.md §5:
+    // "a bare pass/fail rubber-stamps everything"). Answering the checklist
+    // questions in order is what makes the model actually look, rather than
+    // pattern-matching "cute kids book picture, looks fine".
+    named_objects: { type: "string", description: "Every physical thing the sentence names, and whether each is visible in the image." },
+    action_shown: { type: "string", description: "What is the character physically doing in the image, in one sentence — compare it to what the text says is happening." },
+    object_states: { type: "string", description: "For each key object visible: its declared state for this page, and whether the image matches that state or shows something earlier/later/wrong." },
+    mechanism_legible: { type: "string", description: "If the sentence describes an object physically interacting with another (fitting into, plugging, opening, breaking, pouring into, tying to, etc.): does the image draw the SECOND object/feature that the first one interacts with (e.g. a hole, gap, slot, container), and does the image show contact/alignment between them? A child who cannot read must be able to see the mechanism, not just both objects somewhere on the page. If the sentence describes no such interaction, say so and skip this check." },
+    pass: { type: "boolean" },
+    reason: { type: "string", description: "If failing: the specific, narrow thing to fix — never just 'regenerate the page'." },
+  },
+  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "pass", "reason"],
+  additionalProperties: false,
+};
+
+// The consistency check SKILL.md §5 specifies and flags as NOT BUILT — "no
+// gate checks that the pictures agree with each other or with the words".
+// 8.4's "The Thick Pen" shipped a page whose text says the pen plugs a hole
+// in the bag and whose image shows neither the hole nor the pen touching the
+// bag (Lynden 2026-08-09: "the text says X... it doesn't show that"). This
+// covers the two highest-value questions from that list — §5 Q7 (every named
+// object visible) and Q9 (the picture shows THIS sentence's action, not a
+// moment before or after) — plus key-object state (Q8/Q12), which is exactly
+// what failed here: "thick pen" was declared as "fits the gap" for this page
+// and the image drew it nowhere near the bag.
+export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "" }, mediaType = "image/jpeg") {
+  const objectLines = objectsBlock.trim() || "(no key objects declared for this page)";
+  const system =
+    "You QA a children's picture-book illustration against the page it illustrates. Describe what you literally see before judging — a bare pass/fail rubber-stamps everything, because 'a nice picture of kids in a market' looks fine at a glance even when it fails to show the actual sentence. " +
+    "Answer named_objects, action_shown, object_states and mechanism_legible with what is ACTUALLY IN THE IMAGE, not what you'd expect a good illustration to contain. Only then set pass. " +
+    "pass is FALSE if: any object the sentence names is entirely absent from the image; the image shows a moment clearly before or after the sentence's action rather than the action itself; a key object is shown in a state that contradicts its declared state for this page (e.g. declared 'not yet plugged into the hole' but the image shows it already inserted, or vice versa); or the sentence describes one object physically interacting with a second (fitting into, plugging, opening, tying, pouring, etc.) and the image does not draw that second object/feature at all, or draws both objects with no visible contact between them — an object being merely present near another is NOT the same as the image showing them interact. A child who cannot read the words must be able to point at the picture and see the specific thing the sentence describes happening. " +
+    "Minor artistic license is fine — this is not a check for a literal diagram. Fail only for a genuine, obvious mismatch a child's parent would notice.";
+  const content =
+    `PAGE TEXT: "${sceneText}"\n\nKEY OBJECTS for this page:\n${objectLines}\n\n` +
+    "Does this image show the text and the declared object states correctly?";
+  if (useOpenAI) {
+    return openaiJson({
+      model: OPENAI_FAST_MODEL,
+      system,
+      content,
+      schema: SCENE_QA_SCHEMA,
+      images: [{ b64: imageB64, mime: mediaType }],
+      maxTokens: 2000,
+    });
+  }
+  if (useVertex) {
+    return vertexGenerate({
+      model: VERTEX_FAST_MODEL,
+      system,
+      parts: [{ inlineData: { mimeType: mediaType, data: imageB64 } }, { text: content }],
+      schema: SCENE_QA_SCHEMA,
+      maxTokens: 2000,
+    });
+  }
+  const response = await (await getClient()).messages.create({
+    model: MODEL,
+    max_tokens: 1200,
+    system,
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "image", source: { type: "base64", media_type: mediaType, data: imageB64 } },
+          { type: "text", text: content },
+        ],
+      },
+    ],
+    output_config: { format: { type: "json_schema", schema: SCENE_QA_SCHEMA } },
+  });
+  const text = response.content.find((b) => b.type === "text")?.text ?? "";
+  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+}
+
 export async function eyeRuleQA(imageB64, mediaType = "image/jpeg") {
   const system = `You QA children's book illustrations for MyPhonicsBooks. The rule you check is the EYE RULE: every character or animal eye must be a small SOLID BLACK FILLED dot/oval — no white sclera, no catchlight, no glint, no highlight, no coloured iris, no outlined-but-unfilled eyes. Closed eyes (curved lines) are fine. Images with no eyes pass. Be strict: a single white pixel highlight inside an eye is a FAIL.
 Eye dots must also be PROPORTIONAL to the creature: a stray black blotch or smear on a face, or an eye dot grossly oversized for a small creature (a snail, insect or bird), is a FAIL — small creatures get minuscule dots (a snail's eyes sit at the tips of its stalks, nowhere else).

@@ -298,9 +298,16 @@ async function stepScene(book, job, i) {
     anchorBuf,
     camera,
     castRefs,
+    // The actual sentence this page illustrates, for the picture-vs-text
+    // consistency QA in generateScene — a story page always has real text,
+    // unlike the cover, which has none to check against.
+    pageText: story.pages[i].text,
   });
   job.cost += s.cost; job.breakdown.images_usd += s.cost;
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf) });
+  if (s.qa?.consistency && !s.qa.consistency.pass) {
+    console.warn(`[forge] page ${i + 1} consistency QA still failing after repair: ${s.qa.consistency.reason}`);
+  }
   const url = await saveImage(book.id, `page${i + 1}.jpg`, s.buf);
   job.sceneUrls.push(url);
   if (loc && !job.anchors[loc]) job.anchors[loc] = url;

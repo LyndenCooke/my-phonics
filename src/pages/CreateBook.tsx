@@ -87,6 +87,11 @@ export default function CreateBook() {
   const [voucher, setVoucher] = useState("");
   const [showVoucher, setShowVoucher] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
+  // Sticky, not per-click: once production tells us PDF typesetting isn't
+  // available (DEPLOY.md — needs Python + Playwright, studio-machine only),
+  // stop offering the button rather than let a family hit the same dead
+  // end twice.
+  const [pdfUnavailable, setPdfUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [worldPaid, setWorldPaid] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -375,7 +380,14 @@ export default function CreateBook() {
       const { url } = await forgeApi.pdf(book.id);
       window.open(url, "_blank");
     } catch (e) {
-      setError(String((e as Error).message));
+      const msg = String((e as Error).message);
+      if (/not available online/i.test(msg)) {
+        // Expected in production, not a fault — swap the button out instead
+        // of leaving a red alert sitting over an otherwise happy page.
+        setPdfUnavailable(true);
+      } else {
+        setError(msg);
+      }
     } finally {
       setPdfBusy(false);
     }
@@ -766,23 +778,59 @@ export default function CreateBook() {
               </div>
             )}
 
-            {step === "ready" && book?.pages && (
+            {step === "ready" && book?.pages && (() => {
+              // The book's own level (name + colour), the SAME source used
+              // to write the story — not a re-derived guess.
+              const bookLevel = levels.find((l) => l.level === book.level);
+              const levelColour = bookLevel?.colour || "#3B82F6";
+              return (
               <div className="text-center">
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500 shadow-lg">
                   <PartyPopper className="h-8 w-8 text-white" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-slate-900">{book.title}</h2>
-                <p className="mt-1 text-slate-500">by the {book.child_name} family {book.country_flag}</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">Their book is ready!</h2>
+                <p className="mt-1 text-slate-500">Made for the {book.child_name} family {book.country_flag}</p>
+
+                {/* The real MyPhonicsBooks cover template (book_v2.html
+                    .cover): level-colour top band + brand, full-bleed
+                    illustration, level-colour bottom band with the title —
+                    pixel-for-pixel the same layout as every printed cover in
+                    /public/covers/, not just the raw painted art. */}
                 <button onClick={() => setReading(true)}
-                  className="group mx-auto mt-5 block w-56 overflow-hidden rounded-2xl shadow-xl transition hover:scale-[1.02]">
-                  {book.pages[0]?.imageUrl && <img src={book.pages[0].imageUrl} alt="Cover" className="w-full" />}
+                  className="group mx-auto mt-5 block w-64 overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/5 transition hover:scale-[1.02]">
+                  <div className="flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white"
+                    style={{ backgroundColor: levelColour }}>
+                    <span>Level {book.level} · {bookLevel?.name || ""}</span>
+                    <span className="opacity-95">MyPhonicsBooks</span>
+                  </div>
+                  <div className="aspect-[3/4] w-full overflow-hidden bg-slate-100">
+                    {book.pages[0]?.imageUrl && (
+                      <img src={book.pages[0].imageUrl} alt="" className="h-full w-full object-cover" />
+                    )}
+                  </div>
+                  <div className="px-4 py-4 text-center text-white" style={{ backgroundColor: levelColour }}>
+                    <div className="text-lg font-extrabold leading-tight">{book.title}</div>
+                    <div className="mt-0.5 text-xs italic text-white/90">Level {book.level} · {bookLevel?.name || ""}</div>
+                  </div>
                 </button>
-                <button onClick={openPdf} disabled={pdfBusy}
-                  className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
-                  {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
-                </button>
+
+                {/* PDF typesetting needs Python + Playwright, which run on the
+                    studio machine only — production returns 501 (DEPLOY.md).
+                    Once that's known, the button disappears rather than
+                    inviting another dead click; "Read it here" carries the
+                    weight as the primary, permanent way to enjoy the book. */}
+                {pdfUnavailable ? (
+                  <p className="mx-auto mt-4 max-w-xs text-xs text-slate-400">
+                    Printable PDFs are coming soon — for now, enjoy the book right here.
+                  </p>
+                ) : (
+                  <button onClick={openPdf} disabled={pdfBusy}
+                    className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
+                    {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
+                  </button>
+                )}
                 <button onClick={() => setReading(true)}
-                  className="mx-auto mt-2 block rounded-full px-6 py-2 text-sm font-semibold text-violet-600 hover:bg-violet-50">
+                  className="mx-auto mt-2 block rounded-full bg-violet-50 px-6 py-2.5 text-sm font-bold text-violet-700 hover:bg-violet-100">
                   Read it here — turn the pages 📖
                 </button>
 
@@ -842,7 +890,8 @@ export default function CreateBook() {
                   </Link>
                 )}
               </div>
-            )}
+              );
+            })()}
           </motion.div>
         </AnimatePresence>
       </div>
