@@ -41,7 +41,12 @@ scenes, page by page       reference stack below; first image at a location
   ↓
 cover                      the story's own triumph moment, in the story's world
   ↓
-book_v2 PDF                real template, A5, via Playwright
+book_v2 PDF                real template, A5, via Playwright, page count by
+                           level (16pp for L1-4, 20pp for L5-8 — Lynden
+                           2026-08-09; was hardcoded to 16 for every level
+                           until then, so L5+ custom books shipped without
+                           the fuller Word Workshop / Writing Practice page
+                           set a real book at that level gets)
 ```
 
 ## 3. The reference stack
@@ -92,6 +97,7 @@ childlike, and a mum comes out looking like an older sister.
 | Eye rule | 5.4-mini | Describe what is inside each eye outline, THEN judge. Run on the whole page and again on each zoomed face crop. |
 | Decodability | **5.6-sol** | Segment each word into taught graphemes; a violation is only a position where nothing matches. |
 | Shifty marking | **5.6-sol** | Split into graphemes; list only letters making a different sound than taught. Ledger-filtered. |
+| Scene consistency | 5.4-mini | Describe named objects, the action shown, object states, AND mechanism legibility (does a described physical interaction — plugging, fitting, pouring — actually have a visible anchor in the image), THEN judge. One bounded repair regeneration on fail. |
 
 **Two rules learned the hard way about vision QA:**
 1. **Describe before judging.** A bare pass/fail rubber-stamps everything — the
@@ -102,11 +108,22 @@ childlike, and a mum comes out looking like an older sister.
 
 Both apply to any rubric-based image QA, not just eyes.
 
-### The gap — consistency QA (specified, NOT built)
+### Consistency QA — text-vs-image (BUILT 2026-08-09)
 
-No gate checks that the pictures agree with each other or with the words.
-These are the questions it should ask, each against the page image plus its
-references, and each **describe-before-judging**:
+`sceneConsistencyQA()` in `claude.mjs`, wired into `generateScene()` /
+`jobs.mjs`, covers the text-vs-image half of this list (named objects,
+action shown, object states, mechanism legibility) with one bounded repair
+regeneration on fail — see the QA gates table above. Built after "The Thick
+Pen" shipped a page where the pen was technically visible but no hole was
+drawn for it to plug, so the sentence's mechanism had no visual anchor
+(Lynden: "the text says X...it doesn't show that...shouldn't it have been
+QA'd"). Page regenerated and verified by eye against the uploaded image.
+
+**Still NOT built:** the image-vs-image half below (scene vs. location
+anchor, scene vs. hero/cast references) — nothing yet checks that a scene
+still matches its own anchor or reference sheets. These are the questions
+it should ask, each against the page image plus its references, and each
+**describe-before-judging**:
 
 **Per scene, vs the location anchor**
 1. List every fixed feature you can see (window shape and pane count, floor
@@ -236,5 +253,10 @@ gcloud, which is why it is the default.
 - **No reading-progression spec.** Nothing sets sentences per page, words per
   sentence, or required sentence types by level, so a Level 8 book can come
   back as thin as a Level 3 one.
-- **Consistency QA is unbuilt** (§5).
+- **Consistency QA only covers text-vs-image** (§5) — the image-vs-image half
+  (scene vs. anchor, scene vs. hero/cast refs) is still unbuilt.
 - **Cast references are synthetic sheets**, not first-appearance crops (§3).
+- **Story shapes can still cluster thematically even when the named shape
+  differs** — widening STORY_SHAPES (12→23) and giving the picker memory of
+  the last 5 books' shapes (2026-08-09) fixes exact repeats, not every
+  possible convergence. Worth a periodic spot-check of recent titles.
