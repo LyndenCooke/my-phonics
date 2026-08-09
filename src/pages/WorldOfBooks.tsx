@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { BookHeart, BookOpen, Globe2, Heart, Loader2, Lock, Printer, Sparkles, Star, X } from "lucide-react";
+import { BookHeart, BookOpen, Globe2, Heart, LayoutGrid, Loader2, Lock, Printer, Sparkles, Star, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,7 +14,7 @@ import { forgeApi, type CustomBook } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from "@/components/DownloadFormatDialog";
 import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
-import { getJourneyLevel } from "@/lib/levels8";
+import { getJourneyLevel, JOURNEY_LEVELS } from "@/lib/levels8";
 import { LIBRARY_WORLD, libraryCoverUrl, libraryJourneyLevel, type LibraryWorldBook } from "@/lib/libraryWorld";
 
 const InteractiveBookReader = lazy(() => import("@/components/InteractiveBookReader"));
@@ -86,6 +86,7 @@ export default function WorldOfBooks() {
   const [downloadLibraryBook, setDownloadLibraryBook] = useState<Book | null>(null);
   const [familyPdfBusy, setFamilyPdfBusy] = useState(false);
   const [country, setCountry] = useState<string | null>(null);
+  const [view, setView] = useState<"globe" | "level">("globe");
   const [chooser, setChooser] = useState<ShelfBook | null>(null);
   const [quotes, setQuotes] = useState<Testimonial[] | null>(null);
   const email = localStorage.getItem("forge_email");
@@ -208,6 +209,22 @@ export default function WorldOfBooks() {
     [shelf, country],
   );
 
+  // Level view — every book (library + family-made), grouped by journey
+  // level in ledger order, for parents who'd rather browse by what their
+  // child can actually read than spin a globe.
+  const byLevel = useMemo(() => {
+    const groups = new Map<number, ShelfBook[]>();
+    for (const b of shelf) {
+      const list = groups.get(b.level) ?? [];
+      list.push(b);
+      groups.set(b.level, list);
+    }
+    for (const list of groups.values()) list.sort((a, b) => a.title.localeCompare(b.title));
+    return JOURNEY_LEVELS
+      .map((lv) => ({ level: lv, books: groups.get(lv.level) ?? [] }))
+      .filter((g) => g.books.length > 0);
+  }, [shelf]);
+
   // Resolve a shelf entry's real Book row (library only) so the chooser can
   // show the true locked state instead of guessing.
   const realBookFor = (b: ShelfBook): Book | null =>
@@ -307,10 +324,30 @@ export default function WorldOfBooks() {
             Spin the globe and tap a flag to meet the books that live there — from our own
             library, and made by families like yours.
           </p>
+
+          {/* Globe vs. level-order toggle */}
+          <div className="mx-auto mt-5 inline-flex rounded-full bg-muted p-1">
+            <button
+              onClick={() => setView("globe")}
+              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition ${
+                view === "globe" ? "bg-white text-foreground shadow-sm" : "text-muted-foreground"
+              }`}
+            >
+              <Globe2 className="h-3.5 w-3.5" /> Globe
+            </button>
+            <button
+              onClick={() => setView("level")}
+              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-bold transition ${
+                view === "level" ? "bg-white text-foreground shadow-sm" : "text-muted-foreground"
+              }`}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" /> By level
+            </button>
+          </div>
         </div>
 
         {/* ----------------------------------------------------- globe --- */}
-        <div className="relative mt-6">
+        {view === "globe" && <div className="relative mt-6">
           {loading ? (
             <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-muted-foreground/40" /></div>
           ) : (
@@ -366,11 +403,11 @@ export default function WorldOfBooks() {
               </AnimatePresence>
             </>
           )}
-        </div>
+        </div>}
 
         {/* ------------------------------------- shelf (only when tapped) --- */}
         <AnimatePresence>
-          {country && countryBooks.length > 0 && (
+          {view === "globe" && country && countryBooks.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -426,6 +463,57 @@ export default function WorldOfBooks() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* ------------------------------------------------ level view --- */}
+        {view === "level" && (
+          <div className="mt-8 space-y-10">
+            {byLevel.map(({ level, books: levelBooks }) => (
+              <div key={level.level}>
+                <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-foreground">
+                  <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: level.hex }} />
+                  Level {level.level} · {level.name}
+                </h2>
+                <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+                  {levelBooks.map((b, idx) => (
+                    <motion.button
+                      key={b.key}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-30px" }}
+                      transition={{ delay: (idx % 8) * 0.04, duration: 0.3 }}
+                      whileHover={{ y: -6 }}
+                      onClick={() => setChooser(b)}
+                      className="group overflow-hidden rounded-2xl bg-white text-left shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
+                    >
+                      <div className="relative overflow-hidden">
+                        {b.cover ? (
+                          <img src={b.cover} alt="" loading="lazy"
+                            className="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+                        ) : (
+                          <div className="flex aspect-[3/4] w-full items-center justify-center bg-muted"><BookHeart className="h-8 w-8 text-muted-foreground/40" /></div>
+                        )}
+                        {b.flag && (
+                          <div className="absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-extrabold shadow">
+                            {b.flag}
+                          </div>
+                        )}
+                        {b.kind === "family" && (
+                          <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
+                            <Heart className="mr-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> family-made
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3">
+                        <div className="truncate text-sm font-extrabold text-foreground">{b.title}</div>
+                        <div className="mt-0.5 truncate text-xs text-muted-foreground">{b.subtitle}</div>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* ------------------------------- read online / print chooser ---
             Portalled to <body>: the route-transition wrapper carries a CSS

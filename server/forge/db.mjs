@@ -145,17 +145,31 @@ export async function updateOrderBySession(sessionId, patch) {
   return r;
 }
 
-export async function hasWorldAccess(email) {
+// World of Books access is keyed primarily by user_id now (the £10 tier
+// requires sign-in — see checkout()), with the pre-migration email match kept
+// as a fallback so orders placed before accounts existed still unlock.
+export async function hasWorldAccess({ email, userId } = {}) {
   await initDb();
-  if (!email) return false;
+  if (!email && !userId) return false;
   if (mode === "supabase") {
-    const rows = await rest(
-      `custom_book_orders?kind=eq.world&status=eq.paid&email=eq.${encodeURIComponent(email)}&select=id&limit=1`,
-    );
-    return rows.length > 0;
+    if (userId) {
+      const rows = await rest(
+        `custom_book_orders?kind=eq.world&status=eq.paid&user_id=eq.${encodeURIComponent(userId)}&select=id&limit=1`,
+      );
+      if (rows.length > 0) return true;
+    }
+    if (email) {
+      const rows = await rest(
+        `custom_book_orders?kind=eq.world&status=eq.paid&email=eq.${encodeURIComponent(email)}&select=id&limit=1`,
+      );
+      if (rows.length > 0) return true;
+    }
+    return false;
   }
-  return loadFile().custom_book_orders.some(
-    (o) => o.kind === "world" && o.status === "paid" && o.email === email,
+  const orders = loadFile().custom_book_orders;
+  return orders.some(
+    (o) => o.kind === "world" && o.status === "paid"
+      && ((userId && o.user_id === userId) || (email && o.email === email)),
   );
 }
 
