@@ -299,6 +299,12 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
 const STORY_SCHEMA = {
   type: "object",
   properties: {
+    // Forces the shape-avoidance rules below to be an explicit commitment
+    // made DURING generation, not a hope buried in prose the model may skim.
+    // Prep beats QA: a required field the writer must answer is a much
+    // stronger guardrail than another paragraph of instructions, and costs
+    // nothing extra since it rides the same call (Lynden 2026-08-09).
+    shape_fulfilment: { type: "string", description: "One sentence: what makes THIS story genuinely follow its assigned shape, and confirm it is not secretly the make-something-and-spill-it story or a string of collected/traded/swapped objects." },
     title: { type: "string" },
     setting: {
       type: "object",
@@ -359,7 +365,7 @@ const STORY_SCHEMA = {
     questions: { type: "array", items: { type: "string" } },
     alien_words: { type: "array", items: { type: "string" } },
   },
-  required: ["title", "cover_brief", "setting", "key_objects", "cast", "pages", "focus_word_examples", "tricky_words_used", "read_words", "questions", "alien_words"],
+  required: ["shape_fulfilment", "title", "cover_brief", "setting", "key_objects", "cast", "pages", "focus_word_examples", "tricky_words_used", "read_words", "questions", "alien_words"],
   additionalProperties: false,
 };
 

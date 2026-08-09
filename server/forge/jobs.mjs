@@ -173,6 +173,7 @@ async function stepStory(book, job) {
   });
   job.story = story;
   job.breakdown.story_shape = shape.name;
+  job.breakdown.shape_fulfilment = story.shape_fulfilment;
   job.cost += cost; job.breakdown.story_usd += cost;
 }
 
