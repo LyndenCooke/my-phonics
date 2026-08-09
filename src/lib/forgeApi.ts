@@ -1,5 +1,6 @@
 // Client for the local forge API (custom "Create-A-Book" pipeline).
 // The API is served by the Vite dev server at /api/forge (dev/localhost only).
+import { supabase } from "@/integrations/supabase/client";
 
 export interface ForgeLevel {
   level: number;
@@ -47,6 +48,7 @@ export interface CustomBook {
   cost_usd?: number;
   cost_breakdown?: Record<string, unknown>;
   email?: string | null;
+  user_id?: string | null;
   generating?: boolean;
   review_note?: string | null;
   created_at?: string;
@@ -56,9 +58,20 @@ export interface CustomBook {
 
 const base = "/api/forge";
 
+// Attach the signed-in user's Supabase session token, when there is one, so
+// the server can verify identity for anything account-gated (World of Books
+// access + purchase, saving a book to an account). Harmless on routes that
+// don't care — the server only checks it where it matters.
+async function authHeaders(): Promise<Record<string, string>> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  const auth = await authHeaders();
   const res = await fetch(`${base}${path}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...auth },
     ...init,
   });
   const data = await res.json();
@@ -93,6 +106,10 @@ export const forgeApi = {
   retry: (bookId: string) =>
     req<{ ok: boolean }>("/retry", { method: "POST", body: JSON.stringify({ book_id: bookId }) }),
   pdf: (bookId: string) => req<{ url: string }>(`/books/${bookId}/pdf`, { method: "POST" }),
+  // Link a created book to the signed-in account. Server verifies the
+  // bearer token itself — a missing/invalid session comes back as a 401.
+  saveToAccount: (bookId: string) =>
+    req<{ ok: boolean; book: CustomBook }>(`/books/${bookId}/save`, { method: "POST" }),
   world: (email?: string | null) =>
     req<{ access: boolean; books: CustomBook[]; wall: CustomBookPage[] }>(
       `/world${email ? `?email=${encodeURIComponent(email)}` : ""}`,

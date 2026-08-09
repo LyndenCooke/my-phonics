@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
@@ -17,10 +17,15 @@ export default function Auth() {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  // Where to land after a successful sign-in — e.g. the World of Books wizard
+  // sends guests here with ?redirect=/create-book?resume=1&want=world so they
+  // pick up right where they left off instead of losing their in-progress book.
+  const redirectTo = searchParams.get('redirect') || '/library';
 
   // ── Google OAuth ─────────────────────────────────────────────────────
   // Supabase handles the redirect dance. Successful sign-in lands the user
-  // back on /library where AuthContext picks up the session. Requires the
+  // back on `redirectTo` where AuthContext picks up the session. Requires the
   // Google provider to be enabled in the Supabase dashboard with redirect
   // URLs set to the production + preview Vercel domains.
   const handleGoogle = async () => {
@@ -28,7 +33,7 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/library` },
+        options: { redirectTo: `${window.location.origin}${redirectTo}` },
       });
       if (error) throw error;
       // signInWithOAuth redirects the page; we won't reach this line
@@ -53,10 +58,15 @@ export default function Auth() {
         const { error } = await signUp(email, password, fullName);
         if (error) throw error;
         toast({ title: 'Account created!', description: 'Please check your email to confirm your account.' });
+        // If email confirmation is off, signUp already left us a live session
+        // — carry on to redirectTo. If confirmation is required there's no
+        // session yet, but this is harmless: the destination just shows its
+        // normal signed-out state until they confirm and sign in.
+        navigate(redirectTo);
       } else {
         const { error } = await signIn(email, password);
         if (error) throw error;
-        navigate('/library');
+        navigate(redirectTo);
       }
     } catch (err: any) {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
