@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { cfg, BOOKS_DIR, REPO_ROOT } from "./env.mjs";
-import { eyeRuleQA, findFaces } from "./claude.mjs";
+import { eyeRuleQA, findFaces, sceneConsistencyQA } from "./claude.mjs";
 
 const KONTEXT_COST = 0.04; // $ per Kontext Pro image
 const KONTEXT_MAX_COST = 0.08; // $ per Kontext Max (multi-ref) image
@@ -599,7 +599,7 @@ export async function generateAnimal({ name, appearance }) {
 // - camera: how this page is framed within that established place.
 // castRefs: [{name, buf}] — character sheets for the non-hero people visible
 // on this page, injected so they look the same every time they appear.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, camera = "wide", castRefs = [] }) {
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, camera = "wide", castRefs = [], pageText = "" }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -614,7 +614,11 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
     (a.hair ? `, ${a.hair}` : "") +
     (a.outfit ? `, and wears ${a.outfit} — the SAME clothes in the SAME colours in every picture of this book` : "") +
     `. Never redress them, never change their age or size between pages, and never swap their outfit for something the scene suggests. `;
-  const fullScene = `${scene} ${heroLook} Setting reflects ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} authentically and warmly. ${NO_FLOATING_LIMBS} ${PHYSICAL_PLAUSIBILITY} ${settingBlock} ${BASE_STYLE}`;
+  // `correction` is appended only on the one repair pass consistency QA can
+  // trigger below — undefined on the normal first attempt.
+  const buildFullScene = (correction) =>
+    `${scene} ${heroLook} Setting reflects ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} authentically and warmly. ${NO_FLOATING_LIMBS} ${PHYSICAL_PLAUSIBILITY} ${settingBlock} ${BASE_STYLE}` +
+    (correction ? ` CORRECTION FROM QA — fix this specific problem, keep everything else the same: ${correction}` : "");
   const samePlace = locationRefText(camera);
   // A character the text MENTIONS is not a character who is present. Page 1 of
   // the Portugal book said the chair "was for Grandad" and the illustrator
@@ -624,48 +628,79 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       `ONLY these people and the main character are in this picture — no other family members, no bystanders. Someone the words merely mention is NOT in the frame. `
     : "THE MAIN CHARACTER IS ALONE in this picture. Draw no other people at all — no family members, no bystanders, nobody in a doorway or a window. Someone the words merely mention or talk about is NOT in the frame. ";
 
-  const gptPrompt =
-    "The first reference image is the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes) identical in the generated scene. " +
-    castText +
-    (anchorBuf
-      ? `The final reference image is the ${samePlace} `
-      : "The final reference image shows our publishing house's style for full illustrated scenes — match its rendering, texture, palette and mood exactly. ") +
-    `SCENE TO GENERATE: ${fullScene}`;
-  const gptRefs = [
-    heroUri,
-    ...castRefs.map((c) => toDataUri(c.buf, "image/png")),
-    anchorBuf ? toDataUri(anchorBuf, "image/png") : refUri(SCENE_REF_PATH),
-  ];
+  // Rebuilt per attempt so a consistency-QA repair pass (below) can append
+  // its correction to the same scene brief rather than starting from scratch.
+  const composeGen = (correction) => {
+    const fullScene = buildFullScene(correction);
+    const gptPrompt =
+      "The first reference image is the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes) identical in the generated scene. " +
+      castText +
+      (anchorBuf
+        ? `The final reference image is the ${samePlace} `
+        : "The final reference image shows our publishing house's style for full illustrated scenes — match its rendering, texture, palette and mood exactly. ") +
+      `SCENE TO GENERATE: ${fullScene}`;
+    const gptRefs = [
+      heroUri,
+      ...castRefs.map((c) => toDataUri(c.buf, "image/png")),
+      anchorBuf ? toDataUri(anchorBuf, "image/png") : refUri(SCENE_REF_PATH),
+    ];
+    const vertexParts = [
+      { text: "REFERENCE IMAGE 1 — This is the main character. Keep this character's exact appearance (face, hair, skin tone, outfit, proportions, eyes) in the generated scene:" },
+      { inlineData: { mimeType: "image/png", data: heroBuf.toString("base64") } },
+      ...castRefs.flatMap((c) => [
+        { text: `REFERENCE — this is ${c.name}, also in this scene. Keep their exact appearance: same face, same hair, same clothing in the same colours, same dot eyes:` },
+        { inlineData: { mimeType: "image/png", data: c.buf.toString("base64") } },
+      ]),
+      ...(anchorBuf
+        ? [
+            { text: `LOCATION REFERENCE — ${samePlace}` },
+            { inlineData: { mimeType: "image/png", data: anchorBuf.toString("base64") } },
+          ]
+        : [
+            { text: "STYLE REFERENCE — our publishing house's style for full illustrated scenes. Match its rendering, watercolour texture, palette and mood exactly (do NOT copy its content):" },
+            { inlineData: { mimeType: "image/png", data: fs.readFileSync(SCENE_REF_PATH).toString("base64") } },
+          ]),
+      { text: `SCENE TO GENERATE: ${fullScene}` },
+    ];
+    const openaiRefs = [
+      heroBuf,
+      ...castRefs.map((c) => c.buf),
+      anchorBuf || fs.readFileSync(SCENE_REF_PATH),
+    ];
+    return () => withFallback({
+      openai: () => openaiImage(gptPrompt, openaiRefs, "landscape_4_3"),
+      vertex: () => vertexImage(vertexParts),
+      gpt2: () => gptImage(gptPrompt, gptRefs, "landscape_4_3"),
+    }, "scene");
+  };
 
-  const vertexParts = [
-    { text: "REFERENCE IMAGE 1 — This is the main character. Keep this character's exact appearance (face, hair, skin tone, outfit, proportions, eyes) in the generated scene:" },
-    { inlineData: { mimeType: "image/png", data: heroBuf.toString("base64") } },
-    ...castRefs.flatMap((c) => [
-      { text: `REFERENCE — this is ${c.name}, also in this scene. Keep their exact appearance: same face, same hair, same clothing in the same colours, same dot eyes:` },
-      { inlineData: { mimeType: "image/png", data: c.buf.toString("base64") } },
-    ]),
-    ...(anchorBuf
-      ? [
-          { text: `LOCATION REFERENCE — ${samePlace}` },
-          { inlineData: { mimeType: "image/png", data: anchorBuf.toString("base64") } },
-        ]
-      : [
-          { text: "STYLE REFERENCE — our publishing house's style for full illustrated scenes. Match its rendering, watercolour texture, palette and mood exactly (do NOT copy its content):" },
-          { inlineData: { mimeType: "image/png", data: fs.readFileSync(SCENE_REF_PATH).toString("base64") } },
-        ]),
-    { text: `SCENE TO GENERATE: ${fullScene}` },
-  ];
-  const openaiRefs = [
-    heroBuf,
-    ...castRefs.map((c) => c.buf),
-    anchorBuf || fs.readFileSync(SCENE_REF_PATH),
-  ];
-  const gen = () => withFallback({
-    openai: () => openaiImage(gptPrompt, openaiRefs, "landscape_4_3"),
-    vertex: () => vertexImage(vertexParts),
-    gpt2: () => gptImage(gptPrompt, gptRefs, "landscape_4_3"),
-  }, "scene");
-  return generateWithEyeQA(gen, "scene");
+  let result = await generateWithEyeQA(composeGen(), "scene");
+
+  // Consistency QA — SKILL.md §5's specified-but-unbuilt check: does the
+  // picture actually show what this page's text says, in the state the
+  // director declared? Only runs when the caller supplies pageText (jobs.mjs
+  // does, for every real story page). One repair pass, bounded: a second
+  // wrong picture ships rather than looping, same doctrine as repairEyes.
+  if (pageText) {
+    try {
+      const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+      result.cost += check.cost;
+      if (!check.data.pass) {
+        const retry = await generateWithEyeQA(composeGen(check.data.reason), "scene");
+        const recheck = await sceneConsistencyQA(retry.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+        result = {
+          buf: retry.buf,
+          cost: result.cost + retry.cost + recheck.cost,
+          qa: { ...result.qa, consistency: recheck.data, consistencyRepaired: true },
+        };
+      } else {
+        result = { ...result, qa: { ...result.qa, consistency: check.data } };
+      }
+    } catch {
+      // consistency QA unavailable — ship the eye-QA'd image as before
+    }
+  }
+  return result;
 }
 
 // The cover sells THIS story, not the child's hobby list. `brief` is the

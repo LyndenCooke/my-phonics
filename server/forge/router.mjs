@@ -37,6 +37,26 @@ function send(res, status, data) {
   res.end(JSON.stringify(data));
 }
 
+// Resolves the Supabase-authenticated user from the request's bearer token,
+// or null for a guest. Used to gate the World of Books tier (must be signed
+// in to join, and to keep access) and to link a created book to an account.
+// A missing/invalid/expired token is just "not signed in" — never an error.
+async function verifyUser(req) {
+  const authz = req.headers.authorization || "";
+  const token = authz.startsWith("Bearer ") ? authz.slice(7) : null;
+  if (!token) return null;
+  try {
+    const r = await fetch(`${cfg.SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: cfg.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) return null;
+    const u = await r.json();
+    return u?.id ? { id: u.id, email: u.email || null } : null;
+  } catch {
+    return null;
+  }
+}
+
 // Public projection of a book row (no email, no internal notes).
 function publicBook(b) {
   return {
@@ -127,12 +147,12 @@ export async function handleForge(req, res) {
       return send(res, 200, r);
     }
 
-    // Render (or fetch) the real book_v2 PDF for a finished book. In
-    // production this returns 501 and the frontend falls back to the
-    // interactive reader — typesetting needs Python + Playwright.
+    // Render (or fetch) the real book_v2 PDF for a finished book. Production
+    // now renders for real too (api/render-book-html.py + pdf.mjs) and emails
+    // the finished PDF to whoever ordered the book — see renderPdfServerless
+    // in jobs.mjs. Locally this still goes through Python + Playwright direct.
     const pdfMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/pdf$/);
     if (req.method === "POST" && pdfMatch) {
-      if (IS_SERVERLESS) return send(res, 501, { error: "PDF typesetting is not available online yet" });
       const row = await db.getBook(pdfMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!row.pages) return send(res, 400, { error: "book not generated yet" });
@@ -142,6 +162,13 @@ export async function handleForge(req, res) {
 
     if (req.method === "POST" && p === "/checkout") {
       const b = await readBody(req);
+      // World of Books (£10) ties access to an account from the start — no
+      // anonymous purchases. The £3 single-book tier stays guest-friendly.
+      let worldUser = null;
+      if (b.kind === "world") {
+        worldUser = await verifyUser(req);
+        if (!worldUser) return send(res, 401, { error: "Sign in to join the World of Books." });
+      }
       // Private test voucher — redeems to a £0 paid order and skips Stripe
       // entirely. Compared here on the server so the code is never shipped to
       // the browser; an unset FORGE_VOUCHER_CODE accepts nothing (see env.mjs).
@@ -163,7 +190,7 @@ export async function handleForge(req, res) {
         }
         if (b.kind === "world") {
           await db.insertOrder({
-            email: b.email, kind: "world",
+            email: b.email || worldUser.email, kind: "world", user_id: worldUser.id,
             stripe_session_id: `voucher_world_${Date.now()}`,
             amount_pence: 0, status: "paid",
           });
@@ -172,12 +199,13 @@ export async function handleForge(req, res) {
       }
       if (supplied) return send(res, 400, { error: "That code is not valid." });
       const session = await createCheckout({
-        kind: b.kind, bookId: b.book_id, email: b.email, origin,
+        kind: b.kind, bookId: b.book_id, email: b.email || worldUser?.email, origin,
       });
       await db.insertOrder({
         book_id: b.book_id || null,
-        email: b.email || null,
+        email: b.email || worldUser?.email || null,
         kind: b.kind,
+        user_id: b.kind === "world" ? worldUser.id : (b.user_id || null),
         stripe_session_id: session.id,
         amount_pence: PRICES[b.kind].amount,
         status: "pending",
@@ -218,8 +246,10 @@ export async function handleForge(req, res) {
         return send(res, 200, { ok: true });
       }
       if (b.kind === "world") {
+        const user = await verifyUser(req);
+        if (!user) return send(res, 401, { error: "Sign in to join the World of Books." });
         await db.insertOrder({
-          email: b.email, kind: "world",
+          email: b.email || user.email, kind: "world", user_id: user.id,
           stripe_session_id: `dev_world_${Date.now()}`,
           amount_pence: 0, status: "paid",
         });
@@ -236,9 +266,23 @@ export async function handleForge(req, res) {
       return send(res, 200, { ok: true });
     }
 
+    // Link a created book to the signed-in account — the optional "Add to my
+    // account" action after a book is ready. Requires a valid session so a
+    // book can only ever be saved to the account that asked for it.
+    const saveMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/save$/);
+    if (req.method === "POST" && saveMatch) {
+      const user = await verifyUser(req);
+      if (!user) return send(res, 401, { error: "Sign in to add this book to your account." });
+      const book = await db.getBook(saveMatch[1]);
+      if (!book) return send(res, 404, { error: "not found" });
+      const updated = await db.updateBook(saveMatch[1], { user_id: user.id });
+      return send(res, 200, { ok: true, book: updated });
+    }
+
     if (req.method === "GET" && p === "/world") {
       const email = url.searchParams.get("email");
-      const access = await db.hasWorldAccess(email);
+      const user = await verifyUser(req);
+      const access = await db.hasWorldAccess({ email, userId: user?.id });
       const books = await db.listBooks({ is_public: true });
       const wall = books
         .filter((b) => b.wall_of_love_opt_in && b.profile)

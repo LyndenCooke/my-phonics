@@ -52,6 +52,9 @@ export const cfg = {
   FAL_KEY: booksEnv.FAL_KEY || "",
   STRIPE_SECRET_KEY: booksEnv.STRIPE_SECRET_KEY || "",
   ELEVEN_LABS_API: booksEnv.ELEVEN_LABS_API || "",
+  // Same key already used by supabase/functions/stripe-webhook for print-ops
+  // alerts — reused here to email a finished Create-A-Book PDF to the family.
+  RESEND_API_KEY: booksEnv.RESEND_API_KEY || "",
   // Private test voucher (Lynden 2026-08-06): makes Create-A-Book free so he
   // can test the real flow without paying. Lives in myphonics_books/.env and is
   // ONLY ever compared server-side — never sent to the browser, never in the

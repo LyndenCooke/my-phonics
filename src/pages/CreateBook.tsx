@@ -8,6 +8,7 @@ import {
 import { forgeApi, type CustomBook, type ForgeLevel } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import FlipBook from "@/components/FlipBook";
+import { useAuth } from "@/contexts/AuthContext";
 
 /**
  * Create-A-Book — the custom phonics book wizard.
@@ -77,6 +78,7 @@ function pick<T>(arr: T[] | readonly T[]): T {
 
 export default function CreateBook() {
   const [params, setParams] = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState<Step>("intro");
   const [levels, setLevels] = useState<ForgeLevel[]>([]);
   const [book, setBook] = useState<CustomBook | null>(null);
@@ -85,8 +87,15 @@ export default function CreateBook() {
   const [voucher, setVoucher] = useState("");
   const [showVoucher, setShowVoucher] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
+  // Sticky, not per-click: once production tells us PDF typesetting isn't
+  // available (DEPLOY.md — needs Python + Playwright, studio-machine only),
+  // stop offering the button rather than let a family hit the same dead
+  // end twice.
+  const [pdfUnavailable, setPdfUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [worldPaid, setWorldPaid] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   // Form state
   const [name, setName] = useState("");
@@ -194,6 +203,34 @@ export default function CreateBook() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Handle the return trip from a sign-in redirect (?resume=1&want=world|save)
+  // — payForWorld/saveToAccount send guests here when they need an account,
+  // via localStorage("forge_book_id") since React state doesn't survive the
+  // round trip. Waits for AuthContext to resolve the session before acting,
+  // otherwise "want" would fire while `user` is still momentarily null.
+  useEffect(() => {
+    const resume = params.get("resume");
+    if (!resume || authLoading) return;
+    const want = params.get("want");
+    const bookId = localStorage.getItem("forge_book_id");
+    if (!bookId) { setParams({}, { replace: true }); return; }
+    (async () => {
+      try {
+        const { book: b } = await forgeApi.getBook(bookId);
+        setBook(b);
+        if (b.status === "ready" || b.status === "approved") setStep("ready");
+        else if (b.status === "generating") { setStep("generating"); startPolling(bookId); }
+        if (user && want === "world") await payForWorld();
+        else if (user && want === "save") await saveToAccount(bookId);
+      } catch (e) {
+        setError(String((e as Error).message));
+      } finally {
+        setParams({}, { replace: true });
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user]);
+
   // Downscale the photo client-side so it travels as a small base64 payload.
   const onPhoto = (file: File) => {
     const img = new Image();
@@ -295,14 +332,42 @@ export default function CreateBook() {
     }
   };
 
+  // World of Books (£10) requires an account from the start — send guests to
+  // sign in first, then back here with ?resume=1&want=world to pick up the
+  // purchase automatically.
   const payForWorld = async () => {
+    if (!user) {
+      if (book?.id) localStorage.setItem("forge_book_id", book.id);
+      window.location.href = `/auth?redirect=${encodeURIComponent("/create-book?resume=1&want=world")}`;
+      return;
+    }
     setBusy(true); setError(null);
     try {
-      const { url } = await forgeApi.checkout({ kind: "world", book_id: book?.id, email: email.trim() || undefined });
+      const { url } = await forgeApi.checkout({ kind: "world", book_id: book?.id, email: email.trim() || user.email || undefined });
       window.location.href = url;
     } catch (e) {
       setError(String((e as Error).message));
       setBusy(false);
+    }
+  };
+
+  // Optional "Add to my account" for the £3 book — also needs sign-in, but
+  // unlike World of Books it's never required to read/print the book itself.
+  const saveToAccount = async (bookId: string) => {
+    if (!user) {
+      localStorage.setItem("forge_book_id", bookId);
+      window.location.href = `/auth?redirect=${encodeURIComponent("/create-book?resume=1&want=save")}`;
+      return;
+    }
+    setSaving(true); setError(null);
+    try {
+      const { book: b } = await forgeApi.saveToAccount(bookId);
+      setBook(b);
+      setSaved(true);
+    } catch (e) {
+      setError(String((e as Error).message));
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -315,7 +380,14 @@ export default function CreateBook() {
       const { url } = await forgeApi.pdf(book.id);
       window.open(url, "_blank");
     } catch (e) {
-      setError(String((e as Error).message));
+      const msg = String((e as Error).message);
+      if (/not available online/i.test(msg)) {
+        // Expected in production, not a fault — swap the button out instead
+        // of leaving a red alert sitting over an otherwise happy page.
+        setPdfUnavailable(true);
+      } else {
+        setError(msg);
+      }
     } finally {
       setPdfBusy(false);
     }
@@ -706,25 +778,73 @@ export default function CreateBook() {
               </div>
             )}
 
-            {step === "ready" && book?.pages && (
+            {step === "ready" && book?.pages && (() => {
+              // The book's own level (name + colour), the SAME source used
+              // to write the story — not a re-derived guess.
+              const bookLevel = levels.find((l) => l.level === book.level);
+              const levelColour = bookLevel?.colour || "#3B82F6";
+              return (
               <div className="text-center">
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500 shadow-lg">
                   <PartyPopper className="h-8 w-8 text-white" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-slate-900">{book.title}</h2>
-                <p className="mt-1 text-slate-500">by the {book.child_name} family {book.country_flag}</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">Their book is ready!</h2>
+                <p className="mt-1 text-slate-500">Made for the {book.child_name} family {book.country_flag}</p>
+
+                {/* The real MyPhonicsBooks cover template (book_v2.html
+                    .cover): level-colour top band + brand, full-bleed
+                    illustration, level-colour bottom band with the title —
+                    pixel-for-pixel the same layout as every printed cover in
+                    /public/covers/, not just the raw painted art. */}
                 <button onClick={() => setReading(true)}
-                  className="group mx-auto mt-5 block w-56 overflow-hidden rounded-2xl shadow-xl transition hover:scale-[1.02]">
-                  {book.pages[0]?.imageUrl && <img src={book.pages[0].imageUrl} alt="Cover" className="w-full" />}
+                  className="group mx-auto mt-5 block w-64 overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/5 transition hover:scale-[1.02]">
+                  <div className="flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white"
+                    style={{ backgroundColor: levelColour }}>
+                    <span>Level {book.level} · {bookLevel?.name || ""}</span>
+                    <span className="opacity-95">MyPhonicsBooks</span>
+                  </div>
+                  <div className="aspect-[3/4] w-full overflow-hidden bg-slate-100">
+                    {book.pages[0]?.imageUrl && (
+                      <img src={book.pages[0].imageUrl} alt="" className="h-full w-full object-cover" />
+                    )}
+                  </div>
+                  <div className="px-4 py-4 text-center text-white" style={{ backgroundColor: levelColour }}>
+                    <div className="text-lg font-extrabold leading-tight">{book.title}</div>
+                    <div className="mt-0.5 text-xs italic text-white/90">Level {book.level} · {bookLevel?.name || ""}</div>
+                  </div>
                 </button>
-                <button onClick={openPdf} disabled={pdfBusy}
-                  className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
-                  {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
-                </button>
+
+                {/* PDF typesetting needs Python + Playwright, which run on the
+                    studio machine only — production returns 501 (DEPLOY.md).
+                    Once that's known, the button disappears rather than
+                    inviting another dead click; "Read it here" carries the
+                    weight as the primary, permanent way to enjoy the book. */}
+                {pdfUnavailable ? (
+                  <p className="mx-auto mt-4 max-w-xs text-xs text-slate-400">
+                    Printable PDFs are coming soon — for now, enjoy the book right here.
+                  </p>
+                ) : (
+                  <button onClick={openPdf} disabled={pdfBusy}
+                    className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
+                    {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
+                  </button>
+                )}
                 <button onClick={() => setReading(true)}
-                  className="mx-auto mt-2 block rounded-full px-6 py-2 text-sm font-semibold text-violet-600 hover:bg-violet-50">
+                  className="mx-auto mt-2 block rounded-full bg-violet-50 px-6 py-2.5 text-sm font-bold text-violet-700 hover:bg-violet-100">
                   Read it here — turn the pages 📖
                 </button>
+
+                {saved || book.user_id ? (
+                  <p className="mt-3 flex items-center justify-center gap-1 text-xs font-semibold text-green-600">
+                    <Check className="h-3.5 w-3.5" /> Saved to your account
+                  </p>
+                ) : (
+                  <button onClick={() => saveToAccount(book.id)} disabled={saving}
+                    className="mx-auto mt-3 block rounded-full border border-violet-200 px-5 py-2 text-sm font-semibold text-violet-600 hover:bg-violet-50 disabled:opacity-50">
+                    {saving ? "Saving..." : "+ Add to my account"}
+                  </button>
+                )}
+
                 {book.share_requested && book.status === "ready" && (
                   <p className="mt-3 text-xs text-slate-400">Your book is with our team for a quick review before it appears in the World of Books.</p>
                 )}
@@ -738,16 +858,25 @@ export default function CreateBook() {
                     <p className="mt-1 text-sm text-slate-600">
                       Read every book made by families around the world — and every one made after you. One payment, forever.
                     </p>
+                    {!user && (
+                      <p className="mt-1.5 text-xs text-slate-400">
+                        You'll need to sign in — it's how your access travels with you and stays yours.
+                      </p>
+                    )}
                     <button onClick={payForWorld} disabled={busy}
                       className="mt-3 w-full rounded-full bg-slate-900 py-2.5 font-bold text-white shadow-md transition hover:bg-slate-800 disabled:opacity-50">
-                      {busy ? "..." : "Unlock the world — £10, once"}
+                      {busy ? "..." : user ? "Unlock the world — £10, once" : "Sign in to unlock the world — £10"}
                     </button>
                     {import.meta.env.DEV && (
                       <button onClick={async () => {
                         const testEmail = email.trim() || book.email || "test@localhost";
                         localStorage.setItem("forge_email", testEmail);
-                        await forgeApi.simulatePay({ kind: "world", email: testEmail });
-                        setWorldPaid(true);
+                        try {
+                          await forgeApi.simulatePay({ kind: "world", email: testEmail });
+                          setWorldPaid(true);
+                        } catch (e) {
+                          setError(String((e as Error).message));
+                        }
                       }}
                         className="mt-2 w-full text-xs text-slate-400 underline-offset-2 hover:underline">
                         🧪 dev: unlock free
@@ -761,7 +890,8 @@ export default function CreateBook() {
                   </Link>
                 )}
               </div>
-            )}
+              );
+            })()}
           </motion.div>
         </AnimatePresence>
       </div>
