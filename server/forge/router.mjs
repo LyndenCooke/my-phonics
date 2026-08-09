@@ -147,12 +147,12 @@ export async function handleForge(req, res) {
       return send(res, 200, r);
     }
 
-    // Render (or fetch) the real book_v2 PDF for a finished book. In
-    // production this returns 501 and the frontend falls back to the
-    // interactive reader — typesetting needs Python + Playwright.
+    // Render (or fetch) the real book_v2 PDF for a finished book. Production
+    // now renders for real too (api/render-book-html.py + pdf.mjs) and emails
+    // the finished PDF to whoever ordered the book — see renderPdfServerless
+    // in jobs.mjs. Locally this still goes through Python + Playwright direct.
     const pdfMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/pdf$/);
     if (req.method === "POST" && pdfMatch) {
-      if (IS_SERVERLESS) return send(res, 501, { error: "PDF typesetting is not available online yet" });
       const row = await db.getBook(pdfMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!row.pages) return send(res, 400, { error: "book not generated yet" });

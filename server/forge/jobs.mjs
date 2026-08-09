@@ -538,30 +538,29 @@ export async function startGeneration(bookId) {
     });
 }
 
-// Render the finished book through the REAL book pipeline (book_v2.html via
-// scripts/generate_custom_book.py → Playwright → A5 PDF). Dev-machine only.
+// Render the finished book through the REAL book pipeline (book_v2.html).
+// Locally: scripts/generate_custom_book.py → Playwright → A5 PDF, direct.
+// In production: api/render-book-html.py (same Jinja2 template) → Node
+// Chromium (pdf.mjs) → A5 PDF, then emailed to whoever ordered the book
+// (email.mjs). See renderPdfServerless above for why it's split this way.
 const pdfInFlight = new Map();
 
 export function renderPdf(bookId, opts = {}) {
-  if (IS_SERVERLESS) {
-    return Promise.reject(new Error("PDF typesetting runs on the studio machine, not in production — read the book in the app instead."));
-  }
   if (pdfInFlight.has(bookId)) return pdfInFlight.get(bookId);
-  const p = renderPdfInner(bookId, opts).finally(() => pdfInFlight.delete(bookId));
+  const p = (IS_SERVERLESS ? renderPdfServerless(bookId) : renderPdfInner(bookId, opts))
+    .finally(() => pdfInFlight.delete(bookId));
   pdfInFlight.set(bookId, p);
   return p;
 }
 
-async function renderPdfInner(bookId, { force = false } = {}) {
-  const dir = path.join(CUSTOM_BOOKS_DIR, bookId);
-  const outPath = path.join(dir, "book.pdf");
-  const url = `/custom-books/${bookId}/book.pdf`;
-  if (!force && fs.existsSync(outPath)) return url;
-
-  const book = await getBook(bookId);
-  if (!book?.pages) throw new Error("book has no pages yet");
+// Shared by both the local (Python+Playwright) and serverless (Python HTML
+// function + Node Chromium) renderers — everything about turning a book row
+// into a book_v2 spec except WHERE the source images live, which is the only
+// thing that differs between the two (see generate_custom_book.py's
+// build_custom_book_data docstring for the same principle on the Python side).
+function buildPdfSpecCore(book) {
   const story = book.story?.story || {};
-  const spec = {
+  return {
     book_title: book.title || `${book.child_name}'s Story`,
     child_name: book.child_name,
     level: book.level,
@@ -574,10 +573,19 @@ async function renderPdfInner(bookId, { force = false } = {}) {
     tricky_words_used: story.tricky_words_used || [],
     shifty_marks: book.story?.shiftyMarks || {},
     pronunciation_notes: [pronunciationNoteFor(book.focus_sound, book.level)].filter(Boolean),
-    images_dir: dir,
-    out_path: outPath,
     profile: book.profile || {},
   };
+}
+
+async function renderPdfInner(bookId, { force = false } = {}) {
+  const dir = path.join(CUSTOM_BOOKS_DIR, bookId);
+  const outPath = path.join(dir, "book.pdf");
+  const url = `/custom-books/${bookId}/book.pdf`;
+  if (!force && fs.existsSync(outPath)) return url;
+
+  const book = await getBook(bookId);
+  if (!book?.pages) throw new Error("book has no pages yet");
+  const spec = { ...buildPdfSpecCore(book), images_dir: dir, out_path: outPath };
   const specPath = path.join(dir, "pdf_spec.json");
   fs.writeFileSync(specPath, JSON.stringify(spec), "utf8");
 
@@ -594,4 +602,62 @@ async function renderPdfInner(bookId, { force = false } = {}) {
   });
   if (!fs.existsSync(outPath)) throw new Error("pdf render produced no file");
   return url;
+}
+
+// image_urls keys must match what api/render-book-html.py's fetch_images
+// writes (cover/page1../hero/landmark) and what build_custom_book_data reads
+// back off the resulting local dir — same naming contract as the local path's
+// cover.jpg/pageN.jpg/hero.jpg/landmark.jpg convention.
+function imageUrlsOf(book) {
+  const urls = {};
+  const cover = book.pages.find((p) => p.type === "cover");
+  if (cover?.imageUrl) urls.cover = cover.imageUrl;
+  book.pages.filter((p) => p.type === "story").forEach((p, i) => {
+    if (p.imageUrl) urls[`page${i + 1}`] = p.imageUrl;
+  });
+  if (book.profile?.heroUrl) urls.hero = book.profile.heroUrl;
+  if (book.profile?.landmark?.imageUrl) urls.landmark = book.profile.landmark.imageUrl;
+  return urls;
+}
+
+// The serverless PDF pipeline: Python function builds the real book_v2 HTML
+// (same Jinja2 template + business logic as the studio machine) and uploads
+// it to storage; Chromium here converts that HTML to the final PDF; then the
+// finished book is emailed to whoever ordered it. See api/render-book-html.py
+// and pdf.mjs for why this is split this way (Playwright doesn't run on
+// Vercel's Python runtime).
+async function renderPdfServerless(bookId) {
+  const book = await getBook(bookId);
+  if (!book?.pages) throw new Error("book has no pages yet");
+
+  const spec = { ...buildPdfSpecCore(book), book_id: bookId, image_urls: imageUrlsOf(book) };
+
+  const origin = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "";
+  const htmlRes = await fetch(`${origin}/api/render-book-html`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(spec),
+  });
+  if (!htmlRes.ok) {
+    throw new Error(`render-book-html failed: ${htmlRes.status} ${(await htmlRes.text()).slice(0, 300)}`);
+  }
+  const { html_url: htmlUrl } = await htmlRes.json();
+
+  const { htmlUrlToPdf } = await import("./pdf.mjs");
+  const pdfBuf = await htmlUrlToPdf(htmlUrl);
+  const pdfUrl = await saveImage(bookId, "book.pdf", pdfBuf);
+
+  const { sendBookReadyEmail } = await import("./email.mjs");
+  const emailResult = await sendBookReadyEmail({
+    to: book.email,
+    childName: book.child_name,
+    title: book.title || `${book.child_name}'s Story`,
+    pdfBuf,
+    pdfUrl,
+  });
+  if (!emailResult.sent) {
+    console.warn(`[forge] book-ready email not sent for ${bookId}: ${emailResult.reason}`);
+  }
+
+  return pdfUrl;
 }
