@@ -6,7 +6,14 @@
     },
     "api/render-book-html.py": {
       "maxDuration": 300,
-      "includeFiles": "{myphonics_books/scripts/generate_book.py,myphonics_books/scripts/generate_custom_book.py,myphonics_books/core/**,myphonics_books/templates/**,myphonics_books/assets/fonts/**,myphonics_books/data/**}"
+      "includeFiles": [
+        "myphonics_books/scripts/generate_book.py",
+        "myphonics_books/scripts/generate_custom_book.py",
+        "myphonics_books/core/**",
+        "myphonics_books/templates/**",
+        "myphonics_books/assets/fonts/**",
+        "myphonics_books/data/**"
+      ]
     }
   },
   "rewrites": [
