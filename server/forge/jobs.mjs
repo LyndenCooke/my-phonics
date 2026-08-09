@@ -24,7 +24,7 @@ import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, reviewStory, rewriteStory, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
-import { getBook, updateBook } from "./db.mjs";
+import { getBook, updateBook, recentStoryShapes } from "./db.mjs";
 import { BOOKS_DIR } from "./env.mjs";
 
 export { CUSTOM_BOOKS_DIR };
@@ -150,9 +150,20 @@ async function stepStory(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
   const pagesCount = Math.min(level.storyPages, 8);
-  // One story shape per book, chosen at random — left to itself the writer
-  // produces the same book every time.
-  const shape = STORY_SHAPES[Math.floor(Math.random() * STORY_SHAPES.length)];
+  // One story shape per book, chosen at random from whatever hasn't shipped
+  // in the last few books — plain randomness let the same shape land twice in
+  // a row ("The swap", 2026-08-07 and 2026-08-09), and both leant on the same
+  // collect-a-few-objects crutch (Lynden 2026-08-09). Falls back to the full
+  // list if recent history can't be read or would exclude everything.
+  let pool = STORY_SHAPES;
+  try {
+    const recent = new Set(await recentStoryShapes(5));
+    const fresh = STORY_SHAPES.filter((s) => !recent.has(s.name));
+    if (fresh.length) pool = fresh;
+  } catch {
+    // history unavailable — fall back to the full pool rather than fail the book
+  }
+  const shape = pool[Math.floor(Math.random() * pool.length)];
   const { data: story, cost } = await writeStory({
     level, child, focusSound: book.focus_sound, pagesCount,
     greenWords: greenWordsUpTo(book.level),

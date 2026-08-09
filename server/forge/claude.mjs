@@ -366,7 +366,13 @@ const STORY_SCHEMA = {
 // Story shapes. One is chosen per book so consecutive books cannot converge on
 // the same plot — which is exactly what happened when the writer was given a
 // single fixed beat sequence: five books running were "child makes a thing for
-// a relative, spills it, cleans up, is praised" (Lynden 2026-07-26).
+// a relative, spills it, cleans up, is praised" (Lynden 2026-07-26). The list
+// was widened and the picker given short-term memory (see recentStoryShapes in
+// db.mjs) after the SAME shape, "The swap", shipped two books running and both
+// leant on a small pile of traded/collected objects as the plot engine —
+// Lynden 2026-08-09: "all the stories ive been given...always based on a
+// child finding 3 objects or something...RWI have a good range." The goal is
+// RWI's breadth of story ENGINE, not just a different noun each time.
 export const STORY_SHAPES = [
   { name: "The search", how: "Something is missing or has been mislaid and the hero looks for it. Each page is a place searched and a clue found or a wrong guess ruled out. It turns up somewhere ordinary but surprising — and often somewhere the reader could have spotted in an earlier picture." },
   { name: "The unwelcome weather", how: "The weather or the season wrecks the plan, and the child has to change what they were going to do. The story is the adjusting, not the sulking; the new plan ends up better than the old one." },
@@ -378,8 +384,19 @@ export const STORY_SHAPES = [
   { name: "Noticing something nobody else has", how: "The hero spots a small thing everyone else walks past — a sound, a mark, an animal, a change — and follows it to something worth knowing. The story is curiosity rewarded." },
   { name: "The wait", how: "Something is coming and cannot be hurried: dough rising, a seed, a tide, a bus, a letter, an egg. The story is how the hero fills and endures the waiting, and the arrival is the last page." },
   { name: "Helping someone who needs it", how: "Another person's problem, not the hero's, and the hero notices and steps in. They give something up to do it. The thanks is not the point — the noticing is." },
-  { name: "The swap", how: "The hero trades or exchanges things through the story, each swap changing what is possible, and ends up with what was actually needed all along." },
+  { name: "The swap", how: "The hero trades or exchanges things through the story, each swap changing what is possible, and ends up with what was actually needed all along. Use SPARINGLY — this shape has been overused; only pick it if nothing else fits, and keep it to ONE clean exchange, not a string of collected objects." },
   { name: "Getting there", how: "A journey on foot across a real place with real obstacles — a hill, a puddle, a crowd, a wrong turn — with something at the end worth the walk. The place is the co-star." },
+  { name: "Learning the knack", how: "The hero cannot yet do a specific skill — whistle, swim a length, balance a bike, tie a knot, catch a ball — and tries, fails in a small realistic way, adjusts, and gets it by the end through practice, not a lucky break or someone else doing it for them." },
+  { name: "The rescue", how: "A real, physical stuck-thing: an animal caught somewhere, a boat drifting, a kite snagged, a ball down a drain. The hero works out HOW to reach or free it using what is actually to hand — no magic tool appears from nowhere." },
+  { name: "Follow the trail", how: "The hero follows a trail of something sensory — footprints, a smell, a sound, a line of feathers — through several real places to find where it leads. Each page is a fresh clue, not a repeat of the last one." },
+  { name: "The build", how: "The hero constructs one real, functional thing across the book — a den, a kite, a raft, a cart, a bird table — in genuine physical stages, and tests it at the end. The test can half-fail and get fixed; it should not be effortless." },
+  { name: "The mix-up", how: "A mix-up causes real confusion — two near-identical things swapped by accident, a wrong address, a wrong day — and the hero works out what actually happened by noticing a specific detail, not by luck." },
+  { name: "Too much of it", how: "The opposite of a shortage: there is suddenly too much of something (rain, dough, deliveries, guests, washing) and the hero has to cope with the overflow. The fun is in the escalating problem and the practical fix, not a telling-off." },
+  { name: "The race against time", how: "Something will happen if the hero is not quick enough — the tide will come in, the shop will shut, the ice will melt, the bus will leave — and every page raises the pressure a little. They make it (or find a good-enough alternative) through a real effort, not a shortcut." },
+  { name: "The fair contest", how: "A real game or contest between the hero and a friend or sibling — a race, a competition, a challenge — where the story's interest is in how it is played (fairness, effort, a near-miss) rather than simply who wins." },
+  { name: "First time alone", how: "The hero does an everyday thing unsupervised for the very first time — walking a short errand, minding a younger sibling, cooking one step of a meal — and the newness itself, handled a little nervously and then confidently, is the story." },
+  { name: "The puzzle", how: "A concrete practical problem with no obvious answer — how to cross without getting wet, how to carry more than two hands allow, how to reach something too high — solved by the hero trying more than one real idea before the one that works." },
+  { name: "Side by side", how: "Two people or two things are set up as a genuine contrast across the book — big and small, fast and slow, old and new, quiet and loud — each page showing the difference in action, building to a moment where the difference turns out to be exactly what was needed." },
 ];
 
 export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null }) {
@@ -427,6 +444,7 @@ DO NOT WRITE THE DEFAULT BOOK. There is one story these books fall into every si
 - The problem does NOT have to be a spill, a drop or a breakage. Weather, a wrong guess, someone else's need, a shortage, a misunderstanding, being too small, running out of time, an animal, a lost thing, a queue, a change of plan — all better than another spill.
 - The ending does NOT have to be handing the thing to an adult and being praised. A child can end by understanding something, deciding something, helping someone, being surprised, or simply enjoying what they made happen.
 - The adults do not have to solve it, and the hero does not have to be perfect.
+- A SECOND FORBIDDEN DEFAULT: the hero collecting, trading, or gathering a small string of objects one after another (three ingredients, three swapped items, three things found). This has become just as repetitive as the spill-and-praise story — it happens because it is the easiest shape to write, not because it is the best one for THIS book. Prefer a story engine driven by a skill, a physical obstacle, a contest, a rescue, a puzzle, a mix-up, or time pressure — something happening TO the hero or something the hero must work out, not a shopping list they tick off.
 
 BEAT COVERAGE — the pictures must be able to TELL the story on their own:
 - Whatever shape you use, the MIDDLE of the book must show real events happening, not a jump from "starting" to "finished". If something is made, built, searched for, fixed, grown or learned, at least one page shows that process physically happening. A reader must never have to imagine an event that happened between two pages.

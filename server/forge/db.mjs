@@ -173,6 +173,20 @@ export async function hasWorldAccess({ email, userId } = {}) {
   );
 }
 
+// Last N story shapes used, most-recent first — lets the shape picker avoid
+// repeating what the last few families just got (two "The swap" books shipped
+// back to back, 2026-08-07 and 2026-08-09, because the picker had no memory).
+export async function recentStoryShapes(limit = 5) {
+  await initDb();
+  let rows;
+  if (mode === "supabase") {
+    rows = await rest(`custom_books?select=cost_breakdown&order=created_at.desc&limit=${limit}`);
+  } else {
+    rows = loadFile().custom_books.slice(0, limit);
+  }
+  return rows.map((b) => b.cost_breakdown?.story_shape).filter(Boolean);
+}
+
 export async function costSummary() {
   await initDb();
   const books = await listBooks({});
