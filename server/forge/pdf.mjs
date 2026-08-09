@@ -1,0 +1,40 @@
+// Serverless PDF rendering — the Node half of the split described in
+// api/render-book-html.py's docstring. Playwright (the local studio-machine
+// renderer's PDF backend) does not run on Vercel; puppeteer-core +
+// @sparticuz/chromium does. This module ONLY does HTML -> PDF; building that
+// HTML is the Python function's job, so the same Jinja2 template logic that
+// produces every other MyPhonicsBooks PDF also produces this one — nothing
+// about the book_v2 template itself is reimplemented here.
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
+
+// Mirrors PlaywrightPDFGenerator.generate() in myphonics_books/core/pdf_generator.py
+// EXACTLY — A5, zero margin, print backgrounds, CSS page size wins. Any
+// drift here means the serverless PDF looks different from the studio one.
+export async function htmlUrlToPdf(htmlUrl) {
+  const browser = await puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  });
+  try {
+    const page = await browser.newPage();
+    // Same reasoning as the Python side's set_content(..., "domcontentloaded"):
+    // everything (images, fonts) is embedded as a data URI, so there is no
+    // real network activity to wait for past the initial load.
+    await page.goto(htmlUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
+    await page.evaluate(() => document.fonts.ready);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const buf = await page.pdf({
+      width: "148mm",
+      height: "210mm",
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      printBackground: true,
+      preferCSSPageSize: true,
+    });
+    return Buffer.from(buf);
+  } finally {
+    await browser.close();
+  }
+}

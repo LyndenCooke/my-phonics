@@ -94,13 +94,16 @@ def fallback_alien_words(focus: str) -> list:
     return frames
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--json", required=True, help="Path to the book spec JSON")
-    args = ap.parse_args()
-
-    spec = json.loads(Path(args.json).read_text(encoding="utf-8"))
-    images_dir = Path(spec["images_dir"])
+def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
+    """The one, shared spec -> book_data path. `images_dir` must contain
+    cover.jpg / pageN.jpg / hero.jpg / landmark.jpg — where those files come
+    from (already on local disk, or just-decoded from base64) is the only
+    thing that differs between the local CLI render and the serverless HTML
+    render; everything past this point must stay byte-for-byte identical or
+    the two renderers WILL drift. The serverless renderer (api/render-book-
+    html.py) calls this SAME function; it just populates images_dir by
+    fetching each page's Supabase Storage URL over HTTPS instead of reading
+    an already-local directory."""
     page_texts = spec["story_pages"]
     focus = spec["focus_sound"]
 
@@ -178,6 +181,18 @@ def main() -> None:
         "faith": prof.get("faith"),
         "heroImage": image_to_data_uri(hero) if hero.exists() else None,
     }
+    return book_data
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--json", required=True, help="Path to the book spec JSON")
+    args = ap.parse_args()
+
+    spec = json.loads(Path(args.json).read_text(encoding="utf-8"))
+    images_dir = Path(spec["images_dir"])
+
+    book_data = build_custom_book_data(spec, images_dir)
 
     html = render_book_html(book_data)
     out = Path(spec["out_path"])
