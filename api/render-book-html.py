@@ -33,6 +33,29 @@ SCRIPTS = REPO_ROOT / "myphonics_books" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(0, str(SCRIPTS.parent))  # for core.pdf_generator (unused here, but generate_book imports cleanly either way)
 
+# TEMPORARY diagnostics — two prior deploys (includeFiles alone, then
+# includeFiles+excludeFiles together) both hit
+# "ModuleNotFoundError: No module named 'generate_custom_book'" here, and
+# guessing a third fix blind isn't worth another 2-5 minute deploy cycle.
+# This prints BEFORE the import that's failing, so even if it fails again we
+# get the real directory layout Vercel actually deployed instead of another
+# guess. Remove once the import is confirmed working.
+print(f"DIAG __file__={__file__}", file=sys.stderr)
+print(f"DIAG REPO_ROOT={REPO_ROOT} exists={REPO_ROOT.exists()}", file=sys.stderr)
+print(f"DIAG SCRIPTS={SCRIPTS} exists={SCRIPTS.exists()}", file=sys.stderr)
+try:
+    if REPO_ROOT.exists():
+        print(f"DIAG REPO_ROOT contents={sorted(p.name for p in REPO_ROOT.iterdir())}", file=sys.stderr)
+    mb = REPO_ROOT / "myphonics_books"
+    print(f"DIAG myphonics_books exists={mb.exists()}", file=sys.stderr)
+    if mb.exists():
+        print(f"DIAG myphonics_books contents={sorted(p.name for p in mb.iterdir())}", file=sys.stderr)
+    if SCRIPTS.exists():
+        print(f"DIAG SCRIPTS contents={sorted(p.name for p in SCRIPTS.iterdir())}", file=sys.stderr)
+except Exception as diag_err:
+    print(f"DIAG listing failed: {diag_err}", file=sys.stderr)
+print(f"DIAG sys.path={sys.path}", file=sys.stderr)
+
 from generate_custom_book import build_custom_book_data  # noqa: E402
 from generate_book import render_book_html  # noqa: E402
 
