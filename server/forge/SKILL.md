@@ -29,6 +29,10 @@ story (gpt-5.5)            world + cast + key objects + pages + cover_brief
   ↓
 decodability QA (5.6-sol)  segment-before-judge; rewrite ONLY if >3 distinct violations
   ↓
+plausibility QA (gpt-5.5)  BEFORE any image exists — does the story's own
+                           premise hold up? (dual-role object sizes, cause
+                           vs effect); one bounded rewrite on fail
+  ↓
 shifty marking (5.6-sol)   per-word grapheme split → diamond indices → ledger-filtered
   ↓
 director (gpt-5.5)         per page: camera, staging, objects+state, cast_present
@@ -98,6 +102,20 @@ childlike, and a mum comes out looking like an older sister.
 | Decodability | **5.6-sol** | Segment each word into taught graphemes; a violation is only a position where nothing matches. |
 | Shifty marking | **5.6-sol** | Split into graphemes; list only letters making a different sound than taught. Ledger-filtered. |
 | Scene consistency | 5.4-mini | Describe named objects, the action shown, object states, AND mechanism legibility (does a described physical interaction — plugging, fitting, pouring — actually have a visible anchor in the image), THEN judge. One bounded repair regeneration on fail. |
+| Story plausibility | gpt-5.5 | Text only, before any image exists. Walk the causal chain, THEN name every object playing a physical role on more than one page and commit to its size on EACH occasion (`dual_role_objects`), THEN judge. One bounded rewrite on fail. |
+
+**A third rule, learned building the plausibility gate:** a free-text
+"describe, then judge" field is not enough on its own if the judgement it's
+meant to force can be dodged with a hedge — the first version of this gate
+wrote *"plausible if the gap is large enough, or if the cap is soft enough"*
+about a story where a rigid cap falls through a hole a pen later plugs, and
+passed it. Adding a REQUIRED field that forces a specific comparison
+(`dual_role_objects`: name the object, commit to a size on each occasion,
+say whether they're the same size) is what actually caught it — a
+structured comparison the model has to fill in beats an open-ended
+description it can talk around. Same principle as `mechanism_legible`
+(scene consistency) and `shape_fulfilment` (story range): the schema is the
+forcing function, not the prose around it.
 
 **Two rules learned the hard way about vision QA:**
 1. **Describe before judging.** A bare pass/fail rubber-stamps everything — the
