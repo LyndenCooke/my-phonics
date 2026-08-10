@@ -152,3 +152,9 @@ android/app/src/main/assets/public/
 # Custom-book forge (dev-generated assets + local store)
 public/custom-books/
 server/forge/.data/
+
+# Local-only scratch/build artefacts — never needed by the Vercel deploy
+# (already excluded in .vercelignore); tracking these bloated git history
+marketing/booklet/_build/
+.scratch/
+review/_screenshots/
