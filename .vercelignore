@@ -1,25 +1,22 @@
-# Python book pipeline (not needed for web app) — EXCEPT the specific files
-# api/render-book-html.py needs to render a real book_v2 PDF (Create-A-Book).
-# This was the actual root cause of a live "ModuleNotFoundError" (2026-08-10):
-# vercel.json's per-function includeFiles can only add back files that were
-# actually uploaded — it cannot override a repo-wide .vercelignore exclusion,
-# which runs first. The "step down, then negate" pattern below is required
-# because gitignore-style engines never descend into an already-excluded
-# directory to check negations inside it — `!myphonics_books/scripts/x.py`
-# alone would silently do nothing while `myphonics_books/` stays excluded.
+# Python book pipeline (not needed for web app) — EXCEPT scripts/core/
+# templates/data/assets-fonts, which api/render-book-html.py needs to render
+# a real book_v2 PDF (Create-A-Book). This was the actual root cause of a
+# live "ModuleNotFoundError" (2026-08-10): vercel.json's per-function
+# includeFiles can only add back files that were actually uploaded — it
+# cannot override a repo-wide .vercelignore exclusion, which runs first.
+# The "step down, then negate" pattern below is required because
+# gitignore-style engines never descend into an already-excluded directory
+# to check negations inside it — `!myphonics_books/scripts/x.py` alone would
+# silently do nothing while `myphonics_books/` stays excluded. Re-including
+# the whole scripts/ directory (rather than naming files one at a time) is
+# deliberate — every new local module generate_book.py needs meant another
+# round-trip, and scripts/ is only ~18MB, nowhere near Vercel's 500MB cap.
 myphonics_books/*
 !myphonics_books/scripts
 !myphonics_books/core
 !myphonics_books/templates
 !myphonics_books/assets
 !myphonics_books/data
-
-myphonics_books/scripts/*
-!myphonics_books/scripts/generate_book.py
-!myphonics_books/scripts/generate_custom_book.py
-!myphonics_books/scripts/v2_helpers.py
-!myphonics_books/scripts/print_qr.py
-!myphonics_books/scripts/audit_tricky_words.py
 
 myphonics_books/assets/*
 !myphonics_books/assets/fonts

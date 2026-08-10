@@ -6,7 +6,7 @@
     },
     "api/render-book-html.py": {
       "maxDuration": 300,
-      "includeFiles": "{myphonics_books/scripts/generate_book.py,myphonics_books/scripts/generate_custom_book.py,myphonics_books/scripts/v2_helpers.py,myphonics_books/scripts/print_qr.py,myphonics_books/scripts/audit_tricky_words.py,myphonics_books/core/**,myphonics_books/templates/**,myphonics_books/assets/fonts/**,myphonics_books/data/**}",
+      "includeFiles": "myphonics_books/{scripts,core,templates,assets/fonts,data}/**",
       "excludeFiles": "{**/node_modules/**,.git/**,dist/**,public/**,src/**,marketing/**,worksheet-forge/**,worksheet-engine/**,server/worksheet-forge/**,myphonics_books/output/**,myphonics_books/_archive/**,myphonics_books/phonics-fun-hub/**}"
     }
   },
