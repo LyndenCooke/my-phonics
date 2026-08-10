@@ -17,6 +17,9 @@ myphonics_books/*
 myphonics_books/scripts/*
 !myphonics_books/scripts/generate_book.py
 !myphonics_books/scripts/generate_custom_book.py
+!myphonics_books/scripts/v2_helpers.py
+!myphonics_books/scripts/print_qr.py
+!myphonics_books/scripts/audit_tricky_words.py
 
 myphonics_books/assets/*
 !myphonics_books/assets/fonts
