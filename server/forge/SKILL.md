@@ -1,280 +1,493 @@
-# Create-A-Book Forge — the system
+# Create-A-Book Forge
 
-The doctrine every custom book is built to, and the QA gates that enforce it.
-Read this BEFORE changing a prompt in `claude.mjs` / `images.mjs`, and before
-adding a pipeline stage. Every rule here was written because a real book
-shipped the failure it prevents; the failure is named next to each rule so
-nobody removes a guard without knowing what it cost.
+Build every custom book through the workflow and gates below. Treat every gate as blocking. Do not export a book with a known failure.
 
----
+## 1. Binding sources
 
-## 1. Non-negotiables
+Use these sources in this order of authority:
 
-| Rule | Why it exists |
-|---|---|
-| **Eyes are tiny solid black filled dots.** No white sclera, no catchlight, no iris. | House style. A white-sclera face reached a finished book on 2026-07-25. |
-| **A taught letter making a DIFFERENT sound gets the slate diamond**, never a dot (the `u` in *nutritious* says /yoo/, not the /u/ of *up*). Alternative SPELLINGS (`ti` = /sh/ in *patient*) keep their ordinary line. | Pedagogy. The child must not be told a shifty sound is the base sound. |
-| **Every word is decodable at the book's level**, or a listed tricky word, or the child's name. ≤3 above-level words are allowed and auto-previewed as Future Sounds. | The whole product promise. |
-| **The focus sound appears in 1–3 words MAX** — three is a ceiling, not a target. | `tious` has 5 words in the entire bank; "at least 3" produced a story that was nothing but showcase words. |
-| **No floating body parts.** A closeup keeps the character's face and shoulders in frame; never a hand entering from the edge with no body. | A closeup brief written as "her hands and the bowl" was drawn as a disembodied hand. |
-| **One room per frame.** A brief may never say another room is "visible behind" — the illustrator invents furniture that breaks the anchor. | Kofi p5 grew a phantom kitchen counter. |
-| **British English throughout** (colour, mum, favourite). | |
+1. The user's supplied child, family, faith, location and preference data.
+2. `data/reading_progression.json` for level-specific graphemes, tricky words, sentence ranges, punctuation and language devices.
+3. The approved MyPhonicsBooks PDF components and design tokens.
+4. This skill.
 
----
+If `data/reading_progression.json` is missing, internally contradictory or incomplete for the requested level, stop before story generation. Do not invent a level specification.
 
-## 2. Build order
+Never invent personal facts. Use "In the family's words" only for wording the family actually supplied. Treat culture/profile pages as fact-checked editorial content, not as permission to fabricate biography.
+
+## 2. Non-negotiables
+
+- Use British English throughout.
+- Draw eyes as tiny solid black filled shapes: no sclera, catchlight, iris or coloured pupil.
+- Keep clothing modest, child-appropriate and unchanged unless the story explicitly includes a clothing change.
+- Keep each recurring character's identity, age, proportions, hair and fixed outfit consistent.
+- Keep each recurring object's identity features consistent even while its position or state changes.
+- Allow settings and scenes to progress. Preserve permanent location facts while changing only what the story requires.
+- Show one visually coherent time-slice per page. Do not ask one image to show mutually exclusive before-and-after states.
+- Show every concrete noun and physical action needed to understand the page.
+- Show no floating body parts, unsupported bodies, hovering objects or impossible furniture.
+- Keep one room or one coherent outdoor area per frame. Never reveal a second room merely as background decoration.
+- Never show a finished object before the page on which it is completed.
+- Never duplicate a character or recurring object unless the story explicitly requires more than one.
+- Do not place visible words, letters, numerals, signatures or watermarks inside generated artwork unless the page plan explicitly requires readable text.
+- Use the slate diamond component for a taught spelling making a different sound. Do not substitute a circle.
+
+## 3. Phonics contract
+
+### 3.1 Text zones
+
+Classify every piece of book text before QA:
+
+- `assessed_reader_text`: story prose, word cards, examples, answer choices, captions the child must read and pseudo-words.
+- `adult_guidance`: parent/teacher instructions that are not part of the child's decoding task.
+- `profile_editorial`: personalised and cultural material outside the decodable story.
+
+Apply the level's full decodability rules to `assessed_reader_text`. Do not use `adult_guidance` or `profile_editorial` to hide words the child is expected to read.
+
+### 3.2 Decodability
+
+For every assessed real word:
+
+- Segment the word into graphemes before judging it.
+- Accept it only when every position is covered by a taught grapheme at or below the selected level, the exact word is on the permitted tricky-word list, or it is the child's supplied name.
+- Record every uncovered position and its expected teaching level.
+- Allow no more than three distinct above-level orthographic word forms in the entire story. Inflections count separately: *boat* and *boats*, or *hop* and *hopped*, are different forms. Repeated uses of the same form do not create a new form, but repetition must remain natural.
+- Preview every allowed above-level story word under Future Sounds. Never assess a Future Sounds spelling in a word card, pseudo-word, answer choice, Sound Detective task or grammar activity at the current level. Do not introduce additional above-level examples outside the story.
+- Rewrite the story whenever it contains more than three above-level forms. Do not waive the rule because several violations share the same suffix or grapheme.
+
+### 3.3 Focus sound
+
+Use one to three distinct orthographic focus-word forms in the story. Treat inflections as separate forms. Three is a ceiling, not a target. Do not force a focus word onto every page or repeat it unnaturally.
+
+Activity pages may reuse the approved focus words and add only level-decodable examples. Validate pseudo-words against taught graphemes.
+
+### 3.4 Shifty sounds
+
+For each assessed word:
+
+1. Split the word into graphemes.
+2. Compare each taught grapheme with its taught base sound.
+3. Mark only graphemes producing a different sound.
+4. Filter marks through the shifty-sound ledger.
+
+Alternative spellings for the intended phoneme keep their ordinary line. A taught letter or grapheme producing a different phoneme receives the slate diamond. Enforce the marker through the PDF component and DOM, not through prose instructions alone.
+
+### 3.5 Mechanics and progression
+
+Validate deterministically where possible:
+
+- capital letter at every sentence start;
+- capitalised names and pronoun I;
+- permitted terminal punctuation;
+- sentence and word counts;
+- permitted punctuation by level;
+- sentence-opening variety;
+- consistent tense;
+- required sentence forms and language devices from the level specification.
+
+At Level 6 and above, fail when more than half of story sentences begin with the hero's name, a pronoun referring to the hero, or "The".
+
+## 4. Story contract
+
+### 4.1 Required story output
+
+Declare:
+
+- title;
+- level and focus sound;
+- setting: place, season, weather and three to five drawable permanent features;
+- cast: hero plus no more than three recurring non-hero people;
+- one fixed outfit and stable identity description per recurring person;
+- `key_objects`: no more than three, with permanent appearance features only;
+- one to three reusable `location_id` values;
+- pages with text, location, story beat and temporal state;
+- `cover_brief` based on the story's own final triumph or resolved state.
+
+Do not put an object's location or temporary state inside its permanent appearance description.
+
+### 4.2 Required beats
+
+Include, in visible order:
+
+1. idea or need;
+2. setting out;
+3. the doing itself;
+4. a prepared problem or setback;
+5. putting it right;
+6. the result, shared or recognised.
+
+Do not skip the doing itself. Do not make the reader infer an important event between pages. Establish the cause of the setback before the setback happens.
+
+### 4.3 One time-slice per page
+
+For each page declare:
+
+- `pre_state`;
+- `depicted_moment`;
+- `post_state`;
+- `named_visible_things`;
+- `physical_action`;
+- `emotion`.
+
+The prose and illustration must centre on `depicted_moment`. Rewrite a page that requires one frame to show two incompatible states, such as a cap simultaneously worn and attached to a stick.
+
+### 4.4 Plausibility gate
+
+Before generating art:
+
+1. Walk the causal chain page by page.
+2. List every object with a physical role on more than one page.
+3. Commit to its size, rigidity, owner and function on each page.
+4. Compare those states explicitly.
+5. Reject impossible transformations, unsupported mechanisms and unexplained outcomes.
+
+Permit one bounded story rewrite. Re-run story, phonics and plausibility QA after the rewrite. Stop if it still fails.
+
+## 5. Continuity model
+
+Use fixed identity with controlled progression. Do not freeze an entire setting into one unchanging frame.
+
+### 5.1 Permanent anchors
+
+Create and approve:
+
+- one hero reference;
+- one reference for each recurring cast member;
+- one identity reference for each visually important recurring object when text alone is insufficient;
+- one locked art-language clause used unchanged in every image prompt.
+
+Permanent character anchors govern identity. A later scene may improve pose or context reference, but it may never replace or override the approved identity anchor.
+
+### 5.2 Location foundations
+
+For every `location_id`, declare permanent facts such as:
+
+- architecture and materials;
+- fixed structures and landmarks;
+- floor or ground treatment;
+- window, wall and fitting designs;
+- broad spatial relationship between permanent features;
+- time, season and weather unless the story changes them.
+
+The first scene at a location becomes an approved visual foundation only after passing identity, setting and story QA. Never promote a failed or unreviewed scene into an anchor.
+
+Location foundations preserve the world's identity, not an exact camera frame. Permit new angles, movement through the space and temporary objects when the director declares them.
+
+### 5.3 Page continuity state
+
+For every page produce:
+
+```json
+{
+  "page": 1,
+  "location_id": "stable_location_id",
+  "camera": "wide | medium | closeup | new-angle | same-view",
+  "depicted_moment": "one visible moment",
+  "character_instances": [
+    {
+      "character_id": "dad",
+      "count": 1,
+      "placement": "on the boat",
+      "scale": "distant",
+      "action": "holding the tiller",
+      "must_not_appear_at": ["on the pavement"]
+    }
+  ],
+  "objects": [
+    {
+      "object_id": "dad_boat",
+      "identity_features": ["white hull", "green flag", "covered cabin"],
+      "state_now": "moving from the dock",
+      "placement": "on the river"
+    }
+  ],
+  "changes_this_page": [],
+  "must_remain": [],
+  "must_not_show": []
+}
+```
+
+State exact visible-character counts, placements and scales. Naming a character in the sentence does not authorise the generator to place a full-size copy in the foreground.
+
+### 5.4 Reference stack
+
+Use the minimum references needed for the page in this order:
+
+1. hero identity reference when the hero is visible;
+2. visible cast identity references;
+3. recurring-object identity reference when needed;
+4. approved location foundation;
+5. previous approved scene only when spatial or state progression materially benefits from it.
+
+Use a previous scene as continuity evidence, never as the sole authority for identity, object design or art language. State what must change and what must remain. Do not inherit undeclared people, furniture, objects or errors from the previous scene.
+
+### 5.5 API conversation state
+
+Treat each book as one continuing creative conversation, not a collection of unrelated API calls.
+
+Create one durable `conversation_id` per book with the Responses and Conversations APIs when available. Otherwise chain the planning turns with `previous_response_id`; with Chat Completions, resend the managed history explicitly.
+
+Keep story generation, rewrites, director planning and sequential page planning in that book conversation so phrases such as "the next scene" and "further down the trail" retain their narrative meaning.
+
+Persist `conversation_id`, `last_planning_response_id`, `last_approved_image_id`, `book_state_version` and the current structured continuity state with the job.
+
+Do not require the user to repeat character, setting or earlier-page information. Assemble the necessary context automatically.
+
+For a continuing location or physical action, give image generation the previous approved image output or image ID together with the new page delta. Use the Responses API's multi-turn image flow or the equivalent supported provider mechanism.
+
+Force a new scene rather than an edit when the page requires a new composition. Use an edit only when intentionally modifying the same composition.
+
+For a new location, omit the previous scene image unless it materially helps; retain the book conversation, permanent identity anchors and art language.
+
+After a page passes QA, append its approved plan, image identifier and resulting state to the book conversation and increment `book_state_version`.
+
+Never treat conversational memory as the exact source of truth for identity, counts, placement or object state. The structured continuity state and approved visual references remain binding.
+
+Do not allow different model providers to imply shared memory. Pass the required conversation summary, state and references explicitly across provider boundaries.
+
+Keep QA calls independent when independence reduces confirmation bias. An independent QA call must still receive the exact candidate, page contract, binding references and state version it is judging.
+
+Fail a context-dependent stage when it has neither the correct book conversation linkage nor a complete explicit context package. Periodically compact long conversations into a verified summary, but never compact away identity anchors, unresolved failures, permanent setting facts, object identities or current states.
+
+## 6. Director contract
+
+For each page declare:
+
+- camera and framing;
+- staging and exact placement;
+- visible cast with count and scale;
+- emotion;
+- visible named things;
+- recurring objects by stable ID;
+- each object's state on this page;
+- physical interaction or mechanism;
+- changes from the previous page;
+- facts that must remain unchanged;
+- forbidden people, objects, states and future facts.
+
+Anything the hero makes remains absent until the page on which it first exists. Anything completed remains visually identical after completion unless the story changes it.
+
+For a close-up, keep the face and shoulders or the relevant connected body in frame. Never request hands or limbs without their owner.
+
+## 7. Image generation and QA
+
+Generate scenes page by page. Do not generate the cover until the story scenes and final object states are approved.
+
+### 7.1 Scene prompt structure
+
+Use these sections in every prompt:
+
+- TASK
+- IDENTITY AND ART ANCHORS
+- SHOW NOW
+- CHARACTER COUNT AND PLACEMENT
+- OBJECT IDENTITIES AND STATES
+- SETTING FOUNDATION AND ALLOWED CHANGES
+- PHYSICAL ACTION
+- DO NOT SHOW
+- FORMAT
+
+### 7.2 Eye QA
+
+For every visible face:
+
+1. Detect and crop the face.
+2. Upscale the crop.
+3. Describe what is inside each eye outline.
+4. Pass only solid black filled eyes with no white or coloured interior.
+
+Run the check on the whole page and each face crop.
+
+### 7.3 Text-to-image QA
+
+Describe before judging:
+
+- every physical thing named by the sentence;
+- the action actually visible;
+- each recurring object's state;
+- the visible mechanism behind fitting, plugging, pouring, lifting or attaching;
+- whether the image shows the intended moment rather than a moment before or after it.
+
+Fail when any necessary named thing, action or physical anchor is missing.
+
+### 7.4 Identity and continuity QA
+
+Compare the scene with the permanent references and declared continuity state:
+
+- count every visible character and recurring object;
+- verify every declared placement and forbidden location;
+- compare clothing, colours, hair, age and proportions;
+- compare permanent object features;
+- compare permanent setting features;
+- list additions not authorised by the director;
+- detect duplicated characters or objects;
+- detect premature future states;
+- verify that every declared change occurred and every `must_remain` fact remained.
+
+Do not accept "similar". Name exact matches and differences.
+
+### 7.5 Physical plausibility QA
+
+Check:
+
+- connected limbs and bodies;
+- correct furniture parts and support;
+- seated characters supported by fully drawn seats;
+- objects held, fixed, resting or hanging by a visible mechanism;
+- correct scale relationships;
+- no impossible intersections or hovering;
+- no character occupying two locations in one frame.
+
+### 7.6 Repair rule
+
+On failure, return:
+
+- page number;
+- observed evidence;
+- violated field or rule;
+- one narrow repair instruction;
+- elements that must remain unchanged.
+
+Permit one bounded repair regeneration. Re-run every failed gate and all dependent gates. If the repaired page still fails, stop the build. Never export a known failure.
+
+## 8. Cover contract
+
+Use the story's resolved triumph moment and finished object state. Apply the same character-count, placement, identity, object and setting QA as an interior page.
+
+Do not:
+
+- duplicate a character who is already visible elsewhere in the cover scene;
+- show a finished object inconsistent with its final story appearance;
+- invent extra family members;
+- combine incompatible viewpoints or story moments;
+- show mid-story states merely to summarise the plot.
+
+## 9. Activity-page contract
+
+Build activity pages from the approved story data. Never generate them from an unvalidated draft.
+
+### 9.1 Completeness
+
+- Populate every intended template region or remove it cleanly.
+- Show no empty image frames, faint placeholder words, duplicated labels or missing assets.
+- Keep instructions adjacent to the task they govern.
+- Avoid large accidental blank areas.
+- Do not shrink content below legibility limits to force it onto one page; simplify or split the activity.
+
+### 9.2 Required checks
+
+- **Sound Spotlight**: use only approved level-decodable words; display each word once unless repetition has a declared instructional purpose.
+- **Trace and Form**: show the focus grapheme and correctly aligned handwriting lines.
+- **Alien Words**: validate every pseudo-word against taught graphemes.
+- **Sound Detective**: never assess Future Sounds.
+- **Story Order**: use six distinct, legible plot beats including the beginning, problem and resolution; randomise display order without duplicating a beat.
+- **Tell the Story**: use prompts and goals permitted at the level.
+- **Talk About It**: ask questions answerable from the story and artwork.
+- **Word Workshop at Levels 5-8**: require at least four scorable responses across at least two task types, unless the binding level specification requires more.
+
+### 9.3 Morphology and pronunciation
+
+Teach suffix pronunciations by final phoneme, not merely by final letter. Do not use invented spellings such as *play'd* or *hop't* as though they were correct orthography. Use approved child-friendly phoneme notation and examples from the level specification.
+
+## 10. Whole-book QA
+
+Run one ordered pass over all approved pages:
+
+- Track every recurring character's clothing, hair, age and proportions.
+- Track every recurring object's permanent identity and changing state.
+- Confirm each progression moves forward without unexplained regression.
+- Confirm no finished state appears early, including in backgrounds or on the cover.
+- Confirm arrivals do not appear before they arrive.
+- Confirm every story beat has a corresponding image.
+- Confirm the visual story is understandable without reading the prose.
+- Confirm setting changes are intentional progression rather than drift.
+- Confirm the cover matches the approved final states.
+- Compare a full contact sheet for identity, style, scale, colour and narrative flow.
+
+Any whole-book failure returns affected pages and a narrow repair plan. Re-run page QA and whole-book QA after repair.
+
+## 11. PDF production contract
+
+Generate the final book through the real `book_v2` A5 Playwright template.
+
+- Levels 1-4: exactly 16 total PDF pages, including front and back covers.
+- Levels 5-8: exactly 20 total PDF pages, including front and back covers.
+- Total page count must be divisible by four.
+- Use A5 page dimensions on every page.
+- Keep internal page numbering consecutive and exclude cover numbering according to the template specification.
+- Keep all required content inside trim-safe areas.
+- Resolve every image and font asset before export.
+- Enforce the slate diamond through the rendered component.
+- Permit no DOM overflow, clipped text, overlapping elements, broken tables or placeholder assets.
+- Keep child-facing body text at 9 pt or larger and task/answer text at 11 pt or larger. Use smaller chart text only when an approved print test proves legibility; otherwise split the chart.
+
+After export:
+
+1. Verify page count, A5 dimensions, font embedding and asset resolution programmatically.
+2. Render every page at 200 DPI.
+3. Inspect every rendered page individually.
+4. Inspect a full-book contact sheet.
+5. Check legibility at actual A5 print size.
+
+Fail on sparse accidental layouts, empty components, duplicate labels, tiny charts or inconsistent margins.
+
+Do not deliver until the latest rendered PDF passes every check.
+
+## 12. Build order
 
 ```
-story (gpt-5.5)            world + cast + key objects + pages + cover_brief
-  ↓
-decodability QA (5.6-sol)  segment-before-judge; rewrite ONLY if >3 distinct violations
-  ↓
-plausibility QA (gpt-5.5)  BEFORE any image exists — does the story's own
-                           premise hold up? (dual-role object sizes, cause
-                           vs effect); one bounded rewrite on fail
-  ↓
-shifty marking (5.6-sol)   per-word grapheme split → diamond indices → ledger-filtered
-  ↓
-director (gpt-5.5)         per page: camera, staging, objects+state, cast_present
-  ↓
-hero sheet                 the child, eye-ref injected
-cast sheets                every other recurring person, ONE fixed outfit each
-  ↓
-scenes, page by page       reference stack below; first image at a location
-                           becomes that location's anchor
-  ↓
-cover                      the story's own triumph moment, in the story's world
-  ↓
-book_v2 PDF                real template, A5, via Playwright, page count by
-                           level (16pp for L1-4, 20pp for L5-8 — Lynden
-                           2026-08-09; was hardcoded to 16 for every level
-                           until then, so L5+ custom books shipped without
-                           the fuller Word Workshop / Writing Practice page
-                           set a real book at that level gets)
+validate inputs and level specification
+  -> create or resume the book conversation and continuity state
+  -> story and story schema
+  -> deterministic mechanics and decodability QA
+  -> story plausibility QA
+  -> one bounded rewrite if required, then re-QA
+  -> shifty-sound analysis
+  -> director and page continuity states
+  -> permanent character/object anchors and art language
+  -> approved location foundations
+  -> scenes page by page
+  -> text-to-image, identity, continuity, eye and physics QA per scene
+  -> whole-book progression QA
+  -> cover generation and QA
+  -> activity pages and activity QA
+  -> book_v2 PDF
+  -> programmatic PDF checks
+  -> 200-DPI page review and contact-sheet review
+  -> deliver only on full pass
 ```
 
-## 3. The reference stack
+Use the configured stage owners unless deliberately replaced: gpt-5.5 for story, rewrite, plausibility and director; gpt-5.6-sol for decodability and shifty analysis; the configured vision model, currently gpt-5.4-mini, for image QA; gpt-image-2 medium for artwork; authenticated Vertex Gemini only as image fallback; and Playwright book_v2 for PDF composition.
 
-Every scene prompt carries images in this order. This is the spine of
-consistency — text alone cannot hold a floor plan or a face.
+Model substitution must preserve the structured schemas, evidence-first judgements, repair limits and fail-closed behaviour. Do not weaken a gate merely because another model is used.
 
-1. **Hero sheet** — the child. Always.
-2. **Cast sheets** — only the people the director says are in this frame.
-3. **Location anchor** — the first image made at this location, with
-   camera-specific wording:
-   - `same-view` → reproduce the exact frame, only the action changes
-   - `closeup` → fill the frame; any visible background is the same materials
-   - `new-angle` / first visit → same place, different viewpoint, invent nothing
+## 13. Implementation requirements
 
-**The anchor is injected on EVERY revisit, not just identical-frame beats.**
-Gating it on `same-view` meant books whose director preferred closeups — i.e.
-most of them — got no visual continuity at all and re-invented the room page
-by page. That was the single worst bug in this pipeline's history.
+Use deterministic code for facts a model does not need to guess:
 
-**A cast member's best reference is how they were drawn in their first
-scene**, not a sheet made from text: drawn in isolation, an adult renders
-childlike, and a mum comes out looking like an older sister.
+- capitals and terminal punctuation;
+- sentence, word and opener counts;
+- page count and A5 dimensions;
+- text overflow and missing assets;
+- component type for shifty markers;
+- activity item counts;
+- duplicate IDs and invalid continuity-state fields;
+- missing or mismatched `conversation_id`, response linkage, image ID and `book_state_version`.
 
-## 4. What each stage must declare
+Use structured model outputs for judgements that require language or vision:
 
-- **Story** — `setting` (place + 3-5 *drawable* architecture features, season,
-  weather), `cast` (≤3 non-hero people, each with ONE outfit for the whole
-  book), `key_objects` (≤3, appearance ONLY — never where it sits: a "look"
-  that says "simmering on the stove" gets a stove drawn on the floor),
-  `cover_brief`, and a `location` id per page (1–3 locations, reused).
-- **Beats** — idea → setting out → **THE DOING ITSELF** → something goes wrong
-  → putting it right → the result, shared. Beat 3 is the one that gets skipped
-  and it is the heart of the book. A reader must never have to imagine an
-  event that happened between two pages.
-- **Director** — per page: `camera`, `staging`, `emotion`, `objects`
-  (only what is visible, each with its state ON THIS PAGE), `cast_present`.
-  Anything the child MAKES is absent until the page it is finished.
+- grapheme segmentation and true phonics violations;
+- causal plausibility;
+- action and mechanism legibility;
+- character/object/location comparison;
+- progression versus drift;
+- physical plausibility;
+- contact-sheet narrative coherence.
 
----
+Require evidence fields before pass/fail fields. A bare pass/fail judgement is invalid.
 
-## 5. QA gates
+Record every failure, repair and final disposition. A successful export is not proof of a successful book.
 
-### Running now
+Keep `sceneConsistencyQA()` wired into scene generation and job execution. Extend it to consume the character counts, placements, stable object IDs, location foundations, page changes, unchanged facts and forbidden states defined above. Apply the same gates to the cover.
 
-| Gate | Model | Asks |
-|---|---|---|
-| Eye rule | 5.4-mini | Describe what is inside each eye outline, THEN judge. Run on the whole page and again on each zoomed face crop. |
-| Decodability | **5.6-sol** | Segment each word into taught graphemes; a violation is only a position where nothing matches. |
-| Shifty marking | **5.6-sol** | Split into graphemes; list only letters making a different sound than taught. Ledger-filtered. |
-| Scene consistency | 5.4-mini | Describe named objects, the action shown, object states, AND mechanism legibility (does a described physical interaction — plugging, fitting, pouring — actually have a visible anchor in the image), THEN judge. One bounded repair regeneration on fail. |
-| Story plausibility | gpt-5.5 | Text only, before any image exists. Walk the causal chain, THEN name every object playing a physical role on more than one page and commit to its size on EACH occasion (`dual_role_objects`), THEN judge. One bounded rewrite on fail. |
-
-**A third rule, learned building the plausibility gate:** a free-text
-"describe, then judge" field is not enough on its own if the judgement it's
-meant to force can be dodged with a hedge — the first version of this gate
-wrote *"plausible if the gap is large enough, or if the cap is soft enough"*
-about a story where a rigid cap falls through a hole a pen later plugs, and
-passed it. Adding a REQUIRED field that forces a specific comparison
-(`dual_role_objects`: name the object, commit to a size on each occasion,
-say whether they're the same size) is what actually caught it — a
-structured comparison the model has to fill in beats an open-ended
-description it can talk around. Same principle as `mechanism_legible`
-(scene consistency) and `shape_fulfilment` (story range): the schema is the
-forcing function, not the prose around it.
-
-**Two rules learned the hard way about vision QA:**
-1. **Describe before judging.** A bare pass/fail rubber-stamps everything — the
-   eye QA once wrote *"solid black dots, no white sclera"* about a face with
-   obvious white sclera, and passed 11/11 images on a book that failed.
-2. **Zoom.** At page scale a pair of eyes is a few dozen pixels. Find the
-   faces, crop, upscale, then ask.
-
-Both apply to any rubric-based image QA, not just eyes.
-
-### Consistency QA — text-vs-image (BUILT 2026-08-09)
-
-`sceneConsistencyQA()` in `claude.mjs`, wired into `generateScene()` /
-`jobs.mjs`, covers the text-vs-image half of this list (named objects,
-action shown, object states, mechanism legibility) with one bounded repair
-regeneration on fail — see the QA gates table above. Built after "The Thick
-Pen" shipped a page where the pen was technically visible but no hole was
-drawn for it to plug, so the sentence's mechanism had no visual anchor
-(Lynden: "the text says X...it doesn't show that...shouldn't it have been
-QA'd"). Page regenerated and verified by eye against the uploaded image.
-
-**Still NOT built:** the image-vs-image half below (scene vs. location
-anchor, scene vs. hero/cast references) — nothing yet checks that a scene
-still matches its own anchor or reference sheets. These are the questions
-it should ask, each against the page image plus its references, and each
-**describe-before-judging**:
-
-**Per scene, vs the location anchor**
-1. List every fixed feature you can see (window shape and pane count, floor
-   material and pattern, wall finish, units, fittings, what is through the
-   window). Now list the same for the anchor image. Which differ?
-2. Is there any furniture, appliance or structure in this image that is not in
-   the anchor? Name it.
-3. Is any object duplicated that appears once in the anchor?
-
-**Per scene, vs the hero and cast sheets**
-4. For each person: describe their clothing, its colours, their hair, and their
-   apparent age. Does each match their reference exactly? Name every
-   difference.
-5. Does anyone appear as a hand, arm or body part with no body attached?
-6. Is every adult drawn with adult proportions, and every child with child
-   proportions?
-
-**Per scene, vs the page text and the object states**
-7. Read the sentence. List every physical thing it names. Is each one visible?
-8. List every key object visible. For each, is it in the state the director
-   declared for THIS page — or is something shown finished, full, clean or
-   present that should not exist yet?
-9. Does the picture show the action of this sentence, or a moment before or
-   after it?
-
-**Object progression across the book — the story's own subject**
-Many of these books are about something CHANGING: a cake being baked, a plant
-growing, a picture being painted. The object's journey IS the story, and the
-commonest failure is showing its end state early — or, worse, showing the end
-state *and* the early state in the same frame.
-10. Name the story's main changing object. For each page in order, describe
-    the state it is in.
-11. Does that sequence only ever move forward — seed, shoot, bud, flower — with
-    no page showing a later state than the words describe?
-12. Is the finished state visible ANYWHERE before the page on which it is
-    completed, including in the background, on a shelf, in someone's hands, or
-    as a second copy of the same object?
-13. Does the same object appear TWICE in one frame in two different states?
-14. Once completed, does it keep exactly the same appearance to the end of the
-    book (same decoration, same colour, same size)?
-15. Does the cover show the object in its finished state only — never mid-story?
-
-**Text, against the level spec** (`data/reading_progression.json`)
-16. Quote the first word of every sentence. Is each one capitalised? Is the
-    child's name capitalised everywhere, and the pronoun I?
-17. Does every sentence end with a full stop, question mark or exclamation
-    mark?
-18. List every word in the book. For each, state whether it is (a) decodable
-    from the taught graphemes at this level, (b) on this level's tricky-word
-    list, or (c) neither. Only (c) is a violation.
-19. Which tricky words are used, and are they all at or below this level? Is
-    any word being treated as tricky that this level expects to be decoded?
-20. Count sentences per page and words per sentence. Do they sit in this
-    level's range, or does the book read below its level?
-21. Which punctuation is used? Is any of it from above this level (a comma at
-    Level 3, an apostrophe before they are taught)?
-22. Which sentence forms appear — statement, question, exclamation, command?
-    Does the book use the forms this level expects?
-23. Does the book demonstrate this level's new devices? (L4 joining with
-    'and'; L6 subordination and expanded noun phrases; **L7 time adverbials
-    and complex sentences**; L8 fronted adverbials with commas, varied
-    openings.) Quote the sentence that shows each.
-24. Is the tense consistent across the whole book?
-25. How many sentences begin with the hero's name or "The"? More than half is
-    a fail at L6+.
-26. Is the focus sound used in ONE to THREE words — not crammed into every
-    page?
-
-**Physical plausibility — could this be built?**
-27. Describe every piece of furniture in the frame. Does each have the right
-    number of legs, all reaching the floor, with the seat and back properly
-    joined? Does it have the same parts it had on earlier pages?
-28. Is every seated character sitting ON something that is fully drawn
-    underneath them and could take their weight — not on thin air, and not
-    beside their own chair?
-29. Is anything hovering — an object not resting on a surface, hanging from a
-    fixing, or held in a hand?
-
-**Story logic**
-30. Whatever goes wrong: was its cause shown or named BEFORE it happened? A
-    chair that "cracked on the wet step" when no wet step was ever established
-    is a cheat — a child should be able to say why it went wrong.
-31. Does anyone who ARRIVES partway through appear earlier, in the words or the
-    pictures, undercutting their arrival?
-32. Below Level 6, does any character speak? Speech marks are not taught yet,
-    so unattributed dialogue ("Will you fix it?") must not appear.
-
-**Across the finished book (one pass, all pages)**
-33. Does any character change clothing, hair or apparent age between pages?
-28. Is there a beat the words describe that no picture shows?
-29. Would a child who cannot yet read the words be able to follow the whole
-    story from the pictures alone?
-
-Questions 16, 17, 20, 21 and 25 are answered DETERMINISTICALLY in
-`prose.mjs` — a regex is more reliable than a model for capitals, terminal
-punctuation, counts and sentence openers, and `fixMechanics` repairs
-capitalisation automatically rather than reporting it. Do not spend a model
-call on something a regex can prove.
-
-A failure returns the page number, the specific difference, and a repair
-instruction narrow enough for an edit pass — never "regenerate the page".
-
----
-
-## 6. Cost expectations (OpenAI, July 2026)
-
-| Item | Cost |
-|---|---|
-| Story + rewrite + director (gpt-5.5) | ~$0.45 |
-| Phonics + shifty (5.6-sol) | ~$0.13 |
-| Image, gpt-image-2 medium (in $8/M, out $30/M image tokens) | ~$0.076 |
-| Cast sheet, each | ~$0.07 |
-| **8-page book, hero + cover + landmark + 1 cast member** | **~$1.30–1.45** |
-
-Vertex Gemini is the fallback and costs ~$0.039/image, but needs a live
-`gcloud` session — it has expired mid-run and killed a job. OpenAI needs no
-gcloud, which is why it is the default.
-
----
-
-## 7. Known gaps
-
-- **The word bank is the binding constraint.** 1,751 green words total; Level 8
-  adds only 69; `tious` has 5 and `cious` has 0. The ledger's own coverage
-  sheet marks 8 sounds Thin and 13 OK. Little Wandle and RWI run far larger
-  banks — this is what makes the stories feel thin, not the model.
-- **No reading-progression spec.** Nothing sets sentences per page, words per
-  sentence, or required sentence types by level, so a Level 8 book can come
-  back as thin as a Level 3 one.
-- **Consistency QA only covers text-vs-image** (§5) — the image-vs-image half
-  (scene vs. anchor, scene vs. hero/cast refs) is still unbuilt.
-- **Cast references are synthetic sheets**, not first-appearance crops (§3).
-- **Story shapes can still cluster thematically even when the named shape
-  differs** — widening STORY_SHAPES (12→23) and giving the picker memory of
-  the last 5 books' shapes (2026-08-09) fixes exact repeats, not every
-  possible convergence. Worth a periodic spot-check of recent titles.
+Implement conversation state according to the current official OpenAI guidance for the Responses/Conversations APIs and multi-turn image generation. Do not assume that a successful API response proves the request received the correct book context; log and verify the identifiers and state version used by every context-dependent stage.
