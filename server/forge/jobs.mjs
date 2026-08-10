@@ -21,7 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, reviewStory, rewriteStory, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes } from "./db.mjs";
@@ -63,6 +63,7 @@ function newJob(book) {
 function nextStepOf(job) {
   if (!job.story) return "story";
   if (!job.qaDone) return "qa";
+  if (!job.plausibilityDone) return "plausibility";
   if (!job.directDone) return "direct";
   if (!job.heroUrl) return "hero";
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
@@ -237,6 +238,44 @@ async function stepQa(book, job) {
   job.story = story;
   job.validation = validation;
   job.qaDone = true;
+}
+
+// Runs BEFORE any image exists — the last chance to catch a story whose
+// premise is physically or logically self-contradictory. "The Thick Pen"
+// shipped "The bag had a gap. The cap fell into sand." then "The thick pen
+// fit the gap": a rigid cap cannot fall through a hole a thin pen later
+// plugs. No other gate could have caught it — decodability only checks
+// words are legal, and the image-consistency QA only checks a picture
+// matches its OWN page's text, not whether the text's claim is possible at
+// all (Lynden 2026-08-10). One bounded rewrite, same doctrine as stepQa —
+// never loop forever, and log rather than block the book if it still fails.
+async function stepPlausibility(book, job) {
+  const level = getLevel(book.level);
+  const child = childOf(book);
+  const pagesCount = Math.min(level.storyPages, 8);
+  let story = job.story;
+
+  const review = await reviewStoryPlausibility({ story });
+  job.cost += review.cost; job.breakdown.story_usd += review.cost;
+  let result = review.data;
+  if (!result.pass && result.issues?.length) {
+    const fixed = await fixStoryPlausibility({
+      level, child, focusSound: book.focus_sound, pagesCount, story, issues: result.issues,
+    });
+    job.cost += fixed.cost; job.breakdown.story_usd += fixed.cost;
+    story = fixed.data;
+    story.pages = story.pages.map((p) => ({ ...p, text: fixMechanics(p.text, child.name) }));
+    const recheck = await reviewStoryPlausibility({ story });
+    job.cost += recheck.cost; job.breakdown.story_usd += recheck.cost;
+    result = recheck.data;
+    if (!result.pass) {
+      console.warn(`[forge] story still fails plausibility QA after one rewrite: ${JSON.stringify(result.issues)}`);
+    }
+  }
+
+  job.story = story;
+  job.breakdown.plausibility = result;
+  job.plausibilityDone = true;
 }
 
 async function stepDirect(book, job) {
@@ -473,6 +512,7 @@ export async function runNextStep(bookId) {
   try {
     if (step === "story") await stepStory(book, job);
     else if (step === "qa") await stepQa(book, job);
+    else if (step === "plausibility") await stepPlausibility(book, job);
     else if (step === "direct") await stepDirect(book, job);
     else if (step === "hero") await stepHero(book, job);
     else if (step.startsWith("scene:")) await stepScene(book, job, Number(step.split(":")[1]));

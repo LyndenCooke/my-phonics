@@ -542,6 +542,61 @@ THE BOOK MUST STILL READ LIKE A BOOK. Removing a violation is never a licence to
   return callJson({ system, content, schema: STORY_SCHEMA });
 }
 
+// The gate every other QA in this file skips: does the STORY ITSELF make
+// physical/logical sense, before a single image is generated? Built after
+// "The Thick Pen" shipped "The bag had a gap. The cap fell into sand." then
+// "The thick pen fit the gap" — a rigid cap cannot fall through a hole a
+// THIN PEN later plugs; either the hole is cap-sized (too big for the pen to
+// block) or pen-sized (too small for the cap to have passed through). No
+// existing gate could ever catch this: decodability only checks words are
+// legal, prose QA only checks mechanics, and the image-consistency QA (see
+// sceneConsistencyQA) only checks that a picture matches ITS OWN page's
+// text — it has no way to know the text's premise is self-contradictory,
+// and in fact the illustrator quietly drew something sensible instead
+// (sand trickling from the hole, cap already on the ground) while the text
+// kept claiming the impossible version. Lynden 2026-08-10: "how does a cap
+// fall through a whole in the bag that a pen can fill?"
+const PLAUSIBILITY_SCHEMA = {
+  type: "object",
+  properties: {
+    causal_chain: { type: "string", description: "Walk the story page by page: what physically changes on each page, and does it follow from the page before using real-world size, weight and mechanism logic? Describe this BEFORE judging." },
+    dual_role_objects: { type: "string", description: "List every object that plays a physical role — passing through, blocking, fitting into, carrying, holding — on MORE THAN ONE page. For EACH one, state its implied size on every occasion it plays that role, in one line per occasion (e.g. 'gap: page 5 must be big enough for a rigid cap to pass through; page 6 must be small enough for a thin pen to block it'). Then say explicitly whether those occasions describe ONE consistent size, or whether the object would need to be two incompatible sizes at once. If there are no such objects, say so." },
+    issues: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          page: { type: "integer" },
+          problem: { type: "string", description: "The specific physical or logical contradiction, and why a sharp adult reader would object to it." },
+        },
+        required: ["page", "problem"],
+        additionalProperties: false,
+      },
+    },
+    pass: { type: "boolean" },
+  },
+  required: ["causal_chain", "dual_role_objects", "issues", "pass"],
+  additionalProperties: false,
+};
+
+export async function reviewStoryPlausibility({ story }) {
+  const system =
+    "You are the physical and logical plausibility QA gate for MyPhonicsBooks — checked on the WORDS ALONE, before any illustration exists. " +
+    "Describe the causal chain first, page by page, THEN the dual_role_objects size comparison, THEN judge — a bare pass/fail rubber-stamps everything, the same lesson learned the hard way on every other QA gate in this pipeline. Do not hedge with 'plausible if X' or 'this could work if Y' — commit to a real-world size for the object and check it against BOTH occasions; if a single consistent size cannot satisfy every occasion, that is a fail, not a maybe. " +
+    "pass is FALSE if: dual_role_objects finds an object that would need two incompatible sizes to make the story true (this is the single most common failure — check it exhaustively before anything else); a fix, tool or event's scale does not match the scale of the problem it solves; a cause is claimed for an effect that could not actually produce it; or a sequence of events a sensible adult would find genuinely self-contradictory, even allowing for the usual warmth and simplicity of a picture book. " +
+    "Do NOT flag ordinary picture-book compression, coincidence, or the everyday things a child protagonist is allowed to do well (finding something, succeeding at a task, an adult being kind) — this is not a check for total realism, only for claims that are actually impossible or self-contradictory on their own terms. Report only genuine issues.";
+  const content = `Check this story's physical and logical plausibility:\n\n${JSON.stringify(story.pages.map((p, i) => ({ page: i + 1, text: p.text })))}`;
+  return callJson({ system, content, schema: PLAUSIBILITY_SCHEMA });
+}
+
+export async function fixStoryPlausibility({ level, child, focusSound, pagesCount, story, issues }) {
+  const system = `You are the senior story writer for MyPhonicsBooks fixing physical/logical plausibility issues. Keep the same title, characters and setting wherever possible — change only what is needed to make the flagged events make real-world sense. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in one to three words. British English. Exactly ${pagesCount} pages.
+
+Fix the underlying MECHANISM, not just the wording — if an object's size or a fix's scale doesn't match the problem, change what actually happens on that page so cause and effect genuinely line up. Keep every other page's text, scenes and props untouched unless the fix requires a small knock-on change (e.g. a later page referring to the now-changed event). Every sentence still starts with a CAPITAL LETTER and the whole story stays in ONE consistent tense.`;
+  const content = `Original story:\n${JSON.stringify(story)}\n\nPlausibility issues to fix:\n${JSON.stringify(issues)}\n\nReturn the corrected story.`;
+  return callJson({ system, content, schema: STORY_SCHEMA });
+}
+
 const DIRECT_SCHEMA = {
   type: "object",
   properties: {
