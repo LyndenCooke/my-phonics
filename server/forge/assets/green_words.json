@@ -202,16 +202,6 @@
    ]
   },
   {
-   "word": "gig",
-   "sound": "g",
-   "level": 1,
-   "units": [
-    "g",
-    "i",
-    "g"
-   ]
-  },
-  {
    "word": "got",
    "sound": "g",
    "level": 1,
@@ -1250,19 +1240,6 @@
    ]
   },
   {
-   "word": "bridge",
-   "sound": "b",
-   "level": 2,
-   "units": [
-    "b",
-    "r",
-    "i",
-    "d",
-    "g",
-    "e"
-   ]
-  },
-  {
    "word": "bud",
    "sound": "b",
    "level": 2,
@@ -1332,19 +1309,6 @@
     "u",
     "m",
     "p"
-   ]
-  },
-  {
-   "word": "bumped",
-   "sound": "b",
-   "level": 2,
-   "units": [
-    "b",
-    "u",
-    "m",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -1589,30 +1553,6 @@
    ]
   },
   {
-   "word": "centre",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "e",
-    "n",
-    "t",
-    "r",
-    "e"
-   ]
-  },
-  {
-   "word": "city",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "i",
-    "t",
-    "y"
-   ]
-  },
-  {
    "word": "clap",
    "sound": "c",
    "level": 2,
@@ -1621,20 +1561,6 @@
     "l",
     "a",
     "p"
-   ]
-  },
-  {
-   "word": "clapped",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "l",
-    "a",
-    "p",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -1669,19 +1595,6 @@
     "l",
     "i",
     "ck"
-   ]
-  },
-  {
-   "word": "clicked",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "l",
-    "i",
-    "ck",
-    "e",
-    "d"
    ]
   },
   {
@@ -1730,19 +1643,6 @@
     "l",
     "o",
     "ck"
-   ]
-  },
-  {
-   "word": "closed",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "l",
-    "o",
-    "s",
-    "e",
-    "d"
    ]
   },
   {
@@ -1841,34 +1741,6 @@
    ]
   },
   {
-   "word": "crossed",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "r",
-    "o",
-    "ss",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "crumpled",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "c",
-    "r",
-    "u",
-    "m",
-    "p",
-    "l",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "crusty",
    "sound": "c",
    "level": 2,
@@ -1919,32 +1791,6 @@
     "c",
     "u",
     "t"
-   ]
-  },
-  {
-   "word": "dance",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "d",
-    "a",
-    "n",
-    "c",
-    "e"
-   ]
-  },
-  {
-   "word": "noticed",
-   "sound": "c",
-   "level": 2,
-   "units": [
-    "n",
-    "o",
-    "t",
-    "i",
-    "c",
-    "e",
-    "d"
    ]
   },
   {
@@ -2006,18 +1852,6 @@
     "p",
     "i",
     "ck"
-   ]
-  },
-  {
-   "word": "picked",
-   "sound": "ck",
-   "level": 2,
-   "units": [
-    "p",
-    "i",
-    "ck",
-    "e",
-    "d"
    ]
   },
   {
@@ -2109,19 +1943,6 @@
    ]
   },
   {
-   "word": "stacked",
-   "sound": "ck",
-   "level": 2,
-   "units": [
-    "s",
-    "t",
-    "a",
-    "ck",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "stick",
    "sound": "ck",
    "level": 2,
@@ -2175,33 +1996,6 @@
    ]
   },
   {
-   "word": "added",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "a",
-    "d",
-    "d",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "admitted",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "a",
-    "d",
-    "m",
-    "i",
-    "t",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "den",
    "sound": "e",
    "level": 2,
@@ -2220,30 +2014,6 @@
     "e",
     "s",
     "k"
-   ]
-  },
-  {
-   "word": "dipped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "d",
-    "i",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "edge",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "e",
-    "d",
-    "g",
-    "e"
    ]
   },
   {
@@ -2279,21 +2049,6 @@
    ]
   },
   {
-   "word": "entrance",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "e",
-    "n",
-    "t",
-    "r",
-    "a",
-    "n",
-    "c",
-    "e"
-   ]
-  },
-  {
    "word": "eucalyptus",
    "sound": "e",
    "level": 2,
@@ -2324,56 +2079,6 @@
     "i",
     "o",
     "n"
-   ]
-  },
-  {
-   "word": "gentle",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "g",
-    "e",
-    "n",
-    "t",
-    "l",
-    "e"
-   ]
-  },
-  {
-   "word": "get",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "g",
-    "e",
-    "t"
-   ]
-  },
-  {
-   "word": "gets",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "g",
-    "e",
-    "t",
-    "s"
-   ]
-  },
-  {
-   "word": "inspected",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "i",
-    "n",
-    "s",
-    "p",
-    "e",
-    "c",
-    "t",
-    "e",
-    "d"
    ]
   },
   {
@@ -2487,19 +2192,6 @@
    ]
   },
   {
-   "word": "nodded",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "n",
-    "o",
-    "d",
-    "d",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "open",
    "sound": "e",
    "level": 2,
@@ -2508,19 +2200,6 @@
     "p",
     "e",
     "n"
-   ]
-  },
-  {
-   "word": "opened",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "o",
-    "p",
-    "e",
-    "n",
-    "e",
-    "d"
    ]
   },
   {
@@ -2571,19 +2250,6 @@
     "p",
     "e",
     "t"
-   ]
-  },
-  {
-   "word": "popped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "p",
-    "o",
-    "p",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -2642,19 +2308,6 @@
     "m",
     "e",
     "ll"
-   ]
-  },
-  {
-   "word": "smelled",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "s",
-    "m",
-    "e",
-    "ll",
-    "e",
-    "d"
    ]
   },
   {
@@ -2721,20 +2374,6 @@
    ]
   },
   {
-   "word": "spotted",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "s",
-    "p",
-    "o",
-    "t",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "step",
    "sound": "e",
    "level": 2,
@@ -2743,20 +2382,6 @@
     "t",
     "e",
     "p"
-   ]
-  },
-  {
-   "word": "stepped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "s",
-    "t",
-    "e",
-    "p",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -2785,20 +2410,6 @@
    ]
   },
   {
-   "word": "stopped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "s",
-    "t",
-    "o",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "taste",
    "sound": "e",
    "level": 2,
@@ -2808,19 +2419,6 @@
     "s",
     "t",
     "e"
-   ]
-  },
-  {
-   "word": "tasted",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "t",
-    "a",
-    "s",
-    "t",
-    "e",
-    "d"
    ]
   },
   {
@@ -2862,44 +2460,6 @@
     "t",
     "i",
     "m",
-    "e",
-    "s"
-   ]
-  },
-  {
-   "word": "tipped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "t",
-    "i",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "topped",
-   "sound": "e",
-   "level": 2,
-   "units": [
-    "t",
-    "o",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "faces",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "f",
-    "a",
-    "c",
     "e",
     "s"
    ]
@@ -2958,19 +2518,6 @@
     "f",
     "a",
     "n"
-   ]
-  },
-  {
-   "word": "fanned",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "f",
-    "a",
-    "n",
-    "n",
-    "e",
-    "d"
    ]
   },
   {
@@ -3092,18 +2639,6 @@
    ]
   },
   {
-   "word": "filled",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "f",
-    "i",
-    "ll",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "film",
    "sound": "f",
    "level": 2,
@@ -3169,20 +2704,6 @@
    ]
   },
   {
-   "word": "flapped",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "f",
-    "l",
-    "a",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "flat",
    "sound": "f",
    "level": 2,
@@ -3203,19 +2724,6 @@
     "a",
     "t",
     "s"
-   ]
-  },
-  {
-   "word": "flicked",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "f",
-    "l",
-    "i",
-    "ck",
-    "e",
-    "d"
    ]
   },
   {
@@ -3350,17 +2858,6 @@
    ]
   },
   {
-   "word": "gift",
-   "sound": "f",
-   "level": 2,
-   "units": [
-    "g",
-    "i",
-    "f",
-    "t"
-   ]
-  },
-  {
    "word": "if",
    "sound": "f",
    "level": 2,
@@ -3387,19 +2884,6 @@
    "units": [
     "o",
     "ff"
-   ]
-  },
-  {
-   "word": "sniffed",
-   "sound": "ff",
-   "level": 2,
-   "units": [
-    "s",
-    "n",
-    "i",
-    "ff",
-    "e",
-    "d"
    ]
   },
   {
@@ -3440,19 +2924,6 @@
     "h",
     "a",
     "n",
-    "d"
-   ]
-  },
-  {
-   "word": "handed",
-   "sound": "h",
-   "level": 2,
-   "units": [
-    "h",
-    "a",
-    "n",
-    "d",
-    "e",
     "d"
    ]
   },
@@ -3524,19 +2995,6 @@
     "e",
     "l",
     "p"
-   ]
-  },
-  {
-   "word": "helped",
-   "sound": "h",
-   "level": 2,
-   "units": [
-    "h",
-    "e",
-    "l",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -3686,19 +3144,6 @@
    ]
   },
   {
-   "word": "hopped",
-   "sound": "h",
-   "level": 2,
-   "units": [
-    "h",
-    "o",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "hops",
    "sound": "h",
    "level": 2,
@@ -3750,19 +3195,6 @@
    ]
   },
   {
-   "word": "hugged",
-   "sound": "h",
-   "level": 2,
-   "units": [
-    "h",
-    "u",
-    "g",
-    "g",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "hugs",
    "sound": "h",
    "level": 2,
@@ -3791,19 +3223,6 @@
     "h",
     "u",
     "m"
-   ]
-  },
-  {
-   "word": "hummed",
-   "sound": "h",
-   "level": 2,
-   "units": [
-    "h",
-    "u",
-    "m",
-    "m",
-    "e",
-    "d"
    ]
   },
   {
@@ -3954,19 +3373,6 @@
     "u",
     "m",
     "p"
-   ]
-  },
-  {
-   "word": "jumped",
-   "sound": "j",
-   "level": 2,
-   "units": [
-    "j",
-    "u",
-    "m",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -4134,18 +3540,6 @@
     "n",
     "o",
     "t"
-   ]
-  },
-  {
-   "word": "poked",
-   "sound": "k",
-   "level": 2,
-   "units": [
-    "p",
-    "o",
-    "k",
-    "e",
-    "d"
    ]
   },
   {
@@ -4346,19 +3740,6 @@
    ]
   },
   {
-   "word": "landed",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "l",
-    "a",
-    "n",
-    "d",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "lands",
    "sound": "l",
    "level": 2,
@@ -4507,19 +3888,6 @@
    ]
   },
   {
-   "word": "lifted",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "l",
-    "i",
-    "f",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "lifts",
    "sound": "l",
    "level": 2,
@@ -4532,18 +3900,6 @@
    ]
   },
   {
-   "word": "lined",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "l",
-    "i",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "lip",
    "sound": "l",
    "level": 2,
@@ -4551,21 +3907,6 @@
     "l",
     "i",
     "p"
-   ]
-  },
-  {
-   "word": "listened",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "l",
-    "i",
-    "s",
-    "t",
-    "e",
-    "n",
-    "e",
-    "d"
    ]
   },
   {
@@ -4714,19 +4055,6 @@
    ]
   },
   {
-   "word": "places",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "p",
-    "l",
-    "a",
-    "c",
-    "e",
-    "s"
-   ]
-  },
-  {
    "word": "plan",
    "sound": "l",
    "level": 2,
@@ -4796,19 +4124,6 @@
    ]
   },
   {
-   "word": "sliced",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "s",
-    "l",
-    "i",
-    "c",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "slid",
    "sound": "l",
    "level": 2,
@@ -4855,20 +4170,6 @@
    ]
   },
   {
-   "word": "slipped",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "s",
-    "l",
-    "i",
-    "p",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "slips",
    "sound": "l",
    "level": 2,
@@ -4878,19 +4179,6 @@
     "i",
     "p",
     "s"
-   ]
-  },
-  {
-   "word": "smiled",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "s",
-    "m",
-    "i",
-    "l",
-    "e",
-    "d"
    ]
   },
   {
@@ -4919,34 +4207,12 @@
    ]
   },
   {
-   "word": "tiled",
-   "sound": "l",
-   "level": 2,
-   "units": [
-    "t",
-    "i",
-    "l",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "doll",
    "sound": "ll",
    "level": 2,
    "units": [
     "d",
     "o",
-    "ll"
-   ]
-  },
-  {
-   "word": "gill",
-   "sound": "ll",
-   "level": 2,
-   "units": [
-    "g",
-    "i",
     "ll"
    ]
   },
@@ -5055,20 +4321,6 @@
    ]
   },
   {
-   "word": "drifted",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "d",
-    "r",
-    "i",
-    "f",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "drop",
    "sound": "r",
    "level": 2,
@@ -5077,20 +4329,6 @@
     "r",
     "o",
     "p"
-   ]
-  },
-  {
-   "word": "dropped",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "d",
-    "r",
-    "o",
-    "p",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -5165,19 +4403,6 @@
    ]
   },
   {
-   "word": "grated",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "g",
-    "r",
-    "a",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "grateful",
    "sound": "r",
    "level": 2,
@@ -5215,20 +4440,6 @@
    ]
   },
   {
-   "word": "grinned",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "g",
-    "r",
-    "i",
-    "n",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "grins",
    "sound": "r",
    "level": 2,
@@ -5249,20 +4460,6 @@
     "r",
     "i",
     "p"
-   ]
-  },
-  {
-   "word": "gripped",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "g",
-    "r",
-    "i",
-    "p",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -5287,19 +4484,6 @@
     "r",
     "e",
     "ss"
-   ]
-  },
-  {
-   "word": "pressed",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "p",
-    "r",
-    "e",
-    "ss",
-    "e",
-    "d"
    ]
   },
   {
@@ -5410,23 +4594,6 @@
     "u",
     "i",
     "l",
-    "d"
-   ]
-  },
-  {
-   "word": "recognised",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "r",
-    "e",
-    "c",
-    "o",
-    "g",
-    "n",
-    "i",
-    "s",
-    "e",
     "d"
    ]
   },
@@ -5735,20 +4902,6 @@
    ]
   },
   {
-   "word": "trotted",
-   "sound": "r",
-   "level": 2,
-   "units": [
-    "t",
-    "r",
-    "o",
-    "t",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "truck",
    "sound": "r",
    "level": 2,
@@ -5814,18 +4967,6 @@
    ]
   },
   {
-   "word": "missed",
-   "sound": "ss",
-   "level": 2,
-   "units": [
-    "m",
-    "i",
-    "ss",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "moss",
    "sound": "ss",
    "level": 2,
@@ -5843,18 +4984,6 @@
     "p",
     "a",
     "ss"
-   ]
-  },
-  {
-   "word": "passed",
-   "sound": "ss",
-   "level": 2,
-   "units": [
-    "p",
-    "a",
-    "ss",
-    "e",
-    "d"
    ]
   },
   {
@@ -5952,19 +5081,6 @@
     "u",
     "s",
     "t"
-   ]
-  },
-  {
-   "word": "dusted",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "d",
-    "u",
-    "s",
-    "t",
-    "e",
-    "d"
    ]
   },
   {
@@ -6079,19 +5195,6 @@
    ]
   },
   {
-   "word": "paused",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "p",
-    "a",
-    "u",
-    "s",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "pub",
    "sound": "u",
    "level": 2,
@@ -6142,18 +5245,6 @@
    ]
   },
   {
-   "word": "pulled",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "p",
-    "u",
-    "ll",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "pun",
    "sound": "u",
    "level": 2,
@@ -6193,19 +5284,6 @@
     "t",
     "u",
     "ck"
-   ]
-  },
-  {
-   "word": "stuffed",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "s",
-    "t",
-    "u",
-    "ff",
-    "e",
-    "d"
    ]
   },
   {
@@ -6262,19 +5340,6 @@
    ]
   },
   {
-   "word": "sunned",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "s",
-    "u",
-    "n",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "tub",
    "sound": "u",
    "level": 2,
@@ -6292,18 +5357,6 @@
     "t",
     "u",
     "ck"
-   ]
-  },
-  {
-   "word": "tucked",
-   "sound": "u",
-   "level": 2,
-   "units": [
-    "t",
-    "u",
-    "ck",
-    "e",
-    "d"
    ]
   },
   {
@@ -6366,18 +5419,6 @@
    "units": [
     "u",
     "s"
-   ]
-  },
-  {
-   "word": "moved",
-   "sound": "v",
-   "level": 2,
-   "units": [
-    "m",
-    "o",
-    "v",
-    "e",
-    "d"
    ]
   },
   {
@@ -6504,20 +5545,6 @@
    ]
   },
   {
-   "word": "twisted",
-   "sound": "w",
-   "level": 2,
-   "units": [
-    "t",
-    "w",
-    "i",
-    "s",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "wag",
    "sound": "w",
    "level": 2,
@@ -6525,19 +5552,6 @@
     "w",
     "a",
     "g"
-   ]
-  },
-  {
-   "word": "walked",
-   "sound": "w",
-   "level": 2,
-   "units": [
-    "w",
-    "a",
-    "l",
-    "k",
-    "e",
-    "d"
    ]
   },
   {
@@ -6559,19 +5573,6 @@
     "a",
     "ll",
     "s"
-   ]
-  },
-  {
-   "word": "wanted",
-   "sound": "w",
-   "level": 2,
-   "units": [
-    "w",
-    "a",
-    "n",
-    "t",
-    "e",
-    "d"
    ]
   },
   {
@@ -6699,18 +5700,6 @@
    ]
   },
   {
-   "word": "wiped",
-   "sound": "w",
-   "level": 2,
-   "units": [
-    "w",
-    "i",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "wit",
    "sound": "w",
    "level": 2,
@@ -6794,18 +5783,6 @@
     "m",
     "i",
     "x"
-   ]
-  },
-  {
-   "word": "mixed",
-   "sound": "x",
-   "level": 2,
-   "units": [
-    "m",
-    "i",
-    "x",
-    "e",
-    "d"
    ]
   },
   {
@@ -6906,19 +5883,6 @@
     "y",
     "u",
     "m"
-   ]
-  },
-  {
-   "word": "amazed",
-   "sound": "z",
-   "level": 2,
-   "units": [
-    "a",
-    "m",
-    "a",
-    "z",
-    "e",
-    "d"
    ]
   },
   {
@@ -7025,18 +5989,6 @@
     "u",
     "n",
     "ch"
-   ]
-  },
-  {
-   "word": "changed",
-   "sound": "ch",
-   "level": 3,
-   "units": [
-    "ch",
-    "a",
-    "ng",
-    "e",
-    "d"
    ]
   },
   {
@@ -7243,19 +6195,6 @@
    ]
   },
   {
-   "word": "munched",
-   "sound": "ch",
-   "level": 3,
-   "units": [
-    "m",
-    "u",
-    "n",
-    "ch",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "munching",
    "sound": "ch",
    "level": 3,
@@ -7301,20 +6240,6 @@
    ]
   },
   {
-   "word": "sketched",
-   "sound": "ch",
-   "level": 3,
-   "units": [
-    "s",
-    "k",
-    "e",
-    "t",
-    "ch",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "sketches",
    "sound": "ch",
    "level": 3,
@@ -7351,19 +6276,6 @@
     "s",
     "u",
     "ch"
-   ]
-  },
-  {
-   "word": "watched",
-   "sound": "ch",
-   "level": 3,
-   "units": [
-    "w",
-    "a",
-    "t",
-    "ch",
-    "e",
-    "d"
    ]
   },
   {
@@ -7543,19 +6455,6 @@
    ]
   },
   {
-   "word": "getting",
-   "sound": "ng",
-   "level": 3,
-   "units": [
-    "g",
-    "e",
-    "t",
-    "t",
-    "i",
-    "ng"
-   ]
-  },
-  {
    "word": "gong",
    "sound": "ng",
    "level": 3,
@@ -7603,18 +6502,6 @@
    "units": [
     "h",
     "a",
-    "ng"
-   ]
-  },
-  {
-   "word": "hanging",
-   "sound": "ng",
-   "level": 3,
-   "units": [
-    "h",
-    "a",
-    "ng",
-    "i",
     "ng"
    ]
   },
@@ -7726,19 +6613,6 @@
    "units": [
     "p",
     "a",
-    "ng"
-   ]
-  },
-  {
-   "word": "placing",
-   "sound": "ng",
-   "level": 3,
-   "units": [
-    "p",
-    "l",
-    "a",
-    "c",
-    "i",
     "ng"
    ]
   },
@@ -8005,20 +6879,6 @@
    ]
   },
   {
-   "word": "tangyuan",
-   "sound": "ng",
-   "level": 3,
-   "units": [
-    "t",
-    "a",
-    "ng",
-    "y",
-    "u",
-    "a",
-    "n"
-   ]
-  },
-  {
    "word": "travelling",
    "sound": "ng",
    "level": 3,
@@ -8158,18 +7018,6 @@
     "h",
     "o",
     "nk"
-   ]
-  },
-  {
-   "word": "honked",
-   "sound": "nk",
-   "level": 3,
-   "units": [
-    "h",
-    "o",
-    "nk",
-    "e",
-    "d"
    ]
   },
   {
@@ -8522,20 +7370,6 @@
    ]
   },
   {
-   "word": "finished",
-   "sound": "sh",
-   "level": 3,
-   "units": [
-    "f",
-    "i",
-    "n",
-    "i",
-    "sh",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "fish",
    "sound": "sh",
    "level": 3,
@@ -8688,18 +7522,6 @@
    ]
   },
   {
-   "word": "rushed",
-   "sound": "sh",
-   "level": 3,
-   "units": [
-    "r",
-    "u",
-    "sh",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "shack",
    "sound": "sh",
    "level": 3,
@@ -8842,20 +7664,6 @@
     "sh",
     "o",
     "t"
-   ]
-  },
-  {
-   "word": "shrugged",
-   "sound": "sh",
-   "level": 3,
-   "units": [
-    "sh",
-    "r",
-    "u",
-    "g",
-    "g",
-    "e",
-    "d"
    ]
   },
   {
@@ -9142,32 +7950,6 @@
     "b",
     "u",
     "zz"
-   ]
-  },
-  {
-   "word": "buzzed",
-   "sound": "zz",
-   "level": 3,
-   "units": [
-    "b",
-    "u",
-    "zz",
-    "e",
-    "d"
-   ]
-  },
-  {
-   "word": "drizzled",
-   "sound": "zz",
-   "level": 3,
-   "units": [
-    "d",
-    "r",
-    "i",
-    "zz",
-    "l",
-    "e",
-    "d"
    ]
   },
   {
@@ -9693,19 +8475,6 @@
    ]
   },
   {
-   "word": "started",
-   "sound": "ar",
-   "level": 4,
-   "units": [
-    "s",
-    "t",
-    "ar",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "starting",
    "sound": "ar",
    "level": 4,
@@ -9865,18 +8634,6 @@
    ]
   },
   {
-   "word": "played",
-   "sound": "ay",
-   "level": 4,
-   "units": [
-    "p",
-    "l",
-    "ay",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "plays",
    "sound": "ay",
    "level": 4,
@@ -9949,18 +8706,6 @@
    ]
   },
   {
-   "word": "stayed",
-   "sound": "ay",
-   "level": 4,
-   "units": [
-    "s",
-    "t",
-    "ay",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "subway",
    "sound": "ay",
    "level": 4,
@@ -9970,18 +8715,6 @@
     "b",
     "w",
     "ay"
-   ]
-  },
-  {
-   "word": "swayed",
-   "sound": "ay",
-   "level": 4,
-   "units": [
-    "s",
-    "w",
-    "ay",
-    "e",
-    "d"
    ]
   },
   {
@@ -10103,18 +8836,6 @@
     "ch",
     "ee",
     "r"
-   ]
-  },
-  {
-   "word": "cheered",
-   "sound": "ee",
-   "level": 4,
-   "units": [
-    "ch",
-    "ee",
-    "r",
-    "e",
-    "d"
    ]
   },
   {
@@ -10411,18 +9132,6 @@
    ]
   },
   {
-   "word": "peeked",
-   "sound": "ee",
-   "level": 4,
-   "units": [
-    "p",
-    "ee",
-    "k",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "peeks",
    "sound": "ee",
    "level": 4,
@@ -10451,18 +9160,6 @@
     "p",
     "ee",
     "r"
-   ]
-  },
-  {
-   "word": "peered",
-   "sound": "ee",
-   "level": 4,
-   "units": [
-    "p",
-    "ee",
-    "r",
-    "e",
-    "d"
    ]
   },
   {
@@ -10816,21 +9513,6 @@
    ]
   },
   {
-   "word": "frightened",
-   "sound": "igh",
-   "level": 4,
-   "units": [
-    "f",
-    "r",
-    "igh",
-    "t",
-    "e",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "high",
    "sound": "igh",
    "level": 4,
@@ -11028,16 +9710,6 @@
    ]
   },
   {
-   "word": "girl",
-   "sound": "ir",
-   "level": 4,
-   "units": [
-    "g",
-    "ir",
-    "l"
-   ]
-  },
-  {
    "word": "lyrebird",
    "sound": "ir",
    "level": 4,
@@ -11068,19 +9740,6 @@
    "units": [
     "s",
     "ir"
-   ]
-  },
-  {
-   "word": "stirred",
-   "sound": "ir",
-   "level": 4,
-   "units": [
-    "s",
-    "t",
-    "ir",
-    "r",
-    "e",
-    "d"
    ]
   },
   {
@@ -11615,19 +10274,6 @@
    ]
   },
   {
-   "word": "scooped",
-   "sound": "oo",
-   "level": 4,
-   "units": [
-    "s",
-    "c",
-    "oo",
-    "p",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "scoops",
    "sound": "oo",
    "level": 4,
@@ -11668,19 +10314,6 @@
     "m",
     "oo",
     "th"
-   ]
-  },
-  {
-   "word": "smoothed",
-   "sound": "oo",
-   "level": 4,
-   "units": [
-    "s",
-    "m",
-    "oo",
-    "th",
-    "e",
-    "d"
    ]
   },
   {
@@ -11734,19 +10367,6 @@
     "t",
     "oo",
     "l"
-   ]
-  },
-  {
-   "word": "swooped",
-   "sound": "oo",
-   "level": 4,
-   "units": [
-    "s",
-    "w",
-    "oo",
-    "p",
-    "e",
-    "d"
    ]
   },
   {
@@ -11861,18 +10481,6 @@
    ]
   },
   {
-   "word": "zoomed",
-   "sound": "oo",
-   "level": 4,
-   "units": [
-    "z",
-    "oo",
-    "m",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "boring",
    "sound": "or",
    "level": 4,
@@ -11947,18 +10555,6 @@
    "units": [
     "f",
     "or"
-   ]
-  },
-  {
-   "word": "forget",
-   "sound": "or",
-   "level": 4,
-   "units": [
-    "f",
-    "or",
-    "g",
-    "e",
-    "t"
    ]
   },
   {
@@ -12255,18 +10851,6 @@
    ]
   },
   {
-   "word": "worked",
-   "sound": "or",
-   "level": 4,
-   "units": [
-    "w",
-    "or",
-    "k",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "working",
    "sound": "or",
    "level": 4,
@@ -12311,21 +10895,6 @@
    ]
   },
   {
-   "word": "announced",
-   "sound": "ou",
-   "level": 4,
-   "units": [
-    "a",
-    "n",
-    "n",
-    "ou",
-    "n",
-    "c",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "bought",
    "sound": "ou",
    "level": 4,
@@ -12345,20 +10914,6 @@
     "c",
     "l",
     "ou",
-    "d"
-   ]
-  },
-  {
-   "word": "coloured",
-   "sound": "ou",
-   "level": 4,
-   "units": [
-    "c",
-    "o",
-    "l",
-    "ou",
-    "r",
-    "e",
     "d"
    ]
   },
@@ -12395,19 +10950,6 @@
     "l",
     "e",
     "ss"
-   ]
-  },
-  {
-   "word": "crouched",
-   "sound": "ou",
-   "level": 4,
-   "units": [
-    "c",
-    "r",
-    "ou",
-    "ch",
-    "e",
-    "d"
    ]
   },
   {
@@ -12581,18 +11123,6 @@
    ]
   },
   {
-   "word": "shouted",
-   "sound": "ou",
-   "level": 4,
-   "units": [
-    "sh",
-    "ou",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "shouts",
    "sound": "ou",
    "level": 4,
@@ -12743,19 +11273,6 @@
    ]
   },
   {
-   "word": "crowded",
-   "sound": "ow",
-   "level": 4,
-   "units": [
-    "c",
-    "r",
-    "ow",
-    "d",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "crowds",
    "sound": "ow",
    "level": 4,
@@ -12775,18 +11292,6 @@
     "d",
     "ow",
     "n"
-   ]
-  },
-  {
-   "word": "flowed",
-   "sound": "ow",
-   "level": 4,
-   "units": [
-    "f",
-    "l",
-    "ow",
-    "e",
-    "d"
    ]
   },
   {
@@ -12826,19 +11331,6 @@
    ]
   },
   {
-   "word": "frowned",
-   "sound": "ow",
-   "level": 4,
-   "units": [
-    "f",
-    "r",
-    "ow",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "glow",
    "sound": "ow",
    "level": 4,
@@ -12846,18 +11338,6 @@
     "g",
     "l",
     "ow"
-   ]
-  },
-  {
-   "word": "glowed",
-   "sound": "ow",
-   "level": 4,
-   "units": [
-    "g",
-    "l",
-    "ow",
-    "e",
-    "d"
    ]
   },
   {
@@ -13030,17 +11510,6 @@
    ]
   },
   {
-   "word": "showed",
-   "sound": "ow",
-   "level": 4,
-   "units": [
-    "sh",
-    "ow",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "slow",
    "sound": "ow",
    "level": 4,
@@ -13209,16 +11678,6 @@
    ]
   },
   {
-   "word": "age",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "a",
-    "e",
-    "g"
-   ]
-  },
-  {
    "word": "ape",
    "sound": "a-e",
    "level": 5,
@@ -13352,17 +11811,6 @@
    ]
   },
   {
-   "word": "face",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "f",
-    "a",
-    "e",
-    "c"
-   ]
-  },
-  {
    "word": "fade",
    "sound": "a-e",
    "level": 5,
@@ -13439,18 +11887,6 @@
     "a",
     "e",
     "v"
-   ]
-  },
-  {
-   "word": "grace",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "g",
-    "r",
-    "a",
-    "e",
-    "c"
    ]
   },
   {
@@ -13555,21 +11991,6 @@
    ]
   },
   {
-   "word": "misplace",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "m",
-    "i",
-    "s",
-    "p",
-    "l",
-    "a",
-    "e",
-    "c"
-   ]
-  },
-  {
    "word": "mistake",
    "sound": "a-e",
    "level": 5,
@@ -13595,28 +12016,6 @@
    ]
   },
   {
-   "word": "pace",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "p",
-    "a",
-    "e",
-    "c"
-   ]
-  },
-  {
-   "word": "page",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "p",
-    "a",
-    "e",
-    "g"
-   ]
-  },
-  {
    "word": "pale",
    "sound": "a-e",
    "level": 5,
@@ -13625,18 +12024,6 @@
     "a",
     "e",
     "l"
-   ]
-  },
-  {
-   "word": "place",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "p",
-    "l",
-    "a",
-    "e",
-    "c"
    ]
   },
   {
@@ -13661,28 +12048,6 @@
     "a",
     "e",
     "t"
-   ]
-  },
-  {
-   "word": "race",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "r",
-    "a",
-    "e",
-    "c"
-   ]
-  },
-  {
-   "word": "rage",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "r",
-    "a",
-    "e",
-    "g"
    ]
   },
   {
@@ -13785,30 +12150,6 @@
     "a",
     "e",
     "k"
-   ]
-  },
-  {
-   "word": "space",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "s",
-    "p",
-    "a",
-    "e",
-    "c"
-   ]
-  },
-  {
-   "word": "stage",
-   "sound": "a-e",
-   "level": 5,
-   "units": [
-    "s",
-    "t",
-    "a",
-    "e",
-    "g"
    ]
   },
   {
@@ -14170,20 +12511,6 @@
    ]
   },
   {
-   "word": "remained",
-   "sound": "ai",
-   "level": 5,
-   "units": [
-    "r",
-    "e",
-    "m",
-    "ai",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "sail",
    "sound": "ai",
    "level": 5,
@@ -14191,18 +12518,6 @@
     "s",
     "ai",
     "l"
-   ]
-  },
-  {
-   "word": "sailed",
-   "sound": "ai",
-   "level": 5,
-   "units": [
-    "s",
-    "ai",
-    "l",
-    "e",
-    "d"
    ]
   },
   {
@@ -14313,18 +12628,6 @@
     "w",
     "ai",
     "t"
-   ]
-  },
-  {
-   "word": "waited",
-   "sound": "ai",
-   "level": 5,
-   "units": [
-    "w",
-    "ai",
-    "t",
-    "e",
-    "d"
    ]
   },
   {
@@ -14604,19 +12907,6 @@
    ]
   },
   {
-   "word": "breathed",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "b",
-    "r",
-    "ea",
-    "th",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "cheap",
    "sound": "ea",
    "level": 5,
@@ -14635,19 +12925,6 @@
     "l",
     "ea",
     "n"
-   ]
-  },
-  {
-   "word": "cleaned",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "c",
-    "l",
-    "ea",
-    "n",
-    "e",
-    "d"
    ]
   },
   {
@@ -14855,18 +13132,6 @@
    ]
   },
   {
-   "word": "leaned",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "l",
-    "ea",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "leaning",
    "sound": "ea",
    "level": 5,
@@ -15039,18 +13304,6 @@
    ]
   },
   {
-   "word": "reached",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "r",
-    "ea",
-    "ch",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "read",
    "sound": "ea",
    "level": 5,
@@ -15068,20 +13321,6 @@
     "r",
     "ea",
     "l"
-   ]
-  },
-  {
-   "word": "realised",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "r",
-    "ea",
-    "l",
-    "i",
-    "s",
-    "e",
-    "d"
    ]
   },
   {
@@ -15193,20 +13432,6 @@
     "r",
     "ea",
     "m"
-   ]
-  },
-  {
-   "word": "streamed",
-   "sound": "ea",
-   "level": 5,
-   "units": [
-    "s",
-    "t",
-    "r",
-    "ea",
-    "m",
-    "e",
-    "d"
    ]
   },
   {
@@ -15322,17 +13547,6 @@
    ]
   },
   {
-   "word": "dice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "d",
-    "i",
-    "e",
-    "c"
-   ]
-  },
-  {
    "word": "dislike",
    "sound": "i-e",
    "level": 5,
@@ -15344,29 +13558,6 @@
     "i",
     "e",
     "k"
-   ]
-  },
-  {
-   "word": "dive",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "d",
-    "i",
-    "e",
-    "v"
-   ]
-  },
-  {
-   "word": "drive",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "d",
-    "r",
-    "i",
-    "e",
-    "v"
    ]
   },
   {
@@ -15389,28 +13580,6 @@
     "i",
     "e",
     "n"
-   ]
-  },
-  {
-   "word": "five",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "f",
-    "i",
-    "e",
-    "v"
-   ]
-  },
-  {
-   "word": "give",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "g",
-    "i",
-    "e",
-    "v"
    ]
   },
   {
@@ -15445,27 +13614,6 @@
     "i",
     "e",
     "k"
-   ]
-  },
-  {
-   "word": "hive",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "h",
-    "i",
-    "e",
-    "v"
-   ]
-  },
-  {
-   "word": "ice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "i",
-    "e",
-    "c"
    ]
   },
   {
@@ -15526,28 +13674,6 @@
    ]
   },
   {
-   "word": "live",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "l",
-    "i",
-    "e",
-    "v"
-   ]
-  },
-  {
-   "word": "mice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "m",
-    "i",
-    "e",
-    "c"
-   ]
-  },
-  {
    "word": "mine",
    "sound": "i-e",
    "level": 5,
@@ -15556,17 +13682,6 @@
     "i",
     "e",
     "n"
-   ]
-  },
-  {
-   "word": "nice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "n",
-    "i",
-    "e",
-    "c"
    ]
   },
   {
@@ -15651,17 +13766,6 @@
    ]
   },
   {
-   "word": "rice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "r",
-    "i",
-    "e",
-    "c"
-   ]
-  },
-  {
    "word": "ride",
    "sound": "i-e",
    "level": 5,
@@ -15725,18 +13829,6 @@
     "i",
     "e",
     "z"
-   ]
-  },
-  {
-   "word": "slice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "s",
-    "l",
-    "i",
-    "e",
-    "c"
    ]
   },
   {
@@ -15845,18 +13937,6 @@
     "i",
     "e",
     "b"
-   ]
-  },
-  {
-   "word": "twice",
-   "sound": "i-e",
-   "level": 5,
-   "units": [
-    "t",
-    "w",
-    "i",
-    "e",
-    "c"
    ]
   },
   {
@@ -16003,17 +14083,6 @@
    "units": [
     "p",
     "ie"
-   ]
-  },
-  {
-   "word": "piece",
-   "sound": "ie",
-   "level": 5,
-   "units": [
-    "p",
-    "ie",
-    "c",
-    "e"
    ]
   },
   {
@@ -16771,19 +14840,6 @@
    ]
   },
   {
-   "word": "roasted",
-   "sound": "oa",
-   "level": 5,
-   "units": [
-    "r",
-    "oa",
-    "s",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "soak",
    "sound": "oa",
    "level": 5,
@@ -16794,18 +14850,6 @@
    ]
   },
   {
-   "word": "soaked",
-   "sound": "oa",
-   "level": 5,
-   "units": [
-    "s",
-    "oa",
-    "k",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "soap",
    "sound": "oa",
    "level": 5,
@@ -16813,18 +14857,6 @@
     "s",
     "oa",
     "p"
-   ]
-  },
-  {
-   "word": "soared",
-   "sound": "oa",
-   "level": 5,
-   "units": [
-    "s",
-    "oa",
-    "r",
-    "e",
-    "d"
    ]
   },
   {
@@ -16901,17 +14933,6 @@
     "b",
     "oi",
     "l"
-   ]
-  },
-  {
-   "word": "choice",
-   "sound": "oi",
-   "level": 5,
-   "units": [
-    "ch",
-    "oi",
-    "c",
-    "e"
    ]
   },
   {
@@ -17018,19 +15039,6 @@
    ]
   },
   {
-   "word": "pointed",
-   "sound": "oi",
-   "level": 5,
-   "units": [
-    "p",
-    "oi",
-    "n",
-    "t",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "pointing",
    "sound": "oi",
    "level": 5,
@@ -17084,17 +15092,6 @@
     "t",
     "oi",
     "l"
-   ]
-  },
-  {
-   "word": "voice",
-   "sound": "oi",
-   "level": 5,
-   "units": [
-    "v",
-    "oi",
-    "c",
-    "e"
    ]
   },
   {
@@ -17152,17 +15149,6 @@
     "u",
     "e",
     "s"
-   ]
-  },
-  {
-   "word": "huge",
-   "sound": "u-e",
-   "level": 5,
-   "units": [
-    "h",
-    "u",
-    "e",
-    "g"
    ]
   },
   {
@@ -17415,19 +15401,6 @@
    ]
   },
   {
-   "word": "compared",
-   "sound": "are",
-   "level": 6,
-   "units": [
-    "c",
-    "o",
-    "m",
-    "p",
-    "are",
-    "d"
-   ]
-  },
-  {
    "word": "dare",
    "sound": "are",
    "level": 6,
@@ -17505,33 +15478,12 @@
    ]
   },
   {
-   "word": "scared",
-   "sound": "are",
-   "level": 6,
-   "units": [
-    "s",
-    "c",
-    "are",
-    "d"
-   ]
-  },
-  {
    "word": "share",
    "sound": "are",
    "level": 6,
    "units": [
     "sh",
     "are"
-   ]
-  },
-  {
-   "word": "shared",
-   "sound": "are",
-   "level": 6,
-   "units": [
-    "sh",
-    "are",
-    "d"
    ]
   },
   {
@@ -17562,17 +15514,6 @@
     "s",
     "t",
     "are"
-   ]
-  },
-  {
-   "word": "stared",
-   "sound": "are",
-   "level": 6,
-   "units": [
-    "s",
-    "t",
-    "are",
-    "d"
    ]
   },
   {
@@ -17657,18 +15598,6 @@
     "e",
     "t",
     "t",
-    "er"
-   ]
-  },
-  {
-   "word": "bigger",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "b",
-    "i",
-    "g",
-    "g",
     "er"
    ]
   },
@@ -17842,29 +15771,6 @@
    ]
   },
   {
-   "word": "finger",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "f",
-    "i",
-    "ng",
-    "er"
-   ]
-  },
-  {
-   "word": "fingers",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "f",
-    "i",
-    "ng",
-    "er",
-    "s"
-   ]
-  },
-  {
    "word": "flowers",
    "sound": "er",
    "level": 6,
@@ -17886,19 +15792,6 @@
     "ll",
     "er",
     "y"
-   ]
-  },
-  {
-   "word": "gathered",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "g",
-    "a",
-    "th",
-    "er",
-    "e",
-    "d"
    ]
   },
   {
@@ -18046,22 +15939,6 @@
    ]
   },
   {
-   "word": "longersounds",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "l",
-    "o",
-    "ng",
-    "er",
-    "s",
-    "ou",
-    "n",
-    "d",
-    "s"
-   ]
-  },
-  {
    "word": "matter",
    "sound": "er",
    "level": 6,
@@ -18082,20 +15959,6 @@
     "o",
     "th",
     "er"
-   ]
-  },
-  {
-   "word": "muttered",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "m",
-    "u",
-    "t",
-    "t",
-    "er",
-    "e",
-    "d"
    ]
   },
   {
@@ -18143,20 +16006,6 @@
    ]
   },
   {
-   "word": "overjoyed",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "o",
-    "v",
-    "er",
-    "j",
-    "oy",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "paper",
    "sound": "er",
    "level": 6,
@@ -18165,20 +16014,6 @@
     "a",
     "p",
     "er"
-   ]
-  },
-  {
-   "word": "pattered",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "p",
-    "a",
-    "t",
-    "t",
-    "er",
-    "e",
-    "d"
    ]
   },
   {
@@ -18467,17 +16302,6 @@
    ]
   },
   {
-   "word": "tiger",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "t",
-    "i",
-    "g",
-    "er"
-   ]
-  },
-  {
    "word": "tower",
    "sound": "er",
    "level": 6,
@@ -18545,20 +16369,6 @@
    ]
   },
   {
-   "word": "whispered",
-   "sound": "er",
-   "level": 6,
-   "units": [
-    "wh",
-    "i",
-    "s",
-    "p",
-    "er",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "winter",
    "sound": "er",
    "level": 6,
@@ -18609,17 +16419,6 @@
    "units": [
     "ch",
     "ew"
-   ]
-  },
-  {
-   "word": "chewed",
-   "sound": "ew",
-   "level": 6,
-   "units": [
-    "ch",
-    "ew",
-    "e",
-    "d"
    ]
   },
   {
@@ -19059,18 +16858,6 @@
    ]
   },
   {
-   "word": "turned",
-   "sound": "ur",
-   "level": 6,
-   "units": [
-    "t",
-    "ur",
-    "n",
-    "e",
-    "d"
-   ]
-  },
-  {
    "word": "turnip",
    "sound": "ur",
    "level": 6,
@@ -19091,19 +16878,6 @@
     "p",
     "p",
     "ear"
-   ]
-  },
-  {
-   "word": "appeared",
-   "sound": "ear",
-   "level": 7,
-   "units": [
-    "a",
-    "p",
-    "p",
-    "ear",
-    "e",
-    "d"
    ]
   },
   {
@@ -19176,15 +16950,6 @@
    "level": 7,
    "units": [
     "f",
-    "ear"
-   ]
-  },
-  {
-   "word": "gear",
-   "sound": "ear",
-   "level": 7,
-   "units": [
-    "g",
     "ear"
    ]
   },
@@ -19267,18 +17032,6 @@
     "s",
     "ear",
     "ch"
-   ]
-  },
-  {
-   "word": "searched",
-   "sound": "ear",
-   "level": 7,
-   "units": [
-    "s",
-    "ear",
-    "ch",
-    "e",
-    "d"
    ]
   },
   {
@@ -19490,16 +17243,6 @@
    ]
   },
   {
-   "word": "tired",
-   "sound": "ire",
-   "level": 7,
-   "units": [
-    "t",
-    "ire",
-    "d"
-   ]
-  },
-  {
    "word": "wire",
    "sound": "ire",
    "level": 7,
@@ -19559,16 +17302,6 @@
    ]
   },
   {
-   "word": "bored",
-   "sound": "ore",
-   "level": 7,
-   "units": [
-    "b",
-    "ore",
-    "d"
-   ]
-  },
-  {
    "word": "core",
    "sound": "ore",
    "level": 7,
@@ -19587,19 +17320,6 @@
     "p",
     "l",
     "ore"
-   ]
-  },
-  {
-   "word": "explored",
-   "sound": "ore",
-   "level": 7,
-   "units": [
-    "e",
-    "x",
-    "p",
-    "l",
-    "ore",
-    "d"
    ]
   },
   {
@@ -19765,21 +17485,6 @@
    ]
   },
   {
-   "word": "celebration",
-   "sound": "tion",
-   "level": 7,
-   "units": [
-    "c",
-    "e",
-    "l",
-    "e",
-    "b",
-    "r",
-    "a",
-    "tion"
-   ]
-  },
-  {
    "word": "collection",
    "sound": "tion",
    "level": 7,
@@ -19889,21 +17594,6 @@
     "s",
     "t",
     "r",
-    "a",
-    "tion"
-   ]
-  },
-  {
-   "word": "imagination",
-   "sound": "tion",
-   "level": 7,
-   "units": [
-    "i",
-    "m",
-    "a",
-    "g",
-    "i",
-    "n",
     "a",
     "tion"
    ]
@@ -20735,97 +18425,6 @@
    ]
   },
   {
-   "word": "conscious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "c",
-    "o",
-    "n",
-    "s",
-    "cious"
-   ]
-  },
-  {
-   "word": "delicious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "d",
-    "e",
-    "l",
-    "i",
-    "cious"
-   ]
-  },
-  {
-   "word": "gracious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "g",
-    "r",
-    "a",
-    "cious"
-   ]
-  },
-  {
-   "word": "luscious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "l",
-    "u",
-    "s",
-    "cious"
-   ]
-  },
-  {
-   "word": "precious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "p",
-    "r",
-    "e",
-    "cious"
-   ]
-  },
-  {
-   "word": "spacious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "s",
-    "p",
-    "a",
-    "cious"
-   ]
-  },
-  {
-   "word": "suspicious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "s",
-    "u",
-    "s",
-    "p",
-    "i",
-    "cious"
-   ]
-  },
-  {
-   "word": "vicious",
-   "sound": "cious",
-   "level": 8,
-   "units": [
-    "v",
-    "i",
-    "cious"
-   ]
-  },
-  {
    "word": "edible",
    "sound": "ible",
    "level": 8,
@@ -20985,18 +18584,6 @@
    ]
   },
   {
-   "word": "dangerous",
-   "sound": "ous",
-   "level": 8,
-   "units": [
-    "d",
-    "a",
-    "ng",
-    "er",
-    "ous"
-   ]
-  },
-  {
    "word": "enormous",
    "sound": "ous",
    "level": 8,
@@ -21033,18 +18620,6 @@
    ]
   },
   {
-   "word": "generous",
-   "sound": "ous",
-   "level": 8,
-   "units": [
-    "g",
-    "e",
-    "n",
-    "er",
-    "ous"
-   ]
-  },
-  {
    "word": "glamorous",
    "sound": "ous",
    "level": 8,
@@ -21066,18 +18641,6 @@
     "l",
     "or",
     "i",
-    "ous"
-   ]
-  },
-  {
-   "word": "gorgeous",
-   "sound": "ous",
-   "level": 8,
-   "units": [
-    "g",
-    "or",
-    "g",
-    "e",
     "ous"
    ]
   },
@@ -21300,18 +18863,6 @@
     "n",
     "f",
     "u",
-    "sion"
-   ]
-  },
-  {
-   "word": "decision",
-   "sound": "sion",
-   "level": 8,
-   "units": [
-    "d",
-    "e",
-    "c",
-    "i",
     "sion"
    ]
   },

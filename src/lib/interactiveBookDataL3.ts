@@ -21,21 +21,6 @@ function tricky(display: string, word: string): StoryWord {
   return { display, word, phonemes: [], isTricky: true };
 }
 
-// This file also calls cvc() and pw() (335 call sites) but only ever imported
-// the TYPES from ./interactiveBookData, so both were undefined at module load
-// and importing this file threw "cvc is not defined" — which took the whole
-// interactive reader down, since interactiveBookData.ts imports from here.
-// Definitions mirror interactiveBookData.ts / interactiveBookDataL2.ts exactly.
-
-// Helper: auto-split a simple CVC word into single-letter phonemes
-function cvc(display: string, word: string): StoryWord {
-  return { display, word, phonemes: word.split('') };
-}
-
-function pw(display: string, word: string, phonemes: string[]): StoryWord {
-  return { display, word, phonemes };
-}
-
 // Level 3 allSounds grid (all L1 + L2 + L3 sounds)
 const L3_ALL_SOUNDS = [
   's/ss', 'a', 't', 'p', 'i', 'n', 'm', 'd', 'g', 'o',
@@ -925,13 +910,13 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 1
   {
     type: 'story',
-    sentences: ['Mum got her coat.', '"Let us go to the park," she said.', 'Min was so glad.', 'She got on her pink coat and ran to the door.'],
+    sentences: ['Mum got her coat.', "'Let us go to the park,' she said.", 'Min was so glad.', 'She got on her pink coat and ran to the door.'],
     words: [
       w('Mum', 'mum', ['m','u','m']), w('got', 'got', ['g','o','t']),
       w('her', 'her', ['h','er']), w('coat.', 'coat', ['c','oa','t']),
-      tricky('"Let', 'let'), w('us', 'us', ['u','s']),
+      tricky("'Let", 'let'), w('us', 'us', ['u','s']),
       tricky('go', 'go'), tricky('to', 'to'), tricky('the', 'the'),
-      w('park,"', 'park', ['p','ar','k']),
+      w("park,'", 'park', ['p','ar','k']),
       tricky('she', 'she'), tricky('said.', 'said'),
       w('Min', 'min', ['m','i','n']), tricky('was', 'was'),
       tricky('so', 'so'), w('glad.', 'glad', ['g','l','a','d']),
@@ -948,7 +933,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 2
   {
     type: 'story',
-    sentences: ['Out on the street, Mum pointed up.', '"Look at that tall block!" she said.', 'Min saw a big red bus zoom past.'],
+    sentences: ['Out on the street, Mum pointed up.', "'Look at that tall block!' she said.", 'Min saw a big red bus zoom past.'],
     words: [
       w('Out', 'out', ['ou','t']), w('on', 'on', ['o','n']),
       tricky('the', 'the'),
@@ -956,10 +941,10 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('Mum', 'mum', ['m','u','m']),
       w('pointed', 'pointed', ['p','oi','n','t','e','d']),
       w('up.', 'up', ['u','p']),
-      tricky('"Look', 'look'), w('at', 'at', ['a','t']),
+      tricky("'Look", 'look'), w('at', 'at', ['a','t']),
       w('that', 'that', ['th','a','t']),
       tricky('tall', 'tall'),
-      w('block!"', 'block', ['b','l','o','ck']),
+      w("block!'", 'block', ['b','l','o','ck']),
       tricky('she', 'she'), tricky('said.', 'said'),
       w('Min', 'min', ['m','i','n']),
       w('saw', 'saw', ['s','aw']), tricky('a', 'a'),
@@ -974,7 +959,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 3
   {
     type: 'story',
-    sentences: ['At the park, Min saw a soft grey cat.', 'The cat had a small white paw and bright eyes.', '"Hello, cat!" said Min with a grin.'],
+    sentences: ['At the park, Min saw a soft grey cat.', 'The cat had a small white paw and bright eyes.', "'Hello, cat!' said Min with a grin."],
     words: [
       w('At', 'at', ['a','t']), tricky('the', 'the'),
       w('park,', 'park', ['p','ar','k']),
@@ -990,8 +975,8 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('and', 'and', ['a','n','d']),
       w('bright', 'bright', ['b','r','igh','t']),
       tricky('eyes.', 'eyes'),
-      tricky('"Hello,', 'hello'),
-      w('cat!"', 'cat', ['c','a','t']),
+      tricky("'Hello,", 'hello'),
+      w("cat!'", 'cat', ['c','a','t']),
       tricky('said', 'said'), w('Min', 'min', ['m','i','n']),
       w('with', 'with', ['w','i','th']), tricky('a', 'a'),
       w('grin.', 'grin', ['g','r','i','n']),
@@ -1002,7 +987,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 4
   {
     type: 'story',
-    sentences: ['Min hopped on a stone in a stream.', 'She spotted a bright coin in the soil!', '"Look, Mum!" she said.', 'She picked it up and held it tight.'],
+    sentences: ['Min hopped on a stone in a stream.', 'She spotted a bright coin in the soil!', "'Look, Mum!' she said.", 'She picked it up and held it tight.'],
     words: [
       w('Min', 'min', ['m','i','n']),
       w('hopped', 'hopped', ['h','o','pp','ed']),
@@ -1017,8 +1002,8 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('coin', 'coin', ['c','oi','n']),
       w('in', 'in', ['i','n']), tricky('the', 'the'),
       w('soil!', 'soil', ['s','oi','l']),
-      tricky('"Look,', 'look'),
-      w('Mum!"', 'mum', ['m','u','m']),
+      tricky("'Look,", 'look'),
+      w("Mum!'", 'mum', ['m','u','m']),
       tricky('she', 'she'), tricky('said.', 'said'),
       tricky('She', 'she'),
       w('picked', 'picked', ['p','i','ck','ed']),
@@ -1091,7 +1076,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 7
   {
     type: 'story',
-    sentences: ['They sat on the grass to rest.', 'The hawk soared in big slow rings.', '"I saw a hawk!" said Min.', '"I will not forget!"'],
+    sentences: ['They sat on the grass to rest.', 'The hawk soared in big slow rings.', "'I saw a hawk!' said Min.", "'I will not forget!'"],
     words: [
       tricky('They', 'they'),
       w('sat', 'sat', ['s','a','t']),
@@ -1106,14 +1091,14 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('big', 'big', ['b','i','g']),
       w('slow', 'slow', ['s','l','ow']),
       w('rings.', 'rings', ['r','i','ng','s']),
-      tricky('"I', 'I'),
+      tricky("'I", 'I'),
       w('saw', 'saw', ['s','aw']), tricky('a', 'a'),
-      w('hawk!"', 'hawk', ['h','aw','k']),
+      w("hawk!'", 'hawk', ['h','aw','k']),
       tricky('said', 'said'),
       w('Min.', 'min', ['m','i','n']),
-      tricky('"I', 'I'), w('will', 'will', ['w','i','ll']),
+      tricky("'I", 'I'), w('will', 'will', ['w','i','ll']),
       w('not', 'not', ['n','o','t']),
-      w('forget!"', 'forget', ['f','or','g','e','t']),
+      w("forget!'", 'forget', ['f','or','g','e','t']),
     ],
     imageUrl: '/illustrations/3_4/page7.png', audioUrl: '/sounds/sentences/L3_4_p7.mp3',
   },
@@ -1121,7 +1106,7 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
   // Page 8
   {
     type: 'story',
-    sentences: ['On the way home, the trees were gold.', 'Min still had her coin.', 'She smiled at Mum.', '"What a day! I saw so much!"'],
+    sentences: ['On the way home, the trees were gold.', 'Min still had her coin.', 'She smiled at Mum.', "'What a day! I saw so much!'"],
     words: [
       w('On', 'on', ['o','n']), tricky('the', 'the'),
       w('way', 'way', ['w','ay']),
@@ -1138,12 +1123,12 @@ export const BOOK_L3_4_PAGES: InteractivePage[] = [
       w('smiled', 'smiled', ['s','m','i-e','l','d']),
       w('at', 'at', ['a','t']),
       w('Mum.', 'mum', ['m','u','m']),
-      tricky('"What', 'what'), tricky('a', 'a'),
+      tricky("'What", 'what'), tricky('a', 'a'),
       w('day!', 'day', ['d','ay']),
       tricky('I', 'I'),
       w('saw', 'saw', ['s','aw']),
       tricky('so', 'so'),
-      w('much!"', 'much', ['m','u','ch']),
+      w("much!'", 'much', ['m','u','ch']),
     ],
     imageUrl: '/illustrations/3_4/page8.png', audioUrl: '/sounds/sentences/L3_4_p8.mp3',
   },
@@ -1296,7 +1281,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
   // Page 3
   {
     type: 'story',
-    sentences: ['From the trail, Kai spots fish on the boat!', 'A fat snail blocks his path.', '"Not now, snail!" said Kai.'],
+    sentences: ['From the trail, Kai spots fish on the boat!', 'A fat snail blocks his path.', "'Not now, snail!' said Kai."],
     words: [
       w('From', 'from', ['f','r','o','m']),
       tricky('the', 'the'),
@@ -1312,9 +1297,9 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('blocks', 'blocks', ['b','l','o','ck','s']),
       tricky('his', 'his'),
       w('path.', 'path', ['p','a','th']),
-      tricky('"Not', 'not'),
+      tricky("'Not", 'not'),
       w('now,', 'now', ['n','ow']),
-      w('snail!"', 'snail', ['s','n','ai','l']),
+      w("snail!'", 'snail', ['s','n','ai','l']),
       tricky('said', 'said'),
       tricky('Kai.', 'kai'),
     ],
@@ -1382,7 +1367,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
   // Page 6
   {
     type: 'story',
-    sentences: ['The boat docks with a big load of fish.', 'A man in a coat shouts out.', '"Kai! Kai!"'],
+    sentences: ['The boat docks with a big load of fish.', 'A man in a coat shouts out.', "'Kai! Kai!'"],
     words: [
       tricky('The', 'the'),
       w('boat', 'boat', ['b','oa','t']),
@@ -1399,8 +1384,8 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('coat', 'coat', ['c','oa','t']),
       w('shouts', 'shouts', ['sh','ou','t','s']),
       w('out.', 'out', ['ou','t']),
-      tricky('"Kai!', 'kai'),
-      tricky('Kai!"', 'kai'),
+      tricky("'Kai!", 'kai'),
+      tricky("Kai!'", 'kai'),
     ],
     imageUrl: '/illustrations/3_5/page6.png', audioUrl: '/sounds/sentences/L3_5_p6.mp3',
   },
@@ -1434,7 +1419,7 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
   // Page 8
   {
     type: 'story',
-    sentences: ['They stroll back up the road with the fish.', 'The snail is still on the trail!', '"I beat the snail!" grins Kai.'],
+    sentences: ['They stroll back up the road with the fish.', 'The snail is still on the trail!', "'I beat the snail!' grins Kai."],
     words: [
       tricky('They', 'they'),
       w('stroll', 'stroll', ['s','t','r','o','ll']),
@@ -1451,10 +1436,10 @@ export const BOOK_L3_5_PAGES: InteractivePage[] = [
       w('on', 'on', ['o','n']),
       tricky('the', 'the'),
       w('trail!', 'trail', ['t','r','ai','l']),
-      tricky('"I', 'I'),
+      tricky("'I", 'I'),
       w('beat', 'beat', ['b','ea','t']),
       tricky('the', 'the'),
-      w('snail!"', 'snail', ['s','n','ai','l']),
+      w("snail!'", 'snail', ['s','n','ai','l']),
       w('grins', 'grins', ['g','r','i','n','s']),
       tricky('Kai.', 'kai'),
     ],

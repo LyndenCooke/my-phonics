@@ -27,28 +27,7 @@ sys.path.insert(0, str(BASE_DIR.parent))
 
 from generate_pilot_books import get_pilot_stories, LEVEL_KEYS, NEW_TO_OLD  # noqa: E402
 from audit_decodability import load_json  # noqa: E402
-from v2_helpers import build_sound_buttoned_words, SPLIT_EXCEPTIONS  # noqa: E402
-
-
-def deliberate_boundaries(word: str) -> set:
-    """Letter positions where a curated split deliberately breaks a unit.
-
-    SPLIT_EXCEPTIONS exists to stop the greedy matcher reading a digraph that
-    the word does not actually say — the 'ar' of "around" is a schwa plus an
-    /r/, not /ar/, and the 'er' of "terrible" is a short e plus a doubled r.
-    Those words therefore contain the LETTERS of a taught grapheme with no
-    mark on them, which is the whole point, so the unmarked-unit check must
-    not report them as mis-segmentation (it did, for "around", the moment
-    marks started honouring the exception list).
-    """
-    units = SPLIT_EXCEPTIONS.get(word.lower())
-    if not units:
-        return set()
-    bounds, pos = set(), 0
-    for unit in units:
-        pos += len(unit)
-        bounds.add(pos)
-    return bounds
+from v2_helpers import build_sound_buttoned_words  # noqa: E402
 
 OUT_PATH = BASE_DIR.parent / "output" / "qa" / "sound_button_audit.md"
 
@@ -137,14 +116,12 @@ def main():
                 if len(m["indices"]) >= 2:
                     marked_idx.update(m["indices"])
             lw = word.lower()
-            bounds = deliberate_boundaries(lw)
             unmarked = set()
             for g in multi_taught:
                 start = lw.find(g)
                 while start != -1:
                     span = set(range(start, start + len(g)))
-                    crosses = any(start < b < start + len(g) for b in bounds)
-                    if not span & marked_idx and not crosses:
+                    if not span & marked_idx:
                         unmarked.add(g)
                     start = lw.find(g, start + 1)
             unmarked = sorted(unmarked)

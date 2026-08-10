@@ -22,6 +22,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l7-1'],
     hold: ['The stone felt cool in his hand.', 'He found more and more shells!'],
     listen: ['He picked it up.', 'Now he had a pair!'],
+    questions: [null, null, null],
     useGrammar: { chips: ['more', 'before', 'shore', 'fire', 'wire'], scene: '/storyart/l7_1/page3.png', pos: '50% 45%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l7_1/page7.png', pos: '50% 45%' },
     ladders: [
@@ -36,7 +37,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l7-2'],
     hold: ['I crept near.', 'He stood near me and did not run.'],
     listen: ['I kept still.', 'I spoke clear and slow.'],
-    questions: ['What three animals did I see in the snow?', 'Did I feel scared when I first heard the crunch?', 'Do you think the fox felt safe with me? What makes you think that?'],
+    questions: [null, null, null],
     useGrammar: { chips: ['their', 'there', 'here', 'hear', 'near'], scene: '/storyart/l7_2/page3.png', pos: '50% 50%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
@@ -60,7 +61,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l7-3', 'g-l7-4'],
     hold: ['But the paper slipped.', 'At last, the kite was done.'],
     listen: ['Her heart sank.', 'It flew higher and higher!'],
-    questions: ['What did the girl want to make?', 'Did the paper rip the first time she tried?', 'Do you think the girl felt proud at the end? What makes you think that?'],
+    questions: [null, null, null],
     useGrammar: { chips: ['sure', 'pure', 'action', 'direction', 'attention'], scene: '/storyart/l7_3/page2.png', pos: '50% 45%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l7_3/page8.png', pos: '50% 40%' },
     ladders: [
@@ -75,7 +76,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l7-5', 'g-l7-6'],
     hold: ['We went from section to section.', 'Dad picked me up and held me tight.'],
     listen: ['I looked left.', 'I was alone.'],
-    questions: ['What did I lose at the market?', 'Did a boy help me look for Dad?', 'Do you think I felt happy when I found Dad? What makes you think that?'],
+    questions: [null, null, null],
     useGrammar: { chips: ['near', 'fear', 'sure', 'section', 'direction'], scene: '/storyart/l7_4/page4.png', pos: '50% 45%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',

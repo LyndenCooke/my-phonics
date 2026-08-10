@@ -9,11 +9,7 @@ back cover (last page) against the Mixam print spec and the EAN-13 rules:
                 ~0.33mm (SC2 module, uniform scale — a stretched barcode
                 changes this and fails); bar height ~22.85mm.
   3. QUIET    — white box extends >= 3.6mm left / 2.3mm right of the bars.
-  4. MARGINS  — every barcode element sits >= 5mm from the trim edges, AND
-                the symbol is anchored 6.35mm from the bottom trim / 6.35mm
-                from the spine, which is where Bookvault US/AU/CA stamps its
-                own barcode.  Matching that anchor is what stops their
-                un-opt-out-able overlay colliding with ours.
+  4. MARGINS  — every barcode element sits >= 5mm from the trim edges.
   5. K-ONLY   — after Ghostscript CMYK conversion (BlackText/BlackVector
                 preserved), the barcode box rasterises with zero C/M/Y ink:
                 pure K bars on paper white, no rich black.
@@ -47,8 +43,6 @@ SAFE_MM = 5.0                       # Mixam safe zone from TRIM edge
 MODULE_MM = 0.33                    # SC2 X-dimension
 BAR_H_MM = 22.85                    # SC2 bar height
 FOOTER_SEARCH_MM = 48               # barcode lives in the bottom band
-BOOKVAULT_ANCHOR_MM = 6.35          # 0.25in from bottom trim AND from spine
-BOOKVAULT_ANCHOR_TOL_MM = 0.6       # rounding through HTML -> PDF -> boxes
 
 GS = shutil.which("gswin64c") or shutil.which("gswin32c") or shutil.which("gs")
 
@@ -119,8 +113,7 @@ def check_pdf(pdf: Path) -> dict:
     digits = re.sub(r"\D", "", isbn)
     row = {"book_id": book_id, "title": re.sub(r"^\S+\s+", "", pdf.stem),
            "isbn": isbn, "edition": "classroom", "barcode": "no",
-           "digits_match": "-", "safe_margin": "-", "bv_anchor": "-",
-           "k_only": "-", "notes": ""}
+           "digits_match": "-", "safe_margin": "-", "k_only": "-", "notes": ""}
     notes = []
 
     doc = fitz.open(pdf)
@@ -178,31 +171,11 @@ def check_pdf(pdf: Path) -> dict:
         notes.append("safe margin: " + ", ".join(
             f"{k} {v:.2f}mm" for k, v in bad.items()))
 
-    # 4b. Bookvault anchor ---------------------------------------------------
-    # Bookvault US/AU/CA stamps its own 38.1 x 25.4mm barcode 6.35mm from the
-    # bottom trim and 6.35mm from the spine, and that cannot be switched off.
-    # Ours is anchored to the same corner so the overlay lands coincident
-    # instead of clashing.  If this drifts, the two barcodes collide on every
-    # non-UK print run — so it is a hard check, not a warning.
-    anchor = {"right": m["right"], "bottom": m["bottom"]}
-    off = {k: v for k, v in anchor.items()
-           if abs(v - BOOKVAULT_ANCHOR_MM) > BOOKVAULT_ANCHOR_TOL_MM}
-    row["bv_anchor"] = "yes" if not off else "NO"
-    if off:
-        notes.append("bookvault anchor: " + ", ".join(
-            f"{k} {v:.2f}mm != {BOOKVAULT_ANCHOR_MM}mm" for k, v in off.items()))
-
     # 5. K-only after CMYK conversion ---------------------------------------
-    # Sampled over the BARS ONLY, not the whole white box.  make_print_masters
-    # .fix_barcode_k() deliberately no longer repaints the human-readable
-    # digits — re-inserting them embedded an unsubsetted Andika that Bookvault
-    # preflight rejects — so the digits are ordinary RGB black that relies on
-    # the RIP's black-text mapping.  The bars are what has to scan, and they
-    # are the part painted in native DeviceCMYK, so they are what we assert on.
     if GS is None:
         row["k_only"] = "SKIP (no ghostscript)"
     else:
-        row["k_only"] = "yes" if _k_only(doc, page.number, bbox, notes) else "NO"
+        row["k_only"] = "yes" if _k_only(doc, page.number, outer, notes) else "NO"
 
     doc.close()
     row["notes"] = "; ".join(notes)

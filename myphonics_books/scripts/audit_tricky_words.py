@@ -56,11 +56,6 @@ PHONETICALLY_IRREGULAR = {
     "two", "through", "done", "anyone", "everyone", "knew", "walk",
     "brother", "fall", "bush", "famous", "thought", "love",
     "neighbourhood", "corniche",
-    # Added to the L6 master list 2026-07-25 (Lynden).  Both letter-parse
-    # cleanly at L6 and so would otherwise "graduate" out of the strip:
-    # 'together' hides a schwa (the o says /uh/, not /o/), and 'something'
-    # is built on 'some' — already tricky since L5 — where 'ome' says /um/.
-    "together", "something",
 }
 
 # Words whose honest parse needs a SPECIFIC later grapheme, where the letter

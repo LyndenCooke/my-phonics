@@ -71,34 +71,6 @@ Deno.serve(async (req) => {
       }
     }
 
-    // ─── Helper: alert on a print-fulfilment failure with no print_orders
-    // row to attach to (e.g. the product itself has no book_slugs
-    // configured) — mirrors submit-print-order's notifyFailure so both
-    // surfaces look the same in your log/inbox.
-    async function notifyPrintOpsFailure(stripeSessionId: string, reason: string) {
-      console.error("[PRINT ORDER FAILED] manual fulfilment needed — session:", stripeSessionId, "reason:", reason);
-      const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-      const PRINT_ALERT_EMAIL = Deno.env.get("PRINT_ALERT_EMAIL");
-      if (!RESEND_API_KEY || !PRINT_ALERT_EMAIL) return;
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: "MyPhonicsBooks Fulfilment <alerts@myphonicsbooks.co.uk>",
-            to: [PRINT_ALERT_EMAIL],
-            subject: "Print order failed — manual fulfilment needed",
-            text: `A physical-book Stripe session completed but could not be fulfilled.\n\nStripe session: ${stripeSessionId}\nReason: ${reason}`,
-          }),
-        });
-        if (!res.ok) {
-          console.error("[PRINT ORDER FAILED] Resend alert email itself failed to send:", res.status, await res.text());
-        }
-      } catch (err) {
-        console.error("[PRINT ORDER FAILED] Resend alert email threw:", err);
-      }
-    }
-
     // ─── Helper: unlock all books for a user ───
     async function unlockAllBooks(userId: string, purchaseId?: string) {
       const { data: books } = await supabaseAdmin
@@ -411,40 +383,14 @@ Deno.serve(async (req) => {
       const session = event.data.object;
       const userId = await resolveUser(session);
       const productId = session.metadata?.product_id;
+      const productType = session.metadata?.product_type;
 
       if (!userId) {
-        console.error(
-          "No user ID resolved for session:",
-          session.id,
-          session.metadata?.product_type === "physical_book"
-            ? "— PHYSICAL BOOK ORDER: print fulfilment cannot run without a resolved user. Manual follow-up needed."
-            : ""
-        );
+        console.error("No user ID resolved for session:", session.id);
         return new Response(JSON.stringify({ received: true }), {
           headers: { "Content-Type": "application/json" },
         });
       }
-
-      // Single product fetch, reused below for the digital-unlock branch,
-      // physical fulfilment, and the GHL payload — also now the
-      // authoritative source for product_type (see next comment).
-      const { data: product } = productId
-        ? await supabaseAdmin
-            .from("products")
-            .select("name, product_type, levels_included, book_slugs")
-            .eq("id", productId)
-            .single()
-        : { data: null };
-
-      // Prefer the DB's product_type over session.metadata.product_type.
-      // create-checkout-session always sets metadata from this same row,
-      // so for normal checkouts these agree — but a manually-created,
-      // legacy, or replayed session could carry stale/missing metadata
-      // while the DB row is still authoritative. Falling back to metadata
-      // only (the old behaviour) meant a mismatch here made print
-      // fulfilment silently never run, with the purchase still marked
-      // completed and no alert anywhere.
-      const productType = product?.product_type ?? session.metadata?.product_type ?? null;
 
       // Create or update purchase record
       const { data: existingPurchase } = await supabaseAdmin
@@ -495,105 +441,39 @@ Deno.serve(async (req) => {
           .eq("stripe_session_id", session.id)
           .single();
         await unlockAllBooks(userId, purchase?.id);
-      } else if (productType === "physical_book") {
-        // Physical books don't grant digital access — see the print
-        // fulfilment block below instead. levels_included is unused/empty
-        // for these products, so skip straight past the digital-unlock
-        // branch rather than running a pointless empty-array query.
-      } else if (product) {
+      } else if (productId) {
         // One-time purchase: unlock by levels_included
-        const { data: books } = await supabaseAdmin
-          .from("books")
-          .select("id")
-          .in("level", product.levels_included);
+        const { data: product } = await supabaseAdmin
+          .from("products")
+          .select("levels_included")
+          .eq("id", productId)
+          .single();
 
-        if (books) {
-          const { data: purchase } = await supabaseAdmin
-            .from("purchases")
+        if (product) {
+          const { data: books } = await supabaseAdmin
+            .from("books")
             .select("id")
-            .eq("stripe_session_id", session.id)
-            .single();
+            .in("level", product.levels_included);
 
-          for (const book of books) {
-            await supabaseAdmin.from("user_books").upsert(
-              {
-                user_id: userId,
-                book_id: book.id,
-                source: "purchase",
-                purchase_id: purchase?.id,
-              },
-              { onConflict: "user_id,book_id" }
-            );
-          }
-        }
-      }
+          if (books) {
+            const { data: purchase } = await supabaseAdmin
+              .from("purchases")
+              .select("id")
+              .eq("stripe_session_id", session.id)
+              .single();
 
-      // ─── Physical book fulfilment (Bookvault print-on-demand) ───
-      // One submit-print-order invoke per book in the order — a reader
-      // set or the full library ships several books from a single
-      // checkout session, each tracked as its own print_orders row. The
-      // invokes run concurrently (Promise.allSettled, not a sequential
-      // await loop) so a multi-book order can't blow Stripe's webhook
-      // response budget — submit-print-order does its own idempotent
-      // logging, so any individual failure here is non-fatal to the
-      // webhook and never blocks Stripe's 200.
-      if (productType === "physical_book") {
-        const bookSlugs: string[] = product?.book_slugs ?? [];
-        if (bookSlugs.length === 0) {
-          await notifyPrintOpsFailure(session.id, `physical_book product ${productId ?? "(none)"} has no book_slugs configured`);
-        } else {
-          const { data: purchaseForPrint } = await supabaseAdmin
-            .from("purchases")
-            .select("id")
-            .eq("stripe_session_id", session.id)
-            .single();
-
-          // Stripe Checkout puts the collected shipping address on
-          // session.shipping_details since API version 2023-10-16, or
-          // under session.collected_information.shipping_details on newer
-          // API versions, or the legacy session.shipping on older ones —
-          // try all three. This is Stripe's shape (not Bookvault's) but I
-          // have not confirmed which API version this account runs, so
-          // verify against a real test-mode session before relying on it.
-          const shippingDetails =
-            session.shipping_details ?? session.collected_information?.shipping_details ?? session.shipping ?? null;
-          // Bookvault requires a phone number and email whenever a
-          // tracked dispatch service is requested (submit-print-order's
-          // default). Phone comes from phone_number_collection, which
-          // create-checkout-session now enables for physical_book
-          // products; it lands on customer_details.phone, not on the
-          // shipping address itself.
-          const shippingPhone = session.customer_details?.phone ?? null;
-          const shippingEmail = session.customer_email || session.metadata?.guest_email || null;
-
-          // Shared secret so submit-print-order (a public URL — Supabase
-          // functions can't be IP-restricted) only accepts requests from
-          // this webhook, not anyone who finds the URL and the public
-          // anon key. Must match the INTERNAL_FUNCTION_SECRET set as a
-          // secret on submit-print-order.
-          const internalSecret = Deno.env.get("INTERNAL_FUNCTION_SECRET");
-
-          await Promise.allSettled(
-            bookSlugs.map((bookSlug) =>
-              supabaseAdmin.functions.invoke("submit-print-order", {
-                body: {
-                  stripe_session_id: session.id,
-                  stripe_payment_intent_id: session.payment_intent,
-                  purchase_id: purchaseForPrint?.id ?? null,
+            for (const book of books) {
+              await supabaseAdmin.from("user_books").upsert(
+                {
                   user_id: userId,
-                  book_slug: bookSlug,
-                  quantity: 1,
-                  shipping_name: shippingDetails?.name ?? null,
-                  shipping_phone: shippingPhone,
-                  shipping_email: shippingEmail,
-                  shipping_address: shippingDetails?.address ?? null,
+                  book_id: book.id,
+                  source: "purchase",
+                  purchase_id: purchase?.id,
                 },
-                headers: internalSecret ? { "x-internal-secret": internalSecret } : undefined,
-              }).catch((err) => {
-                console.error("[print-fulfilment] submit-print-order invoke failed (non-fatal to webhook):", session.id, bookSlug, err);
-              })
-            )
-          );
+                { onConflict: "user_id,book_id" }
+              );
+            }
+          }
         }
       }
 
@@ -604,6 +484,12 @@ Deno.serve(async (req) => {
       // from amount/product type — Stripe is the source of truth.
       const buyerEmail = session.customer_email || session.metadata?.guest_email || null;
       if (buyerEmail) {
+        const { data: productRow } = await supabaseAdmin
+          .from("products")
+          .select("name, product_type")
+          .eq("id", productId ?? "")
+          .single();
+
         // Trial detection — two signals, either is sufficient. Belt-and-braces
         // because the previous "status === trialing" check alone misclassified
         // a known trial as a purchase (likely a transient fetch failure on the
@@ -651,8 +537,8 @@ Deno.serve(async (req) => {
           email: buyerEmail,
           user_id: userId,
           product_id: productId,
-          product_type: productType,
-          product_name: product?.name ?? null,
+          product_type: productType ?? productRow?.product_type ?? null,
+          product_name: productRow?.name ?? null,
           amount_pence: session.amount_total ?? 0,
           currency: session.currency ?? "gbp",
           stripe_session_id: session.id,

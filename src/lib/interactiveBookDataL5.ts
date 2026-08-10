@@ -756,7 +756,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
     sentences: [
       'Snow dusted my coat as I ran back to the door.',
       'Dad waited there, warm from the fire and keen to hear.',
-      '"I saw a fox, a rabbit and a deer!"',
+      '"I saw a fox, a rabbit, and a deer!"',
       'We sat on the floor indoors and read at the fire.',
     ],
     words: [
@@ -800,7 +800,7 @@ export const BOOK_L5_2_PAGES: InteractivePage[] = [
     type: 'quiz',
     questions: [
       { question: 'What three animals did the child see in the woods?',
-        options: [{ label: 'a fox, a rabbit and a deer', isCorrect: true }, { label: 'a wolf, a hare and a bear', isCorrect: false }, { label: 'a cat, a dog and a sheep', isCorrect: false }] },
+        options: [{ label: 'a fox, a rabbit, and a deer', isCorrect: true }, { label: 'a wolf, a hare, and a bear', isCorrect: false }, { label: 'a cat, a dog, and a sheep', isCorrect: false }] },
       { question: 'How did the rabbit get over the stream?',
         options: [{ label: 'it leapt clear over the water', isCorrect: true }, { label: 'it ran around the stream', isCorrect: false }, { label: 'it stayed near the rock', isCorrect: false }] },
       { question: 'How did the child speak to the deer?',
@@ -936,7 +936,7 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
   {
     type: 'story',
     sentences: [
-      'Grandad sat with thin sticks, string and a sheet of paper.',
+      'Grandad sat with thin sticks, string, and a sheet of paper.',
       '"We can make a kite," he said with a soft smile.',
       'He showed her a neat instruction card from his pocket.',
       '"Are you sure you can follow it?" he asked.',
@@ -1111,10 +1111,10 @@ export const BOOK_L5_3_PAGES: InteractivePage[] = [
   {
     type: 'story',
     sentences: [
-      'The girl nodded, took a deep breath and set a new sheet.',
+      'The girl nodded, took a deep breath, and set a new sheet.',
       '"Read the instruction again, and we go slow this time."',
       '"Press each side flat before you move on."',
-      'She wrapped, smoothed and waited until the paper held firm.',
+      'She wrapped, smoothed, and waited until the paper held firm.',
       'Grandad checked the wind on his phone and smiled at her.',
     ],
     words: [

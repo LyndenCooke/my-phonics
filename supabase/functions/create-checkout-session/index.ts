@@ -145,8 +145,8 @@ Deno.serve(async (req) => {
       mode,
       "line_items[0][price]": product.stripe_price_id,
       "line_items[0][quantity]": "1",
-      success_url: `${req.headers.get("origin") || "https://myphonicsbooks.co.uk"}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get("origin") || "https://myphonicsbooks.co.uk"}/shop`,
+      success_url: `${req.headers.get("origin") || "https://myphonicsbooks.com"}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.get("origin") || "https://myphonicsbooks.com"}/shop`,
       "metadata[product_id]": product.id,
       "metadata[product_type]": product.product_type,
       currency: "gbp",
@@ -155,19 +155,6 @@ Deno.serve(async (req) => {
     // 7-day free trial for monthly subscription
     if (product.product_type === "subscription") {
       body.set("subscription_data[trial_period_days]", "7");
-    }
-
-    // Physical books: collect a shipping address. stripe-webhook reads
-    // which book(s) to ship straight off the product row itself at
-    // fulfilment time (products.book_slugs), not from checkout metadata —
-    // so nothing is duplicated into metadata here. UK-only for now
-    // (allowed_countries); widen this once you ship internationally.
-    if (product.product_type === "physical_book") {
-      if (!product.book_slugs || product.book_slugs.length === 0) {
-        return new Response(JSON.stringify({ error: "Physical book product has no book_slugs configured" }), { status: 400, headers: corsHeaders });
-      }
-      body.set("shipping_address_collection[allowed_countries][0]", "GB");
-      body.set("phone_number_collection[enabled]", "true");
     }
 
     // Set client_reference_id for authenticated users

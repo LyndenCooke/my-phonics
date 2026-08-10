@@ -123,7 +123,7 @@ const L4: TeachingStep[] = [
   S(6,  'SD-L4.04', 'sound_book'),                              // ow (blow)
   S(7,  'SD-L4.05', 'sound_book'),                              // oo (zoo)
   S(8,  'SD-L4.06', 'sound_book'),                              // oo (look)
-  S(9,  'SB-L4.2',  'storybook',     ['SD-L4.04','SD-L4.05','SD-L4.06']), // Hot Food, Cool Moon
+  S(9,  'SB-L4.2',  'storybook',     ['SD-L4.04','SD-L4.05','SD-L4.06']), // Moo at the Zoo
   S(10, 'SD-L4.07', 'sound_book'),                              // ar
   S(11, 'SD-L4.08', 'sound_book'),                              // or
   S(12, 'BB-L4.09', 'blending_book', ['SD-L4.04','SD-L4.05','SD-L4.06','SD-L4.07','SD-L4.08']),

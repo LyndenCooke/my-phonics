@@ -84,11 +84,6 @@ const BOOKS: W2BookData[] = [
       { sound: 'j', word: 'jug', sentence: 'I dip in a jug.' },
       { sound: 'w', word: 'wet', sentence: 'I get a wet rag.' },
     ],
-    revisit: [
-      { kind: 'rewrite', label: 'Write it with a capital letter', refs: [{ sourceUnit: 'G-L2.1', rowRef: 3 }] },
-      { kind: 'rewrite', label: 'Write it with a full stop', refs: [{ sourceUnit: 'G-L2.2', rowRef: 3 }] },
-      { kind: 'rewrite', label: 'Write it with the word I', refs: [{ sourceUnit: 'G-L2.3', rowRef: 0 }] },
-    ],
   },
   {
     num: 5,

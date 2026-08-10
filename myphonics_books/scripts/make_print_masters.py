@@ -11,35 +11,12 @@ generate_pilot_books.py --isbn) and produces press-ready files:
               bands and full-bleed art continue past the trim line instead of
               leaving white flashes.  Only the ring — which the guillotine
               removes — is raster.
-  2. BARCODE — the EAN-13 is repainted in native DeviceCMYK K-only, so it
-              carries its own separation regardless of what the printer's RIP
-              does with the rest of the page.  A K-only object inside an
-              otherwise-RGB PDF is legal and passes through conversion
-              untouched.
+  2. CMYK   — Ghostscript pdfwrite, ColorConversionStrategy=CMYK with
+              -dBlackText/-dBlackVector so pure-black text and the barcode
+              bars stay 100%%K (never rich black), -dPDFSETTINGS=/prepress
+              for print-quality image handling.
   3. BOXES  — MediaBox 154x216, TrimBox inset 3mm, so the printer (and our
               check scripts) know exactly where the trim line is.
-
-NO GLOBAL CMYK CONVERSION (removed 2026-07-29, measured).  This script used to
-run the whole book through Ghostscript ColorConversionStrategy=CMYK.  Every
-strategy was tested on a real page and none is safe:
-
-  fastcolor (what shipped)      max K = 0    — black text became 300%% CMY with
-                                               NO black plate at all
-  managed ICC                   max K = 200  — text became four-colour rich
-                                               black (registration fringing on
-                                               16-36pt reading text)
-  +dBlackText/-dBlackVector     max K = 255  — forces EVERYTHING black: zero
-                                               chromatic pixels left, every
-                                               level-colour band turned into a
-                                               black rectangle
-
-There is no whole-document Ghostscript setting that yields K-only text AND live
-colour.  Chromium cannot emit DeviceGray or CMYK either (it re-encodes even a
-1-bit PNG as 8-bit RGB), so the renderer cannot own this.  The correct answer is
-to supply RGB and let the printer's RIP convert with a real press profile that
-does proper black generation — which is what Mixam and Bookvault both do — while
-we guarantee the one element that must not be left to chance, the barcode.
-Do not reintroduce to_cmyk() without re-measuring the K plate on a text page.
 
 Output: output/books/print_masters/Level{n}/<same name>.pdf
 
@@ -54,6 +31,7 @@ Usage:
 from __future__ import annotations
 
 import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -68,6 +46,8 @@ MM = 72 / 25.4
 BLEED_MM = 3.0
 SLIVER_MM = 0.5        # how much true page edge is sampled for the stretch
 DPI = 300
+
+GS = shutil.which("gswin64c") or shutil.which("gswin32c") or shutil.which("gs")
 
 
 def add_bleed(src_pdf: Path, dst_pdf: Path) -> None:
@@ -106,21 +86,32 @@ def add_bleed(src_pdf: Path, dst_pdf: Path) -> None:
     src.close()
 
 
+def to_cmyk(src_pdf: Path, dst_pdf: Path) -> None:
+    if GS is None:
+        raise RuntimeError("Ghostscript not found on PATH")
+    # NOTE: never add -dBlackText/-dBlackVector here — they FORCE all text
+    # and vectors to black (they are monochrome-output flags, not black
+    # preservation).  -dUseFastColor bypasses ICC rendering so neutral RGB
+    # (R=G=B) converts by the classic formula to K-only — that is what keeps
+    # the barcode bars 100%K instead of rich black.
+    cmd = [GS, "-dBATCH", "-dNOPAUSE", "-dSAFER", "-sDEVICE=pdfwrite",
+           "-dPDFSETTINGS=/prepress",
+           "-sColorConversionStrategy=CMYK", "-dUseFastColor=true",
+           "-o", str(dst_pdf), str(src_pdf)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"gs failed for {src_pdf.name}:\n{r.stderr[-2000:]}")
+
+
 def fix_barcode_k(pdf: Path) -> None:
-    """Repaint the EAN-13 in native K-only DeviceCMYK.
+    """Repaint the EAN-13 in native K-only CMYK.
 
-    Chromium can only emit RGB, so the bars arrive as RGB black — and any
-    RGB->CMYK conversion (ours or the printer's) is free to turn that into
-    three- or four-colour black, which blurs on press and risks scan failure.
-    So we white-out the printed area inside the barcode's white box and redraw
-    every bar rect and text glyph at its exact original position with fill
-    (0,0,0,1) — geometry unchanged, separation now pure K, and immune to
-    whatever the RIP does to the rest of the page.  Fails loudly if no bars
-    are found.
-
-    Runs BEFORE add_bleed(): at that point the bars are still top-level page
-    drawings.  After add_bleed() the original page is a nested Form XObject
-    and get_drawings() no longer reaches them."""
+    Ghostscript's RGB->CMYK conversion (any strategy we tested) turns the
+    RGB-black bars into four-colour black, which blurs on press and risks
+    scan failure.  So after conversion we white-out the printed area inside
+    the barcode's white box and redraw every bar rect and text glyph at its
+    exact original position with fill (0,0,0,1) — geometry unchanged,
+    separation now pure K.  Fails loudly if no bars are found."""
     from check_isbn_barcodes import barcode_bars, trim_rect, white_box
 
     font = BASE_DIR / "assets" / "fonts" / "Andika-Regular.ttf"
@@ -139,29 +130,34 @@ def fix_barcode_k(pdf: Path) -> None:
         doc.close()
         raise RuntimeError(f"{pdf.name}: no white box behind the bars")
 
-    # BARS ONLY.  An earlier version also whited out the ISBN line and the
-    # human-readable digits and re-inserted every glyph via insert_text() with
-    # a K-only fill.  That worked, but PyMuPDF embeds the replacement Andika
-    # UNSUBSETTED, and Bookvault's preflight flags it: "1 key font was
-    # unembedded ('Unknown')" — on all 33 cover files, since the barcode lives
-    # on the back cover.  The digits are decorative (scanners read the bars),
-    # they are already pure RGB black from Chromium, and Ghostscript's
-    # BlackText mapping sends RGB black text to the K plate anyway, so leaving
-    # Chromium's own subsetted glyphs alone costs nothing and keeps every
-    # cover's font table clean.  Only the bars — which actually have to scan —
-    # get the native DeviceCMYK repaint.
-    # Asymmetric pad: the human-readable digits now sit only TEXT_DISTANCE_MM
-    # (0.5mm) below the bars, so a symmetric pad would shave their tops off —
-    # and nothing redraws them any more.  Nothing sits directly below the bars
-    # except that gap, and the redrawn bars land on the same rects, so a zero
-    # bottom pad is safe.
+    # every text glyph inside the box (the ISBN line + the digits), with the
+    # union of their font boxes so the white-out covers all old ink
+    chars = []
+    ink = fitz.Rect(bbox)
+    for block in page.get_text("rawdict")["blocks"]:
+        if block.get("type") != 0:
+            continue
+        for line in block["lines"]:
+            for span in line["spans"]:
+                for ch in span["chars"]:
+                    r = fitz.Rect(ch["bbox"])
+                    if not box.contains(r):
+                        continue
+                    chars.append((ch["origin"], ch["c"], span["size"]))
+                    ink |= r
+
     pad = 0.8 * MM
-    cover = fitz.Rect(bbox.x0 - pad, bbox.y0 - pad, bbox.x1 + pad, bbox.y1)
+    cover = fitz.Rect(ink.x0 - pad, ink.y0 - pad, ink.x1 + pad, ink.y1 + pad)
     cover &= fitz.Rect(box.x0 + 0.3 * MM, box.y0 + 0.3 * MM,
                        box.x1 - 0.3 * MM, box.y1 - 0.3 * MM)
     page.draw_rect(cover, color=None, fill=(0, 0, 0, 0))       # paper white
     for r in bars:
         page.draw_rect(r, color=None, fill=(0, 0, 0, 1))       # 100%K bars
+    for (ox, oy), c, size in chars:
+        if c.strip():
+            page.insert_text((ox, oy), c, fontsize=size,
+                             fontname="AndikaKOnly", fontfile=str(font),
+                             color=(0, 0, 0, 1))
     doc.saveIncr()
     doc.close()
 
@@ -180,17 +176,12 @@ def set_boxes(pdf: Path) -> None:
 
 
 def make_master(src_pdf: Path, dst_pdf: Path) -> None:
-    """Trim-size RGB book -> press-ready 154x216 master.
-
-    Order matters: the barcode is repainted K-only while it is still a
-    top-level drawing, then the bled page is built around the finished
-    interior, then the boxes are stamped."""
     dst_pdf.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as td:
-        staged = Path(td) / "staged.pdf"
-        shutil.copyfile(src_pdf, staged)
-        fix_barcode_k(staged)
-        add_bleed(staged, dst_pdf)
+        bled = Path(td) / "bled.pdf"
+        add_bleed(src_pdf, bled)
+        to_cmyk(bled, dst_pdf)
+    fix_barcode_k(dst_pdf)
     set_boxes(dst_pdf)
 
 

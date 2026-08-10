@@ -201,52 +201,22 @@ def grapheme_type(gr: str, level_entry: dict) -> str:
     return "quadgraph+"
 
 
-# ── Which patterns have been PROMOTED out of the shifty band ─────────────
-# Read from shifty_sounds.json `_decisions.promoted_graphemes`, never
-# hardcoded.  This file used to carry `promoted = {"wh", "ph"}` inline while
-# the real list had grown to include ve, -ed, y=/ee/, y=/igh/, soft c and
-# soft g.  The cost of that drift was not cosmetic: every soft-c, soft-g and
-# final-y word in the 33 books kept being flagged as an unresolved "trap",
-# and every -ed and soft-c/g word kept being held out of the green pool —
-# 283 words queued for a human ruling that had ALREADY been ruled on.  If a
-# promotion is ever reversed in the JSON, the flagging comes straight back.
-
-def _promotions() -> set[str]:
-    d = json.load(open(BASE / "data" / "shifty_sounds.json", encoding="utf-8"))
-    return {p.strip().lower() for p in d["_decisions"]["promoted_graphemes"]}
-
-
-PROMOTED = _promotions()
-
-
-def is_promoted(*names: str) -> bool:
-    """True if any of these pattern names is a promoted grapheme.
-
-    Entries are written several ways in the JSON ("soft c", "y=/ee/", "-ed",
-    "ve"), so callers pass the spellings they care about and we match on the
-    normalised set rather than trying to parse the notation.
-    """
-    return any(n.strip().lower() in PROMOTED for n in names)
-
-
 # ── Trap-word sweep (the 'happy' class) ──────────────────────────────────
 # Words that LETTER-decode at their book's level but phonetically mislead —
 # the false passes the letter engine cannot judge.  Output feeds the manual
-# pass, it never auto-fixes.  A pattern that has been PROMOTED is no longer a
-# trap: the child has been taught the alternative and the diamond marks it.
+# pass, it never auto-fixes.
 
 def trap_reason(word: str, level: int) -> str | None:
     w = word.lower()
     # final -y saying /ee/ in a multi-syllable word (happy, funny, party).
     # y itself is taught at L2 but only as /y/ (yes); y=/ee/ has no ladder
     # slot (pronunciation promotion not implemented).
-    if not is_promoted("y=/ee/") \
-            and len(w) >= 4 and w.endswith("y") and w[-2] not in VOWEL_LETTERS \
+    if len(w) >= 4 and w.endswith("y") and w[-2] not in VOWEL_LETTERS \
             and sum(ch in VOWEL_LETTERS for ch in w) >= 1:
         return "final y says /ee/ — child reads /y/; needs swap, tricky-listing or Watch Out"
     # soft c / soft g before e, i, y — reads /s/ /j/, taught nowhere until
     # the (unimplemented) soft-c/soft-g promotion; L5.1 has a Watch Out.
-    if not is_promoted("soft c") and re.search(r"c[eiy]", w):
+    if re.search(r"c[eiy]", w):
         return "soft c says /s/ — child reads /k/; needs Watch Out or swap"
     # g before e/i/y is unpredictable in English (get/girl/gift are HARD g),
     # so exclude the common hard-g early-reader stems and flag the rest for
@@ -257,7 +227,7 @@ def trap_reason(word: str, level: int) -> str | None:
               "forgets", "target", "finger", "fingers", "longer", "stronger",
               "hunger", "anger", "burger", "burgers"}
     # doubled-g + suffix (hugged, jogging, foggy) is always HARD g — skip.
-    if not is_promoted("soft g") and re.search(r"g[eiy]", w) and w not in HARD_G \
+    if re.search(r"g[eiy]", w) and w not in HARD_G \
             and not re.search(r"gg(ed|ing|y|ier|iest)$", w):
         return "g before e/i/y — VERIFY: if it says /j/ (gem, magic, page) it needs Watch Out or swap"
     return None
@@ -317,30 +287,18 @@ def main():
             continue
         # Past-tense -ed forms: 'picked' is /pikt/ — the -ed sounds aren't
         # taught, so these go to a review sheet, not the green pool.
-        # Each family below is held out of the green pool ONLY while its
-        # pattern is still in the shifty band.  Once promoted, the child has
-        # been taught the alternative and the word is ordinary practice.
-        if (not is_promoted("-ed")
-                and len(w) >= 5 and w.endswith("ed") and not w[-3] in "aeiou"
+        if (len(w) >= 5 and w.endswith("ed") and not w[-3] in "aeiou"
                 and parse_units(w[:-2], all_graphemes)):
             review_ed.append((w, "-ed ending: /d/ /t/ /id/ not taught until the -ed promotion"))
             continue
         # Families that read wrong until their Shifty promotion lands:
         # soft c (face), soft g (age), -ve (give/live), y→i (cried), open-a
         # (famous, before-style open vowels are already tricky-listed).
-        if not is_promoted("soft c", "soft g") \
-                and (re.search(r"c[eiy]", w) or re.search(r"g[eiy]", w)):
+        if re.search(r"c[eiy]", w) or re.search(r"g[eiy]", w):
             review_ed.append((w, "soft c/g: /s/ /j/ pending the soft-c / soft-g promotion"))
             continue
-        # Split deliberately: -ve IS promoted, the open vowel in famous/before
-        # is NOT, and they used to share one branch — so promoting ve would
-        # have silently released the open-vowel words too.
-        if not is_promoted("ve") and (w.endswith("ive") or w.endswith("ved")):
-            review_ed.append((w, "-ve ending: pending the ve promotion"))
-            continue
-        if w in ("famous", "before"):
-            review_ed.append((w, "open vowel (a=/ai/, e=/ee/) — shifty-marked in books, "
-                                 "not yet released to the green pool"))
+        if w.endswith("ive") or w.endswith("ved") or w in ("famous", "before"):
+            review_ed.append((w, "needs an untaught sound (ve ending / open vowel)"))
             continue
         if w.endswith("ied") or w.endswith("ies"):
             review_ed.append((w, "y→i morphology: taught at L8 suffix work"))
@@ -391,23 +349,21 @@ def main():
 
     # ---- Sheet: Shifty Sounds -------------------------------------------
     shifty = json.load(open(BASE / "data" / "shifty_sounds.json", encoding="utf-8"))
+    promoted = {"wh", "ph"}
     ws_sh = wb.create_sheet("Shifty Sounds")
     ws_sh.append(["Grapheme", "Card type", "Sound", "Examples", "Allowed from", "Band status"])
     for card in shifty.get("alt_pronunciation_cards", []):
         gr = card["grapheme"]
         for i, pron in enumerate(card.get("pronunciations", [])):
-            # A card is promoted under its own name (wh, ph) or under a
-            # qualified one (soft c, y=/ee/) — check both spellings.
             status = ("base sound (main ladder)" if i == 0
-                      else "promoted to ladder"
-                      if is_promoted(gr, f"soft {gr}", f"{gr}={pron['sound']}")
+                      else "promoted to ladder 07-12" if gr in promoted
                       else "IN BAND (diamond-mark eligible)")
             ws_sh.append([gr, "alternative pronunciation", pron["sound"],
                           ", ".join(pron.get("examples", [])),
                           f"L{pron.get('allowed_from_level', '?')}", status])
     for card in shifty.get("new_spelling_cards", []):
         gr = card["grapheme"]
-        status = ("promoted to ladder" if is_promoted(gr, gr.lstrip("-"))
+        status = ("promoted to ladder 07-12" if gr.lstrip("-") in promoted
                   else "IN BAND (never diamond-marked — alt spelling)")
         ws_sh.append([gr, "alternative spelling", card.get("sound", ""),
                       ", ".join(card.get("examples", [])),

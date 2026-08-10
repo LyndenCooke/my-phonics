@@ -26,11 +26,6 @@ verify_jwt = false
 # school membership before minting a signed URL from the private buckets.
 verify_jwt = true
 
-[functions.submit-print-order]
-# Only ever called server-side: stripe-webhook (service-role client) and
-# the test script. Same posture as ghl-sync below, which it mirrors.
-verify_jwt = false
-
 [functions.ghl-sync]
 verify_jwt = false
 

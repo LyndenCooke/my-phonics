@@ -9,9 +9,7 @@ Functions here turn existing book_data into:
   - dictation_sentence: short sentence from the story for the Spelling page
 """
 
-import json
 import random
-import re
 from pathlib import Path
 
 
@@ -24,16 +22,6 @@ from pathlib import Path
 # Known exceptions where greedy longest-match produces the wrong split.
 # Manually-curated minimum so we don't ship pedagogically wrong notation.
 SPLIT_EXCEPTIONS = {
-    # 'au' is a real vowel digraph but it is NOT in the taught ledger at any
-    # level — it lives in shifty_sounds.json "stays_in_band", i.e. it is a
-    # Future Sound the book flags rather than teaches.  Because the splitter
-    # only matches TAUGHT graphemes, it fell through to single letters and
-    # printed c·a·u·tious, splitting one vowel sound across two buttons.
-    # Lynden 2026-08-06: it is /c/ /au/ /tious/.  Curated here rather than by
-    # adding 'au' to graphemes_by_level.json, which would be a curriculum
-    # change rippling through all 33 books.  'because' is the only other word
-    # in the corpus containing 'au', and it is tricky (told, not sounded out).
-    "cautious": ["c", "au", "tious"],
     # Unstressed initial 'a' (schwa) followed by 'r' — the 'ar' is NOT the
     # /ar/ digraph here. Splitter should treat the 'a' as a single phoneme.
     "around": ["a", "r", "ou", "n", "d"],
@@ -42,44 +30,7 @@ SPLIT_EXCEPTIONS = {
     "away": ["a", "w", "ay"],
     "about": ["a", "b", "o", "u", "t"],
     "above": ["a", "b", "o", "v", "e"],
-    # ─── Doubled r that is NOT a short-vowel marker ───────────────────
-    # The doubled-consonant rule below says a doubled consonant beats a
-    # vowel+r digraph, because the doubling marks a SHORT vowel: terrible is
-    # t/e/rr/i/ble, not t/er/r/ible.  These words break that rule and the
-    # digraph really is the vowel, so they have to be listed by hand — there
-    # is no mechanical test that separates them.  Two families:
-    #   * a base word that already ends in an r-controlled vowel, doubling
-    #     its r before a suffix (blur -> blurred, stir -> stirring,
-    #     prefer -> preferred, star -> starry, char -> charred, jar -> jarring)
-    #   * a compound whose halves meet at the r (over + ride)
-    # Say them aloud against carry, sorry and terrible and the difference is
-    # obvious: "blurred" keeps the /ur/ of blur, "carry" has no /ar/ in it.
-    "furry": ["f", "ur", "r", "y"],
-    "burr": ["b", "ur", "r"],
-    "blurred": ["b", "l", "ur", "r", "ed"],
-    "stirred": ["s", "t", "ir", "r", "ed"],
-    "stirring": ["s", "t", "ir", "r", "ing"],
-    "deferred": ["d", "e", "f", "er", "r", "ed"],
-    "preferred": ["p", "r", "e", "f", "er", "r", "ed"],
-    "recurring": ["r", "e", "c", "ur", "r", "ing"],
-    "occurred": ["o", "c", "c", "ur", "r", "ed"],
-    "starry": ["s", "t", "ar", "r", "y"],
-    "charred": ["ch", "ar", "r", "ed"],
-    "jarring": ["j", "ar", "r", "ing"],
-    "override": ["o", "v", "er", "r", "i", "d", "e"],
 }
-
-# Suffix units that may only match at the END of a word.  The Level 7-8
-# ledger teaches -able, -ible, -ment, -ness, -ful, -est, -ly, -ous, -en and
-# -es as units, and the greedy matcher was happy to find them anywhere: it
-# read "sensible" as s/en/s/ible, "attention" as a/tt/en/tion, "house" as
-# h/ous/e and "cobblestones" as c/o/bb/l/est/o/n/es.  A suffix is a morpheme
-# at the end of a word, not a phoneme that can turn up in the middle of one.
-# Deliberately NOT listed: -ing and -er, which are real mid-word units
-# (singing, finger, seller), and -ed, which has its own handling below.
-SUFFIX_ONLY_AT_END = frozenset({
-    "able", "ible", "ment", "ness", "ful", "est", "ly", "ous", "en", "es",
-})
 
 # Doubled consonants — single phoneme.  The pedagogical rule is: a doubled
 # consonant tells the child the previous vowel is SHORT (closed syllable).
@@ -118,10 +69,6 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
     # _compute_marks so buttons and marks never disagree):
     #   -ed past tense (turned, jumped) — len>=5 skips shed/sled, and
     #   magic-e stems (liked, named) keep their V-C-e split instead;
-    #   BUT when the letter before -ed is t or d the ending says /id/ =
-    #   TWO phonemes (pointed = p-oi-n-t-i-d, wanted, landed) — NOT one
-    #   unit, so it must NOT be reserved here; the linear pass gives it
-    #   an e-dot + d-dot (Lynden 2026-07-22);
     #   -le final stable syllable after a consonant (purple, little) —
     #   defers to longer taught graphemes ending in le (able, ible).
     suffix = None
@@ -129,7 +76,6 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
         len(lower) >= 5
         and lower.endswith("ed")
         and lower[-3] not in "aeiou"  # avoid words like "need", "feed"
-        and lower[-3] not in "td"     # t/d before -ed = /id/, TWO phonemes (see below)
         and not (lower[-4] in "aeiou" and (lower[-4], "e") in SPLIT_DIGRAPHS)
     ):
         suffix = "ed"
@@ -142,6 +88,7 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
         suffix = "le"
     end = len(lower) - 2 if suffix else len(lower)
 
+    available = set(sorted_g)
     while i < end:
         matched = False
         for g in sorted_g:
@@ -155,15 +102,13 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
             # child is taught to read as one sound.  Refuse this match if
             # the last char of g is also the next char in the word AND that
             # pair is a recognised doubled-consonant grapheme.
-            # A suffix unit only counts at the end of the word.
-            if g in SUFFIX_ONLY_AT_END and i + len(g) != end:
-                continue
             if len(g) >= 2:
                 end_pos = i + len(g)
                 if (
                     end_pos < end
                     and g[-1] == lower[end_pos]
                     and (g[-1] + g[-1]) in DOUBLED_CONSONANTS
+                    and (g[-1] + g[-1]) in available
                 ):
                     continue
             out.append(g)
@@ -192,123 +137,10 @@ def split_into_phonemes(word: str, cumulative_graphemes: list) -> list:
         and (len(out[-3]) >= 2 or out[-3] not in "aeiou")
     ):
         out[-2:] = [out[-2] + "e"]
-
-    # Doubled consonant = ONE phoneme unit (attention = a/tt/e/n/tion), the
-    # mirror of the same merge in _compute_marks — print buttons and marks
-    # must never disagree (PHONICS_PEDAGOGY.md §7).  Only collapses two
-    # ADJACENT lone single letters, so a doubled pair whose first letter was
-    # already eaten by a vowel digraph ('ur' in furry) is left alone.
-    merged, k = [], 0
-    while k < len(out):
-        if (k + 1 < len(out) and out[k] == out[k + 1] and len(out[k]) == 1
-                and (out[k] + out[k]) in DOUBLED_CONSONANTS):
-            merged.append(out[k] + out[k])
-            k += 2
-        else:
-            merged.append(out[k])
-            k += 1
-    return merged
-
-
-# ─── Shifty sounds (diamond marks) ───────────────────────────────
-# A taught letter making one of its OTHER sounds gets the slate DIAMOND, not
-# an ordinary dot: the u in "put" and in "nutritious" is not the /u/ of "up"
-# (Lynden 2026-07-26).  Rules are compiled from the Shifty Sounds sheet of
-# MPB_WORD_LEDGER.xlsx by scripts/build_shifty_marks.py; only graphemes the
-# ledger marks "diamond-mark eligible" can ever take one, so alt SPELLINGS
-# (ti = /sh/ in "patient") correctly keep their ordinary line.
-
-_SHIFTY_CACHE = None
-
-
-def _shifty_data() -> dict:
-    global _SHIFTY_CACHE
-    if _SHIFTY_CACHE is None:
-        path = Path(__file__).resolve().parent.parent / "data" / "shifty_marks.json"
-        try:
-            _SHIFTY_CACHE = json.loads(path.read_text(encoding="utf8"))
-        except (OSError, ValueError):
-            _SHIFTY_CACHE = {"graphemes": {}, "words": {}}
-    return _SHIFTY_CACHE
-
-
-def shifty_indices_for(word: str, level: int | None = None) -> set:
-    """Start indices of graphemes making a shifty sound in this word.
-
-    Only words the ledger knows are resolved here; anything else needs an
-    explicit annotation (see `shifty_overrides`), because whether a letter is
-    shifty depends on the word, not the spelling: the u in "up" is base, the
-    u in "put" is not.
-    """
-    entry = _shifty_data()["words"].get(word.lower())
-    if not entry:
-        return set()
-    if level is None:
-        return {int(i) for i in entry}
-    graphemes = _shifty_data()["graphemes"]
-    out = set()
-    for idx, sound in entry.items():
-        for g in graphemes.values():
-            if any(a["sound"] == sound and a["from_level"] <= level for a in g["alts"]):
-                out.add(int(idx))
-                break
     return out
 
 
-def _norm_sound(s: str) -> str:
-    return "".join(ch for ch in str(s or "").lower() if ch.isalnum())
-
-
-def is_shifty_allowed(word: str, index: int, level: int, sound: str = None) -> bool:
-    """Could the grapheme starting at `index` legitimately be shifty here?
-
-    Validates annotations that come from outside (a custom book's phonics
-    pass). A diamond needs a ledger alternative at or below this level — and
-    when the annotation names the SOUND, that specific pronunciation must be
-    the one that is taught by now.  Without the sound check a Level 6 book
-    printed a diamond on the 'a' of "after" (a = /ar/, not taught until L7)
-    merely because 'a' has *some* alternative by L6 (Lynden 2026-07-26).
-    """
-    graphemes = _shifty_data()["graphemes"]
-    lower = word.lower()
-    for g, data in graphemes.items():
-        if lower[index:index + len(g)] != g:
-            continue
-        allowed = [a for a in data["alts"] if a["from_level"] <= level]
-        if not allowed:
-            continue
-        if not sound:
-            return True
-        want = _norm_sound(sound)
-        for a in allowed:
-            have = _norm_sound(a["sound"])
-            if want and (want == have or want in have or have in want):
-                return True
-        # A named sound that is not taught yet is dropped, not guessed at.
-        return False
-    return False
-
-
-def _apply_shifty(marks: list, indices: set) -> list:
-    """Rewrite the marks starting at `indices` into diamonds."""
-    if not indices:
-        return marks
-    out = []
-    for m in marks:
-        if m["indices"][0] in indices and m["type"] in ("dot", "under_arc"):
-            out.append({"type": "diamond", "indices": m["indices"]})
-        else:
-            out.append(m)
-    return sorted(out, key=lambda m: m["indices"][0])
-
-
-def build_sound_buttoned_words(
-    words: list,
-    cumulative_graphemes: list,
-    level: int | None = None,
-    shifty_overrides: dict | None = None,
-    focus_grapheme: str | None = None,
-) -> list:
+def build_sound_buttoned_words(words: list, cumulative_graphemes: list) -> list:
     """Turn a list of word strings into [{word, phonemes, marks}] dicts.
 
     `marks` is the renderable instruction set used by the SVG sound-button
@@ -325,27 +157,6 @@ def build_sound_buttoned_words(
         if not w:
             continue
         marks = _compute_marks(w, cumulative_graphemes)
-        # Shifty sounds: ledger-known words resolve themselves; anything else
-        # uses a supplied annotation, filtered to what the ledger permits.
-        shifty = shifty_indices_for(w, level)
-        override = (shifty_overrides or {}).get(w.lower())
-        if override:
-            for item in override:
-                # Either a bare index or {"index": n, "says": "/ar/"}
-                idx = int(item["index"]) if isinstance(item, dict) else int(item)
-                snd = item.get("says") if isinstance(item, dict) else None
-                if level is not None and not is_shifty_allowed(w, idx, level, snd):
-                    continue
-                shifty.add(idx)
-        # THE BOOK'S OWN FOCUS SOUND IS NEVER DIAMONDED. A Level 6 "er" book
-        # printed er as a shifty diamond in seller/bakery/after, telling the
-        # child the sound they are learning is not its usual sound. Where the
-        # focus grapheme genuinely has two pronunciations, the Watch Out box
-        # on this same page teaches both — that is the right place for it.
-        if focus_grapheme:
-            fg = focus_grapheme.lower().replace("-", "")
-            shifty = {i for i in shifty if w.lower()[i:i + len(fg)] != fg}
-        marks = _apply_shifty(marks, shifty)
         # Keep `phonemes` for legacy templates; the new template uses `marks`.
         phonemes = split_into_phonemes(w, cumulative_graphemes)
         out.append({"word": w, "phonemes": phonemes, "marks": marks})
@@ -377,25 +188,10 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
     """
     sorted_g = sorted(set(cumulative_graphemes), key=len, reverse=True)
     sorted_g = [g for g in sorted_g if "-" not in g]
+    available = set(sorted_g)
 
     marks = []
     lower = word.lower()
-
-    # A hand-curated split wins here too, or the marks would contradict the
-    # buttons on exactly the words the exception exists to get right: with the
-    # doubled-consonant rule now firing for rr, "furry" would print f/ur/r/y
-    # as buttons and f/u/rr/y as marks (PEDAGOGY §7 — they must never
-    # disagree).
-    if lower in SPLIT_EXCEPTIONS:
-        pos = 0
-        for unit in SPLIT_EXCEPTIONS[lower]:
-            indices = list(range(pos, pos + len(unit)))
-            marks.append({
-                "type": "under_arc" if len(unit) > 1 else "dot",
-                "indices": indices,
-            })
-            pos += len(unit)
-        return marks
     i = 0
     used_indices = set()
 
@@ -406,30 +202,20 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
     # named — the V-C-e pattern wins); -le defers to longer taught graphemes
     # that end in le (able, ible) so 'table' still matches 'able' whole.
     suffix = None
-    id_ending = False
-    if len(lower) >= 5 and lower.endswith("ed") and lower[-3] not in "aeiou":
-        if lower[-3] in "td":
-            # t/d before -ed = /id/ = TWO phonemes (pointed = p-oi-n-t-i-d,
-            # wanted, spotted): e and d each get their own dot, no line, and
-            # "ed" is never matched as a unit (Lynden 2026-07-22).
-            id_ending = True
-        elif not (lower[-4] in "aeiou" and (lower[-4], "e") in SPLIT_DIGRAPHS):
-            # /t/ (jumped) or /d/ (turned, zoomed) = ONE phoneme -> one line.
-            suffix = "ed"
+    if (len(lower) >= 5 and lower.endswith("ed")
+            and lower[-3] not in "aeiou"
+            and not (lower[-4] in "aeiou" and (lower[-4], "e") in SPLIT_DIGRAPHS)):
+        suffix = "ed"
     elif (len(lower) >= 4 and lower.endswith("le")
             and lower[-3] not in "aeiou"
             and not any(g.endswith("le") and lower.endswith(g) for g in sorted_g)):
         suffix = "le"
-    end = len(lower) - 2 if (suffix or id_ending) else len(lower)
+    end = len(lower) - 2 if suffix else len(lower)
 
     while i < end:
         matched = False
         for g in sorted_g:
             if len(g) <= 1 or lower[i:i + len(g)] != g:
-                continue
-            # A suffix unit only counts at the end of the word — same rule as
-            # split_into_phonemes, so buttons and marks agree (PEDAGOGY §7).
-            if g in SUFFIX_ONLY_AT_END and i + len(g) != end:
                 continue
             # Doubled-consonant lookahead — same rule as split_into_phonemes.
             # Refuse a multi-char match whose last letter would orphan the
@@ -439,6 +225,7 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
                 end_pos < end
                 and g[-1] == lower[end_pos]
                 and (g[-1] + g[-1]) in DOUBLED_CONSONANTS
+                and (g[-1] + g[-1]) in available
             ):
                 continue
             indices = list(range(i, i + len(g)))
@@ -454,10 +241,6 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
 
     if suffix:
         marks.append({"type": "under_arc", "indices": [len(lower) - 2, len(lower) - 1]})
-    elif id_ending:
-        # /id/: the e and d are separate phonemes — two dots, never a line.
-        marks.append({"type": "dot", "indices": [len(lower) - 2]})
-        marks.append({"type": "dot", "indices": [len(lower) - 1]})
 
     # Detect split digraph: a single-vowel + single-consonant + final 'e'
     # where the vowel-e pair is in our split-digraph set, AND the level
@@ -528,52 +311,6 @@ def _compute_marks(word: str, cumulative_graphemes: list) -> list:
         if s_dot and e_dot and prev_ok:
             marks = [m for m in marks if m is not s_dot and m is not e_dot]
             marks.append({"type": "under_arc", "indices": [s_idx, e_idx]})
-            marks = sorted(marks, key=lambda m: m["indices"][0])
-
-    # DOUBLED CONSONANT = ONE sound, so ONE under-line (Lynden 2026-07-26:
-    # "'tt' in attention should have a digraph line not to indviudual phoneme
-    # sounds").  attention = a/tt/e/n/tion, never a-t-t-e-n.  Only ff/ll/ss/zz
-    # are ladder graphemes, so bb/cc/dd/gg/mm/nn/pp/rr/tt were falling through
-    # to per-letter dots.
-    #
-    # Merge ONLY when both letters are still lone dots.  That guard is what
-    # keeps "furry" right: its first r is already inside the 'ur' under-line,
-    # so the pair never merges and the vowel keeps its sound.  Walk left to
-    # right and skip a letter once used, so "little" (tt) and a hypothetical
-    # triple never double-count.
-    _i = 0
-    while _i < len(lower) - 1:
-        pair = lower[_i:_i + 2]
-        if pair[0] == pair[1] and pair in DOUBLED_CONSONANTS:
-            d1 = next((m for m in marks if m["type"] == "dot"
-                       and m["indices"] == [_i]), None)
-            d2 = next((m for m in marks if m["type"] == "dot"
-                       and m["indices"] == [_i + 1]), None)
-            if d1 and d2:
-                marks = [m for m in marks if m is not d1 and m is not d2]
-                marks.append({"type": "under_arc", "indices": [_i, _i + 1]})
-                marks = sorted(marks, key=lambda m: m["indices"][0])
-                _i += 2
-                continue
-        _i += 1
-
-    # Word-final y is NOT the taught /y/ (yes, yak) — it says /ee/ (furry,
-    # cheeky, happy) or /igh/ (my, fly).  Both are ALTERNATIVE PRONUNCIATIONS
-    # of a taught letter, so per PHONICS_PEDAGOGY.md §5 the mark is the slate
-    # DIAMOND, never an ordinary dot (Lynden 2026-07-26: "the y in cheeky is
-    # the /ee/ sound... it is a shifty sound and not a original sound").
-    #
-    # Only fires when the y is a lone dot: in day/way/toy/joy the y belongs to
-    # the taught ay/oy digraph and already carries that under-line, which is
-    # correct and must not be touched.  A consonant must precede it — that is
-    # what makes the y a vowel here.
-    if len(lower) >= 3 and lower[-1] == "y" and lower[-2] not in "aeiou":
-        y_idx = len(lower) - 1
-        y_dot = next((m for m in marks
-                      if m["type"] == "dot" and m["indices"] == [y_idx]), None)
-        if y_dot:
-            marks = [m for m in marks if m is not y_dot]
-            marks.append({"type": "diamond", "indices": [y_idx]})
             marks = sorted(marks, key=lambda m: m["indices"][0])
     return marks
 
@@ -1298,229 +1035,11 @@ def build_future_sounds(story_tokens: list, level: int, taught: list,
         # would mean "already taught", which can't happen for a genuine miss.
         if lv is None:
             continue
-        entry = {
+        entries.append({
             "grapheme": unit,
             "level": lv,
             "colour": level_colours.get(lv, "#9aa0aa"),
             "example": example,
-        }
-        # -ed after t or d says /id/ (two sounds) — spell that out so the
-        # caption reads "ed — sounds like 'id' in pointed" rather than the
-        # bare "ed in pointed" (Lynden 2026-07-22).  Other -ed pronunciations
-        # (/t/ jumped, /d/ turned) are left unannotated.
-        if unit == "ed" and len(example) >= 3 and example[-3] in "td":
-            entry["sound"] = "id"
-        entries.append(entry)
+        })
     entries.sort(key=lambda e: (e["level"], e["grapheme"]))
     return entries[:FUTURE_MAX_PER_BOOK]
-
-
-# ─── -ed guide (Lynden 2026-07-25) ───────────────────────────────
-# A child meeting -ed before L7 can't yet read ANY of the -ed words in
-# front of them, and the Future Sounds band can only carry ONE 'ed' cell
-# with one example.  The answer is NOT a list of every -ed word in the
-# book (tried 2026-07-25, Lynden: "dont put every word") — it's the THREE
-# ways -ed can be said, with a reason for each:
-#     started → start-id    an 'id' beat, after a t or d
-#     turned  → turn'd      a soft 'd', after a vowel or soft sound
-#     stopped → stop't      a quick 't', after a sharp sound
-# Learn the three and every -ed word in the book is readable; learn ten
-# words and you've learned ten words.  The example for each row is drawn
-# from THIS book where it uses one, so the child meets it in the story.
-# Apostrophe = no extra beat, hyphen = an extra beat — the same
-# distinction the marks make (PHONICS_PEDAGOGY.md §7).
-#
-# Wording follows the hand-authored note Lynden approved 2026-07-15
-# ("an 'id' beat, after a t" / "a soft 'd', after a vowel" / "a quick
-# 't', after a p"), generalised so it holds for any example word.
-
-ED_SOUND_ORDER = ("id", "d", "t")
-ED_DEFAULT_EXAMPLES = {"id": "wanted", "d": "played", "t": "jumped"}
-ED_WHY = {
-    "id": "an 'id' beat, after a t or d",
-    "d": "a soft 'd', after a vowel or a soft sound",
-    "t": "a quick 't', after a sharp sound like p, k or ch",
-}
-
-# -ed doubles a final SINGLE consonant (stop → stopped), so the double
-# collapses back for display.  The floss-rule doubles (ff, ll, ss, zz)
-# belong to the base word itself — pass → passed, spill → spilled — and
-# must never be collapsed, or the child is shown a word that isn't real.
-_ED_DOUBLE_COLLAPSE = frozenset("bdgkmnprt")
-
-# A stem ending in a voiceless sound takes /t/; everything else takes /d/.
-_ED_VOICELESS_ENDINGS = ("ch", "sh", "ss", "ff", "ck", "ph", "th", "gh")
-_ED_VOICELESS_LETTERS = frozenset("pkfsx")
-
-
-def ed_form(word: str):
-    """(stem, spoken, sound) for an -ed word, or None if it isn't one.
-
-    >>> ed_form("turned")[1:]
-    ("turn'd", 'd')
-    >>> ed_form("stopped")[1:]
-    ("stop't", 't')
-    >>> ed_form("started")[1:]
-    ('start-id', 'id')
-    """
-    w = word.lower()
-    if len(w) < 5 or not w.endswith("ed") or not w.isalpha():
-        return None
-    stem = w[:-2]
-    if len(stem) >= 2 and stem[-1] == stem[-2] and stem[-1] in _ED_DOUBLE_COLLAPSE:
-        stem = stem[:-1]
-    if stem[-1] in "td":
-        # /id/ — a whole extra beat (pointed, crowded, started)
-        return stem, f"{stem}-id", "id"
-    if stem.endswith(_ED_VOICELESS_ENDINGS) or stem[-1] in _ED_VOICELESS_LETTERS:
-        return stem, f"{stem}'t", "t"
-    return stem, f"{stem}'d", "d"
-
-
-def build_ed_guide(story_tokens: list, taught: list, known_units: set,
-                   tricky_words: set = frozenset()) -> list:
-    """The three ways -ed is said, or [] if this book has no -ed words.
-
-    Returns exactly three rows (id, d, t), each illustrated by a word from
-    THIS story where it has one and by a stock example where it doesn't —
-    the child needs all three rules regardless, but meets them in words
-    they're about to read.
-
-    Which words count is decided by `missing_units`, so this can never
-    disagree with the Future Sounds band: a word only qualifies when the
-    engine says it needs the (L7) 'ed' suffix.  The honest exceptions the
-    engine already accepts stay out — magic-e stems (smiled, liked) and
-    words whose e is eaten by a taught grapheme (stared = st-are-d) are
-    simply decodable, and using one here would teach a lie.  Tricky words
-    (looked, called, asked) are read on sight from the page-3 strip.
-    """
-    found = {}  # sound -> (word, spoken) for the first story word of that kind
-    for tok in story_tokens:
-        w = tok.lower().strip("'").replace("'", "")
-        if not w.isalpha() or w in tricky_words:
-            continue
-        if "ed" not in missing_units(w, taught, known_units):
-            continue
-        form = ed_form(w)
-        if form:
-            _stem, spoken, sound = form
-            found.setdefault(sound, (w, spoken))
-    if not found:
-        return []  # no untaught -ed words in this book — nothing to explain
-
-    out = []
-    for sound in ED_SOUND_ORDER:
-        hit = found.get(sound)
-        if hit is None:
-            stock = ED_DEFAULT_EXAMPLES[sound]
-            hit = (stock, ed_form(stock)[1])
-        word, spoken = hit
-        out.append({
-            "sound": sound,
-            "word": word,
-            "spoken": spoken,
-            "why": ED_WHY[sound],
-            "from_book": found.get(sound) is not None,
-        })
-    return out
-
-
-# ─── Sentence reading (Can You Read These?) ──────────────────────
-# The read-words page carried a "Now Write Each Word" block that is now also
-# on Trace & Form, using the SAME words — the child wrote each word twice, one
-# page apart, and read nothing new (Lynden 2026-08-06: "remove writing from
-# can you read these words page, its alread on the trace. add something
-# else").  What the book had nowhere was the step between reading a word and
-# reading the story: the same words IN A SENTENCE.  These come from the
-# book's own story text, so they are decodable by construction and the child
-# meets the word again in the context they just read it in.
-
-# A "short" sentence is not the same length at every level: L8 story
-# sentences run to 14-26 words by design (fronted adverbials, subordination),
-# so a flat 12-word cap found exactly ONE usable sentence in an L8 book.
-# L1-L3 sit at 10 rather than 8: these sentences come from the child's own
-# story, which they have just read, and at 8 an L3 book yielded a single
-# usable sentence once dialogue was excluded.
-SENTENCE_MAX_WORDS = {1: 10, 2: 10, 3: 10, 4: 12, 5: 12, 6: 12, 7: 16, 8: 16}
-
-
-def build_reading_sentences(story_pages: list, words: list, level: int = 6,
-                            count: int = 3, max_words: int = None) -> list:
-    """Short story sentences that each show one of `words` in context.
-
-    One sentence per target word, shortest first, so the block stays inside
-    the space the write rows used to occupy.  A word with no short sentence
-    is skipped rather than padded — three good sentences beat five long ones.
-    """
-    if not story_pages or not words:
-        return []
-    if max_words is None:
-        max_words = SENTENCE_MAX_WORDS.get(level, 12)
-
-    sentences = []
-    for page in story_pages:
-        text = page.get("text", "") or ""
-        for chunk in re.split(r"(?<=[.!?])\s+", text):
-            chunk = " ".join(chunk.split()).strip()
-            if not chunk:
-                continue
-            # Speech marks are not taught below L6 (PEDAGOGY: unattributed
-            # dialogue must not appear at those levels), so they take
-            # narrative sentences only.  L6+ may read dialogue.
-            if level < 6 and ('"' in chunk or "\u201c" in chunk):
-                continue
-            wc = len(chunk.split())
-            if 3 <= wc <= max_words:
-                sentences.append(chunk)
-
-    out, used_words, seen = [], set(), set()
-    for target in words:
-        if len(out) >= count:
-            break
-        low = target.lower()
-        if low in used_words:
-            continue
-        matches = [s for s in sentences
-                   if re.search(rf"\b{re.escape(low)}\b", s.lower())
-                   and s not in seen
-                   # The word must not open the sentence: the gap would then
-                   # need a capital the answer chips do not carry, which tells
-                   # the child where it goes without reading anything.
-                   and not s.lower().startswith(low + " ")]
-        if not matches:
-            continue
-        matches.sort(key=lambda s: len(s.split()))
-        chosen = matches[0]
-        options = _sentence_options(target, chosen, words)
-        # A gap with nothing to choose from is worse than no gap at all, so a
-        # word the book cannot offer two decodable alternatives for is skipped
-        # and the next word gets the slot.
-        if not options:
-            continue
-        seen.add(chosen)
-        used_words.add(low)
-        out.append({"text": chosen, "word": target, "options": options})
-    return out
-
-
-# Three answers per gap, and the two wrong ones have to be worth rejecting.
-# Picked from the book's OWN word list so every option decodes at this level
-# and the child has to read all three rather than spot the only pronounceable
-# one.  Anything already printed in the sentence is excluded — a child who
-# sees the word sitting in the line does not have to decode the choices.
-def _sentence_options(target: str, sentence: str, words: list) -> list:
-    low = target.lower()
-    in_sentence = set(re.findall(r"[a-z']+", sentence.lower()))
-    pool = [w for w in words
-            if w.lower() != low and w.lower() not in in_sentence]
-
-    # Nearest in length first: "possible" against "sensible" is a real
-    # decoding decision, "possible" against "a" is not.
-    pool.sort(key=lambda w: (abs(len(w) - len(target)), w.lower()))
-    options = [target] + pool[:2]
-    if len(options) < 3:
-        return []
-    # Deterministic per word, so a rebuild never reshuffles the answers but
-    # the correct one is not always in the same place.
-    random.Random(low).shuffle(options)
-    return options
