@@ -24,7 +24,17 @@ BASE_DIR = Path(__file__).parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 FONTS_DIR = BASE_DIR / "assets" / "fonts"
 OUTPUT_DIR = BASE_DIR / "output" / "books"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    # Read-only filesystem (Vercel's Python runtime, /var/task) — only the
+    # local CLI path (generate_pilot_books.py etc.) ever writes here; the
+    # serverless renderer (api/render-book-html.py) only needs
+    # render_book_html/build_book_data_from_story from this module, which
+    # never touch OUTPUT_DIR. This was a hard import-time crash in
+    # production until fixed (2026-08-10) — the mkdir ran as a side effect
+    # of just importing the module.
+    pass
 
 
 # ─── Level Data ──────────────────────────────────────────────────
