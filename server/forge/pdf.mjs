@@ -25,9 +25,19 @@ export async function htmlUrlToPdf(htmlUrl) {
     // finished. Function maxDuration is 300s (vercel.json), so there's
     // budget to allow much longer here.
     timeout: 120000,
+    // Separate from the above: this governs individual CDP protocol command
+    // timeouts (Puppeteer's own error points here specifically: "Increase
+    // the 'protocolTimeout' setting"). Set generously alongside it rather
+    // than found the hard way a third time.
+    protocolTimeout: 120000,
   });
   try {
     const page = await browser.newPage();
+    // Blanket default for anything not given an explicit timeout above —
+    // Puppeteer scatters its own 30s defaults across launch(), goto(), AND
+    // pdf() independently (each one had to be found live, one at a time);
+    // this is a safety net against a fourth one surfacing the same way.
+    page.setDefaultTimeout(120000);
     // Same reasoning as the Python side's set_content(..., "domcontentloaded"):
     // everything (images, fonts) is embedded as a data URI, so there is no
     // real network activity to wait for past the initial load.
@@ -40,6 +50,12 @@ export async function htmlUrlToPdf(htmlUrl) {
       margin: { top: "0", right: "0", bottom: "0", left: "0" },
       printBackground: true,
       preferCSSPageSize: true,
+      // page.pdf() has ITS OWN 30s default timeout, entirely separate from
+      // launch()'s and goto()'s — easy to miss since neither of those two
+      // fixing first actually touched this one. Live-tested: this heavy,
+      // image-dense multi-page HTML genuinely takes longer than 30s to
+      // rasterize to PDF.
+      timeout: 120000,
     });
     return Buffer.from(buf);
   } finally {
