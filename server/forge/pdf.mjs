@@ -17,6 +17,14 @@ export async function htmlUrlToPdf(htmlUrl) {
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(),
     headless: chromium.headless,
+    // puppeteer-core's launch() defaults to a 30s timeout waiting for the
+    // browser's websocket endpoint to come up. Live-tested and confirmed:
+    // that's not enough on a cold serverless invocation — @sparticuz/chromium
+    // has to decompress its ~50MB brotli-packed binary to /tmp first, and
+    // the launch timed out (TimeoutError, puppeteer's util.js) before that
+    // finished. Function maxDuration is 300s (vercel.json), so there's
+    // budget to allow much longer here.
+    timeout: 120000,
   });
   try {
     const page = await browser.newPage();
