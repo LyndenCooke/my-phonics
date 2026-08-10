@@ -123,7 +123,39 @@ BASE_STYLE = (
     "Just small simple black dots - cute and friendly like a teddy bear's eyes. "
     "Warm, friendly, inviting. Soft pastel backgrounds with pops of bright colour. "
     "Simple rounded shapes, gentle lighting. Professional picture book quality. "
-    "No text, words, letters, or numbers in the image."
+    "No text, words, letters, or numbers in the image. "
+    "NO GLOW: characters sit directly on the background with a clean outline. NO "
+    "coloured haze, halo, aura, glow, mist or soft cloud of colour around any "
+    "character or object, and no drop shadow ringing them. (Added 2026-07-27 — "
+    "a pale blue cloud kept appearing around the boy in L7.4.) "
+    "FULL BLEED: the artwork fills the whole square edge to edge. NO border, NO "
+    "frame, NO cream or white margin, NO rounded corners, NO painted-panel edge, "
+    "NO vignette. (Added 2026-07-27 — some pages were coming back inside a cream "
+    "rounded panel while their neighbours were edge-to-edge, so a single book "
+    "mixed two framings.) "
+    "MODEST DRESS - every character in every picture, adults and children, boys and girls: "
+    "knees and shoulders are always covered. NO shorts, NO short skirts, NO sleeveless tops, "
+    "NO low necklines, NO bare midriffs, NO swimwear. Boys wear full-length trousers; girls wear "
+    "full-length trousers, or a skirt or dress that covers the knee, and sleeves at least to the elbow. "
+    "Necklines are high and modest. This holds in hot weather, at the beach, at play and in sport - "
+    "dress the character modestly anyway. If an outfit description mentions shorts or a sleeveless "
+    "top, draw full-length trousers and sleeves instead. "
+    "HOUSE VALUES - nothing in the picture may contradict Islamic values, in the foreground or "
+    "the background: NO pork, bacon, ham or pig meat and no pigs; NO alcohol of any kind - no wine, "
+    "beer or spirits, no bottles, glasses, barrels, bars or pubs, not even on a distant shelf or "
+    "market stall; NO idols, religious statues, shrines or figures made for worship, and no "
+    "devotional imagery of any faith; NO gambling, betting or cards; NO Halloween, Christmas or "
+    "Easter imagery and no birthday parties (no cake with candles, party hats or wrapped "
+    "birthday presents). AVOID FESTIVAL SCENES GENERALLY, religious festivals of every faith "
+    "included - unless the scene explicitly describes a festival, draw ordinary everyday life. "
+    "(Ordinary religious life is not a festival and is welcome in the background: a hijab, a "
+    "prayer mat, a mosque along the street.) NO romantic contact and no physical contact between adult men and women who "
+    "are not family; NO nudity or bathing scenes; NEVER depict a prophet. Mosques, prayer mats, "
+    "hijabs, Ramadan and Eid are welcome, drawn with warmth and dignity. "
+    "ANIMALS ARE REAL ANIMALS: they stand and move as their species does, never on two legs like "
+    "a person, never in clothes, never talking or gesturing. Dogs are fine to draw. NOTHING "
+    "MAGICAL: no sparkles, glows, floating objects, fairies or genies - everything happens for an "
+    "ordinary physical reason."
 )
 
 # Detailed character descriptions for hero image generation (text-to-image)
@@ -586,8 +618,13 @@ HERO_PROMPTS = {
             "each tied with a small bright yellow ribbon at the end. "
             "She wears a bright yellow kurta (traditional long top reaching below the knee) "
             "with matching bright yellow salwar (loose gathered trousers) and simple flat sandals. "
-            "She has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, "
-            "a warm bright smile, and an animated expressive face. "
+            # Emphatic wording 2026-07-27 — the mild version lost on the Dadaji
+            # reference and shipped white sclera to all 8 pages.
+            "ABSOLUTELY CRITICAL EYE RULE: her eyes are two TINY SOLID BLACK filled ovals, "
+            "like dots made with a black marker pen. ZERO white, NO sclera, NO eyeball, "
+            "NO pupil, NO iris, NO highlight, NO catchlight. Just two small solid black "
+            "dots, exactly like a teddy bear's. "
+            "She has a warm bright smile and an animated expressive face. "
             "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
             "Arms slightly away from body, feet shoulder-width apart. "
             "Plain light warm cream solid-colour background (no scenery, no objects, no patterns)."
@@ -828,7 +865,16 @@ SIDE_HERO_PROMPTS = {
             "He wears a saffron-orange Rajasthani pagri (turban) wrapped neatly on his head, "
             "a cream/white angrakha-style kurta (crossover front, tied at side), "
             "loose white trousers, and brown leather sandals. "
-            "He has small friendly dot eyes, solid black, tiny and cute like a teddy bear — not too big. "
+            # 2026-07-27: the mild wording ("small friendly dot eyes, solid black")
+            # lost every time — the reference came back with big white sclera and
+            # pupils, and hero injection then propagated that to all 8 pages.
+            # Emphatic phrasing is what actually holds (same wording that worked
+            # on L6.3 page 7).
+            "ABSOLUTELY CRITICAL EYE RULE: his eyes are two TINY SOLID BLACK "
+            "filled ovals, like dots made with a black marker pen. ZERO white, "
+            "NO sclera, NO eyeball, NO pupil, NO iris, NO highlight, NO catchlight, "
+            "NO shine. Do NOT draw realistic or expressive eyes — just two small "
+            "solid black dots, exactly like a teddy bear's. "
             "He is TALL — a fully grown adult man, much taller than a child. "
             "Standing in a neutral pose, facing the viewer, full body visible from head to toe. "
             "Arms slightly away from body, feet shoulder-width apart. "
@@ -904,6 +950,26 @@ SIDE_HERO_PROMPTS = {
 }
 # Alias: "5.4_local_boy" is the same as "5.4" (used in scene-level side_hero_key references)
 SIDE_HERO_PROMPTS["5.4_local_boy"] = SIDE_HERO_PROMPTS["5.4"]
+
+# Emphatic eye rule for L7.4's three characters (2026-07-28).  See L7.3: the
+# mild wording let a reference sheet come back with white sclera, which hero
+# injection then copied onto every page.  Dedupe by id() — "5.4_local_boy" is
+# an alias of "5.4" above, so the same dict would otherwise be patched twice.
+_EMPHATIC_EYES = (
+    " ABSOLUTELY CRITICAL EYE RULE: the eyes are two TINY SOLID BLACK filled "
+    "ovals, like dots made with a black marker pen. ZERO white, NO sclera, NO "
+    "eyeball, NO pupil, NO iris, NO highlight, NO catchlight. Just two small "
+    "solid black dots, exactly like a teddy bear's."
+)
+_seen_ids = set()
+for _d in (HERO_PROMPTS["5.4"],
+           SIDE_HERO_PROMPTS["5.4_dad"],
+           SIDE_HERO_PROMPTS["5.4"]):
+    if id(_d) in _seen_ids:
+        continue
+    _seen_ids.add(id(_d))
+    if "ABSOLUTELY CRITICAL EYE RULE" not in _d["description"]:
+        _d["description"] = _d["description"] + _EMPHATIC_EYES
 
 # ─── Object Reference Prompts (key objects needing visual consistency) ────────
 
@@ -2218,6 +2284,27 @@ SCENE_PROMPTS["4.2"] = {
 # ═══════════════════════════════════════════════════════════════════
 # LEVEL 4.3 — "The New Glue" (Modern Oaxacan home, Mexico)
 # ═══════════════════════════════════════════════════════════════════
+# THE BEDROOM (pages 1 and 7 are the SAME room — pin it, don't just name a
+# nationality).  Lynden 2026-07-26: "The image of the room and desk is
+# different to the first image of the room and desk."  The two prompts used to
+# say only "colourful bedroom" / "colourful Mexican bedroom", so the model
+# invented a second room (tiles became floorboards, the low patchwork bed
+# became a tall magenta one, the mountain picture became geometric wall art).
+# Both prompts now carry this identical block — see
+# feedback_mpb_setting_needs_architecture: list the drawable features, name the
+# ground, every time.
+GLUE_BEDROOM = (
+    "THE ROOM: a child's bedroom with plain salmon-pink walls. The GROUND is a "
+    "patterned floor of SQUARE TILES in cream and dusty pink, each with a small "
+    "flower motif — NOT wooden floorboards. Against the right-hand wall is a LOW "
+    "bed with NO headboard: white base, patchwork quilt of cream, soft blue and "
+    "warm orange squares, three square patterned cushions. On the left wall is "
+    "ONE large window with pale cream curtains. On the right wall hangs ONE "
+    "framed picture of pink and blue mountains. In the foreground stands a LOW "
+    "light-wood craft table with thick square legs, and a yellow ceramic pot of "
+    "coloured pencils sits on the floor beside it."
+)
+
 SCENE_PROMPTS["4.3"] = {
     "title": "The New Glue",
     "scenes": [
@@ -2229,7 +2316,7 @@ SCENE_PROMPTS["4.3"] = {
     {
         # Page 1: Girl at craft desk pressing glue on card
         "name": "page1",
-        "prompt": "A girl at a wooden craft desk presses blue glue on a white card. Blue glue spreads everywhere across the desk. Colourful bedroom with warm terracotta walls, woven cushions, tiled floor. Craft supplies scattered around. She looks surprised at the mess. Whimsical children's book illustration. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. No text. Landscape orientation.",
+        "prompt": "A girl at the low light-wood craft table presses blue glue on a white card. Blue glue spreads everywhere across the table top. Craft supplies — paper, scissors, glue tubes — scattered around. She looks surprised at the mess. " + GLUE_BEDROOM + " Whimsical children's book illustration. CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. No text. Landscape orientation.",
     },
     {
         # Page 2: Card with blue glue flies down staircase toward cat at bottom
@@ -2260,7 +2347,7 @@ SCENE_PROMPTS["4.3"] = {
     {
         # Page 7: Girl and Dad cleaning up, cat licking blue glue off fur
         "name": "page7",
-        "prompt": "Full room view of a colourful Mexican bedroom. A girl and a man with a moustache in a cream shirt clean up a messy desk with cloths. On the floor nearby, a medium-sized short-haired ginger tabby cat with orange stripes, white chest, white paws, and white-tipped tail sits licking a blue glue stain off its fur. Blue glue smudges visible on the cat's back. Craft supplies scattered on the wooden desk, warm terracotta walls, colourful woven textiles on the bed. They look tired but amused. Whimsical children's book illustration. ABSOLUTELY CRITICAL: Every eye on every character — girl, man, AND cat — MUST be tiny solid BLACK filled circles with ZERO white, ZERO highlights, ZERO sclera. No text. Landscape orientation.",
+        "prompt": "Full room view. A girl and a man with a moustache in a cream shirt clean up the sticky blue mess on the low light-wood craft table, both wiping it with cloths. Craft supplies scattered on the table. On the tiled floor in front of the table sits ONE medium-sized short-haired ginger tabby cat with orange stripes, white chest, white paws, and white-tipped tail, licking a blue glue stain off its fur, blue smudges on its back. They look tired but amused. This is the SAME bedroom as page 1. " + GLUE_BEDROOM + " Whimsical children's book illustration. ABSOLUTELY CRITICAL: Every eye on every character — girl, man, AND cat — MUST be tiny solid BLACK filled circles with ZERO white, ZERO highlights, ZERO sclera. No text. Landscape orientation.",
         "side_hero": True,
     },
     {
@@ -2490,6 +2577,40 @@ SCENE_PROMPTS["5.3"] = {
     },
 ]}
 
+# The SETTING, as drawable features rather than a place name.  Every scene gets
+# this verbatim so the ground, the parapet and the background kites stop
+# drifting between pages (Lynden 2026-07-27: "the image settings and the object
+# isn't really strong with consistency here").
+JAIPUR_ROOFTOP = (
+    "THE SETTING (identical in every scene): a flat rooftop terrace in Jaipur. "
+    "The GROUND is paved with large square terracotta-pink stone tiles with "
+    "visible joins. A LOW parapet wall of the same pink stone runs along the "
+    "roof edge. Behind it stand pink sandstone Jaipur buildings with domed "
+    "chhatri pavilions and scalloped arch windows, all in the same dusty rose "
+    "pink. The sky is a clear bright blue winter sky with a few soft white "
+    "clouds. BACKGROUND KITES: small, PLAIN SOLID-COLOUR diamond kites (red, "
+    "green, blue, orange, pink) on thin dark string lines — no patterns, no "
+    "stripes, no long ribbon tails, no bows. Warm midday light."
+)
+
+# The hero kite is THE recurring object of this book, so pin it on every scene
+# that shows it finished — it was drifting (plain diamond on the cover, a small
+# flap on page 7, a long ribbon tail on page 8).  Lynden 2026-07-27: "the image
+# settings and the object isn't really strong with consistency here".
+HERO_KITE = (
+    "THE KITE (identical every time it appears): a plain BRIGHT YELLOW "
+    "diamond-shaped kite made of thin yellow paper over a pale bamboo cross "
+    "frame, the cross clearly visible through the paper, flown on a thin WHITE "
+    "string. It is plain yellow all over — NO pattern, NO coloured corners, NO "
+    "green, NO stripes. It has NO TAIL AT ALL: no ribbon, no bows, no streamer, "
+    "no flap hanging from the bottom point."
+)
+for _sc in SCENE_PROMPTS["5.3"]["scenes"]:
+    _sc["prompt"] = _sc["prompt"] + " " + JAIPUR_ROOFTOP
+    if _sc["name"] in ("cover", "page7", "page8"):
+        _sc["prompt"] = _sc["prompt"] + " " + HERO_KITE
+
+
 # ═══════════════════════════════════════════════════════════════════
 # LEVEL 5.4 — "A Place for Me" (Cartagena, Colombia — morning fruit market, lost and found)
 # ═══════════════════════════════════════════════════════════════════
@@ -2501,68 +2622,205 @@ SCENE_PROMPTS["5.3"] = {
 # terracotta orange, cobalt blue), wooden balconies overflowing with pink bougainvillea,
 # terracotta clay tile roofs, cobblestone streets, coconut palms, fruit market stalls
 
+# The SETTING and the KEY OBJECT, as drawable features shared verbatim by every
+# scene — the same fix used for 5.3's rooftop and 6.3's bedroom.
+CARTAGENA_MARKET = (
+    "THE SETTING (identical in every scene): a morning street market inside the "
+    "walled old city of Cartagena, Colombia. The GROUND is a pale grey "
+    "COBBLESTONE street. The buildings are two-storey Spanish colonial fronts in "
+    "bold flat colours — bright yellow, terracotta orange and cobalt blue — with "
+    "carved dark-wood balconies spilling pink bougainvillea, and terracotta "
+    "clay-tile roofs. The market STANDS are simple wooden tables at adult waist "
+    "height, shaded by big rectangular cloth awnings in red, green and blue, "
+    "piled with tropical fruit. Warm early-morning light, clear pale blue sky."
+)
+
+# The local boy's hair drifted to a flat cropped cap on page6 (Lynden 2026-07-29:
+# "the boy's afro when on the step is way too small") while pages 4 and 7 kept the
+# reference's volume.  Pinned as a drawable feature on every scene he appears in.
+LOCAL_BOY_HAIR = (
+    "THE COLOMBIAN BOY'S HAIR (identical in every scene): a BIG, ROUND, "
+    "VOLUMINOUS afro of tight dark-brown curls. It is a wide halo that is "
+    "clearly WIDER THAN HIS FACE on both sides and rises about half a "
+    "head-height above his crown, with a bumpy curly silhouette and a few loose "
+    "curls springing out past the outline. It is NOT flat, NOT a short cropped "
+    "cap, NOT smoothed down against his skull, and never smaller than in his "
+    "reference image."
+)
+
+MANGO = (
+    "THE MANGO (identical every time it appears): a large ripe mango, rounded "
+    "and oval, with smooth GOLDEN-YELLOW skin blushed red-orange on one "
+    "shoulder. It is NOT a banana, NOT a plantain, NOT crescent-shaped."
+)
+
 SCENE_PROMPTS["5.4"] = {
     "title": "A Place for Me",
     "side_hero_key": "5.4_local_boy",
     "scenes": [
     {
-        # COVER: British boy alone, in a panic, lost in the busy market
+        # COVER: the boy alone in the crowd — must NOT duplicate page 3
         "name": "cover",
-        "prompt": "BOOK COVER ILLUSTRATION. Show the British boy from the reference image standing alone in the middle of a busy bustling Cartagena market, looking scared and worried — eyes wide with a hint of panic, hands clutched to his chest. He is lost. Adults and other people walk past him on all sides, not noticing him. Fruit stalls piled high with tropical fruit — mangoes, papayas, bananas — on both sides. BOLD vivid colonial Cartagena buildings rise behind him in bright yellow, terracotta orange, cobalt blue — with wooden balconies overflowing with bright pink bougainvillea. Coconut palms. Canvas shade canopies over the stalls. Cobblestone street. The boy is small and lost in the wide busy scene. Space at the top for a title. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Portrait orientation.",
+        "prompt": (
+            "BOOK COVER ILLUSTRATION. The British boy from the reference image stands "
+            "ALONE in the middle of the busy market street, small against the crowd, "
+            "holding the strap of his bag with both hands and looking up and around "
+            "with a worried face. Grown-ups walk past on both sides without noticing "
+            "him; their bodies are cut off by the edges of the picture so he is the "
+            "only whole figure. He is STANDING ON THE COBBLESTONES in the open street "
+            "\u2014 NOT sitting, NOT on a step, NOT in a doorway. Portrait orientation."
+        ),
     },
     {
-        # Page 1: Boy and dad arriving at market — peering around corner
+        # Page 1: arriving with Dad, market just waking up
         "name": "page1",
+        "prompt": (
+            "The British boy from the FIRST reference image walks into the market "
+            "street beside his dad from the SECOND reference image, both seen from "
+            "behind and slightly to one side, the boy looking up at the stands with "
+            "interest. The market is JUST OPENING: vendors are still laying fruit out "
+            "on the wooden tables, and BIG RECTANGULAR SHEETS OF CLOTH IN RED, GREEN "
+            "AND BLUE are strung above the stands as awnings, catching the early light. "
+            "Only a few people about. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_dad",
-        "prompt": "Show the British boy from the FIRST reference image peering around the corner of a BOLD bright yellow colonial building in Cartagena, Colombia. He grips the edge of the wall with one hand, leaning forward curiously. The dad from the SECOND reference image (light skin, brown hair, casual shirt, khaki trousers) stands behind him, one hand on the boy's shoulder, also looking ahead. Around the corner is a cobblestone street where market vendors are just setting up — stacking mangoes on wooden carts, hanging colourful cloth from frames. Terracotta orange and cobalt blue colonial buildings with wooden balconies overflowing with bright pink bougainvillea. Terracotta tile roofs. Coconut palms lean over the street. Warm golden early morning light. Same British boy character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 2: Market busy, boy overwhelmed at fruit stall
+        # Page 2: the market fills up and Dad is gone
         "name": "page2",
-        "prompt": "Show the British boy from the reference image standing on tiptoes trying to see over a crowded Cartagena market stall piled high with tropical fruit — bright yellow mangoes, green papayas, fat plantains, bananas, green limes — stacked on a wooden table. The market is busy and bustling around him. Other people browse the stalls (all in long trousers or long dresses). A canvas shade canopy above. BOLD vivid colonial buildings in the background — terracotta orange, cobalt blue — with wooden balconies overflowing with pink bougainvillea. The boy looks amazed and a little overwhelmed. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": (
+            "The British boy from the reference image waits alone in a now-crowded "
+            "market street. He stands on the open COBBLESTONES with a clear gap of "
+            "empty ground between him and the nearest fruit table, holding the strap "
+            "of his own bag with BOTH HANDS against his chest, chin lifted and heels "
+            "raised slightly off the ground as he cranes to look past the grown-ups "
+            "for his dad. His face is uncertain. "
+            "CRITICAL — HIS HANDS AND BODY TOUCH NOTHING: he is not standing on, "
+            "sitting on, leaning over, climbing on or reaching across the stall; he "
+            "does not touch the fruit, the table, the awning or its posts, and no part "
+            "of him overlaps the tabletop. "
+            "CRITICAL — COMPOSITION: the view is from a slight angle, NOT symmetrical. "
+            "The boy stands OFF-CENTRE, to one side of the picture, and the fruit stand "
+            "with its awning sits to the OTHER side, angled away, so nothing is dead "
+            "centre and no post rises behind his head. "
+            "CRITICAL — THE CROWD: the shoppers are WALKING PAST in both directions "
+            "and are seen mostly from BEHIND or in three-quarter view, busy with their "
+            "own errands. NOBODY faces the viewer, nobody looks at the camera and "
+            "nobody stares at the boy. They are NOT lined up in rows and NOT standing "
+            "still. Vary them clearly — different heights, ages, builds, hair and "
+            "clothing colours, some carrying baskets, some with children — with no two "
+            "faces alike and no repeated figure. The nearest grown-ups are large and "
+            "cut off by the edges of the picture, the ones further away are smaller, so "
+            "the street has real depth and the boy looks small and hemmed in among "
+            "them. Landscape orientation."
+        ),
     },
     {
-        # Page 3: Alone on step, scared, looking for dad
+        # Page 3: looking left and right — STANDING, not sitting
         "name": "page3",
-        "prompt": "Show the British boy from the reference image sitting on a stone doorstep beside a large ornate dark wooden door of a bright yellow colonial building in Cartagena. He hugs his knees, looking down, anxious and scared — his dad has disappeared. The busy market carries on in the street in front of him but nobody notices him. Vendors calling out, people walking past. Bright pink bougainvillea trails down from the iron balcony above the door. Cobblestone street. Warm light but he feels cold and left out. Same character, same outfit (blue t-shirt, khaki trousers, white trainers). CRITICAL: Eyes MUST be tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
+        "prompt": (
+            "The British boy from the reference image stands alone in the middle of the "
+            "cobblestone market street, turning his head sharply to look to one side, "
+            "one hand raised to his chest. His eyes search the crowd and his mouth is a "
+            "small worried line \u2014 he cannot find his dad. Wooden doors and market "
+            "stands line the street behind him. He is STANDING UP in the open street: "
+            "NOT sitting, NOT on a doorstep, NOT hugging his knees. Landscape orientation."
+        ),
     },
     {
-        # Page 4: Local Colombian boy finds him and offers help
+        # Page 4: the local boy appears at his side
         "name": "page4",
+        "prompt": (
+            "The British boy from the FIRST reference image stands in the market street "
+            "and turns to look at the local Colombian boy from the SECOND reference "
+            "image, who has just walked up beside him. The local boy has a big open "
+            "grin and one hand raised in a friendly greeting; the British boy looks "
+            "surprised, the worry just starting to lift. BOTH BOYS ARE STANDING on the "
+            "cobblestones, facing each other, roughly the same height. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_local_boy",
-        "prompt": "Show the British boy from the FIRST reference image still sitting on the stone doorstep beside the yellow colonial building, but now looking up with surprise and the start of a small smile. Beside him, the local Colombian boy from the SECOND reference image (curly dark hair, warm brown skin, green t-shirt, dark blue trousers, brown sandals) crouches down with a warm friendly smile, one hand pointing toward the market street. Same yellow building, same dark wooden door, same pink bougainvillea trailing from the balcony above. On the right side of the image: more of the yellow colonial building wall continues, with another ornate window with wooden shutters and potted plants on the windowsill. Cobblestone street in the foreground. Same British boy outfit (blue t-shirt, khaki trousers, white trainers). ABSOLUTELY CRITICAL EYE RULE: ALL characters MUST have eyes that are tiny solid black filled circles like dots drawn with a black marker pen — just small simple black dots like a teddy bear's eyes. NO white sclera, NO white around the black, NO iris, NO pupil detail, NO highlights. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 5: Searching stalls together — local boy holds up a mango
+        # Page 5: the local boy holds up a mango — IN FRONT of the stall
         "name": "page5",
+        "prompt": (
+            "The two boys walk together past a fruit stand. The local Colombian boy "
+            "from the SECOND reference image holds a big mango up in one hand at head "
+            "height, grinning at his friend; the British boy from the FIRST reference "
+            "image walks beside him, smiling back for the first time. "
+            "CRITICAL: BOTH BOYS STAND IN FRONT OF the stall, on the shopper's side, "
+            "as customers. Neither boy is behind the table and neither is a vendor. "
+            "They are CHILDREN, not adults. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_local_boy",
-        "prompt": "Show the local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) standing behind a Cartagena market stall, holding up a huge ripe yellow mango triumphantly above his head with a big smile. The British boy from the FIRST reference image (blue t-shirt, khaki trousers, straight brown hair) stands on the other side of the stall, leaning forward, eyes wide, impressed and laughing. Piles of tropical fruit around them — mangoes, papayas, green limes, plantains, bananas. Canvas shade canopy above. BOLD vivid colonial Cartagena buildings in the background with bougainvillea balconies. Cobblestone market street. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 6: Eating mangoes on the steps together
+        # Page 6: eating the mangos on a doorway step at the SIDE of the street
         "name": "page6",
+        "prompt": (
+            "The British boy from the FIRST reference image and the local Colombian boy "
+            "from the SECOND reference image sit side by side on the STONE DOORSTEP OF A "
+            "BUILDING, each holding a large ripe MANGO in both hands and biting into it. "
+            "Golden mango juice runs down the British boy's chin and he is laughing. "
+            "CRITICAL \u2014 WHERE THEY ARE SITTING: the step is the entrance stoop of a "
+            "colonial house at the EDGE of the street. It is a short flight of two or "
+            "three worn pale stone steps that run along the front WALL of the building "
+            "and lead up to a tall arched dark-wood door directly BEHIND the boys. The "
+            "wall of the house is right at their backs and the door frame rises behind "
+            "their heads; the boys sit on the top step with their feet resting on the "
+            "step below. There must be NO free-standing stone block, bench, boulder, "
+            "plinth or slab sitting on its own in the middle of the road \u2014 the step "
+            "is ATTACHED to the building and the boys are tucked out of the way at the "
+            "side of the street, in the cool shade of the doorway. "
+            "The cobblestone street with its market stalls runs away to ONE SIDE of the "
+            "picture, seen from a slight angle, so the doorway is not dead centre. "
+            "CRITICAL: the fruit is MANGOES \u2014 big rounded golden-yellow ovals. They "
+            "are NOT bananas and NOT plantains; no curved yellow fruit anywhere in the "
+            "picture. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_local_boy",
-        "prompt": "Show the British boy from the FIRST reference image and the local Colombian boy from the SECOND reference image sitting side by side on a low stone step in the shade of a terracotta colonial building, each eating a big ripe yellow mango with their hands. The British boy (blue t-shirt) has mango juice dripping down his chin and is laughing happily. The Colombian boy (green t-shirt, curly hair) takes a huge bite. Mango skins and seeds on the step beside them. A cobblestone Cartagena market street visible in the background with colourful stalls. Warm tropical light, relaxed friendly moment. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 7: Colombian boy points into the distance, British boy looks. Dad OFF-SCREEN.
+        # Page 7: the local boy points down the street
         "name": "page7",
+        "prompt": (
+            "ONLY TWO CHILDREN in this scene \u2014 no other people at all. The local "
+            "Colombian boy from the SECOND reference image stands with one arm stretched "
+            "straight out to the side, pointing off toward the right edge of the picture, "
+            "his face bright with excitement. The British boy from the FIRST reference "
+            "image stands next to him following the point, eyes wide with hope. Empty "
+            "cobblestone street with colonial buildings behind them. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_local_boy",
-        "prompt": "Show ONLY TWO CHILDREN in the scene — NO other people visible except the two boys. The local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) stands with one arm extended HORIZONTALLY to the side, pointing OFF TO THE RIGHT SIDE of the image toward something beyond the frame. His arm is held out straight at shoulder height — NOT pointing up, NOT pointing down, NOT pointing at the floor. The British boy from the FIRST reference image (blue t-shirt, khaki trousers, straight brown hair) stands beside him, looking in the same direction as the Colombian boy is pointing, eyes wide with excitement and relief. Whatever they are looking at is OFF-SCREEN to the right. Colourful colonial Cartagena buildings behind them with pink bougainvillea balconies, market stalls. Cobblestone street. ABSOLUTELY CRITICAL EYE RULE: BOTH boys MUST have identical eyes — tiny solid black filled circles like dots drawn with a black marker pen — NO white, NO iris, NO pupil detail, NO highlights. Just small simple dark dots like a teddy bear's eyes. Whimsical children's book illustration. No text. Landscape orientation.",
     },
     {
-        # Page 8: Reunited with dad, local boy smiling beside them
+        # Page 8: Dad lifts him up — text says "picked me up"
         "name": "page8",
+        "prompt": (
+            "The dad (light skin, short brown hair, pale casual shirt with sleeves "
+            "rolled, khaki trousers) has LIFTED the British boy from the FIRST reference "
+            "image UP OFF THE GROUND in both arms and holds him in a tight hug, the "
+            "boy's feet clear of the cobblestones and his arms round his dad's neck. "
+            "Both faces show relief and joy. The local Colombian boy from the SECOND "
+            "reference image stands nearby watching them with a warm smile, hands in "
+            "his pockets. Landscape orientation."
+        ),
         "side_hero": True,
         "side_hero_key": "5.4_local_boy",
-        "prompt": "Show the dad (light skin, brown hair, casual shirt, khaki trousers) kneeling on the cobblestone Cartagena street hugging the British boy from the FIRST reference image (blue t-shirt, khaki trousers) tightly — relief and love on both faces. The local Colombian boy from the SECOND reference image (curly dark hair, green t-shirt, warm brown skin) stands beside them smiling warmly. The dad reaches one hand out toward the local boy in thanks. BOLD vivid colonial Cartagena buildings behind with pink bougainvillea balconies. Warm golden morning light. Market stalls in the background. Same outfits. CRITICAL: ALL characters MUST have eyes that are tiny solid black filled circles — NO white. Whimsical children's book illustration. No text. Landscape orientation.",
     },
 ]}
+
+for _sc in SCENE_PROMPTS["5.4"]["scenes"]:
+    _sc["prompt"] = _sc["prompt"] + " " + CARTAGENA_MARKET
+    if _sc.get("side_hero_key") == "5.4_local_boy":
+        _sc["prompt"] = _sc["prompt"] + " " + LOCAL_BOY_HAIR
+    if _sc["name"] in ("page5", "page6"):
+        _sc["prompt"] = _sc["prompt"] + " " + MANGO
 
 
 # ─── Gemini API Functions ───────────────────────────────────────

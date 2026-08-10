@@ -10,6 +10,7 @@ import {
   Inbox,
   Star,
   Ticket,
+  BookHeart,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +24,7 @@ const navItems = [
   { to: '/admin/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
   { to: '/admin/feedback', icon: Star, label: 'Feedback' },
+  { to: '/admin/custom-books', icon: BookHeart, label: 'Custom Books' },
 ];
 
 export default function AdminSidebar() {

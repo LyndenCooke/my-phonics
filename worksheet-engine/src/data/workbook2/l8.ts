@@ -21,7 +21,11 @@ const BOOKS: W2BookData[] = [
       'Uncle Tarek smiled and handed Yusuf a small notebook and a pen.',
     ],
     listen: ['The Enormous Nile.', 'The Famous Bakery.'],
-    questions: [null, null, null],
+    questions: [
+      'What did Uncle Tarek give Yusuf at the end?',
+      'Why do you think Yusuf changed his mind about his neighbourhood?',
+      'Write one sentence to sum up what Uncle Tarek taught Yusuf.',
+    ],
     useGrammar: { chips: ['famous', 'enormous', 'glorious', 'joyous', 'marvellous'], scene: '/storyart/l8_1/page5.png', pos: '50% 45%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l8_1/page6.png', pos: '50% 45%' },
     ladders: [
@@ -39,8 +43,16 @@ const BOOKS: W2BookData[] = [
       'He stopped crying and leaned against her shoulder.',
     ],
     listen: ['She stopped.', 'His family is searching for him.'],
-    questions: [null, null, null],
+    questions: [
+      "What did the girl write on her note to help find the boy's family?",
+      'Why do you think the girl did not give up looking for the family?',
+      'Write one sentence to sum up what happened in this story.',
+    ],
     useGrammar: { chips: ['sensible', 'possible', 'terrible', 'visible', 'incredible'], scene: '/storyart/l8_2/page3.png', pos: '50% 45%' },
+    revisit: [
+      { kind: 'rewrite', label: 'Change the opener', refs: [{ sourceUnit: 'G-L8.4', rowRef: 1 }, { sourceUnit: 'G-L8.4', rowRef: 3 }] },
+      { kind: 'rewrite', label: 'Punctuate the speech', refs: [{ sourceUnit: 'G-L8.2', rowRef: 0 }, { sourceUnit: 'G-L8.2', rowRef: 2 }] },
+    ],
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Start a sentence with a fronted adverbial.',
       scene: '/storyart/l8_2/page6.png',
@@ -63,8 +75,16 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l8-6', 'g-l8-1'],
     hold: ['He took the tiniest bite.', 'His eyes went wide.'],
     listen: ['Luca sniffed.', 'Nonna just smiled.'],
-    questions: [null, null, null],
+    questions: [
+      'What three dishes did Nonna make for Luca?',
+      'Why do you think Sofia said the granita looked suspicious, just like Luca did?',
+      "Write one sentence to sum up what Luca learned about Nonna's cooking.",
+    ],
     useGrammar: { chips: ['delicious', 'suspicious', 'cautious', 'precious', 'scrumptious'], scene: '/storyart/l8_3/page3.png', pos: '50% 50%' },
+    revisit: [
+      { kind: 'rewrite', label: 'Be a proofreader', refs: [{ sourceUnit: 'G-L8.6', rowRef: 1 }, { sourceUnit: 'G-L8.6', rowRef: 3 }] },
+      { kind: 'rewrite', label: 'Make it a fronted adverbial', refs: [{ sourceUnit: 'G-L8.1', rowRef: 1 }, { sourceUnit: 'G-L8.1', rowRef: 2 }] },
+    ],
     bigWrite: { prompt: PROMPT, scene: '/storyart/l8_3/page6.png', pos: '50% 45%' },
     ladders: [
       { sound: 'cious', word: 'delicious', sentence: 'It was delicious.' },
@@ -78,7 +98,11 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l8-5'],
     hold: ['Mia was ambitious.', 'He stopped walking and listened.'],
     listen: ['Mia smiled.', 'Today was an incredible bush walk.'],
-    questions: [null, null, null],
+    questions: [
+      'What amazing bird did Tom find hiding behind a fern?',
+      "Why do you think Mia said Tom was 'admirable' by the end of the walk?",
+      'Write one sentence to sum up what Mia learned from Tom on the walk.',
+    ],
     useGrammar: { chips: ['incredible', 'enormous', 'cautious', 'remarkable', 'glorious'], scene: '/storyart/l8_4/page2.png', pos: '50% 50%' },
     revisit: [
       { kind: 'tick', label: 'One owner or more than one?', refs: [{ sourceUnit: 'G-L8.3', rowRef: 0 }, { sourceUnit: 'G-L8.3', rowRef: 1 }] },

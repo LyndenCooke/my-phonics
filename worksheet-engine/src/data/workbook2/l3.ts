@@ -18,7 +18,6 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l3-1'],
     hold: ['It is in a bag.', 'The fish can go in!'],
     listen: ['I get a tank.', 'The fish is sad.'],
-    questions: [null, null, null],
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l3_1/page5.png', pos: '50% 45%' },
     ladders: [
       { sound: 'sh', word: 'fish', sentence: 'I have a fish!' },
@@ -33,7 +32,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l3-2'],
     hold: ['Nan chops it thin.', 'That chip is thick!'],
     listen: ['I got a chip.', 'This is fun!'],
-    questions: [null, null, null],
+    questions: ['Is the pan hot?', 'Did Nan chop the chips?', 'Can Nan dip a chip in?'],
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write what happens.',
       scene: '/storyart/l3_2/page5.png',
@@ -57,7 +56,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l3-3', 'g-l3-4'],
     hold: ['I sit on a big log.', 'I sing and sing!'],
     listen: ['The bugs go!', 'I sing with the bugs!'],
-    questions: [null, null, null],
+    questions: ['Is the bug on a rock?', 'Did I sing a long song?', 'Can the bug buzz and hiss?'],
     bigWrite: { prompt: 'Look at the picture from the book. Write about it.', scene: '/storyart/l3_3/page3.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ng', word: 'song', sentence: 'I sing and sing!' },

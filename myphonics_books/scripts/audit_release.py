@@ -120,6 +120,18 @@ def check_decodability_coverage() -> None:
             for w in story.get(field, []):
                 if missing_units(w.strip("'").lower(), taught, known_units):
                     fail(f"L{new_id}: {field} '{w}' not decodable at this book")
+        # Story Words are presented as "sound out each phoneme, then blend", so
+        # an undecodable -ed suffix word ("shouted", "pointed") must NOT sit
+        # there even though it's a genuine Future Sound (Lynden 2026-07-22):
+        # it belongs in the story text, taught by the -ed note.  Targeted at
+        # -ed suffixes so plain CVC blends never trip it; stared/tired pass
+        # because they decode via are/ire (missing_units empty).
+        for w in story.get("story_words", []):
+            wl = w.strip("'").lower()
+            if (wl.endswith("ed") and len(wl) >= 5 and wl[-3] not in "aeiou"
+                    and missing_units(wl, taught, known_units)):
+                fail(f"L{new_id}: story_words '{w}' is an undecodable -ed word "
+                     f"— move it to the story text, not the sound-out grid")
     ok(f"{books_checked} books: all violations previewable, activity words clean")
 
 
@@ -287,6 +299,129 @@ def check_spotlight_images() -> None:
         ok("every in-use spotlight image passes or is human-approved at its current version")
 
 
+def check_sound_detective_claims() -> None:
+    """No two books may run the same Sound Detective (Lynden 2026-07-29), and
+    the allocation file must match the current stories + Shifty ledger."""
+    print("\n[9] Sound Detective uniqueness")
+    path = ROOT / "data" / "sound_detective_claims.json"
+    if not path.exists():
+        fail("data/sound_detective_claims.json missing — run "
+             "scripts/build_sound_detective_claims.py")
+        return
+    claims = json.load(open(path, encoding="utf-8")).get("claims", {})
+    seen = {}
+    dupes = 0
+    for book_id, keys in claims.items():
+        for k in keys:
+            if k in seen:
+                fail(f"Sound Detective '{k}' used by BOTH {seen[k]} and {book_id}")
+                dupes += 1
+            seen[k] = book_id
+    rc = subprocess.call(
+        [sys.executable, "-X", "utf8",
+         str(ROOT / "scripts" / "build_sound_detective_claims.py"), "--check"],
+        stdout=subprocess.DEVNULL,
+    )
+    if rc != 0:
+        fail("data/sound_detective_claims.json is STALE — rerun "
+             "scripts/build_sound_detective_claims.py and re-render")
+        return
+    if not dupes:
+        ok(f"{len(seen)} Sound Detective rows over {len(claims)} books, all distinct")
+
+
+MAX_PRONUNCIATION_EXAMPLES = 6
+
+
+def check_pronunciation_notes() -> None:
+    """The "Watch Out — How to Say" box shares page 3 with Focus Sounds, Story
+    Words and Tricky Words.  8.2 had grown to NINE entries, six of them the
+    same -able pattern, and swamped the page (Lynden 2026-07-29).  Teach the
+    pattern in the body text and list only what genuinely varies."""
+    print("\n[10] Watch Out box size")
+    import re
+    over = 0
+    for path in sorted((ROOT / "data").glob("*_book1.py")):
+        text = path.read_text(encoding="utf-8")
+        for block in re.findall(r'"pronunciation_notes".*?"examples":\s*\[(.*?)\]',
+                                text, re.S):
+            n = len(re.findall(r'"[^"]+→[^"]*"', block))
+            if n > MAX_PRONUNCIATION_EXAMPLES:
+                fail(f"{path.name}: {n} 'Watch Out' entries "
+                     f"(max {MAX_PRONUNCIATION_EXAMPLES}) — teach the pattern "
+                     "in the body text instead of listing every word")
+                over += 1
+    if not over:
+        ok(f"no book lists more than {MAX_PRONUNCIATION_EXAMPLES} "
+           "'Watch Out' pronunciations")
+
+
+def check_printed_qrs() -> None:
+    """Decode every QR out of the rendered library PDFs and match it against
+    the LOCKED registry (data/print_qr_registry.json).
+
+    A printed QR cannot be reissued.  The failure this guards against is
+    mundane and fatal: somebody adds a QR with an inline f-string URL, or
+    "tidies" a route, and 33 print runs ship codes that will 404 forever.  So
+    this does not trust the generator — it reads the actual pixels back out of
+    the finished PDF and asserts the decoded string is one the registry
+    authorises for that book.  Unknown strings fail; missing codes fail."""
+    print("\n[11] Printed QR codes match the locked registry")
+    try:
+        import cv2
+        import numpy as np
+    except ImportError:
+        fail("opencv (cv2) not available — cannot verify printed QR codes")
+        return
+    from print_qr import all_printed_urls
+
+    import fitz
+    pdfs = sorted((ROOT / "output" / "books" / "print_classroom").rglob("*.pdf"))
+    pdfs = [p for p in pdfs if not p.name.startswith("debug")]
+    if not pdfs:
+        fail("no library PDFs found to check QR codes in")
+        return
+
+    detector = cv2.QRCodeDetector()
+    checked = 0
+    for pdf in pdfs:
+        book_id = pdf.stem.split(" ")[0].replace("_", ".")
+        try:
+            allowed = set(all_printed_urls(book_id).values())
+        except KeyError as e:
+            fail(str(e))
+            continue
+        doc = fitz.open(pdf)
+        found: set[str] = set()
+        for page in doc:
+            for img in page.get_images(full=True):
+                pix = fitz.Pixmap(doc, img[0])
+                if pix.n > 3:
+                    pix = fitz.Pixmap(fitz.csRGB, pix)
+                arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(
+                    pix.height, pix.width, pix.n)
+                # QRs render small; upscale so the detector has enough pixels.
+                if pix.width < 300:
+                    arr = cv2.resize(arr, None, fx=4, fy=4,
+                                     interpolation=cv2.INTER_NEAREST)
+                try:
+                    data, *_ = detector.detectAndDecode(arr)
+                except cv2.error:
+                    continue
+                if data:
+                    found.add(data)
+        doc.close()
+        rogue = found - allowed
+        if rogue:
+            fail(f"{book_id}: QR target not in the registry: {sorted(rogue)}")
+        elif not found:
+            fail(f"{book_id}: no QR codes decoded — check the onboarding page")
+        else:
+            checked += 1
+    if checked:
+        ok(f"{checked} books: every decoded QR is a locked /b/... registry URL")
+
+
 def main() -> int:
     print("MyPhonicsBooks release gate")
     print("=" * 45)
@@ -297,6 +432,9 @@ def main() -> int:
     check_tripwires()
     check_tricky_contradictions()
     check_spotlight_images()
+    check_sound_detective_claims()
+    check_pronunciation_notes()
+    check_printed_qrs()
     print("\n" + "=" * 45)
     if FAILURES:
         print(f"RELEASE GATE: {len(FAILURES)} FAILURE(S) — DO NOT PUBLISH")

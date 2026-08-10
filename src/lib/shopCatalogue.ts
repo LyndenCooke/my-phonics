@@ -65,7 +65,7 @@ const READERS: ReaderDef[] = [
   { level: 3, index: 2, title: 'Chop, Chop, Chop!', sounds: 'ch, th' },
   { level: 3, index: 3, title: 'Buzz and Sing!', sounds: 'ng, qu, zz' },
   { level: 4, index: 1, title: 'The Night Light', sounds: 'ay, ee, igh' },
-  { level: 4, index: 2, title: 'Moo at the Zoo', sounds: 'ow, oo' },
+  { level: 4, index: 2, title: 'Hot Food, Cool Moon', sounds: 'ow, oo' },
   { level: 4, index: 3, title: 'Morning on the Farm', sounds: 'ar, or' },
   { level: 4, index: 4, title: 'The Fair in the Air', sounds: 'air, ir' },
   { level: 4, index: 5, title: 'Round and Round', sounds: 'ou, oy' },
