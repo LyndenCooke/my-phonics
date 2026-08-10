@@ -471,6 +471,7 @@ function displayFor(book, job, step) {
   const map = {
     story: ["story", `Writing ${name}'s story around the sound "${book.focus_sound}"...`, 5],
     qa: ["phonics_qa", "Checking every word is decodable at this level...", 15],
+    plausibility: ["plausibility_qa", "Checking the story actually makes sense...", 20],
     direct: ["directing", `Directing the scenes (walking the story in ${name}'s shoes)...`, 25],
     hero: ["hero", `Drawing ${name} as a book character (eye rule enforced)...`, 30],
     cover: ["cover", "Painting the cover...", 85],
