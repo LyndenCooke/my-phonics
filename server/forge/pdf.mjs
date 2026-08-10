@@ -38,10 +38,21 @@ export async function htmlUrlToPdf(htmlUrl) {
     // pdf() independently (each one had to be found live, one at a time);
     // this is a safety net against a fourth one surfacing the same way.
     page.setDefaultTimeout(120000);
-    // Same reasoning as the Python side's set_content(..., "domcontentloaded"):
-    // everything (images, fonts) is embedded as a data URI, so there is no
-    // real network activity to wait for past the initial load.
-    await page.goto(htmlUrl, { waitUntil: "domcontentloaded", timeout: 120000 });
+    // Fetch the HTML text ourselves and use setContent() rather than
+    // page.goto(htmlUrl) — Supabase Storage serves the uploaded book.html as
+    // Content-Type: text/plain regardless of what content-type was sent on
+    // upload (reproduced directly against the Storage API; not an upload
+    // bug, a serving quirk), and with X-Content-Type-Options: nosniff set,
+    // Chromium trusts that header and renders the literal HTML source as
+    // text instead of parsing it — the 2026-08-10 production PDF came back
+    // as 2728 pages of visible "<!DOCTYPE html>..." source text. setContent()
+    // sidesteps the whole problem: no navigation, no server content-type
+    // involved at all, matching the local Playwright pipeline's
+    // set_content(..., "domcontentloaded") exactly.
+    const htmlRes = await fetch(htmlUrl);
+    if (!htmlRes.ok) throw new Error(`failed to fetch rendered HTML: ${htmlRes.status}`);
+    const html = await htmlRes.text();
+    await page.setContent(html, { waitUntil: "domcontentloaded", timeout: 120000 });
     await page.evaluate(() => document.fonts.ready);
     await new Promise((resolve) => setTimeout(resolve, 200));
     const buf = await page.pdf({
