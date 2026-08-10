@@ -1,0 +1,19 @@
+{
+ "g": "s",
+ "label": "/s/ as in sun",
+ "group": 0,
+ "words": [
+  "at",
+  "sat",
+  "sap",
+  "tap",
+  "pat",
+  "taps"
+ ],
+ "note": "In week one there is no code yet to blend with — the session is oral blending (s-u-n → sun) and formation. The words above become readable within days, once a, t and p are in.",
+ "dictation": [
+  "I sat.",
+  "Pat sat."
+ ],
+ "errors": "A continuous, hissy sound — hold it /sss/, never 'suh' (no added vowel). Formation: the snake curve is often reversed; start at the top."
+}

@@ -275,8 +275,16 @@ async def generate_pilot_pdf(level: int | str, use_images: bool = True,
 
 
 async def generate_all_pilots(use_images: bool = True,
-                              isbn_register: dict | None = None):
-    """Generate all pilot book PDFs (all sub-levels)."""
+                              isbn_register: dict | None = None,
+                              edition: str = "home"):
+    """Generate all pilot book PDFs (all sub-levels).
+
+    `edition` must be threaded through: without it `--library` across the whole
+    fleet silently rendered HOME books into output/books/ (caught 2026-07-27 —
+    the run reported "Generated 33 books" and looked fine, but every PDF still
+    had its write-on pages and library_preview/ was untouched).  A single-level
+    render was unaffected, which is why it went unnoticed.
+    """
     print("MyPhonicsBooks — Pilot Book Generator")
     print("=" * 55)
     print(f"Child: {CHILD_NAME} | Friend: {FRIEND_NAME}")
@@ -311,7 +319,8 @@ async def generate_all_pilots(use_images: bool = True,
                 if isbn_entry is None:
                     raise ValueError(f"no classroom ISBN in register for {level_key}")
             output_path = await generate_pilot_pdf(level_key, use_images,
-                                                   isbn_entry=isbn_entry)
+                                                   isbn_entry=isbn_entry,
+                                                   edition=edition)
             size_kb = output_path.stat().st_size / 1024
             print(f"  Done: {output_path.name} ({size_kb:.0f} KB)")
             generated += 1
@@ -405,7 +414,8 @@ if __name__ == "__main__":
                                        edition=edition))
     else:
         n_failed = asyncio.run(
-            generate_all_pilots(use_images, isbn_register=isbn_register))
+            generate_all_pilots(use_images, isbn_register=isbn_register,
+                                edition=edition))
 
     if do_publish:
         _publish(level_arg)

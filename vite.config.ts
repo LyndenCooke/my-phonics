@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import forgePlugin from "./server/forge/vitePlugin.mjs";
+import worksheetForgePlugin from "./server/worksheet-forge/vitePlugin.mjs";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => ({
@@ -35,10 +37,24 @@ export default defineConfig(({ mode, command }) => ({
         "**/review/stress_test/.playwright-artifacts-*/**",
         "**/playwright-report/**",
         "**/test-results/**",
+        // Heavy non-app directories — watching these OOMs the dev server
+        // (Node heap-limit crash ~50s after boot on this repo).
+        "**/myphonics_books/**",
+        "**/marketing/**",
+        "**/PRINT_RUN_2026-07-10/**",
+        "**/worksheet-engine/node_modules/**",
+        "**/books/**",
+        // The forge writes generated art + its file store here mid-job; a
+        // watcher event on these would full-reload the wizard while it polls.
+        "**/public/custom-books/**",
+        "**/server/forge/.data/**",
+        // The worksheet machine renders PDFs/PNGs here mid-request; a watcher
+        // event would full-reload /create-worksheet while it waits.
+        "**/worksheet-forge/output/**",
       ],
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger(), forgePlugin(), worksheetForgePlugin()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

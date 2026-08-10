@@ -1,0 +1,987 @@
+{
+ "assets\\photos\\s\\sun.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\s\\sock.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\s\\six.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\s\\sad.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\a\\hat.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\a\\cat.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\a\\map.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\a\\van.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\t\\tin.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\t\\tap.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\t\\ten.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\t\\tub.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\p\\pig.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\p\\pan.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\p\\pin.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\p\\peg.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\i\\bin.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\i\\dig.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\i\\fin.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\i\\zip.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\n\\net.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\n\\nut.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\n\\nap.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\n\\nod.jpg": [
+  "1.1"
+ ],
+ "assets\\photos\\m\\mug.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\m\\mat.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\m\\mop.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\m\\mud.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\d\\dog.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\d\\dam.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\d\\den.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\d\\dip.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\g\\gum.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\g\\gap.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\g\\gas.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\g\\gig.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\o\\cot.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\o\\hot.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\o\\log.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\o\\mop.jpg": [
+  "1.2"
+ ],
+ "assets\\photos\\c\\cup.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\c\\cap.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\c\\cob.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\c\\cab.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\k\\kit.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\k\\desk.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\k\\milk.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\k\\kip.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\ck\\duck.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\ck\\sock.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\ck\\lock.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\ck\\kick.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\e\\bed.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\e\\red.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\e\\hen.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\e\\web.jpg": [
+  "2.1"
+ ],
+ "assets\\photos\\u\\bus.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\u\\cup.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\u\\jug.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\u\\rug.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\r\\run.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\r\\rat.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\r\\rug.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\r\\rod.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\h\\hat.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\h\\hen.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\h\\hug.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\h\\hop.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\b\\bat.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\b\\bed.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\b\\bus.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\b\\bun.jpg": [
+  "2.2"
+ ],
+ "assets\\photos\\f\\fan.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\f\\fin.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\f\\fig.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\f\\frog.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\l\\log.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\l\\lip.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\l\\leg.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\l\\lid.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ff\\off.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ff\\huff.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ff\\cliff.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ff\\puff.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ll\\bell.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ll\\doll.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ll\\hill.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\ll\\bull.jpg": [
+  "2.3"
+ ],
+ "assets\\photos\\j\\jam.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\j\\jet.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\j\\jog.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\j\\jug.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\v\\van.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\v\\vet.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\v\\vat.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\v\\vest.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\w\\wig.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\w\\win.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\w\\web.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\w\\wet.jpg": [
+  "2.4"
+ ],
+ "assets\\photos\\x\\box.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\x\\fox.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\x\\mix.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\x\\six.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\y\\yam.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\y\\yak.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\y\\yell.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\y\\yap.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\z\\zip.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\z\\zap.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\z\\zebra.jpg": [
+  "2.5"
+ ],
+ "assets\\photos\\sh\\ship.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\sh\\fish.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\sh\\shed.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\sh\\shop.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\nk\\sink.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\nk\\tank.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\nk\\bank.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\nk\\ink.jpg": [
+  "3.1"
+ ],
+ "assets\\photos\\ch\\chop.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\ch\\chin.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\ch\\chat.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\ch\\chip.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\th\\thin.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\th\\bath.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\th\\moth.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\th\\path.jpg": [
+  "3.2"
+ ],
+ "assets\\photos\\ng\\ring.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ng\\song.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ng\\king.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ng\\gong.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\qu\\quiz.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\qu\\quit.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\qu\\quack.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\qu\\quill.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ss\\hiss.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ss\\moss.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ss\\miss.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ss\\boss.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\zz\\buzz.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\zz\\fizz.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\zz\\jazz.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\zz\\fuzz.jpg": [
+  "3.3"
+ ],
+ "assets\\photos\\ay\\day.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ay\\hay.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ay\\ray.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ay\\bay.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ee\\bee.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ee\\seed.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ee\\reef.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ee\\feet.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\igh\\high.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\igh\\night.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\igh\\light.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\igh\\sigh.jpg": [
+  "4.1",
+  "4.6"
+ ],
+ "assets\\photos\\ow\\bow.jpg": [
+  "4.2",
+  "4.6",
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\ow\\low.jpg": [
+  "4.2",
+  "4.6",
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\ow\\show.jpg": [
+  "4.2",
+  "4.6",
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\ow\\row.jpg": [
+  "4.2",
+  "4.6",
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\oo\\zoo.jpg": [
+  "4.2",
+  "4.6"
+ ],
+ "assets\\photos\\oo\\moon.jpg": [
+  "4.2",
+  "4.6"
+ ],
+ "assets\\photos\\oo\\food.jpg": [
+  "4.2",
+  "4.6"
+ ],
+ "assets\\photos\\oo\\boot.jpg": [
+  "4.2",
+  "4.6"
+ ],
+ "assets\\photos\\ar\\car.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\ar\\jar.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\ar\\bar.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\ar\\far.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\or\\fork.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\or\\corn.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\or\\horn.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\or\\cord.jpg": [
+  "4.3",
+  "4.6"
+ ],
+ "assets\\photos\\air\\hair.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\air\\fair.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\air\\chair.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\air\\pair.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\ir\\bird.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\ir\\girl.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\ir\\dirt.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\ir\\sir.jpg": [
+  "4.4",
+  "4.6"
+ ],
+ "assets\\photos\\ou\\loud.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\ou\\shout.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\ou\\out.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\ou\\round.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\oy\\toy.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\oy\\boy.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\oy\\joy.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\oy\\coy.jpg": [
+  "4.5",
+  "4.6"
+ ],
+ "assets\\photos\\a_e\\cake.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\a_e\\lake.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\a_e\\gate.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\a_e\\flame.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\i_e\\bike.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\i_e\\kite.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\i_e\\lime.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\i_e\\hive.jpg": [
+  "5.1"
+ ],
+ "assets\\photos\\o_e\\bone.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\o_e\\stone.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\o_e\\rope.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\o_e\\home.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\u_e\\cube.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\u_e\\flute.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\u_e\\tube.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\u_e\\huge.jpg": [
+  "5.2"
+ ],
+ "assets\\photos\\ea\\beach.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ea\\leaf.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ea\\cream.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ea\\pea.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ie\\pie.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ie\\tie.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ie\\lie.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\ie\\die.jpg": [
+  "5.3"
+ ],
+ "assets\\photos\\oi\\coin.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\oi\\foil.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\oi\\oil.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\oi\\soil.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\aw\\claw.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\aw\\draw.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\aw\\straw.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\aw\\jaw.jpg": [
+  "5.4"
+ ],
+ "assets\\photos\\ai\\rain.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\ai\\snail.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\ai\\train.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\ai\\tail.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\oa\\boat.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\oa\\coat.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\oa\\goat.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\oa\\road.jpg": [
+  "5.5"
+ ],
+ "assets\\photos\\ur\\burn.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\ur\\curl.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\ur\\surf.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\ur\\hurt.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\er\\fern.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\er\\herb.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\er\\herd.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\er\\stern.jpg": [
+  "6.1",
+  "6.4"
+ ],
+ "assets\\photos\\are\\hare.jpg": [
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\are\\share.jpg": [
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\are\\stare.jpg": [
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\are\\flare.jpg": [
+  "6.2",
+  "6.4"
+ ],
+ "assets\\photos\\ew\\new.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ew\\dew.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ew\\few.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ew\\chew.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ue\\blue.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ue\\glue.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ue\\clue.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ue\\true.jpg": [
+  "6.3",
+  "6.4"
+ ],
+ "assets\\photos\\ire\\fire.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ire\\tire.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ire\\wire.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ire\\hire.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ore\\shore.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ore\\store.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ore\\snore.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ore\\core.jpg": [
+  "7.1",
+  "7.4"
+ ],
+ "assets\\photos\\ear\\ear.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\ear\\near.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\ear\\fear.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\ear\\hear.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\oor\\door.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\oor\\floor.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\oor\\moor.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\oor\\poor.jpg": [
+  "7.2",
+  "7.4"
+ ],
+ "assets\\photos\\ure\\pure.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\ure\\cure.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\ure\\lure.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\ure\\sure.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\tion\\station.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\tion\\nation.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\tion\\action.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\tion\\potion.jpg": [
+  "7.3",
+  "7.4"
+ ],
+ "assets\\photos\\ous\\enormous.jpg": [
+  "8.1",
+  "8.4"
+ ],
+ "assets\\photos\\ous\\nervous.jpg": [
+  "8.1",
+  "8.4"
+ ],
+ "assets\\photos\\ous\\joyous.jpg": [
+  "8.1",
+  "8.4"
+ ],
+ "assets\\photos\\able\\table.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\able\\cable.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\able\\stable.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\able\\comfortable.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\ible\\visible.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\ible\\horrible.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\ible\\terrible.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\ible\\incredible.jpg": [
+  "8.2",
+  "8.4"
+ ],
+ "assets\\photos\\cious\\precious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\cious\\spacious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\cious\\gracious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\cious\\delicious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\tious\\cautious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\tious\\ambitious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\tious\\infectious.jpg": [
+  "8.3",
+  "8.4"
+ ],
+ "assets\\photos\\tious\\nutritious.jpg": [
+  "8.3",
+  "8.4"
+ ]
+}

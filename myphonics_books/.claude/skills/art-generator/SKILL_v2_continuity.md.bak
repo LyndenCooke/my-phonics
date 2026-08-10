@@ -1,0 +1,650 @@
+---
+name: Art Generator
+description: End-to-end illustration generation for MyPhonicsBooks. Treats page-to-page consistency as an asset-and-state management problem — a frozen Book World Pack of visual references (style, characters, settings, objects), a continuity manifest, sequential continuity-chained scene generation, and hard-fail QC gates. Engine: Vertex AI Gemini image models (multi-reference injection).
+---
+
+# Art Generator — MyPhonicsBooks (v2, continuity-first)
+
+Produce story illustrations in which characters, settings, objects, style and
+story state remain consistent from page to page.
+
+Treat consistency as an asset-and-state management problem. Repeated prose is
+never a substitute for an approved visual reference.
+
+---
+
+## Non-negotiable rules
+
+- Finalise the story before generating art.
+- Build and approve the complete Book World Pack before generating pages.
+- Assign a stable ID to every recurring character, setting and object.
+- Inject every relevant approved reference into every scene.
+- Generate continuity-dependent scenes sequentially. Do not generate them in
+  parallel.
+- Never replace an approved reference during a book run.
+- Edit from an approved image when only a small visual change is needed.
+- Fail closed: never deliver an image with an unresolved hard failure.
+- Preserve the MyPhonicsBooks eye rule: eyes are simple solid black ovals or
+  dots with no white, shine, reflection, iris or highlight.
+- Use modest, child-appropriate clothing. Do not show bare thighs, revealing
+  clothing, swimwear or inappropriate imagery. (No shorts — use joggers,
+  trousers or leggings.)
+- Do not include visible words, letters, numbers, watermarks or signatures in
+  final illustrations. Never invent lettering on signs, packaging or clothing.
+- Do not claim perfect consistency. Apply the reference, state and validation
+  gates below to make drift detectable and repairable.
+- For exact unchanged elements, reuse their pixels or locked transparent
+  layer; never ask the model to redraw them.
+- Settings need architecture, not a nationality: define every setting by
+  drawable, countable features (e.g. brick terraces, slate roofs, chimney
+  pots, cobbles, bunting) in EVERY prompt including close-ups, and always
+  name the ground surface. "British street" or "cosy kitchen" alone is a
+  placeless prompt and is forbidden.
+
+## Required inputs
+
+Do not begin image generation until these inputs exist:
+
+- **identity and structure:** book_id, final page text, page count and cover
+  brief;
+- **formats:** cover and story-page aspect ratios;
+- **audience:** reader age, phonics level and personalisation mode (template
+  or uploaded_child);
+- **visual controls:** character specification or roster (Appendix A),
+  approved MyPhonicsBooks style reference, brand rules and safeguarding
+  rules.
+
+If a required detail is absent, choose only a reversible visual detail and
+record it. Never invent a new recurring character, location or plot object.
+
+## Pipeline
+
+Use this order:
+
+```
+1.  Parse story
+2.  Build continuity manifest
+3.  Create visual reference assets
+4.  Validate and freeze Book World Pack
+5.  Build page-by-page scene plan
+6.  Generate scenes by continuity chain
+7.  Validate each scene
+8.  Repair failed scenes
+9.  Validate the complete book as a contact sheet
+10. Deliver images, references, manifest and QC report
+```
+
+No page generation may start before step 4 passes.
+
+---
+
+## 1. Parse the story into continuity entities
+
+Read all pages together. Extract:
+
+- every character and the pages on which they appear;
+- every setting and whether pages show the same physical place;
+- every recurring object, including small background items such as plants,
+  lamps, cushions, pictures, windows and rugs;
+- object state changes, such as closed to open, clean to muddy, empty to
+  full, whole to broken, or indoors to carried outside;
+- clothing changes that are explicitly required by the story;
+- time, weather and lighting changes;
+- action, emotion and visible outcome for each page;
+- facts that must not appear until a later page.
+
+Separate persistent identity, temporary scene state, camera choice and the one
+meaningful story delta from the preceding scene.
+
+## 2. Build the continuity manifest
+
+Create `continuity.json` as the source of truth. Use stable IDs rather than
+descriptive names in page plans.
+
+Minimum shape:
+
+```json
+{
+  "book_id": "L4_B2",
+  "style_id": "STYLE-01",
+  "characters": {
+    "CHAR-01": {
+      "reference_files": ["references/CHAR-01-full.png", "references/CHAR-01-face.png"],
+      "hard_invariants": ["same face, skin, hair and outfit", "solid black eyes with zero white", "no blush"]
+    }
+  },
+  "settings": {
+    "SET-01": {
+      "reference_files": ["references/SET-01-master.png", "references/SET-01-reverse.png"],
+      "hard_invariants": ["arched window on left wall", "blue sofa on rear wall"]
+    }
+  },
+  "objects": {
+    "OBJ-PLANT-01": {
+      "reference_file": "references/OBJ-PLANT-01.png",
+      "hard_invariants": ["round terracotta pot", "three broad green leaves"]
+    }
+  },
+  "pages": [
+    {
+      "page": 1,
+      "text": "Final story text",
+      "setting_id": "SET-01",
+      "character_ids": ["CHAR-01"],
+      "object_ids": ["OBJ-PLANT-01"],
+      "action": "visible present action only",
+      "state_before": {},
+      "state_after": {},
+      "forbidden_future_facts": [],
+      "previous_scene_id": null
+    }
+  ]
+}
+```
+
+Record exact colours as hex values when colour identity matters. Also retain a
+plain-language colour name because image models do not render hex values with
+absolute precision.
+
+Do not make the manifest self-contradictory. For example, never specify both
+"rosy cheeks" and "no blush". (House ruling: NO blush, NO rosy cheeks, ever —
+if a roster entry says otherwise, the no-blush rule wins.)
+
+When a count matters (leaves, stars, buttons, spots), state the count as a
+hard invariant AND verify it in QC — image models routinely miscount
+("6 stars" → 5 stars is a known recurring failure).
+
+## 3. Create the Book World Pack
+
+The Book World Pack is the frozen set of references used for the entire book.
+
+### 3.1 Style anchor
+
+Use one approved MyPhonicsBooks illustration as STYLE-01. It controls:
+
+- 2D hand-drawn children's book appearance;
+- clean black character outlines;
+- soft watercolour-textured backgrounds;
+- warm, friendly, uncluttered composition;
+- soft pastel base colours with controlled bright accents;
+- simple rounded forms;
+- solid-black eye treatment.
+
+Do not ask a model to copy the reference scene or character. Ask it to
+preserve only the art language.
+
+### 3.2 Character references
+
+For each recurring character, create:
+
+- a full-body neutral reference;
+- a close face reference;
+- an optional turnaround or expression sheet when several angles or strong
+  emotions are required.
+
+Create references against a plain background. Show the complete body, both
+hands and both feet. Do not place props in the character reference.
+
+For a template character, include exact garments, colour names and hex
+values, skin tone (use the hex table in Appendix B — never vague words like
+"dark brown skin"), hair shape, age, height and distinctive features.
+
+For an uploaded child:
+
+- use the uploaded image only for the authorised book;
+- preserve recognisable facial features without making the result
+  photorealistic;
+- convert the child into the approved MyPhonicsBooks illustration style;
+- never expose private image URLs in logs or prompts;
+- use private or short-lived signed storage;
+- delete temporary uploads according to the product privacy policy.
+
+Reject a character reference if the eyes contain any white pixels or
+highlights that read as eye shine.
+
+### 3.3 Setting references
+
+Create a clean setting master for every recurring physical location before
+adding characters.
+
+The setting master must fix:
+
+- room or landscape geometry;
+- door and window count and positions;
+- large furniture and permanent features;
+- recurring background objects;
+- colour palette;
+- time of day, weather and base lighting;
+- clear left, centre and right landmarks;
+- the named ground surface (grass, cobbles, tiles, sand — never unstated).
+
+If later pages use a reverse angle, create `SET-xx-reverse.png` by editing or
+deriving it from the approved master. Do not generate the reverse view from
+text alone.
+
+Do not use "a cosy living room" as a setting definition. Use observable,
+countable features and a visual reference.
+
+### 3.4 Object references
+
+Create an isolated reference for every plot-critical object and every
+background object whose changing appearance would be noticeable. Keep a
+transparent cut-out PNG when the object may be composited unchanged.
+
+Record:
+
+- shape and silhouette;
+- material;
+- colour;
+- pattern;
+- number of parts or leaves;
+- relative scale;
+- allowed story states.
+
+If an object changes state, create approved state references when the change
+is visually important, for example `OBJ-BOX-01-closed.png` and
+`OBJ-BOX-01-open.png`.
+
+### 3.5 Single-image reference board
+
+Use a labelled composite reference board only when the chosen endpoint accepts
+one image. Place the character, setting and objects in separate
+non-overlapping panels with strong spacing.
+
+The board is a degraded compatibility method. Prefer a model that accepts
+multiple separate reference images because composite boards can cause panel
+blending. (The production Vertex Gemini endpoint DOES accept multiple
+labelled `inlineData` reference images — use them.)
+
+### 3.6 Freeze gate
+
+Validate all reference assets together. Once approved:
+
+- mark them `locked: true`;
+- calculate and store a file hash;
+- retain the exact files for the entire run;
+- reject accidental replacement or regeneration.
+
+## 4. Build the scene plan
+
+For every page, create a structured scene record before writing a prose
+prompt.
+
+The record must answer:
+
+- Who is visible?
+- Where exactly are they?
+- What are they doing at this moment?
+- Which objects are visible and in what state?
+- What has changed since the previous scene?
+- What must remain unchanged?
+- Which future event must not be revealed?
+- What framing makes the action immediately understandable to a child?
+
+Keep visual storytelling varied through framing, camera distance and
+character position, while keeping world identity fixed.
+
+Do not interpret "match the story" as illustrating every noun in the text.
+Illustrate the current page's event without revealing later outcomes.
+
+## 5. Choose the generation mode
+
+### Mode A: Multi-reference scene generation
+
+Use the current production Vertex Gemini image model (see Engine notes) for
+scenes containing a recurring character plus a recurring setting or object.
+
+Pass the references as separate ordered inputs:
+
+1. style anchor;
+2. each visible character reference;
+3. setting master;
+4. required recurring object references;
+5. previous approved scene when it contains relevant continuity.
+
+Introduce every image with a text label stating its ID and role. Never assume
+the model will infer which reference controls which element.
+
+### Mode B: Controlled edit
+
+Use the previous approved scene as the source when the setting and camera
+should stay almost identical and only an action, expression or object state
+changes. Lock all unchanged pixels. Composite locked object layers where
+practical, then edit or inpaint only the smallest required region for pose,
+contact and shadows.
+
+The prompt must state:
+
+- what to preserve;
+- the single permitted change;
+- what must not be added or removed.
+
+Prefer a localised or masked edit when available.
+
+### Mode C: New angle in an existing setting
+
+Use the locked character references, setting master, reverse-angle reference
+when available, and relevant object references. Do not derive a major new
+camera angle through repeated edits of the previous page; repeated edits
+compound drift.
+
+### Continuity ordering
+
+Generate each location's scenes in story order. A page may begin only after
+its declared `previous_scene_id` has passed validation.
+
+Independent locations may be queued separately only after their own reference
+packs are locked.
+
+Store the model ID, model version when available, request ID, seed when
+exposed, reference hashes and final prompt for every output. A seed aids
+reproducibility; it does not replace visual references.
+
+## 6. Construct the scene prompt
+
+Use this order:
+
+```
+TASK
+Create story page [PAGE] for book [BOOK_ID].
+
+REFERENCE ROLES
+[STYLE-01] controls art style only.
+[CHAR-01] controls the exact character identity, face, hair, outfit and eyes.
+[SET-01] controls the exact physical location and permanent background.
+[OBJ-PLANT-01] controls the exact plant design.
+[SCENE-01] controls continuity from the preceding approved page.
+
+PRESERVE
+List the hard invariants copied from the manifest.
+
+SHOW NOW
+Describe the current visible action, pose, expression, object state and camera.
+
+ONLY STORY DELTA
+State exactly what changed from the previous approved scene.
+
+DO NOT SHOW
+List forbidden future events, unwanted extra people or objects, text, eye
+highlights, blush, style drift and anatomy errors.
+
+FORMAT
+[aspect ratio], full-bleed composition, safe margins for the book template.
+No text, words, letters, numbers, watermark or signature.
+```
+
+Use positive, concrete descriptions. Refer to entities by stable ID and
+repeat their short invariant clauses. Avoid long decorative prose that
+competes with continuity instructions.
+
+Do not say only "same character", "same room" or "same plant". Bind each
+phrase to its reference ID and list the critical invariants.
+
+## 7. Validate every generated scene
+
+Run a separate vision-quality check before accepting an image. Compare the
+candidate with:
+
+- each referenced entity;
+- the continuity manifest;
+- the previous approved scene;
+- the exact page text;
+- the MyPhonicsBooks visual rules.
+
+Return structured QC:
+
+```json
+{
+  "scene_id": "SCENE-02",
+  "hard_pass": false,
+  "checks": {
+    "character_identity": "pass",
+    "solid_black_eyes": "pass",
+    "setting_geometry": "fail",
+    "recurring_objects": "fail",
+    "story_action": "pass",
+    "temporal_state": "pass",
+    "no_text": "pass",
+    "style_and_safeguarding": "pass"
+  },
+  "failures": ["SET-01 window moved", "OBJ-PLANT-01 has five leaves"],
+  "repair_mode": "controlled_edit"
+}
+```
+
+Hard checks require 100% pass:
+
+- character identity and proportions;
+- eye rule;
+- clothing and modesty;
+- entity count;
+- plot object identity and state;
+- permanent setting geometry;
+- action and emotion;
+- chronological correctness;
+- no text;
+- correct aspect ratio and dimensions;
+- no malformed hands, limbs or faces;
+- age suitability.
+
+Do not average hard failures into an overall score. One hard failure rejects
+the image.
+
+## 8. Repair without causing new drift
+
+Choose the smallest repair:
+
+| Failure | Repair |
+|---------|--------|
+| Small object, expression or colour error | Controlled edit of the failed image |
+| Background drift with correct character | Edit the failed image using the setting master |
+| Character drift with correct composition | Replace or edit the character using locked character references |
+| Object identity drift | Edit using the exact object reference and state |
+| Wrong action or premature plot reveal | Regenerate the scene from the full reference set |
+| Major composition or anatomy failure | Regenerate the scene from the full reference set |
+| Style drift across several pages | Regenerate only affected pages with the same style anchor |
+
+After every repair, rerun every QC check, not only the failed one. A repair
+may damage an element that previously passed.
+
+Allow at most three attempts per scene. If it still fails, stop and return
+the candidate images, QC evidence and exact unresolved failure for human
+review. Never silently accept the least-bad image.
+
+## 9. Cross-page validation
+
+After every scene passes individually:
+
+- create a contact sheet in story order;
+- compare the same character across all pages;
+- compare every recurring object across all appearances;
+- compare each setting as a continuity group;
+- verify object states progress in the correct order;
+- verify lighting and weather change only when specified;
+- verify camera variety does not change the world's geometry;
+- verify no page reveals a future event;
+- verify art style, line weight and colour treatment are uniform.
+
+Reject only the affected pages and repair them from locked references. Never
+regenerate approved reference assets to fix page drift.
+
+## 10. Deliverables
+
+Use this structure:
+
+```
+output/images/[book_id]/
+├── continuity.json
+├── references/
+│   ├── STYLE-01.png
+│   ├── CHAR-01-full.png
+│   ├── CHAR-01-face.png
+│   ├── SET-01-master.png
+│   └── OBJ-PLANT-01.png
+├── scenes/
+│   ├── cover.png
+│   ├── page-01.png
+│   └── page-02.png
+├── qc/
+│   ├── page-01.json
+│   ├── page-02.json
+│   └── contact-sheet.png
+└── generation-log.json
+```
+
+Deliver only approved final scene images to the book assembler. Retain the
+references, manifest and QC records so a single page can be regenerated later
+without redesigning the book world.
+
+## Engine notes
+
+- **Current production engine (verified 2026-07):** Vertex AI, region
+  `us-central1`, model `gemini-2.5-flash-image`, authenticated with the
+  gcloud OAuth token (`gcloud auth print-access-token`) — the standalone
+  Gemini API key is billing-depleted; never use it. Auth + call pattern:
+  `scripts/regen_scene_vertex.py`. References go in as multiple labelled
+  `inlineData` parts, `generationConfig.responseModalities: ["IMAGE"]`.
+- Do NOT invent model IDs. `gemini-3.1-flash-image` and `gemini-3-pro-image`
+  do not exist on this project. Before switching models, list what the
+  project can actually call and run a regression book first.
+- Prefer a current multi-reference model for new story scenes.
+- Prefer a controlled image-edit model for small changes to an approved
+  scene.
+- Pin a tested model version in production and re-run a regression book
+  before changing it.
+- Keep engine configuration outside this skill in application config so
+  model deprecations do not require rewriting the continuity workflow.
+- Verify current official API schemas before changing endpoint names or
+  request parameters.
+- Do not lower safety controls to solve an ordinary generation failure.
+- Legacy engines: Flux Kontext Pro via fal.ai (v1 pipeline) is retired for
+  scene generation; FLUX Kontext remains an option for Mode B single-source
+  controlled edits only. The v1 skill is archived at
+  `SKILL_v1_flux_era.md.bak`.
+
+---
+
+## Field notes — first live run (L2.5 "The Yak and the Box", 2026-07-25)
+
+Validated on Vertex `gemini-2.5-flash-image`, 16 generations, 7 scenes: 4
+hard-pass, 3 flagged for human review. Contact sheet vs the old pipeline
+shows dramatically better world consistency. Learnings now binding:
+
+1. **Order references: previous approved scene FIRST**, labelled "THE MOST
+   IMPORTANT REFERENCE … same illustrator, same book", then identity locks.
+   With character refs first and no such framing, page 1 broke the entire
+   world (new art style, realistic yak, white sclera, wrong hut).
+2. **Name the proportions in words** ("chibi, large round head", "SHORT
+   neck, head sits on the shoulders") — refs alone don't stop llama-neck /
+   realism creep in action poses.
+3. **Counting works when enumerated and unoccluded.** "EXACTLY SIX figs —
+   count them: one, two, three in the front row…" succeeded on an isolated
+   reference and in-scene once the lid was lifted clear. Never let the
+   countable object be partially covered; if it is, change the staging, not
+   the count.
+4. **Colour repairs need hex + "the change must be obvious"** — a polite
+   recolour request produced an imperceptible shift; `#8A6A50 (like milk
+   chocolate), no grey tones left` worked.
+5. **Never fix a wrong POSE/action with a controlled edit** — two failed
+   attempts trying to make a standing yak sit. Follow the repair table:
+   action mismatch = full regeneration with explicit scene geometry
+   (left/right positions spelled out).
+6. **Controlled edits can ADD content** (a repair injected extra flag
+   strings and a second pole). Always re-run the full QC after any repair,
+   and include "DO NOT add anything new" — it still isn't guaranteed.
+7. **Version every candidate** — save `page-NN.attemptK.png` before
+   overwriting; a bad repair destroyed a better prior candidate this run.
+8. **Known drift hotspots to list in PRESERVE every time:** roof shape
+   (flat→pitched on close-ups), flag strings (multiply, migrate, or vanish),
+   scarf/clothing patterns (solid→striped), animal neck length, background
+   building count.
+9. **~4-5 refs per call worked**; style anchor can be dropped from scene
+   calls once the previous approved scene carries the style.
+10. **Aspect ratio:** `generationConfig.imageConfig.aspectRatio` is accepted
+    by the Vertex endpoint — use it, plus full-bleed language ("fills the
+    entire canvas edge to edge, no white frame/vignette").
+
+---
+
+## Appendix A: Character roster for template books
+
+Each story should use a DIFFERENT character. Choose based on story context
+(does the outfit suit the setting?), diversity across the collection, and
+reader age. Note the choice in the story data file
+(`"character_id": "CHAR-A"`).
+
+House rules override roster text: ALL characters have solid black filled
+oval/dot eyes with zero white, and NO blush or rosy cheeks — ignore any
+"rosy cheeks" phrasing below.
+
+### Indoor/Casual
+
+- **CHAR-A: British-Asian girl (casual home)** — about 5, warm brown skin,
+  long straight black hair in two low bunches; soft pink flower-print
+  t-shirt, blue joggers, purple fluffy slippers. *Indoor, home, calm.*
+- **CHAR-B: White British boy (casual home)** — about 5, light skin, short
+  sandy brown hair, side parting, freckles; green striped t-shirt, navy
+  joggers, cosy socks. *Indoor, home, playful.*
+- **CHAR-C: Black British girl (smart casual)** — about 6, dark brown skin,
+  afro puffs with colourful bobbles; yellow cardigan over white t-shirt,
+  blue jeans, white canvas shoes. *Indoor/outdoor, school, shops.*
+
+### Outdoor/Adventure
+
+- **CHAR-D: British-Asian girl (outdoor adventure)** — about 5, dark brown
+  skin, short curly black hair; bright red jumper, dark blue denim
+  dungarees, blue wellies. *Gardens, muddy play, farms, puddles.*
+- **CHAR-E: Mixed heritage boy (outdoor explorer)** — about 6, light brown
+  skin, thick curly brown hair; orange waterproof jacket, dark green cargo
+  trousers, brown hiking boots. *Nature walks, forest, park.*
+- **CHAR-F: Muslim girl (rainy day)** — about 6, warm brown skin, soft
+  lilac hijab; bright yellow raincoat over purple dress, red wellies.
+  *Rainy days, autumn, weather themes.*
+
+### Summer/Outdoor (modest)
+
+- **CHAR-G: White British boy (summer outdoor)** — about 5, light skin,
+  blonde hair, sun hat; light blue t-shirt, beige trousers, sandals, sun
+  cream on nose. *Summer, park, garden.*
+- **CHAR-H: South Asian girl (summer outdoor)** — about 6, medium brown
+  skin, long black high ponytail; bright pink t-shirt, purple leggings,
+  trainers. *Sports day, active play.*
+
+### School/Formal
+
+- **CHAR-I: Black British boy (school)** — about 7, dark brown skin, short
+  black hair with neat shape-up; navy school jumper with white collar, grey
+  trousers, black shoes. *School, learning, library.*
+- **CHAR-J: East Asian girl (school)** — about 7, neat black bob with
+  fringe; burgundy cardigan over white blouse, grey pleated skirt, white
+  socks, black Mary Janes. *School, reading, quiet themes.*
+
+### Pet owners
+
+- **CHAR-K: White British girl (pet owner)** — about 6, light skin, long
+  ginger single plait, freckles; teal hoodie, dark grey leggings, green
+  trainers. *Pets, animals, caring themes.*
+- **CHAR-L: Mixed heritage boy (pet owner)** — about 6, medium brown skin,
+  messy dark brown curls; red hoodie, blue jeans, white trainers. *Pets,
+  energetic, playful.*
+
+Personalised books (uploaded_child mode) do NOT use this roster.
+
+## Appendix B: Skin/hair hex table
+
+Never use vague descriptions like "dark brown skin" — always specify hex plus
+a plain-language name, and state relative ordering ("skin darker than X,
+lighter than hair").
+
+| Skin tone | Skin hex | Hair hex | Description |
+|-----------|----------|----------|-------------|
+| Very dark (West African) | `#3A2518` | `#0D0D0D` | Dark chocolate, near-black hair |
+| Dark (East African) | `#4E3524` | `#0D0D0D` | Rich brown, black hair |
+| Medium-dark (South Asian) | `#8B6B4A` | `#1A1A1A` | Warm brown, very dark hair |
+| Medium (Mediterranean) | `#B8956A` | `#2C1810` | Golden brown, dark brown hair |
+| Light-medium (East Asian) | `#D4A574` | `#1A1110` | Warm tan, near-black hair |
+| Light (Northern European) | `#F0D0B0` | `#8B6B3D` | Peach, sandy brown hair |
+
+If skin tone is wrong after generation, use a controlled recolour edit
+("change ONLY the skin colour to [HEX] and hair to [HEX], keep everything
+else EXACTLY the same") — do not regenerate.

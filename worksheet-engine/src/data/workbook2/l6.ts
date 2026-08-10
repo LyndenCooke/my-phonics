@@ -27,7 +27,7 @@ const BOOKS: W2BookData[] = [
       'Dad came with me to search.',
       'We walked up and down the street.',
     ],
-    questions: [null, null, null],
+    questions: ['What did I lose?', 'Did Dad help me search for it?', 'Did a market lady find my purse?'],
     useGrammar: { chips: ["it's", "didn't", "can't", 'stuck', 'ran', 'gave'], scene: '/storyart/l6_1/page8.png' },
     bigWrite: { prompt: 'Look at this moment from the book. Write what happens next.', scene: '/storyart/l6_1/page6.png' },
     ladders: [
@@ -48,8 +48,12 @@ const BOOKS: W2BookData[] = [
       'The air was cool on my bare cheeks.',
       'We went home under the stars.',
     ],
-    questions: [null, null, null],
+    questions: ['What did I hear from deep in the trees?', 'Did I see a big brown owl on a bare branch?', 'Did the owl have owlets in the tree?'],
     useGrammar: { chips: ['when', 'if', 'that', 'because', 'bare', 'brown'], scene: '/storyart/l6_2/page2.png', pos: '50% 45%' },
+    revisit: [
+      { kind: 'match', label: 'Draw a line to join each pair to its short form', refs: [{ sourceUnit: 'G-L6.6', rowRef: 1 }, { sourceUnit: 'G-L6.6', rowRef: 4 }] },
+      { kind: 'rewrite', label: 'Rewrite each one all in the past tense', refs: [{ sourceUnit: 'G-L6.7', rowRef: 0 }] },
+    ],
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use a joining word in your sentences.',
       scene: '/storyart/l6_2/page7.png',
@@ -78,8 +82,12 @@ const BOOKS: W2BookData[] = [
       'She drew a bird on a card.',
       'At last, the card was finished.',
     ],
-    questions: [null, null, null],
+    questions: ['What did the girl draw for Mum?', 'Did the glue get stuck to the cat?', 'Did Dad slip near the sink?'],
     useGrammar: { chips: ['and', 'but', 'or', 'so', 'new', 'blue'], scene: '/storyart/l6_3/page4.png', pos: '50% 72%' },
+    revisit: [
+      { kind: 'tick', label: 'Tick the kind', refs: [{ sourceUnit: 'G-L6.1', rowRef: 1 }, { sourceUnit: 'G-L6.1', rowRef: 4 }] },
+      { kind: 'cloze', label: 'Write the best joining word in each gap', refs: [{ sourceUnit: 'G-L6.4', rowRef: 1 }, { sourceUnit: 'G-L6.4', rowRef: 2 }] },
+    ],
     bigWrite: { prompt: 'Look at this moment from the book. Write what happens next.', scene: '/storyart/l6_3/page6.png', pos: '50% 70%' },
     ladders: [
       { sound: 'ew', word: 'drew', sentence: 'She drew a bird on a card.' },

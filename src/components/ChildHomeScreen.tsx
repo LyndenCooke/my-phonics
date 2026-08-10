@@ -25,7 +25,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Sparkles, Lock, BookOpen, Star, Check } from 'lucide-react';
-import SoundGame from '@/components/SoundGame';
+import Soundlings from '@/games/soundlings/Soundlings';
 import FinishWordGame from '@/components/FinishWordGame';
 import TrickyWordGame from '@/components/TrickyWordGame';
 import WordCannonGame from '@/components/WordCannonGame';
@@ -56,13 +56,14 @@ const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 /** The phonics mini-games, in pedagogical order: spot the sound →
  *  supply the missing sound → whole-word (tricky) recognition → build the
- *  whole word sound by sound. Milo's Cannon is the arcade one — aim and fire
- *  rather than tap a tile — and is deliberately last so the calmer games
- *  stay first. */
-type GameId = 'sound' | 'finish' | 'tricky' | 'cannon';
+ *  whole word sound by sound. Soundlings is the flagship: same spot-the-sound
+ *  skill, wrapped in a persistent creature collection (src/games/soundlings).
+ *  Milo's Cannon is the arcade one — aim and fire rather than tap a tile —
+ *  and is deliberately last so the calmer games stay first. */
+type GameId = 'soundlings' | 'finish' | 'tricky' | 'cannon';
 
 const GAMES: { id: GameId; emoji: string; name: string; blurb: string }[] = [
-  { id: 'sound', emoji: '🔍', name: 'What sound is it?', blurb: 'Find the sound hiding in a word' },
+  { id: 'soundlings', emoji: '🥚', name: 'Soundlings', blurb: 'Feed your sound creatures!' },
   { id: 'finish', emoji: '🧩', name: 'Finish the word', blurb: 'Tap the missing sound' },
   { id: 'tricky', emoji: '👂', name: 'Hear it, find it', blurb: 'Listen and find the tricky word' },
   { id: 'cannon', emoji: '🎯', name: "Milo's Cannon", blurb: 'Fire the right sound into the word' },
@@ -480,8 +481,8 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         </motion.section>
       )}
 
-      {activeGame === 'sound' && (
-        <SoundGame level={levelInfo} onClose={() => setActiveGame(null)} />
+      {activeGame === 'soundlings' && (
+        <Soundlings level={levelInfo} onClose={() => setActiveGame(null)} />
       )}
       {activeGame === 'finish' && (
         <FinishWordGame level={levelInfo} onClose={() => setActiveGame(null)} />

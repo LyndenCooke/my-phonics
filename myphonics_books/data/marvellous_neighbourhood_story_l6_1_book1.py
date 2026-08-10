@@ -218,12 +218,31 @@ MARVELLOUS_NEIGHBOURHOOD_STORY_BOOK1 = {
             "Whimsical children's book illustration style, flat colour, soft texture. "
             "No text in image. Portrait orientation (3:4)."
         ),
-        # "famous" removed from the practice lists (2026-07-03): f-a-m-ous
-        # needs the open-a /ai/ sound, which the ladder never teaches — it is
-        # not decodable, so it can't sit in a sound-out list.  The story text
-        # still uses it, so it rides in tricky_words_used instead.
-        "story_words": ["marvellous", "glorious", "enormous", "fabulous", "joyous"],
-        "tricky_words_used": ["the", "said", "my", "you", "all", "whole", "neighbourhood", "so", "famous"],
+        # "famous" is a SOUND-OUT word, not a tricky word (Lynden 2026-08-08).
+        # This reverses the 2026-07-03 call that pulled it from the practice
+        # lists because "the open-a /ai/ sound is one the ladder never
+        # teaches, so it is not decodable".  That was decided before the
+        # shifty diamond existed for alternative PRONUNCIATIONS: a=/ai/ is a
+        # carded shifty sound from L6 (acorn, apron, paper), and this is an L8
+        # book.  Per PHONICS_PEDAGOGY §4, a word a recurring pattern explains
+        # is shifty, NOT tricky — and f-a-m-ous has exactly one such sound,
+        # with 'ous' taught at L8.  Its sibling books already do this:
+        # 8.4 marks capable a=/ai/, 8.3 marks gracious and spacious.
+        # Moving it into story_words is what actually earns it the diamond:
+        # shifty_marks only apply to SOUND-BUTTONED words, so dropping it from
+        # tricky_words_used on its own would have changed nothing visible —
+        # this book's tricky strip does not render (every entry is either
+        # mastered below L8 or absent from the ledger, and famous was never in
+        # tricky_words_by_level.json at all).  Do not "correct" this back.
+        "story_words": ["marvellous", "glorious", "enormous", "fabulous", "joyous", "famous"],
+        "tricky_words_used": ["the", "said", "my", "you", "all", "whole", "neighbourhood", "so"],
+        # fabulous: f-a-b-U-l-ous — the u is /yoo/ (carded from L6: unicorn,
+        # uniform, human), not the /u/ of "up".  The a in "fab" IS its
+        # ordinary short sound, so the u is the only shifty unit here.
+        "shifty_marks": {
+            "famous": [{"index": 1, "says": "/ai/"}],
+            "fabulous": [{"index": 3, "says": "/yoo/"}],
+        },
         "read_words": ["marvellous", "enormous", "glorious", "fabulous"],
         "nonsense_words": [
             "stamous", "grumous", "trainous", "floatous",

@@ -32,7 +32,7 @@ Each level introduces new sounds. Books at each level are numbered to ensure sys
 | Sub | Old id | Focus Sounds | Title | Culture | Status |
 |-----|--------|--------------|-------|---------|--------|
 | L4.1 | 2.1 | ay, ee, igh | The Night Light | Japan | Done |
-| L4.2 | 2.2 | ow, oo | Moo at the Zoo | Zoo (generic) | Done |
+| L4.2 | 2.2 | ow, oo | Hot Food, Cool Moon | England (night market; revert family) | Rewrite 2026-07-22 — needs art+audio |
 | L4.3 | 2.3 | ar, or | Morning on the Farm | Kenya | Done |
 | L4.4 | 2.4 | air, ir | The Fair in the Air | British fair | Done |
 | L4.5 | 2.5 | ou, oy | Round and Round | Iceland (Reykjavik) | Done |

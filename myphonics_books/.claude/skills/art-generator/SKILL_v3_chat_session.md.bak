@@ -1,0 +1,115 @@
+---
+name: Art Generator
+description: Illustration generation for MyPhonicsBooks via ONE persistent chat session per book (Vertex Gemini image chat). Establish character/setting references once, then describe each scene in 2-3 sentences; the conversation history carries consistency. Repairs are conversational nudges. Won the 2026-07-25 three-way bake-off against both the one-shot star pipeline and the continuity-chain pipeline.
+---
+
+# Art Generator — MyPhonicsBooks (v3, conversational session)
+
+One book = ONE chat session with the image model. The session's history does
+the consistency work: the model natively remembers the character references
+from turn 1 and every image it has already drawn. Do not rebuild context
+per scene with reference ceremony — that was tried (v1 one-shot star, v2
+continuity chain, both archived beside this file) and both lost to this
+approach on character fidelity, world stability AND art quality.
+
+**Engine:** Vertex AI `us-central1`, `gemini-2.5-flash-image`, gcloud OAuth.
+Session helper: `scripts/gen_scene_chat.py <session.json> <out.png>
+"<instruction>" [ref1.png ...]` — appends a user turn, saves the returned
+image, and appends it to the session so later turns see it.
+
+## The session flow
+
+**Turn 1 — establish the world (the only long turn).** Attach the
+references: hero character(s) full-body (reuse an approved
+`hero_reference.png` when one exists), any side hero (animal etc.), and a
+setting image if the story needs a fixed location. Then one paragraph:
+
+> These are the references for a children's picture book we are going to
+> illustrate together in this conversation: first the girl (exactly this
+> face, black bob with fringe, striped headband, orange scarf, maroon
+> jumper...), second her yak (pony-sized, warm brown shaggy fur...), third
+> the village setting (flat-roofed stone hut with wooden door...). Use
+> these as THE references throughout — every illustration must look like
+> the same book by the same illustrator: whimsical hand-drawn watercolour
+> children's book style, and every character's eyes are ALWAYS tiny solid
+> black dots with absolutely no white in them. First illustration
+> (landscape, full-bleed): [scene 1]. No text in the image.
+
+Name the character's key features IN WORDS in this turn (hair shape +
+colour, headband, outfit) — the reference image alone lets hair drift.
+
+**Turns 2..N — one short delta per page.** Two or three sentences:
+
+> Next page, same setting and same characters: [what happens now — action,
+> emotion, object state]. [Camera/zoom note if wanted.] No text in the image.
+
+- Say "same setting" / "same spot" when the location carries over; say when
+  it changes ("now inside the hut", "evening now").
+- Only name what CHANGES. The session carries everything else.
+- Counting: when a number matters, say it enumerated and keep the objects
+  unoccluded: "exactly six figs, all six clearly visible and countable".
+- Generate pages in story order; never generate continuity-dependent pages
+  in parallel (they must land in the session in order).
+
+**Repairs are conversational.** Look at every image before moving on. If
+something is wrong, just say it in the next turn, like a human would:
+
+> Almost perfect — but you drew the girl twice. Redo that last illustration
+> exactly the same, but with only ONE girl: keep the one on the right.
+> Everything else stays the same.
+
+This beats surgical image-editing repairs (v2's edit loop flattened the
+watercolour and sometimes ADDED junk). If a page is badly off (wrong style,
+wrong world), don't argue with it across many turns — regenerate that page
+once, and if it's still off, flag for human review. Roughly 3 attempts per
+page, then stop; never silently keep a bad page.
+
+## QC checklist per image (look at EVERY image)
+
+- Same character face/hair/outfit as turn 1 (hair shape is the #1 drifter)
+- Eyes: solid black dots/ovals, zero white, no highlights — on ALL creatures
+- No duplicate characters (chat sessions love drawing the hero twice)
+- Action matches the page text; no future-page spoilers
+- Object identity + state + count correct (figs, boxes, etc.)
+- Setting consistent with the established world; ground surface named/kept
+- Modesty: no shorts, no swimwear, no bare thighs; family-appropriate
+- No text, letters, numbers, invented lettering, watermarks
+- Style uniform with the rest of the session; full-bleed, no white frame
+
+## Rules that still always apply
+
+- Finalise the story text BEFORE any art.
+- British English; characters chosen from the roster (Appendix A below) to
+  suit the story; skin/hair via hex table (Appendix B) when creating a NEW
+  hero; NO blush/rosy cheeks on new heroes; settings defined by drawable
+  countable features (never just "a cosy room" / a nationality).
+- Never replace an approved hero reference mid-book.
+- Deliver into `output/images/L{n}_{sub}_B{book}/` as `cover.png`,
+  `page1..N.png`; keep the session JSON beside them so any single page can
+  be regenerated later inside the same conversation.
+- Session payload grows ~2 MB per page (history re-sends every image); at
+  16+ turns expect slower calls. If a session must be rebuilt, replay turn 1
+  refs + the latest approved page images, not the whole history.
+- Aspect: pass `imageConfig.aspectRatio` ("4:3" pages, "3:4" cover) — the
+  Vertex endpoint honours it.
+- Do not lower safety settings to fix a failed generation.
+
+## Appendix A: Character roster — see `SKILL_v1_flux_era.md.bak` §3.1
+The 12-character roster (CHAR-A..L) and selection rules live in the v1
+archive to keep this file short. House override: solid black dot eyes, no
+blush, regardless of roster text.
+
+## Appendix B: Skin/hair hex table — see `SKILL_v1_flux_era.md.bak` §Step 1
+Same archive. Never describe skin tone vaguely; use hex + plain name.
+
+## Bake-off record (2026-07-25, L2.5 "The Yak and the Box")
+
+Three pipelines, same book, same references, compared to the human-curated
+production pages: conversational session (this skill) produced the most
+consistent girl + yak + village AND the only correct first-try "yak sits on
+box like a dog" pose; its one failure (duplicate girl) was fixed by a
+one-line conversational nudge. One-shot star (v1-style) held the world but
+let the hair drift. Continuity-chain (v2) held structure but drifted
+identity and flattened art through edit-repairs. Sheets:
+`output/images/_v2_test_L2_5/qc/chat-vs-hybrid-sheet.png` and
+`contact-sheet.png`.

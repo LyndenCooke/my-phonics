@@ -18,7 +18,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l5-1'],
     hold: ['I grip my bike tight.', 'I can see the lake!'],
     listen: ['I made it!', 'I ride and ride.'],
-    questions: [null, null, null],
+    questions: ['What did I ride to and from?', 'Did I win a prize?', 'Was it a good day?'],
     useGrammar: { chips: ['so', 'like', 'ride', 'bike', 'lake'], scene: '/storyart/l5_1/page3.png', pos: '50% 45%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l5_1/page7.png', pos: '50% 45%' },
     ladders: [
@@ -33,7 +33,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l5-2'],
     hold: ['It was huge!', 'Mum must be close!'],
     listen: ['I felt so small.', 'I did not let go.'],
-    questions: [null, null, null],
+    questions: ['What did I lose at the night market?', 'Did I feel small and scared?', 'Did Mum give me a huge hug at the end?'],
     useGrammar: { chips: ['when', 'there', 'huge', 'close', 'stone'], scene: '/storyart/l5_2/page2.png', pos: '50% 50%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
@@ -57,8 +57,12 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l5-3'],
     hold: ['We each grab a cloth.', 'Nana grins and grins.'],
     listen: ['She looks so tired.', 'What a treat!'],
-    questions: [null, null, null],
+    questions: ['What did Nana need help with?', 'Did we clean the tins and line them up?', 'What treat did Nana make for us?'],
     useGrammar: { chips: ['some', 'have', 'clean', 'team', 'reach'], scene: '/storyart/l5_3/page4.png', pos: '50% 50%' },
+    revisit: [
+      { kind: 'build', label: 'Double the letter, then add the ending', refs: [{ sourceUnit: 'G-L5.1', rowRef: 2 }, { sourceUnit: 'G-L5.1', rowRef: 3 }] },
+      { kind: 'match', label: 'Add the prefix un-', refs: [{ sourceUnit: 'G-L5.2', rowRef: 1 }, { sourceUnit: 'G-L5.2', rowRef: 3 }] },
+    ],
     bigWrite: { prompt: PROMPT, scene: '/storyart/l5_3/page8.png', pos: '50% 45%' },
     ladders: [
       { sound: 'ea', word: 'clean', sentence: 'What a treat!' },
@@ -72,7 +76,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l5-4'],
     hold: ['Min saw a big red bus zoom past.', 'She smiled at Mum.'],
     listen: ['Min was so glad.', 'Min looked up.'],
-    questions: [null, null, null],
+    questions: ['What did Min see at the park?', 'What did Min find in the stream?', 'Did Min see a hawk fly past?'],
     useGrammar: { chips: ['saw', 'coin', 'soil', 'hawk', 'paw'], scene: '/storyart/l5_4/page3.png', pos: '50% 50%' },
     bigWrite: {
       prompt: 'Number the pictures 1 to 4 in story order. Then write the story. Use First, Next, Then and Last.',
@@ -96,7 +100,7 @@ const BOOKS: W2BookData[] = [
     grammar: ['g-l5-5', 'g-l5-6'],
     hold: ['It has a big red sail!', 'His coat is soaked in mud.'],
     listen: ['It is Dad!', 'Kai spots the red sail!'],
-    questions: [null, null, null],
+    questions: ['What did Kai see out at sea?', 'Did Kai fall in the mud?', 'Was it Dad on the boat?'],
     useGrammar: { chips: ['big', 'red', 'soft', 'boat', 'sail'], scene: '/storyart/l5_5/page2.png', pos: '50% 50%' },
     bigWrite: { prompt: PROMPT, scene: '/storyart/l5_5/page7.png', pos: '50% 40%' },
     ladders: [
