@@ -19,10 +19,10 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
-import { generateHero, generateCastMember, generateScene, generateCover, generateLandmark } from "./images.mjs";
+import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes } from "./db.mjs";
 import { BOOKS_DIR } from "./env.mjs";
@@ -55,8 +55,9 @@ function newJob(book) {
     cost: 0,
     breakdown: { story_usd: 0, images_usd: 0, qa_notes: [] },
     sceneUrls: [],
-    anchors: {},     // location id -> image URL
-    castSheets: {},  // cast id -> { name, url }
+    anchors: {},      // location id -> image URL
+    castSheets: {},   // cast id -> { name, url }
+    objectSheets: {}, // key_object name (lowercased) -> { name, url }
   };
 }
 
@@ -189,8 +190,24 @@ async function stepQa(book, job) {
   const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
   job.cost += review.cost; job.breakdown.story_usd += review.cost;
   let validation = review.data;
+
+  // Deterministic check the model gate above cannot do: it verifies "oo" is
+  // a taught GRAPHEME, not that a specific word uses a sound this level has
+  // actually unlocked (short /oo/ in "book"/"look" slipped through as if
+  // interchangeable with long /oo/ in "moon" — see focusSoundViolations).
+  // Folded into the SAME violations list so it drives the existing rewrite
+  // path rather than a second, easy-to-ignore channel.
+  const focusViolations = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
+  if (focusViolations.length) {
+    validation = { ...validation, ok: false, violations: [...(validation.violations || []), ...focusViolations] };
+  }
+
   const distinct = new Set((validation.violations || []).map((v) => v.word.toLowerCase())).size;
-  if (!validation.ok && distinct > 3) {
+  // A generic above-level word is fine in small numbers (Future Sounds
+  // preview handles it) — but a focus-word EXAMPLE using an untaught sound of
+  // the very grapheme this book is teaching is never fine, even just one, so
+  // it forces a rewrite regardless of the >3 threshold.
+  if (!validation.ok && (distinct > 3 || focusViolations.length > 0)) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
     });
@@ -199,6 +216,10 @@ async function stepQa(book, job) {
     const recheck = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
     job.cost += recheck.cost; job.breakdown.story_usd += recheck.cost;
     validation = recheck.data;
+    const recheckFocus = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
+    if (recheckFocus.length) {
+      validation = { ...validation, ok: false, violations: [...(validation.violations || []), ...recheckFocus] };
+    }
   }
 
   // Mechanics are TAUGHT by these books, so they are fixed deterministically.
@@ -317,6 +338,31 @@ async function castSheetFor(book, job, id) {
   }
 }
 
+// A locked identity reference for a recurring key object (SKILL.md §5.1) —
+// generated once per book, the same "sheet, then inject everywhere" fix
+// castSheetFor already does for people. Without this a key object (a cap, a
+// bag) is redrawn from its text `look` alone on every page and its colour,
+// shape and trim drift page to page.
+async function objectSheetFor(book, job, name) {
+  const key = String(name).toLowerCase();
+  if (job.objectSheets[key]) {
+    const buf = await loadByUrl(job.objectSheets[key].url);
+    return buf ? { name: job.objectSheets[key].name, buf } : null;
+  }
+  const obj = (job.story.key_objects || []).find((o) => o?.name?.toLowerCase() === key);
+  if (!obj) return null;
+  try {
+    const r = await generateObjectRef({ name: obj.name, look: obj.look, child: childOf(book) });
+    job.cost += r.cost; job.breakdown.images_usd += r.cost; job.breakdown.qa_notes.push(r.qa);
+    const url = await saveImage(book.id, `object_${key.replace(/[^a-z0-9]/g, "")}.jpg`, r.buf);
+    job.objectSheets[key] = { name: obj.name, url };
+    return { name: obj.name, buf: r.buf };
+  } catch (e) {
+    console.warn(`[forge] object reference for ${name} failed:`, e.message);
+    return null;
+  }
+}
+
 async function stepScene(book, job, i) {
   const story = job.story;
   const child = childOf(book);
@@ -339,6 +385,15 @@ async function stepScene(book, job, i) {
     : (story.cast || []).map((m) => m?.id).filter((id) => id && story.pages[i].text.toLowerCase().includes(id.toLowerCase()));
   const castRefs = (await Promise.all(wanted.map((id) => castSheetFor(book, job, id)))).filter(Boolean);
 
+  // Key objects the director declared visible on THIS page get their locked
+  // identity reference injected too (see objectSheetFor) — falls back to
+  // matching the object's name in the page text when there is no director
+  // pass, same pattern castRefs already uses above.
+  const wantedObjects = d?.objects?.length
+    ? d.objects.map((o) => o.name)
+    : (story.key_objects || []).map((o) => o?.name).filter((n) => n && story.pages[i].text.toLowerCase().includes(n.toLowerCase()));
+  const objectRefs = (await Promise.all(wantedObjects.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
+
   const s = await generateScene({
     heroBuf,
     scene: sceneBrief,
@@ -349,6 +404,7 @@ async function stepScene(book, job, i) {
     anchorBuf,
     camera,
     castRefs,
+    objectRefs,
     // The actual sentence this page illustrates, for the picture-vs-text
     // consistency QA in generateScene — a story page always has real text,
     // unlike the cover, which has none to check against.
@@ -380,12 +436,15 @@ async function stepCover(book, job) {
     story.cover_brief ||
     `${child.name} in the happiest moment of the story "${story.title}", holding or beside the story's central object. ${story.pages[story.pages.length - 1]?.scene || ""}`;
   const anchorUrl = mainLoc ? job.anchors[mainLoc] : null;
+  const coverObjectNames = (story.key_objects || []).map((o) => o?.name).filter((n) => n && coverBrief.toLowerCase().includes(n.toLowerCase()));
+  const objectRefs = (await Promise.all(coverObjectNames.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
   const cover = await generateCover({
     heroBuf,
     brief: coverBrief,
     child,
     settingBlock: worldBlockOf(story) + fromText(coverBrief),
     anchorBuf: anchorUrl ? await loadByUrl(anchorUrl) : null,
+    objectRefs,
   });
   job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
   job.coverUrl = await saveImage(book.id, "cover.jpg", cover.buf);

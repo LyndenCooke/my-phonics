@@ -539,6 +539,38 @@ export async function generateCastMember({ member, child }) {
   return generateWithEyeQA(gen, `cast:${member.id}`);
 }
 
+// An OBJECT identity reference — a recurring key object (a cap, a bag, a toy)
+// drawn once in isolation and injected into every scene it appears in, the
+// same fix hero/cast sheets already got. Without this a key object is
+// redrawn from its text description alone on every page and drifts (a red
+// cap with a white zigzag trim came out a different red, a different trim,
+// even a different shape from page to page — SKILL.md §5.1 always required
+// this reference; it just was not built yet). No eye QA — objects have no
+// face — so this skips generateWithEyeQA and calls withFallback directly.
+export async function generateObjectRef({ name, look, child }) {
+  const brief =
+    `${look}. A single object, shown clearly on its own — no hands, no character holding it, no other objects. ` +
+    `It belongs in the same story world as ${child?.city ? `${child.city}, ` : ""}${child?.country || "the UK"}. ` +
+    "Centred, filling most of the frame, plain light cream solid-colour background (no scenery, no patterns, no shadow). " +
+    BASE_STYLE;
+  const prompt =
+    "The reference image shows our publishing house's illustration style: hand-drawn children's book art with soft textures and clean black outlines. Match this exact style. " +
+    `Now draw a single OBJECT (not a character, not a scene) in that style: ${brief}`;
+  const refs = [fs.readFileSync(SCENE_REF_PATH)];
+  const vertexParts = [
+    { text: "STYLE REFERENCE — match this illustration style exactly (soft textures, clean black outlines):" },
+    { inlineData: { mimeType: "image/png", data: refs[0].toString("base64") } },
+    { text: `Now draw a single OBJECT (not a character, not a scene) in that same style: ${brief}` },
+  ];
+  const gen = () => withFallback({
+    openai: () => openaiImage(prompt, refs, "square_hd"),
+    vertex: () => vertexImage(vertexParts),
+    gpt2: () => gptImage(prompt, [refUri(SCENE_REF_PATH)], "square_hd"),
+  }, `object:${name}`);
+  const result = await gen();
+  return { buf: result.buf, cost: result.cost, qa: { pass: true, reason: "no-face-no-eye-qa", engine: result.engine } };
+}
+
 // An ANIMAL reference sheet. Prompting alone will not give an animal the house
 // eye: the model obeys the rule for people and hands every bird a pale iris and
 // a catchlight regardless of how emphatically BASE_STYLE states it (8.4's
@@ -599,7 +631,9 @@ export async function generateAnimal({ name, appearance }) {
 // - camera: how this page is framed within that established place.
 // castRefs: [{name, buf}] — character sheets for the non-hero people visible
 // on this page, injected so they look the same every time they appear.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, camera = "wide", castRefs = [], pageText = "" }) {
+// objectRefs: [{name, buf}] — identity references for recurring key objects
+// visible on this page (see generateObjectRef), injected the same way.
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "" }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -628,6 +662,14 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       `ONLY these people and the main character are in this picture — no other family members, no bystanders. Someone the words merely mention is NOT in the frame. `
     : "THE MAIN CHARACTER IS ALONE in this picture. Draw no other people at all — no family members, no bystanders, nobody in a doorway or a window. Someone the words merely mention or talk about is NOT in the frame. ";
 
+  // A recurring key object (a cap, a bag) redrawn from its text description
+  // alone drifts colour, shape and trim page to page — the same failure mode
+  // castRefs already fixed for people. objectRefs carries a locked identity
+  // reference for each one visible on this page (see generateObjectRef).
+  const objectText = objectRefs.length
+    ? `The next ${objectRefs.length === 1 ? "reference image is a KEY OBJECT" : `${objectRefs.length} reference images are KEY OBJECTS`} in this scene (${objectRefs.map((o) => o.name).join(", ")}) — keep each one's exact appearance identical: same colours, same shape, same markings, same materials, every time it appears. Only draw it in the state this page's text and setting describe (its position, and whether it is open/closed, full/empty, finished/unfinished); never change its fixed identity. `
+    : "";
+
   // Rebuilt per attempt so a consistency-QA repair pass (below) can append
   // its correction to the same scene brief rather than starting from scratch.
   const composeGen = (correction) => {
@@ -635,6 +677,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
     const gptPrompt =
       "The first reference image is the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes) identical in the generated scene. " +
       castText +
+      objectText +
       (anchorBuf
         ? `The final reference image is the ${samePlace} `
         : "The final reference image shows our publishing house's style for full illustrated scenes — match its rendering, texture, palette and mood exactly. ") +
@@ -642,6 +685,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
     const gptRefs = [
       heroUri,
       ...castRefs.map((c) => toDataUri(c.buf, "image/png")),
+      ...objectRefs.map((o) => toDataUri(o.buf, "image/png")),
       anchorBuf ? toDataUri(anchorBuf, "image/png") : refUri(SCENE_REF_PATH),
     ];
     const vertexParts = [
@@ -650,6 +694,10 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       ...castRefs.flatMap((c) => [
         { text: `REFERENCE — this is ${c.name}, also in this scene. Keep their exact appearance: same face, same hair, same clothing in the same colours, same dot eyes:` },
         { inlineData: { mimeType: "image/png", data: c.buf.toString("base64") } },
+      ]),
+      ...objectRefs.flatMap((o) => [
+        { text: `REFERENCE — this is the key object "${o.name}". Keep its exact appearance identical (same colours, shape, markings, materials); only its state/position may change to match this page:` },
+        { inlineData: { mimeType: "image/png", data: o.buf.toString("base64") } },
       ]),
       ...(anchorBuf
         ? [
@@ -665,6 +713,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
     const openaiRefs = [
       heroBuf,
       ...castRefs.map((c) => c.buf),
+      ...objectRefs.map((o) => o.buf),
       anchorBuf || fs.readFileSync(SCENE_REF_PATH),
     ];
     return () => withFallback({
@@ -711,10 +760,13 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
 // character described in words only drifts: 8.4's cover gave Tom black hair and
 // blue jeans when his sheet says sandy hair and khaki cargos (2026-08-05). The
 // scene path had solved this already — the cover just never got the parameter.
-export async function generateCover({ heroBuf, brief, child, settingBlock = "", anchorBuf = null, castRefs = [] }) {
+export async function generateCover({ heroBuf, brief, child, settingBlock = "", anchorBuf = null, castRefs = [], objectRefs = [] }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   const castText = castRefs.length
     ? `The next ${castRefs.length === 1 ? "reference image is the OTHER CHARACTER" : `${castRefs.length} reference images are the OTHER CHARACTERS`} on this cover (${castRefs.map((c) => c.name).join(", ")}) — keep each one's exact appearance: same face, same hair colour, same clothing in the same colours, same proportions, same tiny solid black dot eyes. `
+    : "";
+  const objectText = objectRefs.length
+    ? `The next ${objectRefs.length === 1 ? "reference image is a KEY OBJECT" : `${objectRefs.length} reference images are KEY OBJECTS`} on this cover (${objectRefs.map((o) => o.name).join(", ")}) — keep each one's exact appearance identical to its reference: same colours, shape, markings, materials. Show it in its final story state, matching the cover moment. `
     : "";
   const coverBrief =
     `A joyful children's book COVER illustration starring the exact same character. THE COVER MOMENT: ${brief} ` +
@@ -727,8 +779,9 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
   const gptPrompt =
     "The first reference image is the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes). " +
     castText +
+    objectText +
     (anchorBuf ? placeRef : "") +
-    `The ${anchorBuf ? "third" : "second"} reference image is one of our publishing house's real book covers — match its illustration style, composition feel and warmth (do NOT copy its content or characters). ` +
+    `The final reference image is one of our publishing house's real book covers — match its illustration style, composition feel and warmth (do NOT copy its content or characters). ` +
     `COVER TO GENERATE: ${coverBrief}`;
   const vertexParts = [
     { text: "REFERENCE IMAGE 1 — This is the main character. Keep this character's exact appearance in the generated scene:" },
@@ -737,6 +790,10 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
       { text: `REFERENCE — this is ${c.name}, also on this cover. Keep their exact appearance: same face, same hair colour, same clothing in the same colours, same dot eyes:` },
       { inlineData: { mimeType: "image/png", data: c.buf.toString("base64") } },
     ]),
+    ...objectRefs.flatMap((o) => [
+      { text: `REFERENCE — this is the key object "${o.name}" on the cover. Keep its exact appearance identical (same colours, shape, markings, materials), shown in its final story state:` },
+      { inlineData: { mimeType: "image/png", data: o.buf.toString("base64") } },
+    ]),
     ...(anchorBuf
       ? [{ text: placeRef }, { inlineData: { mimeType: "image/png", data: anchorBuf.toString("base64") } }]
       : []),
@@ -744,7 +801,7 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
     { inlineData: { mimeType: "image/png", data: fs.readFileSync(COVER_REF_PATH).toString("base64") } },
     { text: `COVER TO GENERATE: ${coverBrief}` },
   ];
-  const openaiRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...(anchorBuf ? [anchorBuf] : []), fs.readFileSync(COVER_REF_PATH)];
+  const openaiRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), ...(anchorBuf ? [anchorBuf] : []), fs.readFileSync(COVER_REF_PATH)];
   const gen = () => withFallback({
     openai: () => openaiImage(gptPrompt, openaiRefs, "portrait_4_3"),
     vertex: () => vertexImage(vertexParts),

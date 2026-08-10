@@ -561,6 +561,23 @@ const PLAUSIBILITY_SCHEMA = {
   properties: {
     causal_chain: { type: "string", description: "Walk the story page by page: what physically changes on each page, and does it follow from the page before using real-world size, weight and mechanism logic? Describe this BEFORE judging." },
     dual_role_objects: { type: "string", description: "List every object that plays a physical role — passing through, blocking, fitting into, carrying, holding — on MORE THAN ONE page. For EACH one, state its implied size on every occasion it plays that role, in one line per occasion (e.g. 'gap: page 5 must be big enough for a rigid cap to pass through; page 6 must be small enough for a thin pen to block it'). Then say explicitly whether those occasions describe ONE consistent size, or whether the object would need to be two incompatible sizes at once. If there are no such objects, say so." },
+    // Built after a Level 4 search story ("Amina and the Book") wrote every
+    // pre-reveal page's `scene` field with the missing book already visible
+    // in the bag — "peeks from the bag", "a tiny corner is just visible",
+    // "still tucked low in the bag" — on pages 1-6, even though the plot is
+    // Amina searching for it and it is only found on page 7. dual_role_objects
+    // catches incompatible SIZES; nothing caught an object whose STORY STATE
+    // (hidden vs found; unmade vs finished; arrived vs not-yet-arrived)
+    // contradicts itself across pages until this field was added
+    // (Lynden 2026-08-11: "the book is visible as a mini book before the book
+    // should be revealed"). This must be checked on the `scene` text (the
+    // actual image brief), not just the reader-facing `text` — the reader's
+    // sentence can honestly say "no book was on the rug" while the `scene`
+    // field describing that same page still shows the book peeking out.
+    concealed_objects: {
+      type: "string",
+      description: "Name every object the plot treats as MISSING, HIDDEN, LOST, NOT YET MADE, or NOT YET ARRIVED until a specific page (a search story's missing item; something the hero is making; a character who arrives partway through). For each one, state the page it is first revealed/found/completed/arrives on. Then, for EVERY page BEFORE that reveal page, quote whether that page's `scene` field (the illustration brief, not just the reader's sentence) describes the object as visible, glimpsed, peeking, or otherwise present — even faintly, even in the background, even only partly. If ANY pre-reveal page's scene field shows it, name the page and quote the exact phrase. If there are no such objects, say so explicitly."
+    },
     issues: {
       type: "array",
       items: {
@@ -575,24 +592,25 @@ const PLAUSIBILITY_SCHEMA = {
     },
     pass: { type: "boolean" },
   },
-  required: ["causal_chain", "dual_role_objects", "issues", "pass"],
+  required: ["causal_chain", "dual_role_objects", "concealed_objects", "issues", "pass"],
   additionalProperties: false,
 };
 
 export async function reviewStoryPlausibility({ story }) {
   const system =
     "You are the physical and logical plausibility QA gate for MyPhonicsBooks — checked on the WORDS ALONE, before any illustration exists. " +
-    "Describe the causal chain first, page by page, THEN the dual_role_objects size comparison, THEN judge — a bare pass/fail rubber-stamps everything, the same lesson learned the hard way on every other QA gate in this pipeline. Do not hedge with 'plausible if X' or 'this could work if Y' — commit to a real-world size for the object and check it against BOTH occasions; if a single consistent size cannot satisfy every occasion, that is a fail, not a maybe. " +
-    "pass is FALSE if: dual_role_objects finds an object that would need two incompatible sizes to make the story true (this is the single most common failure — check it exhaustively before anything else); a fix, tool or event's scale does not match the scale of the problem it solves; a cause is claimed for an effect that could not actually produce it; or a sequence of events a sensible adult would find genuinely self-contradictory, even allowing for the usual warmth and simplicity of a picture book. " +
-    "Do NOT flag ordinary picture-book compression, coincidence, or the everyday things a child protagonist is allowed to do well (finding something, succeeding at a task, an adult being kind) — this is not a check for total realism, only for claims that are actually impossible or self-contradictory on their own terms. Report only genuine issues.";
-  const content = `Check this story's physical and logical plausibility:\n\n${JSON.stringify(story.pages.map((p, i) => ({ page: i + 1, text: p.text })))}`;
+    "Describe the causal chain first, page by page, THEN the dual_role_objects size comparison, THEN concealed_objects, THEN judge — a bare pass/fail rubber-stamps everything, the same lesson learned the hard way on every other QA gate in this pipeline. Do not hedge with 'plausible if X' or 'this could work if Y' — commit to a real-world size for the object and check it against BOTH occasions; if a single consistent size cannot satisfy every occasion, that is a fail, not a maybe. " +
+    "pass is FALSE if: dual_role_objects finds an object that would need two incompatible sizes to make the story true (check this exhaustively first); concealed_objects finds any page BEFORE an object's reveal/find/completion/arrival page whose `scene` field shows that object even partly (a search story whose bag secretly already shows the missing item defeats its own plot — this is just as much a fail as a size contradiction); a fix, tool or event's scale does not match the scale of the problem it solves; a cause is claimed for an effect that could not actually produce it; or a sequence of events a sensible adult would find genuinely self-contradictory, even allowing for the usual warmth and simplicity of a picture book. " +
+    "Do NOT flag ordinary picture-book compression, coincidence, or the everyday things a child protagonist is allowed to do well (finding something, succeeding at a task, an adult being kind) — this is not a check for total realism, only for claims that are actually impossible or self-contradictory on their own terms. Report only genuine issues. " +
+    "Every genuine problem found in dual_role_objects or concealed_objects MUST ALSO appear as its own entry in `issues` (page + problem) — the fields above are your working notes, `issues` is what actually drives the rewrite, and a problem left only in the notes never gets fixed.";
+  const content = `Check this story's physical and logical plausibility. Each page includes both the reader's sentence (text) and the illustration brief (scene) — a concealed object's contradiction usually lives in scene, not text:\n\n${JSON.stringify(story.pages.map((p, i) => ({ page: i + 1, text: p.text, scene: p.scene })))}`;
   return callJson({ system, content, schema: PLAUSIBILITY_SCHEMA });
 }
 
 export async function fixStoryPlausibility({ level, child, focusSound, pagesCount, story, issues }) {
   const system = `You are the senior story writer for MyPhonicsBooks fixing physical/logical plausibility issues. Keep the same title, characters and setting wherever possible — change only what is needed to make the flagged events make real-world sense. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in one to three words. British English. Exactly ${pagesCount} pages.
 
-Fix the underlying MECHANISM, not just the wording — if an object's size or a fix's scale doesn't match the problem, change what actually happens on that page so cause and effect genuinely line up. Keep every other page's text, scenes and props untouched unless the fix requires a small knock-on change (e.g. a later page referring to the now-changed event). Every sentence still starts with a CAPITAL LETTER and the whole story stays in ONE consistent tense.`;
+Fix the underlying MECHANISM, not just the wording — if an object's size or a fix's scale doesn't match the problem, change what actually happens on that page so cause and effect genuinely line up. For a concealed-object issue (an object shown too early in a page's \`scene\` field), rewrite that page's \`scene\` field so the object stays genuinely out of view until its reveal page — not just reworded to sound more hidden while still describing it as visible. Keep every other page's text, scenes and props untouched unless the fix requires a small knock-on change (e.g. a later page referring to the now-changed event). Every sentence still starts with a CAPITAL LETTER and the whole story stays in ONE consistent tense.`;
   const content = `Original story:\n${JSON.stringify(story)}\n\nPlausibility issues to fix:\n${JSON.stringify(issues)}\n\nReturn the corrected story.`;
   return callJson({ system, content, schema: STORY_SCHEMA });
 }

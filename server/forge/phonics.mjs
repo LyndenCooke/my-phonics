@@ -96,6 +96,55 @@ export function pronunciationsFor(grapheme, level) {
   return entry.sounds.filter((s) => s.from_level <= level);
 }
 
+// Words used to teach the focus grapheme must use a SOUND actually taught by
+// this level, not just a taught SPELLING. Built after a Level 4 "oo" book
+// used "moon" (long /oo/, taught from Level 4 — correct) alongside "book" and
+// "look" (short /oo/, not taught until Level 5 — above-level) as if they were
+// interchangeable focus-word examples, because decodability QA only checked
+// that "oo" is a taught grapheme, never which of its sounds a specific word
+// uses (Lynden 2026-08-11: "two versions of /oo/ was used... which one should
+// it be?"). This is deterministic, not a model judgement: pronunciations.json
+// already lists each sound's curated example words and the level it unlocks,
+// so a word appearing in an ABOVE-level sound's example list is unambiguous —
+// no segmentation call needed, same doctrine as capitals/punctuation in
+// prose.mjs (SKILL.md §13: use code for facts a model does not need to guess).
+export function focusSoundViolations({ story, focusSound, level }) {
+  if (!pronCache) {
+    try {
+      pronCache = JSON.parse(fs.readFileSync(dataFile("pronunciations.json"), "utf8"));
+    } catch {
+      pronCache = {};
+    }
+  }
+  const entry = pronCache[String(focusSound || "").toLowerCase()];
+  if (!entry || entry.sounds.length < 2) return [];
+  const aboveLevel = entry.sounds.filter((s) => s.from_level > level);
+  if (!aboveLevel.length) return [];
+
+  const violations = [];
+  const seen = new Set();
+  for (const sound of aboveLevel) {
+    for (const example of sound.examples || []) {
+      const word = String(example).toLowerCase();
+      const re = new RegExp(`\\b${word}\\b`, "i");
+      (story.pages || []).forEach((p, i) => {
+        const inText = re.test(p.text || "");
+        const inScene = re.test(p.scene || "");
+        if (!inText && !inScene) return;
+        const key = `${word}:${i + 1}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        violations.push({
+          word: example,
+          page: i + 1,
+          reason: `"${example}" uses "${focusSound}" saying ${sound.sound}, not taught until Level ${sound.from_level} — this Level ${level} book can only use the sound(s) already unlocked for "${focusSound}".`,
+        });
+      });
+    }
+  }
+  return violations;
+}
+
 export function pronunciationNoteFor(grapheme, level) {
   const sounds = pronunciationsFor(grapheme, level);
   if (sounds.length < 2) return null;
