@@ -174,6 +174,52 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
   return Buffer.from(b64, "base64");
 }
 
+// ─── Responses API multi-turn image chain (SKILL.md §5.5, built 2026-08-11) ───
+// The hybrid continuity mechanism, piloted before adoption: each scene turn
+// chains to the previous one via previous_response_id, so the model carries
+// the ACTUAL generated world forward (the rock keeps its shape, the pad stays
+// where the last image left it) — while hero/cast/object identity references
+// are still attached to every turn as input images, because the pilot showed
+// conversation state alone lets the hero's outfit pattern drift page to page.
+// Identity comes from references; world state comes from the chain.
+const RESPONSES_MODEL = "gpt-5.5";
+// A chained turn bills gpt-5.5 text tokens (trivial: ~6k in / ~350 out per
+// turn in the pilot) plus the image tool's own generation, priced like a
+// medium gpt-image-1 render. Flat estimate, same spirit as ENGINE_COSTS.
+const RESPONSES_IMAGE_COST = 0.08;
+
+async function responsesImage({ prompt, refBufs = [], previousResponseId = null, size = "1536x1024" }, attempt = 0) {
+  const content = [
+    { type: "input_text", text: prompt },
+    ...refBufs.map((buf) => ({ type: "input_image", image_url: toDataUri(buf, "image/png") })),
+  ];
+  const body = {
+    model: RESPONSES_MODEL,
+    input: [{ role: "user", content }],
+    tools: [{ type: "image_generation", size, quality: "medium" }],
+  };
+  if (previousResponseId) body.previous_response_id = previousResponseId;
+  const res = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    if ([429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
+      const wait = Math.min(60_000, 5000 * 2 ** attempt) * (0.75 + Math.random() * 0.5);
+      console.warn(`[forge] responses image ${res.status} — retry ${attempt + 1}/3 in ${Math.round(wait / 1000)}s`);
+      await new Promise((r) => setTimeout(r, wait));
+      return responsesImage({ prompt, refBufs, previousResponseId, size }, attempt + 1);
+    }
+    throw new Error(`responses image ${res.status}: ${text.slice(0, 300)}`);
+  }
+  const data = await res.json();
+  const imgCall = (data.output || []).find((o) => o.type === "image_generation_call");
+  if (!imgCall?.result) throw new Error(`responses image: no image in output (status ${data.status})`);
+  return { buf: Buffer.from(imgCall.result, "base64"), responseId: data.id };
+}
+
 // Storage moved to storage.mjs (2026-08-06): images must go to Supabase
 // Storage in production, where this filesystem is read-only. Re-exported so
 // old imports keep working.
@@ -639,7 +685,7 @@ export async function generateAnimal({ name, appearance }) {
 // spot) that no fixed reference was ever generated for. Anchor = "what does
 // this place permanently look like"; prevBuf = "what does it look like RIGHT
 // NOW" — both can be true and useful at once.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "" }) {
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", previousResponseId = null, chainEnabled = true }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -741,6 +787,78 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
     }, "scene");
   };
 
+  // ── HYBRID CHAIN PATH (SKILL.md §5.5, adopted after the 2026-08-11 pilot) ──
+  // Conversation state carries the WORLD forward (the rock keeps its shape,
+  // the tide keeps its progress); per-turn reference images pin IDENTITY
+  // (the pilot showed chain-only lets the hero's outfit drift). prevBuf is
+  // NOT attached here — the chain itself already holds the previous image,
+  // which is the whole point. Any failure falls through to the stateless
+  // legacy path below, which never chains but always works.
+  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0";
+  if (chainWanted) {
+    try {
+      const chainRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), ...(anchorBuf ? [anchorBuf] : [])];
+      const chainRefText =
+        "The attached reference images, in order: first the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes) identical. " +
+        castText + objectText +
+        (anchorBuf ? `The final reference image is the ${samePlace} ` : "");
+      const chainScenePrompt = (correction) =>
+        (previousResponseId
+          ? "CONTINUING THE SAME BOOK: this is the next page of the story you have been illustrating in this conversation. Keep the world exactly as the previous image left it — every structure, rock, prop and piece of set-dressing keeps its shape, position and identity — and change ONLY what this page's action requires. "
+          : "This begins a children's picture book you will illustrate page by page in this conversation. Establish the world carefully — later pages must keep every structure and prop you draw now. ") +
+        chainRefText +
+        `SCENE TO GENERATE: ${buildFullScene(correction)}`;
+
+      let turn = await responsesImage({ prompt: chainScenePrompt(), refBufs: chainRefs, previousResponseId, size: "1536x1024" });
+      let cost = RESPONSES_IMAGE_COST;
+      let buf = turn.buf;
+      let responseId = turn.responseId;
+
+      let eye = await eyeQAZoomed(buf);
+      cost += eye.cost;
+      let qa = { ...eye.qa, engine: "responses-chain" };
+      if (!qa.pass) {
+        const repaired = await repairEyes(buf, qa);
+        buf = repaired.buf; cost += repaired.cost; qa = { ...repaired.qa, engine: "responses-chain" };
+      }
+
+      if (pageText) {
+        const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+        cost += check.cost;
+        if (!check.data.pass) {
+          // The repair turn chains onto the FAILED turn so the model edits
+          // its own picture rather than starting over — the same multi-turn
+          // edit flow the Responses API is built for.
+          const retry = await responsesImage({
+            prompt: `CORRECTION — the previous image has a specific problem to fix, keeping everything else exactly the same: ${check.data.reason}`,
+            refBufs: [],
+            previousResponseId: turn.responseId,
+            size: "1536x1024",
+          });
+          cost += RESPONSES_IMAGE_COST;
+          let rbuf = retry.buf;
+          const reye = await eyeQAZoomed(rbuf);
+          cost += reye.cost;
+          let rqa = { ...reye.qa, engine: "responses-chain" };
+          if (!rqa.pass) {
+            const rrep = await repairEyes(rbuf, rqa);
+            rbuf = rrep.buf; cost += rrep.cost; rqa = { ...rrep.qa, engine: "responses-chain" };
+          }
+          const recheck = await sceneConsistencyQA(rbuf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+          cost += recheck.cost;
+          buf = rbuf;
+          responseId = retry.responseId;
+          qa = { ...rqa, consistency: recheck.data, consistencyRepaired: true };
+        } else {
+          qa = { ...qa, consistency: check.data };
+        }
+      }
+      return { buf, cost, qa, responseId };
+    } catch (e) {
+      console.warn("[forge] chained scene failed, falling back to stateless path:", e.message);
+    }
+  }
+
   let result = await generateWithEyeQA(composeGen(), "scene");
 
   // Consistency QA — SKILL.md §5's specified-but-unbuilt check: does the
@@ -778,7 +896,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
 // character described in words only drifts: 8.4's cover gave Tom black hair and
 // blue jeans when his sheet says sandy hair and khaki cargos (2026-08-05). The
 // scene path had solved this already — the cover just never got the parameter.
-export async function generateCover({ heroBuf, brief, child, settingBlock = "", anchorBuf = null, castRefs = [], objectRefs = [] }) {
+export async function generateCover({ heroBuf, brief, child, settingBlock = "", anchorBuf = null, castRefs = [], objectRefs = [], previousResponseId = null, chainEnabled = true }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   const castText = castRefs.length
     ? `The next ${castRefs.length === 1 ? "reference image is the OTHER CHARACTER" : `${castRefs.length} reference images are the OTHER CHARACTERS`} on this cover (${castRefs.map((c) => c.name).join(", ")}) — keep each one's exact appearance: same face, same hair colour, same clothing in the same colours, same proportions, same tiny solid black dot eyes. `
@@ -819,6 +937,38 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
     { inlineData: { mimeType: "image/png", data: fs.readFileSync(COVER_REF_PATH).toString("base64") } },
     { text: `COVER TO GENERATE: ${coverBrief}` },
   ];
+  // Chained cover: continuing the book's own conversation from the final
+  // scene means the cover inherits the resolved world and final object
+  // states directly — the exact thing the cover contract (§8) needs. Same
+  // hybrid rule as scenes: identity references still attached per turn.
+  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0";
+  if (chainWanted) {
+    try {
+      const chainRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), fs.readFileSync(COVER_REF_PATH)];
+      const chainPrompt =
+        (previousResponseId
+          ? "This conversation's book is finished — now generate its COVER. Keep the story's world exactly as the previous pages established it (same place, same final object states, same characters). "
+          : "") +
+        "The attached reference images, in order: first the MAIN CHARACTER — keep this character's exact appearance identical. " +
+        castText + objectText +
+        "The final reference image is one of our publishing house's real book covers — match its illustration style, composition feel and warmth (do NOT copy its content or characters). " +
+        `COVER TO GENERATE: ${coverBrief}`;
+      const turn = await responsesImage({ prompt: chainPrompt, refBufs: chainRefs, previousResponseId, size: "1024x1536" });
+      let cost = RESPONSES_IMAGE_COST;
+      let buf = turn.buf;
+      let eye = await eyeQAZoomed(buf);
+      cost += eye.cost;
+      let qa = { ...eye.qa, engine: "responses-chain" };
+      if (!qa.pass) {
+        const repaired = await repairEyes(buf, qa);
+        buf = repaired.buf; cost += repaired.cost; qa = { ...repaired.qa, engine: "responses-chain" };
+      }
+      return { buf, cost, qa, responseId: turn.responseId };
+    } catch (e) {
+      console.warn("[forge] chained cover failed, falling back to stateless path:", e.message);
+    }
+  }
+
   const openaiRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), ...(anchorBuf ? [anchorBuf] : []), fs.readFileSync(COVER_REF_PATH)];
   const gen = () => withFallback({
     openai: () => openaiImage(gptPrompt, openaiRefs, "portrait_4_3"),

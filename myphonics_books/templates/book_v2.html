@@ -834,6 +834,17 @@
     .spot-photo-placeholder {
       color: #bbb; font-size: 9pt; font-style: italic;
     }
+    /* Word-only card, used when a spotlight word has no photo (custom forge
+       books ship without the photo library).  The old fallback printed the
+       word INSIDE the photo box as a faint placeholder AND again in bold
+       underneath — a duplicated label on every card (ChatGPT review,
+       2026-08-11).  With no photo the box is skipped and the word carries
+       the card alone. */
+    .spot-card-noimg .spot-word {
+      border-top: none;
+      padding: 6mm 2.5mm;
+      font-size: 22pt;
+    }
     .spot-word {
       padding: 2.5mm;
       font-size: 18pt; font-weight: 700;
@@ -3038,11 +3049,10 @@
         </div>
         <div class="spot-grid">
           {% for entry in spotlights_to_show[0].words[:4] %}
-          <div class="spot-card">
-            <div class="spot-photo">
-              {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
-              {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
-            </div>
+          <div class="spot-card{% if not entry.photo %} spot-card-noimg{% endif %}">
+            {% if entry.photo %}
+            <div class="spot-photo"><img src="{{ entry.photo }}" alt="{{ entry.word }}"></div>
+            {% endif %}
             <div class="spot-word">{{ entry.word_html | safe }}</div>
           </div>
           {% endfor %}
@@ -3066,11 +3076,10 @@
           {% set _n_cards = [spot.words|length, _spot_cap]|min %}
           <div class="spot-row-cards{% if _spot_cap > 3 and _n_cards == 4 %} spot-row-cards-4{% elif _spot_cap > 3 and _n_cards > 4 %} spot-row-cards-2line{% endif %}">
             {% for entry in spot.words[:_spot_cap] %}
-            <div class="spot-card">
-              <div class="spot-photo">
-                {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
-                {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
-              </div>
+            <div class="spot-card{% if not entry.photo %} spot-card-noimg{% endif %}">
+              {% if entry.photo %}
+              <div class="spot-photo"><img src="{{ entry.photo }}" alt="{{ entry.word }}"></div>
+              {% endif %}
               <div class="spot-word{% if entry.word|length > 9 %} spot-word-long{% endif %}">{{ entry.word_html | safe }}</div>
             </div>
             {% endfor %}
@@ -3093,11 +3102,10 @@
           </div>
           <div class="spot-row-cards">
             {% for entry in future_spotlight_row.words[:3] %}
-            <div class="spot-card">
-              <div class="spot-photo">
-                {% if entry.photo %}<img src="{{ entry.photo }}" alt="{{ entry.word }}">
-                {% else %}<div class="spot-photo-placeholder">{{ entry.word }}</div>{% endif %}
-              </div>
+            <div class="spot-card{% if not entry.photo %} spot-card-noimg{% endif %}">
+              {% if entry.photo %}
+              <div class="spot-photo"><img src="{{ entry.photo }}" alt="{{ entry.word }}"></div>
+              {% endif %}
               <div class="spot-word">{{ entry.word_html | safe }}</div>
             </div>
             {% endfor %}

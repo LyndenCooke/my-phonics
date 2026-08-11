@@ -58,6 +58,12 @@ function newJob(book) {
     anchors: {},      // location id -> image URL
     castSheets: {},   // cast id -> { name, url }
     objectSheets: {}, // key_object name (lowercased) -> { name, url }
+    // Responses-API conversation chain (SKILL.md §5.5): the last approved
+    // scene turn's response id. Each scene chains onto this so the model
+    // carries the actual generated world forward; the cover chains onto the
+    // final scene. null until the first chained scene succeeds — and stays
+    // null if the chain path is disabled or failing (stateless fallback).
+    chainResponseId: null,
   };
 }
 
@@ -462,9 +468,11 @@ async function stepScene(book, job, i) {
     // consistency QA in generateScene — a story page always has real text,
     // unlike the cover, which has none to check against.
     pageText: story.pages[i].text,
+    previousResponseId: job.chainResponseId,
   });
   job.cost += s.cost; job.breakdown.images_usd += s.cost;
-  job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf) });
+  if (s.responseId) job.chainResponseId = s.responseId;
+  job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
   if (s.qa?.consistency && !s.qa.consistency.pass) {
     console.warn(`[forge] page ${i + 1} consistency QA still failing after repair: ${s.qa.consistency.reason}`);
   }
@@ -498,6 +506,7 @@ async function stepCover(book, job) {
     settingBlock: worldBlockOf(story) + fromText(coverBrief),
     anchorBuf: anchorUrl ? await loadByUrl(anchorUrl) : null,
     objectRefs,
+    previousResponseId: job.chainResponseId,
   });
   job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
   job.coverUrl = await saveImage(book.id, "cover.jpg", cover.buf);
