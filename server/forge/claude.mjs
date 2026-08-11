@@ -844,10 +844,15 @@ const EYE_QA_SCHEMA = {
     // white almonds with black pupils). Making it state what is literally
     // inside the eye outline first turns the check back into a check.
     eyes_seen: { type: "string" },
+    // Same lesson, different feature: a finished page shipped with the hero
+    // missing her NOSE (2026-08-11, "Amina Gets Food" p5) because this gate
+    // only ever asked about eyes — a checklist QA answers only its checklist.
+    // The face crop is already zoomed; asking about the whole face is free.
+    features_seen: { type: "string", description: "For each visible face: list which facial features are actually drawn — eyes, eyebrows, nose, mouth. Name any that are MISSING on a face shown from the front or three-quarter view (a profile or turned-away head is exempt)." },
     pass: { type: "boolean" },
     reason: { type: "string" },
   },
-  required: ["eyes_seen", "pass", "reason"],
+  required: ["eyes_seen", "features_seen", "pass", "reason"],
   additionalProperties: false,
 };
 
@@ -933,10 +938,17 @@ const SCENE_QA_SCHEMA = {
     action_shown: { type: "string", description: "What is the character physically doing in the image, in one sentence — compare it to what the text says is happening." },
     object_states: { type: "string", description: "For each key object visible: its declared state for this page, and whether the image matches that state or shows something earlier/later/wrong." },
     mechanism_legible: { type: "string", description: "If the sentence describes an object physically interacting with another (fitting into, plugging, opening, breaking, pouring into, tying to, etc.): does the image draw the SECOND object/feature that the first one interacts with (e.g. a hole, gap, slot, container), and does the image show contact/alignment between them? IF THE SENTENCE NAMES A SPECIFIC ATTACHMENT POINT (a leg, a wing, a handle, a specific part of a body or object), the image must show the interaction AT THAT EXACT PART — string described as being 'on its leg' drawn instead around a tail, a wing, or anywhere else on the body is a FAIL even though a string and the animal are both visible and technically touching. Name the exact part the text specifies and the exact part the image actually shows contact at; if they differ, that is a mismatch. A child who cannot read must be able to see the mechanism at the RIGHT location, not just both objects somewhere on the page. If the sentence describes no such interaction, say so and skip this check." },
+    // The open-ended sweep. Every failure this gate has ever shipped was
+    // something its checklist never asked about (a nose missing from a face,
+    // a map read from its blank back, a bag squashed against the map under
+    // one arm — all in one book, 2026-08-11). The checklist fields above stay
+    // because they force specific comparisons, but this field is the fresh
+    // eyes: what would a picky parent flipping through object to?
+    defect_sweep: { type: "string", description: "Look at the whole image with fresh eyes, ignoring the checklist above, and list anything a sharp parent flipping through a printed book would object to. Check in particular: (1) any object a character is USING is oriented the way its user would actually use it — a person reading a map, book or note must be looking at its printed face, not its blank back with the print facing the camera; (2) held or carried items relate to each other and the body sensibly — no item squashed against, merged into, or impossibly overlapping another; (3) no body part or object is malformed, duplicated, or missing something obvious. Name each real problem specifically, or say the image is clean. Do NOT flag ordinary style simplifications or things a checklist field above already covers." },
     pass: { type: "boolean" },
     reason: { type: "string", description: "If failing: the specific, narrow thing to fix — never just 'regenerate the page'." },
   },
-  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "pass", "reason"],
+  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "defect_sweep", "pass", "reason"],
   additionalProperties: false,
 };
 
@@ -954,8 +966,8 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
   const objectLines = objectsBlock.trim() || "(no key objects declared for this page)";
   const system =
     "You QA a children's picture-book illustration against the page it illustrates. Describe what you literally see before judging — a bare pass/fail rubber-stamps everything, because 'a nice picture of kids in a market' looks fine at a glance even when it fails to show the actual sentence. " +
-    "Answer named_objects, action_shown, object_states and mechanism_legible with what is ACTUALLY IN THE IMAGE, not what you'd expect a good illustration to contain. Only then set pass. " +
-    "pass is FALSE if: any object the sentence names is entirely absent from the image; the image shows a moment clearly before or after the sentence's action rather than the action itself; a key object is shown in a state that contradicts its declared state for this page (e.g. declared 'not yet plugged into the hole' but the image shows it already inserted, or vice versa); the sentence describes one object physically interacting with a second (fitting into, plugging, opening, tying, pouring, etc.) and the image does not draw that second object/feature at all, or draws both objects with no visible contact between them — an object being merely present near another is NOT the same as the image showing them interact; OR the sentence names a specific attachment point (a leg, a wing, a handle) and the image shows the interaction at a DIFFERENT part of the same object/creature (string described as tied 'on its leg' but drawn around a tail or wing is a fail, even though a string and the animal are both visible). A child who cannot read the words must be able to point at the picture and see the specific thing the sentence describes happening, at the place it says it is happening. " +
+    "Answer named_objects, action_shown, object_states, mechanism_legible and defect_sweep with what is ACTUALLY IN THE IMAGE, not what you'd expect a good illustration to contain. Only then set pass. " +
+    "pass is FALSE if: any object the sentence names is entirely absent from the image; the image shows a moment clearly before or after the sentence's action rather than the action itself; a key object is shown in a state that contradicts its declared state for this page (e.g. declared 'not yet plugged into the hole' but the image shows it already inserted, or vice versa); the sentence describes one object physically interacting with a second (fitting into, plugging, opening, tying, pouring, etc.) and the image does not draw that second object/feature at all, or draws both objects with no visible contact between them — an object being merely present near another is NOT the same as the image showing them interact; OR the sentence names a specific attachment point (a leg, a wing, a handle) and the image shows the interaction at a DIFFERENT part of the same object/creature (string described as tied 'on its leg' but drawn around a tail or wing is a fail, even though a string and the animal are both visible); OR defect_sweep found a genuine problem — an object being read/used facing the wrong way, held items impossibly overlapping, a malformed or incomplete body part. A child who cannot read the words must be able to point at the picture and see the specific thing the sentence describes happening, at the place it says it is happening. " +
     "Minor artistic license is fine — this is not a check for a literal diagram. Fail only for a genuine, obvious mismatch a child's parent would notice.";
   const content =
     `PAGE TEXT: "${sceneText}"\n\nKEY OBJECTS for this page:\n${objectLines}\n\n` +
@@ -1002,9 +1014,12 @@ export async function eyeRuleQA(imageB64, mediaType = "image/jpeg") {
   const system = `You QA children's book illustrations for MyPhonicsBooks. The rule you check is the EYE RULE: every character or animal eye must be a small SOLID BLACK FILLED dot/oval — no white sclera, no catchlight, no glint, no highlight, no coloured iris, no outlined-but-unfilled eyes. Closed eyes (curved lines) are fine. Images with no eyes pass. Be strict: a single white pixel highlight inside an eye is a FAIL.
 Eye dots must also be PROPORTIONAL to the creature: a stray black blotch or smear on a face, or an eye dot grossly oversized for a small creature (a snail, insect or bird), is a FAIL — small creatures get minuscule dots (a snail's eyes sit at the tips of its stalks, nowhere else).
 
-HOW TO ANSWER — do this in order, and do not skip step 1:
+You ALSO check FACE COMPLETENESS: every face drawn from the front or three-quarter view must have its basic features actually drawn — eyes, nose and mouth. A face with eyebrows, eyes, blush and a mouth but NO NOSE has shipped in a finished book; nobody noticed because nobody was asked. A profile or turned-away head is exempt; a deliberately simplified background figure too small to carry features is exempt.
+
+HOW TO ANSWER — do this in order, and do not skip steps 1-2:
 1. "eyes_seen": for EACH character, describe literally what you can see inside the outline of each eye — the shapes and the colours, in the order they appear ("a white almond shape with a smaller black circle inside it", or "one solid black oval, no other colour"). Describe what is actually there, not what the house style says should be there.
-2. Only then decide "pass". If what you described contains ANY white, grey or coloured area inside an eye outline — including a white almond with a black pupil sitting in it, which is the single most common failure — then pass is FALSE.`;
+2. "features_seen": for EACH face, list the features actually drawn (eyes / eyebrows / nose / mouth) and name any that are missing on a front or three-quarter face.
+3. Only then decide "pass". pass is FALSE if what you described contains ANY white, grey or coloured area inside an eye outline — including a white almond with a black pupil sitting in it, which is the single most common failure — OR if a front/three-quarter face is missing its nose or mouth.`;
   const question = "Does this image pass the eye rule? Look closely at every eye.";
   if (useOpenAI) {
     return openaiJson({
@@ -1043,7 +1058,7 @@ HOW TO ANSWER — do this in order, and do not skip step 1:
     ],
     output_config: { format: { type: "json_schema", schema: EYE_QA_SCHEMA } },
   });
-  if (response.stop_reason === "refusal") return { data: { pass: true, eyes_seen: "", reason: "qa-skipped" }, cost: 0 };
+  if (response.stop_reason === "refusal") return { data: { pass: true, eyes_seen: "", features_seen: "", reason: "qa-skipped" }, cost: 0 };
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
   return { data: JSON.parse(text), cost: usageCost(response.usage) };
 }

@@ -420,9 +420,16 @@ export async function repairEyes(buf, qa) {
   let cost = 0;
   for (let attempt = 1; attempt <= 2 && !qa.pass; attempt++) {
     try {
+      // The face gate now also fails on a missing nose/mouth (a hero shipped
+      // nose-less, 2026-08-11) — an eye-only edit prompt cannot fix that, so
+      // the repair instruction follows what the QA actually found.
+      const missingFeature = /nose|mouth/i.test(`${qa.reason || ""} ${qa.features_seen || ""}`) && !/no (missing|faces?)/i.test(qa.reason || "");
       const fixed = await eyeRepairEdit(
         buf,
-        "Edit this image. Change ONLY the eyes: replace every eye with one small solid pure-black filled dot — tiny like a teddy bear's bead eyes, the same size or smaller than the current eyes, with no white, no highlight, no glint and no iris. The whole eye shape must be filled in solid black: if an eye currently has a white area with a dark pupil inside it, the white area goes too — do not leave any white showing. Eye dots must be proportional to the creature: on small creatures (snails, insects, birds) they are minuscule, and a snail's eyes sit at the tips of its stalks. Remove any stray black blotches or smears from faces. Keep the art style, characters, pose and everything else exactly the same.",
+        (missingFeature
+          ? `Edit this image. A character's face is missing a basic feature: ${qa.reason} Draw the missing feature in — a small simple nose or mouth matching the art style of the other faces in the image — changing nothing else about the face or the picture. Also ensure every eye is one small solid pure-black filled dot with no white, no highlight and no iris. `
+          : "Edit this image. Change ONLY the eyes: replace every eye with one small solid pure-black filled dot — tiny like a teddy bear's bead eyes, the same size or smaller than the current eyes, with no white, no highlight, no glint and no iris. The whole eye shape must be filled in solid black: if an eye currently has a white area with a dark pupil inside it, the white area goes too — do not leave any white showing. Eye dots must be proportional to the creature: on small creatures (snails, insects, birds) they are minuscule, and a snail's eyes sit at the tips of its stalks. Remove any stray black blotches or smears from faces. ") +
+        "Keep the art style, characters, pose and everything else exactly the same.",
       );
       cost += fixed.cost;
       buf = fixed.buf;
