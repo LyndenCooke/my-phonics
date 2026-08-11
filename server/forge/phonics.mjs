@@ -145,6 +145,22 @@ export function focusSoundViolations({ story, focusSound, level }) {
   return violations;
 }
 
+// A book must use AT LEAST 3 distinct focus-sound word forms — not "1 to 3"
+// (that phrasing in the story-writer prompt let the model land on a single
+// word, "soon", for a whole "oo" book). Deterministic: focus_word_examples is
+// exactly the field the story schema asks the writer to fill with these
+// words, so counting its distinct entries needs no model judgement (Lynden
+// 2026-08-11: "there is only one story word... should be at least 3").
+export function focusSoundCountViolation({ story, focusSound }) {
+  const words = [...new Set((story.focus_word_examples || []).map((w) => String(w).toLowerCase().trim()).filter(Boolean))];
+  if (words.length >= 3) return null;
+  return {
+    word: focusSound || "(focus sound)",
+    page: 0,
+    reason: `Only ${words.length} distinct focus-sound word form(s) used (${JSON.stringify(words)}) — this book must use AT LEAST 3 distinct focus-sound words, not one or two.`,
+  };
+}
+
 export function pronunciationNoteFor(grapheme, level) {
   const sounds = pronunciationsFor(grapheme, level);
   if (sounds.length < 2) return null;

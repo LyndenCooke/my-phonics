@@ -633,7 +633,13 @@ export async function generateAnimal({ name, appearance }) {
 // on this page, injected so they look the same every time they appear.
 // objectRefs: [{name, buf}] — identity references for recurring key objects
 // visible on this page (see generateObjectRef), injected the same way.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "" }) {
+// prevBuf: the immediately PREVIOUS page's actual image, when it shares this
+// page's location — carries forward anything set-dressing added since the
+// anchor was taken (a specific rock's ledge, an undeclared prop's exact
+// spot) that no fixed reference was ever generated for. Anchor = "what does
+// this place permanently look like"; prevBuf = "what does it look like RIGHT
+// NOW" — both can be true and useful at once.
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "" }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -669,6 +675,9 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   const objectText = objectRefs.length
     ? `The next ${objectRefs.length === 1 ? "reference image is a KEY OBJECT" : `${objectRefs.length} reference images are KEY OBJECTS`} in this scene (${objectRefs.map((o) => o.name).join(", ")}) — keep each one's exact appearance identical: same colours, same shape, same markings, same materials, every time it appears. Only draw it in the state this page's text and setting describe (its position, and whether it is open/closed, full/empty, finished/unfinished); never change its fixed identity. `
     : "";
+  const prevText = prevBuf
+    ? "The next reference image is THIS BOOK'S OWN PREVIOUS PAGE, in the same place as the scene you are about to draw — this is what the world actually looked like a moment ago. Any recurring object, structure or set-dressing visible in it (a rock's shape, where something was left, the exact background layout) MUST stay the same identity in the new scene, even if it was never separately described — only change what this page's action requires. This is continuity evidence, not the final word on identity — if it conflicts with a character/object reference image above, THIS reference loses. "
+    : "";
 
   // Rebuilt per attempt so a consistency-QA repair pass (below) can append
   // its correction to the same scene brief rather than starting from scratch.
@@ -678,6 +687,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       "The first reference image is the MAIN CHARACTER — keep this character's exact appearance (face, hair, skin tone, outfit, proportions, tiny solid black dot eyes) identical in the generated scene. " +
       castText +
       objectText +
+      prevText +
       (anchorBuf
         ? `The final reference image is the ${samePlace} `
         : "The final reference image shows our publishing house's style for full illustrated scenes — match its rendering, texture, palette and mood exactly. ") +
@@ -686,6 +696,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       heroUri,
       ...castRefs.map((c) => toDataUri(c.buf, "image/png")),
       ...objectRefs.map((o) => toDataUri(o.buf, "image/png")),
+      ...(prevBuf ? [toDataUri(prevBuf, "image/png")] : []),
       anchorBuf ? toDataUri(anchorBuf, "image/png") : refUri(SCENE_REF_PATH),
     ];
     const vertexParts = [
@@ -699,6 +710,12 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
         { text: `REFERENCE — this is the key object "${o.name}". Keep its exact appearance identical (same colours, shape, markings, materials); only its state/position may change to match this page:` },
         { inlineData: { mimeType: "image/png", data: o.buf.toString("base64") } },
       ]),
+      ...(prevBuf
+        ? [
+            { text: "REFERENCE — this is the book's own PREVIOUS page, same place. Keep any recurring object, structure or set-dressing visible in it (a rock's shape, where something was left) the same identity in the new scene, even if never separately described — only change what this page's action requires:" },
+            { inlineData: { mimeType: "image/png", data: prevBuf.toString("base64") } },
+          ]
+        : []),
       ...(anchorBuf
         ? [
             { text: `LOCATION REFERENCE — ${samePlace}` },
@@ -714,6 +731,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       heroBuf,
       ...castRefs.map((c) => c.buf),
       ...objectRefs.map((o) => o.buf),
+      ...(prevBuf ? [prevBuf] : []),
       anchorBuf || fs.readFileSync(SCENE_REF_PATH),
     ];
     return () => withFallback({

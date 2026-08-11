@@ -19,7 +19,7 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
@@ -201,13 +201,21 @@ async function stepQa(book, job) {
   if (focusViolations.length) {
     validation = { ...validation, ok: false, violations: [...(validation.violations || []), ...focusViolations] };
   }
+  // A book that landed on just 1-2 focus-sound words (Lynden 2026-08-11:
+  // "there is only one story word... should be at least 3") — deterministic,
+  // counts story.focus_word_examples directly.
+  const countViolation = focusSoundCountViolation({ story, focusSound: book.focus_sound });
+  if (countViolation) {
+    validation = { ...validation, ok: false, violations: [...(validation.violations || []), countViolation] };
+  }
 
   const distinct = new Set((validation.violations || []).map((v) => v.word.toLowerCase())).size;
   // A generic above-level word is fine in small numbers (Future Sounds
   // preview handles it) — but a focus-word EXAMPLE using an untaught sound of
-  // the very grapheme this book is teaching is never fine, even just one, so
-  // it forces a rewrite regardless of the >3 threshold.
-  if (!validation.ok && (distinct > 3 || focusViolations.length > 0)) {
+  // the very grapheme this book is teaching, or too few focus-sound words
+  // overall, is never fine, so either forces a rewrite regardless of the
+  // >3 threshold.
+  if (!validation.ok && (distinct > 3 || focusViolations.length > 0 || countViolation)) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
     });
@@ -219,6 +227,10 @@ async function stepQa(book, job) {
     const recheckFocus = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
     if (recheckFocus.length) {
       validation = { ...validation, ok: false, violations: [...(validation.violations || []), ...recheckFocus] };
+    }
+    const recheckCount = focusSoundCountViolation({ story, focusSound: book.focus_sound });
+    if (recheckCount) {
+      validation = { ...validation, ok: false, violations: [...(validation.violations || []), recheckCount] };
     }
   }
 
@@ -338,19 +350,42 @@ async function castSheetFor(book, job, id) {
   }
 }
 
+// The director names an object per-page in its own words ("black string",
+// "the string", "string") which rarely matches key_objects[].name character
+// for character. An exact-match lookup silently returns null on any mismatch
+// — no error, just a missing reference and the object drifting on that page
+// exactly like it did before references existed at all (the test book's
+// string). Substring match both ways, case-insensitive, is enough: whichever
+// name is shorter should appear whole inside the other.
+function resolveKeyObject(story, rawName) {
+  const key = String(rawName || "").toLowerCase().trim();
+  if (!key) return null;
+  const objects = story.key_objects || [];
+  const exact = objects.find((o) => o?.name?.toLowerCase() === key);
+  if (exact) return exact;
+  return objects.find((o) => {
+    const oName = String(o?.name || "").toLowerCase();
+    if (!oName) return false;
+    return key.includes(oName) || oName.includes(key);
+  }) || null;
+}
+
 // A locked identity reference for a recurring key object (SKILL.md §5.1) —
 // generated once per book, the same "sheet, then inject everywhere" fix
 // castSheetFor already does for people. Without this a key object (a cap, a
 // bag) is redrawn from its text `look` alone on every page and its colour,
-// shape and trim drift page to page.
-async function objectSheetFor(book, job, name) {
-  const key = String(name).toLowerCase();
+// shape and trim drift page to page. Always cached and looked up under the
+// CANONICAL key_objects.name (never the director's per-page wording), so a
+// page calling it "black string" and another calling it "the string" still
+// hit the same cached reference instead of silently generating none.
+async function objectSheetFor(book, job, rawName) {
+  const obj = resolveKeyObject(job.story, rawName);
+  if (!obj) return null;
+  const key = obj.name.toLowerCase();
   if (job.objectSheets[key]) {
     const buf = await loadByUrl(job.objectSheets[key].url);
     return buf ? { name: job.objectSheets[key].name, buf } : null;
   }
-  const obj = (job.story.key_objects || []).find((o) => o?.name?.toLowerCase() === key);
-  if (!obj) return null;
   try {
     const r = await generateObjectRef({ name: obj.name, look: obj.look, child: childOf(book) });
     job.cost += r.cost; job.breakdown.images_usd += r.cost; job.breakdown.qa_notes.push(r.qa);
@@ -358,7 +393,7 @@ async function objectSheetFor(book, job, name) {
     job.objectSheets[key] = { name: obj.name, url };
     return { name: obj.name, buf: r.buf };
   } catch (e) {
-    console.warn(`[forge] object reference for ${name} failed:`, e.message);
+    console.warn(`[forge] object reference for ${rawName} failed:`, e.message);
     return null;
   }
 }
@@ -379,6 +414,23 @@ async function stepScene(book, job, i) {
   const anchorUrl = loc ? job.anchors[loc] || null : null;
   const anchorBuf = anchorUrl ? await loadByUrl(anchorUrl) : null;
   const camera = anchorBuf ? d?.camera || "new-angle" : "wide";
+
+  // The location anchor is fixed to the FIRST image ever made there — good
+  // for permanent architecture, but stale for anything set-dressing added
+  // since (a rock's exact ledge shape, where an undeclared prop landed). The
+  // PREVIOUS page's actual image, when it shares this page's location, is
+  // what a manual "what would the next image look like, using the last one
+  // as reference" workflow would use — undeclared recurring set-pieces (the
+  // book was on a different-shaped rock every page) only carry forward this
+  // way, since they were never captured as a formal key_objects reference
+  // (Lynden 2026-08-11: "the rock changes in every scene... no continuation
+  // of story through realistic image/object progression"). Skipped when it's
+  // literally the same file as the anchor (page 2, the anchor's own source).
+  const prevLoc = i > 0 ? (story.pages[i - 1].location || "").trim().toLowerCase() : null;
+  const prevUrl = prevLoc && prevLoc === loc && job.sceneUrls[i - 1] && job.sceneUrls[i - 1] !== anchorUrl
+    ? job.sceneUrls[i - 1]
+    : null;
+  const prevBuf = prevUrl ? await loadByUrl(prevUrl) : null;
 
   const wanted = d?.cast_present?.length
     ? d.cast_present
@@ -402,6 +454,7 @@ async function stepScene(book, job, i) {
       worldBlockOf(story) +
       (d ? fromDirector(d.objects) : fromText(`${story.pages[i].text} ${sceneBrief}`)),
     anchorBuf,
+    prevBuf,
     camera,
     castRefs,
     objectRefs,
