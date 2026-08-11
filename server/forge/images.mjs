@@ -564,13 +564,21 @@ function locationRefText(camera) {
 // redrawn from the word "mum" each time and their clothes change colour page
 // to page.
 export async function generateCastMember({ member, child }) {
+  // The age clause must follow the DECLARED cast member, not assume adult.
+  // "This is an ADULT" was hard-coded (added 2026-07-26 because a mum drawn
+  // from text alone rendered as an older sister) — and then "Sam, Amina's
+  // pal, a six-year-old boy" got a beard and adult height, and every scene
+  // faithfully matched his wrong sheet, so no downstream QA could ever catch
+  // it: the reference itself was the error (Lynden's "Food for All" book,
+  // 2026-08-12). Child cast members are real and common — a pal, a sibling.
+  const isChild = /\b(boy|girl|child|kid|toddler|baby|little (?:brother|sister)|(?:[3-9]|1[0-2]|three|four|five|six|seven|eight|nine|ten|eleven|twelve)[- ]year[- ]old)\b/i.test(`${member.who || ""} ${member.appearance || ""}`);
+  const ageClause = isChild
+    ? "CHILD PROPORTIONS: this is a CHILD, close in age and height to the book's young hero — a child's build and round face, clearly a playmate or sibling, NOT an adult and NOT taller than a grown-up. No facial hair ever. "
+    : "GROWN-UP PROPORTIONS: this is an ADULT, not a child — an adult's height and build, a fuller adult face with a softer jaw and gentle laughter lines, clearly older and taller than a young child. They should read instantly as a parent. ";
   const brief =
     `A cartoon character for a children's picture book: ${member.who}. ${member.appearance}. ` +
     `They belong to the same family world as the hero of the book, set in ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} — culturally accurate, warm and dignified. ` +
-    // Drawn from a text description alone, the model renders every cast
-    // member childlike, and a mum ends up looking like an older sister
-    // (Lynden 2026-07-26). Say the age out loud.
-    "GROWN-UP PROPORTIONS: this is an ADULT, not a child — an adult's height and build, a fuller adult face with a softer jaw and gentle laughter lines, clearly older and taller than a young child. They should read instantly as a parent. " +
+    ageClause +
     "Standing in a neutral pose, facing the viewer, full body visible from head to toe, arms slightly away from the body. " +
     "The character has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big. " +
     "Plain light cream solid-colour background (no scenery, no objects, no patterns). " +
