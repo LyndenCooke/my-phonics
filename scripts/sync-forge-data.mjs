@@ -24,6 +24,7 @@ const FILES = [
   "tricky_words_by_level.json",
   "reading_progression.json",
   "pronunciations.json",
+  "core_story_digest.json",
 ];
 
 fs.mkdirSync(DST, { recursive: true });

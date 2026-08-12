@@ -19,7 +19,7 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
@@ -184,6 +184,7 @@ async function stepStory(book, job) {
     progression: progressionUpTo(book.level),
     pronunciations: pronunciationsFor(book.focus_sound, book.level),
     shape,
+    exemplars: coreStoriesFor(book.level),
   });
   job.story = story;
   job.breakdown.story_shape = shape.name;

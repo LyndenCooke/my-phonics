@@ -161,6 +161,35 @@ export function focusSoundCountViolation({ story, focusSound }) {
   };
 }
 
+// Real published MPB books as story exemplars (Lynden 2026-08-12: "use the
+// 33 core MPB for support with stories"). The library's stories are
+// structurally easier on the illustrator BY DESIGN — they tend to move
+// through settings page to page with little accumulating object state,
+// where the forge's invented plots kept hinging on one object mutating in
+// one location (the dot card, the pad on the rock). These exemplars teach
+// the writer that rhythm by example, not just by rule.
+//
+// The digest carries the ORIGINAL 6-level ids; the forge runs the 8-level
+// system. Mapping per the 2026-06-08 realignment: old L1 split into new
+// L1-L3; old L2..L6 shifted to new L4..L8.
+let coreStoriesCache = null;
+export function coreStoriesFor(newLevel, count = 3) {
+  if (!coreStoriesCache) {
+    try {
+      coreStoriesCache = JSON.parse(fs.readFileSync(dataFile("core_story_digest.json"), "utf8")).books || [];
+    } catch {
+      coreStoriesCache = [];
+    }
+  }
+  const oldLevel = newLevel <= 3 ? 1 : newLevel - 2;
+  const atLevel = coreStoriesCache.filter((b) => b.level === oldLevel);
+  // Spread picks across the level rather than always the same first books.
+  const picked = [];
+  const step = Math.max(1, Math.floor(atLevel.length / count));
+  for (let i = 0; i < atLevel.length && picked.length < count; i += step) picked.push(atLevel[i]);
+  return picked.map((b) => ({ title: b.title, pages: b.pages }));
+}
+
 export function pronunciationNoteFor(grapheme, level) {
   const sounds = pronunciationsFor(grapheme, level);
   if (sounds.length < 2) return null;

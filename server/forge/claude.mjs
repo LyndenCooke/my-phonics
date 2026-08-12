@@ -405,7 +405,7 @@ export const STORY_SHAPES = [
   { name: "Side by side", how: "Two people or two things are set up as a genuine contrast across the book — big and small, fast and slow, old and new, quiet and loud — each page showing the difference in action, building to a moment where the difference turns out to be exactly what was needed." },
 ];
 
-export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null }) {
+export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [] }) {
   const system = `You are the senior story writer for MyPhonicsBooks, a British systematic synthetic phonics programme (Letters and Sounds based, NOT Read Write Inc). You write decodable stories for children aged 4-8 that celebrate the child's own culture and background. British English throughout (colour, mum, favourite).
 
 THE STORY COMES FROM THE SOUND, NOT FROM A THEME. Start from the focus sound "${focusSound}": brainstorm the best decodable words it unlocks, pick the ones with the most story potential, and build the most engaging story THOSE words can tell. Do not force the story around the child's hobbies — that constrains it. The child's world appears in what we SEE, not in what the plot must be.
@@ -437,8 +437,16 @@ MECHANICS — non-negotiable, they are what the child is being taught:
 - ONE consistent tense across the whole book (past tense unless there is a reason not to).
 ${progression && !progression.punctuation.some((p) => p.includes("speech")) ? `- NO DIALOGUE AT THIS LEVEL. Speech marks are not taught until Level 6, so a character must not speak — not even without quotation marks. "Dad held up a brush. Will you fix it?" is unattributed speech and confuses a child who has not met speech marks. Tell the story in narration: "Dad held up a brush for Tomás to take."` : `- Dialogue is allowed at this level: punctuate it with speech marks and attribute it ("Stay with me!" said Mum).`}
 
+${exemplars.length ? `REAL PUBLISHED MPB BOOKS AT THIS LEVEL — study these before writing. Match their register, their sentence rhythm, and above all their CONTINUITY LOAD (how little they ask the illustrator to keep identical between pages):
+${exemplars.map((e) => `"${e.title}": ${e.pages.join(" | ")}`).join("\n")}
+
+` : ""}KEEP THE ILLUSTRATOR'S JOB POSSIBLE — this is a picture book, and the pictures are drawn one page at a time:
+- PREFER STORIES THAT MOVE. The published books above tend to travel through settings — a new scene or a new spot page to page — because a fresh backdrop only has to be right ONCE. A story that sits in one location while a single object slowly changes (dots accumulating on a card, a craft being assembled step by step) demands pixel-perfect object continuity across every page, which is the single hardest thing to illustrate consistently. Do not build the plot on it unless the story shape genuinely demands it.
+- If an object DOES change across pages, give it ONE simple, boldly visible change (empty bowl → full bowl), never a precise accumulating layout (never "one more dot each page", "one more brick each page").
+- The fewer recurring props the better: characters carry the continuity; scenery refreshes.
+
 STORY RULES:
-- LANGUAGE A CHILD ACTUALLY SPEAKS. Every sentence must sound like something a real 4-8 year old would say or a parent would say TO one — never literary, poetic or adult narration. "The wash ran up and up" (using "wash" as a noun for the tide, an idiom "up and up") is the kind of phrasing that fails this: a child does not talk like that. Prefer plain, concrete, everyday words and ordinary sentence shapes over anything that sounds like it was written to be admired rather than read aloud to a child.
+- LANGUAGE A CHILD ACTUALLY SPEAKS. Every sentence must sound like something a real 4-8 year old would say or a parent would say TO one — never literary, poetic or adult narration. "The wash ran up and up" (using "wash" as a noun for the tide, an idiom "up and up") is the kind of phrasing that fails this: a child does not talk like that. Prefer plain, concrete, everyday words and ordinary sentence shapes over anything that sounds like it was written to be admired rather than read aloud to a child. The published books above are the register to match.
 - Exactly ${pagesCount} pages.
 - The hero is ${child.name}, age ${child.age ?? "5"}, from ${child.country || "the UK"}.
 - The child's culture and home appear through what we SEE in the scenes (food, clothing, places, family life), guided by: ${child.cultureNotes || "everyday family life"}. Show culture with warmth and dignity — never stereotypes, never preachy text. (For flavour only, not plot: the child likes ${child.likes || "playing"}.)
