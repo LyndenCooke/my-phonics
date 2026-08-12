@@ -466,10 +466,19 @@ async function generateWithEyeQA(genFn, label) {
 // HERO_PROMPTS (generate_gemini_images.py).
 export function heroPrompt(child) {
   const a = child.appearance || {};
+  // Gender must be explicit and reinforced: in this soft round-faced style an
+  // unstated or unstressed gender renders ambiguous, and boys drift girlish —
+  // "Yusuf looks like a girl" happened on two test books (Lynden 2026-08-12).
+  const genderLine = a.gender === "boy"
+    ? ". UNMISTAKABLY A BOY at first glance: short boyish hair unless another style is given, boyish clothing, no long eyelashes, no bow, no dress or skirt"
+    : a.gender === "girl"
+      ? ". Unmistakably a girl at first glance"
+      : "";
   return (
     `A cartoon ${a.gender || "child"} character, about ${child.age ?? 5} years old, ` +
     (a.skinTone ? `with ${a.skinTone} skin` : "") +
     (a.hair ? ` and ${a.hair}` : "") +
+    genderLine +
     `. ${a.outfit ? `Wearing ${a.outfit}` : `Wearing bright comfortable everyday clothes that feel at home in ${child.country || "the UK"}`}. ` +
     "The character has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big, " +
     "and a cheerful smile. Standing in a neutral pose, facing the viewer, full body visible from head to toe. " +

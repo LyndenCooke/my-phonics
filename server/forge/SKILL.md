@@ -21,6 +21,7 @@ Never invent personal facts. Use "In the family's words" only for wording the fa
 - Draw eyes as tiny solid black filled shapes: no sclera, catchlight, iris or coloured pupil.
 - Keep clothing modest, child-appropriate and unchanged unless the story explicitly includes a clothing change.
 - Keep each recurring character's identity, age, proportions, hair and fixed outfit consistent.
+- Make the hero's declared gender unmistakable at first glance in the hero sheet and every scene. In this soft round-faced style an unstressed gender renders ambiguous and boys drift girlish ("Yusuf looks like a girl", two books, 2026-08-12): a boy gets short boyish hair unless another style is given, boyish clothing, no long eyelashes, no bow, no dress or skirt.
 - Keep each recurring object's identity features consistent even while its position or state changes.
 - Allow settings and scenes to progress. Preserve permanent location facts while changing only what the story requires.
 - Show one visually coherent time-slice per page. Do not ask one image to show mutually exclusive before-and-after states.
@@ -119,6 +120,18 @@ Include, in visible order:
 6. the result, shared or recognised.
 
 Do not skip the doing itself. Do not make the reader infer an important event between pages. Establish the cause of the setback before the setback happens.
+
+Every obstacle posed must be overcome on the page by the hero's own visible effort or idea. A story that poses a blocker ("Can Yusuf get to it?" behind a gate full of cats) and then shows the hero at the goal without the page where they get past that specific blocker has failed, even if nothing is physically impossible (Lynden, 2026-08-12, "Yusuf Gets to the Dock"). The plausibility gate rejects it. "The Stuck Stool" is the model: setup, effort, earned result.
+
+### 4.2a Plot source
+
+The plot comes from the story shape and the focus-sound words alone. The family's notes (`culture_notes`) and the child's `likes` are set dressing: they colour what the pictures show (dress, food, streets, architecture) and must never supply the obstacle, the solution, a plot-driving character or animal, or the reason anything happens. Failure example: "feeding the cats by the harbour" in the notes became eight cats blocking the ferry gate as the plot obstacle (2026-08-12). `likes` is not passed to the story writer at all.
+
+Stories should quietly carry one small moral a parent would want — effort, patience, honesty, kindness, fairness: Islamic values lived in everyday action — shown through the events, never stated in the text.
+
+### 4.2b Journey stories: destination discipline
+
+If the story travels toward a destination, the destination appears at most twice in the art: an optional distant glimpse in the opening establishing shot, then not again until the arrival page. Mid-journey pages frame the route and its obstacle with the destination out of frame. A journey book whose destination is visible in every picture reads as though the hero was standing beside it all along.
 
 ### 4.3 One time-slice per page
 
