@@ -1010,6 +1010,65 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
   return { data: JSON.parse(text), cost: usageCost(response.usage) };
 }
 
+// Actual-result state extraction — the missing half of continuity. The plan
+// says what SHOULD happen on a page; nothing recorded what the approved
+// image ACTUALLY shows, so mutable object state had no anchor: the dot card
+// in "Food for All" kept its identity (white card — pinned by its reference
+// sheet) but its SIZE and the PLACEMENT of the dots on it changed page to
+// page (Lynden 2026-08-12), because dot layout is state, not identity, and
+// state lived nowhere. After a page passes QA this runs once on the real
+// image; the result is injected into the NEXT page's prompt as binding fact.
+const SCENE_STATE_SCHEMA = {
+  type: "object",
+  properties: {
+    states: { type: "string", description: "For EACH key object visible in this image: its exact current visible state, precisely enough that another artist could redraw it identically — its approximate size relative to nearby things, its position, its orientation, and the exact layout of any marks, contents or attachments ON it (e.g. 'the white card is palm-sized, lying flat on the mat, with three black dots in a horizontal row across its upper half'). One sentence per object. Only objects from the provided list; skip ones not visible." },
+  },
+  required: ["states"],
+  additionalProperties: false,
+};
+
+export async function extractSceneState(imageB64, { objectNames = [] }, mediaType = "image/jpeg") {
+  const system =
+    "You record continuity state for a children's picture book. Describe ONLY what is literally visible — this exact text will be handed to the illustrator of the NEXT page as binding fact, so precision about size, position, orientation and the layout of marks/contents matters more than prose style.";
+  const content = `Key objects to record: ${objectNames.join(", ") || "(none declared)"}.\n\nRecord each one's exact current visible state.`;
+  if (useOpenAI) {
+    return openaiJson({
+      model: OPENAI_FAST_MODEL,
+      system,
+      content,
+      schema: SCENE_STATE_SCHEMA,
+      images: [{ b64: imageB64, mime: mediaType }],
+      maxTokens: 1200,
+    });
+  }
+  if (useVertex) {
+    return vertexGenerate({
+      model: VERTEX_FAST_MODEL,
+      system,
+      parts: [{ inlineData: { mimeType: mediaType, data: imageB64 } }, { text: content }],
+      schema: SCENE_STATE_SCHEMA,
+      maxTokens: 1200,
+    });
+  }
+  const response = await (await getClient()).messages.create({
+    model: MODEL,
+    max_tokens: 800,
+    system,
+    messages: [
+      {
+        role: "user",
+        content: [
+          { type: "image", source: { type: "base64", media_type: mediaType, data: imageB64 } },
+          { type: "text", text: content },
+        ],
+      },
+    ],
+    output_config: { format: { type: "json_schema", schema: SCENE_STATE_SCHEMA } },
+  });
+  const text = response.content.find((b) => b.type === "text")?.text ?? "";
+  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+}
+
 export async function eyeRuleQA(imageB64, mediaType = "image/jpeg") {
   const system = `You QA children's book illustrations for MyPhonicsBooks. The rule you check is the EYE RULE: every character or animal eye must be a small SOLID BLACK FILLED dot/oval — no white sclera, no catchlight, no glint, no highlight, no coloured iris, no outlined-but-unfilled eyes. Closed eyes (curved lines) are fine. Images with no eyes pass. Be strict: a single white pixel highlight inside an eye is a FAIL.
 Eye dots must also be PROPORTIONAL to the creature: a stray black blotch or smear on a face, or an eye dot grossly oversized for a small creature (a snail, insect or bird), is a FAIL — small creatures get minuscule dots (a snail's eyes sit at the tips of its stalks, nowhere else).

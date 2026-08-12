@@ -21,7 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes } from "./db.mjs";
@@ -64,6 +64,12 @@ function newJob(book) {
     // final scene. null until the first chained scene succeeds — and stays
     // null if the chain path is disabled or failing (stateless fallback).
     chainResponseId: null,
+    // Actual-result state (extractSceneState): what the last APPROVED image
+    // literally shows for each key object — size, position, layout of marks.
+    // Injected into the next page's prompt as binding fact, because mutable
+    // state (dots drawn on a card) is pinned by neither the identity
+    // reference nor the loose conversation chain.
+    carriedState: null,
   };
 }
 
@@ -452,13 +458,21 @@ async function stepScene(book, job, i) {
     : (story.key_objects || []).map((o) => o?.name).filter((n) => n && story.pages[i].text.toLowerCase().includes(n.toLowerCase()));
   const objectRefs = (await Promise.all(wantedObjects.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
 
+  // The previous approved image's ACTUAL state (see extractSceneState) binds
+  // this page harder than any plan does — a card's dots stay where the last
+  // picture actually put them, in the size it actually drew the card.
+  const carried = job.carriedState && prevLoc === loc
+    ? ` ACTUAL STATE AFTER THE PREVIOUS PAGE (binding — redraw each object exactly like this except what this page's action changes): ${job.carriedState}`
+    : "";
+
   const s = await generateScene({
     heroBuf,
     scene: sceneBrief,
     child,
     settingBlock:
       worldBlockOf(story) +
-      (d ? fromDirector(d.objects) : fromText(`${story.pages[i].text} ${sceneBrief}`)),
+      (d ? fromDirector(d.objects) : fromText(`${story.pages[i].text} ${sceneBrief}`)) +
+      carried,
     anchorBuf,
     prevBuf,
     camera,
@@ -473,6 +487,21 @@ async function stepScene(book, job, i) {
   job.cost += s.cost; job.breakdown.images_usd += s.cost;
   if (s.responseId) job.chainResponseId = s.responseId;
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
+
+  // Record what the approved image ACTUALLY shows for each key object, for
+  // the next page to inherit. Non-fatal: a failed extraction just means the
+  // next page falls back to plan-only state, as every page did before this.
+  try {
+    const objectNames = (story.key_objects || []).map((o) => o?.name).filter(Boolean);
+    if (objectNames.length) {
+      const st = await extractSceneState(s.buf.toString("base64"), { objectNames });
+      job.cost += st.cost; job.breakdown.story_usd += st.cost;
+      job.carriedState = st.data.states || null;
+    }
+  } catch (e) {
+    console.warn(`[forge] state extraction failed for page ${i + 1}:`, e.message);
+    job.carriedState = null;
+  }
   if (s.qa?.consistency && !s.qa.consistency.pass) {
     console.warn(`[forge] page ${i + 1} consistency QA still failing after repair: ${s.qa.consistency.reason}`);
   }
