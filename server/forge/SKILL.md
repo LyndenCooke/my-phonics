@@ -21,7 +21,7 @@ Never invent personal facts. Use "In the family's words" only for wording the fa
 - Draw eyes as tiny solid black filled shapes: no sclera, catchlight, iris or coloured pupil.
 - Keep clothing modest, child-appropriate and unchanged unless the story explicitly includes a clothing change.
 - Keep each recurring character's identity, age, proportions, hair and fixed outfit consistent.
-- Make the hero's declared gender unmistakable at first glance in the hero sheet and every scene. In this soft round-faced style an unstressed gender renders ambiguous and boys drift girlish ("Yusuf looks like a girl", two books, 2026-08-12): a boy gets short boyish hair unless another style is given, boyish clothing, no long eyelashes, no bow, no dress or skirt.
+- Make the hero's declared gender unmistakable at first glance in the hero sheet and every scene. In this soft round-faced style an unstressed gender renders ambiguous and boys drift girlish ("Yusuf looks like a girl", two books, 2026-08-12): a boy reads as a boy whatever his hair length (boys can have long hair — do not force it short): boyish face and build, boyish clothing, no long eyelashes, no bow, no dress or skirt.
 - Keep each recurring object's identity features consistent even while its position or state changes.
 - Allow settings and scenes to progress. Preserve permanent location facts while changing only what the story requires.
 - Show one visually coherent time-slice per page. Do not ask one image to show mutually exclusive before-and-after states.

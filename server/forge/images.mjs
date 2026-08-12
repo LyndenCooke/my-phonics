@@ -470,7 +470,7 @@ export function heroPrompt(child) {
   // unstated or unstressed gender renders ambiguous, and boys drift girlish —
   // "Yusuf looks like a girl" happened on two test books (Lynden 2026-08-12).
   const genderLine = a.gender === "boy"
-    ? ". UNMISTAKABLY A BOY at first glance: short boyish hair unless another style is given, boyish clothing, no long eyelashes, no bow, no dress or skirt"
+    ? ". UNMISTAKABLY A BOY at first glance, whatever his hair length: boyish face and build, boyish clothing, no long eyelashes, no bow, no dress or skirt"
     : a.gender === "girl"
       ? ". Unmistakably a girl at first glance"
       : "";
