@@ -593,7 +593,7 @@ async function stepReview(book, job) {
     images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
   }
 
-  const { coldEditorReview } = await import("./claude.mjs");
+  const { coldEditorReview, reviseStoryAfterEditor } = await import("./claude.mjs");
   const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images });
   job.cost += cost || 0;
   job.breakdown.editor_review = review;
@@ -601,7 +601,40 @@ async function stepReview(book, job) {
   const rejects = (review.issues || []).filter((i) => i.severity === "reject");
   if (!review.pass || rejects.length) {
     const detail = rejects.map((i) => `[${i.area}] ${i.detail}`).join(" | ") || review.reason;
-    throw new Error(`editor gate rejected the book: ${detail}`.slice(0, 290));
+    if (job.editorRetryUsed) {
+      // Second rejection — the one revision is spent. Fail with the reasons.
+      throw new Error(`editor gate rejected the book twice: ${detail}`.slice(0, 290));
+    }
+    // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
+    // story against the editor's reasons, then send the book back through
+    // the machine from phonics QA — direction, scenes and cover regenerate
+    // from the revised story. The hero sheet survives (same child); cast and
+    // object sheets are on-demand, so unchanged members are reused and new
+    // ones get drawn. The first review is kept for the audit trail.
+    job.editorRetryUsed = true;
+    job.breakdown.editor_review_first = review;
+    const child = childOf(book);
+    const pagesCount = storyPagesFor(book.level);
+    const revised = await reviseStoryAfterEditor({
+      level, child, focusSound: book.focus_sound, pagesCount,
+      story, review,
+      greenWords: greenWordsUpTo(book.level),
+      progression: progressionUpTo(book.level),
+      exemplars: coreStoriesFor(book.level),
+    });
+    job.cost += revised.cost || 0;
+    job.breakdown.story_usd += revised.cost || 0;
+    job.story = revised.data;
+    job.qaDone = false;
+    job.plausibilityDone = false;
+    job.directDone = false;
+    job.directed = null;
+    job.sceneUrls = [];
+    job.anchors = {};
+    job.coverUrl = null;
+    job.chainResponseId = null;
+    job.carriedState = null;
+    return; // machine re-enters at "qa" with the revised story
   }
   job.reviewDone = true;
 }

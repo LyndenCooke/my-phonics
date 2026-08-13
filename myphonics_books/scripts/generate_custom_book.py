@@ -158,6 +158,31 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
         edition="home",
     )
 
+    # Custom-book sound chart (Lynden 2026-08-13): a Create-A-Book child is not
+    # mid-series — the library's "previous level + this level so far" warm-up
+    # omitted foundational sounds (a, m, t...) and read as an incomplete chart.
+    # Custom books show the FULL cumulative set under "Sounds you should know"
+    # (the template switches the label when `profile` is set).
+    from generate_book import BASE_DIR as _BOOKS_BASE
+    with open(_BOOKS_BASE / "data" / "graphemes_by_level.json", encoding="utf-8") as f:
+        _graphemes_data = json.load(f)
+    _cumulative_chart = []
+    for _lv in range(1, level_num + 1):
+        _cumulative_chart.extend(_graphemes_data.get(f"level_{_lv}", {}).get("graphemes", []))
+    book_data["chart_graphemes"] = _cumulative_chart
+
+    # Same principle for Future Sounds: the library's taught-window cuts the
+    # current level at the book's focus sound (right for a mid-series reader,
+    # wrong for a one-off) — it flagged th as a "future" sound in a Level 3
+    # book whose own chart teaches th. For custom books a sound is future
+    # only if its home level is genuinely ABOVE this book's level; the forge's
+    # writer already uses the full-level window, so this makes the printed
+    # page agree with the story's actual decodability rules.
+    book_data["future_sounds"] = [
+        s for s in book_data.get("future_sounds", [])
+        if s.get("level") and int(s["level"]) > level_num
+    ]
+
     prof = spec.get("profile") or {}
     hero = images_dir / "hero.jpg"
     landmark_img = images_dir / "landmark.jpg"

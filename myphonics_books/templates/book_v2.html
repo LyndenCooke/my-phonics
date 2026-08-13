@@ -2882,7 +2882,10 @@
       {% else %}{% set _c=8 %}{% set _w=11 %}{% set _f=11.5 %}{% endif %}
       {# Centre both tables vertically in the space below the heading. #}
       <div class="snd-body">
-        <div class="snd-section-label">All our sounds so far</div>
+        {# Custom Create-A-Book books (profile set) show the full cumulative
+           chart — the child is not mid-series, so "so far" is meaningless and
+           the chart must include the foundations (Lynden 2026-08-13). #}
+        <div class="snd-section-label">{% if profile %}Sounds you should know{% else %}All our sounds so far{% endif %}</div>
         {{ sound_table(_chart, _c, _w, _f, false) }}
 
         {# Today's new sounds — highlighted, one row when ≤6 (the usual case). #}

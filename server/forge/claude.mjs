@@ -1119,6 +1119,29 @@ export async function coldEditorReview({ story, level, focusSound, images }) {
   return { data: JSON.parse(text), cost: usageCost(response.usage) };
 }
 
+// One bounded editorial rewrite after a cold-editor rejection (Lynden
+// 2026-08-13: "rewrite once"). Unlike the plausibility fixer this may change
+// the PLOT — a reject usually means the premise itself is too thin — but it
+// keeps the child, setting, level constraints and focus sound, so the hero
+// sheet and any still-relevant reference sheets survive into the regeneration.
+export async function reviseStoryAfterEditor({ level, child, focusSound, pagesCount, story, review, greenWords = [], progression = null, exemplars = [] }) {
+  const rejects = (review.issues || []).filter((i) => i.severity === "reject");
+  const system = `You are the senior story writer for MyPhonicsBooks revising a book a demanding editor has REJECTED. This is the one revision the book gets — fix every rejection reason properly, do not patch around them.
+
+Keep: the hero ${child.name} (age ${child.age ?? "5"}, from ${child.country || "the UK"}), the setting's world, the focus sound "${focusSound}", and the level's constraints. Everything else — the premise, the beats, the pages — may change as much as the fixes require. If the editor says the premise is too thin, build a real plot: a goal a child cares about, a developed problem with stakes, visible effort, an earned resolution.
+
+HARD CONSTRAINTS (unchanged from the original brief):
+- Every word decodable from these graphemes: ${JSON.stringify(level.cumulative)} — or one of these tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed.
+- The focus sound "${focusSound}" in AT LEAST 3 distinct words (and no more than 3).
+- Exactly ${pagesCount} pages. British English. One consistent tense. Every sentence starts with a capital and ends with . ? or !
+${progression ? `- Level ${level.level} progression: ${progression.sentences_per_page[0]}${progression.sentences_per_page[1] !== progression.sentences_per_page[0] ? `-${progression.sentences_per_page[1]}` : ""} sentence(s) per page, ${progression.words_per_sentence[0]}-${progression.words_per_sentence[1]} words each; punctuation limited to: ${progression.punctuation.join(", ")}.` : ""}
+- WORD BANK you may draw from freely: ${JSON.stringify(greenWords)}
+- Narration, not instructions: never "can/could + verb" for an action the hero performs. Prose moves the reader between locations. A plot-critical distinguishing mark gets an exact shape and an exact fixed location in its key_object "look".
+${exemplars.length ? `\nPublished books at this level — match their register:\n${exemplars.map((e) => `"${e.title}": ${e.pages.join(" | ")}`).join("\n")}\n` : ""}`;
+  const content = `REJECTED story:\n${JSON.stringify(story)}\n\nEDITOR'S REJECTION REASONS (every one must be genuinely fixed):\n${JSON.stringify(rejects.length ? rejects : review.issues)}\n\nEditor's assessment for context:\nStory quality: ${review.story_quality}\nLanguage: ${review.language_quality}\n\nReturn the revised story.`;
+  return callJson({ system, content, schema: STORY_SCHEMA, tier: "story" });
+}
+
 // Actual-result state extraction — the missing half of continuity. The plan
 // says what SHOULD happen on a page; nothing recorded what the approved
 // image ACTUALLY shows, so mutable object state had no anchor: the dot card
