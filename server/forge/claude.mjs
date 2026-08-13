@@ -453,6 +453,9 @@ STORY RULES:
 - THE FAMILY'S NOTES ARE SET DRESSING, NEVER PLOT. Nothing from the family's notes or the child's hobbies may become the story's obstacle, its solution, a plot-driving character or animal, or the reason anything happens. (A note saying the family loves feeding the harbour cats once turned into eight cats blocking the ferry gate as the story's obstacle — that is exactly the failure.) The plot comes from the story shape and the focus-sound words ALONE; the notes only colour what the pictures show around it.
 - A QUIET MORAL. The best of these books leave a small lesson a parent would want — effort pays off, patience, honesty, kindness, fairness, gratitude: Islamic values lived in everyday action. Let the events carry it (the stool book: she frees the stuck stool herself through effort and earns the view) — never state it in the text, never preach.
 - Emotional journey + Dear Zoo-style hooks: curiosity gaps, repetition with variation, a satisfying ending.
+- A PREMISE IS NOT A PLOT. Before writing, name: the hero's goal (something a child would care about), the problem that develops in the way, what it costs to solve, and what has changed by the end. A situation corrected in one glance — a mix-up spotted and swapped back, a task done without obstacle — is a phonics exercise wearing a story's clothes, and it FAILS ("The Chip on Top", rejected 2026-08-13: "no meaningful goal, no developed problem, almost no tension"). Give the mix-up stakes (the ferry is about to go, lunch is about to be eaten), give the search a deadline, give the task a snag. Tension does not need danger — it needs something the child wants that might not happen.
+- NARRATION, NOT INSTRUCTIONS. "Yusuf can check the top" reads like a worksheet telling the reader what is possible; "Yusuf checks the top" is a story telling what happens. Never use "can/could + verb" for an action the hero actually performs. Every sentence continues the story from the last one — a reader should never wonder "which box? from where? why?" because the sentence names things the story has not introduced.
+- THE PROSE MOVES THE READER BETWEEN PLACES. If the pictures change location (quay to ferry deck, street to kitchen), a sentence must make the move ("Mum and Yusuf get on the big ferry") — characters must never simply BE in the new place on the next page while the words say nothing.
 - For each page also write "scene": a rich one-sentence illustration brief (what we see, setting, action, mood). Scenes must be visually specific and culturally accurate.
 
 STORY SHAPE — ${shape ? `THIS book must use this shape: **${shape.name}** — ${shape.how}` : "choose a shape that suits the sound"}.
@@ -495,7 +498,8 @@ HOUSE VALUES — the story must not contradict Islamic values, in what happens o
 WORLD CONSISTENCY (for the illustrator — this is as important as the story):
 - "setting": place = where the whole story happens; architecture = 3-5 concrete DRAWABLE features (building materials, roof shapes, walls, floors, street furniture — never just a nationality); season; weather. These stay IDENTICAL across every page unless the story itself changes them.
 - Keep the story in 1-3 physical locations maximum. Give every page a "location": a short lowercase id like "kitchen" or "garden". Reuse the SAME id whenever the action happens in the same place — consecutive pages in one spot are good storytelling.
-- "key_objects": up to 3 recurring objects, each with "look" = one exact visual description (colour, material, size, distinguishing marks) that will be repeated verbatim in every illustration prompt where it appears. Describe ONLY the object's appearance — never where it sits or what it is doing ("a small silver metal teapot", NOT "a teapot simmering on the stove"): the description is reused on other pages, and placement written into it gets drawn in places it does not belong.
+- "key_objects": up to 3 recurring objects, each with "look" = one exact visual description (colour, material, size, distinguishing marks) that will be repeated verbatim in every illustration prompt where it appears.
+- A PLOT-CRITICAL MARK GETS AN EXACT SHAPE AND AN EXACT PLACE. If the story's mechanism depends on telling two similar objects apart, or on recognising one specific feature (a chip, a crack, a patch, a label), that feature's "look" must pin BOTH its shape AND its fixed location — "a small crescent-shaped piece missing from the upper-right corner of the lid", never just "a chip on top". A vague mark gets drawn differently on every page and the story's own logic becomes invisible. And the two similar objects must differ by exactly that one named feature — same colour, same size, same everything else — so the feature is the ONLY tell, and it must be a feature big and bold enough for a four-year-old to spot in a small printed picture. Describe ONLY the object's appearance — never where it sits or what it is doing ("a small silver metal teapot", NOT "a teapot simmering on the stove"): the description is reused on other pages, and placement written into it gets drawn in places it does not belong.
 - "cast": EVERY named or recurring person in the story who is not ${child.name} — mum, dad, a friend, a shopkeeper. Maximum 3, and only people who actually appear. "id" = short lowercase id used on the pages ("mum", "dad"). EACH CAST MEMBER MUST BE SOMEBODY, NOT A CATEGORY: give them a name or a relationship a child would actually say — Mum, Dad, Nana, Auntie, Sam — and use THAT in the story text. Never let a story sentence call a person "the woman", "the man" or "the kids"; that is a label, not a character, and it reads as though the writer never decided who they were. Each cast member is ONE person (if a group appears, they are background, not cast). "who" = their role in one phrase; "appearance" = a FIXED, drawable description that will be repeated in every illustration they appear in: approximate age, build, hair, and the exact clothing they wear for the WHOLE book including colours ("a woman in her thirties, warm brown skin, a sage-green abaya with gold trim and a cream headscarf"). They wear the same outfit on every page — a character does not change clothes mid-story. Culturally accurate for ${child.country || "the UK"}, with the same warmth and dignity as the hero.
 - "cover_brief": one sentence describing the COVER illustration — the hero in the single most joyful, most tempting moment of THIS story, with the story's central object clearly in shot, in the story's own setting. It must be a real moment from this book (usually the triumph), never the child's hobbies or a generic pose.
 
@@ -699,6 +703,7 @@ For every page, reason through:
 7. PROP AGREEMENT — every physical object named in the page TEXT must appear in the brief for that page (if the text says she got a wooden spoon, the spoon is in the picture). Conversely, do not stage an object the story has not brought into the scene.
    NUMBERS MUST MATCH. If the text says six holes, draw six; if it says "the kids came", draw more than one child; if it says a nail, the nail is visible. A child counts what is in the picture, and a picture that disagrees with the words teaches them not to trust it.
 8. CREATURE EYES — if a small creature (snail, insect, bird) appears, its eyes are minuscule black dots proportional to its size (a snail's eyes sit at the tips of its stalks); say so in the brief so no oversized black blob lands on its face.
+8a. THE STORY'S TELL MUST BE IN SHOT. If the plot turns on a distinguishing feature (a chip on one lid, a patch on one bag, a crack in one pot), then on EVERY page where that object appears the brief states the feature's exact shape and its exact fixed location, angled toward the camera — never hidden by a hand, the tilt, or the crop. On any page where the two similar objects appear together, the brief must stage them so a child who cannot read can point at which is which. On the page where the character USES the feature to decide, the brief shows them looking at or touching that exact spot.
 
 9. OBJECTS ON THIS PAGE — fill "objects" with ONLY the key objects a reader would actually SEE in this frame, each with the state it is in ON THIS PAGE ("bowl — empty, waiting on the mat"; "date balls — do not draw, they do not exist yet, the mix is still wet paste"). Leave the list EMPTY if none are visible.
    WHEN SOMETHING IS DAMAGED, SAY WHAT IS STILL INTACT. "The chair broke" is read as generic breakage and the illustrator escalates it into wreckage, which then contradicts the next page where it is simply mended. Name the damage narrowly and list what is untouched: "one front leg has come loose and that corner has sunk — the seat is whole and attached, the back is joined on, the other three legs are sound". Damage needs a stated limit exactly as object state does.
@@ -957,10 +962,11 @@ const SCENE_QA_SCHEMA = {
     // because they force specific comparisons, but this field is the fresh
     // eyes: what would a picky parent flipping through object to?
     defect_sweep: { type: "string", description: "Look at the whole image with fresh eyes, ignoring the checklist above, and list anything a sharp parent flipping through a printed book would object to. Check in particular: (1) any object a character is USING is oriented the way its user would actually use it — a person reading a map, book or note must be looking at its printed face, not its blank back with the print facing the camera; (2) held or carried items relate to each other and the body sensibly — no item squashed against, merged into, or impossibly overlapping another; (3) no body part or object is malformed, duplicated, or missing something obvious. Name each real problem specifically, or say the image is clean. Do NOT flag ordinary style simplifications or things a checklist field above already covers." },
+    distinguishing_feature: { type: "string", description: "If a key object's declared look names a distinguishing mark (a chip, a patch, a crack, a label): describe where in THIS image that mark actually is — its shape and its position on the object — and whether it matches the declared shape and location. If two similar objects share the frame, say whether a child could point at which is which WITHOUT reading the text. If no key object declares such a mark, say 'none declared'." },
     pass: { type: "boolean" },
     reason: { type: "string", description: "If failing: the specific, narrow thing to fix — never just 'regenerate the page'." },
   },
-  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "defect_sweep", "pass", "reason"],
+  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "distinguishing_feature", "defect_sweep", "pass", "reason"],
   additionalProperties: false,
 };
 
@@ -978,8 +984,8 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
   const objectLines = objectsBlock.trim() || "(no key objects declared for this page)";
   const system =
     "You QA a children's picture-book illustration against the page it illustrates. Describe what you literally see before judging — a bare pass/fail rubber-stamps everything, because 'a nice picture of kids in a market' looks fine at a glance even when it fails to show the actual sentence. " +
-    "Answer named_objects, action_shown, object_states, mechanism_legible and defect_sweep with what is ACTUALLY IN THE IMAGE, not what you'd expect a good illustration to contain. Only then set pass. " +
-    "pass is FALSE if: any object the sentence names is entirely absent from the image; the image shows a moment clearly before or after the sentence's action rather than the action itself; a key object is shown in a state that contradicts its declared state for this page (e.g. declared 'not yet plugged into the hole' but the image shows it already inserted, or vice versa); the sentence describes one object physically interacting with a second (fitting into, plugging, opening, tying, pouring, etc.) and the image does not draw that second object/feature at all, or draws both objects with no visible contact between them — an object being merely present near another is NOT the same as the image showing them interact; OR the sentence names a specific attachment point (a leg, a wing, a handle) and the image shows the interaction at a DIFFERENT part of the same object/creature (string described as tied 'on its leg' but drawn around a tail or wing is a fail, even though a string and the animal are both visible); OR defect_sweep found a genuine problem — an object being read/used facing the wrong way, held items impossibly overlapping, a malformed or incomplete body part. A child who cannot read the words must be able to point at the picture and see the specific thing the sentence describes happening, at the place it says it is happening. " +
+    "Answer named_objects, action_shown, object_states, mechanism_legible, distinguishing_feature and defect_sweep with what is ACTUALLY IN THE IMAGE, not what you'd expect a good illustration to contain. Only then set pass. " +
+    "pass is FALSE if: any object the sentence names is entirely absent from the image; the image shows a moment clearly before or after the sentence's action rather than the action itself; a key object is shown in a state that contradicts its declared state for this page (e.g. declared 'not yet plugged into the hole' but the image shows it already inserted, or vice versa); the sentence describes one object physically interacting with a second (fitting into, plugging, opening, tying, pouring, etc.) and the image does not draw that second object/feature at all, or draws both objects with no visible contact between them — an object being merely present near another is NOT the same as the image showing them interact; OR the sentence names a specific attachment point (a leg, a wing, a handle) and the image shows the interaction at a DIFFERENT part of the same object/creature (string described as tied 'on its leg' but drawn around a tail or wing is a fail, even though a string and the animal are both visible); OR a key object's declared distinguishing mark (a chip, a patch, a crack) is missing from the image, drawn with a clearly different shape, or drawn at a different location on the object than declared — the mark is the story's own logic made visible, and 'some small dark smudge somewhere' does not count as the declared mark; OR two similar objects share the frame and a child could NOT point at which is which without reading; OR defect_sweep found a genuine problem — an object being read/used facing the wrong way, held items impossibly overlapping, a malformed or incomplete body part. A child who cannot read the words must be able to point at the picture and see the specific thing the sentence describes happening, at the place it says it is happening. " +
     "Minor artistic license is fine — this is not a check for a literal diagram. Fail only for a genuine, obvious mismatch a child's parent would notice.";
   const content =
     `PAGE TEXT: "${sceneText}"\n\nKEY OBJECTS for this page:\n${objectLines}\n\n` +
@@ -1022,6 +1028,97 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
   return { data: JSON.parse(text), cost: usageCost(response.usage) };
 }
 
+// Cold-editor whole-book review — the gate that catches what per-page
+// checklists structurally cannot. Every per-page QA judge sees one image and
+// one checklist; a cold external read of the FINISHED book (ChatGPT,
+// 2026-08-13, "The Chip on Top") instantly caught what all of them passed:
+// a premise too thin to be a story, an identification mark too vague to
+// identify anything, unnatural narration, and a phonics page contradicting
+// the story. The difference was not the model — it was the framing (critic,
+// not verifier) and the altitude (whole book, not one page). This gate
+// recreates that: full book, cold read FIRST, rubric second, verdict last.
+const EDITOR_REVIEW_SCHEMA = {
+  type: "object",
+  properties: {
+    cold_read: { type: "string", description: "Read the whole book cold, cover to last page, BEFORE applying any rubric. React as a demanding children's-book editor flipping through a finished copy: what works, and what would make you stop and reject it? Write 3-8 sentences of honest reaction — praise only what genuinely earns it." },
+    story_quality: { type: "string", description: "Judge the story AS A STORY: does the hero have a goal a child cares about, a developed problem with real tension, a visible attempt (with effort or thought) to solve it, and a satisfying earned resolution? A coherent-but-flat exercise (a mix-up corrected in one glance, a task with no obstacle) FAILS this even if nothing is wrong with it. Name what is missing if anything." },
+    language_quality: { type: "string", description: "Judge every sentence as narration a parent reads aloud: does each read naturally and connectedly ('Yusuf checks the top'), or like an instruction or exercise line ('Yusuf can check the top')? Does the prose establish transitions the pictures show (boarding a ferry, entering a room), or do characters teleport between pages? Quote any sentence that fails." },
+    object_identity: { type: "string", description: "Track every recurring object across all page images: is it recognisably THE SAME physical object every time (same proportions, same details, same distinguishing marks in the same place at the same size)? If the plot depends on a distinguishing feature, could a child point to it on every relevant page and tell similar objects apart WITHOUT the text? Name each drift specifically." },
+    image_text_agreement: { type: "string", description: "For each page: does the picture show this sentence's moment — every named object visible, the action itself (not before/after), numbers matching? Note any page where the words and picture disagree." },
+    phonics_presentation: { type: "string", description: "Check the book's phonics pages against its own story: do the Story Words appear in the story text? Does any story word rely on a sound the book itself lists as not-yet-taught (beyond the allowed one-or-two Future Sound previews)? Do the activity questions use the story's own vocabulary ('chip' asked as 'mark' fails this)? Note contradictions." },
+    issues: {
+      type: "array",
+      description: "Every genuine defect found above, one entry each, most severe first. Empty only if the book is genuinely clean.",
+      items: {
+        type: "object",
+        properties: {
+          severity: { type: "string", enum: ["reject", "minor"] },
+          area: { type: "string", description: "story | language | object-identity | image-text | phonics | print" },
+          detail: { type: "string" },
+        },
+        required: ["severity", "area", "detail"],
+        additionalProperties: false,
+      },
+    },
+    pass: { type: "boolean", description: "true ONLY if you would send this book to print under your own name. Any 'reject'-severity issue means false." },
+    reason: { type: "string", description: "One-sentence verdict a colleague could act on." },
+  },
+  required: ["cold_read", "story_quality", "language_quality", "object_identity", "image_text_agreement", "phonics_presentation", "issues", "pass", "reason"],
+  additionalProperties: false,
+};
+
+export async function coldEditorReview({ story, level, focusSound, images }) {
+  const system =
+    "You are the final quality gate for MyPhonicsBooks: a demanding children's-book editor reviewing a FINISHED custom book before it is allowed to ship. You are a critic, not a verifier — your job is to find the reasons this book should NOT ship, and pass it only if you genuinely cannot. " +
+    "You are reviewing the whole book at once: the images are the cover followed by every story page in order, and the text of each page is given alongside. " +
+    "Fill cold_read FIRST, before any rubric thinking — first impressions catch what checklists miss. Then work through the rubric fields describing what you actually see. Then list issues and give the verdict. " +
+    "Hold the bar of a real published picture book: 'decodable and coherent' is the entry fee, not the standard. A book passes only if the story would hold a four-to-eight-year-old, the pictures tell the story on their own, and nothing on the phonics pages contradicts the book itself.";
+  const pagesBlock = story.pages.map((p, i) => `Page ${i + 1}: "${p.text}"`).join("\n");
+  const content =
+    `Level ${level.level} (${level.name}) custom book, focus sound "${focusSound}". Title: "${story.title}".\n\n` +
+    `PAGE TEXTS:\n${pagesBlock}\n\n` +
+    `STORY WORDS (must appear in the story, >=3 with the focus sound): ${JSON.stringify(story.read_words || [])}\n` +
+    `KEY OBJECTS AS DECLARED: ${JSON.stringify(story.key_objects || [])}\n\n` +
+    `The ${images.length} images attached are: the cover, then story pages 1-${images.length - 1} in order.\n\n` +
+    "Review the finished book now.";
+  if (useOpenAI) {
+    return openaiJson({
+      model: OPENAI_FAST_MODEL,
+      system,
+      content,
+      schema: EDITOR_REVIEW_SCHEMA,
+      images,
+      maxTokens: 4000,
+    });
+  }
+  if (useVertex) {
+    return vertexGenerate({
+      model: VERTEX_FAST_MODEL,
+      system,
+      parts: [...images.map((im) => ({ inlineData: { mimeType: im.mime, data: im.b64 } })), { text: content }],
+      schema: EDITOR_REVIEW_SCHEMA,
+      maxTokens: 4000,
+    });
+  }
+  const response = await (await getClient()).messages.create({
+    model: MODEL,
+    max_tokens: 3000,
+    system,
+    messages: [
+      {
+        role: "user",
+        content: [
+          ...images.map((im) => ({ type: "image", source: { type: "base64", media_type: im.mime, data: im.b64 } })),
+          { type: "text", text: content },
+        ],
+      },
+    ],
+    output_config: { format: { type: "json_schema", schema: EDITOR_REVIEW_SCHEMA } },
+  });
+  const text = response.content.find((b) => b.type === "text")?.text ?? "";
+  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+}
+
 // Actual-result state extraction — the missing half of continuity. The plan
 // says what SHOULD happen on a page; nothing recorded what the approved
 // image ACTUALLY shows, so mutable object state had no anchor: the dot card
@@ -1033,7 +1130,7 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
 const SCENE_STATE_SCHEMA = {
   type: "object",
   properties: {
-    states: { type: "string", description: "For EACH key object visible in this image: its exact current visible state, precisely enough that another artist could redraw it identically — its approximate size relative to nearby things, its position, its orientation, and the exact layout of any marks, contents or attachments ON it (e.g. 'the white card is palm-sized, lying flat on the mat, with three black dots in a horizontal row across its upper half'). One sentence per object. Only objects from the provided list; skip ones not visible." },
+    states: { type: "string", description: "For EACH key object visible in this image: its exact current visible state, precisely enough that another artist could redraw it identically — its approximate size relative to nearby things, its position, its orientation, and the exact layout of any marks, contents or attachments ON it (e.g. 'the white card is palm-sized, lying flat on the mat, with three black dots in a horizontal row across its upper half'). If the object carries a distinguishing mark (a chip, a patch, a crack), record that mark's exact shape and exact position on the object so the next page can redraw it identically. One sentence per object. Only objects from the provided list; skip ones not visible." },
   },
   required: ["states"],
   additionalProperties: false,

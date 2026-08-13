@@ -8,6 +8,17 @@
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 
+// Deterministic page count of a rendered PDF, no dependencies: count page
+// objects, cross-checked against the page tree's /Count. Chromium's PDF
+// output keeps object dicts uncompressed, so both are reliably visible.
+export function pdfPageCount(buf) {
+  const s = buf.toString("latin1");
+  const pageObjs = (s.match(/\/Type\s*\/Page[^s]/g) || []).length;
+  const counts = [...s.matchAll(/\/Count\s+(\d+)/g)].map((m) => Number(m[1]));
+  const treeCount = counts.length ? Math.max(...counts) : 0;
+  return Math.max(pageObjs, treeCount);
+}
+
 // Mirrors PlaywrightPDFGenerator.generate() in myphonics_books/core/pdf_generator.py
 // EXACTLY — A5, zero margin, print backgrounds, CSS page size wins. Any
 // drift here means the serverless PDF looks different from the studio one.

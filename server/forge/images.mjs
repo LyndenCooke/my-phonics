@@ -1025,3 +1025,11 @@ export async function generateLandmark({ name, imageBrief, city, country }) {
 }
 
 
+
+// Small review thumbnail — the cold-editor gate reads the whole book at
+// once, so each page is downscaled to keep the payload sane while leaving
+// plenty of pixels to judge composition, continuity and the story's
+// distinguishing marks.
+export async function reviewThumb(buf, width = 640) {
+  return sharp(buf).resize({ width, withoutEnlargement: true }).jpeg({ quality: 72 }).toBuffer();
+}

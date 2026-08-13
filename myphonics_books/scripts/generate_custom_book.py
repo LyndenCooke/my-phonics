@@ -198,6 +198,18 @@ def main() -> None:
     out = Path(spec["out_path"])
     out.parent.mkdir(parents=True, exist_ok=True)
     asyncio.run(html_to_pdf(html, out))
+
+    # HARD PAGE-COUNT GATE (Lynden 2026-08-13, after a 17-page L3 export):
+    # 16 total pages at L1-4, 20 at L5-8 — anything else cannot saddle-stitch
+    # and must never ship. Fail the render, don't warn.
+    from pypdf import PdfReader
+    expected = 16 if int(spec["level"]) <= 4 else 20
+    got = len(PdfReader(out).pages)
+    if got != expected:
+        out.unlink(missing_ok=True)
+        raise SystemExit(
+            f"page-count gate: rendered {got} pages, Level {spec['level']} requires exactly {expected}"
+        )
     print(str(out))
 
 

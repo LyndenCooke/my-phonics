@@ -82,6 +82,7 @@ function nextStepOf(job) {
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
   if (!job.coverUrl) return "cover";
   if (!job.countryDone) return "country";
+  if (!job.reviewDone) return "review";
   if (!job.assembled) return "assemble";
   return "done";
 }
@@ -158,12 +159,20 @@ function makeObjectBlocks(story) {
   return { fromDirector, fromText };
 }
 
+// Custom books hold a fixed print budget — 16 total pages at L1-4, 20 at
+// L5-8 (Lynden 2026-08-09, re-affirmed 2026-08-13 after a 17-page export).
+// With the fixed activity/profile page set, that leaves exactly 6 story
+// pages at L1-4 and 8 at L5-8, independent of the library's storyPages.
+function storyPagesFor(level) {
+  return level <= 4 ? 6 : 8;
+}
+
 // ------------------------------------------------------------------ steps --
 
 async function stepStory(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = Math.min(level.storyPages, 8);
+  const pagesCount = storyPagesFor(book.level);
   // One story shape per book, chosen at random from whatever hasn't shipped
   // in the last few books — plain randomness let the same shape land twice in
   // a row ("The swap", 2026-08-07 and 2026-08-09), and both leant on the same
@@ -195,7 +204,7 @@ async function stepStory(book, job) {
 async function stepQa(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = Math.min(level.storyPages, 8);
+  const pagesCount = storyPagesFor(book.level);
   let story = job.story;
 
   // A couple of slightly-above-level words are FINE — book_v2 previews them
@@ -298,7 +307,7 @@ async function stepQa(book, job) {
 async function stepPlausibility(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = Math.min(level.storyPages, 8);
+  const pagesCount = storyPagesFor(book.level);
   let story = job.story;
 
   const review = await reviewStoryPlausibility({ story });
@@ -565,6 +574,38 @@ async function stepCountry(book, job) {
   job.countryDone = true;
 }
 
+// Cold-editor whole-book gate (Lynden 2026-08-13): a critic-framed review of
+// the FINISHED book — cover + every page image + every sentence at once —
+// because per-page checklist judges structurally cannot see a thin premise,
+// a drifting object, or a phonics page contradicting the story. An external
+// cold read caught all of those in "The Chip on Top" after every per-page
+// gate had passed. Reject-severity issues fail the book rather than ship it.
+async function stepReview(book, job) {
+  const story = job.story;
+  const level = getLevel(book.level);
+  const { reviewThumb } = await import("./images.mjs");
+
+  const urls = [job.coverUrl, ...job.sceneUrls].filter(Boolean);
+  const images = [];
+  for (const url of urls) {
+    const buf = await loadByUrl(url);
+    const small = await reviewThumb(buf);
+    images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
+  }
+
+  const { coldEditorReview } = await import("./claude.mjs");
+  const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images });
+  job.cost += cost || 0;
+  job.breakdown.editor_review = review;
+
+  const rejects = (review.issues || []).filter((i) => i.severity === "reject");
+  if (!review.pass || rejects.length) {
+    const detail = rejects.map((i) => `[${i.area}] ${i.detail}`).join(" | ") || review.reason;
+    throw new Error(`editor gate rejected the book: ${detail}`.slice(0, 290));
+  }
+  job.reviewDone = true;
+}
+
 async function stepAssemble(book, job) {
   const story = job.story;
   const child = childOf(book);
@@ -627,6 +668,7 @@ function displayFor(book, job, step) {
     hero: ["hero", `Drawing ${name} as a book character (eye rule enforced)...`, 30],
     cover: ["cover", "Painting the cover...", 85],
     country: ["country", `Collecting wonders from ${book.country || "home"}...`, 90],
+    review: ["editor", "A cold-eyed editor is reading the finished book...", 93],
     assemble: ["assemble", "Binding the book...", 96],
     done: ["done", "Your book is ready!", 100],
   };
@@ -670,6 +712,7 @@ export async function runNextStep(bookId) {
     else if (step.startsWith("scene:")) await stepScene(book, job, Number(step.split(":")[1]));
     else if (step === "cover") await stepCover(book, job);
     else if (step === "country") await stepCountry(book, job);
+    else if (step === "review") await stepReview(book, job);
     else if (step === "assemble") await stepAssemble(book, job);
   } catch (e) {
     job.lockAt = null;
@@ -758,7 +801,12 @@ function buildPdfSpecCore(book) {
     level: book.level,
     focus_sound: book.focus_sound,
     story_pages: book.pages.filter((p) => p.type === "story").map((p) => p.text),
-    story_words: story.focus_word_examples || [],
+    // Story Words page shows ALL SIX read_words (>=3 with the focus sound),
+    // not just the 3 focus examples — Lynden 2026-08-13: "six Story Words in
+    // total; at least three containing the target sound; three additional
+    // important decodable story words." The writer already returns exactly
+    // this set; passing only focus_word_examples was hiding half of it.
+    story_words: story.read_words?.length ? story.read_words : (story.focus_word_examples || []),
     read_words: story.read_words || [],
     questions: story.questions || [],
     alien_words: story.alien_words || [],
@@ -841,8 +889,16 @@ async function renderPdfServerless(bookId, origin) {
   }
   const { html_url: htmlUrl } = await htmlRes.json();
 
-  const { htmlUrlToPdf } = await import("./pdf.mjs");
+  const { htmlUrlToPdf, pdfPageCount } = await import("./pdf.mjs");
   const pdfBuf = await htmlUrlToPdf(htmlUrl);
+  // HARD PAGE-COUNT GATE (Lynden 2026-08-13, after a 17-page L3 book shipped):
+  // custom books are exactly 16 pages at L1-4 and 20 at L5-8 — anything else
+  // is unstitchable and must never reach the customer.
+  const expectedPages = book.level <= 4 ? 16 : 20;
+  const gotPages = pdfPageCount(pdfBuf);
+  if (gotPages !== expectedPages) {
+    throw new Error(`page-count gate: rendered PDF has ${gotPages} pages, Level ${book.level} requires exactly ${expectedPages} — not delivering`);
+  }
   const pdfUrl = await saveImage(bookId, "book.pdf", pdfBuf);
 
   const { sendBookReadyEmail } = await import("./email.mjs");

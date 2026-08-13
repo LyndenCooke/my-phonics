@@ -3314,7 +3314,7 @@
         Then use them to retell the story out loud.
         {% else %}
         Number the pictures 1, 2, 3, 4{% if ordering_image_count == 6 %}, 5, 6{% endif %} in the order they happened.
-        Then use them to retell the story on the next page.
+        {% if profile and page_count == 16 %}Then use them to retell the story out loud.{% else %}Then use them to retell the story on the next page.{% endif %}
         {% endif %}
       </div>
       <div class="ordering-grid {% if ordering_image_count == 6 %}ordering-grid-6 ordering-grid-6-large{% else %}ordering-grid-4 ordering-grid-4-large{% endif %}">
@@ -3365,9 +3365,12 @@
   {% endif %}
 
 
-  {% if edition != 'library' %}
+  {% if edition != 'library' and not (profile and page_count == 16) %}
   {# Tell the Story is a written retell — dropped from the library book;
-     the Put-the-Story-in-Order page (kept) covers oral sequencing. #}
+     the Put-the-Story-in-Order page (kept) covers oral sequencing.
+     Also dropped from 16pp custom Create-A-Book books (profile set): their
+     Meet the Star page takes this slot so the total stays exactly 16
+     (Lynden 2026-08-13 page-count ruling after a 17-page export). #}
   <!-- ============================================================
        TELL THE STORY — Story Ordering (+ B/M/E retell at 20pp)
        ============================================================ -->
