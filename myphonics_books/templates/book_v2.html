@@ -3815,10 +3815,12 @@
   </div>
   {% endif %}{# /Word Workshop (home, L4-L6) #}
 
-  {% if level == 4 %}
+  {% if level == 4 and page_count >= 20 %}
   {# L4 keeps this slot as a reading page (the Grow the Code chart starts at
      L5, Lynden 2026-07-20).  Reading, not writing — kept in BOTH editions,
-     so L4 stays 20pp saddle-stitch. #}
+     so L4 stays 20pp saddle-stitch.  16pp custom L4 books (Create-A-Book,
+     page-count ruling 2026-08-13) have no room for it — hence the
+     page_count guard; the read words still live on the Story Words page. #}
   <div class="page">
     <div class="page-inner">
       <div class="activity-title">Can You Read These?</div>
