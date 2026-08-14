@@ -723,7 +723,8 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
                                 friend_name: str, image_dir: Path = None,
                                 page_count: int = None,
                                 edition: str = "home",
-                                book_id: str = None) -> dict:
+                                book_id: str = None,
+                                full_level_window: bool = False) -> dict:
     """Build a complete book_data dict from a pilot/all_stories entry.
 
     Args:
@@ -1003,6 +1004,18 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
                             all_known_units, build_ed_guide,
                             _grapheme_taught_level, FUTURE_MAX_PER_BOOK)
     _book_taught = taught_graphemes(graphemes_data, level, _focus)
+    if full_level_window:
+        # Custom Create-A-Book books: the child is not mid-series, so the
+        # WHOLE current level counts as taught (matches the forge writer's
+        # decodability window). Without this, `or`/`ou` sat later in the L4
+        # sequence than the book's focus sound and got labelled "coming at
+        # Level 4" INSIDE a Level 4 book whose own chart teaches them
+        # (Lynden 2026-08-14).
+        _book_taught = []
+        for _lv in range(1, level + 1):
+            _e = graphemes_data.get(f"level_{_lv}", {})
+            _book_taught.extend(g for g in _e.get("graphemes", []) if g not in _book_taught)
+            _book_taught.extend(s for s in _e.get("suffixes", []) if s not in _book_taught)
     _known_units = all_known_units(graphemes_data)
     _future_skip_tricky = set(_master_tricky.keys()) | {
         w.lower() for w in story_dict.get("tricky_words_used", [])

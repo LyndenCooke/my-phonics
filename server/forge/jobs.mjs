@@ -256,6 +256,37 @@ async function stepQa(book, job) {
     }
   }
 
+  // EXACTLY SIX STORY WORDS, deterministically (Lynden 2026-08-14: a book
+  // shipped displaying eight). The schema asks the writer for 6 but nothing
+  // enforced it — so normalise here: up to 3 focus-sound words first, then
+  // other words from the list, topped up from the story's own decodable
+  // vocabulary if the writer under-delivered, hard-capped at 6.
+  {
+    const focus = String(book.focus_sound || "").toLowerCase();
+    const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))];
+    const bank = new Set(greenWordsUpTo(book.level).map((w) => String(w).toLowerCase()));
+    const textTokens = [...new Set(story.pages.flatMap((p) => (p.text.toLowerCase().match(/[a-z']+/g) || [])))];
+    const hasFocus = (w) => focus && w.includes(focus);
+    const focusPool = [...new Set([
+      ...uniq.filter(hasFocus),
+      ...(story.focus_word_examples || []).map((w) => String(w).toLowerCase()),
+      ...textTokens.filter((t) => hasFocus(t) && bank.has(t)),
+    ])];
+    const otherPool = [...new Set([
+      ...uniq.filter((w) => !hasFocus(w)),
+      ...textTokens.filter((t) => !hasFocus(t) && t.length > 2 && bank.has(t)),
+    ])];
+    const six = [...focusPool.slice(0, 3), ...otherPool.slice(0, 3)];
+    for (const w of [...focusPool.slice(3), ...otherPool.slice(3)]) {
+      if (six.length >= 6) break;
+      if (!six.includes(w)) six.push(w);
+    }
+    if (six.length !== (story.read_words || []).length || six.some((w, i) => w !== String(story.read_words?.[i] || "").toLowerCase())) {
+      console.warn(`[forge] read_words normalised ${JSON.stringify(story.read_words)} -> ${JSON.stringify(six)}`);
+    }
+    story.read_words = six.slice(0, 6);
+  }
+
   // Mechanics are TAUGHT by these books, so they are fixed deterministically.
   story.pages = story.pages.map((p) => ({ ...p, text: fixMechanics(p.text, child.name) }));
   const proseIssues = checkProse({
@@ -502,7 +533,16 @@ async function stepScene(book, job, i) {
   // the next page to inherit. Non-fatal: a failed extraction just means the
   // next page falls back to plan-only state, as every page did before this.
   try {
-    const objectNames = (story.key_objects || []).map((o) => o?.name).filter(Boolean);
+    // The continuity register is DYNAMIC: an object joins it the moment the
+    // story makes it matter, not only if it was declared a key_object up
+    // front. "The Star Card"'s mat became the story's hiding place on page 3
+    // yet was never tracked — its pattern, tassels and lifted-edge physics
+    // drifted page to page (Lynden 2026-08-14). Director-declared per-page
+    // objects are exactly that register, so record their state too.
+    const objectNames = [...new Set([
+      ...(story.key_objects || []).map((o) => o?.name),
+      ...((d?.objects || []).map((o) => o?.name)),
+    ].filter(Boolean))];
     if (objectNames.length) {
       const st = await extractSceneState(s.buf.toString("base64"), { objectNames });
       job.cost += st.cost; job.breakdown.story_usd += st.cost;
@@ -839,8 +879,8 @@ function buildPdfSpecCore(book) {
     // total; at least three containing the target sound; three additional
     // important decodable story words." The writer already returns exactly
     // this set; passing only focus_word_examples was hiding half of it.
-    story_words: story.read_words?.length ? story.read_words : (story.focus_word_examples || []),
-    read_words: story.read_words || [],
+    story_words: (story.read_words?.length ? story.read_words : (story.focus_word_examples || [])).slice(0, 6),
+    read_words: (story.read_words || []).slice(0, 6),
     questions: story.questions || [],
     alien_words: story.alien_words || [],
     tricky_words_used: story.tricky_words_used || [],

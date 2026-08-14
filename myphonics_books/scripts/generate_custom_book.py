@@ -156,6 +156,9 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
         image_dir=tmp_images,
         page_count=page_count,
         edition="home",
+        # Whole current level counts as taught for a one-off custom book —
+        # kills within-level "coming at Level N" labels (see generate_book).
+        full_level_window=True,
     )
 
     # Custom-book sound chart (Lynden 2026-08-13): a Create-A-Book child is not

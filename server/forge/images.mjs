@@ -729,6 +729,23 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   const buildFullScene = (correction) =>
     `${scene} ${heroLook} Setting reflects ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} authentically and warmly. ${NO_FLOATING_LIMBS} ${PHYSICAL_PLAUSIBILITY} ${settingBlock} ${BASE_STYLE}` +
     (correction ? ` CORRECTION FROM QA — fix this specific problem, keep everything else the same: ${correction}` : "");
+  // Downscaled reference sheets for the consistency QA's character_match
+  // check — the hero + every cast member in this scene. The QA compares the
+  // scene's wardrobe (head covering, garments, colours, footwear, hair)
+  // against these sheets item by item; page 4 of a real book redressed the
+  // hero entirely and no gate could see it (Lynden 2026-08-14).
+  const qaCharacterRefs = [];
+  try {
+    const heroSmall = await sharp(heroBuf).resize({ width: 512, withoutEnlargement: true }).jpeg({ quality: 70 }).toBuffer();
+    qaCharacterRefs.push({ name: `${child.name} (the main character)`, b64: heroSmall.toString("base64"), mime: "image/jpeg" });
+    for (const c of castRefs) {
+      const small = await sharp(c.buf).resize({ width: 512, withoutEnlargement: true }).jpeg({ quality: 70 }).toBuffer();
+      qaCharacterRefs.push({ name: c.name, b64: small.toString("base64"), mime: "image/jpeg" });
+    }
+  } catch {
+    // QA refs are best-effort; consistency QA still runs without them
+  }
+
   const samePlace = locationRefText(camera);
   // A character the text MENTIONS is not a character who is present. Page 1 of
   // the Portugal book said the chair "was for Grandad" and the illustrator
@@ -847,7 +864,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       }
 
       if (pageText) {
-        const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+        const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
         cost += check.cost;
         if (!check.data.pass) {
           // The repair turn chains onto the FAILED turn so the model edits
@@ -868,7 +885,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
             const rrep = await repairEyes(rbuf, rqa);
             rbuf = rrep.buf; cost += rrep.cost; rqa = { ...rrep.qa, engine: "responses-chain" };
           }
-          const recheck = await sceneConsistencyQA(rbuf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+          const recheck = await sceneConsistencyQA(rbuf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
           cost += recheck.cost;
           buf = rbuf;
           responseId = retry.responseId;
@@ -892,11 +909,11 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   // wrong picture ships rather than looping, same doctrine as repairEyes.
   if (pageText) {
     try {
-      const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+      const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
       result.cost += check.cost;
       if (!check.data.pass) {
         const retry = await generateWithEyeQA(composeGen(check.data.reason), "scene");
-        const recheck = await sceneConsistencyQA(retry.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock });
+        const recheck = await sceneConsistencyQA(retry.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
         result = {
           buf: retry.buf,
           cost: result.cost + retry.cost + recheck.cost,
