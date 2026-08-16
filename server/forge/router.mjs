@@ -4,7 +4,7 @@ import { cfg, configReport } from "./env.mjs";
 import { allLevels } from "./phonics.mjs";
 import * as db from "./db.mjs";
 import { createCheckout, verifySession, PRICES } from "./stripe.mjs";
-import { startGeneration, stashPhoto, isRunning, renderPdf, runNextStep } from "./jobs.mjs";
+import { startGeneration, stashPhoto, isRunning, renderPdf, runNextStep, repairBook, MAX_BOOK_SPEND_USD } from "./jobs.mjs";
 import { IS_SERVERLESS } from "./storage.mjs";
 
 function readBody(req, limit = 25 * 1024 * 1024) {
@@ -93,6 +93,19 @@ export async function handleForge(req, res) {
       if (!b.child_name || !b.level || !b.focus_sound) {
         return send(res, 400, { error: "child_name, level and focus_sound are required" });
       }
+      // The focus sound must be one of ITS level's own graphemes — a book
+      // teaching a sound its level calls "future" contradicts its own phonics
+      // pages (2026-08-15: an L4 book was created with the L5 grapheme "ai"
+      // via direct API call and shipped labelling its focus sound as
+      // "coming at Level 5"). The wizard already restricts the picker; this
+      // closes the API path.
+      {
+        const lv = allLevels().find((l) => l.level === Number(b.level));
+        if (!lv) return send(res, 400, { error: `Level ${b.level} does not exist.` });
+        if (!lv.graphemes.includes(String(b.focus_sound))) {
+          return send(res, 400, { error: `"${b.focus_sound}" is not a Level ${b.level} sound — it belongs to a different level. Pick one of: ${lv.graphemes.join(", ")}` });
+        }
+      }
       const row = await db.insertBook({
         user_id: b.user_id || null,
         email: b.email || null,
@@ -123,10 +136,20 @@ export async function handleForge(req, res) {
       // Self-heal: a "generating" row with no live job is an orphan (the dev
       // server restarted mid-generation). Flip it to failed so the wizard
       // shows the free retry button instead of polling forever.
+      // MERGE into the existing progress — progress.job is the book's entire
+      // resumable state (finished scenes, references, cost, reviews), and
+      // replacing the object wholesale here destroyed $2.60 of completed
+      // work on 2026-08-14 and forced a from-scratch regeneration.
       if (!IS_SERVERLESS && row.status === "generating" && !isRunning(row.id)) {
         row = await db.updateBook(row.id, {
           status: "failed",
-          progress: { step: "failed", message: "The server restarted mid-generation — tap retry below (it's free).", pct: 0 },
+          progress: {
+            ...(row.progress || {}),
+            step: "failed",
+            message: "The server restarted mid-generation — tap retry below (it's free).",
+            pct: 0,
+            job: row.progress?.job || null,
+          },
         });
       }
       return send(res, 200, { book: { ...row, generating: isRunning(row.id) } });
@@ -141,7 +164,7 @@ export async function handleForge(req, res) {
       const row = await db.getBook(stepMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!["generating"].includes(row.status)) {
-        return send(res, 200, { done: ["ready", "approved"].includes(row.status), status: row.status, step: "none" });
+        return send(res, 200, { done: ["ready", "approved", "text_ready"].includes(row.status), status: row.status, step: "none" });
       }
       const r = await runNextStep(row.id);
       return send(res, 200, r);
@@ -177,6 +200,21 @@ export async function handleForge(req, res) {
       if (b.kind === "world") {
         worldUser = await verifyUser(req);
         if (!worldUser) return send(res, 401, { error: "Sign in to join the World of Books." });
+      }
+      // "Change the story idea" after a content rejection: the restored
+      // credit from the rejected book pays for the new one — no Stripe, no
+      // second charge. The transfer only succeeds if the source book really
+      // holds a restored credit, so this can't be used to mint free books.
+      if (b.kind === "book" && b.book_id && b.credit_from) {
+        const source = await db.getBook(b.credit_from);
+        if (!source || source.status !== "content_rejected") {
+          return send(res, 400, { error: "No restored credit available on that book." });
+        }
+        const moved = await db.transferCredit(b.credit_from, b.book_id);
+        if (!moved) return send(res, 402, { error: "That credit has already been used." });
+        const book = await db.getBook(b.book_id);
+        if (book && ["awaiting_payment", "failed"].includes(book.status)) startGeneration(b.book_id);
+        return send(res, 200, { free: true, kind: "book", book_id: b.book_id, credit_used: true });
       }
       // Private test voucher — redeems to a £0 paid order and skips Stripe
       // entirely. Compared here on the server so the code is never shipped to
@@ -267,11 +305,74 @@ export async function handleForge(req, res) {
       return send(res, 400, { error: "bad kind" });
     }
 
+    // Human sign-off at the text→image boundary (Lynden 2026-08-16): the book
+    // rests at awaiting_imagery_approval with its full imagery contract in
+    // progress.contract; this is the act that authorises image spend.
+    if (req.method === "POST" && p === "/approve-imagery") {
+      const b = await readBody(req);
+      const book = await db.getBook(b.book_id);
+      if (!book) return send(res, 404, { error: "not found" });
+      if (book.status !== "awaiting_imagery_approval") {
+        return send(res, 409, { error: `book is ${book.status}, not awaiting_imagery_approval` });
+      }
+      const job = book.progress?.job;
+      if (!job) return send(res, 500, { error: "no job state on the book" });
+      job.imageryApproved = true;
+      // A reviewer's tweaks to per-page notes ride along as repair-style
+      // corrections the scene prompts pick up (optional).
+      if (b.notes && typeof b.notes === "object") job.repairNotes = b.notes;
+      await db.updateBook(b.book_id, {
+        status: "generating",
+        progress: { ...(book.progress || {}), step: "hero", message: "Imagery approved — generating...", job },
+      });
+      startGeneration(b.book_id);
+      return send(res, 200, { ok: true });
+    }
+
+    // Targeted repair: regenerate only the named pages/cover with their fault
+    // notes, then re-run review + assembly. Body: { book_id, scenes: {"5":
+    // "the figs must be gone"}, cover: "no painted lettering" }.
+    if (req.method === "POST" && p === "/repair") {
+      const b = await readBody(req);
+      try {
+        const r = await repairBook(b.book_id, { scenes: b.scenes || {}, cover: b.cover || null });
+        return send(res, 200, { ok: true, ...r });
+      } catch (e) {
+        return send(res, 400, { error: e.message });
+      }
+    }
+
     if (req.method === "POST" && p === "/retry") {
       const b = await readBody(req);
       const book = await db.getBook(b.book_id);
       if (!book) return send(res, 404, { error: "not found" });
-      if (book.status === "failed") startGeneration(b.book_id);
+      if (book.status === "failed") {
+        startGeneration(b.book_id);
+      } else if (["paused_provider_credit", "paused_budget"].includes(book.status)) {
+        // Resume from the last checkpoint — same provider, same references,
+        // nothing regenerated. A retry on paused_budget is the human act
+        // that authorises one more budget unit (automation never raises it).
+        const job = book.progress?.job || null;
+        if (job && book.status === "paused_budget") {
+          job.capUsd = Number((job.cost + MAX_BOOK_SPEND_USD).toFixed(2));
+          await db.updateBook(b.book_id, { progress: { ...(book.progress || {}), job } });
+        }
+        startGeneration(b.book_id);
+      } else if (book.status === "content_rejected") {
+        // "Try the same idea again": the restored credit is reclaimed and the
+        // book regenerates FROM SCRATCH (a fresh story attempt at the same
+        // idea). The rejected drafts and editor reports stay archived on the
+        // row for debugging.
+        const reclaimed = await db.reclaimCreditForBook(b.book_id);
+        if (!reclaimed) return send(res, 402, { error: "No restored credit found for this book." });
+        // The rejected run is already archived durably in rejected_runs
+        // (written at rejection time by runNextStep) — progress can be reset
+        // clean for the fresh attempt.
+        await db.updateBook(b.book_id, {
+          progress: { step: "story", message: "Starting a fresh attempt at the same idea...", pct: 0, job: null },
+        });
+        startGeneration(b.book_id);
+      }
       return send(res, 200, { ok: true });
     }
 

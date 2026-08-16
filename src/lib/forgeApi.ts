@@ -95,7 +95,7 @@ export const forgeApi = {
   // { step: "busy" }, which the driver treats as "wait and poll".
   step: (bookId: string) =>
     req<{ done: boolean; step: string; status: string }>(`/books/${bookId}/step`, { method: "POST" }),
-  checkout: (body: { kind: "book" | "world"; book_id?: string; email?: string; voucher?: string }) =>
+  checkout: (body: { kind: "book" | "world"; book_id?: string; email?: string; voucher?: string; credit_from?: string }) =>
     req<{ url?: string; free?: boolean }>("/checkout", { method: "POST", body: JSON.stringify(body) }),
   verify: (sessionId: string) =>
     req<{ paid: boolean; kind?: string; book_id?: string | null; email?: string | null }>(

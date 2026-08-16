@@ -181,9 +181,17 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     # only if its home level is genuinely ABOVE this book's level; the forge's
     # writer already uses the full-level window, so this makes the printed
     # page agree with the story's actual decodability rules.
+    # -ed policy (Lynden 2026-08-15, option (a) "for the minute"): stories
+    # narrate in the past tense, so -ed words saturate every custom book. At
+    # L4+ the suffix is a DELIBERATELY TAUGHT EXCEPTION — the prep page's
+    # three-ways -ed guide (build_ed_guide) does the teaching — so it must
+    # not ALSO be labelled a future sound: a book cannot teach a unit and
+    # call it "coming at Level 7" on the same spread ("The Train in the
+    # Drain" shipped exactly that contradiction).
     book_data["future_sounds"] = [
         s for s in book_data.get("future_sounds", [])
         if s.get("level") and int(s["level"]) > level_num
+        and not (level_num >= 4 and s.get("grapheme") == "ed")
     ]
 
     prof = spec.get("profile") or {}

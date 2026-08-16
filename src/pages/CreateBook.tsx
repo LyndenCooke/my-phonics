@@ -117,6 +117,9 @@ export default function CreateBook() {
 
   const fileRef = useRef<HTMLInputElement>(null);
   const pollRef = useRef<number | null>(null);
+  // Set when a content-rejected book's restored credit should pay for the
+  // next book ("Change the story idea") — passed to checkout as credit_from.
+  const [creditFrom, setCreditFrom] = useState<string | null>(null);
 
   const selectedLevel = useMemo(() => levels.find((l) => l.level === level), [levels, level]);
   const flag = useMemo(() => COUNTRIES.find(([c]) => c === country)?.[1] || "🌍", [country]);
@@ -142,7 +145,7 @@ export default function CreateBook() {
       try {
         for (;;) {
           const r = await forgeApi.step(bookId).catch(() => ({ done: false, step: "error", status: "" }));
-          if (r.done || r.status === "failed") break;
+          if (r.done || ["failed", "content_rejected", "paused_provider_credit", "paused_budget"].includes(r.status)) break;
           // busy/error → the dev driver owns it or a blip; wait, then retry.
           if (r.step === "busy" || r.step === "error") await new Promise((res) => setTimeout(res, 4000));
         }
@@ -162,7 +165,7 @@ export default function CreateBook() {
         if (b.status === "ready" || b.status === "approved") {
           if (pollRef.current) window.clearInterval(pollRef.current);
           setStep("ready");
-        } else if (b.status === "failed" && !b.generating) {
+        } else if (["failed", "content_rejected", "paused_provider_credit", "paused_budget"].includes(b.status) && !b.generating) {
           if (pollRef.current) window.clearInterval(pollRef.current);
         }
       } catch {
@@ -303,9 +306,11 @@ export default function CreateBook() {
       const r = await forgeApi.checkout({
         kind: "book", book_id: b.id, email: email.trim() || undefined,
         voucher: voucher?.trim() || undefined,
+        credit_from: creditFrom || undefined,
       });
       if (r.free) {
-        // Redeemed — generation has already been kicked off server-side.
+        // Redeemed (voucher or restored credit) — generation already started.
+        setCreditFrom(null);
         setStep("generating");
         startPolling(b.id);
         return;
@@ -773,6 +778,34 @@ export default function CreateBook() {
                       className="mt-4 rounded-full bg-slate-900 px-7 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
                       Something hiccupped — pick up where it stopped (free)
                     </button>
+                  )}
+                  {book?.status === "content_rejected" && !book.generating && (
+                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-amber-200 bg-amber-50 p-5 text-left">
+                      <p className="text-sm font-extrabold text-slate-900">
+                        We couldn't get this story to meet our quality standard.
+                      </p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                        Your book credit has not been used. You can try the same idea again
+                        or choose a different story idea.
+                      </p>
+                      <div className="mt-4 flex flex-col gap-2">
+                        <button onClick={() => { forgeApi.retry(book.id); startPolling(book.id); }}
+                          className="rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
+                          Try the same idea again (free)
+                        </button>
+                        <button onClick={() => { setCreditFrom(book.id); setBook(null); localStorage.removeItem("forge_book_id"); setStep("child"); }}
+                          className="rounded-full border border-slate-300 bg-white px-6 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
+                          Change the story idea (credit carries over)
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  {["paused_provider_credit", "paused_budget"].includes(book?.status || "") && !book?.generating && (
+                    <p className="mx-auto mt-4 max-w-sm rounded-xl bg-slate-100 px-4 py-3 text-sm leading-relaxed text-slate-600">
+                      Your book is safe and saved. It's taking a little longer than usual —
+                      it will continue from exactly where it stopped, and we'll email you
+                      when it's ready.
+                    </p>
                   )}
                 </div>
               </div>

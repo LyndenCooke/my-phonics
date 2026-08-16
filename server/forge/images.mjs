@@ -159,7 +159,10 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
   });
   if (!res.ok) {
     const text = await res.text();
-    if ([429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
+    // Exhausted credits are a 429 no backoff can fix — fail fast with the
+    // body so jobs.mjs pauses the book (paused_provider_credit) immediately.
+    const billing = /insufficient_quota|credit_balance_exhausted|billing/i.test(text);
+    if (!billing && [429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
       const wait = Math.min(60_000, 5000 * 2 ** attempt) * (0.75 + Math.random() * 0.5);
       console.warn(`[forge] openai image ${res.status} — retry ${attempt + 1}/3 in ${Math.round(wait / 1000)}s`);
       await new Promise((r) => setTimeout(r, wait));
@@ -183,10 +186,24 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
 // conversation state alone lets the hero's outfit pattern drift page to page.
 // Identity comes from references; world state comes from the chain.
 const RESPONSES_MODEL = "gpt-5.5";
-// A chained turn bills gpt-5.5 text tokens (trivial: ~6k in / ~350 out per
-// turn in the pilot) plus the image tool's own generation, priced like a
-// medium gpt-image-1 render. Flat estimate, same spirit as ENGINE_COSTS.
+// FLOOR estimate only (Lynden 2026-08-15: "$20 became $3" — the flat $0.08
+// undercounted real billing badly, because each call also uploads several
+// full-size reference images whose INPUT image tokens bill on top of the
+// generation, and the flat figure ignored them entirely; the ledger tracked
+// ~$7.5 of a real ~$17 day, and the $6 budget cap was silently worth ~2x its
+// face value). When the API reports usage we now price the actual tokens and
+// take whichever is larger; the flat figure remains only as the floor for
+// responses that omit usage.
 const RESPONSES_IMAGE_COST = 0.08;
+// gpt-5.5 pricing (mirrors OPENAI_PRICES in claude.mjs) per 1M tokens.
+const RESPONSES_PRICE = { in: 5.0, out: 30.0 };
+
+function responsesUsageCost(usage) {
+  if (!usage) return RESPONSES_IMAGE_COST;
+  const computed =
+    ((usage.input_tokens || 0) * RESPONSES_PRICE.in + (usage.output_tokens || 0) * RESPONSES_PRICE.out) / 1_000_000;
+  return Math.max(computed, RESPONSES_IMAGE_COST);
+}
 
 async function responsesImage({ prompt, refBufs = [], previousResponseId = null, size = "1536x1024" }, attempt = 0) {
   const content = [
@@ -206,7 +223,9 @@ async function responsesImage({ prompt, refBufs = [], previousResponseId = null,
   });
   if (!res.ok) {
     const text = await res.text();
-    if ([429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
+    // Same billing fast-fail as openaiImage — see comment there.
+    const billing = /insufficient_quota|credit_balance_exhausted|billing/i.test(text);
+    if (!billing && [429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
       const wait = Math.min(60_000, 5000 * 2 ** attempt) * (0.75 + Math.random() * 0.5);
       console.warn(`[forge] responses image ${res.status} — retry ${attempt + 1}/3 in ${Math.round(wait / 1000)}s`);
       await new Promise((r) => setTimeout(r, wait));
@@ -217,7 +236,7 @@ async function responsesImage({ prompt, refBufs = [], previousResponseId = null,
   const data = await res.json();
   const imgCall = (data.output || []).find((o) => o.type === "image_generation_call");
   if (!imgCall?.result) throw new Error(`responses image: no image in output (status ${data.status})`);
-  return { buf: Buffer.from(imgCall.result, "base64"), responseId: data.id };
+  return { buf: Buffer.from(imgCall.result, "base64"), responseId: data.id, cost: responsesUsageCost(data.usage) };
 }
 
 // Storage moved to storage.mjs (2026-08-06): images must go to Supabase
@@ -319,7 +338,13 @@ async function kontextMulti(prompt, imageUris, aspect = "3:4") {
 const ENGINE_COSTS = { vertex: VERTEX_IMG_COST, gpt2: GPT_IMG_COST };
 
 function engineOrder() {
-  const preferred = process.env.FORGE_IMG_ENGINE || (cfg.OPENAI_API_KEY ? "openai" : "vertex");
+  // An EXPLICIT engine override pins that engine with NO fallback: a proof
+  // pass forced onto Vertex must fail loudly rather than quietly finish the
+  // job on OpenAI credit — silent cross-engine fallback is exactly how a
+  // "cheap" run stops being cheap (Lynden 2026-08-16), and mid-book engine
+  // switches break character/style continuity anyway.
+  if (process.env.FORGE_IMG_ENGINE) return [process.env.FORGE_IMG_ENGINE];
+  const preferred = cfg.OPENAI_API_KEY ? "openai" : "vertex";
   const all = ["openai", "vertex", "gpt2"];
   return [preferred, ...all.filter((e) => e !== preferred)];
 }
@@ -709,7 +734,7 @@ export async function generateAnimal({ name, appearance }) {
 // spot) that no fixed reference was ever generated for. Anchor = "what does
 // this place permanently look like"; prevBuf = "what does it look like RIGHT
 // NOW" — both can be true and useful at once.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", previousResponseId = null, chainEnabled = true }) {
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", assertions = null, previousResponseId = null, chainEnabled = true }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -835,7 +860,10 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   // NOT attached here — the chain itself already holds the previous image,
   // which is the whole point. Any failure falls through to the stateless
   // legacy path below, which never chains but always works.
-  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0";
+  // The chain path runs on the OpenAI Responses API regardless of image
+  // engine, so it must ALSO respect an explicit non-openai engine override —
+  // otherwise FORGE_IMG_ENGINE=vertex still bills every scene to OpenAI.
+  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0" && engineOrder()[0] === "openai";
   if (chainWanted) {
     try {
       const chainRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), ...(anchorBuf ? [anchorBuf] : [])];
@@ -851,7 +879,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
         `SCENE TO GENERATE: ${buildFullScene(correction)}`;
 
       let turn = await responsesImage({ prompt: chainScenePrompt(), refBufs: chainRefs, previousResponseId, size: "1536x1024" });
-      let cost = RESPONSES_IMAGE_COST;
+      let cost = turn.cost;
       let buf = turn.buf;
       let responseId = turn.responseId;
 
@@ -864,7 +892,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       }
 
       if (pageText) {
-        const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
+        const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
         cost += check.cost;
         if (!check.data.pass) {
           // The repair turn chains onto the FAILED turn so the model edits
@@ -876,7 +904,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
             previousResponseId: turn.responseId,
             size: "1536x1024",
           });
-          cost += RESPONSES_IMAGE_COST;
+          cost += retry.cost;
           let rbuf = retry.buf;
           const reye = await eyeQAZoomed(rbuf);
           cost += reye.cost;
@@ -885,7 +913,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
             const rrep = await repairEyes(rbuf, rqa);
             rbuf = rrep.buf; cost += rrep.cost; rqa = { ...rrep.qa, engine: "responses-chain" };
           }
-          const recheck = await sceneConsistencyQA(rbuf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
+          const recheck = await sceneConsistencyQA(rbuf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
           cost += recheck.cost;
           buf = rbuf;
           responseId = retry.responseId;
@@ -909,11 +937,11 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   // wrong picture ships rather than looping, same doctrine as repairEyes.
   if (pageText) {
     try {
-      const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
+      const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
       result.cost += check.cost;
       if (!check.data.pass) {
         const retry = await generateWithEyeQA(composeGen(check.data.reason), "scene");
-        const recheck = await sceneConsistencyQA(retry.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs });
+        const recheck = await sceneConsistencyQA(retry.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
         result = {
           buf: retry.buf,
           cost: result.cost + retry.cost + recheck.cost,
@@ -982,7 +1010,9 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
   // scene means the cover inherits the resolved world and final object
   // states directly — the exact thing the cover contract (§8) needs. Same
   // hybrid rule as scenes: identity references still attached per turn.
-  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0";
+  // Same engine-override guard as generateScene: chained covers are OpenAI
+  // calls and must not run when the engine is pinned elsewhere.
+  const chainWanted = chainEnabled && cfg.OPENAI_API_KEY && process.env.FORGE_CHAIN_SCENES !== "0" && engineOrder()[0] === "openai";
   if (chainWanted) {
     try {
       const chainRefs = [heroBuf, ...castRefs.map((c) => c.buf), ...objectRefs.map((o) => o.buf), fs.readFileSync(COVER_REF_PATH)];
@@ -995,7 +1025,7 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
         "The final reference image is one of our publishing house's real book covers — match its illustration style, composition feel and warmth (do NOT copy its content or characters). " +
         `COVER TO GENERATE: ${coverBrief}`;
       const turn = await responsesImage({ prompt: chainPrompt, refBufs: chainRefs, previousResponseId, size: "1024x1536" });
-      let cost = RESPONSES_IMAGE_COST;
+      let cost = turn.cost;
       let buf = turn.buf;
       let eye = await eyeQAZoomed(buf);
       cost += eye.cost;

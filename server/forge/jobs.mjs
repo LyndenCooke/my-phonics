@@ -19,12 +19,13 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
-import { getBook, updateBook, recentStoryShapes } from "./db.mjs";
+import { getBook, updateBook, recentStoryShapes, restoreCreditForBook } from "./db.mjs";
 import { BOOKS_DIR } from "./env.mjs";
 
 export { CUSTOM_BOOKS_DIR };
@@ -49,11 +50,48 @@ export function isRunning(bookId) {
 // two tabs, and then the stale-after window keeps it self-healing.
 const LOCK_MS = 2 * 60 * 1000;
 
+// Maximum AUTOMATIC spend per book. Reaching it PAUSES the job (resumable,
+// nothing lost) instead of letting rewrites and regenerations run open-ended
+// — the $2.60 loss on 2026-08-14 came from a from-scratch regeneration that
+// no ceiling would have allowed to double-spend silently. A human retry on a
+// paused_budget book authorises one more budget unit (see router.mjs).
+export const MAX_BOOK_SPEND_USD = Number(process.env.FORGE_MAX_BOOK_USD || 6);
+
+// Text-only test mode (Lynden 2026-08-14): stop after the story editor gate,
+// before a single image is generated. A rejected draft then costs pennies.
+// Switched by env var OR a dev marker file next to this module, so a test
+// run can flip it without restarting the vite process.
+function isTextOnly() {
+  if (process.env.FORGE_TEXT_ONLY === "1") return true;
+  try {
+    return fs.existsSync(path.join(path.dirname(fileURLToPath(import.meta.url)), ".text_only"));
+  } catch {
+    return false;
+  }
+}
+
+// A double editor rejection is a CONTENT decision, not an infrastructure
+// failure — carried as a typed error so runNextStep can route it to the
+// content_rejected state (credit restored, assets preserved) instead of the
+// generic "failed" retry flow.
+class ContentRejectedError extends Error {
+  constructor(message) {
+    super(message);
+    this.contentRejected = true;
+  }
+}
+
+// Provider-credit exhaustion is a PAUSE, not a failure: the job keeps every
+// checkpoint and resumes with the same provider once credits are topped up
+// (OpenAI ran dry mid-book on 2026-08-12 and the book died; a silent
+// fallback provider is banned — it breaks character/style continuity).
+const PROVIDER_CREDIT_RE = /insufficient[_ ]quota|billing[_ ]hard[_ ]limit|exceeded your current quota|payment required|insufficient credit|\b402\b/i;
+
 function newJob(book) {
   return {
     v: 1,
     cost: 0,
-    breakdown: { story_usd: 0, images_usd: 0, qa_notes: [] },
+    breakdown: { story_usd: 0, images_usd: 0, qa_notes: [], stages: {} },
     sceneUrls: [],
     anchors: {},      // location id -> image URL
     castSheets: {},   // cast id -> { name, url }
@@ -77,7 +115,21 @@ function nextStepOf(job) {
   if (!job.story) return "story";
   if (!job.qaDone) return "qa";
   if (!job.plausibilityDone) return "plausibility";
+  // STORY GATE BEFORE ANY IMAGE (Lynden 2026-08-14): "Yusuf and the Star
+  // Tin" was double-rejected for story thinness with 16 finished paid
+  // illustrations. Both rejections were visible in the text alone, so the
+  // editor now judges the manuscript here — premise, six-beat plan, page
+  // texts — while a rejected draft still costs pennies. Nothing downstream
+  // (direction, hero, scenes, cover) runs until the story has passed.
+  if (!job.storyGateDone) return "storyGate";
+  if (job.textOnly) return job.textReported ? "done" : "textReport";
   if (!job.directDone) return "direct";
+  // IMAGERY APPROVAL GATE (Lynden 2026-08-16, "idea one"): the text→image
+  // boundary is where the money starts, so by default a book STOPS here with
+  // its full imagery contract (story + director plan + visible-state
+  // assertions) and waits for a human sign-off before a single image is
+  // generated. FORGE_AUTO_APPROVE=1 restores the old straight-through flow.
+  if (!job.imageryApproved && process.env.FORGE_AUTO_APPROVE !== "1") return "awaitImagery";
   if (!job.heroUrl) return "hero";
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
   if (!job.coverUrl) return "cover";
@@ -364,6 +416,87 @@ async function stepPlausibility(book, job) {
   job.plausibilityDone = true;
 }
 
+// Reset everything downstream of the story so the machine re-enters at
+// phonics QA with a revised manuscript. The hero sheet survives (same child);
+// cast/object sheets are on-demand caches keyed by name, so unchanged members
+// are reused and new ones get drawn.
+function resetAfterStoryRevision(job, revisedStory) {
+  job.story = revisedStory;
+  job.qaDone = false;
+  job.plausibilityDone = false;
+  job.storyGateDone = false;
+  job.directDone = false;
+  job.directed = null;
+  job.sceneUrls = [];
+  job.anchors = {};
+  job.coverUrl = null;
+  job.chainResponseId = null;
+  job.carriedState = null;
+}
+
+// The text-only editor gate. Severity decides (deriveEditorVerdict): only a
+// critical/major issue blocks; minors are internal notes and the book
+// proceeds. One bounded same-premise revision; a second rejection is a
+// content rejection (credit restored), never a delivery of the weak book.
+async function stepStoryGate(book, job) {
+  const level = getLevel(book.level);
+  const { data: review, cost } = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
+  job.cost += cost || 0; job.breakdown.story_usd += cost || 0;
+  const verdict = deriveEditorVerdict(review);
+
+  if (verdict.pass) {
+    if (verdict.minors.length) {
+      // Minor-only review: the book ships; the notes stay for the audit trail.
+      job.breakdown.story_gate_minors = verdict.minors;
+    }
+    job.breakdown.story_gate = review;
+    job.storyGateDone = true;
+    if (isTextOnly()) job.textOnly = true;
+    return;
+  }
+
+  const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
+  if (job.storyRetryUsed) {
+    job.breakdown.story_gate_second = review;
+    throw new ContentRejectedError(`story gate rejected the manuscript twice: ${detail}`.slice(0, 290));
+  }
+
+  // ONE bounded revision. The premise is LOCKED unless the editor explicitly
+  // rejected the premise itself (a blocking issue with area "premise") —
+  // the 2026-08-14 revision abandoned the simit-cart premise and invented an
+  // unrelated star-tin book, which is exactly what the lock forbids.
+  job.storyRetryUsed = true;
+  job.breakdown.story_gate_first = review;
+  const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise");
+  const child = childOf(book);
+  const pagesCount = storyPagesFor(book.level);
+  const revised = await reviseStoryAfterEditor({
+    level, child, focusSound: book.focus_sound, pagesCount,
+    story: job.story, review, premiseRejected,
+    greenWords: greenWordsUpTo(book.level),
+    progression: progressionUpTo(book.level),
+    exemplars: coreStoriesFor(book.level),
+  });
+  job.cost += revised.cost || 0; job.breakdown.story_usd += revised.cost || 0;
+  resetAfterStoryRevision(job, revised.data);
+  // machine re-enters at "qa" with the revised story
+}
+
+// Terminal step of a FORGE_TEXT_ONLY run: publish the approved manuscript
+// and every editor report onto the row (status "text_ready") without
+// spending a cent on images. Used for cheap story-quality test runs.
+async function stepTextReport(book, job) {
+  await updateBook(book.id, {
+    status: "text_ready",
+    title: job.story.title,
+    story: { story: job.story, validation: job.validation },
+    cost_usd: Number(job.cost.toFixed(4)),
+    cost_breakdown: job.breakdown,
+    progress: { step: "text_ready", message: "Text-only run complete — story approved, no images generated.", pct: 100, job },
+  });
+  job.textReported = true;
+}
+
 async function stepDirect(book, job) {
   try {
     const d = await directScenes({ story: job.story, child: childOf(book) });
@@ -385,6 +518,14 @@ async function stepHero(book, job) {
 
 async function castSheetFor(book, job, id) {
   const key = String(id).toLowerCase();
+  // NEVER build a cast sheet for the hero: the hero reference (stepHero) is
+  // their single fixed identity, and a second independently-generated sheet
+  // inevitably wears a different outfit. On 2026-08-15 a revised story listed
+  // Idris in its own cast, the QA was handed two conflicting "Idris" sheets,
+  // and every page-2 attempt failed character match against one or the other
+  // — an unwinnable deadlock that killed the book.
+  const heroName = String(book.child_name || "").toLowerCase().trim();
+  if (heroName && (key === heroName || key.includes(heroName))) return null;
   if (job.castSheets[key]) {
     const buf = await loadByUrl(job.castSheets[key].url);
     return buf ? { name: job.castSheets[key].name, buf } : null;
@@ -460,7 +601,18 @@ async function stepScene(book, job, i) {
 
   const loc = (story.pages[i].location || "").trim().toLowerCase();
   const d = job.directed?.find((x) => x.page === i + 1);
-  const sceneBrief = d ? `${d.brief} ${child.name} feels ${d.emotion}. Staging: ${d.staging}` : story.pages[i].scene;
+  // Ownership/absence assertions go into the GENERATION brief too, not just
+  // the QA — draw the allocation right first time rather than repair it.
+  const assertionText = d && (d.required_visible_states?.length || d.forbidden_visible_states?.length)
+    ? ` MUST BE CLEARLY VISIBLE: ${(d.required_visible_states || []).map((a) => `${a.object} — ${a.assertion}`).join("; ")}.` +
+      ((d.forbidden_visible_states || []).length ? ` MUST NOT BE SHOWN: ${(d.forbidden_visible_states || []).map((a) => `${a.object} — ${a.assertion}`).join("; ")}.` : "")
+    : "";
+  let sceneBrief = d ? `${d.brief} ${child.name} feels ${d.emotion}. Staging: ${d.staging}${assertionText}` : story.pages[i].scene;
+  // Targeted repair (Lynden 2026-08-16, "edits instead of a complete re-run"):
+  // a repair note for this page rides into the brief so the regeneration
+  // fixes the named fault from the start instead of re-rolling the dice.
+  const repairNote = job.repairNotes?.[i + 1] || job.repairNotes?.[String(i + 1)];
+  if (repairNote) sceneBrief += ` REPAIR — the previous version of this page had this specific problem; fix it and keep everything else the same: ${repairNote}`;
   // The anchor is injected on EVERY revisit — the camera tag decides HOW it is
   // used, never WHETHER (see SKILL.md §3; gating on same-view was the worst
   // bug in this pipeline's history).
@@ -506,7 +658,7 @@ async function stepScene(book, job, i) {
     ? ` ACTUAL STATE AFTER THE PREVIOUS PAGE (binding — redraw each object exactly like this except what this page's action changes): ${job.carriedState}`
     : "";
 
-  const s = await generateScene({
+  const sceneArgs = {
     heroBuf,
     scene: sceneBrief,
     child,
@@ -523,8 +675,33 @@ async function stepScene(book, job, i) {
     // consistency QA in generateScene — a story page always has real text,
     // unlike the cover, which has none to check against.
     pageText: story.pages[i].text,
+    // Director-declared ownership/negative-state assertions for this page —
+    // verified against the finished image by sceneConsistencyQA (an object
+    // being visible is not the same as the allocation being visible).
+    assertions: d ? { required: d.required_visible_states || [], forbidden: d.forbidden_visible_states || [] } : null,
     previousResponseId: job.chainResponseId,
-  });
+  };
+  let s = await generateScene(sceneArgs);
+  // A FAILED CONSISTENCY QA IS BLOCKING (Lynden 2026-08-15, "The Train in the
+  // Drain": pages 4-5 failed QA with exact, correct reasons — "she is not
+  // shown actually sliding a hook into the drain" — and the old code logged a
+  // console warning and SHIPPED them; the paid-for verdict went in the bin).
+  // generateScene already did one chained repair; here we regenerate the
+  // scene ONCE from scratch (chain broken, so the model can't just re-emit
+  // its own bad picture), and if the action still is not visible the book
+  // fails resumably at this scene instead of delivering a page whose central
+  // action happens off-camera.
+  if (s.qa?.consistency && !s.qa.consistency.pass) {
+    console.warn(`[forge] page ${i + 1} consistency QA failed after repair — regenerating from scratch: ${s.qa.consistency.reason}`);
+    job.cost += s.cost; job.breakdown.images_usd += s.cost;
+    job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — regenerated" });
+    s = await generateScene({ ...sceneArgs, previousResponseId: null });
+    if (s.qa?.consistency && !s.qa.consistency.pass) {
+      job.cost += s.cost; job.breakdown.images_usd += s.cost;
+      job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — page rejected" });
+      throw new Error(`page ${i + 1} rejected: the picture does not show the page's action after 2 attempts — ${String(s.qa.consistency.reason).slice(0, 200)}`);
+    }
+  }
   job.cost += s.cost; job.breakdown.images_usd += s.cost;
   if (s.responseId) job.chainResponseId = s.responseId;
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
@@ -556,7 +733,10 @@ async function stepScene(book, job, i) {
     console.warn(`[forge] page ${i + 1} consistency QA still failing after repair: ${s.qa.consistency.reason}`);
   }
   const url = await saveImage(book.id, `page${i + 1}.jpg`, s.buf);
-  job.sceneUrls.push(url);
+  // Repair mode regenerates an EXISTING page in place; normal generation
+  // appends the next page. saveImage upserts the same filename either way.
+  if (i < job.sceneUrls.length) job.sceneUrls[i] = url;
+  else job.sceneUrls.push(url);
   if (loc && !job.anchors[loc]) job.anchors[loc] = url;
 }
 
@@ -573,12 +753,15 @@ async function stepCover(book, job) {
     }, {}),
   ).sort((a, b) => b[1] - a[1])[0]?.[0];
   const coverBrief =
-    story.cover_brief ||
-    `${child.name} in the happiest moment of the story "${story.title}", holding or beside the story's central object. ${story.pages[story.pages.length - 1]?.scene || ""}`;
+    (story.cover_brief ||
+      `${child.name} in the happiest moment of the story "${story.title}", holding or beside the story's central object. ${story.pages[story.pages.length - 1]?.scene || ""}`) +
+    (job.repairNotes?.cover
+      ? ` REPAIR — the previous cover had this specific problem; fix it and keep everything else the same: ${job.repairNotes.cover}`
+      : "");
   const anchorUrl = mainLoc ? job.anchors[mainLoc] : null;
   const coverObjectNames = (story.key_objects || []).map((o) => o?.name).filter((n) => n && coverBrief.toLowerCase().includes(n.toLowerCase()));
   const objectRefs = (await Promise.all(coverObjectNames.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
-  const cover = await generateCover({
+  const coverArgs = {
     heroBuf,
     brief: coverBrief,
     child,
@@ -586,8 +769,36 @@ async function stepCover(book, job) {
     anchorBuf: anchorUrl ? await loadByUrl(anchorUrl) : null,
     objectRefs,
     previousResponseId: job.chainResponseId,
-  });
+  };
+  let cover = await generateCover(coverArgs);
   job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
+
+  // COVER CONTENT GATE (Lynden 2026-08-15): the template overlays the real
+  // title later, so lettering painted into the art is a production blocker —
+  // "Figs on the Tray" regenerated its cover WITH a painted title and only
+  // the editor (too late, revision spent) noticed. One regeneration with a
+  // hardened text-free instruction, then reject rather than typeset over it.
+  const { coverContentQA } = await import("./claude.mjs");
+  let cc = await coverContentQA(cover.buf.toString("base64"));
+  job.cost += cc.cost; job.breakdown.story_usd += cc.cost;
+  if (!cc.data.pass) {
+    console.warn(`[forge] cover contains embedded lettering — regenerating: ${cc.data.reason}`);
+    job.breakdown.qa_notes.push({ cover_content: cc.data, discarded: "embedded lettering — regenerated" });
+    cover = await generateCover({
+      ...coverArgs,
+      previousResponseId: null,
+      brief:
+        `${coverBrief} ABSOLUTELY NO TEXT IN THE ARTWORK: the title is typeset separately later, so the painting must contain no letters, no words, no numbers, no title lettering, no logos, no written signs, no watermarks and no text-like marks of any kind — anywhere, including on awnings, stalls, packaging and background objects.`,
+    });
+    job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
+    cc = await coverContentQA(cover.buf.toString("base64"));
+    job.cost += cc.cost; job.breakdown.story_usd += cc.cost;
+    if (!cc.data.pass) {
+      job.breakdown.qa_notes.push({ cover_content: cc.data, discarded: "embedded lettering — cover rejected" });
+      throw new Error(`cover rejected: artwork still contains embedded lettering after 2 attempts — ${String(cc.data.reason).slice(0, 200)}`);
+    }
+  }
+  job.breakdown.cover_content = cc.data;
   job.coverUrl = await saveImage(book.id, "cover.jpg", cover.buf);
 }
 
@@ -629,53 +840,60 @@ async function stepReview(book, job) {
   const images = [];
   for (const url of urls) {
     const buf = await loadByUrl(url);
-    const small = await reviewThumb(buf);
+    // 1024px, not 640: the editor must be able to resolve the details its
+    // rubric asks about (a hook on a stall, the slot width of a drain grate).
+    const small = await reviewThumb(buf, 1024);
     images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
   }
 
-  const { coldEditorReview, reviseStoryAfterEditor } = await import("./claude.mjs");
-  const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images });
+  // No silent caps: any per-page QA verdict that stayed failed reaches the
+  // editor instead of dying in a console log (the exact failure of
+  // 2026-08-15 — the QA had named the missing hook action and nobody read it).
+  const unresolvedQa = (job.breakdown.qa_notes || [])
+    .filter((n) => n && n.page && n.consistency && n.consistency.pass === false && !n.discarded)
+    .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
+
+  const { coldEditorReview } = await import("./claude.mjs");
+  const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
   job.cost += cost || 0;
   job.breakdown.editor_review = review;
 
-  const rejects = (review.issues || []).filter((i) => i.severity === "reject");
-  if (!review.pass || rejects.length) {
-    const detail = rejects.map((i) => `[${i.area}] ${i.detail}`).join(" | ") || review.reason;
+  // Pass/fail is DERIVED from issue severities, never from the model's
+  // separately generated boolean (on 2026-08-14 a book was killed by a review
+  // whose issues were all "minor" yet whose pass came out false). Minor-only
+  // review = ship, with the notes kept internally.
+  const verdict = deriveEditorVerdict(review);
+  if (!verdict.pass) {
+    const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
     if (job.editorRetryUsed) {
-      // Second rejection — the one revision is spent. Fail with the reasons.
-      throw new Error(`editor gate rejected the book twice: ${detail}`.slice(0, 290));
+      // Second rejection — the one revision is spent. Content rejection:
+      // credit restored, all assets preserved, never delivered.
+      job.breakdown.editor_review_second = review;
+      throw new ContentRejectedError(`editor gate rejected the book twice: ${detail}`.slice(0, 290));
     }
     // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
-    // story against the editor's reasons, then send the book back through
-    // the machine from phonics QA — direction, scenes and cover regenerate
-    // from the revised story. The hero sheet survives (same child); cast and
-    // object sheets are on-demand, so unchanged members are reused and new
-    // ones get drawn. The first review is kept for the audit trail.
+    // story against the editor's reasons — SAME PREMISE unless the editor
+    // explicitly rejected the premise itself — then send the book back
+    // through the machine from phonics QA. The revised story faces the
+    // text-only story gate again BEFORE any scene regenerates.
     job.editorRetryUsed = true;
     job.breakdown.editor_review_first = review;
+    const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise");
     const child = childOf(book);
     const pagesCount = storyPagesFor(book.level);
     const revised = await reviseStoryAfterEditor({
       level, child, focusSound: book.focus_sound, pagesCount,
-      story, review,
+      story, review, premiseRejected,
       greenWords: greenWordsUpTo(book.level),
       progression: progressionUpTo(book.level),
       exemplars: coreStoriesFor(book.level),
     });
     job.cost += revised.cost || 0;
     job.breakdown.story_usd += revised.cost || 0;
-    job.story = revised.data;
-    job.qaDone = false;
-    job.plausibilityDone = false;
-    job.directDone = false;
-    job.directed = null;
-    job.sceneUrls = [];
-    job.anchors = {};
-    job.coverUrl = null;
-    job.chainResponseId = null;
-    job.carriedState = null;
+    resetAfterStoryRevision(job, revised.data);
     return; // machine re-enters at "qa" with the revised story
   }
+  if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
   job.reviewDone = true;
 }
 
@@ -737,6 +955,8 @@ function displayFor(book, job, step) {
     story: ["story", `Writing ${name}'s story around the sound "${book.focus_sound}"...`, 5],
     qa: ["phonics_qa", "Checking every word is decodable at this level...", 15],
     plausibility: ["plausibility_qa", "Checking the story actually makes sense...", 20],
+    storyGate: ["story_editor", "A demanding editor is reading the manuscript before we mix any paint...", 22],
+    textReport: ["text_ready", "Text-only run complete — story approved, no images generated.", 100],
     direct: ["directing", `Directing the scenes (walking the story in ${name}'s shoes)...`, 25],
     hero: ["hero", `Drawing ${name} as a book character (eye rule enforced)...`, 30],
     cover: ["cover", "Painting the cover...", 85],
@@ -758,7 +978,9 @@ function displayFor(book, job, step) {
 export async function runNextStep(bookId) {
   const book = await getBook(bookId);
   if (!book) throw new Error("book not found");
-  if (["ready", "approved", "rejected"].includes(book.status)) return { done: true, step: "done", status: book.status };
+  if (["ready", "approved", "rejected", "text_ready", "content_rejected"].includes(book.status)) {
+    return { done: true, step: "done", status: book.status };
+  }
   if (!getLevel(book.level)) throw new Error(`bad level ${book.level}`);
 
   let job = book.progress?.job || null;
@@ -768,18 +990,72 @@ export async function runNextStep(bookId) {
     return { done: false, step: "busy", status: book.status };
   }
   if (!job) job = newJob(book);
+  if (!job.breakdown.stages) job.breakdown.stages = {}; // jobs from before the ledger existed
 
   const step = nextStepOf(job);
-  if (step === "done") return { done: true, step: "done", status: "ready" };
+  if (step === "done") return { done: true, step: "done", status: book.status === "generating" ? "ready" : book.status };
+  if (step === "awaitImagery") {
+    // Not a step that RUNS — a resting state. The full imagery contract is
+    // surfaced on the row for review; POST /api/forge/approve-imagery flips
+    // job.imageryApproved and restarts generation from the hero step.
+    await updateBook(bookId, {
+      status: "awaiting_imagery_approval",
+      progress: {
+        step: "awaiting_imagery_approval",
+        message: "Story approved. Waiting for imagery sign-off before any images are generated.",
+        pct: 35,
+        contract: {
+          title: job.story.title,
+          setting: job.story.setting,
+          key_objects: job.story.key_objects,
+          cast: job.story.cast,
+          pages: (job.story.pages || []).map((p, i) => {
+            const d = (job.directed || []).find((x) => x.page === i + 1) || {};
+            return {
+              page: i + 1, text: p.text, location: p.location || null,
+              brief: d.brief || p.scene, camera: d.camera || null,
+              objects: d.objects || [], cast_present: d.cast_present || [],
+              required_visible_states: d.required_visible_states || [],
+              forbidden_visible_states: d.forbidden_visible_states || [],
+            };
+          }),
+        },
+        job,
+      },
+    });
+    return { done: true, step: "awaitImagery", status: "awaiting_imagery_approval" };
+  }
+
+  // SPEND CEILING: past the cap the job PAUSES (fully resumable) instead of
+  // spending further. A human retry authorises one more budget unit by
+  // raising job.capUsd (router.mjs) — automation never raises it itself.
+  const cap = Number(job.capUsd || MAX_BOOK_SPEND_USD);
+  if (job.cost >= cap) {
+    console.error(`[forge] ADMIN: book ${bookId} paused at spend cap ($${job.cost.toFixed(2)} >= $${cap})`);
+    await updateBook(bookId, {
+      status: "paused_budget",
+      progress: {
+        ...(book.progress || {}),
+        step: "paused_budget",
+        message: "Taking a little longer than usual — the team has been alerted and your book will continue shortly.",
+        pct: book.progress?.pct ?? 0,
+        job,
+      },
+    });
+    return { done: true, step: "paused", status: "paused_budget" };
+  }
 
   job.lockAt = Date.now();
   job.lockStep = step;
   await persist(bookId, job, displayFor(book, job, step));
 
+  const costBefore = job.cost;
   try {
     if (step === "story") await stepStory(book, job);
     else if (step === "qa") await stepQa(book, job);
     else if (step === "plausibility") await stepPlausibility(book, job);
+    else if (step === "storyGate") await stepStoryGate(book, job);
+    else if (step === "textReport") await stepTextReport(book, job);
     else if (step === "direct") await stepDirect(book, job);
     else if (step === "hero") await stepHero(book, job);
     else if (step.startsWith("scene:")) await stepScene(book, job, Number(step.split(":")[1]));
@@ -790,6 +1066,62 @@ export async function runNextStep(bookId) {
   } catch (e) {
     job.lockAt = null;
     job.lockStep = null;
+    // Per-step cost ledger records even a failed step's spend.
+    job.breakdown.stages[step] = Number(((job.breakdown.stages[step] || 0) + (job.cost - costBefore)).toFixed(4));
+
+    if (e?.contentRejected) {
+      // Two rejected drafts: never deliver the weak book, never start a
+      // third automatic paid rewrite. Job + assets + editor reports are all
+      // preserved in progress.job for debugging; the customer's credit is
+      // restored; the state is distinct from infrastructure "failed".
+      try {
+        await restoreCreditForBook(bookId);
+      } catch (err) {
+        console.error(`[forge] ADMIN: credit restore failed for content-rejected book ${bookId}:`, err.message);
+      }
+      await updateBook(bookId, {
+        status: "content_rejected",
+        cost_usd: Number(job.cost.toFixed(4)),
+        cost_breakdown: job.breakdown,
+        // Durable archive in its OWN column — progress is rewritten wholesale
+        // by every later step, so an archive stored there survives seconds
+        // (the first try-again run wiped its predecessor's audit trail,
+        // 2026-08-15). Append-only: each rejected run stacks up.
+        rejected_runs: [
+          ...(book.rejected_runs || []),
+          { rejected_at: new Date().toISOString(), detail: String(e.message || e).slice(0, 300), job },
+        ],
+        progress: {
+          step: "content_rejected",
+          message: "We couldn't get this story to meet our quality standard. Your book credit has not been used — you can try the same idea again or choose a different story idea.",
+          detail: String(e.message || e).slice(0, 300),
+          pct: 0,
+          job, // convenience copy for the wizard; the durable one is rejected_runs
+        },
+      });
+      return { done: true, step, status: "content_rejected" };
+    }
+
+    if (PROVIDER_CREDIT_RE.test(String(e.message || e))) {
+      // Provider credits ran out: PAUSE, don't fail, and never switch image
+      // provider mid-book (a fallback breaks character/style continuity).
+      // Every completed image is already checkpointed in job; after topping
+      // up, retry resumes from this exact step with the same provider.
+      console.error(`[forge] ADMIN: book ${bookId} paused — provider credits exhausted at step "${step}": ${e.message}`);
+      await updateBook(bookId, {
+        status: "paused_provider_credit",
+        progress: {
+          ...(book.progress || {}),
+          step: "paused_provider_credit",
+          message: "Your book is safe and saved — it will continue from exactly where it stopped shortly.",
+          detail: String(e.message || e).slice(0, 300),
+          pct: book.progress?.pct ?? 0,
+          job,
+        },
+      });
+      return { done: true, step, status: "paused_provider_credit" };
+    }
+
     await updateBook(bookId, {
       status: "failed",
       progress: {
@@ -804,12 +1136,19 @@ export async function runNextStep(bookId) {
 
   job.lockAt = null;
   job.lockStep = null;
+  // Per-step cost ledger — separates story, each gate, each scene image,
+  // cover, country pack and review so a cost overrun names its stage.
+  const delta = job.cost - costBefore;
+  if (delta > 0) {
+    job.breakdown.stages[step] = Number(((job.breakdown.stages[step] || 0) + delta).toFixed(4));
+  }
   const after = nextStepOf(job);
   if (after !== "done") {
     // Show the NEXT step's message so the bar never sits on a finished stage.
     await persist(bookId, job, displayFor(book, job, after));
   }
-  return { done: after === "done", step, status: after === "done" ? "ready" : "generating" };
+  const finalStatus = after === "done" ? (job.textReported ? "text_ready" : "ready") : "generating";
+  return { done: after === "done", step, status: finalStatus };
 }
 
 // -------------------------------------------------------------- lifecycle --
@@ -844,6 +1183,42 @@ export async function startGeneration(bookId) {
       running.delete(bookId);
       photoStash.delete(bookId);
     });
+}
+
+// TARGETED REPAIR (Lynden 2026-08-16, "make any necessary edits instead of a
+// complete re-run"): regenerate ONLY the named pages/cover of a finished (or
+// editor-rejected) book, each with its fault note baked into the brief, then
+// re-enter the normal step machine so the cold-editor review and assembly run
+// again over the mended book. Everything not named keeps its paid-for image.
+export async function repairBook(bookId, { scenes = {}, cover = null } = {}) {
+  const book = await getBook(bookId);
+  if (!book) throw new Error("book not found");
+  const job = book.progress?.job;
+  if (!job?.story) throw new Error("no job state with a story on this book — repair needs the archived job");
+  if (!job.sceneUrls?.length) throw new Error("no generated scenes to repair");
+
+  job.repairNotes = { ...scenes, ...(cover ? { cover } : {}) };
+  // A human asked for this repair — that IS the imagery sign-off, and the
+  // book's images were approved-for-spend when they were first generated.
+  job.imageryApproved = true;
+  const pageNums = Object.keys(scenes).map(Number).filter((n) => n >= 1 && n <= job.sceneUrls.length);
+  if (!pageNums.length && !cover) throw new Error("nothing to repair — pass scenes {page: note} and/or cover note");
+
+  // Regenerate the named scenes in place, cheapest-first order irrelevant —
+  // sequential keeps prev-page continuity references coherent.
+  await updateBook(bookId, { status: "generating", progress: { ...(book.progress || {}), step: "repair", message: `Repairing ${pageNums.length ? `page${pageNums.length > 1 ? "s" : ""} ${pageNums.join(", ")}` : ""}${cover ? `${pageNums.length ? " + " : ""}cover` : ""}...`, job } });
+  for (const n of pageNums.sort((a, b) => a - b)) {
+    await stepScene(book, job, n - 1);
+    await persist(bookId, job, { step: "repair", message: `Repaired page ${n}`, pct: 80, job });
+  }
+  if (cover) job.coverUrl = null; // nextStepOf re-enters at "cover" with the note applied
+
+  // The mended book must re-earn its verdict: review + assembly rerun.
+  job.reviewDone = false;
+  job.assembled = false;
+  await persist(bookId, job, { step: "repair", message: "Repairs done — re-running the editor review...", pct: 85, job });
+  startGeneration(bookId);
+  return { repaired: pageNums, cover: Boolean(cover) };
 }
 
 // Render the finished book through the REAL book pipeline (book_v2.html).

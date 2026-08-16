@@ -45,14 +45,23 @@ function uuid() {
   return crypto.randomUUID();
 }
 
+let fileFallbackAt = 0;
+
 export async function initDb() {
-  if (mode !== "unknown") return mode;
+  // "file" is a FALLBACK, not a destination: one transient network blip at
+  // startup used to strand the whole session on the local store (2026-08-15:
+  // a freshly restarted dev server answered "not found" for every real
+  // Supabase book). Re-probe Supabase periodically so the fallback heals.
+  if (mode === "supabase") return mode;
+  if (mode === "file" && Date.now() - fileFallbackAt < 60_000) return mode;
   try {
     await rest("custom_books?select=id&limit=1");
+    if (mode === "file") console.warn("[forge] Supabase store recovered — leaving file fallback");
     mode = "supabase";
   } catch (e) {
-    console.warn("[forge] Supabase store unavailable, using local file store:", e.message);
+    if (mode !== "file") console.warn("[forge] Supabase store unavailable, using local file store:", e.message);
     mode = "file";
+    fileFallbackAt = Date.now();
   }
   return mode;
 }
@@ -143,6 +152,60 @@ export async function updateOrderBySession(sessionId, patch) {
   if (r) Object.assign(r, patch);
   saveFile(s);
   return r;
+}
+
+// Credit bookkeeping for the double-reject flow (Lynden 2026-08-14): when
+// the editor gate rejects a book twice, the customer's payment must not be
+// consumed — their paid order flips to "credit_restored" and can either be
+// re-used on the same book (retry) or carried to a brand-new book (transfer).
+async function patchOrders(where, patch) {
+  if (mode === "supabase") {
+    return (await rest(`custom_book_orders?${where}`, { method: "PATCH", body: JSON.stringify(patch) })) || [];
+  }
+  return null; // file mode handled by callers
+}
+
+export async function restoreCreditForBook(bookId) {
+  await initDb();
+  if (mode === "supabase") {
+    return patchOrders(`book_id=eq.${bookId}&status=eq.paid`, { status: "credit_restored" });
+  }
+  const s = loadFile();
+  const hit = s.custom_book_orders.filter((o) => o.book_id === bookId && o.status === "paid");
+  hit.forEach((o) => { o.status = "credit_restored"; });
+  saveFile(s);
+  return hit;
+}
+
+export async function reclaimCreditForBook(bookId) {
+  await initDb();
+  if (mode === "supabase") {
+    const rows = await patchOrders(`book_id=eq.${bookId}&status=eq.credit_restored`, { status: "paid" });
+    return rows.length > 0;
+  }
+  const s = loadFile();
+  const hit = s.custom_book_orders.filter((o) => o.book_id === bookId && o.status === "credit_restored");
+  hit.forEach((o) => { o.status = "paid"; });
+  saveFile(s);
+  return hit.length > 0;
+}
+
+// Move a restored credit from a content-rejected book onto a new book row
+// ("Change the story idea"). Returns true if a credit actually moved.
+export async function transferCredit(fromBookId, toBookId) {
+  await initDb();
+  if (mode === "supabase") {
+    const rows = await patchOrders(
+      `book_id=eq.${fromBookId}&status=eq.credit_restored`,
+      { book_id: toBookId, status: "paid" },
+    );
+    return rows.length > 0;
+  }
+  const s = loadFile();
+  const hit = s.custom_book_orders.filter((o) => o.book_id === fromBookId && o.status === "credit_restored");
+  hit.forEach((o) => { o.book_id = toBookId; o.status = "paid"; });
+  saveFile(s);
+  return hit.length > 0;
 }
 
 // World of Books access is keyed primarily by user_id now (the £10 tier
