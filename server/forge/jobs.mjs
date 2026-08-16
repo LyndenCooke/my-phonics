@@ -310,9 +310,15 @@ async function stepQa(book, job) {
 
   // EXACTLY SIX STORY WORDS, deterministically (Lynden 2026-08-14: a book
   // shipped displaying eight). The schema asks the writer for 6 but nothing
-  // enforced it — so normalise here: up to 3 focus-sound words first, then
-  // other words from the list, topped up from the story's own decodable
-  // vocabulary if the writer under-delivered, hard-capped at 6.
+  // enforced it — so normalise here: focus-sound words first, then other
+  // words from the list, topped up from the story's own decodable vocabulary
+  // if the writer under-delivered, hard-capped at 6.
+  //
+  // SPLIT IS 2 + 4 (Lynden 2026-08-16, was 3 + 3): two words for the focus
+  // sound, then four story words drawn from the LEVEL's own decodable bank.
+  // The sound is already spotlighted elsewhere in the book; this page earns
+  // more by widening the child's level vocabulary than by drilling the sound
+  // a third time.
   {
     const focus = String(book.focus_sound || "").toLowerCase();
     const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))];
@@ -328,8 +334,8 @@ async function stepQa(book, job) {
       ...uniq.filter((w) => !hasFocus(w)),
       ...textTokens.filter((t) => !hasFocus(t) && t.length > 2 && bank.has(t)),
     ])];
-    const six = [...focusPool.slice(0, 3), ...otherPool.slice(0, 3)];
-    for (const w of [...focusPool.slice(3), ...otherPool.slice(3)]) {
+    const six = [...focusPool.slice(0, 2), ...otherPool.slice(0, 4)];
+    for (const w of [...otherPool.slice(4), ...focusPool.slice(2)]) {
       if (six.length >= 6) break;
       if (!six.includes(w)) six.push(w);
     }
@@ -1249,11 +1255,10 @@ function buildPdfSpecCore(book) {
     level: book.level,
     focus_sound: book.focus_sound,
     story_pages: book.pages.filter((p) => p.type === "story").map((p) => p.text),
-    // Story Words page shows ALL SIX read_words (>=3 with the focus sound),
-    // not just the 3 focus examples — Lynden 2026-08-13: "six Story Words in
-    // total; at least three containing the target sound; three additional
-    // important decodable story words." The writer already returns exactly
-    // this set; passing only focus_word_examples was hiding half of it.
+    // Story Words page shows ALL SIX read_words, not just the focus examples
+    // (passing only focus_word_examples was hiding half the page). Six in
+    // total: 2 containing the target sound, then 4 further decodable story
+    // words for the level (Lynden 2026-08-16; was 3 + 3 on 08-13).
     story_words: (story.read_words?.length ? story.read_words : (story.focus_word_examples || [])).slice(0, 6),
     read_words: (story.read_words || []).slice(0, 6),
     questions: story.questions || [],

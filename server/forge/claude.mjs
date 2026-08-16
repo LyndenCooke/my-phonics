@@ -683,11 +683,11 @@ WORLD CONSISTENCY (for the illustrator — this is as important as the story):
 - "cover_brief": one sentence describing the COVER illustration — the hero in the single most joyful, most tempting moment of THIS story, with the story's central object clearly in shot, in the story's own setting. It must be a real moment from this book (usually the triumph), never the child's hobbies or a generic pose.
 
 ALSO RETURN (for the practice pages of the printed book):
-- "read_words": EXACTLY 6 decodable practice words drawn from words that actually appear in this story's text, each fully decodable at this level. AT LEAST 3 of the 6 MUST contain "${focusSound}" using a sound this level has taught (the same 3+ focus words required above satisfy this) — the other up to 3 are any other decodable words from the story. Never return a list where only one word contains the focus sound.
+- "read_words": EXACTLY 6 decodable practice words drawn from words that actually appear in this story's text, each fully decodable at this level. EXACTLY 2 of the 6 must contain "${focusSound}" using a sound this level has taught (two of the focus words required above); the other 4 are other decodable words from the story that are worth a child's practice at this level — widen the vocabulary rather than repeating the focus sound again. Never return a list where only one word contains the focus sound.
 - "questions": exactly 3 short comprehension questions about THIS story, phrased for a grown-up to ask a 4-8 year old.
 - "alien_words": exactly 4 made-up nonsense words (not real words) that are fully decodable at this level and each contain "${focusSound}".`;
 
-  const content = `Write the ${pagesCount}-page decodable story now. Focus sound: "${focusSound}". Remember: every word decodable at Level ${level.level} or in the tricky list, focus sound in at least 3 (up to 3) distinct words, read_words exactly 6 words with at least 3 containing the focus sound, and every sentence in words and phrasing an actual young child would say aloud — not literary or adult narration.`;
+  const content = `Write the ${pagesCount}-page decodable story now. Focus sound: "${focusSound}". Remember: every word decodable at Level ${level.level} or in the tricky list, focus sound in at least 3 (up to 3) distinct words, read_words exactly 6 words with exactly 2 containing the focus sound and 4 other level-worthy story words, and every sentence in words and phrasing an actual young child would say aloud — not literary or adult narration.`;
   return callJson({ system, content, schema: STORY_SCHEMA });
 }
 
@@ -1405,7 +1405,7 @@ export async function coldEditorReview({ story, level, focusSound, images, unres
   const content =
     `Level ${level.level} (${level.name}) custom book, focus sound "${focusSound}". Title: "${story.title}".\n\n` +
     `PAGE TEXTS:\n${pagesBlock}\n\n` +
-    `STORY WORDS (must appear in the story, >=3 with the focus sound): ${JSON.stringify(story.read_words || [])}\n` +
+    `STORY WORDS (must appear in the story; 2 with the focus sound, 4 other level words): ${JSON.stringify(story.read_words || [])}\n` +
     `KEY OBJECTS AS DECLARED: ${JSON.stringify(story.key_objects || [])}\n${qaBlock}\n` +
     `The ${images.length} images attached are: the cover, then story pages 1-${images.length - 1} in order.\n\n` +
     "Review the finished book now.";
