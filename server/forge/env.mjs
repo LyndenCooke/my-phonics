@@ -21,6 +21,13 @@ function parseEnvFile(file) {
     let val = line.slice(eq + 1).trim();
     if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
       val = val.slice(1, -1);
+    } else {
+      // Strip a trailing inline comment from an UNQUOTED value, the way dotenv
+      // does. The Anthropic key was pasted with "  # Claude — story generation"
+      // after it (2026-08-16); the em dash rode into the auth header and every
+      // Anthropic call died with a ByteString error before leaving the process.
+      // Quoted values are left alone so a '#' inside a real secret survives.
+      val = val.replace(/\s+#.*$/, "").trim();
     }
     if (key) out[key] = val;
   }
