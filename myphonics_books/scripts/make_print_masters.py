@@ -150,11 +150,12 @@ def fix_barcode_k(pdf: Path) -> None:
     # Chromium's own subsetted glyphs alone costs nothing and keeps every
     # cover's font table clean.  Only the bars — which actually have to scan —
     # get the native DeviceCMYK repaint.
-    # Asymmetric pad: the human-readable digits now sit only TEXT_DISTANCE_MM
-    # (0.5mm) below the bars, so a symmetric pad would shave their tops off —
-    # and nothing redraws them any more.  Nothing sits directly below the bars
-    # except that gap, and the redrawn bars land on the same rects, so a zero
-    # bottom pad is safe.
+    # Asymmetric pad, kept after the 2026-08-16 barcode fix.  It was needed
+    # when TEXT_DISTANCE_MM was 0.5 and the digits overlapped the bars; now
+    # they clear them by ~0.86mm, which is still inside a symmetric 0.8mm pad,
+    # so the zero bottom pad is what keeps the white-out off their tops.
+    # Nothing else sits below the bars, and the redrawn bars land on the same
+    # rects, so a zero bottom pad remains safe.
     pad = 0.8 * MM
     cover = fitz.Rect(bbox.x0 - pad, bbox.y0 - pad, bbox.x1 + pad, bbox.y1)
     cover &= fitz.Rect(box.x0 + 0.3 * MM, box.y0 + 0.3 * MM,
@@ -179,23 +180,36 @@ def set_boxes(pdf: Path) -> None:
     doc.close()
 
 
-def make_master(src_pdf: Path, dst_pdf: Path) -> None:
+def make_master(src_pdf: Path, dst_pdf: Path, barcode: bool = True) -> None:
     """Trim-size RGB book -> press-ready 154x216 master.
 
     Order matters: the barcode is repainted K-only while it is still a
     top-level drawing, then the bled page is built around the finished
-    interior, then the boxes are stamped."""
+    interior, then the boxes are stamped.
+
+    `barcode=False` is for the no-barcode Bookvault variant, where Bookvault
+    stamps its own EAN-13 on the cover.  Everything else — bleed, boxes,
+    geometry — is identical; only the K repaint is skipped, since
+    fix_barcode_k raises when it finds no bars to repaint."""
     dst_pdf.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as td:
         staged = Path(td) / "staged.pdf"
         shutil.copyfile(src_pdf, staged)
-        fix_barcode_k(staged)
+        if barcode:
+            fix_barcode_k(staged)
         add_bleed(staged, dst_pdf)
     set_boxes(dst_pdf)
 
 
 def main() -> int:
-    args = [Path(a).resolve() for a in sys.argv[1:] if not a.startswith("-")]
+    argv = sys.argv[1:]
+    barcode = "--no-barcode" not in argv
+    out_dir = DST_DIR
+    if "--out" in argv:
+        out_dir = Path(argv[argv.index("--out") + 1]).resolve()
+        argv = [a for i, a in enumerate(argv)
+                if i not in (argv.index("--out"), argv.index("--out") + 1)]
+    args = [Path(a).resolve() for a in argv if not a.startswith("-")]
     pdfs = []
     for a in (args or [SRC_DIR]):
         pdfs += sorted(a.rglob("*.pdf")) if a.is_dir() else [a]
@@ -204,17 +218,29 @@ def main() -> int:
         print(f"No classroom PDFs found (looked in {SRC_DIR})")
         return 1
 
+    # Keep the Level<n>/ shape whatever the source root is, so a
+    # library_preview/ build does not flatten every book into one directory
+    # and collide with the barcoded masters.
+    roots = [SRC_DIR] + [a for a in args if a.is_dir()]
     failed = 0
     for p in pdfs:
-        rel = p.relative_to(SRC_DIR) if p.is_relative_to(SRC_DIR) else Path(p.name)
-        dst = DST_DIR / rel
+        rel = Path(p.name)
+        for r in roots:
+            if p.is_relative_to(r):
+                rel = p.relative_to(r)
+                break
+        else:
+            if p.parent.name.lower().startswith("level"):
+                rel = Path(p.parent.name) / p.name
+        dst = out_dir / rel
         try:
-            make_master(p, dst)
+            make_master(p, dst, barcode=barcode)
             print(f"OK   {rel}  ({dst.stat().st_size / 1e6:.1f} MB)")
         except Exception as e:
             failed += 1
             print(f"FAIL {rel}: {e}")
-    print(f"\n{len(pdfs) - failed}/{len(pdfs)} masters -> {DST_DIR}")
+    print(f"\n{len(pdfs) - failed}/{len(pdfs)} masters -> {out_dir}"
+          + ("  (no barcode)" if not barcode else ""))
     return 1 if failed else 0
 
 

@@ -4214,7 +4214,13 @@
         {% endfor %}
       </div>
 
-      <div class="back-footer {% if isbn_barcode_svg %}back-footer-print{% endif %}">
+      {# The white print footer is keyed on the LIBRARY EDITION, not on our own
+         barcode.  The no-barcode Bookvault variant (they stamp their own
+         EAN-13) still needs this corner reserved and WHITE: their box is
+         38.1 x 25.4mm at 6.35mm from the bottom trim and the spine, and with
+         the teal band it would land on solid colour.  Caught 2026-08-16 on the
+         first no-barcode build. #}
+      <div class="back-footer {% if isbn_barcode_svg or edition == 'library' %}back-footer-print{% endif %}">
         <div class="back-footer-qr">
           {% if library_qr %}<img class="back-footer-qr-img" src="{{ library_qr }}" alt="">{% endif %}
           <div class="back-footer-qr-text">

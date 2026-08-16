@@ -113,7 +113,13 @@ def split(master: Path, out_dir: Path) -> dict:
 
 
 def main() -> int:
-    args = [Path(a).resolve() for a in sys.argv[1:] if not a.startswith("-")]
+    argv = sys.argv[1:]
+    out_root = OUT_DIR
+    if "--out" in argv:
+        i = argv.index("--out")
+        out_root = Path(argv[i + 1]).resolve()
+        argv = [a for j, a in enumerate(argv) if j not in (i, i + 1)]
+    args = [Path(a).resolve() for a in argv if not a.startswith("-")]
     pdfs = []
     for a in (args or [SRC_DIR]):
         pdfs += sorted(a.rglob("*.pdf")) if a.is_dir() else [a]
@@ -126,14 +132,14 @@ def main() -> int:
     for p in pdfs:
         book_id = p.stem.split(" ")[0].replace("_", ".")
         try:
-            info = split(p, OUT_DIR / book_id)
+            info = split(p, out_root / book_id)
             print(f"OK   {book_id:>4}  {info['total']}pp master -> "
                   f"cover + {info['interior']}pp text   {p.stem}")
         except Exception as e:
             failed += 1
             print(f"FAIL {book_id}: {e}")
 
-    print(f"\n{len(pdfs) - failed}/{len(pdfs)} split -> {OUT_DIR}")
+    print(f"\n{len(pdfs) - failed}/{len(pdfs)} split -> {out_root}")
     return 1 if failed else 0
 
 

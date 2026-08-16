@@ -1139,15 +1139,29 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     # the marketing booklet's how-it-works content + app screenshots.
     if edition == "library":
         _mock = BASE_DIR.parent / "marketing" / "leaflet" / "assets"
-        def _mock_uri(name):
+        # FAIL LOUDLY on a missing shot.  This used to return None silently,
+        # and when the assets went missing from marketing/leaflet/assets/ the
+        # page kept rendering — just with a blank hole where the four device
+        # shots belong.  Every library master shipped that way until Lynden
+        # spotted it on 2026-08-16.  A missing marketing asset is a build
+        # error, not a layout variant.
+        def _mock_uri(name, required=True):
             p = _mock / name
-            return image_to_data_uri(p) if p.exists() else None
+            if p.exists():
+                return image_to_data_uri(p)
+            if required:
+                raise FileNotFoundError(
+                    f"library edition needs {p} for the 'Check, match, read' "
+                    f"page — without it the page renders a blank gap")
+            print(f"   WARNING: {p.name} missing — step 4 'Play' will have no "
+                  f"screenshot")
+            return None
         book_data["mkt_phone"] = _mock_uri("mock_phone_trim.png")
         book_data["mkt_laptop"] = _mock_uri("mock_laptop_trim.png")
         book_data["mkt_tablet"] = _mock_uri("mock_tablet_trim.png")
         # Step 4 "Play" — Milo's Cannon (Lynden 2026-08-06).  Unlike the other
         # three this is a raw in-game capture, not a device mockup.
-        book_data["mkt_game"] = _mock_uri("mock_game_trim.png")
+        book_data["mkt_game"] = _mock_uri("mock_game_trim.png", required=False)
 
     # "Is this the right level?" — a LEVEL check, not a book check (Lynden
     # 2026-07-21): show ALL the sounds this LEVEL teaches, level words, level
