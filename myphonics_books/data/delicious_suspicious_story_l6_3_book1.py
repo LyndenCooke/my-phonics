@@ -252,12 +252,20 @@ DELICIOUS_SUSPICIOUS_STORY_BOOK1 = {
         # making one of its other sounds, never on the cious/tious — that is an
         # alternative SPELLING of /sh/ and keeps its ordinary line, and it is
         # this book's focus grapheme besides.
-        #   gracious / spacious  a = /ai/   (open a, ledger from L6)
-        #   nutritious           u = /yoo/  (ledger from L6)
+        #   gracious / spacious  a = /ai/        (open a, ledger from L6)
+        #   nutritious           u = /oo/ short  (ledger from L5)
+        # cautious takes NO diamond: au = /or/ is an alternative SPELLING of
+        # /or/, band status "IN BAND (never diamond-marked — alt spelling)" in
+        # the Shifty Sounds ledger — the same category as ti in "patient".  It
+        # is not a letter making one of its other sounds, so it keeps the
+        # ordinary digraph line (Lynden 2026-08-16).
         "shifty_marks": {
             "gracious": [{"index": 2, "says": "/ai/"}],
             "spacious": [{"index": 2, "says": "/ai/"}],
-            "nutritious": [{"index": 1, "says": "/yoo/"}],
+            # Was "/yoo/" until 2026-08-16; Lynden ruled nutritious has no
+            # /yoo/.  The diamond stays — the u is still not the /u/ of "up"
+            # (the 2026-07-26 ruling) — only the declared sound changes.
+            "nutritious": [{"index": 1, "says": "/oo/ short"}],
         },
         "tricky_words_used": ["the", "said", "was", "you", "what", "do", "could", "whole", "people", "love"],  # ever removed 2026-07-13 — ev+er decodable
         "read_words": ["delicious", "suspicious", "cautious", "nutritious"],

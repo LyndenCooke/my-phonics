@@ -259,6 +259,36 @@ def _norm_sound(s: str) -> str:
     return "".join(ch for ch in str(s or "").lower() if ch.isalnum())
 
 
+# Qualifiers the ledger appends to a phoneme ("/oo/ short", "/oo/ long").
+_SOUND_QUALIFIERS = ("short", "long")
+
+
+def _split_sound(s: str) -> tuple[str, str]:
+    """'/oo/ short' -> ('oo', 'short');  '/or/' -> ('or', '')."""
+    n = _norm_sound(s)
+    for q in _SOUND_QUALIFIERS:
+        if n.endswith(q):
+            return n[: -len(q)], q
+    return n, ""
+
+
+def _sounds_match(declared: str, ledger: str) -> bool:
+    """Does an annotation's named sound mean the ledger's sound?
+
+    The phoneme itself must match EXACTLY.  This used to be a substring test,
+    which let '/o/' satisfy a declared '/or/' — so a diamond annotated
+    "au = /or/" resolved against a = /o/ (as in "was") and would have printed
+    on the wrong letter, asserting the wrong sound.  Only the trailing
+    short/long qualifier is allowed to be loose, and only in the direction
+    where the annotation omits what the ledger specifies.
+    """
+    d_core, d_qual = _split_sound(declared)
+    l_core, l_qual = _split_sound(ledger)
+    if not d_core or d_core != l_core:
+        return False
+    return d_qual == l_qual or not d_qual
+
+
 def is_shifty_allowed(word: str, index: int, level: int, sound: str = None) -> bool:
     """Could the grapheme starting at `index` legitimately be shifty here?
 
@@ -271,7 +301,10 @@ def is_shifty_allowed(word: str, index: int, level: int, sound: str = None) -> b
     """
     graphemes = _shifty_data()["graphemes"]
     lower = word.lower()
-    for g, data in graphemes.items():
+    # Longest grapheme first: at index 1 of "sound" both 'o' and 'ou' match,
+    # and the digraph is the real unit.  Dict order used to decide this.
+    for g in sorted(graphemes, key=len, reverse=True):
+        data = graphemes[g]
         if lower[index:index + len(g)] != g:
             continue
         allowed = [a for a in data["alts"] if a["from_level"] <= level]
@@ -279,11 +312,8 @@ def is_shifty_allowed(word: str, index: int, level: int, sound: str = None) -> b
             continue
         if not sound:
             return True
-        want = _norm_sound(sound)
-        for a in allowed:
-            have = _norm_sound(a["sound"])
-            if want and (want == have or want in have or have in want):
-                return True
+        if any(_sounds_match(sound, a["sound"]) for a in allowed):
+            return True
         # A named sound that is not taught yet is dropped, not guessed at.
         return False
     return False

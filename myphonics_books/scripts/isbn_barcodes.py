@@ -42,19 +42,29 @@ NIELSEN_XLSX = BASE_DIR / "myphonicsbooks_isbn_pack.xlsx"
 # so we use the LARGER (left) figure — both quiet zones end up >= spec, which
 # is always scan-safe.  Never shrink these to squeeze a layout.
 #
-# TEXT_DISTANCE_MM is the gap between the bars and the human-readable digits.
-# python-barcode adds its own ~3.4mm font allowance on top, so the finished
-# symbol is 38.61 x 26.76mm.  That is deliberately sized against Bookvault's
-# auto-barcode box (38.1 x 25.4mm at 6.35mm from the bottom trim and 6.35mm
-# from the spine): Bookvault US/AU/CA stamps that box on unconditionally, so
-# ours is anchored to the same corner at nearly the same size and their
-# overlay lands coincident with our symbol instead of clashing with it.  See
-# help.bookvault.app/does-bookvault-add-a-barcode-to-my-cover.  Do not raise
-# this back to 4.2mm without re-checking that overlap.
+# TEXT_DISTANCE_MM is python-barcode's distance from the bars to the human-
+# readable digits' BASELINE — not to the top of the glyphs.  Getting that
+# backwards is what broke all 33 covers between 2026-08-05 and 2026-08-16: at
+# 0.5mm the baseline sat 0.5mm under the bars, so the ~3.4mm of glyph ABOVE
+# the baseline rode up into the bars and the digit row printed through them,
+# illegible.  GS1 requires the human-readable interpretation to stay legible
+# (ref.gs1.org/guidelines/human-readable-interpretation), so the digits must
+# clear the bars outright.  Measured on 8.3: every 1mm added here moves the
+# bars 1mm UP (the block is bottom-anchored), so
+#     visible gap  =  TEXT_DISTANCE_MM - 3.44mm
+# Keep the gap in the 0.75-1mm band; check_isbn_barcodes.py now fails the
+# build if the digit row's top is not clear of the bars' bottom.
+#
+# The symbol is still anchored to Bookvault's auto-barcode corner (their box
+# is 38.1 x 25.4mm at 6.35mm from the bottom trim and 6.35mm from the spine;
+# US/AU/CA stamp it on unconditionally).  Bottom-anchoring means raising this
+# value grows the block UPWARD into empty cover space and leaves that corner
+# alignment untouched.  See help.bookvault.app/does-bookvault-add-a-barcode-
+# to-my-cover.
 MODULE_WIDTH_MM = 0.33
 BAR_HEIGHT_MM = 22.85
 QUIET_ZONE_MM = 3.63
-TEXT_DISTANCE_MM = 0.5
+TEXT_DISTANCE_MM = 4.3
 
 
 # ─────────────────────────────────────────────────────────────────────────────

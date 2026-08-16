@@ -49,6 +49,7 @@ BAR_H_MM = 22.85                    # SC2 bar height
 FOOTER_SEARCH_MM = 48               # barcode lives in the bottom band
 BOOKVAULT_ANCHOR_MM = 6.35          # 0.25in from bottom trim AND from spine
 BOOKVAULT_ANCHOR_TOL_MM = 0.6       # rounding through HTML -> PDF -> boxes
+DIGIT_GAP_MIN_MM = 0.5              # visible white between bars and digits
 
 GS = shutil.which("gswin64c") or shutil.which("gswin32c") or shutil.which("gs")
 
@@ -119,8 +120,8 @@ def check_pdf(pdf: Path) -> dict:
     digits = re.sub(r"\D", "", isbn)
     row = {"book_id": book_id, "title": re.sub(r"^\S+\s+", "", pdf.stem),
            "isbn": isbn, "edition": "classroom", "barcode": "no",
-           "digits_match": "-", "safe_margin": "-", "bv_anchor": "-",
-           "k_only": "-", "notes": ""}
+           "digits_match": "-", "digit_gap": "-", "safe_margin": "-",
+           "bv_anchor": "-", "k_only": "-", "notes": ""}
     notes = []
 
     doc = fitz.open(pdf)
@@ -191,6 +192,29 @@ def check_pdf(pdf: Path) -> dict:
     if off:
         notes.append("bookvault anchor: " + ", ".join(
             f"{k} {v:.2f}mm != {BOOKVAULT_ANCHOR_MM}mm" for k, v in off.items()))
+
+    # 4c. digit row must clear the bars -------------------------------------
+    # Regression gate for the 2026-08-05..16 defect: python-barcode's
+    # text_distance is measured to the digits' BASELINE, so a value smaller
+    # than the font ascent drives the glyphs UP through the bars.  Every one
+    # of the 33 covers shipped with the digit row overlapping the bars by
+    # 2.94mm and every other check here still passed — digits_match only
+    # proves the digits EXIST, not that anyone can read them.  GS1 requires a
+    # legible human-readable interpretation, so this is a hard failure.
+    digit_top = None
+    for w in page.get_text("words"):
+        if re.fullmatch(r"\d{13}", w[4]) and bbox.x0 - 6 * MM <= w[0] <= bbox.x1:
+            digit_top = w[1] if digit_top is None else min(digit_top, w[1])
+    if digit_top is None:
+        notes.append("human-readable digit row not found under the bars")
+        row["digit_gap"] = "NO"
+    else:
+        gap = (digit_top - bbox.y1) / MM
+        row["digit_gap"] = ("yes" if gap >= DIGIT_GAP_MIN_MM else "NO")
+        if gap < DIGIT_GAP_MIN_MM:
+            notes.append(
+                f"digit row {'overlaps bars by %.2fmm' % -gap if gap < 0 else 'clears bars by only %.2fmm' % gap}"
+                f" (need >= {DIGIT_GAP_MIN_MM}mm) — raise TEXT_DISTANCE_MM in isbn_barcodes.py")
 
     # 5. K-only after CMYK conversion ---------------------------------------
     # Sampled over the BARS ONLY, not the whole white box.  make_print_masters
@@ -278,12 +302,14 @@ def main() -> int:
     ok = True
     for r in rows:
         passed = (r["barcode"] == "yes" and r["digits_match"] == "yes"
-                  and r["safe_margin"] == "yes"
+                  and r["digit_gap"] == "yes" and r["safe_margin"] == "yes"
+                  and r["bv_anchor"] == "yes"
                   and r["k_only"] in ("yes", "SKIP (no ghostscript)")
                   and not r["notes"])
         ok &= passed
         print(f"{'PASS' if passed else 'FAIL':4} {r['book_id']:>4} "
-              f"{r['isbn']}  digits={r['digits_match']} margin={r['safe_margin']} "
+              f"{r['isbn']}  digits={r['digits_match']} gap={r['digit_gap']} "
+              f"margin={r['safe_margin']} "
               f"K={r['k_only']}  {r['title']}"
               + (f"  <-- {r['notes']}" if r["notes"] else ""))
     print(f"\nManifest: {MANIFEST}")

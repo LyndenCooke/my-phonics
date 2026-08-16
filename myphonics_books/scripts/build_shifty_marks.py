@@ -35,6 +35,7 @@ Usage:  py -3.12 scripts/build_shifty_marks.py
 
 import json
 import re
+import sys
 from pathlib import Path
 
 import openpyxl
@@ -91,6 +92,33 @@ def main() -> None:
                 words.setdefault(word, {})[str(idx)] = sound
 
     graphemes = {g: v for g, v in graphemes.items() if v["alts"]}
+
+    # REGRESSION GUARD (2026-08-16).  data/shifty_marks.json currently carries
+    # g -> /j/ and c -> /s/, but the ledger bands both "promoted to ladder",
+    # which the ELIGIBLE filter above skips — so the shipped JSON cannot have
+    # come from the current sheet.  Rebuilding blind would silently delete
+    # those graphemes and strip the diamond off every soft-g / soft-c word in
+    # print (e.g. "gorgeous" in 8.4).  Whether a promoted GPC should still be
+    # diamonded is Lynden's call, so refuse rather than guess: fix the sheet's
+    # Band status, or pass --force once the answer is known.
+    if OUT.exists() and "--force" not in sys.argv:
+        try:
+            previous = json.loads(OUT.read_text(encoding="utf8"))["graphemes"]
+        except (OSError, ValueError, KeyError):
+            previous = {}
+        lost = sorted(set(previous) - set(graphemes))
+        if lost:
+            print(f"REFUSING to overwrite {OUT.relative_to(ROOT)}: rebuilding "
+                  f"would drop {', '.join(lost)}, which the shipped file "
+                  f"treats as diamond-eligible.")
+            for g in lost:
+                alts = ", ".join(a["sound"] for a in previous[g]["alts"])
+                print(f"  {g} -> {alts}  (ledger bands this 'promoted to "
+                      f"ladder', not 'diamond-mark eligible')")
+            print("Resolve the Band status in MPB_WORD_LEDGER.xlsx, or "
+                  "re-run with --force to accept the loss.")
+            raise SystemExit(1)
+
     OUT.write_text(
         json.dumps({"graphemes": graphemes, "words": words}, indent=2, ensure_ascii=False),
         encoding="utf8",

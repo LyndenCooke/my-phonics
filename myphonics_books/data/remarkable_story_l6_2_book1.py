@@ -350,7 +350,10 @@ REMARKABLE_STORY_BOOK1 = {
         # -sible ending (Lynden 2026-08-06).
         "shifty_marks": {
             "visible": [{"index": 2, "says": "/z/"}],
-            "miserable": [{"index": 3, "says": "/z/"}],
+            # index was 3 until 2026-08-16 — that is the 'e', not the 's'.
+            # is_shifty_allowed found no /z/ on 'e'/'er' and silently dropped
+            # the mark, so the s printed with an ordinary dot.  m-i-s = 2.
+            "miserable": [{"index": 2, "says": "/z/"}],
         },
         "tricky_words_used": ["the", "said", "was", "you", "her", "their", "people", "thought"],
         "read_words": ["sensible", "possible", "terrible", "incredible"],
