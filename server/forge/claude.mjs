@@ -351,8 +351,14 @@ const JUDGE_ORDER = process.env.FORGE_JUDGE
 // the level is tunable without touching code (FORGE_JUDGE_EFFORT).
 const JUDGE_EFFORT = process.env.FORGE_JUDGE_EFFORT || "medium";
 const vendorKeyed = { anthropic: () => Boolean(cfg.ANTHROPIC_API_KEY), openai: () => Boolean(cfg.OPENAI_API_KEY), vertex: () => true };
-async function judgeVendorFor() {
-  for (const v of JUDGE_ORDER) {
+// `prefer` lets an individual gate ask for a cheaper vendor than the default
+// judge (plausibility does — see reviewStoryPlausibility). A preference never
+// overrides the one hard rule: the judge is never the writer's own vendor.
+async function judgeVendorFor(prefer = null) {
+  const order = prefer && !process.env.FORGE_JUDGE
+    ? [prefer, ...JUDGE_ORDER.filter((v) => v !== prefer)]
+    : JUDGE_ORDER;
+  for (const v of order) {
     if (v === writerVendor || !vendorKeyed[v]()) continue;
     if (v !== "vertex") return v;
     if (vertexJudgeOk === false) continue;
@@ -371,8 +377,10 @@ async function judgeVendorFor() {
   return null; // single-vendor deployment: the gate still runs, just not cold
 }
 
+// judge: false | true (default judge) | "vertex" | "anthropic" | "openai"
+// (a preferred vendor for this gate, still never the writer's own).
 async function callJson({ system, content, schema, maxTokens = 16000, tier = "story", judge = false }) {
-  const vendor = judge ? await judgeVendorFor() : null;
+  const vendor = judge ? await judgeVendorFor(typeof judge === "string" ? judge : null) : null;
   if (vendor === "openai") {
     return openaiJson({
       model: tier === "phonics" ? OPENAI_PHONICS_MODEL : tier === "story" ? OPENAI_STORY_MODEL : OPENAI_FAST_MODEL,
@@ -831,8 +839,14 @@ export async function reviewStoryPlausibility({ story }) {
     "Do NOT flag ordinary picture-book compression, coincidence, or the everyday things a child protagonist is allowed to do well (finding something, succeeding at a task, an adult being kind) — this is not a check for total realism, only for claims that are actually impossible or self-contradictory on their own terms. Report only genuine issues. " +
     "Every genuine problem found in dual_role_objects or concealed_objects MUST ALSO appear as its own entry in `issues` (page + problem) — the fields above are your working notes, `issues` is what actually drives the rewrite, and a problem left only in the notes never gets fixed.";
   const content = `Check this story's physical and logical plausibility. Each page includes both the reader's sentence (text) and the illustration brief (scene) — a concealed object's contradiction usually lives in scene, not text:\n\n${JSON.stringify(story.pages.map((p, i) => ({ page: i + 1, text: p.text, scene: p.scene })))}`;
-  // Judged by a DIFFERENT vendor than the writer whenever possible.
-  return callJson({ system, content, schema: PLAUSIBILITY_SCHEMA, judge: true });
+  // Judged by a DIFFERENT vendor than the writer whenever possible — and by
+  // preference the CHEAP one (Lynden 2026-08-17). This gate is mechanical
+  // (sizes, apertures, ownership, contradictions) rather than literary, so it
+  // is the half of judging that can afford Gemini: measured $0.035 vs $0.067
+  // on the bench, and roughly $0.26 -> ~$0.13 on a real book. The cold editor
+  // keeps Claude, where the literary read is worth the money. Falls back to
+  // the normal judge order when Vertex is unavailable (i.e. in prod).
+  return callJson({ system, content, schema: PLAUSIBILITY_SCHEMA, judge: "vertex" });
 }
 
 export async function fixStoryPlausibility({ level, child, focusSound, pagesCount, story, issues }) {
