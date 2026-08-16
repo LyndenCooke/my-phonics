@@ -1,0 +1,9 @@
+[
+ { "child_name": "Amira",  "country": "Egypt",        "city": "Cairo",      "level": 4, "focus_sound": "ay",  "likes": "Kites and drawing",   "appearance": { "gender": "girl", "skinTone": "olive",        "hair": "dark hair under a hijab" } },
+ { "child_name": "Idris",  "country": "Morocco",      "city": "Fez",        "level": 2, "focus_sound": "ck",  "likes": "Figs and football",   "appearance": { "gender": "boy",  "skinTone": "medium brown", "hair": "short black hair" } },
+ { "child_name": "Zahra",  "country": "Pakistan",     "city": "Lahore",     "level": 6, "focus_sound": "ur",  "likes": "Stars and rooftops",  "appearance": { "gender": "girl", "skinTone": "medium",       "hair": "long dark hair under a scarf" } },
+ { "child_name": "Bilal",  "country": "Indonesia",    "city": "Yogyakarta", "level": 3, "focus_sound": "sh",  "likes": "Fish and rivers",     "appearance": { "gender": "boy",  "skinTone": "tan",          "hair": "short black hair" } },
+ { "child_name": "Sumaya", "country": "Somalia",      "city": "Hargeisa",   "level": 4, "focus_sound": "ee",  "likes": "Goats and singing",   "appearance": { "gender": "girl", "skinTone": "deep brown",   "hair": "hair under a bright scarf" } },
+ { "child_name": "Tariq",  "country": "Bangladesh",   "city": "Sylhet",     "level": 6, "focus_sound": "er",  "likes": "Boats and rain",      "appearance": { "gender": "boy",  "skinTone": "medium brown", "hair": "short black hair" } },
+ { "child_name": "Layla",  "country": "Saudi Arabia", "city": "Jeddah",     "level": 3, "focus_sound": "ch",  "likes": "Cats and the sea",    "appearance": { "gender": "girl", "skinTone": "light olive",  "hair": "dark hair under a scarf" } }
+]

@@ -39,10 +39,23 @@ async function getClient() {
   return client;
 }
 
+// Cached input is NOT billed at the input rate: a cache write costs 1.25x and a
+// read 0.1x. Pricing them as plain input would overstate a cached judge call by
+// roughly the size of the rubric — and an inaccurate ledger is exactly what let
+// a "$6 cap" quietly be worth double (08-15).
 function usageCost(usage) {
+  const cacheWrite = (usage.cache_creation_input_tokens || 0) * PRICE_IN * 1.25;
+  const cacheRead = (usage.cache_read_input_tokens || 0) * PRICE_IN * 0.1;
   return (
-    ((usage.input_tokens || 0) * PRICE_IN + (usage.output_tokens || 0) * PRICE_OUT) / 1_000_000
+    ((usage.input_tokens || 0) * PRICE_IN + cacheWrite + cacheRead +
+      (usage.output_tokens || 0) * PRICE_OUT) / 1_000_000
   );
+}
+
+// Last Anthropic judge call's raw usage, for cost benchmarking only.
+let lastJudgeUsage = null;
+export function getLastJudgeUsage() {
+  return lastJudgeUsage;
 }
 
 // ---------------- OpenAI backend ----------------
@@ -326,7 +339,17 @@ let vertexJudgeOk = null;
 // Vertex because Vertex needs a local gcloud CLI and so is unavailable in prod
 // — putting it last is what gives Vercel a real cold read once a second key
 // exists there (Lynden added ANTHROPIC_API_KEY 2026-08-16 for exactly that).
-const JUDGE_ORDER = ["anthropic", "openai", "vertex"];
+// FORGE_JUDGE pins the judging vendor (openai | vertex | anthropic) for cost
+// experiments; it still never selects the writer's own vendor, so pinning the
+// writer's vendor just disables the cold read rather than faking one.
+const JUDGE_ORDER = process.env.FORGE_JUDGE
+  ? [process.env.FORGE_JUDGE]
+  : ["anthropic", "openai", "vertex"];
+// Thinking depth for judge calls. Opus 5 bills thinking tokens, and on the
+// first real text-only run the two gates cost $0.55 of a $1.02 story — most of
+// it thinking, not input. Low/medium are unusually strong on this model, so
+// the level is tunable without touching code (FORGE_JUDGE_EFFORT).
+const JUDGE_EFFORT = process.env.FORGE_JUDGE_EFFORT || "medium";
 const vendorKeyed = { anthropic: () => Boolean(cfg.ANTHROPIC_API_KEY), openai: () => Boolean(cfg.OPENAI_API_KEY), vertex: () => true };
 async function judgeVendorFor() {
   for (const v of JUDGE_ORDER) {
@@ -376,10 +399,16 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
       const r = await (await getClient()).messages.create({
         model: MODEL,
         max_tokens: Math.max(maxTokens, JUDGE_MAX_TOKENS),
-        system,
+        // The rubric is the same bytes for every book this gate ever judges,
+        // and it is far and away the largest stable block in the request — so
+        // cache it and pay ~0.1x for it from the second book onward. The story
+        // itself stays uncached in the user turn, where it belongs: it differs
+        // every call and would invalidate the prefix if it sat above it.
+        system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content }],
-        output_config: { format: { type: "json_schema", schema } },
+        output_config: { format: { type: "json_schema", schema }, effort: JUDGE_EFFORT },
       });
+      lastJudgeUsage = r.usage;
       // Opus 5 can decline: 200 OK, empty content, stop_reason "refusal".
       // Reading content[0] blind would throw a confusing parse error instead.
       if (r.stop_reason === "refusal") {
@@ -1464,7 +1493,7 @@ const STORY_EDITOR_SCHEMA = {
     language_quality: { type: "string", description: "Judge every sentence as read-aloud narration. Quote any line that is stiff, caption-like or unnatural ('Idris had a think and a way' fails this), and for EACH quoted line PROPOSE the best replacement wording available WITHIN the level's taught sounds — the job is to find natural English inside the phonics window, never to accept unnatural English and never to reach for an above-level word. Put the proposed rewording in the corresponding issue's detail too, so the revision can use it." },
     issues: {
       type: "array",
-      description: "Every genuine defect, most severe first. SEVERITY IS THE VERDICT: critical/major = must not proceed; minor = fine to proceed, internal note. If several minors collectively mean the story has no developed plot, combine them into ONE major issue naming the structural problem. Use area 'premise' ONLY when the premise itself is unusable and no amount of deepening the same story could fix it.",
+      description: "Every genuine defect, most severe first. SEVERITY IS THE VERDICT: critical/major = must not proceed; minor = fine to proceed, internal note. If several minors collectively mean the story has no developed plot, combine them into ONE major issue naming the structural problem. Use area 'premise' ONLY when the premise itself is unusable and no amount of deepening the same story could fix it — and note that A PREMISE WITH NO ENGINE IS EXACTLY THAT CASE. If the hero causes nothing, or the problem resolves through weather, luck, time passing or an adult acting instead of the hero, file it as area 'premise', not 'story': the writer is allowed to replace a premise you reject, but is otherwise LOCKED to the one you were given, so a plot-engine failure filed under 'story' forces a rewrite that must keep the engineless premise and will fail again for the same reason (Omar's 'boy watches the moon from a roof', 2026-08-16: both drafts rejected for exactly this, one wasted rewrite).",
       items: {
         type: "object",
         properties: {
