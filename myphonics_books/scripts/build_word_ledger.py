@@ -398,9 +398,21 @@ def main():
         for i, pron in enumerate(card.get("pronunciations", [])):
             # A card is promoted under its own name (wh, ph) or under a
             # qualified one (soft c, y=/ee/) — check both spellings.
+            #
+            # Promotion does NOT cancel diamond eligibility for a single
+            # LETTER (Lynden 2026-08-16: "if c and g can also be shifty
+            # sounds like a then make sure they're also labelled as shifty
+            # sounds").  PHONICS_PEDAGOGY.md §5 defines the diamond as a
+            # taught LETTER making one of its OTHER sounds — soft c and soft
+            # g are exactly that, no less than a = /ai/, and teaching the
+            # alternative on the ladder is what makes the diamond readable
+            # rather than what removes the need for it.  A promoted multi-
+            # letter unit (wh = /h/) is a taught spelling in its own right
+            # and keeps its ordinary line.
+            promoted = is_promoted(gr, f"soft {gr}", f"{gr}={pron['sound']}")
             status = ("base sound (main ladder)" if i == 0
                       else "promoted to ladder"
-                      if is_promoted(gr, f"soft {gr}", f"{gr}={pron['sound']}")
+                      if promoted and len(gr) > 1
                       else "IN BAND (diamond-mark eligible)")
             ws_sh.append([gr, "alternative pronunciation", pron["sound"],
                           ", ".join(pron.get("examples", [])),
