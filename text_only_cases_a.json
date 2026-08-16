@@ -1,0 +1,12 @@
+[
+ { "child_name": "Yusuf",  "country": "Turkiye",      "city": "Istanbul",   "level": 5, "focus_sound": "oi", "likes": "Cats and boats",      "appearance": { "gender": "boy",  "skinTone": "light olive",  "hair": "short dark brown hair" } },
+ { "child_name": "Amira",  "country": "Egypt",        "city": "Cairo",      "level": 5, "focus_sound": "ai", "likes": "Kites and drawing",   "appearance": { "gender": "girl", "skinTone": "olive",        "hair": "dark hair under a hijab" } },
+ { "child_name": "Idris",  "country": "Morocco",      "city": "Fez",        "level": 2, "focus_sound": "ck", "likes": "Figs and football",   "appearance": { "gender": "boy",  "skinTone": "medium brown", "hair": "short black hair" } },
+ { "child_name": "Zahra",  "country": "Pakistan",     "city": "Lahore",     "level": 4, "focus_sound": "ar", "likes": "Stars and rooftops",  "appearance": { "gender": "girl", "skinTone": "medium",       "hair": "long dark hair under a scarf" } },
+ { "child_name": "Bilal",  "country": "Indonesia",    "city": "Yogyakarta", "level": 3, "focus_sound": "sh", "likes": "Fish and rivers",     "appearance": { "gender": "boy",  "skinTone": "tan",          "hair": "short black hair" } },
+ { "child_name": "Sumaya", "country": "Somalia",      "city": "Hargeisa",   "level": 4, "focus_sound": "ee", "likes": "Goats and singing",   "appearance": { "gender": "girl", "skinTone": "deep brown",   "hair": "hair under a bright scarf" } },
+ { "child_name": "Omar",   "country": "Jordan",       "city": "Amman",      "level": 4, "focus_sound": "oo", "likes": "Bikes and bread",     "appearance": { "gender": "boy",  "skinTone": "light olive",  "hair": "curly dark hair" } },
+ { "child_name": "Nadia",  "country": "Malaysia",     "city": "Melaka",     "level": 3, "focus_sound": "ng", "likes": "Kittens and markets", "appearance": { "gender": "girl", "skinTone": "tan",          "hair": "black hair in a plait" } },
+ { "child_name": "Tariq",  "country": "Bangladesh",   "city": "Sylhet",     "level": 4, "focus_sound": "or", "likes": "Boats and rain",      "appearance": { "gender": "boy",  "skinTone": "medium brown", "hair": "short black hair" } },
+ { "child_name": "Layla",  "country": "Saudi Arabia", "city": "Jeddah",     "level": 3, "focus_sound": "ch", "likes": "Cats and the sea",    "appearance": { "gender": "girl", "skinTone": "light olive",  "hair": "dark hair under a scarf" } }
+]

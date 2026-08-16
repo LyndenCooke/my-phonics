@@ -8,7 +8,7 @@
 import fs from "node:fs";
 const BASE = "http://127.0.0.1:8080/api/forge";
 const OUT = process.argv[2] || "text_only_x10.jsonl";
-const HARD_TOTAL = 9.0, EARLY_AVG = 1.2;
+const HARD_TOTAL = Number(process.env.HARD_TOTAL || 9.0), EARLY_AVG = Number(process.env.EARLY_AVG || 1.2);
 
 async function j(path, opts = {}) {
   for (let attempt = 0; ; attempt++) {
@@ -18,7 +18,12 @@ async function j(path, opts = {}) {
     } catch (e) { if (attempt >= 5) throw e; await new Promise(r => setTimeout(r, 4000)); continue; }
     const text = await res.text();
     let data; try { data = JSON.parse(text); } catch { data = text; }
-    if (!res.ok) throw new Error(`${path} -> ${res.status}: ${JSON.stringify(data).slice(0, 300)}`);
+    if (!res.ok) {
+      // 5xx is transient (an ENETUNREACH between dev server and Supabase
+      // stranded a paid job mid-run on 08-16); 4xx is our bug, fail fast.
+      if (res.status >= 500 && attempt < 8) { await new Promise(r => setTimeout(r, 5000)); continue; }
+      throw new Error(`${path} -> ${res.status}: ${JSON.stringify(data).slice(0, 300)}`);
+    }
     return data;
   }
 }
@@ -43,12 +48,13 @@ const rows = [];
 for (const [i, c] of CASES.entries()) {
   const started = Date.now();
   console.log(`\n===== ${i + 1}/10  ${c.child_name} (L${c.level}, "${c.focus_sound}") =====`);
-  let row, err = null;
+  let row, err = null, bookId = null;
   try {
     const { book } = await j("/books", { method: "POST", body: JSON.stringify({
       ...c, child_age: 6, country_flag: "", culture_notes: `A Muslim family in ${c.city}.`,
       faith: "Muslim", email: "lyndencooke@gmail.com",
     }) });
+    bookId = book.id;
     await j("/dev/simulate-pay", { method: "POST", body: JSON.stringify({ kind: "book", book_id: book.id }) });
     for (let n = 0; n < 150; n++) {
       await new Promise(r => setTimeout(r, 5000));
@@ -65,10 +71,11 @@ for (const [i, c] of CASES.entries()) {
   const focus = String(c.focus_sound).toLowerCase();
   const rw = st.read_words || [];
   const rec = {
-    n: i + 1, child: c.child_name, level: c.level, sound: c.focus_sound,
+    n: i + 1, book_id: bookId, child: c.child_name, level: c.level, sound: c.focus_sound,
     status: row?.status || "error", error: err, cost,
     first_draft_accepted: row?.status === "text_ready" && !revised,
     revised, title: st.title,
+    open_edit_requests: (bd.story_gate_edit_requests || []).length + (bd.editor_edit_requests || []).length,
     read_words: rw,
     focus_words_on_page: rw.filter(w => String(w).toLowerCase().includes(focus)).length,
     stages: bd.stages || { qa: bd.qa, story: bd.story_usd },
@@ -93,6 +100,8 @@ console.log(`content_rejected:       ${rejected.length}`);
 console.log(`first-draft acceptance: ${(acc * 100).toFixed(0)}%  (doctrine gate: >=80%)`);
 console.log(`total spend:            $${total.toFixed(2)}`);
 console.log(`mean per story:         $${(total / (rows.length || 1)).toFixed(3)}  (doctrine cap: $0.10)`);
+const edits = rows.filter(r => r.open_edit_requests > 0);
+console.log(`books with open edit requests: ${edits.length}` + (edits.length ? ` — ${edits.map(e => e.child + "(" + e.open_edit_requests + ")").join(", ")}` : ""));
 if (rejected.length) console.log(`mean per rejected:      $${(rejected.reduce((a, r) => a + r.cost, 0) / rejected.length).toFixed(3)}`);
 const bad = rows.filter(r => r.read_words?.length && (r.read_words.length !== 6 || r.focus_words_on_page !== 2));
 console.log(`story-words 2+4 split:  ${rows.length - bad.length}/${rows.length} correct` + (bad.length ? ` — off: ${bad.map(b => `${b.child}(${b.read_words.length}w/${b.focus_words_on_page}f)`).join(", ")}` : ""));

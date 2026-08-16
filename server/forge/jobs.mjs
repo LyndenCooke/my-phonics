@@ -87,6 +87,12 @@ class ContentRejectedError extends Error {
 // fallback provider is banned — it breaks character/style continuity).
 const PROVIDER_CREDIT_RE = /insufficient[_ ]quota|billing[_ ]hard[_ ]limit|exceeded your current quota|payment required|insufficient credit|\b402\b/i;
 
+// How many EDIT REQUESTS the story gate may issue before the book proceeds
+// with the remaining notes attached (Lynden 2026-08-17: "no full rejections,
+// only edit requests after judgements"). Each pass costs roughly a first
+// draft, so this is the spend ceiling on rewriting, not a quality dial.
+const STORY_EDIT_REQUESTS = Number(process.env.FORGE_STORY_EDIT_REQUESTS || 2);
+
 function newJob(book) {
   return {
     v: 1,
@@ -462,9 +468,25 @@ async function stepStoryGate(book, job) {
   }
 
   const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
-  if (job.storyRetryUsed) {
+  // NO FULL REJECTIONS — EDIT REQUESTS ONLY (Lynden 2026-08-17). A gate never
+  // kills a book now; it asks for edits and the writer works them. Rejecting a
+  // paid book outright was the expensive half of "an expensive QA system that
+  // reliably rejects books after the money is spent" — the customer waits, the
+  // credit bounces back, and nothing ships.
+  //
+  // Bounded at STORY_EDIT_REQUESTS passes because unbounded rewriting is
+  // unbounded spend, and each pass costs about what the first draft did. After
+  // the last pass the remaining notes are carried as edit requests on the row
+  // (story_gate_edit_requests) and the book PROCEEDS — the notes are what a
+  // human acts on, rather than a dead job.
+  if (job.storyEditRequests >= STORY_EDIT_REQUESTS) {
     job.breakdown.story_gate_second = review;
-    throw new ContentRejectedError(`story gate rejected the manuscript twice: ${detail}`.slice(0, 290));
+    job.breakdown.story_gate_edit_requests = verdict.blocking;
+    job.breakdown.story_gate = review;
+    job.storyGateDone = true;
+    if (isTextOnly()) job.textOnly = true;
+    console.warn(`[forge] story gate: ${STORY_EDIT_REQUESTS} edit passes used, proceeding with ${verdict.blocking.length} open edit request(s): ${detail.slice(0, 200)}`);
+    return;
   }
 
   // ONE bounded revision. The premise is LOCKED unless the editor explicitly
@@ -472,8 +494,14 @@ async function stepStoryGate(book, job) {
   // the 2026-08-14 revision abandoned the simit-cart premise and invented an
   // unrelated star-tin book, which is exactly what the lock forbids.
   job.storyRetryUsed = true;
-  job.breakdown.story_gate_first = review;
-  const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise");
+  job.storyEditRequests = (job.storyEditRequests || 0) + 1;
+  job.breakdown[job.storyEditRequests === 1 ? "story_gate_first" : `story_gate_pass_${job.storyEditRequests}`] = review;
+  // The premise unlocks once the editor calls it unusable — and also on the
+  // LAST edit pass, because a premise that has already survived one failed
+  // rewrite is the thing that keeps failing (Omar, 08-16: two drafts rejected
+  // for the same engineless premise because the lock never lifted).
+  const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise")
+    || job.storyEditRequests >= STORY_EDIT_REQUESTS;
   const child = childOf(book);
   const pagesCount = storyPagesFor(book.level);
   const revised = await reviseStoryAfterEditor({
@@ -872,10 +900,21 @@ async function stepReview(book, job) {
   if (!verdict.pass) {
     const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
     if (job.editorRetryUsed) {
-      // Second rejection — the one revision is spent. Content rejection:
-      // credit restored, all assets preserved, never delivered.
+      // NO FULL REJECTIONS — EDIT REQUESTS ONLY (Lynden 2026-08-17). The one
+      // revision is spent, so the remaining notes ride on the row as edit
+      // requests and the book proceeds. This gate sits AFTER the illustrations,
+      // so rejecting here threw away everything already paid for; the story
+      // gate before any image is what stops genuinely weak books cheaply.
       job.breakdown.editor_review_second = review;
-      throw new ContentRejectedError(`editor gate rejected the book twice: ${detail}`.slice(0, 290));
+      job.breakdown.editor_edit_requests = verdict.blocking;
+      // reviewDone MUST be set on this path too: it is the only thing that
+      // stops the machine re-entering this step, and this step costs a vision
+      // call over every page image. Returning without it is an unbounded paid
+      // loop, not a rejection.
+      if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
+      job.reviewDone = true;
+      console.warn(`[forge] editor gate: revision spent, proceeding with ${verdict.blocking.length} open edit request(s): ${detail.slice(0, 200)}`);
+      return;
     }
     // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
     // story against the editor's reasons — SAME PREMISE unless the editor
