@@ -49,6 +49,10 @@ OUT_DIR = BASE_DIR / "output" / "bookvault" / "files"
 
 MM = 72 / 25.4
 COVER_W_MM, COVER_H_MM = 303.0, 216.0
+# Both taken from Bookvault's own v4 templates for 210x148 saddle stitch
+# (downloaded from the title's Templates button, 2026-08-17) — not from their
+# PDF guide, whose body text says 302mm and whose graphic says 306mm.
+TEXT_W_MM, TEXT_H_MM = 154.0, 216.0
 SPINE_MID_MM = COVER_W_MM / 2          # 151.5 — where the two halves meet
 BLEED_MM = 3.0
 
@@ -100,8 +104,21 @@ def split(master: Path, out_dir: Path) -> dict:
     for old in ("cover_outside.pdf", "cover_inside.pdf"):
         (out_dir / old).unlink(missing_ok=True)
 
+    # Their template v4_Text_210_148.pdf is EXACTLY 154.00 x 216.00mm; our
+    # masters come out 154.17 x 215.89 (the 1:1 no-scale rule).  Rather than
+    # scale — which distorts — each page is placed 1:1, centred, on an exact
+    # 154x216 canvas, so the sub-0.1mm difference falls inside the 3mm bleed
+    # and is guillotined.  This only became possible once our own EAN-13 came
+    # off the cover: the old objection to touching page geometry was that any
+    # non-uniform transform stretches the barcode.
     text = fitz.open()
-    text.insert_pdf(src, from_page=1, to_page=n - 2)           # p2 .. p n-1
+    for pno in range(1, n - 1):                                # p2 .. p n-1
+        sr = src[pno].rect
+        page = text.new_page(width=TEXT_W_MM * MM, height=TEXT_H_MM * MM)
+        dx = (TEXT_W_MM * MM - sr.width) / 2
+        dy = (TEXT_H_MM * MM - sr.height) / 2
+        page.show_pdf_page(
+            fitz.Rect(dx, dy, dx + sr.width, dy + sr.height), src, pno)
     interior_pages = text.page_count
     text.save(out_dir / "text.pdf", garbage=3, deflate=True)
     text.close()
