@@ -36,7 +36,13 @@ DEFAULT_TEMPLATE = Path.home() / "Downloads" / "titleTemplate.xlsx"
 # ── Spec choices ─────────────────────────────────────────────────────────────
 # IDs come from the template's own Sheet2 lookup tables, not guessed.
 BIND_ID, BIND_NAME = 5, "Saddle Stitch"          # 16/20pp stapled A5
-TEXT_STOCK_ID, TEXT_STOCK = 157, "115gsm Coated"  # colour picture-book interior
+# 150gsm Coated (Lynden 2026-08-17, "150 gsm coated is better").  The live
+# 8.3 title was already built on it and reads UK £0.97 a copy at 18pp; the
+# spec sheet still said 115gsm (157), so the other 32 would have gone up on a
+# lighter stock than the one book anyone has actually seen.  Saddle stitch has
+# a 0mm spine, so this changes no artwork geometry — feel and cost only.
+# ID confirmed against Sheet2 of the current titleTemplate.xlsx.
+TEXT_STOCK_ID, TEXT_STOCK = 144, "150gsm Coated"  # colour picture-book interior
 COVER_STOCK_ID, COVER_STOCK = 156, "Self Cover"   # Lynden 2026-08-05.  Self
     # Cover prints the cover on the same stock as the interior, so the inside
     # front and inside back covers are ordinary printed pages — which is what
