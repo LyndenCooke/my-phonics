@@ -2208,8 +2208,14 @@
     .back-footer {
       margin: auto -10mm -6mm;
       background: var(--level-color);
-      /* 5mm vertical padding keeps the QR inside the Mixam safe zone. */
-      padding: 5mm 8mm;
+      /* 6.35mm sides and bottom put the QR block on EXACTLY the same grid as
+         the barcode corner opposite it — 6.35mm (0.25in) from the trim, the
+         offset Bookvault stamps its own 38.1 x 25.4mm barcode at and where
+         .back-footer-isbn-filled anchors ours.  At 8mm/5mm the two blocks
+         sat on neither the same baseline nor the same inset and the footer
+         read as lopsided (Lynden 2026-08-17).  Still outside the 5mm Mixam
+         safe zone. */
+      padding: 5mm 6.35mm 6.35mm;
       display: flex; align-items: center; justify-content: space-between;
       gap: 4mm;
     }
