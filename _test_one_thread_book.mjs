@@ -195,7 +195,10 @@ for (const op of final.object_placements || []) {
   const present = new Set(op.pages_present);
   const noun = op.object.toLowerCase().split(" ").pop();
   for (const p of final.pages) {
-    if (!present.has(p.page) && p.brief.toLowerCase().includes(noun))
+    // negative phrasing ("the dish is off-page / not visible") is correct absence, not a leak
+    const sentences = p.brief.toLowerCase().split(".").filter((x) => x.includes(noun));
+    const leaky = sentences.some((x) => !/off-page|off page|not (yet )?visible|absent|no longer|out of frame|remains? off/.test(x));
+    if (!present.has(p.page) && leaky)
       objectViolations.push(`"${op.object}" appears in the page ${p.page} brief but the storyboard does not place it there`);
     if (p.page < reveal && !p.forbidden_visible_states.some((x) => /not visible/i.test(x.assertion)))
       p.forbidden_visible_states.push({ object: op.object, assertion: "not visible yet - must not appear anywhere in the frame" });

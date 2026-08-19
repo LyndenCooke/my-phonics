@@ -6,12 +6,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
-import { generateHero, generateCastMember, generateScene, generateObjectRef, generateLandmark } from "./server/forge/images.mjs";
+import { generateHero, generateCastMember, generateScene, generateObjectRef, generateLandmark, generateAnimal } from "./server/forge/images.mjs";
 
 const BOOKS = [
   { file: "one_thread_hamza_v2.json", slug: "hamza", outfit: "a plain teal thobe-style tunic, dark trousers and brown sandals" },
   { file: "one_thread_case1.json", slug: "safa", outfit: "a lilac tunic with long sleeves, navy trousers, a small white hijab and white shoes" },
   { file: "one_thread_case2.json", slug: "danyal", outfit: "a mustard kurta, dark trousers and brown sandals" },
+  { file: "one_thread_noor.json", slug: "noor", outfit: "a pale blue headscarf covering ALL her hair (no hair visible at the front, sides or back), a loose coral long-sleeved tunic reaching below her knees, navy trousers underneath so no bare legs show, and white trainers" },
   { file: "one_thread_zaid.json", slug: "zaid", outfit: "a plain sand-coloured thobe-style tunic that reaches below his knees, long dark trousers showing beneath it so no bare legs are visible, shoulders fully covered, and brown sandals" },
   { file: "one_thread_case3.json", slug: "maryam", outfit: "a cream hijab worn properly and covering ALL her hair (no hair visible at the front, sides or back), a rose-pink long-sleeved tunic, dark blue trousers and dark shoes" },
 ];
@@ -83,6 +84,20 @@ const log = (label, c, qa) => { cost += c || 0; grand += c || 0; console.log(`  
     if (cbuf) { console.log(`  [${B.slug}/cast:${adult.id}] reused from disk`); }
     else { const cs = await generateCastMember({ member: { id: adult.id, who: adult.who, appearance: adult.appearance }, child }); cbuf = cs.buf; fs.writeFileSync(`${dir}/${cf}`, cbuf); log(`cast:${adult.id}`, cs.cost, cs.qa); }
     castRefs = [{ id: adult.id, name: adult.who, buf: cbuf }];
+  
+  }
+  // ANIMAL cast members need an injected animal reference or they grow pale
+  // irises (eye-rule-animals: pass 2 never fixes them; NEVER paint).
+  for (const m of story.cast || []) {
+    if (!/\b(cat|dog|bird|falcon|goat|hen|owl|camel|donkey|horse|rabbit|kitten)\b/i.test(`${m.id} ${m.who}`)) continue;
+    const af = `animal_${m.id.replace(/\W+/g, "_")}.png`;
+    let abuf = have(af);
+    // a reference created MID-BOOK would redesign the animal between pages -
+    // refs must predate page 1 or not exist at all for this book
+    if (!abuf && have("page1.png")) { console.log(`  [${B.slug}/animal:${m.id}] SKIPPED - pages already exist, a new ref would redesign it mid-book`); continue; }
+    if (abuf) { console.log(`  [${B.slug}/animal:${m.id}] reused from disk`); }
+    else { const ar = await generateAnimal({ name: m.who, appearance: m.appearance }); abuf = ar.buf; fs.writeFileSync(`${dir}/${af}`, abuf); log(`animal:${m.id}`, ar.cost, ar.qa); }
+    castRefs.push({ id: m.id, name: m.who, buf: abuf });
   }
 
   // OBJECT REFERENCE SHEETS - 20.5 declares them required; this lane never made them.
