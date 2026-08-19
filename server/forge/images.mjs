@@ -950,8 +950,10 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       } else {
         result = { ...result, qa: { ...result.qa, consistency: check.data } };
       }
-    } catch {
-      // consistency QA unavailable — ship the eye-QA'd image as before
+    } catch (e) {
+      // consistency QA unavailable - ship the eye-QA'd image, but say so:
+      // a silent catch here hid a whole missing gate (Zaid run, 2026-08-19).
+      console.warn("[forge] scene consistency QA unavailable:", e.message);
     }
   }
   return result;
@@ -1046,7 +1048,10 @@ export async function generateCover({ heroBuf, brief, child, settingBlock = "", 
     vertex: () => vertexImage(vertexParts),
     gpt2: () => gptImage(
       gptPrompt,
-      [heroUri, ...(anchorBuf ? [toDataUri(anchorBuf, "image/png")] : []), refUri(COVER_REF_PATH)],
+      // castRefs/objectRefs were missing here: the prompt promised an "OTHER
+      // CHARACTER" reference the model never received, so it misread the
+      // publisher cover ref as the cast member (Zaid cover, 2026-08-19).
+      [heroUri, ...castRefs.map((c) => toDataUri(c.buf, "image/png")), ...objectRefs.map((o) => toDataUri(o.buf, "image/png")), ...(anchorBuf ? [toDataUri(anchorBuf, "image/png")] : []), refUri(COVER_REF_PATH)],
       "portrait_4_3",
     ),
   }, "cover");

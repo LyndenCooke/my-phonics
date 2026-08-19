@@ -11,6 +11,7 @@
 import fs from "node:fs";
 import { cfg } from "./server/forge/env.mjs";
 import { getLevel, coreStoriesFor } from "./server/forge/phonics.mjs";
+import { STORY_SHAPES } from "./server/forge/claude.mjs";
 
 const MODEL = "gpt-5.6-sol";
 const PRICE = { in: 5.0, out: 30.0 }; // per 1M tokens (mirrors claude.mjs)
@@ -26,12 +27,24 @@ async function turn(label, input, schema) {
     text: { format: { type: "json_schema", name: "out", schema, strict: true } },
   };
   if (prevId) body.previous_response_id = prevId;
-  const res = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${cfg.OPENAI_API_KEY}` },
-    body: JSON.stringify(body),
-  });
-  const j = await res.json();
+  // 20.10: a poll/turn loop must retry 5xx - one blip must not strand a paid chain.
+  let res, j;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      res = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${cfg.OPENAI_API_KEY}` },
+        body: JSON.stringify(body),
+      });
+      j = await res.json();
+      if (res.status >= 500 && attempt < 3) throw new Error(`${res.status}`);
+      break;
+    } catch (e) {
+      if (attempt >= 3) throw new Error(`${label}: ${e.message}`);
+      console.warn(`[${label}] attempt ${attempt + 1} failed (${e.message}) - retrying`);
+      await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+    }
+  }
   if (!res.ok) throw new Error(`${label}: ${res.status} ${JSON.stringify(j).slice(0, 300)}`);
   prevId = j.id;
   const text = (j.output || []).flatMap((o) => o.content || []).find((c) => c.type === "output_text")?.text ?? "";
@@ -50,6 +63,9 @@ const child = CASE?.child || { name: "Hamza", age: 6, gender: "boy", skinTone: "
 const setting = CASE?.setting || { country: "Oman", city: "Muscat", culture: "A Muslim family in Muscat; whitewashed houses, the corniche, fishing boats, kites on the beach." };
 const LEVEL = CASE?.level ?? 4, SOUND = CASE?.sound ?? "ow";
 const LIKES = CASE?.likes || "kites and cats";
+// Story shape: the jobs machine already has a genre axis the one-thread lane
+// never adopted (Lynden 2026-08-20: every book was [name + object]).
+const SHAPE = STORY_SHAPES.find((x) => x.name === CASE?.shape) || STORY_SHAPES[Math.floor(Math.random() * STORY_SHAPES.length)];
 const level = getLevel(LEVEL);
 if (!level) throw new Error("no level data");
 if (!level.graphemes.includes(SOUND)) throw new Error(`"${SOUND}" is not an L${LEVEL} grapheme`);
@@ -108,6 +124,12 @@ const FINAL = S({
   storyboard_verdict: { type: "string", enum: ["plausible", "fixed_now_plausible"] },
   physical_issues_found: arr(str),
   cover: S({ brief: str }),
+  object_placements: arr(S({ object: str, pages_present: arr({ type: "integer" }) })),
+  cast_placements: arr(S({ cast_id: str, pages_present: arr({ type: "integer" }) })),
+  cover_source_page: { type: "integer" },
+  cover_hero_side: { type: "string", enum: ["left", "centre", "right"] },
+  cover_choice_reason: str,
+  landmark: S({ name: str, fact: str, image_brief: str }),
   pages: arr(S({
     page: { type: "integer" },
     brief: str,
@@ -120,7 +142,9 @@ const FINAL = S({
 // ---------------- the one conversation ----------------
 const doctrine = `You are the entire creative team for ONE MyPhonicsBooks personalised decodable book, working in one continuous conversation: writer, phonics checker, editor, storyboard artist and continuity supervisor. British English throughout.
 
-SIMPLICITY IS THE HOUSE STYLE. The published MyPhonicsBooks below are the quality bar — notice how simple they are. One story thread in one connected location. Hero plus AT MOST one adult. AT MOST TWO key objects. Exactly ONE physical mechanism, so ordinary a parent could re-enact it in the kitchen. Never add depth, sub-plots, planted objects or extra beats: every added detail is another thing the illustrations can get wrong.
+SIMPLICITY IS THE HOUSE STYLE. The published MyPhonicsBooks below are the quality bar — notice how simple they are. One story thread in one connected location. Hero plus AT MOST one adult. AT MOST TWO key objects. Exactly ONE physical mechanism, so ordinary a parent could re-enact it in the kitchen. Never add depth, sub-plots, planted objects or extra beats: every added detail is another thing the illustrations can get wrong. DRAWABLE, NOT INVENTED (Lynden 2026-08-20): the mechanism must be a common, instantly recognisable childhood activity or object doing what it always does - something you could find a thousand photos of. NEVER invent a new toy, contraption or novel combination of objects (a ring threaded on a string between two people is an invention; a kite, a ball, a bucket on a rope, a paper boat are not). If an illustrator would need the mechanism explained, it is wrong.
+
+STORY SHAPE for this book - ${SHAPE.name}: ${SHAPE.how} Keep the shape within the simplicity caps above.
 
 SAFE BEHAVIOUR: the child notices, decides and leads; an adult shares any risky step in the same page. Modest dress (knees and shoulders covered). All eyes in any scene description are solid black filled ovals.
 
@@ -146,21 +170,49 @@ const review = await turn("editor", `Read the story again as a demanding but fai
 const story = review.fixed_story;
 
 // 4. forward simulation
-await turn("plan-forward", `Now storyboard it. For each page 1..${pagesCount}: what does a child SEE, what visibly changed from the previous image, what must NOT change, and a draft illustration brief. Think like film continuity: each image starts from the physical state the previous one created.`, FWD);
+await turn("plan-forward", `Now storyboard it. For each page 1..${pagesCount}: what does a child SEE, what visibly changed from the previous image, what must NOT change, and a draft illustration brief. Think like film continuity: each image starts from the physical state the previous one created. VARY THE FRAMING (Lynden 2026-08-20: six identical wide two-shots made the story-ordering activity unsolvable): not every page shows every character full-length. Give the mechanism page a CLOSE-UP where the key object fills the frame, the payoff page a reaction shot, and keep any character OFF-PAGE until the story needs them.`, FWD);
 
 // 5. backward pass
 await turn("plan-backward", `Now plan it BACKWARDS. Start from the final image and walk back to page 1: for each page, what must ALREADY be visible so the later pages are believable — evidence planted early, states that persist, residue that remains after the mechanism resolves. Revise each brief accordingly.`, BWD);
 
 // 6. storyboard plausibility gate + final package
-const final = await turn("storyboard-gate", `Final gate: judge the whole revised storyboard as a physical sequence. Materials must behave like themselves (water soaks and darkens — never pebbles or beads; cloth drapes; wind moves light things first). Every mechanism's cause must be VISIBLY connected to its effect in the frame. Reject impossible or unconnected states and fix them. Then output the final package: cover brief plus, for each page, the final brief, required_visible_states and forbidden_visible_states (assert ONLY the load-bearing mechanism and character continuity — keep the list short), and carries_forward (what the next image inherits).`, FINAL);
+const final = await turn("storyboard-gate", `Final gate: judge the whole revised storyboard as a physical sequence. Materials must behave like themselves (water soaks and darkens — never pebbles or beads; cloth drapes; wind moves light things first). Every mechanism's cause must be VISIBLY connected to its effect in the frame. Reject impossible or unconnected states and fix them. Then output the final package: cover brief plus, for each page, the final brief, required_visible_states and forbidden_visible_states (assert ONLY the load-bearing mechanism and character continuity — keep the list short), and carries_forward (what the next image inherits). Also output object_placements: for EACH key object, the exact page numbers where the storyboard makes it visible in the frame. Likewise cast_placements for EACH cast member including the hero. Choose cover_source_page: the existing page image that becomes the COVER - the hero's face must be clear and large, and the image must NOT spoil the resolution (prefer an early or middle page); give cover_hero_side (where the hero stands in that frame) and cover_choice_reason. Also suggest landmark: one real, famous, drawable landmark in or near the child's city for the profile page, with a one-line child-friendly fact and a short postcard image brief. Keep each page's combined required+forbidden assertions to AT MOST 5 - assert only what is load-bearing.`, FINAL);
 
 // ---------------- report ----------------
 // Deterministic shifty check: the ledger's own example words for gated
 // pronunciations must not appear anywhere in the final text or word lists.
 const allText = [story.title, ...story.pages.map((p) => p.text), ...story.read_words, ...story.focus_word_examples].join(" ").toLowerCase();
-const shiftyViolations = gated.flatMap((g) => g.examples.filter((w) => new RegExp(`\b${w.toLowerCase()}\b`).test(allText)).map((w) => `"${w}" uses ${g.grapheme}=${g.sound} (not taught until later)`));
+// tricky words are always allowed - never shifty violations (nor is the hero's name)
+const alwaysOk = new Set([...level.trickyWords, child.name].map((w) => w.toLowerCase()));
+const shiftyViolations = gated.flatMap((g) => g.examples.filter((w) => !alwaysOk.has(w.toLowerCase()) && new RegExp(`\\b${w.toLowerCase()}\\b`).test(allText)).map((w) => `"${w}" uses ${g.grapheme}=${g.sound} (not taught until later)`));
 
-const out = { child, setting, level: LEVEL, sound: SOUND, model: MODEL, shiftyViolations, totalCost: Number(totalCost.toFixed(4)), transcript };
+// SECTION 20.5 - object identity: pinned only where the storyboard places it;
+// "not visible yet" must sit in forbidden[] on every page before the reveal.
+const objectViolations = [];
+for (const op of final.object_placements || []) {
+  if (!op.pages_present.length) continue;
+  const reveal = Math.min(...op.pages_present);
+  const present = new Set(op.pages_present);
+  const noun = op.object.toLowerCase().split(" ").pop();
+  for (const p of final.pages) {
+    if (!present.has(p.page) && p.brief.toLowerCase().includes(noun))
+      objectViolations.push(`"${op.object}" appears in the page ${p.page} brief but the storyboard does not place it there`);
+    if (p.page < reveal && !p.forbidden_visible_states.some((x) => /not visible/i.test(x.assertion)))
+      p.forbidden_visible_states.push({ object: op.object, assertion: "not visible yet - must not appear anywhere in the frame" });
+  }
+}
+// Cast gated like objects: "not visible yet" before each entrance.
+for (const cp of final.cast_placements || []) {
+  if (!cp.pages_present.length) continue;
+  const reveal = Math.min(...cp.pages_present);
+  for (const p of final.pages) {
+    if (p.page < reveal && !p.forbidden_visible_states.some((x) => x.object === cp.cast_id))
+      p.forbidden_visible_states.push({ object: cp.cast_id, assertion: "not on this page - must not appear anywhere in the frame" });
+  }
+}
+const assertionsPerPage = final.pages.map((p) => p.required_visible_states.length + p.forbidden_visible_states.length);
+
+const out = { child, setting, level: LEVEL, sound: SOUND, likes: LIKES, shape: SHAPE.name, model: MODEL, shiftyViolations, objectViolations, assertionsPerPage, object_placements: final.object_placements, totalCost: Number(totalCost.toFixed(4)), transcript };
 fs.writeFileSync(process.env.OUT_JSON || "one_thread_book.json", JSON.stringify(out, null, 1));
 
 console.log("\n──────── ONE-THREAD RESULT ────────");
@@ -175,4 +227,11 @@ console.log("\npages:");
 story.pages.forEach((p, i) => console.log(`  p${i + 1}: ${p.text}`));
 console.log(`\nassertions per page: ${final.pages.map((p) => p.required_visible_states.length + p.forbidden_visible_states.length).join(", ")}`);
 console.log(`TOTAL COST: $${totalCost.toFixed(3)}  (${transcript.length} turns, one conversation)`);
+console.log("story shape:", SHAPE.name);
+console.log("cast placements:", JSON.stringify(final.cast_placements));
+console.log("cover source: page", final.cover_source_page, `(hero ${final.cover_hero_side}) -`, final.cover_choice_reason);
+console.log("landmark:", final.landmark && final.landmark.name);
+console.log("object placements:", JSON.stringify(final.object_placements));
+console.log("object violations (20.5):", objectViolations.length ? JSON.stringify(objectViolations) : "none");
+console.log("shifty violations:", shiftyViolations.length ? JSON.stringify(shiftyViolations) : "none");
 console.log("full record -> one_thread_book.json");
