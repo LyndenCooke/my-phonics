@@ -2215,8 +2215,8 @@
          sat on neither the same baseline nor the same inset and the footer
          read as lopsided (Lynden 2026-08-17).  Still outside the 5mm Mixam
          safe zone. */
-      padding: 5mm 6.35mm 6.35mm;
-      display: flex; align-items: center; justify-content: space-between;
+      padding: 3mm 6.35mm 6.35mm;
+      display: flex; align-items: flex-end; justify-content: space-between;
       gap: 4mm;
     }
     /* Barcoded (library/print) editions: WHITE footer so the EAN-13 sits on
@@ -2253,8 +2253,16 @@
        SC2 size (0.33mm modules, 22.85mm bars, quiet zones baked in) — never
        scale or crop it, that breaks scanning, and check_isbn_barcodes.py
        fails the build if the module width moves off 0.33mm. */
+    /* IN THE FOOTER FLOW since 2026-08-19, not absolutely positioned.  While
+       it was absolute the band sized itself to the 18.5mm QR alone, so the
+       34.9mm barcode punched up through the footer's top rule — the rule ran
+       behind the QR but broke around the barcode, which is what made the
+       footer look wrong.  As a flex item the band grows to the barcode and the
+       rule sits above BOTH blocks (Lynden 2026-08-19).  The 6.35mm anchor is
+       preserved by the band's own padding (right and bottom are both 6.35mm),
+       and align-items: flex-end keeps the QR and barcode on one baseline. */
     .back-footer-isbn-filled {
-      position: absolute; right: 6.35mm; bottom: 6.35mm; z-index: 7;
+      flex: 0 0 auto;
       width: auto; height: auto;
       background: #ffffff;
       display: flex; flex-direction: column; align-items: center;
@@ -4240,19 +4248,20 @@
             <div class="back-footer-url">Scan to explore the full library</div>
           </div>
         </div>
-        {# Reserved for the ISBN barcode — keep this space clear.  The barcode
-           itself is absolutely positioned against .page (see below), so this
-           spacer is rendered in BOTH editions to hold the corner. #}
+        {# The barcode sits IN the flex row so the band grows around it and the
+           footer's top rule clears both blocks.  Bookvault's corner (6.35mm
+           from bottom trim and spine) is held by the band's own padding.
+           Without a barcode the spacer reserves the same corner for the one
+           Bookvault stamps. #}
+        {% if isbn_barcode_svg %}
+        <div class="back-footer-isbn-filled">
+          <div class="back-isbn-line">{{ isbn_display }}</div>
+          {{ isbn_barcode_svg | safe }}
+        </div>
+        {% else %}
         <div class="back-footer-isbn"></div>
+        {% endif %}
       </div>
-      {% if isbn_barcode_svg %}
-      {# Anchored to Bookvault's barcode corner: 6.35mm from bottom trim,
-         6.35mm from the spine.  Out of the footer's flex flow on purpose. #}
-      <div class="back-footer-isbn-filled">
-        <div class="back-isbn-line">{{ isbn_display }}</div>
-        {{ isbn_barcode_svg | safe }}
-      </div>
-      {% endif %}
     </div>
   </div>
 
