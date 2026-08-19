@@ -67,6 +67,18 @@ SPLIT_EXCEPTIONS = {
     "charred": ["ch", "ar", "r", "ed"],
     "jarring": ["j", "ar", "r", "ing"],
     "override": ["o", "v", "er", "r", "i", "d", "e"],
+    # ─── 'ire' is a taught trigraph (fire, wire), but not here ────────
+    # direction / directions / director printed d/ire/c/tion: the greedy
+    # matcher took the L7 trigraph and told the child the word opens with
+    # the vowel of "fire".  It is d-i-r-e-c-tion, and the i is shifty —
+    # see DIRECTION_I below, which puts the diamond on it (Lynden
+    # 2026-08-19).  Same class of error as the 'ar' words above: the
+    # letters spell a taught grapheme by accident, not by sound.
+    "direction": ["d", "i", "r", "e", "c", "tion"],
+    "directions": ["d", "i", "r", "e", "c", "tion", "s"],
+    "director": ["d", "i", "r", "e", "c", "t", "or"],
+    "directly": ["d", "i", "r", "e", "c", "t", "ly"],
+    "direct": ["d", "i", "r", "e", "c", "t"],
 }
 
 # Suffix units that may only match at the END of a word.  The Level 7-8

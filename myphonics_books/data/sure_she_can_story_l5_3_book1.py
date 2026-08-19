@@ -272,6 +272,13 @@ SURE_SHE_CAN_STORY_BOOK1 = {
         # from the story text, so they need no entry here.  'two' stays: a silent
         # w is explained by nothing at all.
         "tricky_words_used": ["two"],
+        # The i in "direction" is not the /i/ of "in" — it is shifty (i = /igh/,
+        # ledger from L7).  Paired with the SPLIT_EXCEPTIONS entry in
+        # v2_helpers.py, which stops the greedy matcher taking the taught
+        # trigraph "ire" and printing d/ire/c/tion (Lynden 2026-08-19).
+        "shifty_marks": {
+            "direction": [{"index": 1, "says": "/igh/"}],
+        },
         "read_words": ["sure", "pure", "section", "action"],
         "nonsense_words": [
             "fure", "jure", "blure", "grure", "drure",

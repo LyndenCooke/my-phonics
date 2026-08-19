@@ -132,6 +132,13 @@ BELONGING_STORY_BOOK1 = {
         "tricky_words_used": ["the", "to", "I", "was", "said", "where", "people",
                               "anyone", "he", "she", "could", "there", "my",
                               "are", "any", "again", "knew", "sure"],
+        # The i in "direction" is not the /i/ of "in" — it is shifty (i = /igh/,
+        # ledger from L7).  Paired with the SPLIT_EXCEPTIONS entry in
+        # v2_helpers.py, which stops the greedy matcher taking the taught
+        # trigraph "ire" and printing d/ire/c/tion (Lynden 2026-08-19).
+        "shifty_marks": {
+            "direction": [{"index": 1, "says": "/igh/"}],
+        },
         "read_words": ["shore", "explore", "section", "direction", "pure", "attention"],
         "nonsense_words": [
             "blore", "snire", "flear", "thure", "ploor",
