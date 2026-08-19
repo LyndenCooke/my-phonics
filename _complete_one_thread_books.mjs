@@ -11,7 +11,7 @@ const BOOKS = [
   { file: "one_thread_hamza_v2.json", slug: "hamza", outfit: "a plain teal thobe-style tunic, dark trousers and brown sandals" },
   { file: "one_thread_case1.json", slug: "safa", outfit: "a lilac tunic with long sleeves, navy trousers, a small white hijab and white shoes" },
   { file: "one_thread_case2.json", slug: "danyal", outfit: "a mustard kurta, dark trousers and brown sandals" },
-  { file: "one_thread_case3.json", slug: "maryam", outfit: "a rose-pink long-sleeved tunic, dark blue trousers, a cream scarf and dark shoes" },
+  { file: "one_thread_case3.json", slug: "maryam", outfit: "a cream hijab worn properly and covering ALL her hair (no hair visible at the front, sides or back), a rose-pink long-sleeved tunic, dark blue trousers and dark shoes" },
 ];
 
 const only = process.argv[2]; // optional slug filter

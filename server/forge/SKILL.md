@@ -60,7 +60,7 @@ For every assessed real word:
 
 Use AT LEAST THREE, up to three, distinct orthographic focus-word forms in the story — three is both the floor and the ceiling. "One to three" landed a real Level 4 book on a single focus word ("soon" alone for a whole "oo" book — Lynden 2026-08-11: "there is only one story word... should be at least 3"); a book that undershoots has failed exactly as much as one that crams the sound onto every page. Treat inflections as separate forms. Spread naturally across the story rather than forced onto every page or repeated unnaturally, but never fewer than three.
 
-The practice word list (`read_words`) is exactly 6 words drawn from words that actually appear in the story, at least 3 of which contain the focus sound (the same 3+ words above satisfy this) — never a list where only one word carries the sound being taught.
+The practice word list (`read_words`) is exactly 6 words drawn from words that actually appear in the story: EXACTLY 2 containing the focus sound plus 4 other level-worthy story words (Lynden 2026-08-16, was 3+3 — the sound is already spotlighted elsewhere in the book; this page earns more by widening level vocabulary than by drilling the sound a third time). The STORY TEXT still uses at least 3 distinct focus-word forms; the page just shows two of them.
 
 Activity pages may reuse the approved focus words and add only level-decodable examples. Validate pseudo-words against taught graphemes.
 
@@ -582,3 +582,47 @@ Built this pass:
 - **§3 full-level taught window for custom books, at the root.** `build_book_data_from_story(full_level_window=True)`: the whole current level counts as taught, so `or`/`ou` can never be labelled "coming at Level 4" inside a Level 4 book — this reaches the Sound Spotlight future row and Sound Detective, which the earlier post-hoc `future_sounds` filter could not.
 
 Open policy question for Lynden (pedagogy, not code): `-ed` (L7) appears as a Future Sound preview while the story uses showed/lifted/jumped and the tricky-words strip teaches around it — is teaching-around-a-future-concept acceptable at L4, or should the writer be banned from -ed forms below L7? Also his ruling stands: deterministic code wherever possible (page count, word counts, sound classification); AI review focuses on language, motivation, character continuity, object-state continuity, realistic progression between consecutive images.
+
+## 20. Seventh pass — simplicity, one-thread planning, and the two lanes (2026-08-16 → 08-19)
+
+Four complete books shipped (Hamza L4 "ow" 16pp, Safa L3 "th" 16pp, Danyal L2 "ll" 16pp, Maryam L5 "oa" 20pp — $1.30-$2.65 all-in). Lynden's verdict: "fairly impressed" — with named defects, every one traceable to a specific mechanism. The doctrine changes below are binding.
+
+### 20.1 Simplicity IS the house style (Lynden: "the more details the more chance of failure")
+
+The data was unambiguous: simple stories (The Wet Way $0.37, The Hoop Contest $0.40) passed the editor first-draft AND made the best books; complex ones cost $1.0-1.6 in edit passes. Binding caps: ONE story thread in one connected location, hero plus AT MOST one adult, AT MOST TWO key objects, exactly ONE physical mechanism a parent could re-enact in the kitchen. The editor's calibration bar is the published MPB books, NEVER literary fiction: blocking is only nonsense/contradiction, a hero who causes nothing, unsafe behaviour, phonics violations, or text/scene disagreement. Simplicity is never a fault; the editor fixes stiff lines itself instead of demanding rewrites.
+
+### 20.2 No full rejections — edit requests only (Lynden 2026-08-17)
+
+A gate never kills a book. Both rejection sites record remaining blocking issues as edit requests on the row (`story_gate_edit_requests` / `editor_edit_requests`) and the book proceeds. Story-gate passes bounded by FORGE_STORY_EDIT_REQUESTS (default 2 — each pass costs a first draft; it is a spend ceiling, not a quality dial). The premise unlocks when the editor files area "premise" — and a hero who causes nothing, or a problem resolved by weather/luck/time/an adult, IS a premise failure, filed as such — and also on the final edit pass (a premise that survived one failed rewrite is the thing that keeps failing).
+
+### 20.3 One-thread planning (the architecture that won)
+
+Everything for one book in ONE model conversation (gpt-5.6-sol, Responses chain): write → self-check → same-window editor → forward simulation (what a child sees N→N+1) → BACKWARD planning pass (walk from the final image to page 1; plant evidence early; residue persists after the mechanism resolves) → storyboard physics gate (materials behave like themselves — water soaks and darkens, never pebbles; causes visibly connected to effects) → the final per-page package in `directed[]` form. Measured: $0.59-0.79 all-in including image planning, zero edit passes over five runs, and the physics gate caught real faults text-only (wet paper must darken; felucca-sail wind would move loose paper — shelter the balcony). Reference harness: `_test_one_thread_book.mjs`. PORT INTO THE JOBS MACHINE — the four books ran generation-QA only, and every defect Lynden found (setting drift, kite redesign, cover thobe colour) maps to a bypassed jobs-machine mechanism (location anchors, object ref sheets, cover QA, final editor).
+
+### 20.4 Shifty sounds gate the writer, not just the marks
+
+A grapheme only counts WITH its taught pronunciation. "Up Now!" (L4 "ow") used now/down — ow=/ow/ is Level 6; ow=/oa/ (blow/snow/low) is the L4 sound. The doctrine block is generated from `shifty_sounds.json` per level ("ow at Level 4 is ONLY /oa/ as in blow/snow — NEVER /ow/ as in cow/now/down, that is Level 6"), plus a deterministic post-check greps the ledger's own example words for gated pronunciations out of the title, text and word lists. String containment (`w.includes("ow")`) is sound-blind and forbidden as a focus-word test.
+
+### 20.5 Object identity: pin where present, forbid before reveal
+
+Two failures, one rule. The chain proof's kite changed colour because nothing pinned it; the global fix (identity pin in EVERY brief) then made Maryam's resolution bowl appear from page 1 — an identity pin in a brief leaks into presence. Binding: pin an object's full identity ONLY on pages where the storyboard places it, and auto-add "not visible yet" to `forbidden_visible_states` of every page before the object's reveal. Text pins are insufficient for identity across pages — the object reference sheet mechanism is still required.
+
+### 20.6 Wardrobe wording names the drawable state
+
+"Long dark hair under a scarf" drew hair flowing out the back; "a hijab covering ALL her hair — no hair visible at front, sides or back" drew it right. Same law as setting-needs-architecture: name what the picture must show, never the garment category. A full redo from a corrected hero sheet cost $0.70 on the flat lane.
+
+### 20.7 Two image lanes, both OpenAI
+
+The chain lane (Responses API, 1536x1024, usage-priced $0.11-0.43/scene, cost GROWS with page position as the chain re-reads its history) and the flat lane (gpt-image-2 via fal, 1024x768, flat $0.07/image, `FORGE_IMG_ENGINE=gpt2`). Lynden rated the flat lane's output highly BLIND — it is the value lane; the fal key works again. Chained scene 4 in the proof cost $0.093 — chain is not automatically the expensive option early in a book. An explicit FORGE_IMG_ENGINE pin means NO fallback; without a pin, engine failover happens silently (Danyal/Maryam fell to fal after 503s) — a pin must become mandatory per book in the port.
+
+### 20.8 Judging: cross-vendor, medium effort, plausibility on the cheap seat
+
+The gate never runs on the writer's vendor (claude.mjs `judge:`). Opus 5 at effort medium found the SAME issues as high for 27% less; below medium the gate stops finding things. Plausibility (mechanical: sizes, apertures, ownership) prefers the cheap vendor; the cold editor's literary read keeps Claude. Rubrics are prompt-cached; cached input is priced at write 1.25x / read 0.1x in the ledger.
+
+### 20.9 The 20pp custom layout had never rendered
+
+Every L5+ custom book since the 08-13 page-count gate had been text-only; first real render produced 21pp (fleet 20pp plan + Meet the Star). Fixed: Word Workshop yields its slot when `profile` is present (same swap the 16pp layout already does; drill lives in the companion workbooks per 2026-07-22). Fleet books have no profile and are untouched. L7-8 custom is the SAME latent class and remains unexercised — exercise it before any L7-8 custom sale.
+
+### 20.10 Operational lessons that cost money to learn
+
+Validate level/sound pairings against /levels BEFORE a run (7 of 10 test cases died at the door). A poll loop must retry 5xx — one ENETUNREACH stranded a paid job that POST /retry resumed from checkpoint. "Killed" task status is not proof the process died — check the process table before relaunching, or you pay for a duplicate run. Image-generation harnesses must be resume-aware: anything on disk is paid for. No automatic attempt exceeds $1.75 without a wired cap — the batch harness had none and Hamza's art cost $2.04.
