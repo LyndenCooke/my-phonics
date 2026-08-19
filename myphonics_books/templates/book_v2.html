@@ -3719,7 +3719,13 @@
     {{ pnum(ns) }}
   </div>
 
-  {% if page_count >= 20 and level < 7 and edition != 'library' %}
+  {% if page_count >= 20 and level < 7 and edition != 'library' and not profile %}
+  {# `not profile`: custom Create-A-Book 20pp books give this slot to Meet the
+     Star, same pattern as the 16pp slot swap above — the L5 20pp custom
+     layout had never actually rendered before 2026-08 (every L5 custom run
+     was text-only), so the page-count gate caught it at 21pp on first use.
+     Deliberate grammar drill lives in the companion workbooks (2026-07-22),
+     so Word Workshop is the page that yields. #}
   <!-- ============================================================
        WORD WORKSHOP — a recognition Hunt (L1-3 only) plus a Grammar
        Spotlight that scales by level.  The tricky-word SPELLING grid
