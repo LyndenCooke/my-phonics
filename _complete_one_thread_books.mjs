@@ -12,6 +12,7 @@ const BOOKS = [
   { file: "one_thread_hamza_v2.json", slug: "hamza", outfit: "a plain teal thobe-style tunic, dark trousers and brown sandals" },
   { file: "one_thread_case1.json", slug: "safa", outfit: "a lilac tunic with long sleeves, navy trousers, a small white hijab and white shoes" },
   { file: "one_thread_case2.json", slug: "danyal", outfit: "a mustard kurta, dark trousers and brown sandals" },
+  { file: "one_thread_yusuf.json", slug: "yusuf", outfit: "a teal long-sleeved top covering his shoulders and arms, loose tan trousers reaching his ankles so no bare legs show, and brown sandals" },
   { file: "one_thread_noor.json", slug: "noor", outfit: "a pale blue headscarf covering ALL her hair (no hair visible at the front, sides or back), a loose coral long-sleeved tunic reaching below her knees, navy trousers underneath so no bare legs show, and white trainers" },
   { file: "one_thread_zaid.json", slug: "zaid", outfit: "a plain sand-coloured thobe-style tunic that reaches below his knees, long dark trousers showing beneath it so no bare legs are visible, shoulders fully covered, and brown sandals" },
   { file: "one_thread_case3.json", slug: "maryam", outfit: "a cream hijab worn properly and covering ALL her hair (no hair visible at the front, sides or back), a rose-pink long-sleeved tunic, dark blue trousers and dark shoes" },
@@ -163,7 +164,7 @@ const log = (label, c, qa) => { cost += c || 0; grand += c || 0; console.log(`  
     questions: [], alien_words: [], tricky_words_used: story.tricky_words_used || [],
     shifty_marks: {}, pronunciation_notes: [],
     images_dir: path.resolve(dir), out_path: path.resolve(`${dir}/book.pdf`),
-    profile: { name: child.name, age: child.age, country: child.country, countryFlag: "", likes: j.likes || "", culture: j.setting.culture, faith: "Muslim", landmark: lmPlan ? { name: lmPlan.name, fact: lmPlan.fact } : null },
+    profile: { name: child.name, age: child.age, country: child.country, countryFlag: "", likes: j.likes || "", culture: j.setting.culture, faith: j.faith || "Muslim", landmark: lmPlan ? { name: lmPlan.name, fact: lmPlan.fact } : null },
   };
   fs.writeFileSync(`${dir}/pdf_spec.json`, JSON.stringify(spec, null, 1));
   console.log(`  ${B.slug} images done: $${cost.toFixed(2)}`);

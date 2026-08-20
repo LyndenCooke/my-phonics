@@ -220,7 +220,7 @@ const nominated = (story.writer_tricky_word || "").trim().toLowerCase();
 if (nominated && !story.tricky_words_used.map((w) => w.toLowerCase()).includes(nominated)) story.tricky_words_used.push(nominated);
 const assertionsPerPage = final.pages.map((p) => p.required_visible_states.length + p.forbidden_visible_states.length);
 
-const out = { child, setting, level: LEVEL, sound: SOUND, likes: LIKES, shape: SHAPE.name, model: MODEL, shiftyViolations, objectViolations, assertionsPerPage, object_placements: final.object_placements, totalCost: Number(totalCost.toFixed(4)), transcript };
+const out = { child, setting, level: LEVEL, sound: SOUND, likes: LIKES, faith: CASE?.faith, shape: SHAPE.name, model: MODEL, shiftyViolations, objectViolations, assertionsPerPage, object_placements: final.object_placements, totalCost: Number(totalCost.toFixed(4)), transcript };
 fs.writeFileSync(process.env.OUT_JSON || "one_thread_book.json", JSON.stringify(out, null, 1));
 
 console.log("\n──────── ONE-THREAD RESULT ────────");

@@ -3579,7 +3579,12 @@
   {% endif %}{# /Tell the Story (home only) #}
 
   {# Writing Practice / Your Turn to Write — write-on, home edition only. #}
-  {% if (page_count >= 24 or level >= 7) and edition != 'library' %}
+  {% if (page_count >= 24 or level >= 7) and edition != 'library' and not profile %}
+  {# `not profile`: at L7-8 Word Workshop is already suppressed (level < 7 guard),
+     so Writing Practice is the page that yields its slot to Meet the Star in
+     custom Create-A-Book books - the same swap as 16pp and 20pp/L5-6. Without
+     this an L7 custom rendered 21pp (gate catch, 2026-08-20); fleet books have
+     no profile and are untouched. #}
   <!-- ============================================================
        WRITING PRACTICE — full A5 page of writing lines, writing goals,
        and a level-appropriate retell prompt.  L5/L6 only (24-page).
