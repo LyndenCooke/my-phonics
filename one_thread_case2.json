@@ -1,0 +1,637 @@
+{
+ "child": {
+  "name": "Danyal",
+  "age": 5,
+  "gender": "boy",
+  "skinTone": "medium",
+  "hair": "short dark hair"
+ },
+ "setting": {
+  "country": "Pakistan",
+  "city": "Lahore",
+  "culture": "A Muslim family in Lahore; a walled courtyard, a brass bell by the gate, pigeons on the roof."
+ },
+ "level": 2,
+ "sound": "ll",
+ "model": "gpt-5.6-sol",
+ "totalCost": 0.6674,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1332,
+   "usage": {
+    "input_tokens": 820,
+    "input_tokens_details": {
+     "cache_write_tokens": 0,
+     "cached_tokens": 0
+    },
+    "output_tokens": 4303,
+    "output_tokens_details": {
+     "reasoning_tokens": 3575
+    },
+    "total_tokens": 5123
+   },
+   "data": {
+    "title": "Danyal and the Bell",
+    "premise": {
+     "hero_want": "Danyal wants to make the brass bell sound.",
+     "problem": "The bell is still.",
+     "mechanism": "Danyal pulls the red loop, making the bell swing and sound.",
+     "resolution": "The bell makes a big din, and Danyal is glad."
+    },
+    "key_objects": [
+     {
+      "name": "Brass bell",
+      "description": "A small brass bell fixed beside the courtyard gate."
+     },
+     {
+      "name": "Red pull loop",
+      "description": "A short red fabric loop hanging from the bell, low enough for Danyal to reach."
+     }
+    ],
+    "cast": [
+     {
+      "id": "danyal",
+      "who": "Danyal, a five-year-old Pakistani boy in Lahore",
+      "appearance": "Warm brown skin, short black hair and solid black filled oval eyes. He wears a long-sleeved teal kurta, loose cream shalwar and brown sandals. His shoulders and knees are covered."
+     }
+    ],
+    "pages": [
+     {
+      "text": "Danyal is at the bell. The bell is still.",
+      "scene": "In one walled Lahore courtyard, Danyal stands beside the green gate and looks at the brass bell. The red pull loop hangs below it. A few pigeons sit on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "text": "Danyal has a plan. He can pull it.",
+      "scene": "In the same spot, Danyal smiles and points to the red pull loop. The brass bell is still, and the pigeons remain on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "text": "Pull, pull! The bell can jig.",
+      "scene": "Danyal safely pulls the red loop with both hands. The brass bell begins to swing. The pigeons stay on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "text": "The bell is not still. A big din!",
+      "scene": "The brass bell swings above Danyal, with simple motion and sound lines. Danyal still holds the red loop. The pigeons lift their heads on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "text": "Danyal nods. It is fun!",
+      "scene": "Danyal nods under the gently swinging bell, still holding the red loop. The pigeons remain together on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "text": "Danyal is glad. He can pull the bell!",
+      "scene": "Danyal gives the red loop one last gentle pull and smiles as the brass bell swings. The pigeons stay on the roof above him. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "bell",
+     "pull",
+     "plan",
+     "jig",
+     "din",
+     "glad"
+    ],
+    "focus_word_examples": [
+     "bell",
+     "still",
+     "pull"
+    ],
+    "tricky_words_used": [
+     "is",
+     "the",
+     "has",
+     "a"
+    ],
+    "cover_brief": "Danyal stands in his walled Lahore courtyard, smiling as he pulls the red loop of a brass bell beside the green gate. Pigeons sit on the roof above him. Keep the composition simple and warm, with only the bell and pull loop emphasised. Danyal wears his teal kurta, cream shalwar and brown sandals. All visible eyes are solid black filled ovals."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0835,
+   "usage": {
+    "input_tokens": 5218,
+    "input_tokens_details": {
+     "cache_write_tokens": 5215,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1914,
+    "output_tokens_details": {
+     "reasoning_tokens": 1120
+    },
+    "total_tokens": 7132
+   },
+   "data": {
+    "violations_found": [
+     "“He” is not decodable at this level: its vowel sound requires the unlisted grapheme “ee”.",
+     "“nods” ends with the sound /z/, but here it is spelt with “s”; it is not securely decodable under the stated grapheme set."
+    ],
+    "story": {
+     "title": "Danyal and the Bell",
+     "premise": {
+      "hero_want": "Danyal wants to make the brass bell sound.",
+      "problem": "The bell is still.",
+      "mechanism": "Danyal pulls the red loop, making the bell swing and sound.",
+      "resolution": "The bell makes a big din, and Danyal is glad."
+     },
+     "key_objects": [
+      {
+       "name": "Brass bell",
+       "description": "A small brass bell fixed beside the courtyard gate."
+      },
+      {
+       "name": "Red pull loop",
+       "description": "A short red fabric loop hanging from the bell, low enough for Danyal to reach."
+      }
+     ],
+     "cast": [
+      {
+       "id": "danyal",
+       "who": "Danyal, a five-year-old Pakistani boy in Lahore",
+       "appearance": "Warm brown skin, short black hair and solid black filled oval eyes. He wears a long-sleeved teal kurta, loose cream shalwar and brown sandals. His shoulders and knees are covered."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Danyal is at the bell. The bell is still.",
+       "scene": "In one walled Lahore courtyard, Danyal stands beside the green gate and looks at the brass bell. The red pull loop hangs below it. A few pigeons sit on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Danyal has a plan. Danyal can pull it.",
+       "scene": "In the same spot, Danyal smiles and points to the red pull loop. The brass bell is still, and the pigeons remain on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Pull, pull! The bell can jig.",
+       "scene": "Danyal safely pulls the red loop with both hands. The brass bell begins to swing. The pigeons stay on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "The bell is not still. A big din!",
+       "scene": "The brass bell swings above Danyal, with simple motion and sound lines. Danyal still holds the red loop. The pigeons lift their heads on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Danyal can nod. It is fun!",
+       "scene": "Danyal nods under the gently swinging bell, still holding the red loop. The pigeons remain together on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Danyal is glad. The bell is fun!",
+       "scene": "Danyal smiles beside the brass bell as it finishes swinging. The red loop hangs within reach, and the pigeons stay on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "bell",
+      "pull",
+      "plan",
+      "jig",
+      "din",
+      "glad"
+     ],
+     "focus_word_examples": [
+      "bell",
+      "still",
+      "pull"
+     ],
+     "tricky_words_used": [
+      "is",
+      "the",
+      "has",
+      "a"
+     ],
+     "cover_brief": "Danyal stands in his walled Lahore courtyard, smiling as he pulls the red loop of a brass bell beside the green gate. Pigeons sit on the roof above him. Keep the composition simple and warm, with only the bell and pull loop emphasised. Danyal wears his teal kurta, cream shalwar and brown sandals. All visible eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0862,
+   "usage": {
+    "input_tokens": 7268,
+    "input_tokens_details": {
+     "cache_write_tokens": 7265,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1663,
+    "output_tokens_details": {
+     "reasoning_tokens": 743
+    },
+    "total_tokens": 8931
+   },
+   "data": {
+    "cold_read": "The story passes the blocking checks. Danyal notices the still bell, decides what to do and causes the result by pulling one loop. The action is safe, the text and scenes agree, and the story stays in one location with two key objects and one mechanism. The phonics and read_words requirements are met. A few lines are stiff, so the final version smooths them without adding story beats.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Voice",
+      "detail": "“Danyal has a plan. Danyal can pull it.” repeats the name and sounds caption-like. Direct speech makes Danyal’s decision more natural."
+     },
+     {
+      "severity": "minor",
+      "area": "Ending",
+      "detail": "“Danyal can nod” and “The bell is fun” are flat, procedural lines. A grin and a final child-led statement provide a warmer finish without adding a new beat."
+     }
+    ],
+    "fixed_story": {
+     "title": "Danyal and the Bell",
+     "premise": {
+      "hero_want": "Danyal wants to make the brass bell sound.",
+      "problem": "The bell is still.",
+      "mechanism": "Danyal pulls the red loop, making the bell swing and sound.",
+      "resolution": "The bell makes a big din, and Danyal is glad."
+     },
+     "key_objects": [
+      {
+       "name": "Brass bell",
+       "description": "A small brass bell fixed beside the courtyard gate."
+      },
+      {
+       "name": "Red pull loop",
+       "description": "A short red fabric loop hanging from the bell, low enough for Danyal to reach."
+      }
+     ],
+     "cast": [
+      {
+       "id": "danyal",
+       "who": "Danyal, a five-year-old Pakistani boy in Lahore",
+       "appearance": "Warm brown skin, short black hair and solid black filled oval eyes. He wears a long-sleeved teal kurta, loose cream shalwar and brown sandals. His shoulders and knees are covered."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Danyal is at the bell. The bell is still.",
+       "scene": "In one walled Lahore courtyard, Danyal stands beside the green gate and looks at the brass bell. The red pull loop hangs below it. A few pigeons sit on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Danyal has a plan. “I can pull it!”",
+       "scene": "In the same spot, Danyal smiles and points to the red pull loop. The brass bell is still, and the pigeons remain on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Pull, pull! The bell can jig.",
+       "scene": "Danyal safely pulls the red loop with both hands. The brass bell begins to swing. The pigeons stay on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "The bell is not still. A big din!",
+       "scene": "The brass bell swings above Danyal, with simple motion and sound lines. Danyal still holds the red loop. The pigeons lift their heads on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "Danyal has a big grin. It is fun!",
+       "scene": "Danyal grins beside the gently swinging bell, still holding the red loop. The pigeons remain together on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      },
+      {
+       "text": "“I can pull the bell!” Danyal is glad.",
+       "scene": "Danyal gives the red loop one last gentle pull and smiles as the brass bell swings. The pigeons stay on the roof above him. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "bell",
+      "pull",
+      "plan",
+      "jig",
+      "din",
+      "glad"
+     ],
+     "focus_word_examples": [
+      "bell",
+      "still",
+      "pull"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a",
+      "is",
+      "has"
+     ],
+     "cover_brief": "Danyal stands in his walled Lahore courtyard, smiling as he pulls the red loop of a brass bell beside the green gate. Pigeons sit on the roof above him. Keep the composition simple and warm, with only the bell and pull loop emphasised. Danyal wears his teal kurta, cream shalwar and brown sandals. All visible eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1065,
+   "usage": {
+    "input_tokens": 8792,
+    "input_tokens_details": {
+     "cache_write_tokens": 8789,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2083,
+    "output_tokens_details": {
+     "reasoning_tokens": 633
+    },
+    "total_tokens": 10875
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Danyal stands in the courtyard, looking at a still brass bell beside the green gate. A red loop hangs from the bell. Three pigeons sit together on the roof.",
+      "changed_from_previous": "Opening image: establish the fixed layout and the starting state. The bell and red loop are completely still.",
+      "must_not_change": "Keep the green gate on the right, the bell on the cream wall just left of the gate, and Danyal below and left of the bell. Keep three pigeons on the same roof edge. Danyal wears the same teal kurta, cream shalwar and brown sandals throughout. No adult or extra object. All eyes are solid black filled ovals.",
+      "draft_brief": "A simple medium-wide view of one walled Lahore courtyard. Danyal stands below and left of a small brass bell mounted beside the green gate. He looks up at it without touching it. The short red fabric loop hangs straight down from the bell. Three pigeons sit on the roof edge above. Danyal’s shoulders and knees are covered. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Danyal smiles and points at the red loop. He has worked out that he can pull it. The bell is still.",
+      "changed_from_previous": "Only Danyal’s pose and expression change: his pointing hand is now raised towards the loop, and he smiles. He has not touched the loop yet.",
+      "must_not_change": "The bell and loop remain in exactly the same resting position. Keep the gate, wall, roof and three pigeons fixed. Keep Danyal on the same side of the bell in the same clothes. Do not add tools, furniture or an adult. All eyes are solid black filled ovals.",
+      "draft_brief": "Use the same camera position and courtyard layout. Danyal stands below and left of the still brass bell, smiling as he points to the hanging red loop. Leave a small gap between his finger and the loop so it is clear he has not pulled it yet. The three pigeons remain still on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Danyal holds the red loop with both hands and pulls it down. The brass bell begins to swing.",
+      "changed_from_previous": "Danyal has moved from pointing to gripping the loop. The loop is now taut and lower. The bell tilts slightly on its mounting as the pull starts. The pigeons have not reacted yet.",
+      "must_not_change": "Danyal stays below and left of the bell. Keep the loop attached directly to the same bell and show no other mechanism. Keep the fixed gate, wall, roof, three pigeons and clothing unchanged. Both of Danyal’s feet stay safely on the ground. All eyes are solid black filled ovals.",
+      "draft_brief": "From the same medium-wide angle, show Danyal safely pulling the red loop down with both hands, feet flat on the courtyard floor. The loop is taut. The brass bell tilts slightly, with one small motion line showing that it has begun to jig. The three pigeons remain on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "The bell swings farther and makes a big sound. Danyal still holds the taut red loop. The pigeons lift their heads.",
+      "changed_from_previous": "Continue the swing begun on page 3: the bell is now tilted to the opposite side and has stronger motion lines. The pigeons react only by lifting their heads. Danyal maintains his grip.",
+      "must_not_change": "Do not reset the bell to its resting position. Keep Danyal’s hands on the same loop, his feet on the ground and his body on the same side. The pigeons must stay on the roof and must not fly away. Keep all architecture, clothing and colours unchanged. All eyes are solid black filled ovals.",
+      "draft_brief": "Continue directly from the pull on page 3. The brass bell has swung through to the opposite side, with two simple motion lines and a few restrained sound marks. Danyal still holds the taut red loop with both hands. The same three pigeons remain on the roof but now hold their heads up at the sound. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Danyal has a big grin as the bell continues a smaller, gentler swing. He still holds the red loop. The pigeons remain alert on the roof.",
+      "changed_from_previous": "The bell’s swing has begun to slow, so its tilt and motion lines are smaller. The loop is less taut. Danyal’s expression changes to a broad grin. The pigeons stay in place after lifting their heads.",
+      "must_not_change": "The bell must still be moving from the previous pull; do not show it fully still. Danyal keeps hold of the same loop and stays in the same position and clothes. Keep exactly three pigeons on the roof. Add no adult, new object or new action. All eyes are solid black filled ovals.",
+      "draft_brief": "Use the same view. The brass bell is closer to upright but still has one small motion line, showing that the swing from page 4 is slowing. Danyal loosely holds the red loop and has a big grin. The same three pigeons remain alert on the roof. Keep the image uncluttered. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "Danyal gives the red loop one last gentle pull. The bell swings again, and Danyal looks glad. The pigeons stay above him.",
+      "changed_from_previous": "From the loosened loop on page 5, Danyal pulls down again. The loop becomes taut, and the bell tilts into a fresh swing. His grin remains. The pigeons stay on the roof.",
+      "must_not_change": "Use only the established pulling mechanism. Danyal’s feet remain safely on the ground, and no adult is needed. Keep the bell mounted in the same place, the red loop attached, the green gate on the right and all three pigeons on the roof. Keep Danyal’s clothes and proportions unchanged. All eyes are solid black filled ovals.",
+      "draft_brief": "Final image from the same camera position. Danyal gives the red loop a gentle downward pull with both hands. The loop is taut and the brass bell tilts with one clear motion line. Danyal smiles proudly, feet flat on the ground. The same three pigeons stay together on the roof. End with a simple, warm composition. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.1008,
+   "usage": {
+    "input_tokens": 10931,
+    "input_tokens_details": {
+     "cache_write_tokens": 10928,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1538,
+    "output_tokens_details": {
+     "reasoning_tokens": 418
+    },
+    "total_tokens": 12469
+   },
+   "data": {
+    "reasoning": "Work backwards from page 6: the final swing must visibly come from Danyal’s pull, so the loop’s attachment, reach and resting position must be clear from page 1. Danyal must keep hold of the loop from pages 3–6. The bell’s changing tilt shows pull, strong swing, slowing swing and fresh swing. The pigeons remain on the roof throughout; their raised heads persist as simple residue of the bell’s din. The fixed camera and layout prevent accidental resets.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The red loop is already in Danyal’s hands from page 3, the bell has already swung, and the pigeons are already alert. The final taut loop and renewed tilt must clearly show that Danyal has caused one more swing.",
+      "revised_brief": "Same fixed medium-wide view. Danyal stands below and left of the brass bell, giving the red loop one last gentle downward pull with both hands. The loop is taut, and the bell tilts away from its page 5 position with one clear motion line. Danyal keeps his broad grin and both feet flat on the ground. The same three alert pigeons remain on the roof. Keep the green gate on the right and add nothing new. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "This image must leave Danyal holding the loop so the final pull can follow without a reset. The smaller swing is residue from page 4, and the pigeons’ raised heads persist after the din.",
+      "revised_brief": "Same fixed view and layout. The brass bell is nearer upright but still slightly tilted, with one small motion line showing that the page 4 swing is slowing. Danyal remains below and left of it, loosely holding the same red loop with both hands and showing a big grin. The loop is not fully taut. The same three pigeons stay on the roof with their heads raised. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "Danyal’s grip and the taut loop must carry over from page 3. The bell’s stronger opposite tilt proves that the first pull produced a swing. The pigeons’ lifted heads begin the visible residue that remains on pages 5 and 6.",
+      "revised_brief": "Continue directly from page 3 in the same fixed view. Danyal still grips the taut red loop with both hands, feet flat on the ground. The brass bell has swung through to the opposite side, with two simple motion lines and restrained sound marks. The same three pigeons remain on the roof but now lift their heads at the din. Keep the gate, wall, clothes and positions unchanged. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The loop must be shown attached to the bell exactly as established earlier. Danyal begins the only mechanism here, and his grip must be suitable to persist into pages 4 and 5. The first small tilt sets up the stronger swing on page 4.",
+      "revised_brief": "Same fixed medium-wide view. Danyal has moved from pointing to holding the red loop with both hands. He pulls it straight down, making it taut. The brass bell tilts slightly on its fixed top mounting, with one small motion line. His feet remain flat on the ground. The same three pigeons stay still on the roof; they have not reacted yet. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The image must prove that the loop is within Danyal’s safe reach and attached to the bell. His pointing pose plants his decision before the pull begins. The bell must remain fully still so its later movement is clear.",
+      "revised_brief": "Same fixed courtyard view. Danyal stands below and left of the still brass bell, smiling and pointing towards the short red loop. Leave a small gap between his finger and the loop: he has decided to pull it but has not touched it yet. Show the loop hanging straight down from the bottom of the bell and within easy reach. The same three pigeons remain still on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "Establish every element needed later: the bell’s fixed position, its clearly attached red pull loop, the loop’s safe height, Danyal’s position, and the three pigeons. The bell and loop must be completely still to provide a clear before-state.",
+      "revised_brief": "Opening fixed medium-wide view of one uncluttered walled Lahore courtyard. The green gate is on the right. A small brass bell is fixed to the cream wall just left of the gate, with its short red loop visibly attached and hanging straight down within Danyal’s reach. Danyal stands below and left of the bell, looking up without touching it. His teal kurta covers his shoulders, and his cream shalwar covers his knees. Three pigeons sit still together on the roof edge. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1573,
+   "usage": {
+    "input_tokens": 12702,
+    "input_tokens_details": {
+     "cache_write_tokens": 12699,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3125,
+    "output_tokens_details": {
+     "reasoning_tokens": 1196
+    },
+    "total_tokens": 15827
+   },
+   "data": {
+    "storyboard_verdict": "fixed_now_plausible",
+    "physical_issues_found": [
+     "The earlier page 4 kept the loop taut while the bell swung away from the direction of Danyal’s pull. The loop must slacken after the tug for the bell to swing back under its own momentum.",
+     "The earlier briefs did not show how the loop produced the din. The loop is now visibly attached to the bell’s clapper, so pulling it makes the clapper strike the brass rim while the hanging bell jiggles."
+    ],
+    "cover": {
+     "brief": "A simple medium-wide view of Danyal in his walled Lahore courtyard. The green gate is on the right, with a small hanging brass bell beside it. Danyal stands below and left of the bell, smiling as he gently pulls the red fabric loop diagonally down towards himself. The taut loop is visibly connected to the bell’s clapper, which touches the inner brass rim as the bell tilts slightly. Three pigeons sit on the roof. Danyal wears a long-sleeved teal kurta, cream shalwar and brown sandals. All visible eyes, including the pigeons’ eyes, are solid black filled ovals."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Opening medium-wide view of the uncluttered courtyard. The green gate is on the right. Beside it, the brass bell hangs freely from a small top mounting. Its clapper is visible inside, and the red fabric loop is visibly attached to the clapper and hangs loosely under its own weight. Danyal stands below and left of the bell, looking up without touching it. Three pigeons sit on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Bell and red loop",
+        "assertion": "The bell is upright and still; the soft loop hangs loose from the visible clapper."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He stands safely below and left of the bell in his teal kurta, cream shalwar and brown sandals."
+       },
+       {
+        "object": "Pigeons",
+        "assertion": "Exactly three pigeons rest on the roof."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Red loop",
+        "assertion": "It must not be taut, floating or disconnected from the clapper."
+       },
+       {
+        "object": "Bell",
+        "assertion": "It must not be tilted or moving."
+       }
+      ],
+      "carries_forward": "The fixed layout, Danyal’s clothes, the three pigeons and the clear loop-to-clapper connection pass to page 2."
+     },
+     {
+      "page": 2,
+      "brief": "Use the same view and positions. Danyal smiles and points towards the red loop, leaving a clear gap between his finger and the cloth. The brass bell remains upright and still. The loop remains attached to the visible clapper and drapes loosely down within his reach. The same three pigeons stay on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Danyal",
+        "assertion": "He points towards the loop but does not touch it."
+       },
+       {
+        "object": "Bell and red loop",
+        "assertion": "The bell remains still, and the cloth loop hangs loose from the clapper."
+       },
+       {
+        "object": "Pigeons",
+        "assertion": "The same three pigeons remain still on the roof."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Danyal’s hand",
+        "assertion": "It must not yet grip or pull the loop."
+       },
+       {
+        "object": "Bell",
+        "assertion": "It must not move before Danyal acts."
+       }
+      ],
+      "carries_forward": "Danyal’s raised hand is ready to take the reachable loop on page 3; the bell begins from a clearly still state."
+     },
+     {
+      "page": 3,
+      "brief": "From the same view, Danyal now grips the red loop with both hands and pulls it diagonally down and left towards himself. The soft loop is straight and taut from his hands to the visible clapper. The clapper touches the near inner rim, and the freely hanging brass bell tilts slightly towards Danyal. His feet remain flat on the ground. The three pigeons have not reacted yet. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Red loop and clapper",
+        "assertion": "The taut diagonal loop visibly pulls the clapper into the near brass rim."
+       },
+       {
+        "object": "Bell",
+        "assertion": "The hanging bell tilts slightly in the direction of the pull."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He holds the loop with both hands while keeping both feet on the ground."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Red loop",
+        "assertion": "It must not remain loose while Danyal is pulling."
+       },
+       {
+        "object": "Bell",
+        "assertion": "It must not tilt away from the taut pull."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He must not climb, jump or leave the ground."
+       }
+      ],
+      "carries_forward": "The tug gives the bell momentum. On page 4 Danyal eases the loop, allowing the bell and clapper to swing back."
+     },
+     {
+      "page": 4,
+      "brief": "Continue the same action. Danyal still holds the red loop, but his hands have eased slightly upwards, so the cloth now hangs in a shallow loose curve rather than staying taut. The brass bell swings back to the opposite side under its own momentum. The clapper contacts the opposite inner rim with tiny impact marks, visibly producing the din. The three pigeons remain on the roof but lift their heads. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Bell and clapper",
+        "assertion": "The bell swings back, and the clapper visibly strikes the opposite inner rim."
+       },
+       {
+        "object": "Red loop",
+        "assertion": "The cloth is now slack and curved while remaining in Danyal’s hands and attached to the clapper."
+       },
+       {
+        "object": "Pigeons",
+        "assertion": "The same three pigeons lift their heads but stay on the roof."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Red loop",
+        "assertion": "It must not stay taut while the bell swings away from Danyal."
+       },
+       {
+        "object": "Clapper",
+        "assertion": "It must not float clear of the rim while the din is shown."
+       },
+       {
+        "object": "Pigeons",
+        "assertion": "They must not fly away or appear in a new location."
+       }
+      ],
+      "carries_forward": "The bell and clapper continue with less momentum; Danyal keeps hold of the loose loop, and the pigeons remain alert."
+     },
+     {
+      "page": 5,
+      "brief": "Use the same view. The brass bell is nearly upright, with one small motion line showing that the swing is fading. The clapper hangs close to the centre without striking the rim. Danyal loosely holds the draping red loop and shows a broad grin. The same three pigeons remain on the roof with their heads raised. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Bell and clapper",
+        "assertion": "The bell shows a small residual swing, while the clapper hangs near the centre."
+       },
+       {
+        "object": "Red loop",
+        "assertion": "The soft loop drapes loosely from the clapper to Danyal’s hands."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He remains in the same clothes and position, now with a broad grin."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Bell",
+        "assertion": "It must not show a stronger swing than on page 4."
+       },
+       {
+        "object": "Red loop",
+        "assertion": "It must not be taut before the final pull."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He must not release the loop or move to the other side."
+       }
+      ],
+      "carries_forward": "Danyal retains the loop in both hands, ready for one final pull from the bell’s nearly upright position."
+     },
+     {
+      "page": 6,
+      "brief": "Final image from the same view. Danyal gently pulls the red loop diagonally down and left again. The cloth is straight and taut, visibly drawing the clapper into the near inner rim. The freely hanging brass bell tilts slightly towards him with one clear motion line. Danyal smiles proudly with both feet flat on the ground. The same three alert pigeons remain on the roof. All visible eyes, including the pigeons’ eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Red loop and clapper",
+        "assertion": "The final taut pull visibly brings the clapper into contact with the brass rim."
+       },
+       {
+        "object": "Bell",
+        "assertion": "The bell tilts slightly in the same direction as Danyal’s pull."
+       },
+       {
+        "object": "Danyal",
+        "assertion": "He remains safely grounded, consistently dressed and visibly glad."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Red loop",
+        "assertion": "It must not be loose, detached or pulling in a different direction."
+       },
+       {
+        "object": "Bell and clapper",
+        "assertion": "They must not remain motionless despite the taut pull."
+       },
+       {
+        "object": "Pigeons",
+        "assertion": "The three pigeons must not vanish or fly away."
+       }
+      ],
+      "carries_forward": "Final state: Danyal has visibly caused the bell to move and sound through the same connected pull mechanism, while all character and setting continuity remains intact."
+     }
+    ]
+   }
+  }
+ ]
+}

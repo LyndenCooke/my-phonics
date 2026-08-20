@@ -1,0 +1,654 @@
+{
+ "child": {
+  "name": "Zaid",
+  "age": 6,
+  "gender": "boy",
+  "skinTone": "light brown",
+  "hair": "short curly black hair"
+ },
+ "setting": {
+  "country": "Saudi Arabia",
+  "city": "Dammam",
+  "culture": "A Muslim family in Dammam on the Gulf coast of Saudi Arabia; low sand-coloured flat-roofed houses, a palm-lined corniche beside calm blue sea, date palms heavy with brown date clusters, falcons on padded perches; sandy paved ground."
+ },
+ "level": 3,
+ "sound": "ng",
+ "likes": "falcons and dates",
+ "model": "gpt-5.6-sol",
+ "shiftyViolations": [],
+ "objectViolations": [],
+ "assertionsPerPage": [
+  3,
+  3,
+  4,
+  4,
+  4,
+  4
+ ],
+ "object_placements": [
+  {
+   "object": "Red wooden ring",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "object": "Yellow string",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  }
+ ],
+ "totalCost": 0.5685,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1252,
+   "usage": {
+    "input_tokens": 1535,
+    "input_tokens_details": {
+     "cache_write_tokens": 1532,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3916,
+    "output_tokens_details": {
+     "reasoning_tokens": 3106
+    },
+    "total_tokens": 5451
+   },
+   "data": {
+    "title": "Zaid and the Zing Ring",
+    "premise": {
+     "hero_want": "Zaid wants to make a ring zip along a string.",
+     "problem": "The ring stays still when the string is level.",
+     "mechanism": "Zaid lifts one end while Dad lowers the other, making the ring slide down the sloping string.",
+     "resolution": "The ring zips along the string and Zaid grins."
+    },
+    "key_objects": [
+     {
+      "name": "Ring",
+      "description": "One large, smooth red wooden ring, easy for Zaid to hold."
+     },
+     {
+      "name": "String",
+      "description": "One long, thick yellow string threaded through the ring."
+     }
+    ],
+    "cast": [
+     {
+      "id": "zaid",
+      "who": "Zaid, a 6-year-old Saudi boy",
+      "appearance": "Short black hair, teal long-sleeved top, loose beige trousers and brown sandals. His knees and shoulders are covered. His eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "id": "dad",
+      "who": "Zaid\u2019s dad",
+      "appearance": "Short black hair and a neat black beard, wearing a white long-sleeved thobe and brown sandals. His eyes are solid black filled ovals with no highlights."
+     }
+    ],
+    "pages": [
+     {
+      "text": "I get a ring and a long string.",
+      "scene": "On sandy paving beside Dammam\u2019s calm blue sea, Zaid holds the red ring and coiled yellow string. Dad stands beside him. Low sand-coloured houses, a date palm with heavy brown clusters and one falcon on a padded perch form the fixed background. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+     },
+     {
+      "text": "I hang the ring on the string.",
+      "scene": "In the same spot, Zaid threads one end of the yellow string through the red ring. Dad watches nearby. The sea, houses, date palm and falcon remain fixed in the background. All visible eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "text": "The ring will not zip.",
+      "scene": "Zaid holds both ends of the level string. The red ring hangs still in the middle. He looks at it and thinks while Dad stands close by. All visible eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "text": "I tell Dad, \u201cDip that end!\u201d",
+      "scene": "Zaid gives Dad one end of the string and points down, clearly leading the plan. Dad takes the end. The ring remains still on the level string. All visible eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "text": "Dad dips that end. I lift this end.",
+      "scene": "Dad lowers his end while Zaid lifts his end, making one clear slope. Both keep hold of the string together. The red ring begins to slide towards Dad. All visible eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "text": "Zing! The ring zips on the long string. I grin.",
+      "scene": "The red ring zips down the sloping yellow string towards Dad. Zaid grins as they keep holding the two ends. The calm sea, palm-lined corniche, date clusters and perched falcon remain in the background. All visible eyes are solid black filled ovals with no highlights."
+     }
+    ],
+    "read_words": [
+     "ring",
+     "string",
+     "lift",
+     "dips",
+     "zip",
+     "grin"
+    ],
+    "focus_word_examples": [
+     "ring",
+     "long",
+     "string",
+     "hang",
+     "Zing"
+    ],
+    "tricky_words_used": [
+     "I",
+     "the",
+     "a"
+    ],
+    "cover_brief": "Zaid lifts one end of a yellow string while Dad holds the lower end. A large red ring slides along it. Set on sandy paving beside Dammam\u2019s blue sea, with low sand-coloured houses, a date palm heavy with brown date clusters and one falcon on a padded perch in the background. Keep the image simple and warm. Zaid and Dad wear the listed modest clothing. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0627,
+   "usage": {
+    "input_tokens": 5546,
+    "input_tokens_details": {
+     "cache_write_tokens": 5543,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1165,
+    "output_tokens_details": {
+     "reasoning_tokens": 348
+    },
+    "total_tokens": 6711
+   },
+   "data": {
+    "violations_found": [],
+    "story": {
+     "title": "Zaid and the Zing Ring",
+     "premise": {
+      "hero_want": "Zaid wants to make a ring zip along a string.",
+      "problem": "The ring stays still when the string is level.",
+      "mechanism": "Zaid lifts one end while Dad lowers the other, making the ring slide down the sloping string.",
+      "resolution": "The ring zips along the string and Zaid grins."
+     },
+     "key_objects": [
+      {
+       "name": "Ring",
+       "description": "One large, smooth red wooden ring, easy for Zaid to hold."
+      },
+      {
+       "name": "String",
+       "description": "One long, thick yellow string threaded through the ring."
+      }
+     ],
+     "cast": [
+      {
+       "id": "zaid",
+       "who": "Zaid, a 6-year-old Saudi boy",
+       "appearance": "Short black hair, teal long-sleeved top, loose beige trousers and brown sandals. His knees and shoulders are covered. His eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "id": "dad",
+       "who": "Zaid\u2019s dad",
+       "appearance": "Short black hair and a neat black beard, wearing a white long-sleeved thobe and brown sandals. His eyes are solid black filled ovals with no highlights."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I get a ring and a long string.",
+       "scene": "On sandy paving beside Dammam\u2019s calm blue sea, Zaid holds the red ring and coiled yellow string. Dad stands beside him. Low sand-coloured houses, a date palm with heavy brown clusters and one falcon on a padded perch form the fixed background. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "I hang the ring on the string.",
+       "scene": "In the same spot, Zaid threads one end of the yellow string through the red ring. Dad watches nearby. The sea, houses, date palm and falcon remain fixed in the background. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "The ring will not zip.",
+       "scene": "Zaid holds both ends of the level string. The red ring hangs still in the middle. He looks at it and thinks while Dad stands close by. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "I tell Dad, \u201cDip that end!\u201d",
+       "scene": "Zaid gives Dad one end of the string and points down, clearly leading the plan. Dad takes the end. The ring remains still on the level string. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "Dad dips that end. I lift this end.",
+       "scene": "Dad lowers his end while Zaid lifts his end, making one clear slope. Both keep hold of the string together. The red ring begins to slide towards Dad. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "Zing! The ring zips on the long string. I grin.",
+       "scene": "The red ring zips down the sloping yellow string towards Dad. Zaid grins as they keep holding the two ends. The calm sea, palm-lined corniche, date clusters and perched falcon remain in the background. All visible eyes are solid black filled ovals with no highlights."
+      }
+     ],
+     "read_words": [
+      "ring",
+      "string",
+      "lift",
+      "dips",
+      "zip",
+      "grin"
+     ],
+     "focus_word_examples": [
+      "ring",
+      "long",
+      "string",
+      "hang",
+      "Zing"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a"
+     ],
+     "cover_brief": "Zaid lifts one end of a yellow string while Dad holds the lower end. A large red ring slides along it. Set on sandy paving beside Dammam\u2019s blue sea, with low sand-coloured houses, a date palm heavy with brown date clusters and one falcon on a padded perch in the background. Keep the image simple and warm. Zaid and Dad wear the listed modest clothing. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0731,
+   "usage": {
+    "input_tokens": 6847,
+    "input_tokens_details": {
+     "cache_write_tokens": 6844,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1294,
+    "output_tokens_details": {
+     "reasoning_tokens": 339
+    },
+    "total_tokens": 8141
+   },
+   "data": {
+    "cold_read": "A clear, playful six-page story at the published-exemplar level. Zaid has one simple aim, notices the problem, gives Dad the plan and helps make the ring move. The action stays in one place with one adult, two key objects and one easy-to-copy mechanism. The story text meets the Level 3 phonics contract, uses five distinct focus-sound words, and the read_words split is exactly two \u201cng\u201d words plus four others.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Natural child voice",
+      "detail": "\u201cI tell Dad, \u2018Dip that end!\u2019\u201d sounds slightly like a caption reporting speech. Direct speech is warmer and simpler: \u201cDad, dip that end!\u201d"
+     }
+    ],
+    "fixed_story": {
+     "title": "Zaid and the Zing Ring",
+     "premise": {
+      "hero_want": "Zaid wants to make a ring zip along a string.",
+      "problem": "The ring stays still when the string is level.",
+      "mechanism": "Zaid lifts one end while Dad lowers the other, making the ring slide down the sloping string.",
+      "resolution": "The ring zips along the string and Zaid grins."
+     },
+     "key_objects": [
+      {
+       "name": "Ring",
+       "description": "One large, smooth red wooden ring, easy for Zaid to hold."
+      },
+      {
+       "name": "String",
+       "description": "One long, thick yellow string threaded through the ring."
+      }
+     ],
+     "cast": [
+      {
+       "id": "zaid",
+       "who": "Zaid, a 6-year-old Saudi boy",
+       "appearance": "Short black hair, teal long-sleeved top, loose beige trousers and brown sandals. His knees and shoulders are covered. His eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "id": "dad",
+       "who": "Zaid\u2019s dad",
+       "appearance": "Short black hair and a neat black beard, wearing a white long-sleeved thobe and brown sandals. His eyes are solid black filled ovals with no highlights."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I get a ring and a long string.",
+       "scene": "On sandy paving beside Dammam\u2019s calm blue sea, Zaid holds the red ring and coiled yellow string. Dad stands beside him. Low sand-coloured houses, a date palm with heavy brown clusters and one falcon on a padded perch form the fixed background. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "I hang the ring on the string.",
+       "scene": "In the same spot, Zaid threads one end of the yellow string through the red ring. Dad watches nearby. The sea, houses, date palm and falcon remain fixed in the background. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "The ring will not zip.",
+       "scene": "Zaid holds both ends of the level string. The red ring hangs still in the middle. He looks at it and thinks while Dad stands close by. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "\u201cDad, dip that end!\u201d",
+       "scene": "Zaid gives Dad one end of the string and points down, leading the plan. Dad takes the end. The ring remains still on the level string. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "Dad dips that end. I lift this end.",
+       "scene": "Dad lowers his end while Zaid lifts his end, making one clear slope. Both keep hold of the string together. The red ring begins to slide towards Dad. All visible eyes are solid black filled ovals with no highlights."
+      },
+      {
+       "text": "Zing! The ring zips on the long string. I grin.",
+       "scene": "The red ring zips down the sloping yellow string towards Dad. Zaid grins as they keep holding the two ends. The calm sea, palm-lined corniche, date clusters and perched falcon remain in the background. All visible eyes are solid black filled ovals with no highlights."
+      }
+     ],
+     "read_words": [
+      "ring",
+      "string",
+      "lift",
+      "dips",
+      "zip",
+      "grin"
+     ],
+     "focus_word_examples": [
+      "ring",
+      "long",
+      "string",
+      "hang",
+      "Zing"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a"
+     ],
+     "cover_brief": "Zaid lifts one end of a yellow string while Dad holds the lower end. A large red ring slides along it. Set on sandy paving beside Dammam\u2019s blue sea, with low sand-coloured houses, a date palm heavy with brown date clusters and one falcon on a padded perch in the background. Keep the image simple and warm. Zaid and Dad wear the listed modest clothing. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.0972,
+   "usage": {
+    "input_tokens": 8002,
+    "input_tokens_details": {
+     "cache_write_tokens": 7999,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1907,
+    "output_tokens_details": {
+     "reasoning_tokens": 584
+    },
+    "total_tokens": 9909
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Zaid stands on the left with the red wooden ring in his right hand and the coiled yellow string in his left. Dad stands on the right. Behind them are the calm blue sea, sandy paving, low sand-coloured houses, a date palm with brown date clusters and one falcon on its padded perch.",
+      "changed_from_previous": "Opening state: the ring and string are separate. The string is still coiled, and no game has begun.",
+      "must_not_change": "Zaid\u2019s teal long-sleeved top, beige trousers and brown sandals; Dad\u2019s white thobe and brown sandals; their hair and Dad\u2019s beard; the red ring; the yellow string; and the fixed Dammam background. All visible eyes, including the falcon\u2019s, must remain solid black filled ovals with no highlights.",
+      "draft_brief": "Wide, simple establishing view on Dammam\u2019s corniche. Put Zaid on the left and Dad on the right. Zaid clearly holds the separate red ring and coiled yellow string. Keep the background calm and uncluttered: blue sea, sandy paving, low sand-coloured houses, one date palm with brown clusters and one falcon on a padded perch. Warm daylight and clear shapes."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Zaid puts one free end of the yellow string through the hole in the red ring. Part of the string is now uncoiled. Dad stays on the right and watches.",
+      "changed_from_previous": "The string has been partly uncoiled. Zaid has brought its free end to the ring and is threading it through the centre.",
+      "must_not_change": "Zaid remains on the left and Dad on the right. The ring stays red and the string stays yellow. Clothing, appearances, modest dress, setting, date clusters and perched falcon remain the same. All visible eyes remain solid black filled ovals with no highlights.",
+      "draft_brief": "Medium view of Zaid\u2019s hands making the action unmistakable: one yellow string end passes through the large centre of the red ring. Show the remaining string loosely coiled near his left side. Dad watches without adding another action or object. Retain the same corniche background and character positions."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Zaid holds one end of the fully uncoiled string in each hand, stretching it level across his body. The red ring hangs motionless in the middle. Dad stands nearby on the right.",
+      "changed_from_previous": "The string is now fully uncoiled and threaded through the ring. Zaid has taken both ends and stretched them horizontally. The ring has moved to the middle and stopped.",
+      "must_not_change": "The ring must remain threaded on the same single string. Zaid stays left of Dad. No new props or people appear. The background landmarks, clothes, colours and solid black filled oval eyes must remain unchanged.",
+      "draft_brief": "Front-facing medium-wide image. Zaid holds the two ends at the same height, one in each hand, so the yellow string forms a clear level line. Place the red ring at the centre with no motion marks. Zaid looks thoughtfully at it. Dad remains close on the right, ready to help."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Zaid keeps the left end and passes the right end to Dad. He points slightly down towards Dad\u2019s side as he says, \u201cDad, dip that end!\u201d Dad takes the end. The string is still level, and the ring is still in the middle.",
+      "changed_from_previous": "Dad now holds the right end that Zaid held before. Zaid holds only the left end and visibly directs Dad to lower his side. The ring has not moved yet.",
+      "must_not_change": "Do not tilt the string yet. The red ring must remain centred and threaded. Zaid stays on the left; Dad stays on the right. Keep the same clothing, background, two key objects and solid black filled oval eyes.",
+      "draft_brief": "Show the handover completed: Zaid grips the left end, and Dad grips the right end. Keep both hands at the same height for this image. Zaid points down beside Dad\u2019s hand, making his plan clear. The ring remains still at the centre of the level string. Use no extra props or action."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Zaid raises the left end while Dad lowers the right end. The string forms one clear downward slope from Zaid to Dad. The red ring has just started sliding away from the centre towards Dad.",
+      "changed_from_previous": "The two ends are no longer level. Zaid\u2019s end is high and Dad\u2019s end is low. The ring has moved a small distance down the slope towards Dad.",
+      "must_not_change": "Zaid must still hold the left end and Dad the right end. The slope must descend towards Dad, never towards Zaid. The ring stays around the string and does not fall off. Characters, clothes, setting, object colours and solid black filled oval eyes remain consistent.",
+      "draft_brief": "Clear side-to-side composition: Zaid on the left with his hand raised, Dad on the right with his hand lowered. Make the yellow string a strong diagonal. Put the red ring just right of centre, beginning to slide towards Dad. A tiny, simple motion cue may show the direction, but keep the image uncluttered."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "The red ring zips farther down the sloping string and is now close to Dad\u2019s lower hand. Zaid still holds his end high and grins. Dad keeps his end low and smiles.",
+      "changed_from_previous": "The ring has travelled from just right of centre to near Dad. The string keeps the same downward slope, and Zaid\u2019s expression has changed to a broad grin.",
+      "must_not_change": "The ring must remain on the string and must not pass Dad\u2019s hand or fall. Zaid stays left and high; Dad stays right and low. Keep the same two objects, clothing, background landmarks, date clusters, perched falcon and solid black filled oval eyes.",
+      "draft_brief": "Warm final image with the same composition and diagonal string as page 5. Place the red ring near Dad\u2019s hand, with one small motion cue showing that it zipped down from Zaid\u2019s side. Zaid grins proudly while both continue holding the string safely. Keep the calm Dammam corniche background unchanged."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.0861,
+   "usage": {
+    "input_tokens": 9965,
+    "input_tokens_details": {
+     "cache_write_tokens": 9962,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1210,
+    "output_tokens_details": {
+     "reasoning_tokens": 185
+    },
+    "total_tokens": 11175
+   },
+   "data": {
+    "reasoning": "Work backwards from the final state: on page 6 the ring is near Dad because the string still slopes down towards him. Therefore page 5 must establish that exact slope and the start of the ring\u2019s movement. Page 4 must place one end in each person\u2019s hand before the tilt. Page 3 must show why the ring does not move when the string is level. Page 2 must clearly thread the string through the ring, and page 1 must establish the separate objects, their usable shapes and the fixed left-to-right positions. No extra evidence or objects are needed.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The earlier slope and direction of travel remain visible: Zaid still holds the high left end, Dad still holds the low right end, and the ring remains threaded on the same string. Its new position near Dad is the visible result of the mechanism.",
+      "revised_brief": "Keep the exact diagonal established on page 5, descending from Zaid on the left to Dad on the right. The red ring is now close to Dad\u2019s lower hand but remains securely around the yellow string. Zaid grins while both continue holding their ends; do not reset or coil the string. One small motion cue may show the ring\u2019s completed path towards Dad. Keep all clothing and the Dammam background unchanged. All visible eyes are solid black filled ovals with no highlights."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "This image must establish the slope that persists into page 6. The ring is just right of centre, showing that it has begun travelling towards Dad but still has farther to go.",
+      "revised_brief": "Zaid remains on the left and raises the end he already holds. Dad remains on the right and lowers his end. Make the yellow string one clear diagonal descending towards Dad. Place the threaded red ring just right of centre, at the beginning of its path. Both keep firm hold of the same ends they received on page 4. Keep the fixed setting and solid black filled oval eyes unchanged."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "Each person must already hold the end used on pages 5 and 6: Zaid has the left end and Dad has the right. The string is still level so the later tilt is a visible change rather than a new setup.",
+      "revised_brief": "Show the handover complete. Zaid holds the left end of the yellow string; Dad holds the right end. Their hands are still at the same height, keeping the string level, and the red ring remains motionless at the centre. Zaid points down beside Dad\u2019s end as he gives the plan. Preserve the left-to-right positions, fixed background and solid black filled oval eyes."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The ring must already be fully threaded, centred and still on a level string. This visually proves the problem and sets up the need to give Dad one end and make a slope.",
+      "revised_brief": "Zaid stands on the left with one end of the fully uncoiled yellow string in each hand, held apart at the same height. The red ring hangs around the string at the centre with no motion cue. Leave clear space to the right where Dad stands and will receive the right end next. Keep Dad close, the background fixed and all visible eyes solid black filled ovals with no highlights."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The free end must visibly pass through the ring\u2019s large central hole so every later image can show the ring sliding on the string. Both ends of the string must remain available for the later level stretch.",
+      "revised_brief": "Use a close, simple view of Zaid threading one free end of the yellow string through the large centre of the red ring. Show enough loose string on both sides of the ring to make the later two-ended setup believable. Dad watches from the right without touching the objects yet. Do not add knots, clips or other parts. Keep the setting and solid black filled oval eyes consistent."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "The ring needs a clearly open centre wide enough for the string, and the string needs two visible free ends and enough length to stretch between Zaid and Dad. Zaid must begin on the left and Dad on the right because those positions persist through the resolution.",
+      "revised_brief": "Opening wide view on Dammam\u2019s corniche. Zaid stands on the left holding one large red wooden ring in his right hand and one loosely coiled yellow string in his left. Make the ring\u2019s open centre and the string\u2019s two free ends easy to see. Dad stands ready on the right, with clear space between them for the later stretched string. Keep the calm blue sea, sandy paving, low sand-coloured houses, one date palm with brown clusters and one falcon on a padded perch as the fixed background. All visible eyes, including the falcon\u2019s, are solid black filled ovals with no highlights."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1242,
+   "usage": {
+    "input_tokens": 11494,
+    "input_tokens_details": {
+     "cache_write_tokens": 11491,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2226,
+    "output_tokens_details": {
+     "reasoning_tokens": 720
+    },
+    "total_tokens": 13720
+   },
+   "data": {
+    "storyboard_verdict": "plausible",
+    "physical_issues_found": [],
+    "cover": {
+     "brief": "Show the mechanism in one clear image: Zaid stands on the left holding the high end of a taut yellow string while Dad stands on the right holding the low end. The string passes through the open centre of one large red wooden ring, which slides along the sloping string towards Dad. The string itself is the only slope - the ground is flat paving, with no ramp, wedge or hill. Zaid wears EXACTLY the outfit in his reference image; Dad wears his white long-sleeved thobe and brown sandals. Behind them are Dammam\u2019s calm blue sea, sandy paving, low sand-coloured houses, one date palm with brown date clusters and one falcon on a padded perch. All visible eyes are solid black filled ovals with no highlights."
+    },
+    "object_placements": [
+     {
+      "object": "Red wooden ring",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "object": "Yellow string",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     }
+    ],
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Wide opening view on Dammam\u2019s corniche. Zaid stands on the left, holding the large red wooden ring in his right hand and the loosely coiled yellow string in his left. The ring\u2019s open centre and both free ends of the string are visible. Dad stands ready on the right, with clear space between them. Keep the calm sea, sandy paving, low houses, date palm and perched falcon fixed in the background. All visible eyes are solid black filled ovals with no highlights.",
+      "required_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "They are separate; the ring has a large open centre and the coiled string has two visible free ends."
+       },
+       {
+        "object": "Zaid and Dad",
+        "assertion": "Zaid is on the left and Dad is on the right, wearing their established modest clothing."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "The string must not already pass through, wrap around or attach to the ring."
+       }
+      ],
+      "carries_forward": "Zaid keeps both separate objects and remains on the left; Dad remains on the right."
+     },
+     {
+      "page": 2,
+      "brief": "Show Zaid on the left feeding one free end of the yellow string through the large open centre of the red ring. Loose string remains visible on both sides of the ring. Dad watches from the right without touching either object. Add no knot, hook or clip. Keep the fixed setting and solid black filled oval eyes unchanged.",
+      "required_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "One free end of the string visibly passes through the ring\u2019s open centre, with loose string on both sides."
+       },
+       {
+        "object": "Zaid and Dad",
+        "assertion": "Zaid performs the threading on the left while Dad watches from the right."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "String",
+        "assertion": "It must not be knotted, clipped, tied or wrapped around the ring."
+       }
+      ],
+      "carries_forward": "The ring is now freely threaded on the string, and both string ends remain available for Zaid to hold."
+     },
+     {
+      "page": 3,
+      "brief": "Zaid holds one end of the fully uncoiled yellow string in each hand, stretching it taut and level across his body. The threaded red ring hangs still at the centre. Dad stands close on the right, ready to help. Keep the same character designs, modest clothing, background and solid black filled oval eyes.",
+      "required_visible_states": [
+       {
+        "object": "String",
+        "assertion": "It is taut and level, with one end in each of Zaid\u2019s hands."
+       },
+       {
+        "object": "Ring",
+        "assertion": "It remains threaded and motionless at the centre of the level string."
+       },
+       {
+        "object": "Zaid and Dad",
+        "assertion": "Zaid remains on the left; Dad waits on the right in their established clothing."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "The string must not slope, and the ring must not appear to slide."
+       }
+      ],
+      "carries_forward": "The ring stays centred and threaded while Zaid prepares to give the right end to Dad."
+     },
+     {
+      "page": 4,
+      "brief": "Show the handover complete. Zaid holds the left end of the taut yellow string, and Dad holds the right end at the same height. The string remains level and the red ring remains still at its centre. Zaid points down beside Dad\u2019s end as he gives the plan. Keep their established clothing, positions and solid black filled oval eyes.",
+      "required_visible_states": [
+       {
+        "object": "String",
+        "assertion": "Zaid holds the left end and Dad holds the right end, with both ends still at equal height."
+       },
+       {
+        "object": "Ring",
+        "assertion": "It remains threaded and centred on the level string."
+       },
+       {
+        "object": "Zaid",
+        "assertion": "He visibly directs the plan by pointing down beside Dad\u2019s end."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "The string must not tilt and the ring must not move before Dad lowers his end."
+       }
+      ],
+      "carries_forward": "Each person keeps the same end; Zaid will raise the left end as Dad lowers the right."
+     },
+     {
+      "page": 5,
+      "brief": "Zaid raises the left end while Dad lowers the right, keeping the yellow string taut. The resulting diagonal visibly descends towards Dad. The threaded red ring is just right of centre, beginning to slide down the string towards him. Use only a small motion cue. Keep the fixed setting, established clothing and solid black filled oval eyes.",
+      "required_visible_states": [
+       {
+        "object": "String",
+        "assertion": "It is taut and slopes continuously down from Zaid\u2019s raised left end to Dad\u2019s lowered right end."
+       },
+       {
+        "object": "Ring",
+        "assertion": "It remains around the string and has moved just right of centre towards Dad."
+       },
+       {
+        "object": "Zaid and Dad",
+        "assertion": "Both visibly hold their established ends, directly creating the slope."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Ring and string",
+        "assertion": "The string must not sag or slope towards Zaid, and the ring must not float or leave the string."
+       }
+      ],
+      "carries_forward": "The same taut downward slope remains; the ring continues along it towards Dad."
+     },
+     {
+      "page": 6,
+      "brief": "Keep the same diagonal string: Zaid holds the high left end and Dad holds the low right end. The red ring has travelled farther down the taut yellow string and is now close to Dad\u2019s hand, still threaded and not past the end. Zaid grins while both retain their grips. Keep the Dammam background, modest clothing and solid black filled oval eyes unchanged.",
+      "required_visible_states": [
+       {
+        "object": "String",
+        "assertion": "It keeps the same taut downward slope from Zaid to Dad."
+       },
+       {
+        "object": "Ring",
+        "assertion": "It remains threaded and is now close to Dad\u2019s lower hand, visibly farther along than on page 5."
+       },
+       {
+        "object": "Zaid and Dad",
+        "assertion": "Zaid still holds the high left end and grins; Dad still holds the low right end."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Ring",
+        "assertion": "It must not pass Dad\u2019s hand, fall off the string or reset to the centre."
+       }
+      ],
+      "carries_forward": "Final resolved state: the ring rests near Dad on the still-sloping string, with both characters continuing to hold their ends."
+     }
+    ]
+   }
+  }
+ ]
+}

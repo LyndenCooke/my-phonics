@@ -1,0 +1,18 @@
+{
+ "child": {
+  "name": "Elsie",
+  "age": 6,
+  "gender": "girl",
+  "skinTone": "fair",
+  "hair": "wavy ginger hair to her shoulders"
+ },
+ "setting": {
+  "country": "England",
+  "city": "St Ives",
+  "culture": "A family in St Ives, Cornwall, on the English seaside - a stone harbour with a curved granite pier, small moored fishing boats, whitewashed cottages with grey slate roofs climbing the hill, seagulls, golden sand at low tide; smooth cobbled lanes."
+ },
+ "level": 5,
+ "sound": "ai",
+ "likes": "painting and rock pools",
+ "faith": "Christian"
+}

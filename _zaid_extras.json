@@ -1,0 +1,24 @@
+{
+ "questions": [
+  "What does Zaid hang on the string?",
+  "Why will the ring not zip at the start?",
+  "Who dips the end so the ring can zip?"
+ ],
+ "alien_words": [
+  "ming",
+  "zang",
+  "nong",
+  "teng"
+ ],
+ "pronunciation_notes": [
+  {
+   "title": "Watch Out - Two Letters, One Sound",
+   "body": "'n' and 'g' team up to make ONE sound: /ng/. Say it once at the end of the word - 'ri-ng', not 'ri-n-g'. In this story you'll hear it in 'ring', 'string' and 'zing'.",
+   "examples": [
+    "ring",
+    "string",
+    "zing"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,633 @@
+{
+ "child": {
+  "name": "Safa",
+  "age": 5,
+  "gender": "girl",
+  "skinTone": "olive",
+  "hair": "dark hair under a small hijab"
+ },
+ "setting": {
+  "country": "Jordan",
+  "city": "Amman",
+  "culture": "A Muslim family in Amman; pale stone houses, steep steps, a bakery smell in the lane."
+ },
+ "level": 3,
+ "sound": "th",
+ "model": "gpt-5.6-sol",
+ "totalCost": 0.622,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1351,
+   "usage": {
+    "input_tokens": 840,
+    "input_tokens_details": {
+     "cache_write_tokens": 0,
+     "cached_tokens": 0
+    },
+    "output_tokens": 4362,
+    "output_tokens_details": {
+     "reasoning_tokens": 3624
+    },
+    "total_tokens": 5202
+   },
+   "data": {
+    "title": "A Warm Spot",
+    "premise": {
+     "hero_want": "Safa wants to help a thin cat on a cold step.",
+     "problem": "The cat has no warm spot to sit.",
+     "mechanism": "Safa takes her bun from its paper bag and lays the empty bag on the step as a warm mat.",
+     "resolution": "The cat sits on the bag, and Safa is glad."
+    },
+    "key_objects": [
+     {
+      "name": "Hot bun",
+      "description": "A small, round bun from the bakery."
+     },
+     {
+      "name": "Paper bag",
+      "description": "A plain paper bakery bag that Safa lays flat on the step."
+     }
+    ],
+    "cast": [
+     {
+      "id": "safa",
+      "who": "Safa, a five-year-old Muslim Jordanian girl",
+      "appearance": "Dark hair, a long-sleeved coral tunic, loose blue trousers and flat shoes; knees and shoulders covered; solid black filled oval eyes."
+     },
+     {
+      "id": "cat",
+      "who": "A small, thin ginger cat",
+      "appearance": "Short ginger fur, a long tail and solid black filled oval eyes."
+     }
+    ],
+    "pages": [
+     {
+      "text": "Safa has a hot bun in a bag. A thin cat is on a step.",
+      "scene": "In one quiet Amman lane, Safa stands by steep pale stone steps with the bun inside its paper bag. The thin ginger cat sits on the lowest step. A bakery doorway nearby suggests a warm bread smell. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The step is cold. This can help!",
+      "scene": "Safa looks at the cat, then at the paper bag in her hands. She has noticed the cold stone and has her idea. Keep the same pale stone steps and bakery lane. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Safa gets the bun. Then she puts the bag on the step.",
+      "scene": "Safa holds the bun safely in one hand and lays the empty paper bag flat on the lowest step with the other. The cat watches. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cat sits on the bag.",
+      "scene": "The ginger cat sits on the flat paper bag. Safa remains beside the same step, holding her bun. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Safa sits with the cat. She has the hot bun.",
+      "scene": "Safa sits modestly on the step beside the cat, with her tunic and trousers covering her shoulders and knees. She holds the warm bun. The bakery and pale stone lane remain behind them. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cat has a warm spot. Safa is glad.",
+      "scene": "The cat rests on the paper bag while Safa smiles beside it with her bun. The same steep pale stone steps glow warmly in the Amman lane. All visible eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "thin",
+     "This",
+     "step",
+     "cold",
+     "puts",
+     "warm"
+    ],
+    "focus_word_examples": [
+     "thin",
+     "This",
+     "Then",
+     "with"
+    ],
+    "tricky_words_used": [
+     "a",
+     "has",
+     "the",
+     "is",
+     "she"
+    ],
+    "cover_brief": "Title: “A Warm Spot”. Show Safa beside a thin ginger cat on the lowest of the steep pale stone steps in an Amman lane. The cat sits on the flat paper bag while Safa holds her warm bun. Hint at the bakery through a warm open doorway in the background. Safa wears a long-sleeved coral tunic, loose blue trousers and flat shoes, with knees and shoulders covered. No other people or objects. All visible eyes are solid black filled ovals."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0727,
+   "usage": {
+    "input_tokens": 5297,
+    "input_tokens_details": {
+     "cache_write_tokens": 5294,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1540,
+    "output_tokens_details": {
+     "reasoning_tokens": 731
+    },
+    "total_tokens": 6837
+   },
+   "data": {
+    "violations_found": [
+     "“warm” in the title and page 6 is not Level 3 decodable under the given grapheme set: its /ɔː/ spelling is not covered.",
+     "Because “warm” is not decodable, it must also be removed from read_words and replaced by another word from the corrected story."
+    ],
+    "story": {
+     "title": "The Cat and the Bag",
+     "premise": {
+      "hero_want": "Safa wants to help a thin cat on a cold step.",
+      "problem": "The cat has no comfortable spot to sit.",
+      "mechanism": "Safa takes her bun from its paper bag and lays the empty bag on the step.",
+      "resolution": "The cat sits on the bag and is no longer on the cold stone."
+     },
+     "key_objects": [
+      {
+       "name": "Hot bun",
+       "description": "A small, round bun from the bakery."
+      },
+      {
+       "name": "Paper bag",
+       "description": "A plain paper bakery bag that Safa lays flat on the step."
+      }
+     ],
+     "cast": [
+      {
+       "id": "safa",
+       "who": "Safa, a five-year-old Muslim Jordanian girl",
+       "appearance": "Dark hair, a long-sleeved coral tunic, loose blue trousers and flat shoes; knees and shoulders covered; solid black filled oval eyes."
+      },
+      {
+       "id": "cat",
+       "who": "A small, thin ginger cat",
+       "appearance": "Short ginger fur, a long tail and solid black filled oval eyes."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Safa has a hot bun in a bag. A thin cat is on a step.",
+       "scene": "In one quiet Amman lane, Safa stands by steep pale stone steps with the bun inside its paper bag. The thin ginger cat sits on the lowest step. A bakery doorway nearby suggests the smell of fresh bread. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The step is cold. This can help!",
+       "scene": "Safa looks at the cat, then at the paper bag in her hands. She has noticed the cold stone and has an idea. Keep the same pale stone steps and bakery lane. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Safa gets the bun. Then she puts the bag on the step.",
+       "scene": "Safa holds the bun safely in one hand and lays the empty paper bag flat on the lowest step with the other. The cat watches. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat sits on the bag.",
+       "scene": "The ginger cat sits on the flat paper bag. Safa remains beside the same step, holding her bun. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Safa sits with the cat. She has the hot bun.",
+       "scene": "Safa sits modestly on the step beside the cat, with her tunic and trousers covering her shoulders and knees. She holds the hot bun. The bakery and pale stone lane remain behind them. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat is not cold. Safa is glad.",
+       "scene": "The cat rests on the paper bag while Safa smiles beside it with her bun. The same steep pale stone steps glow in the Amman lane. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "thin",
+      "This",
+      "step",
+      "cold",
+      "puts",
+      "glad"
+     ],
+     "focus_word_examples": [
+      "thin",
+      "This",
+      "Then",
+      "with"
+     ],
+     "tricky_words_used": [
+      "a",
+      "has",
+      "the",
+      "is",
+      "she"
+     ],
+     "cover_brief": "Title: “The Cat and the Bag”. Show Safa beside a thin ginger cat on the lowest of the steep pale stone steps in an Amman lane. The cat sits on the flat paper bag while Safa holds her hot bun. Hint at the bakery through an open doorway in the background. Safa wears a long-sleeved coral tunic, loose blue trousers and flat shoes, with knees and shoulders covered. No other people or key objects. All visible eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0804,
+   "usage": {
+    "input_tokens": 6973,
+    "input_tokens_details": {
+     "cache_write_tokens": 6970,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1518,
+    "output_tokens_details": {
+     "reasoning_tokens": 654
+    },
+    "total_tokens": 8491
+   },
+   "data": {
+    "cold_read": "The story meets the blocking requirements: it is logical, safe, fully decodable, visually consistent and clearly driven by Safa. It keeps one thread, no adult, two key objects and one ordinary physical mechanism. Only the final line needs a small wording adjustment.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Resolution wording",
+      "detail": "“The cat is not cold” slightly overstates what has been established: the text says the step is cold, not that the cat is cold. “The cat is snug” gives a warmer, more natural ending without adding a beat."
+     }
+    ],
+    "fixed_story": {
+     "title": "The Cat and the Bag",
+     "premise": {
+      "hero_want": "Safa wants to help a thin cat on a cold step.",
+      "problem": "The cat has no snug spot to sit.",
+      "mechanism": "Safa takes her bun from its paper bag and lays the empty bag on the step.",
+      "resolution": "The cat sits snugly on the bag, and Safa is glad."
+     },
+     "key_objects": [
+      {
+       "name": "Hot bun",
+       "description": "A small, round bun from the bakery."
+      },
+      {
+       "name": "Paper bag",
+       "description": "A plain paper bakery bag that Safa lays flat on the step."
+      }
+     ],
+     "cast": [
+      {
+       "id": "safa",
+       "who": "Safa, a five-year-old Muslim Jordanian girl",
+       "appearance": "Dark hair, a long-sleeved coral tunic, loose blue trousers and flat shoes; knees and shoulders covered; solid black filled oval eyes."
+      },
+      {
+       "id": "cat",
+       "who": "A small, thin ginger cat",
+       "appearance": "Short ginger fur, a long tail and solid black filled oval eyes."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Safa has a hot bun in a bag. A thin cat is on a step.",
+       "scene": "In one quiet Amman lane, Safa stands by steep pale stone steps with the bun inside its paper bag. The thin ginger cat sits on the lowest step. A bakery doorway nearby suggests the smell of fresh bread. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The step is cold. This can help!",
+       "scene": "Safa looks at the cat, then at the paper bag in her hands. She has noticed the cold stone and has an idea. Keep the same pale stone steps and bakery lane. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Safa gets the bun. Then she puts the bag on the step.",
+       "scene": "Safa holds the bun safely in one hand and lays the empty paper bag flat on the lowest step with the other. The cat watches. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat sits on the bag.",
+       "scene": "The ginger cat sits on the flat paper bag. Safa remains beside the same step, holding her bun. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Safa sits with the cat. She has the hot bun.",
+       "scene": "Safa sits modestly on the step beside the cat, with her tunic and trousers covering her shoulders and knees. She holds the hot bun. The bakery and pale stone lane remain behind them. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat is snug. Safa is glad.",
+       "scene": "The cat rests snugly on the paper bag while Safa smiles beside it with her bun. The same steep pale stone steps glow in the Amman lane. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "thin",
+      "This",
+      "step",
+      "cold",
+      "puts",
+      "glad"
+     ],
+     "focus_word_examples": [
+      "thin",
+      "This",
+      "Then",
+      "with"
+     ],
+     "tricky_words_used": [
+      "a",
+      "has",
+      "the",
+      "is",
+      "she"
+     ],
+     "cover_brief": "Title: “The Cat and the Bag”. Show Safa beside a thin ginger cat on the lowest of the steep pale stone steps in an Amman lane. The cat sits on the flat paper bag while Safa holds her hot bun. Hint at the bakery through an open doorway in the background. Safa wears a long-sleeved coral tunic, loose blue trousers and flat shoes, with knees and shoulders covered. No other people or key objects. All visible eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1011,
+   "usage": {
+    "input_tokens": 8352,
+    "input_tokens_details": {
+     "cache_write_tokens": 8349,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1977,
+    "output_tokens_details": {
+     "reasoning_tokens": 538
+    },
+    "total_tokens": 10329
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Safa stands in a quiet Amman lane, holding a paper bag with a hot bun inside. A thin ginger cat sits on the lowest pale stone step. The bakery doorway is behind Safa on the left, and the steep steps rise to the right.",
+      "changed_from_previous": "Opening image: this establishes the lane, the positions of Safa and the cat, and the bun inside the bag.",
+      "must_not_change": "Keep the bakery doorway on the left and the steps rising to the right. Safa wears the same long-sleeved coral tunic, loose blue trousers and flat shoes. The cat stays thin and ginger. The bag is plain paper and the bun is small and round. No adult, background people or extra key objects. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Medium-wide view of one quiet lane lined with pale Amman stone. Safa stands on the left, holding the paper bag in both hands at waist height; the top is open enough to show the bun inside. The thin ginger cat sits on the broad lowest step to the right. Suggest the bakery smell with gentle warmth drifting from the open doorway, without adding food displays or people. Safa’s knees and shoulders are covered. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Safa notices the cold stone, then looks at the paper bag as she gets an idea. The cat is still waiting on the lowest step.",
+      "changed_from_previous": "Only Safa’s attention and expression change: she now looks from the step to the bag. The bun remains inside the bag, and the cat has not moved.",
+      "must_not_change": "Do not move the cat off the lowest step yet. Do not remove the bun or put the bag down yet. Keep Safa, the cat, the bakery doorway and the steps in the same left-to-right positions. Keep clothing, colours and object designs identical. No new people or objects. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Use the same view and lane layout. Safa holds the bag close and looks down at it with a clear bright idea, perhaps touching the side of the bag with one finger. The cat remains seated on the cold pale stone. Keep the action simple and readable: Safa has noticed that the bag can help. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Safa holds the bun in one hand and lays the now-empty paper bag flat on an open part of the lowest step. The cat watches from beside it.",
+      "changed_from_previous": "The bun has come out of the bag. The empty bag has moved from Safa’s hands to the lowest step and is being laid flat. The cat shifts only enough to leave an open patch beside it; it is not on the bag yet.",
+      "must_not_change": "The bun must remain whole and in Safa’s hand. The same paper bag must be visibly empty and flat on the step. Do not show the cat sitting on it yet. Keep the bakery and steps in the same positions, with Safa on the left and the cat on the right. Add no tools, mats, food or people. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Same lane and camera direction. Safa bends safely beside the broad lowest step, holding the whole bun in her left hand while her right hand lays the empty paper bag flat. The ginger cat stays just beside the bag and watches. Show the single mechanism clearly: bun out, empty bag down. Safa’s shoulders and knees remain covered. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "The ginger cat has moved onto the flat paper bag and sits on it. Safa stands close by, still holding the whole bun.",
+      "changed_from_previous": "The bag stays exactly where Safa placed it. The cat moves from beside the bag to the centre of it. Safa has finished laying the bag down and is upright again.",
+      "must_not_change": "Do not move, fold or replace the bag. Safa must still hold the same whole bun; she does not feed it to the cat or eat it. Keep the cat ginger and thin, and keep the lane geography and clothing identical. No new objects or people. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Keep the same view. Centre the small success: the ginger cat sits neatly on the flat paper bag on the lowest step. Safa stands just to the left, holding her bun and watching. The bakery doorway remains in the left background, with the pale steps rising right. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Safa now sits beside the cat. The cat stays on the paper bag, and Safa keeps the hot bun in her hands.",
+      "changed_from_previous": "Safa moves from standing to sitting on the open part of the broad lowest step beside the cat. The cat, bag and bun do not move.",
+      "must_not_change": "The cat must remain on the same flat bag. Safa must keep the whole bun and must not offer it to the cat. Her long tunic and loose trousers continue to cover her shoulders and knees while she sits. Keep the same lane, steps, bakery doorway, colours and character designs. No extra people or objects. All visible eyes are solid black filled ovals.",
+      "draft_brief": "In the same medium-wide composition, show Safa seated modestly on the lowest step beside the cat. She holds the whole bun gently in both hands. The cat remains upright on the paper bag. Their closeness should feel calm and friendly, with the pale stone lane and bakery doorway unchanged. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "The cat rests snugly on the paper bag. Safa sits beside it and smiles, still holding her bun.",
+      "changed_from_previous": "The cat relaxes from an upright sit into a snug resting pose on the same bag. Safa’s smile shows that she is glad. Everything else stays in place.",
+      "must_not_change": "Do not move the bag, Safa or the bun to a new location. The bun remains whole and is not shared with the cat. Keep Safa seated with knees and shoulders covered. Keep the same cat, clothes, pale stone steps, bakery doorway and left-to-right layout. Add no people, food, bowls or other objects. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Final warm image in the same Amman lane. The ginger cat rests compactly on the flat paper bag, and Safa smiles beside it while holding her whole bun. Keep the bakery doorway softly warm in the background and the steep pale stone steps rising to the right. The ending should feel simple, safe and contented. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.0984,
+   "usage": {
+    "input_tokens": 10385,
+    "input_tokens_details": {
+     "cache_write_tokens": 10382,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1549,
+    "output_tokens_details": {
+     "reasoning_tokens": 404
+    },
+    "total_tokens": 11934
+   },
+   "data": {
+    "reasoning": "Working backwards, the final image requires three persistent facts: the same paper bag remains under the cat, Safa remains beside the cat, and the bun remains whole in Safa’s hands. Earlier pages therefore establish only those two key objects and the broad lowest step where the mechanism happens. No extra object or subplot is planted.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The resolved mechanism must leave visible residue: the same flattened paper bag is still under the resting cat. Safa’s seated position carries over from page 5, and the whole bun remains in her hands.",
+      "revised_brief": "Final image in the same Amman lane and from the same side. The ginger cat rests compactly on the flattened paper bag on the broad lowest step. The bag’s original folds remain visible around the cat. Safa sits beside it, smiling and holding the same whole round bun in both hands. The pale stone steps still rise to the right, and the bakery doorway remains on the left. Add no people, food, bowls or other objects. Safa’s shoulders and knees are covered. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "Safa must already be seated where she will remain in the final image. The cat must already be on the same bag, ready only to relax on page 6. The bun must remain whole and uneaten.",
+      "revised_brief": "Show Safa newly seated on the open part of the broad lowest step beside the cat. She holds the same whole bun in both hands. The ginger cat still sits upright on the flattened paper bag; its final resting pose has not happened yet. Keep the bag’s folds and position identical to page 4. Keep the bakery doorway left and the steps rising right. Add nothing else. Safa’s long tunic and loose trousers cover her shoulders and knees. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "The cat must move onto the bag here so it can remain there through pages 5 and 6. The bag must stay flat in the exact place Safa put it, and Safa must keep the bun.",
+      "revised_brief": "Show the ginger cat now sitting in the centre of the same flattened paper bag on the lowest step. Its body does not hide the whole bag: leave the paper edges and fold lines visible so the mechanism remains clear later. Safa stands just to the left, holding the same whole bun. She no longer touches the bag. Keep the pale stone lane, left-side bakery doorway and right-rising steps unchanged. No new objects or people. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "This page must create the physical state that persists to the end: the bun is removed and kept, while the empty bag is opened flat on the broad lowest step. The cat must remain beside the bag so its move on page 4 is believable.",
+      "revised_brief": "Show Safa crouching safely beside the broad lowest step. She holds the whole round bun in her left hand and uses her right hand to finish opening the now-empty paper bag flat on an open patch of stone. Keep recognisable fold lines in the paper; these same folds will remain visible through page 6. The ginger cat waits directly beside the bag and watches but is not yet touching it. Keep Safa left, the cat right, the bakery doorway left and the steps rising right. Add no other objects or people. Safa’s shoulders and knees remain covered. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The bag must already be clearly usable: its top is open, the bun is visibly inside, and it is large enough to lie flat beneath the small cat. The broad lowest step must have an open patch beside the cat where Safa can place it.",
+      "revised_brief": "Use the same lane layout. Safa holds the open paper bag at waist height, with the whole round bun clearly visible inside. She looks from the cold pale stone beside the cat back to the bag, showing her idea without adding anything. Make the bag visibly large enough to open flat beneath the thin cat later. The cat stays on one side of the broad lowest step, leaving an open patch beside it. Keep the bakery doorway left and the steps rising right. No new objects or people. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "Everything needed later must be present from the start: Safa, the thin cat, the whole bun, its paper bag and a broad lowest step. The bun must visibly begin inside the bag, establishing why Safa has both objects. The fixed left-to-right geography must also begin here.",
+      "revised_brief": "Opening medium-wide view of one quiet Amman lane. Establish the bakery doorway on the left and steep pale stone steps rising to the right. Safa stands on the left holding an open plain paper bag at waist height; the small whole round bun is visibly inside. The thin ginger cat sits on one side of the broad lowest step, with a clear open patch of stone beside it. This is the same patch where the bag will be laid on page 3. Suggest fresh bread from the bakery through gentle warmth at the doorway, without adding displays, food or people. Safa wears the same long-sleeved coral tunic, loose blue trousers and flat shoes. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1344,
+   "usage": {
+    "input_tokens": 12167,
+    "input_tokens_details": {
+     "cache_write_tokens": 12164,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2453,
+    "output_tokens_details": {
+     "reasoning_tokens": 576
+    },
+    "total_tokens": 14620
+   },
+   "data": {
+    "storyboard_verdict": "plausible",
+    "physical_issues_found": [],
+    "cover": {
+     "brief": "Cover for “The Cat and the Bag”. In the same quiet Amman lane, show Safa seated beside the thin ginger cat on the broad lowest pale stone step. The cat rests directly on the flattened plain paper bakery bag, with the bag’s edges visible between its body and the stone. Safa holds the same whole round bun. The bakery doorway is on the left and the steep steps rise to the right. Safa wears a long-sleeved coral tunic, loose blue trousers and flat shoes; her knees and shoulders are covered. No other people or key objects. All visible eyes are solid black filled ovals."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Opening medium-wide view of one quiet Amman lane. The bakery doorway is on the left, and steep pale stone steps rise to the right. Safa stands on the left holding an open plain paper bag at waist height; the whole round bun is visibly inside. The thin ginger cat sits directly on one side of the broad lowest stone step, leaving an open patch beside it. Suggest the bakery smell through a warm glow at the doorway, without adding displays or people. Safa wears her long-sleeved coral tunic, loose blue trousers and flat shoes. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper bag and bun",
+        "assertion": "The open paper bag is in Safa’s hands, and the whole bun is visibly inside it."
+       },
+       {
+        "object": "Cat and step",
+        "assertion": "The thin ginger cat sits directly on the bare lowest stone step, with an open patch beside it."
+       },
+       {
+        "object": "Safa",
+        "assertion": "Safa stands safely at the foot of the steps in her established modest outfit; her eyes are solid black filled ovals."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper bag",
+        "assertion": "It must not already be flat on the step or under the cat."
+       },
+       {
+        "object": "Bun",
+        "assertion": "It must not be outside the bag, bitten or broken."
+       }
+      ],
+      "carries_forward": "The bun remains inside the bag; Safa still holds both; the cat remains on the bare lowest step; the lane geography stays fixed."
+     },
+     {
+      "page": 2,
+      "brief": "Keep the same view and positions. Safa still holds the open paper bag with the whole bun visible inside. She looks from the bare stone beside the cat back to the bag, making her idea clear. The cat remains on one side of the broad lowest step, and the open patch remains available beside it. The bakery doorway stays left and the steps rise right. No new objects or people. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper bag and bun",
+        "assertion": "Safa still holds the open bag with the whole bun visibly inside."
+       },
+       {
+        "object": "Safa",
+        "assertion": "Her gaze visibly connects the bare step to the bag, showing that she has noticed and decided."
+       },
+       {
+        "object": "Cat",
+        "assertion": "The same thin ginger cat remains directly on the bare lowest step."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper bag",
+        "assertion": "It must not yet be emptied, flattened or placed on the step."
+       },
+       {
+        "object": "Cat",
+        "assertion": "It must not move onto the bag before Safa places it."
+       }
+      ],
+      "carries_forward": "Safa’s idea leads directly to removing the bun and flattening the empty bag; the cat and open patch stay in place."
+     },
+     {
+      "page": 3,
+      "brief": "In the same lane, Safa crouches safely beside the broad lowest step. She holds the same whole bun in her left hand while her right hand finishes laying the now-empty paper bag flat on the open patch of stone. Natural creases and gusset folds show that it is the same bakery bag. The ginger cat waits directly beside the bag and watches without touching it. Keep the bakery doorway left and the steps rising right. Safa’s knees and shoulders remain covered. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Bun",
+        "assertion": "The whole bun is fully out of the bag and held securely in Safa’s hand."
+       },
+       {
+        "object": "Paper bag",
+        "assertion": "The empty bag is visibly flattened against the stone, with Safa’s hand completing the placement."
+       },
+       {
+        "object": "Cat",
+        "assertion": "The thin ginger cat remains beside the bag, not on it yet."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper bag",
+        "assertion": "It must not look rigid, padded, inflated or like a cloth mat."
+       },
+       {
+        "object": "Cat and bun",
+        "assertion": "The cat must not be on the bag or eating the bun."
+       }
+      ],
+      "carries_forward": "The empty paper bag remains flat on the lowest step; Safa keeps the whole bun; the cat is positioned beside the bag and can move onto it next."
+     },
+     {
+      "page": 4,
+      "brief": "Keep the paper bag in exactly the place Safa laid it. The thin ginger cat now sits in the centre of the flattened bag, with paper edges and natural folds clearly visible around its body and the paper visibly separating it from the stone. Safa stands just to the left, holding the same whole bun and no longer touching the bag. The bakery doorway and steps remain fixed. No new people or objects. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat and paper bag",
+        "assertion": "The cat sits directly on the flattened bag, with visible paper between the cat and the stone."
+       },
+       {
+        "object": "Paper bag",
+        "assertion": "It remains flat in the same position and bends naturally beneath the cat’s weight."
+       },
+       {
+        "object": "Safa and bun",
+        "assertion": "Safa stands nearby holding the same whole bun; her outfit and solid black filled oval eyes remain consistent."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper bag",
+        "assertion": "It must not move, puff up, become fabric or disappear beneath the cat."
+       },
+       {
+        "object": "Bun",
+        "assertion": "It must not be fed to the cat, bitten or broken."
+       }
+      ],
+      "carries_forward": "The cat stays on the flattened bag; the bag remains between the cat and stone; Safa keeps the whole bun and moves to sit beside the cat."
+     },
+     {
+      "page": 5,
+      "brief": "Safa is now seated modestly on the open part of the broad lowest step beside the cat, holding the same whole bun in both hands. The ginger cat remains sitting upright on the same flattened paper bag. Its edges and creases stay visible, confirming that neither the cat nor the bag has moved. Keep the bakery doorway left and the steps rising right. Safa’s long tunic and trousers cover her shoulders and knees. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat and paper bag",
+        "assertion": "The cat remains upright on the same flat bag, with its paper edges visible against the stone."
+       },
+       {
+        "object": "Safa",
+        "assertion": "Safa now sits safely beside the cat in the same modest outfit."
+       },
+       {
+        "object": "Bun",
+        "assertion": "The same whole bun remains in Safa’s hands."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cat and paper bag",
+        "assertion": "The cat must not leave the bag, and the bag must not change position or material."
+       },
+       {
+        "object": "Bun",
+        "assertion": "It must not be eaten, broken or offered to the cat."
+       }
+      ],
+      "carries_forward": "Safa remains seated with the whole bun; the cat remains on the bag and only relaxes its pose in the final image."
+     },
+     {
+      "page": 6,
+      "brief": "Final image in the unchanged Amman lane. The thin ginger cat has relaxed into a compact resting pose on the same flattened paper bag. The bag’s creased edges remain visible around the cat and directly separate it from the pale stone. Safa sits beside it, smiling and holding the same whole round bun. The bakery doorway remains left and the steep steps rise right. Add no people, bowls, food or other objects. Safa’s knees and shoulders are covered. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat and paper bag",
+        "assertion": "The cat rests compactly on the same flattened bag, with visible paper still between its body and the stone."
+       },
+       {
+        "object": "Safa and bun",
+        "assertion": "Safa remains seated beside the cat, smiling and holding the same whole bun."
+       },
+       {
+        "object": "Characters",
+        "assertion": "Safa’s clothing and the cat’s thin ginger appearance remain unchanged; all visible eyes are solid black filled ovals."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper bag",
+        "assertion": "It must not become padded, cloth-like, raised or detached from the stone."
+       },
+       {
+        "object": "Bun and cat",
+        "assertion": "The bun must not be eaten or shared, and the cat must not leave the bag."
+       }
+      ],
+      "carries_forward": "Final resolved state: the flattened bag remains as visible residue of Safa’s action, the cat rests on it, and Safa stays beside the cat with her whole bun."
+     }
+    ]
+   }
+  }
+ ]
+}

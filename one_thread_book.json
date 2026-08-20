@@ -1,0 +1,605 @@
+{
+ "child": {
+  "name": "Hamza",
+  "age": 6,
+  "gender": "boy",
+  "skinTone": "light brown",
+  "hair": "short black hair"
+ },
+ "setting": {
+  "country": "Oman",
+  "city": "Muscat",
+  "culture": "A Muslim family in Muscat; whitewashed houses, the corniche, fishing boats, kites on the beach."
+ },
+ "level": 4,
+ "sound": "ow",
+ "model": "gpt-5.6-sol",
+ "totalCost": 0.589,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1256,
+   "usage": {
+    "input_tokens": 1011,
+    "input_tokens_details": {
+     "cache_write_tokens": 0,
+     "cached_tokens": 0
+    },
+    "output_tokens": 4017,
+    "output_tokens_details": {
+     "reasoning_tokens": 3211
+    },
+    "total_tokens": 5028
+   },
+   "data": {
+    "title": "Up Now!",
+    "premise": {
+     "hero_want": "Hamza wants his toy kite to fly high above the beach.",
+     "problem": "The kite stays low because its cord hangs slack.",
+     "mechanism": "Hamza notices the slack cord and decides to tug it. Mum tugs the same cord with him.",
+     "resolution": "The kite rises high, then drifts gently down as Hamza grins at Mum."
+    },
+    "key_objects": [
+     {
+      "name": "Toy kite",
+      "description": "A simple red diamond-shaped kite with a yellow centre. It has no tail."
+     },
+     {
+      "name": "Kite cord",
+      "description": "One plain white cord fixed to the kite, with no reel."
+     }
+    ],
+    "cast": [
+     {
+      "id": "hamza",
+      "who": "Hamza, a six-year-old Muslim boy in Muscat",
+      "appearance": "Medium-brown skin, short black curls, a teal long-sleeved top, tan full-length trousers and sandals. His eyes are solid black filled ovals."
+     },
+     {
+      "id": "mum",
+      "who": "Hamza's mum",
+      "appearance": "Medium-brown skin, a rose-pink hijab, a navy abaya covering her shoulders and knees, and flat shoes. Her eyes are solid black filled ovals."
+     }
+    ],
+    "pages": [
+     {
+      "text": "I am Hamza. I am on the sand with Mum.",
+      "scene": "Hamza and Mum stand together on a quiet Muscat beach. Hamza holds the white cord of the red kite. The corniche, whitewashed houses and two fishing boats sit in the background. Their modest clothes cover shoulders and knees. All eyes are solid black filled ovals. No other people."
+     },
+     {
+      "text": "My toy is low. It will not go up.",
+      "scene": "The same kite hangs just above the sand, still fixed to the same cord in Hamza's hand. Hamza looks up while Mum stays beside him. Keep the same beach, houses and fishing boats. All eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cord hangs down. I will tug it with Mum.",
+      "scene": "Hamza notices the same white cord hanging slack. He points to it and looks at Mum as he decides what to do. Mum listens beside him. Their clothes remain modest, and all eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum and I tug the cord. Up, up, up!",
+      "scene": "Hamza leads as he and Mum safely tug the same cord together. The red kite starts to rise. They remain in one spot on the beach. All eyes are solid black filled ovals."
+     },
+     {
+      "text": "My toy is high now. It dips, then it is up.",
+      "scene": "The same red kite flies high above Hamza and Mum, with its white cord pulled straight. Hamza watches it dip and rise while Mum stays beside him. The corniche and whitewashed houses remain behind them. All eyes are solid black filled ovals."
+     },
+     {
+      "text": "My toy drifts down. I grin at Mum.",
+      "scene": "The kite drifts gently towards Hamza and Mum on the same patch of sand. Hamza grins at Mum, and she smiles back. Fishing boats rest on the calm water behind them. Their shoulders and knees are covered. All eyes are solid black filled ovals. No other people."
+     }
+    ],
+    "read_words": [
+     "low",
+     "down",
+     "toy",
+     "cord",
+     "hangs",
+     "drifts"
+    ],
+    "focus_word_examples": [
+     "low",
+     "down",
+     "now"
+    ],
+    "tricky_words_used": [
+     "I",
+     "is",
+     "my",
+     "go",
+     "the"
+    ],
+    "cover_brief": "A warm, simple cover showing Hamza and Mum safely tugging one white kite cord together as the red kite rises above a Muscat beach. Add the corniche, whitewashed houses and two fishing boats in the background. No other people or key objects. Hamza and Mum wear the exact modest clothes in the cast guide, with shoulders and knees covered. All eyes are solid black filled ovals. Title: “Up Now!”"
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0617,
+   "usage": {
+    "input_tokens": 5123,
+    "input_tokens_details": {
+     "cache_write_tokens": 5120,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1202,
+    "output_tokens_details": {
+     "reasoning_tokens": 389
+    },
+    "total_tokens": 6325
+   },
+   "data": {
+    "violations_found": [],
+    "story": {
+     "title": "Up Now!",
+     "premise": {
+      "hero_want": "Hamza wants his toy kite to fly high above the beach.",
+      "problem": "The kite stays low because its cord hangs slack.",
+      "mechanism": "Hamza notices the slack cord and decides to tug it. Mum tugs the same cord with him.",
+      "resolution": "The kite rises high, then drifts gently down as Hamza grins at Mum."
+     },
+     "key_objects": [
+      {
+       "name": "Toy kite",
+       "description": "A simple red diamond-shaped kite with a yellow centre. It has no tail."
+      },
+      {
+       "name": "Kite cord",
+       "description": "One plain white cord fixed to the kite, with no reel."
+      }
+     ],
+     "cast": [
+      {
+       "id": "hamza",
+       "who": "Hamza, a six-year-old Muslim boy in Muscat",
+       "appearance": "Medium-brown skin, short black curls, a teal long-sleeved top, tan full-length trousers and sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Hamza's mum",
+       "appearance": "Medium-brown skin, a rose-pink hijab, a navy abaya covering her shoulders and knees, and flat shoes. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I am Hamza. I am on the sand with Mum.",
+       "scene": "Hamza and Mum stand together on a quiet Muscat beach. Hamza holds the white cord of the red kite. The corniche, whitewashed houses and two fishing boats sit in the background. Their modest clothes cover shoulders and knees. All eyes are solid black filled ovals. No other people."
+      },
+      {
+       "text": "My toy is low. It will not go up.",
+       "scene": "The same kite hangs just above the sand, still fixed to the same cord in Hamza's hand. Hamza looks up while Mum stays beside him. Keep the same beach, houses and fishing boats. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cord hangs down. I will tug it with Mum.",
+       "scene": "Hamza notices the same white cord hanging slack. He points to it and looks at Mum as he decides what to do. Mum listens beside him. Their clothes remain modest, and all eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum and I tug the cord. Up, up, up!",
+       "scene": "Hamza leads as he and Mum safely tug the same cord together. The red kite starts to rise. They remain in one spot on the beach. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "My toy is high now. It dips, then it is up.",
+       "scene": "The same red kite flies high above Hamza and Mum, with its white cord pulled straight. Hamza watches it dip and rise while Mum stays beside him. The corniche and whitewashed houses remain behind them. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "My toy drifts down. I grin at Mum.",
+       "scene": "The kite drifts gently towards Hamza and Mum on the same patch of sand. Hamza grins at Mum, and she smiles back. Fishing boats rest on the calm water behind them. Their shoulders and knees are covered. All eyes are solid black filled ovals. No other people."
+      }
+     ],
+     "read_words": [
+      "low",
+      "down",
+      "toy",
+      "cord",
+      "hangs",
+      "drifts"
+     ],
+     "focus_word_examples": [
+      "low",
+      "down",
+      "now"
+     ],
+     "tricky_words_used": [
+      "I",
+      "is",
+      "my",
+      "go",
+      "the"
+     ],
+     "cover_brief": "A warm, simple cover showing Hamza and Mum safely tugging one white kite cord together as the red kite rises above a Muscat beach. Add the corniche, whitewashed houses and two fishing boats in the background. No other people or key objects. Hamza and Mum wear the exact modest clothes in the cast guide, with shoulders and knees covered. All eyes are solid black filled ovals. Title: “Up Now!”"
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0796,
+   "usage": {
+    "input_tokens": 6461,
+    "input_tokens_details": {
+     "cache_write_tokens": 6458,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1578,
+    "output_tokens_details": {
+     "reasoning_tokens": 703
+    },
+    "total_tokens": 8039
+   },
+   "data": {
+    "cold_read": "A clear, warm six-page story at the published-exemplar level. Hamza notices the problem, chooses the solution and acts with Mum. The text and scenes agree, the single tugging mechanism is plausible and safely shared, and all story words meet the phonics contract. No correction is needed.",
+    "issues": [],
+    "fixed_story": {
+     "title": "Up Now!",
+     "premise": {
+      "hero_want": "Hamza wants his toy kite to fly high above the beach.",
+      "problem": "The kite stays low because its cord hangs slack.",
+      "mechanism": "Hamza notices the slack cord and decides to tug it. Mum tugs the same cord with him.",
+      "resolution": "The kite rises high, then drifts gently down as Hamza grins at Mum."
+     },
+     "key_objects": [
+      {
+       "name": "Toy kite",
+       "description": "A simple red diamond-shaped kite with a yellow centre. It has no tail."
+      },
+      {
+       "name": "Kite cord",
+       "description": "One plain white cord fixed to the kite, with no reel."
+      }
+     ],
+     "cast": [
+      {
+       "id": "hamza",
+       "who": "Hamza, a six-year-old Muslim boy in Muscat",
+       "appearance": "Medium-brown skin, short black curls, a teal long-sleeved top, tan full-length trousers and sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Hamza's mum",
+       "appearance": "Medium-brown skin, a rose-pink hijab, a navy abaya covering her shoulders and knees, and flat shoes. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I am Hamza. I am on the sand with Mum.",
+       "scene": "Hamza and Mum stand together on a quiet Muscat beach. Hamza holds the white cord of the red kite. The corniche, whitewashed houses and two fishing boats sit in the background. Their modest clothes cover shoulders and knees. All eyes are solid black filled ovals. No other people."
+      },
+      {
+       "text": "My toy is low. It will not go up.",
+       "scene": "The same kite hangs just above the sand, still fixed to the same cord in Hamza's hand. Hamza looks up while Mum stays beside him. Keep the same beach, houses and fishing boats. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cord hangs down. I will tug it with Mum.",
+       "scene": "Hamza notices the same white cord hanging slack. He points to it and looks at Mum as he decides what to do. Mum listens beside him. Their clothes remain modest, and all eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum and I tug the cord. Up, up, up!",
+       "scene": "Hamza leads as he and Mum safely tug the same cord together. The red kite starts to rise. They remain in one spot on the beach. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "My toy is high now. It dips, then it is up.",
+       "scene": "The same red kite flies high above Hamza and Mum, with its white cord pulled straight. Hamza watches it dip and rise while Mum stays beside him. The corniche and whitewashed houses remain behind them. All eyes are solid black filled ovals."
+      },
+      {
+       "text": "My toy drifts down. I grin at Mum.",
+       "scene": "The kite drifts gently towards Hamza and Mum on the same patch of sand. Hamza grins at Mum, and she smiles back. Fishing boats rest on the calm water behind them. Their shoulders and knees are covered. All eyes are solid black filled ovals. No other people."
+      }
+     ],
+     "read_words": [
+      "low",
+      "down",
+      "toy",
+      "cord",
+      "hangs",
+      "drifts"
+     ],
+     "focus_word_examples": [
+      "low",
+      "down",
+      "now"
+     ],
+     "tricky_words_used": [
+      "I",
+      "is",
+      "my",
+      "go",
+      "the"
+     ],
+     "cover_brief": "A warm, simple cover showing Hamza and Mum safely tugging one white kite cord together as the red kite rises above a Muscat beach. Add the corniche, whitewashed houses and two fishing boats in the background. No other people or key objects. Hamza and Mum wear the exact modest clothes in the cast guide, with shoulders and knees covered. All eyes are solid black filled ovals. Title: “Up Now!”"
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1082,
+   "usage": {
+    "input_tokens": 7900,
+    "input_tokens_details": {
+     "cache_write_tokens": 7897,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2291,
+    "output_tokens_details": {
+     "reasoning_tokens": 803
+    },
+    "total_tokens": 10191
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Hamza and Mum together on the sand. Hamza holds the white cord, and the red kite hangs low above the beach. Muscat’s whitewashed houses, corniche and two fishing boats are behind them.",
+      "changed_from_previous": "Opening image: this establishes all positions and the starting physical state. Hamza stands on the left, Mum on the right, the kite is low, and the cord hangs slack.",
+      "must_not_change": "Hamza’s teal long-sleeved top, tan full-length trousers, black curls and sandals; Mum’s rose-pink hijab and navy abaya; the red diamond kite with a yellow centre and no tail; the single white cord with no reel; the same beach, houses, corniche and two fishing boats. No other people, animals or kites. All eyes are solid black filled ovals.",
+      "draft_brief": "Wide opening view on a quiet Muscat beach. Place Hamza left of centre and Mum beside him on the right. Hamza holds the end of the white cord in his left hand. The cord curves loosely towards the red kite, which hangs low above the sand on the upper left. Keep the whitewashed houses on the far left and the two fishing boats on the water to the far right. Both characters wear their fixed modest outfits. All eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "The kite is still low and will not rise. Hamza looks up at it while Mum remains close beside him.",
+      "changed_from_previous": "The physical state is unchanged: the kite stays low and the cord stays slack. The view is closer, and Hamza’s expression changes from neutral to concerned as he studies the kite.",
+      "must_not_change": "Hamza remains on the left holding the same cord; Mum remains on the right. The kite must stay low, red with a yellow centre, and without a tail. The cord must remain slack and have no reel. Keep the same clothes, beach, houses and two boats. No extra people or objects. All eyes are solid black filled ovals.",
+      "draft_brief": "Use a medium view of the same positions. Show Hamza looking up at the low red kite with a small concerned mouth. Mum watches calmly from his right. The white cord still sags between Hamza’s hand and the kite. Retain the same background layout, modest clothing and solid black filled oval eyes."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Hamza notices that the cord hangs down. He points to the slack part and looks at Mum to show his plan.",
+      "changed_from_previous": "The kite and cord remain in the same low, slack state. Hamza now points at the hanging curve of cord with his free right hand and turns his gaze towards Mum. Mum looks at the cord.",
+      "must_not_change": "Hamza’s left hand must keep hold of the cord. Mum must not tug yet. The kite remains low in the same area and keeps the exact red-and-yellow design with no tail. Keep their positions, clothes, background and two fishing boats fixed. No other people, animals or kites. All eyes are solid black filled ovals.",
+      "draft_brief": "Frame Hamza, Mum and the hanging cord clearly. Hamza holds the cord in his left hand and points at its slack curve with his right hand. He looks towards Mum as the child who has noticed the problem and made the plan. Mum listens and looks where he points. The kite remains low above the sand. Use the same Muscat beach continuity and solid black filled oval eyes."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Hamza leads the tug while Mum helps him with the same cord. The cord pulls straight, and the kite begins to rise.",
+      "changed_from_previous": "Mum has taken hold of the same cord behind Hamza. Both now tug together. The cord changes from slack to taut, and the kite moves from low to midway up in the sky.",
+      "must_not_change": "Hamza stays left/front and Mum stays right/just behind him. They must share the single cord; do not add a reel, second cord or second kite. Keep the kite’s red diamond shape, yellow centre and lack of tail. Clothing, beach, houses and the two boats remain identical. All eyes are solid black filled ovals.",
+      "draft_brief": "Show the safe shared action in a medium-wide view. Hamza stands in front and leads, gripping the white cord with both hands. Mum stands close behind and to his right, holding the same cord with both hands. The cord is now straight and taut. The red kite is visibly rising to mid-height. Their feet remain planted on the same patch of sand. Keep the fixed modest outfits, uncluttered Muscat background and solid black filled oval eyes."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "The kite is high above Hamza and Mum. It has finished its dip and is up again, with the cord stretched straight.",
+      "changed_from_previous": "The kite has moved from mid-height to high in the sky. Hamza and Mum have completed the tug but continue holding the taut cord together. Both now look high above them.",
+      "must_not_change": "Both characters remain in the same left-right order and keep hold of the same cord. The kite must remain attached, red with a yellow centre, and without a tail. Do not add another action or mechanism. Keep the same outfits, beach, whitewashed houses and two fishing boats. All eyes are solid black filled ovals.",
+      "draft_brief": "Use a slightly wider, upward-looking composition. Hamza and Mum remain together on the same sand, lightly holding the taut white cord after their tug. Place the red kite high near the top of the image, tilted slightly to suggest it has dipped and risen again. Hamza looks delighted; Mum looks pleased. Preserve every costume, object and background detail. All eyes are solid black filled ovals."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "The kite drifts gently lower while Hamza and Mum still hold its cord. Hamza turns to grin at Mum, and Mum smiles back.",
+      "changed_from_previous": "The kite moves from high to a lower, mid-air position, and the cord softens slightly as it descends. Hamza turns his face from the kite towards Mum. Mum turns towards him. Neither has changed position or let go.",
+      "must_not_change": "The kite must remain airborne and attached to the same single cord; it must not land or gain a tail. Hamza stays on the left and Mum on the right, both in the same modest clothes. Keep the same beach, houses, corniche and exactly two fishing boats. Add no people, cats, kites or new objects. All eyes are solid black filled ovals.",
+      "draft_brief": "Return to a warm medium-wide view. Show the red kite drifting gently down to mid-height, still connected by the same white cord. Hamza and Mum continue to hold the cord lightly, preserving the state created on page 5. Hamza turns towards Mum with a broad grin, and she smiles back. Keep the calm Muscat sea, fixed whitewashed houses and two fishing boats behind them. All eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.0941,
+   "usage": {
+    "input_tokens": 10247,
+    "input_tokens_details": {
+     "cache_write_tokens": 10244,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1428,
+    "output_tokens_details": {
+     "reasoning_tokens": 246
+    },
+    "total_tokens": 11675
+   },
+   "data": {
+    "reasoning": "Backward chain: page 6 needs the kite still attached and descending from a height; page 5 must therefore leave it high with the cord taut. Page 5 needs the shared tug on page 4 to cause the rise. Page 4 needs Hamza’s plan, Mum’s proximity and the slack cord established on page 3. Page 3 needs the low kite and hanging cord clearly visible on page 2. Page 2 needs those same starting conditions planted on page 1. No extra objects are planted: only the kite, its cord, fixed character positions and stable location persist.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The result of the tug remains visible: the kite is still airborne and attached to the same cord. Its lower position and slightly softened cord show that it has begun drifting down from the height reached on page 5. Hamza and Mum still share the cord, so nothing has vanished between images.",
+      "revised_brief": "On the same patch of Muscat sand, keep Hamza on the left and Mum on the right. Both still hold the single white cord lightly. The red kite with its yellow centre and no tail is now at mid-height, lower than on page 5, and the cord has a gentle curve. Hamza turns to grin at Mum; Mum smiles back. Keep the whitewashed houses on the far left and exactly two fishing boats on the right. No other people, animals, kites or objects. Their modest outfits remain unchanged. All eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "The kite must be high enough that its later downward drift is obvious. The cord remains taut and both characters retain their grip, carrying the shared action from page 4 into the final page. The characters have not moved to a new part of the beach.",
+      "revised_brief": "Show the red kite high near the top of the image after its dip, attached to the same straight white cord. Hamza remains left/front and Mum right/just behind him. They have finished tugging but still hold the cord together, providing the exact starting state for page 6. Both look up. Keep the same modest clothes, fixed beach layout, whitewashed houses and two fishing boats. Add nothing new. All eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "This page must visibly create the height seen on page 5: the previously slack cord becomes taut as Hamza and Mum tug it together, and the kite rises from low to mid-height. Their shared grip must match the grip that persists afterwards.",
+      "revised_brief": "Hamza leads the action from the left/front, gripping the single white cord with both hands. Mum stands close on his right and slightly behind, safely holding the same cord. Show the cord pulled straight for the first time and the red-and-yellow kite rising to mid-height. Their feet stay planted on the same sand. This is the one physical mechanism; do not add running, a reel, a second cord or another kite. Preserve the fixed background, modest outfits and solid black filled oval eyes."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "Hamza’s hand already holds the cord, Mum is already close enough to join him on the next page, and the cord’s slack curve is unmistakable. Hamza points out the problem before either character tugs, establishing that he notices, decides and leads.",
+      "revised_brief": "Keep the kite low in the same place and the white cord hanging in a clear loose curve. Hamza holds its end in his left hand and points to the slack section with his right. He looks towards Mum to share his plan. Mum stands immediately to his right, looking at the cord, but she has not touched or tugged it yet. Keep the red kite’s yellow centre, no tail and no reel. The background, outfits and solid black filled oval eyes remain fixed."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The exact problem needed on page 3 is already visible: the kite is low, the cord droops, and Hamza is holding it. Mum remains beside him so her help on page 4 does not require a new entrance. No attempted solution has happened yet.",
+      "revised_brief": "Use a closer view of the established beach position. Hamza stands on the left holding the end of the slack white cord and looks up with mild concern. The red kite hangs low above the sand. Mum stays calmly beside him on the right, visible and attentive but not acting. Keep the kite without a tail and the cord without a reel. Retain the same houses, corniche and two boats. No additions. All eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "Everything later depends on this baseline: Hamza and Mum are together in one safe spot; Hamza already holds the kite cord; the kite is airborne but low; and the cord is visibly slack. Their left-right positions, clothing, kite design and background anchors are established here and never replaced.",
+      "revised_brief": "Open with a wide view of one quiet Muscat beach location. Place Hamza left of centre and Mum close beside him on the right. Hamza already holds the single white cord in his left hand. Let the cord sag in a clear curve towards the red diamond kite, which hangs low above the sand. The kite has one yellow centre and no tail; there is no reel. Fix the whitewashed houses on the far left and exactly two fishing boats on the water to the far right for all later pages. Show no other people, animals or kites. Their shoulders and knees are covered, and all eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1198,
+   "usage": {
+    "input_tokens": 11908,
+    "input_tokens_details": {
+     "cache_write_tokens": 11905,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2010,
+    "output_tokens_details": {
+     "reasoning_tokens": 510
+    },
+    "total_tokens": 13918
+   },
+   "data": {
+    "storyboard_verdict": "plausible",
+    "physical_issues_found": [],
+    "cover": {
+     "brief": "Hamza leads a shared tug with Mum on a quiet Muscat beach. The single white cord must form an unbroken, taut line from their hands to the rising red diamond kite with its yellow centre. Hamza stands left/front; Mum stands close on his right and slightly behind. Show whitewashed houses on the far left and exactly two fishing boats on the water to the far right. No reel, kite tail, other people, animals or extra kites. Their fixed modest clothes cover shoulders and knees. All eyes are solid black filled ovals. Title: “Up Now!”"
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Wide opening view of the fixed Muscat beach. Hamza stands left of centre with Mum close on his right. Hamza holds the single white cord in his left hand. The cord sags in a visible curve to the red diamond kite, which hangs low above the sand. The kite has a yellow centre and no tail. Keep whitewashed houses far left and exactly two fishing boats far right. Their fixed modest outfits cover shoulders and knees. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Hamza and Mum",
+        "assertion": "Hamza is on the left holding the cord; Mum is close on his right."
+       },
+       {
+        "object": "Kite and cord",
+        "assertion": "The kite is low and airborne, with the unbroken cord visibly slack."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Kite equipment",
+        "assertion": "No reel, tail, second cord or extra kite."
+       },
+       {
+        "object": "Cast",
+        "assertion": "No other people or animals."
+       }
+      ],
+      "carries_forward": "The same low kite, slack cord, character positions, clothing and beach layout pass unchanged into page 2."
+     },
+     {
+      "page": 2,
+      "brief": "Move closer without changing the physical state. Hamza remains on the left, holding the slack white cord and looking up at the low kite with mild concern. Mum remains calmly beside him on the right. The red-and-yellow kite is still just above the sand. Keep the same houses and exactly two boats. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Kite and cord",
+        "assertion": "The kite remains low and the cord still droops continuously from it to Hamza’s hand."
+       },
+       {
+        "object": "Hamza and Mum",
+        "assertion": "Hamza studies the problem while Mum stays close but does not act."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cord",
+        "assertion": "The cord must not be taut, broken or detached."
+       },
+       {
+        "object": "Mechanism",
+        "assertion": "No tug has begun."
+       }
+      ],
+      "carries_forward": "Hamza still holds the slack cord; Mum remains within reach, ready for Hamza to share his plan."
+     },
+     {
+      "page": 3,
+      "brief": "Keep the kite low and the cord slack. Hamza holds the cord in his left hand and points at its hanging curve with his free right hand. He looks towards Mum, visibly leading the decision. Mum looks at the cord but has not touched it. Preserve the same positions, outfits and background. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Hamza",
+        "assertion": "He keeps hold of the cord and points to the visible slack with his free hand."
+       },
+       {
+        "object": "Mum",
+        "assertion": "She stands close and attentive without tugging yet."
+       },
+       {
+        "object": "Kite and cord",
+        "assertion": "The kite remains low, and the slack cord visibly joins Hamza’s hand to it."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mechanism",
+        "assertion": "Neither character is tugging yet."
+       },
+       {
+        "object": "Kite",
+        "assertion": "It must not already be high."
+       }
+      ],
+      "carries_forward": "The identified slack cord and Mum’s close position allow both characters to grasp and tug the same cord on page 4."
+     },
+     {
+      "page": 4,
+      "brief": "Show the single mechanism clearly. Hamza stands left/front and leads, gripping the white cord with both hands. Mum stands close on his right and slightly behind, holding the same cord. The cord is now straight and taut in one visibly unbroken line from their hands to the red kite, which has risen to mid-height. Their feet remain planted on the sand. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Hamza and Mum",
+        "assertion": "Both safely tug the same cord, with Hamza visibly leading."
+       },
+       {
+        "object": "Cord",
+        "assertion": "It is taut, unbroken and visibly connected from their hands to the kite."
+       },
+       {
+        "object": "Kite",
+        "assertion": "It has risen from low to mid-height as the direct effect of the tug."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mechanism",
+        "assertion": "No running, separate cord, reel or hidden connection."
+       },
+       {
+        "object": "Kite",
+        "assertion": "It must not remain on the sand or appear detached."
+       }
+      ],
+      "carries_forward": "The shared grip and taut cord persist as the kite continues from mid-height to high on page 5."
+     },
+     {
+      "page": 5,
+      "brief": "Show the result of the tug. The same kite is high near the top of the image, attached to the same straight, taut white cord. Hamza remains left/front and Mum remains on his right, both still holding the cord after the shared tug and looking up. Keep the same beach anchors and fixed modest clothes. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Kite",
+        "assertion": "It is high, airborne and still attached to the cord."
+       },
+       {
+        "object": "Cord and hands",
+        "assertion": "The taut cord remains visibly continuous to Hamza and Mum’s shared grip."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Kite",
+        "assertion": "It must not be detached, landed or replaced."
+       },
+       {
+        "object": "Characters",
+        "assertion": "Neither character may vanish, swap sides or let go."
+       }
+      ],
+      "carries_forward": "The kite begins page 6 from this believable high state, still attached and held by both characters."
+     },
+     {
+      "page": 6,
+      "brief": "The red kite has drifted down from its previous high position to mid-height. It remains airborne and attached to the same white cord, which now has a gentle slack curve as the kite descends. Hamza and Mum still hold the cord lightly. Hamza turns to grin at Mum, and Mum smiles back. Preserve the same positions, outfits, houses and exactly two boats. All eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Kite and cord",
+        "assertion": "The kite is lower than on page 5, still airborne and visibly attached; the cord has softened from taut to gently slack."
+       },
+       {
+        "object": "Hamza and Mum",
+        "assertion": "Both retain the cord while turning towards each other to share the happy result."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Kite",
+        "assertion": "It must not be on the ground, detached or missing."
+       },
+       {
+        "object": "Continuity",
+        "assertion": "No new person, animal, kite, reel or tail."
+       }
+      ],
+      "carries_forward": "Final residue: the kite remains safely attached and airborne, the shared cord is still in hand, and Hamza’s successful action ends with a warm exchange with Mum."
+     }
+    ]
+   }
+  }
+ ]
+}

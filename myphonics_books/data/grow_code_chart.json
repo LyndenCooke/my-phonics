@@ -1,45 +1,331 @@
 {
   "_note": "Grow the Code chart — Lynden's curated order + spelling sets (from shifty-sounds-a4.svg, 2026-07-20). SOURCE OF TRUTH for the printed Shifty Sounds chart page. Read down each column: the spellings can make the same sound. 'cue' disambiguates repeated heads (th thin/this, oo moon/book, zh vision). Edit here, not the template.",
   "consonants": [
-    {"head": "s",  "spellings": ["s", "ss", "c", "ce", "se"]},
-    {"head": "t",  "spellings": ["t", "ed"]},
-    {"head": "n",  "spellings": ["n", "kn", "gn"]},
-    {"head": "m",  "spellings": ["m", "mb"]},
-    {"head": "d",  "spellings": ["d", "ed"]},
-    {"head": "k",  "spellings": ["k", "c", "ck", "ch", "que"]},
-    {"head": "r",  "spellings": ["r", "wr"]},
-    {"head": "h",  "spellings": ["h", "wh"]},
-    {"head": "f",  "spellings": ["f", "ff", "ph", "gh"]},
-    {"head": "j",  "spellings": ["j", "g", "ge", "dge"]},
-    {"head": "v",  "spellings": ["v", "ve"]},
-    {"head": "w",  "spellings": ["w", "wh"]},
-    {"head": "z",  "spellings": ["z", "zz", "s", "se"]},
-    {"head": "sh", "spellings": ["sh", "ch", "ti", "ci", "ssi", "s"]},
-    {"head": "ch", "spellings": ["ch", "tch"]},
-    {"head": "th", "cue": "thin", "spellings": ["th"]},
-    {"head": "th", "cue": "this", "spellings": ["th"]},
-    {"head": "ng", "spellings": ["ng", "n"]},
-    {"head": "zh", "cue": "vision", "spellings": ["s", "si", "ge"]}
+    {
+      "head": "s",
+      "spellings": [
+        "s",
+        "ss",
+        "c",
+        "ce",
+        "se"
+      ]
+    },
+    {
+      "head": "t",
+      "spellings": [
+        "t",
+        "ed"
+      ]
+    },
+    {
+      "head": "n",
+      "spellings": [
+        "n",
+        "kn",
+        "gn"
+      ]
+    },
+    {
+      "head": "m",
+      "spellings": [
+        "m",
+        "mb"
+      ]
+    },
+    {
+      "head": "d",
+      "spellings": [
+        "d",
+        "ed"
+      ]
+    },
+    {
+      "head": "k",
+      "spellings": [
+        "k",
+        "c",
+        "ck",
+        "ch",
+        "que"
+      ]
+    },
+    {
+      "head": "r",
+      "spellings": [
+        "r",
+        "wr"
+      ]
+    },
+    {
+      "head": "h",
+      "spellings": [
+        "h",
+        "wh"
+      ]
+    },
+    {
+      "head": "f",
+      "spellings": [
+        "f",
+        "ff",
+        "ph",
+        "gh"
+      ]
+    },
+    {
+      "head": "j",
+      "spellings": [
+        "j",
+        "g",
+        "ge",
+        "dge"
+      ]
+    },
+    {
+      "head": "v",
+      "spellings": [
+        "v",
+        "ve"
+      ]
+    },
+    {
+      "head": "w",
+      "spellings": [
+        "w",
+        "wh"
+      ]
+    },
+    {
+      "head": "z",
+      "spellings": [
+        "z",
+        "zz",
+        "s",
+        "se"
+      ]
+    },
+    {
+      "head": "sh",
+      "spellings": [
+        "sh",
+        "ch",
+        "ti",
+        "ci",
+        "ssi",
+        "s"
+      ]
+    },
+    {
+      "head": "ch",
+      "spellings": [
+        "ch",
+        "tch"
+      ]
+    },
+    {
+      "head": "th",
+      "cue": "thin",
+      "spellings": [
+        "th"
+      ]
+    },
+    {
+      "head": "th",
+      "cue": "this",
+      "spellings": [
+        "th"
+      ]
+    },
+    {
+      "head": "ng",
+      "spellings": [
+        "ng",
+        "n"
+      ]
+    },
+    {
+      "head": "zh",
+      "cue": "vision",
+      "spellings": [
+        "s",
+        "si",
+        "ge"
+      ]
+    }
   ],
   "vowels": [
-    {"head": "a",   "spellings": ["a"]},
-    {"head": "e",   "spellings": ["e", "ea"]},
-    {"head": "i",   "spellings": ["i", "y"]},
-    {"head": "o",   "spellings": ["o", "a"]},
-    {"head": "u",   "spellings": ["u", "o", "ou"]},
-    {"head": "ai",  "spellings": ["ai", "ay", "a-e", "ey", "a", "eigh", "ea"]},
-    {"head": "ee",  "spellings": ["ee", "e", "ea", "e-e", "y", "ey", "ie"]},
-    {"head": "igh", "spellings": ["igh", "i-e", "ie", "y", "i"]},
-    {"head": "oa",  "spellings": ["oa", "ow", "o-e", "oe", "o"]},
-    {"head": "oo",  "cue": "moon", "spellings": ["oo", "u-e", "ew", "ue", "ou", "ui"]},
-    {"head": "oo",  "cue": "book", "spellings": ["oo", "u", "ou"]},
-    {"head": "ar",  "spellings": ["ar", "a"]},
-    {"head": "or",  "spellings": ["or", "aw", "au", "augh", "ore", "oor", "oar", "our"]},
-    {"head": "ur",  "spellings": ["ur", "ir", "er", "or", "ear"]},
-    {"head": "ow",  "spellings": ["ow", "ou"]},
-    {"head": "oi",  "spellings": ["oi", "oy"]},
-    {"head": "air", "spellings": ["air", "are", "ere", "ear"]},
-    {"head": "ear", "spellings": ["ear", "eer", "ere"]},
-    {"head": "er",  "spellings": ["er", "a", "o", "our", "re"]}
+    {
+      "head": "a",
+      "spellings": [
+        "a"
+      ]
+    },
+    {
+      "head": "e",
+      "spellings": [
+        "e",
+        "ea"
+      ]
+    },
+    {
+      "head": "i",
+      "spellings": [
+        "i",
+        "y"
+      ]
+    },
+    {
+      "head": "o",
+      "spellings": [
+        "o",
+        "a"
+      ]
+    },
+    {
+      "head": "u",
+      "spellings": [
+        "u",
+        "o",
+        "ou"
+      ]
+    },
+    {
+      "head": "ai",
+      "spellings": [
+        "ai",
+        "ay",
+        "a-e",
+        "ey",
+        "a",
+        "eigh",
+        "ea"
+      ]
+    },
+    {
+      "head": "ee",
+      "spellings": [
+        "ee",
+        "e",
+        "ea",
+        "e-e",
+        "y",
+        "ey",
+        "ie"
+      ]
+    },
+    {
+      "head": "igh",
+      "spellings": [
+        "igh",
+        "i-e",
+        "ie",
+        "y",
+        "i"
+      ]
+    },
+    {
+      "head": "oa",
+      "spellings": [
+        "oa",
+        "ow",
+        "o-e",
+        "oe",
+        "o"
+      ]
+    },
+    {
+      "head": "oo",
+      "cue": "moon",
+      "spellings": [
+        "oo",
+        "u-e",
+        "ew",
+        "ue",
+        "ou",
+        "ui"
+      ]
+    },
+    {
+      "head": "oo",
+      "cue": "book",
+      "spellings": [
+        "oo",
+        "u",
+        "ou"
+      ]
+    },
+    {
+      "head": "ar",
+      "spellings": [
+        "ar",
+        "a"
+      ]
+    },
+    {
+      "head": "or",
+      "spellings": [
+        "or",
+        "aw",
+        "au",
+        "augh",
+        "ore",
+        "oor",
+        "oar",
+        "our"
+      ]
+    },
+    {
+      "head": "ur",
+      "spellings": [
+        "ur",
+        "ir",
+        "er",
+        "or",
+        "ear"
+      ]
+    },
+    {
+      "head": "ow",
+      "spellings": [
+        "ow",
+        "ou"
+      ]
+    },
+    {
+      "head": "oi",
+      "spellings": [
+        "oi",
+        "oy"
+      ]
+    },
+    {
+      "head": "air",
+      "spellings": [
+        "air",
+        "are",
+        "ere",
+        "ear"
+      ]
+    },
+    {
+      "head": "ear",
+      "spellings": [
+        "ear",
+        "eer",
+        "ere"
+      ]
+    },
+    {
+      "head": "uh",
+      "spellings": [
+        "er",
+        "a",
+        "o",
+        "our",
+        "re"
+      ],
+      "cue": "butter"
+    }
   ]
 }

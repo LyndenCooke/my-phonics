@@ -110,6 +110,24 @@ def upload(isbn: str, drop_type: str, path: Path, key: str) -> str:
     return s3_key
 
 
+def revalidate(isbn: str, drop_type: str, key: str) -> None:
+    """Ask Bookvault to re-process a file already on the title.
+
+    Mirrors the portal's own ProcessReVal(): same UploadTool endpoint with
+    reValidate=true and no new S3 object.  Use it when the files are fine but
+    a derived asset (proof render, retail cover thumbnail) did not generate."""
+    auth = {"Authorization": "basic " + key}
+    drop_url = json.loads(_get(f"{API}/FileDropRequest?DropType={drop_type}&ISBN={isbn}", auth))
+    token = urllib.parse.parse_qs(urllib.parse.urlparse(drop_url).query).get("UploadToken", [""])[0]
+    suffix = "t" if drop_type == "TextFile" else "c"
+    payload = json.dumps({"FileName": f"{isbn}-{suffix}.pdf"}).encode()
+    req = urllib.request.Request(
+        f"{API}/UploadTool?ISBN={isbn}&reValidate=true", data=payload, method="POST",
+        headers={"User-Agent": UA, "Content-Type": "application/json; charset=utf-8",
+                 "Authorization": "PodAuth " + token})
+    urllib.request.urlopen(req, timeout=120).read()
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:] if not a.startswith("-")]
     dry = "--dry-run" in sys.argv
@@ -119,6 +137,21 @@ def main() -> int:
     books = json.loads(IDS.read_text(encoding="utf-8"))
     todo = args or sorted(books, key=lambda b: [int(x) for x in b.split(".")])
     key = api_key()
+
+    if "--revalidate" in sys.argv:
+        ok = fail = 0
+        for bid in todo:
+            isbn = books[bid]["isbn"]
+            for drop_type, _ in only:
+                try:
+                    revalidate(isbn, drop_type, key)
+                    print(f"OK   {bid:4} {isbn} revalidate {drop_type}")
+                    ok += 1
+                except Exception as e:
+                    print(f"FAIL {bid:4} {isbn} revalidate {drop_type}: {e}")
+                    fail += 1
+        print(str(ok) + " revalidated, " + str(fail) + " failed")
+        return 1 if fail else 0
 
     ok = fail = 0
     for bid in todo:

@@ -67,7 +67,12 @@ for (const [i, c] of CASES.entries()) {
   const bd = jb.breakdown || {};
   const st = jb.story || row?.story?.story || {};
   const cost = jb.cost ?? row?.cost_usd ?? 0;
-  const revised = Boolean(bd.story_gate_second);
+  // A revision is now ANY edit pass: the edit-request policy writes
+  // story_gate_first / story_gate_pass_N, and only writes story_gate_second
+  // when the passes are exhausted. Keying off story_gate_second alone
+  // reported a book that took two edit passes as a clean first draft.
+  const revised = Boolean(bd.story_gate_first || bd.story_gate_pass_2 ||
+    bd.story_gate_second || bd.editor_review_first);
   const focus = String(c.focus_sound).toLowerCase();
   const rw = st.read_words || [];
   const rec = {

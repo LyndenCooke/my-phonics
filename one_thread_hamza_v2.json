@@ -1,0 +1,637 @@
+{
+ "child": {
+  "name": "Hamza",
+  "age": 6,
+  "gender": "boy",
+  "skinTone": "light brown",
+  "hair": "short black hair"
+ },
+ "setting": {
+  "country": "Oman",
+  "city": "Muscat",
+  "culture": "A Muslim family in Muscat; whitewashed houses, the corniche, fishing boats, kites on the beach."
+ },
+ "level": 4,
+ "sound": "ow",
+ "model": "gpt-5.6-sol",
+ "shiftyViolations": [],
+ "totalCost": 0.607,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.116,
+   "usage": {
+    "input_tokens": 1870,
+    "input_tokens_details": {
+     "cache_write_tokens": 1867,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3555,
+    "output_tokens_details": {
+     "reasoning_tokens": 2802
+    },
+    "total_tokens": 5425
+   },
+   "data": {
+    "title": "Hamza and the Low Red Toy",
+    "premise": {
+     "hero_want": "Hamza wants his red cat kite to fly high.",
+     "problem": "The kite stays low because its cord is stuck around the spool.",
+     "mechanism": "Hamza and Dad lift one cord loop from the spool.",
+     "resolution": "The cord runs freely, and the kite flies high."
+    },
+    "key_objects": [
+     {
+      "name": "Red cat kite",
+      "description": "A simple red diamond kite with a black cat face and a short red tail."
+     },
+     {
+      "name": "Spool",
+      "description": "A small wooden spool with the kite cord wound around it."
+     }
+    ],
+    "cast": [
+     {
+      "id": "hamza",
+      "who": "Hamza, a 6-year-old Muslim boy from Muscat",
+      "appearance": "Warm brown skin, short black hair, teal long-sleeved top, beige ankle-length trousers and sandals. His eyes are solid black filled ovals."
+     },
+     {
+      "id": "dad",
+      "who": "Hamza’s dad",
+      "appearance": "Warm brown skin, short black beard, white dishdasha, embroidered kumma and sandals. His eyes are solid black filled ovals."
+     }
+    ],
+    "pages": [
+     {
+      "text": "I am Hamza. Dad and I go to the beach with my red toy.",
+      "scene": "Hamza and Dad stand together on the beach by the Muscat corniche. Hamza holds the red cat kite and its wooden spool. Whitewashed houses and two fishing boats sit in the distant background. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The wind can blow. Dad and I run with my red toy.",
+      "scene": "Hamza and Dad run side by side on the sand. Hamza holds the spool as the red cat kite begins to lift behind them. Their modest clothes stay consistent. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "It is low and slow. I stop.",
+      "scene": "Hamza stops and looks up at the red cat kite hanging low above the sand. Dad stops beside him. The same corniche, whitewashed houses and fishing boats remain in the background. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I spot a loop on the spool. The cord is stuck!",
+      "scene": "Hamza looks closely at the spool and points to one cord loop caught over its rim. Dad looks where Hamza points. The low red kite remains visible behind them. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Dad and I lift the loop from the spool. The cord can run.",
+      "scene": "Hamza and Dad hold the spool together and lift the single cord loop from its rim. The action is clear and close, with no tools. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The wind can blow. My red toy is high!",
+      "scene": "Hamza holds the spool as the red cat kite flies high above the beach. Dad stands beside him and grins. The Muscat corniche, whitewashed houses and fishing boats remain in the distance. All visible eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "blow",
+     "slow",
+     "beach",
+     "spool",
+     "cord",
+     "high"
+    ],
+    "focus_word_examples": [
+     "blow",
+     "low",
+     "slow"
+    ],
+    "tricky_words_used": [
+     "I",
+     "go",
+     "to",
+     "the",
+     "my",
+     "is",
+     "a"
+    ],
+    "cover_brief": "A bright, simple cover showing Hamza on the Muscat beach holding the wooden spool while his red cat kite flies above him. Dad stands beside him. Add a calm blue sea, two small fishing boats and whitewashed corniche houses in the distance. Keep both characters modestly dressed, with solid black filled oval eyes. Large clear title at the top."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0657,
+   "usage": {
+    "input_tokens": 5520,
+    "input_tokens_details": {
+     "cache_write_tokens": 5517,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1270,
+    "output_tokens_details": {
+     "reasoning_tokens": 510
+    },
+    "total_tokens": 6790
+   },
+   "data": {
+    "violations_found": [],
+    "story": {
+     "title": "Hamza and the Low Red Toy",
+     "premise": {
+      "hero_want": "Hamza wants his red cat kite to fly high.",
+      "problem": "The kite stays low because its cord is stuck around the spool.",
+      "mechanism": "Hamza and Dad lift one cord loop from the spool.",
+      "resolution": "The cord runs freely, and the kite flies high."
+     },
+     "key_objects": [
+      {
+       "name": "Red cat kite",
+       "description": "A simple red diamond kite with a black cat face and a short red tail."
+      },
+      {
+       "name": "Spool",
+       "description": "A small wooden spool with the kite cord wound around it."
+      }
+     ],
+     "cast": [
+      {
+       "id": "hamza",
+       "who": "Hamza, a 6-year-old Muslim boy from Muscat",
+       "appearance": "Warm brown skin, short black hair, teal long-sleeved top, beige ankle-length trousers and sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "dad",
+       "who": "Hamza’s dad",
+       "appearance": "Warm brown skin, short black beard, white dishdasha, embroidered kumma and sandals. His eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I am Hamza. Dad and I go to the beach with my red toy.",
+       "scene": "Hamza and Dad stand together on the beach by the Muscat corniche. Hamza holds the red cat kite and its wooden spool. Whitewashed houses and two fishing boats sit in the distant background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The wind can blow. Dad and I run with my red toy.",
+       "scene": "Hamza and Dad run side by side on the sand. Hamza holds the spool as the red cat kite begins to lift behind them. Their modest clothes stay consistent. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "It is low and slow. I stop.",
+       "scene": "Hamza stops and looks up at the red cat kite hanging low above the sand. Dad stops beside him. The same corniche, whitewashed houses and fishing boats remain in the background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I spot a loop on the spool. The cord is stuck!",
+       "scene": "Hamza looks closely at the spool and points to one cord loop caught over its rim. Dad looks where Hamza points. The low red kite remains visible behind them. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Dad and I lift the loop from the spool. The cord can run.",
+       "scene": "Hamza and Dad hold the spool together and lift the single cord loop from its rim. The action is clear and close, with no tools. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The wind can blow. My red toy is high!",
+       "scene": "Hamza holds the spool as the red cat kite flies high above the beach. Dad stands beside him and grins. The Muscat corniche, whitewashed houses and fishing boats remain in the distance. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "blow",
+      "slow",
+      "beach",
+      "spool",
+      "cord",
+      "high"
+     ],
+     "focus_word_examples": [
+      "blow",
+      "low",
+      "slow"
+     ],
+     "tricky_words_used": [
+      "I",
+      "go",
+      "to",
+      "the",
+      "my",
+      "is",
+      "a"
+     ],
+     "cover_brief": "A bright, simple cover showing Hamza on the Muscat beach holding the wooden spool while his red cat kite flies above him. Dad stands beside him. Add a calm blue sea, two small fishing boats and whitewashed corniche houses in the distance. Keep both characters modestly dressed, with solid black filled oval eyes. Large clear title at the top."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0671,
+   "usage": {
+    "input_tokens": 6926,
+    "input_tokens_details": {
+     "cache_write_tokens": 6923,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1083,
+    "output_tokens_details": {
+     "reasoning_tokens": 239
+    },
+    "total_tokens": 8009
+   },
+   "data": {
+    "cold_read": "A clear, warm six-page story with one simple problem and one simple fix. Hamza notices the cause and helps Dad solve it. The phonics contract, safety rules and simplicity caps are met.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Page 5 wording",
+      "detail": "“The cord can run” sounds slightly stiff and caption-like. “The cord runs!” is more natural while remaining fully decodable."
+     }
+    ],
+    "fixed_story": {
+     "title": "Hamza and the Low Red Toy",
+     "premise": {
+      "hero_want": "Hamza wants his red cat kite to fly high.",
+      "problem": "The kite stays low because its cord is stuck around the spool.",
+      "mechanism": "Hamza and Dad lift one cord loop from the spool.",
+      "resolution": "The cord runs freely, and the kite flies high."
+     },
+     "key_objects": [
+      {
+       "name": "Red cat kite",
+       "description": "A simple red diamond kite with a black cat face and a short red tail."
+      },
+      {
+       "name": "Spool",
+       "description": "A small wooden spool with the kite cord wound around it."
+      }
+     ],
+     "cast": [
+      {
+       "id": "hamza",
+       "who": "Hamza, a 6-year-old Muslim boy from Muscat",
+       "appearance": "Warm brown skin, short black hair, teal long-sleeved top, beige ankle-length trousers and sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "dad",
+       "who": "Hamza’s dad",
+       "appearance": "Warm brown skin, short black beard, white dishdasha, embroidered kumma and sandals. His eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I am Hamza. Dad and I go to the beach with my red toy.",
+       "scene": "Hamza and Dad stand together on the beach by the Muscat corniche. Hamza holds the red cat kite and its wooden spool. Whitewashed houses and two fishing boats sit in the distant background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The wind can blow. Dad and I run with my red toy.",
+       "scene": "Hamza and Dad run side by side on the sand. Hamza holds the spool as the red cat kite begins to lift behind them. Their modest clothes stay consistent. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "It is low and slow. I stop.",
+       "scene": "Hamza stops and looks up at the red cat kite hanging low above the sand. Dad stops beside him. The same corniche, whitewashed houses and fishing boats remain in the background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I spot a loop on the spool. The cord is stuck!",
+       "scene": "Hamza looks closely at the spool and points to one cord loop caught over its rim. Dad looks where Hamza points. The low red kite remains visible behind them. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Dad and I lift the loop from the spool. The cord runs!",
+       "scene": "Hamza and Dad hold the spool together and lift the single cord loop from its rim. The cord unwinds freely. No tools are present. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The wind can blow. My red toy is high!",
+       "scene": "Hamza holds the spool as the red cat kite flies high above the beach. Dad stands beside him and grins. The Muscat corniche, whitewashed houses and fishing boats remain in the distance. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "blow",
+      "slow",
+      "beach",
+      "spool",
+      "cord",
+      "high"
+     ],
+     "focus_word_examples": [
+      "blow",
+      "low",
+      "slow"
+     ],
+     "tricky_words_used": [
+      "I",
+      "go",
+      "to",
+      "the",
+      "my",
+      "is",
+      "a"
+     ],
+     "cover_brief": "A bright, simple cover showing Hamza on the Muscat beach holding the wooden spool while his red cat kite flies above him. Dad stands beside him. Add a calm blue sea, two small fishing boats and whitewashed corniche houses in the distance. Keep both characters modestly dressed, with solid black filled oval eyes. Large clear title at the top."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1013,
+   "usage": {
+    "input_tokens": 7870,
+    "input_tokens_details": {
+     "cache_write_tokens": 7867,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2064,
+    "output_tokens_details": {
+     "reasoning_tokens": 543
+    },
+    "total_tokens": 9934
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Hamza and Dad have arrived on the beach. Hamza holds the red cat kite upright in his right hand and the wooden spool in his left. Dad stands beside him. The sea, two fishing boats, the corniche and whitewashed houses show that they are in Muscat.",
+      "changed_from_previous": "Opening image; this establishes the characters, objects, clothing, setting and screen positions.",
+      "must_not_change": "Hamza wears a teal long-sleeved top, beige ankle-length trousers and sandals. Dad wears a white dishdasha, embroidered kumma and sandals. The kite is a red diamond with a simple black cat face and short red tail. Its eyes and all character eyes are solid black filled ovals. The spool is small and wooden. Show no other people, animals, toys or active objects.",
+      "draft_brief": "Wide establishing view of the beach by the Muscat corniche. Hamza stands on the left and Dad on the right, both facing along the beach. Hamza smiles as he holds the red cat kite upright and grips its wooden spool. Keep the cord visibly attached but visually simple. Place the calm sea and the same two fishing boats behind them, with whitewashed houses farther back. Warm daylight, modest dress and uncluttered sand."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Hamza and Dad run together from left to right. Hamza now holds the spool with both hands. The released red kite has begun to lift behind him, but it is still close to the sand.",
+      "changed_from_previous": "Hamza has released the kite from his right hand. The kite has moved behind and slightly above him while the cord extends from it to the spool. Both Hamza and Dad have started running.",
+      "must_not_change": "Keep Hamza on the left of Dad and keep their clothes, faces and relative sizes identical. The kite must remain the same red cat kite with a short red tail; its cat-face eyes are solid black filled ovals. The wooden spool and attached cord remain the only other key object. Keep the same sea, two boats, corniche and houses. Add no beach visitors or other kites.",
+      "draft_brief": "Medium-wide side view. Hamza leads as he and Dad run from left to right on clear sand. Hamza grips the wooden spool with both hands. The taut cord angles back to the red cat kite, which is just lifting behind them at about Hamza’s shoulder height. Dad runs beside Hamza rather than ahead of him. Show simple joyful movement without making them look unsteady."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Hamza has stopped and looks up. Dad has stopped beside him. The red kite hangs low and moves slowly instead of rising. The cord is taut between the kite and the spool.",
+      "changed_from_previous": "The running has stopped. Hamza and Dad now stand still. The kite has moved a little forwards but remains low, showing that the flight has stalled.",
+      "must_not_change": "Hamza still holds the same wooden spool. The cord remains attached to the same red cat kite. Do not show the loop being fixed yet. Keep Hamza left of Dad, with the sea and the same two fishing boats behind them. Clothing, colours, black filled oval eyes and daylight must remain consistent.",
+      "draft_brief": "Medium view with Hamza in the foreground holding the spool at chest height. His feet are planted after stopping, and Dad stands still beside him. Both look towards the red kite hanging low over the sand. Keep the kite clearly airborne but no higher than Dad’s head. The taut cord should lead the eye back to Hamza’s spool. Hamza looks puzzled, not frightened."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Hamza looks closely at the wooden spool and points to one cord loop caught over its rim. Dad looks exactly where Hamza points. The low kite remains visible in the background.",
+      "changed_from_previous": "Hamza has lowered the spool so he can inspect it. His attention has shifted from the low kite to the caught loop. Dad has leaned closer to see Hamza’s discovery.",
+      "must_not_change": "The cord must still be caught by one clear loop over the spool rim. Do not add knots, broken cord or another fault. The red kite remains low and attached. Keep the same clothes, kite design, spool design and solid black filled oval eyes. Dad must only observe here; Hamza is the one who notices and points.",
+      "draft_brief": "Close-medium view centred on Hamza’s hands and the wooden spool. Hamza holds the spool steady and points to one unmistakable cord loop caught over the outer rim. Dad bends or kneels beside him and follows Hamza’s pointing finger. Leave enough background to show the same red kite still hanging low over the sand. Make the single loop large and visually clear."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Hamza and Dad work together to lift the caught loop over the spool rim. The loop is coming free, and the cord begins to unwind in a straight line towards the kite.",
+      "changed_from_previous": "Dad has joined Hamza’s action. The loop that was caught on the rim is now being lifted clear. The spool stays in place while the cord changes from trapped to free.",
+      "must_not_change": "Show only the same single loop and the same single fix. Do not introduce scissors, tools, knots, broken parts or a new mechanism. Keep the red kite attached and low in the background for this moment. Hamza must remain actively involved rather than watching Dad do it alone. Clothing and all solid black filled oval eyes remain consistent.",
+      "draft_brief": "Close view of the shared fix. Hamza holds the wooden spool and lifts one side of the cord loop with his fingertips. Dad kneels beside him and guides the other side of that same loop over the rim. Show the loop just clearing the wood and the outgoing cord beginning to run freely. Include a small glimpse of the low red kite in the background so the physical connection remains clear."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "Hamza stands with the spool in both hands and looks up proudly. Dad stands beside him and grins. The freed cord reaches high into the sky, where the red cat kite now flies well above them.",
+      "changed_from_previous": "The loop is fully off the spool. Hamza has stood up with the spool, Dad has stood beside him, and the free cord has let the kite rise from low over the sand to high in the sky.",
+      "must_not_change": "The spool must remain whole and in Hamza’s hands. The cord must stay attached to the same red cat kite. Keep Hamza left of Dad, with identical clothes and solid black filled oval eyes. Preserve the same Muscat beach, sea, two fishing boats, corniche and whitewashed houses. Do not add other people, cats, kites or a second celebration beat.",
+      "draft_brief": "Wide final view that echoes page 1. Hamza stands on the left holding the wooden spool securely with both hands; Dad stands on the right, smiling beside him. A clean diagonal cord rises to the same red cat kite, now high against the clear sky. The kite’s simple black cat-face eyes are solid filled ovals. Show the calm sea, the same two fishing boats and whitewashed corniche houses below, keeping the triumphant image bright and uncluttered."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.1042,
+   "usage": {
+    "input_tokens": 9990,
+    "input_tokens_details": {
+     "cache_write_tokens": 9987,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1807,
+    "output_tokens_details": {
+     "reasoning_tokens": 560
+    },
+    "total_tokens": 11797
+   },
+   "data": {
+    "reasoning": "Backward continuity chain: on page 6 the kite can be high only if the cord leaves the spool freely; page 5 must therefore show the caught loop clearing the rim; page 4 must clearly establish that exact loop as the blockage; page 3 must preserve the blockage before Hamza notices it; page 2 must show the outer turn beginning to slip over the rim as the cord pays out; and page 1 must establish the attached cord and wound spool without introducing any extra object or mechanism. After the fix, the spool remains visibly less full, but there is no broken cord, discarded part or new residue.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The mechanism has resolved. The cord now leaves the centre of the spool in one clean line, with no loop over the rim. Less cord remains wound on the spool because the kite has risen. The same spool, cord and kite persist; nothing has broken or been discarded.",
+      "revised_brief": "Wide final view echoing page 1. Hamza stands on the left holding the same wooden spool with both hands; Dad stands on the right beside him. Show less cord wound on the spool than on pages 1–4. The cord must leave the spool cleanly, without crossing its rim, and rise in a clear diagonal to the same red cat kite high in the sky. Hamza looks proud and Dad grins. Keep the same sea, two fishing boats, corniche and whitewashed houses. Add no other people, animals or kites. All visible eyes, including the kite’s cat-face eyes if large enough to see, are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "The exact obstruction from page 4 is visibly being removed. The single loop is halfway over the spool rim, and a short length of cord beyond it has begun to straighten. This creates the free-running state required on page 6.",
+      "revised_brief": "Close view of the shared fix. Hamza holds the same wooden spool while lifting one side of the caught cord loop with his fingertips. Dad kneels beside him and guides the other side of that same loop over the rim. Show the loop halfway clear—not a knot and not broken cord. The line leading towards the kite is beginning to straighten, but the red cat kite remains low in the background because it has not risen yet. Use no tools. Hamza remains actively involved. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "The cause is now unmistakable: one outer turn of cord has slipped over the spool rim and is pinning the outgoing cord. The taut line stops at this exact loop. This is the same loop Hamza and Dad will lift on page 5.",
+      "revised_brief": "Close-medium view centred on the spool in Hamza’s hands. Hamza points to one clear cord loop caught over the wooden rim. Show the outgoing cord pulled against that loop so a child can see why it cannot unwind. Dad bends beside Hamza and looks where he points, but does not begin the fix yet. The same red cat kite hangs low in the background. Do not add a knot, tangle, tear or second fault. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The caught loop already exists even though Hamza has not inspected it yet. The cord is taut, the spool cannot pay out, and the kite remains low. A careful viewer may glimpse the loop over the rim, preparing the discovery on page 4.",
+      "revised_brief": "Medium view. Hamza has stopped on the left and holds the wooden spool near his chest. Dad has stopped on the right. Both first look towards the same red cat kite hanging low over the sand. The cord is taut. Angle the spool so one outer loop can just be seen resting over its rim, but do not make it the main focus yet; Hamza has not looked down and spotted it. Keep the same sea, two boats, corniche and houses. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The cord begins paying out as the kite lifts. One outer turn on the spool is being pulled towards and just over the rim. This is the beginning of the single blockage visible on page 3, not a separate problem.",
+      "revised_brief": "Medium-wide side view. Hamza leads as he and Dad run from left to right. Hamza holds the wooden spool with both hands, and the released red cat kite lifts behind him to about shoulder height. Show the cord paying out from the spool. One outer turn is just slipping towards the rim, subtle but visible, while the outgoing cord remains attached to the kite. Dad runs beside Hamza so the action is shared and safe. Keep the setting, clothes, kite design and solid black filled oval eyes consistent. Add no other kites or beach visitors."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "The complete physical system is established before it acts: the red kite is attached by one cord to the wooden spool. The cord is neatly wound, with its outer turn close enough to the rim that it can slip over when the kite pulls. No extra object or fault is introduced.",
+      "revised_brief": "Wide establishing view of the Muscat beach. Hamza stands on the left and Dad on the right. Hamza holds the red cat kite upright in his right hand and the same wooden spool in his left. Clearly show one cord connecting kite and spool. The cord is neatly wound, with the outermost turn near the spool rim but not caught yet. The kite is a red diamond with a simple black cat face and short red tail. Behind them are the calm sea, the same two fishing boats, the corniche and whitewashed houses. Show no other people, animals, toys or kites. Hamza and Dad wear their established modest clothes. All visible eyes, including the kite’s cat-face eyes, are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1527,
+   "usage": {
+    "input_tokens": 12030,
+    "input_tokens_details": {
+     "cache_write_tokens": 12027,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3086,
+    "output_tokens_details": {
+     "reasoning_tokens": 993
+    },
+    "total_tokens": 15116
+   },
+   "data": {
+    "storyboard_verdict": "fixed_now_plausible",
+    "physical_issues_found": [
+     "The spool previously lacked a defined working structure, so gripping it with both hands could appear to prevent it from turning. It is now consistently a wooden kite spool with a rotating barrel, two flanges and a fixed central handgrip.",
+     "The snag’s cause and effect needed a clearer connection. Page 2 now shows cord tension pulling an outer turn over the flange; pages 3–4 show that turn cinched against the outgoing cord; page 5 shows the same loop being lifted free; page 6 shows the cord leaving the spool cleanly."
+    ],
+    "cover": {
+     "brief": "Cover for “Hamza and the Low Red Toy”. On the Muscat beach, Hamza stands on the left holding the fixed handgrip of a small wooden kite spool while the rotating barrel pays out a clean cord. Dad stands beside him on the right. The same red diamond kite with a simple black cat face and short red tail flies high above them. Show the calm sea, two fishing boats, the corniche and whitewashed houses in the distance. Hamza wears his teal long-sleeved top, beige ankle-length trousers and sandals; Dad wears his white dishdasha, embroidered kumma and sandals. All visible eyes, including the kite’s cat-face eyes, are solid black filled ovals. Keep the image bright and uncluttered, with no other people, animals or kites."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Text: “I am Hamza. Dad and I go to the beach with my red toy.” Wide establishing view. Hamza stands on the left and Dad on the right. Hamza holds the red cat kite upright in his right hand and the wooden kite spool by its fixed central handgrip in his left. The spool has a rotating barrel and two round flanges. One cord visibly connects the wound barrel to the kite. Its outer turn lies near a flange but is not caught. Show the sea, two fishing boats, the corniche and whitewashed houses. All visible eyes, including the kite’s cat-face eyes, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Kite and cord",
+        "assertion": "The red cat kite is visibly attached to one unbroken cord."
+       },
+       {
+        "object": "Wooden spool",
+        "assertion": "The cord is neatly wound on a rotating barrel; the outer turn is near one flange but not caught."
+       },
+       {
+        "object": "Hamza and Dad",
+        "assertion": "Hamza is on the left in teal and beige; Dad is on the right in his white dishdasha and kumma."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cord",
+        "assertion": "No snag, knot, break or detached end is present yet."
+       },
+       {
+        "object": "Cast and active objects",
+        "assertion": "No additional person, animal, kite or toy is present."
+       }
+      ],
+      "carries_forward": "The same connected kite, cord and wooden spool move into page 2. Hamza remains left of Dad, and the outer turn remains close to the same flange."
+     },
+     {
+      "page": 2,
+      "brief": "Text: “The wind can blow. Dad and I run with my red toy.” Medium-wide side view. Hamza leads from left to right with Dad running beside him. Hamza holds the spool’s fixed central handgrip securely, allowing its barrel to rotate. The released red cat kite lifts behind them to about shoulder height. The taut cord visibly pulls from the barrel, and one outer turn is being drawn over the near flange. This is the beginning of the single snag. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cord tension",
+        "assertion": "A continuous taut cord visibly links the lifting kite to the spool."
+       },
+       {
+        "object": "Outer cord turn",
+        "assertion": "The pull of the kite is visibly drawing one outer turn over the same spool flange."
+       },
+       {
+        "object": "Hamza and Dad",
+        "assertion": "Hamza leads while Dad runs beside him; their clothes and left-right relationship remain consistent."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Spool",
+        "assertion": "The barrel must not appear locked by Hamza’s grip; he holds only its fixed handgrip."
+       },
+       {
+        "object": "Cord",
+        "assertion": "Do not show a knot, break, second snag or detached kite."
+       }
+      ],
+      "carries_forward": "The outer turn finishes slipping over the flange and tightens under the kite’s pull. Hamza and Dad stop as the trapped cord prevents more line from paying out."
+     },
+     {
+      "page": 3,
+      "brief": "Text: “It is low and slow. I stop.” Medium view. Hamza has stopped on the left, holding the spool by its fixed handgrip near his chest. Dad has stopped on the right. Both first look towards the red kite hanging low over the sand. The cord is taut from the kite to one loop now cinched over the spool flange. The loop presses against the outgoing cord, visibly preventing the barrel from paying out. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Caught loop",
+        "assertion": "The same outer turn is now cinched over the flange and visibly traps the outgoing cord."
+       },
+       {
+        "object": "Red cat kite",
+        "assertion": "The attached kite remains airborne but low because no more cord can pay out."
+       },
+       {
+        "object": "Hamza and Dad",
+        "assertion": "Both have stopped; Hamza still holds the spool and Dad remains beside him."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mechanism",
+        "assertion": "Do not replace the flange snag with a knot, tangle, broken spool or weak wind."
+       },
+       {
+        "object": "Kite",
+        "assertion": "The kite must not already be high or detached."
+       }
+      ],
+      "carries_forward": "The caught loop, taut outgoing cord and low kite remain unchanged as Hamza lowers and turns the spool to inspect it on page 4."
+     },
+     {
+      "page": 4,
+      "brief": "Text: “I spot a loop on the spool. The cord is stuck!” Close-medium view centred on Hamza’s hands. Hamza has lowered and turned the same spool so the cause is easy to see. He points to the single loop caught over its flange. The taut outgoing cord is visibly pinned beneath that loop. Dad bends beside Hamza and follows his pointing finger without touching the spool yet. Keep the low red kite visible in the background. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Caught loop and outgoing cord",
+        "assertion": "One loop crosses the flange and visibly pins the taut cord that leads to the low kite."
+       },
+       {
+        "object": "Hamza",
+        "assertion": "Hamza is the one pointing out the cause while still controlling the spool."
+       },
+       {
+        "object": "Dad",
+        "assertion": "Dad looks where Hamza points but has not begun the fix."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mechanism",
+        "assertion": "No second fault, knot, tear, tool or broken part is visible."
+       },
+       {
+        "object": "Caught loop",
+        "assertion": "The loop must not already be loose or removed."
+       }
+      ],
+      "carries_forward": "The spool stays in the same orientation. The exact loop Hamza points to becomes the loop Hamza and Dad lift together on page 5."
+     },
+     {
+      "page": 5,
+      "brief": "Text: “Dad and I lift the loop from the spool. The cord runs!” Close view of the shared fix. Hamza holds the spool’s fixed handgrip and lifts the caught loop with his fingertips. Dad kneels beside him, steadies the spool and guides the other side of that same loop over the flange. Show the loop halfway clear. Beyond it, the formerly trapped cord has begun to straighten and the rotating barrel has just started to pay out. The red kite remains low in the background at this instant. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Single caught loop",
+        "assertion": "The same loop from page 4 is visibly halfway over and clear of the flange."
+       },
+       {
+        "object": "Cord and barrel",
+        "assertion": "The outgoing cord begins to straighten as the spool barrel starts rotating freely."
+       },
+       {
+        "object": "Hamza and Dad",
+        "assertion": "Hamza leads the lift while Dad shares and steadies the action."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Fix",
+        "assertion": "Do not add scissors, tools, cut cord, broken parts or another mechanism."
+       },
+       {
+        "object": "Kite",
+        "assertion": "The kite must not be high before the loop is fully free."
+       }
+      ],
+      "carries_forward": "The loop clears the flange completely. The barrel can rotate, more cord pays out, and the kite rises. The spool remains intact but holds visibly less cord on page 6."
+     },
+     {
+      "page": 6,
+      "brief": "Text: “The wind can blow. My red toy is high!” Wide final view echoing page 1. Hamza stands on the left holding the same spool by its fixed handgrip; Dad stands on the right and grins. The spool barrel now carries visibly less cord. No loop crosses either flange. One clean cord leaves the rotating barrel and rises in a clear diagonal to the same red cat kite high in the sky. Show the same sea, two fishing boats, corniche and whitewashed houses. All visible eyes, including the kite’s cat-face eyes if discernible, are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Freed spool",
+        "assertion": "No loop crosses the flange, and less cord remains wound on the freely rotating barrel."
+       },
+       {
+        "object": "Cord and kite",
+        "assertion": "One unbroken cord visibly connects the spool to the same red cat kite flying high."
+       },
+       {
+        "object": "Hamza and Dad",
+        "assertion": "Hamza still controls the spool on the left; Dad remains beside him on the right in unchanged clothing."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mechanism residue",
+        "assertion": "No caught loop, cut end, broken spool or discarded part is present."
+       },
+       {
+        "object": "Cast and active objects",
+        "assertion": "No additional person, animal, kite or toy is added to the resolution."
+       }
+      ],
+      "carries_forward": "Final state: the intact spool pays out freely, the cord remains attached, and Hamza’s kite flies high with Dad beside him."
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "child": {
+  "name": "Noor",
+  "age": 6,
+  "gender": "girl",
+  "skinTone": "medium brown",
+  "hair": "long dark brown hair in a single plait"
+ },
+ "setting": {
+  "country": "Saudi Arabia",
+  "city": "Jeddah",
+  "culture": "A Muslim family in Jeddah on the Red Sea coast; old coral-stone houses with carved wooden balconies in Al-Balad, a wide seafront corniche with palm trees, gulls over calm blue water; pale stone paving."
+ },
+ "level": 4,
+ "sound": "ay",
+ "likes": "cats and the sea"
+}

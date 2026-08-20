@@ -1,0 +1,735 @@
+{
+ "child": {
+  "name": "Maryam",
+  "age": 7,
+  "gender": "girl",
+  "skinTone": "light olive",
+  "hair": "long dark hair under a scarf"
+ },
+ "setting": {
+  "country": "Egypt",
+  "city": "Cairo",
+  "culture": "A Muslim family in Cairo; the Nile bank, felucca boats, a shaded balcony."
+ },
+ "level": 5,
+ "sound": "oa",
+ "model": "gpt-5.6-sol",
+ "totalCost": 0.7876,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1682,
+   "usage": {
+    "input_tokens": 1193,
+    "input_tokens_details": {
+     "cache_write_tokens": 0,
+     "cached_tokens": 1190
+    },
+    "output_tokens": 5407,
+    "output_tokens_details": {
+     "reasoning_tokens": 4562
+    },
+    "total_tokens": 6600
+   },
+   "data": {
+    "title": "Maryam and the Boat",
+    "premise": {
+     "hero_want": "Maryam wants to make her drawing of a boat float.",
+     "problem": "Her drawing is on a flat sheet, not in the shape of a boat.",
+     "mechanism": "Maryam leads Mum in folding the sheet into a paper boat, then sets it on water in a bowl.",
+     "resolution": "The paper boat floats while real boats sail past on the Nile."
+    },
+    "key_objects": [
+     {
+      "name": "Sheet and paper boat",
+      "description": "One cream sheet with a simple dark boat drawing. It becomes a folded paper boat, with parts of the drawing still visible."
+     },
+     {
+      "name": "Bowl",
+      "description": "A wide blue bowl filled with clear water."
+     }
+    ],
+    "cast": [
+     {
+      "id": "maryam",
+      "who": "Maryam, a seven-year-old Muslim girl in Cairo",
+      "appearance": "Warm brown skin, dark curly hair tied back, a long-sleeved yellow tunic and loose teal trousers. Her shoulders and knees are covered. Solid black filled oval eyes."
+     },
+     {
+      "id": "mum",
+      "who": "Maryam’s mum",
+      "appearance": "Warm brown skin, a dusty-rose hijab and a long, loose navy dress. Her shoulders and knees are covered. Solid black filled oval eyes."
+     }
+    ],
+    "pages": [
+     {
+      "text": "I sit in the shade with Mum. I look at the Nile boats.",
+      "scene": "On one shaded balcony, Maryam sits beside Mum and looks over the Nile bank. White felucca boats with tall sails glide past; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I like to draw each boat. I draw one on a sheet.",
+      "scene": "Still on the balcony, Maryam draws a simple boat on the cream sheet with a plain graphite pencil. Mum watches; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I want my boat to float. But a flat sheet is not a boat.",
+      "scene": "Maryam holds up the same flat sheet and studies her boat drawing. The Nile and its felucca boats remain behind her; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I have a plan. “Mum, can we make it into a boat?”",
+      "scene": "Maryam points to the drawing and turns to Mum with an eager smile. They remain seated together in the balcony shade; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I bend the sheet, and Mum bends it with me. It looks like a boat!",
+      "scene": "Maryam leads as she and Mum fold the same sheet together, sharing the step on the same page. The finished shape is a simple paper boat; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum has a wide bowl. We fill it.",
+      "scene": "The wide blue bowl now rests on the balcony floor with clear water inside. Maryam and Mum kneel beside it, with the paper boat nearby; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I set my boat in the bowl. It floats!",
+      "scene": "Maryam carefully sets the paper boat on the water while Mum stays beside her. The boat floats in the centre of the blue bowl; all visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "My boat can float! I smile as Nile boats sail by.",
+      "scene": "Maryam smiles at her floating paper boat while Mum smiles beside her. Beyond the shaded balcony, felucca boats sail along the Nile; all visible eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "shade",
+     "boats",
+     "sheet",
+     "bend",
+     "bowl",
+     "float"
+    ],
+    "focus_word_examples": [
+     "boat",
+     "boats",
+     "float",
+     "floats"
+    ],
+    "tricky_words_used": [
+     "I",
+     "the",
+     "like",
+     "to",
+     "one",
+     "a",
+     "want",
+     "my",
+     "is",
+     "have",
+     "we",
+     "into",
+     "me",
+     "has"
+    ],
+    "cover_brief": "Maryam holds her cream paper boat just above the wide blue bowl on the shaded balcony. Mum sits beside her, and white felucca boats sail on the Nile in the background. Keep the composition uncluttered, clothing modest and all visible eyes solid black filled ovals."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0949,
+   "usage": {
+    "input_tokens": 6694,
+    "input_tokens_details": {
+     "cache_write_tokens": 6691,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2048,
+    "output_tokens_details": {
+     "reasoning_tokens": 1196
+    },
+    "total_tokens": 8742
+   },
+   "data": {
+    "violations_found": [],
+    "story": {
+     "title": "Maryam and the Boat",
+     "premise": {
+      "hero_want": "Maryam wants to make her drawing of a boat float.",
+      "problem": "Her drawing is on a flat sheet, not in the shape of a boat.",
+      "mechanism": "Maryam leads Mum in folding the sheet into a paper boat, then sets it on water in a bowl.",
+      "resolution": "The paper boat floats while real boats sail past on the Nile."
+     },
+     "key_objects": [
+      {
+       "name": "Sheet and paper boat",
+       "description": "One cream sheet with a simple dark boat drawing. It becomes a folded paper boat, with parts of the drawing still visible."
+      },
+      {
+       "name": "Bowl",
+       "description": "A wide blue bowl filled with clear water."
+      }
+     ],
+     "cast": [
+      {
+       "id": "maryam",
+       "who": "Maryam, a seven-year-old Muslim girl in Cairo",
+       "appearance": "Warm brown skin, dark curly hair tied back, a long-sleeved yellow tunic and loose teal trousers. Her shoulders and knees are covered. Solid black filled oval eyes."
+      },
+      {
+       "id": "mum",
+       "who": "Maryam’s mum",
+       "appearance": "Warm brown skin, a dusty-rose hijab and a long, loose navy dress. Her shoulders and knees are covered. Solid black filled oval eyes."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I sit in the shade with Mum. I look at the Nile boats.",
+       "scene": "On one shaded balcony, Maryam sits beside Mum and looks over the Nile bank. White felucca boats with tall sails glide past; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I like to draw each boat. I draw one on a sheet.",
+       "scene": "Still on the balcony, Maryam draws a simple boat on the cream sheet with a plain graphite pencil. Mum watches; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I want my boat to float. But a flat sheet is not a boat.",
+       "scene": "Maryam holds up the same flat sheet and studies her boat drawing. The Nile and its felucca boats remain behind her; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I have a plan. “Mum, can we make it into a boat?”",
+       "scene": "Maryam points to the drawing and turns to Mum with an eager smile. They remain seated together in the balcony shade; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I bend the sheet, and Mum bends it with me. It looks like a boat!",
+       "scene": "Maryam leads as she and Mum fold the same sheet together, sharing the step on the same page. The finished shape is a simple paper boat; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum has a wide bowl. We fill it.",
+       "scene": "The wide blue bowl now rests on the balcony floor with clear water inside. Maryam and Mum kneel beside it, with the paper boat nearby; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I set my boat in the bowl. It floats!",
+       "scene": "Maryam carefully sets the paper boat on the water while Mum stays beside her. The boat floats in the centre of the blue bowl; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "My boat can float! I smile as Nile boats sail by.",
+       "scene": "Maryam smiles at her floating paper boat while Mum smiles beside her. Beyond the shaded balcony, felucca boats sail along the Nile; all visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "shade",
+      "boats",
+      "sheet",
+      "bend",
+      "bowl",
+      "float"
+     ],
+     "focus_word_examples": [
+      "boat",
+      "boats",
+      "float",
+      "floats"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "like",
+      "to",
+      "one",
+      "a",
+      "want",
+      "my",
+      "is",
+      "have",
+      "we",
+      "into",
+      "me",
+      "has"
+     ],
+     "cover_brief": "Maryam holds her cream paper boat just above the wide blue bowl on the shaded balcony. Mum sits beside her, and white felucca boats sail on the Nile in the background. Keep the composition uncluttered, clothing modest and all visible eyes solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.1201,
+   "usage": {
+    "input_tokens": 8878,
+    "input_tokens_details": {
+     "cache_write_tokens": 8875,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2523,
+    "output_tokens_details": {
+     "reasoning_tokens": 1469
+    },
+    "total_tokens": 11401
+   },
+   "data": {
+    "cold_read": "The story passes the blocking checks: it is coherent, safe, decodable, driven by Maryam and limited to one adult, two key objects and one simple mechanism. A few lines feel more like captions than a child speaking, and page 6 describes filling the bowl while the scene only shows it already filled. These are minor editorial fixes, not rewrite issues.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Voice, page 2",
+      "detail": "“I like to draw each boat” sounds stiff and suggests Maryam draws every boat. “I like to draw boats” is more natural."
+     },
+     {
+      "severity": "minor",
+      "area": "Voice, pages 3 and 5",
+      "detail": "“A flat sheet is not a boat” and the repeated “bend/bends” construction are caption-like. Simpler phrasing keeps the same action and phonics level."
+     },
+     {
+      "severity": "minor",
+      "area": "Text/scene staging, page 6",
+      "detail": "The text says the bowl is being filled, but the scene only shows it after filling. Changing the text to Mum setting down the prepared bowl gives the illustrator one clear moment."
+     }
+    ],
+    "fixed_story": {
+     "title": "Maryam and the Boat",
+     "premise": {
+      "hero_want": "Maryam wants to make her drawing of a boat float.",
+      "problem": "Her drawing is on a flat sheet.",
+      "mechanism": "Maryam leads Mum in folding the sheet into a paper boat, then sets it on water in a bowl.",
+      "resolution": "The paper boat floats while real boats sail past on the Nile."
+     },
+     "key_objects": [
+      {
+       "name": "Sheet and paper boat",
+       "description": "One cream sheet with a simple dark boat drawing. It becomes a folded paper boat, with parts of the drawing still visible."
+      },
+      {
+       "name": "Bowl",
+       "description": "A wide blue bowl filled with clear water."
+      }
+     ],
+     "cast": [
+      {
+       "id": "maryam",
+       "who": "Maryam, a seven-year-old Muslim girl in Cairo",
+       "appearance": "Warm brown skin, dark curly hair tied back, a long-sleeved yellow tunic and loose teal trousers. Her shoulders and knees are covered. Solid black filled oval eyes."
+      },
+      {
+       "id": "mum",
+       "who": "Maryam’s mum",
+       "appearance": "Warm brown skin, a dusty-rose hijab and a long, loose navy dress. Her shoulders and knees are covered. Solid black filled oval eyes."
+      }
+     ],
+     "pages": [
+      {
+       "text": "I sit in the shade with Mum. I look at the Nile boats.",
+       "scene": "On one shaded balcony, Maryam sits beside Mum and looks over the Nile bank. White felucca boats with tall sails glide past; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I like to draw boats. I draw one on a sheet.",
+       "scene": "Still on the balcony, Maryam draws a simple boat on the cream sheet with a plain graphite pencil. Mum watches; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I want my boat to float. But my sheet is flat.",
+       "scene": "Maryam holds up the same flat sheet and studies her boat drawing. The Nile and its felucca boats remain behind her; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I have a plan. “Mum, can we make it into a boat?”",
+       "scene": "Maryam points to the drawing and turns to Mum with an eager smile. They remain seated together in the balcony shade; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum and I bend the sheet. Now it looks like a boat!",
+       "scene": "Maryam leads as she and Mum fold the same sheet together. The finished shape is a simple paper boat; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum sets down a wide bowl. It is all set.",
+       "scene": "Mum sets the wide blue bowl, already filled with clear water, on the balcony floor. Maryam waits beside her with the paper boat; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I set my boat in the bowl. It floats!",
+       "scene": "Maryam carefully sets the paper boat on the water while Mum stays beside her. The boat floats in the centre of the blue bowl; all visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "My boat can float! I smile as Nile boats sail by.",
+       "scene": "Maryam smiles at her floating paper boat while Mum smiles beside her. Beyond the shaded balcony, felucca boats sail along the Nile; all visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "shade",
+      "boats",
+      "sheet",
+      "bend",
+      "bowl",
+      "float"
+     ],
+     "focus_word_examples": [
+      "boat",
+      "boats",
+      "float",
+      "floats"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "like",
+      "to",
+      "one",
+      "a",
+      "want",
+      "my",
+      "is",
+      "have",
+      "we",
+      "into",
+      "all"
+     ],
+     "cover_brief": "Maryam holds her cream paper boat just above the wide blue bowl on the shaded balcony. Mum sits beside her, and white felucca boats sail on the Nile in the background. Keep the composition uncluttered, clothing modest and all visible eyes solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1227,
+   "usage": {
+    "input_tokens": 11262,
+    "input_tokens_details": {
+     "cache_write_tokens": 11259,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2213,
+    "output_tokens_details": {
+     "reasoning_tokens": 649
+    },
+    "total_tokens": 13475
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Maryam and Mum sit together in the shade on a Cairo balcony. Beyond the railing, white felucca boats sail along the Nile.",
+      "changed_from_previous": "Opening image: the balcony, characters, clothing, light and Nile view are established.",
+      "must_not_change": "Maryam’s yellow long-sleeved tunic, teal trousers, tied-back dark curls and warm brown skin; Mum’s dusty-rose hijab, long navy dress and warm brown skin; the shaded balcony, railing, Nile direction and warm daylight. Shoulders and knees stay covered. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Wide establishing view from the shaded balcony. Maryam sits beside Mum, both looking towards the Nile. Show a simple railing and two distant white feluccas with tall sails; no visible people on the boats and no extra balcony objects. Keep the composition warm, calm and uncluttered."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Maryam draws a simple boat on one cream sheet while Mum watches. The real Nile boats remain visible behind them.",
+      "changed_from_previous": "A cream sheet and plain graphite pencil have been introduced. Maryam has turned from watching the Nile to drawing one of its boats.",
+      "must_not_change": "The same balcony, daylight, Nile view, clothing and character designs. Maryam and Mum remain in the same general sitting area. The sheet must be flat and cream, with only one simple dark boat drawing. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Move to a closer balcony view. Maryam sits with the flat cream sheet in front of her and uses one plain graphite pencil to draw a boat. Mum sits beside her, watching with a gentle smile. Keep the Nile and a felucca sail visible beyond the railing; add nothing else."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Maryam holds up the flat sheet and looks at her boat drawing. The sheet is clearly still flat, so it cannot yet look like a paper boat.",
+      "changed_from_previous": "The drawing is finished. The pencil has been set down beside Maryam, and she has lifted the flat sheet to inspect it.",
+      "must_not_change": "The exact simple boat drawing on the cream sheet; the sheet must not be folded yet. Keep the pencil beside Maryam, the same seating area, clothing, light and Nile background. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Maryam holds the finished flat sheet upright with both hands and studies it. Make its flatness unmistakable, with the same simple dark boat drawing fully visible. Mum looks at the sheet from beside her. Leave the pencil on the balcony floor near Maryam and keep the background sparse."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Maryam points to her drawing and eagerly tells Mum her plan. Mum turns towards Maryam and listens.",
+      "changed_from_previous": "Maryam has lowered the sheet slightly and now points to the drawing. Her expression has changed from thoughtful to excited; the sheet remains flat.",
+      "must_not_change": "Do not fold or alter the sheet or its drawing yet. The pencil stays beside Maryam. Keep both characters in the same clothes and location, with the same daylight and Nile view. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Show Maryam holding the flat cream sheet in one hand and pointing to its boat drawing with the other as she speaks to Mum. Mum faces her attentively. Keep the paper fully flat so the next page contains the clear transformation. Use the same uncluttered balcony setting."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Maryam and Mum fold the sheet together. By the end of the action, it has become a simple paper boat with parts of Maryam’s drawing still visible.",
+      "changed_from_previous": "The flat sheet has been transformed into a folded paper boat. Maryam and Mum now have their hands on opposite sides of the same paper object.",
+      "must_not_change": "It must be the same cream sheet, not a new piece of paper. Retain visible dark marks from the original drawing on the folded boat. Keep the pencil in its earlier place, and keep clothing, balcony, light and Nile view consistent. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Show the completed fold clearly: Maryam leads with her hands on one side of the newly formed paper boat while Mum supports the other side. Both look pleased. The original dark drawing lines remain visible across parts of the cream folds. Do not add scissors, glue or any other craft tools."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "Mum sets down a wide blue bowl already filled with clear water. Maryam waits beside her, holding the finished paper boat.",
+      "changed_from_previous": "The paper boat remains finished and unchanged. A wide blue bowl of water has entered the balcony scene and is being placed on the floor; the view is tighter, so the pencil is outside the frame rather than removed.",
+      "must_not_change": "The paper boat’s folds, cream colour and visible drawing marks. The bowl must be wide, blue and filled with still, clear water. Keep the same clothes, balcony shade and daylight. Do not show another container, a tap or extra tools. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Mum kneels and sets the wide blue bowl of still water on the balcony floor. Maryam kneels opposite her and holds the same folded paper boat above her lap, ready for the next step. Keep the bowl and paper boat separate, and show no pouring action or extra container."
+     },
+     {
+      "page": 7,
+      "what_child_sees": "Maryam carefully places her paper boat onto the water while Mum stays close beside her. The boat begins to float in the middle of the bowl.",
+      "changed_from_previous": "The paper boat has moved from Maryam’s hands to the water. The water has a few small ripples from the placement, but the boat remains upright and dry-looking.",
+      "must_not_change": "Use the same blue bowl, water level and folded cream boat with visible drawing marks. The boat must not sink, tip, unfold or change size. Mum remains beside Maryam, and their clothing and the balcony setting stay consistent. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Close view of Maryam just releasing the paper boat onto the centre of the water. One hand may still hover close above it; Mum watches from beside her. Add only a few gentle ripples around the upright boat. Keep the action safe, simple and easy to understand."
+     },
+     {
+      "page": 8,
+      "what_child_sees": "The paper boat floats on its own as Maryam smiles. Mum smiles beside her, and real felucca boats sail past on the Nile behind them.",
+      "changed_from_previous": "Maryam’s hands are now away from the bowl. The ripples have settled, and the paper boat floats steadily while the distant feluccas have drifted slightly along the Nile.",
+      "must_not_change": "The paper boat remains upright with the same folds and drawing marks; the blue bowl keeps the same water level and position. Keep Maryam and Mum in the same clothing, the same shaded balcony and the same warm daylight. All visible eyes remain solid black filled ovals.",
+      "draft_brief": "Return to a slightly wider view. Place the floating paper boat in the blue bowl in the foreground, with Maryam smiling proudly and Mum smiling beside her. In the background, show two distant white feluccas sailing in the same direction along the Nile. Keep hands away from the bowl and end on a calm, uncluttered image."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.12,
+   "usage": {
+    "input_tokens": 13531,
+    "input_tokens_details": {
+     "cache_write_tokens": 13528,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1745,
+    "output_tokens_details": {
+     "reasoning_tokens": 586
+    },
+    "total_tokens": 15276
+   },
+   "data": {
+    "reasoning": "Work backwards from the final proof: page 8 needs the same marked paper boat floating in the same blue bowl, so page 7 must establish its placement and ripples; page 6 must introduce still water and the completed boat; page 5 must preserve parts of the drawing through the folds; pages 2–4 must keep that drawing on one flat cream sheet; and page 1 must establish the Nile boats Maryam chooses to draw. No bowl or craft materials need planting before they are used, as that would add clutter rather than credibility.",
+    "pages": [
+     {
+      "page": 8,
+      "evidence_planted": "The cream colour, dark drawing marks and folds prove this is the sheet Maryam drew on and folded. Very faint remaining ripples connect the calm final image to her placement on page 7. The Nile and feluccas persist from page 1.",
+      "revised_brief": "Slightly wider balcony view. The marked cream paper boat floats upright in the same blue bowl, with very faint ripples around it. Maryam’s hands are clear of the bowl as she smiles; Mum smiles beside her. Two distant white feluccas continue along the Nile in the established direction. Keep the bowl position, water level, clothes, shade and warm daylight unchanged. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 7,
+      "evidence_planted": "Maryam’s hovering hand shows that she has just released the boat. Small fresh ripples provide the residue that will nearly settle by page 8. The boat’s visible dark marks link it to the original drawing.",
+      "revised_brief": "Close view of Maryam just releasing the marked cream paper boat onto the centre of the water. One hand hovers just above it while Mum remains beside her. Show a few small ripples spreading across the same blue bowl. The boat is upright, with the same folds and dark drawing marks established on page 5. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 6,
+      "evidence_planted": "The completed marked paper boat is already in Maryam’s hands, ready to be placed. The still water, clear waterline and fixed position of the blue bowl establish the exact state used on pages 7 and 8.",
+      "revised_brief": "Mum sets the wide blue bowl of still, clear water on the balcony floor. Maryam kneels opposite, holding the completed cream paper boat above her lap; its dark drawing marks remain visible. Keep the boat out of the water and show no ripples yet. Do not add a tap, jug or other container. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "Parts of Maryam’s original dark drawing remain across the outer folds. This visual proof must persist on every later view of the boat. The completed shape is the exact boat Maryam holds on page 6.",
+      "revised_brief": "Maryam leads while she and Mum finish folding the same cream sheet together. Show the completed paper-boat shape between their hands, with recognisable dark lines from Maryam’s drawing still visible on its outer folds. Add no scissors, glue or new paper. Keep the balcony, Nile view, clothes and daylight consistent. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "The cream sheet remains completely flat, and the same bold, simple drawing is fully visible. Its dark lines are positioned across the middle of the sheet so parts can credibly remain visible after folding.",
+      "revised_brief": "Maryam holds the flat cream sheet and points to her simple dark boat drawing as she tells Mum her plan. Mum turns towards her and listens. Keep the sheet unfolded, with the drawing centred across it; do not suggest a second sheet or start the folds early. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The finished drawing and flat sheet establish the problem. The sheet’s cream colour, size and centred dark marks must match the folded object on pages 5–8.",
+      "revised_brief": "Maryam holds the finished cream sheet upright with both hands and studies it. Make the sheet unmistakably flat and show one centred, simple dark boat drawing. Mum looks at the same sheet beside her. Use a close composition so the drawing tool need not remain visible. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "This page establishes the one cream sheet and the dark drawing that will survive as marks on the final paper boat. The real felucca in the background clearly provides Maryam’s model.",
+      "revised_brief": "Closer balcony view. Maryam uses one plain graphite pencil to draw a simple boat in bold dark lines across the centre of one flat cream sheet. Mum watches, and one white felucca remains visible beyond the railing as Maryam’s model. Do not add more paper or other craft tools. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "The shaded balcony, Nile direction, warm daylight and white feluccas establish the setting that persists through page 8. Maryam’s focused gaze at the boats motivates the drawing introduced on page 2.",
+      "revised_brief": "Wide establishing view of the shaded Cairo balcony. Maryam sits beside Mum and looks closely at two distant white feluccas sailing in one clear direction along the Nile. Establish the simple railing, warm daylight and the characters’ unchanged modest clothes. Do not plant the sheet, pencil or bowl yet; each enters only when needed. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1617,
+   "usage": {
+    "input_tokens": 15509,
+    "input_tokens_details": {
+     "cache_write_tokens": 15506,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2805,
+    "output_tokens_details": {
+     "reasoning_tokens": 916
+    },
+    "total_tokens": 18314
+   },
+   "data": {
+    "storyboard_verdict": "fixed_now_plausible",
+    "physical_issues_found": [
+     "The earlier page 7 brief described the paper boat as “dry-looking” after it touched water. Real paper begins to absorb water at the contact edge, so pages 7 and 8 now show slight, progressive darkening while the boat still floats for this short sequence.",
+     "Felucca sails imply a breeze, while loose paper would move first. The balcony is now visibly sheltered, and Maryam or Mum keeps hold of the sheet or boat until it is placed in the water."
+    ],
+    "cover": {
+     "brief": "On the sheltered, shaded Cairo balcony, Maryam holds the marked cream paper boat just above the wide blue bowl of clear water. Mum kneels beside her. Two distant white feluccas sail along the Nile behind them. Maryam wears her long-sleeved yellow tunic and loose teal trousers; Mum wears her dusty-rose hijab and long navy dress. Keep shoulders and knees covered, the image uncluttered and all visible eyes solid black filled ovals."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Wide establishing view of the sheltered, shaded Cairo balcony. Maryam sits beside Mum and looks closely at two distant white feluccas sailing along the Nile. Their sails are gently filled, but the balcony itself is calm. Establish the simple railing, warm daylight and modest clothing. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Maryam and Mum",
+        "assertion": "Maryam wears her long-sleeved yellow tunic and teal trousers; Mum wears her dusty-rose hijab and long navy dress."
+       },
+       {
+        "object": "Nile feluccas",
+        "assertion": "Two distant white boats travel in one consistent direction with gently filled sails."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Craft materials and bowl",
+        "assertion": "No sheet, pencil, paper boat or blue bowl is visible yet."
+       },
+       {
+        "object": "Balcony air",
+        "assertion": "No strong wind, flapping clothes or moving loose objects."
+       }
+      ],
+      "carries_forward": "The sheltered balcony, Nile direction, warm daylight, two feluccas and both character designs continue to page 2."
+     },
+     {
+      "page": 2,
+      "brief": "Closer view in the same balcony position. Maryam holds one flat cream sheet steady with one hand while drawing a simple boat across its centre with a plain graphite pencil. Mum watches. One white felucca remains visible beyond the railing as Maryam’s model. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "One flat, uncreased sheet is held securely by Maryam and has a developing dark boat drawing across its centre."
+       },
+       {
+        "object": "Maryam and Mum",
+        "assertion": "Their clothing, colouring and modest coverage match page 1."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "No folds, duplicate sheets or loose edges lifting in wind."
+       },
+       {
+        "object": "Craft materials",
+        "assertion": "No scissors, glue or additional drawing tools."
+       }
+      ],
+      "carries_forward": "One flat cream sheet now bears the dark boat drawing that must remain identifiable after folding."
+     },
+     {
+      "page": 3,
+      "brief": "Maryam holds the finished cream sheet upright with both hands and studies it. The sheet is clearly flat, with one centred dark boat drawing. Mum looks at the same sheet beside her. Use a close frame, with the sheltered balcony and Nile still recognisable. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "The drawing is complete, the sheet remains flat and both of Maryam’s hands secure it."
+       },
+       {
+        "object": "Maryam and Mum",
+        "assertion": "Their appearance and clothing remain unchanged."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "No crease, fold, paper-boat shape or unexplained wet mark."
+       }
+      ],
+      "carries_forward": "The completed drawing and completely flat sheet continue unchanged to page 4."
+     },
+     {
+      "page": 4,
+      "brief": "Maryam holds the same flat sheet securely and points to its boat drawing as she tells Mum her plan. Mum turns towards her and listens. Keep the dark drawing centred and fully visible; folding has not started. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "It is the same dry, flat sheet with the same centred dark drawing."
+       },
+       {
+        "object": "Maryam",
+        "assertion": "She visibly leads by pointing to her drawing and addressing Mum."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cream sheet",
+        "assertion": "No folds, tears, extra sheets or changed drawing."
+       }
+      ],
+      "carries_forward": "The dry marked sheet is ready to be folded by Maryam and Mum on page 5."
+     },
+     {
+      "page": 5,
+      "brief": "Maryam and Mum finish folding the same sheet together. Their fingers visibly press the final crease while the paper already has a clear boat shape, directly connecting their pressure to the fold. Dark parts of Maryam’s drawing remain visible across the outer faces. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Maryam and Mum",
+        "assertion": "Both have hands on the same paper, with Maryam visibly leading and Mum sharing the step."
+       },
+       {
+        "object": "Paper boat",
+        "assertion": "The cream sheet is now folded into one dry boat, with firm creases and recognisable dark drawing marks."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "No cutting, glue, replacement paper, wet patches or unexplained change of colour."
+       }
+      ],
+      "carries_forward": "One completed, dry, marked cream paper boat passes into Maryam’s hands for page 6."
+     },
+     {
+      "page": 6,
+      "brief": "Mum visibly sets the wide blue bowl of still, clear water on the balcony floor. Maryam kneels opposite and securely holds the completed paper boat above her lap. The boat has not touched the water, so its cream paper remains evenly dry. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It retains the same folds and drawing marks from page 5 and is dry in Maryam’s hands."
+       },
+       {
+        "object": "Blue bowl",
+        "assertion": "The bowl has a clear, level waterline and still water with no ripples."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Water and paper boat",
+        "assertion": "The boat does not touch the water, and no wet or darkened paper is visible yet."
+       },
+       {
+        "object": "Water source",
+        "assertion": "No jug, tap or pouring action is added."
+       }
+      ],
+      "carries_forward": "The dry boat is poised beside the stationary bowl of still water, ready for direct placement on page 7."
+     },
+     {
+      "page": 7,
+      "brief": "Maryam’s hand has just released the paper boat onto the centre of the water while Mum remains beside her. The hull visibly touches the water, small ripples spread from that contact point and the paper begins to darken slightly along its lowest wet edge. The boat remains upright and floating. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Maryam’s hand and paper boat",
+        "assertion": "Her hovering hand is visibly connected to the just-released boat directly below it."
+       },
+       {
+        "object": "Water and paper boat",
+        "assertion": "Small ripples radiate from the floating hull, and only the lowest contact edge has begun to darken."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It is not bone-dry, submerged, instantly soaked, sinking, tipping or unfolding."
+       },
+       {
+        "object": "Water",
+        "assertion": "No splash larger than the gentle hand placement could cause."
+       }
+      ],
+      "carries_forward": "The upright boat floats with slightly dampened lower edges; the fresh ripples begin settling before page 8."
+     },
+     {
+      "page": 8,
+      "brief": "Slightly wider final view. Maryam’s hands are clear of the bowl as the same paper boat floats on its own. The water is nearly calm, with only faint residual ripples. The wet lower edge is a little darker than on page 7, while the upper folds and drawing marks remain dry and clear. Maryam smiles, Mum smiles beside her and the feluccas continue along the Nile. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It remains upright with the same folds and drawing marks; its lower contact edge shows modest progressive darkening from absorbed water."
+       },
+       {
+        "object": "Blue bowl",
+        "assertion": "It remains in the page 7 position with the same water level and only faint residual ripples."
+       },
+       {
+        "object": "Maryam and Mum",
+        "assertion": "Their appearance and modest clothing remain unchanged, and Maryam’s hands are away from the bowl."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It is not perfectly dry, completely saturated, collapsed, sinking or replaced by a different boat."
+       },
+       {
+        "object": "Water",
+        "assertion": "No new splash, wave or unexplained change in water level."
+       }
+      ],
+      "carries_forward": "Final resolved state: Maryam’s marked paper boat visibly floats for the moment, with believable slight water absorption at its lower edge."
+     }
+    ]
+   }
+  }
+ ]
+}

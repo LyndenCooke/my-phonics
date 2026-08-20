@@ -1,0 +1,829 @@
+{
+ "child": {
+  "name": "Elsie",
+  "age": 6,
+  "gender": "girl",
+  "skinTone": "fair",
+  "hair": "wavy ginger hair to her shoulders"
+ },
+ "setting": {
+  "country": "England",
+  "city": "St Ives",
+  "culture": "A family in St Ives, Cornwall, on the English seaside - a stone harbour with a curved granite pier, small moored fishing boats, whitewashed cottages with grey slate roofs climbing the hill, seagulls, golden sand at low tide; smooth cobbled lanes."
+ },
+ "level": 5,
+ "sound": "ai",
+ "likes": "painting and rock pools",
+ "faith": "Christian",
+ "shape": "The build",
+ "model": "gpt-5.6-sol",
+ "shiftyViolations": [],
+ "objectViolations": [],
+ "assertionsPerPage": [
+  5,
+  5,
+  4,
+  4,
+  4,
+  5,
+  5,
+  5
+ ],
+ "object_placements": [
+  {
+   "object": "Paper boat, including the original white sheet and all folded stages",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "object": "Red paint pot",
+   "pages_present": [
+    1,
+    2,
+    5,
+    6
+   ]
+  }
+ ],
+ "totalCost": 0.8479,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1981,
+   "usage": {
+    "input_tokens": 2675,
+    "input_tokens_details": {
+     "cache_write_tokens": 2672,
+     "cached_tokens": 0
+    },
+    "output_tokens": 6158,
+    "output_tokens_details": {
+     "reasoning_tokens": 5163
+    },
+    "total_tokens": 8833
+   },
+   "data": {
+    "title": "Elsie and the Paper Boat",
+    "premise": {
+     "hero_want": "Elsie wants to make a paper boat and sail it in a rock pool.",
+     "problem": "The boat tips to one side when Elsie tests it.",
+     "mechanism": "Elsie uses the familiar folds of a traditional paper boat. Its open base lets it float.",
+     "resolution": "Elsie lifts the boat out, pats its base flat and sails it again."
+    },
+    "key_objects": [
+     {
+      "name": "Paper boat",
+      "description": "One white rectangular sheet that becomes a traditional folded paper boat with a red sail painted on one side."
+     },
+     {
+      "name": "Red paint pot",
+      "description": "A small, open pot of red finger paint."
+     }
+    ],
+    "cast": [
+     {
+      "id": "elsie",
+      "who": "Elsie, a six-year-old girl",
+      "appearance": "Warm brown skin and dark brown curly hair in hair exactly as in her reference image. She wears a yellow long-sleeved top, blue trousers and red wellington boots. Her knees and shoulders are covered. Her eyes are solid black filled ovals."
+     }
+    ],
+    "pages": [
+     {
+      "text": "Elsie has paper and red paint. \u201cI want to make a boat,\u201d she said.",
+      "scene": "At low tide in St Ives harbour, Elsie sits on the golden sand beside a shallow rock pool. She holds one flat, white rectangular sheet. The small red paint pot is beside her. The curved granite pier and a few moored fishing boats are in the background. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "She bends the paper end to end. She bends each top tip in.",
+      "scene": "In the same spot, Elsie presses the two short ends of the white sheet together, then bends the two top corners towards the centre. The red paint pot stays beside her. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "She bends the flaps up. She tugs the gap wide.",
+      "scene": "Elsie bends the two lower flaps up to make the familiar paper hat shape. She opens the gap underneath and flattens it into a diamond. Keep the red paint pot beside her. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "She bends the tips up. She tugs the gap wide.",
+      "scene": "Elsie bends the lower tips of the paper diamond upwards. She opens the new gap and flattens the paper into a smaller diamond. Whitewashed cottages with grey slate roofs climb the hill behind the harbour. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "She pulls the top tips out. The paper is a boat!",
+      "scene": "Elsie pulls the two top points apart. The sheet opens into a traditional paper boat with a wide, flat base. She smiles at it. The red paint pot remains beside her. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "Elsie paints a red sail on the side. She must wait.",
+      "scene": "Elsie uses one fingertip to paint a simple red triangular sail on one side of the white paper boat. The boat rests on the sand while the paint dries. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "The boat sails in a rock pool. No! It tips to one side.",
+      "scene": "Elsie kneels at the same shallow rock pool. The dry white boat with its red painted sail floats, then leans sharply to one side. Elsie notices at once and reaches towards it. A seagull is far off on the curved granite pier. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "text": "Elsie lifts it out and pats the base flat. The boat sails on.",
+      "scene": "Elsie pats the base of the paper boat flat, then sets it back in the rock pool. It floats upright with the red sail facing her. Elsie beams. The harbour, small fishing boats and hillside cottages remain behind her. Elsie\u2019s eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "paint",
+     "sail",
+     "bends",
+     "flaps",
+     "tugs",
+     "pulls"
+    ],
+    "focus_word_examples": [
+     "paint",
+     "paints",
+     "sail",
+     "wait",
+     "sails"
+    ],
+    "tricky_words_used": [
+     "has",
+     "I",
+     "want",
+     "to",
+     "a",
+     "she",
+     "said",
+     "the",
+     "is",
+     "no",
+     "one",
+     "paper"
+    ],
+    "writer_tricky_word": "paper",
+    "cover_brief": "Elsie kneels on the golden sand beside a clear rock pool at low tide. Her finished traditional white paper boat floats upright, with the red painted sail visible. Behind her are St Ives\u2019 curved granite pier, small moored fishing boats and whitewashed cottages with grey slate roofs climbing the hill. Keep the scene uncluttered and warm. Elsie wears her yellow long-sleeved top, blue trousers and red wellington boots. Her eyes are solid black filled ovals."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0883,
+   "usage": {
+    "input_tokens": 8928,
+    "input_tokens_details": {
+     "cache_write_tokens": 8925,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1457,
+    "output_tokens_details": {
+     "reasoning_tokens": 455
+    },
+    "total_tokens": 10385
+   },
+   "data": {
+    "violations_found": [],
+    "story": {
+     "title": "Elsie and the Paper Boat",
+     "premise": {
+      "hero_want": "Elsie wants to make a paper boat and sail it in a rock pool.",
+      "problem": "The boat tips to one side when Elsie tests it.",
+      "mechanism": "Elsie uses the familiar folds of a traditional paper boat. Its open base lets it float.",
+      "resolution": "Elsie lifts the boat out, pats its base flat and sails it again."
+     },
+     "key_objects": [
+      {
+       "name": "Paper boat",
+       "description": "One white rectangular sheet that becomes a traditional folded paper boat with a red sail painted on one side."
+      },
+      {
+       "name": "Red paint pot",
+       "description": "A small, open pot of red finger paint."
+      }
+     ],
+     "cast": [
+      {
+       "id": "elsie",
+       "who": "Elsie, a six-year-old girl",
+       "appearance": "Warm brown skin and dark brown curly hair in hair exactly as in her reference image. She wears a yellow long-sleeved top, blue trousers and red wellington boots. Her knees and shoulders are covered. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Elsie has paper and red paint. \u201cI want to make a boat,\u201d she said.",
+       "scene": "At low tide in St Ives harbour, Elsie sits on the golden sand beside a shallow rock pool. She holds one flat, white rectangular sheet. The small red paint pot is beside her. The curved granite pier and a few moored fishing boats are in the background. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the paper end to end. She bends each top tip in.",
+       "scene": "In the same spot, Elsie presses the two short ends of the white sheet together, then bends the two top corners towards the centre. The red paint pot stays beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the flaps up. She tugs the gap wide.",
+       "scene": "Elsie bends the two lower flaps up to make the familiar paper hat shape. She opens the gap underneath and flattens it into a diamond. Keep the red paint pot beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the tips up. She tugs the gap wide.",
+       "scene": "Elsie bends the lower tips of the paper diamond upwards. She opens the new gap and flattens the paper into a smaller diamond. Whitewashed cottages with grey slate roofs climb the hill behind the harbour. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She pulls the top tips out. The paper is a boat!",
+       "scene": "Elsie pulls the two top points apart. The sheet opens into a traditional paper boat with a wide, flat base. She smiles at it. The red paint pot remains beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "Elsie paints a red sail on the side. She must wait.",
+       "scene": "Elsie uses one fingertip to paint a simple red triangular sail on one side of the white paper boat. The boat rests on the sand while the paint dries. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "The boat sails in a rock pool. No! It tips to one side.",
+       "scene": "Elsie kneels at the same shallow rock pool. The dry white boat with its red painted sail floats, then leans sharply to one side. Elsie notices at once and reaches towards it. A seagull is far off on the curved granite pier. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "Elsie lifts it out and pats the base flat. The boat sails on.",
+       "scene": "Elsie pats the base of the paper boat flat, then sets it back in the rock pool. It floats upright with the red sail facing her. Elsie beams. The harbour, small fishing boats and hillside cottages remain behind her. Elsie\u2019s eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "paint",
+      "sail",
+      "bends",
+      "flaps",
+      "tugs",
+      "pulls"
+     ],
+     "focus_word_examples": [
+      "paint",
+      "paints",
+      "sail",
+      "wait",
+      "sails"
+     ],
+     "tricky_words_used": [
+      "has",
+      "I",
+      "want",
+      "to",
+      "a",
+      "she",
+      "said",
+      "the",
+      "is",
+      "no",
+      "one",
+      "paper"
+     ],
+     "writer_tricky_word": "paper",
+     "cover_brief": "Elsie kneels on the golden sand beside a clear rock pool at low tide. Her finished traditional white paper boat floats upright, with the red painted sail visible. Behind her are St Ives\u2019 curved granite pier, small moored fishing boats and whitewashed cottages with grey slate roofs climbing the hill. Keep the scene uncluttered and warm. Elsie wears her yellow long-sleeved top, blue trousers and red wellington boots. Her eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.1019,
+   "usage": {
+    "input_tokens": 10521,
+    "input_tokens_details": {
+     "cache_write_tokens": 10518,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1642,
+    "output_tokens_details": {
+     "reasoning_tokens": 516
+    },
+    "total_tokens": 12163
+   },
+   "data": {
+    "cold_read": "A clear, warm build story at exemplar level. Elsie drives every stage, tests what she has made, notices the problem and fixes it herself. The paper boat is familiar and drawable. The story stays in one location with two key objects, no adult and one simple mechanism. The phonics contract and read_words pattern are met.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Natural language",
+      "detail": "\u201cShe bends the paper end to end\u201d sounds like an instruction rather than something a young child would naturally say. It has been changed to \u201cShe bends the paper so the ends meet.\u201d"
+     }
+    ],
+    "fixed_story": {
+     "title": "Elsie and the Paper Boat",
+     "premise": {
+      "hero_want": "Elsie wants to make a paper boat and sail it in a rock pool.",
+      "problem": "The boat tips to one side when Elsie tests it.",
+      "mechanism": "Elsie uses the familiar folds of a traditional paper boat. Its open base lets it float.",
+      "resolution": "Elsie lifts the boat out, pats its base flat and sails it again."
+     },
+     "key_objects": [
+      {
+       "name": "Paper boat",
+       "description": "One white rectangular sheet that becomes a traditional folded paper boat with a red sail painted on one side."
+      },
+      {
+       "name": "Red paint pot",
+       "description": "A small, open pot of red finger paint."
+      }
+     ],
+     "cast": [
+      {
+       "id": "elsie",
+       "who": "Elsie, a six-year-old girl",
+       "appearance": "Warm brown skin and dark brown curly hair in hair exactly as in her reference image. She wears a yellow long-sleeved top, blue trousers and red wellington boots. Her knees and shoulders are covered. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "Elsie has paper and red paint. \u201cI want to make a boat,\u201d she said.",
+       "scene": "At low tide in St Ives harbour, Elsie sits on the golden sand beside a shallow rock pool. She holds one flat, white rectangular sheet. The small red paint pot is beside her. The curved granite pier and a few moored fishing boats are in the background. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the paper so the ends meet. She bends each top tip in.",
+       "scene": "In the same spot, Elsie presses the two short ends of the white sheet together. She then bends the two top corners towards the centre. The red paint pot stays beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the flaps up. She tugs the gap wide.",
+       "scene": "Elsie bends the two lower flaps up to make the familiar paper hat shape. She opens the gap underneath and flattens it into a diamond. Keep the red paint pot beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She bends the tips up. She tugs the gap wide.",
+       "scene": "Elsie bends the lower tips of the paper diamond upwards. She opens the new gap and flattens the paper into a smaller diamond. Whitewashed cottages with grey slate roofs climb the hill behind the harbour. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "She pulls the top tips out. The paper is a boat!",
+       "scene": "Elsie pulls the two top points apart. The sheet opens into a traditional paper boat with a wide, flat base. She smiles at it. The red paint pot remains beside her. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "Elsie paints a red sail on the side. She must wait.",
+       "scene": "Elsie uses one fingertip to paint a simple red triangular sail on one side of the white paper boat. The boat rests on the sand while the paint dries. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "The boat sails in a rock pool. No! It tips to one side.",
+       "scene": "Elsie kneels at the same shallow rock pool. The dry white boat with its red painted sail floats, then leans sharply to one side. Elsie notices at once and reaches towards it. A seagull is far off on the curved granite pier. Elsie\u2019s eyes are solid black filled ovals."
+      },
+      {
+       "text": "Elsie lifts it out and pats the base flat. The boat sails on.",
+       "scene": "Elsie pats the base of the paper boat flat, then sets it back in the rock pool. It floats upright with the red sail facing her. Elsie beams. The harbour, small fishing boats and hillside cottages remain behind her. Elsie\u2019s eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "paint",
+      "sail",
+      "bends",
+      "flaps",
+      "tugs",
+      "pulls"
+     ],
+     "focus_word_examples": [
+      "paint",
+      "paints",
+      "sail",
+      "wait",
+      "sails"
+     ],
+     "tricky_words_used": [
+      "has",
+      "I",
+      "want",
+      "to",
+      "a",
+      "she",
+      "said",
+      "so",
+      "the",
+      "is",
+      "no",
+      "one",
+      "paper"
+     ],
+     "writer_tricky_word": "paper",
+     "cover_brief": "Elsie kneels on the golden sand beside a clear rock pool at low tide. Her finished traditional white paper boat floats upright, with the red painted sail visible. Behind her are St Ives\u2019 curved granite pier, small moored fishing boats and whitewashed cottages with grey slate roofs climbing the hill. Keep the scene uncluttered and warm. Elsie wears her yellow long-sleeved top, blue trousers and red wellington boots. Her eyes are solid black filled ovals."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1259,
+   "usage": {
+    "input_tokens": 12091,
+    "input_tokens_details": {
+     "cache_write_tokens": 12088,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2181,
+    "output_tokens_details": {
+     "reasoning_tokens": 475
+    },
+    "total_tokens": 14272
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "An establishing view of Elsie sitting on the golden sand beside a shallow rock pool. She holds a flat white rectangular sheet. A small pot of red finger paint sits beside her. St Ives harbour, its curved granite pier, moored fishing boats and hillside cottages make the location clear.",
+      "changed_from_previous": "Opening image. The paper is still flat and unmarked. No building has begun.",
+      "must_not_change": "Elsie\u2019s yellow long-sleeved top, blue trousers, red wellington boots, two dark curly hair exactly as in her reference image and solid black filled oval eyes. Keep the same white sheet, red paint pot, rock pool and low-tide harbour location. No adult or extra play objects.",
+      "draft_brief": "Medium-wide establishing shot from slightly above sand level. Elsie sits beside one shallow rock pool, looking at the flat white rectangular sheet in her hands. The red paint pot is within reach. Show the curved granite pier and a few small moored fishing boats behind her, with whitewashed cottages and grey slate roofs climbing the hill. Keep background detail soft and uncluttered. Elsie\u2019s knees and shoulders are covered. Her eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Elsie\u2019s hands bend the white paper so its short ends meet. The top corners are bent in towards the centre, forming the first clear folded shape.",
+      "changed_from_previous": "The flat sheet from page 1 is now bent in two with both top corners folded in. It is still white and has no red sail.",
+      "must_not_change": "Use the same sheet with no tears, cuts or added parts. The red paint remains unused. Elsie\u2019s clothes, hair and skin tone stay identical. The action remains on the same patch of sand beside the rock pool.",
+      "draft_brief": "Overhead close-medium view centred on Elsie\u2019s lap and hands rather than her full body. Show the short ends of the white sheet aligned and the two top corners bent neatly towards the centre. Part of Elsie\u2019s yellow sleeves and blue trousers frame the paper. The red paint pot remains on the sand at the edge of the image. If her face is visible, her eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "The folded paper fills the frame. Its lower flaps are bent up. Elsie\u2019s fingers pull open the gap underneath, turning the hat-like form into a broad diamond.",
+      "changed_from_previous": "The folded shape from page 2 now has its lower flaps raised. The centre has been opened and is becoming a flat diamond.",
+      "must_not_change": "Keep every existing fold from page 2. Do not show a finished boat yet. Do not add a mast, string, stick, brush or scissors. The paper remains plain white.",
+      "draft_brief": "Extreme close-up of the mechanism. The paper must fill most of the frame. Show Elsie\u2019s small hands tugging the lower gap open while the raised flaps remain visible. The shape should clearly be changing from a paper hat form into a diamond. Only her yellow cuffs and hands need to appear; her face and body are off-page. A little golden sand may show around the paper."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Elsie bends the lower tips of the paper diamond upwards. She opens the new gap so the paper becomes a smaller, thicker diamond.",
+      "changed_from_previous": "The broad diamond from page 3 now has both lower tips bent up and has been opened into a smaller diamond.",
+      "must_not_change": "Preserve the earlier folds and the same clean white paper. The boat must not be fully opened yet. The red paint is still unused. Keep the same low-tide light and location.",
+      "draft_brief": "Low side-angle close shot of Elsie\u2019s hands holding the smaller paper diamond just above the sand. One hand supports it while the other widens the new lower gap. The layered upward folds must be easy to see. Include the blurred rock pool behind the paper to keep the location connected. Elsie\u2019s face is off-page."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Elsie pulls the two top points apart. The layered paper opens into a recognisable traditional paper boat with a broad base. Elsie looks pleased with what she has made.",
+      "changed_from_previous": "The smaller diamond from page 4 has opened into the final boat shape. The paper is still plain white and dry.",
+      "must_not_change": "The boat must be made from the same single sheet with the same fold layers. Do not add a real sail, mast or any other part. Keep the red paint pot nearby and untouched. Elsie\u2019s appearance remains fixed.",
+      "draft_brief": "Over-the-shoulder view from behind Elsie. Her hands hold the newly opened traditional paper boat at chest height, with its broad base and pointed ends clearly visible. Show part of her delighted profile and hair exactly as in her reference image. The red paint pot waits on the sand below. The harbour is softly visible beyond. Elsie\u2019s visible eye is a solid black filled oval."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "The finished white boat rests on the sand. Elsie has used one fingertip to paint a simple red triangular sail on one side. She pauses while the wet paint dries.",
+      "changed_from_previous": "The plain white boat from page 5 now has one red painted sail on one side. Its folds and shape have not changed.",
+      "must_not_change": "The sail is only a flat painted triangle, not a separate fabric sail. Add no mast or brush. Keep the paint on one side only and keep the boat out of the water while it is wet. Use the same red paint pot.",
+      "draft_brief": "Medium profile shot. Elsie kneels beside the boat, which rests upright on dry golden sand. A fresh red triangular sail is painted on the visible side. Elsie holds her red-tipped finger away from the boat and waits. The open red paint pot is beside her hand. The rock pool is close but the boat has not entered it. Her clothes and hair exactly as in her reference image remain unchanged. Her eyes are solid black filled ovals."
+     },
+     {
+      "page": 7,
+      "what_child_sees": "At water level, the white paper boat floats in the rock pool but leans sharply to one side. Its dry red painted sail remains visible. Elsie notices the problem and reaches towards it.",
+      "changed_from_previous": "The paint from page 6 is now dry. The boat has moved from the sand into the rock pool and has begun to tip because its base is uneven.",
+      "must_not_change": "Keep the same traditional folded boat and the same red triangle on its side. Do not sink, tear or soak the boat. Do not add waves, deep water or danger. Elsie stays at the pool edge and does not step into the water.",
+      "draft_brief": "Low, water-level close shot with the tipped paper boat dominating the foreground. One side of its base dips towards the shallow water while the other rises. The red painted sail is easy to see. In the upper background, show part of Elsie\u2019s concerned face and her hand reaching safely from the sand. A distant seagull may stand on the granite pier. Elsie\u2019s visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 8,
+      "what_child_sees": "Elsie beams as the corrected boat floats upright in the rock pool. Its base is flat and its red painted sail faces her.",
+      "changed_from_previous": "Elsie has lifted out the tipped boat, patted its base flat and returned it to the pool. It now sails upright instead of leaning.",
+      "must_not_change": "The same boat, folds and red painted sail must remain. Show no replacement boat and no new object. Keep the water shallow, the tide low and Elsie\u2019s appearance identical. The red paint pot need not be in this tight reaction shot.",
+      "draft_brief": "Tight payoff reaction shot. Elsie\u2019s delighted face and upper body fill one side of the frame as she looks down at the upright paper boat floating in the lower foreground. Her smile is broad, and her solid black filled oval eyes show clear pride. The red sail faces her. Use the curved granite pier, small fishing boats and pale hillside cottages as a soft St Ives background. Keep her yellow sleeves and covered shoulders visible."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.1305,
+   "usage": {
+    "input_tokens": 14328,
+    "input_tokens_details": {
+     "cache_write_tokens": 14325,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1962,
+    "output_tokens_details": {
+     "reasoning_tokens": 513
+    },
+    "total_tokens": 16290
+   },
+   "data": {
+    "reasoning": "The backward chain uses only necessary evidence: the same sheet, the red paint pot, the nearby rock pool, persistent fold lines, the painted sail and the boat\u2019s base. The final flat base must answer the visibly pinched base that causes the page 7 tip. The faint damp edge from the failed test remains on page 8. No extra prop or new mechanism is introduced.",
+    "pages": [
+     {
+      "page": 8,
+      "evidence_planted": "The final boat must retain the same layered folds and red painted sail seen earlier. Its base is now visibly broad and flat, directly answering the tipped, pinched base on page 7. A faint damp line along the lower paper edge remains from the first test.",
+      "revised_brief": "Tight payoff reaction shot. Elsie\u2019s delighted face and upper body fill one side of the frame. Her solid black filled oval eyes look down at the same white paper boat floating upright in the lower foreground. The red painted sail faces her. Make the corrected base broad and flat. Keep a faint damp line along the boat\u2019s lower edge as residue from the failed test. The curved granite pier, small fishing boats and pale hillside cottages are soft in the background. Elsie\u2019s yellow long-sleeved top, blue trousers and two dark hair exactly as in her reference image remain unchanged."
+     },
+     {
+      "page": 7,
+      "evidence_planted": "The boat must enter the pool with the same red sail and fold pattern from page 6. Its base must still be narrow and slightly pinched so the tip has a visible cause. The dipped lower edge becomes damp here and persists on page 8.",
+      "revised_brief": "Low water-level close shot. The same white paper boat dominates the foreground of the shallow rock pool. Its narrow, slightly pinched base makes it lean sharply to one side. The lower edge on that side just touches the water and darkens slightly with damp. The dry red painted sail remains clear and unchanged. In the upper background, show part of Elsie\u2019s concerned face and one hand reaching safely from the sand. Her visible eyes are solid black filled ovals. Do not sink or tear the boat."
+     },
+     {
+      "page": 6,
+      "evidence_planted": "The boat must already have the narrow, slightly pinched base that will make it tip on page 7. The red triangular sail is added here and must stay in the same place through pages 7 and 8. The pause to wait establishes that the paint is dry before the boat enters the water.",
+      "revised_brief": "Medium profile shot. The finished white paper boat rests upright on dry golden sand, but its base is still narrow and slightly pinched from being pulled open. Elsie has just painted one simple red triangle on the visible side with her fingertip. She holds her red-tipped finger away while the wet paint dries. The open red paint pot is beside her hand. The nearby rock pool is visible, but the boat has not entered it. Add no mast, brush or separate sail. Elsie\u2019s eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "The final traditional boat shape must be recognisable here. Its layered creases must persist to the end. Its base should open enough to form a boat but remain slightly pinched and uneven, setting up the later failed test. The boat is still plain white so the red sail clearly originates on page 6.",
+      "revised_brief": "Over-the-shoulder view from behind Elsie. She pulls the two top points of the smaller diamond apart, revealing a traditional white paper boat. Show the familiar pointed ends, layered central folds and a base that is open but still narrow and slightly pinched. The paper has no red mark yet. The same red paint pot waits on the sand below. Show part of Elsie\u2019s pleased profile and hair exactly as in her reference image. Her visible eye is a solid black filled oval."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "The smaller diamond made here must contain the layered upward folds that become the boat\u2019s pointed ends and central layers on page 5. The paper must remain clean, dry and unpainted.",
+      "revised_brief": "Low side-angle close shot. Elsie bends the lower tips of the broad paper diamond upwards, then opens the new lower gap and presses it into a smaller, thicker diamond. Make the layered upward folds easy to see because they must remain visible in the finished boat. The paper is still plain white. The blurred rock pool behind it keeps the location connected. Elsie\u2019s face remains off-page."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The raised lower flaps and opened central gap must create the broad diamond needed on page 4. All folds from page 2 must remain visible. The close view establishes that this is one continuous sheet, not a new object.",
+      "revised_brief": "Extreme close-up of the mechanism, with the same white paper filling most of the frame. Its lower flaps are bent up. Elsie\u2019s hands tug open the gap beneath the hat-like form and begin flattening it into one broad diamond. Preserve the two inward top folds from page 2 as visible layers. Only Elsie\u2019s hands and yellow cuffs appear; her face and body are off-page. Show no tools or added parts."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "The short ends must meet to establish the main centre fold. The two inward top folds must be clear because they remain as layers through every later shape. The paper must match the untouched sheet from page 1.",
+      "revised_brief": "Overhead close-medium view centred on Elsie\u2019s lap and hands. The short ends of the same white rectangular sheet meet along a firm centre fold. Elsie bends both top corners in towards the centre, making two matching triangular layers. Keep the sheet unmarked and dry. Part of her yellow sleeves and blue trousers frames the paper. The same red paint pot remains unused at the edge of the image. If her face is visible, her eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "The opening must establish every necessary later element without adding extra props: one flat white rectangular sheet that becomes the boat, one red paint pot used on page 6, and the shallow rock pool used for the test. The low-tide harbour landmarks anchor all eight pages in one connected location.",
+      "revised_brief": "Medium-wide establishing shot at low tide in St Ives harbour. Elsie sits on dry golden sand beside the same shallow rock pool used later for the test. She holds one untouched, flat white rectangular sheet large enough to become the boat. One small red finger-paint pot sits within reach; the paint has not been used. Behind her, show the curved granite pier, a few small moored fishing boats and whitewashed cottages with grey slate roofs climbing the hill. Add no adult, tools or other play objects. Elsie wears her yellow long-sleeved top, blue trousers and red wellington boots. Her hair exactly matches her reference image. Her eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.2032,
+   "usage": {
+    "input_tokens": 16943,
+    "input_tokens_details": {
+     "cache_write_tokens": 16940,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3949,
+    "output_tokens_details": {
+     "reasoning_tokens": 1657
+    },
+    "total_tokens": 20892
+   },
+   "data": {
+    "storyboard_verdict": "plausible",
+    "physical_issues_found": [],
+    "cover": {
+     "brief": "Use the page 6 image. Elsie is on the left in a medium-close profile, smiling softly as she finishes the red painted sail on her white paper boat. Her face is clear and large. The boat rests on dry golden sand on the right, with the red paint pot beside it and the St Ives rock pool beyond. Show the curved granite pier and pale hillside cottages softly in the background. Leave clear sky space for the title. Do not show the boat tipping or the final successful test. Elsie\u2019s eyes are solid black filled ovals."
+    },
+    "object_placements": [
+     {
+      "object": "Paper boat, including the original white sheet and all folded stages",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "object": "Red paint pot",
+      "pages_present": [
+       1,
+       2,
+       5,
+       6
+      ]
+     }
+    ],
+    "cast_placements": [
+     {
+      "cast_id": "elsie",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ],
+    "cover_source_page": 6,
+    "cover_hero_side": "left",
+    "cover_choice_reason": "Page 6 gives Elsie a clear, warm and fairly large face while showing the familiar painting activity and the paper boat. It conveys the story idea without revealing either the failed test or the final fix.",
+    "landmark": {
+     "name": "St Michael\u2019s Mount",
+     "fact": "At low tide, a stone path links this castle island to the Cornish shore.",
+     "image_brief": "Postcard view of St Michael\u2019s Mount rising from a blue Cornish bay, with its castle on top, small boats nearby and the stone causeway visible at low tide."
+    },
+    "country_iso2": "GB",
+    "country_facts": [
+     "The United Kingdom has four nations: England, Scotland, Wales and Northern Ireland.",
+     "Wild puffins nest on cliffs around the coast.",
+     "Big Ben is the name of a famous bell in London."
+    ],
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Medium-wide establishing shot at low tide in St Ives harbour. Elsie sits on dry golden sand beside the shallow rock pool used later for the test. She holds one untouched, flat white rectangular sheet. One small open pot of red finger paint sits within reach. Behind her are the curved granite pier, a few small moored fishing boats and whitewashed cottages with grey slate roofs. Add no adult, tools or other play objects. Elsie wears a yellow long-sleeved top, blue trousers and red wellington boots. Her hair exactly matches her reference image. Her eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It is one flat, dry, unmarked rectangular sheet in Elsie\u2019s hands."
+       },
+       {
+        "object": "Red paint pot",
+        "assertion": "The small pot is visible within Elsie\u2019s reach and the paint is unused."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her fixed clothes, hair as in her reference image and solid black filled oval eyes are visible."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It must not have folds, red marks or a boat shape."
+       },
+       {
+        "object": "Scene",
+        "assertion": "No adult, tools or extra play objects are present."
+       }
+      ],
+      "carries_forward": "The same sheet and paint pot remain beside the same rock pool; the sheet is ready for its first folds."
+     },
+     {
+      "page": 2,
+      "brief": "Overhead close-medium view cropped below Elsie\u2019s chin. On her lap, the short ends of the same white sheet meet along a centre fold. She bends both top corners towards the centre to form matching triangular layers. Her yellow sleeves and blue trousers frame the paper. The unused red paint pot remains at the edge of the frame.",
+      "required_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "The sheet is folded end to end with both top corners bent towards the centre."
+       },
+       {
+        "object": "Red paint pot",
+        "assertion": "The same unused pot remains visible at the frame edge."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her hands, yellow sleeves and blue trousers match page 1."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It must not yet be a diamond or finished boat."
+       },
+       {
+        "object": "White paper",
+        "assertion": "It has no red paint or added parts."
+       }
+      ],
+      "carries_forward": "The centre fold and two inward corner folds remain as permanent layers for the next stage."
+     },
+     {
+      "page": 3,
+      "brief": "Extreme close-up of the mechanism. The same white paper fills most of the frame. Its two lower flaps are bent up. Elsie\u2019s hands pull open the gap beneath the hat-like form and flatten it into a broad diamond. The inward folds from page 2 remain visible as layers. Only her hands and yellow cuffs appear against a little golden sand.",
+      "required_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "The lower flaps are raised and the opened form is becoming a broad diamond."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her hands and matching yellow cuffs visibly perform the opening action."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It must not yet have the smaller diamond or final boat shape."
+       },
+       {
+        "object": "White paper",
+        "assertion": "It remains unpainted and has no added parts."
+       }
+      ],
+      "carries_forward": "The paper leaves the frame as one broad, flat diamond with all earlier layers intact."
+     },
+     {
+      "page": 4,
+      "brief": "Low side-angle close shot. Elsie bends the lower tips of the broad diamond upwards. She opens the new lower gap and presses the paper into a smaller, thicker diamond. The layered upward folds are clear. The paper remains dry and white, with the rock pool blurred behind it. Elsie\u2019s face is off-page.",
+      "required_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It is now a smaller diamond with both lower tips folded upwards as visible layers."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her hands and yellow cuffs match the previous close-up."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "White paper",
+        "assertion": "It must not yet be pulled open into a boat."
+       },
+       {
+        "object": "White paper",
+        "assertion": "It has no red mark, mast or separate sail."
+       }
+      ],
+      "carries_forward": "The smaller layered diamond is ready for its two top points to be pulled apart."
+     },
+     {
+      "page": 5,
+      "brief": "Over-the-shoulder view from behind Elsie. She pulls the two top points of the smaller diamond apart, revealing a traditional white paper boat. Show its pointed ends and layered centre. Its base is open but remains narrow and slightly pinched. The red paint pot waits on the sand below. Part of Elsie\u2019s pleased profile and her hair exactly as in her reference image are visible; her visible eye is a solid black filled oval.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "The same sheet is now a recognisable traditional boat with a narrow, slightly pinched base."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her matching profile, hair and clothes as in her reference image, and one solid black filled oval eye are visible."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It must not yet have the red painted sail."
+       },
+       {
+        "object": "Paper boat",
+        "assertion": "It has no mast, fabric sail or added component."
+       }
+      ],
+      "carries_forward": "The completed white boat keeps its narrow pinched base; the waiting red paint pot is used next."
+     },
+     {
+      "page": 6,
+      "brief": "Medium-close profile composed for possible cover use. Elsie is on the left with her face clear and a soft, proud smile. The white paper boat rests on dry golden sand on the right. Its base remains narrow and slightly pinched. Elsie has painted one simple red triangle on its visible side with her fingertip. She holds her red-tipped finger away while the wet paint dries. The open red paint pot is beside the boat, and the nearby rock pool is visible beyond. Her eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It has the same narrow pinched base and one newly painted wet red triangle on its side."
+       },
+       {
+        "object": "Red paint pot",
+        "assertion": "The same open pot is beside the boat and Elsie\u2019s fingertip has matching red paint."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her clear, happy face and fixed appearance match earlier pages."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It is not yet in the water."
+       },
+       {
+        "object": "Red sail",
+        "assertion": "It is painted directly on the paper, not attached as a separate sail or mast."
+       }
+      ],
+      "carries_forward": "The red triangle dries in the same position; the narrow pinched base remains for the first water test."
+     },
+     {
+      "page": 7,
+      "brief": "Low water-level close shot. The same white paper boat dominates the shallow rock pool. Its narrow, pinched base makes it lean sharply towards one side. That lower paper edge touches the water and visibly darkens with damp. The red painted triangle is dry and unchanged. In the upper background, part of Elsie\u2019s concerned face and one hand reach safely from the sand. Her visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "Its narrow pinched base is visibly connected to its sharp lean in the water."
+       },
+       {
+        "object": "Paper boat",
+        "assertion": "The dipped lower edge is darker where water has soaked into it."
+       },
+       {
+        "object": "Red sail",
+        "assertion": "The dry painted triangle remains on the same side."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "She remains on dry sand and reaches towards the boat."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It is not sunk, torn or replaced."
+       }
+      ],
+      "carries_forward": "Elsie lifts out this same boat; its damp lower edge remains while she broadens and flattens the pinched base."
+     },
+     {
+      "page": 8,
+      "brief": "Tight payoff reaction shot. Elsie\u2019s delighted face and upper body fill the left side as she looks down at the same boat floating upright in the lower foreground. Its corrected base is visibly broad and flat. The red painted sail still faces her, and a faint darker damp line remains along the lower paper edge from page 7. The curved granite pier and hillside cottages are soft in the background. Elsie\u2019s eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "Its broadened flat base is visibly connected to its upright position in the water."
+       },
+       {
+        "object": "Paper boat",
+        "assertion": "A faint damp line remains along the lower edge from the failed test."
+       },
+       {
+        "object": "Red sail",
+        "assertion": "The same red painted triangle remains on the same side."
+       },
+       {
+        "object": "Elsie",
+        "assertion": "Her fixed appearance and large delighted reaction are clear."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Paper boat",
+        "assertion": "It must not appear pristine, dry, newly replaced or fitted with extra parts."
+       }
+      ],
+      "carries_forward": "Final state: the original paper boat floats upright with its corrected flat base, persistent red sail and faint damp edge."
+     }
+    ]
+   }
+  }
+ ]
+}

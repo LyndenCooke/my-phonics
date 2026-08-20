@@ -1,0 +1,874 @@
+{
+ "child": {
+  "name": "Yusuf",
+  "age": 7,
+  "gender": "boy",
+  "skinTone": "dark brown",
+  "hair": "short black hair"
+ },
+ "setting": {
+  "country": "Malaysia",
+  "city": "Kuala Lumpur",
+  "culture": "A Muslim family in Malaysia; a kampung fishing village near the city - wooden stilt houses with steep tiled roofs, a plank jetty over calm green-blue water, moored wooden fishing boats, coconut palms; sandy shore and worn grey planks underfoot."
+ },
+ "level": 7,
+ "sound": "ore",
+ "likes": "fishing and boats",
+ "shape": "First time alone",
+ "model": "gpt-5.6-sol",
+ "shiftyViolations": [],
+ "objectViolations": [],
+ "assertionsPerPage": [
+  5,
+  4,
+  5,
+  5,
+  5,
+  5,
+  5,
+  4
+ ],
+ "object_placements": [
+  {
+   "object": "Basket of wet washing",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "object": "Washing line and pegs",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  }
+ ],
+ "totalCost": 0.9426,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1897,
+   "usage": {
+    "input_tokens": 2612,
+    "input_tokens_details": {
+     "cache_write_tokens": 2609,
+     "cached_tokens": 0
+    },
+    "output_tokens": 5889,
+    "output_tokens_details": {
+     "reasoning_tokens": 4935
+    },
+    "total_tokens": 8501
+   },
+   "data": {
+    "title": "Yusuf Hangs the Wash",
+    "premise": {
+     "hero_want": "Yusuf wants to hang the wet wash with no help for the first time.",
+     "problem": "He has not done it before, and he feels a bit nervous.",
+     "mechanism": "Yusuf presses ordinary wooden clothes pegs onto a washing line to hold each wet shirt in place.",
+     "resolution": "Yusuf hangs all the shirts by himself and feels ready to do it again."
+    },
+    "key_objects": [
+     {
+      "name": "Basket of wet washing",
+      "description": "A plain woven basket holding four wet, long-sleeved shirts: yellow, red, green and blue."
+     },
+     {
+      "name": "Washing line and pegs",
+      "description": "A low washing line with simple wooden clothes pegs."
+     }
+    ],
+    "cast": [
+     {
+      "id": "yusuf",
+      "who": "Yusuf, a seven-year-old Muslim boy from Malaysia.",
+      "appearance": "Medium-brown skin, short black hair, teal long-sleeved top, loose tan trousers and brown sandals. His eyes are solid black filled ovals."
+     },
+     {
+      "id": "mum",
+      "who": "Yusuf's mum, the only adult in the story.",
+      "appearance": "Medium-brown skin, mustard-yellow hijab, long navy tunic, loose grey trousers and flat shoes. Her eyes are solid black filled ovals."
+     }
+    ],
+    "pages": [
+     {
+      "text": "By the sandy shore, Mum has a basket of wet wash. “Can you hang it with no help?” she said.",
+      "scene": "Outside one wooden stilt house in the kampung fishing village. Mum holds the basket beside a low washing line. Yusuf looks at the wash. Calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms sit in the background. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Yusuf has not hung the wash before. His hands feel cold.",
+      "scene": "Yusuf stands close to the line with his hands held together. Mum waits calmly beside him. The basket and empty line remain in place. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum clips one shirt on the line. “Press the peg hard,” she said.",
+      "scene": "Mum clips the yellow shirt to the line with two wooden pegs as Yusuf watches closely. Three shirts remain in the basket. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum went in. Yusuf gets a wet shirt from the basket.",
+      "scene": "Mum is now inside and out of sight. Yusuf stands alone by the line and lifts the red shirt from the basket. The yellow shirt hangs on the line. Yusuf's eyes are solid black filled ovals."
+     },
+     {
+      "text": "He clips it on the line. It stays up.",
+      "scene": "Yusuf presses a wooden peg onto the red shirt. The red and yellow shirts hang firmly on the line. His eyes are solid black filled ovals."
+     },
+     {
+      "text": "Yusuf smiles and clips up more shirts.",
+      "scene": "Yusuf clips the last blue shirt to the line. The yellow, red and green shirts already hang beside it. The basket is empty. His eyes are solid black filled ovals."
+     },
+     {
+      "text": "Soon, all the wash hangs on the line. Yusuf is glad he did it with no help.",
+      "scene": "Yusuf stands proudly beside all four shirts on the line. The empty basket rests nearby. Boats float on the calm water behind him. His eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum came out, and Yusuf said, “I did it! I can hang the wash next time!”",
+      "scene": "Mum returns and smiles at Yusuf and the neat row of shirts. Yusuf points proudly to the washing line. The same stilt house, jetty, boats, sandy shore and coconut palms remain behind them. All visible eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "shore",
+     "before",
+     "sandy",
+     "basket",
+     "shirt",
+     "smiles"
+    ],
+    "focus_word_examples": [
+     "shore",
+     "before",
+     "more"
+    ],
+    "tricky_words_used": [
+     "I",
+     "the",
+     "a",
+     "no",
+     "is",
+     "has",
+     "of",
+     "he",
+     "she",
+     "you",
+     "said",
+     "all",
+     "one",
+     "cold"
+    ],
+    "writer_tricky_word": "",
+    "cover_brief": "Yusuf proudly clips a wet red shirt onto a low washing line beside his family's wooden stilt house. Mum watches from the doorway. Show the basket of wet shirts, sandy shore, worn grey planks, calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms. Yusuf and Mum wear their established modest clothes. All eyes are solid black filled ovals. Keep the image warm, bright and uncluttered."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.1207,
+   "usage": {
+    "input_tokens": 8595,
+    "input_tokens_details": {
+     "cache_write_tokens": 8592,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2592,
+    "output_tokens_details": {
+     "reasoning_tokens": 1552
+    },
+    "total_tokens": 11187
+   },
+   "data": {
+    "violations_found": [
+     "The word “before” is not decodable under the shifty-sounds rule because its unstressed “e” is pronounced /i/ or schwa, not a taught Level 7 sound. It has been replaced with “chore” in the story, focus examples and read_words.",
+     "After the correction, “to” appears in the story and must be included in tricky_words_used."
+    ],
+    "story": {
+     "title": "Yusuf Hangs the Wash",
+     "premise": {
+      "hero_want": "Yusuf wants to hang the wet wash with no help for the first time.",
+      "problem": "The chore is new, and Yusuf feels a bit nervous.",
+      "mechanism": "Yusuf presses ordinary wooden clothes pegs onto a washing line to hold each wet shirt in place.",
+      "resolution": "Yusuf hangs all the shirts by himself and feels ready to do it again."
+     },
+     "key_objects": [
+      {
+       "name": "Basket of wet washing",
+       "description": "A plain woven basket holding four wet, long-sleeved shirts: yellow, red, green and blue."
+      },
+      {
+       "name": "Washing line and pegs",
+       "description": "A low washing line with simple wooden clothes pegs."
+      }
+     ],
+     "cast": [
+      {
+       "id": "yusuf",
+       "who": "Yusuf, a seven-year-old Muslim boy from Malaysia.",
+       "appearance": "Medium-brown skin, short black hair, teal long-sleeved top, loose tan trousers and brown sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Yusuf's mum, the only adult in the story.",
+       "appearance": "Medium-brown skin, mustard-yellow hijab, long navy tunic, loose grey trousers and flat shoes. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "By the sandy shore, Mum has a basket of wet wash. “Can you hang it with no help?” she said.",
+       "scene": "Outside one wooden stilt house in the kampung fishing village. Mum holds the basket beside a low washing line. Yusuf looks at the wash. Calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms sit in the background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "This chore is new to Yusuf. His hands feel cold.",
+       "scene": "Yusuf stands close to the line with his hands held together. Mum waits calmly beside him. The basket and empty line remain in place. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum clips one shirt on the line. “Press the peg hard,” she said.",
+       "scene": "Mum clips the yellow shirt to the line with two wooden pegs as Yusuf watches closely. Three shirts remain in the basket. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum went in. Yusuf gets a wet shirt from the basket.",
+       "scene": "Mum is now inside and out of sight. Yusuf stands alone by the line and lifts the red shirt from the basket. The yellow shirt hangs on the line. Yusuf's eyes are solid black filled ovals."
+      },
+      {
+       "text": "He clips it on the line. It stays up.",
+       "scene": "Yusuf presses a wooden peg onto the red shirt. The red and yellow shirts hang firmly on the line. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Yusuf smiles and clips up more shirts.",
+       "scene": "Yusuf clips the last blue shirt to the line. The yellow, red and green shirts already hang beside it. The basket is empty. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Soon, all the wash hangs on the line. Yusuf is glad he did it with no help.",
+       "scene": "Yusuf stands proudly beside all four shirts on the line. The empty basket rests nearby. Boats float on the calm water behind him. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum came out, and Yusuf said, “I did it! I can hang the wash next time!”",
+       "scene": "Mum returns and smiles at Yusuf and the neat row of shirts. Yusuf points proudly to the washing line. The same stilt house, jetty, boats, sandy shore and coconut palms remain behind them. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "shore",
+      "chore",
+      "sandy",
+      "basket",
+      "shirt",
+      "smiles"
+     ],
+     "focus_word_examples": [
+      "shore",
+      "chore",
+      "more"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a",
+      "no",
+      "to",
+      "is",
+      "has",
+      "of",
+      "he",
+      "she",
+      "you",
+      "said",
+      "all",
+      "one",
+      "cold"
+     ],
+     "writer_tricky_word": "",
+     "cover_brief": "Yusuf proudly clips a wet red shirt onto a low washing line beside his family's wooden stilt house. Mum watches from the doorway. Show the basket of wet shirts, sandy shore, worn grey planks, calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms. Yusuf and Mum wear their established modest clothes. All eyes are solid black filled ovals. Keep the image warm, bright and uncluttered."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.1363,
+   "usage": {
+    "input_tokens": 11323,
+    "input_tokens_details": {
+     "cache_write_tokens": 11320,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2655,
+    "output_tokens_details": {
+     "reasoning_tokens": 1498
+    },
+    "total_tokens": 13978
+   },
+   "data": {
+    "cold_read": "A warm, clear first-time-alone story with one task, one adult, two key objects and one familiar mechanism. Yusuf completes most of the washing and directly causes the successful ending. The main fault is a contradiction about whether he had help; the revised story makes Mum demonstrate with one shirt and Yusuf hang the rest alone.",
+    "issues": [
+     {
+      "severity": "major",
+      "area": "Logic and text continuity",
+      "detail": "Mum asks Yusuf to hang the wash “with no help”, but then clips up one shirt herself. Yusuf later says he completed the task with no help. The revision makes Mum demonstrate with one shirt and asks Yusuf to hang the rest."
+     },
+     {
+      "severity": "minor",
+      "area": "Natural language",
+      "detail": "“His hands feel cold” is a stiff, indirect way to show nerves. The revision simply says that Yusuf feels a bit scared."
+     },
+     {
+      "severity": "minor",
+      "area": "Opening",
+      "detail": "The original opening reads slightly like a picture caption. The revision gives Mum a simple action—setting down the basket—while keeping the location clear."
+     }
+    ],
+    "fixed_story": {
+     "title": "Yusuf Hangs the Wash",
+     "premise": {
+      "hero_want": "Yusuf wants to hang the wet wash for the first time.",
+      "problem": "The chore is new, and Yusuf feels a bit nervous.",
+      "mechanism": "Yusuf presses ordinary wooden clothes pegs onto a washing line to hold each wet shirt in place.",
+      "resolution": "After Mum demonstrates with one shirt, Yusuf hangs the rest by himself."
+     },
+     "key_objects": [
+      {
+       "name": "Basket of wet washing",
+       "description": "A plain woven basket holding four wet, long-sleeved shirts: yellow, red, green and blue."
+      },
+      {
+       "name": "Washing line and pegs",
+       "description": "A low washing line with simple wooden clothes pegs."
+      }
+     ],
+     "cast": [
+      {
+       "id": "yusuf",
+       "who": "Yusuf, a seven-year-old Muslim boy from Malaysia.",
+       "appearance": "Medium-brown skin, short black hair, teal long-sleeved top, loose tan trousers and brown sandals. His eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Yusuf's mum, the only adult in the story.",
+       "appearance": "Medium-brown skin, mustard-yellow hijab, long navy tunic, loose grey trousers and flat shoes. Her eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "The line is by the sandy shore. Mum sets down a basket of wet wash.",
+       "scene": "Outside one wooden stilt house in the kampung fishing village, Mum sets the basket beside a low washing line. Yusuf stands with her. Calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms form the background. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "“Can you hang the wash?” said Mum. This chore is new to Yusuf, and he feels a bit scared.",
+       "scene": "Yusuf looks from Mum to the empty line and the basket. Mum waits calmly beside him. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum clips one shirt on the line. “Can you hang the rest?” she said.",
+       "scene": "Mum clips the yellow shirt to the line with two wooden pegs as Yusuf watches closely. Three shirts remain in the basket. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum went in. Yusuf nods and gets a wet shirt from the basket.",
+       "scene": "Mum is inside and out of sight. Yusuf stands alone by the line and lifts the red shirt from the basket. The yellow shirt hangs on the line. Yusuf's eyes are solid black filled ovals."
+      },
+      {
+       "text": "He clips it on the line. It stays up.",
+       "scene": "Yusuf presses a wooden peg onto the red shirt. The red and yellow shirts hang firmly on the line. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Yusuf smiles and clips up more shirts.",
+       "scene": "Yusuf clips the last blue shirt to the line. The yellow, red and green shirts already hang beside it. The basket is empty. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Soon, all the wash hangs on the line. Yusuf is glad he hung the rest with no help.",
+       "scene": "Yusuf stands proudly beside all four shirts on the line. The empty basket rests nearby. Boats float on the calm water behind him. His eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum came out, and Yusuf said, “I did it! I can hang the wash next time!”",
+       "scene": "Mum returns and smiles at Yusuf and the neat row of shirts. Yusuf points proudly to the washing line. The same stilt house, jetty, boats, sandy shore and coconut palms remain behind them. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "shore",
+      "chore",
+      "sandy",
+      "basket",
+      "shirt",
+      "smiles"
+     ],
+     "focus_word_examples": [
+      "shore",
+      "chore",
+      "more"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a",
+      "no",
+      "to",
+      "is",
+      "of",
+      "he",
+      "she",
+      "you",
+      "said",
+      "all",
+      "one"
+     ],
+     "writer_tricky_word": "",
+     "cover_brief": "Yusuf proudly clips a wet red shirt onto a low washing line beside his family's wooden stilt house. Mum watches from the doorway. Show the basket of wet shirts, sandy shore, worn grey planks, calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms. Yusuf and Mum wear their established modest clothes. All eyes are solid black filled ovals. Keep the image warm, bright and uncluttered."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.146,
+   "usage": {
+    "input_tokens": 13906,
+    "input_tokens_details": {
+     "cache_write_tokens": 13903,
+     "cached_tokens": 0
+    },
+    "output_tokens": 2549,
+    "output_tokens_details": {
+     "reasoning_tokens": 891
+    },
+    "total_tokens": 16455
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "Yusuf and Mum beside an empty washing line near their stilt house. Mum sets down a basket containing four wet shirts. The sandy shore, jetty and fishing boats make the place clear.",
+      "changed_from_previous": "Opening image: the line is empty. The basket contains yellow, red, green and blue long-sleeved shirts.",
+      "must_not_change": "Yusuf wears a teal long-sleeved top, loose tan trousers and brown sandals. Mum wears a mustard-yellow hijab, long navy tunic, loose grey trousers and flat shoes. Keep the washing line parallel to the shore, with the basket near its left post. No other people. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Wide establishing view outside the wooden stilt house. Mum bends slightly to set the full basket beside the empty washing line while Yusuf watches. Include worn grey planks leading towards the sandy shore, calm green-blue water, a plank jetty, moored wooden fishing boats, steep tiled roofs and coconut palms. Keep the city distant and faint. Warm, uncluttered composition; all visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "Yusuf looks at the empty line and wet shirts. His worried face and held-together hands show that the new chore feels a little scary.",
+      "changed_from_previous": "Nothing has been hung yet. Yusuf is now focused on the task; Mum speaks from just outside the frame.",
+      "must_not_change": "The line remains empty. All four shirts remain in the basket in the same colours. Keep Yusuf's clothes, hair and skin tone unchanged. Mum must not be shown doing the task yet. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Medium close reaction view of Yusuf from the chest up, with his hands held together near the bottom of the frame. The empty line crosses the background, and the full basket is visible below it. Mum is off-page, speaking to him. Show a small part of the shore and one moored boat in soft background focus. Yusuf's eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Mum shows Yusuf how to clip the yellow shirt onto the line. Yusuf watches her hands carefully.",
+      "changed_from_previous": "The yellow shirt has moved from the basket to the line and is held by two wooden pegs. Red, green and blue remain in the basket.",
+      "must_not_change": "The yellow shirt must be the first and leftmost shirt on the line. The basket stays near the left post. Yusuf and Mum keep the same clothes. Do not add washing, tools or another adult. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Over-Yusuf's-shoulder view towards Mum and the line. Mum secures the yellow long-sleeved shirt with two plain wooden pegs. Yusuf's head and shoulder frame one side as he watches. The basket below still contains the red, green and blue shirts. Keep the familiar stilt-house wall and calm water behind them. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Yusuf is alone by the line. He nods and lifts the red wet shirt from the basket, ready to try.",
+      "changed_from_previous": "Mum has gone inside and is fully off-page. The yellow shirt remains pegged up. Yusuf now holds the red shirt; only green and blue remain in the basket.",
+      "must_not_change": "Mum must not be visible in a doorway or window. Keep the yellow shirt fixed at the left end with the same two pegs. Keep the basket beside the left post. Yusuf's outfit and the village background remain unchanged. Yusuf's eyes are solid black filled ovals.",
+      "draft_brief": "Three-quarter medium view of Yusuf alone, framed from his knees upwards. He nods with a small, determined expression as he lifts the red shirt in both hands. The yellow shirt hangs at the left end of the line; the green and blue shirts remain in the basket below. The house doorway is present but empty. Yusuf's eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "Yusuf's fingers press a wooden peg over the red shirt and washing line. The peg holds the shirt firmly in place.",
+      "changed_from_previous": "The red shirt has moved from Yusuf's hands onto the line beside the yellow shirt. Green and blue remain in the basket.",
+      "must_not_change": "This is the mechanism close-up. The peg must be an ordinary wooden clothes peg used in the normal way. The line runs inside the peg with the edge of the red shirt. The yellow shirt remains immediately to the left. Do not show Mum or introduce any new object.",
+      "draft_brief": "Extreme close-up of Yusuf's brown fingers pressing an ordinary wooden clothes peg onto the red shirt and washing line. The peg and red fabric fill most of the frame; a second peg already holds the other side of the red shirt. The edge of the yellow shirt is visible at the far left for continuity. No face is needed in this image."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "Yusuf smiles as he clips up the last blue shirt. Yellow, red and green are already hanging in a neat row.",
+      "changed_from_previous": "The green shirt has been added after the red one. Yusuf is securing the blue shirt at the right end. The basket is now empty.",
+      "must_not_change": "Keep the shirt order left to right: yellow, red, green, blue. Each shirt uses two matching plain wooden pegs. The empty basket remains beside the left post. Mum stays off-page. Yusuf's clothes and appearance remain unchanged. His eyes are solid black filled ovals.",
+      "draft_brief": "Side-on medium shot along the washing line. The yellow, red and green shirts lead the eye towards Yusuf, who smiles while fixing the second peg onto the blue shirt at the right end. Show the empty basket near the distant left post. Fishing boats and coconut palms sit beyond the line. Yusuf's eyes are solid black filled ovals."
+     },
+     {
+      "page": 7,
+      "what_child_sees": "Yusuf's proud, relieved smile fills the picture. Behind him, all four shirts hang securely on the line.",
+      "changed_from_previous": "The blue shirt is now fully secured. The chore is complete, and Yusuf has stepped back to look at his work.",
+      "must_not_change": "All four shirts must remain in the order yellow, red, green, blue, with two pegs each. The basket stays empty. Mum remains off-page. Do not add more washing or people. Yusuf's eyes are solid black filled ovals.",
+      "draft_brief": "Payoff reaction shot: a close view of Yusuf's proud face and upper body as he looks towards the finished washing. Frame the complete line of yellow, red, green and blue shirts behind his shoulder, slightly softer but still readable. A fishing boat rests on the calm water beyond. Yusuf's eyes are solid black filled ovals."
+     },
+     {
+      "page": 8,
+      "what_child_sees": "Mum has come back outside. Yusuf points proudly to the finished line as he tells her that he can do it next time.",
+      "changed_from_previous": "Mum returns beside Yusuf. The four shirts and empty basket remain exactly as Yusuf left them.",
+      "must_not_change": "Keep the shirt order yellow, red, green, blue, with all pegs unchanged. Keep the empty basket by the left post. Mum and Yusuf retain the same modest clothes and appearance. No other people may appear. All visible eyes are solid black filled ovals.",
+      "draft_brief": "Warm medium close two-shot. Yusuf points back towards the finished washing line while speaking proudly. Mum stands beside him, smiling at his work. Show their faces and upper bodies rather than another full-length wide view. The four shirts remain clearly visible behind them in the order yellow, red, green and blue; the empty basket sits below. The stilt house, shore and moored boats confirm the same location. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.1342,
+   "usage": {
+    "input_tokens": 16511,
+    "input_tokens_details": {
+     "cache_write_tokens": 16508,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1720,
+    "output_tokens_details": {
+     "reasoning_tokens": 469
+    },
+    "total_tokens": 18231
+   },
+   "data": {
+    "reasoning": "Worked backwards from page 8. The final image requires four shirts in a fixed order, eight pegs, an empty basket by the left post and a clear route from the house for Mum’s return. Earlier pages therefore establish only those existing elements and show their states changing step by step; no new plot objects are added.",
+    "pages": [
+     {
+      "page": 8,
+      "evidence_planted": "The final state must preserve the evidence of Yusuf’s work: yellow, red, green and blue shirts in order, two pegs on each shirt, and the empty basket by the left post. The familiar doorway explains where Mum has returned from.",
+      "revised_brief": "Warm medium close two-shot. Mum has come out through the familiar house doorway and stands beside Yusuf. Yusuf points proudly towards the completed line while speaking. Behind them, clearly show the four shirts in the fixed order yellow, red, green and blue, each held by two wooden pegs. Keep the empty basket visible below the left end of the line as residue of the finished chore. No other people or washing. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 7,
+      "evidence_planted": "Before Mum returns, the completed result must already exist unchanged: all four shirts secured and the basket empty. The house doorway must remain visible so her entrance on page 8 does not feel sudden.",
+      "revised_brief": "Payoff reaction shot of Yusuf’s proud face and upper body. Over his shoulder, show the full washing line with yellow, red, green and blue shirts, each held by two pegs. The empty basket remains below the left post. Include the house doorway in the background, but Mum is not yet visible. Yusuf’s eyes are solid black filled ovals."
+     },
+     {
+      "page": 6,
+      "evidence_planted": "This image must create the exact completed state seen on pages 7 and 8. Yellow, red and green are already secure; Yusuf adds the final peg to blue. The emptied basket shows that no washing remains.",
+      "revised_brief": "Side-on medium shot along the line. Yellow, red and green already hang in that order, each held by two wooden pegs. Yusuf presses the second peg onto the blue shirt at the right end, creating the final four-shirt row. The basket by the left post is visibly empty. Mum remains inside and off-page. Yusuf’s eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "The red shirt must become the second shirt in the final order. Yellow remains fixed to its left; green and blue remain waiting in the basket for page 6. The ordinary peg action must be unmistakable.",
+      "revised_brief": "Extreme close-up of Yusuf’s fingers pressing the second ordinary wooden clothes peg over the red shirt and washing line. The peg and red fabric fill the frame. The edge of the already-secured yellow shirt is visible at the left. In the soft lower background, the basket still contains only the green and blue shirts. Mum is not visible."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "Yusuf must already be holding the red shirt so its appearance in the page 5 close-up follows directly. Yellow stays on the line, while green and blue remain in the basket. The empty doorway establishes that Mum has gone inside.",
+      "revised_brief": "Three-quarter medium view of Yusuf alone. He nods and lifts the red shirt towards the line. The yellow shirt remains at the left end, held by two pegs. Green and blue are clearly visible in the basket beside the left post. Keep the house doorway in view and empty; Mum is fully off-page. Yusuf’s eyes are solid black filled ovals."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "This page creates the first permanent part of the final row: the yellow shirt at the left end with two pegs. Red, green and blue must remain in the basket. The doorway stays nearby for Mum’s exit on page 4.",
+      "revised_brief": "Over-Yusuf’s-shoulder view as Mum secures the yellow shirt at the far left of the line with two plain wooden pegs. Yusuf watches her hands. Below them, the basket still contains the red, green and blue shirts. Keep the house doorway visible behind Mum so her move inside on the next page is clear. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "Before any washing is moved, the child must see the complete starting state: an empty line long enough for four shirts and a basket containing all four colours. Mum remains close enough to demonstrate on page 3, although the tighter framing need not show her fully.",
+      "revised_brief": "Medium close reaction view of Yusuf from the chest up as he looks from the full basket to the empty line. His hands are held together, showing mild nerves. The basket clearly contains yellow, red, green and blue shirts. The empty line extends far enough to hold all four. Mum’s shoulder and mustard hijab may be cropped at one edge as she speaks, keeping her in the same position for page 3. Yusuf’s eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "The opening must establish every persistent element needed later: the four coloured shirts, the empty basket’s eventual resting place, the washing line with two posts, the nearby house doorway, and the single connected shore setting. No later object should appear without being present here.",
+      "revised_brief": "Wide establishing view outside the wooden stilt house. Mum sets a woven basket beside the left post of an empty washing line while Yusuf watches. Make all four wet shirts visible in the basket: yellow, red, green and blue. Show the line stretching towards the right with enough room for four shirts, and keep the house doorway clearly positioned behind Mum for her later exit and return. Include worn grey planks, sandy shore, calm green-blue water, the plank jetty, moored fishing boats, steep tiled roofs and coconut palms. No other people or washing. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.2157,
+   "usage": {
+    "input_tokens": 18786,
+    "input_tokens_details": {
+     "cache_write_tokens": 18783,
+     "cached_tokens": 0
+    },
+    "output_tokens": 4059,
+    "output_tokens_details": {
+     "reasoning_tokens": 1708
+    },
+    "total_tokens": 22845
+   },
+   "data": {
+    "storyboard_verdict": "fixed_now_plausible",
+    "physical_issues_found": [
+     "The early frames did not establish where the wooden pegs came from. Eight spring pegs are now visible on the empty line from page 1 and are used progressively.",
+     "The peg action needed a visibly connected cause and effect. Close views now show the spring-peg jaws closing around both the wet cloth and the line.",
+     "Wet shirts must not look rigid. They now appear darker from water and hang with soft folds under their own weight."
+    ],
+    "cover": {
+     "brief": "Use the page 4 composition. Yusuf fills the right half of the cover, smiling gently as he lifts the drooping red wet shirt towards the line. The yellow shirt is already pegged at the left, while the green and blue shirts remain in the basket below. Show the stilt house, sandy shore, calm green-blue water, jetty and one moored fishing boat without crowding the image. Leave clear title space at the upper left. Yusuf wears his teal long-sleeved top and loose tan trousers; his eyes are solid black filled ovals."
+    },
+    "object_placements": [
+     {
+      "object": "Basket of wet washing",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "object": "Washing line and pegs",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     }
+    ],
+    "cast_placements": [
+     {
+      "cast_id": "yusuf",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8
+      ]
+     },
+     {
+      "cast_id": "mum",
+      "pages_present": [
+       1,
+       2,
+       3,
+       8
+      ]
+     }
+    ],
+    "cover_source_page": 4,
+    "cover_hero_side": "right",
+    "cover_choice_reason": "Page 4 gives Yusuf a clear, large and gently determined face while showing the familiar task in progress. It does not reveal the completed washing line, and the red shirt creates a bright, inviting cover focus.",
+    "landmark": {
+     "name": "Petronas Twin Towers",
+     "fact": "The Petronas Twin Towers are two matching towers joined by a high bridge.",
+     "image_brief": "Bright postcard view of the silver Petronas Twin Towers rising above Kuala Lumpur, with the skybridge clear between them, green palms below and a blue sky."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "Wide establishing view outside the wooden stilt house. Mum sets the basket beside the left post while Yusuf watches. Four wet long-sleeved shirts—yellow, red, green and blue—lie heavily in the basket with darker damp fabric and soft folds. The line is empty, with eight ordinary wooden spring pegs clipped along it. Include worn grey planks, sandy shore, calm green-blue water, the jetty, moored fishing boats and coconut palms. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Basket of wet washing",
+        "assertion": "It contains exactly four visibly wet, drooping shirts: yellow, red, green and blue."
+       },
+       {
+        "object": "Washing line and pegs",
+        "assertion": "The line is empty, and all eight spring pegs are already clipped along it."
+       },
+       {
+        "object": "Yusuf and Mum",
+        "assertion": "Both wear their established modest clothes beside the same stilt house."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Washing",
+        "assertion": "No shirt is hanging on the line yet."
+       },
+       {
+        "object": "Cast",
+        "assertion": "No person other than Yusuf and Mum is present."
+       }
+      ],
+      "carries_forward": "An empty line with eight available pegs; four wet shirts in the basket; Yusuf and Mum beside the left post."
+     },
+     {
+      "page": 2,
+      "brief": "Medium close reaction view of Yusuf as he looks between the full basket and empty line. His hands are held together and he looks mildly nervous, not distressed. Mum is represented only by a cropped shoulder and edge of her mustard hijab as she speaks. The four damp shirts and eight waiting pegs remain visible. Yusuf's eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Basket of wet washing",
+        "assertion": "All four wet shirts remain in the basket."
+       },
+       {
+        "object": "Washing line and pegs",
+        "assertion": "The line remains empty with eight pegs available."
+       },
+       {
+        "object": "Yusuf",
+        "assertion": "His face is clear, and his teal top and solid black filled oval eyes remain consistent."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Washing",
+        "assertion": "Nothing has moved onto the line."
+       }
+      ],
+      "carries_forward": "The unchanged starting state moves into Mum's demonstration: four shirts in the basket and eight pegs on the empty line."
+     },
+     {
+      "page": 3,
+      "brief": "Over-Yusuf's-shoulder view of Mum attaching the yellow wet shirt at the far left. One spring peg already grips the shirt and line; Mum pinches the second peg's handles so its jaws sit around both cloth and line. The wet shirt hangs down in soft, heavy folds. Red, green and blue remain in the basket, and six spare pegs remain along the line. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Yellow shirt",
+        "assertion": "It is visibly connected to the line by two wooden spring pegs."
+       },
+       {
+        "object": "Basket of wet washing",
+        "assertion": "Only the red, green and blue wet shirts remain inside."
+       },
+       {
+        "object": "Washing line and pegs",
+        "assertion": "Six unused pegs remain clipped farther along the line."
+       },
+       {
+        "object": "Mum and Yusuf",
+        "assertion": "Mum demonstrates while Yusuf watches from close beside her."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Washing",
+        "assertion": "No shirt other than yellow is hanging."
+       }
+      ],
+      "carries_forward": "Yellow stays secured at the far left; six pegs remain available; red, green and blue remain in the basket."
+     },
+     {
+      "page": 4,
+      "brief": "Three-quarter medium view with Yusuf right of centre. Mum is now fully off-page. Yusuf nods and lifts the red wet shirt with both hands; the fabric droops naturally between his hands. Yellow remains secured by two pegs. Green and blue remain in the basket, and six spare pegs stay clipped along the line. The house doorway is visible and empty. Yusuf's eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Red shirt",
+        "assertion": "Yusuf holds the wet, drooping shirt ready to lift onto the line."
+       },
+       {
+        "object": "Yellow shirt and pegs",
+        "assertion": "Yellow remains fixed at the far left by two pegs, with six spare pegs still available."
+       },
+       {
+        "object": "Basket of wet washing",
+        "assertion": "Only green and blue remain in the basket."
+       },
+       {
+        "object": "Mum",
+        "assertion": "She is fully off-page, and the house doorway is empty."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Red shirt",
+        "assertion": "It is not yet attached to the line."
+       }
+      ],
+      "carries_forward": "Yusuf takes the red shirt to the line; yellow stays fixed; green and blue wait in the basket."
+     },
+     {
+      "page": 5,
+      "brief": "Extreme close-up of Yusuf's fingers releasing the handles of the second spring peg. Its wooden jaws close around the washing line and the top edge of the red wet shirt, visibly joining cloth to line. The first red peg already bears some of the shirt's weight; the fabric hangs down rather than sticking out. The edge of yellow and the basket containing green and blue are softly visible behind.",
+      "required_visible_states": [
+       {
+        "object": "Spring peg mechanism",
+        "assertion": "The peg's jaws visibly close around both the line and red cloth as Yusuf releases the handles."
+       },
+       {
+        "object": "Red shirt",
+        "assertion": "It is now held by two pegs and hangs down under its own wet weight."
+       },
+       {
+        "object": "Continuity state",
+        "assertion": "Yellow remains secured; green and blue remain in the basket; four spare pegs remain."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Spring peg mechanism",
+        "assertion": "The peg must not float near the shirt or grip cloth without also gripping the line."
+       },
+       {
+        "object": "Mum",
+        "assertion": "No part of Mum is visible."
+       }
+      ],
+      "carries_forward": "Yellow and red are secured; four spare pegs remain for green and blue."
+     },
+     {
+      "page": 6,
+      "brief": "Side-on medium shot along the line. Yellow, red and green already hang in order with two pegs each. Yusuf releases the final spring peg onto the blue shirt at the right end, with the jaws visibly gripping cloth and line. All four wet shirts hang vertically with soft folds and slightly darker damp fabric. The basket is empty. Yusuf smiles; his eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Completed washing line",
+        "assertion": "The order is yellow, red, green, blue, with exactly two pegs on each shirt."
+       },
+       {
+        "object": "Final peg mechanism",
+        "assertion": "Yusuf's final peg visibly closes around the blue cloth and line."
+       },
+       {
+        "object": "Basket of wet washing",
+        "assertion": "The basket is empty beside the left post."
+       },
+       {
+        "object": "Wet shirts",
+        "assertion": "All four hang down naturally with soft, damp folds."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mum",
+        "assertion": "Mum remains off-page."
+       }
+      ],
+      "carries_forward": "The task is complete: four secured shirts in fixed order, all eight pegs in use and the basket empty."
+     },
+     {
+      "page": 7,
+      "brief": "Close payoff reaction shot of Yusuf's proud, relieved face and upper body. Over his shoulder, the complete line remains readable: yellow, red, green and blue, each held by two pegs and hanging naturally. The empty basket remains below the left post, and the house doorway is empty. Yusuf's eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Yusuf",
+        "assertion": "His proud reaction is large and clear; his clothing and solid black filled oval eyes remain consistent."
+       },
+       {
+        "object": "Completed washing line",
+        "assertion": "All four shirts remain secured in the order yellow, red, green, blue."
+       },
+       {
+        "object": "Basket of wet washing",
+        "assertion": "The basket remains visibly empty."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mum",
+        "assertion": "Mum has not returned yet."
+       },
+       {
+        "object": "Washing",
+        "assertion": "No shirt or peg has fallen or changed position."
+       }
+      ],
+      "carries_forward": "Yusuf's completed work remains untouched as Mum comes back outside."
+     },
+     {
+      "page": 8,
+      "brief": "Warm medium close two-shot. Mum has returned through the familiar doorway and smiles beside Yusuf. Yusuf points towards the completed line while speaking proudly. Behind them, yellow, red, green and blue remain in order with two pegs each; the damp cloth hangs in natural folds. The empty basket remains below the left post. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Completed washing line",
+        "assertion": "The four shirts and all eight pegs remain exactly as on page 7."
+       },
+       {
+        "object": "Basket of wet washing",
+        "assertion": "The basket remains empty beside the left post."
+       },
+       {
+        "object": "Yusuf and Mum",
+        "assertion": "Yusuf points proudly while Mum has visibly returned from the house; both retain their established modest clothes."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Cast and washing",
+        "assertion": "No extra person, shirt or peg is introduced in the final image."
+       }
+      ],
+      "carries_forward": "Final state: Yusuf and Mum share the success beside four securely pegged shirts and an empty basket."
+     }
+    ]
+   }
+  }
+ ]
+}

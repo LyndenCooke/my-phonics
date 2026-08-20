@@ -1,0 +1,17 @@
+{
+ "child": {
+  "name": "Yusuf",
+  "age": 7,
+  "gender": "boy",
+  "skinTone": "dark brown",
+  "hair": "short black hair"
+ },
+ "setting": {
+  "country": "Malaysia",
+  "city": "Kuala Lumpur",
+  "culture": "A Muslim family in Malaysia; a kampung fishing village near the city - wooden stilt houses with steep tiled roofs, a plank jetty over calm green-blue water, moored wooden fishing boats, coconut palms; sandy shore and worn grey planks underfoot."
+ },
+ "level": 7,
+ "sound": "ore",
+ "likes": "fishing and boats"
+}

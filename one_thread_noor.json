@@ -1,0 +1,770 @@
+{
+ "child": {
+  "name": "Noor",
+  "age": 6,
+  "gender": "girl",
+  "skinTone": "medium brown",
+  "hair": "long dark brown hair in a single plait"
+ },
+ "setting": {
+  "country": "Saudi Arabia",
+  "city": "Jeddah",
+  "culture": "A Muslim family in Jeddah on the Red Sea coast; old coral-stone houses with carved wooden balconies in Al-Balad, a wide seafront corniche with palm trees, gulls over calm blue water; pale stone paving."
+ },
+ "level": 4,
+ "sound": "ay",
+ "likes": "cats and the sea",
+ "shape": "The visitor",
+ "model": "gpt-5.6-sol",
+ "shiftyViolations": [],
+ "objectViolations": [
+  "\"Shallow blue ceramic dish\" appears in the page 1 brief but the storyboard does not place it there",
+  "\"Shallow blue ceramic dish\" appears in the page 2 brief but the storyboard does not place it there",
+  "\"Brass wall tap\" appears in the page 6 brief but the storyboard does not place it there"
+ ],
+ "assertionsPerPage": [
+  7,
+  7,
+  5,
+  5,
+  5,
+  4
+ ],
+ "object_placements": [
+  {
+   "object": "Shallow blue ceramic dish",
+   "pages_present": [
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  {
+   "object": "Brass wall tap",
+   "pages_present": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  }
+ ],
+ "totalCost": 0.6444,
+ "transcript": [
+  {
+   "label": "write",
+   "cost": 0.1093,
+   "usage": {
+    "input_tokens": 2069,
+    "input_tokens_details": {
+     "cache_write_tokens": 2066,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3299,
+    "output_tokens_details": {
+     "reasoning_tokens": 2464
+    },
+    "total_tokens": 5368
+   },
+   "data": {
+    "title": "The Cat Can Stay",
+    "premise": {
+     "hero_want": "Noor wants to welcome a hot cat that pads into the courtyard.",
+     "problem": "The cat is hot and pants in the sun.",
+     "mechanism": "Noor gets a dish, then she and Mum fill it at the outdoor tap so the cat can drink.",
+     "resolution": "The cat cools down, plays and settles beside Noor."
+    },
+    "key_objects": [
+     {
+      "name": "Dish",
+      "description": "A shallow blue ceramic dish for the cat."
+     },
+     {
+      "name": "Tap",
+      "description": "A simple brass tap fixed to the courtyard wall."
+     }
+    ],
+    "cast": [
+     {
+      "id": "noor",
+      "who": "Noor, a six-year-old Muslim girl in Jeddah",
+      "appearance": "Warm brown skin, dark hair under a pale blue headscarf, a loose coral long-sleeved tunic, ankle-length navy trousers and sandals. Her eyes are solid black filled ovals."
+     },
+     {
+      "id": "mum",
+      "who": "Noor’s mum",
+      "appearance": "Warm brown skin, a sea-green abaya and cream hijab, with shoulders and knees fully covered. Her eyes are solid black filled ovals."
+     },
+     {
+      "id": "cat",
+      "who": "A small visiting cat",
+      "appearance": "A sandy ginger cat with a white chest and white paws. It has no collar. Its eyes are solid black filled ovals."
+     }
+    ],
+    "pages": [
+     {
+      "text": "It is a hot day. A cat pads in.",
+      "scene": "In the front courtyard of Noor’s coral-stone home, Noor watches the sandy ginger cat pad in through the open gate. Pale stone paving, a carved wooden balcony, a palm and a glimpse of calm blue sea establish Jeddah. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cat is hot. It pants in the sun.",
+      "scene": "The cat stands in a patch of sun on the same pale paving, panting gently. Noor crouches a short distance away and notices. A gull crosses the blue sky beyond the courtyard. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "I say, “You can stay.” I get a dish.",
+      "scene": "Noor smiles and sets the shallow blue dish near the cat. The cat watches her from the same sunny spot. The coral-stone wall and carved balcony remain consistent. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "Mum and I fill the dish at the tap. I set it in a cool spot.",
+      "scene": "At the courtyard wall, Mum helps Noor hold the blue dish under the brass tap. Noor then sets it in a cool patch beside the wall. Both wear modest clothing. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cat laps from the dish. It can play.",
+      "scene": "The ginger cat laps from the blue dish, then bats playfully at a small ripple with one paw. Noor sits close by on the pale paving. No new objects are added. All visible eyes are solid black filled ovals."
+     },
+     {
+      "text": "The cat sits next to me. It may stay all day.",
+      "scene": "The cat sits snugly beside Noor in the cool courtyard spot, with the blue dish nearby. Mum smiles from the wall tap. Palm leaves, gulls and calm blue water are visible beyond the gate. All visible eyes are solid black filled ovals."
+     }
+    ],
+    "read_words": [
+     "day",
+     "stay",
+     "pants",
+     "dish",
+     "fill",
+     "cool"
+    ],
+    "focus_word_examples": [
+     "day",
+     "say",
+     "stay",
+     "play",
+     "may"
+    ],
+    "tricky_words_used": [
+     "I",
+     "the",
+     "a",
+     "to",
+     "is",
+     "me",
+     "you",
+     "all"
+    ],
+    "cover_brief": "Noor sits beside the sandy ginger cat in the pale-stone courtyard, with the shallow blue dish in front of them. Frame them with a coral-stone wall and carved wooden balcony; show a palm, gulls and calm blue Red Sea water beyond the open gate. Warm, simple shapes with minimal background detail. Noor’s clothes cover her shoulders and knees. All eyes are solid black filled ovals. Display only the title: “The Cat Can Stay”."
+   }
+  },
+  {
+   "label": "self-check",
+   "cost": 0.0752,
+   "usage": {
+    "input_tokens": 5463,
+    "input_tokens_details": {
+     "cache_write_tokens": 5460,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1595,
+    "output_tokens_details": {
+     "reasoning_tokens": 716
+    },
+    "total_tokens": 7058
+   },
+   "data": {
+    "violations_found": [
+     "Page 5 adds an unnecessary play beat after the cat drinks, weakening the single welcome-and-settle thread.",
+     "The Page 5 scene adds the cat batting at a ripple, an action not needed by the text or the one drinking mechanism."
+    ],
+    "story": {
+     "title": "The Cat Can Stay",
+     "premise": {
+      "hero_want": "Noor wants to welcome a hot cat that pads into the courtyard.",
+      "problem": "The cat is hot and pants in the sun.",
+      "mechanism": "Noor gets a dish, then she and Mum fill it at the outdoor tap so the cat can drink.",
+      "resolution": "The cat cools down and settles beside Noor."
+     },
+     "key_objects": [
+      {
+       "name": "Dish",
+       "description": "A shallow blue ceramic dish for the cat."
+      },
+      {
+       "name": "Tap",
+       "description": "A simple brass tap fixed to the courtyard wall."
+      }
+     ],
+     "cast": [
+      {
+       "id": "noor",
+       "who": "Noor, a six-year-old Muslim girl in Jeddah",
+       "appearance": "Warm brown skin, dark hair under a pale blue headscarf, a loose coral long-sleeved tunic, ankle-length navy trousers and sandals. Her eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Noor’s mum",
+       "appearance": "Warm brown skin, a sea-green abaya and cream hijab, with shoulders and knees fully covered. Her eyes are solid black filled ovals."
+      },
+      {
+       "id": "cat",
+       "who": "A small visiting cat",
+       "appearance": "A sandy ginger cat with a white chest and white paws. It has no collar. Its eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "It is a hot day. A cat pads in.",
+       "scene": "In the front courtyard of Noor’s coral-stone home, Noor watches the sandy ginger cat pad in through the open gate. Pale stone paving, a carved wooden balcony, a palm and a glimpse of calm blue sea establish Jeddah. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat is hot. It pants in the sun.",
+       "scene": "The cat stands in a patch of sun on the same pale paving, panting gently. Noor crouches a short distance away and notices. A gull crosses the blue sky beyond the courtyard. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I say, “You can stay.” I get a dish.",
+       "scene": "Noor smiles and sets the shallow blue dish near the cat. The cat watches her from the same sunny spot. The coral-stone wall and carved balcony remain consistent. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum and I fill the dish at the tap. I set it in a cool spot.",
+       "scene": "At the courtyard wall, Mum helps Noor hold the blue dish under the brass tap. Noor then sets it in a cool patch beside the wall. Both wear modest clothing. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat laps from the dish. It is not hot.",
+       "scene": "The ginger cat laps calmly from the blue dish in the cool courtyard spot. Noor sits close to the cat on the pale paving. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat sits next to me. It may stay all day.",
+       "scene": "The cat sits snugly beside Noor in the same cool courtyard spot, with the blue dish nearby. Mum smiles from beside the wall tap. Palm leaves, gulls and calm blue water are visible beyond the gate. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "day",
+      "stay",
+      "pants",
+      "dish",
+      "fill",
+      "cool"
+     ],
+     "focus_word_examples": [
+      "day",
+      "say",
+      "stay",
+      "may"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a",
+      "to",
+      "is",
+      "me",
+      "you",
+      "all"
+     ],
+     "cover_brief": "Noor sits beside the sandy ginger cat in the pale-stone courtyard, with the shallow blue dish in front of them. Frame them with a coral-stone wall and carved wooden balcony; show a palm, gulls and calm blue Red Sea water beyond the open gate. Warm, simple shapes with minimal background detail. Noor’s clothes cover her shoulders and knees. All eyes are solid black filled ovals. Display only the title: “The Cat Can Stay”."
+    }
+   }
+  },
+  {
+   "label": "editor",
+   "cost": 0.0887,
+   "usage": {
+    "input_tokens": 7194,
+    "input_tokens_details": {
+     "cache_write_tokens": 7191,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1757,
+    "output_tokens_details": {
+     "reasoning_tokens": 716
+    },
+    "total_tokens": 8951
+   },
+   "data": {
+    "cold_read": "A clear, warm visitor story at the exemplar level: Noor notices the cat’s need, decides to welcome it and leads the simple dish-and-tap solution. The story has one connected location, one adult, two key objects and one familiar mechanism. The phonics contract is met, including four distinct “ay” words and the required 2+4 read_words split. Only two minor line-and-scene refinements are needed.",
+    "issues": [
+     {
+      "severity": "minor",
+      "area": "Page 3 continuity",
+      "detail": "The scene has Noor set the empty dish beside the cat, only for her to take it to the tap on the next page. This unnecessary back-and-forth is removed by showing Noor carrying the dish towards the tap."
+     },
+     {
+      "severity": "minor",
+      "area": "Page 5 wording",
+      "detail": "“It is not hot” sounds like a blunt caption and makes the change feel instant. “It rests in the cool spot” is more natural while keeping the same simple resolution."
+     }
+    ],
+    "fixed_story": {
+     "title": "The Cat Can Stay",
+     "premise": {
+      "hero_want": "Noor wants to welcome a hot cat that pads into the courtyard.",
+      "problem": "The cat is hot and pants in the sun.",
+      "mechanism": "Noor gets a dish, then she and Mum fill it at the outdoor tap so the cat can drink.",
+      "resolution": "The cat drinks, rests in a cool spot and settles beside Noor."
+     },
+     "key_objects": [
+      {
+       "name": "Dish",
+       "description": "A shallow blue ceramic dish for the cat."
+      },
+      {
+       "name": "Tap",
+       "description": "A simple brass tap fixed to the courtyard wall."
+      }
+     ],
+     "cast": [
+      {
+       "id": "noor",
+       "who": "Noor, a six-year-old Muslim girl in Jeddah",
+       "appearance": "Warm brown skin, dark hair under a pale blue headscarf, a loose coral long-sleeved tunic, ankle-length navy trousers and sandals. Her eyes are solid black filled ovals."
+      },
+      {
+       "id": "mum",
+       "who": "Noor’s mum",
+       "appearance": "Warm brown skin, a sea-green abaya and cream hijab, with shoulders and knees fully covered. Her eyes are solid black filled ovals."
+      },
+      {
+       "id": "cat",
+       "who": "A small visiting cat",
+       "appearance": "A sandy ginger cat with a white chest and white paws. It has no collar. Its eyes are solid black filled ovals."
+      }
+     ],
+     "pages": [
+      {
+       "text": "It is a hot day. A cat pads in.",
+       "scene": "In the front courtyard of Noor’s coral-stone home, Noor watches the sandy ginger cat pad in through the open gate. Pale stone paving, a carved wooden balcony, a palm and a glimpse of calm blue sea establish Jeddah. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat is hot. It pants in the sun.",
+       "scene": "The cat stands in a patch of sun on the same pale paving, panting gently. Noor crouches a short distance away and notices. A gull crosses the blue sky beyond the courtyard. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "I say, “You can stay.” I get a dish.",
+       "scene": "Noor smiles and carries the shallow blue dish towards the courtyard tap. The cat watches her from the same sunny spot. The coral-stone wall and carved balcony remain consistent. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "Mum and I fill the dish at the tap. I set it in a cool spot.",
+       "scene": "At the courtyard wall, Mum helps Noor hold the blue dish under the brass tap. Noor then sets it in a cool patch beside the wall. Both wear modest clothing. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat laps from the dish. It rests in the cool spot.",
+       "scene": "The ginger cat laps calmly from the blue dish, then rests in the same cool courtyard spot. Noor sits close to the cat on the pale paving. All visible eyes are solid black filled ovals."
+      },
+      {
+       "text": "The cat sits next to me. It may stay all day.",
+       "scene": "The cat sits snugly beside Noor in the same cool courtyard spot, with the blue dish nearby. Mum smiles from beside the wall tap. Palm leaves, gulls and calm blue water are visible beyond the gate. All visible eyes are solid black filled ovals."
+      }
+     ],
+     "read_words": [
+      "day",
+      "stay",
+      "pants",
+      "dish",
+      "fill",
+      "cool"
+     ],
+     "focus_word_examples": [
+      "day",
+      "say",
+      "stay",
+      "may"
+     ],
+     "tricky_words_used": [
+      "I",
+      "the",
+      "a",
+      "to",
+      "is",
+      "me",
+      "you",
+      "all"
+     ],
+     "cover_brief": "Noor sits beside the sandy ginger cat in the pale-stone courtyard, with the shallow blue dish in front of them. Frame them with a coral-stone wall and carved wooden balcony; show a palm, gulls and calm blue Red Sea water beyond the open gate. Use warm, simple shapes with minimal background detail. Noor’s clothes cover her shoulders and knees. All eyes are solid black filled ovals. Display only the title: “The Cat Can Stay”."
+    }
+   }
+  },
+  {
+   "label": "plan-forward",
+   "cost": 0.1035,
+   "usage": {
+    "input_tokens": 8889,
+    "input_tokens_details": {
+     "cache_write_tokens": 8886,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1970,
+    "output_tokens_details": {
+     "reasoning_tokens": 787
+    },
+    "total_tokens": 10859
+   },
+   "data": {
+    "pages": [
+     {
+      "page": 1,
+      "what_child_sees": "A sandy ginger cat pads through the open gate into Noor’s sunny courtyard. Noor notices it from across the pale paving.",
+      "changed_from_previous": "Opening image: establish the courtyard, Noor, the arriving cat and the cat’s sunny position.",
+      "must_not_change": "Noor’s pale blue headscarf, coral long-sleeved tunic and navy trousers; the cat’s sandy ginger coat, white chest, white paws and lack of collar; pale stone paving, coral-stone wall, carved wooden balcony, palm and sea beyond the gate. All visible eyes are solid black filled ovals.",
+      "draft_brief": "WIDE ESTABLISHING SHOT from inside the courtyard. The cat enters in the foreground through the gate, while Noor stands in the middle distance and turns towards it. Show the Jeddah setting simply: coral-stone wall and wooden balcony on one side, with a palm, one gull and calm blue water beyond the gate. Mum is off-page."
+     },
+     {
+      "page": 2,
+      "what_child_sees": "The cat has stopped in the sun and is panting. Noor has come closer and crouches to look at it.",
+      "changed_from_previous": "The cat has moved a short way in from the gate and stopped. Noor has crossed the courtyard and lowered herself near it.",
+      "must_not_change": "The cat remains in a sunny patch on the same paving and keeps the same markings and size. Noor keeps the same clothes. The open gate and sea stay in the same direction. Mum and the dish must not appear yet. All visible eyes are solid black filled ovals.",
+      "draft_brief": "LOW CLOSE SHOT centred on the hot cat, with its mouth slightly open. Include Noor’s concerned face and bent knees at the edge of the frame rather than showing her full-length. Keep a clear gap between Noor and the cat. Use the bright patch of sun to make the problem obvious."
+     },
+     {
+      "page": 3,
+      "what_child_sees": "Noor carries a shallow blue dish towards the wall tap. She looks back kindly at the cat, which waits in its sunny spot.",
+      "changed_from_previous": "Noor has stood up, found the dish and started towards the tap. The cat has not moved.",
+      "must_not_change": "The cat stays in the same sunny patch with the same ginger-and-white markings. Noor’s clothing and the courtyard layout remain fixed. The dish is always shallow, round and blue. Mum remains off-page. All visible eyes are solid black filled ovals.",
+      "draft_brief": "MEDIUM OVER-THE-CAT SHOT. Use the cat’s ginger ears and white shoulder in the near foreground. Beyond it, Noor crosses towards the wall tap holding the blue dish in both hands and glancing back at the cat. Do not add bowls, food, toys or other household objects."
+     },
+     {
+      "page": 4,
+      "what_child_sees": "Water runs from the brass tap into the blue dish while Noor and Mum hold it together.",
+      "changed_from_previous": "The dish has reached the tap. Mum appears for the first time to help Noor fill it.",
+      "must_not_change": "The blue dish keeps the same shape and colour. The tap is the same simple brass wall tap. Noor’s coral sleeve and Mum’s sea-green sleeve must match their established clothes. The cat is off-page, still waiting in the courtyard. Add no second container. No eyes need be visible in this close-up.",
+      "draft_brief": "MECHANISM CLOSE-UP. Let the shallow blue dish fill most of the frame beneath the brass tap. Show a clear stream of water entering it. Noor’s small hands and coral sleeves hold one side; Mum’s hands and sea-green sleeves steady the other. Crop out both faces and the rest of the courtyard so the familiar fill-the-dish action is instantly clear."
+     },
+     {
+      "page": 5,
+      "what_child_sees": "The cat laps from the blue dish in the cool patch beside the wall. Its body is low and relaxed, ready to rest.",
+      "changed_from_previous": "The filled dish has been moved from beneath the tap to the cool wall-side spot. The cat has left the sunny patch and come to drink.",
+      "must_not_change": "The dish remains blue and shallow and now stays in this exact cool spot. The cat keeps the same markings. Noor is nearby but must not handle the cat. Mum is off-page. Keep the tap on the same wall if its edge is visible. All visible eyes are solid black filled ovals.",
+      "draft_brief": "CAT-LEVEL SIDE SHOT. Focus on the cat’s tongue touching the water in the blue dish, with its relaxed body tucked into the wall’s shade. Show only part of Noor seated quietly in the background so the cat and dish dominate. Keep the pale paving and cool shadow simple; add nothing else."
+     },
+     {
+      "page": 6,
+      "what_child_sees": "Noor beams as the cat sits snugly beside her. The blue dish remains behind them in the cool spot.",
+      "changed_from_previous": "The cat has finished drinking, moved a very short distance from the dish and chosen to sit against Noor. Noor’s happy reaction completes the welcome.",
+      "must_not_change": "The dish remains visible in its Page 5 position and must not become empty, move or change colour. Noor and the cat retain all clothing, colours and markings. Mum is off-page. The same courtyard, gate and calm sea remain behind them. All visible eyes are solid black filled ovals.",
+      "draft_brief": "PAYOFF REACTION SHOT, framed tightly from Noor’s waist up. Noor smiles down with delight as the cat sits pressed beside her, looking settled. Include the blue dish softly in the background to preserve continuity, plus only a narrow glimpse of the coral-stone wall and blue sea. Do not show Mum or introduce any new object."
+     }
+    ]
+   }
+  },
+  {
+   "label": "plan-backward",
+   "cost": 0.1046,
+   "usage": {
+    "input_tokens": 10915,
+    "input_tokens_details": {
+     "cache_write_tokens": 10912,
+     "cached_tokens": 0
+    },
+    "output_tokens": 1666,
+    "output_tokens_details": {
+     "reasoning_tokens": 663
+    },
+    "total_tokens": 12581
+   },
+   "data": {
+    "reasoning": "Work backwards from the settled cat: the final image needs the dish to remain as visible evidence of Noor’s help. Therefore Page 5 must place the drinking cat close enough to move beside Noor; Page 4 must establish water in the same dish; Page 3 must show the route from cat to tap and cool spot; and Pages 1–2 must establish that spatial layout without introducing the dish before Noor gets it.",
+    "pages": [
+     {
+      "page": 6,
+      "evidence_planted": "The blue dish must remain in the exact cool wall-side spot established on Page 5, with some water still visible. Noor must be seated close enough that the cat only had to move a short distance from the dish to settle beside her.",
+      "revised_brief": "PAYOFF REACTION SHOT, tightly framed from Noor’s waist up. Noor beams down as the sandy ginger cat sits pressed beside her. Behind them, keep the shallow blue dish visible in the same wall-side shadow, with a little water still inside as residue of the mechanism. Include a narrow glimpse of the coral-stone wall and calm blue sea. Mum is off-page. Add no new object. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 5,
+      "evidence_planted": "Place Noor already seated where she will remain on Page 6. Put the cat and dish only a short distance from her. Keep water visible in the dish so it can remain in the final image.",
+      "revised_brief": "CAT-LEVEL SIDE SHOT. The cat laps from the water in the shallow blue dish, its body relaxed in the wall’s cool shadow. Noor is already seated one cat-length away, in the same position she will hold on Page 6. Show enough water to remain in the dish later. The brass tap may sit high at the edge of the same wall, confirming that the dish has only moved a short way. Mum is off-page. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 4,
+      "evidence_planted": "The close-up must establish that the blue dish now contains water. The wall’s shadow edge should be visible behind it, linking the tap to the cool spot used on Page 5.",
+      "revised_brief": "MECHANISM CLOSE-UP. Let the shallow blue dish fill most of the frame beneath the brass wall tap. Show a clear stream entering the dish and a rising water surface. Noor’s small hands with coral sleeves hold one side; Mum’s hands with sea-green sleeves steady the other. A simple band of wall shadow behind the dish indicates the nearby cool spot where Noor will set it. Crop out both faces. Add no other container or object."
+     },
+     {
+      "page": 3,
+      "evidence_planted": "The tap and the cool wall-side shadow must be visible as Noor’s destination. The cat must remain in the sunny patch, making its later move into the shade easy to follow. The dish appears here for the first time.",
+      "revised_brief": "MEDIUM OVER-THE-CAT SHOT. Frame the cat’s ginger ears and white shoulder in the sunny foreground. Noor carries the shallow blue dish towards the clearly visible brass wall tap. Beside the tap, show the empty cool patch that will hold the dish on Pages 5–6. Noor glances back at the cat. Mum remains off-page. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 2,
+      "evidence_planted": "Keep the hot cat in the sunny area established on Page 1. In the background, retain the wall tap and its neighbouring patch of shade so the later solution belongs naturally to the same courtyard. Do not show the dish yet.",
+      "revised_brief": "LOW CLOSE SHOT centred on the panting cat in the bright sun. Noor’s concerned face and bent knees enter at the side rather than appearing full-length. In the soft background, retain the brass wall tap and the clear edge of the wall’s cool shadow. The dish and Mum are not yet visible. All visible eyes are solid black filled ovals."
+     },
+     {
+      "page": 1,
+      "evidence_planted": "Establish the complete spatial map needed later: the gate where the cat enters, the sunny paving where it stops, Noor’s starting position, and the wall tap beside a cool patch of shade. The dish must not appear before Noor gets it on Page 3.",
+      "revised_brief": "WIDE ESTABLISHING SHOT from inside the courtyard. The sandy ginger cat enters through the open gate in the foreground. Noor notices it from the middle distance. Lay out the later action clearly: sunny pale paving between the cat and Noor, then the brass tap on the coral-stone wall with a simple patch of shade beside it. Include the carved wooden balcony, one palm, one gull and calm blue sea beyond the gate. Mum and the blue dish are off-page. All visible eyes are solid black filled ovals."
+     }
+    ]
+   }
+  },
+  {
+   "label": "storyboard-gate",
+   "cost": 0.1631,
+   "usage": {
+    "input_tokens": 13114,
+    "input_tokens_details": {
+     "cache_write_tokens": 13111,
+     "cached_tokens": 0
+    },
+    "output_tokens": 3251,
+    "output_tokens_details": {
+     "reasoning_tokens": 1464
+    },
+    "total_tokens": 16365
+   },
+   "data": {
+    "storyboard_verdict": "plausible",
+    "physical_issues_found": [],
+    "cover": {
+     "brief": "Use the Page 2 image: a low close shot of the hot sandy ginger cat in the sunny foreground, with Noor’s concerned face clear and large on the right. Keep the wall tap and cool shadow soft in the background. The blue dish and Mum must not appear, so the solution and ending remain unspoilt. Leave simple title space at the upper left for “The Cat Can Stay”. Noor’s shoulders are covered, and all visible eyes are solid black filled ovals."
+    },
+    "object_placements": [
+     {
+      "object": "Shallow blue ceramic dish",
+      "pages_present": [
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "object": "Brass wall tap",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5
+      ]
+     }
+    ],
+    "cast_placements": [
+     {
+      "cast_id": "noor",
+      "pages_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6
+      ]
+     },
+     {
+      "cast_id": "mum",
+      "pages_present": [
+       4
+      ]
+     },
+     {
+      "cast_id": "cat",
+      "pages_present": [
+       1,
+       2,
+       3,
+       5,
+       6
+      ]
+     }
+    ],
+    "cover_source_page": 2,
+    "cover_hero_side": "right",
+    "cover_choice_reason": "Page 2 gives Noor a clear, large and expressive face while showing the visitor’s problem without revealing the dish, the drinking mechanism or the settled ending.",
+    "landmark": {
+     "name": "King Fahd’s Fountain",
+     "fact": "This famous Jeddah fountain sends Red Sea water high into the sky.",
+     "image_brief": "A bright postcard view from the Jeddah Corniche: the tall white jet of King Fahd’s Fountain rising from the blue Red Sea, with pale paving, a palm and one gull in the foreground."
+    },
+    "pages": [
+     {
+      "page": 1,
+      "brief": "WIDE ESTABLISHING SHOT from inside the courtyard. The sandy ginger cat pads through the open gate in the foreground while Noor notices it from the middle distance. Clearly map the sunny pale paving, then the brass tap on the coral-stone wall with a cool patch of shade beside it. Add the carved wooden balcony, one palm, one gull and calm blue sea beyond the gate. Mum and the dish are off-page. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat",
+        "assertion": "The collarless sandy ginger cat with white chest and paws is entering through the gate."
+       },
+       {
+        "object": "Noor",
+        "assertion": "Noor wears her pale blue headscarf, coral long-sleeved tunic and navy trousers."
+       },
+       {
+        "object": "Tap and shade",
+        "assertion": "The brass wall tap and nearby cool shadow are visible across the sunny paving."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Dish",
+        "assertion": "The blue dish has not been introduced."
+       },
+       {
+        "object": "Mum",
+        "assertion": "Mum remains off-page."
+       },
+       {
+        "object": "Shallow blue ceramic dish",
+        "assertion": "not visible yet - must not appear anywhere in the frame"
+       },
+       {
+        "object": "mum",
+        "assertion": "not on this page - must not appear anywhere in the frame"
+       }
+      ],
+      "carries_forward": "The cat advances onto the sunny paving; Noor moves closer. The tap, shade, gate and courtyard layout remain fixed."
+     },
+     {
+      "page": 2,
+      "brief": "LOW CLOSE SHOT centred on the cat panting in the bright sun. Noor’s concerned face is clear and large on the right, with only part of her crouched body visible. Keep the brass wall tap and the edge of its cool shadow softly visible in the background. The dish and Mum remain off-page. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat",
+        "assertion": "The same cat has stopped in the sunny patch and is visibly panting."
+       },
+       {
+        "object": "Noor",
+        "assertion": "Noor has moved close and crouched, watching the cat with concern."
+       },
+       {
+        "object": "Tap and shade",
+        "assertion": "The tap and neighbouring cool patch remain in their Page 1 positions."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Dish",
+        "assertion": "No dish is visible yet."
+       },
+       {
+        "object": "Mum",
+        "assertion": "Mum remains off-page."
+       },
+       {
+        "object": "Shallow blue ceramic dish",
+        "assertion": "not visible yet - must not appear anywhere in the frame"
+       },
+       {
+        "object": "mum",
+        "assertion": "not on this page - must not appear anywhere in the frame"
+       }
+      ],
+      "carries_forward": "The cat stays in the sunny patch. Noor stands, gets the dish and heads towards the already visible tap."
+     },
+     {
+      "page": 3,
+      "brief": "MEDIUM OVER-THE-CAT SHOT. Frame the cat’s ginger ears and white shoulder in the sunny foreground. Noor carries the shallow, visibly empty blue dish towards the brass wall tap. The empty cool patch beside the tap remains clear as the later destination for the filled dish. Mum stays off-page. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Noor and dish",
+        "assertion": "Noor carries the same shallow blue ceramic dish in both hands; it is visibly empty."
+       },
+       {
+        "object": "Cat",
+        "assertion": "The cat remains in the established sunny patch."
+       },
+       {
+        "object": "Tap and shade",
+        "assertion": "The tap and cool wall-side spot are directly ahead of Noor."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mum",
+        "assertion": "Mum has not appeared yet."
+       },
+       {
+        "object": "mum",
+        "assertion": "not on this page - must not appear anywhere in the frame"
+       }
+      ],
+      "carries_forward": "Noor and the empty dish reach the tap. The cat stays off to the sunny side while Mum joins Noor for the filling step."
+     },
+     {
+      "page": 4,
+      "brief": "MECHANISM CLOSE-UP. The shallow blue dish fills most of the frame beneath the brass tap. A single clear, continuous stream runs directly from the tap into the dish, meeting a rising water surface. Noor’s small hands and coral sleeves hold one side; Mum’s hands and sea-green sleeves steady the other. A band of wall shadow behind them indicates the nearby cool spot. Crop out all faces and show no spill or extra container.",
+      "required_visible_states": [
+       {
+        "object": "Tap and dish",
+        "assertion": "The clear water stream is visibly connected from the open tap to the blue dish."
+       },
+       {
+        "object": "Water",
+        "assertion": "Water behaves as liquid, forming a level surface in the rigid ceramic dish."
+       },
+       {
+        "object": "Noor and Mum",
+        "assertion": "Noor’s coral sleeves and Mum’s sea-green sleeves identify both pairs of helping hands."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Water",
+        "assertion": "Water must not resemble beads, pebbles or disconnected solid pieces."
+       },
+       {
+        "object": "Cat and extra containers",
+        "assertion": "The cat is off-page, and no second bowl, cup or bucket appears."
+       }
+      ],
+      "carries_forward": "The blue dish now contains water. Noor moves it a short distance from the tap into the established cool wall-side spot."
+     },
+     {
+      "page": 5,
+      "brief": "CAT-LEVEL SIDE SHOT. The filled blue dish rests flat on the paving in the cool wall shadow. The cat’s tongue touches the water surface, making only tiny connected ripples; its body is low and relaxed. Noor is already seated one cat-length away in the position she will keep on Page 6. The brass tap remains small but visible higher on the same wall. Mum is off-page. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Cat and water",
+        "assertion": "The cat’s tongue visibly contacts the water, with small liquid ripples at that exact point."
+       },
+       {
+        "object": "Dish",
+        "assertion": "The blue dish sits level in the established cool spot and still holds water."
+       },
+       {
+        "object": "Noor",
+        "assertion": "Noor is seated close enough for the cat to move beside her next."
+       },
+       {
+        "object": "Tap",
+        "assertion": "The brass tap remains on the same wall behind the dish."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mum",
+        "assertion": "Mum remains off-page after the shared filling step."
+       }
+      ],
+      "carries_forward": "The dish stays in the cool spot with water remaining. The cat finishes drinking and moves one short cat-length to sit beside Noor."
+     },
+     {
+      "page": 6,
+      "brief": "PAYOFF REACTION SHOT, tightly framed from Noor’s waist up. Noor beams down as the sandy ginger cat sits pressed snugly beside her. Keep the blue dish visible behind them in the exact Page 5 wall-side spot, with some water still inside as residue of the mechanism. Include only a narrow glimpse of the coral-stone wall and calm blue sea. Mum and the tap are off-page. All visible eyes are solid black filled ovals.",
+      "required_visible_states": [
+       {
+        "object": "Noor and cat",
+        "assertion": "The same cat sits pressed beside Noor, whose happy reaction is clear and large."
+       },
+       {
+        "object": "Dish and water",
+        "assertion": "The blue dish remains in its Page 5 position with some water still visible."
+       }
+      ],
+      "forbidden_visible_states": [
+       {
+        "object": "Mum",
+        "assertion": "Mum remains off-page."
+       },
+       {
+        "object": "Tap",
+        "assertion": "The tighter reaction framing does not relocate or show the tap."
+       }
+      ],
+      "carries_forward": "Final settled state: the cat stays beside Noor, and the water dish remains as visible evidence of her welcome."
+     }
+    ]
+   }
+  }
+ ]
+}

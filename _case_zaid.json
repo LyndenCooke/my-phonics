@@ -1,0 +1,17 @@
+{
+ "child": {
+  "name": "Zaid",
+  "age": 6,
+  "gender": "boy",
+  "skinTone": "light brown",
+  "hair": "short curly black hair"
+ },
+ "setting": {
+  "country": "Saudi Arabia",
+  "city": "Dammam",
+  "culture": "A Muslim family in Dammam on the Gulf coast of Saudi Arabia; low sand-coloured flat-roofed houses, a palm-lined corniche beside calm blue sea, date palms heavy with brown date clusters, falcons on padded perches; sandy paved ground."
+ },
+ "level": 3,
+ "sound": "ng",
+ "likes": "falcons and dates"
+}
