@@ -344,6 +344,88 @@ def _apply_shifty(marks: list, indices: set) -> list:
     return sorted(out, key=lambda m: m["indices"][0])
 
 
+# ---------------------------------------------------------------------------
+# HONEST DECODING GATE (Lynden 2026-08-21, the "Hana Gets the Knack" review).
+#
+# split_into_phonemes falls back to ONE DOT PER LETTER whenever a letter has
+# no taught grapheme.  That fallback is silent, so a word the child cannot
+# actually decode still prints under "Sound out each phoneme, then blend" as
+# though every letter behaves: "knack" printed k-n-a-ck (kn is not taught and
+# says /n/), "listened" printed as eight separate dots (silent t, schwa e).
+# A Story Words page that lies is worse than no Story Words page, and it
+# breaks the 100% decodable claim at the exact spot that claim is displayed.
+#
+# Two distinct failures, both blocking:
+#   1. UNTAUGHT  - a letter matched no grapheme in the cumulative set.
+#   2. DISHONEST - every letter matches, but sounding them out does not
+#      produce the word a child says (wash = "wosh", basket = "baskit").
+# Dishonest spellings cannot be detected from the grapheme list alone, so the
+# common English offenders are named here.  Anything on this list must be
+# taught as a tricky word or kept off the practice pages entirely.
+DISHONEST_DECODE = {
+    # silent letters
+    "listen": "silent t, and the e says schwa",
+    "listened": "silent t, and the e says schwa",
+    "castle": "silent t",
+    "whistle": "silent t",
+    "fasten": "silent t",
+    "answer": "silent w",
+    # 'wa' after w says /o/
+    "wash": "the a after w says /o/ - it sounds like 'wosh'",
+    "want": "the a after w says /o/",
+    "wanted": "the a after w says /o/",
+    "watch": "the a after w says /o/",
+    "water": "the a after w says /o/",
+    "was": "the a after w says /o/",
+    # unstressed vowel in the second syllable
+    "basket": "the e is unstressed - it sounds like 'baskit'",
+    "pocket": "the e is unstressed",
+    "rocket": "the e is unstressed",
+    "carpet": "the e is unstressed",
+    "target": "the e is unstressed",
+    "biscuit": "the ui says /i/",
+}
+
+
+def decode_problem(word: str, cumulative_graphemes: list) -> str | None:
+    """Why this word must not appear on a sound-out practice page, or None.
+
+    Returns a short human reason so the gate can name the exact fault.
+    """
+    lower = (word or "").lower().strip()
+    if not lower:
+        return None
+    if lower in SPLIT_EXCEPTIONS:
+        return None
+    if lower in DISHONEST_DECODE:
+        return f'"{word}" is not honestly decodable: {DISHONEST_DECODE[lower]}'
+    # An untaught grapheme shows up as a bare letter the matcher never
+    # claimed. Re-run the match and record any position that fell through.
+    sorted_g = [g for g in sorted(set(cumulative_graphemes), key=len, reverse=True) if "-" not in g]
+    units = split_into_phonemes(lower, cumulative_graphemes)
+    rebuilt = ""
+    for u in units:
+        if len(u) > 1 and u not in sorted_g and u not in ("ed", "le"):
+            return f'"{word}" uses "{u}", which is not taught at this level'
+        rebuilt += u
+    # Digraphs that are present in the word but NOT taught leave their letters
+    # split apart (kn -> k + n). Catch the common ones explicitly.
+    for pair in ("kn", "wr", "mb", "gn", "ph", "tch", "dge"):
+        if pair in lower and pair not in sorted_g:
+            return f'"{word}" contains "{pair}", which is not taught at this level'
+    return None
+
+
+def decode_problems(words: list, cumulative_graphemes: list) -> list:
+    """Every decode_problem across a list of words, in order."""
+    out = []
+    for w in words or []:
+        r = decode_problem(w, cumulative_graphemes)
+        if r:
+            out.append(r)
+    return out
+
+
 def build_sound_buttoned_words(
     words: list,
     cumulative_graphemes: list,

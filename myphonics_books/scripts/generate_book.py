@@ -642,7 +642,7 @@ def load_sound_detective_claims() -> dict:
     return _sd_claims_cache
 
 
-def build_grow_code_chart():
+def build_grow_code_chart(level: int | None = None):
     """The FIXED Grow the Code sound chart (Lynden's curated content, from
     data/grow_code_chart.json — the SVG he refined 2026-07-20).  Little
     Wandle style, portrait: one narrow COLUMN per sound family, spellings
@@ -653,11 +653,33 @@ def build_grow_code_chart():
     chart = json.load(open(BASE_DIR / "data" / "grow_code_chart.json",
                            encoding="utf-8"))
 
+    # LOCKED CELLS (Lynden 2026-08-21): the chart printed the entire future
+    # code (kn, mb, wr, dge, eigh, augh...) as though it were all taught, so
+    # "watch the code grow" was a spoiler, not a promise. Taught-ness is
+    # derived from the ledger itself - a spelling first taught above this
+    # level, or never taught in the 8-level scheme, renders faded. No new
+    # data file: graphemes_by_level.json stays the only source of truth.
+    _first_taught = {}
+    try:
+        _gbl = json.load(open(BASE_DIR / "data" / "graphemes_by_level.json",
+                              encoding="utf-8"))
+        for _lv in range(1, 9):
+            for _g in _gbl.get(f"level_{_lv}", {}).get("graphemes", []):
+                _first_taught.setdefault(_g, _lv)
+    except Exception:
+        _first_taught = {}
+
+    def _locked(g):
+        if level is None or not _first_taught:
+            return False
+        return _first_taught.get(g, 99) > int(level)
+
     def _col(fam):
         return {
             "head": fam["head"],
             "cue": fam.get("cue", ""),
-            "cells": [{"g": g, "long": len(g) >= 4} for g in fam["spellings"]],
+            "cells": [{"g": g, "long": len(g) >= 4, "locked": _locked(g)}
+                      for g in fam["spellings"]],
         }
 
     cons = [_col(f) for f in chart["consonants"]]
@@ -1116,7 +1138,7 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
     # Grow the Code chart — a whole page at L4-L6, replacing the
     # Listen-and-Write spelling test.  FIXED sound chart, identical in
     # every book, curated in data/grow_code_chart.json.
-    book_data["grow_code_chart"] = build_grow_code_chart()
+    book_data["grow_code_chart"] = build_grow_code_chart(level)
 
     # Library-edition onboarding page (2026-07-20): "Is this the right
     # level?" sample boxes drawn from THIS book's own content, plus the

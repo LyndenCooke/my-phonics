@@ -1391,6 +1391,9 @@
       overflow: hidden;
     }
     .gc-cell-long { font-size: 6.5pt; padding-top: 1.6mm; padding-bottom: 1.6mm; }
+    /* Not taught yet at this level - visibly locked so the chart is a
+       promise rather than a spoiler (Lynden 2026-08-21). */
+    .gc-cell-locked { color: #c8c8c8; border-style: dashed; background: #fbfbfb; }
     .gc-cell-head {
       margin-top: 0;
       font-weight: 700;
@@ -3458,7 +3461,9 @@
       {% endif %}
       {% if level >= 4 %}{% set _wg = _wg + [{'icon': '↔', 'text': 'One joining word: and or but'}] %}{% endif %}
       {% if level == 5 %}{% set _wg = _wg + [{'icon': '✳', 'text': 'One describing word'}] %}{% endif %}
-      {% if level >= 6 %}{% set _wg = _wg + [{'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
+      {# L6 REPLACES the list - appending duplicated "Correct end mark" and the
+   joining-word goal, giving 7 goals against the 4-5 cap (Lynden 2026-08-21). #}
+{% if level >= 6 %}{% set _wg = [{'icon': 'Aa', 'text': 'Capital at the start'}, {'icon': '⎵', 'text': 'Finger spaces'}, {'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
       <div class="writing-goals">
         <div class="writing-goals-label">Writing Goals &mdash; tick when you remember</div>
         <div class="writing-goals-list">
@@ -3600,7 +3605,9 @@
   ] %}
   {% if level >= 4 %}{% set _wg = _wg + [{'icon': '↔', 'text': 'One joining word: and / but'}] %}{% endif %}
   {% if level == 5 %}{% set _wg = _wg + [{'icon': '✳', 'text': 'One describing word'}] %}{% endif %}
-  {% if level >= 6 %}{% set _wg = _wg + [{'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
+  {# L6 REPLACES the list - appending duplicated "Correct end mark" and the
+   joining-word goal, giving 7 goals against the 4-5 cap (Lynden 2026-08-21). #}
+{% if level >= 6 %}{% set _wg = [{'icon': 'Aa', 'text': 'Capital at the start'}, {'icon': '⎵', 'text': 'Finger spaces'}, {'icon': '. ? !', 'text': 'Correct end mark'}, {'icon': '↔', 'text': 'Joining word: and / but / because'}, {'icon': '“ ”', 'text': 'Inverted commas for speech'}] %}{% endif %}
 
   {% if level == 5 %}
     {% set wp_steps = [
@@ -3877,7 +3884,8 @@
       <div class="sw2-subtitle">
         Different spellings can make the same sound. Read down each column
         &mdash; every spelling underneath makes the sound at the top. The
-        same chart is in every book, so you can watch the code grow!
+        <strong>faded</strong> spellings are still locked: your child meets those
+        in later books, and the chart fills in as they grow.
       </div>
 
       {% if grow_code_chart %}
@@ -3892,7 +3900,7 @@
         <div class="gc-col">
           <div class="gc-cell gc-cell-head {% if fam.head|length >= 4 %}gc-cell-long{% endif %}">{{ fam.head }}{% if fam.cue %}<span class="gc-cue">{{ fam.cue }}</span>{% endif %}</div>
           {% for c in fam.cells %}
-          <div class="gc-cell {% if c.long %}gc-cell-long{% endif %}">{{ c.g }}</div>
+          <div class="gc-cell {% if c.long %}gc-cell-long{% endif %}{% if c.locked %} gc-cell-locked{% endif %}">{{ c.g }}</div>
           {% endfor %}
         </div>
         {% endfor %}

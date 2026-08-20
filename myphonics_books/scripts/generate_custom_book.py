@@ -17,6 +17,7 @@ before the schema carried them still render.
 import argparse
 import asyncio
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -172,7 +173,11 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     _cumulative_chart = []
     for _lv in range(1, level_num + 1):
         _cumulative_chart.extend(_graphemes_data.get(f"level_{_lv}", {}).get("graphemes", []))
-    book_data["chart_graphemes"] = _cumulative_chart
+    # The focus sound is TODAY'S NEW SOUND - it must not also sit in the
+    # "Sounds you should know" grid, which reads as a progression
+    # contradiction (Lynden 2026-08-21: "ur is simultaneously old and new").
+    _focus_set = {g.lower() for g in (story_dict.get("focus_graphemes") or [])}
+    book_data["chart_graphemes"] = [g for g in _cumulative_chart if g.lower() not in _focus_set]
 
     # Same principle for Future Sounds: the library's taught-window cuts the
     # current level at the book's focus sound (right for a mid-series reader,
@@ -220,6 +225,36 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     return book_data
 
 
+def assert_decodable(spec: dict) -> None:
+    """Hard gate: nothing that lies about decoding may reach a printed page.
+
+    The Story Words page says "Sound out each phoneme, then blend", and the
+    splitter silently dots any letter it cannot match - so an untaught or
+    dishonest spelling printed as though it behaved ("knack" as k-n-a-ck,
+    "listened" as eight dots). That breaks the 100% decodable claim at the
+    exact place the claim is made, so it fails the build (Lynden 2026-08-21).
+    The TITLE is checked too: it is the first thing a child tries to read.
+    """
+    sys.path.insert(0, str(SCRIPTS))
+    from v2_helpers import decode_problems
+    from generate_book import BASE_DIR as _BD
+    level = int(spec["level"])
+    with open(_BD / "data" / "graphemes_by_level.json", encoding="utf-8") as f:
+        cumulative = json.load(f)[f"level_{level}"]["cumulative_graphemes"]
+    with open(_BD / "data" / "tricky_words_by_level.json", encoding="utf-8") as f:
+        tricky = {w.lower() for w in json.load(f)[f"level_{level}"]["cumulative"]}
+    name = str(spec.get("child_name") or "").lower()
+
+    def _check(words, where):
+        words = [w for w in words if w and w.lower() not in tricky and w.lower() != name]
+        return [f"{where}: {r}" for r in decode_problems(words, cumulative)]
+
+    problems = _check(spec.get("read_words") or [], "practice word")
+    problems += _check(spec.get("story_words") or [], "story word")
+    problems += _check(re.findall(r"[A-Za-z']+", spec.get("book_title") or ""), "TITLE")
+    if problems:
+        raise SystemExit("decodability gate:" + chr(10) + chr(10).join("  - " + p for p in problems))
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", required=True, help="Path to the book spec JSON")
@@ -228,6 +263,7 @@ def main() -> None:
     spec = json.loads(Path(args.json).read_text(encoding="utf-8"))
     images_dir = Path(spec["images_dir"])
 
+    assert_decodable(spec)
     book_data = build_custom_book_data(spec, images_dir)
 
     html = render_book_html(book_data)
@@ -246,6 +282,23 @@ def main() -> None:
         raise SystemExit(
             f"page-count gate: rendered {got} pages, Level {spec['level']} requires exactly {expected}"
         )
+    # PRINT MASTERS (Lynden 2026-08-21): the A5 render is the SCREEN file.
+    # A print vendor needs 3mm bleed with a stamped TrimBox and the cover
+    # supplied separately from the text block - the fleet already has both
+    # steps, and the custom path simply never called them, so every custom
+    # PDF was trim-size, bleedless and single-file. --print-masters runs the
+    # same chain the classroom books use.
+    if spec.get("print_masters") or "--print-masters" in sys.argv:
+        from make_print_masters import make_master
+        from split_for_bookvault import split
+        master = out.with_name(out.stem + "_print.pdf")
+        make_master(out, master, barcode=False)
+        pdir = out.parent / "print"
+        info = split(master, pdir)  # returns page counts; files land in pdir
+        print(f"print master: {master}")
+        print(f"cover file:   {pdir / 'cover.pdf'}")
+        print(f"text file:    {pdir / 'text.pdf'} ({info['interior']}pp of {info['total']})")
+
     print(str(out))
 
 
