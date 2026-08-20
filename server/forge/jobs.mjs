@@ -1003,6 +1003,7 @@ function displayFor(book, job, step) {
     storyGate: ["story_editor", "A demanding editor is reading the manuscript before we mix any paint...", 22],
     textReport: ["text_ready", "Text-only run complete — story approved, no images generated.", 100],
     direct: ["directing", `Directing the scenes (walking the story in ${name}'s shoes)...`, 25],
+    awaitImagery: ["awaiting_imagery_approval", "Story approved - the imagery plan is waiting for sign-off before any paint is mixed...", 28],
     hero: ["hero", `Drawing ${name} as a book character (eye rule enforced)...`, 30],
     cover: ["cover", "Painting the cover...", 85],
     country: ["country", `Collecting wonders from ${book.country || "home"}...`, 90],
@@ -1014,7 +1015,9 @@ function displayFor(book, job, step) {
     const i = Number(step.split(":")[1]);
     return { step: "scenes", message: `Illustrating page ${i + 1} of ${total}...`, pct: 35 + Math.round((i / total) * 45) };
   }
-  const [s, m, p] = map[step];
+  // A step the map does not know must never crash the whole job (awaitImagery
+  // did exactly that for every website book after the 08-16 approval gate).
+  const [s, m, p] = map[step] || ["working", "Working on the book...", 50];
   return { step: s, message: m, pct: p };
 }
 
