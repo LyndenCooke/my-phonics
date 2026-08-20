@@ -12,6 +12,7 @@ const BOOKS = [
   { file: "one_thread_hamza_v2.json", slug: "hamza", outfit: "a plain teal thobe-style tunic, dark trousers and brown sandals" },
   { file: "one_thread_case1.json", slug: "safa", outfit: "a lilac tunic with long sleeves, navy trousers, a small white hijab and white shoes" },
   { file: "one_thread_case2.json", slug: "danyal", outfit: "a mustard kurta, dark trousers and brown sandals" },
+  { file: "one_thread_elsie.json", slug: "elsie", outfit: "a yellow long-sleeved top covering her shoulders, blue trousers reaching her ankles, and red wellington boots" },
   { file: "one_thread_yusuf.json", slug: "yusuf", outfit: "a teal long-sleeved top covering his shoulders and arms, loose tan trousers reaching his ankles so no bare legs show, and brown sandals" },
   { file: "one_thread_noor.json", slug: "noor", outfit: "a pale blue headscarf covering ALL her hair (no hair visible at the front, sides or back), a loose coral long-sleeved tunic reaching below her knees, navy trousers underneath so no bare legs show, and white trainers" },
   { file: "one_thread_zaid.json", slug: "zaid", outfit: "a plain sand-coloured thobe-style tunic that reaches below his knees, long dark trousers showing beneath it so no bare legs are visible, shoulders fully covered, and brown sandals" },
@@ -150,7 +151,11 @@ const log = (label, c, qa) => { cost += c || 0; grand += c || 0; console.log(`  
     const src = `${dir}/page${srcPage}.png`;
     const meta = await sharp(src).metadata();
     const cw = Math.min(meta.width, Math.round(meta.height * 3 / 4));
-    const left = side === "left" ? 0 : side === "right" ? meta.width - cw : Math.round((meta.width - cw) / 2);
+    // lean toward the hero, never a hard third - a hard-left crop cut the
+    // boat out of Elsie's cover entirely (2026-08-20); the subject the hero
+    // faces is almost always nearer the middle.
+    const lean = side === "left" ? 0.35 : side === "right" ? 0.65 : 0.5;
+    const left = Math.round((meta.width - cw) * lean);
     await sharp(src).extract({ left, top: 0, width: cw, height: meta.height }).toFile(`${dir}/cover.png`);
     console.log(`  [${B.slug}/cover] cropped from page${srcPage} (hero ${side}) - $0.00`);
   } else { console.log(`  [${B.slug}/cover] reused from disk`); }
