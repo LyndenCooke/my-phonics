@@ -109,6 +109,7 @@ const STORY = S({
   read_words: arr(str),
   focus_word_examples: arr(str),
   tricky_words_used: arr(str),
+  writer_tricky_word: str,
   cover_brief: str,
 });
 const CHECKED = S({ violations_found: arr(str), story: STORY });
@@ -148,7 +149,7 @@ STORY SHAPE for this book - ${SHAPE.name}: ${SHAPE.how} Keep the shape within th
 
 SAFE BEHAVIOUR: the child notices, decides and leads; an adult shares any risky step in the same page. Modest dress (knees and shoulders covered). All eyes in any scene description are solid black filled ovals.
 
-PHONICS CONTRACT for Level ${LEVEL}: every word decodable using ONLY these graphemes: ${JSON.stringify(level.cumulative)} — or on this tricky list: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is always allowed. Focus sound "${SOUND}" in at least 3 distinct words of the story text. read_words: EXACTLY 6 words that appear in the story text — EXACTLY 2 containing "${SOUND}", plus 4 other level-worthy words.
+PHONICS CONTRACT for Level ${LEVEL}: every word decodable using ONLY these graphemes: ${JSON.stringify(level.cumulative)} — or on this tricky list: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is always allowed. NATURAL LANGUAGE (Lynden 2026-08-20): always use the most common everyday word a five-year-old already says. If the natural word does not decode, REPHRASE the sentence - never reach for an obscure decodable word a child wouldn't know ('pads in' when you mean walks in; 'trots in' is fine because children know it). If the story truly needs ONE common word that does not decode (like 'walks'), nominate it as writer_tricky_word - it will be taught as a tricky word up front. At most one per book; leave it empty ("") if not needed. It still counts as allowed in the story text. Focus sound "${SOUND}" in at least 3 distinct words of the story text. read_words: EXACTLY 6 words that appear in the story text — EXACTLY 2 containing "${SOUND}", plus 4 other level-worthy words.
 
 ${shiftyBlock}
 
@@ -176,14 +177,14 @@ await turn("plan-forward", `Now storyboard it. For each page 1..${pagesCount}: w
 await turn("plan-backward", `Now plan it BACKWARDS. Start from the final image and walk back to page 1: for each page, what must ALREADY be visible so the later pages are believable — evidence planted early, states that persist, residue that remains after the mechanism resolves. Revise each brief accordingly.`, BWD);
 
 // 6. storyboard plausibility gate + final package
-const final = await turn("storyboard-gate", `Final gate: judge the whole revised storyboard as a physical sequence. Materials must behave like themselves (water soaks and darkens — never pebbles or beads; cloth drapes; wind moves light things first). Every mechanism's cause must be VISIBLY connected to its effect in the frame. Reject impossible or unconnected states and fix them. Then output the final package: cover brief plus, for each page, the final brief, required_visible_states and forbidden_visible_states (assert ONLY the load-bearing mechanism and character continuity — keep the list short), and carries_forward (what the next image inherits). Also output object_placements: for EACH key object, the exact page numbers where the storyboard makes it visible in the frame. Likewise cast_placements for EACH cast member including the hero. Choose cover_source_page: the existing page image that becomes the COVER - the hero's face must be clear and large, and the image must NOT spoil the resolution (prefer an early or middle page); give cover_hero_side (where the hero stands in that frame) and cover_choice_reason. Also suggest landmark: one real, famous, drawable landmark in or near the child's city for the profile page, with a one-line child-friendly fact and a short postcard image brief. Keep each page's combined required+forbidden assertions to AT MOST 5 - assert only what is load-bearing.`, FINAL);
+const final = await turn("storyboard-gate", `Final gate: judge the whole revised storyboard as a physical sequence. Materials must behave like themselves (water soaks and darkens — never pebbles or beads; cloth drapes; wind moves light things first). Every mechanism's cause must be VISIBLY connected to its effect in the frame. Reject impossible or unconnected states and fix them. Then output the final package: cover brief plus, for each page, the final brief, required_visible_states and forbidden_visible_states (assert ONLY the load-bearing mechanism and character continuity — keep the list short), and carries_forward (what the next image inherits). Also output object_placements: for EACH key object, the exact page numbers where the storyboard makes it visible in the frame. Likewise cast_placements for EACH cast member including the hero. Choose cover_source_page: the existing page image that becomes the COVER - the hero's face must be clear and large, and the image must NOT spoil the resolution (prefer an early or middle page), and prefer a frame where the hero looks warm, curious or happy - a distressed face makes a poor cover; give cover_hero_side (where the hero stands in that frame) and cover_choice_reason. Also suggest landmark: one real, famous, drawable landmark in or near the child's city for the profile page, with a one-line child-friendly fact and a short postcard image brief. Keep each page's combined required+forbidden assertions to AT MOST 5 - assert only what is load-bearing.`, FINAL);
 
 // ---------------- report ----------------
 // Deterministic shifty check: the ledger's own example words for gated
 // pronunciations must not appear anywhere in the final text or word lists.
 const allText = [story.title, ...story.pages.map((p) => p.text), ...story.read_words, ...story.focus_word_examples].join(" ").toLowerCase();
 // tricky words are always allowed - never shifty violations (nor is the hero's name)
-const alwaysOk = new Set([...level.trickyWords, child.name].map((w) => w.toLowerCase()));
+const alwaysOk = new Set([...level.trickyWords, child.name, (story.writer_tricky_word || "")].filter(Boolean).map((w) => w.toLowerCase()));
 const shiftyViolations = gated.flatMap((g) => g.examples.filter((w) => !alwaysOk.has(w.toLowerCase()) && new RegExp(`\\b${w.toLowerCase()}\\b`).test(allText)).map((w) => `"${w}" uses ${g.grapheme}=${g.sound} (not taught until later)`));
 
 // SECTION 20.5 - object identity: pinned only where the storyboard places it;
@@ -213,6 +214,10 @@ for (const cp of final.cast_placements || []) {
       p.forbidden_visible_states.push({ object: cp.cast_id, assertion: "not on this page - must not appear anywhere in the frame" });
   }
 }
+// writer-nominated tricky word (Lynden 2026-08-20): at most one, surfaces in
+// the tricky-words box like the ledger ones.
+const nominated = (story.writer_tricky_word || "").trim().toLowerCase();
+if (nominated && !story.tricky_words_used.map((w) => w.toLowerCase()).includes(nominated)) story.tricky_words_used.push(nominated);
 const assertionsPerPage = final.pages.map((p) => p.required_visible_states.length + p.forbidden_visible_states.length);
 
 const out = { child, setting, level: LEVEL, sound: SOUND, likes: LIKES, shape: SHAPE.name, model: MODEL, shiftyViolations, objectViolations, assertionsPerPage, object_placements: final.object_placements, totalCost: Number(totalCost.toFixed(4)), transcript };
@@ -231,6 +236,7 @@ story.pages.forEach((p, i) => console.log(`  p${i + 1}: ${p.text}`));
 console.log(`\nassertions per page: ${final.pages.map((p) => p.required_visible_states.length + p.forbidden_visible_states.length).join(", ")}`);
 console.log(`TOTAL COST: $${totalCost.toFixed(3)}  (${transcript.length} turns, one conversation)`);
 console.log("story shape:", SHAPE.name);
+console.log("writer tricky word:", story.writer_tricky_word || "(none)");
 console.log("cast placements:", JSON.stringify(final.cast_placements));
 console.log("cover source: page", final.cover_source_page, `(hero ${final.cover_hero_side}) -`, final.cover_choice_reason);
 console.log("landmark:", final.landmark && final.landmark.name);
