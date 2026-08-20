@@ -18,6 +18,12 @@ const BOOKS = [
   { file: "one_thread_case3.json", slug: "maryam", outfit: "a cream hijab worn properly and covering ALL her hair (no hair visible at the front, sides or back), a rose-pink long-sleeved tunic, dark blue trousers and dark shoes" },
 ];
 
+// faith line gets its symbol on Meet the Star (Lynden 2026-08-20)
+const faithLabel = (f) => {
+  const sym = { muslim: "☪", christian: "✝", jewish: "✡", hindu: "ॐ", sikh: "☬", buddhist: "☸" }[String(f).toLowerCase()];
+  return sym ? `${f} ${sym}` : f;
+};
+
 const only = process.argv[2]; // optional slug filter
 let grand = 0;
 
@@ -164,7 +170,7 @@ const log = (label, c, qa) => { cost += c || 0; grand += c || 0; console.log(`  
     questions: [], alien_words: [], tricky_words_used: story.tricky_words_used || [],
     shifty_marks: {}, pronunciation_notes: [],
     images_dir: path.resolve(dir), out_path: path.resolve(`${dir}/book.pdf`),
-    profile: { name: child.name, age: child.age, country: child.country, countryFlag: "", likes: j.likes || "", culture: j.setting.culture, faith: j.faith || "Muslim", landmark: lmPlan ? { name: lmPlan.name, fact: lmPlan.fact } : null },
+    profile: { name: child.name, age: child.age, country: child.country, countryFlag: "", likes: j.likes || "", culture: j.setting.culture, faith: faithLabel(j.faith || "Muslim"), countryFlag: fin.country_iso2 || "", facts: fin.country_facts || [], landmark: lmPlan ? { name: lmPlan.name, fact: lmPlan.fact } : null },
   };
   fs.writeFileSync(`${dir}/pdf_spec.json`, JSON.stringify(spec, null, 1));
   console.log(`  ${B.slug} images done: $${cost.toFixed(2)}`);
