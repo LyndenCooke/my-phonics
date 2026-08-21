@@ -742,6 +742,31 @@ const REVIEW_SCHEMA = {
   additionalProperties: false,
 };
 
+// HOW TO SAY THIS CHILD'S NAME (Lynden 2026-08-21: "tricky words should be
+// explained... including names"). The 97 ledger tricky words have curated
+// breakdowns in data/tricky_word_breakdowns.json, but no static table can
+// know that "Tomasz" is said Tom-ash or that "Siobhan" is Shiv-awn, and a
+// personalised book puts that word on nearly every page. One tiny call.
+export async function nameBreakdown({ name, country }) {
+  const system =
+    "You help a British parent read a child's name aloud with their child, in a phonics book. " +
+    "Split the name into the chunks you would actually say, and give a plain say-it-like-this. " +
+    "Be accurate to how the name is said in its own culture, not an anglicised guess. " +
+    "Keep 'says' under 12 words, written for a parent, never phonetic symbols - use plain spellings like 'Tom-ash'. " +
+    "If the name is straightforwardly decodable in English (Sam, Ben, Hana), say so simply.";
+  const content = `Name: "${name}"${country ? `, a child in ${country}` : ""}.`;
+  const schema = {
+    type: "object",
+    properties: {
+      parts: { type: "array", items: { type: "string" }, description: "The name split into spoken chunks, e.g. [\"To\",\"masz\"] or [\"Ay\",\"la\"]." },
+      says: { type: "string", description: "How to say it, plainly: 'say Tom-ash - the sz says /sh/'." },
+    },
+    required: ["parts", "says"],
+    additionalProperties: false,
+  };
+  return callJson({ system, content, schema, tier: "fast", maxTokens: 600 });
+}
+
 // READ IT ALOUD (Lynden 2026-08-21: "why can't the writer write a good story
 // without the judge"). It could - we stopped letting it. The writer's brief is
 // 5,000 words carrying 64 prohibitions and four mentions of the exemplars, so

@@ -211,6 +211,9 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
         "countryFlag": prof.get("countryFlag"),
         "flagImage": fetch_flag(prof.get("countryFlag")),
         "greeting": prof.get("greeting"),
+        # How to say the child's own name - it sits in the Tricky Words strip
+        # because sounded out honestly a name usually does not say itself.
+        "name_breakdown": prof.get("nameBreakdown") or prof.get("name_breakdown"),
         "facts": prof.get("facts") or [],
         "landmark": {
             "name": landmark.get("name"),

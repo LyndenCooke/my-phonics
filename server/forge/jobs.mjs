@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, polishStoryAloud, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, polishStoryAloud, nameBreakdown, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, restoreCreditForBook } from "./db.mjs";
@@ -909,6 +909,16 @@ async function stepCountry(book, job) {
     });
     job.cost += cf.cost; job.breakdown.story_usd += cf.cost;
     job.country = cf.data;
+    // How to SAY this child's name, for the tricky-word strip. No static
+    // table can know that Tomasz is Tom-ash or Siobhan is Shi-vawn, and a
+    // personalised book puts that word on nearly every page (2026-08-21).
+    try {
+      const nb = await nameBreakdown({ name: book.child_name, country: book.country });
+      job.cost += nb.cost || 0; job.breakdown.story_usd += nb.cost || 0;
+      job.nameBreakdown = nb.data;
+    } catch (e) {
+      console.warn('[forge] name breakdown unavailable:', e.message);
+    }
     const lm = await generateLandmark({
       name: cf.data.landmark.name,
       imageBrief: cf.data.landmark.image_brief,
@@ -1091,6 +1101,7 @@ async function stepAssemble(book, job) {
       culture: child.cultureNotes,
       faith: book.faith || null,
       greeting: job.country?.greeting || null,
+      nameBreakdown: job.nameBreakdown || null,
       facts: job.country?.facts || [],
       landmark: job.country
         ? { name: job.country.landmark.name, fact: job.country.landmark.fact, imageUrl: job.landmarkUrl }

@@ -642,6 +642,23 @@ def load_sound_detective_claims() -> dict:
     return _sd_claims_cache
 
 
+def _tricky_breakdowns(words):
+    """[{word, parts, tricky, says}] for the tricky-word strip."""
+    try:
+        with open(BASE_DIR / "data" / "tricky_word_breakdowns.json", encoding="utf-8") as f:
+            table = json.load(f)["words"]
+    except Exception:
+        return []
+    lower = {k.lower(): v for k, v in table.items()}
+    out = []
+    for w in words or []:
+        e = table.get(w) or lower.get(str(w).lower())
+        if e:
+            out.append({"word": w, "parts": e.get("parts") or [w],
+                        "tricky": e.get("tricky", ""), "says": e.get("says", "")})
+    return out
+
+
 def build_grow_code_chart(level: int | None = None):
     """The FIXED Grow the Code sound chart (Lynden's curated content, from
     data/grow_code_chart.json — the SVG he refined 2026-07-20).  Little
@@ -943,6 +960,10 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         "story_words": story_dict.get("story_words", []),
         "read_words": story_dict.get("read_words", []),
         "tricky_words": tricky_words_display,
+        # Pronunciation support for each tricky word (Lynden 2026-08-21): a
+        # bare sight-word strip tells the grown-up nothing about WHICH part
+        # misbehaves. Static curated data, so it costs nothing per book.
+        "tricky_breakdowns": _tricky_breakdowns(tricky_words_display),
         "tricky_words_new": tricky_words_new,
         "nonsense_words": story_dict.get("nonsense_words", []),
         "questions": questions,

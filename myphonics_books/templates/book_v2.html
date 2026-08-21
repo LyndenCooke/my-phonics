@@ -471,6 +471,13 @@
     .sw-tricky-words {
       display: flex; flex-wrap: wrap; gap: 3mm; justify-content: center;
     }
+    .sw-tricky-how { margin-top: 2.5mm; display: flex; flex-direction: column; gap: 1.1mm; }
+    .sw-tricky-how-row { display: flex; align-items: baseline; gap: 2.5mm; font-size: 9pt; line-height: 1.25; }
+    .sw-tricky-how-word { font-weight: bold; min-width: 20mm; }
+    .sw-tricky-how-parts { min-width: 30mm; letter-spacing: 0.2mm; }
+    .sw-part { border-bottom: 0.4mm solid #cbb7e8; padding: 0 0.5mm; }
+    .sw-dot { color: #b9a4d8; padding: 0 0.4mm; }
+    .sw-tricky-how-note { color: #555; }
     .sw-tricky-word {
       font-size: 15pt; font-weight: 600; color: #2a2240;
       background: #ffffff;
@@ -2973,6 +2980,27 @@
           {% if profile and profile.name %}<span class="sw-tricky-word">{{ profile.name }}</span>{% endif %}
           {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
         </div>
+        {# HOW TO SAY THEM (Lynden 2026-08-21): a sight-word strip on its own
+           tells the grown-up nothing. Each word is split the way you say it,
+           with the misbehaving part named and what it actually says. #}
+        {% if tricky_breakdowns or (profile and profile.name_breakdown) %}
+        <div class="sw-tricky-how">
+          {% if profile and profile.name_breakdown %}
+          <div class="sw-tricky-how-row">
+            <span class="sw-tricky-how-word">{{ profile.name }}</span>
+            <span class="sw-tricky-how-parts">{% for p in profile.name_breakdown.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
+            <span class="sw-tricky-how-note">{{ profile.name_breakdown.says }}</span>
+          </div>
+          {% endif %}
+          {% for b in tricky_breakdowns %}
+          <div class="sw-tricky-how-row">
+            <span class="sw-tricky-how-word">{{ b.word }}</span>
+            <span class="sw-tricky-how-parts">{% for p in b.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
+            <span class="sw-tricky-how-note">{% if b.tricky %}<strong>{{ b.tricky }}</strong> says {% endif %}{{ b.says }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
         {% if profile and profile.name %}
         <div style="font-size: 8.5pt; color: #777; margin-top: 1.5mm; text-align: center;">
           {{ profile.name }}&rsquo;s own name is here because most children read their name long before they can build it &mdash; say it together, then look for it on every page.
