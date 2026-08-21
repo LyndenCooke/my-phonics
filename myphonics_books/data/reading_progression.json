@@ -1,116 +1,259 @@
 {
-  "_name": "Reading and writing progression per level",
-  "_description": "What a book at each level must look like as TEXT: how much of it there is, which punctuation is allowed, which sentence forms and devices are expected. Sourced from the Writing and Grammar Track of CURRICULUM_LEDGER.md (the user-authored Curriculum Ledger is the source of truth) plus the sentence-length caps the book pipeline already used.",
-  "_use": "Drives the story writer's per-level brief AND the text QA gate, so both sides read from one spec. punctuation and sentence_forms are CUMULATIVE (a level inherits everything below it); devices_new and must_include are what this level adds.",
-  "_status": "sentences_per_page and words_per_sentence are PROPOSED and need Lynden's confirmation; punctuation, sentence_forms and devices_new come straight from the ledger.",
-  "_created": "2026-07-26",
-
-  "levels": {
-    "1": {
-      "name": "Ditties",
-      "sentences_per_page": [1, 1],
-      "words_per_sentence": [3, 5],
-      "punctuation": [".", "capital letter at the start"],
-      "sentence_forms": ["statement"],
-      "devices_new": [],
-      "must_include": [],
-      "note": "One short caption-like sentence. No commas, no dialogue."
-    },
-    "2": {
-      "name": "First Sounds",
-      "sentences_per_page": [1, 1],
-      "words_per_sentence": [4, 6],
-      "punctuation": [".", "capital letter at the start", "capital I"],
-      "sentence_forms": ["statement"],
-      "devices_new": ["capital letter for the personal pronoun I"],
-      "must_include": [],
-      "note": "Full stop and capital are formally taught here — the book must model them perfectly."
-    },
-    "3": {
-      "name": "Special Friends",
-      "sentences_per_page": [1, 2],
-      "words_per_sentence": [5, 7],
-      "punctuation": [".", "?", "capital letters for names"],
-      "sentence_forms": ["statement", "question"],
-      "devices_new": ["question mark", "capital letters for people and places"],
-      "must_include": ["at least one question somewhere in the book"],
-      "note": "Question mark is introduced at this level, so the book should show one."
-    },
-    "4": {
-      "name": "Longer Sounds",
-      "sentences_per_page": [1, 2],
-      "words_per_sentence": [6, 9],
-      "punctuation": [".", "?", "!"],
-      "sentence_forms": ["statement", "question", "exclamation"],
-      "devices_new": ["joining two ideas with 'and'", "exclamation mark", "plural -s / -es", "suffixes -ing, -ed, -er (no root change)"],
-      "must_include": ["at least one exclamation", "at least one sentence joined with 'and'"],
-      "note": "First level where two ideas may share a sentence."
-    },
-    "5": {
-      "name": "New Spellings",
-      "sentences_per_page": [2, 2],
-      "words_per_sentence": [7, 11],
-      "punctuation": [".", "?", "!", "commas in a list"],
-      "sentence_forms": ["statement", "question", "exclamation"],
-      "devices_new": ["commas in lists", "prefix un-", "suffixes with root change (hopping, hopped)"],
-      "must_include": ["sentences that sequence — the story reads as connected events, not captions"],
-      "note": "Sequencing sentences into a short narrative starts here."
-    },
-    "6": {
-      "name": "Building Fluency",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [8, 13],
-      "punctuation": [".", "?", "!", "commas in a list", "apostrophes for contractions", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
-      "devices_new": [
-        "expanded noun phrases (the old wooden door)",
-        "coordination with and / but / or / so",
-        "subordination with when / if / that / because",
-        "apostrophes for contractions (don't, it's)"
-      ],
-      "must_include": [
-        "at least one expanded noun phrase",
-        "at least one sentence using but, or, so, when, if or because",
-        "at least two different sentence forms"
-      ],
-      "note": "Consistent tense throughout is explicitly required from this level."
-    },
-    "7": {
-      "name": "Reading Together",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [10, 15],
-      "punctuation": [".", "?", "!", "commas in a list", "apostrophes for contractions", "apostrophe for singular possession", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
-      "devices_new": [
-        "time adverbials (first, next, then, after that, finally)",
-        "apostrophe for singular possession (the dog's bone)",
-        "suffix spelling rules (doubling, dropping e, y to i)"
-      ],
-      "must_include": [
-        "two or three time adverbials in the WHOLE book, placed where the story genuinely moves on — never one per page, which reads like a worksheet",
-        "at least one sentence with a subordinate clause",
-        "complex sentence structures are expected at this level — not every sentence may be simple"
-      ],
-      "note": "Ledger: 'Complex sentence structures expected.' A Level 7 book that reads like Level 4 has failed."
-    },
-    "8": {
-      "name": "Reading Champion",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [12, 18],
-      "punctuation": [".", "?", "!", "commas in a list", "comma after a fronted adverbial", "apostrophes for contractions", "possessive apostrophes singular and plural", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
-      "devices_new": [
-        "sentence variety: open with a subordinate clause, an -ing word, or a fronted adverbial",
-        "time, place and manner adverbials (first, outside, carefully)",
-        "progressive tense forms (was running, is jumping)",
-        "expanded noun phrases for specificity"
-      ],
-      "must_include": [
-        "at least one sentence opening with a fronted adverbial, followed by a comma",
-        "at least one sentence opening with a subordinate clause or an -ing word",
-        "varied sentence openings — no more than half the sentences may start with the hero's name or 'The'"
-      ],
-      "note": "Reading for meaning, not new GPCs. The writing should carry the level, since the phonics no longer does."
-    }
+ "_name": "Reading and writing progression per level",
+ "_description": "What a book at each level must look like as TEXT: how much of it there is, which punctuation is allowed, which sentence forms and devices are expected. Sourced from the Writing and Grammar Track of CURRICULUM_LEDGER.md (the user-authored Curriculum Ledger is the source of truth) plus the sentence-length caps the book pipeline already used.",
+ "_use": "Drives the story writer's per-level brief AND the text QA gate, so both sides read from one spec. punctuation and sentence_forms are CUMULATIVE (a level inherits everything below it); devices_new and must_include are what this level adds.",
+ "_status": "sentences_per_page and words_per_sentence are PROPOSED and need Lynden's confirmation; punctuation, sentence_forms and devices_new come straight from the ledger.",
+ "_created": "2026-07-26",
+ "levels": {
+  "1": {
+   "name": "Ditties",
+   "sentences_per_page": [
+    1,
+    1
+   ],
+   "words_per_sentence": [
+    3,
+    5
+   ],
+   "punctuation": [
+    ".",
+    "capital letter at the start",
+    "comma (repetition only)"
+   ],
+   "sentence_forms": [
+    "statement"
+   ],
+   "devices_new": [],
+   "must_include": [],
+   "note": "One short caption-like sentence. No dialogue. A comma is allowed ONLY to repeat a word for rhythm - \"I sit, sit, sit.\" - which is the ditty form itself (Lynden 2026-08-21); commas are not otherwise taught until later, so never use one to join clauses or to separate a list of different things."
+  },
+  "2": {
+   "name": "First Sounds",
+   "sentences_per_page": [
+    1,
+    1
+   ],
+   "words_per_sentence": [
+    4,
+    6
+   ],
+   "punctuation": [
+    ".",
+    "capital letter at the start",
+    "capital I"
+   ],
+   "sentence_forms": [
+    "statement"
+   ],
+   "devices_new": [
+    "capital letter for the personal pronoun I"
+   ],
+   "must_include": [],
+   "note": "Full stop and capital are formally taught here — the book must model them perfectly."
+  },
+  "3": {
+   "name": "Special Friends",
+   "sentences_per_page": [
+    1,
+    2
+   ],
+   "words_per_sentence": [
+    5,
+    7
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "capital letters for names"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question"
+   ],
+   "devices_new": [
+    "question mark",
+    "capital letters for people and places"
+   ],
+   "must_include": [
+    "at least one question somewhere in the book"
+   ],
+   "note": "Question mark is introduced at this level, so the book should show one."
+  },
+  "4": {
+   "name": "Longer Sounds",
+   "sentences_per_page": [
+    1,
+    2
+   ],
+   "words_per_sentence": [
+    6,
+    9
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "!"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question",
+    "exclamation"
+   ],
+   "devices_new": [
+    "joining two ideas with 'and'",
+    "exclamation mark",
+    "plural -s / -es",
+    "suffixes -ing, -ed, -er (no root change)"
+   ],
+   "must_include": [
+    "at least one exclamation",
+    "at least one sentence joined with 'and'"
+   ],
+   "note": "First level where two ideas may share a sentence."
+  },
+  "5": {
+   "name": "New Spellings",
+   "sentences_per_page": [
+    2,
+    2
+   ],
+   "words_per_sentence": [
+    7,
+    11
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "!",
+    "commas in a list"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question",
+    "exclamation"
+   ],
+   "devices_new": [
+    "commas in lists",
+    "prefix un-",
+    "suffixes with root change (hopping, hopped)"
+   ],
+   "must_include": [
+    "sentences that sequence — the story reads as connected events, not captions"
+   ],
+   "note": "Sequencing sentences into a short narrative starts here."
+  },
+  "6": {
+   "name": "Building Fluency",
+   "sentences_per_page": [
+    2,
+    3
+   ],
+   "words_per_sentence": [
+    8,
+    13
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "!",
+    "commas in a list",
+    "apostrophes for contractions",
+    "speech marks"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question",
+    "exclamation",
+    "command"
+   ],
+   "devices_new": [
+    "expanded noun phrases (the old wooden door)",
+    "coordination with and / but / or / so",
+    "subordination with when / if / that / because",
+    "apostrophes for contractions (don't, it's)"
+   ],
+   "must_include": [
+    "at least one expanded noun phrase",
+    "at least one sentence using but, or, so, when, if or because",
+    "at least two different sentence forms"
+   ],
+   "note": "Consistent tense throughout is explicitly required from this level."
+  },
+  "7": {
+   "name": "Reading Together",
+   "sentences_per_page": [
+    2,
+    3
+   ],
+   "words_per_sentence": [
+    10,
+    15
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "!",
+    "commas in a list",
+    "apostrophes for contractions",
+    "apostrophe for singular possession",
+    "speech marks"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question",
+    "exclamation",
+    "command"
+   ],
+   "devices_new": [
+    "time adverbials (first, next, then, after that, finally)",
+    "apostrophe for singular possession (the dog's bone)",
+    "suffix spelling rules (doubling, dropping e, y to i)"
+   ],
+   "must_include": [
+    "two or three time adverbials in the WHOLE book, placed where the story genuinely moves on — never one per page, which reads like a worksheet",
+    "at least one sentence with a subordinate clause",
+    "complex sentence structures are expected at this level — not every sentence may be simple"
+   ],
+   "note": "Ledger: 'Complex sentence structures expected.' A Level 7 book that reads like Level 4 has failed."
+  },
+  "8": {
+   "name": "Reading Champion",
+   "sentences_per_page": [
+    2,
+    3
+   ],
+   "words_per_sentence": [
+    12,
+    18
+   ],
+   "punctuation": [
+    ".",
+    "?",
+    "!",
+    "commas in a list",
+    "comma after a fronted adverbial",
+    "apostrophes for contractions",
+    "possessive apostrophes singular and plural",
+    "speech marks"
+   ],
+   "sentence_forms": [
+    "statement",
+    "question",
+    "exclamation",
+    "command"
+   ],
+   "devices_new": [
+    "sentence variety: open with a subordinate clause, an -ing word, or a fronted adverbial",
+    "time, place and manner adverbials (first, outside, carefully)",
+    "progressive tense forms (was running, is jumping)",
+    "expanded noun phrases for specificity"
+   ],
+   "must_include": [
+    "at least one sentence opening with a fronted adverbial, followed by a comma",
+    "at least one sentence opening with a subordinate clause or an -ing word",
+    "varied sentence openings — no more than half the sentences may start with the hero's name or 'The'"
+   ],
+   "note": "Reading for meaning, not new GPCs. The writing should carry the level, since the phonics no longer does."
   }
+ }
 }
