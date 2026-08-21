@@ -770,6 +770,12 @@ async function stepScene(book, job, i) {
     // verified against the finished image by sceneConsistencyQA (an object
     // being visible is not the same as the allocation being visible).
     assertions: d ? { required: d.required_visible_states || [], forbidden: d.forbidden_visible_states || [] } : null,
+    // The director's per-page mechanics go into the prompt verbatim: contact,
+    // support, counts, and the shape of any rope or line. Designing the
+    // plausibility in is cheaper than paying QA to find it missing, and a
+    // general homily about objects resting on surfaces could never have
+    // prevented a two-stranded skipping rope (Lynden 2026-08-21).
+    physics: d?.physics || "",
     previousResponseId: job.chainResponseId,
   };
   let s = await generateScene(sceneArgs);

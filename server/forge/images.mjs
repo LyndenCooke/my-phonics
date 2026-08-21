@@ -734,7 +734,7 @@ export async function generateAnimal({ name, appearance }) {
 // spot) that no fixed reference was ever generated for. Anchor = "what does
 // this place permanently look like"; prevBuf = "what does it look like RIGHT
 // NOW" — both can be true and useful at once.
-export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", assertions = null, previousResponseId = null, chainEnabled = true }) {
+export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", assertions = null, physics = "", previousResponseId = null, chainEnabled = true }) {
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -752,7 +752,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   // `correction` is appended only on the one repair pass consistency QA can
   // trigger below — undefined on the normal first attempt.
   const buildFullScene = (correction) =>
-    `${scene} ${heroLook} Setting reflects ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} authentically and warmly. ${NO_FLOATING_LIMBS} ${PHYSICAL_PLAUSIBILITY} ${settingBlock} ${BASE_STYLE}` +
+    `${scene}${physics ? ` PHYSICS OF THIS PICTURE - obey these exactly: ${physics}` : ""} ${heroLook} Setting reflects ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} authentically and warmly. ${NO_FLOATING_LIMBS} ${PHYSICAL_PLAUSIBILITY} ${settingBlock} ${BASE_STYLE}` +
     (correction ? ` CORRECTION FROM QA — fix this specific problem, keep everything else the same: ${correction}` : "");
   // Downscaled reference sheets for the consistency QA's character_match
   // check — the hero + every cast member in this scene. The QA compares the
