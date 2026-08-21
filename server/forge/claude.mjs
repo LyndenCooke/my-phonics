@@ -787,7 +787,7 @@ export async function polishStoryAloud({ story, level, childName, focusSound }) 
     properties: {
       changed: { type: "string", description: "One line naming which pages you changed and why they sounded wrong, or 'nothing needed changing'." },
       title: { type: "string" },
-      pages: { type: "array", items: { type: "string", description: "The page text, fixed or unchanged." } },
+      pages: { type: "array", items: { type: "string", description: "The page text ONLY, fixed or unchanged. Never prefix it with a label like \"Page 1:\" - just the sentences the child reads." } },
     },
     required: ["changed", "title", "pages"],
     additionalProperties: false,

@@ -273,7 +273,9 @@ async function stepStory(book, job) {
     if (pages.length === story.pages.length) {
       let kept = 0;
       story.pages = story.pages.map((p, i) => {
-        const next = fixMechanics(String(pages[i] || "").trim(), child.name);
+        // strip a "Page 3:" style label if the pass adds one back
+        const raw = String(pages[i] || "").trim().replace(/^page\s*\d+\s*[:.\-]\s*/i, "");
+        const next = fixMechanics(raw, child.name);
         if (!next || next === p.text) return p;
         const words = (next.toLowerCase().match(/[a-z']+/g) || []);
         const bad = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
