@@ -18,6 +18,7 @@
 //                  calling POST /books/:id/step until { done: true }.
 import { execFile } from "node:child_process";
 import fs from "node:fs";
+import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor } from "./phonics.mjs";
@@ -783,67 +784,31 @@ async function stepScene(book, job, i) {
 }
 
 async function stepCover(book, job) {
-  const story = job.story;
-  const child = childOf(book);
-  const { fromText } = makeObjectBlocks(story);
-  const heroBuf = await loadByUrl(job.heroUrl);
-  const mainLoc = Object.entries(
-    story.pages.reduce((acc, p) => {
-      const l = (p.location || "").trim().toLowerCase();
-      if (l) acc[l] = (acc[l] || 0) + 1;
-      return acc;
-    }, {}),
-  ).sort((a, b) => b[1] - a[1])[0]?.[0];
-  const coverBrief =
-    (story.cover_brief ||
-      `${child.name} in the happiest moment of the story "${story.title}", holding or beside the story's central object. ${story.pages[story.pages.length - 1]?.scene || ""}`) +
-    (job.repairNotes?.cover
-      ? ` REPAIR — the previous cover had this specific problem; fix it and keep everything else the same: ${job.repairNotes.cover}`
-      : "");
-  const anchorUrl = mainLoc ? job.anchors[mainLoc] : null;
-  const coverObjectNames = (story.key_objects || []).map((o) => o?.name).filter((n) => n && coverBrief.toLowerCase().includes(n.toLowerCase()));
-  const objectRefs = (await Promise.all(coverObjectNames.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
-  const coverArgs = {
-    heroBuf,
-    brief: coverBrief,
-    child,
-    settingBlock: worldBlockOf(story) + fromText(coverBrief),
-    anchorBuf: anchorUrl ? await loadByUrl(anchorUrl) : null,
-    objectRefs,
-    previousResponseId: job.chainResponseId,
-  };
-  let cover = await generateCover(coverArgs);
-  job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
-
-  // COVER CONTENT GATE (Lynden 2026-08-15): the template overlays the real
-  // title later, so lettering painted into the art is a production blocker —
-  // "Figs on the Tray" regenerated its cover WITH a painted title and only
-  // the editor (too late, revision spent) noticed. One regeneration with a
-  // hardened text-free instruction, then reject rather than typeset over it.
-  const { coverContentQA } = await import("./claude.mjs");
-  let cc = await coverContentQA(cover.buf.toString("base64"));
-  job.cost += cc.cost; job.breakdown.story_usd += cc.cost;
-  if (!cc.data.pass) {
-    console.warn(`[forge] cover contains embedded lettering — regenerating: ${cc.data.reason}`);
-    job.breakdown.qa_notes.push({ cover_content: cc.data, discarded: "embedded lettering — regenerated" });
-    cover = await generateCover({
-      ...coverArgs,
-      previousResponseId: null,
-      brief:
-        `${coverBrief} ABSOLUTELY NO TEXT IN THE ARTWORK: the title is typeset separately later, so the painting must contain no letters, no words, no numbers, no title lettering, no logos, no written signs, no watermarks and no text-like marks of any kind — anywhere, including on awnings, stalls, packaging and background objects.`,
-    });
-    job.cost += cover.cost; job.breakdown.images_usd += cover.cost; job.breakdown.qa_notes.push(cover.qa);
-    cc = await coverContentQA(cover.buf.toString("base64"));
-    job.cost += cc.cost; job.breakdown.story_usd += cc.cost;
-    if (!cc.data.pass) {
-      job.breakdown.qa_notes.push({ cover_content: cc.data, discarded: "embedded lettering — cover rejected" });
-      throw new Error(`cover rejected: artwork still contains embedded lettering after 2 attempts — ${String(cc.data.reason).slice(0, 200)}`);
-    }
-  }
-  job.breakdown.cover_content = cc.data;
-  job.coverUrl = await saveImage(book.id, "cover.jpg", cover.buf);
+  // THE COVER IS A STORY PAGE, NOT A NEW PAINTING (Lynden 2026-08-20:
+  // "the cover should just be taken from one of the images of the story").
+  // Generating a separate cover cost money and invented a whole class of
+  // defects nothing else had: painted-in lettering (which killed this very
+  // book after two paid attempts), a hero drawn twice, a setting the story
+  // never visits. A crop of an image that already passed its own page QA
+  // has none of those failure modes and costs nothing.
+  //
+  // Which page: the FIRST page is the setup - the hero is present, the mood
+  // is warm, and it cannot spoil the ending. Skip it only if the director
+  // marked it as having no clear view of the hero.
+  const idx = 0;
+  const srcUrl = job.sceneUrls[idx];
+  if (!srcUrl) throw new Error("cover needs at least one finished story page");
+  const srcBuf = await loadByUrl(srcUrl);
+  const meta = await sharp(srcBuf).metadata();
+  // Portrait 3:4 window, leaning toward the middle so whatever the hero is
+  // looking at stays in frame (a hard-third crop once cut the story object
+  // out entirely).
+  const cw = Math.min(meta.width, Math.round(meta.height * 3 / 4));
+  const left = Math.round((meta.width - cw) * 0.5);
+  const buf = await sharp(srcBuf).extract({ left, top: 0, width: cw, height: meta.height }).jpeg({ quality: 92 }).toBuffer();
+  job.coverUrl = await saveImage(book.id, "cover.jpg", buf);
+  job.breakdown.cover_source = { page: idx + 1, method: "crop of story page (no generation)" };
 }
-
 async function stepCountry(book, job) {
   try {
     const cf = await countryFacts({
