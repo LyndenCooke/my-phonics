@@ -22,7 +22,8 @@
       "shifty|oo|/oo/ short"
     ],
     "5.2": [
-      "shifty|a|/o/"
+      "shifty|a|/o/",
+      "shifty|tch|/ch/"
     ],
     "5.3": [
       "future|ire|L7"
@@ -32,15 +33,15 @@
     ],
     "5.5": [],
     "6.1": [
-      "shifty|ve|/v/",
-      "shifty|ce|/s/"
+      "shifty|ow|/ow/",
+      "shifty|ve|/v/"
     ],
     "6.2": [
-      "shifty|dge|/j/",
-      "shifty|ea|/e/"
+      "shifty|ce|/s/",
+      "shifty|dge|/j/"
     ],
     "6.3": [
-      "shifty|tch|/ch/",
+      "shifty|ea|/e/",
       "shifty|er|schwa /uh/"
     ],
     "6.4": [
@@ -49,35 +50,35 @@
     ],
     "7.1": [
       "shifty|u|/oo/ short",
-      "shifty|a|/ar/"
-    ],
-    "7.2": [
-      "shifty|ear|/ur/",
       "shifty|kn|/n/"
     ],
-    "7.3": [
+    "7.2": [
       "shifty|o|/u/",
       "shifty|oe|/oa/"
     ],
-    "7.4": [
+    "7.3": [
       "shifty|u|/yoo/",
       "shifty|wh|/h/"
     ],
-    "8.1": [
+    "7.4": [
       "shifty|wr|/r/",
       "shifty|y|/igh/"
     ],
-    "8.2": [
-      "shifty|a|/ai/",
+    "8.1": [
+      "shifty|a|/ar/",
       "shifty|au|/or/"
     ],
+    "8.2": [
+      "shifty|a|/ai/",
+      "shifty|augh|/or/"
+    ],
     "8.3": [
-      "shifty|augh|/or/",
-      "shifty|ch|/k/"
+      "shifty|ch|/k/",
+      "shifty|ch|/sh/"
     ],
     "8.4": [
-      "shifty|ch|/sh/",
-      "shifty|ea|/ai/"
+      "shifty|ea|/ai/",
+      "shifty|ear|/air/"
     ]
   }
 }

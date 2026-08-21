@@ -1608,10 +1608,17 @@
             "cow",
             "now",
             "down",
-            "owl"
+            "owl",
+            "how",
+            "brown",
+            "town",
+            "clown",
+            "gown",
+            "howl",
+            "wow"
           ],
           "allowed_from_level": 6,
-          "note": ""
+          "note": "Examples are the diamond-mark word list, not a sample: build_shifty_marks.py turns this column into shifty_marks.json['words'], and a word missing here silently prints a plain digraph dash instead of a diamond. 4.4 shipped with now/down diamonded and how/brown not, on the same page (2026-08-21). Heteronyms (bow, row, sow) are deliberately absent - spelling cannot resolve them, so they need a per-book shifty_marks annotation."
         }
       ]
     },

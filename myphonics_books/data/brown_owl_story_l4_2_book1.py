@@ -19,8 +19,16 @@ BROWN_OWL_STORY_BOOK1 = {
         "sub_level": 2,
         "book_number": 1,
         "book_title": "The Brown Owl",
-        "focus_graphemes": ["are", "ow"],
-        "level_graphemes": ["are", "ur", "er", "ew", "ue", "ow"],
+        # 'ow' left this list 2026-08-21 (Lynden), same ruling as 6.4.  This is
+        # the book that INTRODUCES ow = /ow/, but the grapheme itself was taught
+        # at L4 saying /oa/ (blow, snow) — what is new here is the second
+        # pronunciation, which is an alternative pronunciation and therefore a
+        # Shifty Sound.  Leaving it here printed 'ow' in the purple new-sounds
+        # band AND in the Shifty band on the same page, which is exactly the
+        # contradiction the ruling exists to kill.  The book still teaches
+        # /ow/ — the Shifty band with its diamond is now how it does it.
+        "focus_graphemes": ["are"],
+        "level_graphemes": ["are", "ur", "er", "ew", "ue"],
         "level_colour": "#3B82F6",
         "level_name": "Building Fluency",
         "font_size": 18,

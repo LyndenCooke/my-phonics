@@ -31,7 +31,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
         "level_colour": "#3B82F6",
         "font_size": 18,
         "focus_graphemes": ["ur", "er"],
-        "all_level_graphemes": ["are", "ur", "er", "ew", "ue", "ow"],
+        "all_level_graphemes": ["are", "ur", "er", "ew", "ue"],  # ow moved to Shifty 2026-08-21
         "story_pages": [
             {
                 "page_number": 1,

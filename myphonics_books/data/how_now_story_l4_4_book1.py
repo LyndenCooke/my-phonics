@@ -42,8 +42,15 @@ HOW_NOW_STORY_BOOK1 = {
         "level_name": "Building Fluency",
         "level_colour": "#3B82F6",
         "font_size": 18,
-        "focus_graphemes": ["are", "ur", "er", "ew", "ue", "ow"],
-        "all_level_graphemes": ["are", "ur", "er", "ew", "ue", "ow"],
+        # 'ow' left this list 2026-08-21 (Lynden).  It is not a new grapheme at
+        # L6 — the child met it at L4 saying /oa/ (blow, snow).  The second
+        # pronunciation /ow/ (brown, down, now, how) is an ALTERNATIVE
+        # PRONUNCIATION, so it belongs in the Shifty band with a diamond, not in
+        # the purple new-sounds band.  It was in both at once, which is why the
+        # page claimed ow as a main sound while the deck called it shifty.
+        # The story is unchanged — /ow/ is still what this book is about.
+        "focus_graphemes": ["are", "ur", "er", "ew", "ue"],
+        "all_level_graphemes": ["are", "ur", "er", "ew", "ue"],
         "story_pages": [
             {
                 "page_number": 1,

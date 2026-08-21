@@ -1094,7 +1094,13 @@ SHIFTY_MAX_PER_BOOK = 2
 # re-teach what the child knows.
 SHIFTY_EXCLUDE = {
     ("th", "voiced /th/"),   # voiced/unvoiced th split isn't taught separately
-    ("ow", "/ow/"),          # ladder L4 'ow' IS /ow/ (owl, down); card base is /oa/
+    # ("ow", "/ow/") was here until 2026-08-21.  Its comment claimed the L4
+    # ladder teaches ow = /ow/, which inverts the standing ruling: L4 'ow' is
+    # /oa/ ONLY (blow/snow/show) and /ow/ (cow/now/down/owl) waits for L6 —
+    # see hot_food_cool_moon_story_l2_2_book1.py:9 (Lynden 2026-07-22) and the
+    # ow card in shifty_sounds.json.  The exclusion suppressed both the Shifty
+    # band at L6 and the Future Sounds preview at L4/L5, so 4.4 printed
+    # diamonds on now/down with no key anywhere in the book explaining them.
 }
 
 _shifty_cache = None
@@ -1127,10 +1133,17 @@ def _tricky_word_levels() -> dict:
 
 
 def build_shifty_sounds(story_tokens: list, level: int,
-                        cumulative_graphemes: list) -> list:
+                        cumulative_graphemes: list,
+                        prefer: list | None = None) -> list:
     """Detect up to SHIFTY_MAX_PER_BOOK Shifty Sounds present in this book.
 
     story_tokens: lower-cased words from the story text + story_words list.
+    prefer: the book's headline `story_words`.  The caption reads "as in
+        <word>", and without this the word is whichever hit comes first in the
+        CARD's example order — which had 6.2 "The Brown Owl" captioned "as in
+        down" off one incidental line, while owl and brown sat in its own story
+        words (2026-08-21).  Preferring a headline word is cosmetic only: it
+        changes which example is named, never whether the band fires.
     Returns [{"grapheme", "sound", "example"}, ...] ordered by confidence.
 
     Detection is deliberately conservative — this drives a printed teaching
@@ -1155,6 +1168,12 @@ def build_shifty_sounds(story_tokens: list, level: int,
         return tricky_lv.get(word.lower(), 99) <= level
     tokens = {t.lower().strip("'") for t in story_tokens if t}
     taught = set(cumulative_graphemes)
+    _prefer = {str(w).lower() for w in (prefer or [])}
+
+    def _pick(hits):
+        """Name a headline story word where the card has one; else card order."""
+        return sorted(hits, key=lambda w: w.lower() not in _prefer)[0]
+
     candidates = []  # (confidence desc sort key, entry)
 
     # Letter strings that map to MORE than one sound across the spelling cards
@@ -1181,7 +1200,7 @@ def build_shifty_sounds(story_tokens: list, level: int,
         ):
             continue
         confidence = 2 if example_hits else 1
-        shown = example_hits[0] if example_hits else sorted(substring_hits)[0]
+        shown = _pick(example_hits) if example_hits else sorted(substring_hits)[0]
         candidates.append((
             (-confidence, card.get("allowed_from_level", 99), g),
             {"grapheme": card["grapheme"], "sound": card["sound"], "example": shown},
@@ -1201,7 +1220,7 @@ def build_shifty_sounds(story_tokens: list, level: int,
                 continue
             candidates.append((
                 (-3, pron.get("allowed_from_level", 99), g),
-                {"grapheme": g, "sound": pron["sound"], "example": hits[0]},
+                {"grapheme": g, "sound": pron["sound"], "example": _pick(hits)},
             ))
 
     candidates.sort(key=lambda c: c[0])

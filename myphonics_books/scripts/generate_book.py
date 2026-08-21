@@ -1012,7 +1012,10 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         [t.lower() for t in re.findall(r"[A-Za-z']+", _story_text)]
         + [w.lower() for w in story_dict.get("story_words", [])]
     )
-    book_data["shifty_sounds"] = build_shifty_sounds(_shifty_tokens, level, cumulative)
+    book_data["shifty_sounds"] = build_shifty_sounds(
+        _shifty_tokens, level, cumulative,
+        prefer=story_dict.get("story_words", []),
+    )
     book_data["shifty_colour"] = SHIFTY_COLOUR
 
     # Future Sounds band (all levels): main-ladder graphemes this story's

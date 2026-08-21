@@ -795,7 +795,29 @@ async function stepCover(book, job) {
   // Which page: the FIRST page is the setup - the hero is present, the mood
   // is warm, and it cannot spoil the ending. Skip it only if the director
   // marked it as having no clear view of the hero.
-  const idx = 0;
+  // WHICH PAGE: the one where the hero's face is biggest and clearest, taken
+  // from every page except the last (the last page is the resolution and
+  // would spoil the ending). Fixed page 1 put an adult in the middle of the
+  // frame and cropped the child to a sliver - the editor rejected the book
+  // for it (Nadia, 2026-08-21).
+  const { findFaces } = await import("./claude.mjs");
+  const heroName = String(book.child_name || "").toLowerCase();
+  const isHero = (f) => {
+    const who = String(f.who || "").toLowerCase();
+    return (heroName && who.includes(heroName)) || /(girl|boy|child|kid)/.test(who);
+  };
+  const candidates = job.sceneUrls.slice(0, Math.max(1, job.sceneUrls.length - 1));
+  let best = { idx: 0, area: -1, centre: 0.5 };
+  for (let n = 0; n < candidates.length; n++) {
+    try {
+      const b64 = (await loadByUrl(candidates[n])).toString("base64");
+      const f = await findFaces(b64);
+      job.cost += f.cost || 0; job.breakdown.story_usd += f.cost || 0;
+      const kid = (f.data?.faces || []).filter(isHero).sort((a, c) => (c.w * c.h) - (a.w * a.h))[0];
+      if (kid && kid.w * kid.h > best.area) best = { idx: n, area: kid.w * kid.h, centre: kid.x + kid.w / 2 };
+    } catch { /* keep looking */ }
+  }
+  const idx = best.idx;
   const srcUrl = job.sceneUrls[idx];
   if (!srcUrl) throw new Error("cover needs at least one finished story page");
   const srcBuf = await loadByUrl(srcUrl);
@@ -809,28 +831,7 @@ async function stepCover(book, job) {
   // (Amara, 2026-08-21). findFaces already exists and costs about a penny;
   // the biggest face is the hero at this scale, and a cover whose child is
   // clipped is not a cover.
-  let centre = 0.5;
-  try {
-    const { findFaces } = await import("./claude.mjs");
-    const f = await findFaces(srcBuf.toString("base64"));
-    job.cost += f.cost || 0; job.breakdown.story_usd += f.cost || 0;
-    const faces = (f.data?.faces || []).filter((x) => x.w > 0 && x.h > 0);
-    if (faces.length) {
-      // The BIGGEST face is usually the adult (they are nearer the camera and
-      // simply larger) - the cover must centre on the CHILD, so prefer a face
-      // labelled with the hero's name or as a child, and only fall back to size.
-      const heroName = String(book.child_name || "").toLowerCase();
-      const isHero = (f) => {
-        const who = String(f.who || "").toLowerCase();
-        return (heroName && who.includes(heroName)) || /(girl|boy|child|kid)/.test(who);
-      };
-      const pick = faces.filter(isHero).sort((a, b) => (b.w * b.h) - (a.w * a.h))[0]
-        || faces.sort((a, b) => (b.w * b.h) - (a.w * a.h))[0];
-      centre = Math.min(0.98, Math.max(0.02, pick.x + pick.w / 2));
-    }
-  } catch (e) {
-    console.warn("[forge] cover face-find unavailable, centring crop:", e.message);
-  }
+  const centre = best.area > 0 ? Math.min(0.98, Math.max(0.02, best.centre)) : 0.5;
   // Place the window so the hero sits at its centre, clamped inside the image.
   const left = Math.max(0, Math.min(meta.width - cw, Math.round(centre * meta.width - cw / 2)));
   const buf = await sharp(srcBuf).extract({ left, top: 0, width: cw, height: meta.height }).jpeg({ quality: 92 }).toBuffer();
@@ -962,6 +963,17 @@ async function stepReview(book, job) {
       const m = String(i.detail || "").match(/\bpages?\s+(\d+)/i);
       return m ? Number(m[1]) : null;
     };
+    // A cover fault is the cheapest fix in the book - re-choose and re-crop -
+    // but it names no page number, so it fell through to a full rewrite and
+    // threw away six finished pages (Nadia, 2026-08-21).
+    const isCoverFault = (i) => /cover/i.test(String(i.detail || ""));
+    if (verdict.blocking.every(isCoverFault)) {
+      job.coverUrl = null;
+      job.reviewDone = false;
+      job.breakdown.editor_cover_recrop = verdict.blocking.map((i) => i.detail);
+      console.warn("[forge] editor gate: re-cropping the cover, keeping the finished pages");
+      return;
+    }
     const allPageLocal = verdict.blocking.every((i) => !BOOK_LEVEL.has(String(i.area || "").toLowerCase()) && pageOf(i));
     if (allPageLocal) {
       const notes = {};

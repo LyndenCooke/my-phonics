@@ -267,7 +267,14 @@
             "cow",
             "now",
             "down",
-            "owl"
+            "owl",
+            "how",
+            "brown",
+            "town",
+            "clown",
+            "gown",
+            "howl",
+            "wow"
           ]
         }
       ]
@@ -1012,6 +1019,27 @@
     },
     "trough": {
       "2": "/off/"
+    },
+    "how": {
+      "1": "/ow/"
+    },
+    "brown": {
+      "2": "/ow/"
+    },
+    "town": {
+      "1": "/ow/"
+    },
+    "clown": {
+      "2": "/ow/"
+    },
+    "gown": {
+      "1": "/ow/"
+    },
+    "howl": {
+      "1": "/ow/"
+    },
+    "wow": {
+      "1": "/ow/"
     }
   }
 }
