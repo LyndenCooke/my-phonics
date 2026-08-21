@@ -497,7 +497,28 @@
        WORSE: at half width every note wraps to a second line, so five double
        rows out-measure nine single ones (611.8pt vs 595.3pt on 5.4).  Do not
        "improve" this into a grid. */
-    .sw-tricky-how-tight { gap: 0.45mm; margin-top: 1.2mm; }
+    /* Page-level squeeze for the one page that carries everything (5.4: nine
+       tricky rows + the -ed guide + a Watch Out box).  Reclaimed from the
+       WHITESPACE BETWEEN the boxes, not from their words — the gaps measured
+       40pt / 24pt / 27pt while the text itself was already at 7.9pt.  Trimming
+       copy alone could not fix this page: shortening the Watch Out body just
+       pulled 'soared' back onto the page from where it had been overflowing
+       invisibly, which is why the measured height went UP after the edit. */
+    .sw-inner-tight .ed-band { margin-top: 1mm; padding: 1.2mm 3.5mm; }
+    .sw-inner.has-ed.sw-inner-tight .sw-section-title + .sw-section-desc { margin-bottom: 1.2mm; }
+    .sw-inner.has-ed.sw-inner-tight .sw-tricky-strip { margin-top: 1.2mm; }
+    .sw-inner-tight.has-ed .sw-pron-note { margin-top: 1mm; padding: 1.2mm 3.5mm; }
+    /* 4 classes deep to beat .sw-inner.has-ed .sw-word-cell above.  This takes
+       PADDING off the cards, not type size: the buttoned word measures 33.3pt
+       and the min-height was reserving 42.5pt, so 12mm still clears the
+       content. The child's sound buttons are unchanged. */
+    /* Row gap between card rows was 3mm (has-ed) on a page needing ~21pt more;
+       three rows means two gaps, so this is 8.5pt of pure whitespace. */
+    .sw-inner.has-ed.sw-inner-tight .sw-words-grid,
+    .sw-inner-tight .sw-words-grid { gap: 1.5mm 3mm; margin-bottom: 1.5mm; }
+    .sw-inner.has-ed.sw-inner-tight .sw-word-cell,
+    .sw-inner-tight .sw-word-cell { min-height: 12mm; padding: 1.2mm 1.5mm; }
+    .sw-tricky-how-tight { gap: 0.3mm; margin-top: 0.8mm; }
     .sw-tricky-how-tight .sw-tricky-how-row { font-size: 7.9pt; line-height: 1.15; }
     /* The chips repeat words the rows below already name, so on an 8+ page they
        give up size before the explanations do. */
@@ -2992,7 +3013,7 @@
        Focus sounds now live on their own page (page 2).
        ============================================================ -->
   <div class="page">
-    <div class="page-inner sw-inner{% if ed_guide %} has-ed{% endif %}">
+    <div class="page-inner sw-inner{% if ed_guide %} has-ed{% endif %}{% if (tricky_breakdowns | length) >= 8 %} sw-inner-tight{% endif %}">
       <div class="sw-section-title">Story Words</div>
       <div class="sw-section-desc">Sound out each phoneme, then blend. Dashes mark digraphs.</div>
       <div class="sw-words-grid">
