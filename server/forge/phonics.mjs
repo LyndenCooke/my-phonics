@@ -196,16 +196,38 @@ export function coreStoriesFor(newLevel, count = 3) {
 // nearly all our story defects came from; the library already contains 33
 // plots he wrote and approved. This returns ONE of them at the right level
 // to reskin, avoiding titles used recently.
+// ANY PATTERN CAN SERVE ANY LEVEL (Lynden 2026-08-21: "even if its a level 1
+// book it can follow a level 4 story structure but reimagine it for the right
+// text to sound, setting, character and object"). What changes with level is
+// the sentence length and vocabulary, not the shape of the story - so the
+// picker reads the distilled patterns and honours each one's own honest floor
+// (simplest_level) rather than matching source level to target level.
+let patternCache = null;
 export function sourceStoryFor(newLevel, avoidTitles = []) {
-  if (!coreStoriesCache) coreStoriesFor(newLevel, 1);
-  const oldLevel = newLevel <= 3 ? 1 : newLevel - 2;
+  if (!patternCache) {
+    try {
+      patternCache = JSON.parse(fs.readFileSync(dataFile("story_patterns.json"), "utf8")).patterns || [];
+    } catch {
+      patternCache = [];
+    }
+  }
+  if (!patternCache.length) return null;
   const avoid = new Set((avoidTitles || []).map((t) => String(t).toLowerCase()));
-  const atLevel = (coreStoriesCache || []).filter((b) => b.level === oldLevel);
-  if (!atLevel.length) return null;
-  const fresh = atLevel.filter((b) => !avoid.has(String(b.title).toLowerCase()));
-  const pool = fresh.length ? fresh : atLevel;
-  const b = pool[Math.floor(Math.random() * pool.length)];
-  return { title: b.title, pages: b.pages, focusGraphemes: b.focus_graphemes || [] };
+  const usable = patternCache.filter((p) => (p.simplest_level || 1) <= Number(newLevel));
+  if (!usable.length) return null;
+  const fresh = usable.filter((p) => !avoid.has(String(p.title).toLowerCase()));
+  const pool = fresh.length ? fresh : usable;
+  const p = pool[Math.floor(Math.random() * pool.length)];
+  return {
+    title: p.title,
+    patternName: p.pattern_name,
+    spine: p.spine || [],
+    device: p.device || "",
+    slots: p.slots || [],
+    hints: p.reimagine_hints || [],
+    sourceLevel: p.source_level,
+    pages: p.source_pages || [],
+  };
 }
 
 export function pronunciationNoteFor(grapheme, level) {

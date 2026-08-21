@@ -635,14 +635,23 @@ Read each line aloud in your head as a grown-up reading to a five-year-old on th
 === 3. THE STORY ===
 THE STORY COMES FROM THE SOUND, NOT FROM A THEME. Start from "${focusSound}": brainstorm the decodable words it unlocks, pick those with story potential, and build the best story THOSE words can tell. The child's hobbies and the family's notes are SET DRESSING - they colour what we SEE and must never become the plot, the obstacle, the solution, or a plot-driving character or animal.
 
-${source ? `YOU ARE WRITING A VARIATION OF A PROVEN BOOK, NOT A NEW PLOT. This is the single most important instruction on this page. MyPhonicsBooks already has 33 published stories that work; your job is to retell ONE of them in this child's world, not to invent a plot from nothing.
+${source ? `YOU ARE REIMAGINING A PROVEN STORY. This is the most important instruction on this page. MyPhonicsBooks has 33 published books whose stories work; your job is to stage ONE of their structures in this child's world, at THIS level. You are not inventing a plot, and you are not translating sentences.
 
-THE SOURCE STORY - "${source.title}":
-${source.pages.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+THE PATTERN - "${source.patternName}" (from "${source.title}")
+WHAT MAKES IT WORK: ${source.device}
+THE SPINE, in order:
+${source.spine.map((b, i) => `  ${i + 1}. ${b}`).join("\n")}
+WHAT YOU MUST REPLACE: ${source.slots.join("; ")}
+SETTINGS IT WOULD SUIT (pick none of these if the child's own world offers better): ${source.hints.join(" | ")}
 
-KEEP its spine exactly: the same thing goes wrong, in the same order, resolved by the same kind of action, with the same feeling at the end. Keep its simplicity and its number of beats.
-CHANGE everything on the surface: a different place, different objects, different people, a different focus sound. Not one sentence may survive - if a line of yours could be swapped into the source book unnoticed, rewrite it. A family who owns both books must see two different stories that happen to rhyme.
-If the source has ${source.pages.length} pages and you need ${pagesCount}, redistribute the same beats across the pages you have; never pad with a new incident.` : `STORY SHAPE - ${shape ? `THIS book must use this shape: **${shape.name}** - ${shape.how}` : "choose a shape that suits the sound"}`}
+RULES OF A REIMAGINING:
+- KEEP the spine and the device. Every beat above must happen, in that order. If the device is a guess before a reveal, the reader must get to guess. If it is three of something, there are three.
+- FIT IT TO THIS LEVEL. A structure written for older readers works perfectly for the youngest ones with shorter sentences and smaller words - that is the whole point. Do not simplify the STORY, simplify the LANGUAGE.
+- REPLACE the surface completely: this child's place, their objects, their people, and the focus sound of THIS book. A reader is welcome to feel the family resemblance - films retell the same handful of stories - but not one sentence may be carried over.
+- WHEN IT WILL NOT FIT, CUT THE COUNT, NEVER THE DEVICE. The device is why the book works; the count is just how many times it happens. If the pattern has three guessed reveals and your pages only carry two, write TWO - each with its clue, its guess and its reveal - rather than three bare sightings. A Level 2 attempt kept three animals and lost the guessing, and what was left was a list (2026-08-21). Two guesses beat three sightings.
+- ONE BEAT PER PAGE AT THE SHORTEST LEVELS. Where a page holds one short sentence, a clue and its reveal are TWO pages, not one. Count your beats against your pages before you write, and drop count until the device fits.
+- REDISTRIBUTE if the page counts differ: the same beats across ${pagesCount} pages, two beats to a page if you must. Never pad with a new incident.
+${source.pages.length ? `FOR REGISTER ONLY - the original, to show the warmth and rhythm expected, NOT to copy:\n${source.pages.map((p, i) => `  ${i + 1}. ${p}`).join("\n")}` : ""}` : `STORY SHAPE - ${shape ? `THIS book must use this shape: **${shape.name}** - ${shape.how}` : "choose a shape that suits the sound"}`}
 Stay on that shape's own throughline: if its tension needs raising, raise THAT tension rather than bolting on a second story.
 
 Fill "premise" (character, setting, goal, object, problem, cultural context, one-sentence premise), then "story_plan" as SIX BEATS the pages must actually deliver:

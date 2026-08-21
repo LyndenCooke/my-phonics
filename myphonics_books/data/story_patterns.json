@@ -1,0 +1,1284 @@
+{
+ "_note": "Reusable story patterns distilled from the 33 published MyPhonicsBooks (Lynden 2026-08-21: 'all 33 books should allow you stories that work'). A pattern is the STRUCTURE, not the words - a Level 1 book may wear a Level 5 book's structure, with only the sentence length and vocabulary changing. Static data: costs nothing per book. Regenerate with _distil_patterns.mjs.",
+ "patterns": [
+  {
+   "title": "The Fish in the Tank",
+   "pattern_name": "wrong fit then right fit",
+   "spine": [
+    "hero receives someone or something with an unmet need",
+    "the first holder or solution is clearly unsuitable",
+    "hero tries another option, but it is still unsuitable",
+    "hero finds an option that fits the need",
+    "the problem is solved with a celebratory action",
+    "both hero and dependent end contented"
+   ],
+   "device": "Two failed or inadequate fits prepare the child to anticipate and celebrate the clearly correct third solution.",
+   "slots": [
+    "dependent creature or object",
+    "first unsuitable holder",
+    "second unsuitable holder",
+    "right-sized home",
+    "celebratory action"
+   ],
+   "reimagine_hints": [
+    "a garden: a seedling outgrows a shell and a cup before reaching a pot",
+    "a space station: a tiny alien rejects two cramped pods before entering a cabin",
+    "a toy shop: a large doll tries two small boxes before finding the right case"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I have a fish! It is in a bag.",
+    "The fish is sad. The bag is not big.",
+    "I get a cup. No! It is not big.",
+    "I get a tank. Yes! The fish can go in!",
+    "Wish, wish! The fish is in the tank!",
+    "The fish is not sad. I am glad!"
+   ]
+  },
+  {
+   "title": "Tap! Tap! Tap!",
+   "pattern_name": "sound guesses then friendly reveal",
+   "spine": [
+    "hero hears a repeated unexplained sound",
+    "hero offers two possible causes",
+    "both guesses are rejected",
+    "hero reaches toward or investigates the source",
+    "the real cause is revealed as harmless",
+    "hero and the revealed visitor settle happily together"
+   ],
+   "device": "A repeated sound invites two guesses before a reassuring, friendly reveal.",
+   "slots": [
+    "listening place",
+    "mystery sound",
+    "two wrong guesses",
+    "hidden visitor",
+    "comforting final activity"
+   ],
+   "reimagine_hints": [
+    "a tent: rustling prompts guesses of a mouse or bird before a puppy appears",
+    "a boat: splashing prompts guesses of a fish or frog before an otter appears",
+    "a bedroom: scratching prompts guesses of a branch or bug before a kitten appears"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I sit at a mat. Tap, tap, tap!",
+    "Is it a rat? Is it a bat?",
+    "It is not a rat. It is not a bat.",
+    "Tap, tap! I pat at it.",
+    "It is a cat! A fat cat!",
+    "I pat the cat. The cat naps. I am happy!"
+   ]
+  },
+  {
+   "title": "Buzz and Sing!",
+   "pattern_name": "noise answered then joined",
+   "spine": [
+    "hero encounters two competing noises",
+    "hero answers them with a performance of their own",
+    "the first performance drives the noise-makers away",
+    "hero changes the performance to invite them back",
+    "the noise-makers return",
+    "everyone performs together"
+   ],
+   "device": "The same action first repels the visitors and then, when changed, creates a joyful group performance.",
+   "slots": [
+    "resting place",
+    "two noise-makers",
+    "their two sounds",
+    "hero's performance",
+    "changed version of the performance"
+   ],
+   "reimagine_hints": [
+    "a pond: two frogs croak while a child drums slowly, then quickly",
+    "a city balcony: two birds call while a child whistles in changing rhythms",
+    "a jungle camp: insects click and chirp while a traveller plays a flute"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I sit on a big log. Buzz, buzz, buzz!",
+    "A big bug sits on a rock. Hiss, hiss, hiss!",
+    "I sing a long, long song!",
+    "The bugs go! No buzz. No hiss.",
+    "I sing quick, quick! I sing and sing!",
+    "Buzz! Hiss! I sing with the bugs!"
+   ]
+  },
+  {
+   "title": "The Mud on the Dog",
+   "pattern_name": "bad fix makes more mess",
+   "spine": [
+    "a dependent gets very dirty",
+    "the hero reacts to the mess",
+    "the hero chooses an unsuitable cleaning tool",
+    "the attempted fix spreads the mess to the tool and hero",
+    "a more experienced helper provides the proper solution",
+    "the dependent and surroundings are clean again"
+   ],
+   "device": "A comic wrong solution makes the problem worse before a competent helper supplies the simple right one.",
+   "slots": [
+    "messy dependent",
+    "source of dirt",
+    "wrong cleaning tool",
+    "person or object dirtied next",
+    "helper",
+    "proper washing place"
+   ],
+   "reimagine_hints": [
+    "a farmyard: a muddy pig is dusted with a broom before a farmer brings a trough",
+    "an art room: a paint-covered toy is wiped with paper before a teacher brings a wash bowl",
+    "a beach: a sandy puppy is brushed with a towel before an aunt uses an outdoor shower"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I got a dog. It is a big dog.",
+    "The dog ran in the mud. Mud, mud, mud!",
+    "The dog is a mess! Mud is on the dog.",
+    "I get a mop. I mop the dog.",
+    "No! The mop is a mess! Mud is on me!",
+    "Mum got a tub. The dog sat in it. No mud! No mess!"
+   ]
+  },
+  {
+   "title": "The Red Socks",
+   "pattern_name": "two wrong finds then right",
+   "spine": [
+    "hero discovers a wanted pair or object is missing",
+    "hero searches one likely place and finds the wrong version",
+    "hero searches a second place and again finds the wrong version",
+    "hero searches an unlikely place and finds the wanted item",
+    "hero retrieves it despite a small nuisance",
+    "using the item restores the hero's happiness"
+   ],
+   "device": "Two repeated wrong finds let the reader predict the search language before the satisfying third-place discovery.",
+   "slots": [
+    "wanted wearable or object",
+    "first hiding place",
+    "second hiding place",
+    "unlikely final place",
+    "two wrong versions",
+    "small guardian or nuisance"
+   ],
+   "reimagine_hints": [
+    "a campsite: a green hat is sought in a tent and pack, then found in a bird nest",
+    "a dance school: silver shoes are sought under a bench and in a locker, then found by the stage curtains",
+    "a farm: a blue scarf is sought in a bed and basket, then found in a goat pen"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "No red socks. I am sad.",
+    "Is it on the bed? A sock. Not red.",
+    "Is it in the bag? A sock. Not red.",
+    "Is it in the hen pen? Red socks!",
+    "I get the red socks. Peck, peck!",
+    "Red socks on. I am not sad."
+   ]
+  },
+  {
+   "title": "Run, Pup, Run!",
+   "pattern_name": "repeated chase ends in cuddle",
+   "spine": [
+    "hero introduces an energetic companion",
+    "the companion runs and hides in a first place",
+    "the same chase repeats at a second place",
+    "the chase ends in a place where the companion can be tended",
+    "hero performs a rhythmic caring action",
+    "movement gives way to a close, affectionate ending"
+   ],
+   "device": "A repeated chase command carries the companion through three hiding places before action slows into touch and reassurance.",
+   "slots": [
+    "energetic companion",
+    "three hiding places",
+    "caring action",
+    "final affectionate gesture"
+   ],
+   "reimagine_hints": [
+    "a garden: a rabbit hides by a pot, hedge and basket before being brushed",
+    "a moon base: a robot rolls into a pod, bay and repair dock before being polished",
+    "a market: a duckling darts under a stall, cart and table before being dried and cuddled"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I have a pup. The pup can run!",
+    "Run, pup, run! The pup hid in the hut.",
+    "Run, pup, run! The pup hid in the bush.",
+    "Run, pup, run! The pup is in the tub!",
+    "I rub the pup. Rub, rub, rub!",
+    "The pup and me! A big hug!"
+   ]
+  },
+  {
+   "title": "Fox Fell Off!",
+   "pattern_name": "three falls then stable place",
+   "spine": [
+    "a companion balances on a place",
+    "the companion falls off",
+    "the companion tries a second place and falls again",
+    "the companion tries a third place and falls again",
+    "hero supplies a safer, more suitable place",
+    "the companion stays secure and receives affection"
+   ],
+   "device": "Three nearly identical falls build comic expectation before the hero breaks the pattern with a stable solution.",
+   "slots": [
+    "unsteady companion",
+    "three balancing places",
+    "safe final surface",
+    "comforting gesture"
+   ],
+   "reimagine_hints": [
+    "a boat: a penguin slips from a crate, rail and barrel before sitting in a nest",
+    "a playroom: a doll falls from a block, stool and shelf before reaching a cushion",
+    "a jungle: a cub tumbles from a root, stone and bank before resting in a hammock"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I am with a fox. Fox is on a log.",
+    "Fox fell off the log!",
+    "Fox is on a rock. Fox fell off the rock!",
+    "Fox is on a hill. Fox fell off the hill!",
+    "I get a big, fat mat. Sit on it, Fox!",
+    "Fox is on the mat! Fox did not slip off! I hug Fox!"
+   ]
+  },
+  {
+   "title": "The Jam Jug",
+   "pattern_name": "sampling leads to spill and repair",
+   "spine": [
+    "hero enters a place containing several tempting goods",
+    "hero samples one variety and enjoys it",
+    "hero samples another variety and enjoys it",
+    "an accident spills the goods onto something important",
+    "hero fetches a suitable cleaning tool and repairs the damage",
+    "successful cleanup earns relief and affection"
+   ],
+   "device": "Pleasurable two-part repetition is abruptly broken by a spill, then resolved through the child's own competent cleanup.",
+   "slots": [
+    "tempting food or material",
+    "two varieties",
+    "container that tips",
+    "surface that is stained",
+    "cleaning tool",
+    "approving adult"
+   ],
+   "reimagine_hints": [
+    "a paint studio: two colours are tested before a jar spills on a mat",
+    "a juice stall: two drinks are tasted before a cup spills on a tablecloth",
+    "a bakery: two fillings are sampled before cream drops on a counter"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "Dad has a van. The van has jam in big jugs.",
+    "I dip in a jug. Fig jam! It is yum!",
+    "I dip in a jug. Red jam! It is yum!",
+    "The jug tips! Jam on the rug! No!",
+    "I get a wet rag. I mop it up.",
+    "No jam on the rug! I did it! I hug Dad."
+   ]
+  },
+  {
+   "title": "The Yak and the Box",
+   "pattern_name": "threatened treasure saved and shared",
+   "spine": [
+    "hero is with a large, impulsive companion",
+    "hero stores a counted treasure in a container",
+    "the companion damages or threatens the container",
+    "hero repairs it and moves it out of reach",
+    "hero prepares to recover the protected treasure",
+    "hero voluntarily shares one piece with the companion"
+   ],
+   "device": "A threatening comic mishap becomes a generosity story when the hero protects the treasure but still shares it.",
+   "slots": [
+    "large companion",
+    "counted treats or treasures",
+    "breakable container",
+    "high safe place",
+    "repair action",
+    "shared piece"
+   ],
+   "reimagine_hints": [
+    "a tree house: a bear cub crushes a berry basket, which is mended, raised and shared from",
+    "a spaceship: a robot dents a snack pod, which is fixed, floated high and opened to share",
+    "a stable: a pony steps on an apple box, which is repaired, shelved and shared from"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "I am with a yak. The yak is big!",
+    "I get a box. Six figs in the box. I zip it up.",
+    "The yak sat on the box! No, no!",
+    "I fix the box. I set it on top of the hut.",
+    "The yak can't get it! I will get the six figs.",
+    "I toss a fig. The big yak gets a fig. Yum!"
+   ]
+  },
+  {
+   "title": "Chop, Chop, Chop!",
+   "pattern_name": "making steps end in sharing",
+   "spine": [
+    "a trusted adult begins a rhythmic food-making task",
+    "the adult prepares contrasting versions of an ingredient",
+    "the food is cooked while the child brings a serving item",
+    "the child chooses one piece and notices its quality",
+    "the child adds a finishing action or flavour",
+    "child and adult eat the finished food together"
+   ],
+   "device": "Rhythmic preparation and simple contrasts turn a familiar process into an anticipatory shared treat.",
+   "slots": [
+    "adult cook",
+    "ingredient",
+    "contrasting cuts or forms",
+    "cooking place",
+    "serving dish",
+    "dip or finishing flavour"
+   ],
+   "reimagine_hints": [
+    "a flatbread kitchen: an aunt rolls thin and thick rounds, then shares them with sauce",
+    "a fruit stall: a grandparent slices long and short fruit pieces for a shared bowl",
+    "a campsite: an uncle cuts large and small vegetables, cooks them and shares a dip"
+   ],
+   "simplest_level": 1,
+   "source_level": 1,
+   "source_pages": [
+    "Nan chops, chops, chops! This is fun!",
+    "Nan chops it thin. Nan chops it thick.",
+    "Chips in a hot pan. I got a big dish!",
+    "I got a chip. That chip is thick!",
+    "I dip a chip in. Yum, yum, yum!",
+    "Chips with Nan! Munch, munch, munch!"
+   ]
+  },
+  {
+   "title": "The Night Light",
+   "pattern_name": "dark search guided by lights",
+   "spine": [
+    "daylight fades and the hero cannot find a treasured object",
+    "hero and caregiver go out to search",
+    "they pass a bright place where seeing is easy",
+    "the route becomes dim and the hero needs light",
+    "a natural or distant light appears",
+    "the caregiver reassures the worried hero",
+    "the light helps reveal the lost object",
+    "hero recovers the treasure and celebrates"
+   ],
+   "device": "A sequence of contrasting light and darkness sustains a gentle search, with reassurance just before the final illuminated discovery.",
+   "slots": [
+    "lost treasured object",
+    "caregiver",
+    "bright stopping place",
+    "dim route",
+    "guiding light",
+    "discovery place"
+   ],
+   "reimagine_hints": [
+    "a village lane: a lost blanket is found after shop lamps and fireflies guide the search",
+    "a campsite: a missing toy is sought by lantern light and finally seen in moonlight",
+    "a power-cut apartment: a lost book is traced past emergency lights to a candlelit hall"
+   ],
+   "simplest_level": 1,
+   "source_level": 2,
+   "source_pages": [
+    "The day ends. I can't see my toy cat.",
+    "We go out to look. It is night.",
+    "Look at the lights. I can see in the shop.",
+    "It is dim on the way. I need a light.",
+    "Look, a light up high! It is the moon.",
+    "Dad can see I am sad. He hugs me in the light.",
+    "I see my toy cat! Dad and I run to it.",
+    "I hug my toy cat. \"Yay, my toy!\""
+   ]
+  },
+  {
+   "title": "Hot Food, Cool Moon",
+   "pattern_name": "waiting problem solved by wonder",
+   "spine": [
+    "hero and caregiver go out to obtain a treat",
+    "the treat is prepared with exciting sights and sounds",
+    "hero receives it but finds it unusable yet",
+    "hero repeatedly tries to hurry the change",
+    "caregiver redirects attention to a calming sight",
+    "while the hero pauses, the problem resolves naturally",
+    "hero enjoys the treat",
+    "the pair rest together in a peaceful setting"
+   ],
+   "device": "An impatient repeated attempt fails, but a soothing distraction creates the wait needed for the desired change.",
+   "slots": [
+    "caregiver",
+    "freshly prepared treat",
+    "temporary problem",
+    "failed hurry-up action",
+    "calming sight",
+    "shared resting place"
+   ],
+   "reimagine_hints": [
+    "a snowy fair: hot cocoa cools while a child watches falling snow",
+    "a beach picnic: warm soup cools while a child watches boats cross the sunset",
+    "a mountain camp: toasted food cools while a child studies the stars"
+   ],
+   "simplest_level": 1,
+   "source_level": 2,
+   "source_pages": [
+    "The sun dips low. I go with my mum to get food.",
+    "It is night. Food shops in a row! Yum!",
+    "I see a man at a big wok. Hiss! Pop! The food hops!",
+    "Mum gets me a bowl. Ooh! It is too hot!",
+    "I huff and puff on it. Huff! Puff! This is no fun!",
+    "Mum said, \"Sit with me. See the moon!\"",
+    "The moon is big and yellow! Then I dig in. It is not hot! Yum, yum, yum!",
+    "We sit low on the mat. The night is cool. I am with my mum. It is fun!"
+   ]
+  },
+  {
+   "title": "Morning on the Farm",
+   "pattern_name": "ordinary work leads to wonder",
+   "spine": [
+    "hero travels with family to a working place",
+    "hero explores and helps with a daytime task",
+    "darkness or closing time changes the mood",
+    "hero becomes curious about a hidden area",
+    "hero takes a tool and approaches it",
+    "a vague shape creates suspense",
+    "the shape is revealed as something newly arrived or precious",
+    "hero shares a warm encounter with family"
+   ],
+   "device": "A familiar working-day sequence turns into a torchlit mystery and ends with a tender new-life reveal.",
+   "slots": [
+    "working place",
+    "daytime chore",
+    "dark hidden building",
+    "seeing tool",
+    "mysterious shape",
+    "newborn or precious discovery"
+   ],
+   "reimagine_hints": [
+    "an aquarium: daytime feeding leads to a dark nursery and newly hatched turtles",
+    "a wildlife centre: cage cleaning leads to a dim shelter and a newborn cub",
+    "a greenhouse: daytime planting leads to a night visit and a rare flower opening"
+   ],
+   "simplest_level": 2,
+   "source_level": 2,
+   "source_pages": [
+    "We go far in the car. I can see a farm!",
+    "The farm is big! I see a yard with corn in a jar.",
+    "I get a fork for the garden. I dig, dig, dig! Good food for the farm.",
+    "Now it is dark. I look at the barn. I need to look in the barn!",
+    "I get a torch for the dark. I march to the big barn doors.",
+    "It is dark in the barn. I look far into a pen. I see a thing!",
+    "A kid! Born this morning! Her mum is with her.",
+    "I hug the warm kid with my dad. This farm is too good! I wish I had a farm!"
+   ]
+  },
+  {
+   "title": "The Fair in the Air",
+   "pattern_name": "won prize lost then rescued",
+   "spine": [
+    "hero arrives at a lively event as weather begins to affect things",
+    "hero attempts a game or challenge for a prize",
+    "hero wins and celebrates",
+    "the weather carries the prize out of reach",
+    "hero locates it but cannot recover it alone",
+    "hero asks the event worker for help",
+    "the helper retrieves the prize",
+    "calm returns and the hero enjoys the prize safely"
+   ],
+   "device": "Winning is immediately reversed by a weather-driven loss, creating a second, cooperative victory through rescue.",
+   "slots": [
+    "public event",
+    "game or challenge",
+    "prize",
+    "weather force",
+    "high landing place",
+    "skilled helper"
+   ],
+   "reimagine_hints": [
+    "a beach carnival: a won kite blows onto a lifeguard tower and an attendant retrieves it",
+    "a winter fête: a prize scarf blows onto a roof and a caretaker brings it down",
+    "a harbour festival: a paper boat prize lands on a mast and a sailor rescues it"
+   ],
+   "simplest_level": 2,
+   "source_level": 2,
+   "source_pages": [
+    "I go to the fair. The fair is so big! The air is cool on my chin.",
+    "A big wind swirls in. It picks up my hair! My hair is up in the air!",
+    "I stop at a stand. A pair of ducks! The man says I can win the pair.",
+    "I win! I win the pair! I jump up high and the man claps for me.",
+    "But the wind swirls back! It lifts my pair up into the air. No, no! My pair!",
+    "My pair lands up in a fir tree. I run to the man. \"Sir! Sir! My pair is in the fir!\"",
+    "The man is quick. Up the fir he goes! He gets my pair from the top.",
+    "The wind is soft. I sit in a chair with my pair. It is the best day at the fair!"
+   ]
+  },
+  {
+   "title": "Round and Round",
+   "pattern_name": "runaway toy searched and found",
+   "spine": [
+    "hero plays with a moving toy in a repeated pattern",
+    "the toy travels farther and becomes harder to control",
+    "the toy disappears",
+    "hero calls a trusted adult for help",
+    "adult promises to join the search",
+    "they check two places and fail",
+    "the adult spots the toy",
+    "hero celebrates, thanks the helper and returns home"
+   ],
+   "device": "Repeated movement turns into repeated searching, with two 'not here' beats before the helper's joyful find.",
+   "slots": [
+    "moving toy",
+    "play route",
+    "trusted helper",
+    "two wrong search places",
+    "final hiding place",
+    "homeward gesture"
+   ],
+   "reimagine_hints": [
+    "a park: a rolling ball vanishes beyond a path and is found with an older sister",
+    "a snowy yard: a sled slides away and is found with a grandparent",
+    "a space station: a floating toy drifts off and is found with a technician"
+   ],
+   "simplest_level": 1,
+   "source_level": 2,
+   "source_pages": [
+    "I went out with my toy car. I zoomed it round and round. Zoom! Zoom!",
+    "I zoomed it far down the path. Round and round! It got loud!",
+    "But it ran too far! My toy! I looked around and around. I can't see it!",
+    "I shouted out loud. \"Mum! I need you! I can't see my toy!\"",
+    "Mum ran out to me. \"I will look around and around,\" she said.",
+    "We looked around the big rock. No toy! We looked around the shed. No toy!",
+    "\"Look!\" said Mum. \"I found it!\" My toy! Joy! Joy! I shouted out loud!",
+    "I hugged my toy and I hugged Mum. \"Thank you!\" I said. We went in."
+   ]
+  },
+  {
+   "title": "The Night Fair",
+   "pattern_name": "sensory tour ends in farewell",
+   "spine": [
+    "hero and caregiver enter a special place at night",
+    "hero admires its lights and displayed objects",
+    "hero pauses for a live sound or performance",
+    "hero tastes local food",
+    "hero chooses or receives a keepsake",
+    "hero rests and takes in the atmosphere",
+    "hero looks beyond the event to the night sky",
+    "hero sums up the outing and says goodbye"
+   ],
+   "device": "A sequence of sensory discoveries—light, sound, taste, touch and sky—creates pleasure without needing a central problem.",
+   "slots": [
+    "night-time venue",
+    "caregiver",
+    "lights or displays",
+    "performer",
+    "food",
+    "keepsake",
+    "night-sky feature"
+   ],
+   "reimagine_hints": [
+    "a lantern garden: glowing flowers, a violinist, dumplings and a paper moth",
+    "a seaside pier: ride lights, a drummer, warm buns and a toy boat",
+    "a winter market: candles, carol singers, soup and a carved star"
+   ],
+   "simplest_level": 1,
+   "source_level": 2,
+   "source_pages": [
+    "It is night! We go to the souq. The lights up high are so bright!",
+    "I see lots of lamps. Each one is so cool! I feel such joy.",
+    "A man plays a drum in the dark. Tap, tap, tap! I stay to see.",
+    "Mum gets food for us. I try a spoon. It is hot and so yum!",
+    "I see a toy bird with soft hair. \"Can I get it, Mum?\" She says yes!",
+    "I sit on a stool. The fair is so much fun! The air is cool.",
+    "Look up! I see stars in the sky. The moon is low and round.",
+    "My night at the souq is so good. I wave good night to the big moon."
+   ]
+  },
+  {
+   "title": "The Big Bike Race",
+   "pattern_name": "outward race and triumphant return",
+   "spine": [
+    "competitors line up and receive the route",
+    "hero wonders whether they can succeed",
+    "hero travels quickly past repeated landmarks",
+    "a sudden hazard shows the risk of the challenge",
+    "hero reaches the turning point",
+    "hero races back under time pressure",
+    "hero crosses the finish successfully",
+    "hero receives public recognition"
+   ],
+   "device": "An out-and-back route makes progress easy to follow, while a midpoint hazard and urgent return create suspense before victory.",
+   "slots": [
+    "race vehicle or movement",
+    "starting line",
+    "two route landmarks",
+    "track hazard",
+    "turning point",
+    "prize or recognition"
+   ],
+   "reimagine_hints": [
+    "a desert: children race carts to an oasis and back past rocks and palms",
+    "a school field: runners circle two markers, avoid a muddy patch and return",
+    "a space academy: pilots race pods to a beacon and back through drifting debris"
+   ],
+   "simplest_level": 2,
+   "source_level": 3,
+   "source_pages": [
+    "Bikes line up at the arch. It is time for the race to start! I stand with my bike on the line.",
+    "‘Ride to the lake and back!’ the man said. Can I win? I grip my bike tight.",
+    "Off I go! Past a tall pine tree. Past a wide stone arch. I ride fast in the sun.",
+    "Look out! Stones on the track. A bike slides and a girl falls off. She gave me a brave smile.",
+    "I can see the lake! It shines in the sun. I ride past it and turn back.",
+    "Can I make it back in time? I ride and ride. I must not be late!",
+    "I am past the line! I made it! I slide off my bike with a wide grin.",
+    "A prize! I am on the top step! I smile and wave at my mates. What a good day!"
+   ]
+  },
+  {
+   "title": "Lost at the Night Market",
+   "pattern_name": "landmarks retraced to reunion",
+   "spine": [
+    "hero enters a crowded place with a caregiver and is warned to stay close",
+    "they notice two memorable landmarks",
+    "an interruption separates the hero from the caregiver",
+    "the hero feels overwhelmed and calls out without success",
+    "the hero recognises an earlier landmark",
+    "the hero retraces the route past familiar sights",
+    "hero and caregiver reunite with intense relief",
+    "they settle close together and repeat the safety rule"
+   ],
+   "device": "Earlier sightseeing details become practical breadcrumbs, allowing the lost child to reverse the route and regain safety.",
+   "slots": [
+    "crowded venue",
+    "caregiver",
+    "two memorable landmarks",
+    "separating interruption",
+    "retraced route",
+    "comforting food or activity"
+   ],
+   "reimagine_hints": [
+    "a train station: a mural and bakery sign guide a child back to an aunt",
+    "a festival: a giant puppet and juice stall guide a child back to Dad",
+    "a museum: a dinosaur model and blue staircase guide a child back to Mum"
+   ],
+   "simplest_level": 2,
+   "source_level": 3,
+   "source_pages": [
+    "Mum and I went to the night market. It was huge! ‘Stay close to me,’ Mum spoke. And I did.",
+    "We see cute stone models on a stand. We see bright noodle pots. The food smelt so good!",
+    "Then a man bumped me! I spun round and round. I can't see Mum! I froze.",
+    "It was dark and loud. I felt so small. ‘Mum!’ I shout. But Mum is not there.",
+    "Then I see the cute stone models! We went past those! Mum must be close!",
+    "I run past the bright lights. I run past the noodle stand. Then… I see Mum!",
+    "Mum gave me a huge tight hug. ‘You are safe!’ she spoke. I did not let go.",
+    "We sat close and ate hot noodles in the moonlight. ‘Stay close to me!’ spoke Mum. I gave a huge grin. Home time!"
+   ]
+  },
+  {
+   "title": "The Dream Team",
+   "pattern_name": "overwhelming task solved together",
+   "spine": [
+    "an older or tired person faces a task that is too large",
+    "hero begins helping alone",
+    "hero realises one helper is not enough",
+    "hero recruits a friend and names them a team",
+    "the pair divide tasks and support each other",
+    "they complete and proudly present the work",
+    "they add an extra thoughtful errand",
+    "the grateful recipient rewards them with shared food or celebration"
+   ],
+   "device": "The phrase and idea of a team transform an impossible solo chore into a sequence of achievable cooperative jobs.",
+   "slots": [
+    "person needing help",
+    "large chore",
+    "recruited friend",
+    "divided jobs",
+    "extra errand",
+    "thank-you feast or reward"
+   ],
+   "reimagine_hints": [
+    "a community garden: two friends weed, stack pots and fetch seeds for a neighbour",
+    "a library: two children sort books, dust shelves and bring tea for the librarian",
+    "a fishing village: two cousins mend nets, sweep a deck and collect supper for Grandad"
+   ],
+   "simplest_level": 2,
+   "source_level": 3,
+   "source_pages": [
+    "Nana sits by her gate. She looks so tired. \"I need to clean,\" she said. \"But it is too much.\"",
+    "I kneel by each plant pot and clean the leaves. \"Let me help, Nana!\" I said. But this is too much for just me.",
+    "I need my best mate! I run and find him. \"Please, can you help?\" I cried. \"We need to be a team!\"",
+    "We each grab a cloth. We clean the step and sweep the yard. Leaves fly!",
+    "I stand on a stool. He holds it. I reach up and grab each tin from the shelf. \"I got them!\"",
+    "We take the tins out to the yard. We clean each one and line them up neat. Nana peeks out. \"What a dream team!\" she cried.",
+    "Then we run to the shop. We get beans and rice and sweet plantain for Nana. What a treat!",
+    "Nana grins and grins. She brings us each a big feast — beans and rice with fried plantain! We cheer: \"Thank you, Nana!\""
+   ]
+  },
+  {
+   "title": "What Min Saw",
+   "pattern_name": "outing of accumulating discoveries",
+   "spine": [
+    "hero eagerly sets out with a caregiver",
+    "the caregiver directs attention to the wider surroundings",
+    "hero notices a friendly small living thing",
+    "hero finds a portable small treasure",
+    "they climb or travel to a broad viewpoint",
+    "an unexpected and impressive creature appears",
+    "hero rests while watching it and names the standout memory",
+    "hero returns home carrying the treasure and recalling the full day"
+   ],
+   "device": "A cumulative sightseeing walk grows from ordinary details to one unforgettable encounter, then closes with a recap.",
+   "slots": [
+    "caregiver",
+    "outing route",
+    "friendly small creature",
+    "found keepsake",
+    "high viewpoint",
+    "spectacular final creature"
+   ],
+   "reimagine_hints": [
+    "a coastal walk: a crab, shell, cliff view and dolphin become the day's discoveries",
+    "a city walk: a dog, token, rooftop view and falcon accumulate into a memory",
+    "a rainforest trail: a beetle, bright seed, ridge view and hornbill mark the journey"
+   ],
+   "simplest_level": 2,
+   "source_level": 3,
+   "source_pages": [
+    "Mum got her coat. ‘Let us go to the park,’ she said. Min was so glad. She got on her pink coat and ran to the door.",
+    "Out on the street, Mum pointed up. ‘Look at that tall block!’ she said. Min saw a big red bus zoom past.",
+    "At the park, Min saw a soft grey cat. The cat had a small white paw and bright eyes. ‘Hello, cat!’ said Min with a grin.",
+    "Min hopped on a stone in a stream. She spotted a bright coin in the soil! ‘Look, Mum!’ she said. She picked it up and held it tight.",
+    "They went up a steep hill. From the top, Min saw the whole town. Mum pointed at the bright bend in the river.",
+    "All at once — a hawk! A big brown hawk flapped past. It had sharp claws and wide wings. Min looked up. Her jaw dropped!",
+    "They sat on the grass to rest. The hawk soared in big slow rings. ‘I saw a hawk!’ said Min. ‘I will not forget!’",
+    "On the way home, the trees were gold. Min still had her coin. She smiled at Mum. ‘What a day! I saw so much!’"
+   ]
+  },
+  {
+   "title": "The Boat with the Red Sail",
+   "pattern_name": "distant sign leads to reunion",
+   "spine": [
+    "hero spots a distinctive sign approaching from far away",
+    "hero believes it signals someone important and sets out",
+    "small obstacles delay the journey",
+    "a larger mishap threatens to make the hero too late",
+    "hero reaches the destination as the sign arrives",
+    "someone calls to the hero from the arriving vehicle",
+    "the expected loved one is revealed and they reunite exuberantly",
+    "they travel home together with a comic callback to an earlier obstacle"
+   ],
+   "device": "A repeated visual marker pulls the hero through escalating delays toward an anticipated but still satisfying reunion reveal.",
+   "slots": [
+    "distinctive distant marker",
+    "arriving vehicle",
+    "loved one",
+    "small obstacle",
+    "larger mishap",
+    "cargo or gift",
+    "comic callback"
+   ],
+   "reimagine_hints": [
+    "an Arctic shore: a yellow flag marks Mum's returning sled beyond ice and snow",
+    "a savannah station: a striped carriage signals an uncle's train despite puddles and goats",
+    "a mountain village: a blue balloon marks Dad's bus while a child crosses a crowded path"
+   ],
+   "simplest_level": 2,
+   "source_level": 3,
+   "source_pages": [
+    "Kai sits on the road eating toast. He spots a boat far out at sea. It has a big red sail!",
+    "Kai grabs his coat and runs! Rain splats on the main road. That red sail — it must be him!",
+    "From the trail, Kai spots fish on the boat! A fat snail blocks his path. ‘Not now, snail!’ said Kai.",
+    "Kai slips and slides into a drain! His coat is soaked in mud. He groans — the boat will not wait!",
+    "He runs and runs to the coast at last! The boat sails in from the sea. Kai spots the red sail!",
+    "The boat docks with a big load of fish. A man in a coat shouts out. ‘Kai! Kai!’",
+    "It is Dad! Dad leaps off the boat and scoops Kai up. They spin in the sun!",
+    "They stroll back up the road with the fish. Then Kai spots the snail! ‘How did the snail get here?’ he grins."
+   ]
+  },
+  {
+   "title": "The Purple Purse",
+   "pattern_name": "long search ends in kindness",
+   "spine": [
+    "hero discovers a valued possession is missing",
+    "a caregiver joins a route-based search",
+    "they check several plausible places without success",
+    "the missing resource prevents the hero from enjoying a small treat",
+    "the search continues and hope fades",
+    "a stranger displays the found possession",
+    "hero verifies that it and its contents are intact",
+    "hero returns home reflecting on the stranger's kindness"
+   ],
+   "device": "Repeated failed searching lowers hope until an honest stranger reverses both the practical loss and the hero's mood.",
+   "slots": [
+    "lost possession",
+    "caregiver",
+    "search route",
+    "two search places",
+    "unaffordable treat",
+    "honest finder"
+   ],
+   "reimagine_hints": [
+    "a village fête: a lost coin pouch is returned by a flower seller",
+    "a station: a missing travel card is returned by a porter",
+    "a boardwalk: a lost bracelet is returned by a snack vendor"
+   ],
+   "simplest_level": 2,
+   "source_level": 4,
+   "source_pages": [
+    "My purple purse was gone! I turned my pockets inside out, but it was not there. I was so upset!",
+    "Dad came with me to search. We walked up and down the street. \"It must be here,\" said Dad.",
+    "I looked under the bench in the park. I searched in the ferns. Not there!",
+    "\"A currant bun?\" said the baker. But I had no coins to pay! I turned away, sad.",
+    "Further on, we passed a church. Past more stalls and tall garden walls. I started to give up.",
+    "Then a market lady held up a purple purse! \"I found this on the kerb. Is it yours?\"",
+    "I turned the purse over. My coins were still in it! \"Thank you!\" I burst out, smiling.",
+    "Dad and I walked home in the warm afternoon. I held the purse close to my chest. \"She was so kind,\" I said."
+   ]
+  },
+  {
+   "title": "The Brown Owl",
+   "pattern_name": "frightening clue becomes family wonder",
+   "spine": [
+    "an alarming sound comes from outside at dusk",
+    "hero asks a caregiver to investigate together",
+    "they spot an indistinct shape above them",
+    "the shape is revealed as a striking wild animal",
+    "the animal moves closer or dramatically, creating awe",
+    "a second clue reveals that it is caring for young",
+    "hero and caregiver witness the parent provide for them",
+    "they return home reassured and promise to care or visit responsibly"
+   ],
+   "device": "Each reveal reinterprets the opening fear: first as a magnificent animal, then as a caring parent with safe young.",
+   "slots": [
+    "night sound",
+    "caregiver",
+    "dark path",
+    "wild parent animal",
+    "hidden nest or den",
+    "young animals",
+    "food brought to them"
+   ],
+   "reimagine_hints": [
+    "a tropical garden: harsh screeches lead to a fruit bat and its pup",
+    "a rocky coast: eerie cries lead to a seabird feeding chicks",
+    "a forest camp: rustling leads to a badger returning to its cubs"
+   ],
+   "simplest_level": 2,
+   "source_level": 4,
+   "source_pages": [
+    "It was getting dark. From deep in the trees came a loud howl, then a growl. What was that? I stared out the window but all I saw were shadows.",
+    "‘Can we go and look?’ I asked Mum. She got me my thick coat and boots. We set off down the dark path together. The air was cool on my bare cheeks.",
+    "Then Mum stopped and stared up at the bare branches. ‘Look!’ she said. I stared too. Something was up there in the dark. What was it?",
+    "Then I saw it. A big brown owl! It sat high up on a bare branch and stared right down at me. How rare! I stared back but I did not dare to get close.",
+    "Then the owl spread its wings and swooped down from the branch. Wow! I froze. I did not dare to make a sound.",
+    "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. ‘Owlets!’ said Mum. ‘She must look after them!’ I peeked and saw fluffy white faces staring down at me.",
+    "The owl swooped back up with a mouse in its claws. The owlets crowded round, cheeping loudly. What a rare sight! Mum and I shared a smile.",
+    "We went home under the stars. ‘I want to go back and care for them,’ I said. Mum took my hand. ‘We will,’ she said. I smiled all the way home. The brown owl and her owlets were safe in the dark."
+   ]
+  },
+  {
+   "title": "The New Glue",
+   "pattern_name": "small mistake triggers chaos chain",
+   "spine": [
+    "hero uses a new material to make a gift",
+    "too much force causes the material and project to stick or spill",
+    "the project attaches to an animal or moving agent",
+    "the fleeing agent causes a second household accident",
+    "an adult reacts and suffers another comic accident",
+    "the chase threatens something fragile, which the hero saves",
+    "everyone cleans the linked messes",
+    "the original gift is completed and presented with the mishap explained"
+   ],
+   "device": "A single mistake creates a fast domino chain of escalating accidents before cleanup restores the original loving goal.",
+   "slots": [
+    "new craft material",
+    "gift project",
+    "animal or moving agent",
+    "three threatened household objects",
+    "adult helper",
+    "gift recipient"
+   ],
+   "reimagine_hints": [
+    "a pottery room: wet clay sticks to a puppy, which bumps stools and a vase",
+    "a bakery: icing sticks to a parrot, which knocks over bowls and a flowerpot",
+    "a robot workshop: magnetic paint catches a toy drone, which drags tools through the lab"
+   ],
+   "simplest_level": 2,
+   "source_level": 4,
+   "source_pages": [
+    "The girl had a pot of new blue glue. She drew a bird on a card. \"This card is for Mum,\" she said to Dad. She pressed the blue glue on — but she pressed too hard!",
+    "The blue glue spread across the desk and stuck to her hand! She pulled and she shook. Then the card flew off her hand, down the hall and down the stairs!",
+    "The card landed right on the cat at the foot of the stairs. The cat grew cross and ran. It had blue glue and bits of card stuck in its fur!",
+    "The cat flew into the front room and jumped on the shelf. It bumped a blue cup of tea. The cup fell and tea ran down on to the new rug.",
+    "Then the cat ran into the kitchen. Dad was at the sink. He turned to look, but he did not see the wet patch on the ground. So he slid and fell with a bump! \"This is all due to that blue glue!\" he said.",
+    "Then the cat ran out into the garden. It jumped on the wall and bumped a pot of blue flowers. The pot started to fall! The girl threw her arms out and rescued it just in time.",
+    "\"That cat!\" said Dad. They cleaned up all the glue and the mess. The girl wiped the blue stain off the desk. The cat just sat and chewed its fur clean.",
+    "At last, the card was finished. Mum came home and the girl gave it to her. \"You drew this for me?\" said Mum. \"It is true,\" said the girl. \"And it was all due to the new blue glue!\""
+   ]
+  },
+  {
+   "title": "The Cheeky Monkey",
+   "pattern_name": "theft chase ends in coexistence",
+   "spine": [
+    "hero and caregiver explore a striking place",
+    "hero notices an unexpected animal watching nearby",
+    "the animal takes the hero's food or small possession",
+    "hero chases it through the setting",
+    "hero briefly loses sight of it",
+    "the animal is found calmly using the stolen item rather than escaping",
+    "caregiver catches up and responds with humour",
+    "hero abandons the conflict and enjoys sitting near the animal"
+   ],
+   "device": "A frantic circular chase ends not with capture but with a funny, peaceful tableau that lets frustration dissolve.",
+   "slots": [
+    "caregiver",
+    "scenic public place",
+    "bold animal",
+    "stolen snack or object",
+    "chase route",
+    "peaceful final spot"
+   ],
+   "reimagine_hints": [
+    "a beach temple: a gull steals a bun and settles beside the tide pool",
+    "a mountain park: a marmot steals fruit and stops by a stream",
+    "a city garden: a squirrel steals a biscuit and eats beside a fountain"
+   ],
+   "simplest_level": 2,
+   "source_level": 4,
+   "source_pages": [
+    "The sun was up. It was a new day! The boy and Mum went to the big pink mosque. \"Wow!\" said the boy. \"It is so big!\"",
+    "They went down to the water. The blue lake was still and cool. Pink and blue — how grand it was!",
+    "But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. \"Wow!\" said the boy. \"What is THAT?\"",
+    "The monkey had his snack! It ran into the garden — fast! \"Stop!\" said the boy. But the monkey just grinned and ran on.",
+    "The boy ran after it. Round and round! The brown furry tail went past a tree. \"Oh no! Where did it go?\"",
+    "At last, the boy stopped. The monkey sat by the water with his snack. It had not run off! It just sat and munched.",
+    "Mum got there too. Her dark gown flowed in the warm air. She had a true glow. \"You ran so fast!\" she said with a grin.",
+    "The boy sat down with Mum by the water. The monkey was still munching. \"Wow!\" said the boy with a grin. \"This is the best day!\""
+   ]
+  },
+  {
+   "title": "Before the Shore",
+   "pattern_name": "found object opens a memory",
+   "spine": [
+    "a tired hero finds an evocative object in the present",
+    "its feel or appearance triggers a memory",
+    "the story moves into a past trip with a loved one",
+    "during the memory, they explore and make something together",
+    "the loved one gives or identifies a keepsake meant to preserve the memory",
+    "the story returns to the present, where the new object matches the old keepsake",
+    "hero combines the pair into a handmade gift",
+    "the loved one receives it and restates the promise of remembering"
+   ],
+   "device": "A matching object creates a clear present–past–present structure and turns private memory into a new reciprocal gift.",
+   "slots": [
+    "present-day found object",
+    "remembered destination",
+    "loved one",
+    "past shared craft",
+    "old keepsake",
+    "new combined gift"
+   ],
+   "reimagine_hints": [
+    "a city park: a feather recalls a wetland trip and becomes part of a charm for Mum",
+    "a garden: a seed pod recalls Grandad's forest walk and becomes a paired ornament",
+    "a station: a ticket stub recalls a train holiday and becomes a framed gift for an aunt"
+   ],
+   "simplest_level": 3,
+   "source_level": 5,
+   "source_pages": [
+    "The boy went home from the park. He was tired and his feet were sore. He sat on a bench to rest. Then he saw something on the path — a smooth, flat stone. He picked it up.",
+    "The stone felt cool in his hand. It had a shine, like something from the shore. Once, before this week, he had seen a stone just like it. He sat still and let his mind go back.",
+    "Before the cold came, he went with Dad to the shore. The air was fresh and the sand soft. \"Come and explore with me!\" said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
+    "The next day, he explored the rock pools. He found more and more shells! Dad helped him put them on a wire. \"We can make a gift,\" he said. He twisted the wire with care. It looked so nice!",
+    "Then it was time to go. He spotted a stone by the shore. It was smooth and flat. \"Keep it safe,\" said Dad. \"So you never forget this trip.\" He put the stone in his pocket with a smile.",
+    "The boy sat up and looked around. He still had that shore stone at home. But in his hand was a new stone, just as smooth! He held it up to the light. The shore felt so close.",
+    "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Dad — just like before.",
+    "He gave the stones to Dad. \"From the shore and from the park,\" he said. He smiled wide. \"I will keep them with me,\" he said. \"So I never forget.\" He wore them on his bag that day."
+   ]
+  },
+  {
+   "title": "Near the Door",
+   "pattern_name": "three partial clues on journey",
+   "spine": [
+    "hero hears an unexplained sound just outside home",
+    "hero leaves a waiting caregiver to investigate",
+    "a partial feature appears and is revealed as a first creature",
+    "a second partial feature appears and is revealed as a different creature",
+    "the second creature demonstrates a distinctive movement",
+    "a third ambiguous shape invites a choice between guesses",
+    "the third creature is revealed and calmly addressed",
+    "hero returns home, lists all three encounters and settles safely with the caregiver"
+   ],
+   "device": "Three clue-before-reveal encounters let the reader guess each animal, while the safe return frames the adventure with reassurance.",
+   "slots": [
+    "home threshold",
+    "waiting caregiver",
+    "three creatures",
+    "partial clue for each creature",
+    "distinctive action",
+    "warm home activity"
+   ],
+   "reimagine_hints": [
+    "a Kenyan riverbank: three birds glimpsed first by a beak, feet and shadow",
+    "a coral reef: three sea animals revealed by a fin, feeler and patterned back",
+    "a city park: three visitors revealed by a tail, long ears and antlers"
+   ],
+   "simplest_level": 2,
+   "source_level": 5,
+   "source_pages": [
+    "Dad sat at the fire in his thick wool socks. I stood near the door with my coat and hat. It was cool outside, and I could hear a soft crunch. I put my ear to the door and heard it again. What could it be out there in the snow?",
+    "I pulled the door wide and stepped out into the woods. It was still cool, and I could hear that crunch again. It was near a tall pine tree, but I could not see more. A red tail peeked out, swayed, then went still. I crept near.",
+    "Out popped a fox, with neat paws and sharp ears. He looked at me and sat down in the soft snow. I felt a bit of fear, but I did not run. I spoke soft and clear. \"Dear fox, you are safe with me.\"",
+    "The fox sniffed and trotted off into the trees. Then a soft tap came near a rock at the stream. Two long ears stuck up, pink and still in the snow. A rabbit was near the rock, under a thin sheet of snow. I kept still.",
+    "The rabbit sprang from the rock and ran to the stream. It leapt clear over the water with long, strong legs. Splash, splash, then the rabbit ran on again. I called out as it landed safe and kept on. What a quick rabbit with big pink ears!",
+    "Next, I spotted two dark points on a pale mound of snow. They poked up out of the snow like small twigs. I went near and a snort came from under the mound. Was it a log, or was it a deer? I waited, still as a rock, and did not fear.",
+    "Out stepped a deer, tall and grand, with big antlers. He stood near me and did not run. I spoke clear and slow. \"Hello, deer,\" I said, \"we will not harm you.\" He looked at me, then stepped off into the trees.",
+    "Snow dusted my coat as I ran back to the door. Dad waited there, warm from the fire and keen to hear. \"I saw a fox, a rabbit and a deer!\" We sat on the floor indoors and read at the fire."
+   ]
+  },
+  {
+   "title": "Sure She Can!",
+   "pattern_name": "guided making failure retry success",
+   "spine": [
+    "hero longs to join an activity but lacks the needed object",
+    "an experienced relative offers materials and step-by-step guidance",
+    "hero successfully completes the first construction stage",
+    "hero rushes the next stage and damages the work",
+    "hero becomes frustrated and wants to stop",
+    "mentor calmly invites a slower, more careful retry",
+    "hero finishes the object and tests it",
+    "the object works spectacularly and the community celebrates"
+   ],
+   "device": "Explicit steps, one discouraging failure and a slower second attempt make perseverance visible and emotionally satisfying.",
+   "slots": [
+    "desired activity",
+    "mentor",
+    "materials",
+    "multi-step object",
+    "damage caused by rushing",
+    "retry instruction",
+    "public test"
+   ],
+   "reimagine_hints": [
+    "a fishing village: a child makes a model boat with an aunt, repairs a torn sail and launches it",
+    "a music workshop: a child builds a drum with Grandad, replaces split skin and performs",
+    "a snowy town: a child makes a sled with a neighbour, repairs a loose runner and rides it"
+   ],
+   "simplest_level": 2,
+   "source_level": 5,
+   "source_pages": [
+    "Kites filled the blue air over Jaipur. Red and green and blue, they flew and spun and dipped in the clear winter air. The girl stood on the rooftop and looked with wide eyes. She wanted to send up a kite more than anything. But she did not own one.",
+    "Dadaji sat near the wall, smiling at all the kites. He held up a thin sheet of paper and two bamboo sticks. \"We can make one,\" he said. \"I can show you the instructions. Pay close attention and follow each step.\" She felt a rush of joy.",
+    "\"Step one,\" said Dadaji. \"Lay the sticks in a cross shape. Tie them at this section — that is the frame.\" With strong concentration, the girl tied the sticks. Her fingers moved in a slow, careful direction. \"Perfect!\" said Dadaji. \"Now pass the string around each point.\"",
+    "\"Step two,\" said Dadaji. \"Lay the paper flat on the frame. Fold each section over the string and press it down.\" The girl worked fast. But the paper slipped. There was a rip — a long split ran right through the kite. Her heart sank.",
+    "The girl crumpled the torn paper in her hands. \"I am full of frustration!\" she said. \"I give up!\" Dadaji did not rush. He sat still and waited. \"Do you want to stop?\" he said in a soft voice. \"We are not done yet.\"",
+    "The girl took a long breath and tried again. \"Slow action this time,\" said Dadaji. \"Press each section flat before you move on. Work in one direction only.\" She worked with great care. She pressed. She smoothed. She waited. The paper held. \"It is working!\" she cried.",
+    "At last, the kite was done. \"Look at the shape we made!\" she cried. Dadaji tied the string to the centre. \"Now for the action!\" he said. \"Run in that direction and let the wind take it!\" She ran with all her might and let the string out.",
+    "The kite shot up into the pure blue air. It flew higher and higher! “Woh Kata!” cheered the people on the next rooftop. Dadaji clapped his hands with joy. The girl looked at her kite spin and dance over the pink town. \"Pure joy!\" she cried. \"Pure joy!\""
+   ]
+  },
+  {
+   "title": "A Place for Me",
+   "pattern_name": "lost child gains a friend",
+   "spine": [
+    "hero enters a busy unfamiliar place with a caregiver",
+    "the crowd grows and the caregiver disappears from view",
+    "hero searches briefly, then feels frightened and alone",
+    "a friendly peer notices and offers help",
+    "the peer confidently guides the hero through the setting",
+    "they pause for a small shared pleasure that eases the fear",
+    "the peer spots the caregiver",
+    "the reunion includes gratitude and a promise that the new friendship will continue"
+   ],
+   "device": "A lost-child plot is softened by a capable peer whose kindness creates both safety and an unexpected friendship.",
+   "slots": [
+    "busy place",
+    "caregiver",
+    "friendly peer",
+    "guided route",
+    "shared food or game",
+    "reunion point"
+   ],
+   "reimagine_hints": [
+    "a harbour festival: a local child shares fruit and helps find Mum by the boats",
+    "a museum: a young guide shares a puzzle and helps find Dad near the entrance",
+    "a mountain market: a shepherd child shares bread and helps find an aunt by the bell tower"
+   ],
+   "simplest_level": 2,
+   "source_level": 5,
+   "source_pages": [
+    "The morning air was cool and clear. I went with Dad to a market near the old town. It was just starting up. Big sheets of cloth hung from the stands in red, green and blue.",
+    "Soon the market was full of people. There was more to see than I had ever seen! Dad went to explore the stands. \"Wait at this stand,\" he said. But then I could not see him.",
+    "I looked left. I looked right. I could not see Dad near any door or stand. I did not know where he went. I felt a fear in my chest. I was alone.",
+    "Then a boy appeared at my side. He had a big grin on his face. \"Are you lost?\" he said. I nodded. \"I will help you. We can spot him!\"",
+    "We went from section to section. He knew the direction to go. He picked up a big yellow mango. \"Pure sunshine!\" he grinned. I could not help but smile back.",
+    "We sat on some steps and ate the mangos. The sweet mess ran down my chin. It was the best thing I had ever tasted. I smiled for the first time all day.",
+    "Then the boy stopped. He pointed down the street. \"Dad must be near!\" he said. \"Let’s go, we can spot him fast!\" I felt a rush in my chest.",
+    "Dad picked me up and held me tight. I had been so tired and scared. But not any more. \"This boy helped me,\" I said. Dad smiled. \"Then he must see us again soon.\""
+   ]
+  },
+  {
+   "title": "The Marvellous Neighbourhood",
+   "pattern_name": "mentor reveals wonder at home",
+   "spine": [
+    "hero dismisses a familiar home area as ordinary",
+    "a well-travelled mentor challenges that judgment",
+    "mentor revisits a major local feature and supplies its larger history",
+    "mentor reveals the human value of an everyday business or neighbour",
+    "more familiar sights, sounds and creatures are reframed as special",
+    "hero pauses and perceives the same place with renewed attention",
+    "mentor gives the hero a tool for recording and naming discoveries",
+    "hero continues observing alone and claims the familiar place with pride"
+   ],
+   "device": "A guided tour changes nothing in the setting but changes the hero's language and attention, proving that wonder depends on how one looks.",
+   "slots": [
+    "familiar neighbourhood",
+    "experienced mentor",
+    "historic natural feature",
+    "long-standing local business",
+    "three ordinary landmarks",
+    "recording tool"
+   ],
+   "reimagine_hints": [
+    "a canal district: a grandmother reframes the locks, bakery, bells and ducks through a sketchbook",
+    "a rural village: a travelling uncle reveals the old oak, mill, shop and footpaths through labels",
+    "a tower-block estate: a neighbour reveals murals, gardens, food stalls and rooftop views through photographs"
+   ],
+   "simplest_level": 3,
+   "source_level": 6,
+   "source_pages": [
+    "Yusuf sat on the front steps of his block of flats and frowned at the street below. Rows of cream-coloured blocks lined the road, and cars honked in the hot afternoon heat. From the market around the corner, he could hear the calls of vendors and the clatter of carts. \"Nothing glorious or fabulous ever happens here,\" he muttered. \"This place is so ordinary.\" Just then, his Uncle Tarek sat down quietly on the step beside him, a worn notebook tucked under his arm.",
+    "\"You look like somebody who thinks they have seen everything there is to see,\" said Uncle Tarek with a smile. Yusuf shrugged. \"I live here. It is just houses, traffic and the same old market.\" His uncle had a luminous look in his eyes, as if he knew something tremendous. \"I have spent my whole life travelling to marvellous places,\" he said, leaning forward. \"And I am going to tell you something, Yusuf. This is one of the most glorious cities on Earth.\"",
+    "Uncle Tarek stood and walked with Yusuf to the wide road that ran along the edge of the river. \"That is the Nile,\" he said in a wondrous voice, \"the most famous river in the whole world.\" \"It has flowed past this very spot for thousands and thousands of years.\" Yusuf had walked along the corniche countless times, but he had never stopped to wonder. He looked at the grey-green water as if he was seeing it for the very first time.",
+    "Next, his uncle led Yusuf around the corner to the old bakery on their street. An enormous cloud of warm bread smell drifted out through the open door. \"The baker has been here for forty years,\" said Uncle Tarek. \"He knows every family by name.\" Yusuf realised he had never once stopped to wave or say good morning to him. The baker spotted them and held out a warm round of aish baladi, the famous flat bread of Egypt.",
+    "They walked on, and Uncle Tarek pointed to the slim minaret that rose above the rooftops. \"On quiet mornings, the call from that tower can be heard for miles and miles,\" he said. Down by the river, white-sailed boats drifted past on the gleaming water. A cluster of street cats — Cairo was famous for its cats — sunned themselves on a warm wall. \"Is this place still boring to you?\" his uncle asked, his eyes twinkling.",
+    "Yusuf stood still for a moment and looked around with new, curious eyes. He could see the white-sailed boats drifting on the enormous Nile, golden in the afternoon haze. He could hear the joyous calls of the market sellers drifting around the corner. He could smell the fabulous bread from the bakery he had walked past hundreds of times. \"It is marvellous,\" he said, in a quiet, amazed voice. \"My neighbourhood is truly marvellous.\"",
+    "Uncle Tarek smiled and handed Yusuf a small notebook and a pen. \"Write down what you see,\" he said. \"Give each part of your neighbourhood the name it deserves.\" Yusuf picked up the pen and began to write, one label for each place he could now see. He wrote: The Marvellous Corniche. The Enormous Nile. The Famous Bakery. The Joyous Market. The Glorious Minaret. \"These are the tremendous things that make up my home,\" said Yusuf, and he felt proud.",
+    "Later, when Uncle Tarek had gone home, Yusuf sat on his step once more. But this time, he was not bored — he was curious and adventurous, watching the world with new eyes. The enormous city hummed and buzzed all around him, full of marvellous, ordinary life. He opened his notebook and added one last label at the bottom of the page: My Marvellous Home. And from that day on, Yusuf never forgot that the most glorious place in the world was the one right outside his door."
+   ]
+  },
+  {
+   "title": "You Are Remarkable",
+   "pattern_name": "child notices stays and helps",
+   "spine": [
+    "hero notices a vulnerable person whom others overlook",
+    "hero approaches gently, gathers what information is possible and chooses responsibility",
+    "hero creates a clear public signal or plan",
+    "hero asks several people for help without immediate success",
+    "hero finds an appropriate authority and follows a safe waiting plan",
+    "hero comforts the vulnerable person while they wait",
+    "family and child are reunited",
+    "the family praises the hero, who draws a lasting principle from the action"
+   ],
+   "device": "A sequence of practical, responsible choices shows that heroism means noticing, persisting, involving safe adults and staying until reunion.",
+   "slots": [
+    "crowded event",
+    "vulnerable lost person",
+    "identifying object or clothing",
+    "written or visible message",
+    "authority figure",
+    "comforting item or story",
+    "returning family"
+   ],
+   "reimagine_hints": [
+    "a railway gala: a girl helps a lost toddler by making a sign and finding station staff",
+    "a beach festival: a boy stays with a lost child and alerts a lifeguard",
+    "a museum night: a child comforts a separated visitor and finds a security officer"
+   ],
+   "simplest_level": 3,
+   "source_level": 6,
+   "source_pages": [
+    "The Lantern Festival had filled the river park with golden light. Hundreds of glowing lanterns drifted above the Li River, and the karst mountains rose like dark peaks behind the city. The girl was watching a paper lantern float upwards when she noticed something terrible. A small boy sat alone on a stone step, clutching a stuffed panda, with tears on his face. The people all around him walked past as if he were invisible. She stopped.",
+    "She crouched down beside the boy and spoke to him in a gentle voice. He was perhaps three years old, and he looked absolutely miserable — his face red, his eyes wide, his small hands gripping the panda. \"Where is your family?\" she asked, but he could only shake his head and sob. It was clear he was not capable of finding them alone. She looked around at the crowds flowing past, and she made a decision: she was responsible for helping him, and it was possible to do it.",
+    "She pulled a small notebook from her jacket pocket and thought for a moment. Then she wrote a careful note in neat, readable handwriting and tore it out. The note said: \"Lost child — dark jacket, green buttons, age 3. He is by the red lantern at the bridge. His family is searching for him. If you have seen them, please come at once.\" She held it up as high as she could. It was a sensible and responsible plan.",
+    "She took the boy's hand and walked towards the busy lantern stalls. An elderly woman selling tangyuan shook her head when she saw the note, but pointed further along the riverbank towards the bridge. A group of young people gathered, read the note and looked around — but nobody recognised the child. Each person was willing, but none were able to help. She did not give up. Giving up was not a reasonable or responsible option.",
+    "Near the entrance of the park, she spotted a security guard in a yellow jacket. She walked straight up to him, held out the note and said clearly, \"This child is lost. He has been here for some time.\" The guard read the note carefully, nodded and spoke into his radio. He asked her to stay in one comfortable spot beside the red lantern at the bridge. She sat with the boy and told him a quiet story about the panda in his arms. He stopped crying and leaned against her shoulder.",
+    "While they waited, she bought the boy a warm roasted sweet potato from a nearby cart. His face changed — from miserable and terrified, to curious, to something almost cheerful. He held the sweet potato in both hands and looked up at her. \"Panda,\" he said, and held the toy out to her. It was an adorable thing to do, and she understood it at once — he was sharing his most valuable possession with her. She held it carefully, and for the first time that evening, he smiled.",
+    "The guard came running back with a woman and a man following close behind. The little boy looked up — and in less than a second, his face went from frightened to overjoyed. \"Mama!\" he cried, and the woman rushed forward and scooped him up, clutching him in an incredible, tearful hug. The man gripped the guard's hand and then looked at the girl with a grateful and disbelieving expression. She stood a little way back, watching the most remarkable reunion she had ever seen, with something warm and steady building inside her.",
+    "The mother turned to the girl, still holding her son tightly. \"You kept him safe,\" she said, and her voice was not quite steady. \"You stayed. You helped.\" She paused for a moment, and then she said something the girl would always remember. \"You are remarkable.\" The girl walked back through the incredible festival, past the glowing lanterns and the karst mountains rising in the dark. She thought about what it meant to be capable, and she thought it was quite simple: when something terrible is visible, a responsible person does not walk past."
+   ]
+  },
+  {
+   "title": "It Looks Suspicious!",
+   "pattern_name": "three temptations convert the skeptic",
+   "spine": [
+    "hero distrusts an unfamiliar meal or experience",
+    "a patient loved one presents one appealing ingredient or feature",
+    "the first complete option is prepared while the hero repeats the refusal",
+    "a second option increases the attractive sights and smells",
+    "a third option makes hunger or curiosity overcome resistance",
+    "hero tries a tiny amount, then eagerly tries more",
+    "a new skeptic arrives and repeats the hero's original words",
+    "the converted hero reassures the newcomer, who tries it too"
+   ],
+   "device": "Three increasingly tempting presentations lead to one tiny trial, then a mirrored second skeptic lets the hero pass on the reassurance.",
+   "slots": [
+    "skeptical hero",
+    "patient cook or guide",
+    "three unfamiliar options",
+    "appealing sensory feature",
+    "new skeptic",
+    "repeated suspicious phrase"
+   ],
+   "reimagine_hints": [
+    "a Korean kitchen: three unfamiliar dishes tempt a cautious child before a younger cousin arrives",
+    "a tropical fruit stall: three strange fruits convert a visitor who then reassures a friend",
+    "a science fair: three odd-looking experiments win over a skeptic who guides a nervous sibling"
+   ],
+   "simplest_level": 2,
+   "source_level": 6,
+   "source_pages": [
+    "Luca stood in Nonna's spacious kitchen and crossed his arms. The morning sun streamed through the open window, and the bright clifftop houses of the Amalfi Coast glowed pink and cream outside. Nonna had set a big glass dish on the tiled bench, and inside it sat something green, something red and something Luca did not trust. \"What is that?\" he asked, taking a cautious step back. \"It looks suspicious.\"",
+    "Nonna just smiled. She was a gracious and patient woman who had fed this cautious boy for all of his visits, and she understood him. She picked up a fat, ripe lemon from the tree outside the door — its skin was bright and luscious. She sliced it open, and a sharp, fresh smell burst into the room. Luca sniffed. \"That smells... not bad,\" he admitted, but he remained cautious.",
+    "Nonna drizzled green oil over the sliced tomatoes and torn basil leaves. Then she grated fresh lemon rind on top and added a pinch of salt. \"This is bruschetta,\" she said. \"It is simple and nutritious.\" Luca peered at the crusty bread stacked on a plate beside the dish. He picked one up and inspected it. \"It looks suspicious,\" he said again. But the smell was delicious — fresh and bright and sharp.",
+    "Next, Nonna filled a big pot with hot water and set it on the stove. She tipped in long strands of fresh pasta and stirred them with a wooden spoon. \"Pasta al limone,\" she announced. \"My mother's precious secret — lemon, cream and a sprinkle of pepper.\" The steam that rose from the pot smelled absolutely delicious, and Luca found himself stepping closer, even though he was still cautious. \"I am not eating that,\" he said, but his feet did not step back.",
+    "Nonna set the last dish on the kitchen table: a small glass cup of pale yellow granita, topped with a thin slice of lemon and a mint leaf. \"Limoncello granita,\" she said. \"Frozen, sweet and scrumptious. This is the most delicious treat on the Amalfi Coast.\" Luca looked at the bruschetta, the pasta and the granita. All three smelled delicious, and he had to admit something: he was not just cautious any more — he was also very, very hungry.",
+    "He reached out — slowly, carefully — and picked up one small piece of bruschetta. He took the tiniest bite. His eyes went wide. It was delicious. He took a bigger bite, and then another. The fresh tomato and lemon burst across his mouth, and the crusty bread was perfect. He tried the pasta next. It was creamy, sharp and absolutely scrumptious. \"Nonna,\" he said, and his voice was thick with feeling, \"this is the most delicious thing I have ever tasted.\"",
+    "The front door clicked open and small feet pattered down the hall. Luca's little sister Sofia ran into the kitchen, her yellow headband bright against her dark curls. She stopped at the table and stared at the granita with a suspicious look on her face. \"What is that?\" she asked, pointing at the frozen treat. \"It looks suspicious!\" Luca grinned. He knew those words — he had said them himself, not long before.",
+    "Luca picked up the glass of granita and held it out to his sister. \"Trust me,\" he said. \"I was suspicious too. But Nonna's cooking is nutritious and delicious — and this is the most precious treat on the whole coast.\" Sofia took a cautious lick. Her face lit up at once. Nonna watched them from the window, the lemon groves glowing golden on the clifftop behind her, and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do."
+   ]
+  },
+  {
+   "title": "The Incredible Bush Walk",
+   "pattern_name": "rushing observer learns patient seeing",
+   "spine": [
+    "a confident hero boasts that speed or ambition makes them the best observer",
+    "a quieter companion moves slowly and notices subtle clues",
+    "the hero criticises the companion for delaying progress",
+    "the companion follows the clue carefully and discovers something rare",
+    "the hero returns, sees the discovery and recognises what rushing missed",
+    "the pair continue at the companion's pace and notice more together",
+    "an adult or public display validates the companion's patient method",
+    "a written or spoken recap confirms the hero's changed respect"
+   ],
+   "device": "Contrasting observation styles let the underestimated slow character make the key discovery, forcing the boastful character to revise what 'capable' means.",
+   "slots": [
+    "natural trail or exploration site",
+    "boastful fast observer",
+    "quiet patient observer",
+    "subtle sound or trace",
+    "rare discovery",
+    "notebook or recording method",
+    "recognising adult"
+   ],
+   "reimagine_hints": [
+    "a mangrove walk: a rushing sister misses a mudskipper heard by her patient brother",
+    "a desert hike: a boastful cousin misses tiny tracks leading to a rare lizard",
+    "a city nature survey: a fast team leader misses a nesting falcon noticed by a quiet sketcher"
+   ],
+   "simplest_level": 3,
+   "source_level": 6,
+   "source_pages": [
+    "Mia was ambitious. She stood at the start of the bush walk trail with her brother Tom and their dad, and looked out at the enormous Blue Mountains stretching before them. The famous blue haze hung over the peaks like a glorious curtain of mist. \"I am going to spot everything first,\" she said. \"I am the most capable one here.\" Tom said nothing. He just opened his small notebook and listened.",
+    "The trail led them through spacious groves of tall gum trees. Mia strode ahead, pointing at everything she saw. \"Look at that gorgeous rosella in the branches!\" she called back. \"And those enormous cliffs are visible from here — they are famous!\" Tom walked behind, slower and more curious. He crouched down beside a fallen log, because under the calls of the birds he could hear something else.",
+    "\"Tom, you are too slow,\" Mia said with a sigh. \"If you keep stopping, it will be impossible to reach the lookout before lunch.\" She was not gracious about it. Tom closed his notebook, but he stood still. The sound came back, deep in the bush — a curious song, mixed with the calls of every other bird on the trail. \"Something is copying them,\" he whispered.",
+    "Tom crept off the trail, cautious and sensible, placing each foot with care. Behind a thick fern, he saw something wondrous — a lyrebird. Its enormous tail feathers fanned out like a gorgeous silver veil. The bird lifted its head and sang the rosella's call, then the call of a bird Tom could not see, then a sound like a creaking branch. It was performing its famous song, copying every creature in the bush. It was the most incredible thing Tom had ever seen. He held his breath and sketched it in his notebook as fast as he could.",
+    "\"Mia!\" Tom whispered. \"Come here — but be flexible and go slowly!\" Mia came back along the trail, looking suspicious. But when she crouched beside Tom and saw the lyrebird, her face changed. \"That is remarkable,\" she breathed. \"I had no idea it was there.\" Then the lyrebird sang the rosella's call — the very bird Mia had shouted about — and she went quiet. She was conscious now that she had rushed past something precious. Being fast did not make her more capable — it just meant she had missed the most valuable thing on the whole walk.",
+    "After the lyrebird slipped back into the bush, they walked on together. This time, Mia let Tom set the pace. He showed her observable things she had never noticed — a notable pattern in the bark of a gum tree, a web of silk strung across the ferns and the delicious smell of eucalyptus oil hanging in the warm air. \"You are admirable at this,\" Mia said, and she meant it. The glorious view from the lookout was even better when they reached it side by side.",
+    "At the visitor centre near the end of the trail, they found a gallery of Aboriginal dot art on the walls — swirling, joyous paintings of the land and its creatures in dots of red, gold and white. Tom held up his notebook and compared his own drawings to the art. \"Your sketches are incredible,\" said Dad, who had been walking comfortably at the back all morning. \"You were responsible and patient, and you heard more than anyone.\" Mia nodded. She was not adventurous in the same way as Tom, but she was learning that his way of seeing was just as remarkable as hers.",
+    "That evening, Tom read from his notebook. \"Dear Journal. Today was an incredible bush walk. The enormous mountains were visible through the famous blue haze. I was cautious and quiet, and I found a precious lyrebird with gorgeous tail feathers performing its marvellous song. Mia missed it at first, but then she came back and we watched it together. It was the most glorious, wondrous moment of the whole day.\" He closed the notebook. Mia smiled. \"You are remarkable, Tom,\" she said."
+   ]
+  }
+ ]
+}
