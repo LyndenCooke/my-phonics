@@ -1251,9 +1251,18 @@ const SCENE_QA_SCHEMA = {
     character_match: { type: "string", description: "For EACH character reference sheet provided after the scene image: describe literally what that character wears IN THE SCENE — head covering (present or absent, and its colour), hairstyle, top garment and its colour, bottom garment and its colour, footwear, any accessories — then compare item by item against their reference sheet. Identity is the WHOLE look: a child who wears a white headscarf and pink tunic on her sheet but appears bare-headed in a yellow dress is a DIFFERENT character, and that is a delivery-blocking fail even when the face matches. If no reference sheets were provided, say 'no references provided'." },
     state_assertions: { type: "string", description: "If STATE ASSERTIONS were provided with this page: go through them ONE BY ONE. For each REQUIRED state, describe what the image actually shows about that object's ownership/count/location and say clearly SATISFIED or NOT SATISFIED — 'the object is visible somewhere' does not satisfy an ownership assertion; the allocation itself must be readable from the picture by a child who cannot read. For each FORBIDDEN state, say whether the image shows it. If no assertions were provided, say 'none provided'." },
     pass: { type: "boolean" },
+    // COST DISCIPLINE (Lynden 2026-08-21): a failed page is regenerated from
+    // scratch and re-judged, so it costs 4-6x a clean one. That is worth
+    // paying when the picture does not show the story - and pure waste for a
+    // detail no parent would notice. Say which this is.
+    severity: {
+      type: "string",
+      enum: ["blocking", "minor"],
+      description: "blocking = a child could not follow the story from this picture: the sentence's action is absent or shown at the wrong moment, a named object is missing, a forbidden state is shown, a character is wearing the wrong clothes or is the wrong person, or something is drawn impossibly. minor = a real but cosmetic imperfection: a slightly off proportion, a background detail, a count that does not carry the story's meaning, an artistic simplification. If pass is true, use minor.",
+    },
     reason: { type: "string", description: "If failing: the specific, narrow thing to fix — never just 'regenerate the page'." },
   },
-  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "distinguishing_feature", "character_match", "state_assertions", "defect_sweep", "pass", "reason"],
+  required: ["named_objects", "action_shown", "object_states", "mechanism_legible", "distinguishing_feature", "character_match", "state_assertions", "defect_sweep", "pass", "severity", "reason"],
   additionalProperties: false,
 };
 

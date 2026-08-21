@@ -894,7 +894,10 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
       if (pageText) {
         const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
         cost += check.cost;
-        if (!check.data.pass) {
+        // Only a BLOCKING fault is worth a regeneration: a failed page costs
+      // 4-6x a clean one, and paying that for a cosmetic note is waste
+      // (Lynden 2026-08-21). Minor faults ride along as recorded notes.
+      if (!check.data.pass && check.data.severity !== "minor") {
           // The repair turn chains onto the FAILED turn so the model edits
           // its own picture rather than starting over — the same multi-turn
           // edit flow the Responses API is built for.

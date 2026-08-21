@@ -726,7 +726,7 @@ async function stepScene(book, job, i) {
   // its own bad picture), and if the action still is not visible the book
   // fails resumably at this scene instead of delivering a page whose central
   // action happens off-camera.
-  if (s.qa?.consistency && !s.qa.consistency.pass) {
+  if (s.qa?.consistency && !s.qa.consistency.pass && s.qa.consistency.severity !== "minor") {
     console.warn(`[forge] page ${i + 1} consistency QA failed after repair — regenerating from scratch: ${s.qa.consistency.reason}`);
     job.cost += s.cost; job.breakdown.images_usd += s.cost;
     job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — regenerated" });
