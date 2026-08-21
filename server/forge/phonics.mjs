@@ -230,3 +230,49 @@ export function greenWordsUpTo(level) {
   }
   return greenWordsCache.filter((w) => w.level <= level).map((w) => w.word);
 }
+
+// DETERMINISTIC DECODABILITY (Lynden 2026-08-21: the LLM phonics gate cost
+// real money to answer a question arithmetic can answer). Mirrors
+// v2_helpers.decode_problem on the Python side, which is the gate that fails
+// the PDF build - keeping both in step means the machine catches upstream
+// what the renderer would refuse downstream.
+const DOUBLED = new Set(["bb", "cc", "dd", "ff", "gg", "ll", "mm", "nn", "pp", "rr", "ss", "tt", "zz"]);
+const DISHONEST = {
+  listen: "silent t", listened: "silent t", castle: "silent t", whistle: "silent t",
+  fasten: "silent t", answer: "silent w",
+  wash: "the a after w says /o/", want: "the a after w says /o/", wanted: "the a after w says /o/",
+  watch: "the a after w says /o/", water: "the a after w says /o/",
+  basket: "unstressed e", pocket: "unstressed e", rocket: "unstressed e", carpet: "unstressed e",
+  market: "unstressed e", tomato: "unstressed vowels", potato: "unstressed o", banana: "unstressed a",
+  animal: "unstressed a", family: "unstressed i", biscuit: "ui says /i/", asked: "said askt",
+};
+const PEOPLE = new Set(["mum", "mummy", "dad", "daddy", "nan", "nana", "nani", "gran", "grandma", "grandad", "auntie", "uncle"]);
+
+export function decodeProblems(words, level, { heroName = "", allowPeople = true } = {}) {
+  const lv = getLevel(level);
+  if (!lv) return [];
+  const tricky = new Set(lv.trickyWords.map((w) => w.toLowerCase()));
+  const graphemes = [...new Set(lv.cumulative)].filter((g) => !g.includes("-")).sort((a, b) => b.length - a.length);
+  const out = [];
+  for (const raw of words || []) {
+    const w = String(raw || "").toLowerCase().replace(/[^a-z']/g, "");
+    if (!w || tricky.has(w) || w === String(heroName).toLowerCase()) continue;
+    if (!allowPeople && PEOPLE.has(w)) { out.push(`"${raw}" is a person, not a word to practise`); continue; }
+    if (PEOPLE.has(w)) continue;
+    if (DISHONEST[w]) { out.push(`"${raw}" is not honestly decodable: ${DISHONEST[w]}`); continue; }
+    for (const pair of ["kn", "wr", "mb", "gn", "tch", "dge"]) {
+      if (w.includes(pair) && !graphemes.includes(pair)) { out.push(`"${raw}" contains "${pair}", not taught at Level ${level}`); break; }
+    }
+    let rest = w, guard = 30, bad = null;
+    while (rest && guard--) {
+      const hit = graphemes.find((g) => rest.startsWith(g));
+      if (hit) { rest = rest.slice(hit.length); continue; }
+      const dbl = rest.slice(0, 2);
+      if (DOUBLED.has(dbl)) { rest = rest.slice(2); continue; }
+      if (rest.length > 2 && rest.endsWith("ed")) { rest = rest.slice(0, -2); continue; }
+      bad = rest[0]; break;
+    }
+    if (bad) out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`);
+  }
+  return [...new Set(out)];
+}

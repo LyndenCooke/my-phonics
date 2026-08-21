@@ -21,7 +21,7 @@ import fs from "node:fs";
 import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
@@ -121,7 +121,13 @@ function newJob(book) {
 function nextStepOf(job) {
   if (!job.story) return "story";
   if (!job.qaDone) return "qa";
-  if (!job.plausibilityDone) return "plausibility";
+  // The plausibility gate was a SECOND paid read of the same 60-word story,
+  // costing $0.41 on a book whose whole text was $1.83 (Lynden 2026-08-21:
+  // "how are we spending so much on the story itself"). Its duties moved into
+  // the story gate, which already reads the manuscript and already owns the
+  // edit-request loop. Left here as a no-op flag so resumed jobs written by
+  // the old machine still advance.
+  if (!job.plausibilityDone) { job.plausibilityDone = true; }
   // STORY GATE BEFORE ANY IMAGE (Lynden 2026-08-14): "Yusuf and the Star
   // Tin" was double-rejected for story thinness with 16 finished paid
   // illustrations. Both rejections were visible in the text alone, so the
@@ -268,9 +274,28 @@ async function stepQa(book, job) {
 
   // A couple of slightly-above-level words are FINE — book_v2 previews them
   // as Future Sounds. Only rewrite when violations pile up (>3 distinct).
-  const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
-  job.cost += review.cost; job.breakdown.story_usd += review.cost;
-  let validation = review.data;
+  // DETERMINISTIC FIRST (Lynden 2026-08-21). Whether a word is buildable from
+  // the taught graphemes is arithmetic, not judgement, and paying a reasoning
+  // model to answer it is waste. The LLM gate now runs ONLY when the cheap
+  // check finds something, or as a spot-check it cannot do (sound choice).
+  const words = [story.title, ...story.pages.map((p) => p.text), ...(story.read_words || [])]
+    .join(" ").toLowerCase().match(/[a-z']+/g) || [];
+  const deterministic = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
+  const practiceProblems = decodeProblems(story.read_words || [], book.level, { heroName: child.name, allowPeople: false });
+  const cheapFindings = [...deterministic, ...practiceProblems];
+  let validation = { ok: true, violations: [], focus_sound_count: 0 };
+  if (cheapFindings.length) {
+    const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
+    job.cost += review.cost; job.breakdown.story_usd += review.cost;
+    validation = review.data;
+  } else {
+    console.log("[forge] phonics: deterministic check clean - skipping the paid gate");
+  }
+  validation.violations = [
+    ...(validation.violations || []),
+    ...cheapFindings.map((reason) => ({ word: "", page: 0, reason })),
+  ];
+  if (cheapFindings.length) validation.ok = false;
 
   // Deterministic check the model gate above cannot do: it verifies "oo" is
   // a taught GRAPHEME, not that a specific word uses a sound this level has
