@@ -613,6 +613,14 @@ export const STORY_SHAPES = [
 ];
 
 export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [], source = null }) {
+  // HAND THE WRITER THE ACTUAL WORDS (Lynden 2026-08-21). At Level 1 the child
+  // has ten letters, and asking a model to derive every "s" word from them in
+  // its head produced books about tapping tins. The bank is already computed;
+  // filtering it costs nothing and turns a memory task into a choice.
+  const fg = String(focusSound || "").toLowerCase().replace("-", "");
+  const focusBank = (greenWords || [])
+    .filter((w) => String(w).toLowerCase().includes(fg))
+    .slice(0, 60);
   const system = `You are the senior story writer for MyPhonicsBooks: British decodable picture books (Letters and Sounds based, NOT Read Write Inc) for children aged 4-8. British English throughout (colour, mum, favourite).
 
 === 1. THE BOOKS YOU ARE WRITING (read these first) ===
@@ -688,12 +696,19 @@ A QUIET MORAL a parent would want - effort pays off, patience, honesty, kindness
 - Every word decodable using ONLY these graphemes: ${JSON.stringify(level.cumulative)}
 - ...or one of these tricky words: ${JSON.stringify(level.trickyWords)}
 - Word bank to draw from freely; you may also build other words from the taught graphemes: ${JSON.stringify(greenWords)}
+${focusBank.length ? `- EVERY WORD IN THE BANK THAT CARRIES "${focusSound}" - these are your focus words, pick from here first rather than inventing: ${JSON.stringify(focusBank)}` : ""}
 - "${child.name}" is allowed, but SPEND IT CAREFULLY: sounded out honestly a name usually is not decodable at all ("Tomasz" is t-o-m-a-s-z), so the book teaches it as a tricky word on the Story Words page. Name the hero in the FIRST sentence, then use he/she/they and let the pictures carry who it is. AT MOST ONE use of the name per page after page 1, and never twice in the same sentence - a book that said "Tomasz" eight times in seventy-nine words read like a robot and made the child decode an undecodable word eight times. No other proper nouns unless fully decodable.
 - HONEST SOUNDS: a word only counts as decodable if saying its taught letter-sounds actually produces the word children say. "wash" sounds out to rhyme with cash but is said 'wosh'; "basket" is said 'baskit'; "listened" has a silent t. Words like these are NOT decodable however regular they look.
 - THE TITLE OBEYS EVERY RULE IN THIS SECTION, and should carry the focus sound wherever it can do so naturally - it is the first thing the child decodes.
-- Use "${focusSound}" in THREE OR FOUR different words across the whole book. Three is the floor; more than four is a warning sign, not a better book.
+${level.level <= 2 ? `- AT THIS LEVEL THE SOUND LEADS AND REPETITION IS THE FORM. A Level 1-2 book is a DITTY, not a plot: the child has ten letters and can only read a handful of words, so the pleasure is hearing "${focusSound}" again and again and finding they can read the next line because it is almost the last one. Use "${focusSound}" in AS MANY words as the word bank honestly allows - five, six, eight uses is right, not three - and repeat a SENTENCE FRAME with ONE word changed each time ("I sit. I sit on the mat. I sip. I sip it up."). The anti-word-hunting rule below does NOT apply here: there is no plot to bend, and drilling the sound IS the pedagogy. Keep every sentence 3-5 words and end each with a full stop.
+THIS IS THE FORM, and it is what the publisher asked for (2026-08-21):
+  I sit. I sit on it.
+  I sip. I sip it up.
+  I sat on a mat. I sat on a pot.
+  I sip. I stop.
+Notice: the SAME frame comes round again with ONE word changed, so a child who decoded the first line can read the next almost free; nearly every content word carries the sound; and the whole book uses about a dozen different words in total. Aim for that. At least FOUR of your ${pagesCount} pages must reuse a frame already used, and at least half your content words should contain "${focusSound}". THE WORD THAT CHANGES MUST CARRY THE SOUND wherever the bank allows: in a book for "s" the verbs and the things are sit, sip, sat, sad, spin, spot, stop, snap, sand - so write "I sip. I sit. I stop." and not "It taps on a tin", which is a fine sentence carrying none of the sound the book exists to teach. The chosen pattern gives you the SHAPE; the focus sound chooses the WORDS inside it, and the sound wins every time they disagree.` : `- Use "${focusSound}" in THREE OR FOUR different words across the whole book.`} Three is the floor; more than four is a warning sign, not a better book.
 - NEVER GO WORD-HUNTING. Nothing may exist in this story ONLY because its name contains the sound. A book about waiting for a coach put GOATS at the bus stop and coats in the dust; a walk home added a GOAT in the road, a GROAN and a STONE step - one focus word every nine words, and the story bent itself around a spelling pattern instead of the other way round (Lynden 2026-08-21: "these stories are crap because the writer tried to put too many words with the sound in"). Ask of every focus word: would this thing be here if the sound were different? If not, cut it.
-- DENSITY: at most ONE focus word in any sentence, and never two sentences running that both carry one. The story text is only ONE of the places this book teaches the sound - the title, the Story Words page with its sound buttons, the Sound Spotlight page and the alien words all carry it too. The text does not have to do that work alone, and a story that tries reads like a word list.
+- DENSITY (Level 3 and above only): at most ONE focus word in any sentence, and never two sentences running that both carry one. The story text is only ONE of the places this book teaches the sound - the title, the Story Words page with its sound buttons, the Sound Spotlight page and the alien words all carry it too. The text does not have to do that work alone, and a story that tries reads like a word list.
 ${pronunciations.length > 1 ? `- "${focusSound}" HAS MORE THAN ONE SOUND: ${pronunciations.map((p) => `${p.sound} as in ${p.examples.slice(0, 2).join(", ")}`).join("; ")}. The book must show BOTH so the child learns to try both and pick the one that makes a real word - never teach half a grapheme - and never use a sound this level has not unlocked.` : ""}
 - A word needing a sound a level or two above may be used SPARINGLY (one or two in the whole book); the book auto-previews them as Future Sounds. Never more than that.
 - At Level 4+, -ed on verbs is a deliberately TAUGHT exception (the prep page teaches its three pronunciations), so past-tense narration is normal and -ed never counts against the above-level allowance. Below Level 4, prefer wording that avoids -ed where a natural alternative exists.
