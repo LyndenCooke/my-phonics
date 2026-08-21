@@ -655,7 +655,13 @@ def _tricky_breakdowns(words):
         e = table.get(w) or lower.get(str(w).lower())
         if e:
             out.append({"word": w, "parts": e.get("parts") or [w],
-                        "tricky": e.get("tricky", ""), "says": e.get("says", "")})
+                        "tricky": e.get("tricky", ""), "says": e.get("says", ""),
+                        # The spoken form, arrowed (Lynden 2026-08-21).  It used
+                        # to be buried in the `says` prose ("...- say 'wor-ter'")
+                        # on 38 of 97 words and absent on the other 59, so most
+                        # rows named the misbehaving letter without ever telling
+                        # the grown-up what the word actually sounds like.
+                        "say": e.get("say", "")})
     return out
 
 

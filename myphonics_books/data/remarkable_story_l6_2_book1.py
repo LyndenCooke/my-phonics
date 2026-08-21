@@ -404,11 +404,26 @@ REMARKABLE_STORY_BOOK1 = {
                 # what varies, not every word in the story.  Kept: the plain
                 # case (remarkable) and the one that drops a syllable
                 # (miserable), plus the three genuine one-offs.
+                # OPENING SENTENCE REWRITTEN 2026-08-21 (Lynden).  It used to
+                # read "These story words don't follow the normal sound rules",
+                # which declared the words irregular and then stated the
+                # perfectly regular rule they follow.  Worse, 'predictable' is
+                # a Story Word two boxes above, sound-buttoned for blending —
+                # same ending, same shape — so page 3 buttoned one -able word
+                # for the child and told the grown-up the next one broke the
+                # rules.  'remarkable' is fully decodable (r-e-m-ar-k-able);
+                # nothing in it is untaught.  What is actually hard is the
+                # STRESS (ri-MARK-uh-bul, not REM-ark-uh-bul) — and that is
+                # what the box now says.  Every other Watch Out box in the
+                # fleet is for genuinely untaught spellings (tangyuan, the
+                # Australian nature words); 8.2 was the only one claiming
+                # irregularity, and the only one where the claim was false.
                 "body": (
-                    "These story words don't follow the normal sound rules.  "
-                    "The ending -able always says 'uh-bul', however long the "
-                    "word looks.  Say each one once before reading so your "
-                    "child hears the real word."
+                    "Long -able words put the stress in a surprising place, so "
+                    "they sound different from how they look.  The ending "
+                    "-able always says 'uh-bul', however long the word looks.  "
+                    "Say each one once before reading so your child hears the "
+                    "real word."
                 ),
                 "examples": [
                     "remarkable → ri-MARK-uh-bul",

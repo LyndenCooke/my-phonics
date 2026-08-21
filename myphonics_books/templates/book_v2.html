@@ -478,6 +478,43 @@
     .sw-part { border-bottom: 0.4mm solid #cbb7e8; padding: 0 0.5mm; }
     .sw-dot { color: #b9a4d8; padding: 0 0.4mm; }
     .sw-tricky-how-note { color: #555; }
+    /* The spoken form, arrowed to the right edge (Lynden 2026-08-21).  Naming
+       the misbehaving letter is only half the job — the grown-up still has to
+       know what comes out of their mouth, so every row now ends in one.
+       Right-aligned rather than inline so the answers form a scannable column
+       whatever length the explanation runs to. */
+    .sw-tricky-how-say {
+      margin-left: auto; white-space: nowrap;
+      font-weight: 700; color: #7c3aed;
+    }
+    /* 5.4 carries NINE tricky words on a page that also runs the -ed guide and
+       a Watch Out box.  At the standard 9pt the how-rows pushed the Watch Out
+       box 8.5pt past the trim and it printed cut in half.  Only 5.4 is over —
+       every other tricky page has slack — so the squeeze is triggered by row
+       count rather than applied to all books, which would shrink 4-row pages
+       for no reason.  Measured saving ~18pt against 8.5pt needed. */
+    /* 8+ rows squeeze rather than reflow.  Two columns were tried and are
+       WORSE: at half width every note wraps to a second line, so five double
+       rows out-measure nine single ones (611.8pt vs 595.3pt on 5.4).  Do not
+       "improve" this into a grid. */
+    .sw-tricky-how-tight { gap: 0.45mm; margin-top: 1.2mm; }
+    .sw-tricky-how-tight .sw-tricky-how-row { font-size: 7.9pt; line-height: 1.15; }
+    /* The chips repeat words the rows below already name, so on an 8+ page they
+       give up size before the explanations do. */
+    /* NOT :has() — the Chromium that renders these PDFs ignores it, so the
+       rule silently did nothing and the page still clipped.  Plain class. */
+    /* Both selectors on purpose: the .sw-inner.has-ed compaction block further
+       up is 3 classes deep, so a bare .sw-tricky-strip-tight rule loses to it
+       on specificity and silently does nothing on exactly the -ed books that
+       need it most (5.4 is both). */
+    .sw-tricky-strip-tight,
+    .sw-inner.has-ed .sw-tricky-strip-tight { margin-top: 2mm; padding: 2mm 4mm; }
+    .sw-tricky-strip-tight .sw-tricky-label,
+    .sw-inner.has-ed .sw-tricky-strip-tight .sw-tricky-label { margin-bottom: 1.4mm; }
+    .sw-tricky-strip-tight .sw-tricky-words,
+    .sw-inner.has-ed .sw-tricky-strip-tight .sw-tricky-words { gap: 1.8mm; }
+    .sw-tricky-strip-tight .sw-tricky-word,
+    .sw-inner.has-ed .sw-tricky-strip-tight .sw-tricky-word { font-size: 11pt; padding: 0.6mm 3mm; }
     .sw-tricky-word {
       font-size: 15pt; font-weight: 600; color: #2a2240;
       background: #ffffff;
@@ -2974,7 +3011,7 @@
          word the child cannot yet build. Custom books only (profile set) -
          fleet books choose decodable names on purpose. #}
       {% if tricky_words or (profile and profile.name) %}
-      <div class="sw-tricky-strip">
+      <div class="sw-tricky-strip{% if (tricky_breakdowns | length) >= 8 %} sw-tricky-strip-tight{% endif %}">
         <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
         <div class="sw-tricky-words">
           {% if profile and profile.name %}<span class="sw-tricky-word">{{ profile.name }}</span>{% endif %}
@@ -2984,7 +3021,7 @@
            tells the grown-up nothing. Each word is split the way you say it,
            with the misbehaving part named and what it actually says. #}
         {% if tricky_breakdowns or (profile and profile.name_breakdown) %}
-        <div class="sw-tricky-how">
+        <div class="sw-tricky-how{% if (tricky_breakdowns | length) >= 8 %} sw-tricky-how-tight{% endif %}">
           {% if profile and profile.name_breakdown %}
           <div class="sw-tricky-how-row">
             <span class="sw-tricky-how-word">{{ profile.name }}</span>
@@ -2997,6 +3034,7 @@
             <span class="sw-tricky-how-word">{{ b.word }}</span>
             <span class="sw-tricky-how-parts">{% for p in b.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
             <span class="sw-tricky-how-note">{% if b.tricky %}<strong>{{ b.tricky }}</strong> says {% endif %}{{ b.says }}</span>
+            {% if b.say %}<span class="sw-tricky-how-say">&rarr; {{ b.say }}</span>{% endif %}
           </div>
           {% endfor %}
         </div>
