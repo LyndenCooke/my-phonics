@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, polishStoryAloud, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, restoreCreditForBook } from "./db.mjs";
@@ -260,10 +260,39 @@ async function stepStory(book, job) {
     shape,
     exemplars: coreStoriesFor(book.level),
   });
+  job.cost += cost; job.breakdown.story_usd += cost;
+
+  // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
+  // then verified for free: if the prettier wording smuggled in a word this
+  // level cannot decode, we keep the original line. A polish that breaks the
+  // phonics contract is not a polish (Lynden 2026-08-21).
+  try {
+    const polish = await polishStoryAloud({ story, level, childName: child.name, focusSound: book.focus_sound });
+    job.cost += polish.cost || 0; job.breakdown.story_usd += polish.cost || 0;
+    const pages = polish.data?.pages || [];
+    if (pages.length === story.pages.length) {
+      let kept = 0;
+      story.pages = story.pages.map((p, i) => {
+        const next = fixMechanics(String(pages[i] || "").trim(), child.name);
+        if (!next || next === p.text) return p;
+        const words = (next.toLowerCase().match(/[a-z']+/g) || []);
+        const bad = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
+        if (bad.length) return p; // prettier but not decodable - keep the original
+        kept++;
+        return { ...p, text: next };
+      });
+      const t = String(polish.data?.title || "").trim();
+      if (t && !decodeProblems(t.toLowerCase().match(/[a-z']+/g) || [], book.level, { heroName: child.name }).length) story.title = t;
+      job.breakdown.read_aloud_pass = { changed: polish.data?.changed, lines_improved: kept };
+      console.log(`[forge] read-aloud pass improved ${kept} line(s): ${String(polish.data?.changed).slice(0, 120)}`);
+    }
+  } catch (e) {
+    console.warn("[forge] read-aloud pass unavailable:", e.message);
+  }
+
   job.story = story;
   job.breakdown.story_shape = shape.name;
   job.breakdown.shape_fulfilment = story.shape_fulfilment;
-  job.cost += cost; job.breakdown.story_usd += cost;
 }
 
 async function stepQa(book, job) {

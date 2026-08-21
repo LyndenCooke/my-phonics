@@ -760,6 +760,41 @@ const REVIEW_SCHEMA = {
   additionalProperties: false,
 };
 
+// READ IT ALOUD (Lynden 2026-08-21: "why can't the writer write a good story
+// without the judge"). It could - we stopped letting it. The writer's brief is
+// 5,000 words carrying 64 prohibitions and four mentions of the exemplars, so
+// the model spends itself on compliance and hands back sentences that are
+// legal rather than warm ("A chip is on the lid"). This pass gives the SAME
+// model the thing it never gets: the finished story, a short craft brief, and
+// permission to care only about how it sounds. It is small input and small
+// output, so it costs pennies - a fraction of one judging pass - and it fixes
+// the class of fault the expensive gates kept catching after the fact.
+export async function polishStoryAloud({ story, level, childName, focusSound }) {
+  const system =
+    "You are a much-loved children's author reading your own manuscript aloud to a five-year-old sitting on your lap. Your ONLY job is how it SOUNDS. " +
+    "Fix every line that reads like a caption, a label, a stage direction or an exercise. In particular, existential and inverted shapes are never how we speak: " +
+    "\"A chip is on the lid\" is \"The lid has a chip\"; \"Tomasz sets his red box with the rest\" is \"Tomasz puts his box beside the others\". " +
+    "Prefer subject-verb-object, warm and plain. Let the child sound like a child. Keep contractions out (early readers meet them later), keep sentences short. " +
+    "HARD LIMITS, because this is a decodable book: you may ONLY use words already in the story, or words built from these graphemes: " + JSON.stringify(level.cumulative) + ", or these tricky words: " + JSON.stringify(level.trickyWords) + ". The name \"" + childName + "\" is always allowed. " +
+    "Do NOT change what happens, do not add or remove pages, do not introduce a new object or character, and do not lose the focus sound \"" + focusSound + "\". If a line is already natural, return it UNCHANGED - most lines usually are. " +
+    "Return every page in order with its scene brief untouched.";
+  const content =
+    "Read this aloud and fix only what sounds wrong:" + String.fromCharCode(10, 10) +
+    story.pages.map((p, i) => `Page ${i + 1}: ${p.text}`).join(String.fromCharCode(10)) +
+    String.fromCharCode(10, 10) + `Title: "${story.title}"`;
+  const schema = {
+    type: "object",
+    properties: {
+      changed: { type: "string", description: "One line naming which pages you changed and why they sounded wrong, or 'nothing needed changing'." },
+      title: { type: "string" },
+      pages: { type: "array", items: { type: "string", description: "The page text, fixed or unchanged." } },
+    },
+    required: ["changed", "title", "pages"],
+    additionalProperties: false,
+  };
+  return callJson({ system, content, schema, tier: "story", maxTokens: 3000 });
+}
+
 export async function reviewStory({ level, story, focusSound, childName }) {
   const system = `You are the phonics QA gate for MyPhonicsBooks. You verify decodability.
 
