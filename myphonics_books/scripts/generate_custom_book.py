@@ -294,7 +294,14 @@ def assert_decodable(spec: dict) -> None:
         words = [w for w in words if w and w.lower() not in tricky and w.lower() != name]
         return [f"{where}: {r}" for r in decode_problems(words, cumulative)]
 
-    problems = _check(spec.get("read_words") or [], "practice word")
+    # PRACTICE WORDS MUST BE PRACTICE, NOT PEOPLE. A shipped book listed
+    # "amara" and "dad" among its six Story Words - the child's own name and a
+    # family label are not decoding practice, and they crowd out real words
+    # from the story (Lynden 2026-08-21).
+    people = {name, "mum", "mummy", "dad", "daddy", "nan", "nana", "nani", "gran", "grandma", "grandad", "auntie", "uncle"}
+    named = [w for w in (spec.get("read_words") or []) if w and w.lower() in people]
+    problems = [f"practice word: \"{w}\" is a person, not a word to practise" for w in named]
+    problems += _check(spec.get("read_words") or [], "practice word")
     problems += _check(spec.get("story_words") or [], "story word")
     problems += _check(re.findall(r"[A-Za-z']+", spec.get("book_title") or ""), "TITLE")
     if problems:

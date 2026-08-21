@@ -804,10 +804,38 @@ async function stepCover(book, job) {
   // looking at stays in frame (a hard-third crop once cut the story object
   // out entirely).
   const cw = Math.min(meta.width, Math.round(meta.height * 3 / 4));
-  const left = Math.round((meta.width - cw) * 0.5);
+  // CENTRE THE CROP ON THE HERO, not on the frame. A fixed centre crop cut
+  // the hero in half at the left edge on the first book to use this path
+  // (Amara, 2026-08-21). findFaces already exists and costs about a penny;
+  // the biggest face is the hero at this scale, and a cover whose child is
+  // clipped is not a cover.
+  let centre = 0.5;
+  try {
+    const { findFaces } = await import("./claude.mjs");
+    const f = await findFaces(srcBuf.toString("base64"));
+    job.cost += f.cost || 0; job.breakdown.story_usd += f.cost || 0;
+    const faces = (f.data?.faces || []).filter((x) => x.w > 0 && x.h > 0);
+    if (faces.length) {
+      // The BIGGEST face is usually the adult (they are nearer the camera and
+      // simply larger) - the cover must centre on the CHILD, so prefer a face
+      // labelled with the hero's name or as a child, and only fall back to size.
+      const heroName = String(book.child_name || "").toLowerCase();
+      const isHero = (f) => {
+        const who = String(f.who || "").toLowerCase();
+        return (heroName && who.includes(heroName)) || /(girl|boy|child|kid)/.test(who);
+      };
+      const pick = faces.filter(isHero).sort((a, b) => (b.w * b.h) - (a.w * a.h))[0]
+        || faces.sort((a, b) => (b.w * b.h) - (a.w * a.h))[0];
+      centre = Math.min(0.98, Math.max(0.02, pick.x + pick.w / 2));
+    }
+  } catch (e) {
+    console.warn("[forge] cover face-find unavailable, centring crop:", e.message);
+  }
+  // Place the window so the hero sits at its centre, clamped inside the image.
+  const left = Math.max(0, Math.min(meta.width - cw, Math.round(centre * meta.width - cw / 2)));
   const buf = await sharp(srcBuf).extract({ left, top: 0, width: cw, height: meta.height }).jpeg({ quality: 92 }).toBuffer();
   job.coverUrl = await saveImage(book.id, "cover.jpg", buf);
-  job.breakdown.cover_source = { page: idx + 1, method: "crop of story page (no generation)" };
+  job.breakdown.cover_source = { page: idx + 1, method: "crop of story page (no generation)", heroCentre: Number(centre.toFixed(3)) };
 }
 async function stepCountry(book, job) {
   try {

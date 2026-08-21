@@ -384,6 +384,15 @@ DISHONEST_DECODE = {
     "carpet": "the e is unstressed",
     "target": "the e is unstressed",
     "biscuit": "the ui says /i/",
+    # schwa-heavy everyday words: the unstressed vowel is not the letter's sound
+    "tomato": "the first o and the a are unstressed - it sounds like 'tuh-mah-toh'",
+    "potato": "the first o is unstressed",
+    "banana": "the first and last a are unstressed",
+    "market": "the e is unstressed - it sounds like 'markit'",
+    "pocketed": "the e is unstressed",
+    "animal": "the second a is unstressed",
+    "family": "the i is unstressed",
+    "asked": "said 'askt' - the -ed is not a beat here",
 }
 
 
