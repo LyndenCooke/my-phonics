@@ -891,6 +891,24 @@ async function stepReview(book, job) {
   const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
   job.cost += cost || 0;
   job.breakdown.editor_review = review;
+  // GATE MANIFEST: record that this gate ran AND that it answered its two
+  // real-world lenses. A rubric field the model leaves empty is a gate that
+  // did not really run, and until now nothing noticed (Lynden 2026-08-21).
+  job.gates = job.gates || {};
+  job.gates.cold_editor = {
+    ran: true,
+    teaching_truth: (review.teaching_truth || "").slice(0, 400) || "MISSING",
+    image_physics: (review.image_physics || "").slice(0, 400) || "MISSING",
+    issues: (review.issues || []).length,
+  };
+  if (!review.teaching_truth || !review.image_physics) {
+    console.warn("[forge] cold editor skipped a real-world lens - treating as a blocking issue");
+    review.issues = [...(review.issues || []), {
+      severity: "major",
+      area: !review.teaching_truth ? "teaching-truth" : "image-physics",
+      detail: "The final gate did not answer this lens, so the book was never checked against the real world.",
+    }];
+  }
 
   // Pass/fail is DERIVED from issue severities, never from the model's
   // separately generated boolean (on 2026-08-14 a book was killed by a review
@@ -923,6 +941,37 @@ async function stepReview(book, job) {
     // text-only story gate again BEFORE any scene regenerates.
     job.editorRetryUsed = true;
     job.breakdown.editor_review_first = review;
+
+    // TARGETED REPAIR BEFORE FULL REWRITE (Lynden 2026-08-21). A rejection
+    // used to rewrite the story and REPAINT EVERY PAGE plus the cover: on the
+    // first website book that was ~$1.30 of the $3.48 spent re-drawing six
+    // pages nobody had complained about. If every blocking issue is page-local
+    // (a picture problem, not a story problem) the fix is to redraw only the
+    // named pages with the editor's own words as the correction note - which
+    // is exactly what repairBook already did for humans, and what this path
+    // never called. A story-level fault still gets the full rewrite.
+    const PAGE_LOCAL = new Set(["image-text", "action", "physics", "image-physics", "object-identity", "print"]);
+    const pageOf = (i) => {
+      const m = String(i.detail || "").match(/pages?\s+(\d+)/i);
+      return m ? Number(m[1]) : null;
+    };
+    const allPageLocal = verdict.blocking.every((i) => PAGE_LOCAL.has(String(i.area || "").toLowerCase()) && pageOf(i));
+    if (allPageLocal) {
+      const notes = {};
+      for (const i of verdict.blocking) {
+        const n = pageOf(i);
+        notes[n] = notes[n] ? `${notes[n]} ${i.detail}` : i.detail;
+      }
+      job.repairNotes = { ...(job.repairNotes || {}), ...notes };
+      for (const n of Object.keys(notes).map(Number).sort((a, b) => a - b)) {
+        if (n >= 1 && n <= job.sceneUrls.length) await stepScene(book, job, n - 1);
+      }
+      job.breakdown.editor_targeted_repair = notes;
+      job.reviewDone = false; // the mended book re-earns its verdict
+      console.warn(`[forge] editor gate: repairing only page(s) ${Object.keys(notes).join(", ")} instead of repainting the book`);
+      return;
+    }
+
     const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise");
     const child = childOf(book);
     const pagesCount = storyPagesFor(book.level);

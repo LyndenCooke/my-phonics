@@ -225,6 +225,51 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     return book_data
 
 
+def _dhash(path: Path, size: int = 8) -> int:
+    """64-bit difference hash - tiny, dependency-free, robust to recompression."""
+    im = Image.open(path).convert("L").resize((size + 1, size), Image.LANCZOS)
+    try:
+        px = list(im.get_flattened_data())  # Pillow >= 11
+    except AttributeError:
+        px = list(im.getdata())
+    bits = 0
+    for row in range(size):
+        for col in range(size):
+            left = px[row * (size + 1) + col]
+            right = px[row * (size + 1) + col + 1]
+            bits = (bits << 1) | (1 if left > right else 0)
+    return bits
+
+
+def assert_pages_distinct(spec: dict, images_dir: Path, max_same: int = 6) -> list:
+    """Near-duplicate page images are a recurring, expensive defect.
+
+    Two books in a row shipped with pages a child could not tell apart: six
+    identical wide two-shots (Zaid), then a take-off and a landing drawn from
+    the same angle with the same pose (Hana). It makes "Put the Story in Order"
+    unsolvable and reads as machine output. A perceptual hash catches it for
+    free, before anyone spends a review on it (Lynden 2026-08-21).
+    """
+    n = len(spec.get("story_pages") or [])
+    hashes = {}
+    for i in range(1, n + 1):
+        for ext in ("jpg", "png"):
+            f = images_dir / f"page{i}.{ext}"
+            if f.exists():
+                hashes[i] = _dhash(f)
+                break
+    warnings = []
+    pages = sorted(hashes)
+    for a_i, a in enumerate(pages):
+        for b in pages[a_i + 1:]:
+            dist = bin(hashes[a] ^ hashes[b]).count("1")
+            if dist <= max_same:
+                warnings.append(
+                    f"pages {a} and {b} are near-identical images (hash distance {dist}) "
+                    "- a child cannot sequence them apart")
+    return warnings
+
+
 def assert_decodable(spec: dict) -> None:
     """Hard gate: nothing that lies about decoding may reach a printed page.
 
@@ -264,6 +309,7 @@ def main() -> None:
     images_dir = Path(spec["images_dir"])
 
     assert_decodable(spec)
+    gate_notes = assert_pages_distinct(spec, images_dir)
     book_data = build_custom_book_data(spec, images_dir)
 
     html = render_book_html(book_data)
@@ -298,6 +344,25 @@ def main() -> None:
         print(f"print master: {master}")
         print(f"cover file:   {pdir / 'cover.pdf'}")
         print(f"text file:    {pdir / 'text.pdf'} ({info['interior']}pp of {info['total']})")
+
+    # SHIP REPORT (Lynden 2026-08-21): every gate that ran, and what it said.
+    # A gate that silently did not run is the worst failure mode we have hit,
+    # so absence has to be visible rather than assumed.
+    report = {
+        "book": spec.get("book_title"),
+        "level": spec.get("level"),
+        "focus_sound": spec.get("focus_sound"),
+        "gates": {
+            "decodability": "PASS (title, story words and practice words)",
+            "page_count": f"PASS ({got} pages at Level {spec['level']})",
+            "distinct_pages": "PASS" if not gate_notes else "WARN: " + "; ".join(gate_notes),
+            "print_masters": "written" if (spec.get("print_masters") or "--print-masters" in sys.argv) else "not requested",
+        },
+    }
+    (out.parent / "ship_report.json").write_text(
+        json.dumps(report, indent=1), encoding="utf-8")
+    for k, v in report["gates"].items():
+        print(f"  gate {k}: {v}")
 
     print(str(out))
 
