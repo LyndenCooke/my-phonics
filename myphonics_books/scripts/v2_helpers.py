@@ -405,6 +405,11 @@ def decode_problem(word: str, cumulative_graphemes: list) -> str | None:
     units = split_into_phonemes(lower, cumulative_graphemes)
     rebuilt = ""
     for u in units:
+        # A doubled consonant is read as one sound (stepped, grinned) and the
+        # -ed box teaches exactly those words - not an untaught grapheme.
+        if u in DOUBLED_CONSONANTS:
+            rebuilt += u
+            continue
         if len(u) > 1 and u not in sorted_g and u not in ("ed", "le"):
             return f'"{word}" uses "{u}", which is not taught at this level'
         rebuilt += u
