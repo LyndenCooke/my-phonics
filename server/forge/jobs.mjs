@@ -950,12 +950,18 @@ async function stepReview(book, job) {
     // named pages with the editor's own words as the correction note - which
     // is exactly what repairBook already did for humans, and what this path
     // never called. A story-level fault still gets the full rewrite.
-    const PAGE_LOCAL = new Set(["image-text", "action", "physics", "image-physics", "object-identity", "print"]);
+    // Allow-listing page-local areas was the wrong way round: the first real
+    // rejection came back tagged "story-state" ("Page 5 does not show the
+    // resolution"), a picture fault that names its own page, and the book took
+    // a full rewrite + 6 repaints instead of one redraw. Only genuinely
+    // BOOK-level faults justify a rewrite; anything else naming a page is
+    // repaired in place (Lynden 2026-08-21).
+    const BOOK_LEVEL = new Set(["premise", "story", "language", "phonics", "safety", "teaching-truth"]);
     const pageOf = (i) => {
       const m = String(i.detail || "").match(/\bpages?\s+(\d+)/i);
       return m ? Number(m[1]) : null;
     };
-    const allPageLocal = verdict.blocking.every((i) => PAGE_LOCAL.has(String(i.area || "").toLowerCase()) && pageOf(i));
+    const allPageLocal = verdict.blocking.every((i) => !BOOK_LEVEL.has(String(i.area || "").toLowerCase()) && pageOf(i));
     if (allPageLocal) {
       const notes = {};
       for (const i of verdict.blocking) {
