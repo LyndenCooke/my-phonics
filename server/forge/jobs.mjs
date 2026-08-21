@@ -952,7 +952,7 @@ async function stepReview(book, job) {
     // never called. A story-level fault still gets the full rewrite.
     const PAGE_LOCAL = new Set(["image-text", "action", "physics", "image-physics", "object-identity", "print"]);
     const pageOf = (i) => {
-      const m = String(i.detail || "").match(/pages?\s+(\d+)/i);
+      const m = String(i.detail || "").match(/\bpages?\s+(\d+)/i);
       return m ? Number(m[1]) : null;
     };
     const allPageLocal = verdict.blocking.every((i) => PAGE_LOCAL.has(String(i.area || "").toLowerCase()) && pageOf(i));
