@@ -733,7 +733,15 @@ async function stepScene(book, job, i) {
     if (s.qa?.consistency && !s.qa.consistency.pass) {
       job.cost += s.cost; job.breakdown.images_usd += s.cost;
       job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — page rejected" });
-      throw new Error(`page ${i + 1} rejected: the picture does not show the page's action after 2 attempts — ${String(s.qa.consistency.reason).slice(0, 200)}`);
+      // NO FULL REJECTIONS - EDIT REQUESTS ONLY (20.2), and that doctrine was
+      // never applied here: a single stubborn page killed a fully paid book
+      // (Amara, 2026-08-21 - the QA read the cart's own wooden side slats as
+      // the story's "plank" and failed the page twice). Two attempts is the
+      // spend ceiling; the third picture ships with the fault recorded as an
+      // open edit request, and the cold editor still sees it downstream.
+      job.qaEditRequests = job.qaEditRequests || [];
+      job.qaEditRequests.push({ page: i + 1, reason: String(s.qa.consistency.reason).slice(0, 300) });
+      console.warn(`[forge] page ${i + 1}: shipping after 2 failed attempts, recorded as an edit request - ${String(s.qa.consistency.reason).slice(0, 160)}`);
     }
   }
   job.cost += s.cost; job.breakdown.images_usd += s.cost;
