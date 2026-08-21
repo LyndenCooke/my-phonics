@@ -669,7 +669,7 @@ A QUIET MORAL a parent would want - effort pays off, patience, honesty, kindness
 - Every word decodable using ONLY these graphemes: ${JSON.stringify(level.cumulative)}
 - ...or one of these tricky words: ${JSON.stringify(level.trickyWords)}
 - Word bank to draw from freely; you may also build other words from the taught graphemes: ${JSON.stringify(greenWords)}
-- "${child.name}" is always allowed. No other proper nouns unless fully decodable.
+- "${child.name}" is allowed, but SPEND IT CAREFULLY: sounded out honestly a name usually is not decodable at all ("Tomasz" is t-o-m-a-s-z), so the book teaches it as a tricky word on the Story Words page. Name the hero in the FIRST sentence, then use he/she/they and let the pictures carry who it is. AT MOST ONE use of the name per page after page 1, and never twice in the same sentence - a book that said "Tomasz" eight times in seventy-nine words read like a robot and made the child decode an undecodable word eight times. No other proper nouns unless fully decodable.
 - HONEST SOUNDS: a word only counts as decodable if saying its taught letter-sounds actually produces the word children say. "wash" sounds out to rhyme with cash but is said 'wosh'; "basket" is said 'baskit'; "listened" has a silent t. Words like these are NOT decodable however regular they look.
 - THE TITLE OBEYS EVERY RULE IN THIS SECTION, and should carry the focus sound wherever it can do so naturally - it is the first thing the child decodes.
 - Use "${focusSound}" in AT LEAST FOUR different words, up to six, spread naturally rather than crammed onto one page. Landing on one or two focus words is a failed book.

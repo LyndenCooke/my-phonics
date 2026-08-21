@@ -2959,12 +2959,25 @@
         {% endfor %}
       </div>
 
-      {% if tricky_words %}
+      {# A PERSONALISED BOOK'S HERO NAME IS A TRICKY WORD (Lynden 2026-08-21:
+         "why have we put names in stories, they are not decodable"). Sounded
+         out honestly, "Tomasz" is t-o-m-a-s-z and "Ayla" is a-y-l-a - neither
+         produces the name the child answers to. The book used to assume it
+         silently; now it is named and handed to the grown-up like any other
+         word the child cannot yet build. Custom books only (profile set) -
+         fleet books choose decodable names on purpose. #}
+      {% if tricky_words or (profile and profile.name) %}
       <div class="sw-tricky-strip">
         <div class="sw-tricky-label">Tricky Words &mdash; tell your child these straight away</div>
         <div class="sw-tricky-words">
+          {% if profile and profile.name %}<span class="sw-tricky-word">{{ profile.name }}</span>{% endif %}
           {% for tw in tricky_words %}<span class="sw-tricky-word">{{ tw }}</span>{% endfor %}
         </div>
+        {% if profile and profile.name %}
+        <div style="font-size: 8.5pt; color: #777; margin-top: 1.5mm; text-align: center;">
+          {{ profile.name }}&rsquo;s own name is here because most children read their name long before they can build it &mdash; say it together, then look for it on every page.
+        </div>
+        {% endif %}
       </div>
       {% endif %}
 
