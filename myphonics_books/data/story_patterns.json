@@ -1,5 +1,5 @@
 {
- "_note": "Reusable story patterns distilled from the 33 published MyPhonicsBooks (Lynden 2026-08-21: 'all 33 books should allow you stories that work'). A pattern is the STRUCTURE, not the words - a Level 1 book may wear a Level 5 book's structure, with only the sentence length and vocabulary changing. Static data: costs nothing per book. Regenerate with _distil_patterns.mjs.",
+ "_note": "Reusable story patterns distilled from the 33 published MyPhonicsBooks (Lynden 2026-08-21: 'all 33 books should allow you stories that work'). A pattern is the STRUCTURE, not the words - a Level 1 book may wear a Level 5 book's structure, with only the sentence length and vocabulary changing. Static data: costs nothing per book. Regenerate with _distil_patterns.mjs. source_level is the CURRENT 8-level number (the digest stores legacy ids: the old 10 Level-1 books were split across new L1/L2/L3, so Buzz and Sing! is a Level 3 book, and Level 1 has only two).",
  "patterns": [
   {
    "title": "The Fish in the Tank",
@@ -26,7 +26,7 @@
     "a toy shop: a large doll tries two small boxes before finding the right case"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 3,
    "source_pages": [
     "I have a fish! It is in a bag.",
     "The fish is sad. The bag is not big.",
@@ -34,7 +34,9 @@
     "I get a tank. Yes! The fish can go in!",
     "Wish, wish! The fish is in the tank!",
     "The fish is not sad. I am glad!"
-   ]
+   ],
+   "source_id": "3.1",
+   "legacy_level": "1.3"
   },
   {
    "title": "Tap! Tap! Tap!",
@@ -69,7 +71,9 @@
     "Tap, tap! I pat at it.",
     "It is a cat! A fat cat!",
     "I pat the cat. The cat naps. I am happy!"
-   ]
+   ],
+   "source_id": "1.1",
+   "legacy_level": "1.1"
   },
   {
    "title": "Buzz and Sing!",
@@ -96,7 +100,7 @@
     "a jungle camp: insects click and chirp while a traveller plays a flute"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 3,
    "source_pages": [
     "I sit on a big log. Buzz, buzz, buzz!",
     "A big bug sits on a rock. Hiss, hiss, hiss!",
@@ -104,7 +108,9 @@
     "The bugs go! No buzz. No hiss.",
     "I sing quick, quick! I sing and sing!",
     "Buzz! Hiss! I sing with the bugs!"
-   ]
+   ],
+   "source_id": "3.3",
+   "legacy_level": "1.10"
   },
   {
    "title": "The Mud on the Dog",
@@ -140,7 +146,9 @@
     "I get a mop. I mop the dog.",
     "No! The mop is a mess! Mud is on me!",
     "Mum got a tub. The dog sat in it. No mud! No mess!"
-   ]
+   ],
+   "source_id": "1.2",
+   "legacy_level": "1.2"
   },
   {
    "title": "The Red Socks",
@@ -168,7 +176,7 @@
     "a farm: a blue scarf is sought in a bed and basket, then found in a goat pen"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 2,
    "source_pages": [
     "No red socks. I am sad.",
     "Is it on the bed? A sock. Not red.",
@@ -176,7 +184,9 @@
     "Is it in the hen pen? Red socks!",
     "I get the red socks. Peck, peck!",
     "Red socks on. I am not sad."
-   ]
+   ],
+   "source_id": "2.1",
+   "legacy_level": "1.4"
   },
   {
    "title": "Run, Pup, Run!",
@@ -202,7 +212,7 @@
     "a market: a duckling darts under a stall, cart and table before being dried and cuddled"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 2,
    "source_pages": [
     "I have a pup. The pup can run!",
     "Run, pup, run! The pup hid in the hut.",
@@ -210,7 +220,9 @@
     "Run, pup, run! The pup is in the tub!",
     "I rub the pup. Rub, rub, rub!",
     "The pup and me! A big hug!"
-   ]
+   ],
+   "source_id": "2.2",
+   "legacy_level": "1.5"
   },
   {
    "title": "Fox Fell Off!",
@@ -236,7 +248,7 @@
     "a jungle: a cub tumbles from a root, stone and bank before resting in a hammock"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 2,
    "source_pages": [
     "I am with a fox. Fox is on a log.",
     "Fox fell off the log!",
@@ -244,7 +256,9 @@
     "Fox is on a hill. Fox fell off the hill!",
     "I get a big, fat mat. Sit on it, Fox!",
     "Fox is on the mat! Fox did not slip off! I hug Fox!"
-   ]
+   ],
+   "source_id": "2.3",
+   "legacy_level": "1.6"
   },
   {
    "title": "The Jam Jug",
@@ -272,7 +286,7 @@
     "a bakery: two fillings are sampled before cream drops on a counter"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 2,
    "source_pages": [
     "Dad has a van. The van has jam in big jugs.",
     "I dip in a jug. Fig jam! It is yum!",
@@ -280,7 +294,9 @@
     "The jug tips! Jam on the rug! No!",
     "I get a wet rag. I mop it up.",
     "No jam on the rug! I did it! I hug Dad."
-   ]
+   ],
+   "source_id": "2.4",
+   "legacy_level": "1.7"
   },
   {
    "title": "The Yak and the Box",
@@ -308,7 +324,7 @@
     "a stable: a pony steps on an apple box, which is repaired, shelved and shared from"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 2,
    "source_pages": [
     "I am with a yak. The yak is big!",
     "I get a box. Six figs in the box. I zip it up.",
@@ -316,7 +332,9 @@
     "I fix the box. I set it on top of the hut.",
     "The yak can't get it! I will get the six figs.",
     "I toss a fig. The big yak gets a fig. Yum!"
-   ]
+   ],
+   "source_id": "2.5",
+   "legacy_level": "1.8"
   },
   {
    "title": "Chop, Chop, Chop!",
@@ -344,7 +362,7 @@
     "a campsite: an uncle cuts large and small vegetables, cooks them and shares a dip"
    ],
    "simplest_level": 1,
-   "source_level": 1,
+   "source_level": 3,
    "source_pages": [
     "Nan chops, chops, chops! This is fun!",
     "Nan chops it thin. Nan chops it thick.",
@@ -352,7 +370,9 @@
     "I got a chip. That chip is thick!",
     "I dip a chip in. Yum, yum, yum!",
     "Chips with Nan! Munch, munch, munch!"
-   ]
+   ],
+   "source_id": "3.2",
+   "legacy_level": "1.9"
   },
   {
    "title": "The Night Light",
@@ -382,7 +402,7 @@
     "a power-cut apartment: a lost book is traced past emergency lights to a candlelit hall"
    ],
    "simplest_level": 1,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "The day ends. I can't see my toy cat.",
     "We go out to look. It is night.",
@@ -392,7 +412,9 @@
     "Dad can see I am sad. He hugs me in the light.",
     "I see my toy cat! Dad and I run to it.",
     "I hug my toy cat. \"Yay, my toy!\""
-   ]
+   ],
+   "source_id": "4.1",
+   "legacy_level": "2.1"
   },
   {
    "title": "Hot Food, Cool Moon",
@@ -422,7 +444,7 @@
     "a mountain camp: toasted food cools while a child studies the stars"
    ],
    "simplest_level": 1,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "The sun dips low. I go with my mum to get food.",
     "It is night. Food shops in a row! Yum!",
@@ -432,7 +454,9 @@
     "Mum said, \"Sit with me. See the moon!\"",
     "The moon is big and yellow! Then I dig in. It is not hot! Yum, yum, yum!",
     "We sit low on the mat. The night is cool. I am with my mum. It is fun!"
-   ]
+   ],
+   "source_id": "4.2",
+   "legacy_level": "2.2"
   },
   {
    "title": "Morning on the Farm",
@@ -462,7 +486,7 @@
     "a greenhouse: daytime planting leads to a night visit and a rare flower opening"
    ],
    "simplest_level": 2,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "We go far in the car. I can see a farm!",
     "The farm is big! I see a yard with corn in a jar.",
@@ -472,7 +496,9 @@
     "It is dark in the barn. I look far into a pen. I see a thing!",
     "A kid! Born this morning! Her mum is with her.",
     "I hug the warm kid with my dad. This farm is too good! I wish I had a farm!"
-   ]
+   ],
+   "source_id": "4.3",
+   "legacy_level": "2.3"
   },
   {
    "title": "The Fair in the Air",
@@ -498,11 +524,11 @@
    ],
    "reimagine_hints": [
     "a beach carnival: a won kite blows onto a lifeguard tower and an attendant retrieves it",
-    "a winter fête: a prize scarf blows onto a roof and a caretaker brings it down",
+    "a winter f\u00eate: a prize scarf blows onto a roof and a caretaker brings it down",
     "a harbour festival: a paper boat prize lands on a mast and a sailor rescues it"
    ],
    "simplest_level": 2,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "I go to the fair. The fair is so big! The air is cool on my chin.",
     "A big wind swirls in. It picks up my hair! My hair is up in the air!",
@@ -512,7 +538,9 @@
     "My pair lands up in a fir tree. I run to the man. \"Sir! Sir! My pair is in the fir!\"",
     "The man is quick. Up the fir he goes! He gets my pair from the top.",
     "The wind is soft. I sit in a chair with my pair. It is the best day at the fair!"
-   ]
+   ],
+   "source_id": "4.4",
+   "legacy_level": "2.4"
   },
   {
    "title": "Round and Round",
@@ -542,7 +570,7 @@
     "a space station: a floating toy drifts off and is found with a technician"
    ],
    "simplest_level": 1,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "I went out with my toy car. I zoomed it round and round. Zoom! Zoom!",
     "I zoomed it far down the path. Round and round! It got loud!",
@@ -552,7 +580,9 @@
     "We looked around the big rock. No toy! We looked around the shed. No toy!",
     "\"Look!\" said Mum. \"I found it!\" My toy! Joy! Joy! I shouted out loud!",
     "I hugged my toy and I hugged Mum. \"Thank you!\" I said. We went in."
-   ]
+   ],
+   "source_id": "4.5",
+   "legacy_level": "2.5"
   },
   {
    "title": "The Night Fair",
@@ -567,7 +597,7 @@
     "hero looks beyond the event to the night sky",
     "hero sums up the outing and says goodbye"
    ],
-   "device": "A sequence of sensory discoveries—light, sound, taste, touch and sky—creates pleasure without needing a central problem.",
+   "device": "A sequence of sensory discoveries\u2014light, sound, taste, touch and sky\u2014creates pleasure without needing a central problem.",
    "slots": [
     "night-time venue",
     "caregiver",
@@ -583,7 +613,7 @@
     "a winter market: candles, carol singers, soup and a carved star"
    ],
    "simplest_level": 1,
-   "source_level": 2,
+   "source_level": 4,
    "source_pages": [
     "It is night! We go to the souq. The lights up high are so bright!",
     "I see lots of lamps. Each one is so cool! I feel such joy.",
@@ -593,7 +623,9 @@
     "I sit on a stool. The fair is so much fun! The air is cool.",
     "Look up! I see stars in the sky. The moon is low and round.",
     "My night at the souq is so good. I wave good night to the big moon."
-   ]
+   ],
+   "source_id": "4.6",
+   "legacy_level": "2.6"
   },
   {
    "title": "The Big Bike Race",
@@ -623,17 +655,19 @@
     "a space academy: pilots race pods to a beacon and back through drifting debris"
    ],
    "simplest_level": 2,
-   "source_level": 3,
+   "source_level": 5,
    "source_pages": [
     "Bikes line up at the arch. It is time for the race to start! I stand with my bike on the line.",
-    "‘Ride to the lake and back!’ the man said. Can I win? I grip my bike tight.",
+    "\u2018Ride to the lake and back!\u2019 the man said. Can I win? I grip my bike tight.",
     "Off I go! Past a tall pine tree. Past a wide stone arch. I ride fast in the sun.",
     "Look out! Stones on the track. A bike slides and a girl falls off. She gave me a brave smile.",
     "I can see the lake! It shines in the sun. I ride past it and turn back.",
     "Can I make it back in time? I ride and ride. I must not be late!",
     "I am past the line! I made it! I slide off my bike with a wide grin.",
     "A prize! I am on the top step! I smile and wave at my mates. What a good day!"
-   ]
+   ],
+   "source_id": "5.1",
+   "legacy_level": "3.1"
   },
   {
    "title": "Lost at the Night Market",
@@ -663,17 +697,19 @@
     "a museum: a dinosaur model and blue staircase guide a child back to Mum"
    ],
    "simplest_level": 2,
-   "source_level": 3,
+   "source_level": 5,
    "source_pages": [
-    "Mum and I went to the night market. It was huge! ‘Stay close to me,’ Mum spoke. And I did.",
+    "Mum and I went to the night market. It was huge! \u2018Stay close to me,\u2019 Mum spoke. And I did.",
     "We see cute stone models on a stand. We see bright noodle pots. The food smelt so good!",
     "Then a man bumped me! I spun round and round. I can't see Mum! I froze.",
-    "It was dark and loud. I felt so small. ‘Mum!’ I shout. But Mum is not there.",
+    "It was dark and loud. I felt so small. \u2018Mum!\u2019 I shout. But Mum is not there.",
     "Then I see the cute stone models! We went past those! Mum must be close!",
-    "I run past the bright lights. I run past the noodle stand. Then… I see Mum!",
-    "Mum gave me a huge tight hug. ‘You are safe!’ she spoke. I did not let go.",
-    "We sat close and ate hot noodles in the moonlight. ‘Stay close to me!’ spoke Mum. I gave a huge grin. Home time!"
-   ]
+    "I run past the bright lights. I run past the noodle stand. Then\u2026 I see Mum!",
+    "Mum gave me a huge tight hug. \u2018You are safe!\u2019 she spoke. I did not let go.",
+    "We sat close and ate hot noodles in the moonlight. \u2018Stay close to me!\u2019 spoke Mum. I gave a huge grin. Home time!"
+   ],
+   "source_id": "5.2",
+   "legacy_level": "3.2"
   },
   {
    "title": "The Dream Team",
@@ -703,7 +739,7 @@
     "a fishing village: two cousins mend nets, sweep a deck and collect supper for Grandad"
    ],
    "simplest_level": 2,
-   "source_level": 3,
+   "source_level": 5,
    "source_pages": [
     "Nana sits by her gate. She looks so tired. \"I need to clean,\" she said. \"But it is too much.\"",
     "I kneel by each plant pot and clean the leaves. \"Let me help, Nana!\" I said. But this is too much for just me.",
@@ -712,8 +748,10 @@
     "I stand on a stool. He holds it. I reach up and grab each tin from the shelf. \"I got them!\"",
     "We take the tins out to the yard. We clean each one and line them up neat. Nana peeks out. \"What a dream team!\" she cried.",
     "Then we run to the shop. We get beans and rice and sweet plantain for Nana. What a treat!",
-    "Nana grins and grins. She brings us each a big feast — beans and rice with fried plantain! We cheer: \"Thank you, Nana!\""
-   ]
+    "Nana grins and grins. She brings us each a big feast \u2014 beans and rice with fried plantain! We cheer: \"Thank you, Nana!\""
+   ],
+   "source_id": "5.3",
+   "legacy_level": "3.3"
   },
   {
    "title": "What Min Saw",
@@ -743,17 +781,19 @@
     "a rainforest trail: a beetle, bright seed, ridge view and hornbill mark the journey"
    ],
    "simplest_level": 2,
-   "source_level": 3,
+   "source_level": 5,
    "source_pages": [
-    "Mum got her coat. ‘Let us go to the park,’ she said. Min was so glad. She got on her pink coat and ran to the door.",
-    "Out on the street, Mum pointed up. ‘Look at that tall block!’ she said. Min saw a big red bus zoom past.",
-    "At the park, Min saw a soft grey cat. The cat had a small white paw and bright eyes. ‘Hello, cat!’ said Min with a grin.",
-    "Min hopped on a stone in a stream. She spotted a bright coin in the soil! ‘Look, Mum!’ she said. She picked it up and held it tight.",
+    "Mum got her coat. \u2018Let us go to the park,\u2019 she said. Min was so glad. She got on her pink coat and ran to the door.",
+    "Out on the street, Mum pointed up. \u2018Look at that tall block!\u2019 she said. Min saw a big red bus zoom past.",
+    "At the park, Min saw a soft grey cat. The cat had a small white paw and bright eyes. \u2018Hello, cat!\u2019 said Min with a grin.",
+    "Min hopped on a stone in a stream. She spotted a bright coin in the soil! \u2018Look, Mum!\u2019 she said. She picked it up and held it tight.",
     "They went up a steep hill. From the top, Min saw the whole town. Mum pointed at the bright bend in the river.",
-    "All at once — a hawk! A big brown hawk flapped past. It had sharp claws and wide wings. Min looked up. Her jaw dropped!",
-    "They sat on the grass to rest. The hawk soared in big slow rings. ‘I saw a hawk!’ said Min. ‘I will not forget!’",
-    "On the way home, the trees were gold. Min still had her coin. She smiled at Mum. ‘What a day! I saw so much!’"
-   ]
+    "All at once \u2014 a hawk! A big brown hawk flapped past. It had sharp claws and wide wings. Min looked up. Her jaw dropped!",
+    "They sat on the grass to rest. The hawk soared in big slow rings. \u2018I saw a hawk!\u2019 said Min. \u2018I will not forget!\u2019",
+    "On the way home, the trees were gold. Min still had her coin. She smiled at Mum. \u2018What a day! I saw so much!\u2019"
+   ],
+   "source_id": "5.4",
+   "legacy_level": "3.4"
   },
   {
    "title": "The Boat with the Red Sail",
@@ -784,17 +824,19 @@
     "a mountain village: a blue balloon marks Dad's bus while a child crosses a crowded path"
    ],
    "simplest_level": 2,
-   "source_level": 3,
+   "source_level": 5,
    "source_pages": [
     "Kai sits on the road eating toast. He spots a boat far out at sea. It has a big red sail!",
-    "Kai grabs his coat and runs! Rain splats on the main road. That red sail — it must be him!",
-    "From the trail, Kai spots fish on the boat! A fat snail blocks his path. ‘Not now, snail!’ said Kai.",
-    "Kai slips and slides into a drain! His coat is soaked in mud. He groans — the boat will not wait!",
+    "Kai grabs his coat and runs! Rain splats on the main road. That red sail \u2014 it must be him!",
+    "From the trail, Kai spots fish on the boat! A fat snail blocks his path. \u2018Not now, snail!\u2019 said Kai.",
+    "Kai slips and slides into a drain! His coat is soaked in mud. He groans \u2014 the boat will not wait!",
     "He runs and runs to the coast at last! The boat sails in from the sea. Kai spots the red sail!",
-    "The boat docks with a big load of fish. A man in a coat shouts out. ‘Kai! Kai!’",
+    "The boat docks with a big load of fish. A man in a coat shouts out. \u2018Kai! Kai!\u2019",
     "It is Dad! Dad leaps off the boat and scoops Kai up. They spin in the sun!",
-    "They stroll back up the road with the fish. Then Kai spots the snail! ‘How did the snail get here?’ he grins."
-   ]
+    "They stroll back up the road with the fish. Then Kai spots the snail! \u2018How did the snail get here?\u2019 he grins."
+   ],
+   "source_id": "5.5",
+   "legacy_level": "3.5"
   },
   {
    "title": "The Purple Purse",
@@ -819,12 +861,12 @@
     "honest finder"
    ],
    "reimagine_hints": [
-    "a village fête: a lost coin pouch is returned by a flower seller",
+    "a village f\u00eate: a lost coin pouch is returned by a flower seller",
     "a station: a missing travel card is returned by a porter",
     "a boardwalk: a lost bracelet is returned by a snack vendor"
    ],
    "simplest_level": 2,
-   "source_level": 4,
+   "source_level": 6,
    "source_pages": [
     "My purple purse was gone! I turned my pockets inside out, but it was not there. I was so upset!",
     "Dad came with me to search. We walked up and down the street. \"It must be here,\" said Dad.",
@@ -834,7 +876,9 @@
     "Then a market lady held up a purple purse! \"I found this on the kerb. Is it yours?\"",
     "I turned the purse over. My coins were still in it! \"Thank you!\" I burst out, smiling.",
     "Dad and I walked home in the warm afternoon. I held the purse close to my chest. \"She was so kind,\" I said."
-   ]
+   ],
+   "source_id": "6.1",
+   "legacy_level": "4.1"
   },
   {
    "title": "The Brown Owl",
@@ -865,17 +909,19 @@
     "a forest camp: rustling leads to a badger returning to its cubs"
    ],
    "simplest_level": 2,
-   "source_level": 4,
+   "source_level": 6,
    "source_pages": [
     "It was getting dark. From deep in the trees came a loud howl, then a growl. What was that? I stared out the window but all I saw were shadows.",
-    "‘Can we go and look?’ I asked Mum. She got me my thick coat and boots. We set off down the dark path together. The air was cool on my bare cheeks.",
-    "Then Mum stopped and stared up at the bare branches. ‘Look!’ she said. I stared too. Something was up there in the dark. What was it?",
+    "\u2018Can we go and look?\u2019 I asked Mum. She got me my thick coat and boots. We set off down the dark path together. The air was cool on my bare cheeks.",
+    "Then Mum stopped and stared up at the bare branches. \u2018Look!\u2019 she said. I stared too. Something was up there in the dark. What was it?",
     "Then I saw it. A big brown owl! It sat high up on a bare branch and stared right down at me. How rare! I stared back but I did not dare to get close.",
     "Then the owl spread its wings and swooped down from the branch. Wow! I froze. I did not dare to make a sound.",
-    "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. ‘Owlets!’ said Mum. ‘She must look after them!’ I peeked and saw fluffy white faces staring down at me.",
+    "The owl sat on a branch next to a hole high in the tree. Out came soft cheeps. \u2018Owlets!\u2019 said Mum. \u2018She must look after them!\u2019 I peeked and saw fluffy white faces staring down at me.",
     "The owl swooped back up with a mouse in its claws. The owlets crowded round, cheeping loudly. What a rare sight! Mum and I shared a smile.",
-    "We went home under the stars. ‘I want to go back and care for them,’ I said. Mum took my hand. ‘We will,’ she said. I smiled all the way home. The brown owl and her owlets were safe in the dark."
-   ]
+    "We went home under the stars. \u2018I want to go back and care for them,\u2019 I said. Mum took my hand. \u2018We will,\u2019 she said. I smiled all the way home. The brown owl and her owlets were safe in the dark."
+   ],
+   "source_id": "6.2",
+   "legacy_level": "4.2"
   },
   {
    "title": "The New Glue",
@@ -905,9 +951,9 @@
     "a robot workshop: magnetic paint catches a toy drone, which drags tools through the lab"
    ],
    "simplest_level": 2,
-   "source_level": 4,
+   "source_level": 6,
    "source_pages": [
-    "The girl had a pot of new blue glue. She drew a bird on a card. \"This card is for Mum,\" she said to Dad. She pressed the blue glue on — but she pressed too hard!",
+    "The girl had a pot of new blue glue. She drew a bird on a card. \"This card is for Mum,\" she said to Dad. She pressed the blue glue on \u2014 but she pressed too hard!",
     "The blue glue spread across the desk and stuck to her hand! She pulled and she shook. Then the card flew off her hand, down the hall and down the stairs!",
     "The card landed right on the cat at the foot of the stairs. The cat grew cross and ran. It had blue glue and bits of card stuck in its fur!",
     "The cat flew into the front room and jumped on the shelf. It bumped a blue cup of tea. The cup fell and tea ran down on to the new rug.",
@@ -915,7 +961,9 @@
     "Then the cat ran out into the garden. It jumped on the wall and bumped a pot of blue flowers. The pot started to fall! The girl threw her arms out and rescued it just in time.",
     "\"That cat!\" said Dad. They cleaned up all the glue and the mess. The girl wiped the blue stain off the desk. The cat just sat and chewed its fur clean.",
     "At last, the card was finished. Mum came home and the girl gave it to her. \"You drew this for me?\" said Mum. \"It is true,\" said the girl. \"And it was all due to the new blue glue!\""
-   ]
+   ],
+   "source_id": "6.3",
+   "legacy_level": "4.3"
   },
   {
    "title": "The Cheeky Monkey",
@@ -945,17 +993,19 @@
     "a city garden: a squirrel steals a biscuit and eats beside a fountain"
    ],
    "simplest_level": 2,
-   "source_level": 4,
+   "source_level": 6,
    "source_pages": [
     "The sun was up. It was a new day! The boy and Mum went to the big pink mosque. \"Wow!\" said the boy. \"It is so big!\"",
-    "They went down to the water. The blue lake was still and cool. Pink and blue — how grand it was!",
+    "They went down to the water. The blue lake was still and cool. Pink and blue \u2014 how grand it was!",
     "But then he saw something brown and furry. A monkey! It sat on a wall and turned to stare. \"Wow!\" said the boy. \"What is THAT?\"",
-    "The monkey had his snack! It ran into the garden — fast! \"Stop!\" said the boy. But the monkey just grinned and ran on.",
+    "The monkey had his snack! It ran into the garden \u2014 fast! \"Stop!\" said the boy. But the monkey just grinned and ran on.",
     "The boy ran after it. Round and round! The brown furry tail went past a tree. \"Oh no! Where did it go?\"",
     "At last, the boy stopped. The monkey sat by the water with his snack. It had not run off! It just sat and munched.",
     "Mum got there too. Her dark gown flowed in the warm air. She had a true glow. \"You ran so fast!\" she said with a grin.",
     "The boy sat down with Mum by the water. The monkey was still munching. \"Wow!\" said the boy with a grin. \"This is the best day!\""
-   ]
+   ],
+   "source_id": "6.4",
+   "legacy_level": "4.4"
   },
   {
    "title": "Before the Shore",
@@ -970,7 +1020,7 @@
     "hero combines the pair into a handmade gift",
     "the loved one receives it and restates the promise of remembering"
    ],
-   "device": "A matching object creates a clear present–past–present structure and turns private memory into a new reciprocal gift.",
+   "device": "A matching object creates a clear present\u2013past\u2013present structure and turns private memory into a new reciprocal gift.",
    "slots": [
     "present-day found object",
     "remembered destination",
@@ -985,17 +1035,19 @@
     "a station: a ticket stub recalls a train holiday and becomes a framed gift for an aunt"
    ],
    "simplest_level": 3,
-   "source_level": 5,
+   "source_level": 7,
    "source_pages": [
-    "The boy went home from the park. He was tired and his feet were sore. He sat on a bench to rest. Then he saw something on the path — a smooth, flat stone. He picked it up.",
+    "The boy went home from the park. He was tired and his feet were sore. He sat on a bench to rest. Then he saw something on the path \u2014 a smooth, flat stone. He picked it up.",
     "The stone felt cool in his hand. It had a shine, like something from the shore. Once, before this week, he had seen a stone just like it. He sat still and let his mind go back.",
     "Before the cold came, he went with Dad to the shore. The air was fresh and the sand soft. \"Come and explore with me!\" said Dad. They ran along the beach and played in the waves. That night, they sat by a fire and the flames jumped and flicked.",
     "The next day, he explored the rock pools. He found more and more shells! Dad helped him put them on a wire. \"We can make a gift,\" he said. He twisted the wire with care. It looked so nice!",
     "Then it was time to go. He spotted a stone by the shore. It was smooth and flat. \"Keep it safe,\" said Dad. \"So you never forget this trip.\" He put the stone in his pocket with a smile.",
     "The boy sat up and looked around. He still had that shore stone at home. But in his hand was a new stone, just as smooth! He held it up to the light. The shore felt so close.",
-    "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Dad — just like before.",
+    "He ran home to get his shore stone. Now he had a pair! He took some wire and made a loop for each one. He would make a gift for Dad \u2014 just like before.",
     "He gave the stones to Dad. \"From the shore and from the park,\" he said. He smiled wide. \"I will keep them with me,\" he said. \"So I never forget.\" He wore them on his bag that day."
-   ]
+   ],
+   "source_id": "7.1",
+   "legacy_level": "5.1"
   },
   {
    "title": "Near the Door",
@@ -1025,7 +1077,7 @@
     "a city park: three visitors revealed by a tail, long ears and antlers"
    ],
    "simplest_level": 2,
-   "source_level": 5,
+   "source_level": 7,
    "source_pages": [
     "Dad sat at the fire in his thick wool socks. I stood near the door with my coat and hat. It was cool outside, and I could hear a soft crunch. I put my ear to the door and heard it again. What could it be out there in the snow?",
     "I pulled the door wide and stepped out into the woods. It was still cool, and I could hear that crunch again. It was near a tall pine tree, but I could not see more. A red tail peeked out, swayed, then went still. I crept near.",
@@ -1035,7 +1087,9 @@
     "Next, I spotted two dark points on a pale mound of snow. They poked up out of the snow like small twigs. I went near and a snort came from under the mound. Was it a log, or was it a deer? I waited, still as a rock, and did not fear.",
     "Out stepped a deer, tall and grand, with big antlers. He stood near me and did not run. I spoke clear and slow. \"Hello, deer,\" I said, \"we will not harm you.\" He looked at me, then stepped off into the trees.",
     "Snow dusted my coat as I ran back to the door. Dad waited there, warm from the fire and keen to hear. \"I saw a fox, a rabbit and a deer!\" We sat on the floor indoors and read at the fire."
-   ]
+   ],
+   "source_id": "7.2",
+   "legacy_level": "5.2"
   },
   {
    "title": "Sure She Can!",
@@ -1066,17 +1120,19 @@
     "a snowy town: a child makes a sled with a neighbour, repairs a loose runner and rides it"
    ],
    "simplest_level": 2,
-   "source_level": 5,
+   "source_level": 7,
    "source_pages": [
     "Kites filled the blue air over Jaipur. Red and green and blue, they flew and spun and dipped in the clear winter air. The girl stood on the rooftop and looked with wide eyes. She wanted to send up a kite more than anything. But she did not own one.",
     "Dadaji sat near the wall, smiling at all the kites. He held up a thin sheet of paper and two bamboo sticks. \"We can make one,\" he said. \"I can show you the instructions. Pay close attention and follow each step.\" She felt a rush of joy.",
-    "\"Step one,\" said Dadaji. \"Lay the sticks in a cross shape. Tie them at this section — that is the frame.\" With strong concentration, the girl tied the sticks. Her fingers moved in a slow, careful direction. \"Perfect!\" said Dadaji. \"Now pass the string around each point.\"",
-    "\"Step two,\" said Dadaji. \"Lay the paper flat on the frame. Fold each section over the string and press it down.\" The girl worked fast. But the paper slipped. There was a rip — a long split ran right through the kite. Her heart sank.",
+    "\"Step one,\" said Dadaji. \"Lay the sticks in a cross shape. Tie them at this section \u2014 that is the frame.\" With strong concentration, the girl tied the sticks. Her fingers moved in a slow, careful direction. \"Perfect!\" said Dadaji. \"Now pass the string around each point.\"",
+    "\"Step two,\" said Dadaji. \"Lay the paper flat on the frame. Fold each section over the string and press it down.\" The girl worked fast. But the paper slipped. There was a rip \u2014 a long split ran right through the kite. Her heart sank.",
     "The girl crumpled the torn paper in her hands. \"I am full of frustration!\" she said. \"I give up!\" Dadaji did not rush. He sat still and waited. \"Do you want to stop?\" he said in a soft voice. \"We are not done yet.\"",
     "The girl took a long breath and tried again. \"Slow action this time,\" said Dadaji. \"Press each section flat before you move on. Work in one direction only.\" She worked with great care. She pressed. She smoothed. She waited. The paper held. \"It is working!\" she cried.",
     "At last, the kite was done. \"Look at the shape we made!\" she cried. Dadaji tied the string to the centre. \"Now for the action!\" he said. \"Run in that direction and let the wind take it!\" She ran with all her might and let the string out.",
-    "The kite shot up into the pure blue air. It flew higher and higher! “Woh Kata!” cheered the people on the next rooftop. Dadaji clapped his hands with joy. The girl looked at her kite spin and dance over the pink town. \"Pure joy!\" she cried. \"Pure joy!\""
-   ]
+    "The kite shot up into the pure blue air. It flew higher and higher! \u201cWoh Kata!\u201d cheered the people on the next rooftop. Dadaji clapped his hands with joy. The girl looked at her kite spin and dance over the pink town. \"Pure joy!\" she cried. \"Pure joy!\""
+   ],
+   "source_id": "7.3",
+   "legacy_level": "5.3"
   },
   {
    "title": "A Place for Me",
@@ -1106,7 +1162,7 @@
     "a mountain market: a shepherd child shares bread and helps find an aunt by the bell tower"
    ],
    "simplest_level": 2,
-   "source_level": 5,
+   "source_level": 7,
    "source_pages": [
     "The morning air was cool and clear. I went with Dad to a market near the old town. It was just starting up. Big sheets of cloth hung from the stands in red, green and blue.",
     "Soon the market was full of people. There was more to see than I had ever seen! Dad went to explore the stands. \"Wait at this stand,\" he said. But then I could not see him.",
@@ -1114,9 +1170,11 @@
     "Then a boy appeared at my side. He had a big grin on his face. \"Are you lost?\" he said. I nodded. \"I will help you. We can spot him!\"",
     "We went from section to section. He knew the direction to go. He picked up a big yellow mango. \"Pure sunshine!\" he grinned. I could not help but smile back.",
     "We sat on some steps and ate the mangos. The sweet mess ran down my chin. It was the best thing I had ever tasted. I smiled for the first time all day.",
-    "Then the boy stopped. He pointed down the street. \"Dad must be near!\" he said. \"Let’s go, we can spot him fast!\" I felt a rush in my chest.",
+    "Then the boy stopped. He pointed down the street. \"Dad must be near!\" he said. \"Let\u2019s go, we can spot him fast!\" I felt a rush in my chest.",
     "Dad picked me up and held me tight. I had been so tired and scared. But not any more. \"This boy helped me,\" I said. Dad smiled. \"Then he must see us again soon.\""
-   ]
+   ],
+   "source_id": "7.4",
+   "legacy_level": "5.4"
   },
   {
    "title": "The Marvellous Neighbourhood",
@@ -1146,17 +1204,19 @@
     "a tower-block estate: a neighbour reveals murals, gardens, food stalls and rooftop views through photographs"
    ],
    "simplest_level": 3,
-   "source_level": 6,
+   "source_level": 8,
    "source_pages": [
     "Yusuf sat on the front steps of his block of flats and frowned at the street below. Rows of cream-coloured blocks lined the road, and cars honked in the hot afternoon heat. From the market around the corner, he could hear the calls of vendors and the clatter of carts. \"Nothing glorious or fabulous ever happens here,\" he muttered. \"This place is so ordinary.\" Just then, his Uncle Tarek sat down quietly on the step beside him, a worn notebook tucked under his arm.",
     "\"You look like somebody who thinks they have seen everything there is to see,\" said Uncle Tarek with a smile. Yusuf shrugged. \"I live here. It is just houses, traffic and the same old market.\" His uncle had a luminous look in his eyes, as if he knew something tremendous. \"I have spent my whole life travelling to marvellous places,\" he said, leaning forward. \"And I am going to tell you something, Yusuf. This is one of the most glorious cities on Earth.\"",
     "Uncle Tarek stood and walked with Yusuf to the wide road that ran along the edge of the river. \"That is the Nile,\" he said in a wondrous voice, \"the most famous river in the whole world.\" \"It has flowed past this very spot for thousands and thousands of years.\" Yusuf had walked along the corniche countless times, but he had never stopped to wonder. He looked at the grey-green water as if he was seeing it for the very first time.",
     "Next, his uncle led Yusuf around the corner to the old bakery on their street. An enormous cloud of warm bread smell drifted out through the open door. \"The baker has been here for forty years,\" said Uncle Tarek. \"He knows every family by name.\" Yusuf realised he had never once stopped to wave or say good morning to him. The baker spotted them and held out a warm round of aish baladi, the famous flat bread of Egypt.",
-    "They walked on, and Uncle Tarek pointed to the slim minaret that rose above the rooftops. \"On quiet mornings, the call from that tower can be heard for miles and miles,\" he said. Down by the river, white-sailed boats drifted past on the gleaming water. A cluster of street cats — Cairo was famous for its cats — sunned themselves on a warm wall. \"Is this place still boring to you?\" his uncle asked, his eyes twinkling.",
+    "They walked on, and Uncle Tarek pointed to the slim minaret that rose above the rooftops. \"On quiet mornings, the call from that tower can be heard for miles and miles,\" he said. Down by the river, white-sailed boats drifted past on the gleaming water. A cluster of street cats \u2014 Cairo was famous for its cats \u2014 sunned themselves on a warm wall. \"Is this place still boring to you?\" his uncle asked, his eyes twinkling.",
     "Yusuf stood still for a moment and looked around with new, curious eyes. He could see the white-sailed boats drifting on the enormous Nile, golden in the afternoon haze. He could hear the joyous calls of the market sellers drifting around the corner. He could smell the fabulous bread from the bakery he had walked past hundreds of times. \"It is marvellous,\" he said, in a quiet, amazed voice. \"My neighbourhood is truly marvellous.\"",
     "Uncle Tarek smiled and handed Yusuf a small notebook and a pen. \"Write down what you see,\" he said. \"Give each part of your neighbourhood the name it deserves.\" Yusuf picked up the pen and began to write, one label for each place he could now see. He wrote: The Marvellous Corniche. The Enormous Nile. The Famous Bakery. The Joyous Market. The Glorious Minaret. \"These are the tremendous things that make up my home,\" said Yusuf, and he felt proud.",
-    "Later, when Uncle Tarek had gone home, Yusuf sat on his step once more. But this time, he was not bored — he was curious and adventurous, watching the world with new eyes. The enormous city hummed and buzzed all around him, full of marvellous, ordinary life. He opened his notebook and added one last label at the bottom of the page: My Marvellous Home. And from that day on, Yusuf never forgot that the most glorious place in the world was the one right outside his door."
-   ]
+    "Later, when Uncle Tarek had gone home, Yusuf sat on his step once more. But this time, he was not bored \u2014 he was curious and adventurous, watching the world with new eyes. The enormous city hummed and buzzed all around him, full of marvellous, ordinary life. He opened his notebook and added one last label at the bottom of the page: My Marvellous Home. And from that day on, Yusuf never forgot that the most glorious place in the world was the one right outside his door."
+   ],
+   "source_id": "8.1",
+   "legacy_level": "6.1"
   },
   {
    "title": "You Are Remarkable",
@@ -1187,17 +1247,19 @@
     "a museum night: a child comforts a separated visitor and finds a security officer"
    ],
    "simplest_level": 3,
-   "source_level": 6,
+   "source_level": 8,
    "source_pages": [
     "The Lantern Festival had filled the river park with golden light. Hundreds of glowing lanterns drifted above the Li River, and the karst mountains rose like dark peaks behind the city. The girl was watching a paper lantern float upwards when she noticed something terrible. A small boy sat alone on a stone step, clutching a stuffed panda, with tears on his face. The people all around him walked past as if he were invisible. She stopped.",
-    "She crouched down beside the boy and spoke to him in a gentle voice. He was perhaps three years old, and he looked absolutely miserable — his face red, his eyes wide, his small hands gripping the panda. \"Where is your family?\" she asked, but he could only shake his head and sob. It was clear he was not capable of finding them alone. She looked around at the crowds flowing past, and she made a decision: she was responsible for helping him, and it was possible to do it.",
-    "She pulled a small notebook from her jacket pocket and thought for a moment. Then she wrote a careful note in neat, readable handwriting and tore it out. The note said: \"Lost child — dark jacket, green buttons, age 3. He is by the red lantern at the bridge. His family is searching for him. If you have seen them, please come at once.\" She held it up as high as she could. It was a sensible and responsible plan.",
-    "She took the boy's hand and walked towards the busy lantern stalls. An elderly woman selling tangyuan shook her head when she saw the note, but pointed further along the riverbank towards the bridge. A group of young people gathered, read the note and looked around — but nobody recognised the child. Each person was willing, but none were able to help. She did not give up. Giving up was not a reasonable or responsible option.",
+    "She crouched down beside the boy and spoke to him in a gentle voice. He was perhaps three years old, and he looked absolutely miserable \u2014 his face red, his eyes wide, his small hands gripping the panda. \"Where is your family?\" she asked, but he could only shake his head and sob. It was clear he was not capable of finding them alone. She looked around at the crowds flowing past, and she made a decision: she was responsible for helping him, and it was possible to do it.",
+    "She pulled a small notebook from her jacket pocket and thought for a moment. Then she wrote a careful note in neat, readable handwriting and tore it out. The note said: \"Lost child \u2014 dark jacket, green buttons, age 3. He is by the red lantern at the bridge. His family is searching for him. If you have seen them, please come at once.\" She held it up as high as she could. It was a sensible and responsible plan.",
+    "She took the boy's hand and walked towards the busy lantern stalls. An elderly woman selling tangyuan shook her head when she saw the note, but pointed further along the riverbank towards the bridge. A group of young people gathered, read the note and looked around \u2014 but nobody recognised the child. Each person was willing, but none were able to help. She did not give up. Giving up was not a reasonable or responsible option.",
     "Near the entrance of the park, she spotted a security guard in a yellow jacket. She walked straight up to him, held out the note and said clearly, \"This child is lost. He has been here for some time.\" The guard read the note carefully, nodded and spoke into his radio. He asked her to stay in one comfortable spot beside the red lantern at the bridge. She sat with the boy and told him a quiet story about the panda in his arms. He stopped crying and leaned against her shoulder.",
-    "While they waited, she bought the boy a warm roasted sweet potato from a nearby cart. His face changed — from miserable and terrified, to curious, to something almost cheerful. He held the sweet potato in both hands and looked up at her. \"Panda,\" he said, and held the toy out to her. It was an adorable thing to do, and she understood it at once — he was sharing his most valuable possession with her. She held it carefully, and for the first time that evening, he smiled.",
-    "The guard came running back with a woman and a man following close behind. The little boy looked up — and in less than a second, his face went from frightened to overjoyed. \"Mama!\" he cried, and the woman rushed forward and scooped him up, clutching him in an incredible, tearful hug. The man gripped the guard's hand and then looked at the girl with a grateful and disbelieving expression. She stood a little way back, watching the most remarkable reunion she had ever seen, with something warm and steady building inside her.",
+    "While they waited, she bought the boy a warm roasted sweet potato from a nearby cart. His face changed \u2014 from miserable and terrified, to curious, to something almost cheerful. He held the sweet potato in both hands and looked up at her. \"Panda,\" he said, and held the toy out to her. It was an adorable thing to do, and she understood it at once \u2014 he was sharing his most valuable possession with her. She held it carefully, and for the first time that evening, he smiled.",
+    "The guard came running back with a woman and a man following close behind. The little boy looked up \u2014 and in less than a second, his face went from frightened to overjoyed. \"Mama!\" he cried, and the woman rushed forward and scooped him up, clutching him in an incredible, tearful hug. The man gripped the guard's hand and then looked at the girl with a grateful and disbelieving expression. She stood a little way back, watching the most remarkable reunion she had ever seen, with something warm and steady building inside her.",
     "The mother turned to the girl, still holding her son tightly. \"You kept him safe,\" she said, and her voice was not quite steady. \"You stayed. You helped.\" She paused for a moment, and then she said something the girl would always remember. \"You are remarkable.\" The girl walked back through the incredible festival, past the glowing lanterns and the karst mountains rising in the dark. She thought about what it meant to be capable, and she thought it was quite simple: when something terrible is visible, a responsible person does not walk past."
-   ]
+   ],
+   "source_id": "8.2",
+   "legacy_level": "6.2"
   },
   {
    "title": "It Looks Suspicious!",
@@ -1227,17 +1289,19 @@
     "a science fair: three odd-looking experiments win over a skeptic who guides a nervous sibling"
    ],
    "simplest_level": 2,
-   "source_level": 6,
+   "source_level": 8,
    "source_pages": [
     "Luca stood in Nonna's spacious kitchen and crossed his arms. The morning sun streamed through the open window, and the bright clifftop houses of the Amalfi Coast glowed pink and cream outside. Nonna had set a big glass dish on the tiled bench, and inside it sat something green, something red and something Luca did not trust. \"What is that?\" he asked, taking a cautious step back. \"It looks suspicious.\"",
-    "Nonna just smiled. She was a gracious and patient woman who had fed this cautious boy for all of his visits, and she understood him. She picked up a fat, ripe lemon from the tree outside the door — its skin was bright and luscious. She sliced it open, and a sharp, fresh smell burst into the room. Luca sniffed. \"That smells... not bad,\" he admitted, but he remained cautious.",
-    "Nonna drizzled green oil over the sliced tomatoes and torn basil leaves. Then she grated fresh lemon rind on top and added a pinch of salt. \"This is bruschetta,\" she said. \"It is simple and nutritious.\" Luca peered at the crusty bread stacked on a plate beside the dish. He picked one up and inspected it. \"It looks suspicious,\" he said again. But the smell was delicious — fresh and bright and sharp.",
-    "Next, Nonna filled a big pot with hot water and set it on the stove. She tipped in long strands of fresh pasta and stirred them with a wooden spoon. \"Pasta al limone,\" she announced. \"My mother's precious secret — lemon, cream and a sprinkle of pepper.\" The steam that rose from the pot smelled absolutely delicious, and Luca found himself stepping closer, even though he was still cautious. \"I am not eating that,\" he said, but his feet did not step back.",
-    "Nonna set the last dish on the kitchen table: a small glass cup of pale yellow granita, topped with a thin slice of lemon and a mint leaf. \"Limoncello granita,\" she said. \"Frozen, sweet and scrumptious. This is the most delicious treat on the Amalfi Coast.\" Luca looked at the bruschetta, the pasta and the granita. All three smelled delicious, and he had to admit something: he was not just cautious any more — he was also very, very hungry.",
-    "He reached out — slowly, carefully — and picked up one small piece of bruschetta. He took the tiniest bite. His eyes went wide. It was delicious. He took a bigger bite, and then another. The fresh tomato and lemon burst across his mouth, and the crusty bread was perfect. He tried the pasta next. It was creamy, sharp and absolutely scrumptious. \"Nonna,\" he said, and his voice was thick with feeling, \"this is the most delicious thing I have ever tasted.\"",
-    "The front door clicked open and small feet pattered down the hall. Luca's little sister Sofia ran into the kitchen, her yellow headband bright against her dark curls. She stopped at the table and stared at the granita with a suspicious look on her face. \"What is that?\" she asked, pointing at the frozen treat. \"It looks suspicious!\" Luca grinned. He knew those words — he had said them himself, not long before.",
-    "Luca picked up the glass of granita and held it out to his sister. \"Trust me,\" he said. \"I was suspicious too. But Nonna's cooking is nutritious and delicious — and this is the most precious treat on the whole coast.\" Sofia took a cautious lick. Her face lit up at once. Nonna watched them from the window, the lemon groves glowing golden on the clifftop behind her, and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do."
-   ]
+    "Nonna just smiled. She was a gracious and patient woman who had fed this cautious boy for all of his visits, and she understood him. She picked up a fat, ripe lemon from the tree outside the door \u2014 its skin was bright and luscious. She sliced it open, and a sharp, fresh smell burst into the room. Luca sniffed. \"That smells... not bad,\" he admitted, but he remained cautious.",
+    "Nonna drizzled green oil over the sliced tomatoes and torn basil leaves. Then she grated fresh lemon rind on top and added a pinch of salt. \"This is bruschetta,\" she said. \"It is simple and nutritious.\" Luca peered at the crusty bread stacked on a plate beside the dish. He picked one up and inspected it. \"It looks suspicious,\" he said again. But the smell was delicious \u2014 fresh and bright and sharp.",
+    "Next, Nonna filled a big pot with hot water and set it on the stove. She tipped in long strands of fresh pasta and stirred them with a wooden spoon. \"Pasta al limone,\" she announced. \"My mother's precious secret \u2014 lemon, cream and a sprinkle of pepper.\" The steam that rose from the pot smelled absolutely delicious, and Luca found himself stepping closer, even though he was still cautious. \"I am not eating that,\" he said, but his feet did not step back.",
+    "Nonna set the last dish on the kitchen table: a small glass cup of pale yellow granita, topped with a thin slice of lemon and a mint leaf. \"Limoncello granita,\" she said. \"Frozen, sweet and scrumptious. This is the most delicious treat on the Amalfi Coast.\" Luca looked at the bruschetta, the pasta and the granita. All three smelled delicious, and he had to admit something: he was not just cautious any more \u2014 he was also very, very hungry.",
+    "He reached out \u2014 slowly, carefully \u2014 and picked up one small piece of bruschetta. He took the tiniest bite. His eyes went wide. It was delicious. He took a bigger bite, and then another. The fresh tomato and lemon burst across his mouth, and the crusty bread was perfect. He tried the pasta next. It was creamy, sharp and absolutely scrumptious. \"Nonna,\" he said, and his voice was thick with feeling, \"this is the most delicious thing I have ever tasted.\"",
+    "The front door clicked open and small feet pattered down the hall. Luca's little sister Sofia ran into the kitchen, her yellow headband bright against her dark curls. She stopped at the table and stared at the granita with a suspicious look on her face. \"What is that?\" she asked, pointing at the frozen treat. \"It looks suspicious!\" Luca grinned. He knew those words \u2014 he had said them himself, not long before.",
+    "Luca picked up the glass of granita and held it out to his sister. \"Trust me,\" he said. \"I was suspicious too. But Nonna's cooking is nutritious and delicious \u2014 and this is the most precious treat on the whole coast.\" Sofia took a cautious lick. Her face lit up at once. Nonna watched them from the window, the lemon groves glowing golden on the clifftop behind her, and she thought that feeding the people you love was the most ambitious and delicious thing a person could ever do."
+   ],
+   "source_id": "8.3",
+   "legacy_level": "6.3"
   },
   {
    "title": "The Incredible Bush Walk",
@@ -1268,17 +1332,19 @@
     "a city nature survey: a fast team leader misses a nesting falcon noticed by a quiet sketcher"
    ],
    "simplest_level": 3,
-   "source_level": 6,
+   "source_level": 8,
    "source_pages": [
     "Mia was ambitious. She stood at the start of the bush walk trail with her brother Tom and their dad, and looked out at the enormous Blue Mountains stretching before them. The famous blue haze hung over the peaks like a glorious curtain of mist. \"I am going to spot everything first,\" she said. \"I am the most capable one here.\" Tom said nothing. He just opened his small notebook and listened.",
-    "The trail led them through spacious groves of tall gum trees. Mia strode ahead, pointing at everything she saw. \"Look at that gorgeous rosella in the branches!\" she called back. \"And those enormous cliffs are visible from here — they are famous!\" Tom walked behind, slower and more curious. He crouched down beside a fallen log, because under the calls of the birds he could hear something else.",
-    "\"Tom, you are too slow,\" Mia said with a sigh. \"If you keep stopping, it will be impossible to reach the lookout before lunch.\" She was not gracious about it. Tom closed his notebook, but he stood still. The sound came back, deep in the bush — a curious song, mixed with the calls of every other bird on the trail. \"Something is copying them,\" he whispered.",
-    "Tom crept off the trail, cautious and sensible, placing each foot with care. Behind a thick fern, he saw something wondrous — a lyrebird. Its enormous tail feathers fanned out like a gorgeous silver veil. The bird lifted its head and sang the rosella's call, then the call of a bird Tom could not see, then a sound like a creaking branch. It was performing its famous song, copying every creature in the bush. It was the most incredible thing Tom had ever seen. He held his breath and sketched it in his notebook as fast as he could.",
-    "\"Mia!\" Tom whispered. \"Come here — but be flexible and go slowly!\" Mia came back along the trail, looking suspicious. But when she crouched beside Tom and saw the lyrebird, her face changed. \"That is remarkable,\" she breathed. \"I had no idea it was there.\" Then the lyrebird sang the rosella's call — the very bird Mia had shouted about — and she went quiet. She was conscious now that she had rushed past something precious. Being fast did not make her more capable — it just meant she had missed the most valuable thing on the whole walk.",
-    "After the lyrebird slipped back into the bush, they walked on together. This time, Mia let Tom set the pace. He showed her observable things she had never noticed — a notable pattern in the bark of a gum tree, a web of silk strung across the ferns and the delicious smell of eucalyptus oil hanging in the warm air. \"You are admirable at this,\" Mia said, and she meant it. The glorious view from the lookout was even better when they reached it side by side.",
-    "At the visitor centre near the end of the trail, they found a gallery of Aboriginal dot art on the walls — swirling, joyous paintings of the land and its creatures in dots of red, gold and white. Tom held up his notebook and compared his own drawings to the art. \"Your sketches are incredible,\" said Dad, who had been walking comfortably at the back all morning. \"You were responsible and patient, and you heard more than anyone.\" Mia nodded. She was not adventurous in the same way as Tom, but she was learning that his way of seeing was just as remarkable as hers.",
+    "The trail led them through spacious groves of tall gum trees. Mia strode ahead, pointing at everything she saw. \"Look at that gorgeous rosella in the branches!\" she called back. \"And those enormous cliffs are visible from here \u2014 they are famous!\" Tom walked behind, slower and more curious. He crouched down beside a fallen log, because under the calls of the birds he could hear something else.",
+    "\"Tom, you are too slow,\" Mia said with a sigh. \"If you keep stopping, it will be impossible to reach the lookout before lunch.\" She was not gracious about it. Tom closed his notebook, but he stood still. The sound came back, deep in the bush \u2014 a curious song, mixed with the calls of every other bird on the trail. \"Something is copying them,\" he whispered.",
+    "Tom crept off the trail, cautious and sensible, placing each foot with care. Behind a thick fern, he saw something wondrous \u2014 a lyrebird. Its enormous tail feathers fanned out like a gorgeous silver veil. The bird lifted its head and sang the rosella's call, then the call of a bird Tom could not see, then a sound like a creaking branch. It was performing its famous song, copying every creature in the bush. It was the most incredible thing Tom had ever seen. He held his breath and sketched it in his notebook as fast as he could.",
+    "\"Mia!\" Tom whispered. \"Come here \u2014 but be flexible and go slowly!\" Mia came back along the trail, looking suspicious. But when she crouched beside Tom and saw the lyrebird, her face changed. \"That is remarkable,\" she breathed. \"I had no idea it was there.\" Then the lyrebird sang the rosella's call \u2014 the very bird Mia had shouted about \u2014 and she went quiet. She was conscious now that she had rushed past something precious. Being fast did not make her more capable \u2014 it just meant she had missed the most valuable thing on the whole walk.",
+    "After the lyrebird slipped back into the bush, they walked on together. This time, Mia let Tom set the pace. He showed her observable things she had never noticed \u2014 a notable pattern in the bark of a gum tree, a web of silk strung across the ferns and the delicious smell of eucalyptus oil hanging in the warm air. \"You are admirable at this,\" Mia said, and she meant it. The glorious view from the lookout was even better when they reached it side by side.",
+    "At the visitor centre near the end of the trail, they found a gallery of Aboriginal dot art on the walls \u2014 swirling, joyous paintings of the land and its creatures in dots of red, gold and white. Tom held up his notebook and compared his own drawings to the art. \"Your sketches are incredible,\" said Dad, who had been walking comfortably at the back all morning. \"You were responsible and patient, and you heard more than anyone.\" Mia nodded. She was not adventurous in the same way as Tom, but she was learning that his way of seeing was just as remarkable as hers.",
     "That evening, Tom read from his notebook. \"Dear Journal. Today was an incredible bush walk. The enormous mountains were visible through the famous blue haze. I was cautious and quiet, and I found a precious lyrebird with gorgeous tail feathers performing its marvellous song. Mia missed it at first, but then she came back and we watched it together. It was the most glorious, wondrous moment of the whole day.\" He closed the notebook. Mia smiled. \"You are remarkable, Tom,\" she said."
-   ]
+   ],
+   "source_id": "8.4",
+   "legacy_level": "6.4"
   }
  ]
 }
