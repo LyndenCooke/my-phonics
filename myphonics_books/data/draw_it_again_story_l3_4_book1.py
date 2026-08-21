@@ -103,11 +103,15 @@ DRAW_IT_AGAIN_STORY_BOOK1 = {
         "pronunciation_notes": [
             {
                 "title": "Watch Out — oar",
+                # Trimmed 2026-08-21 (Lynden: "way too much description").  Four
+                # clauses said one thing: oar = /or/.  The 'like the or in for'
+                # gloss and the 'even though the word has those letters' aside
+                # were both restatements.  This box shares page 3 with the -ed
+                # guide and nine tricky-word rows, and the page was printing
+                # past the trim — see the tight rules in book_v2.html.
                 "body": (
-                    "The letters 'oar' work together to say /or/ — they are "
-                    "NOT the 'are' sound, even though the word has those letters. "
-                    "In this story you'll meet 'soared': sound it out s·oar·d, "
-                    "where 'oar' says /or/ (like the 'or' in 'for')."
+                    "'oar' says /or/ — not the 'are' sound. "
+                    "Sound out 'soared' as s·oar·d."
                 ),
                 "examples": ["soared"],
             },

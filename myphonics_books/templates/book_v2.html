@@ -3056,7 +3056,10 @@
       {% if ed_guide %}
       <div class="ed-band">
         <div class="ed-label">-ed at the end &mdash; three ways to say it</div>
-        <div class="ed-intro">Don&rsquo;t sound <strong>-ed</strong> out letter by letter. Read the first part, then add the ending &mdash; which one depends on the letter just before it.</div>
+        {# Trimmed 2026-08-21 (Lynden: "way too much description").  Was two
+           sentences restating the same rule; the three rows below already show
+           it three times. #}
+        <div class="ed-intro">Don&rsquo;t sound <strong>-ed</strong> out letter by letter &mdash; the letter just before it decides which ending you say.</div>
         {% for e in ed_guide %}
         <div class="ed-item">
           <span class="ed-word">{{ e.word }}</span>

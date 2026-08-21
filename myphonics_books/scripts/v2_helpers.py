@@ -1493,10 +1493,15 @@ def build_future_sounds(story_tokens: list, level: int, taught: list,
 
 ED_SOUND_ORDER = ("id", "d", "t")
 ED_DEFAULT_EXAMPLES = {"id": "wanted", "d": "played", "t": "jumped"}
+# Trimmed 2026-08-21 (Lynden: "way too much description").  The spoken form
+# in the middle column already SHOWS the sound — point-id, play'd, hop't — so
+# naming it again ("an 'id' beat", "a soft 'd'") was the same fact twice.  All
+# these need to carry is the trigger letter, which is the part the reader
+# cannot see from the example.
 ED_WHY = {
-    "id": "an 'id' beat, after a t or d",
-    "d": "a soft 'd', after a vowel or a soft sound",
-    "t": "a quick 't', after a sharp sound like p, k or ch",
+    "id": "after t or d",
+    "d": "after a vowel or soft sound",
+    "t": "after p, k or ch",
 }
 
 # -ed doubles a final SINGLE consonant (stop → stopped), so the double
