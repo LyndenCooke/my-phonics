@@ -21,12 +21,12 @@ import fs from "node:fs";
 import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, decodeProblems } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, polishStoryAloud, nameBreakdown, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
-import { getBook, updateBook, recentStoryShapes, restoreCreditForBook } from "./db.mjs";
+import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
 import { BOOKS_DIR } from "./env.mjs";
 
 export { CUSTOM_BOOKS_DIR };
@@ -252,12 +252,26 @@ async function stepStory(book, job) {
     // history unavailable — fall back to the full pool rather than fail the book
   }
   const shape = pool[Math.floor(Math.random() * pool.length)];
+
+// VARY A PROVEN BOOK RATHER THAN INVENT A PLOT (Lynden 2026-08-21: "the 33
+// books i made have great stories... make variations of them based on new
+// places/objects and characters"). Inventing plots is where our cost and
+// most of our story defects lived. The source supplies the spine; the shape
+// stays only as a fallback for when no source is available at this level.
+let source = null;
+try {
+  source = sourceStoryFor(book.level, await recentSourceStories(6));
+} catch (e) {
+  console.warn("[forge] no source story available, inventing instead:", e.message);
+}
+if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name}`);
   const { data: story, cost } = await writeStory({
     level, child, focusSound: book.focus_sound, pagesCount,
     greenWords: greenWordsUpTo(book.level),
     progression: progressionUpTo(book.level),
     pronunciations: pronunciationsFor(book.focus_sound, book.level),
     shape,
+    source,
     exemplars: coreStoriesFor(book.level),
   });
   job.cost += cost; job.breakdown.story_usd += cost;
@@ -294,6 +308,7 @@ async function stepStory(book, job) {
 
   job.story = story;
   job.breakdown.story_shape = shape.name;
+  job.breakdown.source_story = source?.title || null;
   job.breakdown.shape_fulfilment = story.shape_fulfilment;
 }
 

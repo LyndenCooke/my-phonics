@@ -612,7 +612,7 @@ export const STORY_SHAPES = [
   { name: "Side by side", how: "Two people or two things are set up as a genuine contrast across the book — big and small, fast and slow, old and new, quiet and loud — each page showing the difference in action, building to a moment where the difference turns out to be exactly what was needed." },
 ];
 
-export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [] }) {
+export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [], source = null }) {
   const system = `You are the senior story writer for MyPhonicsBooks: British decodable picture books (Letters and Sounds based, NOT Read Write Inc) for children aged 4-8. British English throughout (colour, mum, favourite).
 
 === 1. THE BOOKS YOU ARE WRITING (read these first) ===
@@ -635,7 +635,14 @@ Read each line aloud in your head as a grown-up reading to a five-year-old on th
 === 3. THE STORY ===
 THE STORY COMES FROM THE SOUND, NOT FROM A THEME. Start from "${focusSound}": brainstorm the decodable words it unlocks, pick those with story potential, and build the best story THOSE words can tell. The child's hobbies and the family's notes are SET DRESSING - they colour what we SEE and must never become the plot, the obstacle, the solution, or a plot-driving character or animal.
 
-STORY SHAPE - ${shape ? `THIS book must use this shape: **${shape.name}** - ${shape.how}` : "choose a shape that suits the sound"}
+${source ? `YOU ARE WRITING A VARIATION OF A PROVEN BOOK, NOT A NEW PLOT. This is the single most important instruction on this page. MyPhonicsBooks already has 33 published stories that work; your job is to retell ONE of them in this child's world, not to invent a plot from nothing.
+
+THE SOURCE STORY - "${source.title}":
+${source.pages.map((p, i) => `${i + 1}. ${p}`).join("\n")}
+
+KEEP its spine exactly: the same thing goes wrong, in the same order, resolved by the same kind of action, with the same feeling at the end. Keep its simplicity and its number of beats.
+CHANGE everything on the surface: a different place, different objects, different people, a different focus sound. Not one sentence may survive - if a line of yours could be swapped into the source book unnoticed, rewrite it. A family who owns both books must see two different stories that happen to rhyme.
+If the source has ${source.pages.length} pages and you need ${pagesCount}, redistribute the same beats across the pages you have; never pad with a new incident.` : `STORY SHAPE - ${shape ? `THIS book must use this shape: **${shape.name}** - ${shape.how}` : "choose a shape that suits the sound"}`}
 Stay on that shape's own throughline: if its tension needs raising, raise THAT tension rather than bolting on a second story.
 
 Fill "premise" (character, setting, goal, object, problem, cultural context, one-sentence premise), then "story_plan" as SIX BEATS the pages must actually deliver:

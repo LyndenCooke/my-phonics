@@ -250,6 +250,19 @@ export async function recentStoryShapes(limit = 5) {
   return rows.map((b) => b.cost_breakdown?.story_shape).filter(Boolean);
 }
 
+// Which published books have recently been varied, so the next one reskins a
+// different plot (Lynden 2026-08-21).
+export async function recentSourceStories(limit = 6) {
+  await initDb();
+  let rows;
+  if (mode === "supabase") {
+    rows = await rest(`custom_books?select=cost_breakdown&order=created_at.desc&limit=${limit}`);
+  } else {
+    rows = loadFile().custom_books.slice(0, limit);
+  }
+  return rows.map((b) => b.cost_breakdown?.source_story).filter(Boolean);
+}
+
 export async function costSummary() {
   await initDb();
   const books = await listBooks({});

@@ -190,6 +190,24 @@ export function coreStoriesFor(newLevel, count = 3) {
   return picked.map((b) => ({ title: b.title, pages: b.pages }));
 }
 
+// A PROVEN STORY TO VARY (Lynden 2026-08-21: "the 33 books i made have great
+// stories - make variations of them based on new places/objects and
+// characters"). Inventing a plot from nothing is where most of our cost and
+// nearly all our story defects came from; the library already contains 33
+// plots he wrote and approved. This returns ONE of them at the right level
+// to reskin, avoiding titles used recently.
+export function sourceStoryFor(newLevel, avoidTitles = []) {
+  if (!coreStoriesCache) coreStoriesFor(newLevel, 1);
+  const oldLevel = newLevel <= 3 ? 1 : newLevel - 2;
+  const avoid = new Set((avoidTitles || []).map((t) => String(t).toLowerCase()));
+  const atLevel = (coreStoriesCache || []).filter((b) => b.level === oldLevel);
+  if (!atLevel.length) return null;
+  const fresh = atLevel.filter((b) => !avoid.has(String(b.title).toLowerCase()));
+  const pool = fresh.length ? fresh : atLevel;
+  const b = pool[Math.floor(Math.random() * pool.length)];
+  return { title: b.title, pages: b.pages, focusGraphemes: b.focus_graphemes || [] };
+}
+
 export function pronunciationNoteFor(grapheme, level) {
   const sounds = pronunciationsFor(grapheme, level);
   if (sounds.length < 2) return null;
