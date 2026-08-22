@@ -612,7 +612,11 @@ export const STORY_SHAPES = [
   { name: "Side by side", how: "Two people or two things are set up as a genuine contrast across the book — big and small, fast and slow, old and new, quiet and loud — each page showing the difference in action, building to a moment where the difference turns out to be exactly what was needed." },
 ];
 
-export async function writeStory({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [], source = null }) {
+// The writer prompt is built separately so the SAME system+user message can be
+// sent to another vendor for comparison (Lynden 2026-08-22: "try the kimi api
+// key... the writing is the easy part"). writeStory is now a thin caller.
+export function writerPrompt({ level, child, focusSound, pagesCount, greenWords = [], progression = null, pronunciations = [], shape = null, exemplars = [], source = null }) {
+
   // HAND THE WRITER THE ACTUAL WORDS (Lynden 2026-08-21). At Level 1 the child
   // has ten letters, and asking a model to derive every "s" word from them in
   // its head produced books about tapping tins. The bank is already computed;
@@ -756,6 +760,20 @@ CULTURE: the child's world - ${child.cultureNotes || "everyday family life"} - a
 - "alien_words": exactly 4 made-up nonsense words (not real words), fully decodable at this level, each containing "${focusSound}".`;
 
   const content = `Write the ${pagesCount}-page decodable story now. Focus sound: "${focusSound}". Remember: every word decodable at Level ${level.level} or in the tricky list, focus sound in 3-4 distinct words that the story would contain anyway - never invent a thing just because its name has the sound, read_words exactly 6 words with exactly 2 containing the focus sound and 4 other level-worthy story words, and every sentence read aloud in your head first - if it sounds like a caption or a stage direction, rewrite it before you answer — not literary or adult narration.`;
+  return { system, content };
+}
+
+export function buildWriterMessages(opts) {
+  const { system, content } = writerPrompt(opts);
+  return [{ role: "system", content: system }, { role: "user", content }];
+}
+
+// FORGE_WRITER_MODEL lets the writing run on a cheaper model than the judges
+// (Lynden 2026-08-22: "the writing is the easy part"). Unset = the story tier.
+export async function writeStory(opts) {
+  const { system, content } = writerPrompt(opts);
+  const override = process.env.FORGE_WRITER_MODEL;
+  if (override) return openaiJson({ model: override, system, content, schema: STORY_SCHEMA, maxTokens: 16000 });
   return callJson({ system, content, schema: STORY_SCHEMA });
 }
 
@@ -1849,3 +1867,6 @@ HOW TO ANSWER — do this in order, and do not skip steps 1-2:
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
   return { data: JSON.parse(text), cost: usageCost(response.usage) };
 }
+
+// For A/B harnesses that need the writer's exact schema.
+export const STORY_SCHEMA_EXPORT = STORY_SCHEMA;

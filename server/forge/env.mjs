@@ -57,6 +57,10 @@ export const cfg = {
   ANTHROPIC_API_KEY: anthropicKey,
   OPENAI_API_KEY: booksEnv.OPENAI_API_KEY || "",
   FAL_KEY: booksEnv.FAL_KEY || "",
+  // Kimi (Moonshot) - a far cheaper text vendor for the writing and judging
+  // work, which is not the hard part of this pipeline (Lynden 2026-08-22).
+  // The .env spells it Kimi_API_KEy; accept any casing.
+  KIMI_API_KEY: booksEnv.KIMI_API_KEY || booksEnv.Kimi_API_KEy || booksEnv.kimi_api_key || "",
   STRIPE_SECRET_KEY: booksEnv.STRIPE_SECRET_KEY || "",
   ELEVEN_LABS_API: booksEnv.ELEVEN_LABS_API || "",
   // Same key already used by supabase/functions/stripe-webhook for print-ops
