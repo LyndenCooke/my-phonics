@@ -965,7 +965,11 @@ async function stepReview(book, job) {
     const buf = await loadByUrl(url);
     // 1024px, not 640: the editor must be able to resolve the details its
     // rubric asks about (a hook on a stall, the slot width of a drain grate).
-    const small = await reviewThumb(buf, 1024);
+    // 640px is plenty for a whole-book read and cuts the largest input this
+    // pipeline sends. The editor judges composition, continuity and whether
+    // the action is visible - none of which needs 1024px x every page. The
+    // per-page QA still sees full-size images (Lynden 2026-08-22, on cost).
+    const small = await reviewThumb(buf, 640);
     images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
   }
 
