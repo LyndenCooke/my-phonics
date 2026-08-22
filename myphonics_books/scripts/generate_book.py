@@ -643,7 +643,14 @@ def load_sound_detective_claims() -> dict:
 
 
 def _tricky_breakdowns(words):
-    """[{word, parts, tricky, says}] for the tricky-word strip."""
+    """[{word, parts, tricky, says, say}] for the tricky-word strip.
+
+    The page prints ONLY `word -> say` (Lynden 2026-08-22: "it should just be
+    the tricky word and then the arrow to the pronunciation, no slashes").
+    `parts`/`tricky`/`says` are kept for other surfaces, but a word whose
+    spoken form is simply its spelling ("my" -> "my", "eye", "oh") now has
+    nothing left to show, so it is dropped here and stays in the word chips.
+    """
     try:
         with open(BASE_DIR / "data" / "tricky_word_breakdowns.json", encoding="utf-8") as f:
             table = json.load(f)["words"]
@@ -653,7 +660,7 @@ def _tricky_breakdowns(words):
     out = []
     for w in words or []:
         e = table.get(w) or lower.get(str(w).lower())
-        if e:
+        if e and (e.get("say") or "").strip().lower() != str(w).strip().lower():
             out.append({"word": w, "parts": e.get("parts") or [w],
                         "tricky": e.get("tricky", ""), "says": e.get("says", ""),
                         # The spoken form, arrowed (Lynden 2026-08-21).  It used

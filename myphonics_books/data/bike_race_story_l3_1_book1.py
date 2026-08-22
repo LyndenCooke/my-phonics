@@ -56,7 +56,7 @@ BIKE_RACE_STORY_BOOK1 = {
                     "instead of /k/.  In this story you'll meet 'race' — "
                     "the 'c' says /s/ because it sits before the silent 'e'."
                 ),
-                "examples": ["race", "face", "place"],
+                "examples": ["race → rayss", "face → fayss", "place → playss"],
             },
         ],
     }

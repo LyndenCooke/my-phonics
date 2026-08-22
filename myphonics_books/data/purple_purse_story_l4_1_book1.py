@@ -103,7 +103,7 @@ PURPLE_PURSE_STORY_BOOK1 = {
                     "'searched' — say s·ear·ch with the /er/ sound, like the "
                     "'er' in 'her'."
                 ),
-                "examples": ["search", "searched"],
+                "examples": ["search → serch", "searched → sercht"],
             },
         ],
         "read_words": ["church", "burst", "seller", "corner"],

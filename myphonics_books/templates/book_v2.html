@@ -471,20 +471,24 @@
     .sw-tricky-words {
       display: flex; flex-wrap: wrap; gap: 3mm; justify-content: center;
     }
-    .sw-tricky-how { margin-top: 2.5mm; display: flex; flex-direction: column; gap: 1.1mm; }
-    .sw-tricky-how-row { display: flex; align-items: baseline; gap: 2.5mm; font-size: 9pt; line-height: 1.25; }
-    .sw-tricky-how-word { font-weight: bold; min-width: 20mm; }
-    .sw-tricky-how-parts { min-width: 30mm; letter-spacing: 0.2mm; }
-    .sw-part { border-bottom: 0.4mm solid #cbb7e8; padding: 0 0.5mm; }
-    .sw-dot { color: #b9a4d8; padding: 0 0.4mm; }
-    .sw-tricky-how-note { color: #555; }
-    /* The spoken form, arrowed to the right edge (Lynden 2026-08-21).  Naming
-       the misbehaving letter is only half the job — the grown-up still has to
-       know what comes out of their mouth, so every row now ends in one.
-       Right-aligned rather than inline so the answers form a scannable column
-       whatever length the explanation runs to. */
+    /* fit-content + auto margins: the block of rows is centred under the word
+       chips, but every row stretches to the widest one, so the arrows stay in
+       a single column instead of drifting row by row. */
+    .sw-tricky-how {
+      margin: 2.5mm auto 0; width: fit-content;
+      display: flex; flex-direction: column; gap: 1.1mm;
+    }
+    .sw-tricky-how-row { display: flex; align-items: baseline; gap: 2.5mm; font-size: 9.5pt; line-height: 1.25; }
+    .sw-tricky-how-word { font-weight: bold; min-width: 20mm; text-align: right; }
+    /* WORD → SAY IT LIKE THIS, and nothing else (Lynden 2026-08-22: "it should
+       just be the tricky word and then the arrow to the pronunciation").  The
+       letter-split (b · u · sy) and the /i/ /z/ note that used to sit between
+       them are gone: slash notation is for teachers, not for the grown-up
+       reading at bedtime, and three columns of grey type buried the one thing
+       they actually needed.  The arrow now follows the word directly, with the
+       words right-aligned in their column so the arrows line up. */
     .sw-tricky-how-say {
-      margin-left: auto; white-space: nowrap;
+      white-space: nowrap;
       font-weight: 700; color: #7c3aed;
     }
     /* 5.4 carries NINE tricky words on a page that also runs the -ed guide and
@@ -518,8 +522,17 @@
     .sw-inner-tight .sw-words-grid { gap: 1.5mm 3mm; margin-bottom: 1.5mm; }
     .sw-inner.has-ed.sw-inner-tight .sw-word-cell,
     .sw-inner-tight .sw-word-cell { min-height: 12mm; padding: 1.2mm 1.5mm; }
-    .sw-tricky-how-tight { gap: 0.3mm; margin-top: 0.8mm; }
-    .sw-tricky-how-tight .sw-tricky-how-row { font-size: 7.9pt; line-height: 1.15; }
+    /* 8+ rows go into TWO columns (2026-08-22).  The old note against two
+       columns was that every explanation wrapped at half width — but the
+       explanations are gone, and "looked → lookt" is short enough that a
+       16-row list otherwise ran a third of the page as a single thin ribbon
+       (3.4 pushed the -ed band and the Watch Out box off the trim). */
+    .sw-tricky-how-tight {
+      display: grid; grid-template-columns: repeat(2, auto);
+      column-gap: 9mm; row-gap: 0.4mm;
+      justify-content: center; margin-top: 0.8mm;
+    }
+    .sw-tricky-how-tight .sw-tricky-how-row { font-size: 8.5pt; line-height: 1.2; }
     /* The chips repeat words the rows below already name, so on an 8+ page they
        give up size before the explanations do. */
     /* NOT :has() — the Chromium that renders these PDFs ignores it, so the
@@ -626,10 +639,8 @@
       text-transform: uppercase; letter-spacing: 0.6px;
       margin-bottom: 1.5mm;
     }
-    .sw-pron-note-body {
-      font-size: 9pt; color: #5c4020; line-height: 1.5;
-      margin-bottom: 2mm;
-    }
+    /* .sw-pron-note-body is intentionally gone — the Watch Out box prints its
+       title and its word → say-it-like-this examples only (Lynden 2026-08-22). */
     /* Each example is "<word> → <pronunciation>" kept on ONE line, and the
        lines PACK left-to-right, fitting as many per row as genuinely fit.
        This used to be a fixed two-column grid where any entry longer than 24
@@ -3044,29 +3055,26 @@
         {% if tricky_breakdowns or (profile and profile.name_breakdown) %}
         <div class="sw-tricky-how{% if (tricky_breakdowns | length) >= 8 %} sw-tricky-how-tight{% endif %}">
           {# The name breakdown follows the same rule: youngest readers only. #}
-          {% if profile and profile.name_breakdown and level <= 4 %}
+          {% if profile and profile.name_breakdown and profile.name_breakdown.say and level <= 4 %}
           <div class="sw-tricky-how-row">
             <span class="sw-tricky-how-word">{{ profile.name }}</span>
-            <span class="sw-tricky-how-parts">{% for p in profile.name_breakdown.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
-            <span class="sw-tricky-how-note">{{ profile.name_breakdown.says }}</span>
+            <span class="sw-tricky-how-say">&rarr; {{ profile.name_breakdown.say }}</span>
           </div>
           {% endif %}
-          {% for b in tricky_breakdowns %}
+          {# Rows whose spoken form IS their spelling ("my" -> "my") are dropped
+             upstream in _tricky_breakdowns — see the note there. #}
+          {% for b in tricky_breakdowns %}{% if b.say %}
           <div class="sw-tricky-how-row">
             <span class="sw-tricky-how-word">{{ b.word }}</span>
-            <span class="sw-tricky-how-parts">{% for p in b.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
-            <span class="sw-tricky-how-note">{% if b.tricky %}<strong>{{ b.tricky }}</strong> says {% endif %}{{ b.says }}</span>
-            {% if b.say %}<span class="sw-tricky-how-say">&rarr; {{ b.say }}</span>{% endif %}
+            <span class="sw-tricky-how-say">&rarr; {{ b.say }}</span>
           </div>
-          {% endfor %}
+          {% endif %}{% endfor %}
         </div>
         {% endif %}
-        {# Youngest readers only, like the breakdowns above. #}
-        {% if profile and profile.name and level <= 4 %}
-        <div style="font-size: 8.5pt; color: #777; margin-top: 1.5mm; text-align: center;">
-          {{ profile.name }}&rsquo;s own name is here because most children read their name long before they can build it &mdash; say it together, then look for it on every page.
-        </div>
-        {% endif %}
+        {# The grey explainer that used to sit here (why the child's own name
+           is a tricky word) is gone — Lynden 2026-08-22: "i dont like all the
+           small grey writing its pointless and too much".  The strip now says
+           only the word and how to say it. #}
       </div>
       {% endif %}
 
@@ -3102,7 +3110,10 @@
       {% for note in pronunciation_notes %}
       <div class="sw-pron-note">
         <div class="sw-pron-note-label">{{ note.title }}</div>
-        <div class="sw-pron-note-body">{{ note.body }}</div>
+        {# The explanatory paragraph is deliberately NOT printed (Lynden
+           2026-08-22: "remove them all" / "the big descriptions").  The
+           word → say-it-like-this examples below carry the whole message;
+           note.body stays in the data for other surfaces. #}
         {% if note.examples %}
         <div class="sw-pron-note-examples">
           {% for ex in note.examples %}

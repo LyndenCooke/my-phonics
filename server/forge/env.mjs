@@ -81,6 +81,10 @@ export const cfg = {
 
 export function configReport() {
   return {
+    // Which model is actually writing, so a stale dev server on another port
+    // cannot silently ignore FORGE_WRITER_MODEL (it has cost two test runs).
+    writer_model: process.env.FORGE_WRITER_MODEL || "(default story tier)",
+    image_engine: process.env.FORGE_IMG_ENGINE || "(failover order)",
     supabase_url: cfg.SUPABASE_URL || "(missing)",
     supabase_service_key: cfg.SUPABASE_SERVICE_KEY ? "present" : "missing",
     llm: cfg.ANTHROPIC_API_KEY

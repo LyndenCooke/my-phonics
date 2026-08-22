@@ -811,15 +811,20 @@ export async function nameBreakdown({ name, country }) {
     "Split the name into the chunks you would actually say, and give a plain say-it-like-this. " +
     "Be accurate to how the name is said in its own culture, not an anglicised guess. " +
     "Keep 'says' under 12 words, written for a parent, never phonetic symbols - use plain spellings like 'Tom-ash'. " +
+    "'say' is the one the book prints: the whole name respelled as spoken, hyphenated, e.g. 'Tom-ash' - never slashes, never an explanation. " +
     "If the name is straightforwardly decodable in English (Sam, Ben, Hana), say so simply.";
   const content = `Name: "${name}"${country ? `, a child in ${country}` : ""}.`;
   const schema = {
     type: "object",
     properties: {
       parts: { type: "array", items: { type: "string" }, description: "The name split into spoken chunks, e.g. [\"To\",\"masz\"] or [\"Ay\",\"la\"]." },
-      says: { type: "string", description: "How to say it, plainly: 'say Tom-ash - the sz says /sh/'." },
+      says: { type: "string", description: "How to say it, plainly: 'say Tom-ash - the sz says /sh/'. Not printed in the book; kept for reference." },
+      // The ONLY thing the book prints: name -> say (Lynden 2026-08-22).
+      // The chunk split and the explanation are gone from the page, so this
+      // one string has to be readable on its own, out loud, by a parent.
+      say: { type: "string", description: "The whole name respelled the way you say it, hyphenated, nothing else: 'Tom-ash', 'Shiv-awn', 'Ay-la'. No symbols, no slashes, no explanation." },
     },
-    required: ["parts", "says"],
+    required: ["parts", "says", "say"],
     additionalProperties: false,
   };
   return callJson({ system, content, schema, tier: "fast", maxTokens: 600 });

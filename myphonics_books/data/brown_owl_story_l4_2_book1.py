@@ -99,7 +99,7 @@ BROWN_OWL_STORY_BOOK1 = {
                     "say branch, then add /iz/ — branch·iz.  '-es' is a Level "
                     "7 sound, so just tell your child this one."
                 ),
-                "examples": ["branches"],
+                "examples": ["branches → branch-iz"],
             },
         ],
         "read_words": ["howl", "bare", "brown", "stared"],

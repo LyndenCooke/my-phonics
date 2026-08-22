@@ -113,7 +113,7 @@ DRAW_IT_AGAIN_STORY_BOOK1 = {
                     "'oar' says /or/ — not the 'are' sound. "
                     "Sound out 'soared' as s·oar·d."
                 ),
-                "examples": ["soared"],
+                "examples": ["soared → sord"],
             },
         ],
         "read_words": ["saw", "hawk", "claw", "coin", "soil", "point"],
