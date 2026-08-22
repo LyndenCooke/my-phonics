@@ -1046,10 +1046,16 @@ async function stepReview(book, job) {
     // BOOK-level faults justify a rewrite; anything else naming a page is
     // repaired in place (Lynden 2026-08-21).
     const BOOK_LEVEL = new Set(["premise", "story", "language", "phonics", "safety", "teaching-truth"]);
+    // The editor now states the pages on each issue; the prose regex stays as
+    // a fallback for older rows and for a model that leaves the list empty.
     const pageOf = (i) => {
-      const m = String(i.detail || "").match(/\bpages?\s+(\d+)/i);
+      if (Array.isArray(i.pages) && i.pages.length) return Number(i.pages[0]);
+      const m = String(i.detail || "").match(/pages?\s+(\d+)/i);
       return m ? Number(m[1]) : null;
     };
+    const pagesOf = (i) => (Array.isArray(i.pages) && i.pages.length
+      ? i.pages.map(Number)
+      : [pageOf(i)].filter(Boolean));
     // A cover fault is the cheapest fix in the book - re-choose and re-crop -
     // but it names no page number, so it fell through to a full rewrite and
     // threw away six finished pages (Nadia, 2026-08-21).
@@ -1065,8 +1071,7 @@ async function stepReview(book, job) {
     if (allPageLocal) {
       const notes = {};
       for (const i of verdict.blocking) {
-        const n = pageOf(i);
-        notes[n] = notes[n] ? `${notes[n]} ${i.detail}` : i.detail;
+        for (const n of pagesOf(i)) notes[n] = notes[n] ? `${notes[n]} ${i.detail}` : i.detail;
       }
       job.repairNotes = { ...(job.repairNotes || {}), ...notes };
       for (const n of Object.keys(notes).map(Number).sort((a, b) => a - b)) {
