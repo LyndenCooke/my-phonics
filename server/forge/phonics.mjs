@@ -268,7 +268,14 @@ export function greenWordsUpTo(level) {
     }
     if (!greenWordsCache?.length) throw new Error("green_words.json missing — cannot write a decodable story without the word bank");
   }
-  return greenWordsCache.filter((w) => w.level <= level).map((w) => w.word);
+  // The bank is not gospel: it lists "market" as a Level 4 'ar' word, but the
+  // renderer's decodability gate rightly rejects it (unstressed e). A bank
+  // word on the DISHONEST list must never reach the writer's legal-word list
+  // or the read_words normaliser — that is exactly how "market" passed every
+  // upstream gate and killed a finished book at typeset time (2026-08-22).
+  return greenWordsCache
+    .filter((w) => w.level <= level && !DISHONEST[String(w.word).toLowerCase()])
+    .map((w) => w.word);
 }
 
 // DETERMINISTIC DECODABILITY (Lynden 2026-08-21: the LLM phonics gate cost
@@ -279,10 +286,11 @@ export function greenWordsUpTo(level) {
 const DOUBLED = new Set(["bb", "cc", "dd", "ff", "gg", "ll", "mm", "nn", "pp", "rr", "ss", "tt", "zz"]);
 const DISHONEST = {
   listen: "silent t", listened: "silent t", castle: "silent t", whistle: "silent t",
-  fasten: "silent t", answer: "silent w",
+  fasten: "silent t", answer: "silent w", was: "the a after w says /o/",
   wash: "the a after w says /o/", want: "the a after w says /o/", wanted: "the a after w says /o/",
   watch: "the a after w says /o/", water: "the a after w says /o/",
   basket: "unstressed e", pocket: "unstressed e", rocket: "unstressed e", carpet: "unstressed e",
+  target: "unstressed e", pocketed: "unstressed e",
   market: "unstressed e", tomato: "unstressed vowels", potato: "unstressed o", banana: "unstressed a",
   animal: "unstressed a", family: "unstressed i", biscuit: "ui says /i/", asked: "said askt",
 };

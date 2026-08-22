@@ -324,11 +324,24 @@ async function stepQa(book, job) {
   // the taught graphemes is arithmetic, not judgement, and paying a reasoning
   // model to answer it is waste. The LLM gate now runs ONLY when the cheap
   // check finds something, or as a spot-check it cannot do (sound choice).
+  // read_words is a LIST, not prose — a bad entry is deleted by code, never
+  // sent to a model. fixStoryWords is only ever shown pages + title, so a
+  // dishonest practice word could NEVER be cleared by the surgical fix and
+  // always escalated to a full rewrite (found 2026-08-22: "market" did this).
+  // The normaliser below tops the list back up to six from clean words.
+  {
+    const clean = (story.read_words || []).filter(
+      (w) => !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length,
+    );
+    if (clean.length !== (story.read_words || []).length) {
+      console.log(`[forge] read_words sanitised: dropped ${JSON.stringify((story.read_words || []).filter((w) => !clean.includes(w)))}`);
+      story.read_words = clean;
+    }
+  }
   const words = [story.title, ...story.pages.map((p) => p.text), ...(story.read_words || [])]
     .join(" ").toLowerCase().match(/[a-z']+/g) || [];
   const deterministic = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
-  const practiceProblems = decodeProblems(story.read_words || [], book.level, { heroName: child.name, allowPeople: false });
-  const cheapFindings = [...deterministic, ...practiceProblems];
+  const cheapFindings = deterministic;
   let validation = { ok: true, violations: [], focus_sound_count: 0 };
   if (cheapFindings.length) {
     const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
@@ -435,13 +448,18 @@ async function stepQa(book, job) {
   // a third time.
   {
     const focus = String(book.focus_sound || "").toLowerCase();
-    const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))];
+    // This normaliser runs AFTER the decode gate, so anything it injects from
+    // the text or the bank skips every check upstream — it re-introduced
+    // "market" into read_words after QA had passed (2026-08-22). Every word
+    // that can enter the six must clear the same free deterministic check.
+    const decodable = (w) => !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length;
+    const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))].filter(decodable);
     const bank = new Set(greenWordsUpTo(book.level).map((w) => String(w).toLowerCase()));
     const textTokens = [...new Set(story.pages.flatMap((p) => (p.text.toLowerCase().match(/[a-z']+/g) || [])))];
     const hasFocus = (w) => focus && w.includes(focus);
     const focusPool = [...new Set([
       ...uniq.filter(hasFocus),
-      ...(story.focus_word_examples || []).map((w) => String(w).toLowerCase()),
+      ...(story.focus_word_examples || []).map((w) => String(w).toLowerCase()).filter(decodable),
       ...textTokens.filter((t) => hasFocus(t) && bank.has(t)),
     ])];
     const otherPool = [...new Set([
@@ -1502,7 +1520,13 @@ function buildPdfSpecCore(book) {
     // (passing only focus_word_examples was hiding half the page). Six in
     // total: 2 containing the target sound, then 4 further decodable story
     // words for the level (Lynden 2026-08-16; was 3 + 3 on 08-13).
-    story_words: (story.read_words?.length ? story.read_words : (story.focus_word_examples || [])).slice(0, 6),
+    // The fallback list goes to the renderer's decodability gate unchecked, so
+    // it gets the same free filter read_words already had upstream — a single
+    // dishonest example here fails the whole typeset after the money is spent.
+    story_words: (story.read_words?.length
+      ? story.read_words
+      : (story.focus_word_examples || []).filter((w) => !decodeProblems([w], book.level, { heroName: book.child_name, allowPeople: false }).length)
+    ).slice(0, 6),
     read_words: (story.read_words || []).slice(0, 6),
     questions: story.questions || [],
     alien_words: story.alien_words || [],
