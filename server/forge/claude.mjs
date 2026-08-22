@@ -881,6 +881,47 @@ Report only genuine violations, with the position that failed as the reason.`;
   return callJson({ system, content, schema: REVIEW_SCHEMA, tier: "phonics" });
 }
 
+// SURGICAL WORD FIX (Lynden 2026-08-22: "why are we doing whole rewrites and
+// not write edits"). rewriteStory regenerates the ENTIRE story - title, every
+// page, cast, scenes - to remove one bad word, which is expensive and can
+// silently change pages that were fine (and invalidate their finished art).
+// This returns ONLY the lines that must change, and nothing else moves.
+export async function fixStoryWords({ story, level, childName, problems }) {
+  const system =
+    "You are fixing SPECIFIC WORDS in a decodable children's book. Change as little as possible: keep the plot, the page count, the title if it is clean, and every line that has no problem EXACTLY as it is. " +
+    "For each faulty word, swap in a word that means nearly the same and is legal here, or rephrase that one sentence around it. Never rewrite a page for style while you are here. " +
+    "LEGAL WORDS: anything built from these graphemes: " + JSON.stringify(level.cumulative) + ", or these tricky words: " + JSON.stringify(level.trickyWords) + ". The name \"" + childName + "\" is allowed. " +
+    "A word only counts as legal if saying its taught letter-sounds actually produces the spoken word - that is why the listed words were rejected. " +
+    "Return ONLY the pages you changed, by their page number, plus a corrected title if the title itself was faulty.";
+  const content =
+    "PAGES:" + String.fromCharCode(10) +
+    story.pages.map((p, i) => `${i + 1}. ${p.text}`).join(String.fromCharCode(10)) +
+    String.fromCharCode(10, 10) + `TITLE: "${story.title}"` +
+    String.fromCharCode(10, 10) + "PROBLEMS TO FIX:" + String.fromCharCode(10) + problems.map((p) => "- " + p).join(String.fromCharCode(10));
+  const schema = {
+    type: "object",
+    properties: {
+      fixes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            page: { type: "integer", description: "1-based page number you changed." },
+            text: { type: "string", description: "The whole corrected page text." },
+          },
+          required: ["page", "text"],
+          additionalProperties: false,
+        },
+      },
+      title: { type: "string", description: "A corrected title, or the original unchanged." },
+      note: { type: "string", description: "One line: what you swapped and why." },
+    },
+    required: ["fixes", "title", "note"],
+    additionalProperties: false,
+  };
+  return callJson({ system, content, schema, tier: "story", maxTokens: 3000 });
+}
+
 export async function rewriteStory({ level, child, focusSound, pagesCount, story, violations }) {
   const system = `You are the senior story writer for MyPhonicsBooks fixing decodability violations. Keep the same title, plot and scenes wherever possible — change only what is needed to remove the violations. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in AT LEAST 3 distinct words (up to 3 - not fewer). British English. Exactly ${pagesCount} pages.
 

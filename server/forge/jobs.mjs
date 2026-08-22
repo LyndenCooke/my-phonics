@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, polishStoryAloud, nameBreakdown, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -373,6 +373,36 @@ async function stepQa(book, job) {
   // outright, so letting one through here just moves the death to render time
   // ("market" reached the renderer and killed the book, 2026-08-22).
   const mustFix = cheapFindings.length > 0;
+  // SURGICAL FIRST (Lynden 2026-08-22). A deterministic finding is usually one
+  // bad word; swapping that word costs a fraction of regenerating the book and
+  // cannot disturb pages that were fine. Only a genuine pile-up, or a fix that
+  // fails to clear the problem, falls through to the full rewrite below.
+  if (mustFix && distinct <= 3 && !focusViolations.length && !countViolation) {
+    try {
+      const edit = await fixStoryWords({ story, level, childName: child.name, problems: cheapFindings });
+      job.cost += edit.cost || 0; job.breakdown.story_usd += edit.cost || 0;
+      const patched = { ...story, pages: story.pages.map((p) => ({ ...p })) };
+      for (const f of edit.data?.fixes || []) {
+        const i = Number(f.page) - 1;
+        if (i >= 0 && i < patched.pages.length && f.text) patched.pages[i].text = fixMechanics(String(f.text).trim(), child.name);
+      }
+      if (edit.data?.title) patched.title = String(edit.data.title).trim();
+      const after = decodeProblems(
+        [...new Set(([patched.title, ...patched.pages.map((p) => p.text), ...(patched.read_words || [])].join(" ").toLowerCase().match(/[a-z']+/g) || []))],
+        book.level, { heroName: child.name });
+      if (!after.length) {
+        story = patched;
+        job.breakdown.word_fix = { note: edit.data?.note, pages: (edit.data?.fixes || []).map((f) => f.page) };
+        console.log(`[forge] word fix instead of rewrite: ${edit.data?.note}`);
+        validation = { ok: true, violations: [], focus_sound_count: validation.focus_sound_count };
+      } else {
+        console.warn("[forge] word fix did not clear it, falling back to a rewrite:", after.join("; "));
+      }
+    } catch (e) {
+      console.warn("[forge] word fix unavailable, falling back to a rewrite:", e.message);
+    }
+  }
+
   if (!validation.ok && (mustFix || distinct > 3 || focusViolations.length > 0 || countViolation)) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
