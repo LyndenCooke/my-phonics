@@ -158,3 +158,5 @@ server/forge/.data/
 marketing/booklet/_build/
 .scratch/
 review/_screenshots/
+
+vite.config.ts.timestamp-*.mjs
