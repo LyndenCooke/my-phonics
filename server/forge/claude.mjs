@@ -1535,9 +1535,17 @@ const EDITOR_REVIEW_SCHEMA = {
         properties: {
           severity: { type: "string", enum: ["critical", "major", "minor"] },
           area: { type: "string", description: "premise | story | story-state | language | object-identity | image-text | action | physics | image-physics | teaching-truth | safety | phonics | print" },
+          // WHICH PAGES (2026-08-21): repair-or-rewrite is decided from this. When
+          // it was left to prose, an issue that happened to omit a page number
+          // triggered a full rewrite and discarded five finished pages.
+          pages: {
+            type: "array",
+            items: { type: "integer" },
+            description: "The story page numbers this issue affects. Give them whenever the fault lives on particular pages, even when the cause is a story decision - an unbelievable setback still shows up on the page that stages it. Use an EMPTY list ONLY when the fault is genuinely the whole book: the premise, the story shape, the register throughout, a phonics rule, or something unsafe.",
+          },
           detail: { type: "string" },
         },
-        required: ["severity", "area", "detail"],
+        required: ["severity", "area", "pages", "detail"],
         additionalProperties: false,
       },
     },
