@@ -367,7 +367,13 @@ async function stepQa(book, job) {
   // the very grapheme this book is teaching, or too few focus-sound words
   // overall, is never fine, so either forces a rewrite regardless of the
   // >3 threshold.
-  if (!validation.ok && (distinct > 3 || focusViolations.length > 0 || countViolation)) {
+  // The >3 threshold is for ABOVE-LEVEL words, which the Future Sounds band
+  // legitimately previews. It must never apply to what the DETERMINISTIC check
+  // found: an untaught grapheme or a dishonest spelling fails the PDF build
+  // outright, so letting one through here just moves the death to render time
+  // ("market" reached the renderer and killed the book, 2026-08-22).
+  const mustFix = cheapFindings.length > 0;
+  if (!validation.ok && (mustFix || distinct > 3 || focusViolations.length > 0 || countViolation)) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
     });
