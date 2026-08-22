@@ -585,6 +585,9 @@ Open policy question for Lynden (pedagogy, not code): `-ed` (L7) appears as a Fu
 
 ## 20. Seventh pass — simplicity, one-thread planning, and the two lanes (2026-08-16 → 08-19)
 
+> **SUPERSEDED IN PART BY SECTION 21 (2026-08-22).** The lanes, the simplicity caps and the operational lessons below still hold, but books are no longer planned by inventing a story: they VARY one of the 33 published books. Where 20 and 21 disagree, 21 wins.
+
+
 Four complete books shipped (Hamza L4 "ow" 16pp, Safa L3 "th" 16pp, Danyal L2 "ll" 16pp, Maryam L5 "oa" 20pp — $1.30-$2.65 all-in). Lynden's verdict: "fairly impressed" — with named defects, every one traceable to a specific mechanism. The doctrine changes below are binding.
 
 ### 20.1 Simplicity IS the house style (Lynden: "the more details the more chance of failure")
@@ -626,3 +629,98 @@ Every L5+ custom book since the 08-13 page-count gate had been text-only; first 
 ### 20.10 Operational lessons that cost money to learn
 
 Validate level/sound pairings against /levels BEFORE a run (7 of 10 test cases died at the door). A poll loop must retry 5xx — one ENETUNREACH stranded a paid job that POST /retry resumed from checkpoint. "Killed" task status is not proof the process died — check the process table before relaunching, or you pay for a duplicate run. Image-generation harnesses must be resume-aware: anything on disk is paid for. No automatic attempt exceeds $1.75 without a wired cap — the batch harness had none and Hamza's art cost $2.04.
+
+
+## 21. Eighth pass — variation from the 33 books, and the rules that came out of it (2026-08-19 → 08-22)
+
+Thirteen books shipped across the two lanes. §20's one-thread harness did its job and its findings are folded in below; **where §20 and §21 disagree, §21 wins.** Everything here is live in `claude.mjs`, `jobs.mjs`, `images.mjs`, `phonics.mjs`, `book_v2.html` and the data files, and every rule below exists because a real book failed without it.
+
+### 21.1 Books VARY a published book — they no longer invent a plot (Lynden 2026-08-21)
+
+"The 33 books i made have great stories. All you need to do is make variations of them based on new places/objects and characters." This is now the architecture, and it retires the failure class that produced almost every story defect we ever found: circling searches, invented contraptions, heroes who caused nothing, word-hunting.
+
+`data/story_patterns.json` holds every published book distilled to STRUCTURE — `pattern_name`, `spine` as stageable beats, the **DEVICE** that makes it work for a child, the `slots` a reimagining must replace, three suggested settings, and an honest `simplest_level`. Built once by `_distil_patterns.mjs` ($0.27); static thereafter. `sourceStoryFor(level, avoid)` picks by the pattern's own FLOOR, **not** by matching source level to target level — a Level 2 book may wear a Level 7 structure, because what changes with level is the sentence length and vocabulary, not the shape of a story. `recentSourceStories()` stops the same plot recurring.
+
+The writer's brief then says: keep the spine and the device; simplify the LANGUAGE, never the STORY; replace place, objects, people and sound entirely; **the family resemblance is welcome** ("as all movies are pretty much stories reimagined") but not one sentence carries over.
+
+**When the pattern will not fit the page budget, cut the COUNT and never the DEVICE.** A Level 2 attempt at the three-clue journey kept three animals and dropped the guessing, leaving a list of sightings; two guessed reveals beat three bare ones.
+
+**Trust the floors.** Forcing a pattern below its `simplest_level` produced disconnected fragments ("A dot did pop. A tot did nod.").
+
+**Level ids:** `core_story_digest.json` stores LEGACY ids — the old ten Level 1 books were split across new L1/L2/L3 (`NEW_TO_OLD` in `generate_pilot_books.py`). `story_patterns.json` carries the true current level. Ledger: 2/5/3/6/5/4/4/4 = 33. **Level 1 is only *Tap! Tap! Tap!* and *The Mud on the Dog*.**
+
+### 21.2 The writer's brief is a brief, not a rulebook
+
+It had grown to 5,127 words carrying 64 prohibitions, with the published exemplars buried two-thirds down — so the model spent itself on compliance and returned sentences that were legal rather than warm ("A chip is on the lid"). Restructured to ~2,900 words in eight sections: **exemplars first**, then voice, story, phonics contract, level, illustrator, house checklist, outputs. A 190-rule inventory was extracted before the rewrite and verified after; nothing was lost.
+
+`polishStoryAloud` then gives the writer what it never had: its own finished story, a short craft brief, and permission to care only how it sounds. It costs about a penny when nothing needs changing and $0.08 when it rewrites — **so its cost is a quality signal**. Every polished line is re-checked with `decodeProblems` and reverted if the prettier wording broke the phonics contract.
+
+### 21.3 Level 1 is a ditty; Level 2 and up are stories
+
+At Level 1 the sound leads and repetition is the form — a child with ten letters reads the next line because it is almost the last one. Repeat a frame with ONE word changed; use the focus sound in as many words as the bank allows. **Commas are allowed at Level 1 for repetition only** (recorded in `reading_progression.json`, not just the prompt). **Only repeat a word that still means the same thing alone**: "I sit, sit, sit" works; "I stand, stand, stand" says the child is standing and the tin has vanished.
+
+**This applies to Level 1 alone.** Gated at ≤2 it produced a chant at Level 2, which Lynden rejected.
+
+The fix that actually made Level 1 work was not prose but **handing the writer the words**: `focusBank` filters the level's word bank to the focus sound, turning "derive every /s/ word from ten letters" into a choice. Level 1 has 31 of them. Generally: **prose permission is applied inconsistently; a countable target sticks** — ≥4 pages reusing a frame, ≥2 comma lines, ≥half the content words carrying the sound.
+
+**Level 1 vowels are too thin for initial-position ditties** — "o" has ONE Level 1 word starting with it, "i" has three. Unresolved product question.
+
+### 21.4 Phonics honesty, and what the page may claim
+
+`split_into_phonemes` silently falls back to one dot per letter for any letter with no taught grapheme, so untaught and dishonest spellings printed as if fully decodable — "knack" as k·n·a·ck, "listened" as eight dots — under the words *"Sound out each phoneme, then blend."* That breaks the 100% decodable claim at the exact spot the claim is made.
+
+- `decode_problem` (Python, fails the PDF build) and `decodeProblems` (JS, runs in the machine) are mirrors: untaught graphemes, plus a named list of **dishonest spellings** — a word only counts as decodable if its taught letter-sounds actually produce the word children say (wash is 'wosh', basket is 'baskit', listened has a silent t).
+- **The title is checked too** — it was never checked before, and shipped "kn".
+- **Practice words may not be people** — a book listed "amara" and "dad" among its six Story Words.
+- **The hero's name is a tricky word.** Sounded honestly, "Tomasz" is t-o-m-a-s-z. It is taught in the Tricky Words strip with a per-book `nameBreakdown` ($0.0003), and the writer names the hero in sentence one then uses pronouns.
+- All 97 ledger tricky words have curated breakdowns (`data/tricky_word_breakdowns.json`) showing the parts, the misbehaving one, and the plain spoken form. **Breakdowns and the name note stop after Level 4** (Lynden 2026-08-22): by Level 5 these are sight words.
+- **No word-hunting (L2+):** 3–4 distinct focus words, one per sentence. Nothing exists only because its name carries the sound — a book put GOATS at a bus stop. The story text is one of FOUR surfaces teaching the sound (title, Story Words, Sound Spotlight, alien words) and must not do that work alone.
+
+### 21.5 Story rules that each cost a book to learn
+
+- **Pointable beats.** Every beat changes something a child can point at — physical (sunk/floating, wet/dry) or **social** (one child holding everything while others are empty-handed). "Pats the base flat" is invisible at picture-book scale.
+- **Teach the real technique.** A skipping book had Mum say "wait for the tap on the ground, then jump", which cues the jump far too late. A hero who succeeds on advice that would not work teaches a child something false, and every other gate passed it.
+- **Drawable, not invented.** The mechanism is a common, instantly recognisable activity — never a new contraption. A ring threaded on a string between two people is an invention; a kite is not. Name the traditional form of everyday objects (a washing line is a rope between posts, not a folding rack).
+- **A search must narrow.** Each look rules a place out or yields a clue; never send the hero back somewhere already searched without a new reason SHOWN. Grass → bench → same grass makes the first look careless.
+- **Plant the lost thing** visibly in an earlier picture — the one deliberate exception to hiding an object before its reveal.
+- **The world is fixed; the spot is not.** The brief used to contain both "prefer stories that move" and "the setting is identical on every page", and the model resolved it by never moving her. A travelling story takes a different point on the route each page and says what changed.
+- **The second attempt must LOOK like one** — different position, hand, tool or route. Two pictures of the same attempt are one attempt.
+- **Name a key object the same way every time.** "A small tin" on page 3 and "the blue oil tin" on page 7 produced two different objects; the illustrator draws what the sentence says, and a new adjective silently redesigns the thing.
+- **No spec-sheet sentences and no adult interiority.** "It had black wheels and a white star on its roof" is a catalogue entry — object detail belongs in the scene brief. "Her chest felt tight" is grown-up; show feeling through what the child does and says.
+
+### 21.6 Images: design the plausibility in
+
+The scene prompt only ever carried a general homily (things rest on surfaces, nothing hovers), which cannot prevent a specific impossibility. The **director now emits a per-page `physics` contract** — what touches what, what carries the weight, how many of each thing, and the exact shape and low point of any rope or line — injected verbatim as "PHYSICS OF THIS PICTURE". On its first test every page passed QA first time.
+
+**A camera plan belongs beside it.** Physics without framing gives six correct pictures a child cannot tell apart; vary wide / mid / low / close / over-shoulder, and make the ordering activity solvable.
+
+**The cover is a crop of a story page, never generated** (Lynden 2026-08-20). It picks the page with the biggest CHILD face among pages 1..N−1 — the biggest face overall is usually the adult — and crops portrait centred on it, for about $0.001. This deleted a whole defect class: painted-in lettering killed two books, and generated covers also duplicated the hero and invented settings.
+
+### 21.7 QA in three layers, and no gate may kill a paid book
+
+1. **Deterministic, free, cannot drift:** the decodability gate; a perceptual-hash check that no two page images are near-identical; and `ship_report.json` naming every gate that ran — *a gate that silently did not run is the worst failure mode we have hit.*
+2. **Adversarial lenses on the cold editor**, because every earlier gate checked the book against ITSELF: `teaching_truth` (is it true — judge the exact arrangement drawn, and count what the job needs: one plank will not lift a two-wheeled cart), `image_physics` (count strands, limbs, wheels), `setting_persistence`, `middle_progress` (does the middle narrow or circle?). A missing answer escalates to blocking. **Keep these answers to two or three sentences** — the lenses exist to make the model LOOK, not write.
+3. **Repair, not rewrite.** Every editor issue carries a REQUIRED `pages` list; empty means genuinely whole-book. Only premise/story/language/phonics/safety/teaching-truth force a rewrite; a cover fault re-crops; a page failing QA twice ships with a recorded edit request. §20.2's "no full rejections" was never applied at the page level, and one stubborn page used to kill a fully paid book.
+
+### 21.8 What a book costs, and where it actually goes
+
+A clean book is about **$2.10** (The Green Jeep: $1.07 text, $1.03 images). A clean page is $0.083; **a page that fails QA costs $0.31–0.52**, so QA churn — not image price — is the cost driver. Scene QA now grades blocking vs minor and only blocking regenerates.
+
+Measured savings: story gate capped to one pass (~$0.80); plausibility folded into the story gate, which was a second paid read of the same 60 words ($0.41); phonics QA deterministic-first; the cover free. **The cold editor is now the largest single line** (~$0.62) because the new lenses invite essays and it was sent 1024px thumbnails of every page — cut to 640px with a brevity instruction.
+
+`FORGE_MAX_BOOK_USD` caps and pauses correctly; a retry raises it one unit, so only resume when you mean to spend.
+
+### 21.9 Operational traps that cost money
+
+- **Never edit `server/forge/*.mjs` while a book is running** — vite hot-reloads and kills the generation mid-flight.
+- **Check for a stray second dev server**: one took port 8081 while curl kept hitting a stale 8080, so edits and API calls hit different processes.
+- **fal locks with "User is locked. Reason: TOP_UP"** — probe with a REAL generation call; a bare POST returns a 422 validation error before the lock ever shows.
+- Deliver PDFs to BOTH desktops: OneDrive Files On-Demand can hide a file written to the OneDrive Desktop.
+
+### 21.10 Still open
+
+- **300 dpi is unsolved** and is the only hard print blocker: source art maxes at 1536px, A5 with bleed needs ~1819px.
+- PDFs are untagged (Playwright cannot; the Prince backend could).
+- **Pattern adherence is unchecked** — a book assigned one structure can write another and nothing notices.
+- Split-digraph marking on the Story Words page needs planner-supplied segmentations.
+- The 33 pattern `device` lines and floors, and the 97 tricky-word breakdowns, were authored by Claude and want a specialist read before print.
