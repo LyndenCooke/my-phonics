@@ -969,7 +969,12 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         # Pronunciation support for each tricky word (Lynden 2026-08-21): a
         # bare sight-word strip tells the grown-up nothing about WHICH part
         # misbehaves. Static curated data, so it costs nothing per book.
-        "tricky_breakdowns": _tricky_breakdowns(tricky_words_display),
+        # Pronunciation support is for the youngest readers only (Lynden
+        # 2026-08-22: "after l4 there is no need to show how tricky words are
+        # pronounced"). By Level 5 these words are sight vocabulary the child
+        # already reads, and the breakdown is clutter on a page that now has
+        # more story words to carry.
+        "tricky_breakdowns": _tricky_breakdowns(tricky_words_display) if level <= 4 else [],
         "tricky_words_new": tricky_words_new,
         "nonsense_words": story_dict.get("nonsense_words", []),
         "questions": questions,

@@ -3043,7 +3043,8 @@
            with the misbehaving part named and what it actually says. #}
         {% if tricky_breakdowns or (profile and profile.name_breakdown) %}
         <div class="sw-tricky-how{% if (tricky_breakdowns | length) >= 8 %} sw-tricky-how-tight{% endif %}">
-          {% if profile and profile.name_breakdown %}
+          {# The name breakdown follows the same rule: youngest readers only. #}
+          {% if profile and profile.name_breakdown and level <= 4 %}
           <div class="sw-tricky-how-row">
             <span class="sw-tricky-how-word">{{ profile.name }}</span>
             <span class="sw-tricky-how-parts">{% for p in profile.name_breakdown.parts %}<span class="sw-part">{{ p }}</span>{% if not loop.last %}<span class="sw-dot">&middot;</span>{% endif %}{% endfor %}</span>
@@ -3060,7 +3061,8 @@
           {% endfor %}
         </div>
         {% endif %}
-        {% if profile and profile.name %}
+        {# Youngest readers only, like the breakdowns above. #}
+        {% if profile and profile.name and level <= 4 %}
         <div style="font-size: 8.5pt; color: #777; margin-top: 1.5mm; text-align: center;">
           {{ profile.name }}&rsquo;s own name is here because most children read their name long before they can build it &mdash; say it together, then look for it on every page.
         </div>
