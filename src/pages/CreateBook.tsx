@@ -414,9 +414,6 @@ export default function CreateBook() {
             <ArrowLeft className="h-4 w-4" /> Library
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/create-worksheet" className="flex items-center gap-1 text-sm font-semibold text-sky-600">
-              <Wand2 className="h-4 w-4" /> Make a Worksheet
-            </Link>
             <Link to="/world-of-books" className="flex items-center gap-1 text-sm font-semibold text-violet-600">
               <Globe2 className="h-4 w-4" /> World of Books
             </Link>

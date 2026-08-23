@@ -51,7 +51,7 @@ const CreateBook = lazy(() => import("./pages/CreateBook"));
 const WorldOfBooks = lazy(() => import("./pages/WorldOfBooks"));
 // Create-A-Worksheet — the worksheet-forge machine on the web (dev server only,
 // API at /api/worksheet-forge).
-const CreateWorksheet = lazy(() => import("./pages/CreateWorksheet"));
+// CreateWorksheet route removed from the public site (Lynden 2026-08-24).
 
 // Lazy-loaded funnel pages
 const LinkTree = lazy(() => import("./pages/funnels/LinkTree"));
@@ -193,7 +193,7 @@ function RoutesWithTransition() {
             {/* Create-A-Book + World of Books (custom family-made books) */}
             <Route path="/create-book" element={<Suspense fallback={<AdminFallback />}><CreateBook /></Suspense>} />
             <Route path="/world-of-books" element={<Suspense fallback={<AdminFallback />}><WorldOfBooks /></Suspense>} />
-            <Route path="/create-worksheet" element={<Suspense fallback={<AdminFallback />}><CreateWorksheet /></Suspense>} />
+            {/* /create-worksheet removed from the public site (Lynden 2026-08-24) — the page component stays for a future return. */}
             <Route path="/teachers" element={<Suspense fallback={<AdminFallback />}><Teachers /></Suspense>} />
             <Route path="/teachers/library" element={<Suspense fallback={<AdminFallback />}><TeachersLibrary /></Suspense>} />
             {/* Funnels — clean URLs */}

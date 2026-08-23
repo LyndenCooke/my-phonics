@@ -167,6 +167,21 @@ export async function handleForge(req, res) {
         return send(res, 200, { done: ["ready", "approved", "text_ready"].includes(row.status), status: row.status, step: "none" });
       }
       const r = await runNextStep(row.id);
+      // DELIVER AT THE FINISH LINE (Lynden 2026-08-24: PDFs "sent straight
+      // away"). The assemble step flips the book to ready; render both PDFs
+      // and fire the email + GHL sync NOW rather than waiting for the
+      // customer to press a download button. Runs exactly once (on the
+      // assemble transition), never fails the step response, and the /pdf
+      // endpoint stays as the manual re-render path.
+      if (r.step === "assemble" && r.status !== "failed") {
+        const scheme = req.headers["x-forwarded-proto"] || "https";
+        const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
+        try {
+          await renderPdf(row.id, { origin: requestOrigin });
+        } catch (e) {
+          console.warn(`[forge] delivery-at-ready render failed for ${row.id} (book still readable, /pdf can retry):`, e.message);
+        }
+      }
       return send(res, 200, r);
     }
 
@@ -359,6 +374,15 @@ export async function handleForge(req, res) {
           let r;
           try { r = await runNextStep(b.id); } catch (e) { r = { done: true, step: "error", error: String(e.message || e).slice(0, 120) }; }
           steps++; last = r;
+          // A swept book that finishes must deliver too — same at-the-finish
+          // hook as the /step path (the customer's tab is gone; nobody else
+          // will press the button).
+          if (r.step === "assemble" && r.status !== "failed") {
+            const scheme = req.headers["x-forwarded-proto"] || "https";
+            const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
+            try { await renderPdf(b.id, { origin: requestOrigin }); }
+            catch (e) { console.warn(`[forge] sweep delivery render failed for ${b.id}:`, e.message); }
+          }
           if (r.done || r.step === "busy") break;
         }
         swept.push({ id: b.id, steps, last: last?.step, status: last?.status || null });
