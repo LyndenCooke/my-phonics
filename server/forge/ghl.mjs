@@ -22,17 +22,20 @@ export function ghlEnabled() {
   return Boolean(cfg.GHL_API_KEY && cfg.GHL_LOCATION_ID);
 }
 
-// The five contact custom fields the book data lands in. Lynden creates
-// them once in GHL (Settings -> Custom Fields -> Contact, type Text) with
-// these NAMES; the code resolves their location-specific ids at runtime by
-// matching either the display name or the auto-generated fieldKey, so the
-// exact key GHL mints doesn't matter.
+// The contact custom fields the book data lands in, matched against
+// Lynden's EXISTING field set (he pasted it 2026-08-23): "Book PDF URL"
+// is his established name for the A5 link, and "Child's First Name"
+// already exists from the earlier delivery flow, so the sync fills it.
+// Each slot lists candidate names/keys, first match wins; a slot with no
+// matching field is skipped with a warning, never an error ("Book Level"
+// and "Book Focus Sound" are optional — create them only if wanted).
 const BOOK_FIELDS = {
-  book_title: "Book Title",
-  book_a5_url: "Book A5 URL",
-  book_a4_url: "Book A4 URL",
-  book_level: "Book Level",
-  book_focus_sound: "Book Focus Sound",
+  book_title: ["Book Title"],
+  book_a5_url: ["Book PDF URL", "Book A5 URL"],
+  book_a4_url: ["Book A4 URL"],
+  childs_first_name: ["Child's First Name", "Childs First Name"],
+  book_level: ["Book Level"],
+  book_focus_sound: ["Book Focus Sound"],
 };
 
 const norm = (s) => String(s || "").toLowerCase().replace(/^contact\./, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
@@ -79,17 +82,18 @@ export async function syncBookReadyContact({ email, childName, title, a5Url, a4U
     book_title: title,
     book_a5_url: a5Url,
     book_a4_url: a4Url,
+    childs_first_name: childName,
     book_level: level != null ? `Level ${level}` : null,
     book_focus_sound: focusSound,
   };
   const customFields = [];
   const missing = [];
-  for (const [slug, name] of Object.entries(BOOK_FIELDS)) {
-    const id = map[slug] || map[norm(name)];
-    if (!id) { missing.push(name); continue; }
+  for (const [slug, names] of Object.entries(BOOK_FIELDS)) {
+    const id = map[slug] || names.map((n) => map[norm(n)]).find(Boolean);
+    if (!id) { missing.push(names[0]); continue; }
     if (values[slug] != null) customFields.push({ id, value: String(values[slug]) });
   }
-  if (missing.length) console.warn(`[forge] GHL custom fields not found (create them in GHL): ${missing.join(", ")}`);
+  if (missing.length) console.warn(`[forge] GHL custom fields not found (optional, create in GHL if wanted): ${missing.join(", ")}`);
 
   let contactId = await findContact(email);
   if (!contactId) {
