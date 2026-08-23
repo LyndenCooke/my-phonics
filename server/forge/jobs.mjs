@@ -1775,28 +1775,26 @@ async function renderPdfServerless(bookId, origin) {
     console.warn(`[forge] book-ready email not sent for ${bookId}: ${emailResult.reason}`);
   }
 
-  // GHL hand-off: POST the delivery facts to a GoHighLevel inbound-webhook
-  // workflow so the CRM owns the customer-facing send (sequences, tagging,
-  // tracking). Fire-and-forget — CRM downtime must never block delivery.
-  if (cfg.GHL_BOOK_WEBHOOK_URL) {
-    fetch(cfg.GHL_BOOK_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: book.email,
-        child_name: book.child_name,
-        book_title: book.title || `${book.child_name}'s Story`,
-        book_id: bookId,
-        level: book.level,
-        focus_sound: book.focus_sound,
-        pdf_a5_url: pdfUrl,
-        pdf_a4_url: a4Url,
-        read_online_url: `https://www.myphonicsbooks.co.uk/create-book?resume=1`,
-      }),
-    }).then((r) => {
-      if (!r.ok) console.warn(`[forge] GHL book webhook answered ${r.status} for ${bookId}`);
-    }).catch((e) => console.warn(`[forge] GHL book webhook failed for ${bookId}:`, e.message));
-  }
+  // GHL hand-off: tag-based, not webhook-based (the Inbound Webhook trigger
+  // is a paid premium feature — Lynden 2026-08-23). The forge upserts the
+  // contact, fills the book custom fields, and re-adds "book-ready"; a
+  // standard Contact-Tag-Added workflow in GHL owns everything after that.
+  // Fire-and-forget — CRM downtime must never block delivery.
+  import("./ghl.mjs")
+    .then(({ syncBookReadyContact }) => syncBookReadyContact({
+      email: book.email,
+      childName: book.child_name,
+      title: book.title || `${book.child_name}'s Story`,
+      a5Url: pdfUrl,
+      a4Url,
+      level: book.level,
+      focusSound: book.focus_sound,
+    }))
+    .then((r) => {
+      if (r.synced) console.log(`[forge] GHL contact tagged book-ready for ${bookId} (${r.fields} fields${r.missing?.length ? `, missing: ${r.missing.join(", ")}` : ""})`);
+      else if (r.reason !== "no_ghl_env") console.warn(`[forge] GHL sync skipped for ${bookId}: ${r.reason}`);
+    })
+    .catch((e) => console.warn(`[forge] GHL sync failed for ${bookId}:`, e.message));
 
   return pdfUrl;
 }

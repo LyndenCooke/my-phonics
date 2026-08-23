@@ -76,6 +76,10 @@ export const cfg = {
   // GoHighLevel inbound-webhook URL for the book-ready delivery workflow.
   // Unset = the CRM hand-off is skipped (Resend email still goes out).
   GHL_BOOK_WEBHOOK_URL: process.env.GHL_BOOK_WEBHOOK_URL || booksEnv.GHL_BOOK_WEBHOOK_URL || "",
+  // Same credentials the Supabase edge functions use (ghl-sync) — copy the
+  // values from Supabase secrets into Vercel to activate the CRM sync.
+  GHL_API_KEY: process.env.GHL_API_KEY || booksEnv.GHL_API_KEY || "",
+  GHL_LOCATION_ID: process.env.GHL_LOCATION_ID || booksEnv.GHL_LOCATION_ID || "",
   // Vertex AI fallback (gcloud OAuth) — the LLM path that is known-good on
   // this machine when no Anthropic key is configured.
   VERTEX_PROJECT: booksEnv.VERTEX_PROJECT || "iron-entropy-496317-q9",
