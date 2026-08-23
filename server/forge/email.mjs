@@ -21,7 +21,7 @@ export async function sendBookReadyEmail({ to, childName, title, pdfBuf, pdfUrl,
       from: "MyPhonicsBooks <books@myphonicsbooks.co.uk>",
       to: [to],
       subject: `"${title}" is ready to read!`,
-      text: `${childName}'s book "${title}" is finished and attached as a PDF.\n\nDownload it again any time:\n${pdfUrl}${a4Url ? `\n\nWant to print it at home? This version lays the pages out on A4 sheets — print double-sided (flip on the long edge), fold the stack in half, and staple the middle:\n${a4Url}` : ""}\n\nHappy reading!\nThe MyPhonicsBooks team`,
+      text: `${childName}'s book "${title}" is finished and attached as a PDF.\n\nRead on screen or print page-by-page (A4 sheets):\n${pdfUrl}${a4Url ? `\n\nMake the real thing — the A5 Booklet: print double-sided on A4 (flip on the long edge), fold the stack in half, and staple the middle. It becomes a proper little A5 book:\n${a4Url}` : ""}\n\nHappy reading!\nThe MyPhonicsBooks team`,
       // Attached so the family has the real file even if they never revisit
       // the site — the same link is also in the email body as a fallback for
       // mail clients that strip large attachments.
