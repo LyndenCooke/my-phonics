@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -584,11 +584,35 @@ function resetAfterStoryRevision(job, revisedStory) {
 // content rejection (credit restored), never a delivery of the weak book.
 async function stepStoryGate(book, job) {
   const level = getLevel(book.level);
-  const { data: review, cost } = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
-  job.cost += cost || 0; job.breakdown.story_usd += cost || 0;
+  // CONVERGENT RE-REVIEW (Lynden 2026-08-23, "i recommend the first one"): a
+  // revised manuscript is judged ONLY on whether the previous notes were
+  // fixed, plus regressions the revision itself introduced — never a fresh
+  // cold read, which raised brand-new majors every pass and never converged.
+  let review;
+  if (job.pendingEditorNotes?.length) {
+    const fu = await storyEditorFollowUp({ story: job.story, level, focusSound: book.focus_sound, notes: job.pendingEditorNotes });
+    job.cost += fu.cost || 0; job.breakdown.story_usd += fu.cost || 0;
+    const verdicts = fu.data.note_verdicts || [];
+    const unfixed = job.pendingEditorNotes
+      .map((n, i) => ({ n, v: verdicts.find((x) => Number(x.note) === i + 1) }))
+      .filter(({ v }) => !v?.fixed)
+      .map(({ n, v }) => ({ ...n, detail: `${n.detail} — STILL UNFIXED: ${v?.reason || "the follow-up returned no verdict for this note"}` }));
+    review = {
+      issues: [...unfixed, ...(fu.data.regressions || [])],
+      story_quality: fu.data.summary || "",
+      language_quality: "",
+    };
+    job.breakdown[`story_gate_followup_${job.storyEditRequests || 0}`] = fu.data;
+    console.log(`[forge] follow-up review: ${verdicts.filter((v) => v.fixed).length}/${job.pendingEditorNotes.length} notes fixed, ${(fu.data.regressions || []).length} regression(s)`);
+  } else {
+    const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
+    job.cost += first.cost || 0; job.breakdown.story_usd += first.cost || 0;
+    review = first.data;
+  }
   const verdict = deriveEditorVerdict(review);
 
   if (verdict.pass) {
+    job.pendingEditorNotes = null;
     if (verdict.minors.length) {
       // Minor-only review: the book ships; the notes stay for the audit trail.
       job.breakdown.story_gate_minors = verdict.minors;
@@ -658,6 +682,9 @@ async function stepStoryGate(book, job) {
     // the two can disagree and the note numbers would point at the wrong issues).
     const bySeverity = (review.issues || []).filter((i) => ["critical", "major", "reject"].includes(String(i.severity || "").toLowerCase()));
     const numberedNotes = bySeverity.length ? bySeverity : (review.issues || []);
+    // The NEXT gate pass judges only these notes (convergent re-review),
+    // never a fresh cold read of the whole manuscript.
+    job.pendingEditorNotes = numberedNotes;
     const skipped = numberedNotes.filter((issue, n) => {
       if (structurallyChanged) return false;
       const r = (revised.data.note_responses || []).find((x) => Number(x.note) === n + 1);

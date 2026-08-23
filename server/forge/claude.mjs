@@ -1768,6 +1768,66 @@ export async function storyEditorReview({ story, level, focusSound }) {
   return callJson({ system, content, schema: STORY_EDITOR_SCHEMA, tier: "story", maxTokens: 6000, judge: true });
 }
 
+// CONVERGENT RE-REVIEW (Lynden 2026-08-23): after a revision, the editor
+// judges ONLY whether the previous notes were fixed, plus any damage the
+// revision itself introduced. A fresh cold read each pass never converges —
+// the Kai ar/L4 run had all five first-pass notes verifiably fixed and the
+// second cold read simply raised two brand-new majors, so books proceeded
+// with open notes forever. This is what a real editorial second pass does:
+// check the requested changes, not re-open the whole manuscript.
+const FOLLOWUP_SCHEMA = {
+  type: "object",
+  properties: {
+    note_verdicts: {
+      type: "array",
+      description: "One entry per numbered note, in order.",
+      items: {
+        type: "object",
+        properties: {
+          note: { type: "integer", description: "The note number (1-based, as given)." },
+          fixed: { type: "boolean", description: "true only if the revised pages genuinely deliver what the note asked for — not merely gesture at it." },
+          reason: { type: "string", description: "One sentence: the evidence on the page that the fix is real, or exactly what is still missing." },
+        },
+        required: ["note", "fixed", "reason"],
+        additionalProperties: false,
+      },
+    },
+    regressions: {
+      type: "array",
+      description: "ONLY defects the revision itself introduced — a new contradiction, impossibility, unsafe action, or broken sentence that was not in the previous draft. Never a fresh opinion about material the previous review already saw and did not flag.",
+      items: {
+        type: "object",
+        properties: {
+          severity: { type: "string", enum: ["minor", "major", "critical"] },
+          area: { type: "string", description: "story, story-state, physics, safety, language, premise" },
+          detail: { type: "string" },
+        },
+        required: ["severity", "area", "detail"],
+        additionalProperties: false,
+      },
+    },
+    summary: { type: "string", description: "One or two sentences on the state of the manuscript after this check." },
+  },
+  required: ["note_verdicts", "regressions", "summary"],
+  additionalProperties: false,
+};
+
+export async function storyEditorFollowUp({ story, level, focusSound, notes }) {
+  const system =
+    "You are the SAME demanding children's-book editor doing a FOLLOW-UP check on a manuscript you already reviewed. The writer has revised it against your numbered notes. " +
+    "Your job on this pass is NARROW: for each numbered note, judge whether the revised pages genuinely deliver what the note asked for — read the pages, cite what is actually there, and do not accept a gesture (a mentioned setback that costs nothing, a lesson stated rather than earned). " +
+    "You may ALSO flag regressions: defects the revision itself introduced that were not in the draft you reviewed — a new contradiction, physical impossibility, unsafe solo action by the child, or broken sentence. " +
+    "You may NOT raise new opinions about material your first review already saw and did not flag: that door is closed. If you find yourself wanting to, it belongs in reason as context, not in regressions.";
+  const pagesBlock = story.pages.map((p, i) => `Page ${i + 1}: "${p.text}"\n  scene: ${p.scene}`).join("\n");
+  const noteBlock = notes.map((i, n) => `NOTE ${n + 1} [${i.severity}/${i.area}]: ${i.detail}`).join("\n\n");
+  const content =
+    `Level ${level.level} (${level.name}) custom book manuscript, focus sound "${focusSound}". Title: "${story.title}".\n\n` +
+    `YOUR NOTES FROM THE PREVIOUS REVIEW:\n${noteBlock}\n\n` +
+    `THE REVISED PAGES:\n${pagesBlock}\n\n` +
+    "Check each note now.";
+  return callJson({ system, content, schema: FOLLOWUP_SCHEMA, tier: "story", maxTokens: 4000, judge: true });
+}
+
 // One bounded editorial rewrite after an editor rejection (Lynden
 // 2026-08-13: "rewrite once"). The PREMISE IS LOCKED (Lynden 2026-08-14,
 // after a revision abandoned the simit-cart premise and invented an
