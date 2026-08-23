@@ -47,11 +47,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/forge/sweep",
-      "schedule": "*/10 * * * *"
-    }
   ]
 }

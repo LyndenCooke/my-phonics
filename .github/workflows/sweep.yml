@@ -1,0 +1,22 @@
+# Orphan sweeper: prod book generation is driven by the customer's browser,
+# so a closed tab strands a paid book at "generating". This cron adopts any
+# stale book and drives it to completion via /api/forge/sweep (router.mjs).
+# Lives here rather than vercel.json crons because Vercel's Hobby plan only
+# allows daily cron schedules — a stranded customer can't wait until tomorrow.
+name: Sweep stranded books
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Call the sweep endpoint
+        run: |
+          out=$(curl -sS --max-time 290 https://www.myphonicsbooks.co.uk/api/forge/sweep)
+          echo "$out"
+          echo "$out" | grep -q '"swept"' || { echo "sweep endpoint did not answer as expected"; exit 1; }
