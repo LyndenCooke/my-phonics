@@ -1779,9 +1779,13 @@ async function renderPdfServerless(bookId, origin) {
   // is a paid premium feature — Lynden 2026-08-23). The forge upserts the
   // contact, fills the book custom fields, and re-adds "book-ready"; a
   // standard Contact-Tag-Added workflow in GHL owns everything after that.
-  // Fire-and-forget — CRM downtime must never block delivery.
-  import("./ghl.mjs")
-    .then(({ syncBookReadyContact }) => syncBookReadyContact({
+  // AWAITED, not fire-and-forget: Vercel freezes the lambda the moment the
+  // response returns, so an un-awaited promise here simply never runs (the
+  // first live test produced zero GHL calls, 2026-08-23). The try/catch
+  // keeps CRM downtime from ever blocking delivery.
+  try {
+    const { syncBookReadyContact } = await import("./ghl.mjs");
+    const r = await syncBookReadyContact({
       email: book.email,
       childName: book.child_name,
       title: book.title || `${book.child_name}'s Story`,
@@ -1789,12 +1793,12 @@ async function renderPdfServerless(bookId, origin) {
       a4Url,
       level: book.level,
       focusSound: book.focus_sound,
-    }))
-    .then((r) => {
-      if (r.synced) console.log(`[forge] GHL contact tagged book-ready for ${bookId} (${r.fields} fields${r.missing?.length ? `, missing: ${r.missing.join(", ")}` : ""})`);
-      else if (r.reason !== "no_ghl_env") console.warn(`[forge] GHL sync skipped for ${bookId}: ${r.reason}`);
-    })
-    .catch((e) => console.warn(`[forge] GHL sync failed for ${bookId}:`, e.message));
+    });
+    if (r.synced) console.log(`[forge] GHL contact tagged book-ready for ${bookId} (${r.fields} fields${r.missing?.length ? `, missing: ${r.missing.join(", ")}` : ""})`);
+    else if (r.reason !== "no_ghl_env") console.warn(`[forge] GHL sync skipped for ${bookId}: ${r.reason}`);
+  } catch (e) {
+    console.warn(`[forge] GHL sync failed for ${bookId}:`, e.message);
+  }
 
   return pdfUrl;
 }
