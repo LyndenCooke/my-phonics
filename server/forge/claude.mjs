@@ -1798,8 +1798,40 @@ ${progression ? `- Level ${level.level} progression: ${progression.sentences_per
 - SAFE BEHAVIOUR IS NON-NEGOTIABLE (revisions introduce this failure most often — a rewrite once sent the hero running back through a public souk alone, 2026-08-15): the hero must never do a risky physical action alone — moving unaccompanied through public streets/crowds, reaching into drains or gaps, using tools, anything near heat, deep water, traffic or heights. The child keeps the agency (notices, plans, decides); an adult is present and part of any risky step in the SAME page's text and scene.
 - NATURALNESS NEVER OVERRIDES DECODABILITY. When the editor calls a line awkward, replace it with the most natural wording available WITHIN the taught graphemes above — never a more literary word that needs an above-level sound ("caught" for "hit" at a level where its sound is untaught makes the book WORSE). If no natural in-level word exists, restructure the sentence instead.
 ${exemplars.length ? `\nPublished books at this level — match their register:\n${exemplars.map((e) => `"${e.title}": ${e.pages.join(" | ")}`).join("\n")}\n` : ""}`;
-  const content = `REJECTED story:\n${JSON.stringify(story)}\n\nEDITOR'S REJECTION REASONS (every one must be genuinely fixed):\n${JSON.stringify(rejects.length ? rejects : review.issues)}\n\nEditor's assessment for context:\nStory quality: ${review.story_quality}\nLanguage: ${review.language_quality}\n\nReturn the revised story.`;
-  return callJson({ system, content, schema: STORY_SCHEMA, tier: "story" });
+  // EVERY NOTE ANSWERED, CHECKABLY (Lynden 2026-08-23 "sort it out"): the
+  // editor writes exact prescriptions, but the reviser was handed them as a
+  // JSON blob and routinely fixed some while silently skipping others — the
+  // Tomas or/L4 revision left all three majors open and the book proceeded
+  // mediocre. The notes are now NUMBERED, the schema demands a per-note
+  // account of what changed and on which pages, and the caller verifies
+  // against the old story that those pages really differ.
+  const notes = rejects.length ? rejects : review.issues || [];
+  const noteBlock = notes
+    .map((i, n) => `NOTE ${n + 1} [${i.severity}/${i.area}]: ${i.detail}`)
+    .join("\n\n");
+  const schema = {
+    ...STORY_SCHEMA,
+    properties: {
+      ...STORY_SCHEMA.properties,
+      note_responses: {
+        type: "array",
+        description: "One entry per numbered editor note, in order. Every note must be answered — a note you disagree with still gets an entry explaining the change you made instead.",
+        items: {
+          type: "object",
+          properties: {
+            note: { type: "integer", description: "The note number being answered (1-based, as given)." },
+            fixed_on_pages: { type: "array", items: { type: "integer" }, description: "1-based page numbers whose text or scene you changed to fix this note. Never empty: every fix must land on at least one page." },
+            what_changed: { type: "string", description: "One concrete sentence: the change that fixes this note." },
+          },
+          required: ["note", "fixed_on_pages", "what_changed"],
+          additionalProperties: false,
+        },
+      },
+    },
+    required: [...STORY_SCHEMA.required, "note_responses"],
+  };
+  const content = `REJECTED story:\n${JSON.stringify(story)}\n\nEDITOR'S NUMBERED NOTES — answer EVERY one in note_responses, and make the fix real on the pages you name (the pages you claim are checked against the old story; a claimed page with identical text and scene means the note was skipped, which fails):\n${noteBlock}\n\nEditor's assessment for context:\nStory quality: ${review.story_quality}\nLanguage: ${review.language_quality}\n\nReturn the revised story.`;
+  return callJson({ system, content, schema, tier: "story" });
 }
 
 // Actual-result state extraction — the missing half of continuity. The plan

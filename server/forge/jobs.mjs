@@ -331,7 +331,8 @@ async function stepQa(book, job) {
   // The normaliser below tops the list back up to six from clean words.
   {
     const clean = (story.read_words || []).filter(
-      (w) => !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length,
+      (w) => String(w).toLowerCase() !== String(child.name).toLowerCase() &&
+        !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length,
     );
     if (clean.length !== (story.read_words || []).length) {
       console.log(`[forge] read_words sanitised: dropped ${JSON.stringify((story.read_words || []).filter((w) => !clean.includes(w)))}`);
@@ -452,7 +453,12 @@ async function stepQa(book, job) {
     // the text or the bank skips every check upstream — it re-introduced
     // "market" into read_words after QA had passed (2026-08-22). Every word
     // that can enter the six must clear the same free deterministic check.
-    const decodable = (w) => !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length;
+    // heroName exempts the child's name from decode checks, but the renderer
+    // separately rejects the name as a practice word ("a person, not a word to
+    // practise") — so it must be barred here by its own test.
+    const decodable = (w) =>
+      String(w).toLowerCase() !== String(child.name).toLowerCase() &&
+      !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length;
     const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))].filter(decodable);
     const bank = new Set(greenWordsUpTo(book.level).map((w) => String(w).toLowerCase()));
     const textTokens = [...new Set(story.pages.flatMap((p) => (p.text.toLowerCase().match(/[a-z']+/g) || [])))];
@@ -460,11 +466,11 @@ async function stepQa(book, job) {
     const focusPool = [...new Set([
       ...uniq.filter(hasFocus),
       ...(story.focus_word_examples || []).map((w) => String(w).toLowerCase()).filter(decodable),
-      ...textTokens.filter((t) => hasFocus(t) && bank.has(t)),
+      ...textTokens.filter((t) => hasFocus(t) && bank.has(t) && decodable(t)),
     ])];
     const otherPool = [...new Set([
       ...uniq.filter((w) => !hasFocus(w)),
-      ...textTokens.filter((t) => !hasFocus(t) && t.length > 2 && bank.has(t)),
+      ...textTokens.filter((t) => !hasFocus(t) && t.length > 2 && bank.has(t) && decodable(t)),
     ])];
     const six = [...focusPool.slice(0, 2), ...otherPool.slice(0, 4)];
     for (const w of [...otherPool.slice(4), ...focusPool.slice(2)]) {
@@ -638,6 +644,47 @@ async function stepStoryGate(book, job) {
     exemplars: coreStoriesFor(book.level),
   });
   job.cost += revised.cost || 0; job.breakdown.story_usd += revised.cost || 0;
+
+  // VERIFY THE NOTES WERE WORKED, NOT NARRATED. The reviser must claim, per
+  // numbered note, which pages it changed; code checks the claim against the
+  // old story. A note whose claimed pages are all byte-identical was skipped
+  // no matter what the prose says — those notes (only) get ONE more targeted
+  // pass, so a $0.32 revision can no longer half-do its job silently.
+  {
+    const pageKey = (s, i) => JSON.stringify({ t: s?.pages?.[i]?.text || "", s: s?.pages?.[i]?.scene || "" });
+    const structurallyChanged = (revised.data.pages || []).length !== (job.story.pages || []).length;
+    // Index against the SAME list the reviser numbered (it filters by severity
+    // itself; verdict.blocking additionally promotes story-state minors, so
+    // the two can disagree and the note numbers would point at the wrong issues).
+    const bySeverity = (review.issues || []).filter((i) => ["critical", "major", "reject"].includes(String(i.severity || "").toLowerCase()));
+    const numberedNotes = bySeverity.length ? bySeverity : (review.issues || []);
+    const skipped = numberedNotes.filter((issue, n) => {
+      if (structurallyChanged) return false;
+      const r = (revised.data.note_responses || []).find((x) => Number(x.note) === n + 1);
+      if (!r) return true;
+      const pages = (r.fixed_on_pages || []).map((p) => Number(p) - 1).filter((i) => i >= 0 && i < job.story.pages.length);
+      return !pages.some((i) => pageKey(revised.data, i) !== pageKey(job.story, i));
+    });
+    job.breakdown.note_responses = revised.data.note_responses || [];
+    delete revised.data.note_responses;
+    if (skipped.length && !job.noteRetryUsed) {
+      job.noteRetryUsed = true;
+      console.warn(`[forge] revision skipped ${skipped.length} editor note(s), one targeted retry: ${skipped.map((i) => i.detail.slice(0, 80)).join(" | ")}`);
+      const again = await reviseStoryAfterEditor({
+        level, child, focusSound: book.focus_sound, pagesCount,
+        story: revised.data, review: { ...review, issues: skipped }, premiseRejected: false,
+        greenWords: greenWordsUpTo(book.level),
+        progression: progressionUpTo(book.level),
+        exemplars: coreStoriesFor(book.level),
+      });
+      job.cost += again.cost || 0; job.breakdown.story_usd += again.cost || 0;
+      job.breakdown.note_retry_responses = again.data.note_responses || [];
+      delete again.data.note_responses;
+      revised.data = again.data;
+    } else if (skipped.length) {
+      job.breakdown.notes_skipped_after_retry = skipped.map((i) => i.detail);
+    }
+  }
   resetAfterStoryRevision(job, revised.data);
   // machine re-enters at "qa" with the revised story
 }
