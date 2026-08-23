@@ -349,9 +349,19 @@ function engineOrder() {
   return [preferred, ...all.filter((e) => e !== preferred)];
 }
 
+// Mirrors PROVIDER_CREDIT_RE in jobs.mjs (kept inline to avoid an import
+// cycle). When the primary engine dies of EXHAUSTED CREDIT and the fallbacks
+// then fail for their own reasons (no gcloud on Vercel, dead fal key), the
+// error that must surface is the CREDIT one — it is the only actionable one,
+// and it is what the step machine classifies into paused_provider_credit so
+// the book checkpoints instead of failing. Surfacing the last fallback's
+// noise instead turned a resumable pause into a $5.11 failed book
+// (Omar, prod, 2026-08-23).
+const IMG_CREDIT_RE = /insufficient[_ ]quota|billing[_ ]hard[_ ]limit|exceeded your current quota|payment required|insufficient credit|no credits remaining|credit_balance_exhausted|\b402\b/i;
+
 async function withFallback(fns, label) {
   const order = engineOrder().filter((name) => fns[name]);
-  let lastErr;
+  let lastErr, creditErr;
   for (const name of order) {
     try {
       const buf = await fns[name]();
@@ -359,10 +369,11 @@ async function withFallback(fns, label) {
       return { buf, cost, engine: name };
     } catch (e) {
       lastErr = e;
+      if (!creditErr && IMG_CREDIT_RE.test(String(e.message || e))) creditErr = e;
       console.warn(`[forge] ${label} engine "${name}" failed, trying next:`, e.message);
     }
   }
-  throw lastErr || new Error(`no image engine available for ${label}`);
+  throw creditErr || lastErr || new Error(`no image engine available for ${label}`);
 }
 
 // Eye QA, zoomed. A pair of eyes on a 1024px page is a few dozen pixels, and
