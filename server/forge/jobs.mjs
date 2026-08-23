@@ -137,12 +137,32 @@ function nextStepOf(job) {
   if (!job.storyGateDone) return "storyGate";
   if (job.textOnly) return job.textReported ? "done" : "textReport";
   if (!job.directDone) return "direct";
-  // IMAGERY APPROVAL GATE (Lynden 2026-08-16, "idea one"): the text→image
-  // boundary is where the money starts, so by default a book STOPS here with
-  // its full imagery contract (story + director plan + visible-state
-  // assertions) and waits for a human sign-off before a single image is
-  // generated. FORGE_AUTO_APPROVE=1 restores the old straight-through flow.
-  if (!job.imageryApproved && process.env.FORGE_AUTO_APPROVE !== "1") return "awaitImagery";
+  // IMAGERY BOUNDARY — AUTONOMOUS BY DEFAULT (Lynden 2026-08-23, "how can I
+  // repair pages in place if I'm asleep"): the text→image boundary is where
+  // the money starts, and the machine now decides at it by itself:
+  //   - CLEAN gate pass (no open edit requests) → paint. A human pause here
+  //     only helps when a human is watching; a paying customer's book must
+  //     not sleep until morning.
+  //   - Gate proceeded WITH open majors → NO IMAGE MONEY follows a flawed
+  //     story (the night-loop run-1 rule, now enforced in prod): one fresh
+  //     attempt at the same spec while failure still costs pennies.
+  //   - The fresh attempt is also flawed → paint it anyway, ship, and
+  //     AUTO-FLAG the book for the morning admin queue — a book with a known
+  //     wrinkle now beats a customer staring at a spinner.
+  // FORGE_MANUAL_IMAGERY=1 restores the human sign-off pause for review
+  // sessions; FORGE_AUTO_APPROVE=1 keeps its old meaning (paint regardless).
+  if (!job.imageryApproved && process.env.FORGE_AUTO_APPROVE !== "1") {
+    if (process.env.FORGE_MANUAL_IMAGERY === "1") return "awaitImagery";
+    const openReqs = job.breakdown?.story_gate_edit_requests || [];
+    if (!openReqs.length) {
+      job.imageryApproved = true;
+    } else if (!job.freshAttemptUsed) {
+      return "freshStory";
+    } else {
+      job.autoFlag = (job.autoFlag || []).concat(openReqs.map((i) => `[story/${i.area}] ${i.detail}`));
+      job.imageryApproved = true;
+    }
+  }
   if (!job.heroUrl) return "hero";
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
   if (!job.coverUrl) return "cover";
@@ -1147,6 +1167,10 @@ async function stepReview(book, job) {
       // gate before any image is what stops genuinely weak books cheaply.
       job.breakdown.editor_review_second = review;
       job.breakdown.editor_edit_requests = verdict.blocking;
+      // Open requests surface on the ROW, not just the breakdown — the
+      // admin queue reads review_note, and a book that ships with known
+      // faults must be visible there without forensics (2026-08-23).
+      job.autoFlag = (job.autoFlag || []).concat(verdict.blocking.map((i) => `[${i.area}] ${i.detail}`));
       // reviewDone MUST be set on this path too: it is the only thing that
       // stops the machine re-entering this step, and this step costs a vision
       // call over every page image. Returning without it is an unbounded paid
@@ -1207,12 +1231,27 @@ async function stepReview(book, job) {
       console.warn("[forge] editor gate: re-cropping the cover, keeping the finished pages");
       return;
     }
-    const allPageLocal = verdict.blocking.every((i) => !BOOK_LEVEL.has(String(i.area || "").toLowerCase()) && pageOf(i));
-    if (allPageLocal) {
-      const notes = {};
-      for (const i of verdict.blocking) {
-        for (const n of pagesOf(i)) notes[n] = notes[n] ? `${notes[n]} ${i.detail}` : i.detail;
-      }
+    // NO POST-IMAGES REWRITES, EVER (Lynden 2026-08-23, after the first real
+    // prod book: a clean-gate story was painted for ~$2.80, this editor
+    // called it "too thin", and the autonomous rewrite+repaint shipped a
+    // WORSE book at $5.55 with open majors at both layers). Story quality is
+    // the PRE-images gate's job — it is the only place a weak story is cheap
+    // to kill. Here, with every scene already paid for: repair the pages the
+    // editor names, and anything it cannot pin to a page rides out as an
+    // AUTO-FLAG on the row for the morning admin queue. The customer gets
+    // their book tonight; a human reviews the flag over coffee and can push
+    // a repaired version to the same link.
+    const notes = {};
+    for (const i of verdict.blocking) {
+      for (const n of pagesOf(i)) notes[n] = notes[n] ? `${notes[n]} ${i.detail}` : i.detail;
+    }
+    const unrepairable = verdict.blocking.filter((i) => !pagesOf(i).length && !isCoverFault(i));
+    if (unrepairable.length) {
+      job.autoFlag = (job.autoFlag || []).concat(unrepairable.map((i) => `[${i.area}] ${i.detail}`));
+      job.breakdown.editor_unrepairable_flagged = unrepairable;
+      console.warn(`[forge] editor gate: ${unrepairable.length} book-level note(s) flagged for the admin queue (no rewrite)`);
+    }
+    if (Object.keys(notes).length) {
       job.repairNotes = { ...(job.repairNotes || {}), ...notes };
       for (const n of Object.keys(notes).map(Number).sort((a, b) => a - b)) {
         if (n >= 1 && n <= job.sceneUrls.length) await stepScene(book, job, n - 1);
@@ -1222,21 +1261,10 @@ async function stepReview(book, job) {
       console.warn(`[forge] editor gate: repairing only page(s) ${Object.keys(notes).join(", ")} instead of repainting the book`);
       return;
     }
-
-    const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise");
-    const child = childOf(book);
-    const pagesCount = storyPagesFor(book.level);
-    const revised = await reviseStoryAfterEditor({
-      level, child, focusSound: book.focus_sound, pagesCount,
-      story, review, premiseRejected,
-      greenWords: greenWordsUpTo(book.level),
-      progression: progressionUpTo(book.level),
-      exemplars: coreStoriesFor(book.level),
-    });
-    job.cost += revised.cost || 0;
-    job.breakdown.story_usd += revised.cost || 0;
-    resetAfterStoryRevision(job, revised.data);
-    return; // machine re-enters at "qa" with the revised story
+    // Nothing page-repairable: ship with the flags rather than loop.
+    if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
+    job.reviewDone = true;
+    return;
   }
   if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
   job.reviewDone = true;
@@ -1273,6 +1301,10 @@ async function stepAssemble(book, job) {
     status: "ready",
     title: story.title,
     pages,
+    // A book that shipped with known open notes carries them on the row —
+    // the admin queue surfaces review_note, so the morning pass sees every
+    // auto-flagged book without digging through job breakdowns.
+    ...(job.autoFlag?.length ? { review_note: `AUTO-FLAG: ${job.autoFlag.join(" | ")}`.slice(0, 2000) } : {}),
     story: { story, validation: job.validation, directed: job.directed, shiftyMarks: job.shiftyMarks },
     profile: pages[pages.length - 1],
     cost_usd: Number(job.cost.toFixed(4)),
@@ -1298,6 +1330,7 @@ function displayFor(book, job, step) {
   const name = book.child_name;
   const total = job.story?.pages?.length || 8;
   const map = {
+    freshStory: ["story", `Taking a fresh run at ${name}'s story...`, 5],
     story: ["story", `Writing ${name}'s story around the sound "${book.focus_sound}"...`, 5],
     qa: ["phonics_qa", "Checking every word is decodable at this level...", 15],
     plausibility: ["plausibility_qa", "Checking the story actually makes sense...", 20],
@@ -1400,7 +1433,21 @@ export async function runNextStep(bookId) {
 
   const costBefore = job.cost;
   try {
-    if (step === "story") await stepStory(book, job);
+    if (step === "freshStory") {
+      // Open majors survived the gate's edit passes: abandon the manuscript
+      // (cheap — no image exists yet) and write a fresh one at the same spec.
+      // Archived in the breakdown; the second attempt paints regardless (with
+      // an auto-flag) so the customer always gets a book.
+      console.warn(`[forge] story reached the imagery boundary with open majors — fresh attempt instead of painting "${job.story?.title}"`);
+      job.freshAttemptUsed = true;
+      job.breakdown.abandoned_story = { title: job.story?.title, open_requests: job.breakdown.story_gate_edit_requests };
+      job.story = null; job.qaDone = false; job.storyGateDone = false; job.directDone = false;
+      job.validation = null; job.directed = null; job.pendingEditorNotes = null;
+      job.storyRetryUsed = false; job.noteRetryUsed = false; job.storyEditRequests = 0;
+      job.shiftyMarks = null;
+      delete job.breakdown.story_gate_edit_requests;
+    }
+    else if (step === "story") await stepStory(book, job);
     else if (step === "qa") await stepQa(book, job);
     else if (step === "plausibility") await stepPlausibility(book, job);
     else if (step === "storyGate") await stepStoryGate(book, job);

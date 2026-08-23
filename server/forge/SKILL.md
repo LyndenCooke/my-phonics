@@ -964,9 +964,30 @@ proceeded with 2 more — including page 2's picture showing Dad
 PLACING the owl on the high shelf before the search that is the
 whole plot. A paying customer would receive this.
 
-Open decisions for Lynden: (a) in prod, a post-images book-level
-fault should repair pages in place or park for the admin queue —
-never rewrite+repaint autonomously; (b) whether the pre-images gate
-should adopt the cold editor's "thin story" bar so the disagreement
-happens before money; (c) prod cap is FORGE_MAX_BOOK_USD default $6
-— the cost doctrine's $1.75 stage caps are not wired into prod.
+Decided that evening (Lynden: "how can I repair pages in place if I'm
+asleep... what if we get 1000s of hits" → "do what you suggest",
+pricing set at £4.99/book) and implemented as the SLEEP-SAFE FLOW:
+
+1. **No post-images rewrites, ever.** The cold editor's blocking notes
+   either name pages (→ targeted repaint, the existing repair path) or
+   they don't (→ AUTO-FLAG on the row's review_note, book ships). The
+   rewrite branch is deleted; resetAfterStoryRevision now runs only in
+   the cheap pre-images gate.
+2. **The imagery boundary is autonomous.** Clean gate → paint, no
+   human pause (FORGE_MANUAL_IMAGERY=1 restores the pause for review
+   sessions). Gate proceeded with open majors → ONE fresh story
+   attempt at the same spec (run-1 rule: no image money follows a
+   flawed story), and if the fresh attempt is also flawed it paints
+   anyway + auto-flags — a customer always gets a book.
+3. **The thin-story bar moved into the pre-images gate prompt** with
+   the concrete 3-question test (obvious-first-idea? failed attempt?
+   stakes?) and the $2.80 rock-story lesson cited.
+4. **Cron sweeper** (vercel.json, */10): /api/forge/sweep adopts any
+   "generating" book whose job.lockAt is >10 min stale and drives it
+   with runNextStep within a 240s budget — a closed customer tab no
+   longer strands a paid book. Safe next to a live tab (step lock
+   returns busy).
+Flagged books surface in the admin queue via review_note
+("AUTO-FLAG: ..."); repairs pushed later update the same book link.
+Still open: stage-level caps in prod (book cap remains
+FORGE_MAX_BOOK_USD=$6; £4.99 covers it).

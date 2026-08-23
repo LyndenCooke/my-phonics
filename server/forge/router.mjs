@@ -342,6 +342,31 @@ export async function handleForge(req, res) {
       }
     }
 
+    // Cron sweeper (vercel.json, every 10 min): prod generation is driven by
+    // the customer's browser, so a closed tab strands a paid book at
+    // "generating" forever. The sweep adopts any book whose last step is
+    // stale and drives it forward within this invocation's time budget —
+    // nobody's book depends on their tab staying open (Lynden 2026-08-23,
+    // "customers will be waiting"). Safe alongside a live tab: the per-step
+    // lock returns "busy" instead of double-running.
+    if (req.method === "GET" && p === "/sweep") {
+      const stale = await db.staleGeneratingBooks(10);
+      const deadline = Date.now() + 240_000;
+      const swept = [];
+      for (const b of stale.slice(0, 5)) {
+        let steps = 0, last = null;
+        while (Date.now() < deadline && steps < 40) {
+          let r;
+          try { r = await runNextStep(b.id); } catch (e) { r = { done: true, step: "error", error: String(e.message || e).slice(0, 120) }; }
+          steps++; last = r;
+          if (r.done || r.step === "busy") break;
+        }
+        swept.push({ id: b.id, steps, last: last?.step, status: last?.status || null });
+        if (Date.now() >= deadline) break;
+      }
+      return send(res, 200, { checked: stale.length, swept });
+    }
+
     if (req.method === "POST" && p === "/retry") {
       const b = await readBody(req);
       const book = await db.getBook(b.book_id);

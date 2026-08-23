@@ -109,6 +109,24 @@ export async function getBook(id) {
   return loadFile().custom_books.find((b) => b.id === id) || null;
 }
 
+// Books stuck mid-generation with nobody driving them. Prod's step machine
+// is advanced by the customer's browser; a closed tab strands the book at
+// "generating" forever. Staleness comes from progress.job.lockAt (stamped by
+// every step) rather than updated_at, which has no update trigger.
+export async function staleGeneratingBooks(minutes = 10) {
+  await initDb();
+  const cutoff = Date.now() - minutes * 60_000;
+  const stale = (b) => {
+    const at = b.progress?.job?.lockAt;
+    return !at || at < cutoff;
+  };
+  if (mode === "supabase") {
+    const rows = await rest("custom_books?status=eq.generating&select=id,progress,created_at&order=created_at.asc&limit=25");
+    return rows.filter(stale).map((b) => ({ id: b.id }));
+  }
+  return loadFile().custom_books.filter((b) => b.status === "generating" && stale(b)).map((b) => ({ id: b.id }));
+}
+
 export async function listBooks(filter = {}) {
   await initDb();
   if (mode === "supabase") {
