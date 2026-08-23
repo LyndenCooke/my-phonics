@@ -1755,7 +1755,10 @@ const STORY_EDITOR_SCHEMA = {
     pass: { type: "boolean", description: "Advisory only — the decision is derived in code from issue severities." },
     reason: { type: "string", description: "One-sentence verdict a colleague could act on." },
   },
-  required: ["cold_read", "premise_check", "plan_check", "story_quality", "language_quality", "issues", "pass", "reason"],
+  // Strict-schema endpoints (the prod serverless path) reject any schema
+  // whose required array misses a property — the lax local path tolerated
+  // the gap for weeks until the first prod book 400'd on it (2026-08-23).
+  required: ["cold_read", "premise_check", "plan_check", "story_quality", "language_quality", "physical_check", "issues", "pass", "reason"],
   additionalProperties: false,
 };
 
