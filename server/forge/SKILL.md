@@ -845,3 +845,19 @@ $0.04) — the renderer-sync work directly saving money. Findings:
    says mini drafts survive the gpt-5.5 judges fine. The validation run
    should set FORGE_WRITER_MODEL=gpt-5.4-mini (~$0.37/book saving) and
    settle it.
+
+### Validation run: PAUSED ON OPENAI QUOTA AGAIN (2026-08-23 ~17:33)
+
+Runs 2+3 consumed the whole top-up (~$8.35 billed). Validation book
+Sana "ee"/L4 Lahore (63c1f9e2) is checkpointed at paused_provider_credit,
+$0 spent. Resume after top-up: POST /retry on it — the dev server must be
+the one started with FORGE_WRITER_MODEL=gpt-5.4-mini (the cheap-writer
+A/B is the point of this run). Gotcha found doing this: TaskStop/Ctrl-C
+on `npm run dev` can orphan the vite child on Windows — the replacement
+server silently takes 8081 while the old env keeps serving 8080. Check
+the port banner before trusting which env a run executes under.
+After the validation book: review it against every s22 finding (schema
+caps, marks, family binding, contact staging, se/ve gate, story quality
+from the mini writer), write the verdict here, then the loop is done —
+remaining open items: multi-action page text (finding 2, run 3),
+absence-proof repaint cost (finding 3, run 3), review-stage price.
