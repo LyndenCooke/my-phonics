@@ -861,3 +861,39 @@ caps, marks, family binding, contact staging, se/ve gate, story quality
 from the mini writer), write the verdict here, then the loop is done —
 remaining open items: multi-action page text (finding 2, run 3),
 absence-proof repaint cost (finding 3, run 3), review-stage price.
+
+### Validation run — Sana, "ee", L4, Lahore (63c1f9e2, "Sana and the
+
+Green Seeds"): $2.40, UNDER TARGET, zero open editor notes
+
+Resumed after the second top-up on the FORGE_WRITER_MODEL=gpt-5.4-mini
+server. First book to come in under the $2.50 target, and the first to
+ship with NO open edit requests at the final editor. Verdict by finding:
+
+1. **Cheap writer: adopt, with the revision caveat.** Write $0.023 (vs
+   ~$0.40 gpt-5.5). The mini draft did NOT pass the gate first time —
+   one revision round, gate total $0.36 vs $0.12–0.14 for gpt-5.5
+   first-drafts — so the net text saving is ~$0.15/book, not $0.37.
+   Post-revision quality held: convergent re-review confirmed 2/2 notes
+   fixed, and the final cold editor passed the whole book clean at
+   $0.13 (vs $0.49–0.66 when it finds faults). Sample of one, but the
+   pattern matches Kai 9701bff9 (also mini, also clean).
+2. **Every banked fix held**: cast 3/3 cap, family binding correct, no
+   PDF typeset failure (se/ve gate live upstream — the writer's draft
+   contained no -se words to catch), read_words normaliser + sanitiser
+   both fired correctly in the log. The lone tin has a "red star" mark
+   BUT the text itself establishes it on p2 — earned, unlike run 1's
+   coin spot; the pictures agree with the words. Watch item, not a
+   defect.
+3. **The multi-action-page class recurred** (gate follow-up minor: p6
+   carries two actions) — third sighting tonight. This is now the top
+   open item.
+4. **L4's 6-page shape is the cost sweet spot**: scenes $1.41 total,
+   review $0.13, all-in $2.40. An 8-page L5/L6 book on this exact
+   pipeline would still land ~$3.30–4.00; the $2.50 target is
+   realistic for L1–L4, aspirational above it without pulling the
+   review-price or repaint levers.
+
+**Loop complete (4 books, 3 review cycles, all fixes committed).**
+Books on both Desktops: The Foil Card ($3.78), A Turn for Baba
+($4.57, purse-repaired), Sana and the Green Seeds ($2.40).
