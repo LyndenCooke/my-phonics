@@ -669,9 +669,11 @@ RULES OF A REIMAGINING:
 - WHEN IT WILL NOT FIT, CUT THE COUNT, NEVER THE DEVICE. The device is why the book works; the count is just how many times it happens. If the pattern has three guessed reveals and your pages only carry two, write TWO - each with its clue, its guess and its reveal - rather than three bare sightings. A Level 2 attempt kept three animals and lost the guessing, and what was left was a list (2026-08-21). Two guesses beat three sightings.
 - AT LEVELS 1 AND 2 THE DEVICE IS USUALLY REPETITION (Lynden 2026-08-21: "level 1 can have lots of repetitions"). A very early reader gets its pleasure from the SAME SENTENCE FRAME coming round again with one word changed - "Run, pup, run! ... Hop, pup, hop!" - because the child can read the second one having only decoded the first. So at these levels prefer a pattern whose device is repetition or escalation, keep the frame identical, and change one thing each time. Do NOT reach for a pattern that needs a clue, a guess and a reveal unless its own floor says it can carry it.
 - ONE BEAT PER PAGE AT THE SHORTEST LEVELS. Where a page holds one short sentence, a clue and its reveal are TWO pages, not one. Count your beats against your pages before you write, and drop count until the device fits.
-- REDISTRIBUTE if the page counts differ: the same beats across ${pagesCount} pages, two beats to a page if you must. Never pad with a new incident.
+- REDISTRIBUTE if the page counts differ: the same beats across ${pagesCount} pages. Never pad with a new incident.
+- ONE DRAWABLE ACTION PER PAGE, AT EVERY LEVEL. Each page gets exactly ONE picture, so its text may narrate at most ONE physical action. A second sentence may show the reaction, the consequence, the feeling or the spoken line — never a SECOND distinct action that would need its own picture. "Sam held the bag while Yusuf pulled it free" is one action (one joint moment, drawable); "Sam stacked the tins, and Yusuf swept the cart top" is two (the picture can only show one, and the missing one becomes a defect — it did, three times, 2026-08-23). If a page needs two things done, either merge them into one joint drawable moment or give the second its own page. Read each page and ask: what single moment does the picture show? If two candidates compete, rewrite.
 ${source.pages.length ? `FOR REGISTER ONLY - the original, to show the warmth and rhythm expected, NOT to copy:\n${source.pages.map((p, i) => `  ${i + 1}. ${p}`).join("\n")}` : ""}` : `STORY SHAPE - ${shape ? `THIS book must use this shape: **${shape.name}** - ${shape.how}` : "choose a shape that suits the sound"}`}
 Stay on that shape's own throughline: if its tension needs raising, raise THAT tension rather than bolting on a second story.
+Every page's text narrates at most ONE drawable physical action (a second sentence may react, feel or speak — never act again): each page gets one picture, and a two-action page guarantees an undrawn action.
 
 Fill "premise" (character, setting, goal, object, problem, cultural context, one-sentence premise), then "story_plan" as SIX BEATS the pages must actually deliver:
 1 GOAL - what the hero wants and why it matters to them.
@@ -774,12 +776,16 @@ export function buildWriterMessages(opts) {
   return [{ role: "system", content: system }, { role: "user", content }];
 }
 
-// FORGE_WRITER_MODEL lets the writing run on a cheaper model than the judges
-// (Lynden 2026-08-22: "the writing is the easy part"). Unset = the story tier.
+// The writer runs on the cheap model BY DEFAULT (Lynden 2026-08-23, after
+// the A/B: mini writes at ~$0.02 vs ~$0.40, its drafts survive the gpt-5.5
+// judges — two clean books including the first-ever clean gate pass — and
+// the one extra gate revision still nets ~$0.15/book cheaper). The judges
+// stay on the strong story tier. FORGE_WRITER_MODEL overrides in either
+// direction ("default" restores the story tier for comparison runs).
 export async function writeStory(opts) {
   const { system, content } = writerPrompt(opts);
-  const override = process.env.FORGE_WRITER_MODEL;
-  if (override) return openaiJson({ model: override, system, content, schema: STORY_SCHEMA, maxTokens: 16000 });
+  const override = process.env.FORGE_WRITER_MODEL || OPENAI_FAST_MODEL;
+  if (override !== "default") return openaiJson({ model: override, system, content, schema: STORY_SCHEMA, maxTokens: 16000 });
   return callJson({ system, content, schema: STORY_SCHEMA });
 }
 
@@ -1866,6 +1872,7 @@ ${progression ? `- Level ${level.level} progression: ${progression.sentences_per
 - Narration, not instructions: never "can/could + verb" for an action the hero performs. Prose moves the reader between locations. A plot-critical distinguishing mark gets an exact shape and an exact fixed location in its key_object "look".
 - SAFE BEHAVIOUR IS NON-NEGOTIABLE (revisions introduce this failure most often — a rewrite once sent the hero running back through a public souk alone, 2026-08-15): the hero must never do a risky physical action alone — moving unaccompanied through public streets/crowds, reaching into drains or gaps, using tools, anything near heat, deep water, traffic or heights. The child keeps the agency (notices, plans, decides); an adult is present and part of any risky step in the SAME page's text and scene.
 - NATURALNESS NEVER OVERRIDES DECODABILITY. When the editor calls a line awkward, replace it with the most natural wording available WITHIN the taught graphemes above — never a more literary word that needs an above-level sound ("caught" for "hit" at a level where its sound is untaught makes the book WORSE). If no natural in-level word exists, restructure the sentence instead.
+- ONE DRAWABLE ACTION PER PAGE (revisions introduce this failure: a fix bolted onto a page adds a second action the picture cannot show — it happened on a revision page, 2026-08-23). Each page's text narrates at most ONE physical action; a second sentence may react, feel or speak, never act again. If your fix needs a second action, merge both into one joint drawable moment or move one to another page.
 ${exemplars.length ? `\nPublished books at this level — match their register:\n${exemplars.map((e) => `"${e.title}": ${e.pages.join(" | ")}`).join("\n")}\n` : ""}`;
   // EVERY NOTE ANSWERED, CHECKABLY (Lynden 2026-08-23 "sort it out"): the
   // editor writes exact prescriptions, but the reviser was handed them as a
