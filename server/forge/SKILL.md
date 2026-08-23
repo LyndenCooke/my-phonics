@@ -802,3 +802,46 @@ with zero human repairs. Findings:
    the save), "oi" practice on the light side (3 distinct words — meets the
    writer rule as written, editor wanted more). Logged, not fixed: both are
    taste-level and the current rules already sit at the agreed thresholds.
+
+### Run 3 — Yusuf, "ur", L6, Istanbul (9878e41e, "A Turn for Baba"):
+
+ready autonomously, but the dearest book yet ($4.57)
+
+Third clean first-draft gate pass in a row ($0.12 gate). Deterministic
+phonics check came back clean and SKIPPED the paid QA gate entirely (QA line
+$0.04) — the renderer-sync work directly saving money. Findings:
+
+1. **"purse" killed the PDF at typeset — the -se one-unit ruling was never
+   ported to JS.** decodeProblems read p-ur-s-e (every letter taught);
+   the renderer splits p/ur/se and refuses the untaught "se" unit
+   (Lynden's 2026-07-12 silent-e ruling). The finished book's typeset
+   failed on both the page-7 text and the practice word. FIXED
+   (`d0ab6899`): the JS gate now mirrors split_into_phonemes' word-final
+   se/ve merge, magic-e guard included, verified against the Python gate
+   on purse/horse/house/nurse/mouse/wave/give. The shipped book was
+   repaired by hand: page 7 "his purse" → "his bag" (the drawn object is
+   a small brown pouch — still honest), practice word purse → turn
+   (already in the story, keeps exactly 2 focus-sound words); PDF then
+   typeset clean.
+2. **The broadened contact rule (9z) worked where it applied**: page 5's
+   bag-pull is drawn with both boys gripping the bag — genuine contact,
+   the class run 2 shipped broken. But the editor's open major moved one
+   layer up: page 5's text narrates THREE actions (bag freed, tins
+   stacked, cart swept) and the picture shows only the first. Multi-action
+   page text cannot be drawn by one frame. Candidate fix (NOT yet applied
+   — needs a decision on writer-vs-director): either the writer keeps each
+   page's text to what one picture can show, or the director must stage
+   evidence of every named action (tins mid-stack in the background).
+3. **Cost $4.57 — where it went**: scenes $3.10 (scene:5 $0.63, scene:6
+   $0.93 — the page-7 purse-absence proof looped repaints then regenerated
+   from scratch chasing "pocket visibly open and empty"), review $0.49,
+   story $0.41. The 9a absence-proof rule is the priciest thing in the
+   imagery pipeline when it fights the illustrator.
+4. **The write cost mystery solved (Lynden asked)**: story-stage cost is
+   bimodal across the fleet — ~$0.03 (books written by last night's
+   FORGE_WRITER_MODEL=cheap server) vs ~$0.26–0.41 (gpt-5.5 writer).
+   No retries involved; it is purely the model. The cheap writer's Kai
+   9701bff9 was the first-ever clean gate pass, so the evidence so far
+   says mini drafts survive the gpt-5.5 judges fine. The validation run
+   should set FORGE_WRITER_MODEL=gpt-5.4-mini (~$0.37/book saving) and
+   settle it.
