@@ -897,3 +897,40 @@ ship with NO open edit requests at the final editor. Verdict by finding:
 **Loop complete (4 books, 3 review cycles, all fixes committed).**
 Books on both Desktops: The Foil Card ($3.78), A Turn for Baba
 ($4.57, purse-repaired), Sana and the Green Seeds ($2.40).
+
+### Post-delivery: Lynden's read of the Sana book found what the vision
+
+QA rubber-stamped — and answered "why so many repaints?"
+
+Lynden spotted seed counts changing and a three-armed Mum. Pixel check
+confirmed worse: 2 seeds on p1, 4 on p3, 6+ on p5 (only p4 was right),
+plus the extra arm on p6. Repaired for $0.83 (pages 1/3/5/6, book now
+$3.23), verified by zoomed count before redelivery.
+
+Why QA missed it: the page judge compares each image to its own
+SENTENCE, and the sentence never says "three" — only the object
+register does; its severity guidance even demoted counts to "minor".
+FIXED: mandatory `count_check` field (count any register object with a
+declared number <=6; mismatch = blocking) and the defect sweep must
+now STATE each figure's limb counts (extra arms hide in overlapping
+figures during hand-overs).
+
+Why the repaints keep happening at all (Lynden: "use our other
+stories — you're inventing the wheel"): the stories ARE varied from
+the 33 (Sana <- The Yak and the Box), but the STAGING threw away the
+sources' implicit engineering. The proven book keeps its counted set
+zipped in a box — the count lives in the WORDS ("Six figs in the box.
+I zip it up"), never asking the illustrator to draw N of anything.
+The variation exposed loose seeds on four pages, hitting the
+documented can't-count-N weakness four times. FIXED: director rule 9v
+— a counted set stays inside its closed container on every page
+except at most ONE close-up page where seeing them is the story's
+point. Stage counts the way the proven books do.
+
+Also found: a `ready` book's job state (castSheets, anchors,
+sceneUrls) is dropped at completion, so /repair on a delivered book
+errors with "no job state". The art survives on disk under fixed
+names and the job can be rebuilt from the row (story.directed +
+page imageUrls + cast_*.jpg/hero.jpg + anchors from first-page-per-
+location) — done by hand this time; a repairBook that self-rebuilds
+is the permanent fix, not yet written.
