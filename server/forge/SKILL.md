@@ -934,3 +934,39 @@ names and the job can be rebuilt from the row (story.directed +
 page imageUrls + cast_*.jpg/hero.jpg + anchors from first-page-per-
 location) — done by hand this time; a repairBook that self-rebuilds
 is the permanent fix, not yet written.
+
+### First real prod book through the website (Omar ow/L4, 76acb8f9,
+
+2026-08-23 evening): READY at $5.55, and the expensive lesson is the
+
+post-imagery rewrite path
+
+Full customer-flow test (wizard → voucher → generate → gate →
+imagery sign-off → ready). Two prod-only crashes found and fixed on
+the way: STORY_EDITOR_SCHEMA missing physical_check in required
+(strict serverless schemas reject; local masked it by cross-vendor
+judging on Vertex — `ee5b7136`), and an exhausted-credit image
+failure surfacing the dead fal fallback's 401 instead of pausing
+(`854debac`). Third OpenAI credit exhaustion of the day hit
+mid-imagery; after top-up the free retry resumed from checkpoint.
+
+**The big finding — two judges, one expensive disagreement.** The
+story gate passed "Omar and the Brown Rock" with ZERO issues; ~$2.80
+of scenes were painted; then the post-images cold editor rejected the
+same story as "structurally too thin to illustrate" → full BOOK_LEVEL
+rewrite into "Omar and the Brown Owl" → all scenes repainted. The
+night loop's own rule (run 1: no image money follows open majors) is
+enforced BEFORE images but the inverse is not: a post-images editor
+can still throw away a whole painted book. Worse, the rewrite shipped
+with open editorial debt at BOTH layers: the re-gate exhausted its
+passes and proceeded with 2 open majors, and the final picture editor
+proceeded with 2 more — including page 2's picture showing Dad
+PLACING the owl on the high shelf before the search that is the
+whole plot. A paying customer would receive this.
+
+Open decisions for Lynden: (a) in prod, a post-images book-level
+fault should repair pages in place or park for the admin queue —
+never rewrite+repaint autonomously; (b) whether the pre-images gate
+should adopt the cold editor's "thin story" bar so the disagreement
+happens before money; (c) prod cap is FORGE_MAX_BOOK_USD default $6
+— the cost doctrine's $1.75 stage caps are not wired into prod.
