@@ -759,3 +759,12 @@ image money followed it — the cheapest review a bad draft can get. Findings:
    convergence on the first draft (fewer editor-bait defects like unearned marks)
    is therefore also the main text-cost lever.
 
+### Runs 2-4: blocked on OpenAI quota (2026-08-23 ~03:00)
+
+Run 2 (same Amina spec, on the fixed code) died at the first writer call:
+OpenAI credit exhausted — the recurring pattern. Book b410a939 is checkpointed
+at paused_provider_credit with $0 spent and resumes with POST /retry after a
+top-up; it will pick up every fix from run 1 (schema caps, scoped family
+binding, hardened mark rule). Deliberately NOT rerouted to the Anthropic key
+overnight: a vendor swap mid-loop would invalidate the comparison and spend
+un-authorised billing. The loop resumes at "run 2" the moment credit exists.
