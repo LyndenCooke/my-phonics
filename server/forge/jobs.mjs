@@ -1177,7 +1177,14 @@ async function stepReview(book, job) {
     // a full rewrite + 6 repaints instead of one redraw. Only genuinely
     // BOOK-level faults justify a rewrite; anything else naming a page is
     // repaired in place (Lynden 2026-08-21).
-    const BOOK_LEVEL = new Set(["premise", "story", "language", "phonics", "safety", "teaching-truth"]);
+    // teaching-truth is NOT in this set: a teaching-truth fault that names a
+    // page is almost always a PICTURE fault (Kai 2026-08-23: "the track is
+    // drawn as one continuous wavy line, but a toy car leaves paired wheel
+    // marks" — drawable, page 5). Leaving it book-level sent that book to a
+    // full rewrite that wiped six finished scenes and the cover, the exact
+    // $1.30 throw-away this path exists to prevent. A teaching-truth fault in
+    // the TEXT is caught by the text-only story gate before any image exists.
+    const BOOK_LEVEL = new Set(["premise", "story", "language", "phonics", "safety"]);
     // The editor now states the pages on each issue; the prose regex stays as
     // a fallback for older rows and for a model that leaves the list empty.
     const pageOf = (i) => {
