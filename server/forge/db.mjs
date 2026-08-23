@@ -116,12 +116,21 @@ export async function getBook(id) {
 export async function staleGeneratingBooks(minutes = 10) {
   await initDb();
   const cutoff = Date.now() - minutes * 60_000;
+  // AGE FENCE: only books CREATED in the last 24h are adopted. Anything
+  // older marked "generating" is pre-sweeper debris (dev experiments,
+  // half-runs from other machines) — the first live sweep found four,
+  // one from 13 days earlier, and started spending real API money
+  // finishing a book nobody was waiting for (2026-08-23). A genuinely
+  // stranded customer book is always fresh; old strays stay untouched
+  // for a human to retry or delete.
+  const ageFence = Date.now() - 24 * 3600_000;
   const stale = (b) => {
+    if (new Date(b.created_at).getTime() < ageFence) return false;
     const at = b.progress?.job?.lockAt;
     return !at || at < cutoff;
   };
   if (mode === "supabase") {
-    const rows = await rest("custom_books?status=eq.generating&select=id,progress,created_at&order=created_at.asc&limit=25");
+    const rows = await rest("custom_books?status=eq.generating&select=id,progress,created_at&order=created_at.desc&limit=25");
     return rows.filter(stale).map((b) => ({ id: b.id }));
   }
   return loadFile().custom_books.filter((b) => b.status === "generating" && stale(b)).map((b) => ({ id: b.id }));
