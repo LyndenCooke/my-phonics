@@ -768,3 +768,37 @@ top-up; it will pick up every fix from run 1 (schema caps, scoped family
 binding, hardened mark rule). Deliberately NOT rerouted to the Anthropic key
 overnight: a vendor swap mid-loop would invalidate the comparison and spend
 un-authorised billing. The loop resumes at "run 2" the moment credit exists.
+
+### Run 2 — Amina, "oi", L5 (b410a939, "The Foil Card"): first fully
+
+autonomous READY book (2026-08-23 afternoon, after credit top-up)
+
+Resumed with POST /retry; ran story → gate → imagery → cold editor → ready
+with zero human repairs. Findings:
+
+1. **Every run-1 fix held.** Cast came back as 2 (dad, sis) against the
+   schema cap that run 1 blew with six; no unearned mark on any key object;
+   the family cast is the hero's own. The story gate passed FIRST TIME with
+   zero majors and five minors — gate cost $0.14 vs $0.44 when a revision
+   round is needed. Convergence-on-first-draft is real and it works.
+2. **Cost $3.78 vs the $2.50 target.** Breakdown: text $0.89 (story 0.40,
+   direct 0.31, gate 0.14, QA 0.05), scenes $2.07 across 8 pages (per-scene
+   spread $0.11–$0.61 — the spread is QA repaints), hero+cover+country $0.16,
+   final cold-editor review $0.66. The $2.50 target assumed ~6 images; an
+   8-page book with per-scene vision QA plus a $0.66 whole-book review may
+   structurally land ~$3.00–3.80. Levers, in order: (a) fewer repaint
+   retries (the contact fix below removes one class of them), (b) the review
+   stage price, (c) scene count. Decision on which to pull is Lynden's.
+3. **Contact beats get drawn as near-misses.** The cold editor's one OPEN
+   major at ship: text "slid into a mop", picture shows Dad slipping NEXT to
+   the mop. Director rule 9z only demanded contact staging on the mechanism/
+   resolution page, so a mid-book slapstick collision had no contact
+   requirement. FIXED: 9z now applies to every page whose text asserts
+   contact (slid into, bumped, knocked, caught), with the touching parts
+   named in required_visible_states. The repair budget had gone to page 7,
+   and the book shipped with the mop major open — by design (one revision,
+   then proceed), but the 9z fix should stop the class.
+4. Un-actioned minors that shipped: hero agency dips pages 4–6 (dad performs
+   the save), "oi" practice on the light side (3 distinct words — meets the
+   writer rule as written, editor wanted more). Logged, not fixed: both are
+   taste-level and the current rules already sit at the agreed thresholds.
