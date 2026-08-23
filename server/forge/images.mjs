@@ -597,7 +597,16 @@ function locationRefText(camera) {
 // once and then injected into every page they appear on. Without this they are
 // redrawn from the word "mum" each time and their clothes change colour page
 // to page.
-export async function generateCastMember({ member, child }) {
+export async function generateCastMember({ member, child, heroBuf = null }) {
+  // FAMILY LOOKS RELATED (Lynden 2026-08-23: a shipped book's Dad and son
+  // plainly weren't family — pale straight-haired Dad, brown curly-haired
+  // son). For a relative, the hero's own sheet rides along as a reference
+  // and the prompt binds skin tone and hair family to it. Words alone were
+  // not enough: the writer's "appearance" text never mentioned the hero.
+  const isFamily = /\b(mum|mummy|mother|dad|daddy|father|nan|nana|nani|gran|grandma|grandad|grandpa|aunt|auntie|uncle|brother|sister|sibling)\b/i.test(`${member.who || ""} ${member.id || ""}`);
+  const familyClause = isFamily && heroBuf
+    ? `FAMILY RESEMBLANCE IS MANDATORY: a reference image of the book's HERO is attached — this character is the hero's close family (${member.who}). Give them the SAME skin tone as the hero and hair in the same colour family (texture may differ with age), and a face that clearly belongs to the same family, so parent and child read as related at a glance. Do NOT copy the hero's outfit or age — only the family colouring and likeness. `
+    : "";
   // The age clause must follow the DECLARED cast member, not assume adult.
   // "This is an ADULT" was hard-coded (added 2026-07-26 because a mum drawn
   // from text alone rendered as an older sister) — and then "Sam, Amina's
@@ -612,6 +621,7 @@ export async function generateCastMember({ member, child }) {
   const brief =
     `A cartoon character for a children's picture book: ${member.who}. ${member.appearance}. ` +
     `They belong to the same family world as the hero of the book, set in ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"} — culturally accurate, warm and dignified. ` +
+    familyClause +
     ageClause +
     "Standing in a neutral pose, facing the viewer, full body visible from head to toe, arms slightly away from the body. " +
     "The character has small friendly dot eyes, solid black, tiny and cute like a teddy bear - not too big. " +
@@ -620,16 +630,21 @@ export async function generateCastMember({ member, child }) {
   const prompt =
     "The first two reference images show our publishing house's illustration style: hand-drawn children's book art with soft textures, clean black outlines, and the signature eye style — tiny solid black filled dots with NO white, NO highlights, NO iris. Match this exact style. " +
     `Now draw a NEW character (a different person from the style references): ${brief}`;
-  const refs = [fs.readFileSync(EYE_REF_PATH), fs.readFileSync(SCENE_REF_PATH)];
+  const familyRef = isFamily && heroBuf ? [heroBuf] : [];
+  const refs = [fs.readFileSync(EYE_REF_PATH), fs.readFileSync(SCENE_REF_PATH), ...familyRef];
   const vertexParts = [
     { text: "EYE STYLE REFERENCE — the new character MUST have the EXACT same eye style: tiny solid black dots, no white, no detail:" },
     { inlineData: { mimeType: "image/png", data: refs[0].toString("base64") } },
+    ...(familyRef.length ? [
+      { text: "HERO REFERENCE — the new character is this hero's close family: match their skin tone and hair-colour family exactly (not their outfit or age):" },
+      { inlineData: { mimeType: "image/jpeg", data: heroBuf.toString("base64") } },
+    ] : []),
     { text: `Now generate a NEW character (a different person from the reference) with the SAME eye style: ${brief}` },
   ];
   const gen = () => withFallback({
     openai: () => openaiImage(prompt, refs, "portrait_4_3"),
     vertex: () => vertexImage(vertexParts),
-    gpt2: () => gptImage(prompt, [refUri(EYE_REF_PATH), refUri(SCENE_REF_PATH)], "portrait_4_3"),
+    gpt2: () => gptImage(prompt, [refUri(EYE_REF_PATH), refUri(SCENE_REF_PATH), ...familyRef.map((b) => toDataUri(b, "image/jpeg"))], "portrait_4_3"),
   }, `cast:${member.id}`);
   return generateWithEyeQA(gen, `cast:${member.id}`);
 }

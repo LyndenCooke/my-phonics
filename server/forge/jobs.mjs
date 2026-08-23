@@ -767,7 +767,8 @@ async function castSheetFor(book, job, id) {
   const member = (job.story.cast || []).find((m) => m?.id?.toLowerCase() === key);
   if (!member) return null;
   try {
-    const c = await generateCastMember({ member, child: childOf(book) });
+    const heroBuf = job.heroUrl ? await loadByUrl(job.heroUrl).catch(() => null) : null;
+    const c = await generateCastMember({ member, child: childOf(book), heroBuf });
     job.cost += c.cost; job.breakdown.images_usd += c.cost; job.breakdown.qa_notes.push(c.qa);
     const url = await saveImage(book.id, `cast_${key.replace(/[^a-z0-9]/g, "")}.jpg`, c.buf);
     job.castSheets[key] = { name: member.who || member.id, url };
