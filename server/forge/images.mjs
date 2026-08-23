@@ -603,7 +603,19 @@ export async function generateCastMember({ member, child, heroBuf = null }) {
   // son). For a relative, the hero's own sheet rides along as a reference
   // and the prompt binds skin tone and hair family to it. Words alone were
   // not enough: the writer's "appearance" text never mentioned the hero.
-  const isFamily = /\b(mum|mummy|mother|dad|daddy|father|nan|nana|nani|gran|grandma|grandad|grandpa|aunt|auntie|uncle|brother|sister|sibling)\b/i.test(`${member.who || ""} ${member.id || ""}`);
+  // ...but only the HERO'S relatives. A lost-child plot can cast the OTHER
+  // child's parents ("boy_mum", "the boy's mum") — binding them to the hero's
+  // colouring would be exactly wrong (caught on the Amina souk story before
+  // it cost anything, 2026-08-23).
+  const memberDesc = `${member.who || ""} ${member.id || ""}`.toLowerCase();
+  const heroName = String(child?.name || "").toLowerCase().replace(/[^a-z]/g, "") || "___none___";
+  const REL = "(mum|mummy|mother|dad|daddy|father|nan|nana|nani|gran|grandma|grandad|grandpa|aunt|auntie|uncle|brother|sister|sibling)";
+  const isFamily =
+    new RegExp(`\\b${REL}\\b`).test(memberDesc) &&
+    !new RegExp(`\\b(his|her|their)\\s+${REL}\\b`).test(memberDesc) &&
+    // a possessive/compound naming anyone but the hero ("boy_mum", "the
+    // boy's mum") is the OTHER family; "amina's mum" is the hero's own.
+    !new RegExp(`\\b(?!${heroName}\\b)\\w+(_|'s\\s*)${REL}\\b`).test(memberDesc);
   const familyClause = isFamily && heroBuf
     ? `FAMILY RESEMBLANCE IS MANDATORY: a reference image of the book's HERO is attached — this character is the hero's close family (${member.who}). Give them the SAME skin tone as the hero and hair in the same colour family (texture may differ with age), and a face that clearly belongs to the same family, so parent and child read as related at a glance. Do NOT copy the hero's outfit or age — only the family colouring and likeness. `
     : "";

@@ -724,3 +724,38 @@ Measured savings: story gate capped to one pass (~$0.80); plausibility folded in
 - **Pattern adherence is unchecked** — a book assigned one structure can write another and nothing notices.
 - Split-digraph marking on the Story Words page needs planner-supplied segmentations.
 - The 33 pattern `device` lines and floors, and the 97 tricky-word breakdowns, were authored by Claude and want a specialist read before print.
+
+## 22. Night runs — three-run improvement loop (2026-08-23, overnight)
+
+Lynden's brief before sleeping: run the pipeline three times, review after each,
+bank every fix here, then validate on a final run. Target: **≤$2.50 a book, quality
+output**. Baseline going in: "Kai and the Car Tracks" at $3.72, where $1.30 of that
+was the (now fixed) editor-wipe bug and ~$0.55 the repair round it forced.
+
+### Run 1 — Amina, "oi", L5, Marrakech (789dbaa4): killed at the imagery gate
+
+The story arrived at the gate with two open majors and $0.95 already spent, so no
+image money followed it — the cheapest review a bad draft can get. Findings:
+
+1. **Prompt rules are advice; schemas are physics.** The writer prompt has said
+   "maximum 3 cast" since 08-21; this story declared SIX (mum, lost boy, guard,
+   and the boy's mum AND dad) — six sheets to pay for and crowd into eight
+   scenes. Same night, the freshly-written "no marks on unique objects" rule was
+   ignored too: a lone toy pony got a "coin spot" and page 7 turned on it with no
+   setup (the editor's open major). Fixes: `maxItems: 3` on cast and key_objects
+   in STORY_SCHEMA (the schema layer retries until obeyed), and the mark rule now
+   ends with a mandatory self-check ("reread key_objects; delete unearned mark
+   clauses"). If the mark disease appears again, the next escalation is
+   deterministic: strip mark-phrases from `look` in code when no second similar
+   object exists.
+2. **Family resemblance must know WHOSE family.** The hero-sheet-as-reference
+   binding (added earlier tonight) would have matched "boy_mum" — the OTHER
+   family's mother — to the hero's colouring. Detection now requires the relative
+   to be the hero's own (bare "Mum"/"Dad"/"Nana" or "<hero>'s mum"), and excludes
+   "his/her/their mum", "<name>_mum", "<other>'s mum". Eight-case test passed.
+3. **Where the text money goes:** story $0.09, phonics QA $0.15, story gate
+   $0.44, directing $0.28. The gate is the biggest text line: first review + one
+   revision + follow-up. A draft that passes first time costs ~$0.20 at the gate;
+   convergence on the first draft (fewer editor-bait defects like unearned marks)
+   is therefore also the main text-cost lever.
+
