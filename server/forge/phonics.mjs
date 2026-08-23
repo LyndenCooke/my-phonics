@@ -312,15 +312,31 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
       if (w.includes(pair) && !graphemes.includes(pair)) { out.push(`"${raw}" contains "${pair}", not taught at Level ${level}`); break; }
     }
     let rest = w, guard = 30, bad = null;
+    const units = [];
     while (rest && guard--) {
       const hit = graphemes.find((g) => rest.startsWith(g));
-      if (hit) { rest = rest.slice(hit.length); continue; }
+      if (hit) { units.push(hit); rest = rest.slice(hit.length); continue; }
       const dbl = rest.slice(0, 2);
-      if (DOUBLED.has(dbl)) { rest = rest.slice(2); continue; }
+      if (DOUBLED.has(dbl)) { units.push(dbl); rest = rest.slice(2); continue; }
       if (rest.length > 2 && rest.endsWith("ed")) { rest = rest.slice(0, -2); continue; }
       bad = rest[0]; break;
     }
-    if (bad) out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`);
+    if (bad) { out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`); continue; }
+    // Word-final -se/-ve = ONE grapheme unit (Lynden 2026-07-12, mirrored
+    // from v2_helpers.split_into_phonemes): the final e is silent spelling
+    // convention, not a phoneme. Merge only when the unit before s/v is a
+    // multi-char grapheme (ur, ou, ee...) or a consonant — a LONE vowel
+    // there means magic-e (wave, five), which keeps its V-C-e treatment.
+    // The renderer refuses any such merged unit its level has not taught
+    // ("purse" killed a finished L6 book's PDF at typeset, 2026-08-23).
+    if (
+      units.length >= 3 && units[units.length - 1] === "e" &&
+      (units[units.length - 2] === "s" || units[units.length - 2] === "v") &&
+      (units[units.length - 3].length >= 2 || !"aeiou".includes(units[units.length - 3]))
+    ) {
+      const unit = units[units.length - 2] + "e";
+      if (!graphemes.includes(unit)) out.push(`"${raw}" ends in "${unit}" (one unit, silent e), not taught at Level ${level}`);
+    }
   }
   return [...new Set(out)];
 }
