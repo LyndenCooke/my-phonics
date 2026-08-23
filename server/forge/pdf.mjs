@@ -19,6 +19,42 @@ export function pdfPageCount(buf) {
   return Math.max(pageObjs, treeCount);
 }
 
+// A4 2-up saddle-stitch imposition of an A5 book — the "print at home"
+// version. Mirrors scripts/make_printable_booklet.py's saddle_stitch_order
+// EXACTLY (sheet i: front = (n-2i, 1+2i), back = (2+2i, n-1-2i)): each
+// output page is one side of one A4 landscape sheet holding two A5 pages;
+// a parent prints double-sided, flip on the LONG edge, folds, staples.
+export async function imposeA4Booklet(a5Buf) {
+  const { PDFDocument } = await import("pdf-lib");
+  const src = await PDFDocument.load(a5Buf);
+  const n = src.getPageCount();
+  if (n % 4 !== 0) throw new Error(`booklet imposition needs a multiple of 4 pages, got ${n}`);
+  const pairs = [];
+  for (let i = 0; i < n / 4; i++) {
+    pairs.push([n - 2 * i, 1 + 2 * i]);
+    pairs.push([2 + 2 * i, n - 1 - 2 * i]);
+  }
+  const out = await PDFDocument.create();
+  const A4_W = 841.89, A4_H = 595.28; // landscape A4 in points = two portrait A5s
+  const embedded = await out.embedPdf(src, [...new Set(pairs.flat())].map((p) => p - 1))
+    .then((pages) => {
+      const uniq = [...new Set(pairs.flat())];
+      const map = {};
+      uniq.forEach((p, i) => { map[p] = pages[i]; });
+      return map;
+    });
+  for (const [left, right] of pairs) {
+    const page = out.addPage([A4_W, A4_H]);
+    for (const [num, x] of [[left, 0], [right, A4_W / 2]]) {
+      const ep = embedded[num];
+      // Scale each A5 page to exactly half the sheet, preserving aspect.
+      const s = Math.min((A4_W / 2) / ep.width, A4_H / ep.height);
+      page.drawPage(ep, { x: x + ((A4_W / 2) - ep.width * s) / 2, y: (A4_H - ep.height * s) / 2, xScale: s, yScale: s });
+    }
+  }
+  return Buffer.from(await out.save());
+}
+
 // Mirrors PlaywrightPDFGenerator.generate() in myphonics_books/core/pdf_generator.py
 // EXACTLY — A5, zero margin, print backgrounds, CSS page size wins. Any
 // drift here means the serverless PDF looks different from the studio one.

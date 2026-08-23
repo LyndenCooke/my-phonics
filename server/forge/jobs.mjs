@@ -27,7 +27,7 @@ import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
-import { BOOKS_DIR } from "./env.mjs";
+import { BOOKS_DIR, cfg } from "./env.mjs";
 
 export { CUSTOM_BOOKS_DIR };
 
@@ -1750,6 +1750,18 @@ async function renderPdfServerless(bookId, origin) {
   }
   const pdfUrl = await saveImage(bookId, "book.pdf", pdfBuf);
 
+  // A4 print-at-home booklet alongside the A5 (Lynden 2026-08-23: "the pdf
+  // is sent with the a5 print straight away pdf and the a4 version"). Never
+  // fatal — a book with only its A5 still delivers.
+  let a4Url = null;
+  try {
+    const { imposeA4Booklet } = await import("./pdf.mjs");
+    const a4Buf = await imposeA4Booklet(pdfBuf);
+    a4Url = await saveImage(bookId, "book-a4-booklet.pdf", a4Buf);
+  } catch (e) {
+    console.warn(`[forge] A4 imposition failed for ${bookId} (A5 still delivered):`, e.message);
+  }
+
   const { sendBookReadyEmail } = await import("./email.mjs");
   const emailResult = await sendBookReadyEmail({
     to: book.email,
@@ -1757,9 +1769,33 @@ async function renderPdfServerless(bookId, origin) {
     title: book.title || `${book.child_name}'s Story`,
     pdfBuf,
     pdfUrl,
+    a4Url,
   });
   if (!emailResult.sent) {
     console.warn(`[forge] book-ready email not sent for ${bookId}: ${emailResult.reason}`);
+  }
+
+  // GHL hand-off: POST the delivery facts to a GoHighLevel inbound-webhook
+  // workflow so the CRM owns the customer-facing send (sequences, tagging,
+  // tracking). Fire-and-forget — CRM downtime must never block delivery.
+  if (cfg.GHL_BOOK_WEBHOOK_URL) {
+    fetch(cfg.GHL_BOOK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: book.email,
+        child_name: book.child_name,
+        book_title: book.title || `${book.child_name}'s Story`,
+        book_id: bookId,
+        level: book.level,
+        focus_sound: book.focus_sound,
+        pdf_a5_url: pdfUrl,
+        pdf_a4_url: a4Url,
+        read_online_url: `https://www.myphonicsbooks.co.uk/create-book?resume=1`,
+      }),
+    }).then((r) => {
+      if (!r.ok) console.warn(`[forge] GHL book webhook answered ${r.status} for ${bookId}`);
+    }).catch((e) => console.warn(`[forge] GHL book webhook failed for ${bookId}:`, e.message));
   }
 
   return pdfUrl;

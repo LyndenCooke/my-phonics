@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 /**
  * Create-A-Book — the custom phonics book wizard.
  * Flow: child profile → level + one focus sound → review + consents →
- * pay £3 → live generation progress → book reveal + £10
+ * pay £4.99 → live generation progress → book reveal + £10
  * World of Books upsell. Localhost workflow preview; API at /api/forge.
  */
 
@@ -356,7 +356,7 @@ export default function CreateBook() {
     }
   };
 
-  // Optional "Add to my account" for the £3 book — also needs sign-in, but
+  // Optional "Add to my account" for the £4.99 book — also needs sign-in, but
   // unlike World of Books it's never required to read/print the book itself.
   const saveToAccount = async (bookId: string) => {
     if (!user) {
@@ -488,7 +488,7 @@ export default function CreateBook() {
                   className="group relative mt-9 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-10 py-4 text-lg font-black text-white shadow-xl shadow-violet-300/60"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  <Sparkles className="h-5 w-5" /> Start their book — £3
+                  <Sparkles className="h-5 w-5" /> Start their book — £4.99
                 </motion.button>
                 <p className="mt-2.5 text-xs text-slate-400">One book, yours to keep and print, forever.</p>
               </div>
@@ -675,7 +675,7 @@ export default function CreateBook() {
               <div className="text-center">
                 <h2 className="text-2xl font-extrabold text-slate-900">Create {name}'s book</h2>
                 <div className="mx-auto mt-5 max-w-sm rounded-3xl bg-white p-6 shadow-lg">
-                  <div className="text-5xl font-extrabold text-slate-900">£3</div>
+                  <div className="text-5xl font-extrabold text-slate-900">£4.99</div>
                   <div className="mt-1 text-sm font-semibold text-violet-600">One personalised book · yours to keep</div>
                   <ul className="mt-4 space-y-2 text-left text-sm text-slate-600">
                     {[
@@ -690,7 +690,7 @@ export default function CreateBook() {
                   </ul>
                   <button onClick={() => payForBook()} disabled={busy}
                     className="mt-5 w-full rounded-full bg-violet-600 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50">
-                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : "Create my book — £3"}
+                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : "Create my book — £4.99"}
                   </button>
 
                   {/* Private code. Deliberately understated: it exists so one

@@ -5,7 +5,7 @@ import { cfg } from "./env.mjs";
 
 export const PRICES = {
   // £3 from 2026-08-06 (Lynden), up from the £1 founder price.
-  book: { amount: 300, name: "Create-A-Book", desc: "Your child's own personalised phonics book" },
+  book: { amount: 499, name: "Create-A-Book", desc: "Your child's own personalised phonics book" },
   world: { amount: 1000, name: "World of Books — Lifetime Access", desc: "Every family-made book in the MyPhonicsBooks world, forever" },
 };
 

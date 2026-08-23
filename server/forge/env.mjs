@@ -73,6 +73,9 @@ export const cfg = {
   // means no voucher is accepted at all, which is the safe default: an empty
   // string must never match an empty submission.
   FORGE_VOUCHER_CODE: booksEnv.FORGE_VOUCHER_CODE || "",
+  // GoHighLevel inbound-webhook URL for the book-ready delivery workflow.
+  // Unset = the CRM hand-off is skipped (Resend email still goes out).
+  GHL_BOOK_WEBHOOK_URL: process.env.GHL_BOOK_WEBHOOK_URL || booksEnv.GHL_BOOK_WEBHOOK_URL || "",
   // Vertex AI fallback (gcloud OAuth) — the LLM path that is known-good on
   // this machine when no Anthropic key is configured.
   VERTEX_PROJECT: booksEnv.VERTEX_PROJECT || "iron-entropy-496317-q9",

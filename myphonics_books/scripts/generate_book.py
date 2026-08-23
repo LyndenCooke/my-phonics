@@ -119,6 +119,12 @@ def build_journey_levels() -> list:
         if key not in _journey_thumb_cache:
             thumb = None
             src = covers_dir / f"{key}_cover.jpg"
+            # Serverless fallback: public/ is excluded from the Vercel render
+            # function, so prod custom books shipped the back-cover journey as
+            # bare colour blocks (Omar, 2026-08-23). data/journey_thumbs holds
+            # the 8 flagship covers pre-shrunk, and data/** is bundled.
+            if not src.exists():
+                src = BASE_DIR / "data" / "journey_thumbs" / f"{key}_cover.jpg"
             if src.exists():
                 try:
                     from PIL import Image
@@ -355,6 +361,13 @@ def build_spotlight_pages(focus_graphemes: list, level: int,
             # Look for photo
             safe_grapheme = grapheme.replace("-", "_")
             photo_path = PHOTOS_DIR / safe_grapheme / f"{word}.jpg"
+            # Serverless fallback: assets/photos (258MB) is not bundled into
+            # the Vercel render function, so custom books rendered in prod
+            # lost every spotlight photo AND the whole Initial Sounds section
+            # (Omar ow/L4, 2026-08-23). data/spotlight_photos holds the same
+            # images pre-shrunk to 360px (3.6MB) and data/** IS bundled.
+            if not photo_path.exists():
+                photo_path = BASE_DIR / "data" / "spotlight_photos" / safe_grapheme / f"{word}.jpg"
             photo_uri = None
             if photo_path.exists():
                 photo_uri = image_to_data_uri(photo_path)
@@ -890,6 +903,31 @@ def build_book_data_from_story(story_dict: dict, child_name: str,
         w for w in tricky_words_display
         if w.lower() not in _declared_decodable and not _grad(w, _win)
     ]
+
+    # FLAG ONCE, THEN OMIT (Lynden 2026-08-23).  At L5+ a tricky word prints
+    # in the strip ONLY in the first book (journey order) that displays it;
+    # later books drop it entirely.  First shipped as "quiet practice chips"
+    # (the specialist-review variant B — chip kept, emphasis dropped), but
+    # Lynden saw the grey chips rendered the same day and ruled them out
+    # ("looks broken... just dont have it in tricky words after"), accepting
+    # the cold-open trade-off the review flagged.  The map comes from
+    # scripts/build_tricky_intro.py — REBUILD IT after any story-text or
+    # tricky-list change (first-display is stable under this filter: the
+    # intro book itself always still shows the word).  A word missing from
+    # the map (freshly authored one-off) is treated as new here.  L1-L4 are
+    # untouched: chips and word→say rows repeat wherever the word appears —
+    # the "explanation once" half was REJECTED at review.
+    if level >= 5 and book_id:
+        try:
+            with open(BASE_DIR / "data" / "tricky_word_intro.json",
+                      encoding="utf-8") as f:
+                _intro = json.load(f).get("first_display", {})
+        except Exception:
+            _intro = {}
+        tricky_words_display = [
+            w for w in tricky_words_display
+            if _intro.get(w.lower(), book_id) == book_id
+        ]
 
     # Cover sounds — first 8
     cover_sounds = all_graphemes[:8] if len(all_graphemes) >= 8 else all_graphemes

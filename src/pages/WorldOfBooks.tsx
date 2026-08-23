@@ -663,7 +663,7 @@ export default function WorldOfBooks() {
           </p>
           <Link to="/create-book"
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md transition hover:opacity-90">
-            <Sparkles className="h-4 w-4" /> Create their book — £3
+            <Sparkles className="h-4 w-4" /> Create their book — £4.99
           </Link>
         </div>
       </div>
