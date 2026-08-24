@@ -43,6 +43,16 @@ export function allLevels() {
   return [1, 2, 3, 4, 5, 6, 7, 8].map(getLevel).filter(Boolean);
 }
 
+// BORROWED TRICKY WORDS (Lynden 2026-08-24: "if you need one or two tricky
+// words from just above, just do that"). The writer may lean on AT MOST TWO
+// tricky words from the NEXT level's new list when the story genuinely needs
+// them ("was", "my" in a Level 3 book). PAGE TEXT ONLY: the Python typeset
+// gate exempts only the level's own tricky words from read_words, story_words
+// and the TITLE, so a borrowed word anywhere but the page text kills the PDF.
+export function borrowableTricky(level) {
+  return (tricky[`level_${level + 1}`]?.new_tricky_words || []).map((w) => String(w).toLowerCase());
+}
+
 // Reading/writing progression per level — how much text, which punctuation,
 // which sentence forms and devices. One spec, read by BOTH the story writer
 // and the text QA gate so they cannot disagree.
@@ -268,14 +278,17 @@ export function greenWordsUpTo(level) {
     }
     if (!greenWordsCache?.length) throw new Error("green_words.json missing — cannot write a decodable story without the word bank");
   }
-  // The bank is not gospel: it lists "market" as a Level 4 'ar' word, but the
-  // renderer's decodability gate rightly rejects it (unstressed e). A bank
-  // word on the DISHONEST list must never reach the writer's legal-word list
-  // or the read_words normaliser — that is exactly how "market" passed every
-  // upstream gate and killed a finished book at typeset time (2026-08-22).
+  // The bank is not gospel: it is harvested from the curated library, which
+  // may lean on the Future Sounds band, so it lists "market" (unstressed e)
+  // as a Level 4 'ar' word and "by"/"happy" (word-final y) at Level 2. Any
+  // word decodeProblems would reject must never reach the writer's legal-word
+  // list or the read_words normaliser — offering it invites the exact story
+  // the gate then bounces ("market" killed a finished book at typeset time,
+  // 2026-08-22; "by" shipped in a Level 3 story, 2026-08-24).
   return greenWordsCache
-    .filter((w) => w.level <= level && !DISHONEST[String(w.word).toLowerCase()])
-    .map((w) => w.word);
+    .filter((w) => w.level <= level)
+    .map((w) => w.word)
+    .filter((w) => !decodeProblems([w], level).length);
 }
 
 // DETERMINISTIC DECODABILITY (Lynden 2026-08-21: the LLM phonics gate cost
@@ -288,6 +301,7 @@ const DISHONEST = {
   listen: "silent t", listened: "silent t", castle: "silent t", whistle: "silent t",
   fasten: "silent t", answer: "silent w", was: "the a after w says /o/",
   wash: "the a after w says /o/", want: "the a after w says /o/", wanted: "the a after w says /o/",
+  wants: "the a after w says /o/", wanting: "the a after w says /o/",
   watch: "the a after w says /o/", water: "the a after w says /o/",
   basket: "unstressed e", pocket: "unstressed e", rocket: "unstressed e", carpet: "unstressed e",
   target: "unstressed e", pocketed: "unstressed e",
@@ -296,10 +310,12 @@ const DISHONEST = {
 };
 const PEOPLE = new Set(["mum", "mummy", "dad", "daddy", "nan", "nana", "nani", "gran", "grandma", "grandad", "auntie", "uncle"]);
 
-export function decodeProblems(words, level, { heroName = "", allowPeople = true } = {}) {
+export function decodeProblems(words, level, { heroName = "", allowPeople = true, borrow = [] } = {}) {
   const lv = getLevel(level);
   if (!lv) return [];
-  const tricky = new Set(lv.trickyWords.map((w) => w.toLowerCase()));
+  // `borrow` extends the tricky exemption for PAGE-TEXT checks only (see
+  // borrowableTricky); callers checking the title or read_words pass none.
+  const tricky = new Set([...lv.trickyWords, ...borrow].map((w) => String(w).toLowerCase()));
   const graphemes = [...new Set(lv.cumulative)].filter((g) => !g.includes("-")).sort((a, b) => b.length - a.length);
   // Multi-letter graphemes from HIGHER levels. A future digraph whose letters
   // are individually taught sails through greedy matching as singles — that is
@@ -337,6 +353,13 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
       bad = rest[0]; break;
     }
     if (bad) { out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`); continue; }
+    // Word-final y never says /y/ — it says /ee/ (happy) or /igh/ (by, my),
+    // sounds taught at Level 6. Greedy matching consumed it as the L2
+    // consonant, which is how "by" shipped in a Level 3 story (2026-08-24).
+    if (level < 6 && w.length > 1 && units[units.length - 1] === "y") {
+      out.push(`"${raw}" ends in "y", which says /ee/ or /igh/ there — not taught until Level 6`);
+      continue;
+    }
     // A future multi-letter grapheme counts as a violation when its letters
     // were consumed as SEPARATE units (o+w in "window") — but not when it
     // merely sits inside one longer taught unit ("ai" inside L4's "air").

@@ -3,6 +3,7 @@
 // per call so each book gets a real cost breakdown.
 import { execFile } from "node:child_process";
 import { cfg } from "./env.mjs";
+import { borrowableTricky } from "./phonics.mjs";
 
 // The JUDGE model (Lynden 2026-08-16). OpenAI writes; Claude reads cold. Opus 5
 // costs the same as the 4.8 it replaces ($5/$25 per 1M) and is materially better
@@ -649,6 +650,9 @@ Read each line aloud in your head as a grown-up reading to a five-year-old on th
 - Never join two clauses with a comma plus 'and'. Write two short sentences.
 - Mechanics: every sentence starts with a capital and ends . ? or !; names and I are capitalised; a family word used AS a name is capitalised (Mum said) but not after a determiner (her mum); ONE tense throughout, past unless there is a reason.
 - ONE MEANING PER WORD, and it must be the one a child pictures. Never build a story on a secondary sense: a "chip" meaning a nick in a lid collided with the fried-potato chip printed elsewhere in the same book. If the best focus word is ambiguous, choose another.
+- NO EMPTY FILLER WORDS: a bare evaluative word that tells the reader nothing ("The bench is wet and bad") is dead weight — say the CONSEQUENCE instead (the child cannot sit; the lunch must move). If "bad", "good" or "nice" appears in your draft, replace it with what the picture would show.
+- NATURAL NEGATIVES: nobody says "No rag is in the shed." Write it the way a person would: "No rag!" or "The shed has no rag."
+- VARY THE MUSIC: a book where every sentence is Name-verb-object reads like a robot, however legal each line is. At least one page should carry a reaction ("Yuck!", "No rag!"), and the last page must land a satisfying final beat, not just report the state of the world.
 
 === 3. THE STORY ===
 THE STORY COMES FROM THE SOUND, NOT FROM A THEME. Start from "${focusSound}": brainstorm the decodable words it unlocks, pick those with story potential, and build the best story THOSE words can tell. The child's hobbies and the family's notes are SET DRESSING - they colour what we SEE and must never become the plot, the obstacle, the solution, or a plot-driving character or animal.
@@ -695,6 +699,9 @@ THE MIDDLE MUST HAPPEN ON THE PAGE:
 - PLANT THE LOST THING WHERE THE READER CAN SEE IT. In a search story the object should be genuinely findable in an EARLIER picture - a corner, an edge, a glimpse of its colour, easy to miss on the first read and obvious on the second. That is the pleasure of the shape, and it is the one deliberate exception to hiding an object before its reveal page: say so in that page's required_visible_states ("one corner of the green jeep just showing in the grass, small and easy to miss").
 - Causes are established BEFORE the accident they cause; never introduce a prop or condition in the same breath as the mishap. A five-year-old should be able to say why it went wrong.
 - Arrivals are arrivals: someone who arrives partway through must not appear earlier, in the words or the pictures.
+- NOBODY WALKS ON FOR THE BOW: any character standing in the final picture took part in the story — in the problem, the attempts or the fix. A sibling who exists only in the last sentence is a defect; introduce them early or cut them.
+- THE FIX MUST FIX THE STATED PROBLEM. Reread your resolution against page one: if the bench was too wet to sit on, the last page must not leave the lunch sitting on that bench. Everything the problem touched ends the book in a state a child can see is right.
+- EVERY DETAIL EARNS ITS PLACE: a prop, count or decoration that exists only because its name is decodable ("six red dots by pots") is word-hunting in disguise. If cutting a detail changes nothing, cut it.
 
 TWO FORBIDDEN DEFAULT PLOTS - both are what a model reaches for, not what is best:
 a) child makes something for a grown-up, spills it, finishes it, is praised. If your draft is that, throw it away.
@@ -707,6 +714,7 @@ A QUIET MORAL a parent would want - effort pays off, patience, honesty, kindness
 - Exactly ${pagesCount} pages. The hero is ${child.name}, age ${child.age ?? "5"}, from ${child.country || "the UK"}.
 - Every word decodable using ONLY these graphemes: ${JSON.stringify(level.cumulative)}
 - ...or one of these tricky words: ${JSON.stringify(level.trickyWords)}
+${borrowableTricky(level.level).length ? `- BORROWING (use sparingly): if a sentence cannot be said naturally without one, you may borrow AT MOST TWO tricky words from the next level's list: ${JSON.stringify(borrowableTricky(level.level))}. A borrowed word may appear ONLY in the page text — never in the title, never in read_words — and it will be taught in this book's tricky-word strip. Borrow because the natural sentence needs it ("was", "my"), never to unlock a fancier plot.` : ""}
 - Word bank to draw from freely; you may also build other words from the taught graphemes: ${JSON.stringify(greenWords)}
 ${focusBank.length ? `- EVERY WORD IN THE BANK THAT CARRIES "${focusSound}" - these are your focus words, pick from here first rather than inventing: ${JSON.stringify(focusBank)}` : ""}
 - "${child.name}" is allowed, but SPEND IT CAREFULLY: sounded out honestly a name usually is not decodable at all ("Tomasz" is t-o-m-a-s-z), so the book teaches it as a tricky word on the Story Words page. Name the hero in the FIRST sentence, then use he/she/they and let the pictures carry who it is. AT MOST ONE use of the name per page after page 1, and never twice in the same sentence - a book that said "Tomasz" eight times in seventy-nine words read like a robot and made the child decode an undecodable word eight times. No other proper nouns unless fully decodable.
@@ -860,6 +868,7 @@ export async function polishStoryAloud({ story, level, childName, focusSound }) 
     "\"A chip is on the lid\" is \"The lid has a chip\"; \"Tomasz sets his red box with the rest\" is \"Tomasz puts his box beside the others\". " +
     "Prefer subject-verb-object, warm and plain. Let the child sound like a child. Keep contractions out (early readers meet them later), keep sentences short. " +
     "HARD LIMITS, because this is a decodable book: you may ONLY use words already in the story, or words built from these graphemes: " + JSON.stringify(level.cumulative) + ", or these tricky words: " + JSON.stringify(level.trickyWords) + ". The name \"" + childName + "\" is always allowed. " +
+    (borrowableTricky(level.level).length ? "Tricky words already borrowed from the next level in the story's pages stay legal in page text (never the title); do not add new ones. " : "") +
     "Do NOT change what happens, do not add or remove pages, do not introduce a new object or character, and do not lose the focus sound \"" + focusSound + "\". If a line is already natural, return it UNCHANGED - most lines usually are. " +
     "Return every page in order with its scene brief untouched.";
   const content =
@@ -884,7 +893,8 @@ export async function reviewStory({ level, story, focusSound, childName }) {
 
 A word PASSES if ANY of these is true:
 - it can be fully segmented into these taught graphemes: ${JSON.stringify(level.cumulative)}
-- it appears in this tricky-word list: ${JSON.stringify(level.trickyWords)}
+- it appears in this tricky-word list: ${JSON.stringify(level.trickyWords)}${borrowableTricky(level.level).length ? `
+- it is one of these borrowed next-level tricky words (page text only): ${JSON.stringify(borrowableTricky(level.level))}` : ""}
 - it is the child's name "${childName}"
 Punctuation and capitalisation are ignored.
 
@@ -905,6 +915,7 @@ export async function fixStoryWords({ story, level, childName, problems }) {
     "You are fixing SPECIFIC WORDS in a decodable children's book. Change as little as possible: keep the plot, the page count, the title if it is clean, and every line that has no problem EXACTLY as it is. " +
     "For each faulty word, swap in a word that means nearly the same and is legal here, or rephrase that one sentence around it. Never rewrite a page for style while you are here. " +
     "LEGAL WORDS: anything built from these graphemes: " + JSON.stringify(level.cumulative) + ", or these tricky words: " + JSON.stringify(level.trickyWords) + ". The name \"" + childName + "\" is allowed. " +
+    (borrowableTricky(level.level).length ? "These borrowed next-level tricky words are legal in PAGE SENTENCES ONLY, never in the title: " + JSON.stringify(borrowableTricky(level.level)) + ". " : "") +
     "A word only counts as legal if saying its taught letter-sounds actually produces the spoken word - that is why the listed words were rejected. " +
     "Return ONLY the pages you changed, by their page number, plus a corrected title if the title itself was faulty.";
   const content =
@@ -937,7 +948,7 @@ export async function fixStoryWords({ story, level, childName, problems }) {
 }
 
 export async function rewriteStory({ level, child, focusSound, pagesCount, story, violations }) {
-  const system = `You are the senior story writer for MyPhonicsBooks fixing decodability violations. Keep the same title, plot and scenes wherever possible — change only what is needed to remove the violations. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in AT LEAST 3 distinct words (up to 3 - not fewer). British English. Exactly ${pagesCount} pages.
+  const system = `You are the senior story writer for MyPhonicsBooks fixing decodability violations. Keep the same title, plot and scenes wherever possible — change only what is needed to remove the violations. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}.${borrowableTricky(level.level).length ? ` At most TWO borrowed next-level tricky words from ${JSON.stringify(borrowableTricky(level.level))} are allowed in page text only — never the title or read_words.` : ""} The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in AT LEAST 3 distinct words (up to 3 - not fewer). British English. Exactly ${pagesCount} pages.
 
 THE BOOK MUST STILL READ LIKE A BOOK. Removing a violation is never a licence to damage the prose: every sentence starts with a CAPITAL LETTER, proper nouns stay capitalised, and the whole story stays in ONE consistent tense (past tense unless the original was written in present). Do not drop articles, mangle word order, or leave telegraphic fragments to dodge a word — rewrite the sentence properly instead. If a violation cannot be removed without wrecking the sentence, rephrase the whole page.`;
   const content = `Original story:\n${JSON.stringify(story)}\n\nViolations to fix:\n${JSON.stringify(violations)}\n\nReturn the corrected story.`;
@@ -1019,7 +1030,7 @@ export async function reviewStoryPlausibility({ story }) {
 }
 
 export async function fixStoryPlausibility({ level, child, focusSound, pagesCount, story, issues }) {
-  const system = `You are the senior story writer for MyPhonicsBooks fixing physical/logical plausibility issues. Keep the same title, characters and setting wherever possible — change only what is needed to make the flagged events make real-world sense. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in AT LEAST 3 distinct words (up to 3 - not fewer). British English. Exactly ${pagesCount} pages.
+  const system = `You are the senior story writer for MyPhonicsBooks fixing physical/logical plausibility issues. Keep the same title, characters and setting wherever possible — change only what is needed to make the flagged events make real-world sense. Allowed graphemes: ${JSON.stringify(level.cumulative)}. Allowed tricky words: ${JSON.stringify(level.trickyWords)}.${borrowableTricky(level.level).length ? ` At most TWO borrowed next-level tricky words from ${JSON.stringify(borrowableTricky(level.level))} are allowed in page text only — never the title or read_words.` : ""} The name "${child.name}" is allowed. Focus sound "${focusSound}" should still appear in AT LEAST 3 distinct words (up to 3 - not fewer). British English. Exactly ${pagesCount} pages.
 
 Fix the underlying MECHANISM, not just the wording — if an object's size or a fix's scale doesn't match the problem, change what actually happens on that page so cause and effect genuinely line up. For a concealed-object issue (an object shown too early in a page's \`scene\` field), rewrite that page's \`scene\` field so the object stays genuinely out of view until its reveal page — not just reworded to sound more hidden while still describing it as visible. Keep every other page's text, scenes and props untouched unless the fix requires a small knock-on change (e.g. a later page referring to the now-changed event). Every sentence still starts with a CAPITAL LETTER and the whole story stays in ONE consistent tense.`;
   const content = `Original story:\n${JSON.stringify(story)}\n\nPlausibility issues to fix:\n${JSON.stringify(issues)}\n\nReturn the corrected story.`;
@@ -1770,6 +1781,7 @@ export async function storyEditorReview({ story, level, focusSound }) {
     "YOU ARE THE ONLY GATE THAT CHECKS THE BOOK AGAINST THE REAL WORLD. Everything upstream checks the book against itself: the phonics gate checks words against the level, the page judge checks each picture against its own sentence, the physics gate checks events against the pictures. None of them can catch a book that is internally perfect and factually wrong, or a picture that matches its sentence while being impossible to photograph. That is your job, and it is why teaching_truth and image_physics come before your verdict. Hold the bar of a real published picture book: 'decodable and coherent' is the entry fee, not the standard. The commonest failure in this pipeline is THINNESS — a problem stated quickly and solved by simply doing the obvious thing, with no attempt, no setback, and no earned resolution. Apply this concrete test to the pages, not the plan: (1) would a reader's FIRST obvious idea solve the problem? (2) does the hero try something that FAILS or costs them something before the resolution? (3) is anything at stake if they fail? If the answers are yes/no/no, that is a MAJOR issue, not a minor — you are the last judge who sees this story while it is still cheap; the post-illustration editor holds exactly this bar, and every story you wave through that it would call 'too thin to illustrate' costs the full price of the paintings (a search story that was 'look in the box, lift the rag, found' passed this gate clean and was rejected after $2.80 of finished art, 2026-08-23). Weigh the six-beat plan against what the PAGES actually show: a plan is worthless if the pages skip its beats. " +
     "YOU ALSO CARRY THE PHYSICAL PLAUSIBILITY CHECK, which used to be a second paid read of this same short manuscript. Before judging the story, fill physical_check: walk the causal chain page by page; commit to real-world SIZES for any object that must pass into or out of a container, gap or opening, and check it both ways; name any object the story needs in two incompatible sizes; and name any page whose scene shows an object BEFORE the page that reveals or finds it. Treat an impossibility as blocking, but do not flag ordinary picture-book compression or coincidence. " + 
     "Respect the level: the vocabulary is deliberately constrained, so judge depth by EVENTS and the scene briefs, not by richness of language. Simple words telling a real story pass; rich words telling no story fail. " +
+    "ROBOTIC PROSE IS A DEFECT EVEN WHEN EVERY WORD IS LEGAL (a Level 3 draft passed every gate reading 'The bench is wet and bad... No rag is in the shed... six red dots by pots', 2026-08-24). File as at least MAJOR any of: an empty evaluative filler word ('bad', 'nice') where a consequence belongs; an unnatural negative construction no person would say aloud; a prop, count or detail that exists only because its name is decodable and changes nothing if cut; a character who appears only in the ending without having taken part; a resolution that dodges the stated problem instead of fixing it (avoiding the wet bench while the lunch stays on it); and a manuscript where nearly every sentence is the same Name-verb-object shape with no reaction and no final beat. " +
     "SAFETY IS BLOCKING: if the hero performs a risky physical action (reaching into drains/holes, using tools, heat, deep water, traffic, heights) without an adult present and part of that action in the same page, that is a major issue — these books model behaviour for young children. " +
     "The -ed past-tense suffix is a deliberately taught exception at Level 4 and above (the book's prep page teaches its three pronunciations) — never raise -ed usage as a phonics issue at L4+. " +
     "SEVERITY DISCIPLINE: your severities ARE the verdict — code proceeds on any review with no critical or major issue, and 'minor' means 'still fine to proceed'. If your honest view is that this story should not be illustrated, you MUST say so as at least one critical or major issue.";
@@ -1870,6 +1882,7 @@ ${premiseBlock}
 
 HARD CONSTRAINTS (unchanged from the original brief):
 - Every word decodable from these graphemes: ${JSON.stringify(level.cumulative)} — or one of these tricky words: ${JSON.stringify(level.trickyWords)}. The name "${child.name}" is allowed.
+${borrowableTricky(level.level).length ? `- You may also borrow AT MOST TWO tricky words from the next level's list ${JSON.stringify(borrowableTricky(level.level))} — in page text only, never the title or read_words.` : ""}
 - The focus sound "${focusSound}" in AT LEAST 3 distinct words (and no more than 3).
 - Exactly ${pagesCount} pages. British English. One consistent tense. Every sentence starts with a capital and ends with . ? or !
 ${progression ? `- Level ${level.level} progression: ${progression.sentences_per_page[0]}${progression.sentences_per_page[1] !== progression.sentences_per_page[0] ? `-${progression.sentences_per_page[1]}` : ""} sentence(s) per page, ${progression.words_per_sentence[0]}-${progression.words_per_sentence[1]} words each; punctuation limited to: ${progression.punctuation.join(", ")}.` : ""}

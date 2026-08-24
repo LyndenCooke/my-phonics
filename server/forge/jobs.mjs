@@ -21,7 +21,7 @@ import fs from "node:fs";
 import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
@@ -116,6 +116,17 @@ function newJob(book) {
     // reference nor the loose conversation chain.
     carriedState: null,
   };
+}
+
+// PER-CALL COST LEDGER (Lynden 2026-08-24: "$1.14 for 54 words" could not be
+// diagnosed because every model call collapsed into two bucket totals). Every
+// charge lands here as {call, usd}, so cost_breakdown.calls reads like an
+// itemised receipt — which call, in order, and what it cost.
+function charge(job, bucket, call, cost) {
+  const c = Number(cost) || 0;
+  job.cost += c;
+  job.breakdown[bucket] += c;
+  (job.breakdown.calls ||= []).push({ call, usd: Number(c.toFixed(4)) });
 }
 
 function nextStepOf(job) {
@@ -294,7 +305,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     source,
     exemplars: coreStoriesFor(book.level),
   });
-  job.cost += cost; job.breakdown.story_usd += cost;
+  charge(job, "story_usd", "writeStory", cost);
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
   // then verified for free: if the prettier wording smuggled in a word this
@@ -302,7 +313,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // phonics contract is not a polish (Lynden 2026-08-21).
   try {
     const polish = await polishStoryAloud({ story, level, childName: child.name, focusSound: book.focus_sound });
-    job.cost += polish.cost || 0; job.breakdown.story_usd += polish.cost || 0;
+    charge(job, "story_usd", "polishStoryAloud", polish.cost);
     const pages = polish.data?.pages || [];
     if (pages.length === story.pages.length) {
       let kept = 0;
@@ -312,7 +323,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
         const next = fixMechanics(raw, child.name);
         if (!next || next === p.text) return p;
         const words = (next.toLowerCase().match(/[a-z']+/g) || []);
-        const bad = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
+        const bad = decodeProblems([...new Set(words)], book.level, { heroName: child.name, borrow: borrowableTricky(book.level) });
         if (bad.length) return p; // prettier but not decodable - keep the original
         kept++;
         return { ...p, text: next };
@@ -330,6 +341,28 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   job.breakdown.story_shape = shape.name;
   job.breakdown.source_story = source?.title || null;
   job.breakdown.shape_fulfilment = story.shape_fulfilment;
+}
+
+// Whole-story decodability with the borrowed-tricky allowance (Lynden
+// 2026-08-24: "if you need one or two tricky words from just above, just do
+// that"). Up to TWO of the next level's tricky words may appear in PAGE TEXT;
+// the title and read_words stay strict, because the Python typeset gate only
+// exempts the level's own tricky words there and a borrowed word in either
+// kills the PDF after the money is spent.
+function storyDecodeProblems(story, level, heroName) {
+  const tok = (s) => String(s || "").toLowerCase().match(/[a-z']+/g) || [];
+  const strictWords = [...new Set([...tok(story.title), ...(story.read_words || []).flatMap(tok)])];
+  const borrow = borrowableTricky(level);
+  const pageWords = [...new Set((story.pages || []).flatMap((p) => tok(p.text)))];
+  const problems = [
+    ...decodeProblems(strictWords, level, { heroName }),
+    ...decodeProblems(pageWords, level, { heroName, borrow }),
+  ];
+  const borrowed = pageWords.filter((w) => borrow.includes(w));
+  if (borrowed.length > 2) {
+    problems.push(`story borrows ${borrowed.length} tricky words from the next level (${borrowed.join(", ")}) — at most 2 allowed`);
+  }
+  return { problems: [...new Set(problems)], borrowed };
 }
 
 async function stepQa(book, job) {
@@ -359,14 +392,11 @@ async function stepQa(book, job) {
       story.read_words = clean;
     }
   }
-  const words = [story.title, ...story.pages.map((p) => p.text), ...(story.read_words || [])]
-    .join(" ").toLowerCase().match(/[a-z']+/g) || [];
-  const deterministic = decodeProblems([...new Set(words)], book.level, { heroName: child.name });
-  const cheapFindings = deterministic;
+  const cheapFindings = storyDecodeProblems(story, book.level, child.name).problems;
   let validation = { ok: true, violations: [], focus_sound_count: 0 };
   if (cheapFindings.length) {
     const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
-    job.cost += review.cost; job.breakdown.story_usd += review.cost;
+    charge(job, "story_usd", "reviewStory", review.cost);
     validation = review.data;
   } else {
     console.log("[forge] phonics: deterministic check clean - skipping the paid gate");
@@ -414,16 +444,14 @@ async function stepQa(book, job) {
   if (mustFix && distinct <= 3 && !focusViolations.length && !countViolation) {
     try {
       const edit = await fixStoryWords({ story, level, childName: child.name, problems: cheapFindings });
-      job.cost += edit.cost || 0; job.breakdown.story_usd += edit.cost || 0;
+      charge(job, "story_usd", "fixStoryWords", edit.cost);
       const patched = { ...story, pages: story.pages.map((p) => ({ ...p })) };
       for (const f of edit.data?.fixes || []) {
         const i = Number(f.page) - 1;
         if (i >= 0 && i < patched.pages.length && f.text) patched.pages[i].text = fixMechanics(String(f.text).trim(), child.name);
       }
       if (edit.data?.title) patched.title = String(edit.data.title).trim();
-      const after = decodeProblems(
-        [...new Set(([patched.title, ...patched.pages.map((p) => p.text), ...(patched.read_words || [])].join(" ").toLowerCase().match(/[a-z']+/g) || []))],
-        book.level, { heroName: child.name });
+      const after = storyDecodeProblems(patched, book.level, child.name).problems;
       if (!after.length) {
         story = patched;
         job.breakdown.word_fix = { note: edit.data?.note, pages: (edit.data?.fixes || []).map((f) => f.page) };
@@ -441,10 +469,10 @@ async function stepQa(book, job) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
     });
-    job.cost += fixed.cost; job.breakdown.story_usd += fixed.cost;
+    charge(job, "story_usd", "rewriteStory", fixed.cost);
     story = fixed.data;
     const recheck = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
-    job.cost += recheck.cost; job.breakdown.story_usd += recheck.cost;
+    charge(job, "story_usd", "reviewStory:recheck", recheck.cost);
     validation = recheck.data;
     const recheckFocus = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
     if (recheckFocus.length) {
@@ -525,7 +553,7 @@ async function stepQa(book, job) {
   if (buttonWords.length) {
     try {
       const sh = await markShiftySounds({ words: buttonWords, level: book.level });
-      job.cost += sh.cost; job.breakdown.story_usd += sh.cost;
+      charge(job, "story_usd", "markShiftySounds", sh.cost);
       for (const entry of sh.data.words || []) {
         const marks = (entry.shifty || [])
           .filter((s) => Number.isInteger(s.index) && s.index >= 0)
@@ -534,6 +562,16 @@ async function stepQa(book, job) {
       }
     } catch (e) {
       console.warn("[forge] shifty marking failed (dots only):", e.message);
+    }
+  }
+
+  // A borrowed next-level tricky word is TAUGHT, not smuggled: it joins
+  // tricky_words_used so the tricky strip introduces it like any other.
+  {
+    const { borrowed } = storyDecodeProblems(story, book.level, child.name);
+    if (borrowed.length) {
+      story.tricky_words_used = [...new Set([...(story.tricky_words_used || []), ...borrowed])];
+      job.breakdown.borrowed_tricky = borrowed;
     }
   }
 
@@ -558,17 +596,17 @@ async function stepPlausibility(book, job) {
   let story = job.story;
 
   const review = await reviewStoryPlausibility({ story });
-  job.cost += review.cost; job.breakdown.story_usd += review.cost;
+  charge(job, "story_usd", "reviewStoryPlausibility", review.cost);
   let result = review.data;
   if (!result.pass && result.issues?.length) {
     const fixed = await fixStoryPlausibility({
       level, child, focusSound: book.focus_sound, pagesCount, story, issues: result.issues,
     });
-    job.cost += fixed.cost; job.breakdown.story_usd += fixed.cost;
+    charge(job, "story_usd", "fixStoryPlausibility", fixed.cost);
     story = fixed.data;
     story.pages = story.pages.map((p) => ({ ...p, text: fixMechanics(p.text, child.name) }));
     const recheck = await reviewStoryPlausibility({ story });
-    job.cost += recheck.cost; job.breakdown.story_usd += recheck.cost;
+    charge(job, "story_usd", "reviewStoryPlausibility:recheck", recheck.cost);
     result = recheck.data;
     if (!result.pass) {
       console.warn(`[forge] story still fails plausibility QA after one rewrite: ${JSON.stringify(result.issues)}`);
@@ -611,7 +649,7 @@ async function stepStoryGate(book, job) {
   let review;
   if (job.pendingEditorNotes?.length) {
     const fu = await storyEditorFollowUp({ story: job.story, level, focusSound: book.focus_sound, notes: job.pendingEditorNotes });
-    job.cost += fu.cost || 0; job.breakdown.story_usd += fu.cost || 0;
+    charge(job, "story_usd", "storyEditorFollowUp", fu.cost);
     const verdicts = fu.data.note_verdicts || [];
     const unfixed = job.pendingEditorNotes
       .map((n, i) => ({ n, v: verdicts.find((x) => Number(x.note) === i + 1) }))
@@ -626,7 +664,7 @@ async function stepStoryGate(book, job) {
     console.log(`[forge] follow-up review: ${verdicts.filter((v) => v.fixed).length}/${job.pendingEditorNotes.length} notes fixed, ${(fu.data.regressions || []).length} regression(s)`);
   } else {
     const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
-    job.cost += first.cost || 0; job.breakdown.story_usd += first.cost || 0;
+    charge(job, "story_usd", "storyEditorReview", first.cost);
     review = first.data;
   }
   const verdict = deriveEditorVerdict(review);
@@ -687,7 +725,7 @@ async function stepStoryGate(book, job) {
     progression: progressionUpTo(book.level),
     exemplars: coreStoriesFor(book.level),
   });
-  job.cost += revised.cost || 0; job.breakdown.story_usd += revised.cost || 0;
+  charge(job, "story_usd", "reviseStoryAfterEditor", revised.cost);
 
   // VERIFY THE NOTES WERE WORKED, NOT NARRATED. The reviser must claim, per
   // numbered note, which pages it changed; code checks the claim against the
@@ -724,7 +762,7 @@ async function stepStoryGate(book, job) {
         progression: progressionUpTo(book.level),
         exemplars: coreStoriesFor(book.level),
       });
-      job.cost += again.cost || 0; job.breakdown.story_usd += again.cost || 0;
+      charge(job, "story_usd", "reviseStoryAfterEditor:noteRetry", again.cost);
       job.breakdown.note_retry_responses = again.data.note_responses || [];
       delete again.data.note_responses;
       revised.data = again.data;
@@ -754,7 +792,7 @@ async function stepTextReport(book, job) {
 async function stepDirect(book, job) {
   try {
     const d = await directScenes({ story: job.story, child: childOf(book) });
-    job.cost += d.cost; job.breakdown.story_usd += d.cost;
+    charge(job, "story_usd", "directScenes", d.cost);
     job.directed = d.data.pages;
   } catch (e) {
     console.warn("[forge] director pass failed, using raw scene briefs:", e.message);
@@ -766,7 +804,7 @@ async function stepDirect(book, job) {
 async function stepHero(book, job) {
   const photo = photoStash.get(book.id);
   const hero = await generateHero({ child: childOf(book), photoB64: photo?.b64, photoMime: photo?.mime });
-  job.cost += hero.cost; job.breakdown.images_usd += hero.cost; job.breakdown.qa_notes.push(hero.qa);
+  charge(job, "images_usd", "generateHero", hero.cost); job.breakdown.qa_notes.push(hero.qa);
   job.heroUrl = await saveImage(book.id, "hero.jpg", hero.buf);
 }
 
@@ -789,7 +827,7 @@ async function castSheetFor(book, job, id) {
   try {
     const heroBuf = job.heroUrl ? await loadByUrl(job.heroUrl).catch(() => null) : null;
     const c = await generateCastMember({ member, child: childOf(book), heroBuf });
-    job.cost += c.cost; job.breakdown.images_usd += c.cost; job.breakdown.qa_notes.push(c.qa);
+    charge(job, "images_usd", "generateCastMember", c.cost); job.breakdown.qa_notes.push(c.qa);
     const url = await saveImage(book.id, `cast_${key.replace(/[^a-z0-9]/g, "")}.jpg`, c.buf);
     job.castSheets[key] = { name: member.who || member.id, url };
     return { name: member.who || member.id, buf: c.buf };
@@ -837,7 +875,7 @@ async function objectSheetFor(book, job, rawName) {
   }
   try {
     const r = await generateObjectRef({ name: obj.name, look: obj.look, child: childOf(book) });
-    job.cost += r.cost; job.breakdown.images_usd += r.cost; job.breakdown.qa_notes.push(r.qa);
+    charge(job, "images_usd", "generateObjectRef", r.cost); job.breakdown.qa_notes.push(r.qa);
     const url = await saveImage(book.id, `object_${key.replace(/[^a-z0-9]/g, "")}.jpg`, r.buf);
     job.objectSheets[key] = { name: obj.name, url };
     return { name: obj.name, buf: r.buf };
@@ -954,11 +992,11 @@ async function stepScene(book, job, i) {
   // action happens off-camera.
   if (s.qa?.consistency && !s.qa.consistency.pass && s.qa.consistency.severity !== "minor") {
     console.warn(`[forge] page ${i + 1} consistency QA failed after repair — regenerating from scratch: ${s.qa.consistency.reason}`);
-    job.cost += s.cost; job.breakdown.images_usd += s.cost;
+    charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost);
     job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — regenerated" });
     s = await generateScene({ ...sceneArgs, previousResponseId: null });
     if (s.qa?.consistency && !s.qa.consistency.pass) {
-      job.cost += s.cost; job.breakdown.images_usd += s.cost;
+      charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost);
       job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — page rejected" });
       // NO FULL REJECTIONS - EDIT REQUESTS ONLY (20.2), and that doctrine was
       // never applied here: a single stubborn page killed a fully paid book
@@ -971,7 +1009,7 @@ async function stepScene(book, job, i) {
       console.warn(`[forge] page ${i + 1}: shipping after 2 failed attempts, recorded as an edit request - ${String(s.qa.consistency.reason).slice(0, 160)}`);
     }
   }
-  job.cost += s.cost; job.breakdown.images_usd += s.cost;
+  charge(job, "images_usd", `generateScene:p${i + 1}`, s.cost);
   if (s.responseId) job.chainResponseId = s.responseId;
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
 
@@ -991,7 +1029,7 @@ async function stepScene(book, job, i) {
     ].filter(Boolean))];
     if (objectNames.length) {
       const st = await extractSceneState(s.buf.toString("base64"), { objectNames });
-      job.cost += st.cost; job.breakdown.story_usd += st.cost;
+      charge(job, "story_usd", `extractSceneState:p${i + 1}`, st.cost);
       job.carriedState = st.data.states || null;
     }
   } catch (e) {
@@ -1038,7 +1076,7 @@ async function stepCover(book, job) {
     try {
       const b64 = (await loadByUrl(candidates[n])).toString("base64");
       const f = await findFaces(b64);
-      job.cost += f.cost || 0; job.breakdown.story_usd += f.cost || 0;
+      charge(job, "story_usd", "findFaces:cover", f.cost);
       const kid = (f.data?.faces || []).filter(isHero).sort((a, c) => (c.w * c.h) - (a.w * a.h))[0];
       if (kid && kid.w * kid.h > best.area) best = { idx: n, area: kid.w * kid.h, centre: kid.x + kid.w / 2 };
     } catch { /* keep looking */ }
@@ -1071,14 +1109,14 @@ async function stepCountry(book, job) {
       city: book.city || null,
       cultureNotes: book.culture_notes || null,
     });
-    job.cost += cf.cost; job.breakdown.story_usd += cf.cost;
+    charge(job, "story_usd", "countryFacts", cf.cost);
     job.country = cf.data;
     // How to SAY this child's name, for the tricky-word strip. No static
     // table can know that Tomasz is Tom-ash or Siobhan is Shi-vawn, and a
     // personalised book puts that word on nearly every page (2026-08-21).
     try {
       const nb = await nameBreakdown({ name: book.child_name, country: book.country });
-      job.cost += nb.cost || 0; job.breakdown.story_usd += nb.cost || 0;
+      charge(job, "story_usd", "nameBreakdown", nb.cost);
       job.nameBreakdown = nb.data;
     } catch (e) {
       console.warn('[forge] name breakdown unavailable:', e.message);
@@ -1089,7 +1127,7 @@ async function stepCountry(book, job) {
       city: book.city,
       country: book.country,
     });
-    job.cost += lm.cost; job.breakdown.images_usd += lm.cost; job.breakdown.qa_notes.push(lm.qa);
+    charge(job, "images_usd", "generateLandmark", lm.cost); job.breakdown.qa_notes.push(lm.qa);
     job.landmarkUrl = await saveImage(book.id, "landmark.jpg", lm.buf);
   } catch (e) {
     console.warn("[forge] country pack failed (profile renders without it):", e.message);
@@ -1131,7 +1169,7 @@ async function stepReview(book, job) {
 
   const { coldEditorReview } = await import("./claude.mjs");
   const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
-  job.cost += cost || 0;
+  charge(job, "story_usd", "coldEditorReview", cost);
   job.breakdown.editor_review = review;
   // GATE MANIFEST: record that this gate ran AND that it answered its two
   // real-world lenses. A rubric field the model leaves empty is a gate that
