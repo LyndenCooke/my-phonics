@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -134,11 +134,13 @@ function newJob(book) {
 // diagnosed because every model call collapsed into two bucket totals). Every
 // charge lands here as {call, usd}, so cost_breakdown.calls reads like an
 // itemised receipt — which call, in order, and what it cost.
-function charge(job, bucket, call, cost) {
+function charge(job, bucket, call, cost, model) {
   const c = Number(cost) || 0;
   job.cost += c;
   job.breakdown[bucket] += c;
-  (job.breakdown.calls ||= []).push({ call, usd: Number(c.toFixed(4)) });
+  // model = the ACTUAL model id the API returned for this call (audit demand,
+  // Lynden 2026-08-24: the ledger must name the model, not the alias).
+  (job.breakdown.calls ||= []).push({ call, usd: Number(c.toFixed(4)), ...(model ? { model } : {}) });
 }
 
 function nextStepOf(job) {
@@ -308,7 +310,7 @@ try {
   console.warn("[forge] no source story available, inventing instead:", e.message);
 }
 if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name}`);
-  const { data: story, cost } = await writeStory({
+  const writerOpts = {
     level, child, focusSound: book.focus_sound, pagesCount,
     greenWords: greenWordsUpTo(book.level),
     progression: progressionUpTo(book.level),
@@ -316,8 +318,40 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     shape,
     source,
     exemplars: coreStoriesFor(book.level),
-  });
-  charge(job, "story_usd", "writeStory", cost);
+  };
+  // CANDIDATES-AND-PICK (Lynden 2026-08-24, opt-in via FORGE_STORY_CANDIDATES):
+  // generate N first drafts, decode-check each for free, then a BLIND fluency
+  // judge (pages only, cross-vendor) picks the one that sounds most like
+  // English. Three fresh drafts can beat repeatedly repairing one robotic one.
+  // Default 1 = production behaviour unchanged.
+  const CANDIDATES = Math.min(5, Math.max(1, Number(process.env.FORGE_STORY_CANDIDATES || 1)));
+  let story;
+  if (CANDIDATES === 1) {
+    const one = await writeStory(writerOpts);
+    charge(job, "story_usd", "writeStory", one.cost, one.model);
+    story = one.data;
+  } else {
+    const drafts = await Promise.all(Array.from({ length: CANDIDATES }, () => writeStory(writerOpts)));
+    drafts.forEach((d, i) => charge(job, "story_usd", `writeStory:candidate${i + 1}`, d.cost, d.model));
+    const judged = await Promise.all(drafts.map(async (d, i) => {
+      const dec = storyDecodeProblems(d.data, book.level, child.name).problems.length;
+      let fails = 99, score = 0;
+      try {
+        const fl = await judgeFluency({ pages: (d.data.pages || []).map((p) => p.text) });
+        charge(job, "story_usd", `judgeFluency:candidate${i + 1}`, fl.cost, fl.model);
+        fails = (fl.data.failures || []).length;
+        score = fl.data.read_aloud_score || 0;
+      } catch (e) {
+        console.warn(`[forge] fluency judge failed for candidate ${i + 1}:`, e.message);
+      }
+      return { i, d, dec, fails, score, title: d.data.title };
+    }));
+    judged.sort((a, b) => (a.fails - b.fails) || (a.dec - b.dec) || (b.score - a.score));
+    const win = judged[0];
+    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
+    console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
+    story = win.d.data;
+  }
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
   // then verified for free: if the prettier wording smuggled in a word this
@@ -325,7 +359,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // phonics contract is not a polish (Lynden 2026-08-21).
   try {
     const polish = await polishStoryAloud({ story, level, childName: child.name, focusSound: book.focus_sound });
-    charge(job, "story_usd", "polishStoryAloud", polish.cost);
+    charge(job, "story_usd", "polishStoryAloud", polish.cost, polish.model);
     const pages = polish.data?.pages || [];
     if (pages.length === story.pages.length) {
       let kept = 0;
@@ -413,7 +447,7 @@ async function stepQa(book, job) {
   let validation = { ok: true, violations: [], focus_sound_count: 0 };
   if (cheapFindings.length) {
     const review = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
-    charge(job, "story_usd", "reviewStory", review.cost);
+    charge(job, "story_usd", "reviewStory", review.cost, review.model);
     validation = review.data;
   } else {
     console.log("[forge] phonics: deterministic check clean - skipping the paid gate");
@@ -461,7 +495,7 @@ async function stepQa(book, job) {
   if (mustFix && distinct <= 3 && !focusViolations.length && !countViolation) {
     try {
       const edit = await fixStoryWords({ story, level, childName: child.name, problems: cheapFindings });
-      charge(job, "story_usd", "fixStoryWords", edit.cost);
+      charge(job, "story_usd", "fixStoryWords", edit.cost, edit.model);
       const patched = { ...story, pages: story.pages.map((p) => ({ ...p })) };
       for (const f of edit.data?.fixes || []) {
         const i = Number(f.page) - 1;
@@ -486,10 +520,10 @@ async function stepQa(book, job) {
     const fixed = await rewriteStory({
       level, child, focusSound: book.focus_sound, pagesCount, story, violations: validation.violations,
     });
-    charge(job, "story_usd", "rewriteStory", fixed.cost);
+    charge(job, "story_usd", "rewriteStory", fixed.cost, fixed.model);
     story = fixed.data;
     const recheck = await reviewStory({ level, story, focusSound: book.focus_sound, childName: child.name });
-    charge(job, "story_usd", "reviewStory:recheck", recheck.cost);
+    charge(job, "story_usd", "reviewStory:recheck", recheck.cost, recheck.model);
     validation = recheck.data;
     const recheckFocus = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
     if (recheckFocus.length) {
@@ -571,7 +605,7 @@ async function stepQa(book, job) {
   if (buttonWords.length) {
     try {
       const sh = await markShiftySounds({ words: buttonWords, level: book.level });
-      charge(job, "story_usd", "markShiftySounds", sh.cost);
+      charge(job, "story_usd", "markShiftySounds", sh.cost, sh.model);
       for (const entry of sh.data.words || []) {
         const marks = (entry.shifty || [])
           .filter((s) => Number.isInteger(s.index) && s.index >= 0)
@@ -617,17 +651,17 @@ async function stepPlausibility(book, job) {
   let story = job.story;
 
   const review = await reviewStoryPlausibility({ story });
-  charge(job, "story_usd", "reviewStoryPlausibility", review.cost);
+  charge(job, "story_usd", "reviewStoryPlausibility", review.cost, review.model);
   let result = review.data;
   if (!result.pass && result.issues?.length) {
     const fixed = await fixStoryPlausibility({
       level, child, focusSound: book.focus_sound, pagesCount, story, issues: result.issues,
     });
-    charge(job, "story_usd", "fixStoryPlausibility", fixed.cost);
+    charge(job, "story_usd", "fixStoryPlausibility", fixed.cost, fixed.model);
     story = fixed.data;
     story.pages = story.pages.map((p) => ({ ...p, text: fixMechanics(p.text, child.name) }));
     const recheck = await reviewStoryPlausibility({ story });
-    charge(job, "story_usd", "reviewStoryPlausibility:recheck", recheck.cost);
+    charge(job, "story_usd", "reviewStoryPlausibility:recheck", recheck.cost, recheck.model);
     result = recheck.data;
     if (!result.pass) {
       console.warn(`[forge] story still fails plausibility QA after one rewrite: ${JSON.stringify(result.issues)}`);
@@ -670,7 +704,7 @@ async function stepStoryGate(book, job) {
   let review;
   if (job.pendingEditorNotes?.length) {
     const fu = await storyEditorFollowUp({ story: job.story, level, focusSound: book.focus_sound, notes: job.pendingEditorNotes });
-    charge(job, "story_usd", "storyEditorFollowUp", fu.cost);
+    charge(job, "story_usd", "storyEditorFollowUp", fu.cost, fu.model);
     const verdicts = fu.data.note_verdicts || [];
     const unfixed = job.pendingEditorNotes
       .map((n, i) => ({ n, v: verdicts.find((x) => Number(x.note) === i + 1) }))
@@ -685,7 +719,7 @@ async function stepStoryGate(book, job) {
     console.log(`[forge] follow-up review: ${verdicts.filter((v) => v.fixed).length}/${job.pendingEditorNotes.length} notes fixed, ${(fu.data.regressions || []).length} regression(s)`);
   } else {
     const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
-    charge(job, "story_usd", "storyEditorReview", first.cost);
+    charge(job, "story_usd", "storyEditorReview", first.cost, first.model);
     review = first.data;
   }
   const verdict = deriveEditorVerdict(review);
@@ -772,7 +806,7 @@ async function stepStoryGate(book, job) {
     progression: progressionUpTo(book.level),
     exemplars: coreStoriesFor(book.level),
   });
-  charge(job, "story_usd", "reviseStoryAfterEditor", revised.cost);
+  charge(job, "story_usd", "reviseStoryAfterEditor", revised.cost, revised.model);
 
   // VERIFY THE NOTES WERE WORKED, NOT NARRATED. The reviser must claim, per
   // numbered note, which pages it changed; code checks the claim against the
@@ -809,7 +843,7 @@ async function stepStoryGate(book, job) {
         progression: progressionUpTo(book.level),
         exemplars: coreStoriesFor(book.level),
       });
-      charge(job, "story_usd", "reviseStoryAfterEditor:noteRetry", again.cost);
+      charge(job, "story_usd", "reviseStoryAfterEditor:noteRetry", again.cost, again.model);
       job.breakdown.note_retry_responses = again.data.note_responses || [];
       delete again.data.note_responses;
       revised.data = again.data;
@@ -839,7 +873,7 @@ async function stepTextReport(book, job) {
 async function stepDirect(book, job) {
   try {
     const d = await directScenes({ story: job.story, child: childOf(book) });
-    charge(job, "story_usd", "directScenes", d.cost);
+    charge(job, "story_usd", "directScenes", d.cost, d.model);
     job.directed = d.data.pages;
   } catch (e) {
     console.warn("[forge] director pass failed, using raw scene briefs:", e.message);
@@ -851,7 +885,7 @@ async function stepDirect(book, job) {
 async function stepHero(book, job) {
   const photo = photoStash.get(book.id);
   const hero = await generateHero({ child: childOf(book), photoB64: photo?.b64, photoMime: photo?.mime });
-  charge(job, "images_usd", "generateHero", hero.cost); job.breakdown.qa_notes.push(hero.qa);
+  charge(job, "images_usd", "generateHero", hero.cost, hero.model); job.breakdown.qa_notes.push(hero.qa);
   job.heroUrl = await saveImage(book.id, "hero.jpg", hero.buf);
 }
 
@@ -874,7 +908,7 @@ async function castSheetFor(book, job, id) {
   try {
     const heroBuf = job.heroUrl ? await loadByUrl(job.heroUrl).catch(() => null) : null;
     const c = await generateCastMember({ member, child: childOf(book), heroBuf });
-    charge(job, "images_usd", "generateCastMember", c.cost); job.breakdown.qa_notes.push(c.qa);
+    charge(job, "images_usd", "generateCastMember", c.cost, c.model); job.breakdown.qa_notes.push(c.qa);
     const url = await saveImage(book.id, `cast_${key.replace(/[^a-z0-9]/g, "")}.jpg`, c.buf);
     job.castSheets[key] = { name: member.who || member.id, url };
     return { name: member.who || member.id, buf: c.buf };
@@ -922,7 +956,7 @@ async function objectSheetFor(book, job, rawName) {
   }
   try {
     const r = await generateObjectRef({ name: obj.name, look: obj.look, child: childOf(book) });
-    charge(job, "images_usd", "generateObjectRef", r.cost); job.breakdown.qa_notes.push(r.qa);
+    charge(job, "images_usd", "generateObjectRef", r.cost, r.model); job.breakdown.qa_notes.push(r.qa);
     const url = await saveImage(book.id, `object_${key.replace(/[^a-z0-9]/g, "")}.jpg`, r.buf);
     job.objectSheets[key] = { name: obj.name, url };
     return { name: obj.name, buf: r.buf };
@@ -1039,11 +1073,11 @@ async function stepScene(book, job, i) {
   // action happens off-camera.
   if (s.qa?.consistency && !s.qa.consistency.pass && s.qa.consistency.severity !== "minor") {
     console.warn(`[forge] page ${i + 1} consistency QA failed after repair — regenerating from scratch: ${s.qa.consistency.reason}`);
-    charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost);
+    charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost, s.model);
     job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — regenerated" });
     s = await generateScene({ ...sceneArgs, previousResponseId: null });
     if (s.qa?.consistency && !s.qa.consistency.pass) {
-      charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost);
+      charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost, s.model);
       job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — page rejected" });
       // NO FULL REJECTIONS - EDIT REQUESTS ONLY (20.2), and that doctrine was
       // never applied here: a single stubborn page killed a fully paid book
@@ -1056,7 +1090,7 @@ async function stepScene(book, job, i) {
       console.warn(`[forge] page ${i + 1}: shipping after 2 failed attempts, recorded as an edit request - ${String(s.qa.consistency.reason).slice(0, 160)}`);
     }
   }
-  charge(job, "images_usd", `generateScene:p${i + 1}`, s.cost);
+  charge(job, "images_usd", `generateScene:p${i + 1}`, s.cost, s.model);
   if (s.responseId) job.chainResponseId = s.responseId;
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
 
@@ -1076,7 +1110,7 @@ async function stepScene(book, job, i) {
     ].filter(Boolean))];
     if (objectNames.length) {
       const st = await extractSceneState(s.buf.toString("base64"), { objectNames });
-      charge(job, "story_usd", `extractSceneState:p${i + 1}`, st.cost);
+      charge(job, "story_usd", `extractSceneState:p${i + 1}`, st.cost, st.model);
       job.carriedState = st.data.states || null;
     }
   } catch (e) {
@@ -1123,7 +1157,7 @@ async function stepCover(book, job) {
     try {
       const b64 = (await loadByUrl(candidates[n])).toString("base64");
       const f = await findFaces(b64);
-      charge(job, "story_usd", "findFaces:cover", f.cost);
+      charge(job, "story_usd", "findFaces:cover", f.cost, f.model);
       const kid = (f.data?.faces || []).filter(isHero).sort((a, c) => (c.w * c.h) - (a.w * a.h))[0];
       if (kid && kid.w * kid.h > best.area) best = { idx: n, area: kid.w * kid.h, centre: kid.x + kid.w / 2 };
     } catch { /* keep looking */ }
@@ -1156,14 +1190,14 @@ async function stepCountry(book, job) {
       city: book.city || null,
       cultureNotes: book.culture_notes || null,
     });
-    charge(job, "story_usd", "countryFacts", cf.cost);
+    charge(job, "story_usd", "countryFacts", cf.cost, cf.model);
     job.country = cf.data;
     // How to SAY this child's name, for the tricky-word strip. No static
     // table can know that Tomasz is Tom-ash or Siobhan is Shi-vawn, and a
     // personalised book puts that word on nearly every page (2026-08-21).
     try {
       const nb = await nameBreakdown({ name: book.child_name, country: book.country });
-      charge(job, "story_usd", "nameBreakdown", nb.cost);
+      charge(job, "story_usd", "nameBreakdown", nb.cost, nb.model);
       job.nameBreakdown = nb.data;
     } catch (e) {
       console.warn('[forge] name breakdown unavailable:', e.message);
@@ -1174,7 +1208,7 @@ async function stepCountry(book, job) {
       city: book.city,
       country: book.country,
     });
-    charge(job, "images_usd", "generateLandmark", lm.cost); job.breakdown.qa_notes.push(lm.qa);
+    charge(job, "images_usd", "generateLandmark", lm.cost, lm.model); job.breakdown.qa_notes.push(lm.qa);
     job.landmarkUrl = await saveImage(book.id, "landmark.jpg", lm.buf);
   } catch (e) {
     console.warn("[forge] country pack failed (profile renders without it):", e.message);
@@ -1215,8 +1249,8 @@ async function stepReview(book, job) {
     .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
 
   const { coldEditorReview } = await import("./claude.mjs");
-  const { data: review, cost } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
-  charge(job, "story_usd", "coldEditorReview", cost);
+  const { data: review, cost, model: editorModel } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
+  charge(job, "story_usd", "coldEditorReview", cost, editorModel);
   job.breakdown.editor_review = review;
   // GATE MANIFEST: record that this gate ran AND that it answered its two
   // real-world lenses. A rubric field the model leaves empty is a gate that

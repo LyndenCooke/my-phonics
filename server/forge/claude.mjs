@@ -182,7 +182,7 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
   const price = OPENAI_PRICES[model] || OPENAI_PRICES[OPENAI_FAST_MODEL];
   const cost = ((u.prompt_tokens || 0) * price.in + (u.completion_tokens || 0) * price.out) / 1_000_000;
   try {
-    return { data: JSON.parse(text), cost };
+    return { data: JSON.parse(text), cost, model };
   } catch (e) {
     // Truncated/mangled JSON (finish=length, mid-stream clip) is transient —
     // re-request rather than kill the job ("Unterminated string" ended a run
@@ -318,7 +318,7 @@ async function vertexGenerate({ model, system, parts, schema, maxTokens }) {
       ((u.promptTokenCount || 0) * price.in +
         ((u.candidatesTokenCount || 0) + (u.thoughtsTokenCount || 0)) * price.out) /
       1_000_000;
-    return { data: JSON.parse(text), cost };
+    return { data: JSON.parse(text), cost, model };
   }
   throw lastErr;
 }
@@ -427,7 +427,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
         throw new Error("response hit max_tokens — JSON is truncated");
       }
       const t = r.content.find((b) => b.type === "text")?.text ?? "";
-      return { data: JSON.parse(t), cost: usageCost(r.usage) };
+      return { data: JSON.parse(t), cost: usageCost(r.usage), model: r.model || MODEL };
     } catch (e) {
       console.warn(`[forge] cross-vendor judge (anthropic) failed, falling back to writer: ${e.message}`);
     }
@@ -466,7 +466,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
     throw new Error("Claude declined the request (refusal)");
   }
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 const STORY_SCHEMA = {
@@ -889,6 +889,40 @@ export async function nameBreakdown({ name, country }) {
 // permission to care only about how it sounds. It is small input and small
 // output, so it costs pennies - a fraction of one judging pass - and it fixes
 // the class of fault the expensive gates kept catching after the fact.
+// BLIND FLUENCY JUDGE (Lynden 2026-08-24): sees ONLY the page texts — no
+// premise, plan, state chain, cost or editor notes — and answers the five
+// fluency questions per sentence. Used to choose between candidate drafts;
+// runs on the judging vendor so the writer never grades its own English.
+const FLUENCY_SCHEMA = {
+  type: "object",
+  properties: {
+    failures: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          page: { type: "integer" },
+          sentence: { type: "string" },
+          question: { type: "integer", description: "Which of the five questions it failed (1-5)." },
+          reason: { type: "string" },
+        },
+        required: ["page", "sentence", "question", "reason"],
+        additionalProperties: false,
+      },
+    },
+    read_aloud_score: { type: "integer", description: "1-10: how much the whole book sounds like a real story read aloud by a fluent British adult." },
+  },
+  required: ["failures", "read_aloud_score"],
+  additionalProperties: false,
+};
+export async function judgeFluency({ pages }) {
+  const system =
+    "You judge ONLY the English of a decodable children's book. The vocabulary is deliberately tiny — never penalise simple words or short sentences; penalise UNNATURAL ENGLISH. For every sentence ask five questions: (1) Would a fluent British adult naturally say this? (2) Is the verb normally used with these nouns and prepositions — collocation ('gasps at the box', 'picks a duck with Dad', 'puts the chest at the shelf' all fail)? (3) Is every pronoun immediately clear? (4) Does the sentence add story meaning rather than exist to satisfy some rule? (5) Read aloud, does it sound like a story rather than an image caption? " +
+    "Record EVERY failing sentence with its question number and a one-line reason. Judge fluency only — never spelling constraints, page counts or plot quality.";
+  const content = pages.map((t, i) => `Page ${i + 1}: ${t}`).join("\n");
+  return callJson({ system, content, schema: FLUENCY_SCHEMA, tier: "story", maxTokens: 3000, judge: true });
+}
+
 export async function polishStoryAloud({ story, level, childName, focusSound }) {
   const system =
     "You are a much-loved children's author reading your own manuscript aloud to a five-year-old sitting on your lap. Your ONLY job is how it SOUNDS. " +
@@ -1448,7 +1482,7 @@ export async function findFaces(imageB64, mediaType = "image/jpeg") {
     output_config: { format: { type: "json_schema", schema: FACES_SCHEMA } },
   });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 // The non-negotiable MPB eye rule: every eye is a solid black filled oval.
@@ -1550,7 +1584,7 @@ export async function coverContentQA(imageB64, mediaType = "image/jpeg") {
     output_config: { format: { type: "json_schema", schema: COVER_CONTENT_SCHEMA } },
   });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 // The consistency check SKILL.md §5 specifies and flags as NOT BUILT — "no
@@ -1620,7 +1654,7 @@ export async function sceneConsistencyQA(imageB64, { sceneText, objectsBlock = "
     output_config: { format: { type: "json_schema", schema: SCENE_QA_SCHEMA } },
   });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 // Cold-editor whole-book review — the gate that catches what per-page
@@ -1760,7 +1794,7 @@ export async function coldEditorReview({ story, level, focusSound, images, unres
     output_config: { format: { type: "json_schema", schema: EDITOR_REVIEW_SCHEMA } },
   });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 // TEXT-ONLY editor gate, run BEFORE any image exists (Lynden 2026-08-14,
@@ -2018,7 +2052,7 @@ export async function extractSceneState(imageB64, { objectNames = [] }, mediaTyp
     output_config: { format: { type: "json_schema", schema: SCENE_STATE_SCHEMA } },
   });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 export async function eyeRuleQA(imageB64, mediaType = "image/jpeg") {
@@ -2071,7 +2105,7 @@ HOW TO ANSWER — do this in order, and do not skip steps 1-2:
   });
   if (response.stop_reason === "refusal") return { data: { pass: true, eyes_seen: "", features_seen: "", reason: "qa-skipped" }, cost: 0 };
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
-  return { data: JSON.parse(text), cost: usageCost(response.usage) };
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 
 // For A/B harnesses that need the writer's exact schema.
