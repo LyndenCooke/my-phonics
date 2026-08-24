@@ -556,6 +556,11 @@
       border-radius: 2mm;
       padding: 1.5mm 6mm;
     }
+    /* The "quiet practice chip" state trialled 2026-08-23 is gone the same
+       day: Lynden saw the grey chips rendered and ruled "looks broken".  At
+       L5+ a repeated tricky word is now OMITTED from the strip entirely
+       (filter in generate_book.py) — every chip that prints is a plain
+       white NEW card. */
 
     /* ---- -ed showcase (Lynden 2026-07-25) ------------------------------
        Sits under the Tricky Words strip and deliberately echoes it — below
@@ -2983,7 +2988,10 @@
 
         {# Today's new sounds — highlighted, one row when ≤6 (the usual case). #}
         {% set _fn = focus_graphemes | length %}
-        <div class="snd-section-label snd-section-label-focus">Today&rsquo;s new sounds</div>
+        {# Singular for the usual one-focus-sound book — "TODAY'S NEW SOUNDS"
+           over a single zz chip read as an error in Lynden's 2026-08-24
+           editorial review of the first customer-flow book. #}
+        <div class="snd-section-label snd-section-label-focus">Today&rsquo;s new sound{% if _fn > 1 %}s{% endif %}</div>
         {{ sound_table(focus_graphemes, (_fn if _fn <= 6 else 6), 20, 19, true) }}
 
         {% if shifty_sounds %}
@@ -3007,7 +3015,10 @@
             {% for s in future_sounds %}
             <div class="shifty-item future-item">
               <div class="shifty-cell future-cell" style="background:{{ s.colour }};">{{ s.grapheme }}</div>
-              <div class="shifty-caption future-caption">{% if s.sound %}sounds like <strong>{{ s.sound }}</strong> {% endif %}in <strong style="color:{{ s.colour }};">{{ s.example }}</strong><br>Level {{ s.level }}</div>
+              {# multi = a unit with more than one sound (-ed): name all of
+                 them, never just the example's own — one sound here misleads
+                 on the book's other -ed words (Lynden 2026-08-23). #}
+              <div class="shifty-caption future-caption">{% if s.multi %}can say <strong>{{ s.multi }}</strong> &mdash; in <strong style="color:{{ s.colour }};">{{ s.example }}</strong>{% else %}{% if s.sound %}sounds like <strong>{{ s.sound }}</strong> {% endif %}in <strong style="color:{{ s.colour }};">{{ s.example }}</strong>{% endif %}<br>Level {{ s.level }}</div>
             </div>
             {% endfor %}
           </div>
@@ -3026,7 +3037,9 @@
   <div class="page">
     <div class="page-inner sw-inner{% if ed_guide %} has-ed{% endif %}{% if (tricky_breakdowns | length) >= 8 %} sw-inner-tight{% endif %}">
       <div class="sw-section-title">Story Words</div>
-      <div class="sw-section-desc">Sound out each phoneme, then blend. Dashes mark digraphs.</div>
+      {# The page marks digraphs with UNDERLINES, not dashes — the old copy
+         described a rendering this template never produces (Lynden 2026-08-24). #}
+      <div class="sw-section-desc">Sound out each phoneme, then blend. Underlines show letters that work together.</div>
       <div class="sw-words-grid">
         {% for w in sound_buttoned_words %}
         <div class="sw-word-cell">

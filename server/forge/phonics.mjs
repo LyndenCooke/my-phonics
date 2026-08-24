@@ -301,6 +301,19 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
   if (!lv) return [];
   const tricky = new Set(lv.trickyWords.map((w) => w.toLowerCase()));
   const graphemes = [...new Set(lv.cumulative)].filter((g) => !g.includes("-")).sort((a, b) => b.length - a.length);
+  // Multi-letter graphemes from HIGHER levels. A future digraph whose letters
+  // are individually taught sails through greedy matching as singles — that is
+  // how "window" (ow, L4) shipped in a Level 3 customer book and forced a full
+  // editorial revision (Lynden 2026-08-24). A custom book's child-facing text
+  // must not lean on the Future Sounds band the way the curated library may.
+  const taughtSet = new Set(graphemes);
+  const futureUnits = [];
+  for (const l of allLevels()) {
+    if (l.level <= level) continue;
+    for (const g of l.graphemes || []) {
+      if (g.length > 1 && !g.includes("-") && !taughtSet.has(g)) futureUnits.push({ g, level: l.level });
+    }
+  }
   const out = [];
   for (const raw of words || []) {
     const w = String(raw || "").toLowerCase().replace(/[^a-z']/g, "");
@@ -313,15 +326,36 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
     }
     let rest = w, guard = 30, bad = null;
     const units = [];
+    const spans = []; // [start, end) of each consumed unit, for the future-digraph check
+    let pos = 0;
     while (rest && guard--) {
       const hit = graphemes.find((g) => rest.startsWith(g));
-      if (hit) { units.push(hit); rest = rest.slice(hit.length); continue; }
+      if (hit) { units.push(hit); spans.push([pos, pos + hit.length]); pos += hit.length; rest = rest.slice(hit.length); continue; }
       const dbl = rest.slice(0, 2);
-      if (DOUBLED.has(dbl)) { units.push(dbl); rest = rest.slice(2); continue; }
+      if (DOUBLED.has(dbl)) { units.push(dbl); spans.push([pos, pos + 2]); pos += 2; rest = rest.slice(2); continue; }
       if (rest.length > 2 && rest.endsWith("ed")) { rest = rest.slice(0, -2); continue; }
       bad = rest[0]; break;
     }
     if (bad) { out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`); continue; }
+    // A future multi-letter grapheme counts as a violation when its letters
+    // were consumed as SEPARATE units (o+w in "window") — but not when it
+    // merely sits inside one longer taught unit ("ai" inside L4's "air").
+    {
+      let flagged = false;
+      for (const { g, level: gl } of futureUnits) {
+        let i = w.indexOf(g);
+        while (i !== -1 && !flagged) {
+          const inOneUnit = spans.some(([s, e]) => i >= s && i + g.length <= e && (e - s) >= g.length && units[spans.findIndex(([ss, ee]) => ss === s && ee === e)].length > 1);
+          if (!inOneUnit) {
+            out.push(`"${raw}" contains "${g}", a Level ${gl} sound not taught at Level ${level}`);
+            flagged = true;
+          }
+          i = w.indexOf(g, i + 1);
+        }
+        if (flagged) break;
+      }
+      if (flagged) continue;
+    }
     // Word-final -se/-ve = ONE grapheme unit (Lynden 2026-07-12, mirrored
     // from v2_helpers.split_into_phonemes): the final e is silent spelling
     // convention, not a phoneme. Merge only when the unit before s/v is a
