@@ -4,64 +4,177 @@
   "_use": "Drives the story writer's per-level brief AND the text QA gate, so both sides read from one spec. punctuation and sentence_forms are CUMULATIVE (a level inherits everything below it); devices_new and must_include are what this level adds.",
   "_status": "sentences_per_page and words_per_sentence are PROPOSED and need Lynden's confirmation; punctuation, sentence_forms and devices_new come straight from the ledger.",
   "_created": "2026-07-26",
-
   "levels": {
     "1": {
       "name": "Ditties",
-      "sentences_per_page": [1, 1],
-      "words_per_sentence": [3, 5],
-      "punctuation": [".", "capital letter at the start"],
-      "sentence_forms": ["statement"],
+      "sentences_per_page": [
+        1,
+        1
+      ],
+      "words_per_sentence": [
+        3,
+        5
+      ],
+      "punctuation": [
+        ".",
+        "capital letter at the start",
+        "comma (repetition only)"
+      ],
+      "sentence_forms": [
+        "statement"
+      ],
       "devices_new": [],
       "must_include": [],
-      "note": "One short caption-like sentence. No commas, no dialogue."
+      "note": "One short caption-like sentence. No dialogue. A comma is allowed ONLY to repeat a word for rhythm - \"I sit, sit, sit.\" - which is the ditty form itself (Lynden 2026-08-21); commas are not otherwise taught until later, so never use one to join clauses or to separate a list of different things."
     },
     "2": {
       "name": "First Sounds",
-      "sentences_per_page": [1, 1],
-      "words_per_sentence": [4, 6],
-      "punctuation": [".", "capital letter at the start", "capital I"],
-      "sentence_forms": ["statement"],
-      "devices_new": ["capital letter for the personal pronoun I"],
+      "sentences_per_page": [
+        1,
+        1
+      ],
+      "words_per_sentence": [
+        4,
+        6
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "capital letter at the start",
+        "capital I"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation"
+      ],
+      "devices_new": [
+        "capital letter for the personal pronoun I"
+      ],
       "must_include": [],
-      "note": "Full stop and capital are formally taught here — the book must model them perfectly."
+      "note": "Full stop and capital are formally taught here - the book must model them perfectly. ? and ! are available early (Lynden 2026-08-24) for natural reactions: Stop! Is it Dad?"
     },
     "3": {
       "name": "Special Friends",
-      "sentences_per_page": [1, 2],
-      "words_per_sentence": [5, 7],
-      "punctuation": [".", "?", "capital letters for names"],
-      "sentence_forms": ["statement", "question"],
-      "devices_new": ["question mark", "capital letters for people and places"],
-      "must_include": ["at least one question somewhere in the book"],
-      "note": "Question mark is introduced at this level, so the book should show one."
+      "sentences_per_page": [
+        1,
+        2
+      ],
+      "words_per_sentence": [
+        5,
+        7
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "speech marks",
+        "capital letters for names"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation"
+      ],
+      "devices_new": [
+        "question mark",
+        "capital letters for people and places"
+      ],
+      "must_include": [
+        "at least one question somewhere in the book"
+      ],
+      "note": "Question mark is introduced at this level, so the book should show one. Speech marks and ! available early (Lynden 2026-08-24): a short spoken line brings a page alive - \"Dad! Dad!\" Zaid yells. Attribute with a verb decodable at this level (\"said\" is not available until Level 5)."
     },
     "4": {
       "name": "Longer Sounds",
-      "sentences_per_page": [1, 2],
-      "words_per_sentence": [6, 9],
-      "punctuation": [".", "?", "!"],
-      "sentence_forms": ["statement", "question", "exclamation"],
-      "devices_new": ["joining two ideas with 'and'", "exclamation mark", "plural -s / -es", "suffixes -ing, -ed, -er (no root change)"],
-      "must_include": ["at least one exclamation", "at least one sentence joined with 'and'"],
+      "sentences_per_page": [
+        1,
+        2
+      ],
+      "words_per_sentence": [
+        6,
+        9
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "speech marks"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation"
+      ],
+      "devices_new": [
+        "joining two ideas with 'and'",
+        "exclamation mark",
+        "plural -s / -es",
+        "suffixes -ing, -ed, -er (no root change)"
+      ],
+      "must_include": [
+        "at least one exclamation",
+        "at least one sentence joined with 'and'"
+      ],
       "note": "First level where two ideas may share a sentence."
     },
     "5": {
       "name": "New Spellings",
-      "sentences_per_page": [2, 2],
-      "words_per_sentence": [7, 11],
-      "punctuation": [".", "?", "!", "commas in a list"],
-      "sentence_forms": ["statement", "question", "exclamation"],
-      "devices_new": ["commas in lists", "prefix un-", "suffixes with root change (hopping, hopped)"],
-      "must_include": ["sentences that sequence — the story reads as connected events, not captions"],
+      "sentences_per_page": [
+        2,
+        2
+      ],
+      "words_per_sentence": [
+        7,
+        11
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "commas in a list",
+        "speech marks"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation"
+      ],
+      "devices_new": [
+        "commas in lists",
+        "prefix un-",
+        "suffixes with root change (hopping, hopped)"
+      ],
+      "must_include": [
+        "sentences that sequence — the story reads as connected events, not captions"
+      ],
       "note": "Sequencing sentences into a short narrative starts here."
     },
     "6": {
       "name": "Building Fluency",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [8, 13],
-      "punctuation": [".", "?", "!", "commas in a list", "apostrophes for contractions", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
+      "sentences_per_page": [
+        2,
+        3
+      ],
+      "words_per_sentence": [
+        8,
+        13
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "commas in a list",
+        "apostrophes for contractions",
+        "speech marks"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation",
+        "command"
+      ],
       "devices_new": [
         "expanded noun phrases (the old wooden door)",
         "coordination with and / but / or / so",
@@ -77,10 +190,29 @@
     },
     "7": {
       "name": "Reading Together",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [10, 15],
-      "punctuation": [".", "?", "!", "commas in a list", "apostrophes for contractions", "apostrophe for singular possession", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
+      "sentences_per_page": [
+        2,
+        3
+      ],
+      "words_per_sentence": [
+        10,
+        15
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "commas in a list",
+        "apostrophes for contractions",
+        "apostrophe for singular possession",
+        "speech marks"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation",
+        "command"
+      ],
       "devices_new": [
         "time adverbials (first, next, then, after that, finally)",
         "apostrophe for singular possession (the dog's bone)",
@@ -95,10 +227,30 @@
     },
     "8": {
       "name": "Reading Champion",
-      "sentences_per_page": [2, 3],
-      "words_per_sentence": [12, 18],
-      "punctuation": [".", "?", "!", "commas in a list", "comma after a fronted adverbial", "apostrophes for contractions", "possessive apostrophes singular and plural", "speech marks"],
-      "sentence_forms": ["statement", "question", "exclamation", "command"],
+      "sentences_per_page": [
+        2,
+        3
+      ],
+      "words_per_sentence": [
+        12,
+        18
+      ],
+      "punctuation": [
+        ".",
+        "?",
+        "!",
+        "commas in a list",
+        "comma after a fronted adverbial",
+        "apostrophes for contractions",
+        "possessive apostrophes singular and plural",
+        "speech marks"
+      ],
+      "sentence_forms": [
+        "statement",
+        "question",
+        "exclamation",
+        "command"
+      ],
       "devices_new": [
         "sentence variety: open with a subordinate clause, an -ing word, or a fronted adverbial",
         "time, place and manner adverbials (first, outside, carefully)",
