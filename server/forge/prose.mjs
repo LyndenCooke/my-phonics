@@ -143,6 +143,22 @@ export function checkProse({ pages, childName, level, progression }) {
     if (!mayUseComma && text.includes(",")) {
       issues.push({ page, type: "punctuation", detail: `comma used at Level ${level}, before commas are taught` });
     }
+    // "comma (repetition only)" licenses ONLY "sip, sip, sip" — but the bare
+    // .includes("comma") test above let it license every comma at every level
+    // (a clause-joining comma sailed through a Level 3 check, 2026-08-24).
+    // Until list commas are taught, any comma whose neighbours differ is wrong.
+    if (mayUseComma && !allowed.some((p) => p.includes("commas in a list") || p.includes("fronted"))) {
+      for (const m of text.matchAll(/([A-Za-z']+)\s*,\s*([A-Za-z']+)/g)) {
+        if (m[1].toLowerCase() !== m[2].toLowerCase()) {
+          issues.push({ page, type: "punctuation", detail: `comma joins different words ("${m[1]}, ${m[2]}") — only the repetition comma ("sip, sip") is taught at Level ${level}` });
+        }
+      }
+    }
+    // Never taught at ANY level — a minimal-prompt test produced a Level 3
+    // page with a semicolon and nothing flagged it (2026-08-24).
+    for (const [ch, name] of [[";", "semicolon"], [":", "colon"], ["—", "dash"], ["(", "brackets"]]) {
+      if (text.includes(ch)) issues.push({ page, type: "punctuation", detail: `${name} used — not taught at any level of these books` });
+    }
     if (!mayUseApostrophe && /[''’]/.test(text)) {
       issues.push({ page, type: "punctuation", detail: `apostrophe used at Level ${level}, before apostrophes are taught` });
     }
