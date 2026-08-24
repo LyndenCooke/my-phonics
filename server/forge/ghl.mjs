@@ -123,8 +123,12 @@ export async function syncBookReadyContact({ email, childName, title, a5Url, a4U
 
   // Remove-then-add so a REPEAT buyer re-fires the tag-added trigger —
   // GHL only triggers on the transition, and the second book must get the
-  // same delivery workflow as the first.
+  // same delivery workflow as the first. The pause between the two is
+  // load-bearing: back-to-back remove/add coalesced in GHL's trigger
+  // engine and the workflow never saw an "added" edge (first live trial,
+  // 2026-08-24 — tag landed, no email).
   await tagOp(contactId, "DELETE", ["book-ready"]);
+  await new Promise((res) => setTimeout(res, 8000));
   const tagged = await tagOp(contactId, "POST", ["myphonicsbooks", "create-a-book", "book-ready"]);
   if (!tagged) return { synced: false, reason: "tag_failed", contactId };
   return { synced: true, contactId, fields: customFields.length, missing };
