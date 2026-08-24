@@ -571,8 +571,11 @@ async function stepQa(book, job) {
     const { borrowed } = storyDecodeProblems(story, book.level, child.name);
     if (borrowed.length) {
       story.tricky_words_used = [...new Set([...(story.tricky_words_used || []), ...borrowed])];
-      job.breakdown.borrowed_tricky = borrowed;
     }
+    // Always overwrite: a revision that removed a borrowed word must not
+    // leave the old list behind (a run reported ["her","you"] from a draft
+    // whose final text contained neither, 2026-08-24).
+    job.breakdown.borrowed_tricky = borrowed;
   }
 
   job.story = story;
