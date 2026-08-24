@@ -82,6 +82,18 @@ class ContentRejectedError extends Error {
   }
 }
 
+// A book that still carries an open MAJOR after every allowed pass STOPS for
+// a human (Lynden 2026-08-24: "Never export, illustrate or call the book
+// complete with an open MAJOR. The pass ceiling should limit spending, not
+// lower the publication standard."). Job and reports are preserved and
+// resumable; the credit is NOT restored — a human fixes and continues.
+class NeedsReviewError extends Error {
+  constructor(message) {
+    super(message);
+    this.needsReview = true;
+  }
+}
+
 // Provider-credit exhaustion is a PAUSE, not a failure: the job keeps every
 // checkpoint and resumes with the same provider once credits are topped up
 // (OpenAI ran dry mid-book on 2026-08-12 and the book died; a silent
@@ -674,6 +686,10 @@ async function stepStoryGate(book, job) {
 
   if (verdict.pass) {
     job.pendingEditorNotes = null;
+    // A pass wipes any edit-request list from an earlier ceiling pass — the
+    // imagery boundary keys off it, and a stale list would trigger the
+    // fresh-story path on a book whose exact patch just cleared everything.
+    job.breakdown.story_gate_edit_requests = [];
     if (verdict.minors.length) {
       // Minor-only review: the book ships; the notes stay for the audit trail.
       job.breakdown.story_gate_minors = verdict.minors;
@@ -685,25 +701,47 @@ async function stepStoryGate(book, job) {
   }
 
   const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
-  // NO FULL REJECTIONS — EDIT REQUESTS ONLY (Lynden 2026-08-17). A gate never
-  // kills a book now; it asks for edits and the writer works them. Rejecting a
-  // paid book outright was the expensive half of "an expensive QA system that
-  // reliably rejects books after the money is spent" — the customer waits, the
-  // credit bounces back, and nothing ships.
-  //
-  // Bounded at STORY_EDIT_REQUESTS passes because unbounded rewriting is
-  // unbounded spend, and each pass costs about what the first draft did. After
-  // the last pass the remaining notes are carried as edit requests on the row
-  // (story_gate_edit_requests) and the book PROCEEDS — the notes are what a
-  // human acts on, rather than a dead job.
+  // THE PASS CEILING LIMITS SPENDING, NOT THE STANDARD (Lynden 2026-08-24,
+  // superseding the 08-17 "proceed with edit requests" rule after two runs in
+  // a row shipped with an open major). At the ceiling:
+  //   1. EXACT PATCH, free: the editor now supplies the corrected page text
+  //      per issue (`replacement`), so code transcribes it verbatim — no
+  //      model call, no chance of a rewrite fixing one thing and breaking
+  //      another. Each patched line is decode-checked before it lands.
+  //   2. Still blocking after the patch (or nothing patchable) → the book
+  //      STOPS for manual review. It never proceeds, is never illustrated,
+  //      with an open MAJOR.
   if (job.storyEditRequests >= STORY_EDIT_REQUESTS) {
     job.breakdown.story_gate_second = review;
     job.breakdown.story_gate_edit_requests = verdict.blocking;
     job.breakdown.story_gate = review;
-    job.storyGateDone = true;
-    if (isTextOnly()) job.textOnly = true;
-    console.warn(`[forge] story gate: ${STORY_EDIT_REQUESTS} edit passes used, proceeding with ${verdict.blocking.length} open edit request(s): ${detail.slice(0, 200)}`);
-    return;
+    const child = childOf(book);
+    const patchable = verdict.blocking.filter((i) => Number(i.page) >= 1 && String(i.replacement || "").trim());
+    if (!job.exactPatchUsed && patchable.length) {
+      job.exactPatchUsed = true;
+      const revised = { ...job.story, pages: job.story.pages.map((p) => ({ ...p })) };
+      let applied = 0;
+      for (const iss of patchable) {
+        const i = Number(iss.page) - 1;
+        if (i < 0 || i >= revised.pages.length) continue;
+        const next = fixMechanics(String(iss.replacement).trim(), child.name);
+        const bad = decodeProblems(
+          [...new Set(next.toLowerCase().match(/[a-z']+/g) || [])],
+          book.level, { heroName: child.name, borrow: borrowableTricky(book.level) },
+        );
+        if (bad.length) { console.warn(`[forge] exact patch for page ${i + 1} rejected (not decodable): ${bad.join("; ")}`); continue; }
+        revised.pages[i].text = next;
+        applied++;
+      }
+      if (applied) {
+        console.log(`[forge] exact patch: transcribed the editor's own text onto ${applied}/${patchable.length} page(s), re-judging`);
+        job.breakdown.exact_patch = { applied, of: patchable.length };
+        job.pendingEditorNotes = verdict.blocking;
+        resetAfterStoryRevision(job, revised);
+        return; // re-enters at qa, then the gate's follow-up judges the patch
+      }
+    }
+    throw new NeedsReviewError(`story gate: open ${verdict.blocking.length} blocking issue(s) after ${STORY_EDIT_REQUESTS} edit pass(es) and the exact-patch attempt — ${detail.slice(0, 220)}`);
   }
 
   // ONE bounded revision. The premise is LOCKED unless the editor explicitly
@@ -1401,7 +1439,7 @@ function displayFor(book, job, step) {
 export async function runNextStep(bookId) {
   const book = await getBook(bookId);
   if (!book) throw new Error("book not found");
-  if (["ready", "approved", "rejected", "text_ready", "content_rejected"].includes(book.status)) {
+  if (["ready", "approved", "rejected", "text_ready", "content_rejected", "needs_review"].includes(book.status)) {
     return { done: true, step: "done", status: book.status };
   }
   if (!getLevel(book.level)) throw new Error(`bad level ${book.level}`);
@@ -1537,6 +1575,23 @@ export async function runNextStep(bookId) {
         },
       });
       return { done: true, step, status: "content_rejected" };
+    }
+
+    if (e?.needsReview) {
+      console.error(`[forge] ADMIN: book ${bookId} needs manual review at step "${step}": ${String(e.message || e).slice(0, 200)}`);
+      await updateBook(bookId, {
+        status: "needs_review",
+        cost_usd: Number(job.cost.toFixed(4)),
+        cost_breakdown: job.breakdown,
+        progress: {
+          step: "needs_review",
+          message: "Our editor wants a human to look at this story before it goes any further — it will continue shortly.",
+          detail: String(e.message || e).slice(0, 300),
+          pct: book.progress?.pct ?? 0,
+          job, // everything preserved: a human edits the story, then retry resumes
+        },
+      });
+      return { done: true, step, status: "needs_review" };
     }
 
     if (PROVIDER_CREDIT_RE.test(String(e.message || e))) {

@@ -164,7 +164,7 @@ export async function handleForge(req, res) {
       const row = await db.getBook(stepMatch[1]);
       if (!row) return send(res, 404, { error: "not found" });
       if (!["generating"].includes(row.status)) {
-        return send(res, 200, { done: ["ready", "approved", "text_ready"].includes(row.status), status: row.status, step: "none" });
+        return send(res, 200, { done: ["ready", "approved", "text_ready", "needs_review", "content_rejected"].includes(row.status), status: row.status, step: "none" });
       }
       const r = await runNextStep(row.id);
       // DELIVER AT THE FINISH LINE (Lynden 2026-08-24: PDFs "sent straight
@@ -397,7 +397,19 @@ export async function handleForge(req, res) {
       if (!book) return send(res, 404, { error: "not found" });
       if (book.status === "failed") {
         startGeneration(b.book_id);
-      } else if (["paused_provider_credit", "paused_budget"].includes(book.status)) {
+      } else if (["paused_provider_credit", "paused_budget", "needs_review"].includes(book.status)) {
+        // needs_review resume: a human has edited the story (or decided it is
+        // fine) — clear the pending gate state so the machine re-judges the
+        // manuscript fresh instead of instantly re-stopping on the same notes.
+        if (book.status === "needs_review" && book.progress?.job) {
+          const job = book.progress.job;
+          job.pendingEditorNotes = null;
+          job.storyEditRequests = 0;
+          job.exactPatchUsed = false;
+          job.qaDone = false;
+          job.storyGateDone = false;
+          await db.updateBook(b.book_id, { status: "generating", progress: { ...(book.progress || {}), job } });
+        }
         // Resume from the last checkpoint — same provider, same references,
         // nothing regenerated. A retry on paused_budget is the human act
         // that authorises one more budget unit (automation never raises it).

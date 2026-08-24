@@ -573,13 +573,28 @@ const STORY_SCHEMA = {
       },
     },
     cover_brief: { type: "string" },
+    state_chain: {
+      type: "array",
+      description: "One entry PER PAGE, written BEFORE the page texts: the physical ledger of the story. If a page's text or scene contradicts this chain, the page is wrong, not the chain.",
+      items: {
+        type: "object",
+        properties: {
+          page: { type: "integer" },
+          object_state: { type: "string", description: "Where the story's central object is (and its condition) at the END of this page — e.g. 'shell: in the box, mixed among similar shells'. 'none' if the story has no central object." },
+          hero_action: { type: "string", description: "The ONE drawable thing the hero does on this page." },
+          new_information: { type: "string", description: "What the reader learns on this page that they did not know before. Every page must earn one." },
+        },
+        required: ["page", "object_state", "hero_action", "new_information"],
+        additionalProperties: false,
+      },
+    },
     focus_word_examples: { type: "array", items: { type: "string" } },
     tricky_words_used: { type: "array", items: { type: "string" } },
     read_words: { type: "array", items: { type: "string" } },
     questions: { type: "array", items: { type: "string" } },
     alien_words: { type: "array", items: { type: "string" } },
   },
-  required: ["shape_fulfilment", "premise", "story_plan", "title", "cover_brief", "setting", "key_objects", "cast", "pages", "focus_word_examples", "tricky_words_used", "read_words", "questions", "alien_words"],
+  required: ["shape_fulfilment", "premise", "story_plan", "title", "cover_brief", "setting", "key_objects", "cast", "pages", "state_chain", "focus_word_examples", "tricky_words_used", "read_words", "questions", "alien_words"],
   additionalProperties: false,
 };
 
@@ -687,6 +702,8 @@ Fill "premise" (character, setting, goal, object, problem, cultural context, one
 5 PLAN AND ACTION - what they notice, decide or do differently. THE SECOND ATTEMPT MUST LOOK DIFFERENT FROM THE FIRST: a child reading the pictures alone should see that this is another go, done another way - a different position, a different tool, a different hand, a different route. Two pictures of the same attempt are one attempt.
 6 EARNED RESOLUTION - their own action produces the ending, and how they feel.
 Tension is not danger: it is something the child wants that might not happen. Where the word bank is too small to SAY the depth, carry it in the events and in the scene briefs.
+
+THEN FILL "state_chain" BEFORE WRITING THE PAGES — one row per page: where the central object is at the end of the page, the hero's one drawable action, and what the reader newly learns. This is the story's physical ledger, and it exists because a book shipped where page 1 had the hero hugging a shell that page 2 had slipping off a shelf (2026-08-24) — the shell cannot be in her arms and on the shelf at once. Write the chain first, then write pages that OBEY it: every physical transition the plot depends on (it drops, it rolls, it is put down) must be SAID in a page's text, never left for the picture to explain. If a page contradicts the chain, fix the page.
 
 THE MIDDLE MUST HAPPEN ON THE PAGE:
 - Every obstacle you pose is overcome on a later page, by the hero, through visible effort or an idea. Never a detour that quietly forgets it, never a cut to the goal already reached.
@@ -1760,8 +1777,10 @@ const STORY_EDITOR_SCHEMA = {
           severity: { type: "string", enum: ["critical", "major", "minor"] },
           area: { type: "string", description: "premise | story | language | phonics | physics" },
           detail: { type: "string" },
+          page: { type: "integer", description: "1-based page the issue lives on, or 0 when it spans the whole story." },
+          replacement: { type: "string", description: "THE EXACT corrected page text (the whole page, ready to print) whenever the fix is a line-level change — you know the best wording, so supply it rather than describing it; the reviser transcribes your words verbatim. Must obey every phonics and level constraint. Empty string ONLY when the issue genuinely cannot be fixed by rewording named pages (e.g. a premise rejection)." },
         },
-        required: ["severity", "area", "detail"],
+        required: ["severity", "area", "detail", "page", "replacement"],
         additionalProperties: false,
       },
     },
@@ -1784,12 +1803,14 @@ export async function storyEditorReview({ story, level, focusSound }) {
     "ROBOTIC PROSE IS A DEFECT EVEN WHEN EVERY WORD IS LEGAL (a Level 3 draft passed every gate reading 'The bench is wet and bad... No rag is in the shed... six red dots by pots', 2026-08-24). File as at least MAJOR any of: an empty evaluative filler word ('bad', 'nice') where a consequence belongs; an unnatural negative construction no person would say aloud; a prop, count or detail that exists only because its name is decodable and changes nothing if cut; a character who appears only in the ending without having taken part; a resolution that dodges the stated problem instead of fixing it (avoiding the wet bench while the lunch stays on it); and a manuscript where nearly every sentence is the same Name-verb-object shape with no reaction and no final beat. " +
     "SAFETY IS BLOCKING: if the hero performs a risky physical action (reaching into drains/holes, using tools, heat, deep water, traffic, heights) without an adult present and part of that action in the same page, that is a major issue — these books model behaviour for young children. " +
     "The -ed past-tense suffix is a deliberately taught exception at Level 4 and above (the book's prep page teaches its three pronunciations) — never raise -ed usage as a phonics issue at L4+. " +
-    "SEVERITY DISCIPLINE: your severities ARE the verdict — code proceeds on any review with no critical or major issue, and 'minor' means 'still fine to proceed'. If your honest view is that this story should not be illustrated, you MUST say so as at least one critical or major issue.";
+    "SEVERITY DISCIPLINE: your severities ARE the verdict — code proceeds on any review with no critical or major issue, and 'minor' means 'still fine to proceed'. If your honest view is that this story should not be illustrated, you MUST say so as at least one critical or major issue. " +
+    "SUPPLY THE FIX, NOT JUST THE DIAGNOSIS: for every issue a rewording can cure, fill `page` and `replacement` with the exact corrected page text, obeying every phonics constraint — you are the best writer in this pipeline, and a reviser transcribing your line cannot introduce a regression the way a fresh rewrite can.";
   const pagesBlock = story.pages.map((p, i) => `Page ${i + 1}: "${p.text}"\n  scene: ${p.scene}`).join("\n");
   const content =
     `Level ${level.level} (${level.name}) custom book manuscript, focus sound "${focusSound}". Title: "${story.title}".\n\n` +
     `PREMISE:\n${JSON.stringify(story.premise || {}, null, 1)}\n\n` +
     `SIX-BEAT PLAN:\n${JSON.stringify(story.story_plan || {}, null, 1)}\n\n` +
+    (story.state_chain?.length ? `PHYSICAL STATE CHAIN (the writer's own ledger — check every page's text AND scene against it; a page that contradicts its row is a story-state issue):\n${JSON.stringify(story.state_chain, null, 1)}\n\n` : "") +
     `PAGES:\n${pagesBlock}\n\n` +
     "Review the manuscript now.";
   // 6000, not 3000: the describe-first rubric makes reviews long, and a
@@ -1833,8 +1854,10 @@ const FOLLOWUP_SCHEMA = {
           severity: { type: "string", enum: ["minor", "major", "critical"] },
           area: { type: "string", description: "story, story-state, physics, safety, language, premise" },
           detail: { type: "string" },
+          page: { type: "integer", description: "1-based page the regression lives on, or 0 when it spans the whole story." },
+          replacement: { type: "string", description: "THE EXACT corrected page text when the fix is a line-level change — supply the wording rather than describing it. Empty string only when rewording named pages cannot fix it." },
         },
-        required: ["severity", "area", "detail"],
+        required: ["severity", "area", "detail", "page", "replacement"],
         additionalProperties: false,
       },
     },

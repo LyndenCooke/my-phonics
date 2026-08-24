@@ -307,6 +307,10 @@ const DISHONEST = {
   target: "unstressed e", pocketed: "unstressed e",
   market: "unstressed e", tomato: "unstressed vowels", potato: "unstressed o", banana: "unstressed a",
   animal: "unstressed a", family: "unstressed i", biscuit: "ui says /i/", asked: "said askt",
+  // uy says /igh/ — greedy matching read b-u-y-s as four honest letters and
+  // "buys" sailed through at Level 3 (2026-08-24). Tricky from Level 4, so
+  // these entries only bite below it and in titles/read_words.
+  buy: "uy says /igh/", buys: "uy says /igh/", buying: "uy says /igh/",
 };
 const PEOPLE = new Set(["mum", "mummy", "dad", "daddy", "nan", "nana", "nani", "gran", "grandma", "grandad", "auntie", "uncle"]);
 

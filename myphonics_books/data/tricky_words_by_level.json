@@ -76,7 +76,9 @@
       "they",
       "her",
       "all",
-      "are"
+      "are",
+      "buy",
+      "buys"
     ],
     "cumulative": [
       "I",
@@ -100,7 +102,9 @@
       "they",
       "her",
       "all",
-      "are"
+      "are",
+      "buy",
+      "buys"
     ]
   },
   "level_5": {
@@ -160,7 +164,9 @@
       "when",
       "what",
       "want",
-      "whole"
+      "whole",
+      "buy",
+      "buys"
     ]
   },
   "level_6": {
@@ -231,7 +237,9 @@
       "together",
       "something",
       "where",
-      "water"
+      "water",
+      "buy",
+      "buys"
     ]
   },
   "level_7": {
@@ -351,7 +359,9 @@
       "beautiful",
       "through",
       "would",
-      "any"
+      "any",
+      "buy",
+      "buys"
     ]
   },
   "level_8": {
@@ -472,10 +482,13 @@
       "half",
       "money",
       "parents",
-      "Christmas"
+      "Christmas",
+      "buy",
+      "buys"
     ]
   },
   "_decisions": {
-    "who_delisted_2026_08_06": "Lynden 2026-08-06, reviewing 8.4: 'who doesn't need to be a tricky word.' Consistent with PHONICS_PEDAGOGY.md §4 — wh = /h/ is a recurring pattern, and a word a pattern explains is Shifty, not tricky. It was the only word left in 8.4's tricky strip. 'walk' and 'brother' were de-listed from that book the same day."
+    "who_delisted_2026_08_06": "Lynden 2026-08-06, reviewing 8.4: 'who doesn't need to be a tricky word.' Consistent with PHONICS_PEDAGOGY.md §4 — wh = /h/ is a recurring pattern, and a word a pattern explains is Shifty, not tricky. It was the only word left in 8.4's tricky strip. 'walk' and 'brother' were de-listed from that book the same day.",
+    "buy_added_2026_08_24": "Lynden 2026-08-24, reviewing the Layla shell book: a shop story needs the purchase shown, and 'buy'/'buys' (uy says /igh/) cannot be built honestly at any level - 'borrowing the single word buys is better than producing five unnatural legal sentences to avoid it'. Added to Level 4 tricky, which also makes it borrowable in Level 3 custom books."
   }
 }
