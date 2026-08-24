@@ -394,9 +394,14 @@ async function stepQa(book, job) {
   // dishonest practice word could NEVER be cleared by the surgical fix and
   // always escalated to a full rewrite (found 2026-08-22: "market" did this).
   // The normaliser below tops the list back up to six from clean words.
+  // Tricky words are NOT decoding practice: decodeProblems SKIPS them (they
+  // are legal in prose), so "the" passed the filter and printed as a Story
+  // Word (Erin, 2026-08-24). Practice words must be buildable, not memorised.
+  const trickySet = new Set(level.trickyWords.map((w) => String(w).toLowerCase()));
   {
     const clean = (story.read_words || []).filter(
       (w) => String(w).toLowerCase() !== String(child.name).toLowerCase() &&
+        !trickySet.has(String(w).toLowerCase()) &&
         !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length,
     );
     if (clean.length !== (story.read_words || []).length) {
@@ -518,6 +523,7 @@ async function stepQa(book, job) {
     // practise") — so it must be barred here by its own test.
     const decodable = (w) =>
       String(w).toLowerCase() !== String(child.name).toLowerCase() &&
+      !trickySet.has(String(w).toLowerCase()) &&
       !decodeProblems([w], book.level, { heroName: child.name, allowPeople: false }).length;
     const uniq = [...new Set((story.read_words || []).map((w) => String(w).toLowerCase()).filter(Boolean))].filter(decodable);
     const bank = new Set(greenWordsUpTo(book.level).map((w) => String(w).toLowerCase()));
