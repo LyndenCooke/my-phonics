@@ -43,7 +43,15 @@ function sentencesOf(text) {
   const out = [];
   for (const part of raw) {
     const prev = out[out.length - 1];
-    if (prev && endsInQuote(prev) && ATTRIBUTION.test(part)) {
+    // A fragment inside an UNCLOSED quote is still mid-speech: '"Dad! Dad!"
+    // Zaid yells.' split into '"Dad!' + 'Dad!"…' and the two one-word
+    // "sentences" tripped every length check once dialogue unlocked at L3
+    // (2026-08-24). Merge until the quotes balance.
+    if (prev && (prev.match(/["“”]/g) || []).length % 2 === 1) {
+      out[out.length - 1] = `${prev} ${part}`;
+      continue;
+    }
+    if (prev && endsInQuote(prev) && (ATTRIBUTION.test(part) || NAME_ATTRIBUTION.test(part))) {
       out[out.length - 1] = `${prev} ${part}`;
     } else {
       out.push(part);
@@ -51,6 +59,11 @@ function sentencesOf(text) {
   }
   return out;
 }
+
+// Name-first attribution after speech ('"Dad!" Zaid yells.') is the natural
+// form below Level 5, where "said" is not yet a taught tricky word. Join-only:
+// fixMechanics' lower-casing keeps using ATTRIBUTION, so names stay capital.
+const NAME_ATTRIBUTION = /^[A-Z][a-z']* (said|says|asked|asks|yelled|yells|called|calls|cried|cries|shouted|shouts|replied|replies|whispered|whispers|told|tells|grinned|grins|laughed|laughs)\b/;
 
 // Speech attribution is NOT a new sentence. '"I can do it!" said Cerys.' is
 // one sentence: the ! belongs to the speech, and "said" stays lower case. The
