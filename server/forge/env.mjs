@@ -90,7 +90,7 @@ export function configReport() {
   return {
     // Which model is actually writing, so a stale dev server on another port
     // cannot silently ignore FORGE_WRITER_MODEL (it has cost two test runs).
-    writer_model: process.env.FORGE_WRITER_MODEL || "(default: cheap writer)",
+    writer_model: process.env.FORGE_WRITER_MODEL || "(default: strong story tier)",
     // CRM sync activates only when BOTH are set — surfaced here so "did the
     // Vercel env vars land" is a health-check away, not a live-book test.
     ghl_sync: cfg.GHL_API_KEY && cfg.GHL_LOCATION_ID ? "present" : "missing",

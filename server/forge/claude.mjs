@@ -776,16 +776,18 @@ export function buildWriterMessages(opts) {
   return [{ role: "system", content: system }, { role: "user", content }];
 }
 
-// The writer runs on the cheap model BY DEFAULT (Lynden 2026-08-23, after
-// the A/B: mini writes at ~$0.02 vs ~$0.40, its drafts survive the gpt-5.5
-// judges — two clean books including the first-ever clean gate pass — and
-// the one extra gate revision still nets ~$0.15/book cheaper). The judges
-// stay on the strong story tier. FORGE_WRITER_MODEL overrides in either
-// direction ("default" restores the story tier for comparison runs).
+// The writer runs on the STRONG story model (reverted 2026-08-24, one day
+// after the cheap-writer default). The mini writer's drafts pass the gates
+// — legal, decodable — but read causally mushy: the first paying-flow book
+// ("Buzz Stops the Jazz") needed a full 1am human editorial rewrite that a
+// strong model produces in one prompt. Judges can only reject or patch;
+// they cannot add quality the writer never wrote. ~$0.35/book against a
+// £4.99 price is the cheapest quality money buys. FORGE_WRITER_MODEL
+// still overrides for experiments (e.g. "gpt-5.4-mini" to re-test cheap).
 export async function writeStory(opts) {
   const { system, content } = writerPrompt(opts);
-  const override = process.env.FORGE_WRITER_MODEL || OPENAI_FAST_MODEL;
-  if (override !== "default") return openaiJson({ model: override, system, content, schema: STORY_SCHEMA, maxTokens: 16000 });
+  const override = process.env.FORGE_WRITER_MODEL;
+  if (override && override !== "default") return openaiJson({ model: override, system, content, schema: STORY_SCHEMA, maxTokens: 16000 });
   return callJson({ system, content, schema: STORY_SCHEMA });
 }
 
