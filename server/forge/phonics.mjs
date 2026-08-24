@@ -337,6 +337,15 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
     if (!allowPeople && PEOPLE.has(w)) { out.push(`"${raw}" is a person, not a word to practise`); continue; }
     if (PEOPLE.has(w)) continue;
     if (DISHONEST[w]) { out.push(`"${raw}" is not honestly decodable: ${DISHONEST[w]}`); continue; }
+    // The all-family (call, small, wall, falls…) says /or/, not short a —
+    // same dishonesty class as the want family (Lynden 2026-08-24: "treat
+    // like want family"). "all" itself is a Level 4 tricky word, exempted
+    // above at L4+. "shall" keeps its honest short a. The suffix tail keeps
+    // gallop/ballot honest — their a really does say /a/.
+    if (/^[a-z]*all(s|es|ed|en|er|est|ing)?$/.test(w) && w !== "shall") {
+      out.push(`"${raw}" is not honestly decodable: the a before ll says /or/`);
+      continue;
+    }
     for (const pair of ["kn", "wr", "mb", "gn", "tch", "dge"]) {
       if (w.includes(pair) && !graphemes.includes(pair)) { out.push(`"${raw}" contains "${pair}", not taught at Level ${level}`); break; }
     }
