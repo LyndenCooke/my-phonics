@@ -378,7 +378,11 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     const penalty = (c) => c.contra * 1.5 + c.fails;
     judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
     const win = judged[0];
-    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
+    // Keep every candidate's TEXT, not just its scores (Lynden 2026-08-25:
+    // "so i can review orginal text and changed text"). Without this the
+    // rejected drafts vanish and the winner's original wording is overwritten
+    // by the first revision, leaving no before/after to review.
+    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win, pages: (c.d.data.pages || []).map((p) => p.text) }));
     if (win.contra > 0) console.warn(`[forge] best candidate still carries ${win.contra} state contradiction(s): ${win.contraDetail.join(" | ").slice(0, 200)}`);
     console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
     story = win.d.data;
@@ -387,6 +391,9 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   if (COMPACT) {
     await applyStaging(job, story, book, child, level);
   }
+  // The as-written draft, frozen before any polish, fix or revision touches
+  // it — the "original text" half of every before/after review.
+  job.breakdown.draft_pages = { title: story.title, pages: story.pages.map((p) => p.text) };
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
   // then verified for free: if the prettier wording smuggled in a word this
