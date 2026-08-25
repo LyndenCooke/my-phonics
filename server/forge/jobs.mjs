@@ -329,8 +329,12 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // writing contract; illustration data and the state chain are STAGED after
   // selection so they cannot bend the prose. FORGE_WRITER_PROMPT=compact.
   const COMPACT = process.env.FORGE_WRITER_PROMPT === "compact";
+  // Each compact candidate gets a DIFFERENT curated story engine (2026-08-25:
+  // without one, three books running converged on zip-snag plots — the same
+  // diversity collapse the full brief once fixed with shape memory).
+  const engineOffset = Math.floor(Math.random() * STORY_SHAPES.length);
   const writeFn = COMPACT
-    ? () => writeStoryCompact({ level, child, focusSound: book.focus_sound, pagesCount, borrow: borrowableTricky(book.level) })
+    ? (i = 0) => writeStoryCompact({ level, child, focusSound: book.focus_sound, pagesCount, borrow: borrowableTricky(book.level), engine: STORY_SHAPES[(engineOffset + i) % STORY_SHAPES.length] })
     : () => writeStory(writerOpts);
   const asStory = (d) => COMPACT
     ? { title: d.title, pages: (d.pages || []).map((t) => ({ text: String(t) })), read_words: d.story_words || [] }
@@ -341,7 +345,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     charge(job, "story_usd", COMPACT ? "writeStoryCompact" : "writeStory", one.cost, one.model);
     story = asStory(one.data);
   } else {
-    const drafts = await Promise.all(Array.from({ length: CANDIDATES }, () => writeFn()));
+    const drafts = await Promise.all(Array.from({ length: CANDIDATES }, (_, i) => writeFn(i)));
     drafts.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:candidate${i + 1}`, d.cost, d.model));
     drafts.forEach((d) => { d.data = asStory(d.data); });
     const judged = await Promise.all(drafts.map(async (d, i) => {
@@ -368,7 +372,11 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
       }
       return { i, d, dec, fails, score, contra, contraDetail, title: d.data.title };
     }));
-    judged.sort((a, b) => (a.contra - b.contra) || (a.fails - b.fails) || (a.dec - b.dec) || (b.score - a.score));
+    // WEIGHTED, not lexicographic (2026-08-25): a pedantic state "contradiction"
+    // outranked a 0-failure 9/10 draft and picked a 4-failure one. Contradictions
+    // weigh more than fluency failures but can no longer veto alone.
+    const penalty = (c) => c.contra * 1.5 + c.fails;
+    judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
     const win = judged[0];
     job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
     if (win.contra > 0) console.warn(`[forge] best candidate still carries ${win.contra} state contradiction(s): ${win.contraDetail.join(" | ").slice(0, 200)}`);

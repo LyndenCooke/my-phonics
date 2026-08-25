@@ -180,7 +180,7 @@ export function checkProse({ pages, childName, level, progression }) {
     }
     // "Dad is at the shrub" — a parent parked as a location marker is safety
     // wallpaper, not narration (appeared twice in one book, 2026-08-25).
-    for (const m of text.matchAll(/\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma)\s+is\s+(at|by|on|in)\s+the\b/g)) {
+    for (const m of text.matchAll(/\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma)\s+is\s+(at|by|on|in|with)\s+\w/g)) {
       issues.push({ page, type: "language", detail: `parent parked as scenery ("${m[0]}…") — a parent in the text must act; presence belongs in the picture` });
     }
 

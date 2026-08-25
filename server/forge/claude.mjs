@@ -927,8 +927,9 @@ const COMPACT_STORY_SCHEMA = {
   required: ["title", "pages", "story_words"],
   additionalProperties: false,
 };
-export async function writeStoryCompact({ level, child, focusSound, pagesCount, borrow = [] }) {
+export async function writeStoryCompact({ level, child, focusSound, pagesCount, borrow = [], engine = null }) {
   const content = `Write an original ${pagesCount}-page decodable story.
+${engine ? `\nSTORY ENGINE for this story — build the plot on THIS shape, staged in the child's own world: **${engine.name}** — ${engine.how}\n` : ""}
 
 Hero: ${child.name}, age ${child.age ?? 5}, from ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"}.
 Level: ${level.level}.
@@ -946,6 +947,7 @@ Requirements:
 - Avoid caption-like repetition and never write an unnatural negative ("No Dad is at the bench" — say "Dad is not at the bench" or "No Dad!").
 - Do not add meaningless colours, numbers or objects merely because they are decodable.
 - THE MECHANISM MUST BE REAL AND DRAWABLE: the problem is caused by a common object doing what it really does, the text SAYS how the problem happened and how the fix works, and a picture could clearly show both. Never leave the physics to the illustrations, and never invent a contraption.
+- DO NOT DEFAULT TO A STUCK ZIP, JAMMED LID OR LUNCH BAG — three consecutive books converged on zip snags (2026-08-25). Draw the problem from the child's OWN world named above; the hometown and their likes are where fresh, specific problems live.
 - Use "${focusSound}" in three or four different words the story would contain anyway — never bend the plot around the sound.
 - In story text use full stops, question marks and exclamation marks only; no semicolons, colons, dashes, possessive apostrophes or commas joining clauses. Speech marks for one or two short spoken lines are welcome — attribute with a verb decodable at this level ("said" is not; yells/tells are).
 - 1-2 short sentences per page, roughly 5-7 words each.
