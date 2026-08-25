@@ -314,6 +314,18 @@ const DISHONEST = {
 };
 const PEOPLE = new Set(["mum", "mummy", "dad", "daddy", "nan", "nana", "nani", "gran", "grandma", "grandad", "auntie", "uncle"]);
 
+// FUTURE SOUNDS vs HARD FAILS (Lynden 2026-08-25: "the odd untaught word can
+// be either a future sound or a tricky word"). A word that needs a grapheme
+// taught at a HIGHER level is previewable — book_v2 prints it in the Future
+// Sounds band, which is exactly what that band is for. A DISHONEST spelling
+// (wash, want, call) is never previewable: its taught letters simply do not
+// produce the spoken word, so it is always a hard fail. Same for a letter no
+// level teaches. This classifies a problem string produced above.
+const FUTURE_RE = /a Level \d+ sound not taught|not taught until Level|split digraph "[^"]+" \(magic e\), not taught|the -ed ending is not taught/;
+export function isFutureSoundProblem(problem) {
+  return FUTURE_RE.test(String(problem)) && !/not honestly decodable/.test(String(problem));
+}
+
 export function decodeProblems(words, level, { heroName = "", allowPeople = true, borrow = [] } = {}) {
   const lv = getLevel(level);
   if (!lv) return [];

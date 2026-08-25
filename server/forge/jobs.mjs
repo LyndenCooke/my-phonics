@@ -21,7 +21,7 @@ import fs from "node:fs";
 import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky } from "./phonics.mjs";
+import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky, isFutureSoundProblem } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, writeStoryCompact, stageStoryForBook, checkStoryState, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
@@ -473,15 +473,26 @@ async function applyStaging(job, story, book, child, level) {
 // the title and read_words stay strict, because the Python typeset gate only
 // exempts the level's own tricky words there and a borrowed word in either
 // kills the PDF after the money is spent.
+// At most this many DISTINCT above-level words may stand in the page text as
+// Future Sounds (Lynden 2026-08-25). The band previews them; the title and the
+// practice words stay strict, and a dishonest spelling is never previewable.
+const FUTURE_SOUND_ALLOWANCE = Number(process.env.FORGE_FUTURE_SOUNDS || 2);
+
 function storyDecodeProblems(story, level, heroName) {
   const tok = (s) => String(s || "").toLowerCase().match(/[a-z']+/g) || [];
   const strictWords = [...new Set([...tok(story.title), ...(story.read_words || []).flatMap(tok)])];
   const borrow = borrowableTricky(level);
   const pageWords = [...new Set((story.pages || []).flatMap((p) => tok(p.text)))];
+  const pageProblems = decodeProblems(pageWords, level, { heroName, borrow });
+  const future = pageProblems.filter(isFutureSoundProblem);
+  const allowedFuture = future.slice(0, FUTURE_SOUND_ALLOWANCE);
   const problems = [
     ...decodeProblems(strictWords, level, { heroName }),
-    ...decodeProblems(pageWords, level, { heroName, borrow }),
+    ...pageProblems.filter((p) => !allowedFuture.includes(p)),
   ];
+  story.future_sound_words = allowedFuture
+    .map((p) => (String(p).match(/^"([^"]+)"/) || [])[1])
+    .filter(Boolean);
   const borrowed = pageWords.filter((w) => borrow.includes(w));
   if (borrowed.length > 2) {
     problems.push(`story borrows ${borrowed.length} tricky words from the next level (${borrowed.join(", ")}) — at most 2 allowed`);
