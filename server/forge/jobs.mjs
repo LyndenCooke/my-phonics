@@ -332,9 +332,15 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // Each compact candidate gets a DIFFERENT curated story engine (2026-08-25:
   // without one, three books running converged on zip-snag plots — the same
   // diversity collapse the full brief once fixed with shape memory).
-  const engineOffset = Math.floor(Math.random() * STORY_SHAPES.length);
+  // Engines come from the SAME short-term-memory pool the full brief uses, so
+  // a shape used in the last few books cannot come round again — compact mode
+  // was drawing from the raw list and repeating (Lynden 2026-08-25: "why is
+  // every story the exact same?").
+  const enginePool = pool.length >= CANDIDATES ? pool : STORY_SHAPES;
+  const engineOffset = Math.floor(Math.random() * enginePool.length);
+  const engineFor = (i) => enginePool[(engineOffset + i) % enginePool.length];
   const writeFn = COMPACT
-    ? (i = 0) => writeStoryCompact({ level, child, focusSound: book.focus_sound, pagesCount, borrow: borrowableTricky(book.level), engine: STORY_SHAPES[(engineOffset + i) % STORY_SHAPES.length] })
+    ? (i = 0) => writeStoryCompact({ level, child, focusSound: book.focus_sound, pagesCount, borrow: borrowableTricky(book.level), engine: engineFor(i) })
     : () => writeStory(writerOpts);
   const asStory = (d) => COMPACT
     ? { title: d.title, pages: (d.pages || []).map((t) => ({ text: String(t) })), read_words: d.story_words || [] }
@@ -344,6 +350,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     const one = await writeFn();
     charge(job, "story_usd", COMPACT ? "writeStoryCompact" : "writeStory", one.cost, one.model);
     story = asStory(one.data);
+    if (COMPACT) job.breakdown.chosen_engine = engineFor(0).name;
   } else {
     const drafts = await Promise.all(Array.from({ length: CANDIDATES }, (_, i) => writeFn(i)));
     drafts.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:candidate${i + 1}`, d.cost, d.model));
@@ -370,7 +377,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
       } catch (e) {
         console.warn(`[forge] state check failed for candidate ${i + 1}:`, e.message);
       }
-      return { i, d, dec, fails, score, contra, contraDetail, title: d.data.title };
+      return { i, d, dec, fails, score, contra, contraDetail, title: d.data.title, engine: COMPACT ? engineFor(i).name : null };
     }));
     // WEIGHTED, not lexicographic (2026-08-25): a pedantic state "contradiction"
     // outranked a 0-failure 9/10 draft and picked a 4-failure one. Contradictions
@@ -382,7 +389,8 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     // "so i can review orginal text and changed text"). Without this the
     // rejected drafts vanish and the winner's original wording is overwritten
     // by the first revision, leaving no before/after to review.
-    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win, pages: (c.d.data.pages || []).map((p) => p.text) }));
+    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, engine: c.engine, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win, pages: (c.d.data.pages || []).map((p) => p.text) }));
+    if (win.engine) job.breakdown.chosen_engine = win.engine;
     if (win.contra > 0) console.warn(`[forge] best candidate still carries ${win.contra} state contradiction(s): ${win.contraDetail.join(" | ").slice(0, 200)}`);
     console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
     story = win.d.data;
@@ -426,7 +434,10 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   }
 
   job.story = story;
-  job.breakdown.story_shape = shape.name;
+  // The WINNER's engine is what this book actually used — recording the
+  // full-brief `shape` here in compact mode fed the cross-book shape memory a
+  // lie, so it never blocked the engine that really repeated (2026-08-25).
+  job.breakdown.story_shape = job.breakdown.chosen_engine || shape.name;
   job.breakdown.source_story = source?.title || null;
   job.breakdown.shape_fulfilment = story.shape_fulfilment;
 }
