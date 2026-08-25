@@ -701,11 +701,18 @@ async function stepQa(book, job) {
         .filter(Boolean),
     ),
   ];
-  job.shiftyMarks = {};
-  if (buttonWords.length) {
+  // Marking the same words twice buys nothing: the answer depends only on the
+  // words and the level. A book that went round the gate three times paid for
+  // SIX identical markings (Lynden 2026-08-25: "$2.71 on text is ridiculous").
+  const shiftyKey = `${book.level}|${[...buttonWords].sort().join(",")}`;
+  if (job.shiftyKey === shiftyKey && job.shiftyMarks) {
+    console.log("[forge] shifty marks unchanged — reusing (no call)");
+  } else if (buttonWords.length) {
+    job.shiftyMarks = {};
     try {
       const sh = await markShiftySounds({ words: buttonWords, level: book.level });
       charge(job, "story_usd", "markShiftySounds", sh.cost, sh.model);
+      job.shiftyKey = shiftyKey;
       for (const entry of sh.data.words || []) {
         const marks = (entry.shifty || [])
           .filter((s) => Number.isInteger(s.index) && s.index >= 0)
@@ -948,6 +955,44 @@ async function stepStoryGate(book, job) {
     throw new NeedsReviewError(`story gate: open ${verdict.blocking.length} blocking issue(s) after ${STORY_EDIT_REQUESTS} edit pass(es) and the exact-patch attempt — ${detail.slice(0, 220)}`);
   }
 
+  // TRANSCRIBE BEFORE YOU BUY A REWRITE (Lynden 2026-08-25: "$2.71 on text is
+  // ridiculous"). The editor already writes the corrected line; a broad
+  // rewrite costs ~$0.29 AND forces a re-stage and a re-direct behind it,
+  // which is where a book's text bill really goes. So when every blocking
+  // issue names a page and carries a replacement, apply them verbatim for
+  // nothing and let the follow-up judge the result. Only faults that no line
+  // can fix — a rejected premise, a missing beat — still buy the rewrite.
+  if (!job.firstPatchUsed) {
+    const patchable = verdict.blocking.filter((i) => {
+      const pg = Number((Array.isArray(i.pages) ? i.pages[0] : i.page) || 0);
+      return pg >= 1 && pg <= (job.story.pages || []).length && String(i.replacement || "").trim();
+    });
+    if (patchable.length && patchable.length === verdict.blocking.length) {
+      job.firstPatchUsed = true;
+      const child = childOf(book);
+      const patched = { ...job.story, pages: job.story.pages.map((p) => ({ ...p })) };
+      const applied = [];
+      for (const iss of patchable) {
+        const idx = Number((Array.isArray(iss.pages) ? iss.pages[0] : iss.page)) - 1;
+        const next = fixMechanics(String(iss.replacement).trim(), child.name);
+        const bad = decodeProblems([...new Set(next.toLowerCase().match(/[a-z']+/g) || [])], book.level,
+          { heroName: child.name, borrow: borrowableTricky(book.level) });
+        if (bad.length) { console.warn(`[forge] first-pass patch for page ${idx + 1} rejected (not decodable): ${bad.join("; ")}`); continue; }
+        patched.pages[idx].text = next;
+        applied.push(idx + 1);
+      }
+      // Only skip the paid rewrite if the patch actually cleared everything.
+      if (applied.length === patchable.length && !styleIssues(patched, book).length) {
+        job.breakdown.first_pass_patch = { pages: applied };
+        job.pendingEditorNotes = verdict.blocking;
+        console.log(`[forge] first-pass patch: transcribed the editor's own lines onto page(s) ${applied.join(", ")} — no rewrite bought`);
+        resetAfterStoryRevision(job, patched);
+        return; // re-enters at qa, then the follow-up judges the patch
+      }
+      console.warn("[forge] first-pass patch did not clear everything — falling through to the revision");
+    }
+  }
+
   // ONE bounded revision. The premise is LOCKED unless the editor explicitly
   // rejected the premise itself (a blocking issue with area "premise") —
   // the 2026-08-14 revision abandoned the simit-cart premise and invented an
@@ -1045,24 +1090,49 @@ async function stepTextReport(book, job) {
 // written: before any picture is planned or painted, if the story's cast or
 // key objects no longer match the sheets we hold, the sheets are thrown away
 // and redrawn from the story that is actually in the book.
+// The signature covers the DESCRIPTIONS, not just the names (Lynden
+// 2026-08-25). Keying on names alone left a hole big enough to ship through:
+// a "black star" was stripped from a lone shell's `look` before painting, but
+// the object was still called "the shell", so the already-drawn reference
+// survived and the star was injected onto all six pages anyway. If what the
+// thing LOOKS LIKE changes, the old drawing of it is worthless.
 function storySignature(story) {
+  const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
   return JSON.stringify({
-    cast: (story?.cast || []).map((c) => `${c.id}:${c.who}`).sort(),
-    objects: (story?.key_objects || []).map((o) => o.name.toLowerCase()).sort(),
+    cast: (story?.cast || []).map((c) => `${norm(c.id)}:${norm(c.who)}:${norm(c.appearance)}`).sort(),
+    objects: (story?.key_objects || []).map((o) => `${norm(o.name)}:${norm(o.look)}`).sort(),
   });
 }
+// PER-ENTRY, not all-or-nothing: a changed prop description must not throw
+// away a perfectly good (and paid-for) drawing of the hero's mum. Each cast
+// member and key object carries its own signature; only the ones that no
+// longer match — or that the story has dropped — are discarded and redrawn.
 function ensureSheetsMatchStory(job) {
-  const sig = storySignature(job.story);
-  if (job.sheetsSignature === sig) return;
-  const hadCast = Object.keys(job.castSheets || {}).length;
-  const hadObjects = Object.keys(job.objectSheets || {}).length;
-  if (job.sheetsSignature !== undefined && (hadCast || hadObjects)) {
-    console.warn(`[forge] story changed since the reference art was drawn — discarding ${hadCast} cast and ${hadObjects} object sheet(s) so nothing from the old story can be painted`);
-    job.breakdown.stale_sheets_discarded = { cast: hadCast, objects: hadObjects };
+  const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
+  const castSigs = Object.fromEntries((job.story?.cast || []).map((c) => [norm(c.id), `${norm(c.who)}|${norm(c.appearance)}`]));
+  const objectSigs = Object.fromEntries((job.story?.key_objects || []).map((o) => [norm(o.name), norm(o.look)]));
+  const prev = job.sheetSigs || { cast: {}, objects: {} };
+  const dropped = { cast: [], objects: [] };
+
+  for (const key of Object.keys(job.castSheets || {})) {
+    const k = norm(key);
+    if (prev.cast[k] !== undefined && castSigs[k] === prev.cast[k]) continue;
+    if (castSigs[k] !== undefined && prev.cast[k] === undefined) continue; // never drawn under a signature yet
+    delete job.castSheets[key];
+    dropped.cast.push(key);
   }
-  job.castSheets = {};
-  job.objectSheets = {};
-  job.sheetsSignature = sig;
+  for (const key of Object.keys(job.objectSheets || {})) {
+    const k = norm(key);
+    if (prev.objects[k] !== undefined && objectSigs[k] === prev.objects[k]) continue;
+    if (objectSigs[k] !== undefined && prev.objects[k] === undefined) continue;
+    delete job.objectSheets[key];
+    dropped.objects.push(key);
+  }
+  if (dropped.cast.length || dropped.objects.length) {
+    console.warn(`[forge] the story changed what these look like — discarding reference art for ${[...dropped.cast, ...dropped.objects].join(", ")} so nothing from the old story can be painted`);
+    job.breakdown.stale_sheets_discarded = dropped;
+  }
+  job.sheetSigs = { cast: castSigs, objects: objectSigs };
 }
 
 async function stepDirect(book, job) {
