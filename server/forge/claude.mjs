@@ -380,6 +380,24 @@ async function judgeVendorFor(prefer = null) {
 
 // judge: false | true (default judge) | "vertex" | "anthropic" | "openai"
 // (a preferred vendor for this gate, still never the writer's own).
+// Anthropic's json_schema output rejects maxItems/minItems on arrays (400
+// invalid_request_error) while OpenAI's strict mode wants them — strip them
+// for anthropic calls only. Found 2026-08-25 when forcing the writer onto
+// Anthropic for the bake-off: the anthropic writer path had NEVER run with
+// STORY_SCHEMA since those fields were added (the router prefers OpenAI).
+function anthropicSchema(schema) {
+  const clean = JSON.parse(JSON.stringify(schema));
+  const walk = (n) => {
+    if (n && typeof n === "object") {
+      delete n.maxItems;
+      delete n.minItems;
+      Object.values(n).forEach(walk);
+    }
+  };
+  walk(clean);
+  return clean;
+}
+
 async function callJson({ system, content, schema, maxTokens = 16000, tier = "story", judge = false }) {
   const vendor = judge ? await judgeVendorFor(typeof judge === "string" ? judge : null) : null;
   if (vendor === "openai") {
@@ -415,7 +433,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
         // every call and would invalidate the prefix if it sat above it.
         system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content }],
-        output_config: { format: { type: "json_schema", schema }, effort: JUDGE_EFFORT },
+        output_config: { format: { type: "json_schema", schema: anthropicSchema(schema) }, effort: JUDGE_EFFORT },
       });
       lastJudgeUsage = r.usage;
       // Opus 5 can decline: 200 OK, empty content, stop_reason "refusal".
@@ -460,7 +478,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
     max_tokens: maxTokens,
     system,
     messages: [{ role: "user", content }],
-    output_config: { format: { type: "json_schema", schema } },
+    output_config: { format: { type: "json_schema", schema: anthropicSchema(schema) } },
   });
   if (response.stop_reason === "refusal") {
     throw new Error("Claude declined the request (refusal)");
