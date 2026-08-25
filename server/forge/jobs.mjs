@@ -803,6 +803,42 @@ function resetAfterStoryRevision(job, revisedStory) {
   if (nowObjects !== wasObjects) job.objectSheets = {};
 }
 
+// DETERMINISTIC STYLE FAULTS THAT BLOCK (Lynden 2026-08-25, on a story the
+// editor passed with zero issues while saying "with Mum" on five of six pages
+// and the hero's name seven times). These are countable, so they are not left
+// to a judge's mood: they are injected into the editor's issue list as majors,
+// which makes the existing revision path fix them and the follow-up verify it.
+function styleIssues(story, book) {
+  const pages = (story.pages || []).map((p) => String(p.text || ""));
+  const out = [];
+  const parentRe = /\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma|Mummy|Daddy)\b/;
+  const parentPages = pages.map((t, i) => (parentRe.test(t) ? i + 1 : 0)).filter(Boolean);
+  if (parentPages.length > 2) {
+    out.push({
+      severity: "major", area: "language", page: parentPages[2], replacement: "",
+      detail: `A parent is named in the text on ${parentPages.length} of ${pages.length} pages (${parentPages.join(", ")}). Presence belongs in the pictures: name the parent only on the pages where they DO something, at most two. Rewrite the other pages so the hero acts — do not simply delete "with Mum" and leave a stub.`,
+    });
+  }
+  const name = String(book.child_name || "");
+  if (name) {
+    const uses = pages.join(" ").split(new RegExp(`\\b${name}\\b`)).length - 1;
+    if (uses > 3) {
+      out.push({
+        severity: "major", area: "language", page: 0, replacement: "",
+        detail: `The hero's name "${name}" appears ${uses} times. It is a tricky word the child cannot decode: use it two or three times in the whole book — first sentence, the turning point, near the end — and use he/she elsewhere.`,
+      });
+    }
+  }
+  // "big, big, big" is the Level 1 ditty device; above that it is padding.
+  if (Number(book.level) > 1) {
+    pages.forEach((t, i) => {
+      const m = t.match(/\b(\w+), *\1\b/i);
+      if (m) out.push({ severity: "major", area: "language", page: i + 1, replacement: "", detail: `Page ${i + 1} pads with repetition ("${m[0]}"). Repeating a word for rhythm is the Level 1 ditty form; at Level ${book.level} say something new instead.` });
+    });
+  }
+  return out;
+}
+
 // The text-only editor gate. Severity decides (deriveEditorVerdict): only a
 // critical/major issue blocks; minors are internal notes and the book
 // proceeds. One bounded same-premise revision; a second rejection is a
@@ -841,6 +877,14 @@ async function stepStoryGate(book, job) {
     const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound, machineFindings });
     charge(job, "story_usd", "storyEditorReview", first.cost, first.model);
     review = first.data;
+  }
+  // Countable faults do not depend on the judge noticing them.
+  {
+    const style = styleIssues(job.story, book);
+    if (style.length) {
+      review = { ...review, issues: [...(review.issues || []), ...style] };
+      console.warn(`[forge] deterministic style faults added to the gate: ${style.map((s) => s.detail.slice(0, 60)).join(" | ")}`);
+    }
   }
   const verdict = deriveEditorVerdict(review);
 
