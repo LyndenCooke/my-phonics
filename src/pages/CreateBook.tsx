@@ -783,12 +783,9 @@ export default function CreateBook() {
                       </p>
                       <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
                         {book.child_name}'s story and pictures are finished, but our editor
-                        wants one page checked by hand before we print it. Nothing more to do:
-                        we'll email you the finished book at <strong>{email || "your email"}</strong>,
+                        wants one page checked by hand before we print it. Nothing for you to
+                        do — keep this link and the book appears here as soon as it is signed off,
                         usually within a few hours.
-                      </p>
-                      <p className="mt-2 text-xs text-slate-400">
-                        You keep this link — the book appears here as soon as it is signed off.
                       </p>
                     </div>
                   )}

@@ -232,7 +232,8 @@
       "oi",
       "aw",
       "ai",
-      "oa"
+      "oa",
+      "tch"
     ],
     "cumulative_graphemes": [
       "s",
@@ -292,7 +293,8 @@
       "oi",
       "aw",
       "ai",
-      "oa"
+      "oa",
+      "tch"
     ],
     "font_size": 24,
     "story_pages": 8,
@@ -375,7 +377,8 @@
       "er",
       "are",
       "ew",
-      "ue"
+      "ue",
+      "tch"
     ],
     "font_size": 20,
     "story_pages": 8,
@@ -463,7 +466,8 @@
       "ear",
       "oor",
       "ure",
-      "tion"
+      "tion",
+      "tch"
     ],
     "suffixes": [
       "s",
@@ -588,7 +592,8 @@
       "ible",
       "cious",
       "tious",
-      "sion"
+      "sion",
+      "tch"
     ],
     "font_size": 16,
     "story_pages": 8,

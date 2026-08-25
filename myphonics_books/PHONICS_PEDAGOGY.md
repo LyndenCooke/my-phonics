@@ -54,6 +54,16 @@ soft c/g). These are swept into the ledger's **"Trap Words (books)"** sheet
 for a human ruling — word-swap, tricky-listing, or Watch Out note. The
 engine must never silently bless them as clean.
 
+**tch ruling (Lynden 2026-08-26):** `tch` = /ch/ after a short vowel is a
+SHIFTY spelling available from **Level 5**. It was already in
+`shifty_sounds.json` (new_spelling_cards, allowed_from_level 5) but had never
+been added to `graphemes_by_level.json`, so catch/match/hatch/kitchen were
+impossible at EVERY level while the writer kept reaching for them naturally.
+Now in the Level 5 grapheme list and the L5-L8 cumulative lists. Below L5 a
+tch word is a previewable Future Sound, not a flat impossibility. `kn`, `wr`,
+`mb`, `gn` and `dge` are still in no level's list — the same question stands
+for them.
+
 **Accent policy (Lynden 2026-08-25):** the scheme reads the BATH-vowel as
 short /a/ — "I say bath the way it is decoded, not like a posh Londoner."
 So ask, bath, grass, branch, path are honestly decodable with short a and

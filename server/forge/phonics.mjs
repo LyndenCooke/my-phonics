@@ -371,7 +371,15 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
       continue;
     }
     for (const pair of ["kn", "wr", "mb", "gn", "tch", "dge"]) {
-      if (w.includes(pair) && !graphemes.includes(pair)) { out.push(`"${raw}" contains "${pair}", not taught at Level ${level}`); break; }
+      if (!w.includes(pair) || graphemes.includes(pair)) continue;
+      // Name the level it IS taught at where the ladder knows one (tch is a
+      // Level 5 shifty spelling), so the word counts as a previewable Future
+      // Sound rather than a flat impossibility (Lynden 2026-08-26).
+      const taughtAt = allLevels().find((l) => (l.graphemes || []).includes(pair))?.level;
+      out.push(taughtAt
+        ? `"${raw}" contains "${pair}", a Level ${taughtAt} sound not taught at Level ${level}`
+        : `"${raw}" contains "${pair}", not taught at Level ${level}`);
+      break;
     }
     let rest = w, guard = 30, bad = null;
     const units = [];
