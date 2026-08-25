@@ -990,7 +990,39 @@ async function stepTextReport(book, job) {
   job.textReported = true;
 }
 
+// THE PAINT MUST ALWAYS BELONG TO THE STORY IN THE BOOK (Lynden 2026-08-25:
+// "make sure it never happens again"). castSheets and objectSheets are caches
+// keyed by NAME, so any path that changes the story — a gate revision, an
+// exact patch, a human edit, a restore — could leave the previous story's
+// people and props in them, and the illustrator draws what it is given: Nuh's
+// book was painted with a moth, a cobweb and a Dad that its words never
+// mention. resetAfterStoryRevision now clears them, but that only covers ONE
+// path. This signature check covers every path, including ones not yet
+// written: before any picture is planned or painted, if the story's cast or
+// key objects no longer match the sheets we hold, the sheets are thrown away
+// and redrawn from the story that is actually in the book.
+function storySignature(story) {
+  return JSON.stringify({
+    cast: (story?.cast || []).map((c) => `${c.id}:${c.who}`).sort(),
+    objects: (story?.key_objects || []).map((o) => o.name.toLowerCase()).sort(),
+  });
+}
+function ensureSheetsMatchStory(job) {
+  const sig = storySignature(job.story);
+  if (job.sheetsSignature === sig) return;
+  const hadCast = Object.keys(job.castSheets || {}).length;
+  const hadObjects = Object.keys(job.objectSheets || {}).length;
+  if (job.sheetsSignature !== undefined && (hadCast || hadObjects)) {
+    console.warn(`[forge] story changed since the reference art was drawn — discarding ${hadCast} cast and ${hadObjects} object sheet(s) so nothing from the old story can be painted`);
+    job.breakdown.stale_sheets_discarded = { cast: hadCast, objects: hadObjects };
+  }
+  job.castSheets = {};
+  job.objectSheets = {};
+  job.sheetsSignature = sig;
+}
+
 async function stepDirect(book, job) {
+  ensureSheetsMatchStory(job);
   try {
     const d = await directScenes({ story: job.story, child: childOf(book) });
     charge(job, "story_usd", "directScenes", d.cost, d.model);
@@ -1087,6 +1119,7 @@ async function objectSheetFor(book, job, rawName) {
 }
 
 async function stepScene(book, job, i) {
+  ensureSheetsMatchStory(job); // never paint the previous story's cast or props
   const story = job.story;
   const child = childOf(book);
   const { fromDirector, fromText } = makeObjectBlocks(story);
