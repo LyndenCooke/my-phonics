@@ -62,11 +62,12 @@ impossible at EVERY level while the writer kept reaching for them naturally.
 Now in the Level 5 grapheme list and the L5-L8 cumulative lists. Below L5 a
 tch word is a previewable Future Sound, not a flat impossibility.
 
-**Silent-letter spellings joined the ladder the same day** (Lynden asked for
-"level 5 and beyond"; the shifty ledger already carried its own levels, which
-are LATER than 5 and were used instead of overwriting them — silent letters
-deliberately sit above tch):
-`dge` /j/ L6 · `kn` /n/ L6 · `wr` /r/ L6 · `mb` /m/ L7 · `gn` /n/ L8.
+**Silent-letter spellings joined the ladder the same day, ALL AT LEVEL 5**
+(Lynden 2026-08-26: "just allow them at 5", overruling the ledger's own
+earlier 6/6/6/7/8 — that call is his, and both data files were changed
+together so they can never disagree again):
+`dge` /j/ · `kn` /n/ · `wr` /r/ · `mb` /m/ · `gn` /n/, all from Level 5,
+alongside `tch`.
 Every one of these was in `shifty_sounds.json` but in no level's grapheme
 list, so bridge, knee, write, lamb and sign were impossible at EVERY level.
 Below its own level each is now a previewable Future Sound.

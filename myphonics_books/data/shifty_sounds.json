@@ -26,7 +26,8 @@
       "ea=/e/",
       "au"
     ],
-    "soft_g_and_i_ee_restored": "2026-08-06 by Lynden, reviewing 8.4's story words: soft g = /j/ (gorgeous) and unstressed i = /ee/ (glorious) are SHIFTY — a taught letter making one of its other sounds — so both take the slate diamond. 'soft g' sits in promoted_graphemes from 2026-07-03; this restores it to the band for marking purposes, exactly as y=/ee/ and y=/igh/ were restored on 2026-07-26 (PHONICS_PEDAGOGY.md §7) once the diamond became the explanation. allowed_from_level 8 is deliberate: it is the level that needs them now, and anything lower would retro-diamond words in already-approved L6/L7 books."
+    "soft_g_and_i_ee_restored": "2026-08-06 by Lynden, reviewing 8.4's story words: soft g = /j/ (gorgeous) and unstressed i = /ee/ (glorious) are SHIFTY — a taught letter making one of its other sounds — so both take the slate diamond. 'soft g' sits in promoted_graphemes from 2026-07-03; this restores it to the band for marking purposes, exactly as y=/ee/ and y=/igh/ were restored on 2026-07-26 (PHONICS_PEDAGOGY.md §7) once the diamond became the explanation. allowed_from_level 8 is deliberate: it is the level that needs them now, and anything lower would retro-diamond words in already-approved L6/L7 books.",
+    "silent_letters_to_L5_2026_08_26": "Lynden 2026-08-26: 'just allow them at 5'. dge, kn, wr, mb and gn moved from their earlier ledger levels (6/6/6/7/8) to Level 5, alongside tch, in BOTH graphemes_by_level.json and this file so the two can never disagree."
   },
   "sound_cards": [
     {
@@ -2099,7 +2100,7 @@
         "edge",
         "fudge"
       ],
-      "allowed_from_level": 6,
+      "allowed_from_level": 5,
       "note": "after a short vowel"
     },
     {
@@ -2150,7 +2151,7 @@
         "know",
         "knife"
       ],
-      "allowed_from_level": 6,
+      "allowed_from_level": 5,
       "note": "silent k"
     },
     {
@@ -2163,7 +2164,7 @@
         "wrap",
         "wrist"
       ],
-      "allowed_from_level": 6,
+      "allowed_from_level": 5,
       "note": "silent w"
     },
     {
@@ -2176,7 +2177,7 @@
         "thumb",
         "comb"
       ],
-      "allowed_from_level": 7,
+      "allowed_from_level": 5,
       "note": "silent b"
     },
     {
@@ -2189,7 +2190,7 @@
         "sign",
         "gnome"
       ],
-      "allowed_from_level": 8,
+      "allowed_from_level": 5,
       "note": "silent g"
     },
     {

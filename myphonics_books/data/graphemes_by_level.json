@@ -233,7 +233,12 @@
       "aw",
       "ai",
       "oa",
-      "tch"
+      "tch",
+      "dge",
+      "kn",
+      "wr",
+      "mb",
+      "gn"
     ],
     "cumulative_graphemes": [
       "s",
@@ -294,7 +299,12 @@
       "aw",
       "ai",
       "oa",
-      "tch"
+      "tch",
+      "dge",
+      "kn",
+      "wr",
+      "mb",
+      "gn"
     ],
     "font_size": 24,
     "story_pages": 8,
@@ -310,10 +320,7 @@
       "er",
       "are",
       "ew",
-      "ue",
-      "dge",
-      "kn",
-      "wr"
+      "ue"
     ],
     "_ow_note": "'ow' was listed here as a seventh new grapheme until 2026-08-21. It is not new at L6 - it is taught at L4 saying /oa/ (blow, snow). What arrives at L6 is the SECOND pronunciation /ow/ (cow, now, down), which is an alternative pronunciation and therefore a Shifty Sound, not a ladder grapheme. Listing it in both places put the same grapheme in the purple new-sounds band and the shifty deck at once (Lynden 2026-08-21). It stays in cumulative_graphemes from L4 onwards, so decodability is unchanged.",
     "cumulative_graphemes": [
@@ -384,7 +391,9 @@
       "tch",
       "dge",
       "kn",
-      "wr"
+      "wr",
+      "mb",
+      "gn"
     ],
     "font_size": 20,
     "story_pages": 8,
@@ -400,8 +409,7 @@
       "ear",
       "oor",
       "ure",
-      "tion",
-      "mb"
+      "tion"
     ],
     "cumulative_graphemes": [
       "s",
@@ -478,7 +486,8 @@
       "dge",
       "kn",
       "wr",
-      "mb"
+      "mb",
+      "gn"
     ],
     "suffixes": [
       "s",
@@ -509,8 +518,7 @@
       "ible",
       "cious",
       "tious",
-      "sion",
-      "gn"
+      "sion"
     ],
     "suffixes": [
       "ous",
