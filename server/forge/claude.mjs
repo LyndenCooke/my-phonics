@@ -115,7 +115,7 @@ async function readStream(res) {
   return { text, usage, refusal, finish };
 }
 
-async function openaiJson({ model, system, content, schema, images = [], maxTokens = 16000, attempt = 0 }) {
+async function openaiJson({ model, system, content, schema, images = [], maxTokens = 16000, attempt = 0, reasoningEffort = null }) {
   const userContent = images.length
     ? [
         ...images.map((i) => ({
@@ -130,7 +130,7 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
     const wait = Math.min(60_000, 4000 * 2 ** attempt) * (0.75 + Math.random() * 0.5);
     console.warn(`[forge] openai ${model} ${why} — retry ${attempt + 1}/4 in ${Math.round(wait / 1000)}s`);
     await new Promise((r) => setTimeout(r, wait));
-    return openaiJson({ model, system, content, schema, images, maxTokens, attempt: attempt + 1 });
+    return openaiJson({ model, system, content, schema, images, maxTokens, attempt: attempt + 1, reasoningEffort });
   };
 
   let res;
@@ -144,6 +144,7 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
           { role: "system", content: system },
           { role: "user", content: userContent },
         ],
+        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
         max_completion_tokens: maxTokens,
         stream: true,
         stream_options: { include_usage: true },
@@ -907,6 +908,104 @@ export async function nameBreakdown({ name, country }) {
 // permission to care only about how it sounds. It is small input and small
 // output, so it costs pennies - a fraction of one judging pass - and it fixes
 // the class of fault the expensive gates kept catching after the fact.
+// COMPACT WRITER MODE (Lynden 2026-08-25, adopting the external reviewer's
+// bake-off verdict: gpt-5.6-sol + compact contract wrote the most natural
+// English at $0.05/story, and "the full brief appears to encourage visible
+// compliance devices"). The write call carries ONLY the writing contract —
+// phonics window, causality, fluency, and the non-negotiable house values —
+// while illustration data, state chain and practice-page material are
+// derived AFTER selection by stageStoryForBook, where they cannot bend the
+// prose. Enabled by FORGE_WRITER_PROMPT=compact; the full brief stays the
+// default ("keep the other line open just in case").
+const COMPACT_STORY_SCHEMA = {
+  type: "object",
+  properties: {
+    title: { type: "string" },
+    pages: { type: "array", items: { type: "string" } },
+    story_words: { type: "array", items: { type: "string" } },
+  },
+  required: ["title", "pages", "story_words"],
+  additionalProperties: false,
+};
+export async function writeStoryCompact({ level, child, focusSound, pagesCount, borrow = [] }) {
+  const content = `Write an original ${pagesCount}-page decodable story.
+
+Hero: ${child.name}, age ${child.age ?? 5}, from ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"}.
+Level: ${level.level}.
+Focus grapheme: ${focusSound}.
+
+Use only words fully decodable from the supplied Level ${level.level} graphemes, the approved tricky words, and the name ${child.name}. The hometown and country are metadata for character identity only — never print them in the story unless independently legal.
+
+Requirements:
+- One connected physical event across all ${pagesCount} pages.
+- ${child.name} must identify and solve the problem.
+- A parent may support but must not rescue them, and the text mentions a parent only when the parent performs a necessary action (at most two pages).
+- Every page must visibly cause the next.
+- Use natural British English: every sentence must be something a fluent British speaker would naturally say, with ordinary word combinations. If a plot beat cannot be expressed naturally, replace the beat.
+- Avoid caption-like repetition and never write an unnatural negative ("No Dad is at the bench" — say "Dad is not at the bench" or "No Dad!").
+- Do not add meaningless colours, numbers or objects merely because they are decodable.
+- Use "${focusSound}" in three or four different words the story would contain anyway — never bend the plot around the sound.
+- In story text use full stops, question marks and exclamation marks only; no semicolons, colons, dashes, possessive apostrophes or commas joining clauses. Speech marks for one or two short spoken lines are welcome — attribute with a verb decodable at this level ("said" is not; yells/tells are).
+- 1-2 short sentences per page, roughly 5-7 words each.
+- HOUSE VALUES (non-negotiable): halal food only, no alcohol anywhere, no magic or wishes coming true, no talking animals, no birthdays or religious festivals; the child never does a risky physical action (heights, deep water, traffic, tools, heat) without an adult sharing that step; warmth between family is the heart of the book.
+- Return the title, the ${pagesCount} pages, and six Story Words: unique, fully decodable words appearing in the story, two containing "${focusSound}" — exclude the hero's name and all tricky words.
+
+LEVEL ${level.level} GRAPHEMES: ${JSON.stringify(level.cumulative)}
+APPROVED TRICKY WORDS: ${JSON.stringify(level.trickyWords)}
+You may additionally borrow AT MOST TWO of these next-level tricky words in page text only: ${JSON.stringify(borrow)}
+HONEST SOUNDS: a word only counts as decodable if saying its taught letter-sounds produces the word children actually say ("wash" is said wosh; "small" says /or/ before ll — neither is decodable).
+THE TITLE obeys every rule above.`;
+  const model = process.env.FORGE_WRITER_MODEL && process.env.FORGE_WRITER_MODEL !== "default"
+    ? process.env.FORGE_WRITER_MODEL
+    : "gpt-5.6-sol";
+  return openaiJson({ model, system: "You write decodable children's books in fluent, natural British English.", content, schema: COMPACT_STORY_SCHEMA, maxTokens: 6000, reasoningEffort: "low" });
+}
+
+// THE STAGER: turns a chosen compact story into everything the book machine
+// needs — premise, six-beat plan, setting, cast, key objects, per-page scene
+// briefs, cover brief, EXTRACTED state chain (each transition must cite the
+// story sentence that causes it — never invent one the pages skipped),
+// practice-page material. The page TEXTS are locked input, copied verbatim.
+const STAGE_SCHEMA = {
+  type: "object",
+  properties: {
+    premise: { type: "object", properties: { character: { type: "string" }, setting: { type: "string" }, goal: { type: "string" }, object: { type: "string" }, problem: { type: "string" }, cultural_context: { type: "string" }, premise: { type: "string" } }, required: ["character", "setting", "goal", "object", "problem", "cultural_context", "premise"], additionalProperties: false },
+    story_plan: { type: "object", properties: { goal: { type: "string" }, problem: { type: "string" }, first_attempt: { type: "string" }, setback: { type: "string" }, plan_and_action: { type: "string" }, earned_resolution: { type: "string" } }, required: ["goal", "problem", "first_attempt", "setback", "plan_and_action", "earned_resolution"], additionalProperties: false },
+    setting: { type: "string" },
+    key_objects: { type: "array", items: { type: "object", properties: { name: { type: "string" }, look: { type: "string" } }, required: ["name", "look"], additionalProperties: false } },
+    cast: { type: "array", items: { type: "object", properties: { id: { type: "string" }, who: { type: "string" }, appearance: { type: "string" } }, required: ["id", "who", "appearance"], additionalProperties: false } },
+    pages: { type: "array", items: { type: "object", properties: { scene: { type: "string" }, location: { type: "string" } }, required: ["scene", "location"], additionalProperties: false } },
+    cover_brief: { type: "string" },
+    state_chain: { type: "array", items: { type: "object", properties: { page: { type: "integer" }, object_state: { type: "string" }, hero_action: { type: "string" }, new_information: { type: "string" }, causing_sentence: { type: "string" } }, required: ["page", "object_state", "hero_action", "new_information", "causing_sentence"], additionalProperties: false } },
+    focus_word_examples: { type: "array", items: { type: "string" } },
+    tricky_words_used: { type: "array", items: { type: "string" } },
+    questions: { type: "array", items: { type: "string" } },
+    alien_words: { type: "array", items: { type: "string" } },
+    shape_fulfilment: { type: "string" },
+  },
+  required: ["premise", "story_plan", "setting", "key_objects", "cast", "pages", "cover_brief", "state_chain", "focus_word_examples", "tricky_words_used", "questions", "alien_words", "shape_fulfilment"],
+  additionalProperties: false,
+};
+export async function stageStoryForBook({ story, level, child, focusSound }) {
+  const system =
+    "You are the staging director for a decodable children's book. The STORY TEXT IS LOCKED — you never change, reword or renumber a page. Your job is everything around it: illustration data, physical audit, practice material. " +
+    "SCENES: one rich sentence per page — what we see, setting, action, mood — visually specific and culturally accurate. Name a key object the same way every time and never add an attribute it does not have. Name the surface work happens on. Every physical object named in a page's text appears in that page's scene. Give each page a lowercase location id; reuse an id only for genuinely the same spot. " +
+    "SETTING: place plus 3-5 concrete DRAWABLE architectural features (materials, roof shapes, walls, street furniture) — never just a nationality. " +
+    "KEY OBJECTS: 0-3 recurring objects the plot genuinely turns on; ZERO is a real answer. Each 'look' = exact visual description (colour, material, size), appearance only, never placement. A UNIQUE object gets NO distinguishing mark — marks exist only to tell two similar objects apart. " +
+    "CAST: only people who appear, max 3, each ONE person with a name the story uses. Appearance = age, build, hair, exact clothing with colours, worn the whole book, modest (knees and shoulders covered), culturally accurate with warmth and dignity. Any relative of the hero visibly shares the hero's colouring — same skin tone and hair-colour family — so parent and child read as related at a glance. " +
+    "STATE CHAIN: one row per page for the story's central object — its state at the end of the page, the hero's one drawable action, what the reader newly learns, and THE EXACT STORY SENTENCE causing any change. If no sentence causes a transition the pages imply, say so in that row's causing_sentence as 'MISSING: <what is unsaid>' — never invent one. " +
+    "PRACTICE MATERIAL: focus_word_examples = the 3-4 story words carrying the focus sound; tricky_words_used = tricky words actually used (including borrowed ones); questions = 3 short comprehension questions for a grown-up to ask a 4-8 year old; alien_words = 4 made-up nonsense words fully decodable at this level, each containing the focus sound. shape_fulfilment = one sentence naming the story's engine. " +
+    "COVER BRIEF: the hero in this story's most joyful moment with the central object in shot, in the story's own setting.";
+  const content =
+    `Level ${level.level} (${level.name}), focus sound "${focusSound}". Hero: ${child.name}, age ${child.age ?? 5}, from ${child.city ? `${child.city}, ` : ""}${child.country || "the UK"}. Culture notes: ${child.cultureNotes || "everyday family life"}. Hero appearance: ${JSON.stringify(child.appearance || {})}.\n\n` +
+    `TITLE: "${story.title}"\n\nLOCKED PAGES:\n${story.pages.map((p, i) => `Page ${i + 1}: ${typeof p === "string" ? p : p.text}`).join("\n")}\n\n` +
+    `Taught graphemes for alien words: ${JSON.stringify(level.cumulative)}\n\nStage this book now.`;
+  const model = process.env.FORGE_WRITER_MODEL && process.env.FORGE_WRITER_MODEL !== "default"
+    ? process.env.FORGE_WRITER_MODEL
+    : "gpt-5.6-sol";
+  return openaiJson({ model, system, content, schema: STAGE_SCHEMA, maxTokens: 8000, reasoningEffort: "low" });
+}
+
 // BLIND FLUENCY JUDGE (Lynden 2026-08-24): sees ONLY the page texts — no
 // premise, plan, state chain, cost or editor notes — and answers the five
 // fluency questions per sentence. Used to choose between candidate drafts;

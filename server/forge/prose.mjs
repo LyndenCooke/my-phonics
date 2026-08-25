@@ -149,9 +149,17 @@ export function checkProse({ pages, childName, level, progression }) {
     // Until list commas are taught, any comma whose neighbours differ is wrong.
     if (mayUseComma && !allowed.some((p) => p.includes("commas in a list") || p.includes("fronted"))) {
       for (const m of text.matchAll(/([A-Za-z']+)\s*,\s*([A-Za-z']+)/g)) {
-        if (m[1].toLowerCase() !== m[2].toLowerCase()) {
-          issues.push({ page, type: "punctuation", detail: `comma joins different words ("${m[1]}, ${m[2]}") — only the repetition comma ("sip, sip") is taught at Level ${level}` });
-        }
+        if (m[1].toLowerCase() === m[2].toLowerCase()) continue;
+        // A vocative comma ("Mum, is the rod in the shed?") is correct English
+        // — the flag is house punctuation policy (commas wait for Level 5),
+        // not a grammar error, and the message should say so (2026-08-25).
+        const vocative = /^[A-Z]/.test(m[1]);
+        issues.push({
+          page, type: "punctuation",
+          detail: vocative
+            ? `comma after a name ("${m[1]}, …") — correct English, but commas beyond the repetition comma are house-reserved until commas in a list are taught`
+            : `comma joins different words ("${m[1]}, ${m[2]}") — only the repetition comma ("sip, sip") is taught at Level ${level}`,
+        });
       }
     }
     // Never taught at ANY level — a minimal-prompt test produced a Level 3

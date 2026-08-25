@@ -341,6 +341,14 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
     if (!allowPeople && PEOPLE.has(w)) { out.push(`"${raw}" is a person, not a word to practise`); continue; }
     if (PEOPLE.has(w)) continue;
     if (DISHONEST[w]) { out.push(`"${raw}" is not honestly decodable: ${DISHONEST[w]}`); continue; }
+    // The -ed SUFFIX below Level 4: "opened"/"checked" decode letter-by-letter
+    // (every single is taught) but the ending says /d/ or /t/ or unstressed
+    // /id/ — a taught exception only from L4 (found by external review,
+    // 2026-08-25). Honest e+d words (bed, red, shed, sled) keep their short e.
+    if (level < 4 && /ed$/.test(w) && !/^[bcdfghjklmnpqrstvwz]{1,3}ed$/.test(w)) {
+      out.push(`"${raw}" — the -ed ending is not taught until Level 4`);
+      continue;
+    }
     // The all-family (call, small, wall, falls…) says /or/, not short a —
     // same dishonesty class as the want family (Lynden 2026-08-24: "treat
     // like want family"). "all" itself is a Level 4 tricky word, exempted
@@ -362,10 +370,35 @@ export function decodeProblems(words, level, { heroName = "", allowPeople = true
       if (hit) { units.push(hit); spans.push([pos, pos + hit.length]); pos += hit.length; rest = rest.slice(hit.length); continue; }
       const dbl = rest.slice(0, 2);
       if (DOUBLED.has(dbl)) { units.push(dbl); spans.push([pos, pos + 2]); pos += 2; rest = rest.slice(2); continue; }
-      if (rest.length > 2 && rest.endsWith("ed")) { rest = rest.slice(0, -2); continue; }
+      // -ed is a deliberately TAUGHT exception from Level 4 (the prep page
+      // teaches its three pronunciations). Below L4 the blanket strip let
+      // "opened"/"checked" sail through a Level 3 story (found by external
+      // review, 2026-08-25) — so the strip is now level-gated.
+      if (level >= 4 && rest.length > 2 && rest.endsWith("ed")) { rest = rest.slice(0, -2); continue; }
       bad = rest[0]; break;
     }
     if (bad) { out.push(`"${raw}" uses "${bad}", not taught at Level ${level}`); continue; }
+    // MAGIC-E: greedy letter matching read "takes" as t-a-k-e-s and "side" as
+    // s-i-d-e — five honest singles — when the a_e/i_e split digraph is the
+    // real code, taught at Level 5 (found by external review, 2026-08-25).
+    // Detect single-vowel + single-consonant + final-e (optionally +s) in the
+    // consumed units and require the split digraph to be taught.
+    {
+      let u = [...units];
+      if (u.length >= 4 && u[u.length - 1] === "s") u = u.slice(0, -1);
+      const n = u.length;
+      if (
+        n >= 3 && u[n - 1] === "e" &&
+        u[n - 2].length === 1 && !"aeiou".includes(u[n - 2]) &&
+        u[n - 3].length === 1 && "aiou".includes(u[n - 3])
+      ) {
+        const split = `${u[n - 3]}-e`;
+        if (!lv.cumulative.includes(split)) {
+          out.push(`"${raw}" uses the split digraph "${split}" (magic e), not taught at Level ${level}`);
+          continue;
+        }
+      }
+    }
     // Word-final y never says /y/ — it says /ee/ (happy) or /igh/ (by, my),
     // sounds taught at Level 6. Greedy matching consumed it as the L2
     // consonant, which is how "by" shipped in a Level 3 story (2026-08-24).

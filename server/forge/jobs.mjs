@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, writeStoryCompact, stageStoryForBook, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -325,14 +325,25 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // English. Three fresh drafts can beat repeatedly repairing one robotic one.
   // Default 1 = production behaviour unchanged.
   const CANDIDATES = Math.min(5, Math.max(1, Number(process.env.FORGE_STORY_CANDIDATES || 1)));
+  // COMPACT MODE (Lynden 2026-08-25): the write call carries only the compact
+  // writing contract; illustration data and the state chain are STAGED after
+  // selection so they cannot bend the prose. FORGE_WRITER_PROMPT=compact.
+  const COMPACT = process.env.FORGE_WRITER_PROMPT === "compact";
+  const writeFn = COMPACT
+    ? () => writeStoryCompact({ level, child, focusSound: book.focus_sound, pagesCount, borrow: borrowableTricky(book.level) })
+    : () => writeStory(writerOpts);
+  const asStory = (d) => COMPACT
+    ? { title: d.title, pages: (d.pages || []).map((t) => ({ text: String(t) })), read_words: d.story_words || [] }
+    : d;
   let story;
   if (CANDIDATES === 1) {
-    const one = await writeStory(writerOpts);
-    charge(job, "story_usd", "writeStory", one.cost, one.model);
-    story = one.data;
+    const one = await writeFn();
+    charge(job, "story_usd", COMPACT ? "writeStoryCompact" : "writeStory", one.cost, one.model);
+    story = asStory(one.data);
   } else {
-    const drafts = await Promise.all(Array.from({ length: CANDIDATES }, () => writeStory(writerOpts)));
-    drafts.forEach((d, i) => charge(job, "story_usd", `writeStory:candidate${i + 1}`, d.cost, d.model));
+    const drafts = await Promise.all(Array.from({ length: CANDIDATES }, () => writeFn()));
+    drafts.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:candidate${i + 1}`, d.cost, d.model));
+    drafts.forEach((d) => { d.data = asStory(d.data); });
     const judged = await Promise.all(drafts.map(async (d, i) => {
       const dec = storyDecodeProblems(d.data, book.level, child.name).problems.length;
       let fails = 99, score = 0;
@@ -351,6 +362,29 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
     console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
     story = win.d.data;
+  }
+
+  if (COMPACT) {
+    // Stage the locked pages into everything the book machine needs. The
+    // stager copies texts verbatim; only scene/location join the page objects.
+    const staged = await stageStoryForBook({ story, level, child, focusSound: book.focus_sound });
+    charge(job, "story_usd", "stageStoryForBook", staged.cost, staged.model);
+    const s = staged.data;
+    story.pages = story.pages.map((p, i) => ({ ...p, scene: s.pages?.[i]?.scene || "", location: s.pages?.[i]?.location || `page-${i + 1}` }));
+    Object.assign(story, {
+      premise: s.premise, story_plan: s.story_plan, setting: s.setting,
+      key_objects: s.key_objects || [], cast: s.cast || [], cover_brief: s.cover_brief,
+      state_chain: s.state_chain || [], focus_word_examples: s.focus_word_examples || [],
+      tricky_words_used: s.tricky_words_used || [], questions: s.questions || [],
+      alien_words: s.alien_words || [], shape_fulfilment: s.shape_fulfilment || "",
+    });
+    // A chain row whose causing sentence is MISSING is a physical-state gap
+    // the pages skipped — surface it for the editor rather than burying it.
+    const gaps = (s.state_chain || []).filter((r) => /^MISSING/i.test(String(r.causing_sentence || "")));
+    if (gaps.length) {
+      job.breakdown.state_chain_gaps = gaps.map((g) => `p${g.page}: ${g.causing_sentence}`);
+      console.warn(`[forge] stager found ${gaps.length} state-chain gap(s): ${job.breakdown.state_chain_gaps.join(" | ")}`);
+    }
   }
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,

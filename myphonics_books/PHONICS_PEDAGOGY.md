@@ -54,6 +54,13 @@ soft c/g). These are swept into the ledger's **"Trap Words (books)"** sheet
 for a human ruling — word-swap, tricky-listing, or Watch Out note. The
 engine must never silently bless them as clean.
 
+**Accent policy (Lynden 2026-08-25):** the scheme reads the BATH-vowel as
+short /a/ — "I say bath the way it is decoded, not like a posh Londoner."
+So ask, bath, grass, branch, path are honestly decodable with short a and
+must never be flagged. This is NOT inconsistent with the all-family ban
+(call, small, wall): a-before-ll says /or/ in every British accent, so the
+want-family treatment stands there (ruled 2026-08-24).
+
 **-ed ruling (Lynden 2026-07-13):** past-tense -ed words ("shouted") are
 NOT decodable below L7 — the ending says /id/ /t/ /d/, none of which is
 taught earlier. The engine flags them as missing unit `ed` (previewed as a
@@ -87,6 +94,17 @@ can never disagree with the band: the honest exceptions above (stared,
 smiled) are decodable and never used as examples, and tricky words (looked,
 asked, called) are told from the strip instead. Per-book hand-authored "How
 -ed sounds at the end" notes are retired — the guide supersedes them.
+
+**Band prints in bands 4+5 only (Lynden 2026-08-23, specialist-reviewed):**
+the guide teaches a RULE, and re-teaching it in seven books read as filler.
+It now prints in **4.5** (the first book that meets -ed words) and **5.2**,
+via `show_ed_guide: False` in 5.4, 5.5, 6.1, 6.2 and 6.4's story dicts. The
+page-2 Future Sounds `ed` cell still appears everywhere the story earns it,
+and a genuinely awkward -ed word in a band-less book rides as a word-level
+note in the existing caption format, never as a re-teach. (The specialist
+recommended once per level band incl. L6/L8; Lynden ruled bands 4+5 only —
+the L8 ledger teaching moment is the workbook strand's job, not the
+storybooks'.)
 
 ## 4. Tricky (red) words
 
@@ -126,6 +144,33 @@ tricky at all.
   Check the blast radius before homing: a master-listed word is auto-detected
   from story TEXT in every book, so a common word can appear where it never
   did before (`over`→L7 leaked into 6.1 and 7.2 and was backed out).
+- **Taxonomy + purpose (Lynden 2026-08-23, specialist-reviewed R1):** once
+  Shifty Sounds are in play, tricky words continue ONLY as (a) truly
+  inexplicable words (one, once, eye, said), (b) high-frequency words needed
+  BEFORE their shifty pattern's `allowed_from_level`, and (c) unsegmentable
+  loanwords. Category (b) carries a **sunset**: from the pattern's allowed
+  level the word's true status is Shifty, recorded in
+  `SHIFTY_EXPLAINED_FROM` (audit_tricky_words.py) — never re-list such a
+  word as tricky at/above its sunset level. The L5+ strip's purpose is
+  **automatic recognition taught through the tricky part** — not "sight
+  vocabulary" (look-and-say language; the child still decodes the regular
+  parts and is told the one irregular grapheme).
+- **Flag once, then omit (Lynden 2026-08-23):** at L5+ a tricky word prints
+  in the strip ONLY in the first book (journey order) that displays it;
+  every later book omits it entirely, and every chip that prints is a plain
+  white card. The specialist review recommended keeping later chips as
+  quiet "practice" chips (books are read out of sequence — cold-open
+  support); that variant shipped for a few hours, Lynden saw the grey chips
+  rendered and ruled them out ("looks broken"), accepting the cold-open
+  trade-off. First-display map: `data/tricky_word_intro.json`, built by
+  `scripts/build_tricky_intro.py` — **regenerate after any story-text or
+  tricky-list change** or the one flagging sits in the wrong book (the map
+  is stable under the filter: an intro book always still shows its word).
+  L7-L8 keep full suppression (2026-07-26 ruling above). The pre-L4 half of
+  the proposal ("explanation once") stays REJECTED: below L5 chips AND
+  word→say rows repeat wherever the word appears — the row is the home
+  edition's substitute for a teacher's mouth, and red-word learning is
+  repetition-to-automaticity.
 - **Graduation on display (2026-07-13, "Near the Door" catch):** a word is
   never SHOWN as tricky in a book whose taught window honestly decodes it
   (`has_graduated` in `audit_tricky_words.py` — can_decode + curated
