@@ -939,7 +939,8 @@ Use only words fully decodable from the supplied Level ${level.level} graphemes,
 Requirements:
 - One connected physical event across all ${pagesCount} pages.
 - ${child.name} must identify and solve the problem.
-- A parent may support but must not rescue them, and the text mentions a parent only when the parent performs a necessary action (at most two pages).
+- A parent may support but must not rescue them, and the text mentions a parent only when the parent performs a necessary action (at most two pages). A parent parked as scenery ("Dad is at the shrub") is not an action — cut the sentence; presence belongs in the pictures.
+- Never write an unnatural negative: "No tin bug is on the rug" is wrong — write "The tin bug is not on the rug" or "No tin bug!".
 - Every page must visibly cause the next.
 - Use natural British English: every sentence must be something a fluent British speaker would naturally say, with ordinary word combinations. If a plot beat cannot be expressed naturally, replace the beat.
 - Avoid caption-like repetition and never write an unnatural negative ("No Dad is at the bench" — say "Dad is not at the bench" or "No Dad!").
@@ -1986,7 +1987,7 @@ const STORY_EDITOR_SCHEMA = {
   additionalProperties: false,
 };
 
-export async function storyEditorReview({ story, level, focusSound }) {
+export async function storyEditorReview({ story, level, focusSound, machineFindings = [] }) {
   const system =
     "You are the STORY gate for MyPhonicsBooks custom books: a demanding children's-book editor judging a decodable manuscript BEFORE illustration money is spent. You are a critic, not a verifier — find the reasons this story should not be illustrated, and pass it only if you genuinely cannot. " +
     "YOU ARE THE ONLY GATE THAT CHECKS THE BOOK AGAINST THE REAL WORLD. Everything upstream checks the book against itself: the phonics gate checks words against the level, the page judge checks each picture against its own sentence, the physics gate checks events against the pictures. None of them can catch a book that is internally perfect and factually wrong, or a picture that matches its sentence while being impossible to photograph. That is your job, and it is why teaching_truth and image_physics come before your verdict. Hold the bar of a real published picture book: 'decodable and coherent' is the entry fee, not the standard. The commonest failure in this pipeline is THINNESS — a problem stated quickly and solved by simply doing the obvious thing, with no attempt, no setback, and no earned resolution. Apply this concrete test to the pages, not the plan: (1) would a reader's FIRST obvious idea solve the problem? (2) does the hero try something that FAILS or costs them something before the resolution? (3) is anything at stake if they fail? If the answers are yes/no/no, that is a MAJOR issue, not a minor — you are the last judge who sees this story while it is still cheap; the post-illustration editor holds exactly this bar, and every story you wave through that it would call 'too thin to illustrate' costs the full price of the paintings (a search story that was 'look in the box, lift the rag, found' passed this gate clean and was rejected after $2.80 of finished art, 2026-08-23). Weigh the six-beat plan against what the PAGES actually show: a plan is worthless if the pages skip its beats. " +
@@ -2004,6 +2005,7 @@ export async function storyEditorReview({ story, level, focusSound }) {
     `SIX-BEAT PLAN:\n${JSON.stringify(story.story_plan || {}, null, 1)}\n\n` +
     (story.state_chain?.length ? `PHYSICAL STATE CHAIN (the writer's own ledger — check every page's text AND scene against it; a page that contradicts its row is a story-state issue):\n${JSON.stringify(story.state_chain, null, 1)}\n\n` : "") +
     `PAGES:\n${pagesBlock}\n\n` +
+    (machineFindings.length ? `AUTOMATED FINDINGS (from the deterministic checks and the cheap state audit — findings the pick could not fix; VERIFY each against the pages, and file every real one as an issue with a severity and an exact replacement; dismiss any that are pedantic):\n${machineFindings.map((f) => `- ${f}`).join("\n")}\n\n` : "") +
     "Review the manuscript now.";
   // 6000, not 3000: the describe-first rubric makes reviews long, and a
   // clipped response is truncated JSON — "Unterminated string at position

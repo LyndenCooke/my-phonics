@@ -170,6 +170,19 @@ export function checkProse({ pages, childName, level, progression }) {
     if (!mayUseApostrophe && /[''’]/.test(text)) {
       issues.push({ page, type: "punctuation", detail: `apostrophe used at Level ${level}, before apostrophes are taught` });
     }
+    // DETERMINISTIC LANGUAGE BLOCKLIST (2026-08-25): patterns every judge has
+    // now waved through at least once. Regex, not judgement.
+    // "No Mum is at the shops" / "No tin bug is on the rug" — the unnatural
+    // negative: nobody says it; write "The tin bug is not on the rug" or "No
+    // tin bug!".
+    for (const m of text.matchAll(/\bNo\s+([a-z]+\s+)?[a-z]+\s+is\s+(at|on|in|by)\b/gi)) {
+      issues.push({ page, type: "language", detail: `unnatural negative ("${m[0]}…") — write "X is not …" or "No X!"` });
+    }
+    // "Dad is at the shrub" — a parent parked as a location marker is safety
+    // wallpaper, not narration (appeared twice in one book, 2026-08-25).
+    for (const m of text.matchAll(/\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma)\s+is\s+(at|by|on|in)\s+the\b/g)) {
+      issues.push({ page, type: "language", detail: `parent parked as scenery ("${m[0]}…") — a parent in the text must act; presence belongs in the picture` });
+    }
 
     if (progression) {
       const [minS, maxS] = progression.sentences_per_page;

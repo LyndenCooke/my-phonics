@@ -377,26 +377,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   }
 
   if (COMPACT) {
-    // Stage the locked pages into everything the book machine needs. The
-    // stager copies texts verbatim; only scene/location join the page objects.
-    const staged = await stageStoryForBook({ story, level, child, focusSound: book.focus_sound });
-    charge(job, "story_usd", "stageStoryForBook", staged.cost, staged.model);
-    const s = staged.data;
-    story.pages = story.pages.map((p, i) => ({ ...p, scene: s.pages?.[i]?.scene || "", location: s.pages?.[i]?.location || `page-${i + 1}` }));
-    Object.assign(story, {
-      premise: s.premise, story_plan: s.story_plan, setting: s.setting,
-      key_objects: s.key_objects || [], cast: s.cast || [], cover_brief: s.cover_brief,
-      state_chain: s.state_chain || [], focus_word_examples: s.focus_word_examples || [],
-      tricky_words_used: s.tricky_words_used || [], questions: s.questions || [],
-      alien_words: s.alien_words || [], shape_fulfilment: s.shape_fulfilment || "",
-    });
-    // A chain row whose causing sentence is MISSING is a physical-state gap
-    // the pages skipped — surface it for the editor rather than burying it.
-    const gaps = (s.state_chain || []).filter((r) => /^MISSING/i.test(String(r.causing_sentence || "")));
-    if (gaps.length) {
-      job.breakdown.state_chain_gaps = gaps.map((g) => `p${g.page}: ${g.causing_sentence}`);
-      console.warn(`[forge] stager found ${gaps.length} state-chain gap(s): ${job.breakdown.state_chain_gaps.join(" | ")}`);
-    }
+    await applyStaging(job, story, book, child, level);
   }
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
@@ -435,6 +416,31 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   job.breakdown.shape_fulfilment = story.shape_fulfilment;
 }
 
+// Stage (or RE-stage) a compact story's locked pages into everything the book
+// machine needs. Re-staging matters: a revision changed "ball" to "can" in
+// the text while every scene brief still said "ball", and the cold editor
+// rightly stopped the book (Huw, 2026-08-25). stagedPagesHash tracks what the
+// staged data was derived from; stepQa re-stages whenever the text moved.
+async function applyStaging(job, story, book, child, level) {
+  const staged = await stageStoryForBook({ story, level, child, focusSound: book.focus_sound });
+  charge(job, "story_usd", "stageStoryForBook", staged.cost, staged.model);
+  const s = staged.data;
+  story.pages = story.pages.map((p, i) => ({ ...p, scene: s.pages?.[i]?.scene || "", location: s.pages?.[i]?.location || `page-${i + 1}` }));
+  Object.assign(story, {
+    premise: s.premise, story_plan: s.story_plan, setting: s.setting,
+    key_objects: s.key_objects || [], cast: s.cast || [], cover_brief: s.cover_brief,
+    state_chain: s.state_chain || [], focus_word_examples: s.focus_word_examples || [],
+    tricky_words_used: s.tricky_words_used || [], questions: s.questions || [],
+    alien_words: s.alien_words || [], shape_fulfilment: s.shape_fulfilment || "",
+  });
+  job.stagedPagesHash = story.pages.map((p) => p.text).join("|");
+  // A chain row whose causing sentence is MISSING is a physical-state gap
+  // the pages skipped — surface it for the editor rather than burying it.
+  const gaps = (s.state_chain || []).filter((r) => /^MISSING/i.test(String(r.causing_sentence || "")));
+  job.breakdown.state_chain_gaps = gaps.length ? gaps.map((g) => `p${g.page}: ${g.causing_sentence}`) : [];
+  if (gaps.length) console.warn(`[forge] stager found ${gaps.length} state-chain gap(s): ${job.breakdown.state_chain_gaps.join(" | ")}`);
+}
+
 // Whole-story decodability with the borrowed-tricky allowance (Lynden
 // 2026-08-24: "if you need one or two tricky words from just above, just do
 // that"). Up to TWO of the next level's tricky words may appear in PAGE TEXT;
@@ -462,6 +468,17 @@ async function stepQa(book, job) {
   const child = childOf(book);
   const pagesCount = storyPagesFor(book.level);
   let story = job.story;
+
+  // Compact mode: a revision or exact patch re-enters here with changed page
+  // text — the staged scenes/premise/state chain were derived from the OLD
+  // text and must be rebuilt or the pictures illustrate a different story.
+  if (process.env.FORGE_WRITER_PROMPT === "compact" && job.stagedPagesHash) {
+    const h = (story.pages || []).map((p) => p.text).join("|");
+    if (h !== job.stagedPagesHash) {
+      console.log("[forge] page text changed since staging — re-staging");
+      await applyStaging(job, story, book, child, level);
+    }
+  }
 
   // A couple of slightly-above-level words are FINE — book_v2 previews them
   // as Future Sounds. Only rewrite when violations pile up (>3 distinct).
@@ -764,7 +781,15 @@ async function stepStoryGate(book, job) {
     job.breakdown[`story_gate_followup_${job.storyEditRequests || 0}`] = fu.data;
     console.log(`[forge] follow-up review: ${verdicts.filter((v) => v.fixed).length}/${job.pendingEditorNotes.length} notes fixed, ${(fu.data.regressions || []).length} regression(s)`);
   } else {
-    const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound });
+    // Findings the pick could not fix ride into the editor's read (Lynden
+    // 2026-08-25: winners still carried one flagged gap the editor never saw).
+    const chosen = (job.breakdown.candidates || []).find((c) => c.chosen);
+    const machineFindings = [
+      ...((chosen?.contradiction_detail) || []).map((d) => `state audit: ${d}`),
+      ...((job.breakdown.state_chain_gaps) || []).map((d) => `state chain: ${d}`),
+      ...((job.breakdown.prose_issues) || []).map((i) => `prose check p${i.page}: ${i.detail}`),
+    ];
+    const first = await storyEditorReview({ story: job.story, level, focusSound: book.focus_sound, machineFindings });
     charge(job, "story_usd", "storyEditorReview", first.cost, first.model);
     review = first.data;
   }
