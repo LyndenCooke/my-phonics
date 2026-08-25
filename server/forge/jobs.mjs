@@ -1386,6 +1386,44 @@ async function stepReview(book, job) {
   const verdict = deriveEditorVerdict(review);
   if (!verdict.pass) {
     const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
+    // SECOND, SMARTER REPAIR BEFORE GIVING UP (Lynden 2026-08-25: "why is it
+    // not doing that automatically, how would the customer know this"). The
+    // first repair repaints the named pages. If the editor still objects, the
+    // fault is usually the TEXT, not the brush: "Nuh gets Mum from the back"
+    // is a beat no single picture can show, so repainting it forever cannot
+    // win. The editor now supplies an exact `replacement` line, so apply it,
+    // re-stage that page's scene brief from the new words, and repaint once
+    // more. Only if THAT fails does a human get involved.
+    if (job.editorRetryUsed && !job.editorTextRepairUsed) {
+      const textFixes = verdict.blocking
+        .map((i) => ({ page: Number((Array.isArray(i.pages) ? i.pages[0] : i.page) || 0), replacement: String(i.replacement || "").trim() }))
+        .filter((f) => f.page >= 1 && f.page <= (job.story.pages || []).length && f.replacement);
+      if (textFixes.length) {
+        job.editorTextRepairUsed = true;
+        const child = childOf(book);
+        const applied = [];
+        for (const f of textFixes) {
+          const next = fixMechanics(f.replacement, child.name);
+          const bad = decodeProblems([...new Set(next.toLowerCase().match(/[a-z']+/g) || [])], book.level,
+            { heroName: child.name, borrow: borrowableTricky(book.level) });
+          if (bad.length) { console.warn(`[forge] editor text fix for page ${f.page} rejected (not decodable): ${bad.join("; ")}`); continue; }
+          job.story.pages[f.page - 1].text = next;
+          applied.push(f.page);
+        }
+        if (applied.length) {
+          job.breakdown.editor_text_repair = { pages: applied };
+          console.warn(`[forge] editor gate: repainting failed, so applying the editor's own words to page(s) ${applied.join(", ")} and re-staging`);
+          if (process.env.FORGE_WRITER_PROMPT === "compact") {
+            await applyStaging(job, job.story, book, child, getLevel(book.level));
+          }
+          job.repairNotes = { ...(job.repairNotes || {}), ...Object.fromEntries(applied.map((n) => [n, "The text of this page changed — draw exactly what it now says."])) };
+          for (const n of applied) await stepScene(book, job, n - 1);
+          job.reviewDone = false; // the mended book re-earns its verdict
+          return;
+        }
+      }
+    }
+
     if (job.editorRetryUsed) {
       // NEVER SHIP WITH AN OPEN MAJOR — AT THIS GATE TOO (Lynden 2026-08-25:
       // "The Stuck Lunch Box" reached `ready` carrying two majors and a
@@ -1723,9 +1761,12 @@ export async function runNextStep(bookId) {
         status: "needs_review",
         cost_usd: Number(job.cost.toFixed(4)),
         cost_breakdown: job.breakdown,
+        // The admin queue reads review_note — a book waiting on a human must
+        // be visible there without forensics (Lynden 2026-08-25).
+        review_note: `NEEDS REVIEW: ${String(e.message || e).slice(0, 1900)}`,
         progress: {
           step: "needs_review",
-          message: "Our editor wants a human to look at this story before it goes any further — it will continue shortly.",
+          message: "Almost there — one page is having a final check by a person. We will email you the moment it is ready.",
           detail: String(e.message || e).slice(0, 300),
           pct: book.progress?.pct ?? 0,
           job, // everything preserved: a human edits the story, then retry resumes

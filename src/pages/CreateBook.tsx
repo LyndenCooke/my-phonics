@@ -145,7 +145,7 @@ export default function CreateBook() {
       try {
         for (;;) {
           const r = await forgeApi.step(bookId).catch(() => ({ done: false, step: "error", status: "" }));
-          if (r.done || ["failed", "content_rejected", "paused_provider_credit", "paused_budget"].includes(r.status)) break;
+          if (r.done || ["failed", "content_rejected", "paused_provider_credit", "paused_budget", "needs_review"].includes(r.status)) break;
           // busy/error → the dev driver owns it or a blip; wait, then retry.
           if (r.step === "busy" || r.step === "error") await new Promise((res) => setTimeout(res, 4000));
         }
@@ -165,7 +165,7 @@ export default function CreateBook() {
         if (b.status === "ready" || b.status === "approved") {
           if (pollRef.current) window.clearInterval(pollRef.current);
           setStep("ready");
-        } else if (["failed", "content_rejected", "paused_provider_credit", "paused_budget"].includes(b.status) && !b.generating) {
+        } else if (["failed", "content_rejected", "paused_provider_credit", "paused_budget", "needs_review"].includes(b.status) && !b.generating) {
           if (pollRef.current) window.clearInterval(pollRef.current);
         }
       } catch {
@@ -775,6 +775,22 @@ export default function CreateBook() {
                       className="mt-4 rounded-full bg-slate-900 px-7 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
                       Something hiccupped — pick up where it stopped (free)
                     </button>
+                  )}
+                  {book?.status === "needs_review" && !book.generating && (
+                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-violet-200 bg-violet-50 p-5 text-left">
+                      <p className="text-sm font-extrabold text-slate-900">
+                        Nearly done — one page is with a person 👀
+                      </p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                        {book.child_name}'s story and pictures are finished, but our editor
+                        wants one page checked by hand before we print it. Nothing more to do:
+                        we'll email you the finished book at <strong>{email || "your email"}</strong>,
+                        usually within a few hours.
+                      </p>
+                      <p className="mt-2 text-xs text-slate-400">
+                        You keep this link — the book appears here as soon as it is signed off.
+                      </p>
+                    </div>
                   )}
                   {book?.status === "content_rejected" && !book.generating && (
                     <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-amber-200 bg-amber-50 p-5 text-left">
