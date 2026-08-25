@@ -23,7 +23,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
-import { writeStory, writeStoryCompact, stageStoryForBook, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
+import { writeStory, writeStoryCompact, stageStoryForBook, checkStoryState, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -346,20 +346,32 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     drafts.forEach((d) => { d.data = asStory(d.data); });
     const judged = await Promise.all(drafts.map(async (d, i) => {
       const dec = storyDecodeProblems(d.data, book.level, child.name).problems.length;
-      let fails = 99, score = 0;
+      const texts = (d.data.pages || []).map((p) => p.text);
+      let fails = 99, score = 0, contra = 99, contraDetail = [];
       try {
-        const fl = await judgeFluency({ pages: (d.data.pages || []).map((p) => p.text) });
+        const fl = await judgeFluency({ pages: texts });
         charge(job, "story_usd", `judgeFluency:candidate${i + 1}`, fl.cost, fl.model);
         fails = (fl.data.failures || []).length;
         score = fl.data.read_aloud_score || 0;
       } catch (e) {
         console.warn(`[forge] fluency judge failed for candidate ${i + 1}:`, e.message);
       }
-      return { i, d, dec, fails, score, title: d.data.title };
+      // Physical-state audit BEFORE the pick (Lynden 2026-08-25): a draft
+      // whose mechanism is never stated loses to one whose chain is complete.
+      try {
+        const st = await checkStoryState({ pages: texts });
+        charge(job, "story_usd", `checkStoryState:candidate${i + 1}`, st.cost, st.model);
+        contraDetail = (st.data.contradictions || []).map((c) => `p${c.page}: ${c.detail}`);
+        contra = contraDetail.length;
+      } catch (e) {
+        console.warn(`[forge] state check failed for candidate ${i + 1}:`, e.message);
+      }
+      return { i, d, dec, fails, score, contra, contraDetail, title: d.data.title };
     }));
-    judged.sort((a, b) => (a.fails - b.fails) || (a.dec - b.dec) || (b.score - a.score));
+    judged.sort((a, b) => (a.contra - b.contra) || (a.fails - b.fails) || (a.dec - b.dec) || (b.score - a.score));
     const win = judged[0];
-    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
+    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win }));
+    if (win.contra > 0) console.warn(`[forge] best candidate still carries ${win.contra} state contradiction(s): ${win.contraDetail.join(" | ").slice(0, 200)}`);
     console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
     story = win.d.data;
   }
@@ -1313,25 +1325,17 @@ async function stepReview(book, job) {
   if (!verdict.pass) {
     const detail = verdict.blocking.map((i) => `[${i.severity}/${i.area}] ${i.detail}`).join(" | ") || review.reason;
     if (job.editorRetryUsed) {
-      // NO FULL REJECTIONS — EDIT REQUESTS ONLY (Lynden 2026-08-17). The one
-      // revision is spent, so the remaining notes ride on the row as edit
-      // requests and the book proceeds. This gate sits AFTER the illustrations,
-      // so rejecting here threw away everything already paid for; the story
-      // gate before any image is what stops genuinely weak books cheaply.
+      // NEVER SHIP WITH AN OPEN MAJOR — AT THIS GATE TOO (Lynden 2026-08-25:
+      // "The Stuck Lunch Box" reached `ready` carrying two majors and a
+      // do-not-ship-as-is verdict, because the 08-24 hard stop only guarded
+      // the story gate). The revision is spent, so the book STOPS for a human
+      // instead of proceeding with edit requests: nothing already paid for is
+      // lost — the job, images and reports are preserved, and /retry resumes
+      // after a human edit or repair.
       job.breakdown.editor_review_second = review;
       job.breakdown.editor_edit_requests = verdict.blocking;
-      // Open requests surface on the ROW, not just the breakdown — the
-      // admin queue reads review_note, and a book that ships with known
-      // faults must be visible there without forensics (2026-08-23).
-      job.autoFlag = (job.autoFlag || []).concat(verdict.blocking.map((i) => `[${i.area}] ${i.detail}`));
-      // reviewDone MUST be set on this path too: it is the only thing that
-      // stops the machine re-entering this step, and this step costs a vision
-      // call over every page image. Returning without it is an unbounded paid
-      // loop, not a rejection.
       if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
-      job.reviewDone = true;
-      console.warn(`[forge] editor gate: revision spent, proceeding with ${verdict.blocking.length} open edit request(s): ${detail.slice(0, 200)}`);
-      return;
+      throw new NeedsReviewError(`cold editor: ${verdict.blocking.length} blocking issue(s) after the one revision — ${detail.slice(0, 220)}`);
     }
     // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
     // story against the editor's reasons — SAME PREMISE unless the editor

@@ -944,6 +944,7 @@ Requirements:
 - Use natural British English: every sentence must be something a fluent British speaker would naturally say, with ordinary word combinations. If a plot beat cannot be expressed naturally, replace the beat.
 - Avoid caption-like repetition and never write an unnatural negative ("No Dad is at the bench" — say "Dad is not at the bench" or "No Dad!").
 - Do not add meaningless colours, numbers or objects merely because they are decodable.
+- THE MECHANISM MUST BE REAL AND DRAWABLE: the problem is caused by a common object doing what it really does, the text SAYS how the problem happened and how the fix works, and a picture could clearly show both. Never leave the physics to the illustrations, and never invent a contraption.
 - Use "${focusSound}" in three or four different words the story would contain anyway — never bend the plot around the sound.
 - In story text use full stops, question marks and exclamation marks only; no semicolons, colons, dashes, possessive apostrophes or commas joining clauses. Speech marks for one or two short spoken lines are welcome — attribute with a verb decodable at this level ("said" is not; yells/tells are).
 - 1-2 short sentences per page, roughly 5-7 words each.
@@ -959,6 +960,35 @@ THE TITLE obeys every rule above.`;
     ? process.env.FORGE_WRITER_MODEL
     : "gpt-5.6-sol";
   return openaiJson({ model, system: "You write decodable children's books in fluent, natural British English.", content, schema: COMPACT_STORY_SCHEMA, maxTokens: 6000, reasoningEffort: "low" });
+}
+
+// PER-CANDIDATE PHYSICAL-STATE CHECK (Lynden 2026-08-25, after "The Stuck
+// Lunch Box" shipped a mechanism the pages never explain): a cheap pages-only
+// audit run on EVERY candidate BEFORE the pick, so a physically mushy draft
+// loses to a sound one — the reviewer's "reject candidates with story-level
+// contradictions" step. Runs on the fast tier; costs about a penny.
+const STATE_CHECK_SCHEMA = {
+  type: "object",
+  properties: {
+    contradictions: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: { page: { type: "integer" }, detail: { type: "string" } },
+        required: ["page", "detail"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["contradictions"],
+  additionalProperties: false,
+};
+export async function checkStoryState({ pages }) {
+  const system =
+    "You audit the PHYSICAL STORY of a six-page children's book from its text alone. Flag as a contradiction: an object in two places at once; a transition the plot depends on that no sentence states (it was in her hands, now it is on a shelf — who put it there?); a problem whose CAUSE is never said; a fix whose MECHANISM is never said (a lid is stuck, then open — what freed it?); a character acting somewhere they have not been placed. " +
+    "Do not flag ordinary picture-book compression, style, or vocabulary — physical state only. An empty list means the chain of events is complete and believable.";
+  const content = pages.map((t, i) => `Page ${i + 1}: ${t}`).join("\n");
+  return callJson({ system, content, schema: STATE_CHECK_SCHEMA, tier: "fast", maxTokens: 1500 });
 }
 
 // THE STAGER: turns a chosen compact story into everything the book machine
