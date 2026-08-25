@@ -404,10 +404,21 @@ export async function handleForge(req, res) {
         if (book.status === "needs_review" && book.progress?.job) {
           const job = book.progress.job;
           job.pendingEditorNotes = null;
-          job.storyEditRequests = 0;
           job.exactPatchUsed = false;
-          job.qaDone = false;
-          job.storyGateDone = false;
+          if ((job.sceneUrls || []).length) {
+            // THE BOOK IS ALREADY PAINTED — resume at the gate that stopped
+            // it, never at the story. Re-opening the story gate here rewrote
+            // a finished book's manuscript into a different story while its
+            // pictures stayed with the old one, and cost $1.49 to do it
+            // (Nuh's "Cat Prints" became a moth-and-web story, 2026-08-25).
+            job.reviewDone = false;
+            job.editorTextRepairUsed = false;
+          } else {
+            // No images yet: the cheap text gates may safely run again.
+            job.storyEditRequests = 0;
+            job.qaDone = false;
+            job.storyGateDone = false;
+          }
           await db.updateBook(b.book_id, { status: "generating", progress: { ...(book.progress || {}), job } });
         }
         // Resume from the last checkpoint — same provider, same references,

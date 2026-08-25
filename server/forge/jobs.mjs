@@ -778,6 +778,8 @@ async function stepPlausibility(book, job) {
 // cast/object sheets are on-demand caches keyed by name, so unchanged members
 // are reused and new ones get drawn.
 function resetAfterStoryRevision(job, revisedStory) {
+  const wasCast = JSON.stringify((job.story?.cast || []).map((c) => c.id).sort());
+  const wasObjects = JSON.stringify((job.story?.key_objects || []).map((o) => o.name).sort());
   job.story = revisedStory;
   job.qaDone = false;
   job.plausibilityDone = false;
@@ -789,6 +791,16 @@ function resetAfterStoryRevision(job, revisedStory) {
   job.coverUrl = null;
   job.chainResponseId = null;
   job.carriedState = null;
+  // CAST AND PROP REFERENCES BELONG TO THE OLD STORY (Lynden 2026-08-25).
+  // These caches are keyed by name and were NOT cleared here, so a revised
+  // story kept painting the previous one's people and props: a book whose
+  // text became "Cat Prints" still carried a moth-story cast (Dad) and props
+  // (moth, web) and the illustrator faithfully drew a cobweb, a moth and a
+  // father who appear nowhere in the words.
+  const nowCast = JSON.stringify((revisedStory?.cast || []).map((c) => c.id).sort());
+  const nowObjects = JSON.stringify((revisedStory?.key_objects || []).map((o) => o.name).sort());
+  if (nowCast !== wasCast) job.castSheets = {};
+  if (nowObjects !== wasObjects) job.objectSheets = {};
 }
 
 // The text-only editor gate. Severity decides (deriveEditorVerdict): only a
