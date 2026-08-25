@@ -60,9 +60,18 @@ SHIFTY spelling available from **Level 5**. It was already in
 been added to `graphemes_by_level.json`, so catch/match/hatch/kitchen were
 impossible at EVERY level while the writer kept reaching for them naturally.
 Now in the Level 5 grapheme list and the L5-L8 cumulative lists. Below L5 a
-tch word is a previewable Future Sound, not a flat impossibility. `kn`, `wr`,
-`mb`, `gn` and `dge` are still in no level's list — the same question stands
-for them.
+tch word is a previewable Future Sound, not a flat impossibility.
+
+**Silent-letter spellings joined the ladder the same day** (Lynden asked for
+"level 5 and beyond"; the shifty ledger already carried its own levels, which
+are LATER than 5 and were used instead of overwriting them — silent letters
+deliberately sit above tch):
+`dge` /j/ L6 · `kn` /n/ L6 · `wr` /r/ L6 · `mb` /m/ L7 · `gn` /n/ L8.
+Every one of these was in `shifty_sounds.json` but in no level's grapheme
+list, so bridge, knee, write, lamb and sign were impossible at EVERY level.
+Below its own level each is now a previewable Future Sound.
+NOTE: `climb` is a Level 7 tricky word AND becomes mb-decodable at L7 — the
+tricky listing simply exempts it, but it is worth a look on the next audit.
 
 **Accent policy (Lynden 2026-08-25):** the scheme reads the BATH-vowel as
 short /a/ — "I say bath the way it is decoded, not like a posh Londoner."
