@@ -206,6 +206,36 @@ export default function CreateBook() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Cold-load resume — a phone that killed the home-screen app and reopened
+  // it lands here with a CLEAN url (the Stripe-return effect wipes its params
+  // after first use), so without this the wizard showed a blank form while a
+  // PAID book sat half-generated with nobody driving the step machine
+  // (production has no background worker — see startDriving). Found live
+  // 2026-08-26: Lynden paid on his phone, backgrounded the app, came back to
+  // the intro screen. Only in-flight or finished books resume; an unpaid
+  // draft keeps the normal blank wizard.
+  useEffect(() => {
+    if (params.get("paid") || params.get("resume")) return; // their own effects handle these
+    const bookId = localStorage.getItem("forge_book_id");
+    if (!bookId) return;
+    (async () => {
+      try {
+        const { book: b } = await forgeApi.getBook(bookId);
+        if (b.status === "ready" || b.status === "approved") {
+          setBook(b);
+          setStep("ready");
+        } else if (["generating", "failed", "content_rejected", "paused_provider_credit", "paused_budget", "needs_review"].includes(b.status)) {
+          setBook(b);
+          setStep("generating");
+          if (b.status === "generating") startPolling(bookId);
+        }
+      } catch {
+        /* stale or deleted id — leave the fresh wizard */
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Handle the return trip from a sign-in redirect (?resume=1&want=world|save)
   // — payForWorld/saveToAccount send guests here when they need an account,
   // via localStorage("forge_book_id") since React state doesn't survive the
