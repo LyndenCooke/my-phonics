@@ -487,6 +487,13 @@ export async function handleForge(req, res) {
       return send(res, 200, { queue, decided, costs: await db.costSummary() });
     }
 
+    // Every book the forge has made, with its cost and its PDF — the admin
+    // ledger (Lynden 2026-08-26). /admin/queue only ever showed books awaiting
+    // a World of Books decision, so most books were invisible.
+    if (req.method === "GET" && p === "/admin/books") {
+      return send(res, 200, { books: await db.allBooksForAdmin(), costs: await db.costSummary() });
+    }
+
     if (req.method === "POST" && p === "/admin/decision") {
       const b = await readBody(req);
       const book = await db.getBook(b.book_id);

@@ -31,6 +31,25 @@ export interface CustomBookPage {
   faith?: string | null;
 }
 
+/** One row of the admin ledger: every book made, what it cost, where its PDF is. */
+export interface AdminBookRow {
+  id: string;
+  created_at: string;
+  child_name: string;
+  level: number;
+  focus_sound: string;
+  country: string | null;
+  title: string | null;
+  status: string;
+  cost_usd: number;
+  text_usd: number;
+  images_usd: number;
+  pdf_url: string;
+  needs_attention: boolean;
+  review_note: string | null;
+  email: string | null;
+}
+
 export interface CustomBook {
   id: string;
   status: string;
@@ -118,6 +137,8 @@ export const forgeApi = {
     req<{ queue: CustomBook[]; decided: CustomBook[]; costs: Record<string, number> }>(
       "/admin/queue",
     ),
+  adminBooks: () =>
+    req<{ books: AdminBookRow[]; costs: Record<string, number> }>("/admin/books"),
   adminDecision: (body: { book_id: string; approve: boolean; note?: string }) =>
     req<{ ok: boolean }>("/admin/decision", { method: "POST", body: JSON.stringify(body) }),
 };

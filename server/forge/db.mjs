@@ -290,14 +290,60 @@ export async function recentSourceStories(limit = 6) {
   return rows.map((b) => b.cost_breakdown?.source_story).filter(Boolean);
 }
 
+// EVERY book counts, not just the finished ones (Lynden 2026-08-26). A book
+// that stopped for review, ran out of provider credit or failed has still
+// SPENT — counting only ready/approved/rejected hid a third of a day's bill.
+// Delivered books are reported separately so the average per SOLD book stays
+// meaningful.
 export async function costSummary() {
   await initDb();
   const books = await listBooks({});
-  const done = books.filter((b) => ["ready", "approved", "rejected"].includes(b.status));
-  const total = done.reduce((s, b) => s + Number(b.cost_usd || 0), 0);
+  const spend = (b) => Number(b.cost_usd || 0) || Number(b.progress?.job?.cost || 0);
+  const spent = books.filter((b) => spend(b) > 0);
+  const delivered = books.filter((b) => ["ready", "approved"].includes(b.status));
+  const total = spent.reduce((s, b) => s + spend(b), 0);
+  const deliveredTotal = delivered.reduce((s, b) => s + spend(b), 0);
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTotal = spent
+    .filter((b) => String(b.created_at || "").slice(0, 10) === today)
+    .reduce((s, b) => s + spend(b), 0);
   return {
-    books_generated: done.length,
+    books_generated: delivered.length,
+    books_with_spend: spent.length,
     total_cost_usd: Number(total.toFixed(4)),
-    avg_cost_usd: done.length ? Number((total / done.length).toFixed(4)) : 0,
+    delivered_cost_usd: Number(deliveredTotal.toFixed(4)),
+    wasted_cost_usd: Number((total - deliveredTotal).toFixed(4)),
+    today_cost_usd: Number(todayTotal.toFixed(4)),
+    avg_cost_usd: delivered.length ? Number((deliveredTotal / delivered.length).toFixed(4)) : 0,
   };
+}
+
+// Every book the forge has ever made, with what it cost and where its PDF is —
+// the admin's ledger (Lynden 2026-08-26: "for each book made the admin needs to
+// be given the books and the cost").
+export async function allBooksForAdmin() {
+  await initDb();
+  const books = await listBooks({});
+  return books.map((b) => {
+    const job = b.progress?.job || {};
+    const bd = b.cost_breakdown || job.breakdown || {};
+    return {
+      id: b.id,
+      created_at: b.created_at,
+      child_name: b.child_name,
+      level: b.level,
+      focus_sound: b.focus_sound,
+      country: b.country,
+      title: b.title || b.story?.story?.title || null,
+      status: b.status,
+      cost_usd: Number((Number(b.cost_usd || 0) || Number(job.cost || 0)).toFixed(4)),
+      text_usd: Number(Number(bd.story_usd || 0).toFixed(4)),
+      images_usd: Number(Number(bd.images_usd || 0).toFixed(4)),
+      pdf_url: `/custom-books/${b.id}/book.pdf`,
+      needs_attention: ["needs_review", "failed", "content_rejected"].includes(b.status)
+        || String(b.status || "").startsWith("paused"),
+      review_note: b.review_note || null,
+      email: b.email || null,
+    };
+  });
 }

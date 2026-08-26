@@ -115,7 +115,12 @@ async function readStream(res) {
   return { text, usage, refusal, finish };
 }
 
-async function openaiJson({ model, system, content, schema, images = [], maxTokens = 16000, attempt = 0, reasoningEffort = null }) {
+// `spent` carries the cost of ABANDONED attempts forward. A broken stream or a
+// truncated JSON is retried, and OpenAI bills the tokens the dead attempt
+// already produced — but only the winning attempt's usage used to be recorded,
+// so every retry was invisible spend (Lynden 2026-08-26: "you're lying to me on
+// price"). Now the bill of every attempt reaches the ledger.
+async function openaiJson({ model, system, content, schema, images = [], maxTokens = 16000, attempt = 0, reasoningEffort = null, spent = 0 }) {
   const userContent = images.length
     ? [
         ...images.map((i) => ({
@@ -125,12 +130,12 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
         { type: "text", text: content },
       ]
     : content;
-  const retry = async (why) => {
+  const retry = async (why, burnt = 0) => {
     if (attempt >= 4) throw new Error(`openai ${model}: ${why}`);
     const wait = Math.min(60_000, 4000 * 2 ** attempt) * (0.75 + Math.random() * 0.5);
-    console.warn(`[forge] openai ${model} ${why} — retry ${attempt + 1}/4 in ${Math.round(wait / 1000)}s`);
+    console.warn(`[forge] openai ${model} ${why} — retry ${attempt + 1}/4 in ${Math.round(wait / 1000)}s${burnt ? ` (dead attempt cost $${burnt.toFixed(4)})` : ""}`);
     await new Promise((r) => setTimeout(r, wait));
-    return openaiJson({ model, system, content, schema, images, maxTokens, attempt: attempt + 1, reasoningEffort });
+    return openaiJson({ model, system, content, schema, images, maxTokens, attempt: attempt + 1, reasoningEffort, spent: spent + burnt });
   };
 
   let res;
@@ -181,14 +186,14 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
   if (!text) throw new Error(`openai ${model}: empty response (${stream.finish})`);
   const u = stream.usage || {};
   const price = OPENAI_PRICES[model] || OPENAI_PRICES[OPENAI_FAST_MODEL];
-  const cost = ((u.prompt_tokens || 0) * price.in + (u.completion_tokens || 0) * price.out) / 1_000_000;
+  const cost = spent + ((u.prompt_tokens || 0) * price.in + (u.completion_tokens || 0) * price.out) / 1_000_000;
   try {
     return { data: JSON.parse(text), cost, model };
   } catch (e) {
     // Truncated/mangled JSON (finish=length, mid-stream clip) is transient —
     // re-request rather than kill the job ("Unterminated string" ended a run
     // at the story gate, 2026-08-15).
-    return retry(`unparseable JSON (${e.message.slice(0, 60)}; finish=${stream.finish})`);
+    return retry(`unparseable JSON (${e.message.slice(0, 60)}; finish=${stream.finish})`, cost - spent);
   }
 }
 

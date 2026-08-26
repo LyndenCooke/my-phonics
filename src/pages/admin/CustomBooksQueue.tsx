@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BookHeart, Check, Eye, Loader2, X } from "lucide-react";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import CustomBookReader from "@/components/CustomBookReader";
-import { forgeApi, type CustomBook } from "@/lib/forgeApi";
+import { forgeApi, type AdminBookRow, type CustomBook } from "@/lib/forgeApi";
 
 /**
  * Approval queue for family-made custom books. A book only ever becomes
@@ -17,12 +17,14 @@ export default function CustomBooksQueue() {
   const [error, setError] = useState<string | null>(null);
   const [reading, setReading] = useState<CustomBook | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [ledger, setLedger] = useState<AdminBookRow[]>([]);
 
   const load = () => {
     setLoading(true);
+    forgeApi.adminBooks().then((r) => { setLedger(r.books); setCosts(r.costs); }).catch(() => {});
     forgeApi
       .adminQueue()
-      .then((r) => { setQueue(r.queue); setDecided(r.decided); setCosts(r.costs); setError(null); })
+      .then((r) => { setQueue(r.queue); setDecided(r.decided); setError(null); })
       .catch(() => setError("The forge API isn't available. This queue only works on the localhost dev server (npm run dev)."))
       .finally(() => setLoading(false));
   };
@@ -46,10 +48,16 @@ export default function CustomBooksQueue() {
         action={
           costs && (
             <div className="rounded-xl border bg-card px-4 py-2 text-right text-sm">
-              <div className="font-bold">{costs.books_generated} generated</div>
-              <div className="text-muted-foreground">
-                avg ${Number(costs.avg_cost_usd || 0).toFixed(2)} / book · ${Number(costs.total_cost_usd || 0).toFixed(2)} total API cost
+              <div className="font-bold">
+                {costs.books_generated} delivered · ${Number(costs.avg_cost_usd || 0).toFixed(2)} each
               </div>
+              <div className="text-muted-foreground">
+                ${Number(costs.total_cost_usd || 0).toFixed(2)} spent on {costs.books_with_spend} books
+                {Number(costs.wasted_cost_usd || 0) > 0 && (
+                  <> · <span className="font-semibold text-amber-700">${Number(costs.wasted_cost_usd).toFixed(2)} on books never delivered</span></>
+                )}
+              </div>
+              <div className="text-xs text-muted-foreground">today: ${Number(costs.today_cost_usd || 0).toFixed(2)}</div>
             </div>
           )
         }
@@ -96,6 +104,46 @@ export default function CustomBooksQueue() {
             </section>
           )}
         </>
+      )}
+
+      {/* EVERY book made, with what it cost and a link to the PDF — the admin
+          ledger. The approval queue above only shows books asking to go public;
+          this shows the lot, including the ones that stopped and still spent. */}
+      {ledger.length > 0 && (
+        <section className="rounded-2xl border bg-card">
+          <div className="flex items-baseline justify-between border-b px-4 py-3">
+            <h2 className="font-bold">Every book made ({ledger.length})</h2>
+            <span className="text-xs text-muted-foreground">newest first · click a title for the PDF</span>
+          </div>
+          <div className="divide-y">
+            {ledger.map((b) => (
+              <div key={b.id} className={`flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 text-sm ${b.needs_attention ? "bg-amber-50" : ""}`}>
+                <a href={b.pdf_url} target="_blank" rel="noreferrer"
+                  className="min-w-[13rem] flex-1 truncate font-semibold text-violet-700 hover:underline">
+                  {b.title || "Untitled"}
+                </a>
+                <span className="text-muted-foreground">
+                  {b.child_name} · L{b.level} “{b.focus_sound}”{b.country ? ` · ${b.country}` : ""}
+                </span>
+                <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${b.needs_attention ? "bg-amber-200 text-amber-900" : "bg-slate-100 text-slate-600"}`}>
+                  {b.status}
+                </span>
+                <span className="ml-auto whitespace-nowrap font-bold">
+                  ${b.cost_usd.toFixed(2)}
+                </span>
+                <span className="whitespace-nowrap text-xs text-muted-foreground">
+                  text ${b.text_usd.toFixed(2)} · art ${b.images_usd.toFixed(2)}
+                </span>
+                <span className="whitespace-nowrap text-xs text-muted-foreground">
+                  {new Date(b.created_at).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                </span>
+                {b.review_note && (
+                  <p className="w-full text-xs text-amber-800">{b.review_note.slice(0, 200)}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {reading?.pages && <CustomBookReader pages={reading.pages} onClose={() => setReading(null)} />}
