@@ -10,7 +10,9 @@
  *  2. Child hero (avatar sticker + name + journey level + Switch Child)
  *  3. For You — unread notifications
  *  3b. Share the love — leave a review + Wall of Love link
- *  4. Parent controls list: Parent View / Messages / My Rewards / Referrals
+ *  4. Parent controls list: Assess / Parent View / Messages / My Rewards / Referrals
+ *     (Assess lives here on phones — the bottom bar gave its slot to
+ *     Create a Book; the desktop sidebar still lists it.)
  *  5. Account list: Download History / Account Settings / Help & Support / Sign Out
  */
 import { useState } from 'react';
@@ -24,7 +26,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   User, LogOut, Download, Settings, ChevronRight, Plus,
   LayoutDashboard, MessageSquare, Trophy, Users, HelpCircle, Gift, PlayCircle, Sparkles, X,
-  Shield, Star, Heart,
+  Shield, Star, Heart, ClipboardList,
 } from 'lucide-react';
 import FeedbackDialog from '@/components/FeedbackDialog';
 import { getJourneyLevel } from '@/lib/levels8';
@@ -117,6 +119,7 @@ export default function Profile() {
             </button>
           </div>
           <Card>
+            <ProfileLink to="/assess" icon={ClipboardList} label="Assess" sub="Find your child's reading level" />
             <ProfileLink to="/love" icon={Heart} label="Wall of Love" sub="What families say about us" />
             <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
           </Card>
@@ -304,6 +307,7 @@ export default function Profile() {
 
           {/* Col 2 — Parent controls */}
           <Card>
+            <ProfileLink to="/assess" icon={ClipboardList} label="Assess" sub="Find your child's reading level" />
             <ProfileLink to="/profile/parent-dashboard" icon={LayoutDashboard} label="Parent View" sub="Go to parent dashboard" />
             <ProfileLink to="/profile/messages" icon={MessageSquare} label="Messages" sub="Rewards, tips & updates" badge={unreadMessages} />
             <ProfileLink to="/profile/messages?type=reward" icon={Trophy} label="My Rewards" sub="See your unlocked rewards" />

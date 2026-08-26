@@ -7,20 +7,31 @@ import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
 
 // Five primary tabs. Resources merged into Library as a Books/Worksheets
-// sub-toggle, freeing the slot for Assess + Pricing. The same list drives
-// three responsive chromes: the mobile bottom-nav, the tablet top-nav, and
-// the desktop left sidebar.
-const NAV = [
-  { path: '/learn', label: 'Learn', icon: Home, badgeKey: null as 'messages' | null, desktopOnly: false },
-  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null, desktopOnly: false },
+// sub-toggle. Create a Book took the Assess slot (Assess lives on the
+// Profile page for phones; the desktop sidebar keeps it). The same list
+// drives three responsive chromes: the mobile bottom-nav, the tablet
+// top-nav, and the desktop left sidebar. `shortLabel` is the bottom-bar
+// caption where the full label won't fit under a 10px tab.
+type NavItem = {
+  path: string;
+  label: string;
+  shortLabel?: string;
+  icon: typeof Home;
+  badgeKey: 'messages' | null;
+  desktopOnly: boolean;
+};
+
+const NAV: NavItem[] = [
+  { path: '/learn', label: 'Learn', icon: Home, badgeKey: null, desktopOnly: false },
   { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null, desktopOnly: false },
+  { path: '/create-book', label: 'Create a Book', shortLabel: 'Create', icon: BookHeart, badgeKey: null, desktopOnly: false },
   { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null, desktopOnly: false },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
-  // Wall of Love and Shop live in the desktop side panel only — the mobile
-  // bottom bar stays at five tabs (Shop is reachable from Pricing there).
+  // Desktop side panel only — the mobile bottom bar stays at five tabs
+  // (Shop is reachable from Pricing there; Assess from Profile).
+  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null, desktopOnly: true },
   { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },
   { path: '/shop', label: 'Shop', icon: ShoppingBag, badgeKey: null, desktopOnly: true },
-  { path: '/create-book', label: 'Create a Book', icon: BookHeart, badgeKey: null, desktopOnly: true },
   { path: '/world-of-books', label: 'World of Books', icon: Globe2, badgeKey: null, desktopOnly: true },
 ];
 
@@ -242,13 +253,14 @@ export default function Layout({ children }: { children: ReactNode }) {
       {typeof document !== 'undefined' && createPortal(
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border md:hidden no-select pb-safe">
           <div className="flex items-center justify-around py-2 px-2">
-            {NAV.filter(i => !i.desktopOnly).map(({ path, label, icon: Icon, badgeKey }) => {
+            {NAV.filter(i => !i.desktopOnly).map(({ path, label, shortLabel, icon: Icon, badgeKey }) => {
               const isActive = pathname === path;
               const badgeCount = badgeKey === 'messages' ? unreadMessages : 0;
               return (
                 <Link
                   key={path}
                   to={path}
+                  aria-label={label}
                   onClick={() => { if (!isActive) hapticLight(); }}
                   className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all duration-200 press-scale ${
                     isActive
@@ -264,7 +276,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                       </span>
                     )}
                   </span>
-                  <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+                  <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{shortLabel ?? label}</span>
                 </Link>
               );
             })}
