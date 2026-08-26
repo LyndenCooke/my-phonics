@@ -192,6 +192,13 @@ function nextStepOf(job) {
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
   if (!job.coverUrl) return "cover";
   if (!job.countryDone) return "country";
+  // Editor-ordered repaints run ONE PER INVOCATION. stepReview used to
+  // repaint every faulted page inside its own invocation, which blew
+  // Vercel's 300s ceiling: the invocation was killed before anything
+  // persisted and the next attempt re-ran (and re-paid for) the whole
+  // review — Lynden's own book looped at "editor" for 40 minutes on
+  // 2026-08-26 exactly this way.
+  if ((job.repairQueue || []).length) return `repair:${job.repairQueue[0]}`;
   if (!job.reviewDone) return "review";
   if (!job.assembled) return "assemble";
   return "done";
@@ -1524,35 +1531,55 @@ async function stepCountry(book, job) {
 // a drifting object, or a phonics page contradicting the story. An external
 // cold read caught all of those in "The Chip on Top" after every per-page
 // gate had passed. Reject-severity issues fail the book rather than ship it.
+// One editor-ordered repaint, in its own invocation (routed as "repair:N" —
+// see nextStepOf). Splitting these out of stepReview is what keeps every
+// invocation under Vercel's time ceiling.
+async function stepRepairPage(book, job) {
+  const n = Number(job.repairQueue[0]);
+  await stepScene(book, job, n - 1);
+  job.repairQueue = job.repairQueue.slice(1);
+}
+
 async function stepReview(book, job) {
   const story = job.story;
   const level = getLevel(book.level);
-  const { reviewThumb } = await import("./images.mjs");
 
-  const urls = [job.coverUrl, ...job.sceneUrls].filter(Boolean);
-  const images = [];
-  for (const url of urls) {
-    const buf = await loadByUrl(url);
-    // 1024px, not 640: the editor must be able to resolve the details its
-    // rubric asks about (a hook on a stall, the slot width of a drain grate).
-    // 640px is plenty for a whole-book read and cuts the largest input this
-    // pipeline sends. The editor judges composition, continuity and whether
-    // the action is visible - none of which needs 1024px x every page. The
-    // per-page QA still sees full-size images (Lynden 2026-08-22, on cost).
-    const small = await reviewThumb(buf, 640);
-    images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
+  // CHECKPOINTED VERDICT: the editor's answer is persisted the moment it
+  // comes back, so a killed invocation resumes from the verdict instead of
+  // paying for the read again. Cleared whenever the book changes (repaints,
+  // text repair, cover re-crop) — a mended book re-earns a FRESH verdict.
+  let review = job.pendingReview;
+  if (!review) {
+    const { reviewThumb } = await import("./images.mjs");
+
+    const urls = [job.coverUrl, ...job.sceneUrls].filter(Boolean);
+    const images = [];
+    for (const url of urls) {
+      const buf = await loadByUrl(url);
+      // 1024px, not 640: the editor must be able to resolve the details its
+      // rubric asks about (a hook on a stall, the slot width of a drain grate).
+      // 640px is plenty for a whole-book read and cuts the largest input this
+      // pipeline sends. The editor judges composition, continuity and whether
+      // the action is visible - none of which needs 1024px x every page. The
+      // per-page QA still sees full-size images (Lynden 2026-08-22, on cost).
+      const small = await reviewThumb(buf, 640);
+      images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
+    }
+
+    // No silent caps: any per-page QA verdict that stayed failed reaches the
+    // editor instead of dying in a console log (the exact failure of
+    // 2026-08-15 â€” the QA had named the missing hook action and nobody read it).
+    const unresolvedQa = (job.breakdown.qa_notes || [])
+      .filter((n) => n && n.page && n.consistency && n.consistency.pass === false && !n.discarded)
+      .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
+
+    const { coldEditorReview } = await import("./claude.mjs");
+    const r = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
+    review = r.data;
+    charge(job, "story_usd", "coldEditorReview", r.cost, r.model);
+    job.pendingReview = review;
+    await persist(book.id, job, displayFor(book, job, "review"));
   }
-
-  // No silent caps: any per-page QA verdict that stayed failed reaches the
-  // editor instead of dying in a console log (the exact failure of
-  // 2026-08-15 â€” the QA had named the missing hook action and nobody read it).
-  const unresolvedQa = (job.breakdown.qa_notes || [])
-    .filter((n) => n && n.page && n.consistency && n.consistency.pass === false && !n.discarded)
-    .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
-
-  const { coldEditorReview } = await import("./claude.mjs");
-  const { data: review, cost, model: editorModel } = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
-  charge(job, "story_usd", "coldEditorReview", cost, editorModel);
   job.breakdown.editor_review = review;
   // GATE MANIFEST: record that this gate ran AND that it answered its two
   // real-world lenses. A rubric field the model leaves empty is a gate that
@@ -1611,7 +1638,8 @@ async function stepReview(book, job) {
             await applyStaging(job, job.story, book, child, getLevel(book.level));
           }
           job.repairNotes = { ...(job.repairNotes || {}), ...Object.fromEntries(applied.map((n) => [n, "The text of this page changed â€” draw exactly what it now says."])) };
-          for (const n of applied) await stepScene(book, job, n - 1);
+          job.repairQueue = applied;      // one page per invocation (repair:N)
+          job.pendingReview = null;
           job.reviewDone = false; // the mended book re-earns its verdict
           return;
         }
@@ -1629,6 +1657,7 @@ async function stepReview(book, job) {
       job.breakdown.editor_review_second = review;
       job.breakdown.editor_edit_requests = verdict.blocking;
       if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
+      job.pendingReview = null; // a human will change the book; re-read it on /retry
       throw new NeedsReviewError(`cold editor: ${verdict.blocking.length} blocking issue(s) after the one revision â€” ${detail.slice(0, 220)}`);
     }
     // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
@@ -1677,6 +1706,7 @@ async function stepReview(book, job) {
     const isCoverFault = (i) => /cover/i.test(String(i.detail || ""));
     if (verdict.blocking.every(isCoverFault)) {
       job.coverUrl = null;
+      job.pendingReview = null;
       job.reviewDone = false;
       job.breakdown.editor_cover_recrop = verdict.blocking.map((i) => i.detail);
       console.warn("[forge] editor gate: re-cropping the cover, keeping the finished pages");
@@ -1704,20 +1734,22 @@ async function stepReview(book, job) {
     }
     if (Object.keys(notes).length) {
       job.repairNotes = { ...(job.repairNotes || {}), ...notes };
-      for (const n of Object.keys(notes).map(Number).sort((a, b) => a - b)) {
-        if (n >= 1 && n <= job.sceneUrls.length) await stepScene(book, job, n - 1);
-      }
+      job.repairQueue = Object.keys(notes).map(Number).sort((a, b) => a - b)
+        .filter((n) => n >= 1 && n <= job.sceneUrls.length);  // one per invocation
       job.breakdown.editor_targeted_repair = notes;
+      job.pendingReview = null;
       job.reviewDone = false; // the mended book re-earns its verdict
       console.warn(`[forge] editor gate: repairing only page(s) ${Object.keys(notes).join(", ")} instead of repainting the book`);
       return;
     }
     // Nothing page-repairable: ship with the flags rather than loop.
     if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
+    job.pendingReview = null;
     job.reviewDone = true;
     return;
   }
   if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
+  job.pendingReview = null;
   job.reviewDone = true;
 }
 
@@ -1908,6 +1940,7 @@ export async function runNextStep(bookId) {
     else if (step.startsWith("scene:")) await stepScene(book, job, Number(step.split(":")[1]));
     else if (step === "cover") await stepCover(book, job);
     else if (step === "country") await stepCountry(book, job);
+    else if (step.startsWith("repair:")) await stepRepairPage(book, job);
     else if (step === "review") await stepReview(book, job);
     else if (step === "assemble") await stepAssemble(book, job);
   } catch (e) {
@@ -2082,6 +2115,7 @@ export async function repairBook(bookId, { scenes = {}, cover = null } = {}) {
 
   // The mended book must re-earn its verdict: review + assembly rerun.
   job.reviewDone = false;
+  job.pendingReview = null;
   job.assembled = false;
   await persist(bookId, job, { step: "repair", message: "Repairs done â€” re-running the editor review...", pct: 85, job });
   startGeneration(bookId);
