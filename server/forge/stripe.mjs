@@ -36,7 +36,7 @@ async function stripeApi(pathName, params, method = "POST") {
   return data;
 }
 
-export async function createCheckout({ kind, bookId, email, origin }) {
+export async function createCheckout({ kind, bookId, email, origin, extraPence = 0, extraDesc = "" }) {
   const price = PRICES[kind];
   if (!price) throw new Error(`unknown price kind ${kind}`);
   const session = await stripeApi("checkout/sessions", {
@@ -45,8 +45,11 @@ export async function createCheckout({ kind, bookId, email, origin }) {
       quantity: 1,
       price_data: {
         currency: "gbp",
-        unit_amount: price.amount,
-        product_data: { name: price.name, description: price.desc },
+        unit_amount: price.amount + extraPence,
+        product_data: {
+          name: extraPence ? `${price.name} — longer story` : price.name,
+          description: extraDesc ? `${price.desc} ${extraDesc}` : price.desc,
+        },
       },
     },
     ...(email ? { customer_email: email } : {}),

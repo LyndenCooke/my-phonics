@@ -1,20 +1,20 @@
-// Generation as a RESUMABLE STEP MACHINE: story → phonics QA → direction →
-// hero → one scene per step → cover → country pack → assemble.
+﻿// Generation as a RESUMABLE STEP MACHINE: story â†’ phonics QA â†’ direction â†’
+// hero â†’ one scene per step â†’ cover â†’ country pack â†’ assemble.
 //
 // Why steps and not one long job: production is Vercel serverless, where a
 // function must answer within its time budget and NOTHING in memory survives
 // between invocations. The old runJob() held the hero image in a local
-// variable for four minutes — fine under vite, impossible on a lambda. So all
+// variable for four minutes â€” fine under vite, impossible on a lambda. So all
 // state now lives in the book row (progress.job, plain JSON) and all images
 // live in storage (URLs in that JSON, re-downloaded when a later step needs
 // one as a reference). Any invocation, anywhere, can pick up exactly where
-// the last one stopped: runNextStep(bookId) does one unit of work (≤ ~60s),
+// the last one stopped: runNextStep(bookId) does one unit of work (â‰¤ ~60s),
 // persists, returns.
 //
 // Two drivers, one engine:
-//   dev (vite)   — startGeneration() loops the steps in-process, exactly the
+//   dev (vite)   â€” startGeneration() loops the steps in-process, exactly the
 //                  old behaviour from the outside.
-//   prod (Vercel)— startGeneration() only INITIALISES; the wizard drives by
+//   prod (Vercel)â€” startGeneration() only INITIALISES; the wizard drives by
 //                  calling POST /books/:id/step until { done: true }.
 import { execFile } from "node:child_process";
 import fs from "node:fs";
@@ -33,7 +33,7 @@ export { CUSTOM_BOOKS_DIR };
 
 const running = new Set();
 // Uploaded photos are held in memory only, never written anywhere. In prod a
-// later invocation may not be the one that stashed the photo — the hero then
+// later invocation may not be the one that stashed the photo â€” the hero then
 // generates without the likeness rather than failing. Documented degradation.
 const photoStash = new Map(); // bookId -> {b64, mime}
 
@@ -45,15 +45,15 @@ export function isRunning(bookId) {
   return running.has(bookId);
 }
 
-// A step claims the row before working and releases after. Not a real mutex —
-// Supabase REST gives us no compare-and-swap — but two polite clients (the
+// A step claims the row before working and releases after. Not a real mutex â€”
+// Supabase REST gives us no compare-and-swap â€” but two polite clients (the
 // wizard's driver never overlaps its own calls) only race if the user opens
 // two tabs, and then the stale-after window keeps it self-healing.
 const LOCK_MS = 2 * 60 * 1000;
 
 // Maximum AUTOMATIC spend per book. Reaching it PAUSES the job (resumable,
 // nothing lost) instead of letting rewrites and regenerations run open-ended
-// — the $2.60 loss on 2026-08-14 came from a from-scratch regeneration that
+// â€” the $2.60 loss on 2026-08-14 came from a from-scratch regeneration that
 // no ceiling would have allowed to double-spend silently. A human retry on a
 // paused_budget book authorises one more budget unit (see router.mjs).
 export const MAX_BOOK_SPEND_USD = Number(process.env.FORGE_MAX_BOOK_USD || 6);
@@ -72,7 +72,7 @@ function isTextOnly() {
 }
 
 // A double editor rejection is a CONTENT decision, not an infrastructure
-// failure — carried as a typed error so runNextStep can route it to the
+// failure â€” carried as a typed error so runNextStep can route it to the
 // content_rejected state (credit restored, assets preserved) instead of the
 // generic "failed" retry flow.
 class ContentRejectedError extends Error {
@@ -86,7 +86,7 @@ class ContentRejectedError extends Error {
 // a human (Lynden 2026-08-24: "Never export, illustrate or call the book
 // complete with an open MAJOR. The pass ceiling should limit spending, not
 // lower the publication standard."). Job and reports are preserved and
-// resumable; the credit is NOT restored — a human fixes and continues.
+// resumable; the credit is NOT restored â€” a human fixes and continues.
 class NeedsReviewError extends Error {
   constructor(message) {
     super(message);
@@ -97,7 +97,7 @@ class NeedsReviewError extends Error {
 // Provider-credit exhaustion is a PAUSE, not a failure: the job keeps every
 // checkpoint and resumes with the same provider once credits are topped up
 // (OpenAI ran dry mid-book on 2026-08-12 and the book died; a silent
-// fallback provider is banned — it breaks character/style continuity).
+// fallback provider is banned â€” it breaks character/style continuity).
 const PROVIDER_CREDIT_RE = /insufficient[_ ]quota|billing[_ ]hard[_ ]limit|exceeded your current quota|payment required|insufficient credit|\b402\b/i;
 
 // How many EDIT REQUESTS the story gate may issue before the book proceeds
@@ -115,14 +115,14 @@ function newJob(book) {
     anchors: {},      // location id -> image URL
     castSheets: {},   // cast id -> { name, url }
     objectSheets: {}, // key_object name (lowercased) -> { name, url }
-    // Responses-API conversation chain (SKILL.md §5.5): the last approved
+    // Responses-API conversation chain (SKILL.md Â§5.5): the last approved
     // scene turn's response id. Each scene chains onto this so the model
     // carries the actual generated world forward; the cover chains onto the
-    // final scene. null until the first chained scene succeeds — and stays
+    // final scene. null until the first chained scene succeeds â€” and stays
     // null if the chain path is disabled or failing (stateless fallback).
     chainResponseId: null,
     // Actual-result state (extractSceneState): what the last APPROVED image
-    // literally shows for each key object — size, position, layout of marks.
+    // literally shows for each key object â€” size, position, layout of marks.
     // Injected into the next page's prompt as binding fact, because mutable
     // state (dots drawn on a card) is pinned by neither the identity
     // reference nor the loose conversation chain.
@@ -133,7 +133,7 @@ function newJob(book) {
 // PER-CALL COST LEDGER (Lynden 2026-08-24: "$1.14 for 54 words" could not be
 // diagnosed because every model call collapsed into two bucket totals). Every
 // charge lands here as {call, usd}, so cost_breakdown.calls reads like an
-// itemised receipt — which call, in order, and what it cost.
+// itemised receipt â€” which call, in order, and what it cost.
 function charge(job, bucket, call, cost, model) {
   const c = Number(cost) || 0;
   job.cost += c;
@@ -156,23 +156,23 @@ function nextStepOf(job) {
   // STORY GATE BEFORE ANY IMAGE (Lynden 2026-08-14): "Yusuf and the Star
   // Tin" was double-rejected for story thinness with 16 finished paid
   // illustrations. Both rejections were visible in the text alone, so the
-  // editor now judges the manuscript here — premise, six-beat plan, page
-  // texts — while a rejected draft still costs pennies. Nothing downstream
+  // editor now judges the manuscript here â€” premise, six-beat plan, page
+  // texts â€” while a rejected draft still costs pennies. Nothing downstream
   // (direction, hero, scenes, cover) runs until the story has passed.
   if (!job.storyGateDone) return "storyGate";
   if (job.textOnly) return job.textReported ? "done" : "textReport";
   if (!job.directDone) return "direct";
-  // IMAGERY BOUNDARY — AUTONOMOUS BY DEFAULT (Lynden 2026-08-23, "how can I
-  // repair pages in place if I'm asleep"): the text→image boundary is where
+  // IMAGERY BOUNDARY â€” AUTONOMOUS BY DEFAULT (Lynden 2026-08-23, "how can I
+  // repair pages in place if I'm asleep"): the textâ†’image boundary is where
   // the money starts, and the machine now decides at it by itself:
-  //   - CLEAN gate pass (no open edit requests) → paint. A human pause here
+  //   - CLEAN gate pass (no open edit requests) â†’ paint. A human pause here
   //     only helps when a human is watching; a paying customer's book must
   //     not sleep until morning.
-  //   - Gate proceeded WITH open majors → NO IMAGE MONEY follows a flawed
+  //   - Gate proceeded WITH open majors â†’ NO IMAGE MONEY follows a flawed
   //     story (the night-loop run-1 rule, now enforced in prod): one fresh
   //     attempt at the same spec while failure still costs pennies.
-  //   - The fresh attempt is also flawed → paint it anyway, ship, and
-  //     AUTO-FLAG the book for the morning admin queue — a book with a known
+  //   - The fresh attempt is also flawed â†’ paint it anyway, ship, and
+  //     AUTO-FLAG the book for the morning admin queue â€” a book with a known
   //     wrinkle now beats a customer staring at a spinner.
   // FORGE_MANUAL_IMAGERY=1 restores the human sign-off pause for review
   // sessions; FORGE_AUTO_APPROVE=1 keeps its old meaning (paint regardless).
@@ -199,7 +199,7 @@ function nextStepOf(job) {
 
 // The ROW's cost must never lag the job's (Lynden 2026-08-26: "you're lying to
 // me on price"). It was written only at a few milestones, so every charge after
-// the last one — the cold editor, the cover face-find, assembly — stayed
+// the last one â€” the cold editor, the cover face-find, assembly â€” stayed
 // invisible: a book reported as $2.16 had actually spent $3.06. Every persist
 // now carries the running total and the itemised breakdown, so what the row
 // says is what has been spent.
@@ -253,10 +253,10 @@ function makeObjectBlocks(story) {
     }
     const lines = objects.map((o) => {
       const look = lookFor(o.name);
-      return `${o.name}${look ? ` (normally: ${look})` : ""} — ON THIS PAGE: ${o.state}`;
+      return `${o.name}${look ? ` (normally: ${look})` : ""} â€” ON THIS PAGE: ${o.state}`;
     });
     return (
-      ` KEY OBJECTS ON THIS PAGE — ${lines.join("; ")}. ` +
+      ` KEY OBJECTS ON THIS PAGE â€” ${lines.join("; ")}. ` +
       "The 'normally' description is what the object looks like when it is finished and in its usual state; the ON THIS PAGE state WINS over it. " +
       "If a state says an object does not exist yet, is empty, unfinished or absent, draw it that way or not at all. Draw no recurring object that is not listed here."
     );
@@ -270,21 +270,25 @@ function makeObjectBlocks(story) {
     });
     if (!used.length) return "";
     return (
-      ` KEY OBJECTS ON THIS PAGE — the same physical object every time it appears (${used
+      ` KEY OBJECTS ON THIS PAGE â€” the same physical object every time it appears (${used
         .map((o) => `${o.name}: ${o.look}`)
         .join("; ")}). These descriptions say what each object LOOKS like, never where it is: its position and its current state come from the scene above and from nothing else. ` +
-      "Draw ONLY the objects this scene calls for — never add an object just because it has been described."
+      "Draw ONLY the objects this scene calls for â€” never add an object just because it has been described."
     );
   };
   return { fromDirector, fromText };
 }
 
-// Custom books hold a fixed print budget — 16 total pages at L1-4, 20 at
+// Custom books hold a fixed print budget â€” 16 total pages at L1-4, 20 at
 // L5-8 (Lynden 2026-08-09, re-affirmed 2026-08-13 after a 17-page export).
 // With the fixed activity/profile page set, that leaves exactly 6 story
 // pages at L1-4 and 8 at L5-8, independent of the library's storyPages.
-function storyPagesFor(level) {
-  return level <= 4 ? 6 : 8;
+// The +Â£1 "longer story" add-on (Lynden 2026-08-26) upgrades an L1-4 book
+// to 8 story pages, which necessarily moves it onto the 20-page print set â€”
+// the 16-page booklet has exactly 6 story slots. L5-8 already include 8.
+function storyPagesFor(book) {
+  if (book.level > 4) return 8;
+  return book.extra_pages ? 8 : 6;
 }
 
 // ------------------------------------------------------------------ steps --
@@ -292,9 +296,9 @@ function storyPagesFor(level) {
 async function stepStory(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = storyPagesFor(book.level);
+  const pagesCount = storyPagesFor(book);
   // One story shape per book, chosen at random from whatever hasn't shipped
-  // in the last few books — plain randomness let the same shape land twice in
+  // in the last few books â€” plain randomness let the same shape land twice in
   // a row ("The swap", 2026-08-07 and 2026-08-09), and both leant on the same
   // collect-a-few-objects crutch (Lynden 2026-08-09). Falls back to the full
   // list if recent history can't be read or would exclude everything.
@@ -304,7 +308,7 @@ async function stepStory(book, job) {
     const fresh = STORY_SHAPES.filter((s) => !recent.has(s.name));
     if (fresh.length) pool = fresh;
   } catch {
-    // history unavailable — fall back to the full pool rather than fail the book
+    // history unavailable â€” fall back to the full pool rather than fail the book
   }
   const shape = pool[Math.floor(Math.random() * pool.length)];
 
@@ -340,10 +344,10 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // selection so they cannot bend the prose. FORGE_WRITER_PROMPT=compact.
   const COMPACT = process.env.FORGE_WRITER_PROMPT === "compact";
   // Each compact candidate gets a DIFFERENT curated story engine (2026-08-25:
-  // without one, three books running converged on zip-snag plots — the same
+  // without one, three books running converged on zip-snag plots â€” the same
   // diversity collapse the full brief once fixed with shape memory).
   // Engines come from the SAME short-term-memory pool the full brief uses, so
-  // a shape used in the last few books cannot come round again — compact mode
+  // a shape used in the last few books cannot come round again â€” compact mode
   // was drawing from the raw list and repeating (Lynden 2026-08-25: "why is
   // every story the exact same?").
   const enginePool = pool.length >= CANDIDATES ? pool : STORY_SHAPES;
@@ -407,7 +411,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     let judged = await judgeBatch(drafts, 1);
     judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
     for (let batch = 2; batch <= BATCHES && penalty(judged[0]) > GOOD_ENOUGH; batch++) {
-      console.warn(`[forge] best of batch ${batch - 1} still scores ${penalty(judged[0]).toFixed(1)} (want <= ${GOOD_ENOUGH}) — redrawing rather than repairing`);
+      console.warn(`[forge] best of batch ${batch - 1} still scores ${penalty(judged[0]).toFixed(1)} (want <= ${GOOD_ENOUGH}) â€” redrawing rather than repairing`);
       const more = await Promise.all(Array.from({ length: CANDIDATES }, (_, i) => writeFn(i + (batch - 1) * CANDIDATES)));
       more.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:b${batch}c${i + 1}`, d.cost, d.model));
       more.forEach((d) => { d.data = asStory(d.data); });
@@ -415,7 +419,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
       judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
     }
     const win = judged[0];
-    console.log(`[forge] picked "${win.title}" — penalty ${penalty(win).toFixed(1)} (fluency ${win.fails}, state ${win.contra}, style ${win.style}) from ${judged.length} draft(s)`);
+    console.log(`[forge] picked "${win.title}" â€” penalty ${penalty(win).toFixed(1)} (fluency ${win.fails}, state ${win.contra}, style ${win.style}) from ${judged.length} draft(s)`);
     // Keep every candidate's TEXT, not just its scores (Lynden 2026-08-25:
     // "so i can review orginal text and changed text"). Without this the
     // rejected drafts vanish and the winner's original wording is overwritten
@@ -431,7 +435,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     await applyStaging(job, story, book, child, level);
   }
   // The as-written draft, frozen before any polish, fix or revision touches
-  // it — the "original text" half of every before/after review.
+  // it â€” the "original text" half of every before/after review.
   job.breakdown.draft_pages = { title: story.title, pages: story.pages.map((p) => p.text) };
 
   // THE WRITER READS ITS OWN WORK BEFORE ANY JUDGE DOES. Cheap craft pass,
@@ -465,7 +469,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   }
 
   job.story = story;
-  // The WINNER's engine is what this book actually used — recording the
+  // The WINNER's engine is what this book actually used â€” recording the
   // full-brief `shape` here in compact mode fed the cross-book shape memory a
   // lie, so it never blocked the engine that really repeated (2026-08-25).
   job.breakdown.story_shape = job.breakdown.chosen_engine || shape.name;
@@ -492,7 +496,7 @@ async function applyStaging(job, story, book, child, level) {
   });
   job.stagedPagesHash = story.pages.map((p) => p.text).join("|");
   // A chain row whose causing sentence is MISSING is a physical-state gap
-  // the pages skipped — surface it for the editor rather than burying it.
+  // the pages skipped â€” surface it for the editor rather than burying it.
   const gaps = (s.state_chain || []).filter((r) => /^MISSING/i.test(String(r.causing_sentence || "")));
   job.breakdown.state_chain_gaps = gaps.length ? gaps.map((g) => `p${g.page}: ${g.causing_sentence}`) : [];
   if (gaps.length) console.warn(`[forge] stager found ${gaps.length} state-chain gap(s): ${job.breakdown.state_chain_gaps.join(" | ")}`);
@@ -526,7 +530,7 @@ function storyDecodeProblems(story, level, heroName) {
     .filter(Boolean);
   const borrowed = pageWords.filter((w) => borrow.includes(w));
   if (borrowed.length > 2) {
-    problems.push(`story borrows ${borrowed.length} tricky words from the next level (${borrowed.join(", ")}) — at most 2 allowed`);
+    problems.push(`story borrows ${borrowed.length} tricky words from the next level (${borrowed.join(", ")}) â€” at most 2 allowed`);
   }
   return { problems: [...new Set(problems)], borrowed };
 }
@@ -534,27 +538,27 @@ function storyDecodeProblems(story, level, heroName) {
 async function stepQa(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = storyPagesFor(book.level);
+  const pagesCount = storyPagesFor(book);
   let story = job.story;
 
   // Compact mode: a revision or exact patch re-enters here with changed page
-  // text — the staged scenes/premise/state chain were derived from the OLD
+  // text â€” the staged scenes/premise/state chain were derived from the OLD
   // text and must be rebuilt or the pictures illustrate a different story.
   if (process.env.FORGE_WRITER_PROMPT === "compact" && job.stagedPagesHash) {
     const h = (story.pages || []).map((p) => p.text).join("|");
     if (h !== job.stagedPagesHash) {
-      console.log("[forge] page text changed since staging — re-staging");
+      console.log("[forge] page text changed since staging â€” re-staging");
       await applyStaging(job, story, book, child, level);
     }
   }
 
-  // A couple of slightly-above-level words are FINE — book_v2 previews them
+  // A couple of slightly-above-level words are FINE â€” book_v2 previews them
   // as Future Sounds. Only rewrite when violations pile up (>3 distinct).
   // DETERMINISTIC FIRST (Lynden 2026-08-21). Whether a word is buildable from
   // the taught graphemes is arithmetic, not judgement, and paying a reasoning
   // model to answer it is waste. The LLM gate now runs ONLY when the cheap
   // check finds something, or as a spot-check it cannot do (sound choice).
-  // read_words is a LIST, not prose — a bad entry is deleted by code, never
+  // read_words is a LIST, not prose â€” a bad entry is deleted by code, never
   // sent to a model. fixStoryWords is only ever shown pages + title, so a
   // dishonest practice word could NEVER be cleared by the surgical fix and
   // always escalated to a full rewrite (found 2026-08-22: "market" did this).
@@ -592,7 +596,7 @@ async function stepQa(book, job) {
   // Deterministic check the model gate above cannot do: it verifies "oo" is
   // a taught GRAPHEME, not that a specific word uses a sound this level has
   // actually unlocked (short /oo/ in "book"/"look" slipped through as if
-  // interchangeable with long /oo/ in "moon" — see focusSoundViolations).
+  // interchangeable with long /oo/ in "moon" â€” see focusSoundViolations).
   // Folded into the SAME violations list so it drives the existing rewrite
   // path rather than a second, easy-to-ignore channel.
   const focusViolations = focusSoundViolations({ story, focusSound: book.focus_sound, level: book.level });
@@ -600,7 +604,7 @@ async function stepQa(book, job) {
     validation = { ...validation, ok: false, violations: [...(validation.violations || []), ...focusViolations] };
   }
   // A book that landed on just 1-2 focus-sound words (Lynden 2026-08-11:
-  // "there is only one story word... should be at least 3") — deterministic,
+  // "there is only one story word... should be at least 3") â€” deterministic,
   // counts story.focus_word_examples directly.
   const countViolation = focusSoundCountViolation({ story, focusSound: book.focus_sound });
   if (countViolation) {
@@ -609,7 +613,7 @@ async function stepQa(book, job) {
 
   const distinct = new Set((validation.violations || []).map((v) => v.word.toLowerCase())).size;
   // A generic above-level word is fine in small numbers (Future Sounds
-  // preview handles it) — but a focus-word EXAMPLE using an untaught sound of
+  // preview handles it) â€” but a focus-word EXAMPLE using an untaught sound of
   // the very grapheme this book is teaching, or too few focus-sound words
   // overall, is never fine, so either forces a rewrite regardless of the
   // >3 threshold.
@@ -668,7 +672,7 @@ async function stepQa(book, job) {
 
   // EXACTLY SIX STORY WORDS, deterministically (Lynden 2026-08-14: a book
   // shipped displaying eight). The schema asks the writer for 6 but nothing
-  // enforced it — so normalise here: focus-sound words first, then other
+  // enforced it â€” so normalise here: focus-sound words first, then other
   // words from the list, topped up from the story's own decodable vocabulary
   // if the writer under-delivered, hard-capped at 6.
   //
@@ -680,12 +684,12 @@ async function stepQa(book, job) {
   {
     const focus = String(book.focus_sound || "").toLowerCase();
     // This normaliser runs AFTER the decode gate, so anything it injects from
-    // the text or the bank skips every check upstream — it re-introduced
+    // the text or the bank skips every check upstream â€” it re-introduced
     // "market" into read_words after QA had passed (2026-08-22). Every word
     // that can enter the six must clear the same free deterministic check.
     // heroName exempts the child's name from decode checks, but the renderer
     // separately rejects the name as a practice word ("a person, not a word to
-    // practise") — so it must be barred here by its own test.
+    // practise") â€” so it must be barred here by its own test.
     const decodable = (w) =>
       String(w).toLowerCase() !== String(child.name).toLowerCase() &&
       !trickySet.has(String(w).toLowerCase()) &&
@@ -737,7 +741,7 @@ async function stepQa(book, job) {
   // SIX identical markings (Lynden 2026-08-25: "$2.71 on text is ridiculous").
   const shiftyKey = `${book.level}|${[...buttonWords].sort().join(",")}`;
   if (job.shiftyKey === shiftyKey && job.shiftyMarks) {
-    console.log("[forge] shifty marks unchanged — reusing (no call)");
+    console.log("[forge] shifty marks unchanged â€” reusing (no call)");
   } else if (buttonWords.length) {
     job.shiftyMarks = {};
     try {
@@ -773,19 +777,19 @@ async function stepQa(book, job) {
   job.qaDone = true;
 }
 
-// Runs BEFORE any image exists — the last chance to catch a story whose
+// Runs BEFORE any image exists â€” the last chance to catch a story whose
 // premise is physically or logically self-contradictory. "The Thick Pen"
 // shipped "The bag had a gap. The cap fell into sand." then "The thick pen
 // fit the gap": a rigid cap cannot fall through a hole a thin pen later
-// plugs. No other gate could have caught it — decodability only checks
+// plugs. No other gate could have caught it â€” decodability only checks
 // words are legal, and the image-consistency QA only checks a picture
 // matches its OWN page's text, not whether the text's claim is possible at
-// all (Lynden 2026-08-10). One bounded rewrite, same doctrine as stepQa —
+// all (Lynden 2026-08-10). One bounded rewrite, same doctrine as stepQa â€”
 // never loop forever, and log rather than block the book if it still fails.
 async function stepPlausibility(book, job) {
   const level = getLevel(book.level);
   const child = childOf(book);
-  const pagesCount = storyPagesFor(book.level);
+  const pagesCount = storyPagesFor(book);
   let story = job.story;
 
   const review = await reviewStoryPlausibility({ story });
@@ -854,7 +858,7 @@ function styleIssues(story, book) {
   if (parentPages.length > 2) {
     out.push({
       severity: "major", area: "language", page: parentPages[2], replacement: "",
-      detail: `A parent is named in the text on ${parentPages.length} of ${pages.length} pages (${parentPages.join(", ")}). Presence belongs in the pictures: name the parent only on the pages where they DO something, at most two. Rewrite the other pages so the hero acts — do not simply delete "with Mum" and leave a stub.`,
+      detail: `A parent is named in the text on ${parentPages.length} of ${pages.length} pages (${parentPages.join(", ")}). Presence belongs in the pictures: name the parent only on the pages where they DO something, at most two. Rewrite the other pages so the hero acts â€” do not simply delete "with Mum" and leave a stub.`,
     });
   }
   const name = String(book.child_name || "");
@@ -863,7 +867,7 @@ function styleIssues(story, book) {
     if (uses > 3) {
       out.push({
         severity: "major", area: "language", page: 0, replacement: "",
-        detail: `The hero's name "${name}" appears ${uses} times. It is a tricky word the child cannot decode: use it two or three times in the whole book — first sentence, the turning point, near the end — and use he/she elsewhere.`,
+        detail: `The hero's name "${name}" appears ${uses} times. It is a tricky word the child cannot decode: use it two or three times in the whole book â€” first sentence, the turning point, near the end â€” and use he/she elsewhere.`,
       });
     }
   }
@@ -885,7 +889,7 @@ async function stepStoryGate(book, job) {
   const level = getLevel(book.level);
   // CONVERGENT RE-REVIEW (Lynden 2026-08-23, "i recommend the first one"): a
   // revised manuscript is judged ONLY on whether the previous notes were
-  // fixed, plus regressions the revision itself introduced — never a fresh
+  // fixed, plus regressions the revision itself introduced â€” never a fresh
   // cold read, which raised brand-new majors every pass and never converged.
   let review;
   if (job.pendingEditorNotes?.length) {
@@ -895,7 +899,7 @@ async function stepStoryGate(book, job) {
     const unfixed = job.pendingEditorNotes
       .map((n, i) => ({ n, v: verdicts.find((x) => Number(x.note) === i + 1) }))
       .filter(({ v }) => !v?.fixed)
-      .map(({ n, v }) => ({ ...n, detail: `${n.detail} — STILL UNFIXED: ${v?.reason || "the follow-up returned no verdict for this note"}` }));
+      .map(({ n, v }) => ({ ...n, detail: `${n.detail} â€” STILL UNFIXED: ${v?.reason || "the follow-up returned no verdict for this note"}` }));
     review = {
       issues: [...unfixed, ...(fu.data.regressions || [])],
       story_quality: fu.data.summary || "",
@@ -928,7 +932,7 @@ async function stepStoryGate(book, job) {
 
   if (verdict.pass) {
     job.pendingEditorNotes = null;
-    // A pass wipes any edit-request list from an earlier ceiling pass — the
+    // A pass wipes any edit-request list from an earlier ceiling pass â€” the
     // imagery boundary keys off it, and a stale list would trigger the
     // fresh-story path on a book whose exact patch just cleared everything.
     job.breakdown.story_gate_edit_requests = [];
@@ -947,10 +951,10 @@ async function stepStoryGate(book, job) {
   // superseding the 08-17 "proceed with edit requests" rule after two runs in
   // a row shipped with an open major). At the ceiling:
   //   1. EXACT PATCH, free: the editor now supplies the corrected page text
-  //      per issue (`replacement`), so code transcribes it verbatim — no
+  //      per issue (`replacement`), so code transcribes it verbatim â€” no
   //      model call, no chance of a rewrite fixing one thing and breaking
   //      another. Each patched line is decode-checked before it lands.
-  //   2. Still blocking after the patch (or nothing patchable) → the book
+  //   2. Still blocking after the patch (or nothing patchable) â†’ the book
   //      STOPS for manual review. It never proceeds, is never illustrated,
   //      with an open MAJOR.
   if (job.storyEditRequests >= STORY_EDIT_REQUESTS) {
@@ -983,7 +987,7 @@ async function stepStoryGate(book, job) {
         return; // re-enters at qa, then the gate's follow-up judges the patch
       }
     }
-    throw new NeedsReviewError(`story gate: open ${verdict.blocking.length} blocking issue(s) after ${STORY_EDIT_REQUESTS} edit pass(es) and the exact-patch attempt — ${detail.slice(0, 220)}`);
+    throw new NeedsReviewError(`story gate: open ${verdict.blocking.length} blocking issue(s) after ${STORY_EDIT_REQUESTS} edit pass(es) and the exact-patch attempt â€” ${detail.slice(0, 220)}`);
   }
 
   // TRANSCRIBE BEFORE YOU BUY A REWRITE (Lynden 2026-08-25: "$2.71 on text is
@@ -992,7 +996,7 @@ async function stepStoryGate(book, job) {
   // which is where a book's text bill really goes. So when every blocking
   // issue names a page and carries a replacement, apply them verbatim for
   // nothing and let the follow-up judge the result. Only faults that no line
-  // can fix — a rejected premise, a missing beat — still buy the rewrite.
+  // can fix â€” a rejected premise, a missing beat â€” still buy the rewrite.
   if (!job.firstPatchUsed) {
     const patchable = verdict.blocking.filter((i) => {
       const pg = Number((Array.isArray(i.pages) ? i.pages[0] : i.page) || 0);
@@ -1016,29 +1020,29 @@ async function stepStoryGate(book, job) {
       if (applied.length === patchable.length && !styleIssues(patched, book).length) {
         job.breakdown.first_pass_patch = { pages: applied };
         job.pendingEditorNotes = verdict.blocking;
-        console.log(`[forge] first-pass patch: transcribed the editor's own lines onto page(s) ${applied.join(", ")} — no rewrite bought`);
+        console.log(`[forge] first-pass patch: transcribed the editor's own lines onto page(s) ${applied.join(", ")} â€” no rewrite bought`);
         resetAfterStoryRevision(job, patched);
         return; // re-enters at qa, then the follow-up judges the patch
       }
-      console.warn("[forge] first-pass patch did not clear everything — falling through to the revision");
+      console.warn("[forge] first-pass patch did not clear everything â€” falling through to the revision");
     }
   }
 
   // ONE bounded revision. The premise is LOCKED unless the editor explicitly
-  // rejected the premise itself (a blocking issue with area "premise") —
+  // rejected the premise itself (a blocking issue with area "premise") â€”
   // the 2026-08-14 revision abandoned the simit-cart premise and invented an
   // unrelated star-tin book, which is exactly what the lock forbids.
   job.storyRetryUsed = true;
   job.storyEditRequests = (job.storyEditRequests || 0) + 1;
   job.breakdown[job.storyEditRequests === 1 ? "story_gate_first" : `story_gate_pass_${job.storyEditRequests}`] = review;
-  // The premise unlocks once the editor calls it unusable — and also on the
+  // The premise unlocks once the editor calls it unusable â€” and also on the
   // LAST edit pass, because a premise that has already survived one failed
   // rewrite is the thing that keeps failing (Omar, 08-16: two drafts rejected
   // for the same engineless premise because the lock never lifted).
   const premiseRejected = verdict.blocking.some((i) => String(i.area || "").toLowerCase() === "premise")
     || job.storyEditRequests >= STORY_EDIT_REQUESTS;
   const child = childOf(book);
-  const pagesCount = storyPagesFor(book.level);
+  const pagesCount = storyPagesFor(book);
   const revised = await reviseStoryAfterEditor({
     level, child, focusSound: book.focus_sound, pagesCount,
     story: job.story, review, premiseRejected,
@@ -1051,7 +1055,7 @@ async function stepStoryGate(book, job) {
   // VERIFY THE NOTES WERE WORKED, NOT NARRATED. The reviser must claim, per
   // numbered note, which pages it changed; code checks the claim against the
   // old story. A note whose claimed pages are all byte-identical was skipped
-  // no matter what the prose says — those notes (only) get ONE more targeted
+  // no matter what the prose says â€” those notes (only) get ONE more targeted
   // pass, so a $0.32 revision can no longer half-do its job silently.
   {
     const pageKey = (s, i) => JSON.stringify({ t: s?.pages?.[i]?.text || "", s: s?.pages?.[i]?.scene || "" });
@@ -1105,15 +1109,15 @@ async function stepTextReport(book, job) {
     story: { story: job.story, validation: job.validation },
     cost_usd: Number(job.cost.toFixed(4)),
     cost_breakdown: job.breakdown,
-    progress: { step: "text_ready", message: "Text-only run complete — story approved, no images generated.", pct: 100, job },
+    progress: { step: "text_ready", message: "Text-only run complete â€” story approved, no images generated.", pct: 100, job },
   });
   job.textReported = true;
 }
 
 // THE PAINT MUST ALWAYS BELONG TO THE STORY IN THE BOOK (Lynden 2026-08-25:
 // "make sure it never happens again"). castSheets and objectSheets are caches
-// keyed by NAME, so any path that changes the story — a gate revision, an
-// exact patch, a human edit, a restore — could leave the previous story's
+// keyed by NAME, so any path that changes the story â€” a gate revision, an
+// exact patch, a human edit, a restore â€” could leave the previous story's
 // people and props in them, and the illustrator draws what it is given: Nuh's
 // book was painted with a moth, a cobweb and a Dad that its words never
 // mention. resetAfterStoryRevision now clears them, but that only covers ONE
@@ -1137,7 +1141,7 @@ function storySignature(story) {
 // PER-ENTRY, not all-or-nothing: a changed prop description must not throw
 // away a perfectly good (and paid-for) drawing of the hero's mum. Each cast
 // member and key object carries its own signature; only the ones that no
-// longer match — or that the story has dropped — are discarded and redrawn.
+// longer match â€” or that the story has dropped â€” are discarded and redrawn.
 function ensureSheetsMatchStory(job) {
   const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
   const castSigs = Object.fromEntries((job.story?.cast || []).map((c) => [norm(c.id), `${norm(c.who)}|${norm(c.appearance)}`]));
@@ -1160,7 +1164,7 @@ function ensureSheetsMatchStory(job) {
     dropped.objects.push(key);
   }
   if (dropped.cast.length || dropped.objects.length) {
-    console.warn(`[forge] the story changed what these look like — discarding reference art for ${[...dropped.cast, ...dropped.objects].join(", ")} so nothing from the old story can be painted`);
+    console.warn(`[forge] the story changed what these look like â€” discarding reference art for ${[...dropped.cast, ...dropped.objects].join(", ")} so nothing from the old story can be painted`);
     job.breakdown.stale_sheets_discarded = dropped;
   }
   job.sheetSigs = { cast: castSigs, objects: objectSigs };
@@ -1193,7 +1197,7 @@ async function castSheetFor(book, job, id) {
   // inevitably wears a different outfit. On 2026-08-15 a revised story listed
   // Idris in its own cast, the QA was handed two conflicting "Idris" sheets,
   // and every page-2 attempt failed character match against one or the other
-  // — an unwinnable deadlock that killed the book.
+  // â€” an unwinnable deadlock that killed the book.
   const heroName = String(book.child_name || "").toLowerCase().trim();
   if (heroName && (key === heroName || key.includes(heroName))) return null;
   if (job.castSheets[key]) {
@@ -1218,7 +1222,7 @@ async function castSheetFor(book, job, id) {
 // The director names an object per-page in its own words ("black string",
 // "the string", "string") which rarely matches key_objects[].name character
 // for character. An exact-match lookup silently returns null on any mismatch
-// — no error, just a missing reference and the object drifting on that page
+// â€” no error, just a missing reference and the object drifting on that page
 // exactly like it did before references existed at all (the test book's
 // string). Substring match both ways, case-insensitive, is enough: whichever
 // name is shorter should appear whole inside the other.
@@ -1235,7 +1239,7 @@ function resolveKeyObject(story, rawName) {
   }) || null;
 }
 
-// A locked identity reference for a recurring key object (SKILL.md §5.1) —
+// A locked identity reference for a recurring key object (SKILL.md Â§5.1) â€”
 // generated once per book, the same "sheet, then inject everywhere" fix
 // castSheetFor already does for people. Without this a key object (a cap, a
 // bag) is redrawn from its text `look` alone on every page and its colour,
@@ -1274,30 +1278,30 @@ async function stepScene(book, job, i) {
   const loc = (story.pages[i].location || "").trim().toLowerCase();
   const d = job.directed?.find((x) => x.page === i + 1);
   // Ownership/absence assertions go into the GENERATION brief too, not just
-  // the QA — draw the allocation right first time rather than repair it.
+  // the QA â€” draw the allocation right first time rather than repair it.
   const assertionText = d && (d.required_visible_states?.length || d.forbidden_visible_states?.length)
-    ? ` MUST BE CLEARLY VISIBLE: ${(d.required_visible_states || []).map((a) => `${a.object} — ${a.assertion}`).join("; ")}.` +
-      ((d.forbidden_visible_states || []).length ? ` MUST NOT BE SHOWN: ${(d.forbidden_visible_states || []).map((a) => `${a.object} — ${a.assertion}`).join("; ")}.` : "")
+    ? ` MUST BE CLEARLY VISIBLE: ${(d.required_visible_states || []).map((a) => `${a.object} â€” ${a.assertion}`).join("; ")}.` +
+      ((d.forbidden_visible_states || []).length ? ` MUST NOT BE SHOWN: ${(d.forbidden_visible_states || []).map((a) => `${a.object} â€” ${a.assertion}`).join("; ")}.` : "")
     : "";
   let sceneBrief = d ? `${d.brief} ${child.name} feels ${d.emotion}. Staging: ${d.staging}${assertionText}` : story.pages[i].scene;
   // Targeted repair (Lynden 2026-08-16, "edits instead of a complete re-run"):
   // a repair note for this page rides into the brief so the regeneration
   // fixes the named fault from the start instead of re-rolling the dice.
   const repairNote = job.repairNotes?.[i + 1] || job.repairNotes?.[String(i + 1)];
-  if (repairNote) sceneBrief += ` REPAIR — the previous version of this page had this specific problem; fix it and keep everything else the same: ${repairNote}`;
-  // The anchor is injected on EVERY revisit — the camera tag decides HOW it is
-  // used, never WHETHER (see SKILL.md §3; gating on same-view was the worst
+  if (repairNote) sceneBrief += ` REPAIR â€” the previous version of this page had this specific problem; fix it and keep everything else the same: ${repairNote}`;
+  // The anchor is injected on EVERY revisit â€” the camera tag decides HOW it is
+  // used, never WHETHER (see SKILL.md Â§3; gating on same-view was the worst
   // bug in this pipeline's history).
   const anchorUrl = loc ? job.anchors[loc] || null : null;
   const anchorBuf = anchorUrl ? await loadByUrl(anchorUrl) : null;
   const camera = anchorBuf ? d?.camera || "new-angle" : "wide";
 
-  // The location anchor is fixed to the FIRST image ever made there — good
+  // The location anchor is fixed to the FIRST image ever made there â€” good
   // for permanent architecture, but stale for anything set-dressing added
   // since (a rock's exact ledge shape, where an undeclared prop landed). The
   // PREVIOUS page's actual image, when it shares this page's location, is
   // what a manual "what would the next image look like, using the last one
-  // as reference" workflow would use — undeclared recurring set-pieces (the
+  // as reference" workflow would use â€” undeclared recurring set-pieces (the
   // book was on a different-shaped rock every page) only carry forward this
   // way, since they were never captured as a formal key_objects reference
   // (Lynden 2026-08-11: "the rock changes in every scene... no continuation
@@ -1315,7 +1319,7 @@ async function stepScene(book, job, i) {
   const castRefs = (await Promise.all(wanted.map((id) => castSheetFor(book, job, id)))).filter(Boolean);
 
   // Key objects the director declared visible on THIS page get their locked
-  // identity reference injected too (see objectSheetFor) — falls back to
+  // identity reference injected too (see objectSheetFor) â€” falls back to
   // matching the object's name in the page text when there is no director
   // pass, same pattern castRefs already uses above.
   const wantedObjects = d?.objects?.length
@@ -1324,10 +1328,10 @@ async function stepScene(book, job, i) {
   const objectRefs = (await Promise.all(wantedObjects.map((name) => objectSheetFor(book, job, name)))).filter(Boolean);
 
   // The previous approved image's ACTUAL state (see extractSceneState) binds
-  // this page harder than any plan does — a card's dots stay where the last
+  // this page harder than any plan does â€” a card's dots stay where the last
   // picture actually put them, in the size it actually drew the card.
   const carried = job.carriedState && prevLoc === loc
-    ? ` ACTUAL STATE AFTER THE PREVIOUS PAGE (binding — redraw each object exactly like this except what this page's action changes): ${job.carriedState}`
+    ? ` ACTUAL STATE AFTER THE PREVIOUS PAGE (binding â€” redraw each object exactly like this except what this page's action changes): ${job.carriedState}`
     : "";
 
   const sceneArgs = {
@@ -1344,10 +1348,10 @@ async function stepScene(book, job, i) {
     castRefs,
     objectRefs,
     // The actual sentence this page illustrates, for the picture-vs-text
-    // consistency QA in generateScene — a story page always has real text,
+    // consistency QA in generateScene â€” a story page always has real text,
     // unlike the cover, which has none to check against.
     pageText: story.pages[i].text,
-    // Director-declared ownership/negative-state assertions for this page —
+    // Director-declared ownership/negative-state assertions for this page â€”
     // verified against the finished image by sceneConsistencyQA (an object
     // being visible is not the same as the allocation being visible).
     assertions: d ? { required: d.required_visible_states || [], forbidden: d.forbidden_visible_states || [] } : null,
@@ -1361,8 +1365,8 @@ async function stepScene(book, job, i) {
   };
   let s = await generateScene(sceneArgs);
   // A FAILED CONSISTENCY QA IS BLOCKING (Lynden 2026-08-15, "The Train in the
-  // Drain": pages 4-5 failed QA with exact, correct reasons — "she is not
-  // shown actually sliding a hook into the drain" — and the old code logged a
+  // Drain": pages 4-5 failed QA with exact, correct reasons â€” "she is not
+  // shown actually sliding a hook into the drain" â€” and the old code logged a
   // console warning and SHIPPED them; the paid-for verdict went in the bin).
   // generateScene already did one chained repair; here we regenerate the
   // scene ONCE from scratch (chain broken, so the model can't just re-emit
@@ -1370,13 +1374,13 @@ async function stepScene(book, job, i) {
   // fails resumably at this scene instead of delivering a page whose central
   // action happens off-camera.
   if (s.qa?.consistency && !s.qa.consistency.pass && s.qa.consistency.severity !== "minor") {
-    console.warn(`[forge] page ${i + 1} consistency QA failed after repair — regenerating from scratch: ${s.qa.consistency.reason}`);
+    console.warn(`[forge] page ${i + 1} consistency QA failed after repair â€” regenerating from scratch: ${s.qa.consistency.reason}`);
     charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost, s.model);
-    job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — regenerated" });
+    job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail â€” regenerated" });
     s = await generateScene({ ...sceneArgs, previousResponseId: null });
     if (s.qa?.consistency && !s.qa.consistency.pass) {
       charge(job, "images_usd", `generateScene:p${i + 1}:discarded`, s.cost, s.model);
-      job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail — page rejected" });
+      job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, discarded: "consistency fail â€” page rejected" });
       // NO FULL REJECTIONS - EDIT REQUESTS ONLY (20.2), and that doctrine was
       // never applied here: a single stubborn page killed a fully paid book
       // (Amara, 2026-08-21 - the QA read the cart's own wooden side slats as
@@ -1399,7 +1403,7 @@ async function stepScene(book, job, i) {
     // The continuity register is DYNAMIC: an object joins it the moment the
     // story makes it matter, not only if it was declared a key_object up
     // front. "The Star Card"'s mat became the story's hiding place on page 3
-    // yet was never tracked — its pattern, tassels and lifted-edge physics
+    // yet was never tracked â€” its pattern, tassels and lifted-edge physics
     // drifted page to page (Lynden 2026-08-14). Director-declared per-page
     // objects are exactly that register, so record their state too.
     const objectNames = [...new Set([
@@ -1515,7 +1519,7 @@ async function stepCountry(book, job) {
 }
 
 // Cold-editor whole-book gate (Lynden 2026-08-13): a critic-framed review of
-// the FINISHED book — cover + every page image + every sentence at once —
+// the FINISHED book â€” cover + every page image + every sentence at once â€”
 // because per-page checklist judges structurally cannot see a thin premise,
 // a drifting object, or a phonics page contradicting the story. An external
 // cold read caught all of those in "The Chip on Top" after every per-page
@@ -1541,7 +1545,7 @@ async function stepReview(book, job) {
 
   // No silent caps: any per-page QA verdict that stayed failed reaches the
   // editor instead of dying in a console log (the exact failure of
-  // 2026-08-15 — the QA had named the missing hook action and nobody read it).
+  // 2026-08-15 â€” the QA had named the missing hook action and nobody read it).
   const unresolvedQa = (job.breakdown.qa_notes || [])
     .filter((n) => n && n.page && n.consistency && n.consistency.pass === false && !n.discarded)
     .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
@@ -1606,7 +1610,7 @@ async function stepReview(book, job) {
           if (process.env.FORGE_WRITER_PROMPT === "compact") {
             await applyStaging(job, job.story, book, child, getLevel(book.level));
           }
-          job.repairNotes = { ...(job.repairNotes || {}), ...Object.fromEntries(applied.map((n) => [n, "The text of this page changed — draw exactly what it now says."])) };
+          job.repairNotes = { ...(job.repairNotes || {}), ...Object.fromEntries(applied.map((n) => [n, "The text of this page changed â€” draw exactly what it now says."])) };
           for (const n of applied) await stepScene(book, job, n - 1);
           job.reviewDone = false; // the mended book re-earns its verdict
           return;
@@ -1615,21 +1619,21 @@ async function stepReview(book, job) {
     }
 
     if (job.editorRetryUsed) {
-      // NEVER SHIP WITH AN OPEN MAJOR — AT THIS GATE TOO (Lynden 2026-08-25:
+      // NEVER SHIP WITH AN OPEN MAJOR â€” AT THIS GATE TOO (Lynden 2026-08-25:
       // "The Stuck Lunch Box" reached `ready` carrying two majors and a
       // do-not-ship-as-is verdict, because the 08-24 hard stop only guarded
       // the story gate). The revision is spent, so the book STOPS for a human
       // instead of proceeding with edit requests: nothing already paid for is
-      // lost — the job, images and reports are preserved, and /retry resumes
+      // lost â€” the job, images and reports are preserved, and /retry resumes
       // after a human edit or repair.
       job.breakdown.editor_review_second = review;
       job.breakdown.editor_edit_requests = verdict.blocking;
       if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
-      throw new NeedsReviewError(`cold editor: ${verdict.blocking.length} blocking issue(s) after the one revision — ${detail.slice(0, 220)}`);
+      throw new NeedsReviewError(`cold editor: ${verdict.blocking.length} blocking issue(s) after the one revision â€” ${detail.slice(0, 220)}`);
     }
     // ONE bounded revision (Lynden 2026-08-13: "rewrite once"): revise the
-    // story against the editor's reasons — SAME PREMISE unless the editor
-    // explicitly rejected the premise itself — then send the book back
+    // story against the editor's reasons â€” SAME PREMISE unless the editor
+    // explicitly rejected the premise itself â€” then send the book back
     // through the machine from phonics QA. The revised story faces the
     // text-only story gate again BEFORE any scene regenerates.
     job.editorRetryUsed = true;
@@ -1652,7 +1656,7 @@ async function stepReview(book, job) {
     // teaching-truth is NOT in this set: a teaching-truth fault that names a
     // page is almost always a PICTURE fault (Kai 2026-08-23: "the track is
     // drawn as one continuous wavy line, but a toy car leaves paired wheel
-    // marks" — drawable, page 5). Leaving it book-level sent that book to a
+    // marks" â€” drawable, page 5). Leaving it book-level sent that book to a
     // full rewrite that wiped six finished scenes and the cover, the exact
     // $1.30 throw-away this path exists to prevent. A teaching-truth fault in
     // the TEXT is caught by the text-only story gate before any image exists.
@@ -1682,7 +1686,7 @@ async function stepReview(book, job) {
     // prod book: a clean-gate story was painted for ~$2.80, this editor
     // called it "too thin", and the autonomous rewrite+repaint shipped a
     // WORSE book at $5.55 with open majors at both layers). Story quality is
-    // the PRE-images gate's job — it is the only place a weak story is cheap
+    // the PRE-images gate's job â€” it is the only place a weak story is cheap
     // to kill. Here, with every scene already paid for: repair the pages the
     // editor names, and anything it cannot pin to a page rides out as an
     // AUTO-FLAG on the row for the morning admin queue. The customer gets
@@ -1748,7 +1752,7 @@ async function stepAssemble(book, job) {
     status: "ready",
     title: story.title,
     pages,
-    // A book that shipped with known open notes carries them on the row —
+    // A book that shipped with known open notes carries them on the row â€”
     // the admin queue surfaces review_note, so the morning pass sees every
     // auto-flagged book without digging through job breakdowns.
     ...(job.autoFlag?.length ? { review_note: `AUTO-FLAG: ${job.autoFlag.join(" | ")}`.slice(0, 2000) } : {}),
@@ -1760,8 +1764,8 @@ async function stepAssemble(book, job) {
   });
   job.assembled = true;
 
-  // The typeset PDF needs Python + Playwright — dev-machine only. In prod the
-  // reader is the product and the PDF button degrades gracefully (501 → the
+  // The typeset PDF needs Python + Playwright â€” dev-machine only. In prod the
+  // reader is the product and the PDF button degrades gracefully (501 â†’ the
   // frontend falls back to the interactive reader).
   if (!IS_SERVERLESS) {
     try {
@@ -1782,7 +1786,7 @@ function displayFor(book, job, step) {
     qa: ["phonics_qa", "Checking every word is decodable at this level...", 15],
     plausibility: ["plausibility_qa", "Checking the story actually makes sense...", 20],
     storyGate: ["story_editor", "A demanding editor is reading the manuscript before we mix any paint...", 22],
-    textReport: ["text_ready", "Text-only run complete — story approved, no images generated.", 100],
+    textReport: ["text_ready", "Text-only run complete â€” story approved, no images generated.", 100],
     direct: ["directing", `Directing the scenes (walking the story in ${name}'s shoes)...`, 25],
     awaitImagery: ["awaiting_imagery_approval", "Story approved - the imagery plan is waiting for sign-off before any paint is mixed...", 28],
     hero: ["hero", `Drawing ${name} as a book character (eye rule enforced)...`, 30],
@@ -1803,7 +1807,7 @@ function displayFor(book, job, step) {
 }
 
 // Advance the machine by exactly one unit of work. Returns
-// { done, step, status } — `step` is what just RAN (or "busy"/"done").
+// { done, step, status } â€” `step` is what just RAN (or "busy"/"done").
 export async function runNextStep(bookId) {
   const book = await getBook(bookId);
   if (!book) throw new Error("book not found");
@@ -1824,7 +1828,7 @@ export async function runNextStep(bookId) {
   const step = nextStepOf(job);
   if (step === "done") return { done: true, step: "done", status: book.status === "generating" ? "ready" : book.status };
   if (step === "awaitImagery") {
-    // Not a step that RUNS — a resting state. The full imagery contract is
+    // Not a step that RUNS â€” a resting state. The full imagery contract is
     // surfaced on the row for review; POST /api/forge/approve-imagery flips
     // job.imageryApproved and restarts generation from the hero step.
     await updateBook(bookId, {
@@ -1857,7 +1861,7 @@ export async function runNextStep(bookId) {
 
   // SPEND CEILING: past the cap the job PAUSES (fully resumable) instead of
   // spending further. A human retry authorises one more budget unit by
-  // raising job.capUsd (router.mjs) — automation never raises it itself.
+  // raising job.capUsd (router.mjs) â€” automation never raises it itself.
   const cap = Number(job.capUsd || MAX_BOOK_SPEND_USD);
   if (job.cost >= cap) {
     console.error(`[forge] ADMIN: book ${bookId} paused at spend cap ($${job.cost.toFixed(2)} >= $${cap})`);
@@ -1866,7 +1870,7 @@ export async function runNextStep(bookId) {
       progress: {
         ...(book.progress || {}),
         step: "paused_budget",
-        message: "Taking a little longer than usual — the team has been alerted and your book will continue shortly.",
+        message: "Taking a little longer than usual â€” the team has been alerted and your book will continue shortly.",
         pct: book.progress?.pct ?? 0,
         job,
       },
@@ -1882,10 +1886,10 @@ export async function runNextStep(bookId) {
   try {
     if (step === "freshStory") {
       // Open majors survived the gate's edit passes: abandon the manuscript
-      // (cheap — no image exists yet) and write a fresh one at the same spec.
+      // (cheap â€” no image exists yet) and write a fresh one at the same spec.
       // Archived in the breakdown; the second attempt paints regardless (with
       // an auto-flag) so the customer always gets a book.
-      console.warn(`[forge] story reached the imagery boundary with open majors — fresh attempt instead of painting "${job.story?.title}"`);
+      console.warn(`[forge] story reached the imagery boundary with open majors â€” fresh attempt instead of painting "${job.story?.title}"`);
       job.freshAttemptUsed = true;
       job.breakdown.abandoned_story = { title: job.story?.title, open_requests: job.breakdown.story_gate_edit_requests };
       job.story = null; job.qaDone = false; job.storyGateDone = false; job.directDone = false;
@@ -1926,7 +1930,7 @@ export async function runNextStep(bookId) {
         status: "content_rejected",
         cost_usd: Number(job.cost.toFixed(4)),
         cost_breakdown: job.breakdown,
-        // Durable archive in its OWN column — progress is rewritten wholesale
+        // Durable archive in its OWN column â€” progress is rewritten wholesale
         // by every later step, so an archive stored there survives seconds
         // (the first try-again run wiped its predecessor's audit trail,
         // 2026-08-15). Append-only: each rejected run stacks up.
@@ -1936,7 +1940,7 @@ export async function runNextStep(bookId) {
         ],
         progress: {
           step: "content_rejected",
-          message: "We couldn't get this story to meet our quality standard. Your book credit has not been used — you can try the same idea again or choose a different story idea.",
+          message: "We couldn't get this story to meet our quality standard. Your book credit has not been used â€” you can try the same idea again or choose a different story idea.",
           detail: String(e.message || e).slice(0, 300),
           pct: 0,
           job, // convenience copy for the wizard; the durable one is rejected_runs
@@ -1951,12 +1955,12 @@ export async function runNextStep(bookId) {
         status: "needs_review",
         cost_usd: Number(job.cost.toFixed(4)),
         cost_breakdown: job.breakdown,
-        // The admin queue reads review_note — a book waiting on a human must
+        // The admin queue reads review_note â€” a book waiting on a human must
         // be visible there without forensics (Lynden 2026-08-25).
         review_note: `NEEDS REVIEW: ${String(e.message || e).slice(0, 1900)}`,
         progress: {
           step: "needs_review",
-          message: "Almost there — one page is having a final check by a person. We will email you the moment it is ready.",
+          message: "Almost there â€” one page is having a final check by a person. We will email you the moment it is ready.",
           detail: String(e.message || e).slice(0, 300),
           pct: book.progress?.pct ?? 0,
           job, // everything preserved: a human edits the story, then retry resumes
@@ -1970,13 +1974,13 @@ export async function runNextStep(bookId) {
       // provider mid-book (a fallback breaks character/style continuity).
       // Every completed image is already checkpointed in job; after topping
       // up, retry resumes from this exact step with the same provider.
-      console.error(`[forge] ADMIN: book ${bookId} paused — provider credits exhausted at step "${step}": ${e.message}`);
+      console.error(`[forge] ADMIN: book ${bookId} paused â€” provider credits exhausted at step "${step}": ${e.message}`);
       await updateBook(bookId, {
         status: "paused_provider_credit",
         progress: {
           ...(book.progress || {}),
           step: "paused_provider_credit",
-          message: "Your book is safe and saved — it will continue from exactly where it stopped shortly.",
+          message: "Your book is safe and saved â€” it will continue from exactly where it stopped shortly.",
           detail: String(e.message || e).slice(0, 300),
           pct: book.progress?.pct ?? 0,
           job,
@@ -1999,7 +2003,7 @@ export async function runNextStep(bookId) {
 
   job.lockAt = null;
   job.lockStep = null;
-  // Per-step cost ledger — separates story, each gate, each scene image,
+  // Per-step cost ledger â€” separates story, each gate, each scene image,
   // cover, country pack and review so a cost overrun names its stage.
   const delta = job.cost - costBefore;
   if (delta > 0) {
@@ -2026,7 +2030,7 @@ export async function startGeneration(bookId) {
   await updateBook(bookId, { status: "generating" });
 
   if (IS_SERVERLESS) {
-    // No background work on a lambda — set up the row and let the wizard
+    // No background work on a lambda â€” set up the row and let the wizard
     // drive via POST /books/:id/step. Kick nothing off here.
     const job = book.progress?.job || newJob(book);
     await persist(bookId, job, displayFor(book, job, nextStepOf(job)));
@@ -2057,17 +2061,17 @@ export async function repairBook(bookId, { scenes = {}, cover = null } = {}) {
   const book = await getBook(bookId);
   if (!book) throw new Error("book not found");
   const job = book.progress?.job;
-  if (!job?.story) throw new Error("no job state with a story on this book — repair needs the archived job");
+  if (!job?.story) throw new Error("no job state with a story on this book â€” repair needs the archived job");
   if (!job.sceneUrls?.length) throw new Error("no generated scenes to repair");
 
   job.repairNotes = { ...scenes, ...(cover ? { cover } : {}) };
-  // A human asked for this repair — that IS the imagery sign-off, and the
+  // A human asked for this repair â€” that IS the imagery sign-off, and the
   // book's images were approved-for-spend when they were first generated.
   job.imageryApproved = true;
   const pageNums = Object.keys(scenes).map(Number).filter((n) => n >= 1 && n <= job.sceneUrls.length);
-  if (!pageNums.length && !cover) throw new Error("nothing to repair — pass scenes {page: note} and/or cover note");
+  if (!pageNums.length && !cover) throw new Error("nothing to repair â€” pass scenes {page: note} and/or cover note");
 
-  // Regenerate the named scenes in place, cheapest-first order irrelevant —
+  // Regenerate the named scenes in place, cheapest-first order irrelevant â€”
   // sequential keeps prev-page continuity references coherent.
   await updateBook(bookId, { status: "generating", progress: { ...(book.progress || {}), step: "repair", message: `Repairing ${pageNums.length ? `page${pageNums.length > 1 ? "s" : ""} ${pageNums.join(", ")}` : ""}${cover ? `${pageNums.length ? " + " : ""}cover` : ""}...`, job } });
   for (const n of pageNums.sort((a, b) => a - b)) {
@@ -2079,15 +2083,15 @@ export async function repairBook(bookId, { scenes = {}, cover = null } = {}) {
   // The mended book must re-earn its verdict: review + assembly rerun.
   job.reviewDone = false;
   job.assembled = false;
-  await persist(bookId, job, { step: "repair", message: "Repairs done — re-running the editor review...", pct: 85, job });
+  await persist(bookId, job, { step: "repair", message: "Repairs done â€” re-running the editor review...", pct: 85, job });
   startGeneration(bookId);
   return { repaired: pageNums, cover: Boolean(cover) };
 }
 
 // Render the finished book through the REAL book pipeline (book_v2.html).
-// Locally: scripts/generate_custom_book.py → Playwright → A5 PDF, direct.
-// In production: api/render-book-html.py (same Jinja2 template) → Node
-// Chromium (pdf.mjs) → A5 PDF, then emailed to whoever ordered the book
+// Locally: scripts/generate_custom_book.py â†’ Playwright â†’ A5 PDF, direct.
+// In production: api/render-book-html.py (same Jinja2 template) â†’ Node
+// Chromium (pdf.mjs) â†’ A5 PDF, then emailed to whoever ordered the book
 // (email.mjs). See renderPdfServerless above for why it's split this way.
 const pdfInFlight = new Map();
 
@@ -2100,7 +2104,7 @@ export function renderPdf(bookId, opts = {}) {
 }
 
 // Shared by both the local (Python+Playwright) and serverless (Python HTML
-// function + Node Chromium) renderers — everything about turning a book row
+// function + Node Chromium) renderers â€” everything about turning a book row
 // into a book_v2 spec except WHERE the source images live, which is the only
 // thing that differs between the two (see generate_custom_book.py's
 // build_custom_book_data docstring for the same principle on the Python side).
@@ -2117,7 +2121,7 @@ function buildPdfSpecCore(book) {
     // total: 2 containing the target sound, then 4 further decodable story
     // words for the level (Lynden 2026-08-16; was 3 + 3 on 08-13).
     // The fallback list goes to the renderer's decodability gate unchecked, so
-    // it gets the same free filter read_words already had upstream — a single
+    // it gets the same free filter read_words already had upstream â€” a single
     // dishonest example here fails the whole typeset after the money is spent.
     story_words: (story.read_words?.length
       ? story.read_words
@@ -2162,7 +2166,7 @@ async function renderPdfInner(bookId, { force = false } = {}) {
 
 // image_urls keys must match what api/render-book-html.py's fetch_images
 // writes (cover/page1../hero/landmark) and what build_custom_book_data reads
-// back off the resulting local dir — same naming contract as the local path's
+// back off the resulting local dir â€” same naming contract as the local path's
 // cover.jpg/pageN.jpg/hero.jpg/landmark.jpg convention.
 function imageUrlsOf(book) {
   const urls = {};
@@ -2189,7 +2193,7 @@ async function renderPdfServerless(bookId, origin) {
   const spec = { ...buildPdfSpecCore(book), book_id: bookId, image_urls: imageUrlsOf(book) };
 
   // MUST be the real custom-domain host the request arrived on (passed in
-  // by router.mjs), not process.env.VERCEL_URL — that always resolves to the
+  // by router.mjs), not process.env.VERCEL_URL â€” that always resolves to the
   // per-deployment *.vercel.app hostname, which Vercel's Deployment
   // Protection blocks even in production (custom domains are exempt).
   // Verified live 2026-08-09: this fetch 401'd with "Protected deployment"
@@ -2208,18 +2212,21 @@ async function renderPdfServerless(bookId, origin) {
   const { htmlUrlToPdf, pdfPageCount } = await import("./pdf.mjs");
   const pdfBuf = await htmlUrlToPdf(htmlUrl);
   // HARD PAGE-COUNT GATE (Lynden 2026-08-13, after a 17-page L3 book shipped):
-  // custom books are exactly 16 pages at L1-4 and 20 at L5-8 — anything else
+  // custom books are exactly 16 pages at L1-4 and 20 at L5-8 â€” anything else
   // is unstitchable and must never reach the customer.
-  const expectedPages = book.level <= 4 ? 16 : 20;
+  // 8 story pages (L5-8, or an L1-4 book with the +£1 longer-story add-on)
+  // always means the 20-page set; only the 6-story L1-4 booklet is 16.
+  const storyPageCount = (book.pages || []).filter((p) => p.type === "story").length;
+  const expectedPages = book.level <= 4 && storyPageCount < 8 ? 16 : 20;
   const gotPages = pdfPageCount(pdfBuf);
   if (gotPages !== expectedPages) {
-    throw new Error(`page-count gate: rendered PDF has ${gotPages} pages, Level ${book.level} requires exactly ${expectedPages} — not delivering`);
+    throw new Error(`page-count gate: rendered PDF has ${gotPages} pages, Level ${book.level} requires exactly ${expectedPages} â€” not delivering`);
   }
   const pdfUrl = await saveImage(bookId, "book.pdf", pdfBuf);
 
   // A4 print-at-home booklet alongside the A5 (Lynden 2026-08-23: "the pdf
   // is sent with the a5 print straight away pdf and the a4 version"). Never
-  // fatal — a book with only its A5 still delivers.
+  // fatal â€” a book with only its A5 still delivers.
   let a4Url = null;
   try {
     const { imposeA4Booklet } = await import("./pdf.mjs");
@@ -2243,7 +2250,7 @@ async function renderPdfServerless(bookId, origin) {
   }
 
   // GHL hand-off: tag-based, not webhook-based (the Inbound Webhook trigger
-  // is a paid premium feature — Lynden 2026-08-23). The forge upserts the
+  // is a paid premium feature â€” Lynden 2026-08-23). The forge upserts the
   // contact, fills the book custom fields, and re-adds "book-ready"; a
   // standard Contact-Tag-Added workflow in GHL owns everything after that.
   // AWAITED, not fire-and-forget: Vercel freezes the lambda the moment the

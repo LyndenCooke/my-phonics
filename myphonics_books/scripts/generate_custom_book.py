@@ -118,7 +118,10 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     # custom book shipped without the fuller Word Workshop / Writing
     # Practice / etc. page set a real book at that level gets.
     level_num = int(spec["level"])
-    page_count = 16 if level_num <= 4 else 20
+    # 8 story pages always means the 20-page set — L5-8 by design, and an
+    # L1-4 book whose family bought the +£1 longer-story add-on (2026-08-26).
+    # The 16-page booklet physically holds exactly 6 story slots.
+    page_count = 20 if (level_num > 4 or len(page_texts) >= 8) else 16
 
     questions = spec.get("questions") or [
         "Who is the star of the story?",
@@ -198,6 +201,31 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
         if s.get("level") and int(s["level"]) > level_num
         and not (level_num >= 4 and s.get("grapheme") == "ed")
     ]
+
+    # SPOTLIGHT FALLBACK (2026-08-26, "Lin Has a Mission"): the Sound Spotlight
+    # page is built from the per-grapheme photo library, which has no entries
+    # for the L7-8 suffix graphemes (sion, tion, ...). With no spotlight the
+    # 20-page set silently rendered 19 pages and the page-count gate refused
+    # the book. A custom book always has focus words of its own — synthesise a
+    # photo-less spotlight page from them rather than dropping the page.
+    if page_count >= 20 and not book_data.get("sound_spotlight_pages"):
+        from generate_book import highlight_grapheme_in_word
+        _seen = set()
+        _spot_words = []
+        for _w in (spec.get("read_words") or []) + (spec.get("story_words") or []):
+            _wl = str(_w or "").lower()
+            if focus in _wl and _wl not in _seen:
+                _seen.add(_wl)
+                _spot_words.append(_wl)
+        if _spot_words:
+            book_data["sound_spotlight_pages"] = [{
+                "grapheme": focus,
+                "grapheme_display": focus,
+                "words": [
+                    {"word": _w, "word_html": highlight_grapheme_in_word(_w, focus), "photo": None}
+                    for _w in _spot_words[:4]
+                ],
+            }]
 
     prof = spec.get("profile") or {}
     hero = images_dir / "hero.jpg"
@@ -331,7 +359,7 @@ def main() -> None:
     # 16 total pages at L1-4, 20 at L5-8 — anything else cannot saddle-stitch
     # and must never ship. Fail the render, don't warn.
     from pypdf import PdfReader
-    expected = 16 if int(spec["level"]) <= 4 else 20
+    expected = 20 if (int(spec["level"]) > 4 or len(spec.get("story_pages") or []) >= 8) else 16
     got = len(PdfReader(out).pages)
     if got != expected:
         out.unlink(missing_ok=True)

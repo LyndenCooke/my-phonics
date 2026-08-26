@@ -121,6 +121,10 @@ export async function handleForge(req, res) {
         photo_used: Boolean(b.photo_b64),
         level: Number(b.level),
         focus_sound: String(b.focus_sound),
+        // +£1 longer-story add-on: 8 story pages at L1-4 (L5-8 already have 8,
+        // so the flag is meaningless there and never stored). Key only included
+        // when bought — the column may not exist yet on older databases.
+        ...(Number(b.level) <= 4 && b.extra_pages ? { extra_pages: true } : {}),
         status: "awaiting_payment",
         share_requested: Boolean(b.share_requested),
         wall_of_love_opt_in: Boolean(b.wall_of_love_opt_in),
@@ -260,8 +264,16 @@ export async function handleForge(req, res) {
         }
       }
       if (supplied) return send(res, 400, { error: "That code is not valid." });
+      // The +£1 longer-story add-on is read from the BOOK ROW, never from the
+      // request body — the price follows what the book will actually be.
+      let extraPence = 0;
+      if (b.kind === "book" && b.book_id) {
+        const bookRow = await db.getBook(b.book_id);
+        if (bookRow?.extra_pages) extraPence = 100;
+      }
       const session = await createCheckout({
         kind: b.kind, bookId: b.book_id, email: b.email || worldUser?.email, origin,
+        extraPence, extraDesc: extraPence ? "Longer story: 8 illustrated pages and the fuller 20-page activity set." : "",
       });
       await db.insertOrder({
         book_id: b.book_id || null,
@@ -269,7 +281,7 @@ export async function handleForge(req, res) {
         kind: b.kind,
         user_id: b.kind === "world" ? worldUser.id : (b.user_id || null),
         stripe_session_id: session.id,
-        amount_pence: PRICES[b.kind].amount,
+        amount_pence: PRICES[b.kind].amount + extraPence,
         status: "pending",
       });
       return send(res, 200, { url: session.url });
