@@ -355,13 +355,19 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
     const drafts = await Promise.all(Array.from({ length: CANDIDATES }, (_, i) => writeFn(i)));
     drafts.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:candidate${i + 1}`, d.cost, d.model));
     drafts.forEach((d) => { d.data = asStory(d.data); });
-    const judged = await Promise.all(drafts.map(async (d, i) => {
+    // REDRAW, DON'T REPAIR (Lynden 2026-08-26: "on the website you will not be
+    // able to intervene"). Three fresh compact drafts cost about $0.20; ONE
+    // revision cycle costs about $0.60 once the re-stage and re-direct behind
+    // it are counted, and a weak draft usually stays weak. So a batch whose
+    // best draft is still poor is thrown away and redrawn, up to
+    // FORGE_STORY_BATCHES times, before the paid gate is ever entered.
+    const judgeBatch = async (drafts, batch) => Promise.all(drafts.map(async (d, i) => {
       const dec = storyDecodeProblems(d.data, book.level, child.name).problems.length;
       const texts = (d.data.pages || []).map((p) => p.text);
       let fails = 99, score = 0, contra = 99, contraDetail = [];
       try {
         const fl = await judgeFluency({ pages: texts });
-        charge(job, "story_usd", `judgeFluency:candidate${i + 1}`, fl.cost, fl.model);
+        charge(job, "story_usd", `judgeFluency:b${batch}c${i + 1}`, fl.cost, fl.model);
         fails = (fl.data.failures || []).length;
         score = fl.data.read_aloud_score || 0;
       } catch (e) {
@@ -371,25 +377,40 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
       // whose mechanism is never stated loses to one whose chain is complete.
       try {
         const st = await checkStoryState({ pages: texts });
-        charge(job, "story_usd", `checkStoryState:candidate${i + 1}`, st.cost, st.model);
+        charge(job, "story_usd", `checkStoryState:b${batch}c${i + 1}`, st.cost, st.model);
         contraDetail = (st.data.contradictions || []).map((c) => `p${c.page}: ${c.detail}`);
         contra = contraDetail.length;
       } catch (e) {
         console.warn(`[forge] state check failed for candidate ${i + 1}:`, e.message);
       }
-      return { i, d, dec, fails, score, contra, contraDetail, title: d.data.title, engine: COMPACT ? engineFor(i).name : null };
+      // Countable house faults are free to check and must count at the pick,
+      // not only later at the gate.
+      const style = COMPACT ? styleIssues(d.data, book).length : 0;
+      return { i, d, dec, fails, score, contra, contraDetail, style, title: d.data.title, engine: COMPACT ? engineFor(i).name : null };
     }));
     // WEIGHTED, not lexicographic (2026-08-25): a pedantic state "contradiction"
     // outranked a 0-failure 9/10 draft and picked a 4-failure one. Contradictions
     // weigh more than fluency failures but can no longer veto alone.
-    const penalty = (c) => c.contra * 1.5 + c.fails;
+    const penalty = (c) => c.contra * 1.5 + c.fails + c.style * 1.5;
+    const BATCHES = Math.min(3, Math.max(1, Number(process.env.FORGE_STORY_BATCHES || 1)));
+    const GOOD_ENOUGH = Number(process.env.FORGE_DRAFT_PENALTY || 3);
+    let judged = await judgeBatch(drafts, 1);
     judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
+    for (let batch = 2; batch <= BATCHES && penalty(judged[0]) > GOOD_ENOUGH; batch++) {
+      console.warn(`[forge] best of batch ${batch - 1} still scores ${penalty(judged[0]).toFixed(1)} (want <= ${GOOD_ENOUGH}) — redrawing rather than repairing`);
+      const more = await Promise.all(Array.from({ length: CANDIDATES }, (_, i) => writeFn(i + (batch - 1) * CANDIDATES)));
+      more.forEach((d, i) => charge(job, "story_usd", `${COMPACT ? "writeStoryCompact" : "writeStory"}:b${batch}c${i + 1}`, d.cost, d.model));
+      more.forEach((d) => { d.data = asStory(d.data); });
+      judged = [...judged, ...(await judgeBatch(more, batch))];
+      judged.sort((a, b) => (penalty(a) - penalty(b)) || (a.dec - b.dec) || (b.score - a.score));
+    }
     const win = judged[0];
+    console.log(`[forge] picked "${win.title}" — penalty ${penalty(win).toFixed(1)} (fluency ${win.fails}, state ${win.contra}, style ${win.style}) from ${judged.length} draft(s)`);
     // Keep every candidate's TEXT, not just its scores (Lynden 2026-08-25:
     // "so i can review orginal text and changed text"). Without this the
     // rejected drafts vanish and the winner's original wording is overwritten
     // by the first revision, leaving no before/after to review.
-    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, engine: c.engine, state_contradictions: c.contra, contradiction_detail: c.contraDetail, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win, pages: (c.d.data.pages || []).map((p) => p.text) }));
+    job.breakdown.candidates = judged.map((c) => ({ candidate: c.i + 1, title: c.title, engine: c.engine, state_contradictions: c.contra, contradiction_detail: c.contraDetail, style_faults: c.style, fluency_failures: c.fails, decode_problems: c.dec, read_aloud_score: c.score, chosen: c === win, pages: (c.d.data.pages || []).map((p) => p.text) }));
     if (win.engine) job.breakdown.chosen_engine = win.engine;
     if (win.contra > 0) console.warn(`[forge] best candidate still carries ${win.contra} state contradiction(s): ${win.contraDetail.join(" | ").slice(0, 200)}`);
     console.log(`[forge] candidates: chose #${win.i + 1} "${win.title}" (${win.fails} fluency failures, ${win.dec} decode problems, score ${win.score}) of ${CANDIDATES}`);
