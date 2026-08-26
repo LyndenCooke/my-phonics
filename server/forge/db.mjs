@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { cfg } from "./env.mjs";
+import { publicUrl } from "./storage.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, ".data");
@@ -344,7 +345,10 @@ export async function allBooksForAdmin() {
       cost_usd: Number((Number(b.cost_usd || 0) || Number(job.cost || 0)).toFixed(4)),
       text_usd: Number(Number(bd.story_usd || 0).toFixed(4)),
       images_usd: Number(Number(bd.images_usd || 0).toFixed(4)),
-      pdf_url: `/custom-books/${b.id}/book.pdf`,
+      // storage.publicUrl, not a hand-built path — the old literal was the
+      // DEV shape (/custom-books/...), a 404 on prod where PDFs live in the
+      // Supabase bucket.
+      pdf_url: publicUrl(b.id, "book.pdf"),
       needs_attention: ["needs_review", "failed", "content_rejected"].includes(b.status)
         || String(b.status || "").startsWith("paused"),
       review_note: b.review_note || null,

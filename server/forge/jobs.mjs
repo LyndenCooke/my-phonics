@@ -25,7 +25,7 @@ import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronuncia
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, writeStoryCompact, stageStoryForBook, checkStoryState, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
-import { saveImage, loadByUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
+import { saveImage, loadByUrl, publicUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
 import { BOOKS_DIR, cfg } from "./env.mjs";
 
@@ -2097,7 +2097,7 @@ const pdfInFlight = new Map();
 
 export function renderPdf(bookId, opts = {}) {
   if (pdfInFlight.has(bookId)) return pdfInFlight.get(bookId);
-  const p = (IS_SERVERLESS ? renderPdfServerless(bookId, opts.origin) : renderPdfInner(bookId, opts))
+  const p = (IS_SERVERLESS ? renderPdfServerless(bookId, opts.origin, { force: opts.force }) : renderPdfInner(bookId, opts))
     .finally(() => pdfInFlight.delete(bookId));
   pdfInFlight.set(bookId, p);
   return p;
@@ -2186,9 +2186,22 @@ function imageUrlsOf(book) {
 // finished book is emailed to whoever ordered it. See api/render-book-html.py
 // and pdf.mjs for why this is split this way (Playwright doesn't run on
 // Vercel's Python runtime).
-async function renderPdfServerless(bookId, origin) {
+async function renderPdfServerless(bookId, origin, { force = false } = {}) {
   const book = await getBook(bookId);
   if (!book?.pages) throw new Error("book has no pages yet");
+
+  // A book.pdf already in storage was saved AFTER the page-count gate passed,
+  // so it is a delivered, valid book — hand its URL back instead of paying
+  // for a full re-render. Every admin-ledger click used to re-typeset the
+  // whole book (Lynden 2026-08-26, "the links don't work" — slow renders and
+  // gate refusals looked like dead links). force re-renders (repair path).
+  if (!force) {
+    const existing = publicUrl(bookId, "book.pdf");
+    try {
+      const head = await fetch(existing, { method: "HEAD" });
+      if (head.ok) return existing;
+    } catch { /* storage blip — fall through to a fresh render */ }
+  }
 
   const spec = { ...buildPdfSpecCore(book), book_id: bookId, image_urls: imageUrlsOf(book) };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BookHeart, Check, Loader2, X } from "lucide-react";
+import { BookHeart, Check, ChevronDown, Loader2, X } from "lucide-react";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import { forgeApi, type AdminBookRow, type CustomBook } from "@/lib/forgeApi";
 
@@ -16,6 +16,9 @@ export default function CustomBooksQueue() {
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [ledger, setLedger] = useState<AdminBookRow[]>([]);
+  // Collapsed by default — the ledger is the long tail, the queue is the work
+  // (Lynden 2026-08-26, "make the every book ever made a drop down").
+  const [ledgerOpen, setLedgerOpen] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -155,10 +158,21 @@ export default function CustomBooksQueue() {
           this shows the lot, including the ones that stopped and still spent. */}
       {ledger.length > 0 && (
         <section className="rounded-2xl border bg-card">
-          <div className="flex items-baseline justify-between border-b px-4 py-3">
-            <h2 className="font-bold">Every book made ({ledger.length})</h2>
-            <span className="text-xs text-muted-foreground">newest first · click a title for the PDF</span>
-          </div>
+          <button
+            type="button"
+            onClick={() => setLedgerOpen((v) => !v)}
+            aria-expanded={ledgerOpen}
+            className={`flex w-full items-baseline justify-between px-4 py-3 text-left ${ledgerOpen ? "border-b" : ""}`}
+          >
+            <h2 className="flex items-center gap-2 font-bold">
+              <ChevronDown className={`h-4 w-4 transition-transform ${ledgerOpen ? "" : "-rotate-90"}`} />
+              Every book made ({ledger.length})
+            </h2>
+            <span className="text-xs text-muted-foreground">
+              {ledgerOpen ? "newest first · click a title for the PDF" : "click to expand"}
+            </span>
+          </button>
+          {ledgerOpen && (
           <div className="divide-y">
             {ledger.map((b) => (
               <div key={b.id} className={`flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 text-sm ${b.needs_attention ? "bg-amber-50" : ""}`}>
@@ -187,6 +201,7 @@ export default function CustomBooksQueue() {
               </div>
             ))}
           </div>
+          )}
         </section>
       )}
 
