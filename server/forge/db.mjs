@@ -324,7 +324,12 @@ export async function costSummary() {
 export async function allBooksForAdmin() {
   await initDb();
   const books = await listBooks({});
-  return books.map((b) => {
+  // Ledger, not archive (Lynden 2026-08-26): admin-rejected books and
+  // FORGE_TEXT_ONLY validation runs are noise in the day-to-day list.
+  // Their spend still counts — costSummary reads every row, not this list.
+  const listed = books.filter((b) =>
+    b.status !== "rejected" && !b.progress?.job?.textOnly);
+  return listed.map((b) => {
     const job = b.progress?.job || {};
     const bd = b.cost_breakdown || job.breakdown || {};
     return {
