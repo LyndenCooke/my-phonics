@@ -2108,6 +2108,19 @@ export async function repairBook(bookId, { scenes = {}, cover = null } = {}) {
   // sequential keeps prev-page continuity references coherent.
   await updateBook(bookId, { status: "generating", progress: { ...(book.progress || {}), step: "repair", message: `Repairing ${pageNums.length ? `page${pageNums.length > 1 ? "s" : ""} ${pageNums.join(", ")}` : ""}${cover ? `${pageNums.length ? " + " : ""}cover` : ""}...`, job } });
   for (const n of pageNums.sort((a, b) => a - b)) {
+    // SPEND CEILING APPLIES TO REPAIRS TOO (Lynden 2026-08-26: a repair ran
+    // $6.41 past a $5.98 cap because only the step machine checked it). Same
+    // rule as generation: at the cap, pause fully-resumable — the remaining
+    // repairNotes survive on the job, and a human /retry buys the next unit.
+    const cap = Number(job.capUsd || MAX_BOOK_SPEND_USD);
+    if (job.cost >= cap) {
+      console.error(`[forge] ADMIN: repair of ${bookId} paused at spend cap ($${job.cost.toFixed(2)} >= $${cap}) — pages ${pageNums.filter((m) => m >= n).join(", ")} not repainted`);
+      await updateBook(bookId, {
+        status: "paused_budget",
+        progress: { ...(book.progress || {}), step: "repair", message: `Repair paused at the spend cap ($${cap}) — pages ${pageNums.filter((m) => m >= n).join(", ")} still waiting.`, job },
+      });
+      return { repaired: pageNums.filter((m) => m < n), paused_at_cap: true, cover: false };
+    }
     await stepScene(book, job, n - 1);
     await persist(bookId, job, { step: "repair", message: `Repaired page ${n}`, pct: 80, job });
   }
