@@ -111,6 +111,8 @@ export default function CreateBook() {
   const [photoB64, setPhotoB64] = useState<string | null>(null);
   const [level, setLevel] = useState<number>(2);
   const [sound, setSound] = useState<string>("");
+  // +£1 longer-story add-on: 8 story pages at L1-4 (L5-8 already include 8).
+  const [extraPages, setExtraPages] = useState(false);
   const [email, setEmail] = useState(() => localStorage.getItem("forge_email") || "");
   const [shareRequested, setShareRequested] = useState(true);
   const [wallOptIn, setWallOptIn] = useState(true);
@@ -317,6 +319,7 @@ export default function CreateBook() {
       photo_mime: "image/jpeg",
       level,
       focus_sound: sound,
+      extra_pages: level <= 4 && extraPages,
       email: email.trim() || null,
       share_requested: shareRequested,
       wall_of_love_opt_in: wallOptIn,
@@ -653,6 +656,21 @@ export default function CreateBook() {
                     </div>
                   </div>
                 )}
+                {/* +£1 longer-story add-on (Lynden 2026-08-26). Only offered at
+                    L1-4 — L5-8 books already include 8 story pages. Buying it
+                    moves the book onto the fuller 20-page print set. */}
+                {level <= 4 && (
+                  <button onClick={() => setExtraPages(!extraPages)}
+                    className={`mt-4 flex w-full items-center gap-3 rounded-2xl border-2 p-4 text-left transition ${extraPages ? "border-violet-500 bg-violet-50" : "border-slate-200 bg-white hover:border-slate-300"}`}>
+                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 ${extraPages ? "border-violet-600 bg-violet-600 text-white" : "border-slate-300 bg-white"}`}>
+                      {extraPages && <Check className="h-4 w-4" />}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-extrabold text-slate-900">Longer story — 8 pages instead of 6 <span className="text-violet-600">+£1</span></span>
+                      <span className="block text-sm text-slate-500">Two more illustrated pages, and the bigger 20-page activity set at the back.</span>
+                    </span>
+                  </button>
+                )}
                 <WizardNav onBack={() => setStep("child")} onNext={() => setStep("review")} nextDisabled={!sound} />
               </div>
             )}
@@ -702,11 +720,12 @@ export default function CreateBook() {
               <div className="text-center">
                 <h2 className="text-2xl font-extrabold text-slate-900">Create {name}'s book</h2>
                 <div className="mx-auto mt-5 max-w-sm rounded-3xl bg-white p-6 shadow-lg">
-                  <div className="text-5xl font-extrabold text-slate-900">£4.99</div>
+                  <div className="text-5xl font-extrabold text-slate-900">{level <= 4 && extraPages ? "£5.99" : "£4.99"}</div>
                   <div className="mt-1 text-sm font-semibold text-violet-600">One personalised book · yours to keep</div>
                   <ul className="mt-4 space-y-2 text-left text-sm text-slate-600">
                     {[
                       `A full decodable story around the sound "${sound}"`,
+                      ...(level <= 4 && extraPages ? ["Longer story: 8 illustrated pages + the fuller activity set"] : []),
                       `${name} illustrated as the hero on every page`,
                       "Eye-rule + phonics QA on every single page",
                       "The 'Meet the star' family page at the back",
@@ -717,7 +736,7 @@ export default function CreateBook() {
                   </ul>
                   <button onClick={() => payForBook()} disabled={busy}
                     className="mt-5 w-full rounded-full bg-violet-600 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50">
-                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : "Create my book — £4.99"}
+                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : `Create my book — ${level <= 4 && extraPages ? "£5.99" : "£4.99"}`}
                   </button>
 
                   {/* Private code. Deliberately understated: it exists so one
