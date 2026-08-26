@@ -483,7 +483,10 @@ export async function handleForge(req, res) {
     if (req.method === "GET" && p === "/admin/queue") {
       const all = await db.listBooks({});
       const queue = all.filter((b) => b.share_requested && ["ready"].includes(b.status));
-      const decided = all.filter((b) => ["approved", "rejected"].includes(b.status));
+      // Approved only — a rejected share request needs no further action, so
+      // listing it is clutter (Lynden 2026-08-26, same ruling as the
+      // /admin/books ledger). The row keeps its status; nothing is deleted.
+      const decided = all.filter((b) => b.status === "approved");
       return send(res, 200, { queue, decided, costs: await db.costSummary() });
     }
 
