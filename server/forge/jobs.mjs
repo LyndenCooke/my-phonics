@@ -197,8 +197,18 @@ function nextStepOf(job) {
   return "done";
 }
 
+// The ROW's cost must never lag the job's (Lynden 2026-08-26: "you're lying to
+// me on price"). It was written only at a few milestones, so every charge after
+// the last one — the cold editor, the cover face-find, assembly — stayed
+// invisible: a book reported as $2.16 had actually spent $3.06. Every persist
+// now carries the running total and the itemised breakdown, so what the row
+// says is what has been spent.
 async function persist(bookId, job, display) {
-  await updateBook(bookId, { progress: { ...display, job } });
+  await updateBook(bookId, {
+    progress: { ...display, job },
+    cost_usd: Number((job.cost || 0).toFixed(4)),
+    cost_breakdown: job.breakdown,
+  });
 }
 
 // ---------------------------------------------------------------- helpers --
