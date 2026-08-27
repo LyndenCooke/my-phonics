@@ -75,8 +75,12 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
 - Objective catastrophic failures may stop immediately: unsafe content, missing
   or wrong hero, wrong required count, impossible anatomy or a central
   text–image contradiction.
-- The final editor reads a 640 px contact sheet plus every sentence once. It
-  compares all pages with the canonical hero and the story progression.
+- The director's per-page entity states are persisted as the book's state
+  ledger. A "stays", "remains" or "still" transition must agree with the prior
+  state before any illustration is purchased.
+- The final editor reads 1024 px pages plus every sentence once. It returns a
+  literal observation for every code-supplied count, contact, cropping, identity
+  and story-state assertion. Missing or failed assertions become majors in code.
 - Any identity, outfit, skin or hair conflict is major and blocks release.
 - The editor returns one consolidated page list. At most one repair batch runs,
   one page per server invocation. There is no automatic cosmetic repair and no

@@ -798,9 +798,11 @@ async function stepQa(book, job) {
   // tricky_words_used so the tricky strip introduces it like any other.
   {
     const { borrowed } = storyDecodeProblems(story, book.level, child.name);
-    if (borrowed.length) {
-      story.tricky_words_used = [...new Set([...(story.tricky_words_used || []), ...borrowed])];
-    }
+    const tokens = new Set(story.pages.flatMap((p) => String(p.text || "").toLowerCase().match(/[a-z']+/g) || []));
+    const actualTricky = level.trickyWords.map((w) => String(w).toLowerCase()).filter((w) => tokens.has(w));
+    // Exact reconciliation, never an additive merge: revisions may remove a
+    // tricky word and the printed strip must describe the final manuscript.
+    story.tricky_words_used = [...new Set([...actualTricky, ...borrowed])];
     // Always overwrite: a revision that removed a borrowed word must not
     // leave the old list behind (a run reported ["her","you"] from a draft
     // whose final text contained neither, 2026-08-24).
@@ -885,9 +887,17 @@ function resetAfterStoryRevision(job, revisedStory) {
 // and the hero's name seven times). These are countable, so they are not left
 // to a judge's mood: they are injected into the editor's issue list as majors,
 // which makes the existing revision path fix them and the follow-up verify it.
-function styleIssues(story, book) {
+export function styleIssues(story, book) {
   const pages = (story.pages || []).map((p) => String(p.text || ""));
   const out = [];
+  const shyPage = pages.findIndex((t) => /\b(?:shy|small|timid)\s+(?:sheep|animal|dog|cat|goat|pony)\b/i.test(t));
+  if (shyPage > 0) {
+    const ambiguous = pages.slice(0, shyPage).findIndex((t) => /\bthe\s+(?:sheep|animals|dogs|cats|goats|ponies)\b/i.test(t));
+    if (ambiguous >= 0) out.push({
+      severity: "major", area: "story", page: ambiguous + 1, replacement: "",
+      detail: `Page ${ambiguous + 1} uses an undifferentiated animal group immediately before page ${shyPage + 1} says one shy animal "stays back". State exactly which animals act so the director cannot place the shy animal in two incompatible states.`,
+    });
+  }
   const parentRe = /\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma|Mummy|Daddy)\b/;
   const parentPages = pages.map((t, i) => (parentRe.test(t) ? i + 1 : 0)).filter(Boolean);
   if (parentPages.length > 2) {
@@ -968,14 +978,6 @@ async function stepStoryGate(book, job) {
       console.warn(`[forge] deterministic style faults added to the gate: ${style.map((s) => s.detail.slice(0, 60)).join(" | ")}`);
     }
   }
-  // A canonical identity conflict is never cosmetic. The model called Mia's
-  // complete teal-to-yellow wardrobe change "minor"; code now owns severity.
-  review.issues = (review.issues || []).map((issue) => {
-    const text = `${issue.area || ""} ${issue.detail || ""}`;
-    return /identity|outfit|wardrobe|clothing|skin tone|hair colour/i.test(text)
-      ? { ...issue, severity: "major" }
-      : issue;
-  });
   const verdict = deriveEditorVerdict(review);
 
   if (verdict.pass) {
@@ -1224,11 +1226,52 @@ async function stepDirect(book, job) {
     const d = await directScenes({ story: job.story, child: childOf(book) });
     charge(job, "story_usd", "directScenes", d.cost, d.model);
     job.directed = d.data.pages;
+    job.breakdown.entity_state_ledger = buildEntityStateLedger(job.story, job.directed);
+    const continuity = validateDirectedContinuity(job.story, job.directed);
+    if (continuity.length) {
+      job.breakdown.director_continuity_failures = continuity;
+      throw new NeedsReviewError(`director state ledger failed before painting: ${continuity.join(" | ").slice(0, 240)}`);
+    }
   } catch (e) {
+    if (e?.needsReview) throw e;
     console.warn("[forge] director pass failed, using raw scene briefs:", e.message);
     job.directed = null;
   }
   job.directDone = true;
+}
+
+const STATE_WORDS = /\b(crowd(?:ed|ing)?|eat(?:ing)?|back|wait(?:ing)?|full|empty|open|closed|inside|outside|held|holding|moving|still|separate[ d]?|together)\b/gi;
+
+export function buildEntityStateLedger(story, directed) {
+  return (directed || []).map((page, i) => ({
+    page: i + 1,
+    text: String(story?.pages?.[i]?.text || ""),
+    entities: (page.objects || []).map((object) => ({
+      name: String(object.name || "").trim(),
+      state: String(object.state || "").trim(),
+    })).filter((object) => object.name),
+  }));
+}
+
+export function validateDirectedContinuity(story, directed) {
+  const failures = [];
+  const previous = new Map();
+  for (let i = 0; i < (directed || []).length; i++) {
+    const text = String(story?.pages?.[i]?.text || "");
+    for (const object of directed[i]?.objects || []) {
+      const key = String(object.name || "").toLowerCase().trim();
+      if (!key) continue;
+      const state = String(object.state || "").toLowerCase();
+      const stateWords = new Set(state.match(STATE_WORDS)?.map((w) => w.replace(/ing$|ed$/g, "")) || []);
+      const prior = previous.get(key);
+      if (prior && /\b(stays?|remains?|still)\b/i.test(text)) {
+        const overlap = [...stateWords].some((w) => prior.words.has(w));
+        if (!overlap) failures.push(`page ${i + 1} says ${key} stays/remains, but direction changes it from "${prior.state}" to "${state}"`);
+      }
+      previous.set(key, { state, words: stateWords, page: i + 1 });
+    }
+  }
+  return failures;
 }
 
 async function stepHero(book, job) {
@@ -1591,9 +1634,34 @@ async function stepRepairPage(book, job) {
   job.repairQueue = job.repairQueue.slice(1);
 }
 
+export function buildExpectedAssertions(directed, childName) {
+  return (directed || []).flatMap((page, i) => {
+    const required = (page.required_visible_states || []).map((a, n) => ({
+      id: `p${i + 1}:required:${n + 1}`, page: i + 1, kind: "required", assertion: a.assertion,
+    }));
+    const forbidden = (page.forbidden_visible_states || []).map((a, n) => ({
+      id: `p${i + 1}:forbidden:${n + 1}`, page: i + 1, kind: "forbidden", assertion: a.assertion,
+    }));
+    return [...required, ...forbidden, {
+      id: `p${i + 1}:hero-identity`, page: i + 1, kind: "identity",
+      assertion: `${childName} matches the canonical hero reference in face, skin, hair and exact clothing colours; the hero and the page's central action are not unintentionally cropped.`,
+    }];
+  });
+}
+
+export function objectiveVisualFailures(expectedAssertions, assertionChecks) {
+  const checks = new Map((assertionChecks || []).map((c) => [String(c.id), c]));
+  return expectedAssertions.filter((a) => checks.get(a.id)?.pass !== true).map((a) => {
+    const observed = checks.get(a.id)?.observed || "The editor returned no observation for this required check.";
+    return { severity: "major", area: a.kind === "identity" ? "object-identity" : "story-state",
+      pages: [a.page], detail: `${a.assertion} OBSERVED: ${observed}` };
+  });
+}
+
 async function stepReview(book, job) {
   const story = job.story;
   const level = getLevel(book.level);
+  const expectedAssertions = buildExpectedAssertions(job.directed, book.child_name);
 
   // CHECKPOINTED VERDICT: the editor's answer is persisted the moment it
   // comes back, so a killed invocation resumes from the verdict instead of
@@ -1611,9 +1679,9 @@ async function stepReview(book, job) {
       // rubric asks about (a hook on a stall, the slot width of a drain grate).
       // 640px is plenty for a whole-book read and cuts the largest input this
       // pipeline sends. The editor judges composition, continuity and whether
-      // the action is visible - none of which needs 1024px x every page. The
+      // the action is visible at a reviewable 1024px without full render files. The
       // per-page QA still sees full-size images (Lynden 2026-08-22, on cost).
-      const small = await reviewThumb(buf, 640);
+      const small = await reviewThumb(buf, 1024);
       images.push({ b64: small.toString("base64"), mime: "image/jpeg" });
     }
 
@@ -1625,7 +1693,7 @@ async function stepReview(book, job) {
       .map((n) => ({ page: n.page, reason: String(n.consistency.reason || "").slice(0, 300) }));
 
     const { coldEditorReview } = await import("./claude.mjs");
-    const r = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa });
+    const r = await coldEditorReview({ story, level, focusSound: book.focus_sound, images, unresolvedQa, expectedAssertions });
     review = r.data;
     charge(job, "story_usd", "coldEditorReview", r.cost, r.model);
     job.pendingReview = review;
@@ -1650,6 +1718,22 @@ async function stepReview(book, job) {
       detail: "The final gate did not answer this lens, so the book was never checked against the real world.",
     }];
   }
+
+  // Vision observes; code decides. Every expected assertion must be returned
+  // exactly once and pass. Missing checks, count mismatches, cropping, broken
+  // contact and identity drift become majors regardless of the model verdict.
+  const objectiveFailures = objectiveVisualFailures(expectedAssertions, review.assertion_checks);
+  if (objectiveFailures.length) review.issues = [...(review.issues || []), ...objectiveFailures];
+
+  review.issues = (review.issues || []).map((issue) => {
+    const text = `${issue.area || ""} ${issue.detail || ""}`;
+    return /identity|outfit|wardrobe|clothing|skin tone|hair colour/i.test(text)
+      ? { ...issue, severity: "major" }
+      : issue;
+  });
+  // Record the final code-enforced count, not the model-only count captured
+  // before mandatory assertions and severity promotion were applied.
+  job.gates.cold_editor.issues = review.issues.length;
 
   // Pass/fail is DERIVED from issue severities, never from the model's
   // separately generated boolean (on 2026-08-14 a book was killed by a review
@@ -1793,7 +1877,12 @@ async function stepReview(book, job) {
       console.warn(`[forge] editor gate: repairing only page(s) ${Object.keys(notes).join(", ")} instead of repainting the book`);
       return;
     }
-    // Nothing page-repairable: ship with the flags rather than loop.
+    // A blocking objective or book-level failure never becomes ready merely
+    // because it lacks a repaintable page number.
+    if (unrepairable.length) {
+      throw new NeedsReviewError(`cold editor: ${unrepairable.length} blocking issue(s) need a human decision — ${detail.slice(0, 220)}`);
+    }
+    // Nothing page-repairable and no blocking issue remains.
     if (verdict.minors.length) job.breakdown.editor_review_minors = verdict.minors;
     job.pendingReview = null;
     job.reviewDone = true;

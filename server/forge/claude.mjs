@@ -1881,6 +1881,14 @@ const EDITOR_REVIEW_SCHEMA = {
     image_physics: { type: "string", description: "ARE THE PICTURES POSSIBLE AS DRAWN? Not whether the story could happen - whether these specific images could be photographs. COUNT things: how many strands does the rope have between the two hands (a single rope held between two people is ONE continuous line - two strands or a closed oval is impossible), how many legs, arms, fingers, wheels, handles are drawn, how many of each character appears. Say the counts out loud before judging. Then check anything attached to something else actually connects, that objects rest on surfaces rather than floating, and that shadows and marks on the ground correspond to real objects - unexplained ovals, rings or smudges on grass or floor are machine artefacts and must be called out, not accepted as texture (five meaningless ovals shipped on a final page, 2026-08-21)." },
     safety: { type: "string", description: "Would a parent flinch? A young child modelled doing something risky — reaching into drains or gaps, wielding tools, near heat, water, traffic or heights — WITHOUT an adult visibly present and part of the action is a delivery-blocking failure: these books model behaviour for four-to-eight-year-olds. The child keeping the agency (noticing, planning, deciding) while the adult shares the risky step is the standard." },
     phonics_presentation: { type: "string", description: "Check the book's phonics pages against its own story: do the Story Words appear in the story text? Does any story word rely on a sound the book itself lists as not-yet-taught (beyond the allowed one-or-two Future Sound previews)? Is the book's own focus sound ever ALSO labelled as a future/not-yet-taught sound (a direct self-contradiction)? Do the activity questions use the story's own vocabulary ('chip' asked as 'mark' fails this)? Note contradictions." },
+    assertion_checks: {
+      type: "array",
+      description: "One result for EVERY expected visual assertion supplied. Observe the image; do not infer from the prompt. Missing, obscured or cropped evidence is a failure.",
+      items: { type: "object", properties: {
+        id: { type: "string" }, pass: { type: "boolean" },
+        observed: { type: "string", description: "Literal observed counts, contact and cropping." },
+      }, required: ["id", "pass", "observed"], additionalProperties: false },
+    },
     issues: {
       type: "array",
       description: "Every genuine defect found above, one entry each, most severe first. Empty only if the book is genuinely clean. SEVERITY IS THE VERDICT: 'critical' or 'major' = the book must not ship as-is; 'minor' = the book remains suitable to deliver and this is an internal note. If several minor observations COLLECTIVELY show a structural weakness (e.g. the story has no developed plot), do not list them as scattered minors — combine or promote them into ONE major issue that names the structural problem. NO DISCRETION ON STORY-STATE: use area 'story-state' (never 'image-text') and severity major-or-worse whenever the failure touches the story's load-bearing meaning — the central problem is not visible in the pictures; a picture contradicts the central problem; the main attempt or action is missing; the resolution is not visually demonstrated (including the recipients of a sharing/giving resolution being absent when receiving IS the resolution); object ownership shown reverses the meaning of the text; a stated absence is contradicted by the object being visibly available. A missing decorative detail is a minor; a missing story beat never is. (The same page-5 contradiction was called minor by one review and major by the next, 2026-08-15 — that discretion is what this rule removes.)",
@@ -1906,7 +1914,7 @@ const EDITOR_REVIEW_SCHEMA = {
     pass: { type: "boolean", description: "Your overall opinion. ADVISORY ONLY — the shipping decision is derived in code from the issue severities above, so make the severities carry your verdict: if you would not ship it, at least one issue must be critical or major." },
     reason: { type: "string", description: "One-sentence verdict a colleague could act on." },
   },
-  required: ["cold_read", "story_quality", "middle_progress", "language_quality", "setting_persistence", "object_identity", "image_text_agreement", "action_realisation", "physical_possibility", "teaching_truth", "image_physics", "safety", "phonics_presentation", "issues", "pass", "reason"],
+  required: ["cold_read", "story_quality", "middle_progress", "language_quality", "setting_persistence", "object_identity", "image_text_agreement", "action_realisation", "physical_possibility", "teaching_truth", "image_physics", "safety", "phonics_presentation", "assertion_checks", "issues", "pass", "reason"],
   additionalProperties: false,
 };
 
@@ -1938,7 +1946,7 @@ export function deriveEditorVerdict(review) {
 // while a free cold ChatGPT read caught everything. The most consequential
 // judgment in the pipeline gets the strongest model and full-size pages;
 // ~$0.10-0.30 per book is the cheapest insurance the forge buys).
-export async function coldEditorReview({ story, level, focusSound, images, unresolvedQa = [] }) {
+export async function coldEditorReview({ story, level, focusSound, images, unresolvedQa = [], expectedAssertions = [] }) {
   const system =
     "You are the final quality gate for MyPhonicsBooks: a demanding children's-book editor reviewing a FINISHED custom book before it is allowed to ship. You are a critic, not a verifier — your job is to find the reasons this book should NOT ship, and pass it only if you genuinely cannot. " +
     "You are reviewing the whole book at once: the images are the cover followed by every story page in order, and the text of each page is given alongside. " +
@@ -1956,6 +1964,7 @@ export async function coldEditorReview({ story, level, focusSound, images, unres
     `PAGE TEXTS:\n${pagesBlock}\n\n` +
     `STORY WORDS (must appear in the story; 2 with the focus sound, 4 other level words): ${JSON.stringify(story.read_words || [])}\n` +
     `KEY OBJECTS AS DECLARED: ${JSON.stringify(story.key_objects || [])}\n${qaBlock}\n` +
+    `EXPECTED VISUAL ASSERTIONS (return exactly one assertion_checks result for every id; judge only visible evidence):\n${JSON.stringify(expectedAssertions)}\n\n` +
     `The ${images.length} images attached are: the cover, then story pages 1-${images.length - 1} in order.\n\n` +
     "Review the finished book now.";
   if (useOpenAI) {
