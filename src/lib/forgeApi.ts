@@ -42,6 +42,9 @@ export interface AdminBookRow {
   title: string | null;
   status: string;
   cost_usd: number;
+  confirmed_spend_usd: number;
+  uncertain_exposure_usd: number;
+  active_reservation_usd: number;
   text_usd: number;
   images_usd: number;
   pdf_url: string;

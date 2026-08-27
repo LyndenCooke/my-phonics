@@ -24,6 +24,7 @@ import { fileURLToPath } from "node:url";
 import { getLevel, greenWordsUpTo, progressionUpTo, pronunciationsFor, pronunciationNoteFor, focusSoundViolations, focusSoundCountViolation, coreStoriesFor, sourceStoryFor, decodeProblems, borrowableTricky, isFutureSoundProblem } from "./phonics.mjs";
 import { fixMechanics, checkProse } from "./prose.mjs";
 import { writeStory, writeStoryCompact, stageStoryForBook, checkStoryState, polishStoryAloud, nameBreakdown, fixStoryWords, reviewStory, rewriteStory, reviewStoryPlausibility, fixStoryPlausibility, directScenes, countryFacts, markShiftySounds, extractSceneState, storyEditorReview, storyEditorFollowUp, reviseStoryAfterEditor, deriveEditorVerdict, judgeFluency, STORY_SHAPES } from "./claude.mjs";
+import { withSpendContext, SpendCapError, DuplicateSpendOperationError } from "./spend.mjs";
 import { generateHero, generateCastMember, generateObjectRef, generateScene, generateCover, generateLandmark } from "./images.mjs";
 import { saveImage, loadByUrl, publicUrl, IS_SERVERLESS, CUSTOM_BOOKS_DIR } from "./storage.mjs";
 import { getBook, updateBook, recentStoryShapes, recentSourceStories, restoreCreditForBook } from "./db.mjs";
@@ -115,12 +116,14 @@ function newJob(book) {
     anchors: {},      // location id -> image URL
     castSheets: {},   // cast id -> { name, url }
     objectSheets: {}, // key_object name (lowercased) -> { name, url }
+    characterSpec: canonicalCharacterSpec(book),
     // Responses-API conversation chain (SKILL.md Â§5.5): the last approved
     // scene turn's response id. Each scene chains onto this so the model
     // carries the actual generated world forward; the cover chains onto the
     // final scene. null until the first chained scene succeeds â€” and stays
     // null if the chain path is disabled or failing (stateless fallback).
     chainResponseId: null,
+    chainDepth: 0,
     // Actual-result state (extractSceneState): what the last APPROVED image
     // literally shows for each key object â€” size, position, layout of marks.
     // Injected into the next page's prompt as binding fact, because mutable
@@ -220,7 +223,28 @@ async function persist(bookId, job, display) {
 
 // ---------------------------------------------------------------- helpers --
 
+const HERO_OUTFITS = [
+  "a sunflower-yellow cardigan, raspberry-pink knee-length dress, teal leggings and pink-and-white trainers",
+  "a cobalt-blue jumper, rust-orange trousers and white trainers",
+  "a forest-green long-sleeved top, navy dungarees and red trainers",
+  "a plum-purple tunic, mustard trousers and dark blue trainers",
+];
+
+export function canonicalCharacterSpec(book) {
+  const appearance = { ...(book.appearance || {}) };
+  if (!appearance.outfit) {
+    const seed = [...String(book.id || book.child_name || "hero")].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
+    appearance.outfit = HERO_OUTFITS[seed % HERO_OUTFITS.length];
+  }
+  return Object.freeze({
+    name: book.child_name, age: book.child_age, gender: appearance.gender || null,
+    skinTone: appearance.skinTone || null, hair: appearance.hair || null,
+    outfit: appearance.outfit,
+  });
+}
+
 function childOf(book) {
+  const spec = canonicalCharacterSpec(book);
   return {
     name: book.child_name,
     age: book.child_age,
@@ -228,7 +252,8 @@ function childOf(book) {
     country: book.country,
     cultureNotes: book.culture_notes,
     likes: book.likes,
-    appearance: book.appearance || {},
+    appearance: { ...(book.appearance || {}), outfit: spec.outfit },
+    characterSpec: spec,
   };
 }
 
@@ -345,7 +370,10 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // judge (pages only, cross-vendor) picks the one that sounds most like
   // English. Three fresh drafts can beat repeatedly repairing one robotic one.
   // Default 1 = production behaviour unchanged.
-  const CANDIDATES = Math.min(5, Math.max(1, Number(process.env.FORGE_STORY_CANDIDATES || 1)));
+  // One constrained draft is the production contract. The former tournament
+  // could buy six drafts plus twelve judging/state calls before the real
+  // editor saw a word. The story gate below already owns one bounded repair.
+  const CANDIDATES = 1;
   // COMPACT MODE (Lynden 2026-08-25): the write call carries only the compact
   // writing contract; illustration data and the state chain are STAGED after
   // selection so they cannot bend the prose. FORGE_WRITER_PROMPT=compact.
@@ -449,7 +477,7 @@ if (source) console.log(`[forge] varying "${source.title}" for ${book.child_name
   // then verified for free: if the prettier wording smuggled in a word this
   // level cannot decode, we keep the original line. A polish that breaks the
   // phonics contract is not a polish (Lynden 2026-08-21).
-  try {
+  if (process.env.FORGE_PAID_POLISH === "1") try {
     const polish = await polishStoryAloud({ story, level, childName: child.name, focusSound: book.focus_sound });
     charge(job, "story_usd", "polishStoryAloud", polish.cost, polish.model);
     const pages = polish.data?.pages || [];
@@ -870,6 +898,11 @@ function styleIssues(story, book) {
   }
   const name = String(book.child_name || "");
   if (name) {
+    const titleHasName = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(String(story.title || ""));
+    if (!titleHasName) {
+      out.push({ severity: "major", area: "language", page: 0, replacement: "",
+        detail: `The title must contain the hero's exact name "${name}". Rewrite the title before any illustration is generated and keep it decodable at Level ${book.level}.` });
+    }
     const uses = pages.join(" ").split(new RegExp(`\\b${name}\\b`)).length - 1;
     if (uses > 3) {
       out.push({
@@ -935,6 +968,14 @@ async function stepStoryGate(book, job) {
       console.warn(`[forge] deterministic style faults added to the gate: ${style.map((s) => s.detail.slice(0, 60)).join(" | ")}`);
     }
   }
+  // A canonical identity conflict is never cosmetic. The model called Mia's
+  // complete teal-to-yellow wardrobe change "minor"; code now owns severity.
+  review.issues = (review.issues || []).map((issue) => {
+    const text = `${issue.area || ""} ${issue.detail || ""}`;
+    return /identity|outfit|wardrobe|clothing|skin tone|hair colour/i.test(text)
+      ? { ...issue, severity: "major" }
+      : issue;
+  });
   const verdict = deriveEditorVerdict(review);
 
   if (verdict.pass) {
@@ -1368,7 +1409,11 @@ async function stepScene(book, job, i) {
     // general homily about objects resting on surfaces could never have
     // prevented a two-stranded skipping rope (Lynden 2026-08-21).
     physics: d?.physics || "",
-    previousResponseId: job.chainResponseId,
+    // Keep a chain only for a short adjacent run in the same mutable world.
+    // A full-book chain made later pages reread every earlier turn and caused
+    // page-eight cost to exceed page-one cost fivefold.
+    previousResponseId: prevLoc === loc && carried && Number(job.chainDepth || 0) < 2
+      ? job.chainResponseId : null,
   };
   let s = await generateScene(sceneArgs);
   // A FAILED CONSISTENCY QA IS BLOCKING (Lynden 2026-08-15, "The Train in the
@@ -1400,7 +1445,13 @@ async function stepScene(book, job, i) {
     }
   }
   charge(job, "images_usd", `generateScene:p${i + 1}`, s.cost, s.model);
-  if (s.responseId) job.chainResponseId = s.responseId;
+  if (s.responseId) {
+    job.chainDepth = sceneArgs.previousResponseId ? Number(job.chainDepth || 0) + 1 : 1;
+    job.chainResponseId = s.responseId;
+  } else {
+    job.chainDepth = 0;
+    job.chainResponseId = null;
+  }
   job.breakdown.qa_notes.push({ ...s.qa, page: i + 1, location: loc || null, camera, anchored: Boolean(anchorBuf), chained: Boolean(s.responseId) });
 
   // Record what the approved image ACTUALLY shows for each key object, for
@@ -1615,7 +1666,7 @@ async function stepReview(book, job) {
     // win. The editor now supplies an exact `replacement` line, so apply it,
     // re-stage that page's scene brief from the new words, and repaint once
     // more. Only if THAT fails does a human get involved.
-    if (job.editorRetryUsed && !job.editorTextRepairUsed) {
+    if (false && job.editorRetryUsed && !job.editorTextRepairUsed) {
       const textFixes = verdict.blocking
         .map((i) => ({ page: Number((Array.isArray(i.pages) ? i.pages[0] : i.page) || 0), replacement: String(i.replacement || "").trim() }))
         .filter((f) => f.page >= 1 && f.page <= (job.story.pages || []).length && f.replacement);
@@ -1780,6 +1831,7 @@ async function stepAssemble(book, job) {
     },
   ];
 
+  job.assembled = true;
   await updateBook(book.id, {
     status: "ready",
     title: story.title,
@@ -1792,9 +1844,8 @@ async function stepAssemble(book, job) {
     profile: pages[pages.length - 1],
     cost_usd: Number(job.cost.toFixed(4)),
     cost_breakdown: job.breakdown,
-    progress: { step: "done", message: "Your book is ready!", pct: 100 },
+    progress: { step: "done", message: "Your book is ready!", pct: 100, job },
   });
-  job.assembled = true;
 
   // The typeset PDF needs Python + Playwright â€” dev-machine only. In prod the
   // reader is the product and the PDF button degrades gracefully (501 â†’ the
@@ -1890,7 +1941,6 @@ export async function runNextStep(bookId) {
     });
     return { done: true, step: "awaitImagery", status: "awaiting_imagery_approval" };
   }
-
   // SPEND CEILING: past the cap the job PAUSES (fully resumable) instead of
   // spending further. A human retry authorises one more budget unit by
   // raising job.capUsd (router.mjs) â€” automation never raises it itself.
@@ -1916,6 +1966,7 @@ export async function runNextStep(bookId) {
 
   const costBefore = job.cost;
   try {
+    await withSpendContext({ bookId, step, epoch: job.spendEpoch || 0, capUsd: cap }, async () => {
     if (step === "freshStory") {
       // Open majors survived the gate's edit passes: abandon the manuscript
       // (cheap â€” no image exists yet) and write a fresh one at the same spec.
@@ -1943,6 +1994,7 @@ export async function runNextStep(bookId) {
     else if (step.startsWith("repair:")) await stepRepairPage(book, job);
     else if (step === "review") await stepReview(book, job);
     else if (step === "assemble") await stepAssemble(book, job);
+    });
   } catch (e) {
     job.lockAt = null;
     job.lockStep = null;
@@ -2010,6 +2062,8 @@ export async function runNextStep(bookId) {
       console.error(`[forge] ADMIN: book ${bookId} paused â€” provider credits exhausted at step "${step}": ${e.message}`);
       await updateBook(bookId, {
         status: "paused_provider_credit",
+        cost_usd: Number(job.cost.toFixed(4)),
+        cost_breakdown: job.breakdown,
         progress: {
           ...(book.progress || {}),
           step: "paused_provider_credit",
@@ -2020,6 +2074,21 @@ export async function runNextStep(bookId) {
         },
       });
       return { done: true, step, status: "paused_provider_credit" };
+    }
+
+    if (e instanceof DuplicateSpendOperationError || e?.duplicateSpend) {
+      return { done: false, step: "busy", status: "generating" };
+    }
+    if (e instanceof SpendCapError || e?.spendCap) {
+      await updateBook(bookId, {
+        status: "paused_budget",
+        cost_usd: Number(job.cost.toFixed(4)),
+        cost_breakdown: job.breakdown,
+        progress: { ...(book.progress || {}), step: "paused_budget",
+          message: "The book reached its spend limit and is safely paused.",
+          detail: String(e.message || e).slice(0, 300), pct: book.progress?.pct ?? 0, job },
+      });
+      return { done: true, step, status: "paused_budget" };
     }
 
     await updateBook(bookId, {

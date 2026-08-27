@@ -4,6 +4,7 @@
 import { execFile } from "node:child_process";
 import { cfg } from "./env.mjs";
 import { borrowableTricky } from "./phonics.mjs";
+import { beginPaidCall, completePaidCall, failPaidCall } from "./spend.mjs";
 
 // The JUDGE model (Lynden 2026-08-16). OpenAI writes; Claude reads cold. Opus 5
 // costs the same as the 4.8 it replaces ($5/$25 per 1M) and is materially better
@@ -138,11 +139,14 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
     return openaiJson({ model, system, content, schema, images, maxTokens, attempt: attempt + 1, reasoningEffort, spent: spent + burnt });
   };
 
+  const receipt = await beginPaidCall({ call: `openai-json-${attempt + 1}`, provider: "openai", model, estimateUsd: 0.75,
+    requestMeta: { system, content, schema, image_count: images.length, max_tokens: maxTokens, reasoning_effort: reasoningEffort } });
   let res;
   try {
     res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
-      headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`, "Content-Type": "application/json",
+        ...(receipt?.clientRequestId ? { "X-Client-Request-Id": receipt.clientRequestId } : {}) },
       body: JSON.stringify({
         model,
         messages: [
@@ -160,11 +164,15 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
       }),
     });
   } catch (e) {
+    await failPaidCall(receipt, e);
     // Network-level failure (timeout, socket reset) — worth one more go.
     return retry(`fetch failed (${e.cause?.code || e.message})`);
   }
   if (!res.ok) {
     const text = await res.text();
+    await failPaidCall(receipt, new Error(`${res.status}: ${text.slice(0, 120)}`), {
+      definitelyUnbilled: true, providerRequestId: res.headers.get("x-request-id"),
+    });
     // Exhausted credits also arrive as a 429, but no amount of backoff fixes
     // them — fail fast WITH the body so the job machine's provider-credit
     // classifier (PROVIDER_CREDIT_RE in jobs.mjs) can pause the job instead
@@ -179,14 +187,17 @@ async function openaiJson({ model, system, content, schema, images = [], maxToke
   try {
     stream = await readStream(res);
   } catch (e) {
+    await failPaidCall(receipt, e, { providerRequestId: res.headers.get("x-request-id") });
     return retry(`stream broke (${e.cause?.code || e.message})`);
   }
-  if (stream.refusal) throw new Error(`openai ${model} refused: ${stream.refusal.slice(0, 200)}`);
-  const text = stream.text;
-  if (!text) throw new Error(`openai ${model}: empty response (${stream.finish})`);
   const u = stream.usage || {};
   const price = OPENAI_PRICES[model] || OPENAI_PRICES[OPENAI_FAST_MODEL];
   const cost = spent + ((u.prompt_tokens || 0) * price.in + (u.completion_tokens || 0) * price.out) / 1_000_000;
+  await completePaidCall(receipt, { costUsd: cost - spent, providerRequestId: res.headers.get("x-request-id"), usage: u,
+    responseMeta: { text: stream.text, refusal: stream.refusal || null, finish: stream.finish } });
+  if (stream.refusal) throw new Error(`openai ${model} refused: ${stream.refusal.slice(0, 200)}`);
+  const text = stream.text;
+  if (!text) throw new Error(`openai ${model}: empty response (${stream.finish})`);
   try {
     return { data: JSON.parse(text), cost, model };
   } catch (e) {
@@ -428,7 +439,10 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
     // As with Vertex: a judge failing is not a book failing. Fall through to
     // the writer's engine rather than killing a paid job over a bad key or a
     // transient Anthropic error.
+    let receipt;
     try {
+      receipt = await beginPaidCall({ call: "anthropic-judge", provider: "anthropic", model: MODEL, estimateUsd: 0.75,
+        requestMeta: { system, content, schema: anthropicSchema(schema), max_tokens: Math.max(maxTokens, JUDGE_MAX_TOKENS) } });
       const r = await (await getClient()).messages.create({
         model: MODEL,
         max_tokens: Math.max(maxTokens, JUDGE_MAX_TOKENS),
@@ -451,8 +465,11 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
         throw new Error("response hit max_tokens — JSON is truncated");
       }
       const t = r.content.find((b) => b.type === "text")?.text ?? "";
+      await completePaidCall(receipt, { costUsd: usageCost(r.usage), providerRequestId: r._request_id || null,
+        usage: r.usage, responseMeta: { text: t, stop_reason: r.stop_reason } });
       return { data: JSON.parse(t), cost: usageCost(r.usage), model: r.model || MODEL };
     } catch (e) {
+      await failPaidCall(receipt, e, { definitelyUnbilled: Number(e?.status || 0) >= 400, providerRequestId: e?._request_id || null });
       console.warn(`[forge] cross-vendor judge (anthropic) failed, falling back to writer: ${e.message}`);
     }
   }
@@ -479,17 +496,27 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
       maxTokens,
     });
   }
-  const response = await (await getClient()).messages.create({
+  const receipt = await beginPaidCall({ call: "anthropic-json", provider: "anthropic", model: MODEL, estimateUsd: 0.75,
+    requestMeta: { system, content, schema: anthropicSchema(schema), max_tokens: maxTokens } });
+  let response;
+  try { response = await (await getClient()).messages.create({
     model: MODEL,
     max_tokens: maxTokens,
     system,
     messages: [{ role: "user", content }],
     output_config: { format: { type: "json_schema", schema: anthropicSchema(schema) } },
-  });
+  }); } catch (e) {
+    await failPaidCall(receipt, e, { definitelyUnbilled: Number(e?.status || 0) >= 400, providerRequestId: e?._request_id || null });
+    throw e;
+  }
   if (response.stop_reason === "refusal") {
+    await completePaidCall(receipt, { costUsd: usageCost(response.usage), providerRequestId: response._request_id || null,
+      usage: response.usage, responseMeta: { text: "", stop_reason: response.stop_reason } });
     throw new Error("Claude declined the request (refusal)");
   }
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
+  await completePaidCall(receipt, { costUsd: usageCost(response.usage), providerRequestId: response._request_id || null,
+    usage: response.usage, responseMeta: { text, stop_reason: response.stop_reason } });
   return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }
 

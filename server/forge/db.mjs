@@ -35,7 +35,7 @@ async function rest(pathQ, opts = {}) {
 
 // ---------- file fallback ----------
 function loadFile() {
-  if (!fs.existsSync(FILE_STORE)) return { custom_books: [], custom_book_orders: [] };
+  if (!fs.existsSync(FILE_STORE)) return { custom_books: [], custom_book_orders: [], forge_spend_attempts: [] };
   return JSON.parse(fs.readFileSync(FILE_STORE, "utf8"));
 }
 function saveFile(s) {
@@ -69,6 +69,88 @@ export async function initDb() {
 
 export function dbMode() {
   return mode;
+}
+
+export async function beginSpendAttempt(row) {
+  await initDb();
+  if (mode === "supabase") {
+    return rest("rpc/forge_begin_spend_attempt", {
+      method: "POST",
+      body: JSON.stringify({
+        p_book_id: row.bookId, p_operation_key: row.operationKey, p_step: row.step,
+        p_call_name: row.callName, p_provider: row.provider, p_model: row.model || null,
+        p_estimate_usd: row.estimateUsd, p_cap_usd: row.capUsd,
+        p_client_request_id: row.clientRequestId,
+        p_request_meta: row.requestMeta,
+      }),
+    });
+  }
+  const s = loadFile();
+  s.forge_spend_attempts ||= [];
+  if (s.forge_spend_attempts.some((a) => a.operation_key === row.operationKey)) {
+    const existing = s.forge_spend_attempts.find((a) => a.operation_key === row.operationKey);
+    const stale = existing.status === "active" && Date.now() - new Date(existing.started_at).getTime() > 6 * 60_000;
+    if (stale) { existing.status = "uncertain"; existing.finished_at = new Date().toISOString(); saveFile(s); }
+    return { allowed: false, reason: stale ? "unresolved operation" : "duplicate operation", status: existing.status, startedAt: existing.started_at };
+  }
+  const exposure = spendExposureFromRows(s.forge_spend_attempts.filter((a) => a.book_id === row.bookId));
+  if (exposure.confirmed_usd + exposure.uncertain_usd + exposure.active_reservation_usd + row.estimateUsd > row.capUsd) {
+    return { allowed: false, reason: "spend cap", exposure };
+  }
+  const attempt = { id: uuid(), book_id: row.bookId, operation_key: row.operationKey,
+    step: row.step, call_name: row.callName, provider: row.provider, model: row.model || null,
+    client_request_id: row.clientRequestId, estimate_usd: row.estimateUsd, actual_usd: null,
+    status: "active", request_meta: row.requestMeta, started_at: new Date().toISOString() };
+  s.forge_spend_attempts.push(attempt); saveFile(s);
+  return { allowed: true, id: attempt.id, clientRequestId: attempt.client_request_id, operationKey: attempt.operation_key };
+}
+
+export async function finishSpendAttempt({ id, status, actualUsd, providerRequestId, usage, responseMeta, error }) {
+  await initDb();
+  const patch = { status, actual_usd: actualUsd, provider_request_id: providerRequestId,
+    usage, response_meta: responseMeta, error, finished_at: new Date().toISOString() };
+  Object.keys(patch).forEach((k) => patch[k] === undefined && delete patch[k]);
+  if (mode === "supabase") {
+    const rows = await rest(`forge_spend_attempts?id=eq.${id}`, { method: "PATCH", body: JSON.stringify(patch) });
+    return rows[0] || null;
+  }
+  const s = loadFile(); const hit = (s.forge_spend_attempts || []).find((a) => a.id === id);
+  if (hit) Object.assign(hit, patch); saveFile(s); return hit || null;
+}
+
+function spendExposureFromRows(rows) {
+  const sum = (status, field) => rows.filter((a) => a.status === status).reduce((n, a) => n + Number(a[field] || 0), 0);
+  return { confirmed_usd: sum("confirmed", "actual_usd"), uncertain_usd: sum("uncertain", "estimate_usd"),
+    active_reservation_usd: sum("active", "estimate_usd") };
+}
+
+export async function getSpendExposure(bookId) {
+  await initDb();
+  const rows = mode === "supabase"
+    ? await rest(`forge_spend_attempts?book_id=eq.${bookId}&select=status,estimate_usd,actual_usd`)
+    : (loadFile().forge_spend_attempts || []).filter((a) => a.book_id === bookId);
+  return spendExposureFromRows(rows);
+}
+
+export async function getAllSpendExposure() {
+  await initDb();
+  const rows = mode === "supabase"
+    ? await rest("forge_spend_attempts?select=status,estimate_usd,actual_usd")
+    : (loadFile().forge_spend_attempts || []);
+  return spendExposureFromRows(rows);
+}
+
+async function spendExposureByBook() {
+  await initDb();
+  const rows = mode === "supabase"
+    ? await rest("forge_spend_attempts?select=book_id,status,estimate_usd,actual_usd")
+    : (loadFile().forge_spend_attempts || []);
+  const grouped = new Map();
+  for (const row of rows) {
+    if (!grouped.has(row.book_id)) grouped.set(row.book_id, []);
+    grouped.get(row.book_id).push(row);
+  }
+  return new Map([...grouped].map(([id, attempts]) => [id, spendExposureFromRows(attempts)]));
 }
 
 export async function insertBook(row) {
@@ -299,7 +381,12 @@ export async function recentSourceStories(limit = 6) {
 export async function costSummary() {
   await initDb();
   const books = await listBooks({});
-  const spend = (b) => Number(b.cost_usd || 0) || Number(b.progress?.job?.cost || 0);
+  const legacyUncertain = (b) => {
+    const bd = b.cost_breakdown || b.progress?.job?.breakdown || {};
+    return (bd.calls || []).filter((c) => String(c.call || "").startsWith("unreconciled:"))
+      .reduce((n, c) => n + Number(c.usd || 0), 0);
+  };
+  const spend = (b) => Math.max(0, (Number(b.cost_usd || 0) || Number(b.progress?.job?.cost || 0)) - legacyUncertain(b));
   const spent = books.filter((b) => spend(b) > 0);
   const delivered = books.filter((b) => ["ready", "approved"].includes(b.status));
   const total = spent.reduce((s, b) => s + spend(b), 0);
@@ -308,6 +395,9 @@ export async function costSummary() {
   const todayTotal = spent
     .filter((b) => String(b.created_at || "").slice(0, 10) === today)
     .reduce((s, b) => s + spend(b), 0);
+  const legacyUncertainTotal = books.reduce((n, b) => n + legacyUncertain(b), 0);
+  let tracked = { confirmed_usd: total, uncertain_usd: 0, active_reservation_usd: 0 };
+  try { tracked = await getAllSpendExposure(); } catch { /* pre-migration fallback */ }
   return {
     books_generated: delivered.length,
     books_with_spend: spent.length,
@@ -316,6 +406,8 @@ export async function costSummary() {
     wasted_cost_usd: Number((total - deliveredTotal).toFixed(4)),
     today_cost_usd: Number(todayTotal.toFixed(4)),
     avg_cost_usd: delivered.length ? Number((deliveredTotal / delivered.length).toFixed(4)) : 0,
+    uncertain_exposure_usd: Number((Number(tracked.uncertain_usd || 0) + legacyUncertainTotal).toFixed(4)),
+    active_reservation_usd: Number(Number(tracked.active_reservation_usd || 0).toFixed(4)),
   };
 }
 
@@ -330,9 +422,18 @@ export async function allBooksForAdmin() {
   // Their spend still counts — costSummary reads every row, not this list.
   const listed = books.filter((b) =>
     b.status !== "rejected" && !b.progress?.job?.textOnly);
+  let exposureByBook = new Map();
+  try { exposureByBook = await spendExposureByBook(); } catch { /* pre-migration fallback */ }
   return listed.map((b) => {
     const job = b.progress?.job || {};
     const bd = b.cost_breakdown || job.breakdown || {};
+    const legacyUncertain = (bd.calls || []).filter((c) => String(c.call || "").startsWith("unreconciled:"))
+      .reduce((n, c) => n + Number(c.usd || 0), 0);
+    let exposure = { confirmed_usd: Math.max(0, Number(b.cost_usd || job.cost || 0) - legacyUncertain),
+      uncertain_usd: legacyUncertain, active_reservation_usd: 0 };
+    const tracked = exposureByBook.get(b.id);
+    const hasTracked = tracked && (tracked.confirmed_usd || tracked.uncertain_usd || tracked.active_reservation_usd);
+    if (hasTracked) exposure = tracked; // pre-migration books retain their legacy confirmed ledger
     return {
       id: b.id,
       created_at: b.created_at,
@@ -343,6 +444,9 @@ export async function allBooksForAdmin() {
       title: b.title || b.story?.story?.title || null,
       status: b.status,
       cost_usd: Number((Number(b.cost_usd || 0) || Number(job.cost || 0)).toFixed(4)),
+      confirmed_spend_usd: Number(Number(exposure.confirmed_usd || 0).toFixed(4)),
+      uncertain_exposure_usd: Number(Number(exposure.uncertain_usd || 0).toFixed(4)),
+      active_reservation_usd: Number(Number(exposure.active_reservation_usd || 0).toFixed(4)),
       text_usd: Number(Number(bd.story_usd || 0).toFixed(4)),
       images_usd: Number(Number(bd.images_usd || 0).toFixed(4)),
       // storage.publicUrl, not a hand-built path — the old literal was the

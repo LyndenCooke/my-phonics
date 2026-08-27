@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { cfg, BOOKS_DIR, REPO_ROOT } from "./env.mjs";
 import { eyeRuleQA, findFaces, sceneConsistencyQA } from "./claude.mjs";
+import { beginPaidCall, completePaidCall, failPaidCall } from "./spend.mjs";
 
 const KONTEXT_COST = 0.04; // $ per Kontext Pro image
 const KONTEXT_MAX_COST = 0.08; // $ per Kontext Max (multi-ref) image
@@ -143,6 +144,8 @@ export function takeLastOpenAIImageCost() {
 }
 
 async function openaiImage(prompt, refBufs, size, attempt = 0) {
+  const receipt = await beginPaidCall({ call: `image-edit-${attempt + 1}`, provider: "openai", model: OPENAI_IMG_MODEL, estimateUsd: 0.35,
+    requestMeta: { prompt, reference_count: refBufs.length, size: OPENAI_SIZES[size] || "1024x1024", quality: "medium" } });
   const fd = new FormData();
   fd.append("model", OPENAI_IMG_MODEL);
   fd.append("prompt", prompt);
@@ -152,13 +155,23 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
   refBufs.forEach((buf, i) => {
     fd.append("image[]", new Blob([buf], { type: "image/png" }), `ref${i}.png`);
   });
-  const res = await fetch("https://api.openai.com/v1/images/edits", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}` },
-    body: fd,
-  });
+  let res;
+  try {
+    res = await fetch("https://api.openai.com/v1/images/edits", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`,
+        ...(receipt?.clientRequestId ? { "X-Client-Request-Id": receipt.clientRequestId } : {}) },
+      body: fd,
+    });
+  } catch (e) {
+    await failPaidCall(receipt, e);
+    throw e;
+  }
   if (!res.ok) {
     const text = await res.text();
+    await failPaidCall(receipt, new Error(`${res.status}: ${text.slice(0, 120)}`), {
+      definitelyUnbilled: true, providerRequestId: res.headers.get("x-request-id"),
+    });
     // Exhausted credits are a 429 no backoff can fix — fail fast with the
     // body so jobs.mjs pauses the book (paused_provider_credit) immediately.
     const billing = /insufficient_quota|credit_balance_exhausted|billing/i.test(text);
@@ -172,8 +185,13 @@ async function openaiImage(prompt, refBufs, size, attempt = 0) {
   }
   const data = await res.json();
   const b64 = data.data?.[0]?.b64_json;
-  if (!b64) throw new Error("openai image: no image in response");
+  if (!b64) {
+    await failPaidCall(receipt, new Error("openai image: no image in response"), { providerRequestId: res.headers.get("x-request-id") });
+    throw new Error("openai image: no image in response");
+  }
   lastOpenAIImageCost = costFromImageUsage(data.usage);
+  await completePaidCall(receipt, { costUsd: lastOpenAIImageCost, providerRequestId: res.headers.get("x-request-id"), usage: data.usage,
+    responseMeta: { image_count: 1 } });
   return Buffer.from(b64, "base64");
 }
 
@@ -216,13 +234,25 @@ async function responsesImage({ prompt, refBufs = [], previousResponseId = null,
     tools: [{ type: "image_generation", size, quality: "medium" }],
   };
   if (previousResponseId) body.previous_response_id = previousResponseId;
-  const res = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const receipt = await beginPaidCall({ call: `responses-image-${attempt + 1}`, provider: "openai", model: RESPONSES_MODEL, estimateUsd: 0.65,
+    requestMeta: { prompt, reference_count: refBufs.length, previous_response_id: previousResponseId, size, quality: "medium" } });
+  let res;
+  try {
+    res = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${cfg.OPENAI_API_KEY}`, "Content-Type": "application/json",
+        ...(receipt?.clientRequestId ? { "X-Client-Request-Id": receipt.clientRequestId } : {}) },
+      body: JSON.stringify(body),
+    });
+  } catch (e) {
+    await failPaidCall(receipt, e);
+    throw e;
+  }
   if (!res.ok) {
     const text = await res.text();
+    await failPaidCall(receipt, new Error(`${res.status}: ${text.slice(0, 120)}`), {
+      definitelyUnbilled: true, providerRequestId: res.headers.get("x-request-id"),
+    });
     // Same billing fast-fail as openaiImage — see comment there.
     const billing = /insufficient_quota|credit_balance_exhausted|billing/i.test(text);
     if (!billing && [429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
@@ -235,8 +265,16 @@ async function responsesImage({ prompt, refBufs = [], previousResponseId = null,
   }
   const data = await res.json();
   const imgCall = (data.output || []).find((o) => o.type === "image_generation_call");
-  if (!imgCall?.result) throw new Error(`responses image: no image in output (status ${data.status})`);
-  return { buf: Buffer.from(imgCall.result, "base64"), responseId: data.id, cost: responsesUsageCost(data.usage) };
+  if (!imgCall?.result) {
+    await failPaidCall(receipt, new Error(`responses image: no image in output (status ${data.status})`), {
+      providerRequestId: res.headers.get("x-request-id"),
+    });
+    throw new Error(`responses image: no image in output (status ${data.status})`);
+  }
+  const cost = responsesUsageCost(data.usage);
+  await completePaidCall(receipt, { costUsd: cost, providerRequestId: res.headers.get("x-request-id"), usage: data.usage,
+    responseMeta: { response_id: data.id, image_count: 1, status: data.status } });
+  return { buf: Buffer.from(imgCall.result, "base64"), responseId: data.id, cost };
 }
 
 // Storage moved to storage.mjs (2026-08-06): images must go to Supabase
@@ -773,6 +811,10 @@ export async function generateAnimal({ name, appearance }) {
 // this place permanently look like"; prevBuf = "what does it look like RIGHT
 // NOW" — both can be true and useful at once.
 export async function generateScene({ heroBuf, scene, child, settingBlock = "", anchorBuf = null, prevBuf = null, camera = "wide", castRefs = [], objectRefs = [], pageText = "", assertions = null, physics = "", previousResponseId = null, chainEnabled = true }) {
+  // Whole-book QA is the default: paint the set once, compare the contact
+  // sheet once, then make one consolidated repair decision. Per-page vision
+  // QA remains an explicit diagnostic switch, not a hidden repaint trigger.
+  const perPageQa = process.env.FORGE_PER_PAGE_QA === "1";
   const heroUri = toDataUri(heroBuf, "image/png");
   // The hero's look goes in as TEXT as well as a reference image. The
   // reference alone is not enough on the establishing page — it is the one
@@ -929,7 +971,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
         buf = repaired.buf; cost += repaired.cost; qa = { ...repaired.qa, engine: "responses-chain" };
       }
 
-      if (pageText) {
+      if (pageText && perPageQa) {
         const check = await sceneConsistencyQA(buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
         cost += check.cost;
         // Only a BLOCKING fault is worth a regeneration: a failed page costs
@@ -976,7 +1018,7 @@ export async function generateScene({ heroBuf, scene, child, settingBlock = "", 
   // director declared? Only runs when the caller supplies pageText (jobs.mjs
   // does, for every real story page). One repair pass, bounded: a second
   // wrong picture ships rather than looping, same doctrine as repairEyes.
-  if (pageText) {
+  if (pageText && perPageQa) {
     try {
       const check = await sceneConsistencyQA(result.buf.toString("base64"), { sceneText: pageText, objectsBlock: settingBlock, characterRefs: qaCharacterRefs, assertions });
       result.cost += check.cost;

@@ -437,6 +437,10 @@ export async function handleForge(req, res) {
         // nothing regenerated. A retry on paused_budget is the human act
         // that authorises one more budget unit (automation never raises it).
         const job = book.progress?.job || null;
+        if (job) {
+          job.spendEpoch = Number(job.spendEpoch || 0) + 1;
+          await db.updateBook(b.book_id, { progress: { ...(book.progress || {}), job } });
+        }
         if (job && book.status === "paused_budget") {
           job.capUsd = Number((job.cost + MAX_BOOK_SPEND_USD).toFixed(2));
           await db.updateBook(b.book_id, { progress: { ...(book.progress || {}), job } });

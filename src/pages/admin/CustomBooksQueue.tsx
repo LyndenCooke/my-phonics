@@ -95,6 +95,11 @@ export default function CustomBooksQueue() {
                 )}
               </div>
               <div className="text-xs text-muted-foreground">today: ${Number(costs.today_cost_usd || 0).toFixed(2)}</div>
+              {(Number(costs.uncertain_exposure_usd || 0) > 0 || Number(costs.active_reservation_usd || 0) > 0) && (
+                <div className="text-xs font-semibold text-amber-700">
+                  ${Number(costs.uncertain_exposure_usd || 0).toFixed(2)} uncertain · ${Number(costs.active_reservation_usd || 0).toFixed(2)} active
+                </div>
+              )}
             </div>
           )
         }
@@ -187,8 +192,15 @@ export default function CustomBooksQueue() {
                   {b.status}
                 </span>
                 <span className="ml-auto whitespace-nowrap font-bold">
-                  ${b.cost_usd.toFixed(2)}
+                  ${b.confirmed_spend_usd.toFixed(2)} confirmed
                 </span>
+                {(b.uncertain_exposure_usd > 0 || b.active_reservation_usd > 0) && (
+                  <span className="whitespace-nowrap rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                    {b.uncertain_exposure_usd > 0 && `$${b.uncertain_exposure_usd.toFixed(2)} uncertain`}
+                    {b.uncertain_exposure_usd > 0 && b.active_reservation_usd > 0 && " · "}
+                    {b.active_reservation_usd > 0 && `$${b.active_reservation_usd.toFixed(2)} reserved`}
+                  </span>
+                )}
                 <span className="whitespace-nowrap text-xs text-muted-foreground">
                   text ${b.text_usd.toFixed(2)} · art ${b.images_usd.toFixed(2)}
                 </span>
