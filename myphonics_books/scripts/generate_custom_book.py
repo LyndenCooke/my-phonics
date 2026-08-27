@@ -108,6 +108,29 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
     page_texts = spec["story_pages"]
     focus = spec["focus_sound"]
 
+    # IMAGE PRESENCE GATE (2026-08-27): a paid book must NEVER render with the
+    # template's "[ Scene N ]" placeholder boxes. It happened for real — a
+    # dev-generated book viewed through the prod admin fetched its images from
+    # Supabase Storage, found none (dev saves to local disk only), rendered
+    # placeholders on every page, PASSED the page-count gate (placeholders
+    # still make 20 pages) and saved the garbage PDF to storage as the book.
+    # Fail the render loudly instead; a missing image is an asset problem to
+    # fix, not a page to ship.
+    _missing = []
+    for _i in range(1, len(page_texts) + 1):
+        _p = images_dir / f"page{_i}.jpg"
+        if not _p.exists() or _p.stat().st_size < 10_000:
+            _missing.append(_p.name)
+    if not (images_dir / "cover.jpg").exists():
+        _missing.append("cover.jpg")
+    if _missing:
+        raise SystemExit(
+            "image-presence gate: refusing to render with missing/empty story art "
+            f"({', '.join(_missing)}) — a book must never ship placeholder pages. "
+            "If this is a dev-generated book viewed on prod, its images live on the dev "
+            "machine's public/custom-books/ and must be backfilled into Supabase Storage."
+        )
+
     tmp_images = jpgs_to_pngs(images_dir, len(page_texts))
 
     # Page count follows the level, same as the real 33-book library —
