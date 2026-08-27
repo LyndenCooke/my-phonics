@@ -50,13 +50,7 @@ export function publicUrl(bookId, name) {
   return `${cfg.SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${bookId}/${name}`;
 }
 
-export async function saveImage(bookId, name, buf) {
-  if (!IS_SERVERLESS) {
-    const dir = path.join(CUSTOM_BOOKS_DIR, bookId);
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, name), buf);
-    return publicUrl(bookId, name);
-  }
+async function uploadToBucket(bookId, name, buf) {
   await ensureBucket();
   const mime = MIME[path.extname(name).toLowerCase()] || "application/octet-stream";
   const res = await fetch(
@@ -71,6 +65,28 @@ export async function saveImage(bookId, name, buf) {
     const text = await res.text();
     throw new Error(`storage upload ${name}: ${res.status} ${text.slice(0, 200)}`);
   }
+}
+
+export async function saveImage(bookId, name, buf) {
+  if (!IS_SERVERLESS) {
+    const dir = path.join(CUSTOM_BOOKS_DIR, bookId);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, name), buf);
+    // DUAL-WRITE (2026-08-27): also mirror to Supabase Storage, best-effort.
+    // Dev-only books used to live solely on this machine's disk, so the prod
+    // admin's serverless renderer found no images and shipped "[ Scene N ]"
+    // placeholder PDFs for all three of the owner's test books. Local disk
+    // stays the dev source of truth (URLs unchanged); storage is the mirror
+    // prod reads. A failed upload must never fail generation — warn and move
+    // on; the image-presence gate now catches any book that slips through.
+    try {
+      await uploadToBucket(bookId, name, buf);
+    } catch (e) {
+      console.warn(`[forge] storage mirror failed for ${bookId}/${name} (book unaffected locally):`, e.message);
+    }
+    return publicUrl(bookId, name);
+  }
+  await uploadToBucket(bookId, name, buf);
   return publicUrl(bookId, name);
 }
 
