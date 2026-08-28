@@ -194,7 +194,7 @@ export default function SafariGame({ level, onClose }: Props) {
             rot += Math.sin(t * 1.1 + o.ph * 2) * 0.03;
             // the lens makes things lean in closer
             const d = Math.hypot(o.x - lens.x, o.y - lens.y);
-            if (d < 130) s *= 1 + 0.22 * (1 - d / 130);
+            if (d < 150) s *= 1 + 0.24 * (1 - d / 150);
           } else if (o.state === 'shake') {
             x += Math.sin(o.t * 42) * 8 * Math.max(0, 1 - o.t / 0.55);
             rot += Math.sin(o.t * 42) * 0.06;
@@ -218,15 +218,30 @@ export default function SafariGame({ level, onClose }: Props) {
 
         fx.draw(ctx);
 
+        // ── candle-lit gloom with the lens as a pool of light — the
+        // magnifier is a real torch, not a cursor decoration ──
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, LW, LH);
+        ctx.arc(lens.x, lens.y, 118, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(38,24,10,0.34)';
+        ctx.fill('evenodd');
+        const rim = ctx.createRadialGradient(lens.x, lens.y, 92, lens.x, lens.y, 150);
+        rim.addColorStop(0, 'rgba(255,214,140,0.16)');
+        rim.addColorStop(1, 'rgba(255,214,140,0)');
+        ctx.fillStyle = rim;
+        ctx.beginPath(); ctx.arc(lens.x, lens.y, 150, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+
         // ── magnifying glass (the detective's tool) ──
         ctx.save();
         ctx.translate(lens.x, lens.y);
-        ctx.strokeStyle = '#B98A2E'; ctx.lineWidth = 7;
-        ctx.beginPath(); ctx.arc(0, 0, 64, 0, 7); ctx.stroke();
-        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.arc(0, 0, 56, -2.6, -1.9); ctx.stroke();
-        ctx.strokeStyle = '#8A5A2B'; ctx.lineWidth = 13; ctx.lineCap = 'round';
-        ctx.beginPath(); ctx.moveTo(46, 46); ctx.lineTo(88, 88); ctx.stroke();
+        ctx.strokeStyle = '#B98A2E'; ctx.lineWidth = 9;
+        ctx.beginPath(); ctx.arc(0, 0, 118, 0, 7); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(0, 0, 106, -2.6, -1.9); ctx.stroke();
+        ctx.strokeStyle = '#8A5A2B'; ctx.lineWidth = 17; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(85, 85); ctx.lineTo(150, 150); ctx.stroke();
         ctx.restore();
 
         // ── HUD: the brief ──

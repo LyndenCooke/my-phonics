@@ -74,6 +74,11 @@ export default function WordPopGame({ level, onClose }: Props) {
     const fx = new Particles();
     const art = new Image();
     art.src = '/images/games/wordpop_sky.webp';
+    // painted sprites (optional — procedural fallbacks below)
+    const beeImgs = [0, 1].map(i => { const im = new Image(); im.src = `/images/games/sprites/bee_${i}.png`; return im; });
+    const hillsImg = new Image();
+    hillsImg.src = '/images/games/sprites/hills_fg.png';
+    const okIm = (im: HTMLImageElement) => im.complete && im.naturalWidth > 0;
     let fontReady = false;
     try { document.fonts.ready.then(() => { fontReady = true; }); } catch { fontReady = true; }
 
@@ -316,11 +321,25 @@ export default function WordPopGame({ level, onClose }: Props) {
           ctx.restore();
         }
 
+        // ── foreground hills: bubbles rise from BEHIND the meadow ──
+        if (okIm(hillsImg)) {
+          const hw = LW, hh = hw * hillsImg.naturalHeight / hillsImg.naturalWidth;
+          ctx.drawImage(hillsImg, 0, LH + 120 - hh, hw, hh);
+        }
+
         // ── Buzz the bee ──
         const flap = Math.sin(t * 26) * 0.9;
         const ang = clamp(bee.vx * 0.0004, -0.35, 0.35) + bee.spin * Math.sin(t * 30) * 0.5;
         ctx.save(); ctx.translate(bee.x, bee.y); ctx.rotate(ang);
         ctx.fillStyle = 'rgba(40,30,40,0.16)'; ctx.beginPath(); ctx.ellipse(0, 34, 20, 5, 0, 0, 7); ctx.fill();
+        if (beeImgs.every(okIm)) {
+          // painted bee, two wing frames; sprite faces right — flip with vx
+          const frame = beeImgs[Math.floor(t * 14) % 2];
+          const bh = 96, bw = bh * frame.naturalWidth / frame.naturalHeight;
+          if (bee.vx < -40) ctx.scale(-1, 1);
+          ctx.drawImage(frame, -bw / 2, -bh / 2 - 6, bw, bh);
+          ctx.restore();
+        } else {
         // wings
         ctx.fillStyle = 'rgba(235,248,255,0.85)';
         ctx.save(); ctx.rotate(-0.5 - flap * 0.35); ctx.beginPath(); ctx.ellipse(-4, -20, 9, 17, 0.3, 0, 7); ctx.fill(); ctx.restore();
@@ -339,6 +358,7 @@ export default function WordPopGame({ level, onClose }: Props) {
         ctx.strokeStyle = '#0D0D0D'; ctx.lineWidth = 2;
         ctx.beginPath(); ctx.moveTo(14, 2); ctx.quadraticCurveTo(17, 5, 20, 2); ctx.stroke();
         ctx.restore();
+        }
 
         fx.draw(ctx);
 

@@ -19,9 +19,10 @@
  * up. Wrong door: it's shut — thud, bounce, the right door shows a tick,
  * and the pace resets. Eight doors a run.
  *
- * Shared engine scene: fixed 1280×720 logical space; the painted meadow
- * (wordpop_sky) is environment only — a procedural sky and path draw when
- * it's absent. No TTS anywhere.
+ * Shared engine scene: fixed 1280×720 logical space. The painted path
+ * backdrop, door sprite and 3-frame run-cycle kid (gpt-image, real alpha)
+ * are all optional assets — procedural versions draw when any is missing.
+ * No TTS anywhere.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -39,7 +40,7 @@ interface Props {
 
 const LW = 1280, LH = 720;
 const WAVES = 8;
-const HORIZON_Y = 296;
+const HORIZON_Y = 330;
 const RUNNER_Y = 598;
 const MARKS = ['.', '?', '!'] as const;
 type Mark = typeof MARKS[number];
@@ -97,8 +98,13 @@ export default function PunctuationRun({ level, onClose }: Props) {
     const hex = level.hex, ink = level.inkHex;
     const ev = new EventQueue();
     const fx = new Particles();
+    // Painted scenery + sprites (all optional — procedural fallbacks below)
     const art = new Image();
-    art.src = '/images/games/wordpop_sky.webp';
+    art.src = '/images/games/run_path.webp';
+    const doorImg = new Image();
+    doorImg.src = '/images/games/sprites/door.png';
+    const kidImgs = [0, 1, 2].map(i => { const im = new Image(); im.src = `/images/games/sprites/kid_${i}.png`; return im; });
+    const ok = (im: HTMLImageElement) => im.complete && im.naturalWidth > 0;
     let fontReady = false;
     try { document.fonts.ready.then(() => { fontReady = true; }); } catch { fontReady = true; }
 
@@ -213,19 +219,23 @@ export default function PunctuationRun({ level, onClose }: Props) {
         const F = fontReady ? 'Andika' : 'sans-serif';
         const FD = fontReady ? 'Outfit' : 'sans-serif';
 
-        // ── the path (drawn over the meadow, narrowing to the horizon) ──
-        ctx.fillStyle = '#E4C98F';
-        ctx.beginPath();
-        ctx.moveTo(LW / 2 - 120, HORIZON_Y);
-        ctx.lineTo(LW / 2 + 120, HORIZON_Y);
-        ctx.lineTo(LW / 2 + 520, LH);
-        ctx.lineTo(LW / 2 - 520, LH);
-        ctx.closePath(); ctx.fill();
-        ctx.strokeStyle = 'rgba(140,100,50,0.4)'; ctx.lineWidth = 5;
-        ctx.beginPath(); ctx.moveTo(LW / 2 - 120, HORIZON_Y); ctx.lineTo(LW / 2 - 520, LH); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(LW / 2 + 120, HORIZON_Y); ctx.lineTo(LW / 2 + 520, LH); ctx.stroke();
-        // scrolling dashes on the two lane separators
-        ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+        // ── the path — only drawn when the painted backdrop (which has the
+        // path baked in) is missing ──
+        if (!ok(art)) {
+          ctx.fillStyle = '#E4C98F';
+          ctx.beginPath();
+          ctx.moveTo(LW / 2 - 120, HORIZON_Y);
+          ctx.lineTo(LW / 2 + 120, HORIZON_Y);
+          ctx.lineTo(LW / 2 + 520, LH);
+          ctx.lineTo(LW / 2 - 520, LH);
+          ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = 'rgba(140,100,50,0.4)'; ctx.lineWidth = 5;
+          ctx.beginPath(); ctx.moveTo(LW / 2 - 120, HORIZON_Y); ctx.lineTo(LW / 2 - 520, LH); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(LW / 2 + 120, HORIZON_Y); ctx.lineTo(LW / 2 + 520, LH); ctx.stroke();
+        }
+        // scrolling dashes — the speed feel — subtle over the painted path
+        ctx.strokeStyle = ok(art) ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.55)';
+        ctx.lineWidth = 4; ctx.lineCap = 'round';
         for (const sep of [-0.5, 0.5]) {
           for (let k = 0; k < 9; k++) {
             const u0 = ((k + (roadPhase % 1)) / 9);
@@ -257,32 +267,55 @@ export default function PunctuationRun({ level, onClose }: Props) {
               ctx.translate(Math.sin(wave.t * 40) * 5 * Math.max(0, 1 - wave.t), 0);
             }
             if (gone) ctx.globalAlpha = Math.max(0, 1 - wave.t * 2.2);
-            // frame
-            ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.3)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 5 * s;
-            ctx.fillStyle = '#8A5A2B';
-            roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.fill(); ctx.restore();
-            // opening
             const open = wave.resolved === 'hit' && lane === runner.lane;
-            ctx.fillStyle = open ? '#BFE8C5'
-              : wave.resolved === 'miss' && lane === runner.lane ? '#F3C1C1' : '#C68B59';
-            roundRect(ctx, -w / 2 + 9 * s, -h + 9 * s, w - 18 * s, h - 12 * s, 10 * s); ctx.fill();
-            ctx.strokeStyle = 'rgba(80,50,20,0.5)'; ctx.lineWidth = 2.5 * s;
-            ctx.beginPath(); ctx.moveTo(0, -h + 9 * s); ctx.lineTo(0, -3 * s); ctx.stroke();
-            // the mark sign
-            ctx.save(); ctx.translate(0, -h - 34 * s);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.fill();
-            ctx.lineWidth = 4 * s; ctx.strokeStyle = isCorrect && wave.resolved === 'miss' ? '#22C55E' : `${ink}`;
-            ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.stroke();
-            ctx.fillStyle = ink; ctx.font = `800 ${Math.round(44 * s)}px ${F}`;
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(wave.marks[lane], 0, 3 * s);
-            // tick on the correct door after a miss
-            if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
-              ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(36 * s)}px ${FD}`;
-              ctx.fillText('✓', 34 * s, -26 * s);
+            const missed = wave.resolved === 'miss' && lane === runner.lane;
+            if (ok(doorImg)) {
+              // painted sprite: sign plate baked in at the top (~12% down)
+              const dh = 330 * s, dw = dh * doorImg.naturalWidth / doorImg.naturalHeight;
+              if (open) {
+                const glow = ctx.createRadialGradient(0, -dh * 0.45, 8, 0, -dh * 0.45, dh * 0.55);
+                glow.addColorStop(0, 'rgba(140,240,160,0.75)'); glow.addColorStop(1, 'rgba(140,240,160,0)');
+                ctx.fillStyle = glow; ctx.fillRect(-dw, -dh * 1.05, dw * 2, dh * 1.2);
+              }
+              ctx.save();
+              ctx.shadowColor = 'rgba(40,30,40,0.35)'; ctx.shadowBlur = 12 * s; ctx.shadowOffsetY = 6 * s;
+              ctx.drawImage(doorImg, -dw / 2, -dh, dw, dh);
+              ctx.restore();
+              if (missed) {
+                ctx.globalAlpha *= 0.35; ctx.fillStyle = '#E5484D';
+                roundRect(ctx, -dw * 0.38, -dh * 0.72, dw * 0.76, dh * 0.7, 12 * s); ctx.fill();
+                ctx.globalAlpha = gone ? Math.max(0, 1 - wave.t * 2.2) : 1;
+              }
+              const signY = -dh * 0.885;
+              ctx.fillStyle = missed && lane === runner.lane ? '#E5484D' : ink;
+              ctx.font = `800 ${Math.round(46 * s)}px ${F}`;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText(wave.marks[lane], 0, signY);
+              if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
+                ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(38 * s)}px ${FD}`;
+                ctx.fillText('✓', dw * 0.42, signY - 20 * s);
+              }
+            } else {
+              // procedural fallback door
+              ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.3)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 5 * s;
+              ctx.fillStyle = '#8A5A2B';
+              roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.fill(); ctx.restore();
+              ctx.fillStyle = open ? '#BFE8C5' : missed ? '#F3C1C1' : '#C68B59';
+              roundRect(ctx, -w / 2 + 9 * s, -h + 9 * s, w - 18 * s, h - 12 * s, 10 * s); ctx.fill();
+              ctx.save(); ctx.translate(0, -h - 34 * s);
+              ctx.fillStyle = '#FFFFFF';
+              ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.fill();
+              ctx.lineWidth = 4 * s; ctx.strokeStyle = isCorrect && wave.resolved === 'miss' ? '#22C55E' : `${ink}`;
+              ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.stroke();
+              ctx.fillStyle = ink; ctx.font = `800 ${Math.round(44 * s)}px ${F}`;
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillText(wave.marks[lane], 0, 3 * s);
+              if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
+                ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(36 * s)}px ${FD}`;
+                ctx.fillText('✓', 34 * s, -26 * s);
+              }
+              ctx.restore();
             }
-            ctx.restore();
             ctx.restore();
           }
         }
@@ -298,6 +331,22 @@ export default function PunctuationRun({ level, onClose }: Props) {
         ctx.fillStyle = 'rgba(40,30,40,0.22)';
         ctx.beginPath(); ctx.ellipse(0, 64 + bob, 34, 8, 0, 0, 7); ctx.fill();
         const legSwing = Math.sin(runner.stride);
+        if (kidImgs.every(ok)) {
+          // painted run cycle: stride phase walks the frames 0-1-2-1
+          const seq = [0, 1, 2, 1];
+          const frame = kidImgs[seq[Math.floor(runner.stride * 1.7) % 4]];
+          const kh = 180, kw = kh * frame.naturalWidth / frame.naturalHeight;
+          ctx.save();
+          ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 6;
+          ctx.drawImage(frame, -kw / 2, -kh + 62, kw, kh);
+          ctx.restore();
+          // running dust at the heels (scene space)
+          if (Math.abs(legSwing) > 0.94 && fx.list.length < 90) {
+            fx.puff(rx - 6 + Math.random() * 12, RUNNER_Y + 56, 1, 'rgba(214,183,120,0.55)');
+          }
+          ctx.restore();
+        } else {
+        // procedural fallback runner
         // legs (navy trousers)
         ctx.strokeStyle = '#3A4A6B'; ctx.lineWidth = 15; ctx.lineCap = 'round';
         ctx.beginPath(); ctx.moveTo(-9, 18); ctx.lineTo(-9 - legSwing * 8, 52 - Math.max(0, legSwing) * 14); ctx.stroke();
@@ -322,6 +371,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
         ctx.beginPath(); ctx.arc(0, -53, 19, Math.PI * 0.95, Math.PI * 2.05); ctx.fill();
         ctx.beginPath(); ctx.ellipse(0, -58, 19, 13, 0, 0, 7); ctx.fill();
         ctx.restore();
+        }
 
         fx.draw(ctx);
 
