@@ -898,11 +898,19 @@ export function styleIssues(story, book) {
       detail: `Page ${ambiguous + 1} uses an undifferentiated animal group immediately before page ${shyPage + 1} says one shy animal "stays back". State exactly which animals act so the director cannot place the shy animal in two incompatible states.`,
     });
   }
+  // GRADED SEVERITY (Lynden 2026-08-27, "we need some leniency â€¦ we can't
+  // waste money on little things that aren't too noticeable"): a small
+  // overshoot of a style rule is a MINOR â€” it ships with a flag for the
+  // audit trail and costs nothing. Only an egregious breach, or a fault a
+  // buyer/child would actually notice, blocks and buys edit passes. The
+  // proof this was needed: Ben's test book (2026-08-27) spent two edit
+  // passes + the exact patch and then STOPPED over a name used 4 times
+  // instead of 3.
   const parentRe = /\b(Mum|Dad|Mam|Nan|Nana|Gran|Grandad|Grandma|Mummy|Daddy)\b/;
   const parentPages = pages.map((t, i) => (parentRe.test(t) ? i + 1 : 0)).filter(Boolean);
   if (parentPages.length > 2) {
     out.push({
-      severity: "major", area: "language", page: parentPages[2], replacement: "",
+      severity: parentPages.length > 3 ? "major" : "minor", area: "language", page: parentPages[2], replacement: "",
       detail: `A parent is named in the text on ${parentPages.length} of ${pages.length} pages (${parentPages.join(", ")}). Presence belongs in the pictures: name the parent only on the pages where they DO something, at most two. Rewrite the other pages so the hero acts â€” do not simply delete "with Mum" and leave a stub.`,
     });
   }
@@ -915,18 +923,28 @@ export function styleIssues(story, book) {
     }
     const uses = pages.join(" ").split(new RegExp(`\\b${name}\\b`)).length - 1;
     if (uses > 3) {
+      // 4-5 uses reads fine to a child â€” minor, ships flagged. 6+ is the
+      // name-on-every-page monotony the 08-25 ruling was about â€” blocks.
+      // (Also: don't claim the name is undecodable â€” "Ben" decodes at L2;
+      // the real objection is repetitive prose.)
       out.push({
-        severity: "major", area: "language", page: 0, replacement: "",
-        detail: `The hero's name "${name}" appears ${uses} times. It is a tricky word the child cannot decode: use it two or three times in the whole book â€” first sentence, the turning point, near the end â€” and use he/she elsewhere.`,
+        severity: uses > 5 ? "major" : "minor", area: "language", page: 0, replacement: "",
+        detail: `The hero's name "${name}" appears ${uses} times; prefer two or three â€” first sentence, the turning point, near the end â€” with he/she elsewhere so the prose does not drum the name.`,
       });
     }
   }
   // "big, big, big" is the Level 1 ditty device; above that it is padding.
+  // One padded page is a minor (ships flagged); padding on several pages is
+  // the book leaning on the crutch â€” that blocks.
   if (Number(book.level) > 1) {
+    const padded = [];
     pages.forEach((t, i) => {
       const m = t.match(/\b(\w+), *\1\b/i);
-      if (m) out.push({ severity: "major", area: "language", page: i + 1, replacement: "", detail: `Page ${i + 1} pads with repetition ("${m[0]}"). Repeating a word for rhythm is the Level 1 ditty form; at Level ${book.level} say something new instead.` });
+      if (m) padded.push({ page: i + 1, sample: m[0] });
     });
+    for (const p of padded) {
+      out.push({ severity: padded.length > 1 ? "major" : "minor", area: "language", page: p.page, replacement: "", detail: `Page ${p.page} pads with repetition ("${p.sample}"). Repeating a word for rhythm is the Level 1 ditty form; at Level ${book.level} say something new instead.` });
+    }
   }
   return out;
 }
@@ -1066,8 +1084,10 @@ async function stepStoryGate(book, job) {
         patched.pages[idx].text = next;
         applied.push(idx + 1);
       }
-      // Only skip the paid rewrite if the patch actually cleared everything.
-      if (applied.length === patchable.length && !styleIssues(patched, book).length) {
+      // Only skip the paid rewrite if the patch actually cleared everything
+      // BLOCKING — a leftover minor ships flagged and must not buy a rewrite
+      // (graded leniency, Lynden 2026-08-27).
+      if (applied.length === patchable.length && !styleIssues(patched, book).some((i) => i.severity !== "minor")) {
         job.breakdown.first_pass_patch = { pages: applied };
         job.pendingEditorNotes = verdict.blocking;
         console.log(`[forge] first-pass patch: transcribed the editor's own lines onto page(s) ${applied.join(", ")} â€” no rewrite bought`);
@@ -1256,8 +1276,21 @@ export function buildEntityStateLedger(story, directed) {
 export function validateDirectedContinuity(story, directed) {
   const failures = [];
   const previous = new Map();
+  const seenSettings = new Set();
   for (let i = 0; i < (directed || []).length; i++) {
     const text = String(story?.pages?.[i]?.text || "");
+    const expectedSetting = String(story?.pages?.[i]?.location || "").trim().toLowerCase();
+    const plannedSetting = String(directed[i]?.setting_id || "").trim().toLowerCase();
+    const relation = directed[i]?.setting_relation;
+    const camera = directed[i]?.camera;
+    if (plannedSetting !== expectedSetting) failures.push(`page ${i + 1} direction uses setting "${plannedSetting}" instead of story location "${expectedSetting}"`);
+    const firstVisit = !seenSettings.has(expectedSetting);
+    if (firstVisit && relation !== "new-setting") failures.push(`page ${i + 1} first visits ${expectedSetting} but is planned as ${relation}`);
+    if (!firstVisit && relation === "new-setting") failures.push(`page ${i + 1} revisits ${expectedSetting} but is planned as a new setting`);
+    if (relation === "same-view" && camera !== "same-view") failures.push(`page ${i + 1} same-view plan conflicts with ${camera} camera`);
+    if (relation === "same-setting-closeup" && camera !== "closeup") failures.push(`page ${i + 1} close-up setting plan conflicts with ${camera} camera`);
+    if (relation === "same-setting-new-angle" && camera !== "new-angle") failures.push(`page ${i + 1} new-angle setting plan conflicts with ${camera} camera`);
+    seenSettings.add(expectedSetting);
     for (const object of directed[i]?.objects || []) {
       const key = String(object.name || "").toLowerCase().trim();
       if (!key) continue;
@@ -1383,8 +1416,16 @@ async function stepScene(book, job, i) {
   // The anchor is injected on EVERY revisit â€” the camera tag decides HOW it is
   // used, never WHETHER (see SKILL.md Â§3; gating on same-view was the worst
   // bug in this pipeline's history).
-  const anchorUrl = loc ? job.anchors[loc] || null : null;
-  const anchorBuf = anchorUrl ? await loadByUrl(anchorUrl) : null;
+  let anchorUrl = loc ? job.anchors[loc] || null : null;
+  let anchorBuf = anchorUrl ? await loadByUrl(anchorUrl) : null;
+  // Legacy jobs pointed the location anchor at the first mutable page file.
+  // A targeted page repair then overwrote the canonical setting by accident.
+  // Detach it into an immutable setting plate before any paid image call.
+  if (loc && anchorBuf && job.sceneUrls.includes(anchorUrl)) {
+    const sourcePage = Math.max(1, job.sceneUrls.indexOf(anchorUrl) + 1);
+    anchorUrl = await saveImage(book.id, `setting_page${sourcePage}.jpg`, anchorBuf);
+    job.anchors[loc] = anchorUrl;
+  }
   const camera = anchorBuf ? d?.camera || "new-angle" : "wide";
 
   // The location anchor is fixed to the FIRST image ever made there â€” good
@@ -1528,7 +1569,10 @@ async function stepScene(book, job, i) {
   // appends the next page. saveImage upserts the same filename either way.
   if (i < job.sceneUrls.length) job.sceneUrls[i] = url;
   else job.sceneUrls.push(url);
-  if (loc && !job.anchors[loc]) job.anchors[loc] = url;
+  if (loc && !job.anchors[loc]) {
+    // pageN.jpg is repairable; the setting plate must never be overwritten.
+    job.anchors[loc] = await saveImage(book.id, `setting_page${i + 1}.jpg`, s.buf);
+  }
 }
 
 async function stepCover(book, job) {
@@ -2055,7 +2099,17 @@ export async function runNextStep(bookId) {
 
   const costBefore = job.cost;
   try {
-    await withSpendContext({ bookId, step, epoch: job.spendEpoch || 0, capUsd: cap }, async () => {
+    // Sequence numbers continue from the step's persisted high-water mark
+    // instead of restarting at 0 each invocation — otherwise a re-entered
+    // step collides with its own confirmed operation keys and is refused as
+    // a duplicate (the "paused_budget at $0.59" wedge, 2026-08-27). The mark
+    // rides on the job, so it persists with every existing persist() call.
+    job.spendSeq = job.spendSeq || {};
+    const spendSeqKey = `e${Number(job.spendEpoch || 0)}:${step}`;
+    const spendCtx = { bookId, step, epoch: job.spendEpoch || 0, capUsd: cap,
+      sequence: Number(job.spendSeq[spendSeqKey]) || 0 };
+    try {
+    await withSpendContext(spendCtx, async () => {
     if (step === "freshStory") {
       // Open majors survived the gate's edit passes: abandon the manuscript
       // (cheap â€” no image exists yet) and write a fresh one at the same spec.
@@ -2084,6 +2138,10 @@ export async function runNextStep(bookId) {
     else if (step === "review") await stepReview(book, job);
     else if (step === "assemble") await stepAssemble(book, job);
     });
+    } finally {
+      job.spendSeq[spendSeqKey] = Math.max(
+        Number(job.spendSeq[spendSeqKey]) || 0, Number(spendCtx.sequence) || 0);
+    }
   } catch (e) {
     job.lockAt = null;
     job.lockStep = null;

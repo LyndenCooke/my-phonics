@@ -1304,6 +1304,8 @@ const DIRECT_SCHEMA = {
           emotion: { type: "string" },
           staging: { type: "string" },
           brief: { type: "string" },
+          setting_id: { type: "string", description: "The exact lowercase location id supplied for this story page. Pages in the same physical place share this id." },
+          setting_relation: { type: "string", enum: ["new-setting", "same-view", "same-setting-new-angle", "same-setting-closeup"] },
           camera: { type: "string", enum: ["wide", "closeup", "new-angle", "same-view"] },
           // Which key objects are ACTUALLY visible on this page, and what
           // state each is in right now. Replaces string-matching the object
@@ -1368,7 +1370,7 @@ const DIRECT_SCHEMA = {
             },
           },
         },
-        required: ["page", "emotion", "staging", "brief", "camera", "objects", "cast_present", "physics", "required_visible_states", "forbidden_visible_states"],
+        required: ["page", "emotion", "staging", "brief", "setting_id", "setting_relation", "camera", "objects", "cast_present", "physics", "required_visible_states", "forbidden_visible_states"],
         additionalProperties: false,
       },
     },
@@ -1391,6 +1393,7 @@ For every page, reason through:
 4a. WHERE IS THE WORK HAPPENING? Every brief must state the surface the action sits on — the table, the worktop, the floor, the step, the mat ON THE FLOOR, the mat ON THE TABLE — never an unqualified "mat", which the illustrator will read as a floor mat on one page and a table mat on the next. Then KEEP IT: the surface on this page is the surface from the previous page unless the story text moved it. A child kneeling on the floor with a bowl, then standing at a worktop with the same bowl, is two different afternoons. If the story does move the work, the brief must show the moving.
 4b. OBJECT STATE OVER TIME — objects CHANGE as the story progresses and must appear in the state they are in ON THIS PAGE, never their final state early: paper is BLANK until the character paints it (the finished picture exists only from the page it is completed), food disappears as it is eaten, a wrapped present stays wrapped until opened. State each such object's current state explicitly in the brief.
 5. CAMERA — direct like a real picture book, and use the camera to PROTECT consistency:
+   - BEFORE choosing a shot, fill setting_id with this page's supplied location id and setting_relation with exactly one plan: "new-setting" for its first appearance, "same-view" for an intentional repeated frame, "same-setting-new-angle" for another angle or part of that established place, or "same-setting-closeup" for a crop within it. This is a binding continuity plan made before painting.
    - "wide" for the FIRST page in a location (establishing shot).
    - For later pages in the same location, PREFER "closeup" or "new-angle": zoom in on the object or a hand, zoom out, over-the-shoulder, through-the-window, low angle, or a DIFFERENT CORNER of the same location. Zoom-ins/outs, changed angles and different spots within the setting show little repeated background, so nothing can contradict the established view — this is the safest and most cinematic choice. (E.g. the moment a picture is finished = a zoom-in on the paper itself.)
    - Choose "same-view" ONLY when the storytelling genuinely needs the identical frame repeated (a before/after beat). Then NOTHING in the background may change or be added.

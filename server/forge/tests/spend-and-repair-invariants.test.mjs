@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { buildEntityStateLedger, buildExpectedAssertions, canonicalCharacterSpec, objectiveVisualFailures, styleIssues, validateDirectedContinuity } from "../jobs.mjs";
+import { isReleasedDuplicate } from "../spend.mjs";
+
+assert.equal(isReleasedDuplicate({ allowed: false, reason: "duplicate operation", status: "released" }), true,
+  "a definitively unbilled duplicate key may advance to a fresh key");
+assert.equal(isReleasedDuplicate({ allowed: false, reason: "duplicate operation", status: "confirmed" }), false,
+  "a confirmed duplicate must remain blocked");
 
 const specA = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age: 6, appearance: { hair: "dark bob" } });
 const specB = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age: 6, appearance: { hair: "dark bob" } });
@@ -22,12 +28,20 @@ assert.equal(failures.length, 2, "a failed count and omitted identity check must
 assert.ok(failures.every((f) => f.severity === "major"));
 
 const continuity = validateDirectedContinuity({ pages: [
-  { text: "The sheep rush to one tub." }, { text: "The shy sheep stays back by the shed." },
+  { text: "The sheep rush to one tub.", location: "field" }, { text: "The shy sheep stays back by the shed.", location: "field" },
 ] }, [
-  { objects: [{ name: "shy sheep", state: "crowding at the same tub" }] },
-  { objects: [{ name: "shy sheep", state: "standing back by the shed, not eating" }] },
+  { setting_id: "field", setting_relation: "new-setting", camera: "wide", objects: [{ name: "shy sheep", state: "crowding at the same tub" }] },
+  { setting_id: "field", setting_relation: "same-setting-new-angle", camera: "new-angle", objects: [{ name: "shy sheep", state: "standing back by the shed, not eating" }] },
 ]);
 assert.equal(continuity.length, 1, "stays/remains must preserve the entity's previous directed state");
+const badSettingPlan = validateDirectedContinuity({ pages: [
+  { text: "Mia is in the field.", location: "field" },
+  { text: "She stays in the field.", location: "field" },
+] }, [
+  { setting_id: "field", setting_relation: "same-view", camera: "same-view", objects: [] },
+  { setting_id: "shop", setting_relation: "new-setting", camera: "wide", objects: [] },
+]);
+assert.ok(badSettingPlan.length >= 3, "the director must plan first visits, revisits and setting ids consistently before painting");
 const ledger = buildEntityStateLedger(miaStory, [{ objects: [{ name: "shy sheep", state: "back by shed" }] }]);
 assert.deepEqual(ledger[0], {
   page: 1, text: "Mia has a job to feed three sheep.",
@@ -41,9 +55,11 @@ assert.match(source, /progress: \{ step: "done", message: "Your book is ready!",
   "ready progress must retain the repair snapshot");
 assert.match(source, /const CANDIDATES = 1;/, "production must write one draft, not run a tournament");
 assert.match(source, /The title must contain the hero's exact name/, "title/hero must be a deterministic gate");
+assert.match(source, /setting_page\$\{i \+ 1\}\.jpg/, "location anchors must use immutable setting files, never mutable page files");
 
 const imageSource = fs.readFileSync(new URL("../images.mjs", import.meta.url), "utf8");
 assert.match(imageSource, /FORGE_PER_PAGE_QA === "1"/, "per-page repaint QA must be opt-in");
+assert.match(imageSource, /immutable SETTING PLATE/, "scene prompts must separate the fixed setting from the current cast");
 
 const spendSource = fs.readFileSync(new URL("../spend.mjs", import.meta.url), "utf8");
 assert.match(spendSource, /X-Client-Request-Id|clientRequestId/,

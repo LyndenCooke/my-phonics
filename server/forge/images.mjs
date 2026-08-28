@@ -625,6 +625,7 @@ const NO_FLOATING_LIMBS =
 function locationRefText(camera) {
   const base =
     "LOCATION REFERENCE — the scene below happens in EXACTLY the place shown in this image. " +
+    "Treat this as an immutable SETTING PLATE, not a cast list: ignore and remove every person or animal shown in it, then add ONLY the characters and animals required by the new scene and its identity references. " +
     "The room's architecture and contents are FIXED by it: same window shape, size, position and pane pattern; " +
     "same floor material and pattern; same wall colour and finish; same furniture, units and fittings in the same places; " +
     "same colours, lighting, weather and season. " +

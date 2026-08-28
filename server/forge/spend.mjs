@@ -17,11 +17,22 @@ export class DuplicateSpendOperationError extends Error {
 }
 
 export function withSpendContext(context, fn) {
-  return storage.run({ ...context, sequence: 0 }, fn);
+  // The caller's object IS the store, so the caller can read back the final
+  // sequence after fn and persist it as the step's high-water mark. A fresh
+  // `sequence: 0` here is what wedged every multi-invocation step: the
+  // re-entered step regenerated its own earlier confirmed operation keys and
+  // was refused as a duplicate (found live on the first spend-system test
+  // book, 2026-08-27 — it never got past story_editor's second invocation).
+  context.sequence = Number(context.sequence) || 0;
+  return storage.run(context, fn);
 }
 
 export function currentSpendContext() {
   return storage.getStore() || null;
+}
+
+export function isReleasedDuplicate(attempt) {
+  return attempt?.allowed === false && attempt?.reason === "duplicate operation" && attempt?.status === "released";
 }
 
 function safePart(value) {
@@ -31,20 +42,29 @@ function safePart(value) {
 export async function beginPaidCall({ call, provider, model, estimateUsd, requestMeta = null }) {
   const ctx = storage.getStore();
   if (!ctx?.bookId) return null;
-  ctx.sequence += 1;
-  const operationKey = `${ctx.bookId}:e${Number(ctx.epoch || 0)}:${safePart(ctx.step)}:${ctx.sequence}:${safePart(call)}`;
-  const attempt = await db.beginSpendAttempt({
-    bookId: ctx.bookId,
-    operationKey,
-    step: ctx.step,
-    callName: call,
-    provider,
-    model,
-    estimateUsd,
-    capUsd: ctx.capUsd,
-    clientRequestId: crypto.randomUUID(),
-    requestMeta,
-  });
+  let attempt;
+  // A definitively unbilled provider failure may be followed by another call
+  // when this logical step is re-entered. Sequence numbers restart with each
+  // invocation, so skip past released keys instead of misreporting their
+  // uniqueness collision as a spend-cap failure. Confirmed, active and
+  // uncertain duplicates remain hard stops.
+  for (let releasedKeys = 0; releasedKeys < 20; releasedKeys++) {
+    ctx.sequence += 1;
+    const operationKey = `${ctx.bookId}:e${Number(ctx.epoch || 0)}:${safePart(ctx.step)}:${ctx.sequence}:${safePart(call)}`;
+    attempt = await db.beginSpendAttempt({
+      bookId: ctx.bookId,
+      operationKey,
+      step: ctx.step,
+      callName: call,
+      provider,
+      model,
+      estimateUsd,
+      capUsd: ctx.capUsd,
+      clientRequestId: crypto.randomUUID(),
+      requestMeta,
+    });
+    if (!isReleasedDuplicate(attempt)) break;
+  }
   if (!attempt?.allowed) {
     const recentActive = attempt?.reason === "duplicate operation" && attempt?.status === "active"
       && Date.now() - new Date(attempt.startedAt || 0).getTime() < 6 * 60_000;

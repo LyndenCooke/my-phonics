@@ -105,6 +105,9 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
 - The cap tests confirmed + uncertain + active + the next maximum estimate.
 - A returned success reconciles actual usage. A definitive unbilled error
   releases the reservation. An ambiguous timeout/process death becomes uncertain.
+- Re-entering a step may skip a duplicate key only when its prior attempt is
+  `released` (definitively unbilled). Active, confirmed and uncertain keys remain
+  duplicate-spend barriers.
 - Log provider request IDs. They aid tracing but are not provider idempotency;
   the application's operation key is the duplicate-spend barrier.
 - A human retry increments the spend epoch. It acknowledges uncertainty without
@@ -122,6 +125,14 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
 - The production sweep adopts only recent stalled customer books. It never adopts
   historical debris or a book with an unresolved paid operation.
 - Repair preserves all unaffected files and regenerates only named pages.
+- Before painting, the director assigns every page a canonical setting id and
+  declares whether it is a new setting, the same view, another angle/part of
+  the same setting or a close-up within it. A recurring location uses a
+  separate immutable setting plate copied from its first approved scene; never
+  point its anchor at mutable `pageN.jpg`. Later images preserve the plate's
+  architecture, layout, materials and colours, ignore/remove people and animals
+  in the plate and inject only the current page's required cast and action. If
+  the setting itself changes, replace it explicitly and re-check all dependants.
 
 ## Acceptance criteria
 
