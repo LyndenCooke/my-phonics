@@ -18,7 +18,10 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, BookOpen, Timer, Play, RotateCcw } from 'lucide-react';
 import type { JourneyLevel } from '@/lib/levels8';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
-import { WORD_BANK, displayGrapheme, speakWord, type GameRound } from '@/lib/soundGameWords';
+import { WORD_BANK, displayGrapheme, soundInWord, speakWord, type GameRound } from '@/lib/soundGameWords';
+import { useGameBank } from '@/lib/greenWords';
+import { sfx } from '@/games/audio';
+import Scene from '@/games/Scene';
 import SoundlingSprite from './SoundlingSprite';
 import { soundlingName } from './soundlingNames';
 import {
@@ -50,15 +53,16 @@ function shuffle<T>(arr: T[]): T[] {
 
 /** One encounter aimed at a specific Soundling. Same distractor rules as
  *  lib/soundGameWords.buildRounds: same-level first, never a grapheme that
- *  also appears in the word. */
-function buildTargetRound(level: JourneyLevel, target: string): GameRound | null {
-  const words = WORD_BANK[target];
+ *  also appears in the word. `bank` is the ledger-backed grapheme → words
+ *  map from lib/greenWords.useGameBank (curated fallback until it loads). */
+function buildTargetRound(level: JourneyLevel, target: string, bank: Record<string, string[]>): GameRound | null {
+  const words = bank[target];
   if (!words?.length) return null;
   const word = words[Math.floor(Math.random() * words.length)];
-  const ok = (g: string) => g !== target && !word.includes(displayGrapheme(g));
-  const pool = level.gpcs.filter(g => WORD_BANK[g]?.length);
+  const ok = (g: string) => g !== target && !word.includes(displayGrapheme(g)) && !soundInWord(g, word);
+  const pool = level.gpcs.filter(g => bank[g]?.length);
   const sameLevel = shuffle(pool.filter(ok));
-  const padding = shuffle(Object.keys(WORD_BANK).filter(g => ok(g) && !sameLevel.includes(g)));
+  const padding = shuffle(Object.keys(bank).filter(g => ok(g) && !sameLevel.includes(g)));
   const distractors = [...sameLevel, ...padding].slice(0, 2);
   return { word, target, options: shuffle([target, ...distractors]) };
 }
@@ -79,7 +83,8 @@ export default function Soundlings({ level, onClose }: Props) {
   const hex = level.hex;
   const ink = level.inkHex;
 
-  const pool = useMemo(() => level.gpcs.filter(g => WORD_BANK[g]?.length), [level]);
+  const bank = useGameBank(level);
+  const pool = useMemo(() => level.gpcs.filter(g => bank[g]?.length), [level, bank]);
   const [collection, setCollection] = useState(() => getAllSoundlings());
   const glowing = useMemo(() => glowingEggOfDay(pool), [pool]);
 
@@ -116,7 +121,7 @@ export default function Soundlings({ level, onClose }: Props) {
     const list = (startWith ? [startWith, ...rest] : rest).slice(0, VISIT_ROUNDS);
     setTargets(list);
     setRoundIdx(0);
-    setRound(buildTargetRound(level, list[0]));
+    setRound(buildTargetRound(level, list[0], bank));
     setSolved(false);
     setFirstTry(true);
     setWrongTile(null);
@@ -133,7 +138,7 @@ export default function Soundlings({ level, onClose }: Props) {
       return;
     }
     setRoundIdx(next);
-    setRound(buildTargetRound(level, targets[next]));
+    setRound(buildTargetRound(level, targets[next], bank));
     setSolved(false);
     setFirstTry(true);
     setWrongTile(null);
@@ -148,11 +153,15 @@ export default function Soundlings({ level, onClose }: Props) {
       setFedThisVisit(n => n + 1);
       refresh();
       if (res.after !== res.before) {
-        setTimeout(() => setCelebration({ grapheme: round.target, stage: res.after }), 750);
+        // Stage-up! The chord belongs to the celebration card, not the tap.
+        sfx.pop();
+        setTimeout(() => { setCelebration({ grapheme: round.target, stage: res.after }); sfx.fanfare(); }, 750);
       } else {
+        if (firstTry) sfx.star(); else sfx.pop();
         setTimeout(advanceVisitRef.current, 1100);
       }
     } else {
+      sfx.bonk();
       setFirstTry(false);
       setWrongTile(g);
       setTimeout(() => setWrongTile(null), 500);
@@ -171,7 +180,7 @@ export default function Soundlings({ level, onClose }: Props) {
   const startFrenzy = () => {
     const rs: GameRound[] = [];
     for (const g of shuffle([...pool, ...pool, ...pool, ...pool, ...pool, ...pool])) {
-      const r = buildTargetRound(level, g);
+      const r = buildTargetRound(level, g, bank);
       if (r) rs.push(r);
     }
     setFrenzyRounds(rs);
@@ -206,6 +215,7 @@ export default function Soundlings({ level, onClose }: Props) {
     if (!r || solved) return;
     if (g === r.target) {
       setSolved(true);
+      sfx.pop();
       if (firstTry) {
         setFrenzyScore(s => s + 1);
         feedSoundling(r.target, true, r.target === glowing);
@@ -217,11 +227,17 @@ export default function Soundlings({ level, onClose }: Props) {
         setWrongTile(null);
       }, 350);
     } else {
+      sfx.bonk();
       setFirstTry(false);
       setWrongTile(g);
       setTimeout(() => setWrongTile(null), 400);
     }
   };
+
+  // Frenzy-over fanfare
+  useEffect(() => {
+    if (view === 'frenzyDone') sfx.fanfare();
+  }, [view]);
 
   // Speak each new word (visit + frenzy)
   const playRound = view === 'play' ? round : view === 'frenzy' ? frenzyRounds[frenzyIdx] : null;
@@ -258,6 +274,9 @@ export default function Soundlings({ level, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+      {/* Light wash in the habitat: the Soundlings LIVE in this scene, so
+          the barn stays vivid; play views get the readable default. */}
+      <Scene img="/images/games/soundlings_barn.webp" wash={view === 'habitat' ? 'light' : 'default'} />
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[34rem] h-[34rem] rounded-full blur-3xl opacity-[0.14]" style={{ background: hex }} />
 
       <div className="relative max-w-md lg:max-w-5xl mx-auto px-5 pt-5 pb-10 min-h-full flex flex-col">
@@ -285,36 +304,64 @@ export default function Soundlings({ level, onClose }: Props) {
           </div>
         </div>
 
-        {/* ── Habitat ── */}
+        {/* ── Habitat — the barn floor. No cards: every Soundling sits IN
+             the scene, in its own straw nest on the straw band of the
+             backdrop. Eggs are barn-cream with hay speckles; feeding
+             progress shows as cracks spreading across the shell (the crack
+             IS the meter), and a nearly-hatched egg wobbles. ── */}
         {view === 'habitat' && (
           <motion.div {...(reduceMotion ? {} : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 } })}
-            className="flex-1 flex flex-col pt-6">
-            <p className="font-child text-lg lg:text-2xl text-foreground/70 text-center">
-              Your Soundlings are waiting! Tap one to feed it.
+            className="flex-1 flex flex-col pt-4">
+            <p className="font-child text-lg lg:text-2xl text-foreground/80 text-center"
+              style={{ textShadow: '0 1px 8px rgba(255,250,235,0.9)' }}>
+              Your Soundlings are waiting in the barn! Tap one to feed it.
             </p>
 
-            <div className="mt-5 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 lg:gap-4">
-              {pool.map(g => {
+            <div className="mt-auto flex flex-wrap justify-center items-end gap-x-1.5 gap-y-4 lg:gap-x-3 pt-8 pb-3">
+              {pool.map((g, i) => {
                 const st = stateOf(g);
                 const stage = stageOf(st, g === glowing);
                 const asleep = isAsleep(st);
                 const isGlow = g === glowing && stage === 'egg';
+                const meter = meterOf(st, stage, g === glowing);
+                const nearHatch = stage === 'egg' && meter >= 0.85;
                 return (
                   <motion.button key={g} onClick={() => startVisit(g)}
                     aria-label={stage === 'egg' ? `Egg — the ${displayGrapheme(g)} sound` : `${soundlingName(g)} — the ${displayGrapheme(g)} sound`}
-                    className="rounded-3xl bg-white p-2.5 lg:p-3 flex flex-col items-center press-scale relative"
-                    style={{ boxShadow: isGlow ? `0 0 0 3px ${hex}80, 0 0 24px ${hex}70, ${STICKER}` : STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
-                    animate={isGlow && !reduceMotion ? { scale: [1, 1.04, 1] } : {}}
-                    transition={isGlow ? { repeat: Infinity, duration: 1.6 } : {}}>
-                    {isGlow && <span className="absolute -top-2 -right-1 text-lg" aria-hidden>✨</span>}
+                    className="relative w-[4.4rem] lg:w-24 flex flex-col items-center press-scale"
+                    style={{ marginTop: i % 2 === 0 ? 0 : 10 }}
+                    animate={!reduceMotion
+                      ? nearHatch
+                        ? { rotate: [0, -3, 3, -3, 0] }
+                        : isGlow ? { scale: [1, 1.05, 1] } : {}
+                      : {}}
+                    transition={nearHatch
+                      ? { repeat: Infinity, duration: 0.7, repeatDelay: 2.2 }
+                      : isGlow ? { repeat: Infinity, duration: 1.6 } : {}}>
+                    {isGlow && <span className="absolute -top-2 right-0 text-lg z-10" aria-hidden>✨</span>}
+                    {/* straw nest — the Soundling sits in it, not on a card */}
+                    <svg viewBox="0 0 100 34" aria-hidden
+                      className="absolute bottom-3 lg:bottom-4 left-1/2 -translate-x-1/2 w-[115%]">
+                      <ellipse cx="50" cy="22" rx="46" ry="11" fill="#D9A852" />
+                      <ellipse cx="50" cy="19" rx="39" ry="9" fill="#EFCB7B" />
+                      <ellipse cx="50" cy="20" rx="27" ry="6.5" fill="#B9853C" />
+                      <path d="M8 20 q10 -8 20 -5 M88 22 q-8 -9 -19 -6 M18 28 q12 4 24 2 M60 29 q12 2 22 -3"
+                        stroke="#A97B33" strokeWidth="2.2" fill="none" strokeLinecap="round" opacity="0.8" />
+                    </svg>
                     <SoundlingSprite grapheme={g} level={level.level} stage={stage} hex={hex} inkHex={ink}
-                      asleep={asleep} className="w-full aspect-square" />
-                    <span className="font-display text-xs lg:text-sm font-extrabold mt-1" style={{ color: ink }}>
-                      {stage === 'egg' ? (isGlow ? 'Hatch me!' : '?') : soundlingName(g)}
+                      asleep={asleep} inScene crack={stage === 'egg' ? meter : 0}
+                      className="relative w-full aspect-square drop-shadow-[0_4px_6px_rgba(80,50,15,0.25)]" />
+                    {/* name on a little wooden tag */}
+                    <span className="relative -mt-1 rounded-md px-1.5 py-0.5 font-display text-[10px] lg:text-xs font-extrabold text-[#FFF6E3]"
+                      style={{ background: '#8A5A2B', boxShadow: '0 2px 0 #6B4523' }}>
+                      {stage === 'egg' ? (isGlow ? 'Hatch me!' : nearHatch ? 'Nearly!' : '?') : soundlingName(g)}
                     </span>
-                    <div className="mt-1.5 h-1.5 w-full rounded-full bg-black/[0.06] overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${meterOf(st, stage, g === glowing) * 100}%`, background: stage === 'golden' ? '#F6C453' : hex }} />
-                    </div>
+                    {/* hatched creatures keep a tiny feed meter, straw-styled */}
+                    {stage !== 'egg' && (
+                      <div className="relative mt-1 h-1.5 w-3/4 rounded-full bg-[#6B4523]/30 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${meter * 100}%`, background: stage === 'golden' ? '#F6C453' : '#EFCB7B' }} />
+                      </div>
+                    )}
                   </motion.button>
                 );
               })}

@@ -71,6 +71,39 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+// ── phonics-truth layer ─────────────────────────────────────────────
+// Letter-containment lies: "fork" contains the letter o but not the /o/
+// sound; "face" has a c that says /s/. The green-words ledger carries the
+// real grapheme breakdown per word (units), injected here by
+// lib/greenWords once the ledger loads (a setter, to avoid an import
+// cycle). Distractor checks consult it so a "wrong" option is never a
+// sound that is actually IN the word.
+let LEDGER_UNITS: Record<string, string[]> | null = null;
+
+export function setLedgerUnits(units: Record<string, string[]>): void {
+  LEDGER_UNITS = units;
+}
+
+/** True when the ledger says this word genuinely contains this sound. */
+export function soundInWord(g: string, word: string): boolean {
+  const u = LEDGER_UNITS?.[word];
+  if (!u) return false;
+  return u.includes(g) || u.includes(displayGrapheme(g));
+}
+
+/** Say a grapheme's SOUND (the pre-recorded phoneme MP3s in /sounds/,
+ *  a-e → a_e naming). Silent on miss — never TTS a bare phoneme. */
+export function playPhoneme(g: string): void {
+  const key = g.replace(/^-/, '').replace(/-/g, '_').toLowerCase();
+  if (!key) return;
+  try {
+    currentWordAudio?.pause();
+    const audio = new Audio(`/sounds/${key}.mp3`);
+    currentWordAudio = audio;
+    audio.play().catch(() => { /* optional */ });
+  } catch { /* optional */ }
+}
+
 /** The grapheme as the child sees it on a tile ("-ous" → "ous"). */
 export function displayGrapheme(g: string): string {
   return g.replace(/^-/, '');
@@ -82,22 +115,26 @@ export function displayGrapheme(g: string): string {
  * full bank when a level is short. A distractor must not ALSO appear in
  * the word, or the "wrong" answer would secretly be right (e.g. never
  * offer "s" alongside "sun" unless it's the target).
+ *
+ * `bank` defaults to the curated WORD_BANK; pass the ledger-backed bank
+ * from lib/greenWords.useGameBank for real curriculum depth (its keys are
+ * taught-sounds-only, which also keeps padded distractors level-safe).
  */
-export function buildRounds(level: JourneyLevel, count: number): GameRound[] {
-  const pool = level.gpcs.filter(g => WORD_BANK[g]?.length);
+export function buildRounds(level: JourneyLevel, count: number, bank: Record<string, string[]> = WORD_BANK): GameRound[] {
+  const pool = level.gpcs.filter(g => bank[g]?.length);
   if (pool.length === 0) return [];
 
-  const allGraphemes = Object.keys(WORD_BANK);
+  const allGraphemes = Object.keys(bank);
   const targets = shuffle(pool);
   const rounds: GameRound[] = [];
 
   for (let i = 0; i < count; i++) {
     const target = targets[i % targets.length];
-    const words = WORD_BANK[target];
+    const words = bank[target];
     const word = words[Math.floor(Math.random() * words.length)];
 
     const isValidDistractor = (g: string) =>
-      g !== target && !word.includes(displayGrapheme(g));
+      g !== target && !word.includes(displayGrapheme(g)) && !soundInWord(g, word);
     const sameLevel = shuffle(pool.filter(isValidDistractor));
     const padding = shuffle(allGraphemes.filter(g => isValidDistractor(g) && !sameLevel.includes(g)));
     const distractors = [...sameLevel, ...padding].slice(0, 2);
@@ -130,23 +167,23 @@ const BLOCKED_FORMS = new Set(['dick', 'cock', 'tit', 'tits', 'shit', 'fuck', 'a
  * the word and the child picks the missing sound. Split digraphs (a-e)
  * are excluded — a word with two blanks reads as a puzzle, not phonics.
  */
-export function buildFinishRounds(level: JourneyLevel, count: number): FinishRound[] {
+export function buildFinishRounds(level: JourneyLevel, count: number, bank: Record<string, string[]> = WORD_BANK): FinishRound[] {
   const usable = (g: string) => {
     if (g.includes('-') && !g.startsWith('-')) return false; // split digraph
     const shown = displayGrapheme(g);
-    return (WORD_BANK[g] ?? []).some(w => w.includes(shown));
+    return (bank[g] ?? []).some(w => w.includes(shown));
   };
   const pool = level.gpcs.filter(usable);
   if (pool.length === 0) return [];
 
-  const allGraphemes = Object.keys(WORD_BANK).filter(usable);
+  const allGraphemes = Object.keys(bank).filter(usable);
   const targets = shuffle(pool);
   const rounds: FinishRound[] = [];
 
   for (let i = 0; i < count; i++) {
     const target = targets[i % targets.length];
     const shown = displayGrapheme(target);
-    const words = WORD_BANK[target].filter(w => w.includes(shown));
+    const words = bank[target].filter(w => w.includes(shown));
     const word = words[Math.floor(Math.random() * words.length)];
     const at = word.indexOf(shown);
     const before = word.slice(0, at);
@@ -160,6 +197,8 @@ export function buildFinishRounds(level: JourneyLevel, count: number): FinishRou
       // (the same word, or anything on the blocklist).
       const formed = before + d + after;
       if (formed === word || BLOCKED_FORMS.has(formed)) return false;
+      // never offer a sound that is genuinely in the word
+      if (soundInWord(g, word)) return false;
       return true;
     };
     const sameLevel = shuffle(pool.filter(isValidDistractor));
@@ -214,45 +253,24 @@ export function buildTrickyRounds(levels: JourneyLevel[], level: JourneyLevel, c
 }
 
 /**
- * Say a word aloud. Prefers the pre-recorded ElevenLabs (George) MP3 in
- * /sounds/words/ — the same voice the book reader narrates with — and only
- * falls back to browser TTS when the file is missing. Unlike the reader
- * (silent-on-miss for brand consistency), the games DO fall back: in
- * "Hear it, find it" the audio IS the gameplay, so a wrong-voice round
- * beats an unplayable one.
+ * Say a word aloud — the pre-recorded ElevenLabs (George) MP3 in
+ * /sounds/words/, or SILENCE. No browser-TTS fallback: the robot voice
+ * mangles short words ("jet" that doesn't sound like jet), and the game
+ * banks now prefer voiced words via the audio manifest, so a miss means
+ * the manifest is stale — regenerate it, don't let a robot teach.
  */
 let currentWordAudio: HTMLAudioElement | null = null;
 
 export function speakWord(word: string): void {
   const key = word.toLowerCase().replace(/[^a-z]/g, '');
-  if (key) {
-    try {
-      currentWordAudio?.pause();
-      const audio = new Audio(`/sounds/words/${key}.mp3`);
-      currentWordAudio = audio;
-      audio.onerror = () => speakWordTTS(word);
-      audio.play().catch(() => speakWordTTS(word));
-      return;
-    } catch {
-      /* fall through to TTS */
-    }
+  if (!key) return;
+  try {
+    currentWordAudio?.pause();
+    const audio = new Audio(`/sounds/words/${key}.mp3`);
+    currentWordAudio = audio;
+    audio.play().catch(() => { /* silent on miss — never TTS */ });
+  } catch {
+    /* silent on miss */
   }
-  speakWordTTS(word);
 }
 
-/** Web Speech API fallback (best-effort; silent no-op where unsupported).
- *  Prefers a British English voice. */
-function speakWordTTS(word: string): void {
-  try {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(word);
-    u.rate = 0.8;
-    u.lang = 'en-GB';
-    const voice = window.speechSynthesis.getVoices().find(v => v.lang === 'en-GB');
-    if (voice) u.voice = voice;
-    window.speechSynthesis.speak(u);
-  } catch {
-    /* no speech available — the word is on screen anyway */
-  }
-}

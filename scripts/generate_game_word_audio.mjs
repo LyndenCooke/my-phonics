@@ -43,7 +43,15 @@ const levelsTs = fs.readFileSync(path.resolve('src/lib/levels8.ts'), 'utf8');
 const trickyWords = [...levelsTs.matchAll(/trickyWords:\s*\[([^\]]*)\]/g)]
   .flatMap(m => quotedStrings(m[1]));
 
-const allWords = [...new Set([...bankWords, ...trickyWords])];
+// Green-words ledger (Milo's Cannon, Word Pop, Finish the Word pools)
+const ledger = JSON.parse(fs.readFileSync(path.resolve('public/green_words.json'), 'utf8'));
+const ledgerWords = (ledger.words ?? []).map(w => w.word);
+
+// Sound Spotter object bank
+const safariTs = fs.readFileSync(path.resolve('src/games/soundSafari/safariData.ts'), 'utf8');
+const safariWords = [...safariTs.matchAll(/word:\s*'([^']+)'/g)].map(m => m[1]);
+
+const allWords = [...new Set([...bankWords, ...trickyWords, ...ledgerWords, ...safariWords])];
 const toKey = w => w.toLowerCase().replace(/[^a-z]/g, '');
 
 const missing = allWords

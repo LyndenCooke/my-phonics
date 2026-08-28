@@ -18,6 +18,12 @@ interface Props {
   inkHex: string;
   asleep?: boolean;
   className?: string;
+  /** Feed progress toward hatching, 0..1 — draws spreading cracks on the
+   *  shell (the barn habitat's replacement for a progress bar). */
+  crack?: number;
+  /** Scene-grounded rendering: warm straw shell + no floating shadow disc,
+   *  for sprites sitting directly in the barn rather than on a white card. */
+  inScene?: boolean;
 }
 
 /** Small deterministic per-grapheme variation so siblings differ. */
@@ -27,7 +33,7 @@ function hashOf(s: string): number {
   return h;
 }
 
-export default function SoundlingSprite({ grapheme, level, stage, hex, inkHex, asleep, className }: Props) {
+export default function SoundlingSprite({ grapheme, level, stage, hex, inkHex, asleep, className, crack = 0, inScene }: Props) {
   const shown = grapheme.replace(/^-/, '');
   const h = hashOf(grapheme);
   const tilt = ((h % 9) - 4) * 1.2; // −4.8°…+4.8°
@@ -36,23 +42,43 @@ export default function SoundlingSprite({ grapheme, level, stage, hex, inkHex, a
   const ink = gold ? '#8A6210' : inkHex;
 
   if (stage === 'egg') {
+    // In the barn, eggs are barn-coloured: warm straw-cream shell with
+    // hay-brown speckles. On white cards they keep the level tint.
+    const shell = inScene ? '#FBF3DE' : '#FFFDF6';
+    const speck = inScene ? '#C9A15E' : hex;
+    const line = inScene ? '#8A6a3B' : ink;
+    // Crack stages: hairline → forked → wide zigzag ring near hatching.
+    const crackPaths = [
+      'M44 24 L48 32 L43 39',
+      'M58 30 L54 40 L60 47 L55 53',
+      'M31 52 L39 56 L35 63 L44 66 L41 73',
+    ];
+    const crackCount = crack >= 0.85 ? 3 : crack >= 0.5 ? 2 : crack > 0.12 ? 1 : 0;
     return (
       <svg viewBox="0 0 100 100" className={className} aria-hidden>
         <g transform={`rotate(${tilt} 50 58)`}>
-          {/* nest */}
-          <ellipse cx="50" cy="84" rx="26" ry="8" fill={hex} opacity="0.18" />
+          {!inScene && <ellipse cx="50" cy="84" rx="26" ry="8" fill={hex} opacity="0.18" />}
           {/* shell */}
           <path
             d="M50 16 C67 16 78 38 78 58 C78 76 66 88 50 88 C34 88 22 76 22 58 C22 38 33 16 50 16 Z"
-            fill="#FFFDF6" stroke={ink} strokeOpacity="0.25" strokeWidth="2.5"
+            fill={shell} stroke={line} strokeOpacity="0.35" strokeWidth="2.5"
           />
+          {/* soft top-light on the shell */}
+          <path d="M40 24 C34 30 30 38 29 46 C33 34 39 27 45 23 Z" fill="#FFFFFF" opacity="0.55" />
           {/* speckles */}
           {[0, 1, 2, 3].map(i => (
-            <circle key={i} cx={36 + ((h >> (i * 3)) % 30)} cy={34 + ((h >> (i * 2 + 1)) % 36)} r={2 + (i % 2)} fill={hex} opacity="0.35" />
+            <circle key={i} cx={36 + ((h >> (i * 3)) % 30)} cy={34 + ((h >> (i * 2 + 1)) % 36)} r={2 + (i % 2)} fill={speck} opacity="0.4" />
           ))}
+          {/* spreading cracks as the egg is fed */}
+          {crackPaths.slice(0, crackCount).map((d, i) => (
+            <path key={i} d={d} fill="none" stroke={line} strokeWidth={i === 2 ? 2.4 : 1.8}
+              strokeLinejoin="round" strokeLinecap="round" opacity="0.75" />
+          ))}
+          {/* a peek of who's inside at the widest crack */}
+          {crackCount === 3 && <circle cx="40" cy="60" r="2.6" fill="#0D0D0D" opacity="0.85" />}
           {/* who's inside? */}
           <text x="50" y="60" textAnchor="middle" fontSize="22" fontWeight="800"
-            fill={ink} opacity="0.28" fontFamily="inherit">{shown}</text>
+            fill={inScene ? line : ink} opacity="0.3" fontFamily="inherit">{shown}</text>
         </g>
       </svg>
     );
@@ -115,7 +141,7 @@ export default function SoundlingSprite({ grapheme, level, stage, hex, inkHex, a
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden>
       <g transform={`rotate(${tilt} 50 ${cy})`}>
-        <ellipse cx="50" cy={100 - 10} rx={rx * 0.9} ry="6" fill={hex} opacity="0.18" />
+        <ellipse cx="50" cy={100 - 10} rx={rx * 0.9} ry="6" fill={inScene ? '#6B4A23' : hex} opacity={inScene ? 0.22 : 0.18} />
         {level === 8 || level === 3 || level === 6 || level === 7 ? accessory : null}
         {/* body: white base + colour wash = pastel of the level colour */}
         <ellipse cx="50" cy={cy} rx={rx} ry={ry} fill="#FFFFFF" />

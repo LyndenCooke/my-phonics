@@ -1,12 +1,12 @@
 import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, BookHeart, ClipboardList, Tag, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen , Globe2 } from 'lucide-react';
+import { BookOpen, BookHeart, ClipboardList, Tag, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen , Globe2, Gamepad2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
 
-// Five primary tabs. Resources merged into Library as a Books/Worksheets
+// Six primary tabs. Resources merged into Library as a Books/Worksheets
 // sub-toggle. Create a Book took the Assess slot (Assess lives on the
 // Profile page for phones; the desktop sidebar keeps it). The same list
 // drives three responsive chromes: the mobile bottom-nav, the tablet
@@ -24,10 +24,13 @@ type NavItem = {
 const NAV: NavItem[] = [
   { path: '/learn', label: 'Learn', icon: Home, badgeKey: null, desktopOnly: false },
   { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null, desktopOnly: false },
+  // Games is public (no sign-in) — the free arcade is a taster for the
+  // books, so it earns a primary tab everywhere.
+  { path: '/games', label: 'Games', icon: Gamepad2, badgeKey: null, desktopOnly: false },
   { path: '/create-book', label: 'Create a Book', shortLabel: 'Create', icon: BookHeart, badgeKey: null, desktopOnly: false },
   { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null, desktopOnly: false },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
-  // Desktop side panel only — the mobile bottom bar stays at five tabs
+  // Desktop side panel only — the mobile bottom bar stays at six tabs
   // (Shop is reachable from Pricing there; Assess from Profile).
   { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null, desktopOnly: true },
   { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },

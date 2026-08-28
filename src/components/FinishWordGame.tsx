@@ -20,6 +20,9 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
 import type { JourneyLevel } from '@/lib/levels8';
 import { buildFinishRounds, displayGrapheme, speakWord, type FinishRound } from '@/lib/soundGameWords';
+import { useGameBank } from '@/lib/greenWords';
+import { sfx } from '@/games/audio';
+import Scene from '@/games/Scene';
 
 interface Props {
   level: JourneyLevel;
@@ -37,6 +40,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
+  const bank = useGameBank(level);
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [mode, setMode] = useState<Mode>('relax');
@@ -54,7 +58,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
 
   const start = (m: Mode) => {
     setMode(m);
-    setRounds(buildFinishRounds(level, m === 'relax' ? RELAX_ROUNDS : 60));
+    setRounds(buildFinishRounds(level, m === 'relax' ? RELAX_ROUNDS : 60, bank));
     setRoundIdx(0);
     setSolved(false);
     setFirstTry(true);
@@ -107,21 +111,29 @@ export default function FinishWordGame({ level, onClose }: Props) {
     if (g === round.target) {
       setSolved(true);
       setWrongTile(null);
+      if (firstTry) sfx.star(); else sfx.pop();
       if (mode === 'relax') setStars(s => [...s, firstTry]);
       else if (firstTry) setScore(s => s + 1);
       setTimeout(advance, 950);
     } else {
+      sfx.bonk();
       setFirstTry(false);
       setWrongTile(g);
       setTimeout(() => setWrongTile(null), 500);
     }
   };
 
+  // End-of-game fanfare
+  useEffect(() => {
+    if (phase === 'done') sfx.fanfare();
+  }, [phase]);
+
   const starsEarned = stars.filter(Boolean).length;
   const wordSizeClass = round && round.word.length > 8 ? 'text-4xl lg:text-6xl' : 'text-6xl lg:text-7xl';
 
   return (
     <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+      <Scene img="/images/games/finish_workshop.webp" />
       {/* soft level wash */}
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
 

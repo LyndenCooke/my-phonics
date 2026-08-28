@@ -18,6 +18,8 @@ import NotFound from "./pages/NotFound";
 // marketing landing page at /landing, where they choose Parent vs School.
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Learn = lazy(() => import("./pages/Learn"));
+// Public phonics arcade — no sign-in needed, level picker + all the games.
+const Games = lazy(() => import("./pages/Games"));
 const Index = lazy(() => import("./pages/Index"));
 // Not lazy: these are printed QR landings, so they must resolve on the first
 // paint rather than after a chunk fetch. The component is a bare <Navigate>.
@@ -156,6 +158,7 @@ function RoutesWithTransition() {
             <Route path="/" element={<RootRedirect />} />
             <Route path="/landing" element={<Suspense fallback={<AdminFallback />}><LandingPage /></Suspense>} />
             <Route path="/learn" element={<Suspense fallback={<AdminFallback />}><Learn /></Suspense>} />
+            <Route path="/games" element={<Suspense fallback={<AdminFallback />}><Games /></Suspense>} />
             <Route path="/library" element={<Index />} />
             {/* /b/* — permanent QR targets printed inside books. These paths
                 are frozen forever; only their destinations may change.

@@ -21,6 +21,8 @@ import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
 import type { JourneyLevel } from '@/lib/levels8';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { buildTrickyRounds, speakWord, type TrickyRound } from '@/lib/soundGameWords';
+import { sfx } from '@/games/audio';
+import Scene from '@/games/Scene';
 
 interface Props {
   level: JourneyLevel;
@@ -107,10 +109,12 @@ export default function TrickyWordGame({ level, onClose }: Props) {
     if (w === round.target) {
       setSolved(true);
       setWrongTile(null);
+      if (firstTry) sfx.star(); else sfx.pop();
       if (mode === 'relax') setStars(s => [...s, firstTry]);
       else if (firstTry) setScore(s => s + 1);
       setTimeout(advance, 950);
     } else {
+      sfx.bonk();
       setFirstTry(false);
       setWrongTile(w);
       // Say it again so the child can re-listen rather than guess.
@@ -119,10 +123,16 @@ export default function TrickyWordGame({ level, onClose }: Props) {
     }
   };
 
+  // End-of-game fanfare
+  useEffect(() => {
+    if (phase === 'done') sfx.fanfare();
+  }, [phase]);
+
   const starsEarned = stars.filter(Boolean).length;
 
   return (
     <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+      <Scene img="/images/games/tricky_night.webp" wash="strong" />
       {/* soft level wash */}
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
 

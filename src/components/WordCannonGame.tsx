@@ -24,6 +24,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
 import { speakWord } from '@/lib/soundGameWords';
+import { hasAudio, loadAudioManifest } from '@/lib/greenWords';
 
 interface Props {
   level: JourneyLevel;
@@ -138,7 +139,9 @@ const MAX_UNITS = 6;
 /** Words that sit exactly at the child's level and fit on the plank. */
 function bankFor(all: LedgerWord[], lvl: number): WordEntry[] {
   return all
-    .filter(w => w.level === lvl && w.units.length >= MIN_UNITS && w.units.length <= MAX_UNITS)
+    // hasAudio: speakWord no longer falls back to TTS, and the word being
+    // SPOKEN is the whole cue on audio-only rounds — unvoiced words are out.
+    .filter(w => w.level === lvl && w.units.length >= MIN_UNITS && w.units.length <= MAX_UNITS && hasAudio(w.word))
     .map(w => ({ word: w.word, tiles: w.units }));
 }
 
@@ -165,7 +168,10 @@ interface Ball {
 }
 interface Slot { expected: string; filled: string | null; land: number; x: number; y: number; size: number; }
 interface Particle { kind: 'puff' | 'conf'; x: number; y: number; vx: number; vy: number; life: number; max: number; size: number; color: string; rot: number; vr: number; }
-interface Shot { sx: number; sy: number; tx: number; ty: number; t: number; ballId: string | null; x?: number; y?: number; }
+/** A real cannonball: spawned at the muzzle with a velocity, integrated
+ *  every frame, resolved by circle-circle collision with whatever bubble
+ *  it actually hits — never by which bubble was clicked. */
+interface Shot { x: number; y: number; vx: number; vy: number; r: number; t: number; dead: boolean; }
 
 const HEX_FALLBACK = '#E84B8A';
 const INK_FALLBACK = '#BE1862';
@@ -208,7 +214,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
   // picks it up, and if it fails the curated fallback is already in place.
   useEffect(() => {
     let cancelled = false;
-    loadLedger().then(all => {
+    Promise.all([loadLedger(), loadAudioManifest()]).then(([all]) => {
       if (cancelled || !all.length) return;
       const state = g.current;
       const bank = bankFor(all, level.level);
@@ -389,28 +395,33 @@ export default function WordCannonGame({ level, onClose }: Props) {
       }
     }
     function fire(x: number, y: number) {
-      let hit: Ball | null = null, best = 1e9;
-      for (const b of state.balls) {
-        if (b.state !== 'float' || b.born < 0) continue;
-        const d = Math.hypot(b.x - x, b.y - y);
-        if (d < b.r + 14 && d < best) { best = d; hit = b; }
-      }
       const cp = cannonPos(); const barrel = miloSize() * 0.62;
       const a = aimAngle(x, y);
       const mx = cp.x + Math.cos(a) * barrel, my = cp.y + Math.sin(a) * barrel;
-      state.shots.push({ sx: mx, sy: my, tx: x, ty: y, t: 0, ballId: hit ? hit.id : null });
+      // Muzzle velocity along the aim line. Fast enough that a shot aimed
+      // squarely at a bubble lands before it drifts away, slow enough that
+      // the ball visibly crosses the sky.
+      const speed = Math.max(state.W, state.H) * 1.7;
+      state.shots.push({ x: mx, y: my, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, r: 9, t: 0, dead: false });
       state.cannonKick = 1; boom(); smoke(mx, my); state.shake = Math.max(state.shake, 3);
     }
-    function resolveShot(sh: Shot) {
-      const b = state.balls.find(z => z.id === sh.ballId && z.state === 'float');
-      if (!b) { smoke(sh.tx, sh.ty); return; }
+    /** The cannonball physically struck this bubble. */
+    function resolveHit(sh: Shot, b: Ball) {
       const nextIdx = state.slots.findIndex(s => !s.filled);
       if (nextIdx >= 0 && b.g === state.slots[nextIdx].expected) {
         popSnd(); state.rings.push({ x: b.x, y: b.y, t: 0 }); droplets(b.x, b.y);
         b.state = 'flying'; b.t = 0; b.sx = b.x; b.sy = b.y; b.slot = nextIdx;
+        sh.dead = true;
       } else {
+        // Wrong bubble: it wobbles red and shrugs the ball off — the shot
+        // deflects away with most of its energy gone.
         b.wrong = 0.55; bonk(); state.shake = Math.max(state.shake, 5);
-        b.vx += (b.x > sh.tx ? 1 : -1) * 130; b.vy -= 70;
+        b.vx += sh.vx * 0.12; b.vy += sh.vy * 0.08 - 60;
+        const nx = (sh.x - b.x), ny = (sh.y - b.y), nl = Math.hypot(nx, ny) || 1;
+        const dot = (sh.vx * nx + sh.vy * ny) / nl;
+        sh.vx = (sh.vx - 2 * dot * (nx / nl)) * 0.3;
+        sh.vy = (sh.vy - 2 * dot * (ny / nl)) * 0.3 + 40;
+        sh.t = Math.max(sh.t, 1.8); // dies shortly after the bounce
       }
     }
     function complete() {
@@ -425,6 +436,20 @@ export default function WordCannonGame({ level, onClose }: Props) {
       setTimeout(() => burst(state.W * 0.7, state.H * 0.4, cols, 22, 200), 340);
       state.flyStars.push({ x: state.W / 2, y: plankY() - 40, t: 0 });
     }
+    // Keyboard: arrows swing the barrel, Space/Enter fires along it.
+    function onKey(e: KeyboardEvent) {
+      if (state.phase !== 'play') return;
+      const cp = cannonPos();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const a = Math.max(-2.15, Math.min(-0.2, state.aimA + (e.key === 'ArrowLeft' ? -0.11 : 0.11)));
+        state.aimX = cp.x + Math.cos(a) * 400; state.aimY = cp.y + Math.sin(a) * 400;
+        e.preventDefault();
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        fire(cp.x + Math.cos(state.aimA) * 400, cp.y + Math.sin(state.aimA) * 400);
+        e.preventDefault();
+      }
+    }
+
     function onTap(e: PointerEvent) {
       const c = actx(); if (c && c.state === 'suspended') c.resume().catch(() => {});
       const rect = canvas!.getBoundingClientRect();
@@ -507,11 +532,26 @@ export default function WordCannonGame({ level, onClose }: Props) {
         }
       }
       for (let i = state.shots.length - 1; i >= 0; i--) {
-        const sh = state.shots[i]; sh.t += dt / 0.2;
-        if (sh.t >= 1) { state.shots.splice(i, 1); resolveShot(sh); continue; }
-        const e = sh.t;
-        sh.x = sh.sx + (sh.tx - sh.sx) * e; sh.y = sh.sy + (sh.ty - sh.sy) * e - Math.sin(Math.PI * e) * 14;
+        const sh = state.shots[i]; sh.t += dt;
+        // Light gravity: shots arc very slightly, like a real (toy) cannon.
+        sh.vy += 260 * dt;
+        sh.x += sh.vx * dt; sh.y += sh.vy * dt;
         state.trails.push({ x: sh.x, y: sh.y, life: 0.25, max: 0.25, size: 2.5 + Math.random() * 3 });
+        // Collision sweep against the floating bubbles — whichever the ball
+        // actually reaches first is the one that resolves.
+        if (!sh.dead) {
+          for (const b of state.balls) {
+            if (b.state !== 'float' || b.born < 0) continue;
+            if (Math.hypot(b.x - sh.x, b.y - sh.y) < b.r + sh.r) { resolveHit(sh, b); break; }
+          }
+        }
+        // A shot that sails into the sea splashes; one that leaves the sky
+        // just expires. Either way a miss is a visible non-event, not a hit.
+        const splashY = plankTop() - 6;
+        if (!sh.dead && sh.vy > 0 && sh.y > splashY) { droplets(sh.x, splashY); sh.dead = true; }
+        if (sh.dead || sh.t > 2.4 || sh.x < -60 || sh.x > state.W + 60 || sh.y < -80) {
+          state.shots.splice(i, 1);
+        }
       }
       for (let i = state.trails.length - 1; i >= 0; i--) { const p = state.trails[i]; p.life -= dt; if (p.life <= 0) state.trails.splice(i, 1); }
       for (let i = state.rings.length - 1; i >= 0; i--) { const r = state.rings[i]; r.t += dt / 0.45; if (r.t >= 1) state.rings.splice(i, 1); }
@@ -836,6 +876,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
     window.addEventListener('resize', layout);
     canvas.addEventListener('pointerdown', onTap);
     canvas.addEventListener('pointermove', onAim);
+    window.addEventListener('keydown', onKey);
     state.last = performance.now();
     state.raf = requestAnimationFrame(loop);
 
@@ -844,6 +885,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
       window.removeEventListener('resize', layout);
       canvas.removeEventListener('pointerdown', onTap);
       canvas.removeEventListener('pointermove', onAim);
+      window.removeEventListener('keydown', onKey);
       if (state.timerHandle) clearInterval(state.timerHandle);
       try { window.speechSynthesis?.cancel(); } catch { /* n/a */ }
     };
