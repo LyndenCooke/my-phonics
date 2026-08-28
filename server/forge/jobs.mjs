@@ -1245,7 +1245,7 @@ async function stepDirect(book, job) {
   try {
     const d = await directScenes({ story: job.story, child: childOf(book) });
     charge(job, "story_usd", "directScenes", d.cost, d.model);
-    job.directed = d.data.pages;
+    job.directed = normaliseDirectedSettingPlan(job.story, d.data.pages);
     job.breakdown.entity_state_ledger = buildEntityStateLedger(job.story, job.directed);
     const continuity = validateDirectedContinuity(job.story, job.directed);
     if (continuity.length) {
@@ -1273,24 +1273,39 @@ export function buildEntityStateLedger(story, directed) {
   }));
 }
 
+export function normaliseDirectedSettingPlan(story, directed) {
+  let activeSetting = null;
+  return (directed || []).map((page, i) => {
+    const relation = page?.setting_relation;
+    if (!activeSetting || relation === "new-setting") {
+      activeSetting = String(page?.setting_id || story?.pages?.[i]?.location || `setting-${i + 1}`).trim().toLowerCase();
+    }
+    // A continuation is, by definition, another view inside the active
+    // physical setting. Directors sometimes copied the writer's finer-grained
+    // route/shot location into setting_id (cart-edge, cart-spill, cart-clean),
+    // which split one cart into eight fake settings. Canonicalise that output
+    // deterministically before validation or painting.
+    return { ...page, setting_id: activeSetting };
+  });
+}
+
 export function validateDirectedContinuity(story, directed) {
   const failures = [];
   const previous = new Map();
   const seenSettings = new Set();
   for (let i = 0; i < (directed || []).length; i++) {
     const text = String(story?.pages?.[i]?.text || "");
-    const expectedSetting = String(story?.pages?.[i]?.location || "").trim().toLowerCase();
     const plannedSetting = String(directed[i]?.setting_id || "").trim().toLowerCase();
     const relation = directed[i]?.setting_relation;
     const camera = directed[i]?.camera;
-    if (plannedSetting !== expectedSetting) failures.push(`page ${i + 1} direction uses setting "${plannedSetting}" instead of story location "${expectedSetting}"`);
-    const firstVisit = !seenSettings.has(expectedSetting);
-    if (firstVisit && relation !== "new-setting") failures.push(`page ${i + 1} first visits ${expectedSetting} but is planned as ${relation}`);
-    if (!firstVisit && relation === "new-setting") failures.push(`page ${i + 1} revisits ${expectedSetting} but is planned as a new setting`);
+    if (!plannedSetting) failures.push(`page ${i + 1} has no canonical setting id`);
+    const firstVisit = !seenSettings.has(plannedSetting);
+    if (firstVisit && relation !== "new-setting") failures.push(`page ${i + 1} first visits ${plannedSetting} but is planned as ${relation}`);
+    if (!firstVisit && relation === "new-setting") failures.push(`page ${i + 1} revisits ${plannedSetting} but is planned as a new setting`);
     if (relation === "same-view" && camera !== "same-view") failures.push(`page ${i + 1} same-view plan conflicts with ${camera} camera`);
     if (relation === "same-setting-closeup" && camera !== "closeup") failures.push(`page ${i + 1} close-up setting plan conflicts with ${camera} camera`);
     if (relation === "same-setting-new-angle" && camera !== "new-angle") failures.push(`page ${i + 1} new-angle setting plan conflicts with ${camera} camera`);
-    seenSettings.add(expectedSetting);
+    seenSettings.add(plannedSetting);
     for (const object of directed[i]?.objects || []) {
       const key = String(object.name || "").toLowerCase().trim();
       if (!key) continue;
@@ -1399,8 +1414,10 @@ async function stepScene(book, job, i) {
   const heroBuf = await loadByUrl(job.heroUrl);
   if (!heroBuf) throw new Error("hero image missing from storage");
 
-  const loc = (story.pages[i].location || "").trim().toLowerCase();
   const d = job.directed?.find((x) => x.page === i + 1);
+  // The director's canonical physical setting groups writer-level positions
+  // such as cart-edge, cart-spill and cart-clean under one reusable plate.
+  const loc = (d?.setting_id || story.pages[i].location || "").trim().toLowerCase();
   // Ownership/absence assertions go into the GENERATION brief too, not just
   // the QA â€” draw the allocation right first time rather than repair it.
   const assertionText = d && (d.required_visible_states?.length || d.forbidden_visible_states?.length)
@@ -1439,7 +1456,8 @@ async function stepScene(book, job, i) {
   // (Lynden 2026-08-11: "the rock changes in every scene... no continuation
   // of story through realistic image/object progression"). Skipped when it's
   // literally the same file as the anchor (page 2, the anchor's own source).
-  const prevLoc = i > 0 ? (story.pages[i - 1].location || "").trim().toLowerCase() : null;
+  const prevDirection = i > 0 ? job.directed?.find((x) => x.page === i) : null;
+  const prevLoc = i > 0 ? (prevDirection?.setting_id || story.pages[i - 1].location || "").trim().toLowerCase() : null;
   const prevUrl = prevLoc && prevLoc === loc && job.sceneUrls[i - 1] && job.sceneUrls[i - 1] !== anchorUrl
     ? job.sceneUrls[i - 1]
     : null;

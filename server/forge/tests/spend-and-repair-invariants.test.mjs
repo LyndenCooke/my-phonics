@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { buildEntityStateLedger, buildExpectedAssertions, canonicalCharacterSpec, objectiveVisualFailures, styleIssues, validateDirectedContinuity } from "../jobs.mjs";
+import { buildEntityStateLedger, buildExpectedAssertions, canonicalCharacterSpec, normaliseDirectedSettingPlan, objectiveVisualFailures, styleIssues, validateDirectedContinuity } from "../jobs.mjs";
 import { isReleasedDuplicate } from "../spend.mjs";
 
 assert.equal(isReleasedDuplicate({ allowed: false, reason: "duplicate operation", status: "released" }), true,
@@ -39,9 +39,18 @@ const badSettingPlan = validateDirectedContinuity({ pages: [
   { text: "She stays in the field.", location: "field" },
 ] }, [
   { setting_id: "field", setting_relation: "same-view", camera: "same-view", objects: [] },
-  { setting_id: "shop", setting_relation: "new-setting", camera: "wide", objects: [] },
+  { setting_id: "field", setting_relation: "new-setting", camera: "wide", objects: [] },
 ]);
-assert.ok(badSettingPlan.length >= 3, "the director must plan first visits, revisits and setting ids consistently before painting");
+assert.ok(badSettingPlan.length >= 2, "the director must plan first visits and revisits consistently before painting");
+const groupedSettings = normaliseDirectedSettingPlan({ pages: [
+  { location: "cart-front" }, { location: "cart-edge" }, { location: "cart-spill" },
+] }, [
+  { setting_id: "cart-front", setting_relation: "new-setting" },
+  { setting_id: "cart-edge", setting_relation: "same-setting-closeup" },
+  { setting_id: "cart-spill", setting_relation: "same-setting-new-angle" },
+]);
+assert.deepEqual(groupedSettings.map((p) => p.setting_id), ["cart-front", "cart-front", "cart-front"],
+  "different parts and crops of one physical setting must share one immutable plate");
 const ledger = buildEntityStateLedger(miaStory, [{ objects: [{ name: "shy sheep", state: "back by shed" }] }]);
 assert.deepEqual(ledger[0], {
   page: 1, text: "Mia has a job to feed three sheep.",
