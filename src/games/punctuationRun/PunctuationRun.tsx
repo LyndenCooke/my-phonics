@@ -101,9 +101,11 @@ interface Wave {
   t: number;              // time since resolution
 }
 
-/** Lane x at a given depth (lanes fan out as they approach). */
+/** Lane x at a given depth. The spread converges to the path's vanishing
+ *  point (near-zero at the horizon) so the doors are always ON the path —
+ *  the old fixed base spread put the outer doors on the grass and barn. */
 function laneX(lane: number, u: number) {
-  return LW / 2 + (lane - 1) * (90 + 240 * u);
+  return LW / 2 + (lane - 1) * (34 + 296 * u);
 }
 
 /** Pick two distractors that make the child actually read: prefer words
@@ -333,8 +335,8 @@ export default function PunctuationRun({ level, onClose }: Props) {
             if (u1 >= 1) continue;
             const y0 = HORIZON_Y + (LH - HORIZON_Y) * Math.pow(u0, 1.6);
             const y1 = HORIZON_Y + (LH - HORIZON_Y) * Math.pow(u1, 1.6);
-            const x0 = LW / 2 + sep * 2 * (90 + 240 * Math.pow(u0, 1.6));
-            const x1 = LW / 2 + sep * 2 * (90 + 240 * Math.pow(u1, 1.6));
+            const x0 = LW / 2 + sep * 2 * (34 + 296 * Math.pow(u0, 1.6));
+            const x1 = LW / 2 + sep * 2 * (34 + 296 * Math.pow(u1, 1.6));
             ctx.globalAlpha = 0.25 + u0 * 0.6;
             ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
           }
@@ -347,6 +349,45 @@ export default function PunctuationRun({ level, onClose }: Props) {
           const ue = easeOutCubic(wave.u) * 0.4 + wave.u * 0.6;
           const s = 0.22 + 0.78 * ue;
           const y = HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
+          // fade in at the vanishing point so the row doesn't pop into being
+          const rowAlpha = clamp(wave.u / 0.08, 0, 1);
+          ctx.save();
+          ctx.globalAlpha = rowAlpha;
+
+          // ── the gate row: the three doors are GATES in a fence that
+          // crosses the path — rails and end posts in the same weathered
+          // wood as the painted roadside fences, so the row belongs to the
+          // scene instead of floating over it ──
+          {
+            const gateH = 330 * s;                 // matches sprite door height
+            const spanL = laneX(0, d), spanR = laneX(2, d);
+            const postW = 16 * s, postH = gateH * 0.62;
+            const railH = 13 * s;
+            const endL = spanL - 96 * s, endR = spanR + 96 * s;
+            // contact shadows for the whole row first
+            ctx.fillStyle = 'rgba(70,50,30,0.20)';
+            for (let lane = 0; lane < 3; lane++) {
+              const x = laneX(lane, d);
+              ctx.beginPath(); ctx.ellipse(x, y + 6 * s, 78 * s, 13 * s, 0, 0, 7); ctx.fill();
+            }
+            ctx.beginPath(); ctx.ellipse(endL, y + 5 * s, 22 * s, 8 * s, 0, 0, 7); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(endR, y + 5 * s, 22 * s, 8 * s, 0, 0, 7); ctx.fill();
+            // two rails spanning the row (drawn behind the doors)
+            ctx.fillStyle = '#8B7355'; ctx.strokeStyle = '#5E4B37'; ctx.lineWidth = 2 * s;
+            for (const rh of [0.30, 0.55]) {
+              const ry = y - gateH * rh;
+              roundRect(ctx, endL, ry - railH / 2, endR - endL, railH, railH / 2);
+              ctx.fill(); ctx.stroke();
+            }
+            // end posts where the row meets the roadside grass
+            ctx.fillStyle = '#7A6349';
+            for (const px of [endL, endR]) {
+              roundRect(ctx, px - postW / 2, y - postH, postW, postH, 4 * s);
+              ctx.fill(); ctx.stroke();
+              ctx.fillStyle = '#7A6349';
+            }
+          }
+
           for (let lane = 0; lane < 3; lane++) {
             const x = laneX(lane, d);
             const w = 150 * s, h = 210 * s;
@@ -466,6 +507,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
             }
             ctx.restore();
           }
+          ctx.restore(); // rowAlpha
         }
 
         // ── the runner (from behind — we run with them) ──
