@@ -1,33 +1,42 @@
 /**
- * PunctuationRun — "Punctuation Run", a lane-runner for the grammar strand.
+ * Door Dash (the running-man game) — a lane-runner where the child reads
+ * doors and runs through the right one.
  *
  * A kid (drawn from behind — we run WITH them) sprints down a meadow path.
- * Every few seconds a row of three wooden doors rushes up from the
- * horizon, each wearing a punctuation mark. Steer into a lane (tap a
- * door, or arrow keys / 1-2-3); the answer resolves when the runner
- * PHYSICALLY passes the door plane, not on the tap.
+ * Three wooden doors rush up from the horizon; steer into a lane (tap a
+ * door, or arrow keys / 1-2-3) and the answer resolves when the runner
+ * PHYSICALLY passes the door plane. The chosen door glows the whole
+ * approach with a bouncing chevron, so the commitment is always visible.
  *
- * Progression (the user's design):
- *  - early levels (1-4): MATCH rounds — a big mark on the prompt plank,
- *    run through the same mark; symbol recognition plus its printed name;
- *  - later levels (5-8): after two warm-up matches, SENTENCE rounds — a
- *    sentence missing its end mark ("Can you see the cat __") and the
- *    child must choose the door that finishes it. Real reading, real
- *    grammar, right when the curriculum's grammar strand begins.
+ * What the doors ask depends on what the child can actually do:
+ *  - WORD rounds (all of L1-4, and the first two rounds at L5-8):
+ *    George says a real curriculum word (recorded MP3 — never TTS), the
+ *    three doors wear written words from the level's bank, and the child
+ *    must READ the doors to find the one they heard. Distractors are
+ *    picked to look similar (shared letters / length), so decoding is
+ *    genuinely required. Tap the prompt plank to hear the word again;
+ *    it also replays halfway down the path.
+ *  - SENTENCE rounds (L5-8, after the warm-ups — the grammar strand):
+ *    a sentence missing its end mark, doors wearing . ? !. The doors
+ *    HOLD at the horizon for a reading beat scaled to sentence length,
+ *    and the approach itself is slower than word rounds. A miss teaches:
+ *    "It's asking — asking sentences end with a question mark."
  *
- * Correct door: swings a green flash, confetti, star, and the run speeds
- * up. Wrong door: it's shut — thud, bounce, the right door shows a tick,
- * and the pace resets. Eight doors a run.
+ * Correct door: green flash, confetti, star, the run speeds up. Wrong
+ * door: it's shut — thud, bounce, the correct door shows a tick and the
+ * teaching line appears. Eight doors a run.
  *
  * Shared engine scene: fixed 1280×720 logical space. The painted path
  * backdrop, door sprite and 3-frame run-cycle kid (gpt-image, real alpha)
  * are all optional assets — procedural versions draw when any is missing.
- * No TTS anywhere.
+ * No TTS anywhere: recorded audio or silence.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
 import { sfx } from '@/games/audio';
+import { useGameBank, hasAudio } from '@/lib/greenWords';
+import { speakWord } from '@/lib/soundGameWords';
 import {
   mountScene, EventQueue, Particles, drawCover, roundRect, starPath,
   easeOutCubic, clamp, shuffle, type Scene,
@@ -51,6 +60,13 @@ const MARK_NAMES: Record<Mark, string> = {
   '!': 'exclamation mark',
 };
 
+/** What a miss teaches — why THAT mark ends THAT sentence. */
+const MARK_TEACH: Record<Mark, string> = {
+  '.': 'It tells us something — telling sentences end with a full stop.',
+  '?': 'It asks — asking sentences end with a question mark.',
+  '!': 'It shouts with feeling — that needs an exclamation mark!',
+};
+
 /** Sentence bank for the later-level rounds — short, familiar words. */
 const SENTENCES: Record<Mark, string[]> = {
   '.': [
@@ -69,13 +85,18 @@ const SENTENCES: Record<Mark, string[]> = {
   ],
 };
 
+/** Longest word that fits on a door plank at horizon size. */
+const MAX_DOOR_WORD = 9;
+
 interface Wave {
-  marks: Mark[];          // mark per lane
+  mode: 'word' | 'sentence';
+  labels: string[];       // what each door wears (words, or . ? !)
   correctLane: number;
-  mode: 'match' | 'sentence';
-  sentence: string;       // '' in match mode
-  target: Mark;
+  target: string;         // the heard word, or the missing mark
+  sentence: string;       // '' in word mode
+  hold: number;           // reading beat before the doors move
   u: number;              // 0 (horizon) → 1 (runner plane)
+  replayed: boolean;      // word said again at half way
   resolved: 'no' | 'hit' | 'miss';
   t: number;              // time since resolution
 }
@@ -85,11 +106,35 @@ function laneX(lane: number, u: number) {
   return LW / 2 + (lane - 1) * (90 + 240 * u);
 }
 
+/** Pick two distractors that make the child actually read: prefer words
+ *  that share length / first letter / last letter with the target. */
+function pickDistractors(target: string, pool: string[]): string[] {
+  const scored = pool
+    .filter(w => w !== target)
+    .map(w => {
+      let s = Math.random(); // tie-break variety
+      if (Math.abs(w.length - target.length) <= 1) s += 2;
+      if (w[0] === target[0]) s += 2;
+      if (w[w.length - 1] === target[target.length - 1]) s += 1;
+      return { w, s };
+    })
+    .sort((a, b) => b.s - a.s);
+  // choose from the look-alike top so rounds vary run to run
+  const top = scored.slice(0, 6).map(x => x.w);
+  return shuffle(top).slice(0, 2);
+}
+
 export default function PunctuationRun({ level, onClose }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ended, setEnded] = useState<{ stars: number } | null>(null);
   const endedRef = useRef(setEnded);
   endedRef.current = setEnded;
+
+  // Level word bank (upgrades in place once the ledger fetch lands); the
+  // scene reads it through a ref so rounds always use the freshest bank.
+  const bank = useGameBank(level);
+  const bankRef = useRef(bank);
+  bankRef.current = bank;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -117,11 +162,26 @@ export default function PunctuationRun({ level, onClose }: Props) {
     let roadPhase = 0;        // scrolling dashes
     let shake = 0;
     const runner = { lane: 1, x: 1, stride: 0, stumble: 0 };
+    const usedWords = new Set<string>();
     const sentencesLeft: Record<Mark, string[]> = {
       '.': shuffle(SENTENCES['.']), '?': shuffle(SENTENCES['?']), '!': shuffle(SENTENCES['!']),
     };
 
-    function approachTime() { return 3.4 / speed; }
+    /** Voiced, door-sized words for this level — reading is only honest
+     *  when the child HEARS the target in George's voice. */
+    function wordPool(): string[] {
+      const all = [...new Set(Object.values(bankRef.current).flat())]
+        .filter(w => w.length <= MAX_DOOR_WORD && !w.includes(' '));
+      const voiced = all.filter(hasAudio);
+      const pool = voiced.length >= 3 ? voiced : all;
+      return pool.length >= 3 ? pool : ['sat', 'tap', 'pin'];
+    }
+
+    function approachTime(mode: Wave['mode']) {
+      // Sentence rounds approach slower — there are three symbols but a
+      // whole sentence to think about; word rounds ask for three reads.
+      return (mode === 'sentence' ? 5.2 : 4.4) / speed;
+    }
 
     function spawnWave() {
       if (over) return;
@@ -132,19 +192,32 @@ export default function PunctuationRun({ level, onClose }: Props) {
         ev.at(0.8, () => endedRef.current({ stars }));
         return;
       }
-      const target = MARKS[Math.floor(Math.random() * MARKS.length)];
-      // early levels match symbols; later levels read sentences after two warm-ups
-      const mode: Wave['mode'] = level.level >= 5 && waveN > 2 ? 'sentence' : 'match';
-      let sentence = '';
+      // Sentences only where the grammar strand lives (L5+), after two
+      // word-round warm-ups. Everything else is hear-it-read-it.
+      const mode: Wave['mode'] = level.level >= 5 && waveN > 2 ? 'sentence' : 'word';
       if (mode === 'sentence') {
+        const target = MARKS[Math.floor(Math.random() * MARKS.length)];
         if (!sentencesLeft[target].length) sentencesLeft[target] = shuffle(SENTENCES[target]);
-        sentence = sentencesLeft[target].pop() as string;
+        const sentence = sentencesLeft[target].pop() as string;
+        const labels = shuffle([...MARKS]) as string[];
+        wave = {
+          mode, labels, correctLane: labels.indexOf(target), target, sentence,
+          // reading beat: doors wait at the horizon while the child reads
+          hold: 1.1 + 0.3 * sentence.split(' ').length,
+          u: 0, replayed: false, resolved: 'no', t: 0,
+        };
+      } else {
+        const pool = wordPool();
+        const fresh = pool.filter(w => !usedWords.has(w));
+        const target = (fresh.length ? fresh : pool)[Math.floor(Math.random() * (fresh.length ? fresh.length : pool.length))];
+        usedWords.add(target);
+        const labels = shuffle([target, ...pickDistractors(target, pool)]);
+        wave = {
+          mode, labels, correctLane: labels.indexOf(target), target, sentence: '',
+          hold: 0.5, u: 0, replayed: false, resolved: 'no', t: 0,
+        };
+        speakWord(target);
       }
-      const marks = shuffle([...MARKS]) as Mark[];
-      wave = {
-        marks, correctLane: marks.indexOf(target), mode, sentence, target,
-        u: 0, resolved: 'no', t: 0,
-      };
     }
 
     function resolve() {
@@ -166,13 +239,16 @@ export default function PunctuationRun({ level, onClose }: Props) {
         runner.stumble = 1;
         shake = Math.max(shake, 6);
         fx.puff(doorX, RUNNER_Y - 80, 8, 'rgba(140,100,60,0.5)');
+        // a miss re-teaches: hear the word again while the tick shows
+        if (wave.mode === 'word') ev.at(0.5, () => { if (wave?.resolved === 'miss') speakWord(wave.target); });
       }
-      ev.at(hitIt ? 0.7 : 1.4, spawnWave);
+      ev.at(hitIt ? 0.9 : (wave.mode === 'sentence' ? 2.6 : 1.8), spawnWave);
     }
 
     function start() {
       waveN = 0; stars = 0; over = false; speed = 1;
       runner.lane = 1; runner.x = 1; runner.stumble = 0;
+      usedWords.clear();
       ev.clear(); wave = null;
       spawnWave();
     }
@@ -183,6 +259,12 @@ export default function PunctuationRun({ level, onClose }: Props) {
       if (l !== runner.lane) { runner.lane = l; sfx.tick(); }
     }
 
+    /** Current door depth for drawing and hit-testing. */
+    function doorDepth(w: Wave) {
+      const ue = easeOutCubic(w.u) * 0.4 + w.u * 0.6;
+      return Math.pow(ue, 1.6);
+    }
+
     const scene: Scene = {
       W: LW, H: LH, bars: '#12202E',
       update(dt, t) {
@@ -190,14 +272,22 @@ export default function PunctuationRun({ level, onClose }: Props) {
         fx.update(dt);
         shake *= Math.pow(0.001, dt);
         if (shake < 0.2) shake = 0;
-        roadPhase += dt * 3.2 * speed;
-        runner.stride += dt * 11 * speed;
+        // during a reading beat the runner jogs on the spot
+        const moving = !wave || wave.hold <= 0;
+        roadPhase += dt * 3.2 * speed * (moving ? 1 : 0.25);
+        runner.stride += dt * 11 * speed * (moving ? 1 : 0.6);
         runner.stumble = Math.max(0, runner.stumble - dt * 1.6);
         runner.x += (runner.lane - runner.x) * Math.min(1, dt * 9);
 
         if (wave) {
-          if (wave.resolved === 'no') {
-            wave.u += dt / approachTime();
+          if (wave.hold > 0) {
+            wave.hold -= dt;
+          } else if (wave.resolved === 'no') {
+            wave.u += dt / approachTime(wave.mode);
+            if (wave.mode === 'word' && !wave.replayed && wave.u >= 0.5) {
+              wave.replayed = true;
+              speakWord(wave.target);
+            }
             if (wave.u >= 1) { wave.u = 1; resolve(); }
           } else {
             wave.t += dt;
@@ -253,25 +343,34 @@ export default function PunctuationRun({ level, onClose }: Props) {
 
         // ── the doors ──
         if (wave) {
-          const ue = easeOutCubic(wave.u) * 0.4 + wave.u * 0.6; // slight ease
+          const d = doorDepth(wave);
+          const ue = easeOutCubic(wave.u) * 0.4 + wave.u * 0.6;
           const s = 0.22 + 0.78 * ue;
-          const y = HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * Math.pow(ue, 1.6);
+          const y = HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
           for (let lane = 0; lane < 3; lane++) {
-            const x = laneX(lane, Math.pow(ue, 1.6));
+            const x = laneX(lane, d);
             const w = 150 * s, h = 210 * s;
             const isCorrect = lane === wave.correctLane;
+            const chosen = lane === runner.lane;
             const gone = wave.resolved === 'hit' && lane === runner.lane;
             ctx.save();
             ctx.translate(x, y);
-            if (wave.resolved !== 'no' && lane === runner.lane && wave.resolved === 'miss') {
+            if (wave.resolved === 'miss' && lane === runner.lane) {
               ctx.translate(Math.sin(wave.t * 40) * 5 * Math.max(0, 1 - wave.t), 0);
             }
             if (gone) ctx.globalAlpha = Math.max(0, 1 - wave.t * 2.2);
             const open = wave.resolved === 'hit' && lane === runner.lane;
             const missed = wave.resolved === 'miss' && lane === runner.lane;
+            const label = wave.labels[lane];
+            const isMarkLabel = wave.mode === 'sentence';
             if (ok(doorImg)) {
-              // painted sprite: sign plate baked in at the top (~12% down)
               const dh = 330 * s, dw = dh * doorImg.naturalWidth / doorImg.naturalHeight;
+              // the chosen door glows in the level colour the whole approach
+              if (chosen && wave.resolved === 'no') {
+                const glow = ctx.createRadialGradient(0, -dh * 0.45, 8, 0, -dh * 0.45, dh * 0.62);
+                glow.addColorStop(0, `${hex}66`); glow.addColorStop(1, `${hex}00`);
+                ctx.fillStyle = glow; ctx.fillRect(-dw, -dh * 1.1, dw * 2, dh * 1.25);
+              }
               if (open) {
                 const glow = ctx.createRadialGradient(0, -dh * 0.45, 8, 0, -dh * 0.45, dh * 0.55);
                 glow.addColorStop(0, 'rgba(140,240,160,0.75)'); glow.addColorStop(1, 'rgba(140,240,160,0)');
@@ -284,16 +383,47 @@ export default function PunctuationRun({ level, onClose }: Props) {
               if (missed) {
                 ctx.globalAlpha *= 0.35; ctx.fillStyle = '#E5484D';
                 roundRect(ctx, -dw * 0.38, -dh * 0.72, dw * 0.76, dh * 0.7, 12 * s); ctx.fill();
-                ctx.globalAlpha = gone ? Math.max(0, 1 - wave.t * 2.2) : 1;
+                ctx.globalAlpha = 1;
               }
-              const signY = -dh * 0.885;
-              ctx.fillStyle = missed && lane === runner.lane ? '#E5484D' : ink;
-              ctx.font = `800 ${Math.round(46 * s)}px ${F}`;
-              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-              ctx.fillText(wave.marks[lane], 0, signY);
+              if (isMarkLabel) {
+                // punctuation fits the baked sign plate
+                const signY = -dh * 0.885;
+                ctx.fillStyle = missed ? '#E5484D' : ink;
+                ctx.font = `800 ${Math.round(46 * s)}px ${F}`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, 0, signY);
+              } else {
+                // words get a hanging plank above the door — sized to fit
+                ctx.font = `800 40px ${F}`;
+                const tw = ctx.measureText(label).width;
+                const fpx = Math.min(34 * s * 1.35, (dw * 1.5) / Math.max(1, tw / 40)) ;
+                ctx.font = `800 ${Math.round(fpx)}px ${F}`;
+                const lw2 = ctx.measureText(label).width;
+                const pw = lw2 + 34 * s, ph = fpx * 1.7, py = -dh * 1.02;
+                ctx.save();
+                ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 8 * s; ctx.shadowOffsetY = 4 * s;
+                ctx.fillStyle = '#FFF9EF';
+                roundRect(ctx, -pw / 2, py - ph / 2, pw, ph, 10 * s); ctx.fill();
+                ctx.restore();
+                ctx.lineWidth = 3 * s;
+                ctx.strokeStyle = missed ? '#E5484D' : chosen && wave.resolved === 'no' ? hex : `${ink}44`;
+                roundRect(ctx, -pw / 2, py - ph / 2, pw, ph, 10 * s); ctx.stroke();
+                ctx.fillStyle = missed ? '#E5484D' : ink;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, 0, py + 1);
+              }
               if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
                 ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(38 * s)}px ${FD}`;
-                ctx.fillText('✓', dw * 0.42, signY - 20 * s);
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText('✓', dw * 0.42, -dh * 0.885 - 20 * s);
+              }
+              // chevron over the chosen door — "this is where I'm running"
+              if (chosen && wave.resolved === 'no') {
+                const cy = -dh * (isMarkLabel ? 1.06 : 1.18) - Math.abs(Math.sin(t * 4.4)) * 10 * s;
+                ctx.fillStyle = hex;
+                ctx.beginPath();
+                ctx.moveTo(0, cy + 14 * s); ctx.lineTo(-13 * s, cy - 6 * s); ctx.lineTo(13 * s, cy - 6 * s);
+                ctx.closePath(); ctx.fill();
               }
             } else {
               // procedural fallback door
@@ -302,17 +432,35 @@ export default function PunctuationRun({ level, onClose }: Props) {
               roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.fill(); ctx.restore();
               ctx.fillStyle = open ? '#BFE8C5' : missed ? '#F3C1C1' : '#C68B59';
               roundRect(ctx, -w / 2 + 9 * s, -h + 9 * s, w - 18 * s, h - 12 * s, 10 * s); ctx.fill();
-              ctx.save(); ctx.translate(0, -h - 34 * s);
+              if (chosen && wave.resolved === 'no') {
+                ctx.lineWidth = 5 * s; ctx.strokeStyle = hex;
+                roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.stroke();
+              }
+              ctx.save(); ctx.translate(0, -h - 40 * s);
+              ctx.font = `800 40px ${F}`;
+              const tw = ctx.measureText(label).width;
+              const fpx = isMarkLabel ? 44 * s : Math.min(34 * s * 1.35, (w * 1.9) / Math.max(1, tw / 40));
+              ctx.font = `800 ${Math.round(fpx)}px ${F}`;
+              const lw2 = isMarkLabel ? 50 * s : ctx.measureText(label).width;
+              const pw = lw2 + 30 * s, ph = Math.max(fpx * 1.6, 52 * s);
               ctx.fillStyle = '#FFFFFF';
-              ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.fill();
-              ctx.lineWidth = 4 * s; ctx.strokeStyle = isCorrect && wave.resolved === 'miss' ? '#22C55E' : `${ink}`;
-              ctx.beginPath(); ctx.arc(0, 0, 34 * s, 0, 7); ctx.stroke();
-              ctx.fillStyle = ink; ctx.font = `800 ${Math.round(44 * s)}px ${F}`;
+              roundRect(ctx, -pw / 2, -ph / 2, pw, ph, 12 * s); ctx.fill();
+              ctx.lineWidth = 4 * s;
+              ctx.strokeStyle = isCorrect && wave.resolved === 'miss' ? '#22C55E' : chosen && wave.resolved === 'no' ? hex : `${ink}`;
+              roundRect(ctx, -pw / 2, -ph / 2, pw, ph, 12 * s); ctx.stroke();
+              ctx.fillStyle = missed ? '#E5484D' : ink;
               ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-              ctx.fillText(wave.marks[lane], 0, 3 * s);
+              ctx.fillText(label, 0, 2 * s);
               if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
                 ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(36 * s)}px ${FD}`;
-                ctx.fillText('✓', 34 * s, -26 * s);
+                ctx.fillText('✓', pw / 2 + 18 * s, -ph / 2);
+              }
+              if (chosen && wave.resolved === 'no') {
+                const cy = -ph / 2 - 24 * s - Math.abs(Math.sin(t * 4.4)) * 10 * s;
+                ctx.fillStyle = hex;
+                ctx.beginPath();
+                ctx.moveTo(0, cy + 14 * s); ctx.lineTo(-13 * s, cy - 6 * s); ctx.lineTo(13 * s, cy - 6 * s);
+                ctx.closePath(); ctx.fill();
               }
               ctx.restore();
             }
@@ -376,21 +524,46 @@ export default function PunctuationRun({ level, onClose }: Props) {
         fx.draw(ctx);
 
         // ── HUD: prompt plank ──
-        const plankW = wave?.mode === 'sentence' ? 640 : 380;
-        ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 4;
-        ctx.fillStyle = '#FFFFFF'; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, 74, 18); ctx.fill(); ctx.restore();
-        ctx.strokeStyle = `${hex}55`; ctx.lineWidth = 3; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, 74, 18); ctx.stroke();
-        ctx.textAlign = 'center';
-        if (wave?.mode === 'sentence') {
-          ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 14px ${FD}`; ctx.textBaseline = 'alphabetic';
-          ctx.fillText('Which mark ends the sentence? Run through its door!', LW / 2, 48);
-          ctx.fillStyle = ink; ctx.font = `700 27px ${F}`;
-          ctx.fillText(`${wave.sentence} __`, LW / 2, 84);
-        } else if (wave) {
-          ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 14px ${FD}`; ctx.textBaseline = 'alphabetic';
-          ctx.fillText(`Run through the ${MARK_NAMES[wave.target]}!`, LW / 2, 48);
-          ctx.fillStyle = ink; ctx.font = `800 40px ${F}`;
-          ctx.fillText(wave.target, LW / 2, 90);
+        if (wave) {
+          const plankW = wave.mode === 'sentence' ? 680 : 420;
+          const plankH = 78;
+          ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 4;
+          ctx.fillStyle = '#FFFFFF'; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, plankH, 18); ctx.fill(); ctx.restore();
+          ctx.strokeStyle = `${hex}55`; ctx.lineWidth = 3; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, plankH, 18); ctx.stroke();
+          ctx.textAlign = 'center';
+          if (wave.mode === 'sentence') {
+            ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
+            ctx.fillText(wave.hold > 0 ? 'Read the sentence — get ready to run!' : 'Which mark ends it? Run through its door!', LW / 2, 50);
+            ctx.fillStyle = ink; ctx.font = `700 29px ${F}`;
+            ctx.fillText(`${wave.sentence} __`, LW / 2, 88);
+          } else {
+            // AUDIO-FIRST: the target is never printed before the answer —
+            // the child hears George and must READ the doors.
+            ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
+            ctx.fillText('Run through the word you hear', LW / 2, 50);
+            // speaker button (tappable — replays the word)
+            ctx.font = `700 30px ${FD}`;
+            ctx.fillStyle = ink;
+            ctx.fillText('🔊', LW / 2 - 60, 88);
+            ctx.font = `700 17px ${FD}`;
+            ctx.fillStyle = 'rgba(90,78,86,0.85)';
+            ctx.fillText('tap to hear it again', LW / 2 + 34, 84);
+          }
+          // resolution banner: reveal + teach
+          if (wave.resolved !== 'no') {
+            const msg = wave.resolved === 'hit'
+              ? (wave.mode === 'word' ? `Yes — "${wave.target}"!` : `Yes — the ${MARK_NAMES[wave.target as Mark]}!`)
+              : (wave.mode === 'word' ? `It was "${wave.target}"` : MARK_TEACH[wave.target as Mark]);
+            ctx.font = `700 21px ${FD}`;
+            const mw = ctx.measureText(msg).width + 44;
+            const by = 26 + plankH + 12;
+            ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.2)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 3;
+            ctx.fillStyle = wave.resolved === 'hit' ? '#E9F9EE' : '#FFF4E8';
+            roundRect(ctx, LW / 2 - mw / 2, by, mw, 44, 14); ctx.fill(); ctx.restore();
+            ctx.fillStyle = wave.resolved === 'hit' ? '#177A3E' : '#9A5A1E';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(msg, LW / 2, by + 23);
+          }
         }
         // score + progress
         ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.15)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
@@ -408,9 +581,26 @@ export default function PunctuationRun({ level, onClose }: Props) {
 
       onTap(x, y) {
         if (over) return;
-        // tap a door column (or anywhere in its third of the path)
-        steer(x < LW / 2 - 90 ? 0 : x > LW / 2 + 90 ? 2 : 1);
-        void y;
+        // the speaker plank replays the word
+        if (wave?.mode === 'word' && y < 116 && Math.abs(x - LW / 2) < 210) {
+          speakWord(wave.target);
+          sfx.tick();
+          return;
+        }
+        // steer to the door column nearest the tap AT ITS CURRENT DEPTH —
+        // near the horizon the doors are close together, so fixed screen
+        // thirds sent taps to the wrong lane
+        if (wave && wave.resolved === 'no') {
+          const d = doorDepth(wave);
+          let best = 1, bestDist = Infinity;
+          for (let lane = 0; lane < 3; lane++) {
+            const dist = Math.abs(x - laneX(lane, d));
+            if (dist < bestDist) { bestDist = dist; best = lane; }
+          }
+          steer(best);
+        } else {
+          steer(x < LW / 2 - 90 ? 0 : x > LW / 2 + 90 ? 2 : 1);
+        }
       },
       onKey(e) {
         if (e.key === 'ArrowLeft') { steer(runner.lane - 1); e.preventDefault(); }

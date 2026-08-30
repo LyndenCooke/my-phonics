@@ -42,7 +42,7 @@ const GAMES: { id: GameId; emoji: string; name: string; blurb: string; vibe: str
   { id: 'soundlings', emoji: '🥚', name: 'Soundlings', blurb: 'Hatch and feed your own sound creatures', vibe: 'Collect' },
   { id: 'pop', emoji: '🫧', name: 'Word Pop', blurb: 'Fly Buzz the bee to pop the word you hear', vibe: 'Arcade' },
   { id: 'cannon', emoji: '🎯', name: "Milo's Cannon", blurb: 'Aim and fire the right sound into the word', vibe: 'Arcade' },
-  { id: 'run', emoji: '🚪', name: 'Punctuation Run', blurb: 'Run through the door that ends the sentence', vibe: 'Runner' },
+  { id: 'run', emoji: '🚪', name: 'Door Dash', blurb: 'Read the doors and run through the right one', vibe: 'Runner' },
   { id: 'pairs', emoji: '🃏', name: 'Sound Pairs', blurb: 'Flip the cards and match sounds to words', vibe: 'Memory' },
   { id: 'finish', emoji: '🧩', name: 'Finish the Word', blurb: 'A sound is missing — tap the right one', vibe: 'Puzzle' },
   { id: 'spot', emoji: '🔍', name: 'Sound Spotter', blurb: 'Hunt the scene for things hiding the sound', vibe: 'Seek & find' },
