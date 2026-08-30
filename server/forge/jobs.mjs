@@ -1305,6 +1305,10 @@ export function validateDirectedContinuity(story, directed) {
     if (relation === "same-view" && camera !== "same-view") failures.push(`page ${i + 1} same-view plan conflicts with ${camera} camera`);
     if (relation === "same-setting-closeup" && camera !== "closeup") failures.push(`page ${i + 1} close-up setting plan conflicts with ${camera} camera`);
     if (relation === "same-setting-new-angle" && camera !== "new-angle") failures.push(`page ${i + 1} new-angle setting plan conflicts with ${camera} camera`);
+    if (/\b(?:pour(?:s|ed|ing)?|spill(?:s|ed|ing)?|leak(?:s|ed|ing)?|spray(?:s|ed|ing)?|drip(?:s|ped|ping)?|flow(?:s|ed|ing)?|stream(?:s|ed|ing)?|tips?|tipped|tipping)\b/i.test(text)
+      && !(directed[i]?.flow_paths || []).length) {
+      failures.push(`page ${i + 1} describes a flow but the director supplied no source/exit/route/destination plan`);
+    }
     seenSettings.add(plannedSetting);
     for (const object of directed[i]?.objects || []) {
       const key = String(object.name || "").toLowerCase().trim();
@@ -1510,7 +1514,11 @@ async function stepScene(book, job, i) {
     // plausibility in is cheaper than paying QA to find it missing, and a
     // general homily about objects resting on surfaces could never have
     // prevented a two-stranded skipping rope (Lynden 2026-08-21).
-    physics: d?.physics || "",
+    physics: [
+      d?.physics || "",
+      ...((d?.flow_paths || []).map((flow) =>
+        `FLOW PATH — ${flow.substance}: starts ${flow.source}; exits ONLY through ${flow.exit}; follows ${flow.route}; lands ${flow.destination}; MUST NOT emerge through ${(flow.forbidden_exits || []).join(", ") || "any sealed surface"}.`)),
+    ].filter(Boolean).join(" "),
     // Keep a chain only for a short adjacent run in the same mutable world.
     // A full-book chain made later pages reread every earlier turn and caused
     // page-eight cost to exceed page-one cost fivefold.
@@ -1704,7 +1712,11 @@ export function buildExpectedAssertions(directed, childName) {
     const forbidden = (page.forbidden_visible_states || []).map((a, n) => ({
       id: `p${i + 1}:forbidden:${n + 1}`, page: i + 1, kind: "forbidden", assertion: a.assertion,
     }));
-    return [...required, ...forbidden, {
+    const flows = (page.flow_paths || []).map((flow, n) => ({
+      id: `p${i + 1}:flow:${n + 1}`, page: i + 1, kind: "flow",
+      assertion: `Trace the visible ${flow.substance} continuously: it starts ${flow.source}, exits ONLY through ${flow.exit}, follows ${flow.route}, and lands ${flow.destination}. It must not emerge through ${(flow.forbidden_exits || []).join(", ") || "any sealed surface"}.`,
+    }));
+    return [...required, ...forbidden, ...flows, {
       id: `p${i + 1}:hero-identity`, page: i + 1, kind: "identity",
       assertion: `${childName} matches the canonical hero reference in face, skin, hair and exact clothing colours; the hero and the page's central action are not unintentionally cropped.`,
     }];
@@ -1715,7 +1727,7 @@ export function objectiveVisualFailures(expectedAssertions, assertionChecks) {
   const checks = new Map((assertionChecks || []).map((c) => [String(c.id), c]));
   return expectedAssertions.filter((a) => checks.get(a.id)?.pass !== true).map((a) => {
     const observed = checks.get(a.id)?.observed || "The editor returned no observation for this required check.";
-    return { severity: "major", area: a.kind === "identity" ? "object-identity" : "story-state",
+    return { severity: "major", area: a.kind === "identity" ? "object-identity" : a.kind === "flow" ? "image-physics" : "story-state",
       pages: [a.page], detail: `${a.assertion} OBSERVED: ${observed}` };
   });
 }

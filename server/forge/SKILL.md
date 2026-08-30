@@ -65,6 +65,10 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   mutable physical state genuinely carries forward, then it resets.
 - Connection-like objects must be traceable end to end. Each end states what it
   attaches to. A floating, detached or wrongly attached end is blocking.
+- Flowing liquid, powder, smoke or spray has a director-defined topology:
+  source, exact real exit, continuous route, destination and forbidden sealed
+  exits. Flow emerging through a cup base, wall or another sealed surface is a
+  blocking physics failure even when the spill itself looks attractive.
 - The director specifies counts, contact/support, ownership, forbidden states
   and the one visible action. Schemas and deterministic validation outrank prose.
 

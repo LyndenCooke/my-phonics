@@ -26,6 +26,18 @@ const expected = buildExpectedAssertions([{ required_visible_states: [{ assertio
 const failures = objectiveVisualFailures(expected, [{ id: "p1:required:1", pass: false, observed: "Only two sheep." }]);
 assert.equal(failures.length, 2, "a failed count and omitted identity check must both block");
 assert.ok(failures.every((f) => f.severity === "major"));
+const flowExpected = buildExpectedAssertions([{ required_visible_states: [], forbidden_visible_states: [], flow_paths: [{
+  substance: "red drink", source: "inside the red cup", exit: "the lid's drinking slot",
+  route: "a continuous downward stream", destination: "on the cream cloth",
+  forbidden_exits: ["the sealed cup base", "the side wall", "the sleeve"],
+}] }], "Elsie");
+assert.match(flowExpected.find((a) => a.kind === "flow")?.assertion || "", /exits ONLY through the lid's drinking slot/,
+  "the final editor must trace liquid through the director-specified real opening");
+const missingFlow = validateDirectedContinuity({ pages: [{ text: "The cup tips over and spills.", location: "cart" }] }, [{
+  setting_id: "cart", setting_relation: "new-setting", camera: "wide", objects: [], flow_paths: [],
+}]);
+assert.ok(missingFlow.some((f) => /supplied no source\/exit\/route\/destination/.test(f)),
+  "a director cannot leave flow topology blank on a spill page");
 
 const continuity = validateDirectedContinuity({ pages: [
   { text: "The sheep rush to one tub.", location: "field" }, { text: "The shy sheep stays back by the shed.", location: "field" },

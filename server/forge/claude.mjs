@@ -1345,6 +1345,23 @@ const DIRECT_SCHEMA = {
             type: "string",
             description: "The mechanics of THIS picture in one or two plain sentences an illustrator can follow. Name (a) CONTACT - what is touching what, and where ('the front wheel rests on the board, rim against the wood'); (b) SUPPORT - what holds the weight of what, and what the characters stand on; (c) COUNT - how many of each key thing is in frame; (d) SHAPE OF ANY LINE - a rope, string, lead, hose or chain held between two people is ONE continuous strand from hand to hand, and you must say where its lowest point sits. Say nothing else here - no mood, no colour. If the page has no mechanism, describe what each character's hands are doing and what they are standing on.",
           },
+          flow_paths: {
+            type: "array",
+            description: "Every visible liquid, powder, smoke or other flowing substance on this page. Empty when nothing flows.",
+            items: {
+              type: "object",
+              properties: {
+                substance: { type: "string" },
+                source: { type: "string", description: "Where the substance begins, e.g. inside the red cup." },
+                exit: { type: "string", description: "The exact real opening it passes through, e.g. the lid's drinking slot, spout or torn seam." },
+                route: { type: "string", description: "The continuous visible path and direction from exit to destination." },
+                destination: { type: "string" },
+                forbidden_exits: { type: "array", items: { type: "string" }, description: "Sealed surfaces the substance must never emerge through." },
+              },
+              required: ["substance", "source", "exit", "route", "destination", "forbidden_exits"],
+              additionalProperties: false,
+            },
+          },
           required_visible_states: {
             type: "array",
             items: {
@@ -1370,7 +1387,7 @@ const DIRECT_SCHEMA = {
             },
           },
         },
-        required: ["page", "emotion", "staging", "brief", "setting_id", "setting_relation", "camera", "objects", "cast_present", "physics", "required_visible_states", "forbidden_visible_states"],
+        required: ["page", "emotion", "staging", "brief", "setting_id", "setting_relation", "camera", "objects", "cast_present", "physics", "flow_paths", "required_visible_states", "forbidden_visible_states"],
         additionalProperties: false,
       },
     },
@@ -1426,6 +1443,8 @@ When the story travels, each brief must also say WHERE ALONG THE ROUTE we now ar
 And where the story has a second attempt, stage it so it LOOKS like a second attempt: a different position, hand, tool or route from the first.
 
 9y. FILL "physics" FOR EVERY PAGE, and make it the truth the picture has to obey. Work it out like an engineer for a moment before you write the brief: what touches what, what carries the weight, how many of each thing, and the exact shape of any rope or line. This text is pasted straight into the illustrator's instructions, so vagueness there becomes a defect here — "the rope is between them" produced an impossible doubled loop, twice.
+
+9y-LIQUID AND FLOW TOPOLOGY. Whenever anything pours, spills, leaks, sprays, drips, tips out, blows or streams, add one flow_paths entry. State where it starts, the EXACT REAL OPENING it exits through, its continuous visible route and where it lands. List every sealed surface as a forbidden exit. A lidded cup tipped over must show drink leaving ONLY through its visible drinking slot; its base, side wall and sleeve stay intact and dry. "Drink runs from the cup" is forbidden vagueness. If the required opening cannot be visible from the chosen camera, change the camera. Leave flow_paths empty only when nothing flows in the picture.
 
 9z. PLAN THE CONTACT MOMENT — ON EVERY PAGE WHOSE TEXT ASSERTS CONTACT, not just the resolving one. For the page where the story's mechanism actually works, the brief must place the tool and the thing it acts on IN CONTACT and say so in required_visible_states ("the front wheel is resting ON the board, its rim touching the wood"). Never let the resolving page be the aftermath. If the mechanism physically needs more than one of something (both wheels supported, both ends held), the story and the briefs must use that many. The SAME applies to mishap and slapstick beats: if the text says someone slid INTO the mop, bumped the shelf, knocked the tin or caught the jar, the picture must show the moment of contact — name in required_visible_states exactly what part touches what ("Dad's shoulder is pressed against the mop, the mop tipping with him"). Illustrators default to a polite near-miss, and a near-miss picture contradicts a contact sentence (proved: "slid into a mop" drawn as slipping NEXT to the mop, 2026-08-23).
 
