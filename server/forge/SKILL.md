@@ -39,6 +39,10 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
 - A fresh manuscript that still has an open major stops before imagery; never
   paint it with an auto-flag. Repetitive search premises are disabled until
   they have a deterministic narrowing and escalation contract.
+- A configured but unavailable cold-judge key must fall through to the next
+  judge. If no second vendor is reachable, use a different OpenAI model from
+  the writer; never let the writing model approve its own manuscript. The
+  story editor owns the physical check so it is not bought twice.
 - A child notices, chooses and acts. An adult may support a risky action but may
   not solve the plot for the child.
 - Scene text is narration, not instructions. Avoid robotic Name–verb–object

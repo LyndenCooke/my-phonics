@@ -153,10 +153,11 @@ function nextStepOf(job) {
   // costing $0.41 on a book whose whole text was $1.83 (Lynden 2026-08-21:
   // "how are we spending so much on the story itself"). Its duties moved into
   // the story gate, which already reads the manuscript and already owns the
-  // Physical story logic is checked while failures still cost pennies. This
-  // was temporarily reduced to a no-op and allowed Milo's fixed U-shaped toy
-  // track to become a route that somehow "runs to the bush".
-  if (!job.plausibilityDone) return "plausibility";
+  // Physical plausibility is consolidated into the demanding story editor's
+  // physical_check. Paying for a separate read duplicated the same manuscript
+  // and pushed text-only tests above $1.50. Director geometry/state validation
+  // remains a second deterministic pre-paint gate for visual mechanisms.
+  if (!job.plausibilityDone) job.plausibilityDone = true;
   // STORY GATE BEFORE ANY IMAGE (Lynden 2026-08-14): "Yusuf and the Star
   // Tin" was double-rejected for story thinness with 16 finished paid
   // illustrations. Both rejections were visible in the text alone, so the
@@ -900,7 +901,8 @@ export function styleIssues(story, book) {
   // here? No" pages is cheap exercise design, not a developed story. Search
   // can return only when it has its own deterministic narrowing/escalation
   // contract; for now reject the premise while it is still text-only.
-  const searchBeats = pages.filter((t) => /\b(?:is it|looks? (?:in|at|under|on)|not (?:his|her|the)|no \w+[!.])\b/i.test(t));
+  const searchBeats = pages.filter((t) =>
+    /\b(?:is it|looks?|checks?|checked|search(?:es|ed)?|still no|not (?:his|her|the)|no (?:pouch|bag|toy|card|book|pet|cash|jeep|item|thing))\b/i.test(t));
   if (searchBeats.length >= 2) out.push({
     severity: "major", area: "premise", page: 0, replacement: "",
     detail: `Search-story pattern detected on ${searchBeats.length} pages. Repeated looking and ruling-out is temporarily blocked: replace the premise with a developed physical goal, failed attempt, changed plan and hero-earned resolution.`,

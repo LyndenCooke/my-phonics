@@ -353,6 +353,7 @@ const writerVendor = useOpenAI ? "openai" : useVertex ? "vertex" : "anthropic";
 // after a failure, so a prod judge falls straight back to the writer's vendor
 // instead of paying a failed exec on every gate.
 let vertexJudgeOk = null;
+let anthropicJudgeOk = null;
 // Every vendor EXCEPT the writer, best-first. A keyed vendor is preferred over
 // Vertex because Vertex needs a local gcloud CLI and so is unavailable in prod
 // — putting it last is what gives Vercel a real cold read once a second key
@@ -378,6 +379,7 @@ async function judgeVendorFor(prefer = null) {
     : JUDGE_ORDER;
   for (const v of order) {
     if (v === writerVendor || !vendorKeyed[v]()) continue;
+    if (v === "anthropic" && anthropicJudgeOk === false) continue;
     if (v !== "vertex") return v;
     if (vertexJudgeOk === false) continue;
     if (vertexJudgeOk === null) {
@@ -467,10 +469,17 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
       const t = r.content.find((b) => b.type === "text")?.text ?? "";
       await completePaidCall(receipt, { costUsd: usageCost(r.usage), providerRequestId: r._request_id || null,
         usage: r.usage, responseMeta: { text: t, stop_reason: r.stop_reason } });
+      anthropicJudgeOk = true;
       return { data: JSON.parse(t), cost: usageCost(r.usage), model: r.model || MODEL };
     } catch (e) {
       await failPaidCall(receipt, e, { definitelyUnbilled: Number(e?.status || 0) >= 400, providerRequestId: e?._request_id || null });
-      console.warn(`[forge] cross-vendor judge (anthropic) failed, falling back to writer: ${e.message}`);
+      // A configured but credit-dead key used to capture every cold-read
+      // attempt, fail, then fall straight back to the writer even though
+      // Vertex was healthy on the studio machine. Mark it unavailable for
+      // this process and ask the router for the next independent vendor.
+      anthropicJudgeOk = false;
+      console.warn(`[forge] cross-vendor judge (anthropic) failed, trying the next independent judge: ${e.message}`);
+      return callJson({ system, content, schema, maxTokens, tier, judge });
     }
   }
   if (useOpenAI) {
@@ -479,7 +488,7 @@ async function callJson({ system, content, schema, maxTokens = 16000, tier = "st
         tier === "phonics"
           ? OPENAI_PHONICS_MODEL
           : tier === "story"
-            ? OPENAI_STORY_MODEL
+            ? (judge ? OPENAI_PHONICS_MODEL : OPENAI_STORY_MODEL)
             : OPENAI_FAST_MODEL,
       system,
       content,
@@ -2091,6 +2100,7 @@ export async function storyEditorReview({ story, level, focusSound, machineFindi
     "YOU ALSO CARRY THE PHYSICAL PLAUSIBILITY CHECK, which used to be a second paid read of this same short manuscript. Before judging the story, fill physical_check: walk the causal chain page by page; commit to real-world SIZES for any object that must pass into or out of a container, gap or opening, and check it both ways; name any object the story needs in two incompatible sizes; and name any page whose scene shows an object BEFORE the page that reveals or finds it. Treat an impossibility as blocking, but do not flag ordinary picture-book compression or coincidence. " + 
     "Respect the level: the vocabulary is deliberately constrained, so judge depth by EVENTS and the scene briefs, not by richness of language. Simple words telling a real story pass; rich words telling no story fail. " +
     "ROBOTIC PROSE IS A DEFECT EVEN WHEN EVERY WORD IS LEGAL (a Level 3 draft passed every gate reading 'The bench is wet and bad... No rag is in the shed... six red dots by pots', 2026-08-24). File as at least MAJOR any of: an empty evaluative filler word ('bad', 'nice') where a consequence belongs; an unnatural negative construction no person would say aloud; a prop, count or detail that exists only because its name is decodable and changes nothing if cut; a character who appears only in the ending without having taken part; a resolution that dodges the stated problem instead of fixing it (avoiding the wet bench while the lunch stays on it); and a manuscript where nearly every sentence is the same Name-verb-object shape with no reaction and no final beat. " +
+    "ENDING AND DIALOGUE MUST MEAN WHAT THEY SAY. The last page must show a concrete consequence of the hero's effort, not merely 'Yay!', 'felt proud/glad', 'at the end', or the opening activity resumed. Trace every quoted thank-you: the named person must actually have provided the thing they are thanked for, and the possessives must be true. 'Thank you Ken for my sweet' fails when Ken returned a pouch and the hero bought the sweet. Treat a generic cheer, mismatched thanks or vague 'all the way' in place of a visible destination as MAJOR language/story damage. " +
     "SAFETY IS BLOCKING: if the hero performs a risky physical action (reaching into drains/holes, using tools, heat, deep water, traffic, heights) without an adult present and part of that action in the same page, that is a major issue — these books model behaviour for young children. " +
     "The -ed past-tense suffix is a deliberately taught exception at Level 4 and above (the book's prep page teaches its three pronunciations) — never raise -ed usage as a phonics issue at L4+. " +
     "SEVERITY DISCIPLINE: your severities ARE the verdict — code proceeds on any review with no critical or major issue, and 'minor' means 'still fine to proceed'. If your honest view is that this story should not be illustrated, you MUST say so as at least one critical or major issue. " +

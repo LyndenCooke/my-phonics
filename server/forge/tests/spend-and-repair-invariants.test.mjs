@@ -29,6 +29,13 @@ const miloSearchIssues = styleIssues({ title: "Milo and the Jeep", pages: [
 ] }, { child_name: "Milo", level: 4 });
 assert.ok(miloSearchIssues.some((i) => i.area === "premise" && /temporarily blocked/.test(i.detail)),
   "repetitive search premises must stop before image spend");
+const theoSearchIssues = styleIssues({ title: "Theo and the Green Pouch", pages: [
+  { text: "Theo checked his bag. His pouch was not in it!" },
+  { text: "He checked by the bench. No pouch was in that spot!" },
+  { text: "He checked by the shop step. Still no pouch!" },
+] }, { child_name: "Theo", level: 4 });
+assert.ok(theoSearchIssues.some((i) => i.area === "premise"),
+  "location-by-location lost-object searches must stop before image spend");
 
 const expected = buildExpectedAssertions([{ required_visible_states: [{ assertion: "Exactly three sheep." }], forbidden_visible_states: [] }], "Mia");
 const failures = objectiveVisualFailures(expected, [{ id: "p1:required:1", pass: false, observed: "Only two sheep." }]);
@@ -101,6 +108,12 @@ assert.match(source, /setting_page\$\{i \+ 1\}\.jpg/, "location anchors must use
 const imageSource = fs.readFileSync(new URL("../images.mjs", import.meta.url), "utf8");
 assert.match(imageSource, /FORGE_PER_PAGE_QA === "1"/, "per-page repaint QA must be opt-in");
 assert.match(imageSource, /immutable SETTING PLATE/, "scene prompts must separate the fixed setting from the current cast");
+
+const claudeSource = fs.readFileSync(new URL("../claude.mjs", import.meta.url), "utf8");
+assert.match(claudeSource, /anthropicJudgeOk = false;[\s\S]{0,300}return callJson\(\{ system, content, schema, maxTokens, tier, judge \}\)/,
+  "a dead Anthropic judge must fall through to Vertex instead of the writer judging itself");
+assert.match(claudeSource, /tier === "story"\s*\? \(judge \? OPENAI_PHONICS_MODEL : OPENAI_STORY_MODEL\)/,
+  "when no second vendor is available, the story judge must use a different OpenAI model from the writer");
 
 const spendSource = fs.readFileSync(new URL("../spend.mjs", import.meta.url), "utf8");
 assert.match(spendSource, /X-Client-Request-Id|clientRequestId/,
