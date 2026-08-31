@@ -3,33 +3,40 @@
  * doors and runs through the right one.
  *
  * A kid (drawn from behind — we run WITH them) sprints down a meadow path.
- * Three wooden doors rush up from the horizon; steer into a lane (tap a
- * door, or arrow keys / 1-2-3) and the answer resolves when the runner
- * PHYSICALLY passes the door plane. The chosen door glows the whole
- * approach with a bouncing chevron, so the commitment is always visible.
+ * A fence row with THREE ARCHED GATES rushes up from the horizon; steer
+ * into a lane (tap a gate, or arrow keys / 1-2-3) and the answer resolves
+ * when the runner PHYSICALLY passes the gate plane. The chosen gate glows
+ * with a bouncing chevron the whole approach.
  *
- * What the doors ask depends on what the child can actually do:
+ * The gate row is ONE painted sprite (gate_row.png — three gates joined by
+ * split-rail fence, signs, grass and ground shadow baked in, generated in
+ * the run_path backdrop's own watercolour style) so it can never read as
+ * separate floating doors. Labels are drawn onto the baked sign faces; the
+ * lane geometry converges to the path's vanishing point so the row is
+ * always ON the path. GATE_X/SIGN_* constants are MEASURED from the PNG —
+ * re-measure if the sprite is ever regenerated.
+ *
+ * What the gates ask depends on what the child can actually do:
  *  - WORD rounds (all of L1-4, and the first two rounds at L5-8):
  *    George says a real curriculum word (recorded MP3 — never TTS), the
- *    three doors wear written words from the level's bank, and the child
- *    must READ the doors to find the one they heard. Distractors are
- *    picked to look similar (shared letters / length), so decoding is
- *    genuinely required. Tap the prompt plank to hear the word again;
- *    it also replays halfway down the path.
+ *    three signs wear written words from the level's bank, and the child
+ *    must READ them to find the one they heard. Distractors are picked to
+ *    look similar (shared letters / length), so decoding is genuinely
+ *    required. Tap the prompt plank to hear the word again; it also
+ *    replays halfway down the path.
  *  - SENTENCE rounds (L5-8, after the warm-ups — the grammar strand):
- *    a sentence missing its end mark, doors wearing . ? !. The doors
- *    HOLD at the horizon for a reading beat scaled to sentence length,
- *    and the approach itself is slower than word rounds. A miss teaches:
- *    "It's asking — asking sentences end with a question mark."
+ *    a sentence missing its end mark, signs wearing . ? !. The row HOLDS
+ *    at the horizon for a reading beat scaled to sentence length, and the
+ *    approach is slower than word rounds. A miss teaches: "It's asking —
+ *    asking sentences end with a question mark."
  *
- * Correct door: green flash, confetti, star, the run speeds up. Wrong
- * door: it's shut — thud, bounce, the correct door shows a tick and the
- * teaching line appears. Eight doors a run.
+ * Correct gate: green flash, confetti, star, the run speeds up. Wrong
+ * gate: it's shut — thud, the row judders, the correct sign shows a tick
+ * and the teaching line appears. Eight gates a run.
  *
- * Shared engine scene: fixed 1280×720 logical space. The painted path
- * backdrop, door sprite and 3-frame run-cycle kid (gpt-image, real alpha)
- * are all optional assets — procedural versions draw when any is missing.
- * No TTS anywhere: recorded audio or silence.
+ * Shared engine scene: fixed 1280×720 logical space. Backdrop, gate row
+ * and 3-frame run-cycle kid are all optional assets — procedural versions
+ * draw when any is missing. No TTS anywhere: recorded audio or silence.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -53,6 +60,17 @@ const HORIZON_Y = 330;
 const RUNNER_Y = 598;
 const MARKS = ['.', '?', '!'] as const;
 type Mark = typeof MARKS[number];
+
+// ── gate_row.png geometry, measured from the sprite (fractions of the
+// trimmed image). Gate centres, row aspect, and the blank sign faces. ──
+const GATE_X = [0.1907, 0.4994, 0.8094];
+const GATE_GAP = (GATE_X[2] - GATE_X[0]) / 2;   // lane gap as a row-width fraction
+const ROW_ASPECT = 0.3127;                       // row height / row width
+const SIGN_CY = 0.097;                           // sign face centre y (of row height)
+const SIGN_H = 0.135;                            // sign face height (of row height)
+const SIGN_W = 0.116;                            // sign face width (of row width)
+const SIGN_FACE = '#F5EBD0';                     // the baked cream — panels extend invisibly
+const SIGN_EDGE = '#8B7355';
 
 const MARK_NAMES: Record<Mark, string> = {
   '.': 'full stop',
@@ -85,16 +103,16 @@ const SENTENCES: Record<Mark, string[]> = {
   ],
 };
 
-/** Longest word that fits on a door plank at horizon size. */
+/** Longest word that fits on a gate sign at approach sizes. */
 const MAX_DOOR_WORD = 9;
 
 interface Wave {
   mode: 'word' | 'sentence';
-  labels: string[];       // what each door wears (words, or . ? !)
+  labels: string[];       // what each gate sign wears (words, or . ? !)
   correctLane: number;
   target: string;         // the heard word, or the missing mark
   sentence: string;       // '' in word mode
-  hold: number;           // reading beat before the doors move
+  hold: number;           // reading beat before the row moves
   u: number;              // 0 (horizon) → 1 (runner plane)
   replayed: boolean;      // word said again at half way
   resolved: 'no' | 'hit' | 'miss';
@@ -102,8 +120,7 @@ interface Wave {
 }
 
 /** Lane x at a given depth. The spread converges to the path's vanishing
- *  point (near-zero at the horizon) so the doors are always ON the path —
- *  the old fixed base spread put the outer doors on the grass and barn. */
+ *  point (near-zero at the horizon) so the gates are always ON the path. */
 function laneX(lane: number, u: number) {
   return LW / 2 + (lane - 1) * (34 + 296 * u);
 }
@@ -148,8 +165,8 @@ export default function PunctuationRun({ level, onClose }: Props) {
     // Painted scenery + sprites (all optional — procedural fallbacks below)
     const art = new Image();
     art.src = '/images/games/run_path.webp';
-    const doorImg = new Image();
-    doorImg.src = '/images/games/sprites/door.png';
+    const rowImg = new Image();
+    rowImg.src = '/images/games/sprites/gate_row.png';
     const kidImgs = [0, 1, 2].map(i => { const im = new Image(); im.src = `/images/games/sprites/kid_${i}.png`; return im; });
     const ok = (im: HTMLImageElement) => im.complete && im.naturalWidth > 0;
     let fontReady = false;
@@ -160,7 +177,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
     let waveN = 0;
     let stars = 0;
     let over = false;
-    let speed = 1;            // pace multiplier — correct doors speed the run up
+    let speed = 1;            // pace multiplier — correct gates speed the run up
     let roadPhase = 0;        // scrolling dashes
     let shake = 0;
     const runner = { lane: 1, x: 1, stride: 0, stumble: 0 };
@@ -169,7 +186,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
       '.': shuffle(SENTENCES['.']), '?': shuffle(SENTENCES['?']), '!': shuffle(SENTENCES['!']),
     };
 
-    /** Voiced, door-sized words for this level — reading is only honest
+    /** Voiced, sign-sized words for this level — reading is only honest
      *  when the child HEARS the target in George's voice. */
     function wordPool(): string[] {
       const all = [...new Set(Object.values(bankRef.current).flat())]
@@ -204,7 +221,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
         const labels = shuffle([...MARKS]) as string[];
         wave = {
           mode, labels, correctLane: labels.indexOf(target), target, sentence,
-          // reading beat: doors wait at the horizon while the child reads
+          // reading beat: the row waits at the horizon while the child reads
           hold: 1.1 + 0.3 * sentence.split(' ').length,
           u: 0, replayed: false, resolved: 'no', t: 0,
         };
@@ -261,7 +278,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
       if (l !== runner.lane) { runner.lane = l; sfx.tick(); }
     }
 
-    /** Current door depth for drawing and hit-testing. */
+    /** Current gate-row depth for drawing and hit-testing. */
     function doorDepth(w: Wave) {
       const ue = easeOutCubic(w.u) * 0.4 + w.u * 0.6;
       return Math.pow(ue, 1.6);
@@ -343,169 +360,123 @@ export default function PunctuationRun({ level, onClose }: Props) {
         }
         ctx.globalAlpha = 1;
 
-        // ── the doors ──
+        // ── the gate row — ONE unit crossing the path ──
         if (wave) {
           const d = doorDepth(wave);
-          const ue = easeOutCubic(wave.u) * 0.4 + wave.u * 0.6;
-          const s = 0.22 + 0.78 * ue;
           const y = HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
-          // fade in at the vanishing point so the row doesn't pop into being
-          const rowAlpha = clamp(wave.u / 0.08, 0, 1);
+          const gap = 34 + 296 * d;                    // lane gap on screen
+          const rowW = gap / GATE_GAP;                 // gates land exactly on lanes
+          const rowH = rowW * ROW_ASPECT;
+          const left = LW / 2 - GATE_X[1] * rowW;
+          const rowTop = y - rowH;
+          const gx = (lane: number) => left + GATE_X[lane] * rowW;
+          // fade in at the vanishing point; fade out as we burst through
+          const rowAlpha = clamp(wave.u / 0.08, 0, 1)
+            * (wave.resolved === 'hit' ? Math.max(0, 1 - wave.t * 1.6) : 1);
           ctx.save();
           ctx.globalAlpha = rowAlpha;
+          // the whole row judders when the runner thumps a shut gate
+          if (wave.resolved === 'miss') {
+            ctx.translate(Math.sin(wave.t * 40) * 4 * Math.max(0, 1 - wave.t), 0);
+          }
 
-          // ── the gate row: the three doors are GATES in a fence that
-          // crosses the path — rails and end posts in the same weathered
-          // wood as the painted roadside fences, so the row belongs to the
-          // scene instead of floating over it ──
-          {
-            const gateH = 330 * s;                 // matches sprite door height
-            const spanL = laneX(0, d), spanR = laneX(2, d);
-            const postW = 16 * s, postH = gateH * 0.62;
-            const railH = 13 * s;
-            const endL = spanL - 96 * s, endR = spanR + 96 * s;
-            // contact shadows for the whole row first
+          if (ok(rowImg)) {
+            ctx.drawImage(rowImg, left, rowTop, rowW, rowH);
+          } else {
+            // procedural fallback row: shadows, rails, end posts, plain gates
             ctx.fillStyle = 'rgba(70,50,30,0.20)';
             for (let lane = 0; lane < 3; lane++) {
-              const x = laneX(lane, d);
-              ctx.beginPath(); ctx.ellipse(x, y + 6 * s, 78 * s, 13 * s, 0, 0, 7); ctx.fill();
+              ctx.beginPath(); ctx.ellipse(gx(lane), y - 2, rowW * 0.075, rowH * 0.035, 0, 0, 7); ctx.fill();
             }
-            ctx.beginPath(); ctx.ellipse(endL, y + 5 * s, 22 * s, 8 * s, 0, 0, 7); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(endR, y + 5 * s, 22 * s, 8 * s, 0, 0, 7); ctx.fill();
-            // two rails spanning the row (drawn behind the doors)
-            ctx.fillStyle = '#8B7355'; ctx.strokeStyle = '#5E4B37'; ctx.lineWidth = 2 * s;
-            for (const rh of [0.30, 0.55]) {
-              const ry = y - gateH * rh;
-              roundRect(ctx, endL, ry - railH / 2, endR - endL, railH, railH / 2);
+            ctx.fillStyle = '#8B7355'; ctx.strokeStyle = '#5E4B37'; ctx.lineWidth = rowW * 0.004;
+            for (const rh of [0.32, 0.52]) {
+              roundRect(ctx, left, y - rowH * rh - rowH * 0.02, rowW, rowH * 0.04, rowH * 0.02);
               ctx.fill(); ctx.stroke();
             }
-            // end posts where the row meets the roadside grass
-            ctx.fillStyle = '#7A6349';
-            for (const px of [endL, endR]) {
-              roundRect(ctx, px - postW / 2, y - postH, postW, postH, 4 * s);
-              ctx.fill(); ctx.stroke();
+            for (const px of [left + rowW * 0.02, left + rowW * 0.98]) {
               ctx.fillStyle = '#7A6349';
+              roundRect(ctx, px - rowW * 0.012, y - rowH * 0.62, rowW * 0.024, rowH * 0.62, rowW * 0.006);
+              ctx.fill(); ctx.stroke();
+            }
+            for (let lane = 0; lane < 3; lane++) {
+              const x = gx(lane);
+              ctx.fillStyle = '#8A5A2B';
+              roundRect(ctx, x - rowW * 0.065, y - rowH * 0.66, rowW * 0.13, rowH * 0.64, rowW * 0.02);
+              ctx.fill();
+              ctx.fillStyle = SIGN_FACE; ctx.strokeStyle = SIGN_EDGE; ctx.lineWidth = rowW * 0.004;
+              roundRect(ctx, x - rowW * SIGN_W / 2, rowTop + (SIGN_CY - SIGN_H / 2) * rowH, rowW * SIGN_W, SIGN_H * rowH, rowW * 0.008);
+              ctx.fill(); ctx.stroke();
             }
           }
 
+          // ── per-gate overlays: labels on the signs, glow, chevron ──
+          const faceW = rowW * SIGN_W, faceH = rowH * SIGN_H;
+          const signY = rowTop + SIGN_CY * rowH;
           for (let lane = 0; lane < 3; lane++) {
-            const x = laneX(lane, d);
-            const w = 150 * s, h = 210 * s;
+            const x = gx(lane);
             const isCorrect = lane === wave.correctLane;
             const chosen = lane === runner.lane;
-            const gone = wave.resolved === 'hit' && lane === runner.lane;
-            ctx.save();
-            ctx.translate(x, y);
-            if (wave.resolved === 'miss' && lane === runner.lane) {
-              ctx.translate(Math.sin(wave.t * 40) * 5 * Math.max(0, 1 - wave.t), 0);
-            }
-            if (gone) ctx.globalAlpha = Math.max(0, 1 - wave.t * 2.2);
-            const open = wave.resolved === 'hit' && lane === runner.lane;
-            const missed = wave.resolved === 'miss' && lane === runner.lane;
+            const missed = wave.resolved === 'miss' && chosen;
             const label = wave.labels[lane];
-            const isMarkLabel = wave.mode === 'sentence';
-            if (ok(doorImg)) {
-              const dh = 330 * s, dw = dh * doorImg.naturalWidth / doorImg.naturalHeight;
-              // the chosen door glows in the level colour the whole approach
-              if (chosen && wave.resolved === 'no') {
-                const glow = ctx.createRadialGradient(0, -dh * 0.45, 8, 0, -dh * 0.45, dh * 0.62);
-                glow.addColorStop(0, `${hex}66`); glow.addColorStop(1, `${hex}00`);
-                ctx.fillStyle = glow; ctx.fillRect(-dw, -dh * 1.1, dw * 2, dh * 1.25);
-              }
-              if (open) {
-                const glow = ctx.createRadialGradient(0, -dh * 0.45, 8, 0, -dh * 0.45, dh * 0.55);
-                glow.addColorStop(0, 'rgba(140,240,160,0.75)'); glow.addColorStop(1, 'rgba(140,240,160,0)');
-                ctx.fillStyle = glow; ctx.fillRect(-dw, -dh * 1.05, dw * 2, dh * 1.2);
-              }
+
+            // chosen-gate glow behind the door area
+            if (chosen && wave.resolved === 'no') {
+              const glow = ctx.createRadialGradient(x, y - rowH * 0.33, 6, x, y - rowH * 0.33, rowH * 0.55);
+              glow.addColorStop(0, `${hex}55`); glow.addColorStop(1, `${hex}00`);
+              ctx.fillStyle = glow;
+              ctx.fillRect(x - rowH * 0.6, y - rowH * 0.95, rowH * 1.2, rowH);
+            }
+            if (wave.resolved === 'hit' && chosen) {
+              const glow = ctx.createRadialGradient(x, y - rowH * 0.33, 6, x, y - rowH * 0.33, rowH * 0.6);
+              glow.addColorStop(0, 'rgba(140,240,160,0.7)'); glow.addColorStop(1, 'rgba(140,240,160,0)');
+              ctx.fillStyle = glow;
+              ctx.fillRect(x - rowH * 0.65, y - rowH, rowH * 1.3, rowH * 1.1);
+            }
+            // the shut gate flushes red on a miss
+            if (missed) {
               ctx.save();
-              ctx.shadowColor = 'rgba(40,30,40,0.35)'; ctx.shadowBlur = 12 * s; ctx.shadowOffsetY = 6 * s;
-              ctx.drawImage(doorImg, -dw / 2, -dh, dw, dh);
-              ctx.restore();
-              if (missed) {
-                ctx.globalAlpha *= 0.35; ctx.fillStyle = '#E5484D';
-                roundRect(ctx, -dw * 0.38, -dh * 0.72, dw * 0.76, dh * 0.7, 12 * s); ctx.fill();
-                ctx.globalAlpha = 1;
-              }
-              if (isMarkLabel) {
-                // punctuation fits the baked sign plate
-                const signY = -dh * 0.885;
-                ctx.fillStyle = missed ? '#E5484D' : ink;
-                ctx.font = `800 ${Math.round(46 * s)}px ${F}`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(label, 0, signY);
-              } else {
-                // words get a hanging plank above the door — sized to fit
-                ctx.font = `800 40px ${F}`;
-                const tw = ctx.measureText(label).width;
-                const fpx = Math.min(34 * s * 1.35, (dw * 1.5) / Math.max(1, tw / 40)) ;
-                ctx.font = `800 ${Math.round(fpx)}px ${F}`;
-                const lw2 = ctx.measureText(label).width;
-                const pw = lw2 + 34 * s, ph = fpx * 1.7, py = -dh * 1.02;
-                ctx.save();
-                ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 8 * s; ctx.shadowOffsetY = 4 * s;
-                ctx.fillStyle = '#FFF9EF';
-                roundRect(ctx, -pw / 2, py - ph / 2, pw, ph, 10 * s); ctx.fill();
-                ctx.restore();
-                ctx.lineWidth = 3 * s;
-                ctx.strokeStyle = missed ? '#E5484D' : chosen && wave.resolved === 'no' ? hex : `${ink}44`;
-                roundRect(ctx, -pw / 2, py - ph / 2, pw, ph, 10 * s); ctx.stroke();
-                ctx.fillStyle = missed ? '#E5484D' : ink;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(label, 0, py + 1);
-              }
-              if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
-                ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(38 * s)}px ${FD}`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText('✓', dw * 0.42, -dh * 0.885 - 20 * s);
-              }
-              // chevron over the chosen door — "this is where I'm running"
-              if (chosen && wave.resolved === 'no') {
-                const cy = -dh * (isMarkLabel ? 1.06 : 1.18) - Math.abs(Math.sin(t * 4.4)) * 10 * s;
-                ctx.fillStyle = hex;
-                ctx.beginPath();
-                ctx.moveTo(0, cy + 14 * s); ctx.lineTo(-13 * s, cy - 6 * s); ctx.lineTo(13 * s, cy - 6 * s);
-                ctx.closePath(); ctx.fill();
-              }
-            } else {
-              // procedural fallback door
-              ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.3)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 5 * s;
-              ctx.fillStyle = '#8A5A2B';
-              roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.fill(); ctx.restore();
-              ctx.fillStyle = open ? '#BFE8C5' : missed ? '#F3C1C1' : '#C68B59';
-              roundRect(ctx, -w / 2 + 9 * s, -h + 9 * s, w - 18 * s, h - 12 * s, 10 * s); ctx.fill();
-              if (chosen && wave.resolved === 'no') {
-                ctx.lineWidth = 5 * s; ctx.strokeStyle = hex;
-                roundRect(ctx, -w / 2, -h, w, h, 14 * s); ctx.stroke();
-              }
-              ctx.save(); ctx.translate(0, -h - 40 * s);
-              ctx.font = `800 40px ${F}`;
-              const tw = ctx.measureText(label).width;
-              const fpx = isMarkLabel ? 44 * s : Math.min(34 * s * 1.35, (w * 1.9) / Math.max(1, tw / 40));
-              ctx.font = `800 ${Math.round(fpx)}px ${F}`;
-              const lw2 = isMarkLabel ? 50 * s : ctx.measureText(label).width;
-              const pw = lw2 + 30 * s, ph = Math.max(fpx * 1.6, 52 * s);
-              ctx.fillStyle = '#FFFFFF';
-              roundRect(ctx, -pw / 2, -ph / 2, pw, ph, 12 * s); ctx.fill();
-              ctx.lineWidth = 4 * s;
-              ctx.strokeStyle = isCorrect && wave.resolved === 'miss' ? '#22C55E' : chosen && wave.resolved === 'no' ? hex : `${ink}`;
-              roundRect(ctx, -pw / 2, -ph / 2, pw, ph, 12 * s); ctx.stroke();
-              ctx.fillStyle = missed ? '#E5484D' : ink;
-              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-              ctx.fillText(label, 0, 2 * s);
-              if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
-                ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(36 * s)}px ${FD}`;
-                ctx.fillText('✓', pw / 2 + 18 * s, -ph / 2);
-              }
-              if (chosen && wave.resolved === 'no') {
-                const cy = -ph / 2 - 24 * s - Math.abs(Math.sin(t * 4.4)) * 10 * s;
-                ctx.fillStyle = hex;
-                ctx.beginPath();
-                ctx.moveTo(0, cy + 14 * s); ctx.lineTo(-13 * s, cy - 6 * s); ctx.lineTo(13 * s, cy - 6 * s);
-                ctx.closePath(); ctx.fill();
-              }
+              ctx.globalAlpha = rowAlpha * 0.32;
+              ctx.fillStyle = '#E5484D';
+              roundRect(ctx, x - rowW * 0.062, y - rowH * 0.64, rowW * 0.124, rowH * 0.6, rowW * 0.015);
+              ctx.fill();
               ctx.restore();
             }
-            ctx.restore();
+
+            // label on the sign face — a matching cream panel extends the
+            // baked sign invisibly when the word needs more room
+            ctx.font = `800 40px ${F}`;
+            const tw40 = ctx.measureText(label).width;
+            const isMark = wave.mode === 'sentence';
+            const maxW = Math.min(gap * 0.9, Math.max(faceW * 0.92, isMark ? 0 : faceW * 1.7));
+            const fpx = isMark
+              ? faceH * 0.85
+              : Math.min(faceH * 0.72, (maxW / Math.max(1, tw40)) * 40);
+            ctx.font = `800 ${Math.round(fpx)}px ${F}`;
+            const lw2 = ctx.measureText(label).width;
+            if (!isMark && lw2 > faceW * 0.92) {
+              const pw = lw2 + faceH * 0.5;
+              ctx.fillStyle = SIGN_FACE; ctx.strokeStyle = SIGN_EDGE; ctx.lineWidth = Math.max(1.5, rowW * 0.003);
+              roundRect(ctx, x - pw / 2, signY - faceH * 0.44, pw, faceH * 0.88, faceH * 0.18);
+              ctx.fill(); ctx.stroke();
+            }
+            ctx.fillStyle = missed ? '#E5484D' : ink;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(label, x, signY + faceH * 0.04);
+
+            // the correct sign earns its tick after a miss
+            if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
+              ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(faceH * 0.8)}px ${FD}`;
+              ctx.fillText('✓', x + faceW * 0.62, signY - faceH * 0.5);
+            }
+            // chevron over the chosen sign — "this is where I'm running"
+            if (chosen && wave.resolved === 'no') {
+              const ch = Math.max(10, faceH * 0.55);
+              const cy = signY - faceH * 0.8 - Math.abs(Math.sin(t * 4.4)) * ch * 0.8;
+              ctx.fillStyle = hex;
+              ctx.beginPath();
+              ctx.moveTo(x, cy + ch * 0.6); ctx.lineTo(x - ch * 0.55, cy - ch * 0.4); ctx.lineTo(x + ch * 0.55, cy - ch * 0.4);
+              ctx.closePath(); ctx.fill();
+            }
           }
           ctx.restore(); // rowAlpha
         }
@@ -575,12 +546,12 @@ export default function PunctuationRun({ level, onClose }: Props) {
           ctx.textAlign = 'center';
           if (wave.mode === 'sentence') {
             ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
-            ctx.fillText(wave.hold > 0 ? 'Read the sentence — get ready to run!' : 'Which mark ends it? Run through its door!', LW / 2, 50);
+            ctx.fillText(wave.hold > 0 ? 'Read the sentence — get ready to run!' : 'Which mark ends it? Run through its gate!', LW / 2, 50);
             ctx.fillStyle = ink; ctx.font = `700 29px ${F}`;
             ctx.fillText(`${wave.sentence} __`, LW / 2, 88);
           } else {
             // AUDIO-FIRST: the target is never printed before the answer —
-            // the child hears George and must READ the doors.
+            // the child hears George and must READ the signs.
             ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
             ctx.fillText('Run through the word you hear', LW / 2, 50);
             // speaker button (tappable — replays the word)
@@ -629,9 +600,9 @@ export default function PunctuationRun({ level, onClose }: Props) {
           sfx.tick();
           return;
         }
-        // steer to the door column nearest the tap AT ITS CURRENT DEPTH —
-        // near the horizon the doors are close together, so fixed screen
-        // thirds sent taps to the wrong lane
+        // steer to the gate nearest the tap AT ITS CURRENT DEPTH — near the
+        // horizon the gates are close together, so fixed screen thirds sent
+        // taps to the wrong lane
         if (wave && wave.resolved === 'no') {
           const d = doorDepth(wave);
           let best = 1, bestDist = Infinity;
