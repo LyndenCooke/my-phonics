@@ -79,4 +79,28 @@ export const sfx = {
     sfx.chord();
     setTimeout(() => sfx.sparkle(), 350);
   },
+  /** Soft footstep thud — the sound of running. */
+  step(): void {
+    tone(75 + Math.random() * 25, 0.06, 'sine', 0.04);
+  },
+  /** Passing whoosh — bursting through a gate. */
+  whoosh(): void {
+    const c = actx();
+    if (!c) return;
+    try {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = 'sawtooth';
+      o.connect(g);
+      g.connect(c.destination);
+      const t = c.currentTime;
+      o.frequency.setValueAtTime(190, t);
+      o.frequency.exponentialRampToValueAtTime(55, t + 0.26);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.08, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+      o.start(t);
+      o.stop(t + 0.33);
+    } catch { /* stay silent */ }
+  },
 };

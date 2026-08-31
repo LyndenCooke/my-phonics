@@ -125,9 +125,10 @@ function laneX(lane: number, u: number) {
   return LW / 2 + (lane - 1) * (34 + 296 * u);
 }
 
-/** Pick two distractors that make the child actually read: prefer words
- *  that share length / first letter / last letter with the target. */
-function pickDistractors(target: string, pool: string[]): string[] {
+/** Pick two distractors. `hardness` 0→1 ramps the difficulty curve: early
+ *  rounds draw easy-to-tell-apart words, later rounds draw look-alikes
+ *  (shared length / first letter / last letter) that force a real read. */
+function pickDistractors(target: string, pool: string[], hardness: number): string[] {
   const scored = pool
     .filter(w => w !== target)
     .map(w => {
@@ -138,14 +139,15 @@ function pickDistractors(target: string, pool: string[]): string[] {
       return { w, s };
     })
     .sort((a, b) => b.s - a.s);
-  // choose from the look-alike top so rounds vary run to run
-  const top = scored.slice(0, 6).map(x => x.w);
+  // hard rounds choose from the look-alike top; easy rounds from a wide slice
+  const slice = Math.max(4, Math.round(14 - 10 * hardness));
+  const top = scored.slice(0, slice).map(x => x.w);
   return shuffle(top).slice(0, 2);
 }
 
 export default function PunctuationRun({ level, onClose }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [ended, setEnded] = useState<{ stars: number } | null>(null);
+  const [ended, setEnded] = useState<{ stars: number; newBest: boolean } | null>(null);
   const endedRef = useRef(setEnded);
   endedRef.current = setEnded;
 
@@ -176,10 +178,18 @@ export default function PunctuationRun({ level, onClose }: Props) {
     let wave: Wave | null = null;
     let waveN = 0;
     let stars = 0;
+    let streak = 0;           // consecutive correct gates
     let over = false;
     let speed = 1;            // pace multiplier — correct gates speed the run up
     let roadPhase = 0;        // scrolling dashes
     let shake = 0;
+    let steered = false;      // has the child ever changed lane? (drives the hint)
+    let lastLeg = 0;          // stride phase sign, for footstep timing
+    const clouds = [          // slow sky drift — the painting breathes
+      { x: 180, y: 74, s: 1.0, v: 9 },
+      { x: 760, y: 120, s: 0.7, v: 13 },
+      { x: 1150, y: 56, s: 0.85, v: 11 },
+    ];
     const runner = { lane: 1, x: 1, stride: 0, stumble: 0 };
     const usedWords = new Set<string>();
     const sentencesLeft: Record<Mark, string[]> = {
@@ -199,7 +209,8 @@ export default function PunctuationRun({ level, onClose }: Props) {
     function approachTime(mode: Wave['mode']) {
       // Sentence rounds approach slower — there are three symbols but a
       // whole sentence to think about; word rounds ask for three reads.
-      return (mode === 'sentence' ? 5.2 : 4.4) / speed;
+      // The very first gate of a run comes gentler still.
+      return ((mode === 'sentence' ? 5.2 : 4.4) / speed) * (waveN === 1 ? 1.3 : 1);
     }
 
     function spawnWave() {
@@ -208,7 +219,12 @@ export default function PunctuationRun({ level, onClose }: Props) {
       if (waveN > WAVES) {
         over = true;
         sfx.fanfare();
-        ev.at(0.8, () => endedRef.current({ stars }));
+        let newBest = false;
+        try {
+          const b = Number(localStorage.getItem('mpb_doordash_best') || 0);
+          if (stars > b) { localStorage.setItem('mpb_doordash_best', String(stars)); newBest = stars > 0; }
+        } catch { /* private mode — no best tracking */ }
+        ev.at(0.8, () => endedRef.current({ stars, newBest }));
         return;
       }
       // Sentences only where the grammar strand lives (L5+), after two
@@ -230,7 +246,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
         const fresh = pool.filter(w => !usedWords.has(w));
         const target = (fresh.length ? fresh : pool)[Math.floor(Math.random() * (fresh.length ? fresh.length : pool.length))];
         usedWords.add(target);
-        const labels = shuffle([target, ...pickDistractors(target, pool)]);
+        const labels = shuffle([target, ...pickDistractors(target, pool, Math.min(1, (waveN - 1) / 5))]);
         wave = {
           mode, labels, correctLane: labels.indexOf(target), target, sentence: '',
           hold: 0.5, u: 0, replayed: false, resolved: 'no', t: 0,
@@ -247,13 +263,17 @@ export default function PunctuationRun({ level, onClose }: Props) {
       const doorX = laneX(runner.lane, 1);
       if (hitIt) {
         stars += 1;
+        streak += 1;
         speed = Math.min(1.8, speed + 0.12);
         sfx.pop();
-        if (waveN % 3 === 0) sfx.chord();
-        fx.burst(doorX, RUNNER_Y - 120, [hex, '#FDBA2D', '#22C55E', '#ffffff'], 22);
+        sfx.whoosh();
+        if (streak === 3 || streak === 5 || streak === WAVES) sfx.sparkle();
+        else if (waveN % 3 === 0) sfx.chord();
+        fx.burst(doorX, RUNNER_Y - 120, [hex, '#FDBA2D', '#22C55E', '#ffffff'], streak >= 3 ? 34 : 22);
         shake = Math.max(shake, 3);
       } else {
         speed = 1;
+        streak = 0;
         sfx.bonk();
         runner.stumble = 1;
         shake = Math.max(shake, 6);
@@ -265,7 +285,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
     }
 
     function start() {
-      waveN = 0; stars = 0; over = false; speed = 1;
+      waveN = 0; stars = 0; streak = 0; over = false; speed = 1;
       runner.lane = 1; runner.x = 1; runner.stumble = 0;
       usedWords.clear();
       ev.clear(); wave = null;
@@ -274,6 +294,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
 
     function steer(lane: number) {
       if (over) return;
+      steered = true;
       const l = clamp(lane, 0, 2);
       if (l !== runner.lane) { runner.lane = l; sfx.tick(); }
     }
@@ -297,8 +318,22 @@ export default function PunctuationRun({ level, onClose }: Props) {
         runner.stride += dt * 11 * speed * (moving ? 1 : 0.6);
         runner.stumble = Math.max(0, runner.stumble - dt * 1.6);
         runner.x += (runner.lane - runner.x) * Math.min(1, dt * 9);
+        // footsteps land on the stride beat
+        const leg = Math.sin(runner.stride);
+        if (moving && lastLeg <= 0 && leg > 0) sfx.step();
+        if (moving && lastLeg >= 0 && leg < 0) sfx.step();
+        lastLeg = leg;
+        // sky drifts — the scene is alive even between gates
+        for (const c of clouds) {
+          c.x -= c.v * dt;
+          if (c.x < -160) { c.x = LW + 160; c.y = 40 + Math.random() * 100; }
+        }
 
         if (wave) {
+          // dust on landing after the victory leap
+          if (wave.resolved === 'hit' && wave.t - dt < 0.55 && wave.t >= 0.55) {
+            fx.puff(laneX(runner.x, 1), RUNNER_Y + 56, 6, 'rgba(214,183,120,0.6)');
+          }
           if (wave.hold > 0) {
             wave.hold -= dt;
           } else if (wave.resolved === 'no') {
@@ -323,8 +358,21 @@ export default function PunctuationRun({ level, onClose }: Props) {
           ctx.fillStyle = '#7FB069'; ctx.fillRect(0, HORIZON_Y, LW, LH - HORIZON_Y);
         }
 
+        // drifting clouds over the painted sky — gentle life
+        for (const c of clouds) {
+          ctx.save();
+          ctx.globalAlpha = 0.5;
+          ctx.fillStyle = '#FFFFFF';
+          for (const [dx, dy, r] of [[-34, 4, 22], [0, -6, 30], [36, 4, 24], [10, 10, 26]] as const) {
+            ctx.beginPath(); ctx.ellipse(c.x + dx * c.s, c.y + dy * c.s, r * c.s, r * 0.62 * c.s, 0, 0, 7); ctx.fill();
+          }
+          ctx.restore();
+        }
+
         ctx.save();
         if (shake > 0) ctx.translate((Math.random() * 2 - 1) * shake, (Math.random() * 2 - 1) * shake);
+        // camera bobs against the stride — the run is felt, not just shown
+        ctx.translate(0, Math.sin(runner.stride * 2) * 1.6);
         const F = fontReady ? 'Andika' : 'sans-serif';
         const FD = fontReady ? 'Outfit' : 'sans-serif';
 
@@ -359,6 +407,25 @@ export default function PunctuationRun({ level, onClose }: Props) {
           }
         }
         ctx.globalAlpha = 1;
+
+        // speed streaks at full sprint — the reward for a hot streak
+        const rush = clamp((speed - 1.3) * 2, 0, 1);
+        if (rush > 0) {
+          ctx.strokeStyle = `rgba(255,255,255,${0.28 * rush})`;
+          ctx.lineWidth = 3; ctx.lineCap = 'round';
+          for (let i = 0; i < 7; i++) {
+            const a = (i / 7) * Math.PI * 2 + 0.4;
+            const p = ((roadPhase * 1.7 + i * 0.37) % 1);
+            const r0 = 260 + p * 420, r1 = r0 + 60 + p * 90;
+            const cxr = LW / 2, cyr = HORIZON_Y + 30;
+            ctx.globalAlpha = rush * p;
+            ctx.beginPath();
+            ctx.moveTo(cxr + Math.cos(a) * r0, cyr + Math.sin(a) * r0 * 0.62);
+            ctx.lineTo(cxr + Math.cos(a) * r1, cyr + Math.sin(a) * r1 * 0.62);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+        }
 
         // ── the gate row — ONE unit crossing the path ──
         if (wave) {
@@ -481,16 +548,37 @@ export default function PunctuationRun({ level, onClose }: Props) {
           ctx.restore(); // rowAlpha
         }
 
+        // first-timer hint: until the child ever steers, show them how
+        if (!steered && wave && wave.resolved === 'no' && wave.hold <= 0 && wave.u > 0.22) {
+          const pulse = 0.7 + Math.sin(t * 5) * 0.3;
+          const hint = '👆 Tap a gate to change lane!';
+          ctx.font = `700 22px ${FD}`;
+          const hw = ctx.measureText(hint).width + 48;
+          ctx.save();
+          ctx.globalAlpha = pulse;
+          ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+          ctx.fillStyle = '#FFFFFF';
+          roundRect(ctx, LW / 2 - hw / 2, 486, hw, 48, 16); ctx.fill();
+          ctx.restore();
+          ctx.fillStyle = ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(hint, LW / 2, 511);
+        }
+
         // ── the runner (from behind — we run with them) ──
         const rx = laneX(runner.x, 1);
         const bob = Math.abs(Math.sin(runner.stride)) * 7;
+        // the victory leap through an open gate
+        const jump = wave && wave.resolved === 'hit' && wave.t < 0.55
+          ? Math.sin(Math.PI * wave.t / 0.55) * 64 : 0;
         const lean = (runner.lane - runner.x) * -0.4;
         const stumbleRot = runner.stumble > 0 ? Math.sin(runner.stumble * 14) * 0.14 * runner.stumble : 0;
         ctx.save();
-        ctx.translate(rx, RUNNER_Y - bob);
+        ctx.translate(rx, RUNNER_Y - bob - jump);
         ctx.rotate(lean * 0.25 + stumbleRot);
+        // ground shadow stays on the path and shrinks under the leap
         ctx.fillStyle = 'rgba(40,30,40,0.22)';
-        ctx.beginPath(); ctx.ellipse(0, 64 + bob, 34, 8, 0, 0, 7); ctx.fill();
+        const shScale = 1 - jump / 200;
+        ctx.beginPath(); ctx.ellipse(0, 64 + bob + jump, 34 * shScale, 8 * shScale, 0, 0, 7); ctx.fill();
         const legSwing = Math.sin(runner.stride);
         if (kidImgs.every(ok)) {
           // painted run cycle: stride phase walks the frames 0-1-2-1
@@ -578,6 +666,16 @@ export default function PunctuationRun({ level, onClose }: Props) {
             ctx.fillText(msg, LW / 2, by + 23);
           }
         }
+        // streak chip — the fire the child runs to keep alive
+        if (streak >= 2) {
+          const chip = `🔥 ${streak} in a row`;
+          ctx.font = `800 17px ${FD}`;
+          const cw = ctx.measureText(chip).width + 32;
+          ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.15)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+          ctx.fillStyle = '#FFF4DC'; roundRect(ctx, LW - 164 - cw, 22, cw, 40, 20); ctx.fill(); ctx.restore();
+          ctx.fillStyle = '#B45309'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(chip, LW - 164 - cw / 2, 43);
+        }
         // score + progress
         ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.15)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
         ctx.fillStyle = '#fff'; roundRect(ctx, LW - 148, 22, 116, 40, 20); ctx.fill(); ctx.restore();
@@ -646,8 +744,13 @@ export default function PunctuationRun({ level, onClose }: Props) {
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
             <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
-              {ended.stars === WAVES ? 'Perfect run! 🌟' : `${ended.stars} of ${WAVES} doors!`}
+              {ended.stars === WAVES ? 'Perfect run! 🌟' : `${ended.stars} of ${WAVES} gates!`}
             </p>
+            {ended.newBest && ended.stars < WAVES && (
+              <p className="font-display text-sm font-extrabold mt-0.5" style={{ color: '#B45309' }}>
+                New best! 🏅
+              </p>
+            )}
           </div>
           <button
             onClick={restart}
