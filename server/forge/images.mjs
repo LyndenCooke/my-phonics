@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { cfg, BOOKS_DIR, REPO_ROOT } from "./env.mjs";
-import { eyeRuleQA, findFaces, sceneConsistencyQA } from "./claude.mjs";
+import { eyeRuleQA, heroIdentityQA, findFaces, sceneConsistencyQA } from "./claude.mjs";
 import { beginPaidCall, completePaidCall, failPaidCall } from "./spend.mjs";
 
 const KONTEXT_COST = 0.04; // $ per Kontext Pro image
@@ -595,7 +595,21 @@ export async function generateHero({ child, photoB64, photoMime }) {
     vertex: () => vertexImage(vertexParts),
     gpt2: () => gptImage(gptPrompt, gptRefs, "portrait_4_3"),
   }, "hero");
-  return generateWithEyeQA(gen, "hero");
+  const hero = await generateWithEyeQA(gen, "hero");
+  try {
+    const identity = await heroIdentityQA(hero.buf.toString("base64"), child.characterSpec || {
+      age: child.age,
+      gender: child.appearance?.gender,
+      skinTone: child.appearance?.skinTone,
+      hair: child.appearance?.hair,
+      outfit: child.appearance?.outfit,
+    });
+    hero.cost += identity.cost;
+    hero.qa = { eye: hero.qa, identity: identity.data, pass: Boolean(hero.qa?.pass && identity.data?.match) };
+  } catch (e) {
+    hero.qa = { eye: hero.qa, identity: { match: false, reason: `identity QA unavailable: ${e.message}` }, pass: false };
+  }
+  return hero;
 }
 
 // The location reference is injected on EVERY page that revisits a location,

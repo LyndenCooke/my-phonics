@@ -12,6 +12,8 @@ const specA = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age:
 const specB = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age: 6, appearance: { hair: "dark bob" } });
 assert.deepEqual(specA, specB, "the same book must receive the same canonical outfit");
 assert.ok(specA.outfit, "a missing wizard outfit must be filled before hero generation");
+const boySpec = canonicalCharacterSpec({ id: "milo-test", child_name: "Milo", child_age: 6, appearance: { gender: "boy", hair: "short curls" } });
+assert.doesNotMatch(boySpec.outfit, /dress|skirt|tunic/i, "a submitted boy must never be assigned the feminine outfit pool");
 
 const miaStory = { title: "Feed for Three Sheep", pages: [
   { text: "Mia has a job to feed three sheep." }, { text: "She sets three tubs on the grass." },
@@ -21,6 +23,12 @@ const miaStory = { title: "Feed for Three Sheep", pages: [
 const miaIssues = styleIssues(miaStory, { child_name: "Mia", level: 4 });
 assert.ok(miaIssues.some((i) => /undifferentiated animal group/.test(i.detail)),
   "the archived shy-sheep contradiction must be blocked before direction");
+const miloSearchIssues = styleIssues({ title: "Milo and the Jeep", pages: [
+  { text: "Is it in his box? A car, but not his jeep!" },
+  { text: "Is it on his bed? A truck, but not his jeep!" },
+] }, { child_name: "Milo", level: 4 });
+assert.ok(miloSearchIssues.some((i) => i.area === "premise" && /temporarily blocked/.test(i.detail)),
+  "repetitive search premises must stop before image spend");
 
 const expected = buildExpectedAssertions([{ required_visible_states: [{ assertion: "Exactly three sheep." }], forbidden_visible_states: [] }], "Mia");
 const failures = objectiveVisualFailures(expected, [{ id: "p1:required:1", pass: false, observed: "Only two sheep." }]);
@@ -85,6 +93,8 @@ assert.match(source, /job\.assembled = true;\s*await updateBook\(book\.id/,
 assert.match(source, /progress: \{ step: "done", message: "Your book is ready!", pct: 100, job \}/,
   "ready progress must retain the repair snapshot");
 assert.match(source, /const CANDIDATES = 1;/, "production must write one draft, not run a tournament");
+assert.match(source, /return "storyBlocked"/, "a second manuscript with open majors must stop before paint");
+assert.match(source, /hero identity failed before scenes/, "hero identity must be gated before scene generation");
 assert.match(source, /The title must contain the hero's exact name/, "title/hero must be a deterministic gate");
 assert.match(source, /setting_page\$\{i \+ 1\}\.jpg/, "location anchors must use immutable setting files, never mutable page files");
 

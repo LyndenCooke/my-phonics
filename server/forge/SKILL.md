@@ -36,6 +36,9 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   one principal action per page.
 - The demanding editor may request one bounded same-premise revision. A second
   blocking failure stops for review; it does not lower the quality bar.
+- A fresh manuscript that still has an open major stops before imagery; never
+  paint it with an auto-flag. Repetitive search premises are disabled until
+  they have a deterministic narrowing and escalation contract.
 - A child notices, chooses and acts. An adult may support a risky action but may
   not solve the plot for the child.
 - Scene text is narration, not instructions. Avoid robotic Name–verb–object
@@ -49,6 +52,10 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   second hero or cast sheet.
 - Story and director output may describe the hero's action, pose and emotion but
   may not invent or replace appearance. If they conflict, `CharacterSpec` wins.
+- Default outfits are selected from gender-safe pools, then the finished hero
+  sheet is vision-checked against gender, age, skin, hair, every garment and
+  footwear before any scene is painted. Eye QA alone is not identity QA. A
+  mismatch stops with no `heroUrl`, so retry cannot carry the bad sheet forward.
 - Relatives inherit the hero's colouring. Other cast members have one fixed
   specification and one sheet each.
 - Recurring plot-critical objects have one fixed identity. A distinguishing mark

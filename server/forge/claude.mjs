@@ -1632,6 +1632,19 @@ const EYE_QA_SCHEMA = {
   additionalProperties: false,
 };
 
+const HERO_IDENTITY_QA_SCHEMA = {
+  type: "object",
+  properties: {
+    person_seen: { type: "string", description: "Describe the child's apparent age presentation and gender presentation without judging yet." },
+    clothes_seen: { type: "string", description: "List every visible garment by type and colour, plus footwear." },
+    hair_and_skin_seen: { type: "string", description: "Describe visible hair colour/style and skin tone." },
+    match: { type: "boolean" },
+    reason: { type: "string" },
+  },
+  required: ["person_seen", "clothes_seen", "hair_and_skin_seen", "match", "reason"],
+  additionalProperties: false,
+};
+
 const FACES_SCHEMA = {
   type: "object",
   properties: {
@@ -2286,6 +2299,29 @@ export async function extractSceneState(imageB64, { objectNames = [] }, mediaTyp
     ],
     output_config: { format: { type: "json_schema", schema: SCENE_STATE_SCHEMA } },
   });
+  const text = response.content.find((b) => b.type === "text")?.text ?? "";
+  return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
+}
+
+export async function heroIdentityQA(imageB64, spec, mediaType = "image/jpeg") {
+  const expected = {
+    age: spec?.age ?? null,
+    gender: spec?.gender || null,
+    skinTone: spec?.skinTone || null,
+    hair: spec?.hair || null,
+    outfit: spec?.outfit || null,
+  };
+  const system = `You are the pre-paint identity gate for a personalised children's book. Describe the generated character literally before judging it. The submitted CharacterSpec is binding. Garment TYPE and colour must match, not merely the general palette. If the spec says boy, the character must read clearly as a boy and must not wear a dress or skirt unless the outfit explicitly asks for one. If the spec says girl, she must read clearly as a girl. Hair, skin tone, age presentation, every garment and footwear must agree. Set match=false for any conflict or ambiguity; attractive artwork is irrelevant.`;
+  const content = `Binding CharacterSpec: ${JSON.stringify(expected)}. Inspect the attached hero sheet and decide whether it is safe to use as the single reference for every page.`;
+  if (useOpenAI) return openaiJson({ model: OPENAI_FAST_MODEL, system, content, schema: HERO_IDENTITY_QA_SCHEMA,
+    images: [{ b64: imageB64, mime: mediaType }], maxTokens: 1200 });
+  if (useVertex) return vertexGenerate({ model: VERTEX_FAST_MODEL, system,
+    parts: [{ inlineData: { mimeType: mediaType, data: imageB64 } }, { text: content }], schema: HERO_IDENTITY_QA_SCHEMA, maxTokens: 1200 });
+  const response = await (await getClient()).messages.create({ model: MODEL, max_tokens: 1000, system,
+    messages: [{ role: "user", content: [
+      { type: "image", source: { type: "base64", media_type: mediaType, data: imageB64 } },
+      { type: "text", text: content },
+    ] }], output_config: { format: { type: "json_schema", schema: HERO_IDENTITY_QA_SCHEMA } } });
   const text = response.content.find((b) => b.type === "text")?.text ?? "";
   return { data: JSON.parse(text), cost: usageCost(response.usage), model: response.model || MODEL };
 }

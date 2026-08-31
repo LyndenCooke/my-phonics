@@ -153,9 +153,10 @@ function nextStepOf(job) {
   // costing $0.41 on a book whose whole text was $1.83 (Lynden 2026-08-21:
   // "how are we spending so much on the story itself"). Its duties moved into
   // the story gate, which already reads the manuscript and already owns the
-  // edit-request loop. Left here as a no-op flag so resumed jobs written by
-  // the old machine still advance.
-  if (!job.plausibilityDone) { job.plausibilityDone = true; }
+  // Physical story logic is checked while failures still cost pennies. This
+  // was temporarily reduced to a no-op and allowed Milo's fixed U-shaped toy
+  // track to become a route that somehow "runs to the bush".
+  if (!job.plausibilityDone) return "plausibility";
   // STORY GATE BEFORE ANY IMAGE (Lynden 2026-08-14): "Yusuf and the Star
   // Tin" was double-rejected for story thinness with 16 finished paid
   // illustrations. Both rejections were visible in the text alone, so the
@@ -174,9 +175,8 @@ function nextStepOf(job) {
   //   - Gate proceeded WITH open majors â†’ NO IMAGE MONEY follows a flawed
   //     story (the night-loop run-1 rule, now enforced in prod): one fresh
   //     attempt at the same spec while failure still costs pennies.
-  //   - The fresh attempt is also flawed â†’ paint it anyway, ship, and
-  //     AUTO-FLAG the book for the morning admin queue â€” a book with a known
-  //     wrinkle now beats a customer staring at a spinner.
+  //   - The fresh attempt is also flawed â†’ stop before paint. A spinner is a
+  //     service problem; it is not permission to spend on a known-bad book.
   // FORGE_MANUAL_IMAGERY=1 restores the human sign-off pause for review
   // sessions; FORGE_AUTO_APPROVE=1 keeps its old meaning (paint regardless).
   if (!job.imageryApproved && process.env.FORGE_AUTO_APPROVE !== "1") {
@@ -186,10 +186,7 @@ function nextStepOf(job) {
       job.imageryApproved = true;
     } else if (!job.freshAttemptUsed) {
       return "freshStory";
-    } else {
-      job.autoFlag = (job.autoFlag || []).concat(openReqs.map((i) => `[story/${i.area}] ${i.detail}`));
-      job.imageryApproved = true;
-    }
+    } else return "storyBlocked";
   }
   if (!job.heroUrl) return "hero";
   if (job.sceneUrls.length < job.story.pages.length) return `scene:${job.sceneUrls.length}`;
@@ -223,7 +220,13 @@ async function persist(bookId, job, display) {
 
 // ---------------------------------------------------------------- helpers --
 
-const HERO_OUTFITS = [
+const BOY_HERO_OUTFITS = [
+  "a cobalt-blue jumper, rust-orange trousers and white trainers",
+  "a forest-green long-sleeved top, navy dungarees and red trainers",
+  "a sunflower-yellow cardigan, teal crew-neck top, navy trousers and white trainers",
+  "a plum-purple jumper, mustard trousers and dark blue trainers",
+];
+const GIRL_HERO_OUTFITS = [
   "a sunflower-yellow cardigan, raspberry-pink knee-length dress, teal leggings and pink-and-white trainers",
   "a cobalt-blue jumper, rust-orange trousers and white trainers",
   "a forest-green long-sleeved top, navy dungarees and red trainers",
@@ -234,7 +237,8 @@ export function canonicalCharacterSpec(book) {
   const appearance = { ...(book.appearance || {}) };
   if (!appearance.outfit) {
     const seed = [...String(book.id || book.child_name || "hero")].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
-    appearance.outfit = HERO_OUTFITS[seed % HERO_OUTFITS.length];
+    const outfits = appearance.gender === "girl" ? GIRL_HERO_OUTFITS : BOY_HERO_OUTFITS;
+    appearance.outfit = outfits[seed % outfits.length];
   }
   return Object.freeze({
     name: book.child_name, age: book.child_age, gender: appearance.gender || null,
@@ -843,7 +847,9 @@ async function stepPlausibility(book, job) {
     charge(job, "story_usd", "reviewStoryPlausibility:recheck", recheck.cost, recheck.model);
     result = recheck.data;
     if (!result.pass) {
-      console.warn(`[forge] story still fails plausibility QA after one rewrite: ${JSON.stringify(result.issues)}`);
+      job.story = story;
+      job.breakdown.plausibility = result;
+      throw new NeedsReviewError(`story still fails physical plausibility after one rewrite: ${JSON.stringify(result.issues).slice(0, 240)}`);
     }
   }
 
@@ -890,6 +896,15 @@ function resetAfterStoryRevision(job, revisedStory) {
 export function styleIssues(story, book) {
   const pages = (story.pages || []).map((p) => String(p.text || ""));
   const out = [];
+  // Temporary hard stop after "Milo and the Jeep": a sequence of "Is it
+  // here? No" pages is cheap exercise design, not a developed story. Search
+  // can return only when it has its own deterministic narrowing/escalation
+  // contract; for now reject the premise while it is still text-only.
+  const searchBeats = pages.filter((t) => /\b(?:is it|looks? (?:in|at|under|on)|not (?:his|her|the)|no \w+[!.])\b/i.test(t));
+  if (searchBeats.length >= 2) out.push({
+    severity: "major", area: "premise", page: 0, replacement: "",
+    detail: `Search-story pattern detected on ${searchBeats.length} pages. Repeated looking and ruling-out is temporarily blocked: replace the premise with a developed physical goal, failed attempt, changed plan and hero-earned resolution.`,
+  });
   const shyPage = pages.findIndex((t) => /\b(?:shy|small|timid)\s+(?:sheep|animal|dog|cat|goat|pony)\b/i.test(t));
   if (shyPage > 0) {
     const ambiguous = pages.slice(0, shyPage).findIndex((t) => /\bthe\s+(?:sheep|animals|dogs|cats|goats|ponies)\b/i.test(t));
@@ -1336,7 +1351,11 @@ async function stepHero(book, job) {
   const photo = photoStash.get(book.id);
   const hero = await generateHero({ child: childOf(book), photoB64: photo?.b64, photoMime: photo?.mime });
   charge(job, "images_usd", "generateHero", hero.cost, hero.model); job.breakdown.qa_notes.push(hero.qa);
-  job.heroUrl = await saveImage(book.id, "hero.jpg", hero.buf);
+  const heroUrl = await saveImage(book.id, "hero.jpg", hero.buf);
+  if (!hero.qa?.pass) {
+    throw new NeedsReviewError(`hero identity failed before scenes: ${hero.qa?.identity?.reason || hero.qa?.eye?.reason || "hero does not match CharacterSpec"}`);
+  }
+  job.heroUrl = heroUrl;
 }
 
 async function castSheetFor(book, job, id) {
@@ -2159,6 +2178,9 @@ export async function runNextStep(bookId) {
       job.storyRetryUsed = false; job.noteRetryUsed = false; job.storyEditRequests = 0;
       job.shiftyMarks = null;
       delete job.breakdown.story_gate_edit_requests;
+    }
+    else if (step === "storyBlocked") {
+      throw new NeedsReviewError("the fresh manuscript still has open major story issues; refusing to spend on illustrations");
     }
     else if (step === "story") await stepStory(book, job);
     else if (step === "qa") await stepQa(book, job);
