@@ -285,7 +285,7 @@ function makeObjectBlocks(story) {
     }
     const lines = objects.map((o) => {
       const look = lookFor(o.name);
-      return `${o.name}${look ? ` (normally: ${look})` : ""} â€” ON THIS PAGE: ${o.state}`;
+      return `${o.name}${look ? ` (story look: ${look})` : ""} â€” IMMUTABLE IDENTITY: ${o.identity_lock || look || "keep its exact established build"} â€” ON THIS PAGE: ${o.state}`;
     });
     return (
       ` KEY OBJECTS ON THIS PAGE â€” ${lines.join("; ")}. ` +
@@ -1254,8 +1254,8 @@ async function stepDirect(book, job) {
     }
   } catch (e) {
     if (e?.needsReview) throw e;
-    console.warn("[forge] director pass failed, using raw scene briefs:", e.message);
-    job.directed = null;
+    console.warn("[forge] director pass failed before painting:", e.message);
+    throw new NeedsReviewError(`illustration director failed before painting: ${String(e.message).slice(0, 240)}`);
   }
   job.directDone = true;
 }
@@ -1268,30 +1268,27 @@ export function buildEntityStateLedger(story, directed) {
     text: String(story?.pages?.[i]?.text || ""),
     entities: (page.objects || []).map((object) => ({
       name: String(object.name || "").trim(),
+      identity_lock: String(object.identity_lock || "").trim(),
       state: String(object.state || "").trim(),
     })).filter((object) => object.name),
   }));
 }
 
 export function normaliseDirectedSettingPlan(story, directed) {
-  let activeSetting = null;
   return (directed || []).map((page, i) => {
-    const relation = page?.setting_relation;
-    if (!activeSetting || relation === "new-setting") {
-      activeSetting = String(page?.setting_id || story?.pages?.[i]?.location || `setting-${i + 1}`).trim().toLowerCase();
-    }
-    // A continuation is, by definition, another view inside the active
-    // physical setting. Directors sometimes copied the writer's finer-grained
-    // route/shot location into setting_id (cart-edge, cart-spill, cart-clean),
-    // which split one cart into eight fake settings. Canonicalise that output
-    // deterministically before validation or painting.
-    return { ...page, setting_id: activeSetting };
+    // Normalise spelling only. Never guess that a continuation belongs to the
+    // immediately previous setting: a book may leave a garden for a bedroom
+    // and then RETURN to the earlier garden. The director must name that
+    // canonical setting explicitly and validation rejects an unknown one.
+    const settingId = String(page?.setting_id || story?.pages?.[i]?.location || `setting-${i + 1}`).trim().toLowerCase();
+    return { ...page, setting_id: settingId };
   });
 }
 
 export function validateDirectedContinuity(story, directed) {
   const failures = [];
   const previous = new Map();
+  const identityLocks = new Map();
   const seenSettings = new Set();
   for (let i = 0; i < (directed || []).length; i++) {
     const text = String(story?.pages?.[i]?.text || "");
@@ -1313,12 +1310,21 @@ export function validateDirectedContinuity(story, directed) {
     for (const object of directed[i]?.objects || []) {
       const key = String(object.name || "").toLowerCase().trim();
       if (!key) continue;
+      const identityLock = String(object.identity_lock || "").trim();
+      const priorIdentity = identityLocks.get(key);
+      if (priorIdentity && identityLock !== priorIdentity.lock) {
+        failures.push(`page ${i + 1} changes ${key}'s immutable identity from page ${priorIdentity.page}`);
+      } else if (!priorIdentity && identityLock) {
+        identityLocks.set(key, { lock: identityLock, page: i + 1 });
+      }
       const state = String(object.state || "").toLowerCase();
       const stateWords = new Set(state.match(STATE_WORDS)?.map((w) => w.replace(/ing$|ed$/g, "")) || []);
       const prior = previous.get(key);
       if (prior && /\b(stays?|remains?|still)\b/i.test(text)) {
-        const overlap = [...stateWords].some((w) => prior.words.has(w));
-        if (!overlap) failures.push(`page ${i + 1} says ${key} stays/remains, but direction changes it from "${prior.state}" to "${state}"`);
+        const opposites = [["full", "empty"], ["open", "closed"], ["inside", "outside"], ["moving", "still"], ["together", "separate"], ["crowd", "back"]];
+        const contradicted = opposites.some(([a, b]) =>
+          (prior.words.has(a) && stateWords.has(b)) || (prior.words.has(b) && stateWords.has(a)));
+        if (contradicted) failures.push(`page ${i + 1} says ${key} stays/remains, but direction changes it from "${prior.state}" to "${state}"`);
       }
       previous.set(key, { state, words: stateWords, page: i + 1 });
     }

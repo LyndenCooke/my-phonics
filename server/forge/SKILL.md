@@ -53,6 +53,12 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   specification and one sheet each.
 - Recurring plot-critical objects have one fixed identity. A distinguishing mark
   exists only when two similar objects must be told apart.
+- Keep immutable object identity separate from mutable state. The director must
+  repeat one verbatim identity lock (geometry, proportions, parts, material,
+  colour and fixed marks) on every page where the object appears. Position,
+  orientation, contents and action belong only to state. Any changed identity
+  lock stops before painting. A U-shaped track cannot become a longer track to
+  satisfy a later composition; orient the same fixed object or reject the plan.
 - Every human and animal has a tiny solid black filled oval eye with no white or
   catchlight. Fix eyes using the approved reference, never manual painting.
 
@@ -137,6 +143,9 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   architecture, layout, materials and colours, ignore/remove people and animals
   in the plate and inject only the current page's required cast and action. If
   the setting itself changes, replace it explicitly and re-check all dependants.
+- Leaving a setting and later returning to it must reuse that setting's earlier
+  canonical id. Never infer that a continuation belongs to the immediately
+  previous setting: that attached a return to a garden to an intervening bedroom.
 
 ## Acceptance criteria
 

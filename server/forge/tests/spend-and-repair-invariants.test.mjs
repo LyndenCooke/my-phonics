@@ -61,13 +61,23 @@ const groupedSettings = normaliseDirectedSettingPlan({ pages: [
   { setting_id: "cart-edge", setting_relation: "same-setting-closeup" },
   { setting_id: "cart-spill", setting_relation: "same-setting-new-angle" },
 ]);
-assert.deepEqual(groupedSettings.map((p) => p.setting_id), ["cart-front", "cart-front", "cart-front"],
-  "different parts and crops of one physical setting must share one immutable plate");
+assert.deepEqual(groupedSettings.map((p) => p.setting_id), ["cart-front", "cart-edge", "cart-spill"],
+  "code must not guess setting membership and accidentally attach a returning scene to the intervening room");
+assert.ok(validateDirectedContinuity({ pages: [{ text: "At the cart.", location: "cart" }, { text: "At the cart edge.", location: "edge" }] }, groupedSettings.slice(0, 2))
+  .some((f) => /first visits cart-edge/.test(f)), "a continuation using an unknown canonical setting id must stop before painting");
 const ledger = buildEntityStateLedger(miaStory, [{ objects: [{ name: "shy sheep", state: "back by shed" }] }]);
 assert.deepEqual(ledger[0], {
   page: 1, text: "Mia has a job to feed three sheep.",
-  entities: [{ name: "shy sheep", state: "back by shed" }],
+  entities: [{ name: "shy sheep", identity_lock: "", state: "back by shed" }],
 }, "the exact directed entity state must survive for audit and final review");
+
+const objectIdentityStory = { pages: [{ text: "Milo sets the track." }, { text: "The track runs to the bush." }] };
+const objectIdentityPlan = [
+  { setting_id: "garden", setting_relation: "new-setting", camera: "wide", objects: [{ name: "track", identity_lock: "one compact grey U-shaped track with two straight arms", state: "flat on path" }] },
+  { setting_id: "garden", setting_relation: "same-setting-new-angle", camera: "new-angle", objects: [{ name: "track", identity_lock: "one long grey track with one curved end", state: "flat, aimed at bush" }] },
+];
+assert.ok(validateDirectedContinuity(objectIdentityStory, objectIdentityPlan)
+  .some((f) => /changes track's immutable identity/.test(f)), "object geometry drift must stop before painting");
 
 const source = fs.readFileSync(new URL("../jobs.mjs", import.meta.url), "utf8");
 assert.match(source, /job\.assembled = true;\s*await updateBook\(book\.id/,
