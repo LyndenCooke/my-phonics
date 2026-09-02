@@ -51,6 +51,8 @@ const TeachersLibrary = lazy(() => import("./pages/TeachersLibrary"));
 // Powered by the local forge API (dev server only for now).
 const CreateBook = lazy(() => import("./pages/CreateBook"));
 const WorldOfBooks = lazy(() => import("./pages/WorldOfBooks"));
+// /story/:id — the public share link for one family-made book (no account).
+const SharedBook = lazy(() => import("./pages/SharedBook"));
 // Create-A-Worksheet — the worksheet-forge machine on the web (dev server only,
 // API at /api/worksheet-forge).
 // CreateWorksheet route removed from the public site (Lynden 2026-08-24).
@@ -196,6 +198,7 @@ function RoutesWithTransition() {
             {/* Create-A-Book + World of Books (custom family-made books) */}
             <Route path="/create-book" element={<Suspense fallback={<AdminFallback />}><CreateBook /></Suspense>} />
             <Route path="/world-of-books" element={<Suspense fallback={<AdminFallback />}><WorldOfBooks /></Suspense>} />
+            <Route path="/story/:id" element={<Suspense fallback={<AdminFallback />}><SharedBook /></Suspense>} />
             {/* /create-worksheet removed from the public site (Lynden 2026-08-24) — the page component stays for a future return. */}
             <Route path="/teachers" element={<Suspense fallback={<AdminFallback />}><Teachers /></Suspense>} />
             <Route path="/teachers/library" element={<Suspense fallback={<AdminFallback />}><TeachersLibrary /></Suspense>} />

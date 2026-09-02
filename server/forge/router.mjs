@@ -72,6 +72,52 @@ function publicBook(b) {
   };
 }
 
+// What the CUSTOMER's wizard needs from a row, and nothing else. The wizard
+// polls this every 2.5 s while a book paints, and until now each poll shipped
+// the whole row: the family's email, the raw appearance/culture/faith form
+// answers, the archived rejected drafts and progress.job — the complete
+// resumable pipeline state (prompts, references, spend ledger), tens of KB
+// per tick. The browser only ever reads step/message/pct from progress.
+export function customerBook(b) {
+  return {
+    id: b.id,
+    status: b.status,
+    title: b.title,
+    level: b.level,
+    focus_sound: b.focus_sound,
+    child_name: b.child_name,
+    country: b.country,
+    country_flag: b.country_flag,
+    pages: b.pages,
+    profile: b.profile,
+    progress: b.progress
+      ? { step: b.progress.step, message: b.progress.message, pct: b.progress.pct }
+      : null,
+    share_requested: Boolean(b.share_requested),
+    wall_of_love_opt_in: Boolean(b.wall_of_love_opt_in),
+    user_id: b.user_id || null,
+    created_at: b.created_at,
+  };
+}
+
+// The share-link projection: what a grandparent opening a WhatsApp link
+// sees. Only finished books are shareable, and only the printed pages travel
+// — never the email, the form answers or the pipeline state.
+export const SHAREABLE_STATUSES = new Set(["ready", "approved"]);
+export function shareableBook(b) {
+  return {
+    id: b.id,
+    title: b.title,
+    level: b.level,
+    focus_sound: b.focus_sound,
+    child_name: b.child_name,
+    country: b.country,
+    country_flag: b.country_flag,
+    pages: b.pages,
+    created_at: b.created_at,
+  };
+}
+
 export async function handleForge(req, res) {
   const url = new URL(req.url, "http://localhost");
   // req.url here is already stripped of the /api/forge prefix by connect
@@ -156,7 +202,21 @@ export async function handleForge(req, res) {
           },
         });
       }
-      return send(res, 200, { book: { ...row, generating: isRunning(row.id) } });
+      return send(res, 200, { book: { ...customerBook(row), generating: isRunning(row.id) } });
+    }
+
+    // Share link — GET /books/:id/share. Public by design: the family sends
+    // this link to grandparents and cousins, who have no account. The id is
+    // an unguessable UUID, the response is the shareable projection only,
+    // and an unfinished book is a 404 rather than a half-painted preview.
+    const shareMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/share$/);
+    if (req.method === "GET" && shareMatch) {
+      const row = await db.getBook(shareMatch[1]);
+      if (!row || !SHAREABLE_STATUSES.has(row.status) || !row.pages) {
+        return send(res, 404, { error: "That book is not ready to share yet." });
+      }
+      res.setHeader("Cache-Control", "public, max-age=300");
+      return send(res, 200, { book: shareableBook(row) });
     }
 
     // Advance a generating book by ONE step. This is how production works:
@@ -474,7 +534,7 @@ export async function handleForge(req, res) {
       const book = await db.getBook(saveMatch[1]);
       if (!book) return send(res, 404, { error: "not found" });
       const updated = await db.updateBook(saveMatch[1], { user_id: user.id });
-      return send(res, 200, { ok: true, book: updated });
+      return send(res, 200, { ok: true, book: customerBook(updated) });
     }
 
     if (req.method === "GET" && p === "/world") {

@@ -2,13 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft, ArrowRight, Camera, Check, Dices, Globe2, Loader2,
-  PartyPopper, ShieldCheck, Sparkles, Wand2, X,
+  ArrowLeft, ArrowRight, Camera, Check, Copy, Dices, Globe2, Loader2,
+  MessageCircle, PartyPopper, Share2, ShieldCheck, Sparkles, Wand2, X,
 } from "lucide-react";
-import { forgeApi, type CustomBook, type ForgeLevel } from "@/lib/forgeApi";
+import { forgeApi, shareUrlFor, type CustomBook, type ForgeLevel } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import FlipBook from "@/components/FlipBook";
 import { useAuth } from "@/contexts/AuthContext";
+import { COUNTRIES as COUNTRY_REGISTRY } from "@/lib/countries";
+import { LIBRARY_WORLD } from "@/lib/libraryWorld";
 
 /**
  * Create-A-Book — the custom phonics book wizard.
@@ -17,16 +19,9 @@ import { useAuth } from "@/contexts/AuthContext";
  * World of Books upsell. Localhost workflow preview; API at /api/forge.
  */
 
-const COUNTRIES: Array<[string, string]> = [
-  ["United Kingdom", "🇬🇧"], ["United States", "🇺🇸"], ["Saudi Arabia", "🇸🇦"],
-  ["United Arab Emirates", "🇦🇪"], ["Egypt", "🇪🇬"], ["Pakistan", "🇵🇰"], ["India", "🇮🇳"],
-  ["Nigeria", "🇳🇬"], ["Ghana", "🇬🇭"], ["Kenya", "🇰🇪"], ["South Africa", "🇿🇦"],
-  ["Jamaica", "🇯🇲"], ["Poland", "🇵🇱"], ["Romania", "🇷🇴"], ["Turkey", "🇹🇷"],
-  ["Bangladesh", "🇧🇩"], ["China", "🇨🇳"], ["Japan", "🇯🇵"], ["Philippines", "🇵🇭"],
-  ["Brazil", "🇧🇷"], ["Mexico", "🇲🇽"], ["France", "🇫🇷"], ["Spain", "🇪🇸"],
-  ["Italy", "🇮🇹"], ["Germany", "🇩🇪"], ["Ireland", "🇮🇪"], ["Australia", "🇦🇺"],
-  ["Somalia", "🇸🇴"], ["Morocco", "🇲🇦"], ["Malaysia", "🇲🇾"], ["Indonesia", "🇮🇩"],
-];
+// Every country the World of Books globe can place — one shared registry, so
+// the flag a family picks here is the flag that lights up on the globe.
+const COUNTRIES: Array<[string, string]> = COUNTRY_REGISTRY.map((c) => [c.name, c.flag]);
 
 const SKIN_TONES = [
   { label: "Light", hex: "#F0D0B0" },
@@ -131,6 +126,27 @@ export default function CreateBook() {
       "The Create-A-Book service isn't reachable right now — give it a moment and refresh.",
     ));
   }, []);
+
+  // How many books already shine on the globe for each country — the
+  // library fleet plus every approved family-made book. Shown under the
+  // country picker so a family sees the flag they are about to light up
+  // ("No book from Sweden yet — yours would be the first"). The public
+  // /world read needs no account; if it fails the library alone still counts.
+  const [globeCounts, setGlobeCounts] = useState<Map<string, number>>(() => {
+    const m = new Map<string, number>();
+    for (const b of LIBRARY_WORLD) m.set(b.country, (m.get(b.country) ?? 0) + 1);
+    return m;
+  });
+  useEffect(() => {
+    forgeApi.world().then((r) => {
+      setGlobeCounts((prev) => {
+        const m = new Map(prev);
+        for (const b of r.books) if (b.country) m.set(b.country, (m.get(b.country) ?? 0) + 1);
+        return m;
+      });
+    }).catch(() => { /* library counts stand */ });
+  }, []);
+  const countryCount = globeCounts.get(country) ?? 0;
 
   // Two loops share the work of "generating":
   //   poll  — reads the book row for the progress bar (cheap, every 2.5s)
@@ -564,6 +580,14 @@ export default function CreateBook() {
                         className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                     </label>
                   </div>
+                  <p className="flex items-start gap-2 rounded-xl bg-violet-50 px-3 py-2 text-xs text-violet-800">
+                    <Globe2 className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    <span>
+                      {countryCount === 0
+                        ? <>No book from {country} on the World of Books globe yet: {name.trim() || "your child"}'s would be the very first flag there.</>
+                        : <>{countryCount} {countryCount === 1 ? "book already lives" : "books already live"} in {country} on the World of Books globe. {name.trim() || "Your child"}'s would join them.</>}
+                    </span>
+                  </p>
 
                   <label className="block">
                     <span className="text-sm font-semibold text-slate-700">Your family's world <span className="font-normal text-slate-400">(culture, food, places, traditions)</span></span>
@@ -937,6 +961,8 @@ export default function CreateBook() {
                   </button>
                 )}
 
+                <SharePanel bookId={book.id} childName={book.child_name} />
+
                 {book.share_requested && book.status === "ready" && (
                   <p className="mt-3 text-xs text-slate-400">Your book is with our team for a quick review before it appears in the World of Books.</p>
                 )}
@@ -961,7 +987,7 @@ export default function CreateBook() {
                     </button>
                     {import.meta.env.DEV && (
                       <button onClick={async () => {
-                        const testEmail = email.trim() || book.email || "test@localhost";
+                        const testEmail = email.trim() || "test@localhost";
                         localStorage.setItem("forge_email", testEmail);
                         try {
                           await forgeApi.simulatePay({ kind: "world", email: testEmail });
@@ -1009,6 +1035,66 @@ function WizardNav({ onBack, onNext, nextDisabled, nextLabel }: {
           {nextLabel || "Next"} <ArrowRight className="h-4 w-4" />
         </button>
       )}
+    </div>
+  );
+}
+
+/**
+ * Send the finished book to the people who will love it most. The link is
+ * /story/:id — the real pages, no account needed — so a grandparent on
+ * WhatsApp sees the book itself, not a sign-in wall. The native share sheet
+ * is used where the browser offers one (every phone); WhatsApp and copy
+ * cover the desktop.
+ */
+function SharePanel({ bookId, childName }: { bookId: string; childName: string }) {
+  const [copied, setCopied] = useState(false);
+  const url = shareUrlFor(bookId);
+  const text = `${childName}'s very own phonics book is ready. Every word is matched to the sounds ${childName} has been taught. Read it here: ${url}`;
+  const canNativeShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+
+  const nativeShare = async () => {
+    try {
+      await navigator.share({ title: `${childName}'s book`, text, url });
+    } catch {
+      /* dismissed */
+    }
+  };
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt("Copy this link", url);
+    }
+  };
+
+  return (
+    <div className="mx-auto mt-6 max-w-sm rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-slate-900/5">
+      <div className="flex items-center gap-2 font-extrabold text-slate-900">
+        <Share2 className="h-5 w-5 text-violet-500" /> Share {childName}'s book
+      </div>
+      <p className="mt-1 text-sm text-slate-500">
+        Grandparents, cousins, the class group: anyone with the link can turn the pages. No account needed.
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        {canNativeShare ? (
+          <button onClick={nativeShare}
+            className="flex items-center justify-center gap-2 rounded-full bg-violet-600 py-2.5 text-sm font-bold text-white shadow-md hover:bg-violet-700">
+            <Share2 className="h-4 w-4" /> Share
+          </button>
+        ) : (
+          <a href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"
+            className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] py-2.5 text-sm font-bold text-white shadow-md hover:opacity-90">
+            <MessageCircle className="h-4 w-4" /> WhatsApp
+          </a>
+        )}
+        <button onClick={copy}
+          className="flex items-center justify-center gap-2 rounded-full border-2 border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-700 hover:border-slate-300">
+          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />} {copied ? "Copied" : "Copy link"}
+        </button>
+      </div>
+      <p className="mt-2.5 truncate text-[11px] text-slate-400">{url}</p>
     </div>
   );
 }

@@ -126,7 +126,7 @@ export default function BarnGame({ level, onClose }: Props) {
     };
 
     S.art.src = '/images/games/soundlings_barn.webp';
-    S.art.onload = () => { S.art.naturalWidth && (S.artOk = true); };
+    S.art.onload = () => { if (S.art.naturalWidth) S.artOk = true; };
     try { document.fonts.ready.then(() => { S.fontReady = true; }); } catch { S.fontReady = true; }
 
     const hatchAt = (g: string) => (g === S.glowing ? GLOW_HATCH_FEEDS : HATCH_FEEDS);

@@ -32,7 +32,7 @@ export default function CustomBookReader({
       <div className="min-h-0 flex-1 p-4">
         <FlipBook
           pages={pages.map((page, i) => (
-            <Page key={i} page={page} colour={colour} />
+            <CustomBookPageView key={i} page={page} colour={colour} />
           ))}
           pageWidth={420}
           fitHeight
@@ -43,7 +43,12 @@ export default function CustomBookReader({
   );
 }
 
-function Page({ page, colour }: { page: CustomBookPage; colour: string }) {
+/**
+ * One page of a family-made book, sized off its container. Exported so the
+ * share page (/story/:id) renders the exact pages the family saw — same
+ * markup, same fonts, no second reader to drift.
+ */
+export function CustomBookPageView({ page, colour }: { page: CustomBookPage; colour: string }) {
   return (
     <div className="h-full w-full bg-white" style={{ containerType: "inline-size" }}>
       {page.type === "cover" && (

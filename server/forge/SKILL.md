@@ -110,6 +110,17 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
   illustration.
 - Admin reviews the real typeset PDF, never a substitute screen reader.
 
+## Customer-facing reads
+
+- `GET /books/:id` returns `customerBook` only: status, pages, profile and
+  `progress.{step,message,pct}`. Never the email, the raw child form answers,
+  the rejected runs, the spend or `progress.job`. The wizard polls this every
+  2.5 s; the full row was leaving the server on every tick before this rule.
+- `GET /books/:id/share` is the public share link (`/story/:id`) for `ready`
+  and `approved` books only. It returns `shareableBook`: the printed pages and
+  the label. Anything else is a 404. Never widen either projection; the
+  invariant tests in `src/test/forgeProjections.test.ts` enforce both.
+
 ## Spend and concurrency contract
 
 - Default hard cap is `MAX_BOOK_SPEND_USD`; automation never raises it.

@@ -67,15 +67,30 @@ export interface CustomBook {
   progress?: { step: string; message: string; pct: number } | null;
   share_requested?: boolean;
   wall_of_love_opt_in?: boolean;
-  cost_usd?: number;
-  cost_breakdown?: Record<string, unknown>;
-  email?: string | null;
   user_id?: string | null;
   generating?: boolean;
-  review_note?: string | null;
   created_at?: string;
   cover?: string | null;
   locked?: boolean;
+}
+
+/** The share-link view of a finished book (GET /books/:id/share). */
+export interface SharedBook {
+  id: string;
+  title: string | null;
+  level: number;
+  focus_sound: string;
+  child_name: string;
+  country: string | null;
+  country_flag: string | null;
+  pages: CustomBookPage[];
+  created_at?: string;
+}
+
+/** The public URL a family sends to grandparents — /story/:id. */
+export function shareUrlFor(bookId: string): string {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://myphonicsbooks.com";
+  return `${origin}/story/${bookId}`;
 }
 
 const base = "/api/forge";
@@ -108,6 +123,8 @@ export const forgeApi = {
   createBook: (body: Record<string, unknown>) =>
     req<{ book: CustomBook }>("/books", { method: "POST", body: JSON.stringify(body) }),
   getBook: (id: string) => req<{ book: CustomBook }>(`/books/${id}`),
+  // Public share-link read: finished books only, printed pages only.
+  share: (id: string) => req<{ book: SharedBook }>(`/books/${id}/share`),
   // `voucher` redeems a private test code server-side. A successful redeem
   // returns { free: true } and no Stripe URL — the caller must handle both.
   // Advance a generating book by one step. Production has no background

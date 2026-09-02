@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Minus, Plus, RotateCcw } from "lucide-react";
 import { WORLD_LAND } from "@/lib/worldLand";
+import { COUNTRIES, flagUrl } from "@/lib/countries";
 
 /**
  * The World of Books globe — a toy planet whose pins are real books.
@@ -19,40 +20,15 @@ import { WORLD_LAND } from "@/lib/worldLand";
  * d3-geo/three.js would cost more bundle than this whole feature is worth.
  */
 
-const COUNTRY_COORDS: Record<string, [number, number]> = {
-  "United Kingdom": [-2.0, 54.0], "United States": [-98.0, 39.5], "Saudi Arabia": [45.0, 24.0],
-  "United Arab Emirates": [54.0, 24.0], Egypt: [30.0, 26.8], Pakistan: [69.3, 30.4],
-  India: [78.9, 20.6], Nigeria: [8.7, 9.1], Ghana: [-1.0, 7.9], Kenya: [37.9, -0.02],
-  "South Africa": [24.7, -29.0], Jamaica: [-77.3, 18.1], Poland: [19.1, 51.9],
-  Romania: [24.9, 45.9], Turkey: [35.2, 39.0], Bangladesh: [90.4, 23.7], China: [104.2, 35.9],
-  Japan: [138.3, 36.2], Philippines: [121.8, 12.9], Brazil: [-51.9, -14.2],
-  Mexico: [-102.6, 23.6], France: [2.2, 46.2], Spain: [-3.7, 40.5], Italy: [12.6, 41.9],
-  Germany: [10.5, 51.2], Ireland: [-8.2, 53.4], Australia: [133.8, -25.3],
-  Somalia: [46.2, 5.2], Morocco: [-7.1, 31.8], Malaysia: [101.98, 4.2], Indonesia: [113.9, -0.8],
-  Nepal: [84.1, 28.4], "Trinidad and Tobago": [-61.2, 10.7], Iceland: [-19.0, 64.9],
-  Thailand: [100.99, 15.87], "South Korea": [127.8, 36.5], Sweden: [18.6, 60.1],
-  Colombia: [-74.3, 4.6],
-};
-
-// ISO-3166 alpha-2 for flag artwork. Anything absent renders a warm fallback
-// badge instead — reserved for a future pin whose story genuinely names no
-// country (none currently do; the Jam Jug was the last one, now Saudi Arabia).
-const COUNTRY_ISO: Record<string, string> = {
-  "United Kingdom": "gb", "United States": "us", "Saudi Arabia": "sa",
-  "United Arab Emirates": "ae", Egypt: "eg", Pakistan: "pk", India: "in",
-  Nigeria: "ng", Ghana: "gh", Kenya: "ke", "South Africa": "za", Jamaica: "jm",
-  Poland: "pl", Romania: "ro", Turkey: "tr", Bangladesh: "bd", China: "cn",
-  Japan: "jp", Philippines: "ph", Brazil: "br", Mexico: "mx", France: "fr",
-  Spain: "es", Italy: "it", Germany: "de", Ireland: "ie", Australia: "au",
-  Somalia: "so", Morocco: "ma", Malaysia: "my", Indonesia: "id", Nepal: "np",
-  "Trinidad and Tobago": "tt", Iceland: "is", Thailand: "th", "South Korea": "kr",
-  Sweden: "se", Colombia: "co",
-};
-
-export function flagUrl(country: string, size: 40 | 80 = 40): string | null {
-  const iso = COUNTRY_ISO[country];
-  return iso ? `https://flagcdn.com/w${size}/${iso}.png` : null;
-}
+// Country names, flags, ISO codes and pin coordinates all come from ONE
+// registry shared with the Create-A-Book wizard and the library pins, so a
+// family can only ever pick a country this globe can place.
+const COUNTRY_COORDS: Record<string, [number, number]> = Object.fromEntries(
+  COUNTRIES.map((c) => [c.name, c.at]),
+);
+const COUNTRY_ISO: Record<string, string> = Object.fromEntries(
+  COUNTRIES.map((c) => [c.name, c.iso]),
+);
 
 const DEG = Math.PI / 180;
 

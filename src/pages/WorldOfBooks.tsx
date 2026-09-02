@@ -13,7 +13,8 @@ import type { Book } from "@/lib/types";
 import { forgeApi, type CustomBook } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from "@/components/DownloadFormatDialog";
-import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
+import WorldGlobe, { type GlobePin } from "@/components/WorldGlobe";
+import { flagUrl } from "@/lib/countries";
 import { getJourneyLevel, JOURNEY_LEVELS } from "@/lib/levels8";
 import { LIBRARY_WORLD, libraryCoverUrl, libraryJourneyLevel, type LibraryWorldBook } from "@/lib/libraryWorld";
 

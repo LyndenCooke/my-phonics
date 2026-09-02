@@ -184,7 +184,8 @@ export default function SafariGame({ level, onClose }: Props) {
         const total = r?.targetCount ?? 0;
         for (const o of objs) {
           if (o.state === 'done') continue;
-          let x = o.x, y = o.y, s = o.size, rot = o.rot, alpha = 1;
+          let x = o.x, y = o.y, s = o.size, rot = o.rot;
+          const alpha = 1;
           if (o.state === 'in') {
             if (o.t < 0) continue;
             const k = easeOutBack(Math.min(1, o.t / 0.4));
