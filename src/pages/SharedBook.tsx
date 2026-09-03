@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BookOpen, Globe2, Loader2, Sparkles } from "lucide-react";
@@ -6,6 +6,8 @@ import { forgeApi, type SharedBook as SharedBookRow } from "@/lib/forgeApi";
 import CustomBookReader, { CustomBookPageView } from "@/components/CustomBookReader";
 import FlipBook from "@/components/FlipBook";
 import { flagUrl } from "@/lib/countries";
+
+const PdfFlipBook = lazy(() => import("@/components/PdfFlipBook"));
 
 /**
  * /story/:id — the share link for a family-made book.
@@ -25,6 +27,9 @@ export default function SharedBook() {
   const [book, setBook] = useState<SharedBookRow | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "missing">("loading");
   const [reading, setReading] = useState(false);
+  // The typeset PDF is the truest preview (every printed page). If it is not
+  // there yet, or the browser cannot draw it, the story pages stand in.
+  const [pdfOk, setPdfOk] = useState(true);
 
   useEffect(() => {
     if (!id) { setState("missing"); return; }
@@ -101,19 +106,25 @@ export default function SharedBook() {
             </div>
 
             <div className="mt-6">
-              <FlipBook
-                pages={book.pages.map((page, i) => (
-                  <CustomBookPageView key={i} page={page} colour={colour} />
-                ))}
-                pageWidth={340}
-                showCounter
-              />
+              {book.pdf_url && pdfOk ? (
+                <Suspense fallback={<div className="py-8 text-center text-sm text-slate-400">Laying out the printed pages…</div>}>
+                  <PdfFlipBook url={book.pdf_url} pageWidth={300} onUnavailable={() => setPdfOk(false)} />
+                </Suspense>
+              ) : (
+                <FlipBook
+                  pages={book.pages.map((page, i) => (
+                    <CustomBookPageView key={i} page={page} colour={colour} />
+                  ))}
+                  pageWidth={340}
+                  showCounter
+                />
+              )}
             </div>
 
             <div className="mt-4 text-center">
               <button onClick={() => setReading(true)}
                 className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-slate-900/5 hover:bg-slate-50">
-                <BookOpen className="h-4 w-4" /> Read it full screen
+                <BookOpen className="h-4 w-4" /> Read it with sounds
               </button>
             </div>
 

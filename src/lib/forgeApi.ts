@@ -29,6 +29,9 @@ export interface CustomBookPage {
   likes?: string | null;
   culture?: string | null;
   faith?: string | null;
+  // Narration recorded once per book (server/forge/audio.mjs): the page read
+  // aloud, and every word on it keyed lower-case with punctuation stripped.
+  audio?: { sentence?: string; words?: Record<string, string> } | null;
 }
 
 /** One row of the admin ledger: every book made, what it cost, where its PDF is. */
@@ -84,6 +87,8 @@ export interface SharedBook {
   country: string | null;
   country_flag: string | null;
   pages: CustomBookPage[];
+  /** Where the typeset PDF lives once rendered; the page probes it and falls back to the pages if absent. */
+  pdf_url?: string | null;
   created_at?: string;
 }
 
@@ -145,6 +150,9 @@ export const forgeApi = {
   retry: (bookId: string) =>
     req<{ ok: boolean }>("/retry", { method: "POST", body: JSON.stringify({ book_id: bookId }) }),
   pdf: (bookId: string) => req<{ url: string }>(`/books/${bookId}/pdf`, { method: "POST" }),
+  // Record (or top up) the narration for a finished book. Idempotent.
+  audio: (bookId: string) =>
+    req<{ ok: boolean; recorded?: number; skipped?: boolean }>(`/books/${bookId}/audio`, { method: "POST" }),
   // Link a created book to the signed-in account. Server verifies the
   // bearer token itself — a missing/invalid session comes back as a 401.
   saveToAccount: (bookId: string) =>

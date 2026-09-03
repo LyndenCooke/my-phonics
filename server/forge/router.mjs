@@ -5,7 +5,8 @@ import { allLevels } from "./phonics.mjs";
 import * as db from "./db.mjs";
 import { createCheckout, verifySession, PRICES } from "./stripe.mjs";
 import { startGeneration, stashPhoto, isRunning, renderPdf, runNextStep, repairBook, MAX_BOOK_SPEND_USD } from "./jobs.mjs";
-import { IS_SERVERLESS } from "./storage.mjs";
+import { IS_SERVERLESS, publicUrl } from "./storage.mjs";
+import { generateBookAudio, audioKey } from "./audio.mjs";
 
 function readBody(req, limit = 25 * 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -114,8 +115,31 @@ export function shareableBook(b) {
     country: b.country,
     country_flag: b.country_flag,
     pages: b.pages,
+    // Deterministic location of the typeset PDF (may not exist yet); the
+    // share page probes it and falls back to the pages when it is absent.
+    pdf_url: publicUrl(b.id, "book.pdf"),
     created_at: b.created_at,
   };
+}
+
+// Finish-line delivery, shared by /step and /sweep: typeset the PDF and
+// record the narration. Both are best-effort — a book is readable without
+// either, so neither may fail the step that finished it.
+async function deliverAtReady(bookId, req) {
+  const scheme = req.headers["x-forwarded-proto"] || "https";
+  const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
+  try {
+    await renderPdf(bookId, { origin: requestOrigin });
+  } catch (e) {
+    console.warn(`[forge] delivery-at-ready render failed for ${bookId} (book still readable, /pdf can retry):`, e.message);
+  }
+  if (audioKey()) {
+    try {
+      await generateBookAudio(bookId);
+    } catch (e) {
+      console.warn(`[forge] narration failed for ${bookId} (book still readable, /audio can retry):`, e.message);
+    }
+  }
 }
 
 export async function handleForge(req, res) {
@@ -237,16 +261,25 @@ export async function handleForge(req, res) {
       // customer to press a download button. Runs exactly once (on the
       // assemble transition), never fails the step response, and the /pdf
       // endpoint stays as the manual re-render path.
-      if (r.step === "assemble" && r.status !== "failed") {
-        const scheme = req.headers["x-forwarded-proto"] || "https";
-        const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
-        try {
-          await renderPdf(row.id, { origin: requestOrigin });
-        } catch (e) {
-          console.warn(`[forge] delivery-at-ready render failed for ${row.id} (book still readable, /pdf can retry):`, e.message);
-        }
-      }
+      if (r.step === "assemble" && r.status !== "failed") await deliverAtReady(row.id, req);
       return send(res, 200, r);
+    }
+
+    // Narration on demand: record what is missing for a finished book (a
+    // book made before narration existed, or one whose finish-line recording
+    // failed). Idempotent, so a double tap costs nothing extra.
+    const audioMatch = p.match(/^\/books\/([0-9a-f-]{8,})\/audio$/);
+    if (req.method === "POST" && audioMatch) {
+      const row = await db.getBook(audioMatch[1]);
+      if (!row) return send(res, 404, { error: "not found" });
+      if (!row.pages) return send(res, 400, { error: "book not generated yet" });
+      if (!audioKey()) return send(res, 501, { error: "Narration is not configured on this server (ELEVEN_LABS_API)." });
+      try {
+        const r = await generateBookAudio(audioMatch[1]);
+        return send(res, 200, { ok: true, ...r });
+      } catch (e) {
+        return send(res, 500, { error: e.message });
+      }
     }
 
     // Render (or fetch) the real book_v2 PDF for a finished book. Production
@@ -449,12 +482,7 @@ export async function handleForge(req, res) {
           // A swept book that finishes must deliver too — same at-the-finish
           // hook as the /step path (the customer's tab is gone; nobody else
           // will press the button).
-          if (r.step === "assemble" && r.status !== "failed") {
-            const scheme = req.headers["x-forwarded-proto"] || "https";
-            const requestOrigin = req.headers.host ? `${scheme}://${req.headers.host}` : null;
-            try { await renderPdf(b.id, { origin: requestOrigin }); }
-            catch (e) { console.warn(`[forge] sweep delivery render failed for ${b.id}:`, e.message); }
-          }
+          if (r.step === "assemble" && r.status !== "failed") await deliverAtReady(b.id, req);
           if (r.done || r.step === "busy") break;
         }
         swept.push({ id: b.id, steps, last: last?.step, status: last?.status || null });

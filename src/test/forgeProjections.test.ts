@@ -69,7 +69,7 @@ describe("shareableBook (the public /story link)", () => {
 
   it("is the printed book and its label, nothing more", () => {
     expect(Object.keys(out).sort()).toEqual(
-      ["child_name", "country", "country_flag", "created_at", "focus_sound", "id", "level", "pages", "title"],
+      ["child_name", "country", "country_flag", "created_at", "focus_sound", "id", "level", "pages", "pdf_url", "title"],
     );
     expect(out.pages).toBe(row.pages);
   });

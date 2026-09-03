@@ -18,6 +18,7 @@ The gitignored `.env` files that power local dev do not exist in a deployment.
 | `STRIPE_SECRET_KEY` | yes (payments) | `sk_live_...` — without it checkout 500s; the voucher path still works. |
 | `FORGE_VOUCHER_CODE` | optional | Lynden's private free-book test code. Unset = no voucher accepted. |
 | `FAL_KEY` | optional | Third image-engine fallback (fal.ai). |
+| `ELEVEN_LABS_API` | optional | ElevenLabs key. With it set, every finished book is narrated once (George, same voice as the library) so the online reader can read pages and words aloud. Unset = books ship silent. |
 
 Never set `FORGE_IMG_ENGINE=vertex` in prod — the Vertex path shells out to
 `gcloud`, which does not exist on a lambda.
@@ -35,8 +36,11 @@ stopped at, paying nothing twice.
 
 ## Known production degradations (by design)
 
-- **PDF typesetting** returns 501 — it needs Python + Playwright, which run on
-  the studio machine only. The frontend falls back to the interactive reader.
+- **PDF typesetting** runs serverless now (`api/render-book-html.py` builds
+  the HTML through the real book_v2 template, `server/forge/pdf.mjs` prints it
+  with puppeteer + @sparticuz/chromium) and the finished PDF is emailed at the
+  finish line. If that path fails for a book, the frontend still falls back
+  to the interactive reader and `/api/forge/books/:id/pdf` can retry.
 - **Photo likeness**: the uploaded photo is held in memory only (privacy) and
   may not survive to the hero step on a different lambda; the hero then
   generates from the described appearance instead.

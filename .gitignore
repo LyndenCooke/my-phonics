@@ -160,3 +160,6 @@ marketing/booklet/_build/
 review/_screenshots/
 
 vite.config.ts.timestamp-*.mjs
+
+# OpenAI TTS takes awaiting a human ear (scripts/generate_phoneme_bank.mjs)
+public/sounds/takes/

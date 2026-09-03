@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft, ArrowRight, Camera, Check, Copy, Dices, Globe2, Loader2,
+  ArrowLeft, ArrowRight, Camera, Check, Copy, Dices, Download, ExternalLink, Globe2, Loader2,
   MessageCircle, PartyPopper, Share2, ShieldCheck, Sparkles, Wand2, X,
 } from "lucide-react";
 import { forgeApi, shareUrlFor, type CustomBook, type ForgeLevel } from "@/lib/forgeApi";
@@ -11,6 +11,9 @@ import FlipBook from "@/components/FlipBook";
 import { useAuth } from "@/contexts/AuthContext";
 import { COUNTRIES as COUNTRY_REGISTRY } from "@/lib/countries";
 import { LIBRARY_WORLD } from "@/lib/libraryWorld";
+
+// pdf.js is a few hundred KB; only the "book is ready" screen needs it.
+const PdfFlipBook = lazy(() => import("@/components/PdfFlipBook"));
 
 /**
  * Create-A-Book — the custom phonics book wizard.
@@ -87,6 +90,11 @@ export default function CreateBook() {
   // stop offering the button rather than let a family hit the same dead
   // end twice.
   const [pdfUnavailable, setPdfUnavailable] = useState(false);
+  // The typeset PDF for the CURRENT book (keyed by id so "change the story
+  // idea" never shows the previous book's pages), and whether pdf.js managed
+  // to draw it. When it cannot, the cover card stands in.
+  const [pdf, setPdf] = useState<{ id: string; url: string } | null>(null);
+  const [pdfRenderFailed, setPdfRenderFailed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [worldPaid, setWorldPaid] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -425,23 +433,52 @@ export default function CreateBook() {
     }
   };
 
-  // The real thing: the full phonics book PDF, typeset through the same
-  // book_v2 template as the printed library books.
-  const openPdf = async () => {
-    if (!book) return;
+  // As soon as the book is ready, look up its typeset PDF. The router renders
+  // it at the finish line, so this is usually just a URL — the preview below
+  // shows the printed pages and the save button has a real file to hand over.
+  // "not available online" is the studio-only renderer's honest answer, not a
+  // fault; anything else is surfaced so a family is never left guessing.
+  const pdfUrl = pdf && book && pdf.id === book.id ? pdf.url : null;
+  useEffect(() => {
+    if (step !== "ready" || !book?.id || pdfUrl || pdfUnavailable) return;
+    let alive = true;
+    setPdfBusy(true);
+    forgeApi.pdf(book.id)
+      .then(({ url }) => { if (alive) { setPdf({ id: book.id, url }); setPdfRenderFailed(false); } })
+      .catch((e) => {
+        if (!alive) return;
+        const msg = String((e as Error).message);
+        if (/not available online/i.test(msg)) setPdfUnavailable(true);
+        else setError(`The printable PDF could not be typeset yet: ${msg}`);
+      })
+      .finally(() => { if (alive) setPdfBusy(false); });
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, book?.id]);
+
+  // Hand the PDF over as a FILE. window.open after an await is popup-blocked
+  // on Safari, Chrome and installed PWAs (the exact phone case: "press the
+  // PDF and nothing happens"). Fetching the bytes and clicking a hidden
+  // <a download> is what the library's own download button does, and on
+  // iOS it opens the PDF with the share sheet — Save to Files, AirDrop,
+  // print — rather than silently doing nothing.
+  const savePdf = async () => {
+    if (!book || !pdfUrl) return;
     setPdfBusy(true); setError(null);
     try {
-      const { url } = await forgeApi.pdf(book.id);
-      window.open(url, "_blank");
+      const res = await fetch(pdfUrl);
+      if (!res.ok) throw new Error("The PDF file could not be fetched — try again in a moment.");
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `${book.title || `${book.child_name}'s book`}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch (e) {
-      const msg = String((e as Error).message);
-      if (/not available online/i.test(msg)) {
-        // Expected in production, not a fault — swap the button out instead
-        // of leaving a red alert sitting over an otherwise happy page.
-        setPdfUnavailable(true);
-      } else {
-        setError(msg);
-      }
+      setError(String((e as Error).message));
     } finally {
       setPdfBusy(false);
     }
@@ -907,47 +944,68 @@ export default function CreateBook() {
                 <h2 className="text-2xl font-extrabold text-slate-900">Their book is ready!</h2>
                 <p className="mt-1 text-slate-500">Made for the {book.child_name} family {book.country_flag}</p>
 
-                {/* The real MyPhonicsBooks cover template (book_v2.html
-                    .cover): level-colour top band + brand, full-bleed
-                    illustration, level-colour bottom band with the title —
-                    pixel-for-pixel the same layout as every printed cover in
-                    /public/covers/, not just the raw painted art. */}
-                <button onClick={() => setReading(true)}
-                  className="group mx-auto mt-5 block w-64 overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/5 transition hover:scale-[1.02]">
-                  <div className="flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white"
-                    style={{ backgroundColor: levelColour }}>
-                    <span>Level {book.level} · {bookLevel?.name || ""}</span>
-                    <span className="opacity-95">MyPhonicsBooks</span>
-                  </div>
-                  <div className="aspect-[3/4] w-full overflow-hidden bg-slate-100">
-                    {book.pages[0]?.imageUrl && (
-                      <img src={book.pages[0].imageUrl} alt="" className="h-full w-full object-cover" />
-                    )}
-                  </div>
-                  <div className="px-4 py-4 text-center text-white" style={{ backgroundColor: levelColour }}>
-                    <div className="text-lg font-extrabold leading-tight">{book.title}</div>
-                    <div className="mt-0.5 text-xs italic text-white/90">Level {book.level} · {bookLevel?.name || ""}</div>
-                  </div>
-                </button>
+                {/* The whole printed book, page for page — the same turn-the-
+                    pages view as the sample on the intro, rasterised from the
+                    real typeset PDF. Until the PDF exists (or where pdf.js
+                    cannot draw it), the cover card stands in. */}
+                <div className="mt-5">
+                  {pdfUrl && !pdfRenderFailed ? (
+                    <Suspense fallback={<div className="py-8 text-sm text-slate-400">Laying out the printed pages…</div>}>
+                      <PdfFlipBook url={pdfUrl} pageWidth={230} onUnavailable={() => setPdfRenderFailed(true)} />
+                    </Suspense>
+                  ) : (
+                    <button onClick={() => setReading(true)}
+                      className="group mx-auto block w-64 overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/5 transition hover:scale-[1.02]">
+                      <div className="flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white"
+                        style={{ backgroundColor: levelColour }}>
+                        <span>Level {book.level} · {bookLevel?.name || ""}</span>
+                        <span className="opacity-95">MyPhonicsBooks</span>
+                      </div>
+                      <div className="aspect-[3/4] w-full overflow-hidden bg-slate-100">
+                        {book.pages[0]?.imageUrl && (
+                          <img src={book.pages[0].imageUrl} alt="" className="h-full w-full object-cover" />
+                        )}
+                      </div>
+                      <div className="px-4 py-4 text-center text-white" style={{ backgroundColor: levelColour }}>
+                        <div className="text-lg font-extrabold leading-tight">{book.title}</div>
+                        <div className="mt-0.5 text-xs italic text-white/90">Level {book.level} · {bookLevel?.name || ""}</div>
+                      </div>
+                    </button>
+                  )}
+                </div>
+                <p className="mt-2 text-xs font-medium text-slate-400">
+                  {pdfUrl && !pdfRenderFailed
+                    ? "Every page exactly as it prints — tap or swipe to turn"
+                    : pdfBusy ? "Typesetting the printed pages…" : "Tap the cover to read"}
+                </p>
 
-                {/* PDF typesetting needs Python + Playwright, which run on the
-                    studio machine only — production returns 501 (DEPLOY.md).
-                    Once that's known, the button disappears rather than
-                    inviting another dead click; "Read it here" carries the
-                    weight as the primary, permanent way to enjoy the book. */}
-                {pdfUnavailable ? (
-                  <p className="mx-auto mt-4 max-w-xs text-xs text-slate-400">
-                    Printable PDFs are coming soon — for now, enjoy the book right here.
-                  </p>
-                ) : (
-                  <button onClick={openPdf} disabled={pdfBusy}
-                    className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
-                    {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
-                  </button>
-                )}
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                  {pdfUrl ? (
+                    <>
+                      <button onClick={savePdf} disabled={pdfBusy}
+                        className="inline-flex items-center gap-2 rounded-full bg-violet-600 px-7 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
+                        {pdfBusy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />} Save the PDF
+                      </button>
+                      {/* A real link in a real tap: never popup-blocked, and
+                          the surest route on a phone that refuses downloads. */}
+                      <a href={pdfUrl} target="_blank" rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full border-2 border-violet-200 bg-white px-5 py-3 text-sm font-bold text-violet-700 hover:border-violet-300">
+                        <ExternalLink className="h-4 w-4" /> Open in a new tab
+                      </a>
+                    </>
+                  ) : pdfUnavailable ? (
+                    <p className="max-w-xs text-xs text-slate-400">
+                      The printable PDF is not available online for this book. Enjoy it right here; the printed pages follow by email.
+                    </p>
+                  ) : (
+                    <button disabled className="inline-flex items-center gap-2 rounded-full bg-violet-600 px-7 py-3 font-bold text-white opacity-60">
+                      <Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book…
+                    </button>
+                  )}
+                </div>
                 <button onClick={() => setReading(true)}
                   className="mx-auto mt-2 block rounded-full bg-violet-50 px-6 py-2.5 text-sm font-bold text-violet-700 hover:bg-violet-100">
-                  Read it here — turn the pages 📖
+                  Read it here with sounds — tap any word 📖
                 </button>
 
                 {saved || book.user_id ? (

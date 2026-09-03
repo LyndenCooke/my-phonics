@@ -43,7 +43,7 @@ async function ensureBucket() {
   bucketReady = true;
 }
 
-const MIME = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".pdf": "application/pdf", ".json": "application/json" };
+const MIME = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".pdf": "application/pdf", ".json": "application/json", ".mp3": "audio/mpeg" };
 
 export function publicUrl(bookId, name) {
   if (!IS_SERVERLESS) return `/custom-books/${bookId}/${name}`;
