@@ -190,6 +190,58 @@ export default function PunctuationRun({ level, onClose }: Props) {
       { x: 760, y: 120, s: 0.7, v: 13 },
       { x: 1150, y: 56, s: 0.85, v: 11 },
     ];
+    // ── the streaming world ──
+    // Only the sky and the far hills are the painting; everything below
+    // the horizon is drawn live and RUSHES PAST — fence posts with rails,
+    // flowers and grass tufts on the verges, texture bands on the track.
+    // A static painting with moving doors reads as floating cutouts; a
+    // moving world makes the gate row just another thing you run past.
+    interface Streamer { kind: 'post' | 'flower' | 'tuft' | 'patch' | 'pebble'; side: number; u: number; off: number; hue: number }
+    let world: Streamer[] = [];
+    let postGap = 0;          // countdown (in u-units) to the next fence post pair
+    let dressGap = 0;         // countdown to the next flower / tuft
+    let patchGap = 0;         // countdown to the next grass-mottle patch
+    let pebbleGap = 0;        // countdown to the next pebble on the track
+    const dressing = (): Streamer => ({
+      kind: Math.random() < 0.5 ? 'flower' : 'tuft',
+      side: Math.random() < 0.5 ? -1 : 1,
+      u: 0, off: 0.1 + Math.random() * 1.1, hue: Math.random(),
+    });
+    const patch = (): Streamer => ({
+      kind: 'patch', side: Math.random() < 0.5 ? -1 : 1,
+      u: 0, off: 0.1 + Math.random() * 1.0, hue: Math.random(),
+    });
+    const pebble = (): Streamer => ({
+      kind: 'pebble', side: Math.random() < 0.5 ? -1 : 1,
+      u: 0, off: Math.random(), hue: Math.random(),
+    });
+    const spawnStreamers = (du: number) => {
+      postGap -= du; dressGap -= du; patchGap -= du; pebbleGap -= du;
+      if (postGap <= 0) {
+        postGap += 0.085;
+        world.push({ kind: 'post', side: -1, u: 0, off: 0, hue: Math.random() });
+        world.push({ kind: 'post', side: 1, u: 0, off: 0, hue: Math.random() });
+      }
+      if (dressGap <= 0) { dressGap += 0.028; world.push(dressing()); }
+      if (patchGap <= 0) { patchGap += 0.11; world.push(patch()); }
+      if (pebbleGap <= 0) { pebbleGap += 0.035; world.push(pebble()); }
+    };
+    /** Pre-fill so the very first frame already has a world rushing by. */
+    const primeWorld = () => {
+      world = [];
+      for (let u = 0.04; u <= 1.05; u += 0.085) {
+        world.push({ kind: 'post', side: -1, u, off: 0, hue: Math.random() });
+        world.push({ kind: 'post', side: 1, u, off: 0, hue: Math.random() });
+      }
+      for (let u = 0.02; u <= 1.1; u += 0.028) world.push({ ...dressing(), u });
+      for (let u = 0.05; u <= 1.1; u += 0.11) world.push({ ...patch(), u });
+      for (let u = 0.03; u <= 1.1; u += 0.035) world.push({ ...pebble(), u });
+      postGap = 0.085; dressGap = 0.028; patchGap = 0.11; pebbleGap = 0.035;
+    };
+    /** Track half-width at depth d — the path the whole world obeys. */
+    const pathHalf = (d: number) => 58 + 470 * d;
+    /** Ground line at depth d — the SAME line the gate row stands on. */
+    const groundY = (d: number) => HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
     const runner = { lane: 1, x: 1, stride: 0, stumble: 0 };
     const usedWords = new Set<string>();
     const sentencesLeft: Record<Mark, string[]> = {
@@ -289,6 +341,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
       runner.lane = 1; runner.x = 1; runner.stumble = 0;
       usedWords.clear();
       ev.clear(); wave = null;
+      primeWorld();
       spawnWave();
     }
 
@@ -328,6 +381,15 @@ export default function PunctuationRun({ level, onClose }: Props) {
           c.x -= c.v * dt;
           if (c.x < -160) { c.x = LW + 160; c.y = 40 + Math.random() * 100; }
         }
+        // the world streams past at EXACTLY the gate row's pace, so fences
+        // and gates are one flow; a reading beat slows the whole world
+        const worldRate = wave && wave.hold <= 0 && wave.resolved === 'no'
+          ? 1 / approachTime(wave.mode)
+          : (moving ? 0.85 : 0.22) * (speed / 4.4);
+        const du = dt * worldRate;
+        for (const s of world) s.u += du;
+        world = world.filter(s => s.u < 1.45);
+        spawnStreamers(du);
 
         if (wave) {
           // dust on landing after the victory leap
@@ -376,23 +438,51 @@ export default function PunctuationRun({ level, onClose }: Props) {
         const F = fontReady ? 'Andika' : 'sans-serif';
         const FD = fontReady ? 'Outfit' : 'sans-serif';
 
-        // ── the path — only drawn when the painted backdrop (which has the
-        // path baked in) is missing ──
-        if (!ok(art)) {
-          ctx.fillStyle = '#E4C98F';
+        // ── the LIVE ground — everything below the horizon is drawn fresh
+        // every frame and streams toward the viewer. The painting only
+        // supplies the sky, far hills, barn and tree. ──
+        // meadow (colours sampled from the painting)
+        const meadow = ctx.createLinearGradient(0, HORIZON_Y, 0, LH);
+        meadow.addColorStop(0, '#B5BE6A');
+        meadow.addColorStop(0.45, '#93AC55');
+        meadow.addColorStop(1, '#7FA04C');
+        ctx.fillStyle = meadow;
+        ctx.fillRect(0, HORIZON_Y, LW, LH - HORIZON_Y);
+        // the dirt track, widening with the same perspective as the gates
+        const trackPoly = () => {
           ctx.beginPath();
-          ctx.moveTo(LW / 2 - 120, HORIZON_Y);
-          ctx.lineTo(LW / 2 + 120, HORIZON_Y);
-          ctx.lineTo(LW / 2 + 520, LH);
-          ctx.lineTo(LW / 2 - 520, LH);
-          ctx.closePath(); ctx.fill();
-          ctx.strokeStyle = 'rgba(140,100,50,0.4)'; ctx.lineWidth = 5;
-          ctx.beginPath(); ctx.moveTo(LW / 2 - 120, HORIZON_Y); ctx.lineTo(LW / 2 - 520, LH); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(LW / 2 + 120, HORIZON_Y); ctx.lineTo(LW / 2 + 520, LH); ctx.stroke();
+          ctx.moveTo(LW / 2 - pathHalf(0), HORIZON_Y);
+          ctx.lineTo(LW / 2 + pathHalf(0), HORIZON_Y);
+          ctx.lineTo(LW / 2 + pathHalf(1.8), LH);
+          ctx.lineTo(LW / 2 - pathHalf(1.8), LH);
+          ctx.closePath();
+        };
+        const dirt = ctx.createLinearGradient(0, HORIZON_Y, 0, LH);
+        dirt.addColorStop(0, '#F0EFD4');
+        dirt.addColorStop(0.28, '#F4CA73');
+        dirt.addColorStop(1, '#ECBB5D');
+        ctx.fillStyle = dirt;
+        trackPoly(); ctx.fill();
+        // soft dark edges where track meets grass
+        ctx.strokeStyle = 'rgba(120,90,45,0.30)'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+        for (const s of [-1, 1]) {
+          ctx.beginPath();
+          ctx.moveTo(LW / 2 + s * pathHalf(0), HORIZON_Y);
+          ctx.lineTo(LW / 2 + s * pathHalf(1.8), LH);
+          ctx.stroke();
         }
-        // scrolling dashes — the speed feel — subtle over the painted path
-        ctx.strokeStyle = ok(art) ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.55)';
-        ctx.lineWidth = 4; ctx.lineCap = 'round';
+        // texture bands sweeping down the track — the ground itself moves
+        ctx.save();
+        trackPoly(); ctx.clip();
+        for (let k = 0; k < 8; k++) {
+          const p = ((roadPhase * 0.4 + k / 8) % 1);
+          const bd = Math.pow(p, 1.6);
+          const by = HORIZON_Y + (LH - HORIZON_Y) * bd;
+          ctx.fillStyle = `rgba(150,105,50,${0.04 + 0.07 * bd})`;
+          ctx.fillRect(0, by, LW, 5 + 26 * bd);
+        }
+        // faint centre dashes for lane feel
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 4;
         for (const sep of [-0.5, 0.5]) {
           for (let k = 0; k < 9; k++) {
             const u0 = ((k + (roadPhase % 1)) / 9);
@@ -406,7 +496,90 @@ export default function PunctuationRun({ level, onClose }: Props) {
             ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
           }
         }
+        ctx.restore();
         ctx.globalAlpha = 1;
+        // haze where the live ground meets the painted horizon — hides the seam
+        const haze = ctx.createLinearGradient(0, HORIZON_Y - 2, 0, HORIZON_Y + 30);
+        haze.addColorStop(0, 'rgba(240,239,212,0.85)');
+        haze.addColorStop(1, 'rgba(240,239,212,0)');
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, HORIZON_Y - 2, LW, 34);
+
+        // ── roadside world rushing past: fences with rails, flowers, tufts ──
+        const streamSorted = [...world].sort((a, b) => a.u - b.u);
+        // grass mottling and track pebbles first — texture under everything
+        for (const s of streamSorted) {
+          const d = Math.pow(s.u, 1.6);
+          const gy = groundY(d);
+          if (s.kind === 'patch') {
+            const x = LW / 2 + s.side * (pathHalf(d) + 60 + (40 + 420 * s.off) * d);
+            const rw = (30 + 110 * d) * (0.7 + s.hue * 0.6);
+            ctx.fillStyle = s.hue < 0.5 ? 'rgba(96,130,58,0.30)' : 'rgba(180,200,110,0.28)';
+            ctx.beginPath(); ctx.ellipse(x, gy, rw, rw * 0.3, 0, 0, 7); ctx.fill();
+          } else if (s.kind === 'pebble') {
+            const x = LW / 2 + s.side * pathHalf(d) * (0.15 + 0.8 * s.off);
+            const r = 1 + 4.5 * d * (0.5 + s.hue);
+            ctx.fillStyle = s.hue < 0.5 ? 'rgba(190,150,90,0.85)' : 'rgba(215,180,120,0.9)';
+            ctx.beginPath(); ctx.ellipse(x, gy, r, r * 0.65, 0, 0, 7); ctx.fill();
+            ctx.strokeStyle = 'rgba(130,95,50,0.4)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.ellipse(x, gy, r, r * 0.65, 0, 0, 7); ctx.stroke();
+          }
+        }
+        // rails first (behind their posts): connect consecutive posts per side
+        for (const side of [-1, 1]) {
+          const posts = streamSorted.filter(s => s.kind === 'post' && s.side === side);
+          for (let i = 0; i + 1 < posts.length; i++) {
+            const a = posts[i], b = posts[i + 1];
+            const da = Math.pow(a.u, 1.6), db = Math.pow(b.u, 1.6);
+            const ha = 16 + 88 * da, hb = 16 + 88 * db;
+            const xa = LW / 2 + side * (pathHalf(da) + 14 + 30 * da);
+            const xb = LW / 2 + side * (pathHalf(db) + 14 + 30 * db);
+            ctx.strokeStyle = '#8B7355';
+            for (const rh of [0.42, 0.74]) {
+              ctx.lineWidth = 2 + 5 * (da + db) / 2;
+              ctx.beginPath();
+              ctx.moveTo(xa, groundY(da) - ha * rh);
+              ctx.lineTo(xb, groundY(db) - hb * rh);
+              ctx.stroke();
+            }
+          }
+        }
+        for (const s of streamSorted) {
+          const d = Math.pow(s.u, 1.6);
+          const gy = groundY(d);
+          if (s.kind === 'post') {
+            const h = 16 + 88 * d, w = 4 + 12 * d;
+            const x = LW / 2 + s.side * (pathHalf(d) + 14 + 30 * d);
+            ctx.fillStyle = 'rgba(60,45,25,0.18)';
+            ctx.beginPath(); ctx.ellipse(x, gy + 2, w * 1.4, w * 0.5, 0, 0, 7); ctx.fill();
+            ctx.fillStyle = s.hue < 0.5 ? '#A08050' : '#96774A';
+            roundRect(ctx, x - w / 2, gy - h, w, h, w * 0.3); ctx.fill();
+            ctx.strokeStyle = '#574627'; ctx.lineWidth = Math.max(1, d * 2);
+            roundRect(ctx, x - w / 2, gy - h, w, h, w * 0.3); ctx.stroke();
+          } else if (s.kind === 'flower' || s.kind === 'tuft') {
+            const x = LW / 2 + s.side * (pathHalf(d) + 30 + (30 + 360 * s.off) * d);
+            if (Math.abs(x - LW / 2) > LW / 2 + 40) continue;
+            if (s.kind === 'flower') {
+              const r = 1.5 + 5 * d;
+              ctx.fillStyle = s.hue < 0.4 ? '#FFF8E7' : s.hue < 0.75 ? '#F7D64A' : '#CFE3F7';
+              for (let pth = 0; pth < 4; pth++) {
+                const a = pth * Math.PI / 2 + s.hue * 6;
+                ctx.beginPath(); ctx.arc(x + Math.cos(a) * r, gy - r + Math.sin(a) * r, r * 0.8, 0, 7); ctx.fill();
+              }
+              ctx.fillStyle = '#E8A33D';
+              ctx.beginPath(); ctx.arc(x, gy - r, r * 0.6, 0, 7); ctx.fill();
+            } else {
+              const h2 = 4 + 16 * d;
+              ctx.strokeStyle = 'rgba(70,110,50,0.75)'; ctx.lineWidth = 1 + 2 * d; ctx.lineCap = 'round';
+              for (const lean2 of [-0.5, 0, 0.5]) {
+                ctx.beginPath();
+                ctx.moveTo(x, gy);
+                ctx.quadraticCurveTo(x + lean2 * h2 * 0.6, gy - h2 * 0.6, x + lean2 * h2, gy - h2);
+                ctx.stroke();
+              }
+            }
+          }
+        }
 
         // speed streaks at full sprint — the reward for a hot streak
         const rush = clamp((speed - 1.3) * 2, 0, 1);

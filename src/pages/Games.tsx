@@ -1,10 +1,14 @@
 /**
  * Games — the public phonics arcade at /games.
  *
- * No sign-in, no unlocks: anyone picks a journey level (1–8) and plays.
- * Every game is fully client-side and level-parameterised, so there is
- * nothing to gate — the arcade doubles as a taster for the books, with a
- * soft "not sure which level?" pointer into the free assessment funnel.
+ * No sign-in: anyone picks a journey level (1–8) and plays. Every game is
+ * fully client-side and level-parameterised. The arcade doubles as a
+ * taster for the books, with a soft "not sure which level?" pointer into
+ * the free assessment funnel.
+ *
+ * ONE GO PER GAME PER DAY (localStorage, resets at local midnight): short
+ * bursts of practice beat long dopamine sessions, and tomorrow's arcade
+ * is fresh. A play is spent at launch, so quitting early doesn't refund it.
  *
  * Same "paper & stickers" design language as the child home screen:
  * level chips are fridge magnets in the ledger colours, game cards are
@@ -33,6 +37,7 @@ import PunctuationRun from '@/games/punctuationRun/PunctuationRun';
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 const EASE: [number, number, number, number] = [0.21, 0.65, 0.36, 1];
 const LEVEL_KEY = 'mpb_games_level';
+const PLAYED_KEY = 'mpb_games_played_v1';
 
 type GameId = 'soundlings' | 'pop' | 'cannon' | 'run' | 'pairs' | 'finish' | 'spot' | 'tricky';
 
@@ -59,6 +64,28 @@ function GamePortal({ children }: { children: ReactNode }) {
   return createPortal(children, document.body);
 }
 
+/** Local calendar date — the once-a-day clock resets at the child's own
+ *  midnight, not UTC. */
+function todayStr(): string {
+  return new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+}
+
+/** Which games have been played today. One play per game per day: screen
+ *  time stays a handful of short bursts, and tomorrow is a fresh arcade. */
+function loadPlayed(): Set<GameId> {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PLAYED_KEY) || 'null') as { date?: string; played?: GameId[] } | null;
+    if (raw?.date === todayStr() && Array.isArray(raw.played)) return new Set(raw.played);
+  } catch { /* private mode / bad data */ }
+  return new Set();
+}
+
+function savePlayed(played: Set<GameId>): void {
+  try {
+    localStorage.setItem(PLAYED_KEY, JSON.stringify({ date: todayStr(), played: [...played] }));
+  } catch { /* private mode */ }
+}
+
 function savedLevel(): number {
   try {
     const n = Number(localStorage.getItem(LEVEL_KEY));
@@ -72,6 +99,18 @@ export default function Games() {
   const reduceMotion = useReducedMotion();
   const [levelNum, setLevelNum] = useState<number>(savedLevel);
   const [activeGame, setActiveGame] = useState<GameId | null>(null);
+  const [played, setPlayed] = useState<Set<GameId>>(loadPlayed);
+
+  /** Launch marks the game as today's play immediately — quitting early
+   *  doesn't earn a replay, which is the whole point of the daily limit. */
+  const launchGame = (id: GameId) => {
+    const current = loadPlayed(); // re-read in case midnight passed while the page sat open
+    if (current.has(id)) { setPlayed(current); return; }
+    current.add(id);
+    savePlayed(current);
+    setPlayed(current);
+    setActiveGame(id);
+  };
 
   // Warm the green-words ledger so every game opens with the full
   // curriculum bank instead of the curated fallback.
@@ -170,39 +209,50 @@ export default function Games() {
 
         {/* ── The arcade ── */}
         <motion.section {...fade(0.14)} className="mt-9 lg:mt-12" aria-label="Games">
+          <p className="font-child text-sm text-foreground/50 text-center mb-4">
+            One go at each game per day — little and often is how reading sticks.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 lg:gap-4">
-            {GAMES.map(({ id, emoji, name, blurb, vibe }, i) => (
+            {GAMES.map(({ id, emoji, name, blurb, vibe }, i) => {
+              const done = played.has(id);
+              return (
               <button
                 key={id}
-                onClick={() => setActiveGame(id)}
+                onClick={() => launchGame(id)}
+                disabled={done}
+                aria-disabled={done}
                 className="relative rounded-3xl bg-white px-4 pt-6 pb-5 flex flex-col items-center text-center transition-all active:translate-y-[4px]"
                 style={{
-                  boxShadow: `0 5px 0 ${hex}40, ${STICKER}`,
-                  border: `2px solid ${hex}40`,
+                  boxShadow: done ? STICKER : `0 5px 0 ${hex}40, ${STICKER}`,
+                  border: done ? '2px solid rgba(40,30,40,0.10)' : `2px solid ${hex}40`,
                   rotate: `${[-1, 0.8, -0.8, 1, -0.6, 0.7, -1][i % 7]}deg`,
+                  opacity: done ? 0.72 : 1,
                 }}
               >
                 <span
                   className="absolute top-3 right-3 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold"
-                  style={{ background: `${hex}18`, color: ink }}
+                  style={done ? { background: 'rgba(40,30,40,0.08)', color: 'rgba(40,30,40,0.55)' } : { background: `${hex}18`, color: ink }}
                 >
-                  {vibe}
+                  {done ? 'Played ✓' : vibe}
                 </span>
-                <span className="text-5xl" aria-hidden>{emoji}</span>
-                <span className="font-display text-xl font-extrabold mt-2.5 leading-tight" style={{ color: ink }}>
+                <span className="text-5xl" aria-hidden style={done ? { filter: 'grayscale(0.6)' } : undefined}>{emoji}</span>
+                <span className="font-display text-xl font-extrabold mt-2.5 leading-tight" style={{ color: done ? 'rgba(40,30,40,0.5)' : ink }}>
                   {name}
                 </span>
                 <span className="font-child text-sm lg:text-base text-foreground/60 mt-1 leading-snug min-h-[2.5rem]">
-                  {blurb}
+                  {done ? 'Great playing! Come back tomorrow for another go.' : blurb}
                 </span>
                 <span
-                  className="mt-3 inline-flex items-center justify-center rounded-full px-6 py-1.5 font-display text-sm font-extrabold text-white"
-                  style={{ background: hex, boxShadow: `0 3px 0 ${ink}` }}
+                  className="mt-3 inline-flex items-center justify-center rounded-full px-6 py-1.5 font-display text-sm font-extrabold"
+                  style={done
+                    ? { background: 'rgba(40,30,40,0.08)', color: 'rgba(40,30,40,0.5)' }
+                    : { background: hex, boxShadow: `0 3px 0 ${ink}`, color: '#fff' }}
                 >
-                  Play
+                  {done ? 'Back tomorrow' : 'Play'}
                 </span>
               </button>
-            ))}
+              );
+            })}
           </div>
         </motion.section>
 
