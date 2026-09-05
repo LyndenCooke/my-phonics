@@ -30,6 +30,7 @@ import type { JourneyLevel } from '@/lib/levels8';
 import { speakWord, WORD_BANK } from '@/lib/soundGameWords';
 import { useGameBank } from '@/lib/greenWords';
 import { sfx } from '@/games/audio';
+import RotateGate from '@/games/RotateGate';
 import {
   mountScene, EventQueue, Particles, drawCover, roundRect, starPath,
   easeOutCubic, clamp, shuffle, type Scene,
@@ -460,11 +461,12 @@ export default function WordPopGame({ level, onClose }: Props) {
   return createPortal(
     <div className="fixed inset-0 z-[70]" style={{ background: '#12202E' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }} />
+      <RotateGate />
       <button
         onClick={onClose}
         aria-label="Close game"
         className="absolute top-3.5 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
-        style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)' }}
+        style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', top: 'max(0.875rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
       >
         <span style={{ fontSize: 18, color: 'rgba(0,0,0,0.4)' }}>&times;</span>
       </button>
