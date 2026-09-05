@@ -1,42 +1,33 @@
 /**
- * Door Dash (the running-man game) — a lane-runner where the child reads
- * doors and runs through the right one.
+ * Door Dash v4 — read the signs, pick an arch, and the hero ACTUALLY RUNS
+ * THROUGH THE DOOR.
  *
- * A kid (drawn from behind — we run WITH them) sprints down a meadow path.
- * A fence row with THREE ARCHED GATES rushes up from the horizon; steer
- * into a lane (tap a gate, or arrow keys / 1-2-3) and the answer resolves
- * when the runner PHYSICALLY passes the gate plane. The chosen gate glows
- * with a bouncing chevron the whole approach.
+ * Built around the user's mockup: three glowing archway gates at the top
+ * of a forking country path, a big expressive boy seen from behind, and a
+ * warm storybook HUD (hearts, star count, banner, "Hear it again" pill).
  *
- * The gate row is ONE painted sprite (gate_row.png — three gates joined by
- * split-rail fence, signs, grass and ground shadow baked in, generated in
- * the run_path backdrop's own watercolour style) so it can never read as
- * separate floating doors. Labels are drawn onto the baked sign faces; the
- * lane geometry converges to the path's vanishing point so the row is
- * always ON the path. GATE_X/SIGN_* constants are MEASURED from the PNG —
- * re-measure if the sprite is ever regenerated.
+ * The old conveyor (gates sliding at a static runner) is gone. Now:
+ *  - READ: the boy jogs on the spot at the fork. George says the word
+ *    (recorded MP3, never printed first). No timer — speed must never
+ *    punish careful decoding.
+ *  - COMMIT: tap an arch (or its path, or keys 1/2/3) and the boy sprints
+ *    up that fork, shrinking into the perspective, dust at his heels.
+ *  - THROUGH: arriving at the RIGHT arch, the portal flares and he
+ *    disappears through it — confetti, star, next round. The WRONG arch
+ *    thuds shut: he bounces back down the path, a heart is lost, the
+ *    correct sign shows its tick, the word is spoken again, and the same
+ *    round is retried. Three hearts, eight arches a run; stars count
+ *    first-try successes.
  *
- * What the gates ask depends on what the child can actually do:
- *  - WORD rounds (all of L1-4, and the first two rounds at L5-8):
- *    George says a real curriculum word (recorded MP3 — never TTS), the
- *    three signs wear written words from the level's bank, and the child
- *    must READ them to find the one they heard. Distractors are picked to
- *    look similar (shared letters / length), so decoding is genuinely
- *    required. Tap the prompt plank to hear the word again; it also
- *    replays halfway down the path.
- *  - SENTENCE rounds (L5-8, after the warm-ups — the grammar strand):
- *    a sentence missing its end mark, signs wearing . ? !. The row HOLDS
- *    at the horizon for a reading beat scaled to sentence length, and the
- *    approach is slower than word rounds. A miss teaches: "It's asking —
- *    asking sentences end with a question mark."
+ * Rounds: L1-4 (and two warm-ups at L5-8) are hear-it-read-it word rounds
+ * with look-alike distractors ramping over the run; L5-8 rounds 3-8 are
+ * sentence rounds, arch signs wearing . ? ! with a teaching line on any
+ * miss.
  *
- * Correct gate: green flash, confetti, star, the run speeds up. Wrong
- * gate: it's shut — thud, the row judders, the correct sign shows a tick
- * and the teaching line appears. Eight gates a run.
- *
- * Shared engine scene: fixed 1280×720 logical space. Backdrop, gate row
- * and 3-frame run-cycle kid are all optional assets — procedural versions
- * draw when any is missing. No TTS anywhere: recorded audio or silence.
+ * Assets: arch_scene.webp (the mockup scene, boy removed, signs blanked)
+ * and kid2_{0,1,2}.png (3-frame run cycle in the same style, real alpha).
+ * ARCH_X / SIGN geometry is MEASURED from the PNG — re-measure if the
+ * scene is regenerated. Procedural fallbacks draw if any asset is missing.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -55,22 +46,26 @@ interface Props {
 }
 
 const LW = 1280, LH = 720;
-const WAVES = 8;
-const HORIZON_Y = 330;
-const RUNNER_Y = 598;
+const ROUNDS = 8;
+const HEARTS = 3;
 const MARKS = ['.', '?', '!'] as const;
 type Mark = typeof MARKS[number];
 
-// ── gate_row.png geometry, measured from the sprite (fractions of the
-// trimmed image). Gate centres, row aspect, and the blank sign faces. ──
-const GATE_X = [0.1907, 0.4994, 0.8094];
-const GATE_GAP = (GATE_X[2] - GATE_X[0]) / 2;   // lane gap as a row-width fraction
-const ROW_ASPECT = 0.3127;                       // row height / row width
-const SIGN_CY = 0.097;                           // sign face centre y (of row height)
-const SIGN_H = 0.135;                            // sign face height (of row height)
-const SIGN_W = 0.116;                            // sign face width (of row width)
-const SIGN_FACE = '#F5EBD0';                     // the baked cream — panels extend invisibly
-const SIGN_EDGE = '#8B7355';
+// ── arch_scene.webp geometry (logical 1280×720, measured) ──
+const ARCH_X = [372, 634, 912];         // arch opening centres
+const ARCH_BASE = 345;                  // where the path meets the glow
+const SIGNS = [
+  { x: 346, w: 200 },
+  { x: 637, w: 185 },
+  { x: 915, w: 170 },
+];
+const SIGN_CY = 134, SIGN_H = 60;
+// the boy's journey
+const START = { x: 640, y: 700 };
+const KID_H0 = 300;                     // hero height at the fork
+const KID_H1 = 108;                     // height at the arch
+const RUN_T = 1.5;                      // seconds up the path
+const BACK_T = 0.6;                     // bounce-back after a shut door
 
 const MARK_NAMES: Record<Mark, string> = {
   '.': 'full stop',
@@ -78,14 +73,12 @@ const MARK_NAMES: Record<Mark, string> = {
   '!': 'exclamation mark',
 };
 
-/** What a miss teaches — why THAT mark ends THAT sentence. */
 const MARK_TEACH: Record<Mark, string> = {
   '.': 'It tells us something — telling sentences end with a full stop.',
   '?': 'It asks — asking sentences end with a question mark.',
   '!': 'It shouts with feeling — that needs an exclamation mark!',
 };
 
-/** Sentence bank for the later-level rounds — short, familiar words. */
 const SENTENCES: Record<Mark, string[]> = {
   '.': [
     'The dog sat on the mat', 'We went to the park', 'The cat is black',
@@ -103,46 +96,41 @@ const SENTENCES: Record<Mark, string[]> = {
   ],
 };
 
-/** Longest word that fits on a gate sign at approach sizes. */
 const MAX_DOOR_WORD = 9;
 
-interface Wave {
+interface Round {
   mode: 'word' | 'sentence';
-  labels: string[];       // what each gate sign wears (words, or . ? !)
-  correctLane: number;
-  target: string;         // the heard word, or the missing mark
-  sentence: string;       // '' in word mode
-  hold: number;           // reading beat before the row moves
-  u: number;              // 0 (horizon) → 1 (runner plane)
-  replayed: boolean;      // word said again at half way
-  resolved: 'no' | 'hit' | 'miss';
-  t: number;              // time since resolution
+  labels: string[];
+  correct: number;
+  target: string;
+  sentence: string;
+  firstTry: boolean;
 }
 
-/** Lane x at a given depth. The spread converges to the path's vanishing
- *  point (near-zero at the horizon) so the gates are always ON the path. */
-function laneX(lane: number, u: number) {
-  return LW / 2 + (lane - 1) * (34 + 296 * u);
+/** Quadratic bezier point from the fork to an arch. */
+function pathPoint(archX: number, t: number): { x: number; y: number } {
+  const p1x = (START.x + archX) / 2, p1y = 520;
+  const a = 1 - t;
+  return {
+    x: a * a * START.x + 2 * a * t * p1x + t * t * archX,
+    y: a * a * START.y + 2 * a * t * p1y + t * t * (ARCH_BASE + 8),
+  };
 }
 
-/** Pick two distractors. `hardness` 0→1 ramps the difficulty curve: early
- *  rounds draw easy-to-tell-apart words, later rounds draw look-alikes
- *  (shared length / first letter / last letter) that force a real read. */
+/** Distractors ramp from easy-to-tell-apart to true look-alikes. */
 function pickDistractors(target: string, pool: string[], hardness: number): string[] {
   const scored = pool
     .filter(w => w !== target)
     .map(w => {
-      let s = Math.random(); // tie-break variety
+      let s = Math.random();
       if (Math.abs(w.length - target.length) <= 1) s += 2;
       if (w[0] === target[0]) s += 2;
       if (w[w.length - 1] === target[target.length - 1]) s += 1;
       return { w, s };
     })
     .sort((a, b) => b.s - a.s);
-  // hard rounds choose from the look-alike top; easy rounds from a wide slice
   const slice = Math.max(4, Math.round(14 - 10 * hardness));
-  const top = scored.slice(0, slice).map(x => x.w);
-  return shuffle(top).slice(0, 2);
+  return shuffle(scored.slice(0, slice).map(x => x.w)).slice(0, 2);
 }
 
 export default function PunctuationRun({ level, onClose }: Props) {
@@ -151,8 +139,6 @@ export default function PunctuationRun({ level, onClose }: Props) {
   const endedRef = useRef(setEnded);
   endedRef.current = setEnded;
 
-  // Level word bank (upgrades in place once the ledger fetch lands); the
-  // scene reads it through a ref so rounds always use the freshest bank.
   const bank = useGameBank(level);
   const bankRef = useRef(bank);
   bankRef.current = bank;
@@ -164,92 +150,34 @@ export default function PunctuationRun({ level, onClose }: Props) {
     const hex = level.hex, ink = level.inkHex;
     const ev = new EventQueue();
     const fx = new Particles();
-    // Painted scenery + sprites (all optional — procedural fallbacks below)
     const art = new Image();
-    art.src = '/images/games/run_path.webp';
-    const rowImg = new Image();
-    rowImg.src = '/images/games/sprites/gate_row.png';
-    const kidImgs = [0, 1, 2].map(i => { const im = new Image(); im.src = `/images/games/sprites/kid_${i}.png`; return im; });
+    art.src = '/images/games/arch_scene.webp';
+    const kidImgs = [0, 1, 2].map(i => { const im = new Image(); im.src = `/images/games/sprites/kid2_${i}.png`; return im; });
     const ok = (im: HTMLImageElement) => im.complete && im.naturalWidth > 0;
     let fontReady = false;
     try { document.fonts.ready.then(() => { fontReady = true; }); } catch { fontReady = true; }
 
     // ── state ──
-    let wave: Wave | null = null;
-    let waveN = 0;
+    let round: Round | null = null;
+    let roundN = 0;
     let stars = 0;
-    let streak = 0;           // consecutive correct gates
+    let hearts = HEARTS;
     let over = false;
-    let speed = 1;            // pace multiplier — correct gates speed the run up
-    let roadPhase = 0;        // scrolling dashes
+    // phase machine: read → run → (through | back → read)
+    let phase: 'read' | 'run' | 'through' | 'back' = 'read';
+    let phaseT = 0;
+    let chosen = 1;
+    let lastMiss = -1;          // which arch thudded (for the red flash)
+    let teach = '';             // banner line after a miss
+    let stride = 0;
+    let lastLeg = 0;
     let shake = 0;
-    let steered = false;      // has the child ever changed lane? (drives the hint)
-    let lastLeg = 0;          // stride phase sign, for footstep timing
-    const clouds = [          // slow sky drift — the painting breathes
-      { x: 180, y: 74, s: 1.0, v: 9 },
-      { x: 760, y: 120, s: 0.7, v: 13 },
-      { x: 1150, y: 56, s: 0.85, v: 11 },
-    ];
-    // ── the streaming world ──
-    // Only the sky and the far hills are the painting; everything below
-    // the horizon is drawn live and RUSHES PAST — fence posts with rails,
-    // flowers and grass tufts on the verges, texture bands on the track.
-    // A static painting with moving doors reads as floating cutouts; a
-    // moving world makes the gate row just another thing you run past.
-    interface Streamer { kind: 'post' | 'flower' | 'tuft' | 'patch' | 'pebble'; side: number; u: number; off: number; hue: number }
-    let world: Streamer[] = [];
-    let postGap = 0;          // countdown (in u-units) to the next fence post pair
-    let dressGap = 0;         // countdown to the next flower / tuft
-    let patchGap = 0;         // countdown to the next grass-mottle patch
-    let pebbleGap = 0;        // countdown to the next pebble on the track
-    const dressing = (): Streamer => ({
-      kind: Math.random() < 0.5 ? 'flower' : 'tuft',
-      side: Math.random() < 0.5 ? -1 : 1,
-      u: 0, off: 0.1 + Math.random() * 1.1, hue: Math.random(),
-    });
-    const patch = (): Streamer => ({
-      kind: 'patch', side: Math.random() < 0.5 ? -1 : 1,
-      u: 0, off: 0.1 + Math.random() * 1.0, hue: Math.random(),
-    });
-    const pebble = (): Streamer => ({
-      kind: 'pebble', side: Math.random() < 0.5 ? -1 : 1,
-      u: 0, off: Math.random(), hue: Math.random(),
-    });
-    const spawnStreamers = (du: number) => {
-      postGap -= du; dressGap -= du; patchGap -= du; pebbleGap -= du;
-      if (postGap <= 0) {
-        postGap += 0.085;
-        world.push({ kind: 'post', side: -1, u: 0, off: 0, hue: Math.random() });
-        world.push({ kind: 'post', side: 1, u: 0, off: 0, hue: Math.random() });
-      }
-      if (dressGap <= 0) { dressGap += 0.028; world.push(dressing()); }
-      if (patchGap <= 0) { patchGap += 0.11; world.push(patch()); }
-      if (pebbleGap <= 0) { pebbleGap += 0.035; world.push(pebble()); }
-    };
-    /** Pre-fill so the very first frame already has a world rushing by. */
-    const primeWorld = () => {
-      world = [];
-      for (let u = 0.04; u <= 1.05; u += 0.085) {
-        world.push({ kind: 'post', side: -1, u, off: 0, hue: Math.random() });
-        world.push({ kind: 'post', side: 1, u, off: 0, hue: Math.random() });
-      }
-      for (let u = 0.02; u <= 1.1; u += 0.028) world.push({ ...dressing(), u });
-      for (let u = 0.05; u <= 1.1; u += 0.11) world.push({ ...patch(), u });
-      for (let u = 0.03; u <= 1.1; u += 0.035) world.push({ ...pebble(), u });
-      postGap = 0.085; dressGap = 0.028; patchGap = 0.11; pebbleGap = 0.035;
-    };
-    /** Track half-width at depth d — the path the whole world obeys. */
-    const pathHalf = (d: number) => 58 + 470 * d;
-    /** Ground line at depth d — the SAME line the gate row stands on. */
-    const groundY = (d: number) => HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
-    const runner = { lane: 1, x: 1, stride: 0, stumble: 0 };
+    let steered = false;
     const usedWords = new Set<string>();
     const sentencesLeft: Record<Mark, string[]> = {
       '.': shuffle(SENTENCES['.']), '?': shuffle(SENTENCES['?']), '!': shuffle(SENTENCES['!']),
     };
 
-    /** Voiced, sign-sized words for this level — reading is only honest
-     *  when the child HEARS the target in George's voice. */
     function wordPool(): string[] {
       const all = [...new Set(Object.values(bankRef.current).flat())]
         .filter(w => w.length <= MAX_DOOR_WORD && !w.includes(' '));
@@ -258,606 +186,291 @@ export default function PunctuationRun({ level, onClose }: Props) {
       return pool.length >= 3 ? pool : ['sat', 'tap', 'pin'];
     }
 
-    function approachTime(mode: Wave['mode']) {
-      // Sentence rounds approach slower — there are three symbols but a
-      // whole sentence to think about; word rounds ask for three reads.
-      // The very first gate of a run comes gentler still.
-      return ((mode === 'sentence' ? 5.2 : 4.4) / speed) * (waveN === 1 ? 1.3 : 1);
-    }
-
-    function spawnWave() {
+    function nextRound() {
       if (over) return;
-      waveN += 1;
-      if (waveN > WAVES) {
-        over = true;
-        sfx.fanfare();
-        let newBest = false;
-        try {
-          const b = Number(localStorage.getItem('mpb_doordash_best') || 0);
-          if (stars > b) { localStorage.setItem('mpb_doordash_best', String(stars)); newBest = stars > 0; }
-        } catch { /* private mode — no best tracking */ }
-        ev.at(0.8, () => endedRef.current({ stars, newBest }));
-        return;
-      }
-      // Sentences only where the grammar strand lives (L5+), after two
-      // word-round warm-ups. Everything else is hear-it-read-it.
-      const mode: Wave['mode'] = level.level >= 5 && waveN > 2 ? 'sentence' : 'word';
+      roundN += 1;
+      lastMiss = -1; teach = '';
+      phase = 'read'; phaseT = 0;
+      if (roundN > ROUNDS) { finish(); return; }
+      const mode: Round['mode'] = level.level >= 5 && roundN > 2 ? 'sentence' : 'word';
       if (mode === 'sentence') {
         const target = MARKS[Math.floor(Math.random() * MARKS.length)];
         if (!sentencesLeft[target].length) sentencesLeft[target] = shuffle(SENTENCES[target]);
         const sentence = sentencesLeft[target].pop() as string;
         const labels = shuffle([...MARKS]) as string[];
-        wave = {
-          mode, labels, correctLane: labels.indexOf(target), target, sentence,
-          // reading beat: the row waits at the horizon while the child reads
-          hold: 1.1 + 0.3 * sentence.split(' ').length,
-          u: 0, replayed: false, resolved: 'no', t: 0,
-        };
+        round = { mode, labels, correct: labels.indexOf(target), target, sentence, firstTry: true };
       } else {
         const pool = wordPool();
         const fresh = pool.filter(w => !usedWords.has(w));
         const target = (fresh.length ? fresh : pool)[Math.floor(Math.random() * (fresh.length ? fresh.length : pool.length))];
         usedWords.add(target);
-        const labels = shuffle([target, ...pickDistractors(target, pool, Math.min(1, (waveN - 1) / 5))]);
-        wave = {
-          mode, labels, correctLane: labels.indexOf(target), target, sentence: '',
-          hold: 0.5, u: 0, replayed: false, resolved: 'no', t: 0,
-        };
+        const labels = shuffle([target, ...pickDistractors(target, pool, Math.min(1, (roundN - 1) / 5))]);
+        round = { mode, labels, correct: labels.indexOf(target), target, sentence: '', firstTry: true };
         speakWord(target);
       }
     }
 
-    function resolve() {
-      if (!wave || wave.resolved !== 'no') return;
-      const hitIt = runner.lane === wave.correctLane;
-      wave.resolved = hitIt ? 'hit' : 'miss';
-      wave.t = 0;
-      const doorX = laneX(runner.lane, 1);
-      if (hitIt) {
-        stars += 1;
-        streak += 1;
-        speed = Math.min(1.8, speed + 0.12);
-        sfx.pop();
-        sfx.whoosh();
-        if (streak === 3 || streak === 5 || streak === WAVES) sfx.sparkle();
-        else if (waveN % 3 === 0) sfx.chord();
-        fx.burst(doorX, RUNNER_Y - 120, [hex, '#FDBA2D', '#22C55E', '#ffffff'], streak >= 3 ? 34 : 22);
-        shake = Math.max(shake, 3);
+    function finish() {
+      over = true;
+      sfx.fanfare();
+      let newBest = false;
+      try {
+        const b = Number(localStorage.getItem('mpb_doordash_best') || 0);
+        if (stars > b) { localStorage.setItem('mpb_doordash_best', String(stars)); newBest = stars > 0; }
+      } catch { /* private mode */ }
+      ev.at(0.8, () => endedRef.current({ stars, newBest }));
+    }
+
+    function commit(lane: number) {
+      if (over || phase !== 'read' || !round) return;
+      steered = true;
+      chosen = clamp(lane, 0, 2);
+      phase = 'run'; phaseT = 0;
+      teach = '';
+      sfx.tick();
+    }
+
+    function arrive() {
+      if (!round) return;
+      if (chosen === round.correct) {
+        phase = 'through'; phaseT = 0;
+        if (round.firstTry) stars += 1;
+        sfx.pop(); sfx.whoosh();
+        if (roundN % 3 === 0) sfx.chord();
+        const p = pathPoint(ARCH_X[chosen], 1);
+        fx.burst(p.x, p.y - 70, [hex, '#FDBA2D', '#FFF3C2', '#ffffff'], 30);
+        ev.at(0.9, nextRound);
       } else {
-        speed = 1;
-        streak = 0;
+        phase = 'back'; phaseT = 0;
+        round.firstTry = false;
+        lastMiss = chosen;
+        hearts -= 1;
+        shake = 6;
         sfx.bonk();
-        runner.stumble = 1;
-        shake = Math.max(shake, 6);
-        fx.puff(doorX, RUNNER_Y - 80, 8, 'rgba(140,100,60,0.5)');
-        // a miss re-teaches: hear the word again while the tick shows
-        if (wave.mode === 'word') ev.at(0.5, () => { if (wave?.resolved === 'miss') speakWord(wave.target); });
+        const p = pathPoint(ARCH_X[chosen], 1);
+        fx.puff(p.x, p.y - 40, 8, 'rgba(140,100,60,0.5)');
+        teach = round.mode === 'word'
+          ? `Not that one — listen again!`
+          : MARK_TEACH[round.target as Mark];
+        ev.at(0.7, () => { if (round && phase !== 'through') speakWord(round.target); });
+        if (hearts <= 0) ev.at(1.4, finish);
       }
-      ev.at(hitIt ? 0.9 : (wave.mode === 'sentence' ? 2.6 : 1.8), spawnWave);
     }
 
     function start() {
-      waveN = 0; stars = 0; streak = 0; over = false; speed = 1;
-      runner.lane = 1; runner.x = 1; runner.stumble = 0;
+      roundN = 0; stars = 0; hearts = HEARTS; over = false;
+      phase = 'read'; phaseT = 0; chosen = 1; teach = ''; lastMiss = -1;
       usedWords.clear();
-      ev.clear(); wave = null;
-      primeWorld();
-      spawnWave();
-    }
-
-    function steer(lane: number) {
-      if (over) return;
-      steered = true;
-      const l = clamp(lane, 0, 2);
-      if (l !== runner.lane) { runner.lane = l; sfx.tick(); }
-    }
-
-    /** Current gate-row depth for drawing and hit-testing. */
-    function doorDepth(w: Wave) {
-      const ue = easeOutCubic(w.u) * 0.4 + w.u * 0.6;
-      return Math.pow(ue, 1.6);
+      ev.clear(); round = null;
+      nextRound();
     }
 
     const scene: Scene = {
-      W: LW, H: LH, bars: '#12202E',
+      W: LW, H: LH, bars: '#173049',
       update(dt, t) {
         ev.update(t);
         fx.update(dt);
         shake *= Math.pow(0.001, dt);
         if (shake < 0.2) shake = 0;
-        // during a reading beat the runner jogs on the spot
-        const moving = !wave || wave.hold <= 0;
-        roadPhase += dt * 3.2 * speed * (moving ? 1 : 0.25);
-        runner.stride += dt * 11 * speed * (moving ? 1 : 0.6);
-        runner.stumble = Math.max(0, runner.stumble - dt * 1.6);
-        runner.x += (runner.lane - runner.x) * Math.min(1, dt * 9);
-        // footsteps land on the stride beat
-        const leg = Math.sin(runner.stride);
-        if (moving && lastLeg <= 0 && leg > 0) sfx.step();
-        if (moving && lastLeg >= 0 && leg < 0) sfx.step();
+        phaseT += dt;
+        const running = phase === 'run' || phase === 'back';
+        stride += dt * (running ? 13 : 7);
+        // footsteps while sprinting
+        const leg = Math.sin(stride);
+        if (running && ((lastLeg <= 0 && leg > 0) || (lastLeg >= 0 && leg < 0))) sfx.step();
         lastLeg = leg;
-        // sky drifts — the scene is alive even between gates
-        for (const c of clouds) {
-          c.x -= c.v * dt;
-          if (c.x < -160) { c.x = LW + 160; c.y = 40 + Math.random() * 100; }
-        }
-        // the world streams past at EXACTLY the gate row's pace, so fences
-        // and gates are one flow; a reading beat slows the whole world
-        const worldRate = wave && wave.hold <= 0 && wave.resolved === 'no'
-          ? 1 / approachTime(wave.mode)
-          : (moving ? 0.85 : 0.22) * (speed / 4.4);
-        const du = dt * worldRate;
-        for (const s of world) s.u += du;
-        world = world.filter(s => s.u < 1.45);
-        spawnStreamers(du);
-
-        if (wave) {
-          // dust on landing after the victory leap
-          if (wave.resolved === 'hit' && wave.t - dt < 0.55 && wave.t >= 0.55) {
-            fx.puff(laneX(runner.x, 1), RUNNER_Y + 56, 6, 'rgba(214,183,120,0.6)');
-          }
-          if (wave.hold > 0) {
-            wave.hold -= dt;
-          } else if (wave.resolved === 'no') {
-            wave.u += dt / approachTime(wave.mode);
-            if (wave.mode === 'word' && !wave.replayed && wave.u >= 0.5) {
-              wave.replayed = true;
-              speakWord(wave.target);
-            }
-            if (wave.u >= 1) { wave.u = 1; resolve(); }
-          } else {
-            wave.t += dt;
-          }
-        }
+        if (phase === 'run' && phaseT >= RUN_T) arrive();
+        if (phase === 'back' && phaseT >= BACK_T) { phase = 'read'; phaseT = 0; }
       },
 
       draw(ctx, t) {
-        // ── scenery ──
+        // ── the scene ──
         if (!drawCover(ctx, art, LW, LH)) {
           const sky = ctx.createLinearGradient(0, 0, 0, LH);
-          sky.addColorStop(0, '#AEDCEF'); sky.addColorStop(0.75, '#FDF3E7');
+          sky.addColorStop(0, '#7EC4EE'); sky.addColorStop(0.5, '#CBE6C0'); sky.addColorStop(1, '#E9C883');
           ctx.fillStyle = sky; ctx.fillRect(0, 0, LW, LH);
-          ctx.fillStyle = '#7FB069'; ctx.fillRect(0, HORIZON_Y, LW, LH - HORIZON_Y);
-        }
-
-        // drifting clouds over the painted sky — gentle life
-        for (const c of clouds) {
-          ctx.save();
-          ctx.globalAlpha = 0.5;
-          ctx.fillStyle = '#FFFFFF';
-          for (const [dx, dy, r] of [[-34, 4, 22], [0, -6, 30], [36, 4, 24], [10, 10, 26]] as const) {
-            ctx.beginPath(); ctx.ellipse(c.x + dx * c.s, c.y + dy * c.s, r * c.s, r * 0.62 * c.s, 0, 0, 7); ctx.fill();
+          for (let a = 0; a < 3; a++) {
+            const x = ARCH_X[a];
+            ctx.fillStyle = '#8A5A2B';
+            roundRect(ctx, x - 90, 170, 180, 190, 26); ctx.fill();
+            ctx.fillStyle = '#FFF6C9';
+            ctx.beginPath(); ctx.ellipse(x, ARCH_BASE - 70, 62, 92, 0, 0, 7); ctx.fill();
+            ctx.fillStyle = '#F1E4C3';
+            roundRect(ctx, SIGNS[a].x - SIGNS[a].w / 2, SIGN_CY - SIGN_H / 2, SIGNS[a].w, SIGN_H, 12); ctx.fill();
           }
-          ctx.restore();
         }
 
         ctx.save();
         if (shake > 0) ctx.translate((Math.random() * 2 - 1) * shake, (Math.random() * 2 - 1) * shake);
-        // camera bobs against the stride — the run is felt, not just shown
-        ctx.translate(0, Math.sin(runner.stride * 2) * 1.6);
         const F = fontReady ? 'Andika' : 'sans-serif';
         const FD = fontReady ? 'Outfit' : 'sans-serif';
 
-        // ── the LIVE ground — everything below the horizon is drawn fresh
-        // every frame and streams toward the viewer. The painting only
-        // supplies the sky, far hills, barn and tree. ──
-        // meadow (colours sampled from the painting)
-        const meadow = ctx.createLinearGradient(0, HORIZON_Y, 0, LH);
-        meadow.addColorStop(0, '#B5BE6A');
-        meadow.addColorStop(0.45, '#93AC55');
-        meadow.addColorStop(1, '#7FA04C');
-        ctx.fillStyle = meadow;
-        ctx.fillRect(0, HORIZON_Y, LW, LH - HORIZON_Y);
-        // the dirt track, widening with the same perspective as the gates
-        const trackPoly = () => {
-          ctx.beginPath();
-          ctx.moveTo(LW / 2 - pathHalf(0), HORIZON_Y);
-          ctx.lineTo(LW / 2 + pathHalf(0), HORIZON_Y);
-          ctx.lineTo(LW / 2 + pathHalf(1.8), LH);
-          ctx.lineTo(LW / 2 - pathHalf(1.8), LH);
-          ctx.closePath();
-        };
-        const dirt = ctx.createLinearGradient(0, HORIZON_Y, 0, LH);
-        dirt.addColorStop(0, '#F0EFD4');
-        dirt.addColorStop(0.28, '#F4CA73');
-        dirt.addColorStop(1, '#ECBB5D');
-        ctx.fillStyle = dirt;
-        trackPoly(); ctx.fill();
-        // soft dark edges where track meets grass
-        ctx.strokeStyle = 'rgba(120,90,45,0.30)'; ctx.lineWidth = 5; ctx.lineCap = 'round';
-        for (const s of [-1, 1]) {
-          ctx.beginPath();
-          ctx.moveTo(LW / 2 + s * pathHalf(0), HORIZON_Y);
-          ctx.lineTo(LW / 2 + s * pathHalf(1.8), LH);
-          ctx.stroke();
-        }
-        // texture bands sweeping down the track — the ground itself moves
-        ctx.save();
-        trackPoly(); ctx.clip();
-        for (let k = 0; k < 8; k++) {
-          const p = ((roadPhase * 0.4 + k / 8) % 1);
-          const bd = Math.pow(p, 1.6);
-          const by = HORIZON_Y + (LH - HORIZON_Y) * bd;
-          ctx.fillStyle = `rgba(150,105,50,${0.04 + 0.07 * bd})`;
-          ctx.fillRect(0, by, LW, 5 + 26 * bd);
-        }
-        // faint centre dashes for lane feel
-        ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 4;
-        for (const sep of [-0.5, 0.5]) {
-          for (let k = 0; k < 9; k++) {
-            const u0 = ((k + (roadPhase % 1)) / 9);
-            const u1 = u0 + 0.035;
-            if (u1 >= 1) continue;
-            const y0 = HORIZON_Y + (LH - HORIZON_Y) * Math.pow(u0, 1.6);
-            const y1 = HORIZON_Y + (LH - HORIZON_Y) * Math.pow(u1, 1.6);
-            const x0 = LW / 2 + sep * 2 * (34 + 296 * Math.pow(u0, 1.6));
-            const x1 = LW / 2 + sep * 2 * (34 + 296 * Math.pow(u1, 1.6));
-            ctx.globalAlpha = 0.25 + u0 * 0.6;
-            ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
-          }
-        }
-        ctx.restore();
-        ctx.globalAlpha = 1;
-        // haze where the live ground meets the painted horizon — hides the seam
-        const haze = ctx.createLinearGradient(0, HORIZON_Y - 2, 0, HORIZON_Y + 30);
-        haze.addColorStop(0, 'rgba(240,239,212,0.85)');
-        haze.addColorStop(1, 'rgba(240,239,212,0)');
-        ctx.fillStyle = haze;
-        ctx.fillRect(0, HORIZON_Y - 2, LW, 34);
-
-        // ── roadside world rushing past: fences with rails, flowers, tufts ──
-        const streamSorted = [...world].sort((a, b) => a.u - b.u);
-        // grass mottling and track pebbles first — texture under everything
-        for (const s of streamSorted) {
-          const d = Math.pow(s.u, 1.6);
-          const gy = groundY(d);
-          if (s.kind === 'patch') {
-            const x = LW / 2 + s.side * (pathHalf(d) + 60 + (40 + 420 * s.off) * d);
-            const rw = (30 + 110 * d) * (0.7 + s.hue * 0.6);
-            ctx.fillStyle = s.hue < 0.5 ? 'rgba(96,130,58,0.30)' : 'rgba(180,200,110,0.28)';
-            ctx.beginPath(); ctx.ellipse(x, gy, rw, rw * 0.3, 0, 0, 7); ctx.fill();
-          } else if (s.kind === 'pebble') {
-            const x = LW / 2 + s.side * pathHalf(d) * (0.15 + 0.8 * s.off);
-            const r = 1 + 4.5 * d * (0.5 + s.hue);
-            ctx.fillStyle = s.hue < 0.5 ? 'rgba(190,150,90,0.85)' : 'rgba(215,180,120,0.9)';
-            ctx.beginPath(); ctx.ellipse(x, gy, r, r * 0.65, 0, 0, 7); ctx.fill();
-            ctx.strokeStyle = 'rgba(130,95,50,0.4)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.ellipse(x, gy, r, r * 0.65, 0, 0, 7); ctx.stroke();
-          }
-        }
-        // rails first (behind their posts): connect consecutive posts per side
-        for (const side of [-1, 1]) {
-          const posts = streamSorted.filter(s => s.kind === 'post' && s.side === side);
-          for (let i = 0; i + 1 < posts.length; i++) {
-            const a = posts[i], b = posts[i + 1];
-            const da = Math.pow(a.u, 1.6), db = Math.pow(b.u, 1.6);
-            const ha = 16 + 88 * da, hb = 16 + 88 * db;
-            const xa = LW / 2 + side * (pathHalf(da) + 14 + 30 * da);
-            const xb = LW / 2 + side * (pathHalf(db) + 14 + 30 * db);
-            ctx.strokeStyle = '#8B7355';
-            for (const rh of [0.42, 0.74]) {
-              ctx.lineWidth = 2 + 5 * (da + db) / 2;
-              ctx.beginPath();
-              ctx.moveTo(xa, groundY(da) - ha * rh);
-              ctx.lineTo(xb, groundY(db) - hb * rh);
-              ctx.stroke();
-            }
-          }
-        }
-        for (const s of streamSorted) {
-          const d = Math.pow(s.u, 1.6);
-          const gy = groundY(d);
-          if (s.kind === 'post') {
-            const h = 16 + 88 * d, w = 4 + 12 * d;
-            const x = LW / 2 + s.side * (pathHalf(d) + 14 + 30 * d);
-            ctx.fillStyle = 'rgba(60,45,25,0.18)';
-            ctx.beginPath(); ctx.ellipse(x, gy + 2, w * 1.4, w * 0.5, 0, 0, 7); ctx.fill();
-            ctx.fillStyle = s.hue < 0.5 ? '#A08050' : '#96774A';
-            roundRect(ctx, x - w / 2, gy - h, w, h, w * 0.3); ctx.fill();
-            ctx.strokeStyle = '#574627'; ctx.lineWidth = Math.max(1, d * 2);
-            roundRect(ctx, x - w / 2, gy - h, w, h, w * 0.3); ctx.stroke();
-          } else if (s.kind === 'flower' || s.kind === 'tuft') {
-            const x = LW / 2 + s.side * (pathHalf(d) + 30 + (30 + 360 * s.off) * d);
-            if (Math.abs(x - LW / 2) > LW / 2 + 40) continue;
-            if (s.kind === 'flower') {
-              const r = 1.5 + 5 * d;
-              ctx.fillStyle = s.hue < 0.4 ? '#FFF8E7' : s.hue < 0.75 ? '#F7D64A' : '#CFE3F7';
-              for (let pth = 0; pth < 4; pth++) {
-                const a = pth * Math.PI / 2 + s.hue * 6;
-                ctx.beginPath(); ctx.arc(x + Math.cos(a) * r, gy - r + Math.sin(a) * r, r * 0.8, 0, 7); ctx.fill();
-              }
-              ctx.fillStyle = '#E8A33D';
-              ctx.beginPath(); ctx.arc(x, gy - r, r * 0.6, 0, 7); ctx.fill();
-            } else {
-              const h2 = 4 + 16 * d;
-              ctx.strokeStyle = 'rgba(70,110,50,0.75)'; ctx.lineWidth = 1 + 2 * d; ctx.lineCap = 'round';
-              for (const lean2 of [-0.5, 0, 0.5]) {
-                ctx.beginPath();
-                ctx.moveTo(x, gy);
-                ctx.quadraticCurveTo(x + lean2 * h2 * 0.6, gy - h2 * 0.6, x + lean2 * h2, gy - h2);
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
-        // speed streaks at full sprint — the reward for a hot streak
-        const rush = clamp((speed - 1.3) * 2, 0, 1);
-        if (rush > 0) {
-          ctx.strokeStyle = `rgba(255,255,255,${0.28 * rush})`;
-          ctx.lineWidth = 3; ctx.lineCap = 'round';
-          for (let i = 0; i < 7; i++) {
-            const a = (i / 7) * Math.PI * 2 + 0.4;
-            const p = ((roadPhase * 1.7 + i * 0.37) % 1);
-            const r0 = 260 + p * 420, r1 = r0 + 60 + p * 90;
-            const cxr = LW / 2, cyr = HORIZON_Y + 30;
-            ctx.globalAlpha = rush * p;
-            ctx.beginPath();
-            ctx.moveTo(cxr + Math.cos(a) * r0, cyr + Math.sin(a) * r0 * 0.62);
-            ctx.lineTo(cxr + Math.cos(a) * r1, cyr + Math.sin(a) * r1 * 0.62);
-            ctx.stroke();
-          }
-          ctx.globalAlpha = 1;
-        }
-
-        // ── the gate row — ONE unit crossing the path ──
-        if (wave) {
-          const d = doorDepth(wave);
-          const y = HORIZON_Y + (RUNNER_Y - 40 - HORIZON_Y) * d;
-          const gap = 34 + 296 * d;                    // lane gap on screen
-          const rowW = gap / GATE_GAP;                 // gates land exactly on lanes
-          const rowH = rowW * ROW_ASPECT;
-          const left = LW / 2 - GATE_X[1] * rowW;
-          const rowTop = y - rowH;
-          const gx = (lane: number) => left + GATE_X[lane] * rowW;
-          // fade in at the vanishing point; fade out as we burst through
-          const rowAlpha = clamp(wave.u / 0.08, 0, 1)
-            * (wave.resolved === 'hit' ? Math.max(0, 1 - wave.t * 1.6) : 1);
-          ctx.save();
-          ctx.globalAlpha = rowAlpha;
-          // the whole row judders when the runner thumps a shut gate
-          if (wave.resolved === 'miss') {
-            ctx.translate(Math.sin(wave.t * 40) * 4 * Math.max(0, 1 - wave.t), 0);
-          }
-
-          if (ok(rowImg)) {
-            ctx.drawImage(rowImg, left, rowTop, rowW, rowH);
-          } else {
-            // procedural fallback row: shadows, rails, end posts, plain gates
-            ctx.fillStyle = 'rgba(70,50,30,0.20)';
-            for (let lane = 0; lane < 3; lane++) {
-              ctx.beginPath(); ctx.ellipse(gx(lane), y - 2, rowW * 0.075, rowH * 0.035, 0, 0, 7); ctx.fill();
-            }
-            ctx.fillStyle = '#8B7355'; ctx.strokeStyle = '#5E4B37'; ctx.lineWidth = rowW * 0.004;
-            for (const rh of [0.32, 0.52]) {
-              roundRect(ctx, left, y - rowH * rh - rowH * 0.02, rowW, rowH * 0.04, rowH * 0.02);
-              ctx.fill(); ctx.stroke();
-            }
-            for (const px of [left + rowW * 0.02, left + rowW * 0.98]) {
-              ctx.fillStyle = '#7A6349';
-              roundRect(ctx, px - rowW * 0.012, y - rowH * 0.62, rowW * 0.024, rowH * 0.62, rowW * 0.006);
-              ctx.fill(); ctx.stroke();
-            }
-            for (let lane = 0; lane < 3; lane++) {
-              const x = gx(lane);
-              ctx.fillStyle = '#8A5A2B';
-              roundRect(ctx, x - rowW * 0.065, y - rowH * 0.66, rowW * 0.13, rowH * 0.64, rowW * 0.02);
-              ctx.fill();
-              ctx.fillStyle = SIGN_FACE; ctx.strokeStyle = SIGN_EDGE; ctx.lineWidth = rowW * 0.004;
-              roundRect(ctx, x - rowW * SIGN_W / 2, rowTop + (SIGN_CY - SIGN_H / 2) * rowH, rowW * SIGN_W, SIGN_H * rowH, rowW * 0.008);
-              ctx.fill(); ctx.stroke();
-            }
-          }
-
-          // ── per-gate overlays: labels on the signs, glow, chevron ──
-          const faceW = rowW * SIGN_W, faceH = rowH * SIGN_H;
-          const signY = rowTop + SIGN_CY * rowH;
-          for (let lane = 0; lane < 3; lane++) {
-            const x = gx(lane);
-            const isCorrect = lane === wave.correctLane;
-            const chosen = lane === runner.lane;
-            const missed = wave.resolved === 'miss' && chosen;
-            const label = wave.labels[lane];
-
-            // chosen-gate glow behind the door area
-            if (chosen && wave.resolved === 'no') {
-              const glow = ctx.createRadialGradient(x, y - rowH * 0.33, 6, x, y - rowH * 0.33, rowH * 0.55);
-              glow.addColorStop(0, `${hex}55`); glow.addColorStop(1, `${hex}00`);
-              ctx.fillStyle = glow;
-              ctx.fillRect(x - rowH * 0.6, y - rowH * 0.95, rowH * 1.2, rowH);
-            }
-            if (wave.resolved === 'hit' && chosen) {
-              const glow = ctx.createRadialGradient(x, y - rowH * 0.33, 6, x, y - rowH * 0.33, rowH * 0.6);
-              glow.addColorStop(0, 'rgba(140,240,160,0.7)'); glow.addColorStop(1, 'rgba(140,240,160,0)');
-              ctx.fillStyle = glow;
-              ctx.fillRect(x - rowH * 0.65, y - rowH, rowH * 1.3, rowH * 1.1);
-            }
-            // the shut gate flushes red on a miss
-            if (missed) {
-              ctx.save();
-              ctx.globalAlpha = rowAlpha * 0.32;
-              ctx.fillStyle = '#E5484D';
-              roundRect(ctx, x - rowW * 0.062, y - rowH * 0.64, rowW * 0.124, rowH * 0.6, rowW * 0.015);
-              ctx.fill();
-              ctx.restore();
-            }
-
-            // label on the sign face — a matching cream panel extends the
-            // baked sign invisibly when the word needs more room
+        // ── sign labels ──
+        if (round) {
+          for (let a = 0; a < 3; a++) {
+            const s = SIGNS[a];
+            const label = round.labels[a];
             ctx.font = `800 40px ${F}`;
-            const tw40 = ctx.measureText(label).width;
-            const isMark = wave.mode === 'sentence';
-            const maxW = Math.min(gap * 0.9, Math.max(faceW * 0.92, isMark ? 0 : faceW * 1.7));
-            const fpx = isMark
-              ? faceH * 0.85
-              : Math.min(faceH * 0.72, (maxW / Math.max(1, tw40)) * 40);
+            const tw = ctx.measureText(label).width;
+            const fpx = round.mode === 'sentence'
+              ? 52
+              : Math.min(46, ((s.w * 0.88) / Math.max(1, tw)) * 40);
             ctx.font = `800 ${Math.round(fpx)}px ${F}`;
-            const lw2 = ctx.measureText(label).width;
-            if (!isMark && lw2 > faceW * 0.92) {
-              const pw = lw2 + faceH * 0.5;
-              ctx.fillStyle = SIGN_FACE; ctx.strokeStyle = SIGN_EDGE; ctx.lineWidth = Math.max(1.5, rowW * 0.003);
-              roundRect(ctx, x - pw / 2, signY - faceH * 0.44, pw, faceH * 0.88, faceH * 0.18);
-              ctx.fill(); ctx.stroke();
-            }
-            ctx.fillStyle = missed ? '#E5484D' : ink;
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(label, x, signY + faceH * 0.04);
-
-            // the correct sign earns its tick after a miss
-            if (isCorrect && wave.resolved === 'miss' && wave.t > 0.3) {
-              ctx.fillStyle = '#22C55E'; ctx.font = `800 ${Math.round(faceH * 0.8)}px ${FD}`;
-              ctx.fillText('✓', x + faceW * 0.62, signY - faceH * 0.5);
-            }
-            // chevron over the chosen sign — "this is where I'm running"
-            if (chosen && wave.resolved === 'no') {
-              const ch = Math.max(10, faceH * 0.55);
-              const cy = signY - faceH * 0.8 - Math.abs(Math.sin(t * 4.4)) * ch * 0.8;
-              ctx.fillStyle = hex;
-              ctx.beginPath();
-              ctx.moveTo(x, cy + ch * 0.6); ctx.lineTo(x - ch * 0.55, cy - ch * 0.4); ctx.lineTo(x + ch * 0.55, cy - ch * 0.4);
-              ctx.closePath(); ctx.fill();
+            // sign face shading is baked; a soft dark ink reads as painted-on
+            ctx.fillStyle = lastMiss === a ? '#C93A3F' : '#3E2E1E';
+            ctx.fillText(label, s.x, SIGN_CY + 2);
+            // tick on the correct sign after a miss
+            if (a === round.correct && teach && phase !== 'through') {
+              ctx.fillStyle = '#1FA84F';
+              ctx.font = `800 34px ${FD}`;
+              ctx.fillText('✓', s.x + s.w / 2 + 22, SIGN_CY - SIGN_H / 2);
             }
           }
-          ctx.restore(); // rowAlpha
+          // red flush over a freshly-shut arch
+          if (phase === 'back' && lastMiss >= 0) {
+            ctx.save();
+            ctx.globalAlpha = 0.28 * Math.max(0, 1 - phaseT / BACK_T);
+            ctx.fillStyle = '#E5484D';
+            ctx.beginPath();
+            ctx.ellipse(ARCH_X[lastMiss], ARCH_BASE - 80, 70, 105, 0, 0, 7);
+            ctx.fill();
+            ctx.restore();
+          }
         }
 
-        // first-timer hint: until the child ever steers, show them how
-        if (!steered && wave && wave.resolved === 'no' && wave.hold <= 0 && wave.u > 0.22) {
-          const pulse = 0.7 + Math.sin(t * 5) * 0.3;
-          const hint = '👆 Tap a gate to change lane!';
-          ctx.font = `700 22px ${FD}`;
-          const hw = ctx.measureText(hint).width + 48;
-          ctx.save();
-          ctx.globalAlpha = pulse;
-          ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
-          ctx.fillStyle = '#FFFFFF';
-          roundRect(ctx, LW / 2 - hw / 2, 486, hw, 48, 16); ctx.fill();
-          ctx.restore();
-          ctx.fillStyle = ink; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(hint, LW / 2, 511);
+        // ── the boy ──
+        let kx = START.x, ky = START.y, kh = KID_H0, alpha = 1, rot = 0;
+        if (phase === 'run') {
+          const p = easeOutCubic(Math.min(1, phaseT / RUN_T));
+          const pt = pathPoint(ARCH_X[chosen], p);
+          kx = pt.x; ky = pt.y;
+          kh = KID_H0 + (KID_H1 - KID_H0) * p;
+          // melt into the portal glow over the last stretch (right arch only)
+          if (round && chosen === round.correct && p > 0.9) alpha = 1 - (p - 0.9) / 0.1;
+        } else if (phase === 'through') {
+          alpha = 0;
+        } else if (phase === 'back') {
+          const p = 1 - phaseT / BACK_T; // reverse, fast
+          const pt = pathPoint(ARCH_X[chosen], easeOutCubic(Math.max(0, p)));
+          kx = pt.x; ky = pt.y;
+          kh = KID_H0 + (KID_H1 - KID_H0) * Math.max(0, p);
+          rot = Math.sin(phaseT * 22) * 0.08 * (1 - phaseT / BACK_T);
         }
-
-        // ── the runner (from behind — we run with them) ──
-        const rx = laneX(runner.x, 1);
-        const bob = Math.abs(Math.sin(runner.stride)) * 7;
-        // the victory leap through an open gate
-        const jump = wave && wave.resolved === 'hit' && wave.t < 0.55
-          ? Math.sin(Math.PI * wave.t / 0.55) * 64 : 0;
-        const lean = (runner.lane - runner.x) * -0.4;
-        const stumbleRot = runner.stumble > 0 ? Math.sin(runner.stumble * 14) * 0.14 * runner.stumble : 0;
-        ctx.save();
-        ctx.translate(rx, RUNNER_Y - bob - jump);
-        ctx.rotate(lean * 0.25 + stumbleRot);
-        // ground shadow stays on the path and shrinks under the leap
-        ctx.fillStyle = 'rgba(40,30,40,0.22)';
-        const shScale = 1 - jump / 200;
-        ctx.beginPath(); ctx.ellipse(0, 64 + bob + jump, 34 * shScale, 8 * shScale, 0, 0, 7); ctx.fill();
-        const legSwing = Math.sin(runner.stride);
-        if (kidImgs.every(ok)) {
-          // painted run cycle: stride phase walks the frames 0-1-2-1
-          const seq = [0, 1, 2, 1];
-          const frame = kidImgs[seq[Math.floor(runner.stride * 1.7) % 4]];
-          const kh = 180, kw = kh * frame.naturalWidth / frame.naturalHeight;
+        const bob = Math.abs(Math.sin(stride)) * (phase === 'read' ? 6 : 3) * (kh / KID_H0);
+        if (alpha > 0) {
           ctx.save();
-          ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 6;
-          ctx.drawImage(frame, -kw / 2, -kh + 62, kw, kh);
-          ctx.restore();
-          // running dust at the heels (scene space)
-          if (Math.abs(legSwing) > 0.94 && fx.list.length < 90) {
-            fx.puff(rx - 6 + Math.random() * 12, RUNNER_Y + 56, 1, 'rgba(214,183,120,0.55)');
+          ctx.globalAlpha = alpha;
+          ctx.translate(kx, ky - bob);
+          ctx.rotate(rot);
+          const sc = kh / KID_H0;
+          ctx.fillStyle = 'rgba(60,40,25,0.28)';
+          ctx.beginPath(); ctx.ellipse(0, bob + 4, 52 * sc, 12 * sc, 0, 0, 7); ctx.fill();
+          if (kidImgs.every(ok)) {
+            const seq = [0, 1, 2, 1];
+            const frame = kidImgs[seq[Math.floor(stride * 1.6) % 4]];
+            const kw = kh * frame.naturalWidth / frame.naturalHeight;
+            ctx.drawImage(frame, -kw / 2, -kh, kw, kh);
+          } else {
+            // procedural fallback boy
+            const legSwing = Math.sin(stride);
+            ctx.scale(sc, sc);
+            ctx.strokeStyle = '#2E4A8F'; ctx.lineWidth = 22; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(-14, -60); ctx.lineTo(-14 - legSwing * 12, -8); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(14, -60); ctx.lineTo(14 + legSwing * 12, -8); ctx.stroke();
+            ctx.fillStyle = '#19B8AF';
+            roundRect(ctx, -36, -150, 72, 95, 20); ctx.fill();
+            ctx.fillStyle = '#2F5FBF';
+            roundRect(ctx, -26, -140, 52, 62, 16); ctx.fill();
+            ctx.fillStyle = '#E8B48C'; ctx.beginPath(); ctx.arc(0, -175, 30, 0, 7); ctx.fill();
+            ctx.fillStyle = '#7A4A22'; ctx.beginPath(); ctx.ellipse(0, -185, 31, 22, 0, 0, 7); ctx.fill();
           }
           ctx.restore();
-        } else {
-        // procedural fallback runner
-        // legs (navy trousers)
-        ctx.strokeStyle = '#3A4A6B'; ctx.lineWidth = 15; ctx.lineCap = 'round';
-        ctx.beginPath(); ctx.moveTo(-9, 18); ctx.lineTo(-9 - legSwing * 8, 52 - Math.max(0, legSwing) * 14); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(9, 18); ctx.lineTo(9 + legSwing * 8, 52 - Math.max(0, -legSwing) * 14); ctx.stroke();
-        // shoes
-        ctx.fillStyle = '#2B2833';
-        ctx.beginPath(); ctx.ellipse(-9 - legSwing * 8, 56 - Math.max(0, legSwing) * 14, 10, 6, 0, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(9 + legSwing * 8, 56 - Math.max(0, -legSwing) * 14, 10, 6, 0, 0, 7); ctx.fill();
-        // body (level-colour t-shirt)
-        ctx.fillStyle = hex;
-        roundRect(ctx, -22, -34, 44, 56, 14); ctx.fill();
-        // arms swinging opposite the legs
-        ctx.strokeStyle = hex; ctx.lineWidth = 12;
-        ctx.beginPath(); ctx.moveTo(-20, -22); ctx.lineTo(-28 + legSwing * 10, 6); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(20, -22); ctx.lineTo(28 - legSwing * 10, 6); ctx.stroke();
-        ctx.fillStyle = '#E8B48C';
-        ctx.beginPath(); ctx.arc(-28 + legSwing * 10, 10, 7, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.arc(28 - legSwing * 10, 10, 7, 0, 7); ctx.fill();
-        // head from behind: hair only, no face
-        ctx.fillStyle = '#E8B48C'; ctx.beginPath(); ctx.arc(0, -50, 19, 0, 7); ctx.fill();
-        ctx.fillStyle = '#5B4222';
-        ctx.beginPath(); ctx.arc(0, -53, 19, Math.PI * 0.95, Math.PI * 2.05); ctx.fill();
-        ctx.beginPath(); ctx.ellipse(0, -58, 19, 13, 0, 0, 7); ctx.fill();
-        ctx.restore();
+          // dust while sprinting
+          if ((phase === 'run' || phase === 'back') && Math.abs(Math.sin(stride)) > 0.93 && fx.list.length < 80) {
+            fx.puff(kx - 8 + Math.random() * 16, ky + 2, 1, 'rgba(214,183,120,0.6)');
+          }
+        }
+
+        // ── portal flare when he goes through ──
+        if (phase === 'through' && round) {
+          const x = ARCH_X[round.correct];
+          const a = Math.max(0, 1 - phaseT / 0.8);
+          const r = 60 + 90 * easeOutCubic(Math.min(1, phaseT / 0.35));
+          const glow = ctx.createRadialGradient(x, ARCH_BASE - 80, 6, x, ARCH_BASE - 80, r);
+          glow.addColorStop(0, `rgba(255,250,215,${0.95 * a})`);
+          glow.addColorStop(0.6, `rgba(255,230,150,${0.6 * a})`);
+          glow.addColorStop(1, 'rgba(255,230,150,0)');
+          ctx.fillStyle = glow;
+          ctx.fillRect(x - r, ARCH_BASE - 80 - r, r * 2, r * 2);
         }
 
         fx.draw(ctx);
 
-        // ── HUD: prompt plank ──
-        if (wave) {
-          const plankW = wave.mode === 'sentence' ? 680 : 420;
-          const plankH = 78;
-          ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 4;
-          ctx.fillStyle = '#FFFFFF'; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, plankH, 18); ctx.fill(); ctx.restore();
-          ctx.strokeStyle = `${hex}55`; ctx.lineWidth = 3; roundRect(ctx, LW / 2 - plankW / 2, 26, plankW, plankH, 18); ctx.stroke();
-          ctx.textAlign = 'center';
-          if (wave.mode === 'sentence') {
-            ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
-            ctx.fillText(wave.hold > 0 ? 'Read the sentence — get ready to run!' : 'Which mark ends it? Run through its gate!', LW / 2, 50);
-            ctx.fillStyle = ink; ctx.font = `700 29px ${F}`;
-            ctx.fillText(`${wave.sentence} __`, LW / 2, 88);
-          } else {
-            // AUDIO-FIRST: the target is never printed before the answer —
-            // the child hears George and must READ the signs.
-            ctx.fillStyle = 'rgba(90,78,86,0.75)'; ctx.font = `700 15px ${FD}`; ctx.textBaseline = 'alphabetic';
-            ctx.fillText('Run through the word you hear', LW / 2, 50);
-            // speaker button (tappable — replays the word)
-            ctx.font = `700 30px ${FD}`;
-            ctx.fillStyle = ink;
-            ctx.fillText('🔊', LW / 2 - 60, 88);
-            ctx.font = `700 17px ${FD}`;
-            ctx.fillStyle = 'rgba(90,78,86,0.85)';
-            ctx.fillText('tap to hear it again', LW / 2 + 34, 84);
+        // ── HUD (mockup layout) ──
+        // hearts, top-left
+        for (let i = 0; i < HEARTS; i++) {
+          const x = 44 + i * 40;
+          ctx.font = `28px ${FD}`;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.globalAlpha = i < hearts ? 1 : 0.28;
+          ctx.fillText('❤️', x, 42);
+          ctx.globalAlpha = 1;
+        }
+        // stars, top-right
+        ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.2)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+        ctx.fillStyle = '#fff'; roundRect(ctx, LW - 140, 24, 108, 42, 21); ctx.fill(); ctx.restore();
+        ctx.fillStyle = '#FDBA2D'; starPath(ctx, LW - 112, 45, 13); ctx.fill();
+        ctx.fillStyle = '#33261A'; ctx.font = `800 22px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText(String(stars), LW - 90, 46);
+        // banner, top-centre
+        if (round) {
+          const msg = teach
+            ? teach
+            : round.mode === 'sentence'
+              ? `${round.sentence} __`
+              : 'Run through the word you hear';
+          ctx.font = teach || round.mode !== 'sentence' ? `800 24px ${FD}` : `700 27px ${F}`;
+          const bw = Math.min(760, ctx.measureText(msg).width + 60);
+          ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.22)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+          ctx.fillStyle = teach ? '#FFF4E8' : 'rgba(255,255,255,0.94)';
+          roundRect(ctx, LW / 2 - bw / 2, 16, bw, 46, 23); ctx.fill(); ctx.restore();
+          ctx.fillStyle = teach ? '#9A5A1E' : '#26364F';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(msg, LW / 2, 40);
+          // "hear it again" pill (word rounds)
+          if (round.mode === 'word') {
+            ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.2)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+            ctx.fillStyle = '#2F5FBF';
+            ctx.beginPath(); ctx.arc(LW / 2 - 74, 88, 20, 0, 7); ctx.fill();
+            ctx.fillStyle = '#fff';
+            roundRect(ctx, LW / 2 - 50, 72, 132, 32, 16); ctx.fill();
+            ctx.restore();
+            ctx.font = `20px ${FD}`; ctx.fillStyle = '#fff';
+            ctx.fillText('🔊', LW / 2 - 74, 89);
+            ctx.font = `800 15px ${FD}`; ctx.fillStyle = '#26364F';
+            ctx.fillText('Hear it again', LW / 2 + 16, 89);
           }
-          // resolution banner: reveal + teach
-          if (wave.resolved !== 'no') {
-            const msg = wave.resolved === 'hit'
-              ? (wave.mode === 'word' ? `Yes — "${wave.target}"!` : `Yes — the ${MARK_NAMES[wave.target as Mark]}!`)
-              : (wave.mode === 'word' ? `It was "${wave.target}"` : MARK_TEACH[wave.target as Mark]);
+          // first-timer hint
+          if (!steered && phase === 'read' && roundN === 1) {
+            const pulse = 0.7 + Math.sin(t * 5) * 0.3;
+            ctx.save(); ctx.globalAlpha = pulse;
             ctx.font = `700 21px ${FD}`;
-            const mw = ctx.measureText(msg).width + 44;
-            const by = 26 + plankH + 12;
-            ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.2)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 3;
-            ctx.fillStyle = wave.resolved === 'hit' ? '#E9F9EE' : '#FFF4E8';
-            roundRect(ctx, LW / 2 - mw / 2, by, mw, 44, 14); ctx.fill(); ctx.restore();
-            ctx.fillStyle = wave.resolved === 'hit' ? '#177A3E' : '#9A5A1E';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(msg, LW / 2, by + 23);
+            const hint = '👆 Tap a door to run through it!';
+            const hw = ctx.measureText(hint).width + 44;
+            ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
+            ctx.fillStyle = '#FFFFFF';
+            roundRect(ctx, LW / 2 - hw / 2, 452, hw, 44, 16); ctx.fill();
+            ctx.restore();
+            ctx.fillStyle = '#26364F'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.font = `700 21px ${FD}`;
+            ctx.fillText(hint, LW / 2, 474);
           }
         }
-        // streak chip — the fire the child runs to keep alive
-        if (streak >= 2) {
-          const chip = `🔥 ${streak} in a row`;
-          ctx.font = `800 17px ${FD}`;
-          const cw = ctx.measureText(chip).width + 32;
-          ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.15)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
-          ctx.fillStyle = '#FFF4DC'; roundRect(ctx, LW - 164 - cw, 22, cw, 40, 20); ctx.fill(); ctx.restore();
-          ctx.fillStyle = '#B45309'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(chip, LW - 164 - cw / 2, 43);
-        }
-        // score + progress
-        ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.15)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
-        ctx.fillStyle = '#fff'; roundRect(ctx, LW - 148, 22, 116, 40, 20); ctx.fill(); ctx.restore();
-        ctx.fillStyle = '#FDBA2D'; starPath(ctx, LW - 122, 42, 12); ctx.fill();
-        ctx.fillStyle = ink; ctx.font = `800 20px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-        ctx.fillText(String(stars), LW - 102, 43);
-        for (let i = 0; i < WAVES; i++) {
-          ctx.beginPath(); ctx.arc(48 + i * 22, 40, 6, 0, 7);
-          ctx.fillStyle = i < waveN - (wave && wave.resolved === 'no' ? 1 : 0) ? hex : 'rgba(255,255,255,0.8)';
+        // round progress dots, bottom-left
+        for (let i = 0; i < ROUNDS; i++) {
+          ctx.beginPath(); ctx.arc(40 + i * 22, LH - 26, 6, 0, 7);
+          ctx.fillStyle = i < roundN - (phase === 'through' ? 0 : 1) ? hex : 'rgba(255,255,255,0.85)';
           ctx.fill();
         }
         ctx.restore();
@@ -865,31 +478,30 @@ export default function PunctuationRun({ level, onClose }: Props) {
 
       onTap(x, y) {
         if (over) return;
-        // the speaker plank replays the word
-        if (wave?.mode === 'word' && y < 116 && Math.abs(x - LW / 2) < 210) {
-          speakWord(wave.target);
+        // "hear it again" pill
+        if (round?.mode === 'word' && y > 60 && y < 116 && Math.abs(x - LW / 2) < 110) {
+          speakWord(round.target);
           sfx.tick();
           return;
         }
-        // steer to the gate nearest the tap AT ITS CURRENT DEPTH — near the
-        // horizon the gates are close together, so fixed screen thirds sent
-        // taps to the wrong lane
-        if (wave && wave.resolved === 'no') {
-          const d = doorDepth(wave);
-          let best = 1, bestDist = Infinity;
-          for (let lane = 0; lane < 3; lane++) {
-            const dist = Math.abs(x - laneX(lane, d));
-            if (dist < bestDist) { bestDist = dist; best = lane; }
+        if (phase !== 'read') return;
+        // tap an arch, its sign, or its fork of the path
+        if (y < 480) {
+          let best = 1, bd = Infinity;
+          for (let a = 0; a < 3; a++) {
+            const d = Math.abs(x - ARCH_X[a]);
+            if (d < bd) { bd = d; best = a; }
           }
-          steer(best);
+          commit(best);
         } else {
-          steer(x < LW / 2 - 90 ? 0 : x > LW / 2 + 90 ? 2 : 1);
+          commit(x < 500 ? 0 : x > 780 ? 2 : 1);
         }
       },
       onKey(e) {
-        if (e.key === 'ArrowLeft') { steer(runner.lane - 1); e.preventDefault(); }
-        else if (e.key === 'ArrowRight') { steer(runner.lane + 1); e.preventDefault(); }
-        else if (e.key === '1' || e.key === '2' || e.key === '3') { steer(Number(e.key) - 1); e.preventDefault(); }
+        if (e.key === '1' || e.key === '2' || e.key === '3') { commit(Number(e.key) - 1); e.preventDefault(); }
+        else if (e.key === 'ArrowLeft') { commit(0); e.preventDefault(); }
+        else if (e.key === 'ArrowUp') { commit(1); e.preventDefault(); }
+        else if (e.key === 'ArrowRight') { commit(2); e.preventDefault(); }
       },
     };
 
@@ -903,7 +515,7 @@ export default function PunctuationRun({ level, onClose }: Props) {
   const restart = () => (canvasRef.current as unknown as { __restart?: () => void })?.__restart?.();
 
   return createPortal(
-    <div className="fixed inset-0 z-[70]" style={{ background: '#12202E' }}>
+    <div className="fixed inset-0 z-[70]" style={{ background: '#173049' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }} />
       <button
         onClick={onClose}
@@ -917,9 +529,9 @@ export default function PunctuationRun({ level, onClose }: Props) {
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
             <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
-              {ended.stars === WAVES ? 'Perfect run! 🌟' : `${ended.stars} of ${WAVES} gates!`}
+              {ended.stars === ROUNDS ? 'Perfect run! 🌟' : `${ended.stars} of ${ROUNDS} doors first try!`}
             </p>
-            {ended.newBest && ended.stars < WAVES && (
+            {ended.newBest && ended.stars < ROUNDS && (
               <p className="font-display text-sm font-extrabold mt-0.5" style={{ color: '#B45309' }}>
                 New best! 🏅
               </p>
