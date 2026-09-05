@@ -894,6 +894,21 @@ function resetAfterStoryRevision(job, revisedStory) {
 // and the hero's name seven times). These are countable, so they are not left
 // to a judge's mood: they are injected into the editor's issue list as majors,
 // which makes the existing revision path fix them and the follow-up verify it.
+// A missing hero name is a formatting defect, not a reason to buy another
+// manuscript rewrite. Preserve the writer's decodable title and add the
+// canonical name once, before the paid story editor sees the book.
+export function ensureHeroTitle(story, book) {
+  const name = String(book?.child_name || "").trim();
+  const title = String(story?.title || "").trim();
+  if (!name || !title) return false;
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (new RegExp(`\\b${escaped}\\b`, "i").test(title)) return false;
+  const words = title.toLowerCase().match(/[a-z']+/g) || [];
+  if (decodeProblems(words, book.level, { heroName: name, borrow: borrowableTricky(book.level) }).length) return false;
+  story.title = `${name} and ${title.replace(/^the\s+/i, "the ")}`;
+  return true;
+}
+
 export function styleIssues(story, book) {
   const pages = (story.pages || []).map((p) => String(p.text || ""));
   const out = [];
@@ -902,7 +917,7 @@ export function styleIssues(story, book) {
   // can return only when it has its own deterministic narrowing/escalation
   // contract; for now reject the premise while it is still text-only.
   const searchBeats = pages.filter((t) =>
-    /\b(?:is it|looks?|checks?|checked|search(?:es|ed)?|still no|not (?:his|her|the)|no (?:pouch|bag|toy|card|book|pet|cash|jeep|item|thing))\b/i.test(t));
+    /\b(?:is it|look(?:s|ed|ing)?|checks?|checked|search(?:es|ed)?|still no|not (?:his|her|the|in|with|on|by|at)|no (?:pouch|bag|toy|card|book|pet|cash|jeep|item|thing))\b/i.test(t));
   if (searchBeats.length >= 2) out.push({
     severity: "major", area: "premise", page: 0, replacement: "",
     detail: `Search-story pattern detected on ${searchBeats.length} pages. Repeated looking and ruling-out is temporarily blocked: replace the premise with a developed physical goal, failed attempt, changed plan and hero-earned resolution.`,
@@ -972,6 +987,17 @@ export function styleIssues(story, book) {
 // content rejection (credit restored), never a delivery of the weak book.
 async function stepStoryGate(book, job) {
   const level = getLevel(book.level);
+  if (ensureHeroTitle(job.story, book)) {
+    console.log(`[forge] added the hero to the decodable title for free: "${job.story.title}"`);
+    const isTitleNote = (n) => Number(n?.page || 0) === 0 && /title must contain the hero/i.test(String(n?.detail || ""));
+    if (Array.isArray(job.pendingEditorNotes)) {
+      job.pendingEditorNotes = job.pendingEditorNotes.filter((n) => !isTitleNote(n));
+      if (!job.pendingEditorNotes.length) job.pendingEditorNotes = null;
+    }
+    if (Array.isArray(job.breakdown?.story_gate_edit_requests)) {
+      job.breakdown.story_gate_edit_requests = job.breakdown.story_gate_edit_requests.filter((n) => !isTitleNote(n));
+    }
+  }
   // CONVERGENT RE-REVIEW (Lynden 2026-08-23, "i recommend the first one"): a
   // revised manuscript is judged ONLY on whether the previous notes were
   // fixed, plus regressions the revision itself introduced â€” never a fresh

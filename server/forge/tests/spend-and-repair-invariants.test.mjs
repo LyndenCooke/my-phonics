@@ -1,12 +1,23 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { buildEntityStateLedger, buildExpectedAssertions, canonicalCharacterSpec, normaliseDirectedSettingPlan, objectiveVisualFailures, styleIssues, validateDirectedContinuity } from "../jobs.mjs";
+import { buildEntityStateLedger, buildExpectedAssertions, canonicalCharacterSpec, ensureHeroTitle, normaliseDirectedSettingPlan, objectiveVisualFailures, styleIssues, validateDirectedContinuity } from "../jobs.mjs";
 import { isReleasedDuplicate } from "../spend.mjs";
+import { sourcePatternFitsLevel } from "../phonics.mjs";
 
 assert.equal(isReleasedDuplicate({ allowed: false, reason: "duplicate operation", status: "released" }), true,
   "a definitively unbilled duplicate key may advance to a fresh key");
 assert.equal(isReleasedDuplicate({ allowed: false, reason: "duplicate operation", status: "confirmed" }), false,
   "a confirmed duplicate must remain blocked");
+assert.equal(sourcePatternFitsLevel({ simplest_level: 2, source_level: 8, spine: Array(8).fill("beat") }, 4), false,
+  "a Level 8 eight-beat source must never be compressed into a six-page Level 4 book");
+assert.equal(sourcePatternFitsLevel({ simplest_level: 3, source_level: 3, spine: Array(6).fill("beat") }, 4), true,
+  "a proven lower-level spine that fits the page budget may scale up");
+const titleStory = { title: "The Toy Crow", pages: [] };
+assert.equal(ensureHeroTitle(titleStory, { child_name: "Asha", level: 4 }), true,
+  "a decodable anonymous title must be repaired without another model call");
+assert.equal(titleStory.title, "Asha and the Toy Crow");
+assert.equal(ensureHeroTitle(titleStory, { child_name: "Asha", level: 4 }), false,
+  "the deterministic title repair must be idempotent");
 
 const specA = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age: 6, appearance: { hair: "dark bob" } });
 const specB = canonicalCharacterSpec({ id: "same", child_name: "Mia", child_age: 6, appearance: { hair: "dark bob" } });
@@ -36,6 +47,12 @@ const theoSearchIssues = styleIssues({ title: "Theo and the Green Pouch", pages:
 ] }, { child_name: "Theo", level: 4 });
 assert.ok(theoSearchIssues.some((i) => i.area === "premise"),
   "location-by-location lost-object searches must stop before image spend");
+const ashaSearchIssues = styleIssues({ title: "Asha and the Toy Crow", pages: [
+  { text: "She looked in the bag. Her toy crow was not in it!" },
+  { text: "She looked at a row of chairs. The toy crow was not with them." },
+] }, { child_name: "Asha", level: 4 });
+assert.ok(ashaSearchIssues.some((i) => i.area === "premise"),
+  "past-tense looked/not-in searches must not slip through to illustration");
 
 const expected = buildExpectedAssertions([{ required_visible_states: [{ assertion: "Exactly three sheep." }], forbidden_visible_states: [] }], "Mia");
 const failures = objectiveVisualFailures(expected, [{ id: "p1:required:1", pass: false, observed: "Only two sheep." }]);

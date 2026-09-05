@@ -13,6 +13,8 @@ that when diagnosing a recurrence, not as a runtime prompt.
   L5–8 book. Never weaken this gate.
 - The title contains the hero's exact name and is decodable at the selected
   level. This is checked in code before illustration.
+- If a writer returns a decodable anonymous title, code adds the hero's name
+  before the paid editor. Never buy a rewrite solely to repair that title.
 - Every word must be decodable at the level or an explicitly permitted tricky
   word. The hero's name is the only personal-name exemption.
 - Values rules apply to every output: modest clothing with knees and shoulders
@@ -31,6 +33,10 @@ Recovery resumes at the interrupted gate and never rewrites a painted story.
 
 - Generate one constrained draft from a proven story shape. Never run a
   candidate tournament in production.
+- A proven source may scale up to a later reading level but never down. Its
+  source level must be at or below the target and its full spine must fit the
+  six/eight-page budget; otherwise the adaptation loses the device that made
+  the source story work.
 - Deterministic checks run before a paid judge: title/hero, page count, phonics,
   tricky words, focus sound, hero-name frequency, parent frequency, safety and
   one principal action per page.

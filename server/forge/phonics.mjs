@@ -213,6 +213,13 @@ export function coreStoriesFor(newLevel, count = 3) {
 // picker reads the distilled patterns and honours each one's own honest floor
 // (simplest_level) rather than matching source level to target level.
 let patternCache = null;
+export function sourcePatternFitsLevel(pattern, newLevel) {
+  const level = Number(newLevel);
+  const pageBudget = level <= 4 ? 6 : 8;
+  return Number(pattern?.simplest_level || 1) <= level &&
+    Number(pattern?.source_level || level) <= level &&
+    (pattern?.spine || []).length <= pageBudget;
+}
 export function sourceStoryFor(newLevel, avoidTitles = []) {
   if (!patternCache) {
     try {
@@ -223,7 +230,12 @@ export function sourceStoryFor(newLevel, avoidTitles = []) {
   }
   if (!patternCache.length) return null;
   const avoid = new Set((avoidTitles || []).map((t) => String(t).toLowerCase()));
-  const usable = patternCache.filter((p) => (p.simplest_level || 1) <= Number(newLevel));
+  // A high-level eight-beat source compressed into a six-page early-reader
+  // book loses the very device that made it proven. A Level 4 test selected
+  // the Level 8 "It Looks Suspicious!", dropped its three temptations and
+  // invented a trivial snow-crow mix-up. Sources may scale UP, but not down,
+  // and their explicit spine must fit the available story-page budget.
+  const usable = patternCache.filter((p) => sourcePatternFitsLevel(p, newLevel));
   if (!usable.length) return null;
   const fresh = usable.filter((p) => !avoid.has(String(p.title).toLowerCase()));
   const pool = fresh.length ? fresh : usable;
