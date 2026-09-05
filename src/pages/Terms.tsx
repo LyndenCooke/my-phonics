@@ -52,9 +52,11 @@ export default function Terms() {
             <h2 className="text-xl font-bold">4. Our content</h2>
             <p>
               All books, illustrations, audio, and assessment material are
-              the copyright of MyPhonicsBooks. You may download PDFs for
-              personal family use only. Please don't redistribute, resell,
-              or share with other families.
+              the copyright of MyPhonicsBooks. Books, worksheets and games
+              are free to read and play. Downloaded PDFs are licensed for
+              your own family or your own classroom: print as many copies as
+              you need for them. They are not for resale, redistribution or
+              re-upload, individually or as part of any bundle.
             </p>
           </section>
 

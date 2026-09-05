@@ -212,12 +212,12 @@ export default function DownloadHistory() {
                     <ShoppingBag className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <p className="text-sm font-medium text-foreground">No purchases yet</p>
-                  <p className="text-[11px] text-muted-foreground mt-1">Anything you buy will appear here.</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">Create-A-Book orders and any support you give will appear here.</p>
                   <Link
-                    to="/pricing"
+                    to="/support"
                     className="inline-block mt-3 px-4 py-2 rounded-xl gradient-primary text-primary-foreground font-bold text-xs shadow-button"
                   >
-                    Browse plans
+                    Support MyPhonicsBooks
                   </Link>
                 </div>
               ) : (

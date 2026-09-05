@@ -11,12 +11,12 @@ import LevelFilter from '@/components/LevelFilter';
 import WorksheetsPanel from '@/components/WorksheetsPanel';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from '@/components/DownloadFormatDialog';
-import { useBooks, useUserBooks, useBookPages, useQuizQuestions, useProducts } from '@/hooks/useBooks';
+import { useBooks, useUserBooks, useBookPages, useQuizQuestions } from '@/hooks/useBooks';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useTeacherSession } from '@/lib/teacherSession';
-import { BookOpen, Lock, ShoppingBag, Loader2, Trophy, FileText } from 'lucide-react';
+import { BookOpen, Loader2, Trophy, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -55,9 +55,7 @@ export default function Index() {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(initialLevel);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [upsellBook, setUpsellBook] = useState<Book | null>(null);
   const [downloadBook, setDownloadBook] = useState<Book | null>(null);
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
   const { add: addNotification } = useNotifications();
@@ -81,7 +79,6 @@ export default function Index() {
   const { data: userBooksData } = useUserBooks();
   const { data: pagesData } = useBookPages(activeBookId);
   const { data: quizData } = useQuizQuestions(activeBookId);
-  const { data: products } = useProducts();
 
   // Show "Book Unlocked" modal for first-time login (magic link users)
   const [showUnlockedModal, setShowUnlockedModal] = useState(false);
@@ -149,7 +146,9 @@ export default function Index() {
       // true, which then collapses this whole OR chain to `true` and
       // unlocks every book for every visitor in production. Caused an
       // outage 2026-05-20. Use explicit roles instead.
-      unlocked: isAdmin || isQaUser || isTeacher || !!ub || (b.is_free_sample ?? false),
+      // Launch 2026-09-05: every book is free to READ for everyone, signed in
+      // or not. Sign-up gates the PDF download only (handleDownloadBook).
+      unlocked: true,
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: (pagesData && activeBookId === b.id)
@@ -224,20 +223,8 @@ export default function Index() {
     sortOrder: q.sort_order,
   }));
 
-  // Find the product that includes this book's level
-  const getProductForLevel = (level: number) => {
-    return products?.find(p =>
-      p.product_type === 'level_pack' && p.levels_included.includes(level)
-    );
-  };
-
   const handleBookSelect = (book: Book) => {
-    if (book.unlocked) {
-      setActiveBookId(book.id);
-    } else {
-      // Show upsell
-      setUpsellBook(book);
-    }
+    setActiveBookId(book.id);
   };
 
   // Gated download. Hits generate-pdf-download which enforces tier rules
@@ -261,7 +248,8 @@ export default function Index() {
   // success state instead of a toast that disappears.
   const handleDownloadBook = (book: Book) => {
     if (!user) {
-      navigate('/auth');
+      // Downloads are the one thing that needs a (free) account.
+      navigate(`/auth?redirect=${encodeURIComponent('/library')}`);
       return;
     }
     setDownloadBook(book);
@@ -275,33 +263,16 @@ export default function Index() {
     format: DownloadFormat,
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-pdf-download`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ book_id: book.id, format }),
-        }
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        // Throttle / tier limit — surface the user-facing message.
-        if (data?.error === 'download_limit') {
-          const cooldown = data.cooldown_until
-            ? ` Try again in ${formatCooldown(data.cooldown_until)}.`
-            : '';
-          return {
-            success: false,
-            error: `${data.message ?? 'Download not available.'}${cooldown}`,
-          };
-        }
-        return { success: false, error: data?.error || 'Download failed' };
-      }
+      // Launch 2026-09-05: downloads are free for any signed-in account, so
+      // we no longer go through generate-pdf-download (which enforced the
+      // old free/monthly/bundle tiers and required a user_books row). The
+      // book-pdfs bucket is public; the key is built from sub_level the same
+      // way TeachersLibrary does it: "L1.1" -> "1_1".
+      if (!user) return { success: false, error: 'Please sign in to download.' };
+      const storageKey = book.subLevel.replace(/^L/i, '').replace('.', '_');
+      const data = {
+        url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/book-pdfs/${format}/${storageKey}.pdf`,
+      };
 
       // Trigger a real file save by fetching the PDF as a blob and clicking
       // a hidden <a download>. window.open(url) after an await chain is
@@ -348,80 +319,6 @@ export default function Index() {
       return { success: true };
     } catch (err) {
       return { success: false, error: (err as Error).message || 'Download failed' };
-    }
-  };
-
-  const handleGetFreeSample = async () => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-    setCheckoutLoading(true);
-    try {
-      const freeProduct = products?.find(p => p.product_type === 'free_sample');
-      if (!freeProduct) throw new Error('Free sample not available');
-
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ product_id: freeProduct.id }),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      if (data.free) {
-        toast.success('Free sample books unlocked!');
-        // Refetch user books
-        queryClient.invalidateQueries({ queryKey: ['user_books'] });
-      }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
-      toast.error(errorMessage);
-    } finally {
-      setCheckoutLoading(false);
-    }
-  };
-
-  const handleBuyLevel = async (level: number) => {
-    const product = getProductForLevel(level);
-    if (!product) {
-      navigate('/pricing');
-      return;
-    }
-
-    if (!user) {
-      navigate('/pricing');
-      return;
-    }
-
-    setCheckoutLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ product_id: product.id }),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      if (data.url) window.location.href = data.url;
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Something went wrong';
-      toast.error(errorMessage);
-    } finally {
-      setCheckoutLoading(false);
     }
   };
 
@@ -515,11 +412,6 @@ export default function Index() {
     }
   }
 
-  const formatPrice = (pence: number) => {
-    if (pence === 0) return 'Free';
-    return `£${(pence / 100).toFixed(2)}`;
-  };
-
   return (
     <Layout>
       {/* Book Unlocked modal for first-time magic-link users */}
@@ -592,22 +484,22 @@ export default function Index() {
               <BookOpen className="w-4 h-4 text-primary" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">Browsing as a guest</p>
+              <p className="text-sm font-bold text-foreground">Every book is free to read</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Log in to access your library, or take the 3-minute assessment for a free book.
+                Tap any book to start. Want the printable PDF? Create a free account to download.
               </p>
               <div className="mt-2 flex flex-wrap gap-3">
                 <button
-                  onClick={() => navigate('/auth')}
+                  onClick={() => navigate(`/auth?redirect=${encodeURIComponent('/library')}`)}
                   className="text-xs font-bold text-primary-ink hover:underline"
                 >
-                  Log In →
+                  Sign up free →
                 </button>
                 <button
                   onClick={() => navigate('/assess')}
                   className="text-xs font-bold text-primary-ink hover:underline"
                 >
-                  Start Free Assessment →
+                  Find your child's level →
                 </button>
               </div>
             </div>
@@ -620,9 +512,9 @@ export default function Index() {
               <BookOpen className="w-4 h-4 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-bold text-foreground">Unlock your first free book</p>
+              <p className="text-sm font-bold text-foreground">Not sure where to start?</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Take our 3-minute assessment to get a book at your child's level
+                Take our 3-minute check to find the right level — then read or download any book.
               </p>
               <button
                 onClick={() => navigate('/assess')}
@@ -713,70 +605,6 @@ export default function Index() {
         </>
         )}
       </div>
-
-      {/* Upsell dialog for locked books */}
-      <Dialog open={!!upsellBook} onOpenChange={(open) => !open && setUpsellBook(null)}>
-        <DialogContent className="max-w-sm mx-auto rounded-2xl">
-          {upsellBook && (() => {
-            const journeyInfo = getJourneyLevel(journeyLevelOf(upsellBook.subLevel));
-            const product = getProductForLevel(upsellBook.level);
-            return (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-muted-foreground" />
-                    {upsellBook.title}
-                  </DialogTitle>
-                  <DialogDescription className="text-sm text-muted-foreground">
-                    This book is part of Level {journeyInfo?.level}: {journeyInfo?.name}
-                  </DialogDescription>
-                </DialogHeader>
-
-                <div className="text-white rounded-xl p-4 text-center" style={{ background: journeyInfo?.hex }}>
-                  <p className="text-2xl font-extrabold">Level {journeyInfo?.level}</p>
-                  <p className="text-sm opacity-90">{journeyInfo?.name}</p>
-                  {product && (
-                    <p className="text-lg font-extrabold mt-2">
-                      {formatPrice(product.price_pence)}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  {product && (
-                    <button
-                      onClick={() => {
-                        setUpsellBook(null);
-                        handleBuyLevel(upsellBook.level);
-                      }}
-                      disabled={checkoutLoading}
-                      className="w-full py-3 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      {checkoutLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <>
-                          <ShoppingBag className="w-4 h-4" />
-                          Buy {product.name}
-                        </>
-                      )}
-                    </button>
-                  )}
-                  <button
-                    onClick={() => {
-                      setUpsellBook(null);
-                      navigate('/pricing');
-                    }}
-                    className="w-full py-3 rounded-xl font-bold text-sm border-2 border-primary text-primary bg-card transition-all duration-200 active:scale-[0.97]"
-                  >
-                    View All Packs
-                  </button>
-                </div>
-              </>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
 
       {/* Download format picker — opens when a parent taps Download on
        *  any unlocked book. Owns its own download → success/error UI so

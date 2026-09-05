@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown };
+    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown; support_pence?: unknown };
     try {
       payload = await req.json();
     } catch {
@@ -59,6 +59,73 @@ Deno.serve(async (req) => {
     // hard-fail if it's invalid; just drop it. The webhook will look it up
     // and skip attribution if no matching referrer exists.
     const ref_code = /^[A-Z0-9]{4,12}$/.test(ref_code_raw) ? ref_code_raw : "";
+
+    // ─── Optional "Support MyPhonicsBooks" payment (launch 2026-09-05) ───
+    // Everything on the site is free; signed-in parents can leave a
+    // pay-what-you-like thank-you. No product row and no entitlement —
+    // the line item is built inline (price_data) so no Stripe Price has to
+    // exist in the dashboard. The webhook completes the pending purchase
+    // row (product_id null, metadata.product_type = "support") and, since
+    // that type matches no unlock branch, grants nothing extra.
+    const support_pence =
+      typeof payload.support_pence === "number" ? Math.round(payload.support_pence) : NaN;
+    if (Number.isFinite(support_pence)) {
+      if (!userId) {
+        return badRequest("Please sign in to support MyPhonicsBooks");
+      }
+      if (support_pence < 100 || support_pence > 50000) {
+        return badRequest("Support amount must be between £1 and £500");
+      }
+      const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
+      if (!STRIPE_SECRET_KEY) {
+        return new Response(JSON.stringify({ error: "Stripe not configured" }), { status: 500, headers: corsHeaders });
+      }
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("email")
+        .eq("id", userId)
+        .single();
+      const origin = req.headers.get("origin") || "https://myphonicsbooks.co.uk";
+      const body = new URLSearchParams({
+        mode: "payment",
+        "line_items[0][price_data][currency]": "gbp",
+        "line_items[0][price_data][unit_amount]": String(support_pence),
+        "line_items[0][price_data][product_data][name]": "Support MyPhonicsBooks",
+        "line_items[0][price_data][product_data][description]":
+          "A thank-you that keeps every book, game and worksheet free for other families.",
+        "line_items[0][quantity]": "1",
+        success_url: `${origin}/payment-success?support=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/support`,
+        "metadata[product_type]": "support",
+        "metadata[support_pence]": String(support_pence),
+        client_reference_id: userId,
+      });
+      if (profile?.email) body.set("customer_email", profile.email);
+
+      const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body.toString(),
+      });
+      const session = await stripeRes.json();
+      if (!stripeRes.ok) {
+        return new Response(JSON.stringify({ error: session.error?.message || "Stripe error" }), { status: 400, headers: corsHeaders });
+      }
+      await supabaseAdmin.from("purchases").insert({
+        user_id: userId,
+        product_id: null,
+        stripe_session_id: session.id,
+        amount_paid: support_pence,
+        currency: "gbp",
+        status: "pending",
+      });
+      return new Response(JSON.stringify({ url: session.url }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     if (!product_id || !UUID_RE.test(product_id)) {
       return badRequest("product_id must be a valid UUID");

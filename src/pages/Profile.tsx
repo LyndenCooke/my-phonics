@@ -121,6 +121,7 @@ export default function Profile() {
           <Card>
             <ProfileLink to="/assess" icon={ClipboardList} label="Assess" sub="Find your child's reading level" />
             <ProfileLink to="/love" icon={Heart} label="Wall of Love" sub="What families say about us" />
+            <ProfileLink to="/support" icon={Heart} label="Support MyPhonicsBooks" sub="Everything's free — leave a thank-you if you like" />
             <ProfileLink to="/admin" icon={Shield} label="Admin" sub="CRM & analytics (staff only)" />
           </Card>
         </div>
@@ -316,6 +317,7 @@ export default function Profile() {
 
           {/* Col 3 — Account */}
           <Card>
+            <ProfileLink to="/support" icon={Heart} label="Support MyPhonicsBooks" sub="Everything's free — leave a thank-you if you like" />
             <ProfileLink to="/profile/downloads" icon={Download} label="Download History" />
             <ProfileLink to="/profile/account" icon={Settings} label="Account Settings" />
             <ProfileLink to="/profile/help" icon={HelpCircle} label="Help & Support" />

@@ -1,7 +1,8 @@
 import { ReactNode, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, BookHeart, ClipboardList, Tag, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen , Globe2, Gamepad2 } from 'lucide-react';
+import { BookOpen, BookHeart, ClipboardList, User, LogIn, Home, Heart, ShoppingBag, PanelLeftClose, PanelLeftOpen , Globe2, Gamepad2 } from 'lucide-react';
+import SupportPrompt from '@/components/SupportPrompt';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -28,7 +29,7 @@ const NAV: NavItem[] = [
   // books, so it earns a primary tab everywhere.
   { path: '/games', label: 'Games', icon: Gamepad2, badgeKey: null, desktopOnly: false },
   { path: '/create-book', label: 'Create a Book', shortLabel: 'Create', icon: BookHeart, badgeKey: null, desktopOnly: false },
-  { path: '/pricing', label: 'Pricing', icon: Tag, badgeKey: null, desktopOnly: false },
+  { path: '/support', label: 'Support', icon: Heart, badgeKey: null, desktopOnly: false },
   { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
   // Desktop side panel only — the mobile bottom bar stays at six tabs
   // (Shop is reachable from Pricing there; Assess from Profile).
@@ -78,6 +79,8 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* One-time optional "support us" pop-up after account creation. */}
+      <SupportPrompt />
       {/* Header — mobile + tablet only. On laptop/desktop (lg+) the left
        *  sidebar takes over and this is hidden. pt-safe pads behind the iOS
        *  notch / Android status bar so the status bar text isn't overlapping

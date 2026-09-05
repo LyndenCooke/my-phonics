@@ -46,6 +46,23 @@
       z-index: 6; line-height: 1;
     }
     .page-num-left { left: 5mm; } .page-num-right { right: 5mm; }
+
+    /* Licence marks (launch 2026-09-05).  Four quiet "not for resale" lines —
+       cover band, page 3, Talk About the Story, back cover — so a downloaded
+       PDF can't be quietly sold on.  Tiny + grey: they must never compete
+       with the page.  Centred on the same 6.5mm baseline as the page number
+       so they read as furniture, not content. */
+    .licence-note {
+      position: absolute; bottom: 6.5mm; left: 18mm; right: 18mm;
+      text-align: center; font-size: 5.5pt; color: #b8b8b8;
+      z-index: 6; line-height: 1; letter-spacing: 0.15px;
+    }
+    .cover-licence {
+      font-size: 6pt; color: rgba(255,255,255,0.72);
+      margin-top: 2.5mm; letter-spacing: 0.2px;
+    }
+    .back-licence { font-size: 5.5pt; color: rgba(255,255,255,0.78); margin-top: 1.2mm; line-height: 1.25; }
+    .back-footer-print .back-licence { color: #9a9a9a; }
     .page-num-pill {
       background: rgba(255, 255, 255, 0.92);
       padding: 1mm 1.8mm; border-radius: 2mm; color: #777;
@@ -2870,6 +2887,7 @@
     <div class="cover-bottom-band">
       <div class="cover-title">{{ book_title }}</div>
       <div class="cover-subtitle">Level {{ level }} &middot; {{ level_name }}</div>
+      <div class="cover-licence">&copy; MyPhonicsBooks &middot; free for your family or class &middot; not for resale</div>
     </div>
   </div>
 
@@ -3142,6 +3160,7 @@
       </div>
       {% endfor %}
     </div>
+    <div class="licence-note">&copy; MyPhonicsBooks &middot; myphonicsbooks.co.uk &middot; Free to print for your own family or class &middot; Not for resale or redistribution</div>
     {{ pnum(ns) }}
   </div>
 
@@ -3865,6 +3884,7 @@
         </div>
       </div>
     </div>
+    <div class="licence-note">&copy; MyPhonicsBooks &middot; myphonicsbooks.co.uk &middot; Free to print for your own family or class &middot; Not for resale or redistribution</div>
     {{ pnum(ns) }}
   </div>
 
@@ -4388,6 +4408,7 @@
           <div class="back-footer-qr-text">
             <div class="back-footer-brand">myphonicsbooks.co.uk</div>
             <div class="back-footer-url">Scan to explore the full library</div>
+            <div class="back-licence">&copy; MyPhonicsBooks. Free for personal &amp; classroom use &middot; not for resale or redistribution.</div>
           </div>
         </div>
         {# The barcode sits IN the flex row so the band grows around it and the

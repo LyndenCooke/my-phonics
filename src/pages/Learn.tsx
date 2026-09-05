@@ -51,7 +51,8 @@ export default function Learn() {
       pageCount: b.page_count ?? 16,
       sortOrder: b.sort_order,
       // See Index.tsx:142 — never key entitlement off import.meta.env.DEV.
-      unlocked: isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+      // Launch 2026-09-05: every book is free to read for everyone.
+      unlocked: true,
       completed: !!ub?.completed_at,
       lastPageRead: ub?.last_page_read ?? 0,
       pages: [],

@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { markSupportPromptPending } from '@/lib/support';
 
 type Mode = 'signin' | 'signup' | 'forgot';
 
@@ -57,6 +58,9 @@ export default function Auth() {
       } else if (mode === 'signup') {
         const { error } = await signUp(email, password, fullName);
         if (error) throw error;
+        // Show the one-time optional "support us" pop-up once they land
+        // (SupportPrompt in Layout waits for a live session).
+        markSupportPromptPending();
         toast({ title: 'Account created!', description: 'Please check your email to confirm your account.' });
         // If email confirmation is off, signUp already left us a live session
         // — carry on to redirectTo. If confirmation is required there's no

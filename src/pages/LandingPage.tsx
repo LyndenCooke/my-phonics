@@ -113,7 +113,7 @@ export default function LandingPage() {
         <LandingTestimonials />
         <LevelJourney />
         <FeatureShowcase />
-        <Pricing onFree={() => navigate('/auth')} onFull={() => navigate('/pricing')} />
+        <FreeForAll onSignUp={() => navigate('/auth')} onSupport={() => navigate('/support')} />
         <FooterCTA onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
       </main>
       <Footer />
@@ -654,86 +654,63 @@ function FeatureShowcase() {
 }
 
 /* ─── PRICING ─── */
-function Pricing({ onFree, onFull }: { onFree: () => void; onFull: () => void }) {
+function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: () => void }) {
   const r = useReveal();
 
   return (
     <section className="py-14 md:py-20 bg-card">
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Simple, fair pricing</h2>
-          <p className="mt-3 text-muted-foreground text-lg">Start free. Go unlimited from £4.99.</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Free for every family</h2>
+          <p className="mt-3 text-muted-foreground text-lg">No plans, no paywall. Read everything now. Sign up (free) to print.</p>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-5">
-          {/* Free */}
+        <div className="grid sm:grid-cols-2 gap-5">
+          {/* Read & play — nothing needed */}
           <div className="bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
-            <h3 className="font-display text-lg font-extrabold text-foreground">Free</h3>
-            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span></div>
+            <h3 className="font-display text-lg font-extrabold text-foreground">Read &amp; play</h3>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ml-1">no account</span></div>
             <ul className="space-y-3 mb-6 flex-1">
-              {['Free phonics assessment', '6 free books to read & download', 'Interactive tap-to-hear reading', 'Progress tracking'].map(f => (
+              {['All 33 books across 8 levels, read online', 'Interactive tap-to-hear reading', 'Every phonics game', 'Free 3-minute phonics check'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(var(--level-3))] shrink-0" /> {f}
                 </li>
               ))}
             </ul>
-            <button onClick={onFree} className="w-full py-3 rounded-2xl border-2 border-primary text-primary font-display font-extrabold text-sm hover:bg-primary/5 transition-colors">
-              Get started free
-            </button>
+            <Link to="/library" className="w-full py-3 rounded-2xl border-2 border-primary text-primary font-display font-extrabold text-sm hover:bg-primary/5 transition-colors text-center">
+              Open the library
+            </Link>
           </div>
 
-          {/* Monthly */}
-          <div className="bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
-            <h3 className="font-display text-lg font-extrabold text-foreground">Monthly</h3>
-            <div className="mt-2 mb-5">
-              <span className="font-display text-4xl font-extrabold text-foreground">£4.99</span>
-              <span className="text-sm text-muted-foreground font-semibold">/mo</span>
-            </div>
-            <ul className="space-y-3 mb-6 flex-1">
-              {['All 33 books across 8 levels', 'All comprehension quizzes', 'Full progress dashboard', 'New books added regularly', 'Cancel anytime'].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
-                </li>
-              ))}
-            </ul>
-            <button onClick={onFull} className="w-full py-3 rounded-2xl border-2 border-primary text-primary font-display font-extrabold text-sm hover:bg-primary/5 transition-colors">
-              Start monthly
-            </button>
-          </div>
-
-          {/* Yearly */}
+          {/* Download — free account */}
           <div className="relative bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: `2px solid ${PINK}`, outline: `4px solid ${PINK}20` }}>
             <span
               className="absolute -top-3 right-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-primary-ink"
               style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}40` }}
             >
-              Best value
+              Still free
             </span>
-            <h3 className="font-display text-lg font-extrabold text-foreground">Yearly</h3>
-            <div className="mt-2 mb-1">
-              <span className="font-display text-4xl font-extrabold text-foreground">£29.99</span>
-              <span className="text-sm text-muted-foreground font-semibold">/yr</span>
-            </div>
-            <p className="text-xs font-bold text-primary-ink mb-4">Save 50% — under £2.50/mo</p>
+            <h3 className="font-display text-lg font-extrabold text-foreground">Print at home</h3>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ml-1">free account</span></div>
             <ul className="space-y-3 mb-6 flex-1">
-              {['Everything in Monthly', 'All 8 levels, all books', 'All comprehension quizzes', 'New books added regularly', 'Cancel anytime'].map(f => (
+              {['Everything in Read & play', 'Download every book as a printable PDF', 'Every worksheet and sound mat', 'Progress tracking and rewards'].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
                 </li>
               ))}
             </ul>
             <button
-              onClick={onFull}
+              onClick={onSignUp}
               className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
               style={{ background: PINK, boxShadow: `0 4px 0 ${PINK_INK}` }}
             >
-              Start yearly
+              Create a free account
             </button>
           </div>
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          Or <Link to="/pricing" className="font-bold text-primary-ink hover:underline">£39 lifetime</Link> — everything, forever, one payment.
+          Love it? <button onClick={onSupport} className="font-bold text-primary-ink hover:underline">Support MyPhonicsBooks</button> with a one-off thank-you of any size — completely optional.
         </p>
       </div>
     </section>

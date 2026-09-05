@@ -28,7 +28,7 @@ const Resources = lazy(() => import("./pages/Resources"));
 const Assessment = lazy(() => import("./pages/Assessment"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
-const Shop = lazy(() => import("./pages/Shop"));
+const Support = lazy(() => import("./pages/Support"));
 const PhysicalShop = lazy(() => import("./pages/PhysicalShop"));
 const WallOfLove = lazy(() => import("./pages/WallOfLove"));
 const Progress = lazy(() => import("./pages/Progress"));
@@ -174,7 +174,11 @@ function RoutesWithTransition() {
             <Route path="/assess" element={<Suspense fallback={<AdminFallback />}><Assessment /></Suspense>} />
             {/* /shop = the physical product catalogue; the digital plans page stays at /pricing */}
             <Route path="/shop" element={<Suspense fallback={<AdminFallback />}><PhysicalShop /></Suspense>} />
-            <Route path="/pricing" element={<Suspense fallback={<AdminFallback />}><Shop /></Suspense>} />
+            <Route path="/support" element={<Suspense fallback={<AdminFallback />}><Support /></Suspense>} />
+            {/* Launch 2026-09-05: no plans any more — old /pricing links show the
+             *  Support page. Rendered directly (not <Navigate>): a redirect on
+             *  mount leaves AnimatedRoutes' mode="wait" transition stuck blank. */}
+            <Route path="/pricing" element={<Suspense fallback={<AdminFallback />}><Support /></Suspense>} />
             <Route path="/love" element={<Suspense fallback={<AdminFallback />}><WallOfLove /></Suspense>} />
             <Route path="/payment-success" element={<Suspense fallback={<AdminFallback />}><PaymentSuccess /></Suspense>} />
             <Route path="/progress" element={<Suspense fallback={<AdminFallback />}><Progress /></Suspense>} />

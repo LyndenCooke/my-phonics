@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
-import { CheckCircle, BookOpen, ArrowRight, Loader2 } from 'lucide-react';
+import { CheckCircle, BookOpen, ArrowRight, Loader2, Heart } from 'lucide-react';
 import { hapticSuccess } from '@/lib/native';
 import { supabase } from '@/integrations/supabase/client';
 import AddToHomeScreenPrompt from '@/components/AddToHomeScreenPrompt';
@@ -14,6 +14,9 @@ export default function PaymentSuccess() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const sessionId = searchParams.get('session_id');
+  // ?support=1 — a pay-what-you-like thank-you, not a purchase that unlocks
+  // anything. Skip the unlock polling and just say thank you.
+  const isSupport = searchParams.get('support') === '1';
 
   // Webhook latency: Stripe fires checkout.session.completed within a few
   // seconds of payment, but the browser hits this page first. Poll the
@@ -23,7 +26,7 @@ export default function PaymentSuccess() {
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
-    if (!user) { setUnlocking(false); return; }
+    if (!user || isSupport) { setUnlocking(false); return; }
 
     let cancelled = false;
     let attempts = 0;
@@ -88,7 +91,7 @@ export default function PaymentSuccess() {
     };
     poll();
     return () => { cancelled = true; };
-  }, [user, queryClient]);
+  }, [user, queryClient, isSupport]);
 
   // Fallback button — if polling ended but books still aren't unlocked,
   // user can tap to retry the self-heal RPC manually.
@@ -105,6 +108,30 @@ export default function PaymentSuccess() {
   };
   const userBooksData = queryClient.getQueryData<unknown[]>(['user_books', user?.id]);
   const showRetry = !unlocking && user && (!userBooksData || userBooksData.length === 0);
+
+  if (isSupport) {
+    return (
+      <Layout>
+        <div className="px-4 pt-12 pb-8 max-w-lg mx-auto text-center">
+          <div className="w-16 h-16 rounded-full bg-tint-pink flex items-center justify-center mx-auto mb-4">
+            <Heart className="w-8 h-8 text-primary fill-current" />
+          </div>
+          <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">Thank you!</h1>
+          <p className="text-sm text-muted-foreground mb-6">
+            Your support keeps every book, game and worksheet free for the next family.
+            A receipt is on its way from Stripe.
+          </p>
+          <button
+            onClick={() => navigate('/library')}
+            className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
+          >
+            <BookOpen className="w-4 h-4" />
+            Back to the Library
+          </button>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

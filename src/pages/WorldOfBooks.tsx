@@ -118,7 +118,8 @@ export default function WorldOfBooks() {
         pdfUrl: b.pdf_url ?? undefined,
         pageCount: b.page_count ?? 16,
         sortOrder: b.sort_order,
-        unlocked: isAdmin || isQaUser || !!ub || (b.is_free_sample ?? false),
+        // Launch 2026-09-05: library books are free to read for everyone.
+        unlocked: true,
         completed: !!ub?.completed_at,
         lastPageRead: ub?.last_page_read ?? 0,
         pages: (pagesData && readingLibraryId === b.id)
@@ -587,11 +588,11 @@ export default function WorldOfBooks() {
                       ) : chooser.kind === "library" ? (
                         <>
                           <p className="mt-1.5 text-sm text-muted-foreground">
-                            This book unlocks with a MyPhonicsBooks membership.
+                            This book is free to read in the library.
                           </p>
-                          <Link to="/pricing"
+                          <Link to="/library"
                             className="mt-3 inline-block rounded-full bg-slate-900 px-5 py-2 text-sm font-bold text-white transition hover:bg-slate-800">
-                            See membership
+                            Open the library
                           </Link>
                         </>
                       ) : (

@@ -3,6 +3,8 @@ import { LEVELS } from '@/lib/types';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Force a real PDF file save instead of letting the browser navigate to the
 // URL. A plain `<a href="/worksheets/….pdf" target="_blank">` is unreliable:
@@ -177,11 +179,27 @@ const L1_BOOKS: BookFolder[] = [
   { id: 'l1-10', bookNumber: '1.10', title: 'Buzz and Sing!',        focusSounds: ['ng', 'qu', 'ss', 'zz'], status: 'coming-soon', groups: [] },
 ];
 
+/** Downloads need a free account (launch 2026-09-05) — reading and
+ *  browsing never do. Returns a click handler that either downloads or
+ *  sends the guest to sign up and back to the Library. */
+function useGatedDownload() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  return (href: string, filename: string) => {
+    if (!user) {
+      navigate(`/auth?redirect=${encodeURIComponent('/library')}`);
+      return;
+    }
+    void downloadPdf(href, filename);
+  };
+}
+
 function SheetCard({ sheet }: { sheet: Sheet }) {
+  const download = useGatedDownload();
   return (
     <button
       type="button"
-      onClick={() => downloadPdf(sheet.href, pdfFilename(sheet.title))}
+      onClick={() => download(sheet.href, pdfFilename(sheet.title))}
       className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-left w-full"
     >
       <div className="aspect-[1/1.4142] overflow-hidden bg-muted">
@@ -210,6 +228,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
 
 function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) {
   const totalSheets = book.groups.reduce((n, g) => n + g.sheets.length, 0);
+  const download = useGatedDownload();
 
   return (
     <AccordionItem
@@ -257,7 +276,7 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) 
                   {g.bundleHref && (
                     <button
                       type="button"
-                      onClick={() => downloadPdf(g.bundleHref!, pdfFilename(`${book.title} - ${g.label}`))}
+                      onClick={() => download(g.bundleHref!, pdfFilename(`${book.title} - ${g.label}`))}
                       className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 active:scale-[0.97] transition-all"
                     >
                       <Download className="w-3.5 h-3.5" />

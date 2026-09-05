@@ -166,11 +166,11 @@ export default function WallOfLove() {
               </button>
             )}
             <button
-              onClick={() => navigate('/pricing')}
+              onClick={() => navigate('/support')}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
               style={{ boxShadow: STICKER }}
             >
-              See plans
+              Support MyPhonicsBooks
             </button>
           </div>
         </motion.div>
