@@ -6,9 +6,12 @@
  * taster for the books, with a soft "not sure which level?" pointer into
  * the free assessment funnel.
  *
- * ONE GO PER GAME PER DAY (localStorage, resets at local midnight): short
- * bursts of practice beat long dopamine sessions, and tomorrow's arcade
- * is fresh. A play is spent at launch, so quitting early doesn't refund it.
+ * ONE GO PER GAME PER DAY — SIGNED-IN USERS ONLY (localStorage, resets at
+ * local midnight): short bursts of practice beat long dopamine sessions,
+ * and tomorrow's arcade is fresh. A play is spent at launch, so quitting
+ * early doesn't refund it. Anonymous visitors are never limited: a
+ * classroom device with children taking turns must not lock after the
+ * first child's go.
  *
  * Same "paper & stickers" design language as the child home screen:
  * level chips are fridge magnets in the ledger colours, game cards are
@@ -23,6 +26,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ClipboardList } from 'lucide-react';
 import Layout from '@/components/Layout';
+import { useAuth } from '@/contexts/AuthContext';
 import { JOURNEY_LEVELS, getJourneyLevel } from '@/lib/levels8';
 import { loadLedger } from '@/lib/greenWords';
 import BarnGame from '@/games/soundlings/BarnGame';
@@ -100,10 +104,15 @@ export default function Games() {
   const [levelNum, setLevelNum] = useState<number>(savedLevel);
   const [activeGame, setActiveGame] = useState<GameId | null>(null);
   const [played, setPlayed] = useState<Set<GameId>>(loadPlayed);
+  const { user } = useAuth();
+  // The daily limit only binds signed-in (home) users. Anonymous devices
+  // — e.g. a classroom where children take turns — play freely.
+  const limited = Boolean(user);
 
   /** Launch marks the game as today's play immediately — quitting early
    *  doesn't earn a replay, which is the whole point of the daily limit. */
   const launchGame = (id: GameId) => {
+    if (!limited) { setActiveGame(id); return; }
     const current = loadPlayed(); // re-read in case midnight passed while the page sat open
     if (current.has(id)) { setPlayed(current); return; }
     current.add(id);
@@ -209,12 +218,14 @@ export default function Games() {
 
         {/* ── The arcade ── */}
         <motion.section {...fade(0.14)} className="mt-9 lg:mt-12" aria-label="Games">
-          <p className="font-child text-sm text-foreground/50 text-center mb-4">
-            One go at each game per day — little and often is how reading sticks.
-          </p>
+          {limited && (
+            <p className="font-child text-sm text-foreground/50 text-center mb-4">
+              One go at each game per day — little and often is how reading sticks.
+            </p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 lg:gap-4">
             {GAMES.map(({ id, emoji, name, blurb, vibe }, i) => {
-              const done = played.has(id);
+              const done = limited && played.has(id);
               return (
               <button
                 key={id}
