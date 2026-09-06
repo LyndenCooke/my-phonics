@@ -1,5 +1,5 @@
 import { SoundMatsResources } from '@/components/SoundMatsResources';
-import { LEVELS } from '@/lib/types';
+import { JOURNEY_LEVELS, journeyPlacement } from '@/lib/levels8';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -41,15 +41,18 @@ function pdfFilename(title: string): string {
   return `${base}.pdf`;
 }
 
+// The panel follows the 8-level reading journey (Curriculum Ledger), the same
+// scale the library and the reader use. Worksheet packs on disk are still
+// filed under their legacy 6-level book numbers ("1.3" = The Fish in the
+// Tank), so each folder is PLACED on the journey via journeyPlacement().
 const CATEGORIES = [
   { id: 'sound-mats', label: 'Sound mats' },
-  ...LEVELS.map((l) => ({ id: `level-${l.level}-worksheets`, label: `L${l.level} worksheets` })),
+  ...JOURNEY_LEVELS.map((l) => ({ id: `level-${l.level}-worksheets`, label: `L${l.level} worksheets` })),
 ];
 
-const levelBgs: Record<number, string> = {
-  1: 'bg-level-1', 2: 'bg-level-2', 3: 'bg-level-3',
-  4: 'bg-level-4', 5: 'bg-level-5', 6: 'bg-level-6',
-};
+// Ledger banner colour per journey level (the bg-level-N CSS tokens are still
+// the legacy 6-level palette, so tiles take the hex inline).
+const levelHex = (level: number) => JOURNEY_LEVELS.find((l) => l.level === level)?.hex ?? '#E84B8A';
 
 type Sheet = {
   href: string;
@@ -72,6 +75,50 @@ type BookFolder = {
   status: 'ready' | 'coming-soon';
   groups: SheetGroup[];
 };
+
+const L2_SOUNDS = ['c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff', 'l', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z'];
+const L3_SOUNDS = ['sh', 'nk', 'ch', 'th', 'ng', 'qu', 'zz'];
+
+/** Whole-level single-sound packs (one sheet per grapheme), shown at the top
+ *  of their journey level ahead of the per-book folders. */
+const LEVEL_PACKS: BookFolder[] = [
+  {
+    id: 'l2-sound-pack',
+    bookNumber: 'L2',
+    title: 'Level 2 single-sound sheets',
+    focusSounds: L2_SOUNDS,
+    status: 'ready',
+    groups: [
+      {
+        label: 'Single-sound sheets — the rest of the alphabet',
+        bundleHref: '/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf',
+        bundleLabel: `Download all ${L2_SOUNDS.length} sheets`,
+        sheets: L2_SOUNDS.map((g) => ({
+          href: `/worksheets/Sound_Pack_L2/sound_${g}.pdf`, title: `Sound ${g}`, thumb: `/worksheets/Sound_Pack_L2/sound_${g}.png`,
+        })),
+      },
+    ],
+  },
+  {
+    id: 'l3-sound-pack',
+    bookNumber: 'L3',
+    title: 'Level 3 single-sound sheets',
+    focusSounds: L3_SOUNDS,
+    status: 'ready',
+    groups: [
+      {
+        label: 'Single-sound sheets — special friends',
+        bundleHref: '/worksheets/Level_3_Pack/L3_Complete_Pack.pdf',
+        bundleLabel: `Download all ${L3_SOUNDS.length} sheets`,
+        sheets: L3_SOUNDS.map((g, i) => ({
+          href: `/worksheets/Level_3_Pack/${String(i + 1).padStart(2, '0')}_sound_${g}.pdf`,
+          title: `Sound ${g}`,
+          thumb: `/worksheets/Level_3_Pack/${String(i + 1).padStart(2, '0')}_sound_${g}.png`,
+        })),
+      },
+    ],
+  },
+];
 
 const L1_BOOKS: BookFolder[] = [
   {
@@ -226,7 +273,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
   );
 }
 
-function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) {
+function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* hex */ }) {
   const totalSheets = book.groups.reduce((n, g) => n + g.sheets.length, 0);
   const download = useGatedDownload();
 
@@ -237,7 +284,7 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) 
     >
       <AccordionTrigger className="px-5 py-4 hover:no-underline">
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          <div className={`${accent} w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-sm`}>
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-sm" style={{ backgroundColor: accent }}>
             {book.bookNumber}
           </div>
           <div className="flex-1 min-w-0 text-left">
@@ -302,6 +349,22 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string }) 
   );
 }
 
+/** Per-book folders placed on the 8-level journey. The legacy "1.3" number
+ *  becomes its journey number ("3.1"); the pack files keep their paths. */
+const BOOKS_BY_JOURNEY_LEVEL: Record<number, BookFolder[]> = (() => {
+  const out: Record<number, BookFolder[]> = {};
+  for (const pack of LEVEL_PACKS) {
+    const level = Number(pack.bookNumber.replace(/^L/, ''));
+    (out[level] ??= []).push(pack);
+  }
+  for (const b of L1_BOOKS) {
+    const placed = journeyPlacement(`L${b.bookNumber}`);
+    const level = placed?.level ?? 1;
+    (out[level] ??= []).push(placed ? { ...b, bookNumber: placed.subLevel.replace(/^L/, '') } : b);
+  }
+  return out;
+})();
+
 export default function WorksheetsPanel() {
   return (
     <div className="max-w-6xl mx-auto">
@@ -336,8 +399,8 @@ export default function WorksheetsPanel() {
         <SoundMatsResources />
       </div>
 
-      {LEVELS.map((l) => {
-        const books = l.level === 1 ? L1_BOOKS : [];
+      {JOURNEY_LEVELS.map((l) => {
+        const books = BOOKS_BY_JOURNEY_LEVEL[l.level] ?? [];
         return (
           <section
             key={l.level}
@@ -356,12 +419,12 @@ export default function WorksheetsPanel() {
             {books.length > 0 ? (
               <Accordion type="single" collapsible defaultValue={books[0].id} className="space-y-3">
                 {books.map((b) => (
-                  <BookFolderItem key={b.id} book={b} accent={levelBgs[l.level]} />
+                  <BookFolderItem key={b.id} book={b} accent={levelHex(l.level)} />
                 ))}
               </Accordion>
             ) : (
               <div className="bg-card rounded-2xl border border-border p-6 shadow-card flex items-start gap-4">
-                <div className={`${levelBgs[l.level]} w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0`}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0" style={{ backgroundColor: levelHex(l.level) }}>
                   <FileText className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0">

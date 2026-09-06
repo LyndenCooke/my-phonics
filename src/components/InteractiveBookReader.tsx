@@ -10,6 +10,7 @@ import {
 } from '@/lib/interactiveBookData';
 import TappableWord from '@/components/interactive/TappableWord';
 import { awardStamp, getStamps, isReadyToMoveUp, MAX_STAMPS, needsCheckIn, type BookStamps } from '@/lib/stamps';
+import { JOURNEY_LEVELS, getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
 
 // ─── Audio helpers ──────────────────────────────────────────────────────────
 
@@ -158,13 +159,18 @@ interface LevelTheme {
   focusRing: string;            // focus-visible ring colour
 }
 
+// One palette per level of the 8-level journey (Curriculum Ledger colours:
+// L1 pink · L2 coral · L3 amber · L4 green · L5 blue · L6 indigo · L7 purple ·
+// L8 teal). Class names stay literal so Tailwind's JIT picks them up.
 const LEVEL_THEME: Record<number, LevelTheme> = {
   1: { heroBgIdle: 'from-pink-100 to-pink-200', heroBgActive: 'from-pink-500 to-pink-600', heroText: 'text-pink-700', cardBorderActive: 'border-pink-400', cardBgActive: 'from-pink-50 to-pink-100', cardHoverBorder: 'hover:border-pink-300', textAccent: 'text-pink-600', textAccentMuted: 'text-pink-500', solidBg: 'bg-pink-500', solidBgHover: 'hover:bg-pink-600', softGradient: 'from-pink-50 to-pink-100', focusRing: 'focus-visible:ring-pink-400' },
-  2: { heroBgIdle: 'from-amber-100 to-amber-200', heroBgActive: 'from-amber-500 to-amber-600', heroText: 'text-amber-700', cardBorderActive: 'border-amber-400', cardBgActive: 'from-amber-50 to-amber-100', cardHoverBorder: 'hover:border-amber-300', textAccent: 'text-amber-600', textAccentMuted: 'text-amber-500', solidBg: 'bg-amber-500', solidBgHover: 'hover:bg-amber-600', softGradient: 'from-amber-50 to-amber-100', focusRing: 'focus-visible:ring-amber-400' },
-  3: { heroBgIdle: 'from-green-100 to-green-200', heroBgActive: 'from-green-500 to-green-600', heroText: 'text-green-700', cardBorderActive: 'border-green-400', cardBgActive: 'from-green-50 to-green-100', cardHoverBorder: 'hover:border-green-300', textAccent: 'text-green-600', textAccentMuted: 'text-green-500', solidBg: 'bg-green-500', solidBgHover: 'hover:bg-green-600', softGradient: 'from-green-50 to-green-100', focusRing: 'focus-visible:ring-green-400' },
-  4: { heroBgIdle: 'from-blue-100 to-blue-200', heroBgActive: 'from-blue-500 to-blue-600', heroText: 'text-blue-700', cardBorderActive: 'border-blue-400', cardBgActive: 'from-blue-50 to-blue-100', cardHoverBorder: 'hover:border-blue-300', textAccent: 'text-blue-600', textAccentMuted: 'text-blue-500', solidBg: 'bg-blue-500', solidBgHover: 'hover:bg-blue-600', softGradient: 'from-blue-50 to-blue-100', focusRing: 'focus-visible:ring-blue-400' },
-  5: { heroBgIdle: 'from-purple-100 to-purple-200', heroBgActive: 'from-purple-500 to-purple-600', heroText: 'text-purple-700', cardBorderActive: 'border-purple-400', cardBgActive: 'from-purple-50 to-purple-100', cardHoverBorder: 'hover:border-purple-300', textAccent: 'text-purple-600', textAccentMuted: 'text-purple-500', solidBg: 'bg-purple-500', solidBgHover: 'hover:bg-purple-600', softGradient: 'from-purple-50 to-purple-100', focusRing: 'focus-visible:ring-purple-400' },
-  6: { heroBgIdle: 'from-teal-100 to-teal-200', heroBgActive: 'from-teal-500 to-teal-600', heroText: 'text-teal-700', cardBorderActive: 'border-teal-400', cardBgActive: 'from-teal-50 to-teal-100', cardHoverBorder: 'hover:border-teal-300', textAccent: 'text-teal-600', textAccentMuted: 'text-teal-500', solidBg: 'bg-teal-500', solidBgHover: 'hover:bg-teal-600', softGradient: 'from-teal-50 to-teal-100', focusRing: 'focus-visible:ring-teal-400' },
+  2: { heroBgIdle: 'from-orange-100 to-orange-200', heroBgActive: 'from-orange-500 to-orange-600', heroText: 'text-orange-700', cardBorderActive: 'border-orange-400', cardBgActive: 'from-orange-50 to-orange-100', cardHoverBorder: 'hover:border-orange-300', textAccent: 'text-orange-600', textAccentMuted: 'text-orange-500', solidBg: 'bg-orange-500', solidBgHover: 'hover:bg-orange-600', softGradient: 'from-orange-50 to-orange-100', focusRing: 'focus-visible:ring-orange-400' },
+  3: { heroBgIdle: 'from-amber-100 to-amber-200', heroBgActive: 'from-amber-500 to-amber-600', heroText: 'text-amber-700', cardBorderActive: 'border-amber-400', cardBgActive: 'from-amber-50 to-amber-100', cardHoverBorder: 'hover:border-amber-300', textAccent: 'text-amber-600', textAccentMuted: 'text-amber-500', solidBg: 'bg-amber-500', solidBgHover: 'hover:bg-amber-600', softGradient: 'from-amber-50 to-amber-100', focusRing: 'focus-visible:ring-amber-400' },
+  4: { heroBgIdle: 'from-green-100 to-green-200', heroBgActive: 'from-green-500 to-green-600', heroText: 'text-green-700', cardBorderActive: 'border-green-400', cardBgActive: 'from-green-50 to-green-100', cardHoverBorder: 'hover:border-green-300', textAccent: 'text-green-600', textAccentMuted: 'text-green-500', solidBg: 'bg-green-500', solidBgHover: 'hover:bg-green-600', softGradient: 'from-green-50 to-green-100', focusRing: 'focus-visible:ring-green-400' },
+  5: { heroBgIdle: 'from-blue-100 to-blue-200', heroBgActive: 'from-blue-500 to-blue-600', heroText: 'text-blue-700', cardBorderActive: 'border-blue-400', cardBgActive: 'from-blue-50 to-blue-100', cardHoverBorder: 'hover:border-blue-300', textAccent: 'text-blue-600', textAccentMuted: 'text-blue-500', solidBg: 'bg-blue-500', solidBgHover: 'hover:bg-blue-600', softGradient: 'from-blue-50 to-blue-100', focusRing: 'focus-visible:ring-blue-400' },
+  6: { heroBgIdle: 'from-indigo-100 to-indigo-200', heroBgActive: 'from-indigo-500 to-indigo-600', heroText: 'text-indigo-700', cardBorderActive: 'border-indigo-400', cardBgActive: 'from-indigo-50 to-indigo-100', cardHoverBorder: 'hover:border-indigo-300', textAccent: 'text-indigo-600', textAccentMuted: 'text-indigo-500', solidBg: 'bg-indigo-500', solidBgHover: 'hover:bg-indigo-600', softGradient: 'from-indigo-50 to-indigo-100', focusRing: 'focus-visible:ring-indigo-400' },
+  7: { heroBgIdle: 'from-purple-100 to-purple-200', heroBgActive: 'from-purple-500 to-purple-600', heroText: 'text-purple-700', cardBorderActive: 'border-purple-400', cardBgActive: 'from-purple-50 to-purple-100', cardHoverBorder: 'hover:border-purple-300', textAccent: 'text-purple-600', textAccentMuted: 'text-purple-500', solidBg: 'bg-purple-500', solidBgHover: 'hover:bg-purple-600', softGradient: 'from-purple-50 to-purple-100', focusRing: 'focus-visible:ring-purple-400' },
+  8: { heroBgIdle: 'from-teal-100 to-teal-200', heroBgActive: 'from-teal-500 to-teal-600', heroText: 'text-teal-700', cardBorderActive: 'border-teal-400', cardBgActive: 'from-teal-50 to-teal-100', cardHoverBorder: 'hover:border-teal-300', textAccent: 'text-teal-600', textAccentMuted: 'text-teal-500', solidBg: 'bg-teal-500', solidBgHover: 'hover:bg-teal-600', softGradient: 'from-teal-50 to-teal-100', focusRing: 'focus-visible:ring-teal-400' },
 };
 
 const getTheme = (level: number): LevelTheme => LEVEL_THEME[level] ?? LEVEL_THEME[1];
@@ -203,35 +209,26 @@ function CoverPage({ page, level }: { page: Extract<InteractivePage, { type: 'co
 // level. This map drives the accordion grouping on SoundGridPage so reviewing
 // children can collapse / expand whole sets at a time. Single-letter L1
 // graphemes are listed under their own row so e.g. 's' and 'ss' aren't separated.
-const GRAPHEME_LEVEL: Record<string, number> = {
-  // L1 — Set 1 single letters + L1 digraphs
-  's/ss': 1, 's': 1, 'ss': 1, 'a': 1, 't': 1, 'p': 1, 'i': 1, 'n': 1,
-  'm': 1, 'd': 1, 'g': 1, 'o': 1, 'c/k/ck': 1, 'c': 1, 'k': 1, 'ck': 1,
-  'e': 1, 'u': 1, 'r': 1, 'h': 1, 'b': 1, 'f/ff': 1, 'f': 1, 'ff': 1,
-  'l/ll': 1, 'l': 1, 'll': 1, 'j': 1, 'v': 1, 'w': 1, 'x': 1, 'y': 1,
-  'z/zz': 1, 'z': 1, 'zz': 1, 'qu': 1, 'ch': 1, 'sh': 1, 'th': 1, 'ng': 1, 'nk': 1,
-  // L2 — Longer Sounds
-  'ay': 2, 'ee': 2, 'igh': 2, 'ow': 2, 'oo': 2, 'ar': 2, 'or': 2,
-  'air': 2, 'ir': 2, 'ou': 2, 'oy': 2,
-  // L3 — New Spellings
-  'a-e': 3, 'i-e': 3, 'o-e': 3, 'u-e': 3, 'ea': 3, 'ie': 3,
-  'oi': 3, 'aw': 3, 'ai': 3, 'oa': 3,
-  // L4 — Building Fluency
-  'ur': 4, 'er': 4, 'are': 4, 'ew': 4, 'ue': 4,
-  // L5 — Reading Together
-  'ore': 5, 'ire': 5, 'oor': 5, 'ear': 5, 'ure': 5, 'tion': 5,
-  // L6 — Reading Champion
-  'ous': 6, 'able': 6, 'ible': 6, 'cious': 6, 'tious': 6,
-};
+// Built from the 8-level Curriculum Ledger (levels8.ts): a grapheme maps to
+// the FIRST journey level that teaches it, and the slash-groups the static
+// data uses ('s/ss', 'c/k/ck') sit with their parent letter's level.
+const GRAPHEME_LEVEL: Record<string, number> = (() => {
+  const map: Record<string, number> = {};
+  for (const l of JOURNEY_LEVELS) {
+    for (const g of l.gpcs) {
+      const key = g.replace(/^-/, '');
+      if (!(key in map)) map[key] = l.level;
+    }
+  }
+  for (const group of ['s/ss', 'c/k/ck', 'f/ff', 'l/ll', 'z/zz']) {
+    map[group] = map[group.split('/')[0]] ?? 1;
+  }
+  return map;
+})();
 
-const LEVEL_LABEL: Record<number, string> = {
-  1: 'Level 1 — Starting Stories',
-  2: 'Level 2 — Longer Sounds',
-  3: 'Level 3 — New Spellings',
-  4: 'Level 4 — Building Fluency',
-  5: 'Level 5 — Reading Together',
-  6: 'Level 6 — Reading Champion',
-};
+const LEVEL_LABEL: Record<number, string> = Object.fromEntries(
+  JOURNEY_LEVELS.map((l) => [l.level, `Level ${l.level} — ${l.name}`]),
+);
 
 // Sound → clipart card map. The clipart pack lives in /public/clipart/level_N/cards/
 // with filenames `<sound>_<cueword>.png`. Cards visually match the printed
@@ -402,11 +399,11 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
   );
 
   // Bucket review sounds by canonical level using the GRAPHEME_LEVEL map.
-  const reviewByLevel: Record<number, string[]> = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+  const reviewByLevel: Record<number, string[]> = Object.fromEntries(JOURNEY_LEVELS.map((l) => [l.level, [] as string[]]));
   for (const g of reviewGroups) {
     const primary = g.split('/')[0];
     const lvl = GRAPHEME_LEVEL[g] ?? GRAPHEME_LEVEL[primary] ?? 1;
-    reviewByLevel[lvl].push(g);
+    (reviewByLevel[lvl] ??= []).push(g);
   }
   const populatedLevels = (Object.keys(reviewByLevel) as unknown as number[])
     .map(Number)
@@ -1967,17 +1964,29 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
 
 // ─── Main Reader ────────────────────────────────────────────────────────────
 
-interface InteractiveBookReaderProps { book: Book; onClose: () => void; onFinish: () => void; }
-const levelColors: Record<number, string> = { 1:'bg-level-1', 2:'bg-level-2', 3:'bg-level-3', 4:'bg-level-4', 5:'bg-level-5', 6:'bg-level-6' };
+interface InteractiveBookReaderProps {
+  book: Book;
+  onClose: () => void;
+  onFinish: () => void;
+  /** Page data supplied directly (family-made Create-A-Book editions). When
+   *  omitted the pages come from the curated INTERACTIVE_BOOKS registry. */
+  pages?: InteractivePage[];
+}
 const SWIPE_THRESHOLD = 50;
 
-export default function InteractiveBookReader({ book, onClose, onFinish }: InteractiveBookReaderProps) {
-  const pages = INTERACTIVE_BOOKS[book.subLevel] ?? [];
+export default function InteractiveBookReader({ book, onClose, onFinish, pages: pagesProp }: InteractiveBookReaderProps) {
+  const pages = pagesProp ?? INTERACTIVE_BOOKS[book.subLevel] ?? [];
+  // Theme, header band and sound-grid grouping all follow the 8-level journey.
+  // Library books still carry the legacy 6-level catalogue level, so place
+  // them via their sub-level; family-made books already speak 8-level.
+  const level = pagesProp ? book.level : journeyLevelOf(book.subLevel);
   const [currentPage, setCurrentPage] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const totalPages = pages.length;
-  const levelBg = levelColors[book.level] || 'bg-primary';
+  // Header band, progress bar and finish button wear the ledger colour of the
+  // journey level (the bg-level-N CSS tokens are still the legacy palette).
+  const levelHex = getJourneyLevel(level)?.hex ?? '#E84B8A';
   const updateProgress = useUpdateReadingProgress();
 
   // Persist reading progress whenever the page changes.
@@ -2029,23 +2038,23 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
     const p = pages[currentPage]; if (!p) return null;
     const fs = book.focusSounds;
     switch (p.type) {
-      case 'cover': return <CoverPage page={p} level={book.level} />;
-      case 'sound_grid': return <SoundGridPage page={p} level={book.level} />;
-      case 'vocab_preview': return <VocabPreviewPage page={p} level={book.level} />;
-      case 'story': return <StoryPage page={p} focusSounds={fs} level={book.level} />;
-      case 'sound_spotlight': return <SoundSpotlightPage page={p} level={book.level} />;
-      case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} level={book.level} />;
+      case 'cover': return <CoverPage page={p} level={level} />;
+      case 'sound_grid': return <SoundGridPage page={p} level={level} />;
+      case 'vocab_preview': return <VocabPreviewPage page={p} level={level} />;
+      case 'story': return <StoryPage page={p} focusSounds={fs} level={level} />;
+      case 'sound_spotlight': return <SoundSpotlightPage page={p} level={level} />;
+      case 'word_reading': return <WordReadingPage page={p} focusSounds={fs} level={level} />;
       case 'tricky_words': return <TrickyWordsPage page={p} />;
       case 'writing_practice': return <WritingPracticePage page={p} />;
       case 'drawing': return <DrawingCanvas prompt={p.prompt} />;
       case 'nonsense_words': return <NonsenseWordsPage page={p} focusSounds={fs} />;
       case 'story_ordering': return <StoryOrderingPage page={p} />;
-      case 'quiz': return <QuizPage page={p} level={book.level} />;
-      case 'spelling': return <SpellingPage page={p} level={book.level} />;
+      case 'quiz': return <QuizPage page={p} level={level} />;
+      case 'spelling': return <SpellingPage page={p} level={level} />;
       case 'grammar':
-        if (p.variant === 'word_order') return <GrammarWordOrderPage page={p} level={book.level} />;
+        if (p.variant === 'word_order') return <GrammarWordOrderPage page={p} level={level} />;
         return null;
-      case 'certificate': return <CertificatePage page={p} level={book.level} bookId={book.subLevel} quizQuestions={quizQuestions} />;
+      case 'certificate': return <CertificatePage page={p} level={level} bookId={book.subLevel} quizQuestions={quizQuestions} />;
       default: return null;
     }
   };
@@ -2053,7 +2062,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
   return (
     <div className="fixed inset-0 z-[9999] bg-amber-50 flex flex-col" style={{ ...ANDIKA, isolation: 'isolate' }}
       onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div className={`flex items-center justify-between px-4 py-2 ${levelBg} z-10 shrink-0`}>
+      <div className="flex items-center justify-between px-4 py-2 z-10 shrink-0" style={{ backgroundColor: levelHex }}>
         <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30" aria-label="Close book">
           <X className="w-5 h-5 text-white" />
         </button>
@@ -2079,14 +2088,15 @@ export default function InteractiveBookReader({ book, onClose, onFinish }: Inter
           <ChevronLeft className="w-5 h-5 text-slate-600" />
         </button>
         <div className="w-40 md:w-56 h-2 bg-slate-200 rounded-full overflow-hidden">
-          <div className={`h-full ${levelBg} rounded-full transition-all duration-300`}
-            style={{ width: `${((currentPage + 1) / totalPages) * 100}%` }} />
+          <div className="h-full rounded-full transition-all duration-300"
+            style={{ backgroundColor: levelHex, width: `${((currentPage + 1) / totalPages) * 100}%` }} />
         </div>
         <span className="text-xs text-slate-400 font-medium ml-2 min-w-[40px]">{currentPage + 1}/{totalPages}</span>
         <button
           onClick={goNext}
           aria-label={isLast ? 'Finish book' : 'Next page'}
-          className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? `${levelBg} text-white rounded-xl px-4` : 'hover:bg-slate-100 text-slate-600'}`}
+          className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? 'text-white rounded-xl px-4' : 'hover:bg-slate-100 text-slate-600'}`}
+          style={isLast ? { backgroundColor: levelHex } : undefined}
         >
           {isLast ? <span className="text-base font-bold">Finish</span> : <ChevronRight className="w-5 h-5" />}
         </button>
