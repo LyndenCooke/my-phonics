@@ -539,12 +539,18 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
   const wordSize: 'large' | 'medium' = longest <= 6 ? 'large' : 'medium';
   // Cards are laid out as wrapping rows sized from the column/row counts, so
   // a short last row centres itself instead of leaving an empty grid cell.
-  const gridStyle = {
-    '--vocab-cols': mobileCols,
-    '--vocab-rows': mobileRows,
-    '--vocab-cols-md': desktopCols,
-    '--vocab-rows-md': desktopRows,
-  } as React.CSSProperties;
+  // Sizes are set INLINE from JS: the Tailwind arbitrary-value classes for
+  // this (md:[&>*]:h-[calc(...)]) silently dropped out of the production
+  // build, leaving desktop cards at the mobile row height (Lynden's Red Socks
+  // screenshot, 2026-09-06).
+  const isDesktop = useMinWidth(768);
+  const cols = isDesktop ? desktopCols : mobileCols;
+  const rows = isDesktop ? desktopRows : mobileRows;
+  const gap = isDesktop ? 20 : 12; // px
+  const cardStyle: React.CSSProperties = {
+    width: `calc((100% - ${(cols - 1) * gap}px) / ${cols})`,
+    height: `calc((100% - ${(rows - 1) * gap}px) / ${rows})`,
+  };
 
   return (
     <div className="flex flex-col h-full px-4 md:px-8 lg:px-12 py-3 md:py-4" style={{ fontFamily: "'Andika', sans-serif" }}>
@@ -555,12 +561,7 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
       <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
         Tap a card to hear the word. You'll meet all of these in the story.
       </p>
-      <div
-        className="flex flex-wrap justify-center content-start flex-1 min-h-0 [--vocab-gap:0.75rem] md:[--vocab-gap:1rem] lg:[--vocab-gap:1.25rem]
-          [&>*]:w-[calc((100%-(var(--vocab-cols)-1)*var(--vocab-gap))/var(--vocab-cols))] [&>*]:h-[calc((100%-(var(--vocab-rows)-1)*var(--vocab-gap))/var(--vocab-rows))]
-          md:[&>*]:w-[calc((100%-(var(--vocab-cols-md)-1)*var(--vocab-gap))/var(--vocab-cols-md))] md:[&>*]:h-[calc((100%-(var(--vocab-rows-md)-1)*var(--vocab-gap))/var(--vocab-rows-md))]"
-        style={{ ...gridStyle, gap: 'var(--vocab-gap)' }}
-      >
+      <div className="flex flex-wrap justify-center content-start flex-1 min-h-0" style={{ gap }}>
         {page.words.map((w, i) => {
           const isActive = activeWord === w.word;
           return (
@@ -570,6 +571,7 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
               size={wordSize}
               isActive={isActive}
               theme={theme}
+              style={cardStyle}
               onTap={() => handleCardTap(w)}
             />
           );
@@ -584,12 +586,27 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
  *  level-tinted tile with the word centred, so the two kinds sit side by side
  *  as a deliberate pair rather than one looking broken. The picture's
  *  existence is discovered on load, not assumed. */
-function VocabCard({ word: w, size, isActive, theme, onTap }: {
-  word: StoryWord; size: 'large' | 'medium'; isActive: boolean; theme: LevelTheme; onTap: () => void;
+/** True when the viewport is at least `px` wide (Tailwind's md is 768). */
+function useMinWidth(px: number): boolean {
+  const query = `(min-width: ${px}px)`;
+  const [matches, setMatches] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatches(mql.matches);
+    mql.addEventListener('change', onChange);
+    setMatches(mql.matches);
+    return () => mql.removeEventListener('change', onChange);
+  }, [query]);
+  return matches;
+}
+
+function VocabCard({ word: w, size, isActive, theme, style, onTap }: {
+  word: StoryWord; size: 'large' | 'medium'; isActive: boolean; theme: LevelTheme; style: React.CSSProperties; onTap: () => void;
 }) {
   const [hasImage, setHasImage] = useState(true);
   return (
     <div
+      style={style}
       role="button"
       tabIndex={0}
       aria-pressed={isActive}
