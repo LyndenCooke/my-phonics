@@ -1,4 +1,4 @@
-"""
+﻿"""
 The Boat with the Red Sail — Level 3.5 Story
 Focus sounds: ai, oa
 Setting: Contemporary Port of Spain, Trinidad — Gulf of Paria waterfront,
@@ -107,6 +107,12 @@ RED_SAIL_STORY_BOOK1 = {
             "straif", "blaip", "drail", "plaig", "snaim", "fraib",
             "bloap", "groab", "snoam", "cloaf", "troap", "floag",
         ],
+        # -ed band pruned to one printing per band 4+5 (Lynden 2026-08-23,
+        # specialist-reviewed): the three-ways guide teaches a RULE, so it
+        # prints in 4.5 (first -ed book) and 5.2 only.  Later books drop the
+        # band; the page-2 Future Sounds 'ed' cell still appears, and any
+        # awkward -ed word rides as a word-level note if needed.
+        "show_ed_guide": False,
         "questions": [
             {"category": "Finding", "text": "What clues help Kai guess who is on the boat?"},
             {"category": "Thinking", "text": "Why does Kai run so fast to the coast?"},

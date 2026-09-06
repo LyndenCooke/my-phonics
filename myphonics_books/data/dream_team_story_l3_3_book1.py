@@ -62,6 +62,14 @@ DREAM_TEAM_STORY_BOOK1 = {
             },
         ],
         "story_words": ["clean", "team", "reach", "feast", "tries", "spies"],
+        # Lynden 2026-08-23 (claws ruling, applied fleet-wide the same day):
+        # a final s that says /z/ is a taught letter making one of its other
+        # sounds, so it takes the slate diamond, not an ordinary dot.
+        # tries = t-r-ie-s ("trize"), spies = s-p-ie-s — s is letter index 4.
+        "shifty_marks": {
+            "tries": [{"index": 4, "says": "/z/"}],
+            "spies": [{"index": 4, "says": "/z/"}],
+        },
         "tricky_words_used": ["the", "to", "I", "she", "her", "we", "he", "your", "me", "go", "one", "said", "what", "are", "so"],
         "read_words": ["clean", "team", "reach", "feast"],
         "nonsense_words": [

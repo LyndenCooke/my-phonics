@@ -1,4 +1,4 @@
-"""
+﻿"""
 What Min Saw — Level 3.4 Story
 Focus sounds: oi, aw
 Setting: Contemporary Seoul, South Korea — autumn day out with Mum
@@ -93,6 +93,13 @@ DRAW_IT_AGAIN_STORY_BOOK1 = {
             },
         ],
         "story_words": ["saw", "hawk", "claws", "coin", "soil", "paw", "jaw"],  # 'pointed' dropped: -ed not decodable at L5, taught via the note
+        # Lynden 2026-08-23: the s in claws says /z/ (klawz) — a taught
+        # letter making one of its other sounds, so it takes the slate
+        # diamond, not an ordinary dot (same ruling as visible/miserable in
+        # 8.2).  c-l-aw-s: the s is letter index 4.
+        "shifty_marks": {
+            "claws": [{"index": 4, "says": "/z/"}],
+        },
         "tricky_words_used": ["the", "I", "her", "no", "all", "to", "want",
                               "said", "she", "he", "are", "so", "they", "was",
                               "what", "you",
@@ -121,6 +128,12 @@ DRAW_IT_AGAIN_STORY_BOOK1 = {
             "bloin", "froip", "snoik", "ploig", "troim", "groib",
             "drawk", "flawp", "stawg", "clawb", "brawg", "plawm",
         ],
+        # -ed band pruned to one printing per band 4+5 (Lynden 2026-08-23,
+        # specialist-reviewed): the three-ways guide teaches a RULE, so it
+        # prints in 4.5 (first -ed book) and 5.2 only.  Later books drop the
+        # band; the page-2 Future Sounds 'ed' cell still appears, and any
+        # awkward -ed word rides as a word-level note if needed.
+        "show_ed_guide": False,
         "questions": [
             {"category": "Finding", "text": "Where did Min find the bright coin?"},
             {"category": "Thinking", "text": "Why do you think Min said she will not forget the hawk?"},

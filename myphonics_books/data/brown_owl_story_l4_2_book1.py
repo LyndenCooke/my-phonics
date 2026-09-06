@@ -1,4 +1,4 @@
-"""
+﻿"""
 The Brown Owl — Level 4.2 Story
 Focus sounds: are, ow (cow pronunciation)
 Setting: British woodland at dusk
@@ -107,6 +107,12 @@ BROWN_OWL_STORY_BOOK1 = {
             "zare", "gow", "mowl", "frow", "jare", "plown",
             "chowl", "thare", "drow", "scrow", "blare", "snown",
         ],
+        # -ed band pruned to one printing per band 4+5 (Lynden 2026-08-23,
+        # specialist-reviewed): the three-ways guide teaches a RULE, so it
+        # prints in 4.5 (first -ed book) and 5.2 only.  Later books drop the
+        # band; the page-2 Future Sounds 'ed' cell still appears, and any
+        # awkward -ed word rides as a word-level note if needed.
+        "show_ed_guide": False,
         "questions": [
             {"category": "Finding", "text": "What did the owl have in its claws?"},
             {"category": "Thinking", "text": "Why did the child not dare to get close to the owl?"},

@@ -243,6 +243,13 @@ BUSH_WALK_STORY_BOOK1 = {
             "enormous": [{"index": 0, "says": "schwa /uh/"}],
             "visible": [{"index": 2, "says": "/z/"}],
             "brother": [{"index": 2, "says": "/u/"}],
+            # Lynden 2026-08-23: remarkable takes the diamond here too (same
+            # ruling applied in 8.2, its own book).  The opening e is the
+            # unstressed schwa (ruh-MARK-uh-bul) — exactly enormous's opening
+            # e above.  r-e = index 1.  The -able a stays unmarked: it sits
+            # inside the taught 'able' unit (one diamond per word, capable
+            # rule).
+            "remarkable": [{"index": 1, "says": "schwa /uh/"}],
         },
         # 'over' and 'famous' dropped 2026-07-26 (Lynden): both are already
         # pre-taught earlier in the series — 'over' in 7.3 Sure She Can, 'famous'

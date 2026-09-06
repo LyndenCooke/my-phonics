@@ -335,10 +335,17 @@ REMARKABLE_STORY_BOOK1 = {
         # Practice-page words: only CLOSED-SYLLABLE -able/-ible items where
         # the syllable before the suffix has a real (short) vowel that the
         # child can sound out cleanly.  Open-syllable words like "capable"
-        # /keɪ-pə-bəl/ and "remarkable" /rɪ-MAR-kə-bəl/ still appear in the
-        # story text (with adult support) but are pulled from Read Words,
-        # Listen-and-Write and Writing Practice to keep encoding clean.
+        # /keɪ-pə-bəl/ still appear in the story text (with adult support)
+        # but are pulled from Read Words, Listen-and-Write and Writing
+        # Practice to keep encoding clean.
+        # "remarkable" restored to Story Words 2026-08-23 (Lynden): it is the
+        # TITLE word and the interactive book already presented it as a story
+        # word, so hiding it from the PDF's Story Words box was drift, not
+        # protection.  It reads with a shifty diamond (see shifty_marks) and
+        # stays OUT of the encoding lists (Read Words / Listen-and-Write /
+        # Writing Practice) per the ruling above.
         "story_words": [
+            "remarkable",
             "sensible", "possible", "terrible", "horrible",
             "visible", "incredible", "responsible", "predictable",
         ],
@@ -354,6 +361,14 @@ REMARKABLE_STORY_BOOK1 = {
             # is_shifty_allowed found no /z/ on 'e'/'er' and silently dropped
             # the mark, so the s printed with an ordinary dot.  m-i-s = 2.
             "miserable": [{"index": 2, "says": "/z/"}],
+            # Lynden 2026-08-23: remarkable is a Story Word, not an
+            # adult-support-only word — same ruling in 8.4.  The opening e is
+            # the unstressed schwa (ruh-MARK-uh-bul), a taught letter making
+            # one of its other sounds, so it takes the slate diamond — the
+            # exact treatment enormous already gets in 8.4.  r-e = index 1.
+            # The -able a is ALSO a schwa but sits inside the taught 'able'
+            # unit, so the word carries one diamond, not two (capable rule).
+            "remarkable": [{"index": 1, "says": "schwa /uh/"}],
         },
         "tricky_words_used": ["the", "said", "was", "you", "her", "their", "people", "thought"],
         "read_words": ["sensible", "possible", "terrible", "incredible"],
