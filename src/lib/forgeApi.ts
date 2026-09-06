@@ -1,6 +1,7 @@
 // Client for the local forge API (custom "Create-A-Book" pipeline).
 // The API is served by the Vite dev server at /api/forge (dev/localhost only).
 import { supabase } from "@/integrations/supabase/client";
+import type { InteractivePage } from "@/lib/interactiveBookData";
 
 export interface ForgeLevel {
   level: number;
@@ -64,6 +65,9 @@ export interface CustomBook {
   country_flag?: string | null;
   pages?: CustomBookPage[] | null;
   profile?: CustomBookPage | null;
+  /** Interactive edition (tappable words, sound grid, games) — built by the
+   *  server from the finished story, same source as the PDF. */
+  interactive?: InteractivePage[] | null;
   progress?: { step: string; message: string; pct: number } | null;
   share_requested?: boolean;
   wall_of_love_opt_in?: boolean;
