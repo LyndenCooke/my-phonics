@@ -196,9 +196,9 @@ export default function TappableWord({
       : 'text-base md:text-lg lg:text-xl';
   const wordPad = size === 'large' ? 'px-2 py-1 md:px-3' : size === 'medium' ? 'px-1.5 py-0.5' : 'px-1 py-0.5';
   const wordMargin = size === 'large' ? 'mx-0.5 mb-1.5 md:mx-1 md:mb-2' : size === 'medium' ? 'mx-0 mb-0.5 md:mx-0.5 md:mb-1' : 'mx-0 mb-0';
-  const annotH = size === 'large' ? 16 : size === 'medium' ? 12 : 10;
-  const dotR = size === 'large' ? 2.5 : 2;
-  const strokeW = size === 'large' ? 2 : 1.5;
+  const annotH = size === 'large' ? 20 : size === 'medium' ? 14 : 10;
+  const dotR = size === 'large' ? 3.5 : size === 'medium' ? 2.75 : 2;
+  const strokeW = size === 'large' ? 3 : size === 'medium' ? 2.25 : 1.5;
 
   // ─── Build letter spans for annotations ──────────────────────────────
   const spans = (wordData.phonemes.length > 0 && !wordData.isTricky)

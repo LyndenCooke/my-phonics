@@ -525,16 +525,29 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
     setActiveWord(null);
   };
 
-  // Cards size to fit available height — count-based grid columns and rows so
-  // every card stays visible without inner scroll. cardCount = page.words.length.
+  // The cards are the whole page: a fixed grid whose rows share the height
+  // equally, so every card fills its cell and the picture scales with the
+  // card instead of sitting as a 64px thumbnail in a sea of white. Columns
+  // are chosen so the grid never leaves a lonely half-row on desktop.
   const n = page.words.length;
-  const cols = n <= 4 ? 'grid-cols-2 md:grid-cols-4'
-              : n <= 6 ? 'grid-cols-3 md:grid-cols-3 lg:grid-cols-6'
-              : n <= 8 ? 'grid-cols-2 sm:grid-cols-4 md:grid-cols-4'
-              : 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6';
+  const desktopCols = n <= 4 ? n : n <= 6 ? 3 : n <= 8 ? 4 : n <= 10 ? 5 : n <= 12 ? 4 : 5;
+  const mobileCols = n <= 4 ? 2 : n <= 9 ? 3 : 3;
+  const desktopRows = Math.ceil(n / desktopCols);
+  const mobileRows = Math.ceil(n / mobileCols);
+  // Long words need a smaller face to sit inside a card without wrapping.
+  const longest = Math.max(...page.words.map(w => w.display.length));
+  const wordSize: 'large' | 'medium' = longest <= 6 ? 'large' : 'medium';
+  // Cards are laid out as wrapping rows sized from the column/row counts, so
+  // a short last row centres itself instead of leaving an empty grid cell.
+  const gridStyle = {
+    '--vocab-cols': mobileCols,
+    '--vocab-rows': mobileRows,
+    '--vocab-cols-md': desktopCols,
+    '--vocab-rows-md': desktopRows,
+  } as React.CSSProperties;
 
   return (
-    <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-5" style={{ fontFamily: "'Andika', sans-serif" }}>
+    <div className="flex flex-col h-full px-4 md:px-8 lg:px-12 py-3 md:py-4" style={{ fontFamily: "'Andika', sans-serif" }}>
       <div className="flex items-center gap-2 mb-0.5 shrink-0">
         <BookOpenIcon className={theme.textAccentMuted} />
         <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">Story Words</h2>
@@ -542,44 +555,77 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
       <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
         Tap a card to hear the word. You'll meet all of these in the story.
       </p>
-      <div className={`grid ${cols} gap-3 md:gap-4 flex-1 min-h-0 content-start`}>
+      <div
+        className="flex flex-wrap justify-center content-start flex-1 min-h-0 [--vocab-gap:0.75rem] md:[--vocab-gap:1rem] lg:[--vocab-gap:1.25rem]
+          [&>*]:w-[calc((100%-(var(--vocab-cols)-1)*var(--vocab-gap))/var(--vocab-cols))] [&>*]:h-[calc((100%-(var(--vocab-rows)-1)*var(--vocab-gap))/var(--vocab-rows))]
+          md:[&>*]:w-[calc((100%-(var(--vocab-cols-md)-1)*var(--vocab-gap))/var(--vocab-cols-md))] md:[&>*]:h-[calc((100%-(var(--vocab-rows-md)-1)*var(--vocab-gap))/var(--vocab-rows-md))]"
+        style={{ ...gridStyle, gap: 'var(--vocab-gap)' }}
+      >
         {page.words.map((w, i) => {
           const isActive = activeWord === w.word;
           return (
-            <div
+            <VocabCard
               key={i}
-              role="button"
-              tabIndex={0}
-              aria-pressed={isActive}
-              aria-label={`${w.word}. Tap to hear.`}
-              onClick={() => handleCardTap(w)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleCardTap(w);
-                }
-              }}
-              className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl border-2 cursor-pointer select-none transition-all duration-200 min-h-0
-                ${isActive
-                  ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.04] shadow-lg`
-                  : `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-md shadow-sm`}`}
-            >
-              <img
-                src={`/images/words/${w.word}.png`}
-                alt=""
-                className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain mb-2 pointer-events-none"
-                onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-              />
-              <div className="pointer-events-none">
-                <TappableWord
-                  wordData={w}
-                  size="medium"
-                  showAnnotations={true}
-                />
-              </div>
-            </div>
+              word={w}
+              size={wordSize}
+              isActive={isActive}
+              theme={theme}
+              onTap={() => handleCardTap(w)}
+            />
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+/** One Story Words card. Words with a picture show it large above the word;
+ *  words with no picture (abstract ones — "made", "brave", "wide") get a soft
+ *  level-tinted tile with the word centred, so the two kinds sit side by side
+ *  as a deliberate pair rather than one looking broken. The picture's
+ *  existence is discovered on load, not assumed. */
+function VocabCard({ word: w, size, isActive, theme, onTap }: {
+  word: StoryWord; size: 'large' | 'medium'; isActive: boolean; theme: LevelTheme; onTap: () => void;
+}) {
+  const [hasImage, setHasImage] = useState(true);
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-pressed={isActive}
+      aria-label={`${w.word}. Tap to hear.`}
+      onClick={onTap}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onTap();
+        }
+      }}
+      className={`grid ${hasImage ? 'grid-rows-[minmax(0,1fr)_auto]' : 'grid-rows-1'} justify-items-center items-center min-h-0 min-w-0 p-2 md:p-3 rounded-3xl border-2 cursor-pointer select-none transition-all duration-200
+        ${isActive
+          ? `${theme.cardBorderActive} bg-gradient-to-br ${theme.cardBgActive} scale-[1.03] shadow-lg`
+          : hasImage
+            ? `border-slate-200 bg-white ${theme.cardHoverBorder} hover:shadow-md shadow-sm`
+            : `border-transparent bg-gradient-to-br ${theme.softGradient} ${theme.cardHoverBorder} hover:shadow-md shadow-sm`}`}
+    >
+      {/* The picture box is the card's 1fr grid row — every pixel the word does
+          not need. The img is absolutely positioned so it sizes to the box's
+          real layout height (a percentage max-height inside a flex-grown box
+          was treated as indefinite and collapsed to the 49px thumbnail). */}
+      {hasImage && (
+        <div className="relative min-h-0 h-full w-full mb-1 md:mb-2">
+          <img
+            src={`/images/words/${w.word}.png`}
+            alt=""
+            className="absolute inset-0 m-auto max-h-full max-w-full object-contain pointer-events-none"
+            onError={() => setHasImage(false)}
+          />
+        </div>
+      )}
+      {/* With a picture the picture is the hero and the word sits under it at
+          medium size; a picture-less tile is all word, so it goes large. */}
+      <div className="pointer-events-none shrink-0">
+        <TappableWord wordData={w} size={hasImage ? 'medium' : size} showAnnotations={true} />
       </div>
     </div>
   );
