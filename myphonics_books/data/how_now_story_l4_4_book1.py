@@ -1,4 +1,4 @@
-"""
+﻿"""
 How Now? — Level 4.4 Story (REVIEW of all L4 sounds)
 Focus sounds: are, ur, er, ew, ue, ow (cow)
 Setting: Masjid Putra (Putra Mosque), Putrajaya, Malaysia
@@ -101,6 +101,12 @@ HOW_NOW_STORY_BOOK1 = {
             "frow", "plew", "grue", "blare", "chur",
             "frur", "stue", "snew", "trow", "fler",
         ],
+        # -ed band pruned to one printing per band 4+5 (Lynden 2026-08-23,
+        # specialist-reviewed): the three-ways guide teaches a RULE, so it
+        # prints in 4.5 (first -ed book) and 5.2 only.  Later books drop the
+        # band; the page-2 Future Sounds 'ed' cell still appears, and any
+        # awkward -ed word rides as a word-level note if needed.
+        "show_ed_guide": False,
         "questions": [
             {"category": "Finding", "text": "What did the monkey take from the boy?"},
             {"category": "Thinking", "text": "Why do you think the monkey took the snack?"},

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -7,6 +8,11 @@ import {
 } from "lucide-react";
 import { forgeApi, type CustomBook, type ForgeLevel } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
+import { customBookAsBook } from "@/lib/customBookAsBook";
+
+// The library's interactive reader (tappable words, sound grid, games) - lazy,
+// it is a big chunk and only needed once a book is ready.
+const InteractiveBookReader = lazy(() => import("@/components/InteractiveBookReader"));
 import FlipBook from "@/components/FlipBook";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -83,6 +89,7 @@ export default function CreateBook() {
   const [levels, setLevels] = useState<ForgeLevel[]>([]);
   const [book, setBook] = useState<CustomBook | null>(null);
   const [reading, setReading] = useState(false);
+  const [playing, setPlaying] = useState(false); // interactive edition open
   const [busy, setBusy] = useState(false);
   const [voucher, setVoucher] = useState("");
   const [showVoucher, setShowVoucher] = useState(false);
@@ -921,6 +928,17 @@ export default function CreateBook() {
                     {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
                   </button>
                 )}
+                {/* Interactive edition — the same reader as the library's
+                    books: tap a word to hear it sounded out, the sound
+                    grid, Story Words, alien words, the ordering game and a
+                    certificate. Built by the server from the same story the
+                    PDF is typeset from, so the two never disagree. */}
+                {book.interactive && book.interactive.length > 0 && (
+                  <button onClick={() => setPlaying(true)}
+                    className="mx-auto mt-2 flex items-center justify-center gap-2 rounded-full bg-pink-500 px-8 py-3 font-bold text-white shadow-md hover:bg-pink-600">
+                    <Sparkles className="h-5 w-5" /> Play the interactive book — tap every word
+                  </button>
+                )}
                 <button onClick={() => setReading(true)}
                   className="mx-auto mt-2 block rounded-full bg-violet-50 px-6 py-2.5 text-sm font-bold text-violet-700 hover:bg-violet-100">
                   Read it here — turn the pages 📖
@@ -989,6 +1007,17 @@ export default function CreateBook() {
       </div>
 
       {reading && book?.pages && <CustomBookReader pages={book.pages} onClose={() => setReading(false)} />}
+      {playing && book?.interactive && createPortal(
+        <Suspense fallback={<div className="fixed inset-0 z-[9999] bg-slate-900" />}>
+          <InteractiveBookReader
+            book={customBookAsBook(book)}
+            pages={book.interactive}
+            onClose={() => setPlaying(false)}
+            onFinish={() => setPlaying(false)}
+          />
+        </Suspense>,
+        document.body,
+      )}
     </div>
   );
 }

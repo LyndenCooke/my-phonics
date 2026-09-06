@@ -121,6 +121,10 @@ function cvc(display: string, word: string): StoryWord {
   return { display, word, phonemes: word.split('') };
 }
 
+// Helpers emitted by scripts/regenerate_interactive_stories.py.
+function pw(display: string, word: string, phonemes: string[]): StoryWord {
+  return { display, word, phonemes };
+}
 function tricky(display: string, word: string): StoryWord {
   return { display, word, phonemes: [], isTricky: true };
 }
@@ -130,7 +134,7 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
   {
     type: 'cover',
     title: 'Tap! Tap! Tap!',
-    subtitle: 'Level 1 · Starting Stories',
+    subtitle: 'Level 1 · Ditties',
     imageUrl: '/illustrations/1_1/cover.png',
   },
 
@@ -345,7 +349,7 @@ export const BOOK_L1_1_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_2_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'The Mud on the Dog', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_2/cover.png' },
+  { type: 'cover', title: 'The Mud on the Dog', subtitle: 'Level 1 · Ditties', imageUrl: '/illustrations/1_2/cover.png' },
 
   // ── SOUNDS ──
   {
@@ -499,7 +503,7 @@ export const BOOK_L1_2_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_3_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'The Fish in the Tank', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_3/cover.png' },
+  { type: 'cover', title: 'The Fish in the Tank', subtitle: 'Level 3 · Special Friends', imageUrl: '/illustrations/1_3/cover.png' },
 
   // ── SOUNDS + STORY WORDS (pre-reading) ──
   {
@@ -536,77 +540,83 @@ export const BOOK_L1_3_PAGES: InteractivePage[] = [
 
   // ── STORY PAGES ──
   // Page 1: "I have a fish! It is in a bag."
-  {
-    type: 'story', sentences: ['I have a fish!', 'It is in a bag.'],
+      { type: 'story', sentences: ['I have a fish!', 'It is in a bag.'],
     words: [
-      tricky('I', 'I'), tricky('have', 'have'), tricky('a', 'a'),
-      { display: 'fish!', word: 'fish', phonemes: ['f','i','sh'] },
-      { display: 'It', word: 'it', phonemes: ['i','t'] }, tricky('is', 'is'),
-      { display: 'in', word: 'in', phonemes: ['i','n'] }, tricky('a', 'a'),
+      tricky('I', 'I'),
+      pw('have', 'have', ['h', 'a-e', 'v']),
+      tricky('a', 'a'),
+      pw('fish!', 'fish', ['f', 'i', 'sh']),
+      cvc('It', 'it'),
+      tricky('is', 'is'),
+      cvc('in', 'in'),
+      tricky('a', 'a'),
       cvc('bag.', 'bag'),
     ],
-    imageUrl: '/illustrations/1_3/page1.png', audioUrl: '/sounds/sentences/L1_3_p1.mp3',
-  },
-  // Page 2: "The fish is sad. The bag is not big."
-  {
-    type: 'story', sentences: ['The fish is sad.', 'The bag is not big.'],
+    imageUrl: '/illustrations/1_3/page1.png', audioUrl: '/sounds/sentences/L1_3_p1.mp3' },
+  { type: 'story', sentences: ['The fish is sad.', 'The bag is not big.'],
     words: [
-      tricky('The', 'the'), { display: 'fish', word: 'fish', phonemes: ['f','i','sh'] },
-      tricky('is', 'is'), cvc('sad.', 'sad'),
-      tricky('The', 'the'), cvc('bag', 'bag'), tricky('is', 'is'),
-      { display: 'not', word: 'not', phonemes: ['n','o','t'] }, cvc('big.', 'big'),
-    ],
-    imageUrl: '/illustrations/1_3/page2.png', audioUrl: '/sounds/sentences/L1_3_p2.mp3',
-  },
-  // Page 3: "I get a cup. No! It is not big."
-  {
-    type: 'story', sentences: ['I get a cup.', 'No! It is not big.'],
-    words: [
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
-      tricky('a', 'a'), cvc('cup.', 'cup'),
-      tricky('No!', 'no'), { display: 'It', word: 'it', phonemes: ['i','t'] },
-      tricky('is', 'is'), { display: 'not', word: 'not', phonemes: ['n','o','t'] },
+      tricky('The', 'the'),
+      pw('fish', 'fish', ['f', 'i', 'sh']),
+      tricky('is', 'is'),
+      cvc('sad.', 'sad'),
+      tricky('The', 'the'),
+      cvc('bag', 'bag'),
+      tricky('is', 'is'),
+      cvc('not', 'not'),
       cvc('big.', 'big'),
     ],
-    imageUrl: '/illustrations/1_3/page3.png', audioUrl: '/sounds/sentences/L1_3_p3.mp3',
-  },
-  // Page 4: "I get a tank. Yes! The fish can go in!"
-  {
-    type: 'story', sentences: ['I get a tank.', 'Yes! The fish can go in!'],
+    imageUrl: '/illustrations/1_3/page2.png', audioUrl: '/sounds/sentences/L1_3_p2.mp3' },
+  { type: 'story', sentences: ['I get a cup.', 'No!', 'It is not big.'],
     words: [
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
-      tricky('a', 'a'), { display: 'tank.', word: 'tank', phonemes: ['t','a','nk'] },
-      { display: 'Yes!', word: 'yes', phonemes: ['y','e','s'] },
-      tricky('The', 'the'), { display: 'fish', word: 'fish', phonemes: ['f','i','sh'] },
-      { display: 'can', word: 'can', phonemes: ['c','a','n'] },
-      tricky('go', 'go'), { display: 'in!', word: 'in', phonemes: ['i','n'] },
+      tricky('I', 'I'),
+      cvc('get', 'get'),
+      tricky('a', 'a'),
+      cvc('cup.', 'cup'),
+      tricky('No!', 'no'),
+      cvc('It', 'it'),
+      tricky('is', 'is'),
+      cvc('not', 'not'),
+      cvc('big.', 'big'),
     ],
-    imageUrl: '/illustrations/1_3/page4.png', audioUrl: '/sounds/sentences/L1_3_p4.mp3',
-  },
-  // Page 5: "Wish, wish! The fish is in the tank!"
-  {
-    type: 'story', sentences: ['Wish, wish!', 'The fish is in the tank!'],
+    imageUrl: '/illustrations/1_3/page3.png', audioUrl: '/sounds/sentences/L1_3_p3.mp3' },
+  { type: 'story', sentences: ['I get a tank.', 'Yes!', 'The fish can go in!'],
     words: [
-      { display: 'Wish,', word: 'wish', phonemes: ['w','i','sh'] },
-      { display: 'wish!', word: 'wish', phonemes: ['w','i','sh'] },
-      tricky('The', 'the'), { display: 'fish', word: 'fish', phonemes: ['f','i','sh'] },
-      tricky('is', 'is'), { display: 'in', word: 'in', phonemes: ['i','n'] },
-      tricky('the', 'the'), { display: 'tank!', word: 'tank', phonemes: ['t','a','nk'] },
+      tricky('I', 'I'),
+      cvc('get', 'get'),
+      tricky('a', 'a'),
+      pw('tank.', 'tank', ['t', 'a', 'nk']),
+      cvc('Yes!', 'yes'),
+      tricky('The', 'the'),
+      pw('fish', 'fish', ['f', 'i', 'sh']),
+      cvc('can', 'can'),
+      tricky('go', 'go'),
+      cvc('in!', 'in'),
     ],
-    imageUrl: '/illustrations/1_3/page5.png', audioUrl: '/sounds/sentences/L1_3_p5.mp3',
-  },
-  // Page 6: "The fish is not sad. I am happy!"
-  {
-    type: 'story', sentences: ['The fish is not sad.', 'I am happy!'],
+    imageUrl: '/illustrations/1_3/page4.png', audioUrl: '/sounds/sentences/L1_3_p4.mp3' },
+  { type: 'story', sentences: ['Wish, wish!', 'The fish is in the tank!'],
     words: [
-      tricky('The', 'the'), { display: 'fish', word: 'fish', phonemes: ['f','i','sh'] },
-      tricky('is', 'is'), { display: 'not', word: 'not', phonemes: ['n','o','t'] },
+      pw('Wish,', 'wish', ['w', 'i', 'sh']),
+      pw('wish!', 'wish', ['w', 'i', 'sh']),
+      tricky('The', 'the'),
+      pw('fish', 'fish', ['f', 'i', 'sh']),
+      tricky('is', 'is'),
+      cvc('in', 'in'),
+      tricky('the', 'the'),
+      pw('tank!', 'tank', ['t', 'a', 'nk']),
+    ],
+    imageUrl: '/illustrations/1_3/page5.png', audioUrl: '/sounds/sentences/L1_3_p5.mp3' },
+  { type: 'story', sentences: ['The fish is not sad.', 'I am glad!'],
+    words: [
+      tricky('The', 'the'),
+      pw('fish', 'fish', ['f', 'i', 'sh']),
+      tricky('is', 'is'),
+      cvc('not', 'not'),
       cvc('sad.', 'sad'),
-      tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
-      tricky('happy!', 'happy'),
+      tricky('I', 'I'),
+      cvc('am', 'am'),
+      cvc('glad!', 'glad'),
     ],
-    imageUrl: '/illustrations/1_3/page6.png', audioUrl: '/sounds/sentences/L1_3_p6.mp3',
-  },
+    imageUrl: '/illustrations/1_3/page6.png', audioUrl: '/sounds/sentences/L1_3_p6.mp3' },
 
   // ── COMPREHENSION QUIZ ──
   { type: 'quiz', questions: [
@@ -668,7 +678,7 @@ export const BOOK_L1_3_PAGES: InteractivePage[] = [
     { imageUrl: '/illustrations/1_3/page3.png', label: 'I get a cup.', correctIndex: 2 },
     { imageUrl: '/illustrations/1_3/page4.png', label: 'I get a tank.', correctIndex: 3 },
     { imageUrl: '/illustrations/1_3/page5.png', label: 'Wish, wish!', correctIndex: 4 },
-    { imageUrl: '/illustrations/1_3/page6.png', label: 'I am happy!', correctIndex: 5 }] },
+    { imageUrl: '/illustrations/1_3/page6.png', label: 'I am glad!', correctIndex: 5 }] },
 
   // ── DRAWING ──
   { type: 'drawing', prompt: 'Draw Your Favourite Part' },
@@ -684,7 +694,7 @@ export const BOOK_L1_3_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_4_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'The Red Socks', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_4/cover.png' },
+  { type: 'cover', title: 'The Red Socks', subtitle: 'Level 2 · First Sounds', imageUrl: '/illustrations/1_4/cover.png' },
 
   // ── SOUNDS + STORY WORDS ──
   {
@@ -721,79 +731,76 @@ export const BOOK_L1_4_PAGES: InteractivePage[] = [
 
   // ── STORY PAGES ──
   // Page 1: "I have no socks! I am sad."
-  {
-    type: 'story', sentences: ['I have no socks!', 'I am sad.'],
+      { type: 'story', sentences: ['No red socks.', 'I am sad.'],
     words: [
-      tricky('I', 'I'), tricky('have', 'have'), tricky('no', 'no'),
-      { display: 'socks!', word: 'socks', phonemes: ['s','o','ck','s'] },
-      tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
+      tricky('No', 'no'),
+      pw('red', 'red', ['r', 'ed']),
+      pw('socks.', 'socks', ['s', 'o', 'ck', 's']),
+      tricky('I', 'I'),
+      cvc('am', 'am'),
       cvc('sad.', 'sad'),
     ],
-    imageUrl: '/illustrations/1_4/page1.png', audioUrl: '/sounds/sentences/L1_4_p1.mp3',
-  },
-  // Page 2: "I check the bed. I get a sock. Not red!"
-  {
-    type: 'story', sentences: ['I check the bed.', 'I get a sock.', 'Not red!'],
+    imageUrl: '/illustrations/1_4/page1.png', audioUrl: '/sounds/sentences/L1_4_p1.mp3' },
+  { type: 'story', sentences: ['Is it on the bed?', 'A sock.', 'Not red.'],
     words: [
-      tricky('I', 'I'), { display: 'check', word: 'check', phonemes: ['ch','e','ck'] },
-      tricky('the', 'the'), cvc('bed.', 'bed'),
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
-      tricky('a', 'a'), { display: 'sock.', word: 'sock', phonemes: ['s','o','ck'] },
-      { display: 'Not', word: 'not', phonemes: ['n','o','t'] }, cvc('red!', 'red'),
+      tricky('Is', 'is'),
+      cvc('it', 'it'),
+      cvc('on', 'on'),
+      tricky('the', 'the'),
+      pw('bed?', 'bed', ['b', 'ed']),
+      tricky('A', 'a'),
+      pw('sock.', 'sock', ['s', 'o', 'ck']),
+      cvc('Not', 'not'),
+      pw('red.', 'red', ['r', 'ed']),
     ],
-    imageUrl: '/illustrations/1_4/page2.png', audioUrl: '/sounds/sentences/L1_4_p2.mp3',
-  },
-  // Page 3: "I check the bag. I get a sock. Not red!"
-  {
-    type: 'story', sentences: ['I check the bag.', 'I get a sock.', 'Not red!'],
+    imageUrl: '/illustrations/1_4/page2.png', audioUrl: '/sounds/sentences/L1_4_p2.mp3' },
+  { type: 'story', sentences: ['Is it in the bag?', 'A sock.', 'Not red.'],
     words: [
-      tricky('I', 'I'), { display: 'check', word: 'check', phonemes: ['ch','e','ck'] },
-      tricky('the', 'the'), cvc('bag.', 'bag'),
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
-      tricky('a', 'a'), { display: 'sock.', word: 'sock', phonemes: ['s','o','ck'] },
-      { display: 'Not', word: 'not', phonemes: ['n','o','t'] }, cvc('red!', 'red'),
+      tricky('Is', 'is'),
+      cvc('it', 'it'),
+      cvc('in', 'in'),
+      tricky('the', 'the'),
+      cvc('bag?', 'bag'),
+      tricky('A', 'a'),
+      pw('sock.', 'sock', ['s', 'o', 'ck']),
+      cvc('Not', 'not'),
+      pw('red.', 'red', ['r', 'ed']),
     ],
-    imageUrl: '/illustrations/1_4/page3.png', audioUrl: '/sounds/sentences/L1_4_p3.mp3',
-  },
-  // Page 4: "I check the hen pen. The hen has red socks!"
-  {
-    type: 'story', sentences: ['I check the hen pen.', 'The hen has red socks!'],
+    imageUrl: '/illustrations/1_4/page3.png', audioUrl: '/sounds/sentences/L1_4_p3.mp3' },
+  { type: 'story', sentences: ['Is it in the hen pen?', 'Red socks!'],
     words: [
-      tricky('I', 'I'), { display: 'check', word: 'check', phonemes: ['ch','e','ck'] },
-      tricky('the', 'the'), cvc('hen', 'hen'), cvc('pen.', 'pen'),
-      tricky('The', 'the'), cvc('hen', 'hen'), tricky('has', 'has'),
-      cvc('red', 'red'), { display: 'socks!', word: 'socks', phonemes: ['s','o','ck','s'] },
+      tricky('Is', 'is'),
+      cvc('it', 'it'),
+      cvc('in', 'in'),
+      tricky('the', 'the'),
+      cvc('hen', 'hen'),
+      cvc('pen?', 'pen'),
+      pw('Red', 'red', ['r', 'ed']),
+      pw('socks!', 'socks', ['s', 'o', 'ck', 's']),
     ],
-    imageUrl: '/illustrations/1_4/page4.png', audioUrl: '/sounds/sentences/L1_4_p4.mp3',
-  },
-  // Page 5: "I get the socks. The hen pecks me! Peck, peck!"
-  {
-    type: 'story', sentences: ['I get the socks.', 'The hen pecks me!', 'Peck, peck!'],
+    imageUrl: '/illustrations/1_4/page4.png', audioUrl: '/sounds/sentences/L1_4_p4.mp3' },
+  { type: 'story', sentences: ['I get the red socks.', 'Peck, peck!'],
     words: [
-      tricky('I', 'I'), { display: 'get', word: 'get', phonemes: ['g','e','t'] },
-      tricky('the', 'the'), { display: 'socks.', word: 'socks', phonemes: ['s','o','ck','s'] },
-      tricky('The', 'the'), cvc('hen', 'hen'),
-      { display: 'pecks', word: 'pecks', phonemes: ['p','e','ck','s'] },
-      tricky('me!', 'me'),
-      { display: 'Peck,', word: 'peck', phonemes: ['p','e','ck'] },
-      { display: 'peck!', word: 'peck', phonemes: ['p','e','ck'] },
+      tricky('I', 'I'),
+      cvc('get', 'get'),
+      tricky('the', 'the'),
+      pw('red', 'red', ['r', 'ed']),
+      pw('socks.', 'socks', ['s', 'o', 'ck', 's']),
+      pw('Peck,', 'peck', ['p', 'e', 'ck']),
+      pw('peck!', 'peck', ['p', 'e', 'ck']),
     ],
-    imageUrl: '/illustrations/1_4/page5.png', audioUrl: '/sounds/sentences/L1_4_p5.mp3',
-  },
-  // Page 6: "Red socks on me! I can kick! I am so happy!"
-  {
-    type: 'story', sentences: ['Red socks on me!', 'I can kick!', 'I am so happy!'],
+    imageUrl: '/illustrations/1_4/page5.png', audioUrl: '/sounds/sentences/L1_4_p5.mp3' },
+  { type: 'story', sentences: ['Red socks on.', 'I am not sad.'],
     words: [
-      cvc('Red', 'red'), { display: 'socks', word: 'socks', phonemes: ['s','o','ck','s'] },
-      { display: 'on', word: 'on', phonemes: ['o','n'] },
-      tricky('me!', 'me'),
-      tricky('I', 'I'), { display: 'can', word: 'can', phonemes: ['c','a','n'] },
-      { display: 'kick!', word: 'kick', phonemes: ['k','i','ck'] },
-      tricky('I', 'I'), { display: 'am', word: 'am', phonemes: ['a','m'] },
-      tricky('so', 'so'), tricky('happy!', 'happy'),
+      pw('Red', 'red', ['r', 'ed']),
+      pw('socks', 'socks', ['s', 'o', 'ck', 's']),
+      cvc('on.', 'on'),
+      tricky('I', 'I'),
+      cvc('am', 'am'),
+      cvc('not', 'not'),
+      cvc('sad.', 'sad'),
     ],
-    imageUrl: '/illustrations/1_4/page6.png', audioUrl: '/sounds/sentences/L1_4_p6.mp3',
-  },
+    imageUrl: '/illustrations/1_4/page6.png', audioUrl: '/sounds/sentences/L1_4_p6.mp3' },
 
   // ── COMPREHENSION QUIZ ──
   { type: 'quiz', questions: [
@@ -852,12 +859,12 @@ export const BOOK_L1_4_PAGES: InteractivePage[] = [
 
   // ── STORY ORDERING ──
   { type: 'story_ordering', items: [
-    { imageUrl: '/illustrations/1_4/page1.png', label: 'I have no socks!', correctIndex: 0 },
-    { imageUrl: '/illustrations/1_4/page2.png', label: 'I check the bed.', correctIndex: 1 },
-    { imageUrl: '/illustrations/1_4/page3.png', label: 'I check the bag.', correctIndex: 2 },
-    { imageUrl: '/illustrations/1_4/page4.png', label: 'The hen has red socks!', correctIndex: 3 },
+    { imageUrl: '/illustrations/1_4/page1.png', label: 'No red socks.', correctIndex: 0 },
+    { imageUrl: '/illustrations/1_4/page2.png', label: 'Is it on the bed?', correctIndex: 1 },
+    { imageUrl: '/illustrations/1_4/page3.png', label: 'Is it in the bag?', correctIndex: 2 },
+    { imageUrl: '/illustrations/1_4/page4.png', label: 'Red socks!', correctIndex: 3 },
     { imageUrl: '/illustrations/1_4/page5.png', label: 'Peck, peck!', correctIndex: 4 },
-    { imageUrl: '/illustrations/1_4/page6.png', label: 'I can kick!', correctIndex: 5 }] },
+    { imageUrl: '/illustrations/1_4/page6.png', label: 'Red socks on.', correctIndex: 5 }] },
 
   // ── DRAWING ──
   { type: 'drawing', prompt: 'Draw Your Favourite Part' },
@@ -873,7 +880,7 @@ export const BOOK_L1_4_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_5_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'Run, Pup, Run!', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_5/cover.png' },
+  { type: 'cover', title: 'Run, Pup, Run!', subtitle: 'Level 2 · First Sounds', imageUrl: '/illustrations/1_5/cover.png' },
 
   // ── SOUNDS + STORY WORDS ──
   {
@@ -1037,7 +1044,7 @@ export const BOOK_L1_5_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_6_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'Fox Fell Off!', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_6/cover.png' },
+  { type: 'cover', title: 'Fox Fell Off!', subtitle: 'Level 2 · First Sounds', imageUrl: '/illustrations/1_6/cover.png' },
 
   // ── SOUNDS ──
   {
@@ -1232,7 +1239,7 @@ export const BOOK_L1_6_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_7_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'The Jam Jug', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_7/cover.png' },
+  { type: 'cover', title: 'The Jam Jug', subtitle: 'Level 2 · First Sounds', imageUrl: '/illustrations/1_7/cover.png' },
 
   // ── SOUNDS ──
   {
@@ -1631,7 +1638,7 @@ export const BOOK_L1_8_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_9_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'Chop, Chop, Chop!', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_9/cover.png' },
+  { type: 'cover', title: 'Chop, Chop, Chop!', subtitle: 'Level 3 · Special Friends', imageUrl: '/illustrations/1_9/cover.png' },
 
   // ── SOUNDS ──
   {
@@ -1822,7 +1829,7 @@ export const BOOK_L1_9_PAGES: InteractivePage[] = [
 
 export const BOOK_L1_10_PAGES: InteractivePage[] = [
   // ── COVER ──
-  { type: 'cover', title: 'Buzz and Sing!', subtitle: 'Level 1 · Starting Stories', imageUrl: '/illustrations/1_10/cover.png' },
+  { type: 'cover', title: 'Buzz and Sing!', subtitle: 'Level 3 · Special Friends', imageUrl: '/illustrations/1_10/cover.png' },
 
   // ── SOUNDS ──
   {

@@ -6,6 +6,7 @@ import * as db from "./db.mjs";
 import { createCheckout, verifySession, PRICES } from "./stripe.mjs";
 import { startGeneration, stashPhoto, isRunning, renderPdf, runNextStep, repairBook, MAX_BOOK_SPEND_USD } from "./jobs.mjs";
 import { IS_SERVERLESS } from "./storage.mjs";
+import { buildInteractivePages } from "./interactive.mjs";
 
 function readBody(req, limit = 25 * 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -69,7 +70,15 @@ function publicBook(b) {
     country_flag: b.country_flag,
     pages: b.pages,
     profile: b.profile,
+    interactive: interactiveFor(b),
   };
+}
+
+// The interactive edition is derived from the finished row on every read
+// (see interactive.mjs) — never stored, never able to drift from the PDF.
+function interactiveFor(b) {
+  try { return buildInteractivePages(b); }
+  catch (e) { console.warn(`[forge] interactive build failed for ${b?.id}:`, e.message); return null; }
 }
 
 export async function handleForge(req, res) {
@@ -156,7 +165,7 @@ export async function handleForge(req, res) {
           },
         });
       }
-      return send(res, 200, { book: { ...row, generating: isRunning(row.id) } });
+      return send(res, 200, { book: { ...row, generating: isRunning(row.id), interactive: interactiveFor(row) } });
     }
 
     // Advance a generating book by ONE step. This is how production works:

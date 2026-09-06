@@ -12,6 +12,7 @@ import { hasInteractiveData } from "@/lib/interactiveBooksAvailability";
 import type { Book } from "@/lib/types";
 import { forgeApi, type CustomBook } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
+import { customBookAsBook } from "@/lib/customBookAsBook";
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from "@/components/DownloadFormatDialog";
 import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
 import { getJourneyLevel, JOURNEY_LEVELS } from "@/lib/levels8";
@@ -82,6 +83,7 @@ export default function WorldOfBooks() {
   const [access, setAccess] = useState(false);
   const [books, setBooks] = useState<CustomBook[]>([]);
   const [reading, setReading] = useState<CustomBook | null>(null);
+  const [playing, setPlaying] = useState<CustomBook | null>(null); // family book, interactive edition
   const [readingLibraryId, setReadingLibraryId] = useState<string | null>(null);
   const [downloadLibraryBook, setDownloadLibraryBook] = useState<Book | null>(null);
   const [familyPdfBusy, setFamilyPdfBusy] = useState(false);
@@ -243,6 +245,14 @@ export default function WorldOfBooks() {
       return;
     }
     if (b.custom?.pages && access) { setChooser(null); setReading(b.custom); }
+  };
+
+  // "Read & play" — a family-made book's interactive edition, the same reader
+  // the library uses (tappable words, sound grid, games, certificate).
+  const playBook = (b: ShelfBook) => {
+    if (b.kind !== "family" || !b.custom?.interactive?.length || !access) return;
+    setChooser(null);
+    setPlaying(b.custom);
   };
 
   // "Print at home" — the real gated flow (generate-pdf-download), same as
@@ -556,10 +566,17 @@ export default function WorldOfBooks() {
                   if (!locked) {
                     return (
                       <div className="mt-4 grid grid-cols-2 gap-2.5">
+                        {chooser.kind === "family" && chooser.custom?.interactive?.length ? (
+                          <button onClick={() => playBook(chooser)}
+                            className="col-span-2 flex items-center justify-center gap-2 rounded-2xl bg-pink-500 px-3 py-4 font-bold text-white shadow-md transition hover:opacity-90">
+                            <Sparkles className="h-6 w-6" />
+                            <span className="text-sm">Read &amp; play — tap every word</span>
+                          </button>
+                        ) : null}
                         <button onClick={() => readOnline(chooser)}
                           className="flex flex-col items-center gap-1.5 rounded-2xl bg-primary px-3 py-4 font-bold text-primary-foreground shadow-md transition hover:opacity-90">
                           <BookOpen className="h-6 w-6" />
-                          <span className="text-sm">Read online</span>
+                          <span className="text-sm">{chooser.kind === "family" ? "Turn the pages" : "Read online"}</span>
                         </button>
                         <button onClick={() => printBook(chooser)} disabled={familyPdfBusy}
                           className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-white px-3 py-4 font-bold text-foreground transition hover:border-foreground/30 disabled:opacity-50">
@@ -670,6 +687,17 @@ export default function WorldOfBooks() {
       </div>
 
       {reading?.pages && <CustomBookReader pages={reading.pages} onClose={() => setReading(null)} />}
+      {playing?.interactive && createPortal(
+        <Suspense fallback={<div className="fixed inset-0 z-[9999] bg-slate-900" />}>
+          <InteractiveBookReader
+            book={customBookAsBook(playing)}
+            pages={playing.interactive}
+            onClose={() => setPlaying(null)}
+            onFinish={() => setPlaying(null)}
+          />
+        </Suspense>,
+        document.body,
+      )}
 
       {/* Library reader — IN PLACE, no navigation. Portalled the same way as
           the chooser: this whole tree sits under Layout's route-transition

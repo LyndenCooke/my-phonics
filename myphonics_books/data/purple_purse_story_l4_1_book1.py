@@ -1,4 +1,4 @@
-"""
+﻿"""
 The Purple Purse — Level 4.1 Story (REVISED)
 Focus sounds: ur, er
 Setting: Modern Istanbul neighbourhood (Kadıköy/Moda)
@@ -76,6 +76,15 @@ PURPLE_PURSE_STORY_BOOK1 = {
         ],
         "cover_prompt": "A girl in a purple jumper stands on a colourful modern street, holding a small purple purse close to her chest with a smile. Green ferns and modern shops behind her. Portrait orientation.",
         "story_words": ["purple", "purse", "ferns", "herbs", "never"],  # 'turned' dropped: -ed not decodable at L6, showcased on page 2 instead
+        # Lynden 2026-08-23 (claws ruling, applied fleet-wide the same day):
+        # a final s that says /z/ takes the slate diamond, not an ordinary
+        # dot.  ferns = f-er-n-s ("fernz"), herbs = h-er-b-s — s is letter
+        # index 4 in both.  purse's s is a true /s/ inside the 'se' ending
+        # and stays a plain mark.
+        "shifty_marks": {
+            "ferns": [{"index": 4, "says": "/z/"}],
+            "herbs": [{"index": 4, "says": "/z/"}],
+        },
         # Cleaned 2026-07-22: dropped stale/already-mastered entries that were
         # cluttering the Tricky Words strip (your, old, put, where, go, no,
         # what, was, you, her, she, my, the, to, I — all either mastered by L6
@@ -111,6 +120,12 @@ PURPLE_PURSE_STORY_BOOK1 = {
             "chur", "gern", "flur", "sperk", "thurn",
             "blerch", "grurn", "clurp", "skerb", "flerp",
         ],
+        # -ed band pruned to one printing per band 4+5 (Lynden 2026-08-23,
+        # specialist-reviewed): the three-ways guide teaches a RULE, so it
+        # prints in 4.5 (first -ed book) and 5.2 only.  Later books drop the
+        # band; the page-2 Future Sounds 'ed' cell still appears, and any
+        # awkward -ed word rides as a word-level note if needed.
+        "show_ed_guide": False,
         "questions": [
             {"category": "Finding", "text": "What was the girl looking for?"},
             {"category": "Thinking", "text": "Why did the girl feel hurt when the shopkeeper said no?"},

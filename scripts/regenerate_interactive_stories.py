@@ -82,7 +82,7 @@ GRAPHEMES: list[str] = [
     "cious", "tious",
     "tion", "ture", "able", "ible", "ous",
     "igh", "air", "ear", "oor", "ore", "ure", "ire", "are", "our",
-    "ay", "ee", "oo", "ar", "or", "ir", "ou", "oy",
+    "ay", "ee", "oo", "ar", "or", "ir", "ur", "er", "ou", "oy",
     "oa", "oi", "aw", "ai", "ea", "ie", "ue", "ew",
     "ow", "ey", "oe", "au",
     "sh", "ch", "th", "ng", "nk", "ck", "ff", "ll", "ss", "zz", "qu", "tch",
@@ -92,11 +92,24 @@ GRAPHEMES: list[str] = [
 ]
 
 
+# Words the greedy matcher gets wrong; mirrors v2_helpers.py (the PDF side).
+SPLIT_EXCEPTIONS: dict[str, list[str]] = {
+    "direction": ["d", "i", "r", "e", "c", "tion"],
+    "directions": ["d", "i", "r", "e", "c", "tion", "s"],
+}
+
+
 def split_graphemes(word: str) -> list[str]:
-    """Longest-match-first grapheme split. Mirrors InteractiveBookReader.splitDigraphs."""
+    """Longest-match-first grapheme split. Mirrors InteractiveBookReader.splitDigraphs,
+    then applies the two conventions the curated data uses on top of it:
+    magic-e collapses onto the vowel (came -> c, a-e, m) and a word-final
+    -se / -ve after a consonant or long-vowel unit is one silent-e unit
+    (purse -> p, ur, se), matching v2_helpers.split_into_phonemes."""
     out: list[str] = []
     i = 0
     lower = word.lower()
+    if lower in SPLIT_EXCEPTIONS:
+        return list(SPLIT_EXCEPTIONS[lower])
     while i < len(lower):
         matched = None
         for g in GRAPHEMES:
@@ -109,7 +122,41 @@ def split_graphemes(word: str) -> list[str]:
         else:
             out.append(lower[i])
             i += 1
+    # Magic-e: vowel + single consonant + final e (optionally + s / + d).
+    tail = 1 if len(out) >= 4 and out[-1] in ("s", "d") else 0
+    n = len(out) - tail
+    if (
+        n >= 3 and out[n - 1] == "e"
+        and len(out[n - 2]) == 1 and out[n - 2] not in "aeiou"
+        and len(out[n - 3]) == 1 and out[n - 3] in "aeiou"
+    ):
+        collapsed = out[: n - 3] + [f"{out[n - 3]}-e", out[n - 2]]
+        return collapsed + out[n:] if tail else collapsed
+    if (
+        len(out) >= 3 and out[-1] == "e" and out[-2] in ("s", "v")
+        and (len(out[-3]) >= 2 or out[-3] not in "aeiou")
+    ):
+        return out[:-2] + [out[-2] + "e"]
     return out
+
+
+# Legacy 6-level sub-level -> 8-level journey sub-level. tricky_words_by_level.json
+# was rebuilt to 8 levels (2026-06-09), so the tricky set must be looked up by
+# the JOURNEY level, not the legacy catalogue level the TS files are named by.
+LEGACY_TO_JOURNEY: dict[str, str] = {
+    "L1.1": "L1.1", "L1.2": "L1.2",
+    "L1.4": "L2.1", "L1.5": "L2.2", "L1.6": "L2.3", "L1.7": "L2.4", "L1.8": "L2.5",
+    "L1.3": "L3.1", "L1.9": "L3.2", "L1.10": "L3.3",
+    "L2.1": "L4.1", "L2.2": "L4.2", "L2.3": "L4.3", "L2.4": "L4.4", "L2.5": "L4.5", "L2.6": "L4.6",
+    "L3.1": "L5.1", "L3.2": "L5.2", "L3.3": "L5.3", "L3.4": "L5.4", "L3.5": "L5.5",
+    "L4.1": "L6.1", "L4.2": "L6.2", "L4.3": "L6.3", "L4.4": "L6.4",
+    "L5.1": "L7.1", "L5.2": "L7.2", "L5.3": "L7.3", "L5.4": "L7.4",
+    "L6.1": "L8.1", "L6.2": "L8.2", "L6.3": "L8.3", "L6.4": "L8.4",
+}
+
+
+def journey_level_of(sub_level: str) -> int:
+    return int(LEGACY_TO_JOURNEY.get(sub_level, sub_level).split(".")[0][1:])
 
 
 def load_tricky_cumulative(level: int) -> set[str]:
@@ -132,7 +179,18 @@ def load_python_pages(py_stem: str) -> list[str]:
 
 
 # Split on terminator + whitespace, so `'Yay!'` (no space after !) stays whole.
+def normalise_quotes(text: str) -> str:
+    """The interactive corpus writes dialogue in straight double quotes and
+    apostrophes as straight single quotes; the PDF sources have drifted to
+    curly single quotes for dialogue in places. Map: a curly apostrophe
+    between letters -> ', every other curly quote -> \"."""
+    text = re.sub(r"(?<=[A-Za-z])’(?=[A-Za-z])", "'", text)
+    return (text.replace("“", '"').replace("”", '"')
+                .replace("‘", '"').replace("’", '"'))
+
+
 def split_sentences(text: str) -> list[str]:
+    text = normalise_quotes(text)
     parts = re.split(r"(?<=[.!?])\s+", text.strip())
     return [p for p in parts if p]
 
@@ -326,7 +384,7 @@ def regenerate(sub_level: str) -> tuple[str, str]:
     """Return (old_block_excerpt, new_story_block) for review."""
     py_stem = PY_FILES[sub_level]
     level = int(sub_level.split(".")[0][1:])
-    tricky = load_tricky_cumulative(level)
+    tricky = load_tricky_cumulative(journey_level_of(sub_level))
     pages = load_python_pages(py_stem)
     new_entries: list[str] = []
     for idx, text in enumerate(pages, start=1):
@@ -338,7 +396,7 @@ def regenerate(sub_level: str) -> tuple[str, str]:
 def update_ts_file(sub_level: str, *, write: bool) -> str:
     py_stem = PY_FILES[sub_level]
     level = int(sub_level.split(".")[0][1:])
-    tricky = load_tricky_cumulative(level)
+    tricky = load_tricky_cumulative(journey_level_of(sub_level))
     pages = load_python_pages(py_stem)
 
     ts_path = TS_FILES[level]
