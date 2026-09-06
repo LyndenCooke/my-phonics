@@ -32,7 +32,7 @@ const L2_ALL_SOUNDS = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_1_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'The Night Light', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_1/cover.png' },
+  { type: 'cover', title: 'The Night Light', subtitle: 'Level 4 · Longer Sounds', imageUrl: '/illustrations/2_1/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ay', 'ee', 'igh'], allSounds: L2_ALL_SOUNDS },
 
@@ -249,7 +249,7 @@ export const BOOK_L2_1_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_2_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Hot Food, Cool Moon', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_2/cover.png' },
+  { type: 'cover', title: 'Hot Food, Cool Moon', subtitle: 'Level 4 · Longer Sounds', imageUrl: '/illustrations/2_2/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ow', 'oo'], allSounds: L2_ALL_SOUNDS },
 
@@ -426,7 +426,7 @@ export const BOOK_L2_2_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_3_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Morning on the Farm', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_3/cover.png' },
+  { type: 'cover', title: 'Morning on the Farm', subtitle: 'Level 4 · Longer Sounds', imageUrl: '/illustrations/2_3/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ar', 'or'], allSounds: L2_ALL_SOUNDS },
 
@@ -612,7 +612,7 @@ export const BOOK_L2_3_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_4_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'The Fair in the Air', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_4/cover.png' },
+  { type: 'cover', title: 'The Fair in the Air', subtitle: 'Level 4 · Longer Sounds', imageUrl: '/illustrations/2_4/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['air', 'ir'], allSounds: L2_ALL_SOUNDS },
 
@@ -873,7 +873,7 @@ export const BOOK_L2_4_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_5_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'Round and Round', subtitle: 'Level 2 · Longer Sounds', imageUrl: '/illustrations/2_5/cover.png' },
+  { type: 'cover', title: 'Round and Round', subtitle: 'Level 4 · Longer Sounds', imageUrl: '/illustrations/2_5/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ou', 'oy'], allSounds: L2_ALL_SOUNDS },
 
@@ -1107,7 +1107,7 @@ export const BOOK_L2_5_PAGES: InteractivePage[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const BOOK_L2_6_PAGES: InteractivePage[] = [
-  { type: 'cover', title: 'The Night Fair', subtitle: 'Level 2 · Review', imageUrl: '/illustrations/2_6/cover.png' },
+  { type: 'cover', title: 'The Night Fair', subtitle: 'Level 4 · Review', imageUrl: '/illustrations/2_6/cover.png' },
 
   { type: 'sound_grid', focusSounds: ['ay', 'ee', 'igh', 'ow', 'oo', 'ar', 'or', 'air', 'ir', 'ou', 'oy'], allSounds: L2_ALL_SOUNDS },
 

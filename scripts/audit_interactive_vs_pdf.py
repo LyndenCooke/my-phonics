@@ -119,8 +119,9 @@ def load_ts_pages(level: int, key: str) -> list[str] | None:
     sentences: list[str] = []
     for sm in STORY_SENTENCES_RE.finditer(block):
         raw = sm.group(1)
-        for q in re.finditer(r"'((?:\\'|[^'])*)'", raw):
-            sentences.append(q.group(1).replace("\\'", "'"))
+        # Sentence literals may be single- OR double-quoted ("The yak can't get it!").
+        for q in re.finditer(r"'((?:\\'|[^'])*)'|\"((?:\\\"|[^\"])*)\"", raw):
+            sentences.append((q.group(1) or q.group(2) or "").replace("\\'", "'"))
     return sentences
 
 
@@ -144,8 +145,14 @@ def main() -> int:
         # The TS often splits each python page into multiple `type: 'story'`
         # pages (e.g. two sentences split into two pages). So compare by
         # joined text rather than count.
-        py_text = " ".join(s.strip() for s in py_pages)
-        ts_text = " ".join(s.strip() for s in ts_pages)
+        # Curly quotes in the PDF sources vs straight quotes in the corpus are
+        # not drift - normalise before comparing.
+        def straight(t: str) -> str:
+            t = re.sub(r"(?<=[A-Za-z])\u2019(?=[A-Za-z])", "'", t)  # apostrophe inside a word
+            return (t.replace("\u201c", '"').replace("\u201d", '"')
+                     .replace("\u2018", '"').replace("\u2019", '"'))
+        py_text = " ".join(straight(s).strip() for s in py_pages)
+        ts_text = " ".join(straight(s).strip() for s in ts_pages)
         match = py_text == ts_text
         # Looser match: token equality ignoring whitespace/punct variations.
         def norm(s: str) -> str:
