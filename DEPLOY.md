@@ -62,18 +62,24 @@ myphonicsbooks.co.uk". Setup, once per environment:
    App name "MyPhonicsBooks", logo, support email, authorised domain
    `myphonicsbooks.co.uk`, links to `/privacy` and `/terms`. Publish the app
    (Testing mode caps you at 100 users and shows an "unverified" warning).
-2. **Credentials → Create credentials → OAuth client ID → Web application.**
-   Authorised JavaScript origins:
+2. **Credentials → the existing Web application client.** The Google
+   provider in Supabase already uses
+   `325732048807-gbibje74sh43lalnei3dm389dquoaf7p.apps.googleusercontent.com`
+   (it is public: it appears in the redirect Supabase sends to Google).
+   Reuse it rather than creating another. Add these authorised JavaScript
+   origins:
    `https://www.myphonicsbooks.co.uk`, `https://myphonicsbooks.co.uk`,
    `http://localhost:8080` (dev). Authorised redirect URIs: keep the existing
    `https://jfbgdeyjngvzpfucwpuk.supabase.co/auth/v1/callback` so the
-   fallback redirect flow still works. Copy the Client ID.
-3. **Supabase dashboard → Authentication → Providers → Google.** Keep the
-   provider enabled. Paste the same Client ID into **Authorised Client IDs**
-   (comma-separated list). Leave "Skip nonce checks" off: the button sends a
-   hashed nonce to Google and the raw nonce to Supabase.
-4. **Vercel → Environment Variables:** `VITE_GOOGLE_CLIENT_ID=<client id>`
-   for Production and Preview. Add it to the local `.env` too. Redeploy.
+   fallback redirect flow still works.
+3. **Supabase dashboard → Authentication → Providers → Google.** Nothing
+   to change: Supabase accepts ID tokens whose audience is the provider's
+   own Client ID. Leave "Skip nonce checks" off: the button sends a hashed
+   nonce to Google and the raw nonce to Supabase.
+4. **Vercel → Environment Variables:** `VITE_GOOGLE_CLIENT_ID` set to the
+   client ID above, for Production and Preview. Do this only after step 2,
+   otherwise Google rejects the button with "origin is not allowed" and
+   parents cannot sign in. Redeploy (merging the PR does this).
 
 Preview deploys on `*.vercel.app` will fall back to the redirect flow unless
 that preview origin is also added as an authorised JavaScript origin.
