@@ -13,6 +13,7 @@ The gitignored `.env` files that power local dev do not exist in a deployment.
 | Variable | Required | What it is |
 |---|---|---|
 | `VITE_SUPABASE_URL` | yes | Prod project: `https://jfbgdeyjngvzpfucwpuk.supabase.co` |
+| `VITE_GOOGLE_CLIENT_ID` | yes (Google sign-in on our domain) | Google Cloud OAuth "Web application" client ID. See "Google sign-in" below. Unset = falls back to the Supabase-hosted redirect flow. |
 | `SUPABASE_SERVICE_KEY` | yes | Service-role key. Books DB (`custom_books`, `custom_book_orders`) + Storage uploads. |
 | `OPENAI_API_KEY` | yes | Story writing, direction, QA, and gpt-image-2 art. The default engine. |
 | `STRIPE_SECRET_KEY` | yes (payments) | `sk_live_...` — without it checkout 500s; the voucher path still works. |
@@ -49,3 +50,35 @@ Anything the function reads at runtime must be traced into the bundle —
 reference art + `green_words.json` word bank) and `myphonics_books/data/**`
 (phonics JSON). If you add a new `readFileSync`, add its file there too;
 `myphonics_books/output/**` is gitignored and can NEVER be read in prod.
+
+## Google sign-in (own domain, no Supabase hostname on the consent screen)
+
+`src/components/GoogleSignInButton.tsx` renders Google Identity Services on
+our origin and exchanges the returned ID token with
+`supabase.auth.signInWithIdToken`. The parent sees "continue to
+myphonicsbooks.co.uk". Setup, once per environment:
+
+1. **Google Cloud Console → APIs & Services → OAuth consent screen.**
+   App name "MyPhonicsBooks", logo, support email, authorised domain
+   `myphonicsbooks.co.uk`, links to `/privacy` and `/terms`. Publish the app
+   (Testing mode caps you at 100 users and shows an "unverified" warning).
+2. **Credentials → Create credentials → OAuth client ID → Web application.**
+   Authorised JavaScript origins:
+   `https://www.myphonicsbooks.co.uk`, `https://myphonicsbooks.co.uk`,
+   `http://localhost:8080` (dev). Authorised redirect URIs: keep the existing
+   `https://jfbgdeyjngvzpfucwpuk.supabase.co/auth/v1/callback` so the
+   fallback redirect flow still works. Copy the Client ID.
+3. **Supabase dashboard → Authentication → Providers → Google.** Keep the
+   provider enabled. Paste the same Client ID into **Authorised Client IDs**
+   (comma-separated list). Leave "Skip nonce checks" off: the button sends a
+   hashed nonce to Google and the raw nonce to Supabase.
+4. **Vercel → Environment Variables:** `VITE_GOOGLE_CLIENT_ID=<client id>`
+   for Production and Preview. Add it to the local `.env` too. Redeploy.
+
+Preview deploys on `*.vercel.app` will fall back to the redirect flow unless
+that preview origin is also added as an authorised JavaScript origin.
+
+Native (Capacitor) builds always use the redirect fallback: the GIS script
+does not run inside a WebView. Native Google sign-in needs a plugin that
+returns an ID token, which then goes through the same `signInWithIdToken`
+call.
