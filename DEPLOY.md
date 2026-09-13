@@ -13,7 +13,8 @@ The gitignored `.env` files that power local dev do not exist in a deployment.
 | Variable | Required | What it is |
 |---|---|---|
 | `VITE_SUPABASE_URL` | yes | Prod project: `https://jfbgdeyjngvzpfucwpuk.supabase.co` |
-| `VITE_GOOGLE_CLIENT_ID` | yes (Google sign-in on our domain) | Google Cloud OAuth "Web application" client ID. See "Google sign-in" below. Unset = falls back to the Supabase-hosted redirect flow. |
+| `VITE_GOOGLE_CLIENT_ID` | committed in `.env` | Google Cloud OAuth "Web application" client ID (public). See "Google sign-in" below. Unset = falls back to the Supabase-hosted redirect flow. |
+| `VITE_GOOGLE_ORIGIN_HOSTS` | committed in `.env` | Comma-separated hostnames registered as Authorised JavaScript origins on that client. The Google button only renders on these hosts; everywhere else uses the redirect fallback. |
 | `SUPABASE_SERVICE_KEY` | yes | Service-role key. Books DB (`custom_books`, `custom_book_orders`) + Storage uploads. |
 | `OPENAI_API_KEY` | yes | Story writing, direction, QA, and gpt-image-2 art. The default engine. |
 | `STRIPE_SECRET_KEY` | yes (payments) | `sk_live_...` — without it checkout 500s; the voucher path still works. |
@@ -76,13 +77,14 @@ myphonicsbooks.co.uk". Setup, once per environment:
    to change: Supabase accepts ID tokens whose audience is the provider's
    own Client ID. Leave "Skip nonce checks" off: the button sends a hashed
    nonce to Google and the raw nonce to Supabase.
-4. **Vercel → Environment Variables:** `VITE_GOOGLE_CLIENT_ID` set to the
-   client ID above, for Production and Preview. Do this only after step 2,
-   otherwise Google rejects the button with "origin is not allowed" and
-   parents cannot sign in. Redeploy (merging the PR does this).
+4. **Nothing to set in Vercel.** Both variables are committed in `.env`
+   and Vite reads them at build time. If you add a new origin in Google
+   (e.g. `http://localhost:8080` for dev), add its hostname to
+   `VITE_GOOGLE_ORIGIN_HOSTS` too. A hostname in that list that Google does
+   not know about makes the button fail with "origin is not allowed".
 
-Preview deploys on `*.vercel.app` will fall back to the redirect flow unless
-that preview origin is also added as an authorised JavaScript origin.
+Preview deploys on `*.vercel.app` fall back to the redirect flow because
+their hostnames are not in `VITE_GOOGLE_ORIGIN_HOSTS`.
 
 Native (Capacitor) builds always use the redirect fallback: the GIS script
 does not run inside a WebView. Native Google sign-in needs a plugin that

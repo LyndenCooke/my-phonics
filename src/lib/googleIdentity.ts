@@ -17,6 +17,24 @@
 
 export const GOOGLE_CLIENT_ID: string | undefined = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
+/**
+ * Hostnames registered as Authorised JavaScript origins on the Google client.
+ * Google refuses the button anywhere else ("origin is not allowed"), and that
+ * refusal is not detectable from the page, so we only offer GIS on hosts we
+ * know are registered. Preview deploys and unlisted dev hosts get the
+ * redirect fallback. Empty = no restriction.
+ */
+const ORIGIN_HOSTS: string[] = (import.meta.env.VITE_GOOGLE_ORIGIN_HOSTS ?? '')
+  .split(',')
+  .map((h: string) => h.trim().toLowerCase())
+  .filter(Boolean);
+
+export function isGoogleIdentityOrigin(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (ORIGIN_HOSTS.length === 0) return true;
+  return ORIGIN_HOSTS.includes(window.location.hostname.toLowerCase());
+}
+
 const GSI_SRC = 'https://accounts.google.com/gsi/client';
 
 /** Shape of the GIS credential callback payload (subset we use). */

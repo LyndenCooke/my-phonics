@@ -4,6 +4,7 @@ import { isNative } from '@/lib/native';
 import {
   GOOGLE_CLIENT_ID,
   createNoncePair,
+  isGoogleIdentityOrigin,
   loadGoogleIdentity,
   type GoogleCredentialResponse,
 } from '@/lib/googleIdentity';
@@ -16,8 +17,9 @@ interface Props {
   /**
    * Legacy path: supabase.auth.signInWithOAuth redirect. Used when the
    * Google client ID is not configured, on native builds (the GIS script
-   * does not run inside a Capacitor WebView), or when the GIS script
-   * cannot load at all.
+   * does not run inside a Capacitor WebView), on hosts not registered as
+   * JavaScript origins with Google (preview deploys), or when the GIS
+   * script cannot load at all.
    */
   onFallback: () => void;
   disabled?: boolean;
@@ -36,7 +38,9 @@ type State = 'loading' | 'gis' | 'fallback';
  */
 export default function GoogleSignInButton({ onSignedIn, onError, onFallback, disabled }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [state, setState] = useState<State>(() => (GOOGLE_CLIENT_ID && !isNative ? 'loading' : 'fallback'));
+  const [state, setState] = useState<State>(() =>
+    GOOGLE_CLIENT_ID && !isNative && isGoogleIdentityOrigin() ? 'loading' : 'fallback',
+  );
   const [exchanging, setExchanging] = useState(false);
   // Keep the latest callbacks without re-initialising GIS on every render.
   const callbacks = useRef({ onSignedIn, onError });
