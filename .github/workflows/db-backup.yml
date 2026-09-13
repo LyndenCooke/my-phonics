@@ -1,0 +1,99 @@
+# Weekly encrypted Postgres backup of the production Supabase project.
+#
+# Why: the Supabase Free plan has no daily backups, and public.purchases +
+# public.user_books are the ledger of who paid for what. Stripe holds the
+# payments but not the entitlement mapping, so a lost database would mean
+# rebuilding that by hand.
+#
+# Privacy: the dumps contain parents' emails and children's first names, so
+# nothing leaves the runner in the clear. Every file is encrypted with `age`
+# to a public key before upload; only the matching private key (kept off
+# GitHub, in your password manager) can open them. GitHub only ever stores
+# ciphertext.
+#
+# What it dumps (each gzipped, then encrypted, uploaded as a workflow
+# artifact kept for 90 days):
+#   public-schema.sql.gz.age   schema + data for every public table
+#   auth-data.sql.gz.age       data only for auth.users and auth.identities
+#   storage-data.sql.gz.age    data only for storage.buckets and storage.objects
+#                              (object metadata; files stay in Supabase Storage)
+#
+# Setup (once): Repository → Settings → Secrets and variables → Actions:
+#   SUPABASE_DB_URL        the "Session pooler" connection string from the
+#                          Supabase dashboard (Connect → Session pooler, port
+#                          5432, user postgres.<project-ref>). Not the direct
+#                          host (IPv6-only, unreachable from runners) and not
+#                          the transaction pooler (6543; pg_dump needs a session).
+#   BACKUP_AGE_PUBLIC_KEY  the "age1..." public key from `age-keygen`. Keep the
+#                          matching private key out of GitHub.
+#
+# Restore: see the "Database backups" section of DEPLOY.md.
+
+name: Weekly database backup
+
+on:
+  schedule:
+    - cron: "0 3 * * 1" # Mondays 03:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check the secrets are present
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          BACKUP_AGE_PUBLIC_KEY: ${{ secrets.BACKUP_AGE_PUBLIC_KEY }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::SUPABASE_DB_URL secret is not set. See .github/workflows/db-backup.yml for setup."
+            exit 1
+          fi
+          case "$BACKUP_AGE_PUBLIC_KEY" in
+            age1*) ;;
+            *) echo "::error::BACKUP_AGE_PUBLIC_KEY secret is missing or is not an age public key."; exit 1 ;;
+          esac
+
+      - name: Install age
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq age
+
+      - name: Dump and encrypt the database
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          BACKUP_AGE_PUBLIC_KEY: ${{ secrets.BACKUP_AGE_PUBLIC_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p backup
+          dump() {
+            # $1 = output name, remaining args = pg_dump options.
+            # postgres:17 matches the server major version; pg_dump must not be older.
+            # The plaintext only ever exists inside this pipe.
+            docker run --rm -e PGURL="$SUPABASE_DB_URL" postgres:17 \
+              pg_dump "$PGURL" --no-owner --no-privileges "${@:2}" \
+              | gzip -9 \
+              | age -r "$BACKUP_AGE_PUBLIC_KEY" -o "backup/$1.sql.gz.age"
+          }
+          dump public-schema --schema=public
+          dump auth-data --data-only --table=auth.users --table=auth.identities
+          dump storage-data --data-only --table=storage.buckets --table=storage.objects
+          ls -la backup
+          # An encrypted dump under 1 KB means pg_dump wrote nothing useful.
+          for f in backup/*.age; do
+            size=$(stat -c %s "$f")
+            if [ "$size" -lt 1024 ]; then
+              echo "::error::$f is only $size bytes; dump failed"
+              exit 1
+            fi
+          done
+
+      - name: Upload the encrypted backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup-${{ github.run_id }}
+          path: backup/
+          retention-days: 90
+          if-no-files-found: error
