@@ -90,3 +90,63 @@ Native (Capacitor) builds always use the redirect fallback: the GIS script
 does not run inside a WebView. Native Google sign-in needs a plugin that
 returns an ID token, which then goes through the same `signInWithIdToken`
 call.
+
+## Database backups (GitHub Actions, weekly)
+
+`.github/workflows/db-backup.yml` runs every Monday 03:00 UTC (and on demand
+from the Actions tab → "Weekly database backup" → Run workflow). It uses
+`pg_dump` from the `postgres:17` image, gzips each dump, encrypts it with
+[age](https://age-encryption.org) to your public key, and uploads the three
+ciphertext files as a workflow artifact kept for 90 days:
+`public-schema.sql.gz.age` (schema + data for every public table),
+`auth-data.sql.gz.age` (auth.users and auth.identities rows) and
+`storage-data.sql.gz.age` (bucket and object metadata). The dumps hold
+parents' emails and children's names, so GitHub only ever sees ciphertext.
+
+Setup once:
+
+1. On your own machine: `brew install age` (or `apt install age`), then
+   `age-keygen -o mpb-backup-key.txt`. Put the whole file in your password
+   manager. Never commit it or paste it into GitHub. The command prints the
+   public key (`age1...`).
+2. Repository → Settings → Secrets and variables → Actions:
+   - `BACKUP_AGE_PUBLIC_KEY` = that `age1...` public key.
+   - `SUPABASE_DB_URL` = the **Session pooler** connection string from the
+     Supabase dashboard (Connect → Session pooler, port 5432, user
+     `postgres.<project-ref>`). The direct `db.<ref>.supabase.co` host is
+     IPv6-only and unreachable from GitHub runners; the transaction pooler
+     (6543) cannot run `pg_dump`.
+3. Actions tab → Weekly database backup → Run workflow, and check an
+   artifact appears.
+
+Restore into a fresh project (order matters: auth users first so the
+`profiles.id` foreign keys resolve):
+
+```sh
+age -d -i mpb-backup-key.txt auth-data.sql.gz.age     | gunzip -c | psql "$NEW_DB_URL"
+age -d -i mpb-backup-key.txt public-schema.sql.gz.age | gunzip -c | psql "$NEW_DB_URL"
+age -d -i mpb-backup-key.txt storage-data.sql.gz.age  | gunzip -c | psql "$NEW_DB_URL"
+```
+
+Then re-create the Google provider, SMTP and edge-function secrets in the new
+project's dashboard: none of those live in the database.
+
+## Auth email via Resend (custom SMTP)
+
+Supabase's built-in sender is rate-limited to a handful of messages an hour
+(lower still on the Free plan), so confirmation and password-reset emails go
+out through Resend instead. Dashboard → Project Settings → Authentication →
+SMTP Settings → Enable Custom SMTP:
+
+| Field | Value |
+|---|---|
+| Sender email | `hello@myphonicsbooks.co.uk` (domain already verified in Resend; `books@` is used by the forge) |
+| Sender name | `MyPhonicsBooks` |
+| Host | `smtp.resend.com` |
+| Port | `465` |
+| Username | `resend` |
+| Password | a Resend API key with sending access, created just for this and stored only in the Supabase dashboard |
+
+After saving, raise Authentication → Rate Limits → "Rate limit for sending
+emails" from the default to about 30 an hour, then test with Forgot password
+on the live site.

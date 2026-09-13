@@ -490,7 +490,7 @@ export default function Index() {
               </p>
               <div className="mt-2 flex flex-wrap gap-3">
                 <button
-                  onClick={() => navigate(`/auth?redirect=${encodeURIComponent('/library')}`)}
+                  onClick={() => navigate(`/auth?mode=signup&redirect=${encodeURIComponent('/library')}`)}
                   className="text-xs font-bold text-primary-ink hover:underline"
                 >
                   Sign up free →

@@ -113,7 +113,7 @@ export default function LandingPage() {
         <LandingTestimonials />
         <LevelJourney />
         <FeatureShowcase />
-        <FreeForAll onSignUp={() => navigate('/auth')} onSupport={() => navigate('/support')} />
+        <FreeForAll onSignUp={() => navigate('/auth?mode=signup')} onSupport={() => navigate('/support')} />
         <FooterCTA onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
       </main>
       <Footer />
