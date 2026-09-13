@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { markSupportPromptPending } from '@/lib/support';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 type Mode = 'signin' | 'signup' | 'forgot';
 
@@ -24,12 +25,19 @@ export default function Auth() {
   // pick up right where they left off instead of losing their in-progress book.
   const redirectTo = searchParams.get('redirect') || '/library';
 
-  // ── Google OAuth ─────────────────────────────────────────────────────
-  // Supabase handles the redirect dance. Successful sign-in lands the user
-  // back on `redirectTo` where AuthContext picks up the session. Requires the
-  // Google provider to be enabled in the Supabase dashboard with redirect
-  // URLs set to the production + preview Vercel domains.
-  const handleGoogle = async () => {
+  // ── Google sign-in ───────────────────────────────────────────────────
+  // Primary path is <GoogleSignInButton>: Google Identity Services on our
+  // own origin, ID token exchanged with supabase.auth.signInWithIdToken.
+  // The parent sees "continue to myphonicsbooks.co.uk", not the Supabase
+  // project hostname. AuthContext still picks the session up through
+  // onAuthStateChange, so nothing downstream changes.
+  //
+  // handleGoogleRedirect is the legacy fallback (Supabase-hosted OAuth
+  // redirect). It runs when VITE_GOOGLE_CLIENT_ID is unset, on native
+  // builds, or if the Google script fails to load. Requires the Google
+  // provider to be enabled in the Supabase dashboard with redirect URLs set
+  // to the production + preview Vercel domains.
+  const handleGoogleRedirect = async () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -114,21 +122,12 @@ export default function Auth() {
          *  is faster for most parents — fewer passwords to remember). */}
         {mode !== 'forgot' && (
           <>
-            <button
-              type="button"
-              onClick={handleGoogle}
+            <GoogleSignInButton
               disabled={submitting}
-              className="w-full py-3 rounded-xl bg-white border-2 border-border hover:border-primary/40 text-foreground font-bold text-sm shadow-sm hover:shadow flex items-center justify-center gap-2.5 transition-all disabled:opacity-60"
-            >
-              {/* Google "G" mark — inline SVG to avoid an extra dep */}
-              <svg className="w-4 h-4" viewBox="0 0 48 48" aria-hidden="true">
-                <path fill="#FFC107" d="M43.61 20.08H42V20H24v8h11.3c-1.65 4.66-6.08 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20c0-1.34-.14-2.65-.39-3.92z"/>
-                <path fill="#FF3D00" d="M6.31 14.69l6.57 4.81C14.66 15.13 18.97 12 24 12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 16.32 4 9.66 8.34 6.31 14.69z"/>
-                <path fill="#4CAF50" d="M24 44c5.17 0 9.86-1.98 13.41-5.21l-6.19-5.24C29.21 35.09 26.71 36 24 36c-5.2 0-9.62-3.32-11.28-7.96l-6.52 5.02C9.5 39.55 16.23 44 24 44z"/>
-                <path fill="#1976D2" d="M43.61 20.08H42V20H24v8h11.3c-.79 2.24-2.23 4.16-4.09 5.55l6.19 5.24C40.99 35.27 44 30 44 24c0-1.34-.14-2.65-.39-3.92z"/>
-              </svg>
-              Continue with Google
-            </button>
+              onFallback={handleGoogleRedirect}
+              onSignedIn={() => navigate(redirectTo)}
+              onError={(message) => toast({ title: 'Google sign-in failed', description: message, variant: 'destructive' })}
+            />
 
             <div className="relative my-1">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
