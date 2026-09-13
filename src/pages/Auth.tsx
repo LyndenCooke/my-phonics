@@ -10,7 +10,10 @@ import GoogleSignInButton from '@/components/GoogleSignInButton';
 type Mode = 'signin' | 'signup' | 'forgot';
 
 export default function Auth() {
-  const [mode, setMode] = useState<Mode>('signin');
+  const [searchParams] = useSearchParams();
+  // "Create a free account" buttons send ?mode=signup so a new parent lands
+  // on the Create Account form, not "Welcome back! Sign In".
+  const [mode, setMode] = useState<Mode>(() => (searchParams.get('mode') === 'signup' ? 'signup' : 'signin'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -19,7 +22,6 @@ export default function Auth() {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [searchParams] = useSearchParams();
   // Where to land after a successful sign-in — e.g. the World of Books wizard
   // sends guests here with ?redirect=/create-book?resume=1&want=world so they
   // pick up right where they left off instead of losing their in-progress book.
