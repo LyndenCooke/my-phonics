@@ -1,3 +1,4 @@
 jinja2>=3.1,<4
 Pillow>=10.0,<11
 qrcode[pil]>=7.4,<8
+pypdf>=5,<7

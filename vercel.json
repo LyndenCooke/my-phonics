@@ -8,9 +8,17 @@
       "maxDuration": 300,
       "includeFiles": "myphonics_books/{scripts,core,templates,assets/fonts,data}/**",
       "excludeFiles": "{**/node_modules/**,.git/**,dist/**,public/**,src/**,marketing/**,worksheet-forge/**,worksheet-engine/**,server/worksheet-forge/**,myphonics_books/output/**,myphonics_books/_archive/**,myphonics_books/phonics-fun-hub/**}"
+    },
+    "api/printable.py": {
+      "maxDuration": 30,
+      "includeFiles": "public/book-pdfs/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/p/:book/:page",
+      "destination": "/api/printable?book=:book&page=:page"
+    },
     {
       "source": "/book-pdfs/:path*",
       "destination": "/book-pdfs/:path*"
