@@ -5,19 +5,20 @@ curriculum order, with no one touching it.
 
 ## What goes out
 
-`marketing/social/queue.json` — 441 posts, built by `build_queue.py`:
+`marketing/social/queue.json` — 164 posts, built by `build_queue.py`:
 
 | kind | count | source |
 |---|---|---|
 | book | 33 | Supabase Storage, public bucket `book-pdfs/a5/<id>.pdf` (the published books are not in git or on Vercel: `*.pdf` is ignored) |
-| page | 310 | every activity page inside those books (Our Sounds, Story Words, Sound Spotlight, Trace & Form, Alien Words, sequencing, Tell the Story, Talk About It, Grammar Spotlight, Can You Read These?, Shifty Sounds), served by `api/printable.py` at `/p/<book>/<page>` |
-| pack | 33 | all of one book's activity pages in one PDF: `/p/<book>/2-3,10-15` (explicit page list) |
-| worksheet | 65 | `public/worksheets/**` (git-tracked, re-included in `.vercelignore`) |
+| worksheet (from books) | 66 | two per book, composed from its activity pages by `compose_worksheets`: the **Sounds worksheet** (Sound Spotlight → Trace & Form → Alien Words → Can You Read These? → Shifty Sounds, whichever the book has) and the **Story worksheet** (sequencing → Tell the Story → Your Turn to Write → Talk About It → Grammar Spotlight). Served as one PDF by `api/printable.py` at `/p/<book>/<page list>` |
+| worksheet (designed) | 65 | `public/worksheets/**` (git-tracked, re-included in `.vercelignore`) |
 
-Order, per book: the book, then its activity pages in the order they appear
-(sounds, words, story practice, talk), then the pack. Books run Level 1 to 8,
-with each level's worksheets after its books. So a parent following the Page
-sees a lesson sequence, not a random pile.
+A worksheet is a task sequence with one purpose. Reference pages (Our Sounds,
+Story Words) are not worksheets and are never posted on their own; the book
+post tells parents to use them before reading.
+
+Order, per book: the book, its sounds worksheet, its story worksheet. Books
+run Level 1 to 8, with each level's designed worksheets after its books.
 
 Every caption states an OBJECTIVE and a HOW TO USE line (see `PAGE_TYPES` and
 `worksheet_objective` in `build_queue.py`), then the print link and sign-off.
