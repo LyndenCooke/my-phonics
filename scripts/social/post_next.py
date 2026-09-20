@@ -43,7 +43,13 @@ def load(path, default):
 
 def render_preview(item):
     """First page (or the specific activity page) as a JPG, ~1200px tall."""
-    doc = fitz.open(os.path.join(ROOT, item["preview_pdf"]))
+    local = os.path.join(ROOT, item["preview_pdf"])
+    if os.path.exists(local):
+        doc = fitz.open(local)
+    else:
+        # Book PDFs are git-ignored (*.pdf) — the runner fetches the published copy.
+        with urllib.request.urlopen(item["pdf_url"], timeout=60) as r:
+            doc = fitz.open(stream=r.read(), filetype="pdf")
     page = doc[item["preview_page"] - 1]
     pix = page.get_pixmap(dpi=150)
     pix.save(PREVIEW)

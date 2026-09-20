@@ -21,6 +21,8 @@ import fitz  # PyMuPDF
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BASE = "https://myphonicsbooks.vercel.app"
+# Published books are in Supabase Storage, not the Vercel deploy (.vercelignore: *.pdf).
+BOOK_URL = "https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs/a5/{id}.pdf"
 OUT = os.path.join(ROOT, "marketing", "social", "queue.json")
 
 LEVEL_NAMES = {1: "Ditties", 2: "First Sounds", 3: "Special Friends", 4: "Longer Sounds",
@@ -119,26 +121,26 @@ def build():
         # 1) the books themselves
         for b in lvl_books:
             add(kind="book", level=lvl, title=b["title"], sounds=b["sounds"],
-                url=f"{BASE}/book-pdfs/{b['file_id']}.pdf", preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=1,
+                url=BOOK_URL.format(id=b["file_id"]), preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=1, pdf_url=BOOK_URL.format(id=b["file_id"]),
                 caption=(f"FREE phonics book: {b['title']}\n"
                          f"{level_line(lvl)} · sounds: {b['sounds']}\n"
                          f"One of 33 decodable books that go in order from first sounds to fluent reading. Book {b['idx']} of Level {lvl}.\n"
-                         f"Print it: {BASE}/book-pdfs/{b['file_id']}.pdf\n{SIGN_OFF}"))
+                         f"Print it: {BOOK_URL.format(id=b['file_id'])}\n{SIGN_OFF}"))
         # 2) every activity page inside those books, one per post
         for b in lvl_books:
             for page_no, label, blurb in activity_pages(b):
                 url = f"{BASE}/p/{b['file_id']}/{page_no}"
                 add(kind="page", level=lvl, title=f"{label} — {b['title']}", sounds=b["sounds"],
-                    url=url, preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=page_no,
+                    url=url, preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=page_no, pdf_url=BOOK_URL.format(id=b["file_id"]),
                     caption=(f"FREE phonics printable: {label} from {b['title']}\n"
                              f"{level_line(lvl)} · sounds: {b['sounds']}\n"
                              f"{blurb}\n"
                              f"Print it: {url}\n"
-                             f"Want the whole book? {BASE}/book-pdfs/{b['file_id']}.pdf\n{SIGN_OFF}"))
+                             f"Want the whole book? {BOOK_URL.format(id=b['file_id'])}\n{SIGN_OFF}"))
         # 3) worksheets for the level
         for s in [w for w in worksheets() if w["level"] == lvl]:
             add(kind="worksheet", level=lvl, title=s["name"], sounds=s["pack"],
-                url=s["url"], preview_pdf=s["local"], preview_page=1,
+                url=s["url"], preview_pdf=s["local"], preview_page=1, pdf_url=s["url"],
                 caption=(f"FREE phonics worksheet: {s['name']}\n"
                          f"{level_line(lvl)} · {s['pack']}\n"
                          f"Matches the books at this level, so the practice uses only sounds your child has met.\n"
