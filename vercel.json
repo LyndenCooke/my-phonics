@@ -11,7 +11,7 @@
     },
     "api/printable.py": {
       "maxDuration": 30,
-      "includeFiles": "public/book-pdfs/**"
+      "excludeFiles": "{**/node_modules/**,.git/**,dist/**,public/**,src/**,marketing/**,myphonics_books/**,worksheet-forge/**,worksheet-engine/**,server/**,scripts/**,api/forge/**}"
     }
   },
   "rewrites": [
