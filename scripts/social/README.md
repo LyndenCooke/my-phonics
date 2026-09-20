@@ -5,17 +5,29 @@ curriculum order, with no one touching it.
 
 ## What goes out
 
-`marketing/social/queue.json` — 408 posts, built by `build_queue.py`:
+`marketing/social/queue.json` — 441 posts, built by `build_queue.py`:
 
 | kind | count | source |
 |---|---|---|
-| book | 33 | `public/book-pdfs/*.pdf` |
-| page | 310 | every activity page inside those books (Our Sounds, Story Words, Sound Spotlight, Trace & Form, Alien Words, sequencing, Tell the Story, Talk About It, Grammar Spotlight, Can You Read These?, Shifty Sounds), served one page at a time by `api/printable.py` at `/p/<book>/<page>` |
-| worksheet | 65 | `public/worksheets/**` |
+| book | 33 | Supabase Storage, public bucket `book-pdfs/a5/<id>.pdf` (the published books are not in git or on Vercel: `*.pdf` is ignored) |
+| page | 310 | every activity page inside those books (Our Sounds, Story Words, Sound Spotlight, Trace & Form, Alien Words, sequencing, Tell the Story, Talk About It, Grammar Spotlight, Can You Read These?, Shifty Sounds), served by `api/printable.py` at `/p/<book>/<page>` |
+| pack | 33 | all of one book's activity pages in one PDF: `/p/<book>/2-3,10-15` (explicit page list) |
+| worksheet | 65 | `public/worksheets/**` (git-tracked, re-included in `.vercelignore`) |
 
-Order: Level 1 books, then their activity pages, then Level 1 worksheets, then
-Level 2, and so on to Level 8. Each item has a paste-ready caption that names
-the level out of 8, the sounds, and the sign-off pointing to the Page.
+Order, per book: the book, then its activity pages in the order they appear
+(sounds, words, story practice, talk), then the pack. Books run Level 1 to 8,
+with each level's worksheets after its books. So a parent following the Page
+sees a lesson sequence, not a random pile.
+
+Every caption states an OBJECTIVE and a HOW TO USE line (see `PAGE_TYPES` and
+`worksheet_objective` in `build_queue.py`), then the print link and sign-off.
+
+## The creative
+
+`creative.py` wraps the printable's page in a branded 1080x1350 card: level
+pill, activity name, the book it belongs to, the page in a white card, the
+objective, and the logo lockup. Font: `marketing/social/assets/Outfit.ttf`
+(the site's display font, OFL).
 
 Rebuild after adding books or worksheets:
 

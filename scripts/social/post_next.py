@@ -51,9 +51,11 @@ def render_preview(item):
         with urllib.request.urlopen(item["pdf_url"], timeout=60) as r:
             doc = fitz.open(stream=r.read(), filetype="pdf")
     page = doc[item["preview_page"] - 1]
-    pix = page.get_pixmap(dpi=150)
-    pix.save(PREVIEW)
-    return PREVIEW
+    png = page.get_pixmap(dpi=150).tobytes("png")
+    # Branded 4:5 card around the page (level pill, activity name, objective, logo).
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from creative import render_creative
+    return render_creative(item, png, PREVIEW)
 
 
 def post_photo(page_id, token, caption, jpg_path):
