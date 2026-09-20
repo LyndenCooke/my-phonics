@@ -1,0 +1,2850 @@
+[
+ {
+  "kind": "book",
+  "level": 1,
+  "book": {
+   "level": 1,
+   "idx": 1,
+   "sub": "L1.1",
+   "title": "Tap! Tap! Tap!",
+   "slug": "tap-tap-tap",
+   "file_id": "1_1",
+   "sounds": [
+    "s",
+    "a",
+    "t",
+    "p",
+    "i",
+    "n"
+   ]
+  },
+  "folder": "L1/1_1_tap_tap_tap",
+  "label": "More practice",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "s",
+    "stem": "01_assess_s",
+    "title": "Check-up: s",
+    "objective": "Show the sound s is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 1 sound 's'",
+    "seed": 8
+   },
+   {
+    "intent": "draw",
+    "grapheme": "s",
+    "stem": "02_draw_s",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 1 sound 's'",
+    "seed": 9
+   },
+   {
+    "intent": "game",
+    "grapheme": "s",
+    "stem": "03_game_s",
+    "title": "Story game: Tap! Tap! Tap!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 1 sound 's'",
+    "seed": 10
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 1,
+  "book": {
+   "level": 1,
+   "idx": 2,
+   "sub": "L1.2",
+   "title": "The Mud on the Dog",
+   "slug": "the-mud-on-the-dog",
+   "file_id": "1_2",
+   "sounds": [
+    "m",
+    "d",
+    "g",
+    "o"
+   ]
+  },
+  "folder": "L1/1_2_the_mud_on_the_dog",
+  "label": "More practice",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "m",
+    "stem": "01_assess_m",
+    "title": "Check-up: m",
+    "objective": "Show the sound m is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 1 sound 'm'",
+    "seed": 8
+   },
+   {
+    "intent": "draw",
+    "grapheme": "m",
+    "stem": "02_draw_m",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 1 sound 'm'",
+    "seed": 9
+   },
+   {
+    "intent": "game",
+    "grapheme": "m",
+    "stem": "03_game_m",
+    "title": "Story game: The Mud on the Dog",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 1 sound 'm'",
+    "seed": 10
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 2,
+  "book": {
+   "level": 2,
+   "idx": 1,
+   "sub": "L2.1",
+   "title": "The Red Socks",
+   "slug": "the-red-socks",
+   "file_id": "1_4",
+   "sounds": [
+    "c",
+    "k",
+    "ck",
+    "e"
+   ]
+  },
+  "folder": "L2/1_4_the_red_socks",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "c",
+    "stem": "01_handwriting_c",
+    "title": "Trace and write c",
+    "objective": "Form the sound c correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'c'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "k",
+    "stem": "02_handwriting_k",
+    "title": "Trace and write k",
+    "objective": "Form the sound k correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'k'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "ck",
+    "stem": "03_handwriting_ck",
+    "title": "Trace and write ck",
+    "objective": "Form the sound ck correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'ck'",
+    "seed": 10
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "e",
+    "stem": "04_handwriting_e",
+    "title": "Trace and write e",
+    "objective": "Form the sound e correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'e'",
+    "seed": 11
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "c",
+    "stem": "05_segmenting_c",
+    "title": "Hear and build c",
+    "objective": "Hear every sound in a c word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 2 sound 'c'",
+    "seed": 12
+   },
+   {
+    "intent": "draw",
+    "grapheme": "c",
+    "stem": "06_draw_c",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 2 sound 'c'",
+    "seed": 13
+   },
+   {
+    "intent": "game",
+    "grapheme": "c",
+    "stem": "07_game_c",
+    "title": "Story game: The Red Socks",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 2 sound 'c'",
+    "seed": 14
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 2,
+  "book": {
+   "level": 2,
+   "idx": 2,
+   "sub": "L2.2",
+   "title": "Run, Pup, Run!",
+   "slug": "run-pup-run",
+   "file_id": "1_5",
+   "sounds": [
+    "u",
+    "r",
+    "h",
+    "b"
+   ]
+  },
+  "folder": "L2/1_5_run_pup_run",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "u",
+    "stem": "01_handwriting_u",
+    "title": "Trace and write u",
+    "objective": "Form the sound u correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'u'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "r",
+    "stem": "02_handwriting_r",
+    "title": "Trace and write r",
+    "objective": "Form the sound r correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'r'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "h",
+    "stem": "03_handwriting_h",
+    "title": "Trace and write h",
+    "objective": "Form the sound h correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'h'",
+    "seed": 10
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "b",
+    "stem": "04_handwriting_b",
+    "title": "Trace and write b",
+    "objective": "Form the sound b correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'b'",
+    "seed": 11
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "u",
+    "stem": "05_segmenting_u",
+    "title": "Hear and build u",
+    "objective": "Hear every sound in a u word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 2 sound 'u'",
+    "seed": 12
+   },
+   {
+    "intent": "draw",
+    "grapheme": "u",
+    "stem": "06_draw_u",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 2 sound 'u'",
+    "seed": 13
+   },
+   {
+    "intent": "game",
+    "grapheme": "u",
+    "stem": "07_game_u",
+    "title": "Story game: Run, Pup, Run!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 2 sound 'u'",
+    "seed": 14
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 2,
+  "book": {
+   "level": 2,
+   "idx": 3,
+   "sub": "L2.3",
+   "title": "Fox Fell Off!",
+   "slug": "fox-fell-off",
+   "file_id": "1_6",
+   "sounds": [
+    "f",
+    "l",
+    "ff",
+    "ll"
+   ]
+  },
+  "folder": "L2/1_6_fox_fell_off",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "f",
+    "stem": "01_handwriting_f",
+    "title": "Trace and write f",
+    "objective": "Form the sound f correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'f'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "l",
+    "stem": "02_handwriting_l",
+    "title": "Trace and write l",
+    "objective": "Form the sound l correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'l'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "ff",
+    "stem": "03_handwriting_ff",
+    "title": "Trace and write ff",
+    "objective": "Form the sound ff correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'ff'",
+    "seed": 10
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "ll",
+    "stem": "04_handwriting_ll",
+    "title": "Trace and write ll",
+    "objective": "Form the sound ll correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'll'",
+    "seed": 11
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "f",
+    "stem": "05_segmenting_f",
+    "title": "Hear and build f",
+    "objective": "Hear every sound in a f word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 2 sound 'f'",
+    "seed": 12
+   },
+   {
+    "intent": "draw",
+    "grapheme": "f",
+    "stem": "06_draw_f",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 2 sound 'f'",
+    "seed": 13
+   },
+   {
+    "intent": "game",
+    "grapheme": "f",
+    "stem": "07_game_f",
+    "title": "Story game: Fox Fell Off!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 2 sound 'f'",
+    "seed": 14
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 2,
+  "book": {
+   "level": 2,
+   "idx": 4,
+   "sub": "L2.4",
+   "title": "The Jam Jug",
+   "slug": "the-jam-jug",
+   "file_id": "1_7",
+   "sounds": [
+    "j",
+    "v",
+    "w"
+   ]
+  },
+  "folder": "L2/1_7_the_jam_jug",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "j",
+    "stem": "01_handwriting_j",
+    "title": "Trace and write j",
+    "objective": "Form the sound j correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'j'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "v",
+    "stem": "02_handwriting_v",
+    "title": "Trace and write v",
+    "objective": "Form the sound v correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'v'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "w",
+    "stem": "03_handwriting_w",
+    "title": "Trace and write w",
+    "objective": "Form the sound w correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'w'",
+    "seed": 10
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "j",
+    "stem": "04_segmenting_j",
+    "title": "Hear and build j",
+    "objective": "Hear every sound in a j word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 2 sound 'j'",
+    "seed": 11
+   },
+   {
+    "intent": "draw",
+    "grapheme": "j",
+    "stem": "05_draw_j",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 2 sound 'j'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "j",
+    "stem": "06_game_j",
+    "title": "Story game: The Jam Jug",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 2 sound 'j'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 2,
+  "book": {
+   "level": 2,
+   "idx": 5,
+   "sub": "L2.5",
+   "title": "The Yak and the Box",
+   "slug": "the-yak-and-the-box",
+   "file_id": "1_8",
+   "sounds": [
+    "x",
+    "y",
+    "z"
+   ]
+  },
+  "folder": "L2/1_8_the_yak_and_the_box",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "x",
+    "stem": "01_handwriting_x",
+    "title": "Trace and write x",
+    "objective": "Form the sound x correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'x'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "y",
+    "stem": "02_handwriting_y",
+    "title": "Trace and write y",
+    "objective": "Form the sound y correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'y'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "z",
+    "stem": "03_handwriting_z",
+    "title": "Trace and write z",
+    "objective": "Form the sound z correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 2 sound 'z'",
+    "seed": 10
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "x",
+    "stem": "04_segmenting_x",
+    "title": "Hear and build x",
+    "objective": "Hear every sound in a x word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 2 sound 'x'",
+    "seed": 11
+   },
+   {
+    "intent": "draw",
+    "grapheme": "x",
+    "stem": "05_draw_x",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 2 sound 'x'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "x",
+    "stem": "06_game_x",
+    "title": "Story game: The Yak and the Box",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 2 sound 'x'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 3,
+  "book": {
+   "level": 3,
+   "idx": 1,
+   "sub": "L3.1",
+   "title": "The Fish in the Tank",
+   "slug": "the-fish-in-the-tank",
+   "file_id": "1_3",
+   "sounds": [
+    "sh",
+    "nk"
+   ]
+  },
+  "folder": "L3/1_3_the_fish_in_the_tank",
+  "label": "More practice",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "sh",
+    "stem": "01_assess_sh",
+    "title": "Check-up: sh",
+    "objective": "Show the sound sh is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 3 sound 'sh'",
+    "seed": 8
+   },
+   {
+    "intent": "draw",
+    "grapheme": "sh",
+    "stem": "02_draw_sh",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 3 sound 'sh'",
+    "seed": 9
+   },
+   {
+    "intent": "game",
+    "grapheme": "sh",
+    "stem": "03_game_sh",
+    "title": "Story game: The Fish in the Tank",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 3 sound 'sh'",
+    "seed": 10
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 3,
+  "book": {
+   "level": 3,
+   "idx": 2,
+   "sub": "L3.2",
+   "title": "Chop, Chop, Chop!",
+   "slug": "chop-chop-chop",
+   "file_id": "1_9",
+   "sounds": [
+    "ch",
+    "th"
+   ]
+  },
+  "folder": "L3/1_9_chop_chop_chop",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "ch",
+    "stem": "01_handwriting_ch",
+    "title": "Trace and write ch",
+    "objective": "Form the sound ch correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 3 sound 'ch'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "th",
+    "stem": "02_handwriting_th",
+    "title": "Trace and write th",
+    "objective": "Form the sound th correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 3 sound 'th'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "ch",
+    "stem": "03_segmenting_ch",
+    "title": "Hear and build ch",
+    "objective": "Hear every sound in a ch word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 3 sound 'ch'",
+    "seed": 10
+   },
+   {
+    "intent": "draw",
+    "grapheme": "ch",
+    "stem": "04_draw_ch",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 3 sound 'ch'",
+    "seed": 11
+   },
+   {
+    "intent": "game",
+    "grapheme": "ch",
+    "stem": "05_game_ch",
+    "title": "Story game: Chop, Chop, Chop!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 3 sound 'ch'",
+    "seed": 12
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 3,
+  "book": {
+   "level": 3,
+   "idx": 3,
+   "sub": "L3.3",
+   "title": "Buzz and Sing!",
+   "slug": "buzz-and-sing",
+   "file_id": "1_10",
+   "sounds": [
+    "ng",
+    "qu",
+    "zz"
+   ]
+  },
+  "folder": "L3/1_10_buzz_and_sing",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "handwriting",
+    "grapheme": "ng",
+    "stem": "01_handwriting_ng",
+    "title": "Trace and write ng",
+    "objective": "Form the sound ng correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 3 sound 'ng'",
+    "seed": 8
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "qu",
+    "stem": "02_handwriting_qu",
+    "title": "Trace and write qu",
+    "objective": "Form the sound qu correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 3 sound 'qu'",
+    "seed": 9
+   },
+   {
+    "intent": "handwriting",
+    "grapheme": "zz",
+    "stem": "03_handwriting_zz",
+    "title": "Trace and write zz",
+    "objective": "Form the sound zz correctly and write words that use it.",
+    "how": "Trace the letters while saying the sound, trace the words, then write the missing sound yourself.",
+    "prompt": "a handwriting worksheet for level 3 sound 'zz'",
+    "seed": 10
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "ng",
+    "stem": "04_segmenting_ng",
+    "title": "Hear and build ng",
+    "objective": "Hear every sound in a ng word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 3 sound 'ng'",
+    "seed": 11
+   },
+   {
+    "intent": "draw",
+    "grapheme": "ng",
+    "stem": "05_draw_ng",
+    "title": "Read, draw and write",
+    "objective": "Read a sentence with the book's sounds and show you understood it.",
+    "how": "Trace the words, read the sentence aloud, draw exactly what it says, then copy it.",
+    "prompt": "a draw worksheet for level 3 sound 'ng'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ng",
+    "stem": "06_game_ng",
+    "title": "Story game: Buzz and Sing!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 3 sound 'ng'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 1,
+   "sub": "L4.1",
+   "title": "The Night Light",
+   "slug": "the-night-light",
+   "file_id": "2_1",
+   "sounds": [
+    "ay",
+    "ee",
+    "igh"
+   ]
+  },
+  "folder": "L4/2_1_the_night_light",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "ay",
+    "stem": "01_segmenting_ay",
+    "title": "Hear and build ay",
+    "objective": "Hear every sound in a ay word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ay'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ay",
+    "stem": "02_sentences_ay",
+    "title": "Read ay in sentences",
+    "objective": "Read and complete sentences that use the sound ay.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ay'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "ee",
+    "stem": "03_segmenting_ee",
+    "title": "Hear and build ee",
+    "objective": "Hear every sound in a ee word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ee'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ee",
+    "stem": "04_sentences_ee",
+    "title": "Read ee in sentences",
+    "objective": "Read and complete sentences that use the sound ee.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ee'",
+    "seed": 11
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "igh",
+    "stem": "05_segmenting_igh",
+    "title": "Hear and build igh",
+    "objective": "Hear every sound in a igh word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'igh'",
+    "seed": 12
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "igh",
+    "stem": "06_sentences_igh",
+    "title": "Read igh in sentences",
+    "objective": "Read and complete sentences that use the sound igh.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'igh'",
+    "seed": 13
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ay",
+    "stem": "07_assess_ay",
+    "title": "Check-up: ay",
+    "objective": "Show the sound ay is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ay'",
+    "seed": 14
+   },
+   {
+    "intent": "game",
+    "grapheme": "ay",
+    "stem": "08_game_ay",
+    "title": "Story game: The Night Light",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'ay'",
+    "seed": 15
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 2,
+   "sub": "L4.2",
+   "title": "Hot Food, Cool Moon",
+   "slug": "hot-food-cool-moon",
+   "file_id": "2_2",
+   "sounds": [
+    "ow",
+    "oo"
+   ]
+  },
+  "folder": "L4/2_2_hot_food_cool_moon",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "ow",
+    "stem": "01_segmenting_ow",
+    "title": "Hear and build ow",
+    "objective": "Hear every sound in a ow word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ow'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ow",
+    "stem": "02_sentences_ow",
+    "title": "Read ow in sentences",
+    "objective": "Read and complete sentences that use the sound ow.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ow'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "oo",
+    "stem": "03_segmenting_oo",
+    "title": "Hear and build oo",
+    "objective": "Hear every sound in a oo word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'oo'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "oo",
+    "stem": "04_sentences_oo",
+    "title": "Read oo in sentences",
+    "objective": "Read and complete sentences that use the sound oo.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'oo'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ow",
+    "stem": "05_assess_ow",
+    "title": "Check-up: ow",
+    "objective": "Show the sound ow is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ow'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ow",
+    "stem": "06_game_ow",
+    "title": "Story game: Hot Food, Cool Moon",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'ow'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 3,
+   "sub": "L4.3",
+   "title": "Morning on the Farm",
+   "slug": "morning-on-the-farm",
+   "file_id": "2_3",
+   "sounds": [
+    "ar",
+    "or"
+   ]
+  },
+  "folder": "L4/2_3_morning_on_the_farm",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "ar",
+    "stem": "01_segmenting_ar",
+    "title": "Hear and build ar",
+    "objective": "Hear every sound in a ar word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ar'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ar",
+    "stem": "02_sentences_ar",
+    "title": "Read ar in sentences",
+    "objective": "Read and complete sentences that use the sound ar.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ar'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "or",
+    "stem": "03_segmenting_or",
+    "title": "Hear and build or",
+    "objective": "Hear every sound in a or word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'or'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "or",
+    "stem": "04_sentences_or",
+    "title": "Read or in sentences",
+    "objective": "Read and complete sentences that use the sound or.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'or'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ar",
+    "stem": "05_assess_ar",
+    "title": "Check-up: ar",
+    "objective": "Show the sound ar is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ar'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ar",
+    "stem": "06_game_ar",
+    "title": "Story game: Morning on the Farm",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'ar'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 4,
+   "sub": "L4.4",
+   "title": "The Fair in the Air",
+   "slug": "the-fair-in-the-air",
+   "file_id": "2_4",
+   "sounds": [
+    "air",
+    "ir"
+   ]
+  },
+  "folder": "L4/2_4_the_fair_in_the_air",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "air",
+    "stem": "01_segmenting_air",
+    "title": "Hear and build air",
+    "objective": "Hear every sound in a air word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'air'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "air",
+    "stem": "02_sentences_air",
+    "title": "Read air in sentences",
+    "objective": "Read and complete sentences that use the sound air.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'air'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "ir",
+    "stem": "03_segmenting_ir",
+    "title": "Hear and build ir",
+    "objective": "Hear every sound in a ir word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ir'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ir",
+    "stem": "04_sentences_ir",
+    "title": "Read ir in sentences",
+    "objective": "Read and complete sentences that use the sound ir.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ir'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "air",
+    "stem": "05_assess_air",
+    "title": "Check-up: air",
+    "objective": "Show the sound air is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'air'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "air",
+    "stem": "06_game_air",
+    "title": "Story game: The Fair in the Air",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'air'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 5,
+   "sub": "L4.5",
+   "title": "Round and Round",
+   "slug": "round-and-round",
+   "file_id": "2_5",
+   "sounds": [
+    "ou",
+    "oy"
+   ]
+  },
+  "folder": "L4/2_5_round_and_round",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "ou",
+    "stem": "01_segmenting_ou",
+    "title": "Hear and build ou",
+    "objective": "Hear every sound in a ou word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'ou'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ou",
+    "stem": "02_sentences_ou",
+    "title": "Read ou in sentences",
+    "objective": "Read and complete sentences that use the sound ou.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'ou'",
+    "seed": 9
+   },
+   {
+    "intent": "segmenting",
+    "grapheme": "oy",
+    "stem": "03_segmenting_oy",
+    "title": "Hear and build oy",
+    "objective": "Hear every sound in a oy word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'oy'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "oy",
+    "stem": "04_sentences_oy",
+    "title": "Read oy in sentences",
+    "objective": "Read and complete sentences that use the sound oy.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 4 sound 'oy'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ou",
+    "stem": "05_assess_ou",
+    "title": "Check-up: ou",
+    "objective": "Show the sound ou is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ou'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ou",
+    "stem": "06_game_ou",
+    "title": "Story game: Round and Round",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'ou'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "idx": 6,
+   "sub": "L4.6",
+   "title": "The Night Fair",
+   "slug": "the-night-fair",
+   "file_id": "2_6",
+   "sounds": [
+    "ay",
+    "ee",
+    "igh",
+    "ow",
+    "oo",
+    "ar",
+    "or",
+    "air",
+    "ir",
+    "ou",
+    "oy"
+   ]
+  },
+  "folder": "L4/2_6_the_night_fair",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "ay",
+    "stem": "01_assess_ay",
+    "title": "Check-up: ay",
+    "objective": "Show the sound ay is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ay'",
+    "seed": 8
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ee",
+    "stem": "02_assess_ee",
+    "title": "Check-up: ee",
+    "objective": "Show the sound ee is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ee'",
+    "seed": 9
+   },
+   {
+    "intent": "assess",
+    "grapheme": "igh",
+    "stem": "03_assess_igh",
+    "title": "Check-up: igh",
+    "objective": "Show the sound igh is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'igh'",
+    "seed": 10
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ow",
+    "stem": "04_assess_ow",
+    "title": "Check-up: ow",
+    "objective": "Show the sound ow is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ow'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "oo",
+    "stem": "05_assess_oo",
+    "title": "Check-up: oo",
+    "objective": "Show the sound oo is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'oo'",
+    "seed": 12
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ar",
+    "stem": "06_assess_ar",
+    "title": "Check-up: ar",
+    "objective": "Show the sound ar is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ar'",
+    "seed": 13
+   },
+   {
+    "intent": "assess",
+    "grapheme": "or",
+    "stem": "07_assess_or",
+    "title": "Check-up: or",
+    "objective": "Show the sound or is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'or'",
+    "seed": 14
+   },
+   {
+    "intent": "assess",
+    "grapheme": "air",
+    "stem": "08_assess_air",
+    "title": "Check-up: air",
+    "objective": "Show the sound air is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'air'",
+    "seed": 15
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ir",
+    "stem": "09_assess_ir",
+    "title": "Check-up: ir",
+    "objective": "Show the sound ir is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ir'",
+    "seed": 16
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ou",
+    "stem": "10_assess_ou",
+    "title": "Check-up: ou",
+    "objective": "Show the sound ou is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'ou'",
+    "seed": 17
+   },
+   {
+    "intent": "assess",
+    "grapheme": "oy",
+    "stem": "11_assess_oy",
+    "title": "Check-up: oy",
+    "objective": "Show the sound oy is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 4 sound 'oy'",
+    "seed": 18
+   },
+   {
+    "intent": "game",
+    "grapheme": "ay",
+    "stem": "12_game_ay",
+    "title": "Story game: The Night Fair",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 4 sound 'ay'",
+    "seed": 19
+   }
+  ]
+ },
+ {
+  "kind": "extras",
+  "level": 4,
+  "book": {
+   "level": 4,
+   "title": "Level 4 extra sounds",
+   "slug": "level-4-extras",
+   "file_id": null,
+   "sounds": [
+    "wh"
+   ]
+  },
+  "folder": "L4/extras",
+  "label": "Extra sounds",
+  "sheets": [
+   {
+    "intent": "segmenting",
+    "grapheme": "wh",
+    "stem": "01_segmenting_wh",
+    "title": "Hear and build wh",
+    "objective": "Hear every sound in a wh word and write it down.",
+    "how": "Say the word, tap one box per sound, write the missing sound, then write the dictated words. One sound per box, never one letter.",
+    "prompt": "a segmenting worksheet for level 4 sound 'wh'",
+    "seed": 8
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "idx": 1,
+   "sub": "L5.1",
+   "title": "The Big Bike Race",
+   "slug": "the-big-bike-race",
+   "file_id": "3_1",
+   "sounds": [
+    "a-e",
+    "i-e"
+   ]
+  },
+  "folder": "L5/3_1_the_big_bike_race",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "a-e",
+    "stem": "01_spelling_ae",
+    "title": "Spell a-e words",
+    "objective": "Choose the right spelling for the a-e sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'a-e'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "a-e",
+    "stem": "02_sentences_ae",
+    "title": "Read a-e in sentences",
+    "objective": "Read and complete sentences that use the sound a-e.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'a-e'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "i-e",
+    "stem": "03_spelling_ie",
+    "title": "Spell i-e words",
+    "objective": "Choose the right spelling for the i-e sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'i-e'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "i-e",
+    "stem": "04_sentences_ie",
+    "title": "Read i-e in sentences",
+    "objective": "Read and complete sentences that use the sound i-e.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'i-e'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "a-e",
+    "stem": "05_assess_ae",
+    "title": "Check-up: a-e",
+    "objective": "Show the sound a-e is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 5 sound 'a-e'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "a-e",
+    "stem": "06_game_ae",
+    "title": "Story game: The Big Bike Race",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 5 sound 'a-e'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "idx": 2,
+   "sub": "L5.2",
+   "title": "Lost at the Night Market",
+   "slug": "lost-at-the-night-market",
+   "file_id": "3_2",
+   "sounds": [
+    "o-e",
+    "u-e"
+   ]
+  },
+  "folder": "L5/3_2_lost_at_the_night_market",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "o-e",
+    "stem": "01_spelling_oe",
+    "title": "Spell o-e words",
+    "objective": "Choose the right spelling for the o-e sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'o-e'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "o-e",
+    "stem": "02_sentences_oe",
+    "title": "Read o-e in sentences",
+    "objective": "Read and complete sentences that use the sound o-e.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'o-e'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "u-e",
+    "stem": "03_spelling_ue",
+    "title": "Spell u-e words",
+    "objective": "Choose the right spelling for the u-e sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'u-e'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "u-e",
+    "stem": "04_sentences_ue",
+    "title": "Read u-e in sentences",
+    "objective": "Read and complete sentences that use the sound u-e.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'u-e'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "o-e",
+    "stem": "05_assess_oe",
+    "title": "Check-up: o-e",
+    "objective": "Show the sound o-e is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 5 sound 'o-e'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "o-e",
+    "stem": "06_game_oe",
+    "title": "Story game: Lost at the Night Market",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 5 sound 'o-e'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "idx": 3,
+   "sub": "L5.3",
+   "title": "The Dream Team",
+   "slug": "the-dream-team",
+   "file_id": "3_3",
+   "sounds": [
+    "ea",
+    "ie"
+   ]
+  },
+  "folder": "L5/3_3_the_dream_team",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ea",
+    "stem": "01_spelling_ea",
+    "title": "Spell ea words",
+    "objective": "Choose the right spelling for the ea sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'ea'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ea",
+    "stem": "02_sentences_ea",
+    "title": "Read ea in sentences",
+    "objective": "Read and complete sentences that use the sound ea.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'ea'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "ie",
+    "stem": "03_spelling_ie",
+    "title": "Spell ie words",
+    "objective": "Choose the right spelling for the ie sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'ie'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ie",
+    "stem": "04_sentences_ie",
+    "title": "Read ie in sentences",
+    "objective": "Read and complete sentences that use the sound ie.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'ie'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ea",
+    "stem": "05_assess_ea",
+    "title": "Check-up: ea",
+    "objective": "Show the sound ea is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 5 sound 'ea'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ea",
+    "stem": "06_game_ea",
+    "title": "Story game: The Dream Team",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 5 sound 'ea'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "idx": 4,
+   "sub": "L5.4",
+   "title": "What Min Saw",
+   "slug": "what-min-saw",
+   "file_id": "3_4",
+   "sounds": [
+    "oi",
+    "aw"
+   ]
+  },
+  "folder": "L5/3_4_what_min_saw",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "oi",
+    "stem": "01_spelling_oi",
+    "title": "Spell oi words",
+    "objective": "Choose the right spelling for the oi sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'oi'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "oi",
+    "stem": "02_sentences_oi",
+    "title": "Read oi in sentences",
+    "objective": "Read and complete sentences that use the sound oi.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'oi'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "aw",
+    "stem": "03_spelling_aw",
+    "title": "Spell aw words",
+    "objective": "Choose the right spelling for the aw sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'aw'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "aw",
+    "stem": "04_sentences_aw",
+    "title": "Read aw in sentences",
+    "objective": "Read and complete sentences that use the sound aw.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'aw'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "oi",
+    "stem": "05_assess_oi",
+    "title": "Check-up: oi",
+    "objective": "Show the sound oi is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 5 sound 'oi'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "oi",
+    "stem": "06_game_oi",
+    "title": "Story game: What Min Saw",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 5 sound 'oi'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "idx": 5,
+   "sub": "L5.5",
+   "title": "The Boat with the Red Sail",
+   "slug": "the-boat-with-the-red-sail",
+   "file_id": "3_5",
+   "sounds": [
+    "ai",
+    "oa"
+   ]
+  },
+  "folder": "L5/3_5_the_boat_with_the_red_sail",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ai",
+    "stem": "01_spelling_ai",
+    "title": "Spell ai words",
+    "objective": "Choose the right spelling for the ai sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'ai'",
+    "seed": 8
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ai",
+    "stem": "02_sentences_ai",
+    "title": "Read ai in sentences",
+    "objective": "Read and complete sentences that use the sound ai.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'ai'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "oa",
+    "stem": "03_spelling_oa",
+    "title": "Spell oa words",
+    "objective": "Choose the right spelling for the oa sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'oa'",
+    "seed": 10
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "oa",
+    "stem": "04_sentences_oa",
+    "title": "Read oa in sentences",
+    "objective": "Read and complete sentences that use the sound oa.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 5 sound 'oa'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ai",
+    "stem": "05_assess_ai",
+    "title": "Check-up: ai",
+    "objective": "Show the sound ai is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 5 sound 'ai'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ai",
+    "stem": "06_game_ai",
+    "title": "Story game: The Boat with the Red Sail",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 5 sound 'ai'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "extras",
+  "level": 5,
+  "book": {
+   "level": 5,
+   "title": "Level 5 extra sounds",
+   "slug": "level-5-extras",
+   "file_id": null,
+   "sounds": [
+    "tch",
+    "dge",
+    "kn",
+    "wr",
+    "mb",
+    "gn"
+   ]
+  },
+  "folder": "L5/extras",
+  "label": "Extra sounds",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "tch",
+    "stem": "01_spelling_tch",
+    "title": "Spell tch words",
+    "objective": "Choose the right spelling for the tch sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'tch'",
+    "seed": 8
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "dge",
+    "stem": "02_spelling_dge",
+    "title": "Spell dge words",
+    "objective": "Choose the right spelling for the dge sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'dge'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "kn",
+    "stem": "03_spelling_kn",
+    "title": "Spell kn words",
+    "objective": "Choose the right spelling for the kn sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'kn'",
+    "seed": 10
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "wr",
+    "stem": "04_spelling_wr",
+    "title": "Spell wr words",
+    "objective": "Choose the right spelling for the wr sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'wr'",
+    "seed": 11
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "mb",
+    "stem": "05_spelling_mb",
+    "title": "Spell mb words",
+    "objective": "Choose the right spelling for the mb sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'mb'",
+    "seed": 12
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "gn",
+    "stem": "06_spelling_gn",
+    "title": "Spell gn words",
+    "objective": "Choose the right spelling for the gn sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 5 sound 'gn'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 6,
+  "book": {
+   "level": 6,
+   "idx": 1,
+   "sub": "L6.1",
+   "title": "The Purple Purse",
+   "slug": "the-purple-purse",
+   "file_id": "4_1",
+   "sounds": [
+    "ur",
+    "er"
+   ]
+  },
+  "folder": "L6/4_1_the_purple_purse",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ur",
+    "stem": "01_spelling_ur",
+    "title": "Spell ur words",
+    "objective": "Choose the right spelling for the ur sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'ur'",
+    "seed": 8
+   },
+   {
+    "intent": "code",
+    "grapheme": "ur",
+    "stem": "02_code_ur",
+    "title": "Crack the code: ur",
+    "objective": "Decode ur words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'ur'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "er",
+    "stem": "03_spelling_er",
+    "title": "Spell er words",
+    "objective": "Choose the right spelling for the er sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'er'",
+    "seed": 10
+   },
+   {
+    "intent": "code",
+    "grapheme": "er",
+    "stem": "04_code_er",
+    "title": "Crack the code: er",
+    "objective": "Decode er words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'er'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ur",
+    "stem": "05_sentences_ur",
+    "title": "Read ur in sentences",
+    "objective": "Read and complete sentences that use the sound ur.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 6 sound 'ur'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ur",
+    "stem": "06_game_ur",
+    "title": "Story game: The Purple Purse",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 6 sound 'ur'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 6,
+  "book": {
+   "level": 6,
+   "idx": 2,
+   "sub": "L6.2",
+   "title": "The Brown Owl",
+   "slug": "the-brown-owl",
+   "file_id": "4_2",
+   "sounds": [
+    "are",
+    "ow"
+   ]
+  },
+  "folder": "L6/4_2_the_brown_owl",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "are",
+    "stem": "01_spelling_are",
+    "title": "Spell are words",
+    "objective": "Choose the right spelling for the are sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'are'",
+    "seed": 8
+   },
+   {
+    "intent": "code",
+    "grapheme": "are",
+    "stem": "02_code_are",
+    "title": "Crack the code: are",
+    "objective": "Decode are words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'are'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "ow",
+    "stem": "03_spelling_ow",
+    "title": "Spell ow words",
+    "objective": "Choose the right spelling for the ow sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'ow'",
+    "seed": 10
+   },
+   {
+    "intent": "code",
+    "grapheme": "ow",
+    "stem": "04_code_ow",
+    "title": "Crack the code: ow",
+    "objective": "Decode ow words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'ow'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "are",
+    "stem": "05_sentences_are",
+    "title": "Read are in sentences",
+    "objective": "Read and complete sentences that use the sound are.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 6 sound 'are'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "are",
+    "stem": "06_game_are",
+    "title": "Story game: The Brown Owl",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 6 sound 'are'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 6,
+  "book": {
+   "level": 6,
+   "idx": 3,
+   "sub": "L6.3",
+   "title": "The New Glue",
+   "slug": "the-new-glue",
+   "file_id": "4_3",
+   "sounds": [
+    "ew",
+    "ue"
+   ]
+  },
+  "folder": "L6/4_3_the_new_glue",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ew",
+    "stem": "01_spelling_ew",
+    "title": "Spell ew words",
+    "objective": "Choose the right spelling for the ew sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'ew'",
+    "seed": 8
+   },
+   {
+    "intent": "code",
+    "grapheme": "ew",
+    "stem": "02_code_ew",
+    "title": "Crack the code: ew",
+    "objective": "Decode ew words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'ew'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "ue",
+    "stem": "03_spelling_ue",
+    "title": "Spell ue words",
+    "objective": "Choose the right spelling for the ue sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'ue'",
+    "seed": 10
+   },
+   {
+    "intent": "code",
+    "grapheme": "ue",
+    "stem": "04_code_ue",
+    "title": "Crack the code: ue",
+    "objective": "Decode ue words letter by letter.",
+    "how": "Use the key to decode each word and write it, then speed read, then dictation.",
+    "prompt": "a crack the code worksheet for level 6 sound 'ue'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ew",
+    "stem": "05_sentences_ew",
+    "title": "Read ew in sentences",
+    "objective": "Read and complete sentences that use the sound ew.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 6 sound 'ew'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ew",
+    "stem": "06_game_ew",
+    "title": "Story game: The New Glue",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 6 sound 'ew'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 6,
+  "book": {
+   "level": 6,
+   "idx": 4,
+   "sub": "L6.4",
+   "title": "The Cheeky Monkey",
+   "slug": "the-cheeky-monkey",
+   "file_id": "4_4",
+   "sounds": [
+    "ur",
+    "er",
+    "are",
+    "ow",
+    "ew",
+    "ue"
+   ]
+  },
+  "folder": "L6/4_4_the_cheeky_monkey",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "ur",
+    "stem": "01_assess_ur",
+    "title": "Check-up: ur",
+    "objective": "Show the sound ur is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'ur'",
+    "seed": 8
+   },
+   {
+    "intent": "assess",
+    "grapheme": "er",
+    "stem": "02_assess_er",
+    "title": "Check-up: er",
+    "objective": "Show the sound er is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'er'",
+    "seed": 9
+   },
+   {
+    "intent": "assess",
+    "grapheme": "are",
+    "stem": "03_assess_are",
+    "title": "Check-up: are",
+    "objective": "Show the sound are is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'are'",
+    "seed": 10
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ow",
+    "stem": "04_assess_ow",
+    "title": "Check-up: ow",
+    "objective": "Show the sound ow is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'ow'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ew",
+    "stem": "05_assess_ew",
+    "title": "Check-up: ew",
+    "objective": "Show the sound ew is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'ew'",
+    "seed": 12
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ue",
+    "stem": "06_assess_ue",
+    "title": "Check-up: ue",
+    "objective": "Show the sound ue is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 6 sound 'ue'",
+    "seed": 13
+   },
+   {
+    "intent": "game",
+    "grapheme": "ur",
+    "stem": "07_game_ur",
+    "title": "Story game: The Cheeky Monkey",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 6 sound 'ur'",
+    "seed": 14
+   }
+  ]
+ },
+ {
+  "kind": "extras",
+  "level": 6,
+  "book": {
+   "level": 6,
+   "title": "Level 6 extra sounds",
+   "slug": "level-6-extras",
+   "file_id": null,
+   "sounds": [
+    "ph"
+   ]
+  },
+  "folder": "L6/extras",
+  "label": "Extra sounds",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ph",
+    "stem": "01_spelling_ph",
+    "title": "Spell ph words",
+    "objective": "Choose the right spelling for the ph sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 6 sound 'ph'",
+    "seed": 8
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 7,
+  "book": {
+   "level": 7,
+   "idx": 1,
+   "sub": "L7.1",
+   "title": "Before the Shore",
+   "slug": "before-the-shore",
+   "file_id": "5_1",
+   "sounds": [
+    "ire",
+    "ore"
+   ]
+  },
+  "folder": "L7/5_1_before_the_shore",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ire",
+    "stem": "01_spelling_ire",
+    "title": "Spell ire words",
+    "objective": "Choose the right spelling for the ire sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'ire'",
+    "seed": 8
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "ire",
+    "stem": "02_fluency_ire",
+    "title": "Fluency: ire",
+    "objective": "Read ire words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'ire'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "ore",
+    "stem": "03_spelling_ore",
+    "title": "Spell ore words",
+    "objective": "Choose the right spelling for the ore sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'ore'",
+    "seed": 10
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "ore",
+    "stem": "04_fluency_ore",
+    "title": "Fluency: ore",
+    "objective": "Read ore words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'ore'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ire",
+    "stem": "05_sentences_ire",
+    "title": "Read ire in sentences",
+    "objective": "Read and complete sentences that use the sound ire.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 7 sound 'ire'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ire",
+    "stem": "06_game_ire",
+    "title": "Story game: Before the Shore",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 7 sound 'ire'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 7,
+  "book": {
+   "level": 7,
+   "idx": 2,
+   "sub": "L7.2",
+   "title": "Near the Door",
+   "slug": "near-the-door",
+   "file_id": "5_2",
+   "sounds": [
+    "ear",
+    "oor"
+   ]
+  },
+  "folder": "L7/5_2_near_the_door",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ear",
+    "stem": "01_spelling_ear",
+    "title": "Spell ear words",
+    "objective": "Choose the right spelling for the ear sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'ear'",
+    "seed": 8
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "ear",
+    "stem": "02_fluency_ear",
+    "title": "Fluency: ear",
+    "objective": "Read ear words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'ear'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "oor",
+    "stem": "03_spelling_oor",
+    "title": "Spell oor words",
+    "objective": "Choose the right spelling for the oor sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'oor'",
+    "seed": 10
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "oor",
+    "stem": "04_fluency_oor",
+    "title": "Fluency: oor",
+    "objective": "Read oor words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'oor'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ear",
+    "stem": "05_sentences_ear",
+    "title": "Read ear in sentences",
+    "objective": "Read and complete sentences that use the sound ear.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 7 sound 'ear'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ear",
+    "stem": "06_game_ear",
+    "title": "Story game: Near the Door",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 7 sound 'ear'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 7,
+  "book": {
+   "level": 7,
+   "idx": 3,
+   "sub": "L7.3",
+   "title": "Sure She Can!",
+   "slug": "sure-she-can",
+   "file_id": "5_3",
+   "sounds": [
+    "ure",
+    "tion"
+   ]
+  },
+  "folder": "L7/5_3_sure_she_can",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ure",
+    "stem": "01_spelling_ure",
+    "title": "Spell ure words",
+    "objective": "Choose the right spelling for the ure sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'ure'",
+    "seed": 8
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "ure",
+    "stem": "02_fluency_ure",
+    "title": "Fluency: ure",
+    "objective": "Read ure words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'ure'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "tion",
+    "stem": "03_spelling_tion",
+    "title": "Spell tion words",
+    "objective": "Choose the right spelling for the tion sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 7 sound 'tion'",
+    "seed": 10
+   },
+   {
+    "intent": "fluency",
+    "grapheme": "tion",
+    "stem": "04_fluency_tion",
+    "title": "Fluency: tion",
+    "objective": "Read tion words quickly and accurately.",
+    "how": "Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.",
+    "prompt": "a fluency worksheet for level 7 sound 'tion'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ure",
+    "stem": "05_sentences_ure",
+    "title": "Read ure in sentences",
+    "objective": "Read and complete sentences that use the sound ure.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 7 sound 'ure'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ure",
+    "stem": "06_game_ure",
+    "title": "Story game: Sure She Can!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 7 sound 'ure'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 7,
+  "book": {
+   "level": 7,
+   "idx": 4,
+   "sub": "L7.4",
+   "title": "A Place for Me",
+   "slug": "a-place-for-me",
+   "file_id": "5_4",
+   "sounds": [
+    "ire",
+    "ore",
+    "ear",
+    "oor",
+    "ure",
+    "tion"
+   ]
+  },
+  "folder": "L7/5_4_a_place_for_me",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "ire",
+    "stem": "01_assess_ire",
+    "title": "Check-up: ire",
+    "objective": "Show the sound ire is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'ire'",
+    "seed": 8
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ore",
+    "stem": "02_assess_ore",
+    "title": "Check-up: ore",
+    "objective": "Show the sound ore is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'ore'",
+    "seed": 9
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ear",
+    "stem": "03_assess_ear",
+    "title": "Check-up: ear",
+    "objective": "Show the sound ear is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'ear'",
+    "seed": 10
+   },
+   {
+    "intent": "assess",
+    "grapheme": "oor",
+    "stem": "04_assess_oor",
+    "title": "Check-up: oor",
+    "objective": "Show the sound oor is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'oor'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ure",
+    "stem": "05_assess_ure",
+    "title": "Check-up: ure",
+    "objective": "Show the sound ure is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'ure'",
+    "seed": 12
+   },
+   {
+    "intent": "assess",
+    "grapheme": "tion",
+    "stem": "06_assess_tion",
+    "title": "Check-up: tion",
+    "objective": "Show the sound tion is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 7 sound 'tion'",
+    "seed": 13
+   },
+   {
+    "intent": "game",
+    "grapheme": "ire",
+    "stem": "07_game_ire",
+    "title": "Story game: A Place for Me",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 7 sound 'ire'",
+    "seed": 14
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 8,
+  "book": {
+   "level": 8,
+   "idx": 1,
+   "sub": "L8.1",
+   "title": "The Marvellous Neighbourhood",
+   "slug": "the-marvellous-neighbourhood",
+   "file_id": "6_1",
+   "sounds": [
+    "ous"
+   ]
+  },
+  "folder": "L8/6_1_the_marvellous_neighbourhood",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "ous",
+    "stem": "01_spelling_ous",
+    "title": "Spell ous words",
+    "objective": "Choose the right spelling for the ous sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'ous'",
+    "seed": 8
+   },
+   {
+    "intent": "wordsearch",
+    "grapheme": "ous",
+    "stem": "02_wordsearch_ous",
+    "title": "Word search: ous",
+    "objective": "Find and read ous words fast.",
+    "how": "Ring each word in the grid and tick it off, crack the code, then speed read.",
+    "prompt": "a word search worksheet for level 8 sound 'ous'",
+    "seed": 9
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "ous",
+    "stem": "03_sentences_ous",
+    "title": "Read ous in sentences",
+    "objective": "Read and complete sentences that use the sound ous.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 8 sound 'ous'",
+    "seed": 10
+   },
+   {
+    "intent": "game",
+    "grapheme": "ous",
+    "stem": "04_game_ous",
+    "title": "Story game: The Marvellous Neighbourhood",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 8 sound 'ous'",
+    "seed": 11
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 8,
+  "book": {
+   "level": 8,
+   "idx": 2,
+   "sub": "L8.2",
+   "title": "You Are Remarkable",
+   "slug": "you-are-remarkable",
+   "file_id": "6_2",
+   "sounds": [
+    "able",
+    "ible"
+   ]
+  },
+  "folder": "L8/6_2_you_are_remarkable",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "able",
+    "stem": "01_spelling_able",
+    "title": "Spell able words",
+    "objective": "Choose the right spelling for the able sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'able'",
+    "seed": 8
+   },
+   {
+    "intent": "wordsearch",
+    "grapheme": "able",
+    "stem": "02_wordsearch_able",
+    "title": "Word search: able",
+    "objective": "Find and read able words fast.",
+    "how": "Ring each word in the grid and tick it off, crack the code, then speed read.",
+    "prompt": "a word search worksheet for level 8 sound 'able'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "ible",
+    "stem": "03_spelling_ible",
+    "title": "Spell ible words",
+    "objective": "Choose the right spelling for the ible sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'ible'",
+    "seed": 10
+   },
+   {
+    "intent": "wordsearch",
+    "grapheme": "ible",
+    "stem": "04_wordsearch_ible",
+    "title": "Word search: ible",
+    "objective": "Find and read ible words fast.",
+    "how": "Ring each word in the grid and tick it off, crack the code, then speed read.",
+    "prompt": "a word search worksheet for level 8 sound 'ible'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "able",
+    "stem": "05_sentences_able",
+    "title": "Read able in sentences",
+    "objective": "Read and complete sentences that use the sound able.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 8 sound 'able'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "able",
+    "stem": "06_game_able",
+    "title": "Story game: You Are Remarkable",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 8 sound 'able'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 8,
+  "book": {
+   "level": 8,
+   "idx": 3,
+   "sub": "L8.3",
+   "title": "It Looks Suspicious!",
+   "slug": "it-looks-suspicious",
+   "file_id": "6_3",
+   "sounds": [
+    "cious",
+    "tious"
+   ]
+  },
+  "folder": "L8/6_3_it_looks_suspicious",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "cious",
+    "stem": "01_spelling_cious",
+    "title": "Spell cious words",
+    "objective": "Choose the right spelling for the cious sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'cious'",
+    "seed": 8
+   },
+   {
+    "intent": "wordsearch",
+    "grapheme": "cious",
+    "stem": "02_wordsearch_cious",
+    "title": "Word search: cious",
+    "objective": "Find and read cious words fast.",
+    "how": "Ring each word in the grid and tick it off, crack the code, then speed read.",
+    "prompt": "a word search worksheet for level 8 sound 'cious'",
+    "seed": 9
+   },
+   {
+    "intent": "spelling",
+    "grapheme": "tious",
+    "stem": "03_spelling_tious",
+    "title": "Spell tious words",
+    "objective": "Choose the right spelling for the tious sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'tious'",
+    "seed": 10
+   },
+   {
+    "intent": "wordsearch",
+    "grapheme": "tious",
+    "stem": "04_wordsearch_tious",
+    "title": "Word search: tious",
+    "objective": "Find and read tious words fast.",
+    "how": "Ring each word in the grid and tick it off, crack the code, then speed read.",
+    "prompt": "a word search worksheet for level 8 sound 'tious'",
+    "seed": 11
+   },
+   {
+    "intent": "sentences",
+    "grapheme": "cious",
+    "stem": "05_sentences_cious",
+    "title": "Read cious in sentences",
+    "objective": "Read and complete sentences that use the sound cious.",
+    "how": "Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.",
+    "prompt": "a sentences worksheet for level 8 sound 'cious'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "cious",
+    "stem": "06_game_cious",
+    "title": "Story game: It Looks Suspicious!",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 8 sound 'cious'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "book",
+  "level": 8,
+  "book": {
+   "level": 8,
+   "idx": 4,
+   "sub": "L8.4",
+   "title": "The Incredible Bush Walk",
+   "slug": "the-incredible-bush-walk",
+   "file_id": "6_4",
+   "sounds": [
+    "ous",
+    "able",
+    "ible",
+    "cious",
+    "tious"
+   ]
+  },
+  "folder": "L8/6_4_the_incredible_bush_walk",
+  "label": "Worksheets",
+  "sheets": [
+   {
+    "intent": "assess",
+    "grapheme": "ous",
+    "stem": "01_assess_ous",
+    "title": "Check-up: ous",
+    "objective": "Show the sound ous is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 8 sound 'ous'",
+    "seed": 8
+   },
+   {
+    "intent": "assess",
+    "grapheme": "able",
+    "stem": "02_assess_able",
+    "title": "Check-up: able",
+    "objective": "Show the sound able is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 8 sound 'able'",
+    "seed": 9
+   },
+   {
+    "intent": "assess",
+    "grapheme": "ible",
+    "stem": "03_assess_ible",
+    "title": "Check-up: ible",
+    "objective": "Show the sound ible is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 8 sound 'ible'",
+    "seed": 10
+   },
+   {
+    "intent": "assess",
+    "grapheme": "cious",
+    "stem": "04_assess_cious",
+    "title": "Check-up: cious",
+    "objective": "Show the sound cious is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 8 sound 'cious'",
+    "seed": 11
+   },
+   {
+    "intent": "assess",
+    "grapheme": "tious",
+    "stem": "05_assess_tious",
+    "title": "Check-up: tious",
+    "objective": "Show the sound tious is secure before moving on.",
+    "how": "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet.",
+    "prompt": "an assessment worksheet for level 8 sound 'tious'",
+    "seed": 12
+   },
+   {
+    "intent": "game",
+    "grapheme": "ous",
+    "stem": "06_game_ous",
+    "title": "Story game: The Incredible Bush Walk",
+    "objective": "Read the book's words in a race game, so practice feels like play.",
+    "how": "You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.",
+    "prompt": "a board game for level 8 sound 'ous'",
+    "seed": 13
+   }
+  ]
+ },
+ {
+  "kind": "extras",
+  "level": 8,
+  "book": {
+   "level": 8,
+   "title": "Level 8 extra sounds",
+   "slug": "level-8-extras",
+   "file_id": null,
+   "sounds": [
+    "sion"
+   ]
+  },
+  "folder": "L8/extras",
+  "label": "Extra sounds",
+  "sheets": [
+   {
+    "intent": "spelling",
+    "grapheme": "sion",
+    "stem": "01_spelling_sion",
+    "title": "Spell sion words",
+    "objective": "Choose the right spelling for the sion sound and use it.",
+    "how": "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.",
+    "prompt": "a spelling worksheet for level 8 sound 'sion'",
+    "seed": 8
+   }
+  ]
+ }
+]

@@ -132,6 +132,10 @@ def activity_pages(book):
                 break
 
 
+# Hand-made book packs -> the story they belong to (6-level book id).
+PACK_STORY = {"L1/1_1_Tap_Tap_Tap_Pack": "1_1", "L1/1_2_Mud_on_Dog_Pack": "1_2", "L1/1_3_Fish_in_Tank_Pack": "1_3"}
+MANIFEST = os.path.join(ROOT, "public", "worksheets", "manifest.json")
+
 # folder -> (level, pack name, curriculum order): sounds first, then the book
 # pack that uses them, so the drip follows the teaching sequence.
 WS_LEVEL = {
@@ -163,7 +167,8 @@ def worksheets():
         rel = os.path.relpath(f, os.path.join(ROOT, "public/worksheets")).replace("\\", "/")
         folder = rel.rsplit("/", 1)[0]
         if folder not in WS_LEVEL:
-            print(f"warning: unmapped worksheet folder {folder}", file=sys.stderr)
+            if not re.match(r"^L\d/", folder):  # forged folders come from the manifest below
+                print(f"warning: unmapped worksheet folder {folder}", file=sys.stderr)
             continue
         lvl, pack, order = WS_LEVEL[folder]
         fname = os.path.basename(f)[:-4]
@@ -171,8 +176,22 @@ def worksheets():
         name = re.sub(r"^\d+_", "", fname).replace("_", " ")
         name = name[:1].upper() + name[1:]
         items.append(dict(level=lvl, pack=pack, order=order, name=("Full pack: " if is_pack else "") + name,
-                          is_pack=is_pack, url=f"{BASE}/worksheets/{rel}", local=os.path.relpath(f, ROOT).replace("\\", "/")))
+                          is_pack=is_pack, url=f"{BASE}/worksheets/{rel}", local=os.path.relpath(f, ROOT).replace("\\", "/"),
+                          story=PACK_STORY.get(folder)))
     items.sort(key=lambda s: (s["order"], not s["is_pack"], sound_rank(s["name"]), s["url"]))
+    # Forged packs (scripts/worksheets/forge_batch.py) follow the hand-made ones,
+    # in book order. Each sheet carries its own objective/how and its story.
+    if os.path.exists(MANIFEST):
+        for i, p in enumerate(json.load(open(MANIFEST, encoding="utf-8"))["packs"]):
+            b = p["book"]
+            pack_name = f"{b['title']} worksheets" if p["kind"] == "book" else b["title"]
+            order = 100 + i
+            items.append(dict(level=p["level"], pack=pack_name, order=order, name="Full pack: " + pack_name, is_pack=True,
+                              url=f"{BASE}{p['bundle']}", local="public" + p["bundle"], story=b.get("file_id")))
+            for s in p["sheets"]:
+                items.append(dict(level=p["level"], pack=pack_name, order=order, name=s["title"], is_pack=False,
+                                  url=f"{BASE}{s['href']}", local="public" + s["href"], story=b.get("file_id"),
+                                  objective=s["objective"], how=s["how"]))
     return items
 
 
@@ -234,6 +253,9 @@ def compose_worksheets(book, pages):
                    steps=story, url=f"{BASE}/p/{book['file_id']}/{page_list(s[0] for s in story)}")
 
 
+BOOK_TITLES = {b["file_id"]: b["title"] for b in load_books()}
+
+
 def build():
     """Three designed worksheets a day, in curriculum order, never mixing packs.
     (Lynden 2026-09-20: "forget the book pages, let's just do the actual
@@ -257,6 +279,8 @@ def build():
     for pk in packs:
         lvl, pack_name = pk["key"]
         singles, full = pk["singles"], pk["full"]
+        story = (singles or [full])[0].get("story")
+        story_title = BOOK_TITLES.get(story, "") if story else ""
         # Balanced groups of up to 3 (7 sheets -> 3,2,2 rather than 3,3,1).
         parts = max(1, (len(singles) + 2) // 3)
         base, extra = divmod(len(singles), parts) if singles else (0, 0)
@@ -269,7 +293,8 @@ def build():
                 continue
             lines = []
             for s in group:
-                s["objective"], s["how"] = worksheet_objective(s)
+                if not s.get("objective"):
+                    s["objective"], s["how"] = worksheet_objective(s)
                 lines.append(f"{s['name'].upper()}\nObjective: {s['objective']}\nHow: {s['how']}\nPrint: {s['url']}")
             names = ", ".join(s["name"] for s in group)
             add(kind="worksheets", level=lvl, level_name=LEVEL_NAMES[lvl], title=f"{pack_name}: {names}",
@@ -284,6 +309,7 @@ def build():
                          f"{level_line(lvl)} · one sound or skill per sheet, in the order the books teach it\n\n"
                          + "\n\n".join(lines)
                          + (f"\n\nThe whole pack in one PDF: {full['url']}" if full else "")
+                         + (f"\n\nThese go with the story {story_title}. Read it first: {BOOK_URL.format(id=story)}" if story else "")
                          + f"\n\n{SIGN_OFF}"))
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

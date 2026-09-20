@@ -1,5 +1,6 @@
 import { SoundMatsResources } from '@/components/SoundMatsResources';
 import { JOURNEY_LEVELS, journeyPlacement } from '@/lib/levels8';
+import { FORGED_FOLDERS } from '@/data/forgedWorksheets';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -57,7 +58,8 @@ const levelHex = (level: number) => JOURNEY_LEVELS.find((l) => l.level === level
 type Sheet = {
   href: string;
   title: string;
-  thumb?: string;
+  thumb?: string | null;
+  objective?: string;
 };
 
 type SheetGroup = {
@@ -74,7 +76,13 @@ type BookFolder = {
   focusSounds: string[];
   status: 'ready' | 'coming-soon';
   groups: SheetGroup[];
+  /** 6-level book id ("2_2") when the pack belongs to a story: shows a "Read the story" link. */
+  storyFileId?: string | null;
 };
+
+// The published books live in Supabase Storage (public bucket), not on Vercel.
+const storyPdfUrl = (fileId: string) =>
+  `https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs/a5/${fileId}.pdf`;
 
 const L2_SOUNDS = ['c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff', 'l', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z'];
 const L3_SOUNDS = ['sh', 'nk', 'ch', 'th', 'ng', 'qu', 'zz'];
@@ -247,6 +255,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
     <button
       type="button"
       onClick={() => download(sheet.href, pdfFilename(sheet.title))}
+      title={sheet.objective}
       className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-left w-full"
     >
       <div className="aspect-[1/1.4142] overflow-hidden bg-muted">
@@ -316,6 +325,17 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
           </div>
         ) : (
           <div className="space-y-5">
+            {book.storyFileId && (
+              <a
+                href={storyPdfUrl(book.storyFileId)}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-primary-ink hover:underline"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                Read the story first: {book.title} (PDF)
+              </a>
+            )}
             {book.groups.map((g, gi) => (
               <div key={gi}>
                 <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
@@ -361,6 +381,27 @@ const BOOKS_BY_JOURNEY_LEVEL: Record<number, BookFolder[]> = (() => {
     const placed = journeyPlacement(`L${b.bookNumber}`);
     const level = placed?.level ?? 1;
     (out[level] ??= []).push(placed ? { ...b, bookNumber: placed.subLevel.replace(/^L/, '') } : b);
+  }
+  // Forged packs (scripts/worksheets/): a folder for a book that is already
+  // listed adds its group to that book (and makes it ready); anything else
+  // becomes a new folder. Level extras ("L5") go after the level's books.
+  for (const f of FORGED_FOLDERS) {
+    const level = f.bookNumber.startsWith('L') ? Number(f.bookNumber.slice(1)) : Number(f.bookNumber.split('.')[0]);
+    const list = (out[level] ??= []);
+    const existing = list.find((b) => b.bookNumber === f.bookNumber);
+    if (existing) {
+      existing.groups = [...existing.groups, ...f.groups];
+      existing.status = 'ready';
+      existing.storyFileId ??= f.storyFileId;
+    } else {
+      list.push({ ...f, groups: [...f.groups] });
+    }
+  }
+  for (const level of Object.keys(out)) {
+    out[Number(level)].sort((a, b) => {
+      const key = (x: BookFolder) => (x.bookNumber.startsWith('L') ? 999 : Number(x.bookNumber.split('.')[1] ?? 0));
+      return key(a) - key(b);
+    });
   }
   return out;
 })();

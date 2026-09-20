@@ -165,3 +165,7 @@ vite.config.ts.timestamp-*.mjs
 public/sounds/takes/
 public/sounds/*.previous.mp3
 marketing/social/preview*.jpg
+.tmp_forge/
+.tmp_forge_batch/
+marketing/worksheets_batch.out
+marketing/worksheets_forge.log
