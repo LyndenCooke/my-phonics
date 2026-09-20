@@ -76,12 +76,14 @@ def worksheet_objective(s):
     """(objective, how) for a worksheet, from its pack and name."""
     name = s["name"].replace("Full pack: ", "")
     low = name.lower()
-    if low.startswith("sound "):
+    if "sound hunt" in low:
+        return ("Spot the book's sounds at the start of words.", "Say each picture word and listen for the first sound. Circle the ones that match.")
+    if "sound sort" in low:
+        return ("Sort words by the sound they contain.", "Read each word, decide which sound it has, and write it in the right column.")
+    if low.startswith("sound ") and len(name.split()) == 2:
         g = name.split(" ", 1)[1]
         return (f"Hear, say, read and write the sound {g}.",
                 "Say the sound, circle the pictures that start with it, then trace and write it. One sound per sheet, so nothing is mixed in.")
-    if "sound hunt" in low:
-        return ("Spot the book's sounds at the start of words.", "Say each picture word and listen for the first sound. Circle the ones that match.")
     if "trace" in low or "tap the sounds" in low:
         return ("Form the book's new sounds correctly.", "Trace slowly while saying the sound, then write it on your own.")
     if "read and do" in low:
@@ -130,16 +132,29 @@ def activity_pages(book):
                 break
 
 
+# folder -> (level, pack name, curriculum order): sounds first, then the book
+# pack that uses them, so the drip follows the teaching sequence.
 WS_LEVEL = {
-    "Sound_Pack": (1, "s a t p i n sound sheets"),
-    "Sound_Pack_MDGO": (1, "m d g o sound sheets"),
-    "L1/1_1_Tap_Tap_Tap_Pack": (1, "Tap! Tap! Tap! book pack"),
-    "L1/1_2_Mud_on_Dog_Pack": (1, "The Mud on the Dog book pack"),
-    "Sound_Pack_L2": (2, "Level 2 sound sheets"),
-    "Sound_Pack_SHNK": (3, "sh and nk sound sheets"),
-    "L1/1_3_Fish_in_Tank_Pack": (3, "The Fish in the Tank book pack"),
-    "Level_3_Pack": (3, "Level 3 practice pack"),
+    "Sound_Pack": (1, "Sounds s, a, t, p, i, n", 1),
+    "L1/1_1_Tap_Tap_Tap_Pack": (1, "Tap! Tap! Tap! book pack", 2),
+    "Sound_Pack_MDGO": (1, "Sounds m, d, g, o", 3),
+    "L1/1_2_Mud_on_Dog_Pack": (1, "The Mud on the Dog book pack", 4),
+    "Sound_Pack_L2": (2, "Level 2 sound sheets", 5),
+    "Sound_Pack_SHNK": (3, "Sounds sh and nk", 6),
+    "L1/1_3_Fish_in_Tank_Pack": (3, "The Fish in the Tank book pack", 7),
+    "Level_3_Pack": (3, "Level 3 practice pack", 8),
 }
+
+
+# Teaching order of single-sound sheets (Letters and Sounds phases 2-3).
+SOUND_ORDER = "s a t p i n m d g o c k ck e u r h b f ff l ll ss j v w x y z zz qu ch sh th ng nk".split()
+
+
+def sound_rank(name):
+    parts = name.replace("Full pack: ", "").split()
+    if len(parts) == 2 and parts[0].lower() == "sound" and parts[1] in SOUND_ORDER:
+        return SOUND_ORDER.index(parts[1])
+    return 999
 
 
 def worksheets():
@@ -150,14 +165,14 @@ def worksheets():
         if folder not in WS_LEVEL:
             print(f"warning: unmapped worksheet folder {folder}", file=sys.stderr)
             continue
-        lvl, pack = WS_LEVEL[folder]
+        lvl, pack, order = WS_LEVEL[folder]
         fname = os.path.basename(f)[:-4]
         is_pack = not re.match(r"^\d\d_", fname) and not fname.startswith("sound_")
         name = re.sub(r"^\d+_", "", fname).replace("_", " ")
         name = name[:1].upper() + name[1:]
-        items.append(dict(level=lvl, pack=pack, name=("Full pack: " if is_pack else "") + name,
+        items.append(dict(level=lvl, pack=pack, order=order, name=("Full pack: " if is_pack else "") + name,
                           is_pack=is_pack, url=f"{BASE}/worksheets/{rel}", local=os.path.relpath(f, ROOT).replace("\\", "/")))
-    items.sort(key=lambda s: (s["level"], s["pack"], not s["is_pack"], s["url"]))
+    items.sort(key=lambda s: (s["order"], not s["is_pack"], sound_rank(s["name"]), s["url"]))
     return items
 
 
@@ -220,64 +235,61 @@ def compose_worksheets(book, pages):
 
 
 def build():
-    books = load_books()
+    """Three designed worksheets a day, in curriculum order, never mixing packs.
+    (Lynden 2026-09-20: "forget the book pages, let's just do the actual
+    worksheets we made... one image creative showing the 3 worksheets.")"""
     queue = []
 
     def add(**item):
         item["id"] = f"{len(queue) + 1:03d}"
         queue.append(item)
 
-    for lvl in range(1, 9):
-        lvl_books = [b for b in books if b["level"] == lvl]
-        name = LEVEL_NAMES[lvl]
-        # Per book: the book, then its two WORKSHEETS. A worksheet here is a
-        # task sequence with one purpose (Lynden 2026-09-20: "singular
-        # worksheets should be seen as a task with a progression based on a
-        # clear purpose"). Reference pages (Our Sounds, Story Words) are not
-        # worksheets and are never posted alone; the book post points to them.
-        for b in lvl_books:
-            book_url = BOOK_URL.format(id=b["file_id"])
-            pages = list(activity_pages(b))
-            add(kind="book", level=lvl, level_name=name, title=b["title"], sounds=b["sounds"],
-                headline=b["title"], subline=f"Decodable book · sounds {b['sounds']}",
-                objective=f"Read a whole story using only the sounds taught so far, up to {b['sounds'].split(', ')[-1]}.",
-                url=book_url, preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=1, pdf_url=book_url,
-                caption=(f"FREE decodable book: {b['title']}\n"
-                         f"{level_line(lvl)} · Book {b['idx']} · sounds: {b['sounds']}\n\n"
-                         f"OBJECTIVE: read a whole story using only sounds your child has been taught, so every word can be sounded out. No guessing.\n\n"
-                         f"HOW TO USE: pages 2 and 3 are the sound mat and the story words. Say the sounds, blend the words, then read the story together. "
-                         f"Two worksheets for this book follow over the next two days: one on its sounds, one on the story.\n\n"
-                         f"Print the book: {book_url}\n{SIGN_OFF}"))
-            for ws in compose_worksheets(b, pages):
-                add(kind="worksheet", level=lvl, level_name=name, title=f"{ws['name']} — {b['title']}", sounds=b["sounds"],
-                    headline=ws["name"], subline=f"{b['title']} · {len(ws['steps'])} tasks · " + " → ".join(s[2] for s in ws["steps"]),
-                    objective=ws["objective"],
-                    url=ws["url"], preview_pdf=f"public/book-pdfs/{b['file_id']}.pdf", preview_page=ws["steps"][0][0], pdf_url=book_url,
-                    caption=(f"FREE phonics worksheet: {ws['name']} ({len(ws['steps'])} tasks)\n"
-                             f"{level_line(lvl)} · from {b['title']} · sounds: {b['sounds']}\n\n"
-                             f"OBJECTIVE: {ws['objective']}\n\n"
-                             + "\n".join(f"TASK {i}: {label}. {purpose}" for i, (_, label, _, purpose) in enumerate(ws["steps"], 1)) +
-                             f"\n\nHOW TO USE: {ws['how']}\n\n"
-                             f"Print the worksheet: {ws['url']}\n"
-                             f"The book it belongs to: {book_url}\n{SIGN_OFF}"))
-        # Worksheets for the level, after its books
-        for s in [w for w in worksheets() if w["level"] == lvl]:
-            objective, how = worksheet_objective(s)
-            add(kind="worksheet", level=lvl, level_name=name, title=s["name"], sounds=s["pack"],
-                headline=s["name"].replace("Full pack: ", ""), subline=f"{s['pack']}",
-                objective=objective,
-                url=s["url"], preview_pdf=s["local"], preview_page=1, pdf_url=s["url"],
-                caption=(f"FREE phonics worksheet: {s['name']}\n"
-                         f"{level_line(lvl)} · {s['pack']}\n\n"
-                         f"OBJECTIVE: {objective}\n\n"
-                         f"HOW TO USE: {how}\n\n"
-                         f"Print it: {s['url']}\n{SIGN_OFF}"))
+    packs = []
+    for s in worksheets():
+        key = (s["level"], s["pack"])
+        if not packs or packs[-1]["key"] != key:
+            packs.append(dict(key=key, singles=[], full=None))
+        if s["is_pack"]:
+            packs[-1]["full"] = s
+        else:
+            packs[-1]["singles"].append(s)
+
+    for pk in packs:
+        lvl, pack_name = pk["key"]
+        singles, full = pk["singles"], pk["full"]
+        # Balanced groups of up to 3 (7 sheets -> 3,2,2 rather than 3,3,1).
+        parts = max(1, (len(singles) + 2) // 3)
+        base, extra = divmod(len(singles), parts) if singles else (0, 0)
+        groups, pos = [], 0
+        for g in range(parts):
+            size = base + (1 if g < extra else 0)
+            groups.append(singles[pos:pos + size]); pos += size
+        for i, group in enumerate(groups):
+            if not group:
+                continue
+            lines = []
+            for s in group:
+                s["objective"], s["how"] = worksheet_objective(s)
+                lines.append(f"{s['name'].upper()}\nObjective: {s['objective']}\nHow: {s['how']}\nPrint: {s['url']}")
+            names = ", ".join(s["name"] for s in group)
+            add(kind="worksheets", level=lvl, level_name=LEVEL_NAMES[lvl], title=f"{pack_name}: {names}",
+                sounds=pack_name, headline=pack_name,
+                subline=f"{len(group)} worksheet{'s' if len(group) != 1 else ''} · {level_line(lvl)}",
+                objective=f"Part {i + 1} of {parts} of the {pack_name}. One sound or skill per sheet.",
+                sheets=[dict(name=s["name"], url=s["url"], local=s["local"], objective=s["objective"]) for s in group],
+                pack_url=full["url"] if full else None,
+                url=full["url"] if full else group[0]["url"],
+                preview_pdf=group[0]["local"], preview_page=1, pdf_url=group[0]["url"],
+                caption=(f"FREE phonics worksheets: {len(group)} today from the {pack_name}\n"
+                         f"{level_line(lvl)} · one sound or skill per sheet, in the order the books teach it\n\n"
+                         + "\n\n".join(lines)
+                         + (f"\n\nThe whole pack in one PDF: {full['url']}" if full else "")
+                         + f"\n\n{SIGN_OFF}"))
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(queue, f, ensure_ascii=False, indent=1)
-    kinds = {k: sum(1 for q in queue if q["kind"] == k) for k in ("book", "worksheet")}
-    print(f"wrote {os.path.relpath(OUT, ROOT)}: {len(queue)} posts {kinds}")
+    print(f"wrote {os.path.relpath(OUT, ROOT)}: {len(queue)} posts, {sum(len(q['sheets']) for q in queue)} worksheets")
 
 
 if __name__ == "__main__":

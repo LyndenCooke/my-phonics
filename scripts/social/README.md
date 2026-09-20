@@ -5,36 +5,29 @@ curriculum order, with no one touching it.
 
 ## What goes out
 
-`marketing/social/queue.json` — 164 posts, built by `build_queue.py`:
+`marketing/social/queue.json` — 22 posts, built by `build_queue.py`, each
+carrying two or three of the designed worksheets from `public/worksheets/**`
+(57 single sheets; the 8 full-pack PDFs are linked, not posted).
 
-| kind | count | source |
-|---|---|---|
-| book | 33 | Supabase Storage, public bucket `book-pdfs/a5/<id>.pdf` (the published books are not in git or on Vercel: `*.pdf` is ignored) |
-| worksheet (from books) | 66 | two per book, composed from its activity pages by `compose_worksheets`: the **Sounds worksheet** (Sound Spotlight → Trace & Form → Alien Words → Can You Read These? → Shifty Sounds, whichever the book has) and the **Story worksheet** (sequencing → Tell the Story → Your Turn to Write → Talk About It → Grammar Spotlight). Served as one PDF by `api/printable.py` at `/p/<book>/<page list>` |
-| worksheet (designed) | 65 | `public/worksheets/**` (git-tracked, re-included in `.vercelignore`) |
+- Teaching order (`WS_LEVEL` order + `SOUND_ORDER`): the s a t p i n sound
+  sheets, then the Tap! Tap! Tap! book pack, then m d g o, then The Mud on the
+  Dog pack, then Level 2 sounds, then sh/nk, The Fish in the Tank pack, and the
+  Level 3 practice pack.
+- Groups never mix packs and are balanced (7 sheets -> 3, 2, 2).
+- Every caption lists each sheet with an Objective, a How line and its link,
+  then the full-pack link, then the sign-off. Objectives come from
+  `worksheet_objective` in `build_queue.py`.
 
-A worksheet is a task sequence with one purpose. Reference pages (Our Sounds,
-Story Words) are not worksheets and are never posted on their own; the book
-post tells parents to use them before reading.
-
-Order, per book: the book, its sounds worksheet, its story worksheet. Books
-run Level 1 to 8, with each level's designed worksheets after its books.
-
-Every caption states an OBJECTIVE and a HOW TO USE line (see `PAGE_TYPES` and
-`worksheet_objective` in `build_queue.py`), then the print link and sign-off.
+When there are more worksheets, drop them in `public/worksheets/<pack>/`,
+add the folder to `WS_LEVEL`, force-add the PDFs (`*.pdf` is git-ignored)
+and re-run `build_queue.py`. When the queue is exhausted it loops.
 
 ## The creative
 
-`creative.py` wraps the printable's page in a branded 1080x1350 card: level
-pill, activity name, the book it belongs to, the page in a white card, the
-objective, and the logo lockup. Font: `marketing/social/assets/Outfit.ttf`
-(the site's display font, OFL).
-
-Rebuild after adding books or worksheets:
-
-```bash
-py -3.12 scripts/social/build_queue.py
-```
+`creative.py` renders one 1080x1080 card showing the day's sheets side by
+side (first page of each in a white card, name underneath), with the level
+pill, pack name, a "Today: part n of m" line and the logo. Font:
+`marketing/social/assets/Outfit.ttf` (the site's display font, OFL).
 
 ## How it posts
 

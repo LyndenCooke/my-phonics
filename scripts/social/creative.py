@@ -1,7 +1,7 @@
 """
-Branded 1080x1350 Facebook creative for a queue item: the printable's page in a
-white card on the MyPhonicsBooks cream, with a level pill, the activity name,
-the book it comes from, the learning objective and the logo lockup.
+Branded 1080x1080 Facebook creative for a day's worksheets: up to three first
+pages side by side in white cards on the MyPhonicsBooks cream, with a level
+pill, the pack name, each sheet's name, a "Today:" line and the logo lockup.
 
     from creative import render_creative
     render_creative(item, page_pixmap_png_bytes, out_path)
@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 FONT = os.path.join(ROOT, "marketing", "social", "assets", "Outfit.ttf")
 LOGO = os.path.join(ROOT, "public", "logo", "mpb-lockup.png")
 
-W, H = 1080, 1350
+W, H = 1080, 1080
 CREAM = (255, 247, 238)
 NAVY = (30, 42, 74)
 INK = (90, 96, 112)
@@ -78,49 +78,58 @@ def _wrap(d, text, f, max_w):
     return lines
 
 
-def render_creative(item, page_png: bytes, out_path: str):
+def render_creative(item, pages_png: list, out_path: str):
+    """pages_png: 1-3 PNG byte strings, one per worksheet, shown side by side."""
     colour = LEVEL_COLOURS.get(item["level"], PINK)
     c = Image.new("RGBA", (W, H), CREAM + (255,))
     _blobs(c, colour)
     d = ImageDraw.Draw(c)
 
-    # Level pill
-    pill = f"FREE PRINTABLE  ·  LEVEL {item['level']} OF 8  ·  {item.get('level_name', '').upper()}"
+    pill = f"FREE WORKSHEETS  ·  LEVEL {item['level']} OF 8  ·  {item.get('level_name', '').upper()}"
     pf = font(26, 700)
     pw = d.textlength(pill, font=pf) + 56
     px = (W - pw) / 2
-    d.rounded_rectangle([px, 56, px + pw, 56 + 52], 26, fill=colour)
-    d.text((px + 28, 56 + 11), pill, font=pf, fill="white")
+    d.rounded_rectangle([px, 40, px + pw, 40 + 52], 26, fill=colour)
+    d.text((px + 28, 40 + 11), pill, font=pf, fill="white")
 
-    # Headline (activity / book / worksheet name) and sub-line
     head = item.get("headline") or item["title"]
-    hf = _fit(d, head, 78, W - 120)
-    d.text(((W - d.textlength(head, font=hf)) / 2, 132), head, font=hf, fill=NAVY)
+    hf = _fit(d, head, 66, W - 120)
+    d.text(((W - d.textlength(head, font=hf)) / 2, 108), head, font=hf, fill=NAVY)
     sub = item.get("subline", "")
-    sf = font(34, 600)
+    sf = font(30, 600)
     if sub:
-        d.text(((W - d.textlength(sub, font=sf)) / 2, 132 + hf.size + 14), sub, font=sf, fill=INK)
+        d.text(((W - d.textlength(sub, font=sf)) / 2, 108 + hf.size + 8), sub, font=sf, fill=INK)
 
-    # Page in a white card
-    page = Image.open(io.BytesIO(page_png)).convert("RGB")
-    top = 132 + hf.size + (60 if sub else 30) + 10
-    bottom = H - 300
-    pad = 12
-    scale = min((W - 160 - 2 * pad) / page.width, (bottom - top - 2 * pad) / page.height)
-    page = page.resize((int(page.width * scale), int(page.height * scale)), Image.LANCZOS)
-    cw, ch = page.width + 2 * pad, page.height + 2 * pad
-    cx, cy = int((W - cw) / 2), int(top + (bottom - top - ch) / 2)
-    _shadow(c, (cx, cy, cx + cw, cy + ch))
-    ImageDraw.Draw(c).rounded_rectangle([cx, cy, cx + cw, cy + ch], 28, fill="white")
-    c.alpha_composite(_rounded(page, 18), (cx + pad, cy + pad))
+    # Pages side by side in white cards, names underneath
+    n = max(1, len(pages_png))
+    top = 108 + hf.size + 56
+    bottom = H - 235
+    gap = 24
+    card_w = (W - 80 - gap * (n - 1)) / n
+    pad = 8
+    names = [s["name"] for s in item.get("sheets", [])] or [item["title"]]
+    for i, png in enumerate(pages_png):
+        page = Image.open(io.BytesIO(png)).convert("RGB")
+        scale = min((card_w - 2 * pad) / page.width, (bottom - top - 60 - 2 * pad) / page.height)
+        page = page.resize((int(page.width * scale), int(page.height * scale)), Image.LANCZOS)
+        cw, ch = page.width + 2 * pad, page.height + 2 * pad
+        cx = int(40 + i * (card_w + gap) + (card_w - cw) / 2)
+        cy = int(top + (bottom - 60 - top - ch) / 2)
+        _shadow(c, (cx, cy, cx + cw, cy + ch), 22)
+        ImageDraw.Draw(c).rounded_rectangle([cx, cy, cx + cw, cy + ch], 22, fill="white")
+        c.alpha_composite(_rounded(page, 14), (cx + pad, cy + pad))
+        d = ImageDraw.Draw(c)
+        label = names[i] if i < len(names) else ""
+        lf = _fit(d, label, 26, card_w - 10, min_size=18)
+        d.text((cx + cw / 2 - d.textlength(label, font=lf) / 2, cy + ch + 14), label, font=lf, fill=NAVY)
 
-    # Objective
+    # "Today:" line
     d = ImageDraw.Draw(c)
     of_label = font(30, 800)
     of_body = font(30, 500)
-    label = "Objective: "
+    label = "Today: "
     body_lines = _wrap(d, item.get("objective", ""), of_body, W - 140 - d.textlength(label, font=of_label))
-    y = H - 270
+    y = H - 205
     if body_lines:
         first = body_lines[0]
         total = d.textlength(label, font=of_label) + d.textlength(first, font=of_body)
@@ -131,11 +140,9 @@ def render_creative(item, page_png: bytes, out_path: str):
             y += 40
             d.text(((W - d.textlength(ln, font=of_body)) / 2, y), ln, font=of_body, fill=NAVY)
 
-    # Logo
     lg = Image.open(LOGO).convert("RGBA")
-    lh = 84
+    lh = 72
     lg = lg.resize((int(lg.width * lh / lg.height), lh), Image.LANCZOS)
-    c.alpha_composite(lg, (int((W - lg.width) / 2), H - 150))
-
+    c.alpha_composite(lg, (int((W - lg.width) / 2), H - 108))
     c.convert("RGB").save(out_path, quality=90)
     return out_path
