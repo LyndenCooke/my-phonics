@@ -1,0 +1,51 @@
+name: Daily Facebook printable
+
+# One free printable a day to the MyPhonicsBooks Facebook Page, in curriculum
+# order, from marketing/social/queue.json. See scripts/social/README.md.
+on:
+  schedule:
+    - cron: "30 6 * * *"   # 06:30 UTC = 07:30 BST / 06:30 GMT, before the school run
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "Queue id to post (blank = next unposted)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-post
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyMuPDF
+        run: pip install --quiet pymupdf
+
+      - name: Post next printable
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.inputs.id }}" ]; then
+            python scripts/social/post_next.py --id "${{ github.event.inputs.id }}"
+          else
+            python scripts/social/post_next.py
+          fi
+
+      - name: Record what went out
+        run: |
+          git config user.name "myphonicsbooks-bot"
+          git config user.email "bot@myphonicsbooks.co.uk"
+          git add marketing/social/posted.json
+          git diff --cached --quiet || git commit -m "social: daily printable posted"
+          git push
