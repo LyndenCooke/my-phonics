@@ -317,8 +317,9 @@ def build():
                 lines.append(f"{s['name'].upper()}\nObjective: {s['objective']}\nHow: {s['how']}\nPrint: {s['url']}")
             names = ", ".join(s["name"] for s in group)
             add(kind="worksheets", level=lvl, level_name=LEVEL_NAMES[lvl], title=f"{pack_name}: {names}",
-                sounds=pack_name, headline=pack_name,
-                subline=f"{len(group)} worksheet{'s' if len(group) != 1 else ''} · {level_line(lvl)}",
+                sounds=pack_name, headline=story_title or pack_name,
+                subline=(f"{'Worksheets' if story_title else ''}{' · ' if story_title else ''}"
+                         f"{len(group)} sheet{'s' if len(group) != 1 else ''} today · {level_line(lvl)}"),
                 objective=f"Part {i + 1} of {parts} of {pack_name}. One sound or skill per sheet.",
                 sheets=[dict(name=s["name"], url=s["url"], local=s["local"], objective=s["objective"]) for s in group],
                 book_idx=books_by_id[story]["idx"] if story in books_by_id else None,
