@@ -39,7 +39,7 @@ STICKER = {1: "Perfect for early readers!", 2: "Perfect for early readers!", 3: 
            4: "Great for Year 1!", 5: "Great for Year 1!", 6: "For confident readers!",
            7: "For confident readers!", 8: "For confident readers!"}
 BENEFITS = [("book", "Builds reading skills"), ("pencil", "Fun and engaging"),
-            ("star", "Ideal for home learning"), ("heart", "Supports confidence")]
+            ("star", "Ideal for home learning")]
 
 
 # ---------------------------------------------------------------- helpers
@@ -118,68 +118,76 @@ def _sticker(canvas, text, cx, cy, r=98, angle=-8):
         d.line([(x0, y0), (x1, y1)], fill=YELLOW, width=12, joint="curve")
 
 
-def _benefits(canvas, cy):
+def _benefits(canvas, y, items=BENEFITS, x0=64, col_w=236, box=70):
+    """Icon + caption (up to three lines), in fixed columns so they line up."""
     d = ImageDraw.Draw(canvas)
-    col_w = (W - 48) / 4
-    f = font(24, 700)
-    box = 78  # every icon sits in the same square so the captions align
-    for i, (name, label) in enumerate(BENEFITS):
-        x0 = 24 + i * col_w
+    f = font(25, 700)
+    for i, (name, label) in enumerate(items):
+        x = x0 + i * col_w
         ic = icon(name, box)
         if ic.width > box:
             ic = ic.resize((box, int(ic.height * box / ic.width)), Image.LANCZOS)
-        canvas.alpha_composite(ic, (int(x0 + (box - ic.width) / 2), int(cy - ic.height / 2)))
-        lines = _wrap(d, label, f, col_w - box - 24)[:3]
-        top = cy - 14.5 * len(lines)
+        canvas.alpha_composite(ic, (int(x + (box - ic.width) / 2), int(y - ic.height / 2)))
+        lines = _wrap(d, label, f, col_w - box - 18)[:3]
+        top = y - 15 * len(lines)
         for j, ln in enumerate(lines):
-            d.text((x0 + box + 14, top + j * 29), ln, font=f, fill=NAVY)
+            d.text((x + box + 12, top + j * 30), ln, font=f, fill=NAVY)
 
 
-def _button(canvas, cy, label):
+def _button(canvas, x0, cy, label, w=None):
     d = ImageDraw.Draw(canvas)
     f = font(46, 800)
     tw = d.textlength(label, font=f)
-    w, h = tw + 190, 96
-    x0 = (W - w) / 2 - 50
+    w = w or tw + 200
+    h = 96
     d.rounded_rectangle([x0, cy - h / 2 + 5, x0 + w, cy + h / 2 + 5], h / 2, fill=GREEN_INK)
     d.rounded_rectangle([x0, cy - h / 2, x0 + w, cy + h / 2], h / 2, fill=GREEN)
-    dl = icon("download", 58)
-    canvas.alpha_composite(dl, (int(x0 + 44), int(cy - dl.height / 2)))
+    dl = icon("download", 56)
+    left = x0 + (w - tw - dl.width - 22) / 2
+    canvas.alpha_composite(dl, (int(left), int(cy - dl.height / 2)))
     d = ImageDraw.Draw(canvas)
-    d.text((x0 + 122, cy - h / 2 + 21), label, font=f, fill=WHITE)
-    for name, x, flip in (("sparkle_green", x0 - 70, True), ("sparkle_green", x0 + w + 8, False)):
-        b = icon(name, 54)
-        b = b.rotate(-30 if flip else 30, expand=True, resample=Image.BICUBIC)
-        canvas.alpha_composite(b, (int(x), int(cy - b.height / 2)))
+    d.text((left + dl.width + 22, cy - h / 2 + 21), label, font=f, fill=WHITE)
+
+
+def _logo_stacked(canvas, right, bottom, width=230):
+    """Mark above wordmark, as one lockup, anchored bottom-right."""
     lg = Image.open(LOGO).convert("RGBA")
-    lh = 54
-    lg = lg.resize((int(lg.width * lh / lg.height), lh), Image.LANCZOS)
-    canvas.alpha_composite(lg, (W - lg.width - 36, int(cy - lh / 2)))
+    lg = lg.crop(lg.getbbox())
+    mark = lg.crop((0, 0, int(lg.width * 0.11), lg.height))
+    mark = mark.crop(mark.getbbox())
+    word = lg.crop((int(lg.width * 0.14), 0, lg.width, lg.height))
+    word = word.crop(word.getbbox())
+    word = word.resize((width, int(word.height * width / word.width)), Image.LANCZOS)
+    mh = 120
+    mark = mark.resize((int(mark.width * mh / mark.height), mh), Image.LANCZOS)
+    cx = right - width / 2
+    y = bottom - word.height
+    canvas.alpha_composite(word, (int(cx - word.width / 2), int(y)))
+    canvas.alpha_composite(mark, (int(cx - mark.width / 2), int(y - mark.height - 6)))
 
 
-def _header(canvas, item, kicker):
-    d = ImageDraw.Draw(canvas)
-    _pill(d, kicker, 64, LAVENDER, NAVY)
-    burst = icon("sparkle", 96).rotate(25, expand=True, resample=Image.BICUBIC)
-    canvas.alpha_composite(burst, (54, 150))
-    _sticker(canvas, STICKER.get(item["level"], ""), W - 124, 150)
+def _header(canvas, item):
     d = ImageDraw.Draw(canvas)
     head = item.get("headline") or item["title"]
-    max_w = W - 2 * 232
-    hf = _fit(d, head, 90, max_w, min_size=62)
+    max_w = W - 220
+    hf = _fit(d, head, 128, max_w, min_size=72)
     lines = [head] if d.textlength(head, font=hf) <= max_w else _wrap(d, head, hf, max_w)[:2]
-    y = 112
+    y = 28
     for ln in lines:
         d.text(((W - d.textlength(ln, font=hf)) / 2, y), ln, font=hf, fill=NAVY)
-        y += int(hf.size * 1.0)
+        y += int(hf.size * 1.02)
     sub = item.get("subline", "")
     if sub:
-        sf = font(33, 600)
-        while d.textlength(sub, font=sf) > max_w + 60 and sf.size > 24:
+        sf = font(40, 600)
+        while d.textlength(sub, font=sf) > max_w and sf.size > 26:
             sf = font(sf.size - 2, 600)
-        d.text(((W - d.textlength(sub, font=sf)) / 2, y + 10), sub, font=sf, fill=INK)
-        y += 52
-    return y + 26
+        d.text(((W - d.textlength(sub, font=sf)) / 2, y + 8), sub, font=sf, fill=INK)
+        y += 64
+    burst = icon("sparkle", 80).rotate(25, expand=True, resample=Image.BICUBIC)
+    canvas.alpha_composite(burst, (W - 112, 96))
+    lb = icon("sparkle", 74).rotate(-140, expand=True, resample=Image.BICUBIC)
+    canvas.alpha_composite(lb, (22, 96))
+    return y + 30
 
 
 def _cutout(item, width):
@@ -198,47 +206,54 @@ def _sheet(png, size):
     return paper
 
 
+def _footer(canvas, label):
+    _benefits(canvas, 862)
+    _button(canvas, 64, 972, label, w=560)
+    _logo_stacked(canvas, W - 64, 1030)
+
+
 # ---------------------------------------------------------------- renderers
 def render_creative(item, pages_png: list, out_path: str):
     c = Image.new("RGBA", (W, H), WHITE + (255,))
-    top = _header(c, item, "FREE PHONICS WORKSHEETS")
-    band_top, band_bottom = top, H - 292
+    band_top, band_bottom = _header(c, item), 790
     n = max(1, min(3, len(pages_png)))
+    cut = _cutout(item, 400) if item.get("book_idx") else None
 
-    if item.get("book_idx"):
-        cut = _cutout(item, 330)
-        if cut is not None:
-            cut = cut.rotate(9, expand=True, resample=Image.BICUBIC)
-            _shadowed(c, cut, (W - cut.width - 6, band_bottom - cut.height + 4), alpha=55)
-
-    sheet_h = band_bottom - band_top - 44
+    if cut is not None:
+        cut = cut.rotate(-4, expand=True, resample=Image.BICUBIC)
+        cx0, cy0 = W - cut.width - 30, band_bottom - cut.height + 10
+        _shadowed(c, cut, (cx0, cy0), blur=26, offset=(0, 20), alpha=70)
+        sheets_cx = 400
+        sheet_h = band_bottom - band_top - 30
+    else:
+        sheets_cx = {1: W / 2, 2: 470, 3: 470}[n]
+        sheet_h = band_bottom - band_top - 30
     sheet_w = int(sheet_h / 1.414)
-    spread = {1: 0, 2: 250, 3: 305}[n]
-    angles = {1: [0], 2: [-4, 4], 3: [-7, 0, 7]}[n]
+    spread = {1: 0, 2: 190, 3: 200}[n] if cut is not None else {1: 0, 2: 250, 3: 250}[n]
+    angles = {1: [0], 2: [-4, 3], 3: [-6, 0, 6]}[n]
     cy = band_top + (band_bottom - band_top) / 2
     for i, png in enumerate(pages_png[:3]):
         sheet = _sheet(png, (sheet_w, sheet_h)).rotate(angles[i], expand=True, resample=Image.BICUBIC)
-        cx = W / 2 + (i - (n - 1) / 2) * spread
+        cx = sheets_cx + (i - (n - 1) / 2) * spread
         _shadowed(c, sheet, (int(cx - sheet.width / 2), int(cy - sheet.height / 2)), blur=26, offset=(0, 20), alpha=85)
 
-    _benefits(c, H - 206)
-    _button(c, H - 92, "Download for free")
+    _sticker(c, STICKER.get(item["level"], ""), W - 150, band_top + 70, r=92)
+    _footer(c, "Download for free")
     c.convert("RGB").save(out_path, quality=93)
     return out_path
 
 
 def render_book_creative(item, out_path: str):
     c = Image.new("RGBA", (W, H), WHITE + (255,))
-    top = _header(c, item, "FREE DECODABLE BOOK")
-    band_top, band_bottom = top, H - 292
-    cut = _cutout(item, 660)
+    band_top, band_bottom = _header(c, item), 800
+    cut = _cutout(item, 640)
     if cut is not None:
         cut = cut.rotate(-3, expand=True, resample=Image.BICUBIC)
         scale = min(1.0, (band_bottom - band_top - 10) / cut.height)
         if scale < 1:
             cut = cut.resize((int(cut.width * scale), int(cut.height * scale)), Image.LANCZOS)
         _shadowed(c, cut, (int((W - cut.width) / 2), int(band_top + (band_bottom - band_top - cut.height) / 2)), blur=30, offset=(0, 26), alpha=95)
-    _benefits(c, H - 206)
-    _button(c, H - 92, "Print it for free")
+    _sticker(c, STICKER.get(item["level"], ""), W - 150, band_top + 70, r=92)
+    _footer(c, "Print it for free")
     c.convert("RGB").save(out_path, quality=93)
     return out_path
