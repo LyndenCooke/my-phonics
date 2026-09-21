@@ -28,6 +28,7 @@
     "objective": "Hear, say, read and write the sound t."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack/SATPIN_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack/SATPIN_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack/sound_s.pdf",
@@ -65,6 +66,7 @@
     "objective": "Hear, say, read and write the sound n."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack/SATPIN_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack/SATPIN_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack/sound_p.pdf",
@@ -120,6 +122,7 @@
     "objective": "Read a short instruction and act on it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_Tap_Tap_Tap_Pack/Tap_Tap_Tap_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_Tap_Tap_Tap_Pack/Tap_Tap_Tap_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_1_Tap_Tap_Tap_Pack/01_sound_hunt.pdf",
@@ -151,6 +154,7 @@
     "objective": "Read a sentence and show understanding by drawing it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_Tap_Tap_Tap_Pack/Tap_Tap_Tap_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_Tap_Tap_Tap_Pack/Tap_Tap_Tap_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_1_Tap_Tap_Tap_Pack/04_alien_word_mission.pdf",
@@ -182,6 +186,7 @@
     "objective": "Hear, say, read and write the sound d."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_MDGO/MDGO_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_MDGO/MDGO_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_MDGO/sound_m.pdf",
@@ -213,6 +218,7 @@
     "objective": "Hear, say, read and write the sound o."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_MDGO/MDGO_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_MDGO/MDGO_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_MDGO/sound_g.pdf",
@@ -268,6 +274,7 @@
     "objective": "Read a short instruction and act on it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_Mud_on_Dog_Pack/Mud_on_Dog_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_Mud_on_Dog_Pack/Mud_on_Dog_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_2_Mud_on_Dog_Pack/01_sound_hunt.pdf",
@@ -299,6 +306,7 @@
     "objective": "Read a sentence and show understanding by drawing it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_Mud_on_Dog_Pack/Mud_on_Dog_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_Mud_on_Dog_Pack/Mud_on_Dog_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_2_Mud_on_Dog_Pack/04_alien_word_mission.pdf",
@@ -336,6 +344,7 @@
     "objective": "Hear, say, read and write the sound ck."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_c.pdf",
@@ -373,6 +382,7 @@
     "objective": "Hear, say, read and write the sound r."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_e.pdf",
@@ -410,6 +420,7 @@
     "objective": "Hear, say, read and write the sound f."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_h.pdf",
@@ -447,6 +458,7 @@
     "objective": "Hear, say, read and write the sound ll."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_ff.pdf",
@@ -484,6 +496,7 @@
     "objective": "Hear, say, read and write the sound v."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_ss.pdf",
@@ -515,6 +528,7 @@
     "objective": "Hear, say, read and write the sound x."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_w.pdf",
@@ -546,6 +560,7 @@
     "objective": "Hear, say, read and write the sound z."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_L2/sound_y.pdf",
@@ -577,6 +592,7 @@
     "objective": "Hear, say, read and write the sound nk."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_SHNK/SHNK_Sound_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Sound_Pack_SHNK/SHNK_Sound_Pack.pdf",
   "preview_pdf": "public/worksheets/Sound_Pack_SHNK/sound_sh.pdf",
@@ -632,6 +648,7 @@
     "objective": "Read a short instruction and act on it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_3_Fish_in_Tank_Pack/01_sound_hunt.pdf",
@@ -663,6 +680,7 @@
     "objective": "Sort words by the sound they contain."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_3_Fish_in_Tank_Pack/04_alien_word_mission.pdf",
@@ -700,6 +718,7 @@
     "objective": "Hear, say, read and write the sound ch."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "preview_pdf": "public/worksheets/Level_3_Pack/07_sound_zz.pdf",
@@ -737,6 +756,7 @@
     "objective": "Hear, say, read and write the sound ng."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "preview_pdf": "public/worksheets/Level_3_Pack/01_sound_sh.pdf",
@@ -774,6 +794,7 @@
     "objective": "Read the tricky words that can't be fully sounded out."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "preview_pdf": "public/worksheets/Level_3_Pack/02_sound_nk.pdf",
@@ -805,6 +826,7 @@
     "objective": "Use capital letters for names."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/Level_3_Pack/L3_Complete_Pack.pdf",
   "preview_pdf": "public/worksheets/Level_3_Pack/10_full_stop_or_question.pdf",
@@ -842,6 +864,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_tap_tap_tap/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_1_tap_tap_tap/pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_1_tap_tap_tap/01_assess_s.pdf",
@@ -879,6 +902,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_the_mud_on_the_dog/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L1/1_2_the_mud_on_the_dog/pack.pdf",
   "preview_pdf": "public/worksheets/L1/1_2_the_mud_on_the_dog/01_assess_m.pdf",
@@ -934,6 +958,7 @@
     "objective": "Form the sound ck correctly and write words that use it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_4_the_red_socks/01_handwriting_c.pdf",
@@ -965,6 +990,7 @@
     "objective": "Hear every sound in a c word and write it down."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_4_the_red_socks/04_handwriting_e.pdf",
@@ -996,6 +1022,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_4_the_red_socks/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_4_the_red_socks/06_draw_c.pdf",
@@ -1051,6 +1078,7 @@
     "objective": "Form the sound h correctly and write words that use it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_5_run_pup_run/01_handwriting_u.pdf",
@@ -1082,6 +1110,7 @@
     "objective": "Hear every sound in a u word and write it down."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_5_run_pup_run/04_handwriting_b.pdf",
@@ -1113,6 +1142,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_5_run_pup_run/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_5_run_pup_run/06_draw_u.pdf",
@@ -1168,6 +1198,7 @@
     "objective": "Form the sound ff correctly and write words that use it."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_6_fox_fell_off/01_handwriting_f.pdf",
@@ -1199,6 +1230,7 @@
     "objective": "Hear every sound in a f word and write it down."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_6_fox_fell_off/04_handwriting_ll.pdf",
@@ -1230,6 +1262,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_6_fox_fell_off/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_6_fox_fell_off/06_draw_f.pdf",
@@ -1285,6 +1318,7 @@
     "objective": "Hear every sound in a j word and write it down."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_7_the_jam_jug/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_7_the_jam_jug/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_7_the_jam_jug/01_handwriting_j.pdf",
@@ -1316,6 +1350,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_7_the_jam_jug/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_7_the_jam_jug/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_7_the_jam_jug/05_draw_j.pdf",
@@ -1371,6 +1406,7 @@
     "objective": "Hear every sound in a x word and write it down."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_8_the_yak_and_the_box/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_8_the_yak_and_the_box/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_8_the_yak_and_the_box/01_handwriting_x.pdf",
@@ -1402,6 +1438,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_8_the_yak_and_the_box/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L2/1_8_the_yak_and_the_box/pack.pdf",
   "preview_pdf": "public/worksheets/L2/1_8_the_yak_and_the_box/05_draw_x.pdf",
@@ -1439,6 +1476,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_3_the_fish_in_the_tank/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_3_the_fish_in_the_tank/pack.pdf",
   "preview_pdf": "public/worksheets/L3/1_3_the_fish_in_the_tank/01_assess_sh.pdf",
@@ -1494,6 +1532,7 @@
     "objective": "Hear every sound in a ch word and write it down."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_9_chop_chop_chop/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_9_chop_chop_chop/pack.pdf",
   "preview_pdf": "public/worksheets/L3/1_9_chop_chop_chop/01_handwriting_ch.pdf",
@@ -1525,6 +1564,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_9_chop_chop_chop/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_9_chop_chop_chop/pack.pdf",
   "preview_pdf": "public/worksheets/L3/1_9_chop_chop_chop/04_draw_ch.pdf",
@@ -1580,6 +1620,7 @@
     "objective": "Form the sound zz correctly and write words that use it."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_10_buzz_and_sing/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_10_buzz_and_sing/pack.pdf",
   "preview_pdf": "public/worksheets/L3/1_10_buzz_and_sing/01_handwriting_ng.pdf",
@@ -1617,6 +1658,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_10_buzz_and_sing/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L3/1_10_buzz_and_sing/pack.pdf",
   "preview_pdf": "public/worksheets/L3/1_10_buzz_and_sing/04_segmenting_ng.pdf",
@@ -1672,6 +1714,7 @@
     "objective": "Hear every sound in a ee word and write it down."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_1_the_night_light/01_segmenting_ay.pdf",
@@ -1709,6 +1752,7 @@
     "objective": "Read and complete sentences that use the sound igh."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_1_the_night_light/04_sentences_ee.pdf",
@@ -1740,6 +1784,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_1_the_night_light/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_1_the_night_light/07_assess_ay.pdf",
@@ -1795,6 +1840,7 @@
     "objective": "Hear every sound in a oo word and write it down."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_2_hot_food_cool_moon/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_2_hot_food_cool_moon/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_2_hot_food_cool_moon/01_segmenting_ow.pdf",
@@ -1832,6 +1878,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_2_hot_food_cool_moon/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_2_hot_food_cool_moon/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_2_hot_food_cool_moon/04_sentences_oo.pdf",
@@ -1887,6 +1934,7 @@
     "objective": "Hear every sound in a or word and write it down."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_3_morning_on_the_farm/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_3_morning_on_the_farm/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_3_morning_on_the_farm/01_segmenting_ar.pdf",
@@ -1924,6 +1972,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_3_morning_on_the_farm/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_3_morning_on_the_farm/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_3_morning_on_the_farm/04_sentences_or.pdf",
@@ -1979,6 +2028,7 @@
     "objective": "Hear every sound in a ir word and write it down."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_4_the_fair_in_the_air/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_4_the_fair_in_the_air/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_4_the_fair_in_the_air/01_segmenting_air.pdf",
@@ -2016,6 +2066,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_4_the_fair_in_the_air/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_4_the_fair_in_the_air/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_4_the_fair_in_the_air/04_sentences_ir.pdf",
@@ -2071,6 +2122,7 @@
     "objective": "Hear every sound in a oy word and write it down."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_5_round_and_round/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_5_round_and_round/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_5_round_and_round/01_segmenting_ou.pdf",
@@ -2108,6 +2160,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_5_round_and_round/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_5_round_and_round/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_5_round_and_round/04_sentences_oy.pdf",
@@ -2163,6 +2216,7 @@
     "objective": "Show the sound igh is secure before moving on."
    }
   ],
+  "book_idx": 6,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_6_the_night_fair/01_assess_ay.pdf",
@@ -2200,6 +2254,7 @@
     "objective": "Show the sound ar is secure before moving on."
    }
   ],
+  "book_idx": 6,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_6_the_night_fair/04_assess_ow.pdf",
@@ -2237,6 +2292,7 @@
     "objective": "Show the sound ir is secure before moving on."
    }
   ],
+  "book_idx": 6,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_6_the_night_fair/07_assess_or.pdf",
@@ -2274,6 +2330,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 6,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L4/2_6_the_night_fair/pack.pdf",
   "preview_pdf": "public/worksheets/L4/2_6_the_night_fair/10_assess_ou.pdf",
@@ -2329,6 +2386,7 @@
     "objective": "Choose the right spelling for the i-e sound and use it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
@@ -2366,6 +2424,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_1_the_big_bike_race/04_sentences_ie.pdf",
@@ -2421,6 +2480,7 @@
     "objective": "Choose the right spelling for the u-e sound and use it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
@@ -2458,6 +2518,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_2_lost_at_the_night_market/04_sentences_ue.pdf",
@@ -2513,6 +2574,7 @@
     "objective": "Choose the right spelling for the ie sound and use it."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
@@ -2550,6 +2612,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_3_the_dream_team/04_sentences_ie.pdf",
@@ -2605,6 +2668,7 @@
     "objective": "Choose the right spelling for the aw sound and use it."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
@@ -2642,6 +2706,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_4_what_min_saw/04_sentences_aw.pdf",
@@ -2697,6 +2762,7 @@
     "objective": "Choose the right spelling for the oa sound and use it."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
@@ -2734,6 +2800,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
   "preview_pdf": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/04_sentences_oa.pdf",
@@ -2789,6 +2856,7 @@
     "objective": "Choose the right spelling for the er sound and use it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
@@ -2826,6 +2894,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_1_the_purple_purse/04_code_er.pdf",
@@ -2881,6 +2950,7 @@
     "objective": "Choose the right spelling for the ow sound and use it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
@@ -2918,6 +2988,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_2_the_brown_owl/04_code_ow.pdf",
@@ -2973,6 +3044,7 @@
     "objective": "Choose the right spelling for the ue sound and use it."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
@@ -3010,6 +3082,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_3_the_new_glue/04_code_ue.pdf",
@@ -3065,6 +3138,7 @@
     "objective": "Show the sound are is secure before moving on."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_4_the_cheeky_monkey/01_assess_ur.pdf",
@@ -3096,6 +3170,7 @@
     "objective": "Show the sound ew is secure before moving on."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_4_the_cheeky_monkey/04_assess_ow.pdf",
@@ -3127,6 +3202,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_4_the_cheeky_monkey/pack.pdf",
   "preview_pdf": "public/worksheets/L6/4_4_the_cheeky_monkey/06_assess_ue.pdf",
@@ -3176,6 +3252,7 @@
     "objective": "Choose the right spelling for the ore sound and use it."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
@@ -3207,6 +3284,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf",
@@ -3262,6 +3340,7 @@
     "objective": "Choose the right spelling for the oor sound and use it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
@@ -3299,6 +3378,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_2_near_the_door/04_fluency_oor.pdf",
@@ -3354,6 +3434,7 @@
     "objective": "Read tion words quickly and accurately."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf",
@@ -3385,6 +3466,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf",
@@ -3440,6 +3522,7 @@
     "objective": "Show the sound ear is secure before moving on."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_4_a_place_for_me/01_assess_ire.pdf",
@@ -3471,6 +3554,7 @@
     "objective": "Show the sound ure is secure before moving on."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_4_a_place_for_me/04_assess_oor.pdf",
@@ -3502,6 +3586,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_4_a_place_for_me/pack.pdf",
   "preview_pdf": "public/worksheets/L7/5_4_a_place_for_me/06_assess_tion.pdf",
@@ -3551,6 +3636,7 @@
     "objective": "Find and read ous words fast."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_1_the_marvellous_neighbourhood/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_1_the_marvellous_neighbourhood/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_1_the_marvellous_neighbourhood/01_spelling_ous.pdf",
@@ -3582,6 +3668,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_1_the_marvellous_neighbourhood/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_1_the_marvellous_neighbourhood/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_1_the_marvellous_neighbourhood/03_sentences_ous.pdf",
@@ -3637,6 +3724,7 @@
     "objective": "Choose the right spelling for the ible sound and use it."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_2_you_are_remarkable/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_2_you_are_remarkable/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_2_you_are_remarkable/01_spelling_able.pdf",
@@ -3674,6 +3762,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_2_you_are_remarkable/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_2_you_are_remarkable/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_2_you_are_remarkable/04_wordsearch_ible.pdf",
@@ -3729,6 +3818,7 @@
     "objective": "Choose the right spelling for the tious sound and use it."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_3_it_looks_suspicious/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_3_it_looks_suspicious/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_3_it_looks_suspicious/01_spelling_cious.pdf",
@@ -3766,6 +3856,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_3_it_looks_suspicious/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_3_it_looks_suspicious/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_3_it_looks_suspicious/04_wordsearch_tious.pdf",
@@ -3821,6 +3912,7 @@
     "objective": "Show the sound ible is secure before moving on."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_4_the_incredible_bush_walk/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_4_the_incredible_bush_walk/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_4_the_incredible_bush_walk/01_assess_ous.pdf",
@@ -3858,6 +3950,7 @@
     "objective": "Read the book's words in a race game, so practice feels like play."
    }
   ],
+  "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_4_the_incredible_bush_walk/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/6_4_the_incredible_bush_walk/pack.pdf",
   "preview_pdf": "public/worksheets/L8/6_4_the_incredible_bush_walk/04_assess_cious.pdf",
@@ -3883,6 +3976,7 @@
     "objective": "Choose the right spelling for the sion sound and use it."
    }
   ],
+  "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf",
   "preview_pdf": "public/worksheets/L8/extras/01_spelling_sion.pdf",

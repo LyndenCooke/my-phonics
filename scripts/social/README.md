@@ -5,9 +5,10 @@ curriculum order, with no one touching it.
 
 ## What goes out
 
-`marketing/social/queue.json` — 22 posts, built by `build_queue.py`, each
-carrying two or three of the designed worksheets from `public/worksheets/**`
-(57 single sheets; the 8 full-pack PDFs are linked, not posted).
+`marketing/social/queue.json` — 127 posts, built by `build_queue.py`: each
+book (one post, the day before its worksheets) and then two or three designed
+worksheets a day from `public/worksheets/**` (hand-made packs plus the forged
+packs in `public/worksheets/manifest.json`; full-pack PDFs are linked, not posted).
 
 - Teaching order (`WS_LEVEL` order + `SOUND_ORDER`): the s a t p i n sound
   sheets, then the Tap! Tap! Tap! book pack, then m d g o, then The Mud on the
@@ -24,16 +25,19 @@ and re-run `build_queue.py`. When the queue is exhausted it loops.
 
 ## The creative
 
-`creative.py` renders one 1080x1080 card showing the day's sheets side by
-side (first page of each in a white card, name underneath), with the level
-pill, pack name, a "Today: part n of m" line and the logo. Font:
-`marketing/social/assets/Outfit.ttf` (the site's display font, OFL).
+`creative.py` renders a 1080x1080 white card in the house style (Lynden's
+reference, 2026-09-21): lavender kicker pill, big navy headline, sparkle and a
+yellow sticker ("Perfect for early readers!" by level), the day's sheets fanned
+with drop shadows (the story's booklet cutout from `public/shop/cutouts`
+behind them when the pack belongs to a book), four benefit icons, a green
+"Download for free" button and the logo. Book days use the same skeleton
+around the photographic booklet cutout. Font: `marketing/social/assets/Outfit.ttf`.
 
 ## How it posts
 
 `.github/workflows/daily-post.yml` runs `post_next.py` at 06:30 UTC every day.
 It renders the printable's page to a JPG, uploads it as a photo post with the
-caption, and commits the id to `marketing/social/posted.json`. When all 408 have
+caption, and commits the id to `marketing/social/posted.json`. When all have
 gone out it starts again from the top (different people see the Page each day).
 
 Post a specific item by hand: Actions -> Daily Facebook printable -> Run

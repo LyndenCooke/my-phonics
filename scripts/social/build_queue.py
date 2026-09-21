@@ -321,6 +321,7 @@ def build():
                 subline=f"{len(group)} worksheet{'s' if len(group) != 1 else ''} · {level_line(lvl)}",
                 objective=f"Part {i + 1} of {parts} of {pack_name}. One sound or skill per sheet.",
                 sheets=[dict(name=s["name"], url=s["url"], local=s["local"], objective=s["objective"]) for s in group],
+                book_idx=books_by_id[story]["idx"] if story in books_by_id else None,
                 pack_url=full["url"] if full else None,
                 url=full["url"] if full else group[0]["url"],
                 preview_pdf=group[0]["local"], preview_page=1, pdf_url=group[0]["url"],
