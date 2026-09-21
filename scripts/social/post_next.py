@@ -41,19 +41,29 @@ def load(path, default):
         return json.load(f)
 
 
-def render_preview(item):
-    """First page (or the specific activity page) as a JPG, ~1200px tall."""
-    local = os.path.join(ROOT, item["preview_pdf"])
+def _open_pdf(local_rel, url):
+    local = os.path.join(ROOT, local_rel)
     if os.path.exists(local):
-        doc = fitz.open(local)
-    else:
-        # Book PDFs are git-ignored (*.pdf) — the runner fetches the published copy.
-        with urllib.request.urlopen(item["pdf_url"], timeout=60) as r:
-            doc = fitz.open(stream=r.read(), filetype="pdf")
-    page = doc[item["preview_page"] - 1]
-    pix = page.get_pixmap(dpi=150)
-    pix.save(PREVIEW)
-    return PREVIEW
+        return fitz.open(local)
+    with urllib.request.urlopen(url, timeout=60) as r:
+        return fitz.open(stream=r.read(), filetype="pdf")
+
+
+def render_preview(item):
+    """One branded card: the photographic book cutout for a book post, or the
+    day's worksheets (first page of each) side by side."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    if item.get("kind") == "book":
+        from creative import render_book_creative
+        return render_book_creative(item, PREVIEW)
+    sheets = item.get("sheets") or [dict(local=item["preview_pdf"], url=item["pdf_url"])]
+    pngs = []
+    for s in sheets[:3]:
+        doc = _open_pdf(s["local"], s["url"])
+        pngs.append(doc[0].get_pixmap(dpi=110).tobytes("png"))
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from creative import render_creative
+    return render_creative(item, pngs, PREVIEW)
 
 
 def post_photo(page_id, token, caption, jpg_path):

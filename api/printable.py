@@ -33,17 +33,37 @@ def fetch_book(book_id: str) -> bytes | None:
         return None
 
 
-def extract_page(book_id: str, page_no: int, pdf_bytes: bytes | None = None) -> bytes:
-    """Return the bytes of a one-page PDF holding page `page_no` (1-based)."""
+SPEC = re.compile(r"^\d{1,2}(-\d{1,2})?(,\d{1,2}(-\d{1,2})?)*$")
+
+
+def select_pages(reader: PdfReader, spec: str) -> list[int]:
+    """`12` -> [12]; `12-15` -> [12..15]; `2,3,12-19` -> that list (1-based, in order)."""
+    n = len(reader.pages)
+    if not SPEC.match(spec):
+        raise IndexError(spec)
+    pages = []
+    for part in spec.split(","):
+        a, _, b = part.partition("-")
+        lo, hi = int(a), int(b or a)
+        if not 1 <= lo <= hi <= n:
+            raise IndexError(part)
+        pages.extend(range(lo, hi + 1))
+    if len(pages) > 24:
+        raise IndexError("too many pages")
+    return pages
+
+
+def extract_page(book_id: str, page_spec, pdf_bytes: bytes | None = None) -> bytes:
+    """Return a PDF holding the requested page(s): an int, "12", "12-15" or "pack"."""
     pdf_bytes = pdf_bytes if pdf_bytes is not None else fetch_book(book_id)
     if pdf_bytes is None:
         raise FileNotFoundError(book_id)
     reader = PdfReader(io.BytesIO(pdf_bytes))
-    if not 1 <= page_no <= len(reader.pages):
-        raise IndexError(page_no)
+    pages = select_pages(reader, str(page_spec))
     writer = PdfWriter()
-    writer.add_page(reader.pages[page_no - 1])
-    writer.add_metadata({"/Title": f"MyPhonicsBooks printable {book_id} p{page_no}", "/Producer": "myphonicsbooks.co.uk"})
+    for p in pages:
+        writer.add_page(reader.pages[p - 1])
+    writer.add_metadata({"/Title": f"MyPhonicsBooks printable {book_id} p{page_spec}", "/Producer": "myphonicsbooks.co.uk"})
     buf = io.BytesIO()
     writer.write(buf)
     return buf.getvalue()
@@ -54,10 +74,10 @@ class handler(BaseHTTPRequestHandler):  # noqa: N801 (Vercel expects this name)
         q = parse_qs(urlparse(self.path).query)
         book = (q.get("book") or [""])[0]
         page = (q.get("page") or [""])[0]
-        if not BOOK_ID.match(book) or not page.isdigit():
+        if not BOOK_ID.match(book) or not SPEC.match(page):
             return self._send(404, b"not found", "text/plain")
         try:
-            pdf = extract_page(book, int(page))
+            pdf = extract_page(book, page)
         except FileNotFoundError:
             return self._send(404, b"no such book", "text/plain")
         except IndexError:
