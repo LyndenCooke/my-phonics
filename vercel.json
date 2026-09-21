@@ -55,5 +55,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/worksheets",
+      "destination": "/resources",
+      "permanent": false
+    }
   ]
 }
