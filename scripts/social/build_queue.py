@@ -20,15 +20,16 @@ import sys
 import fitz  # PyMuPDF
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BASE = "https://myphonicsbooks.vercel.app"
-# Published books are in Supabase Storage, not the Vercel deploy (.vercelignore: *.pdf).
-BOOK_URL = "https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs/a5/{id}.pdf"
+BASE = "https://www.myphonicsbooks.co.uk"
+# Published books are in Supabase Storage, not the Vercel deploy (.vercelignore:
+# *.pdf); vercel.json rewrites /book-pdfs/* to the bucket so links stay on our domain.
+BOOK_URL = BASE + "/book-pdfs/{id}.pdf"
 OUT = os.path.join(ROOT, "marketing", "social", "queue.json")
 
 LEVEL_NAMES = {1: "Ditties", 2: "First Sounds", 3: "Special Friends", 4: "Longer Sounds",
                5: "New Spellings", 6: "Building Fluency", 7: "Reading Together", 8: "Reading Champion"}
 
-SIGN_OFF = "All 33 books, worksheets and games are free on our page: MyPhonicsBooks"
+SIGN_OFF = "All 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks"
 
 # Activity page types found inside the books, keyed by how the page's text starts.
 # (text prefix, label, learning objective, how to use).  {sounds} is filled per book.
@@ -276,11 +277,29 @@ def build():
         else:
             packs[-1]["singles"].append(s)
 
+    books_by_id = {b["file_id"]: b for b in load_books()}
+    announced = set()
     for pk in packs:
         lvl, pack_name = pk["key"]
         singles, full = pk["singles"], pk["full"]
         story = (singles or [full])[0].get("story")
         story_title = BOOK_TITLES.get(story, "") if story else ""
+        # The book itself goes out the day before its worksheets, once.
+        if story and story not in announced and story in books_by_id:
+            announced.add(story)
+            b = books_by_id[story]
+            add(kind="book", level=lvl, level_name=LEVEL_NAMES[lvl], title=b["title"], book_idx=b["idx"],
+                sounds=b["sounds"], headline=b["title"], subline=f"Decodable book · sounds {b['sounds']}",
+                objective="Read a whole story using only the sounds your child has been taught. Every word can be sounded out.",
+                sheets=[], url=BOOK_URL.format(id=story), preview_pdf=f"public/book-pdfs/{story}.pdf", preview_page=1,
+                pdf_url=BOOK_URL.format(id=story),
+                caption=(f"FREE decodable book: {b['title']}\n"
+                         f"{level_line(lvl)} · Book {b['idx']} · sounds: {b['sounds']}\n\n"
+                         f"OBJECTIVE: read a whole story using only sounds your child has been taught, so every word can be sounded out. No guessing.\n\n"
+                         f"HOW TO USE: page 2 is the sound mat and page 3 the story words. Say the sounds, blend the words, then read the story together. "
+                         f"Worksheets for this book follow over the next few days.\n\n"
+                         f"Print the book: {BOOK_URL.format(id=story)}\n"
+                         f"Read it online with tap-to-hear: {BASE}/library\n\n{SIGN_OFF}"))
         # Balanced groups of up to 3 (7 sheets -> 3,2,2 rather than 3,3,1).
         parts = max(1, (len(singles) + 2) // 3)
         base, extra = divmod(len(singles), parts) if singles else (0, 0)

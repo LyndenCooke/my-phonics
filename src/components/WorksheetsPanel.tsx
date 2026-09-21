@@ -80,9 +80,9 @@ type BookFolder = {
   storyFileId?: string | null;
 };
 
-// The published books live in Supabase Storage (public bucket), not on Vercel.
-const storyPdfUrl = (fileId: string) =>
-  `https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs/a5/${fileId}.pdf`;
+// The published books live in Supabase Storage (public bucket), not on Vercel;
+// vercel.json rewrites /book-pdfs/* there so the link stays on our domain.
+const storyPdfUrl = (fileId: string) => `/book-pdfs/${fileId}.pdf`;
 
 const L2_SOUNDS = ['c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff', 'l', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z'];
 const L3_SOUNDS = ['sh', 'nk', 'ch', 'th', 'ng', 'qu', 'zz'];

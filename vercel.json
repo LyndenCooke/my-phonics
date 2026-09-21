@@ -21,7 +21,7 @@
     },
     {
       "source": "/book-pdfs/:path*",
-      "destination": "/book-pdfs/:path*"
+      "destination": "https://jfbgdeyjngvzpfucwpuk.supabase.co/storage/v1/object/public/book-pdfs/a5/:path*"
     },
     {
       "source": "/covers/:path*",

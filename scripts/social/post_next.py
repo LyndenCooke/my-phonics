@@ -50,7 +50,12 @@ def _open_pdf(local_rel, url):
 
 
 def render_preview(item):
-    """One branded card showing the day's worksheets (first page of each) side by side."""
+    """One branded card: the photographic book cutout for a book post, or the
+    day's worksheets (first page of each) side by side."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    if item.get("kind") == "book":
+        from creative import render_book_creative
+        return render_book_creative(item, PREVIEW)
     sheets = item.get("sheets") or [dict(local=item["preview_pdf"], url=item["pdf_url"])]
     pngs = []
     for s in sheets[:3]:
