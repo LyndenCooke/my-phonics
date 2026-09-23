@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "Bahasa",
+    "choose": "Pilih bahasa Anda",
+    "autoDetected": "Menampilkan MyPhonicsBooks dalam {{language}}",
+    "autoDetectedHint": "Buku dan kata-kata bacaan tetap dalam bahasa Inggris — itulah yang sedang dipelajari anak Anda. Ganti bahasa kapan saja lewat tombol 文A.",
+    "readingStaysEnglish": "Konten bacaan tetap dalam bahasa Inggris"
+  },
+  "nav": {
+    "learn": "Belajar",
+    "library": "Perpustakaan",
+    "games": "Permainan",
+    "createBook": "Buat Buku",
+    "createBookShort": "Buat",
+    "support": "Dukung Kami",
+    "profile": "Profil",
+    "assess": "Asesmen",
+    "wallOfLove": "Dinding Cinta",
+    "shop": "Toko",
+    "worldOfBooks": "Dunia Buku",
+    "forSchools": "Untuk Sekolah",
+    "schools": "Sekolah",
+    "home": "Beranda",
+    "goHome": "Ke beranda Pusat Belajar",
+    "expandSidebar": "Buka bilah samping",
+    "collapseSidebar": "Ciutkan bilah samping"
+  },
+  "actions": {
+    "signIn": "Masuk",
+    "signInTitle": "Masuk",
+    "signOut": "Keluar",
+    "back": "Kembali",
+    "next": "Berikutnya",
+    "previous": "Sebelumnya",
+    "continue": "Lanjutkan",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "saving": "Menyimpan…",
+    "close": "Tutup",
+    "done": "Selesai",
+    "retry": "Coba lagi",
+    "loading": "Memuat…",
+    "download": "Unduh",
+    "submit": "Kirim",
+    "send": "Kirim",
+    "edit": "Ubah",
+    "delete": "Hapus",
+    "learnMore": "Selengkapnya",
+    "seeAll": "Lihat semua",
+    "skip": "Lewati"
+  },
+  "errors": {
+    "generic": "Terjadi kesalahan. Silakan coba lagi.",
+    "network": "Tidak dapat terhubung ke server. Periksa koneksi Anda lalu coba lagi."
+  }
+}

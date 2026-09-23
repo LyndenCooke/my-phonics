@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "اللغة",
+    "choose": "اختر لغتك",
+    "autoDetected": "نعرض MyPhonicsBooks باللغة {{language}}",
+    "autoDetectedHint": "تبقى الكتب وكلمات القراءة باللغة الإنجليزية — فهذا ما يتعلمه طفلك. يمكنك تغيير اللغة في أي وقت من زر 文A.",
+    "readingStaysEnglish": "يبقى محتوى القراءة باللغة الإنجليزية"
+  },
+  "nav": {
+    "learn": "تعلّم",
+    "library": "المكتبة",
+    "games": "الألعاب",
+    "createBook": "أنشئ كتابًا",
+    "createBookShort": "أنشئ",
+    "support": "ادعمنا",
+    "profile": "الملف الشخصي",
+    "assess": "التقييم",
+    "wallOfLove": "جدار المحبة",
+    "shop": "المتجر",
+    "worldOfBooks": "عالم الكتب",
+    "forSchools": "للمدارس",
+    "schools": "المدارس",
+    "home": "الرئيسية",
+    "goHome": "الانتقال إلى الصفحة الرئيسية لمركز التعلّم",
+    "expandSidebar": "توسيع الشريط الجانبي",
+    "collapseSidebar": "طي الشريط الجانبي"
+  },
+  "actions": {
+    "signIn": "تسجيل الدخول",
+    "signInTitle": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "continue": "متابعة",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ…",
+    "close": "إغلاق",
+    "done": "تم",
+    "retry": "حاول مرة أخرى",
+    "loading": "جارٍ التحميل…",
+    "download": "تنزيل",
+    "submit": "إرسال",
+    "send": "إرسال",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "learnMore": "اعرف المزيد",
+    "seeAll": "عرض الكل",
+    "skip": "تخطٍّ"
+  },
+  "errors": {
+    "generic": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
+    "network": "تعذّر الاتصال بالخادم. تحقّق من اتصالك وحاول مرة أخرى."
+  }
+}

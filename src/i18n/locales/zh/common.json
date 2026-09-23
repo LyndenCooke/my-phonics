@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "语言",
+    "choose": "选择您的语言",
+    "autoDetected": "正在以{{language}}显示 MyPhonicsBooks",
+    "autoDetectedHint": "图书和阅读单词保持英文——这正是孩子要学习的内容。您可以随时通过 文A 按钮更改语言。",
+    "readingStaysEnglish": "阅读内容保持英文"
+  },
+  "nav": {
+    "learn": "学习",
+    "library": "书库",
+    "games": "游戏",
+    "createBook": "制作一本书",
+    "createBookShort": "制作",
+    "support": "支持我们",
+    "profile": "个人资料",
+    "assess": "评估",
+    "wallOfLove": "好评墙",
+    "shop": "商店",
+    "worldOfBooks": "图书世界",
+    "forSchools": "学校专区",
+    "schools": "学校",
+    "home": "首页",
+    "goHome": "返回学习中心首页",
+    "expandSidebar": "展开侧边栏",
+    "collapseSidebar": "收起侧边栏"
+  },
+  "actions": {
+    "signIn": "登录",
+    "signInTitle": "登录",
+    "signOut": "退出登录",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "continue": "继续",
+    "cancel": "取消",
+    "save": "保存",
+    "saving": "正在保存…",
+    "close": "关闭",
+    "done": "完成",
+    "retry": "重试",
+    "loading": "加载中…",
+    "download": "下载",
+    "submit": "提交",
+    "send": "发送",
+    "edit": "编辑",
+    "delete": "删除",
+    "learnMore": "了解更多",
+    "seeAll": "查看全部",
+    "skip": "跳过"
+  },
+  "errors": {
+    "generic": "出了点问题，请重试。",
+    "network": "无法连接服务器。请检查网络连接后重试。"
+  }
+}

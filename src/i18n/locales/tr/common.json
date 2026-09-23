@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "Dil",
+    "choose": "Dilinizi seçin",
+    "autoDetected": "MyPhonicsBooks {{language}} olarak gösteriliyor",
+    "autoDetectedHint": "Kitaplar ve okuma kelimeleri İngilizce kalır — çocuğunuzun öğrendiği şey budur. Dili istediğiniz zaman 文A düğmesiyle değiştirebilirsiniz.",
+    "readingStaysEnglish": "Okuma içeriği İngilizce kalır"
+  },
+  "nav": {
+    "learn": "Öğren",
+    "library": "Kütüphane",
+    "games": "Oyunlar",
+    "createBook": "Kitap Oluştur",
+    "createBookShort": "Oluştur",
+    "support": "Destek Ol",
+    "profile": "Profil",
+    "assess": "Değerlendirme",
+    "wallOfLove": "Sevgi Duvarı",
+    "shop": "Mağaza",
+    "worldOfBooks": "Kitaplar Dünyası",
+    "forSchools": "Okullar İçin",
+    "schools": "Okullar",
+    "home": "Ana sayfa",
+    "goHome": "Öğrenme Merkezi ana sayfasına git",
+    "expandSidebar": "Kenar çubuğunu genişlet",
+    "collapseSidebar": "Kenar çubuğunu daralt"
+  },
+  "actions": {
+    "signIn": "Giriş yap",
+    "signInTitle": "Giriş Yap",
+    "signOut": "Çıkış yap",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "continue": "Devam et",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "saving": "Kaydediliyor…",
+    "close": "Kapat",
+    "done": "Tamam",
+    "retry": "Tekrar dene",
+    "loading": "Yükleniyor…",
+    "download": "İndir",
+    "submit": "Gönder",
+    "send": "Gönder",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "learnMore": "Daha fazla bilgi",
+    "seeAll": "Tümünü gör",
+    "skip": "Atla"
+  },
+  "errors": {
+    "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+    "network": "Sunucuya ulaşılamadı. Bağlantınızı kontrol edip tekrar deneyin."
+  }
+}

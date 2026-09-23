@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import FeedbackPrompt from "@/components/FeedbackPrompt";
+import LanguageNotice from "@/components/LanguageNotice";
 import { Loader2 } from "lucide-react";
 import NotFound from "./pages/NotFound";
 
@@ -122,12 +123,16 @@ const App = () => {
   useEffect(() => { captureRefFromUrl(); }, []);
 
   return (
+  // Outer Suspense: translation files load lazily (per language + page), so
+  // anything that calls useTranslation() outside a route boundary suspends here.
+  <Suspense fallback={<PageFallback />}>
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <FeedbackPrompt />
+        <LanguageNotice />
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
           <RoutesWithTransition />
@@ -136,6 +141,7 @@ const App = () => {
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
+  </Suspense>
   );
 };
 

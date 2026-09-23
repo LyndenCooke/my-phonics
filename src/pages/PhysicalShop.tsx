@@ -442,7 +442,7 @@ export default function PhysicalShop() {
         <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
           <Link to="/landing" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0 min-w-0" aria-label="MyPhonicsBooks home">
             <img src="/logo/mpb-mark-transparent.png" alt="" className="w-9 h-9 sm:w-10 sm:h-10 object-contain shrink-0" draggable={false} />
-            <span className="font-display text-base sm:text-lg font-extrabold text-foreground tracking-tight truncate hidden xs:inline">
+            <span dir="ltr" className="font-display text-base sm:text-lg font-extrabold text-foreground tracking-tight truncate hidden xs:inline">
               My<span className="text-primary-ink">Phonics</span>Books
             </span>
           </Link>

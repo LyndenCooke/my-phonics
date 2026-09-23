@@ -6,6 +6,8 @@ import SupportPrompt from '@/components/SupportPrompt';
 import { useAuth } from '@/contexts/AuthContext';
 import { hapticLight } from '@/lib/native';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Six primary tabs. Resources merged into Library as a Books/Worksheets
 // sub-toggle. Create a Book took the Assess slot (Assess lives on the
@@ -15,6 +17,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 // caption where the full label won't fit under a 10px tab.
 type NavItem = {
   path: string;
+  /** i18n key in the `common` namespace. */
   label: string;
   shortLabel?: string;
   icon: typeof Home;
@@ -23,20 +26,20 @@ type NavItem = {
 };
 
 const NAV: NavItem[] = [
-  { path: '/learn', label: 'Learn', icon: Home, badgeKey: null, desktopOnly: false },
-  { path: '/library', label: 'Library', icon: BookOpen, badgeKey: null, desktopOnly: false },
+  { path: '/learn', label: 'nav.learn', icon: Home, badgeKey: null, desktopOnly: false },
+  { path: '/library', label: 'nav.library', icon: BookOpen, badgeKey: null, desktopOnly: false },
   // Games is public (no sign-in) — the free arcade is a taster for the
   // books, so it earns a primary tab everywhere.
-  { path: '/games', label: 'Games', icon: Gamepad2, badgeKey: null, desktopOnly: false },
-  { path: '/create-book', label: 'Create a Book', shortLabel: 'Create', icon: BookHeart, badgeKey: null, desktopOnly: false },
-  { path: '/support', label: 'Support', icon: Heart, badgeKey: null, desktopOnly: false },
-  { path: '/profile', label: 'Profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
+  { path: '/games', label: 'nav.games', icon: Gamepad2, badgeKey: null, desktopOnly: false },
+  { path: '/create-book', label: 'nav.createBook', shortLabel: 'nav.createBookShort', icon: BookHeart, badgeKey: null, desktopOnly: false },
+  { path: '/support', label: 'nav.support', icon: Heart, badgeKey: null, desktopOnly: false },
+  { path: '/profile', label: 'nav.profile', icon: User, badgeKey: 'messages' as const, desktopOnly: false },
   // Desktop side panel only — the mobile bottom bar stays at six tabs
   // (Shop is reachable from Pricing there; Assess from Profile).
-  { path: '/assess', label: 'Assess', icon: ClipboardList, badgeKey: null, desktopOnly: true },
-  { path: '/love', label: 'Wall of Love', icon: Heart, badgeKey: null, desktopOnly: true },
-  { path: '/shop', label: 'Shop', icon: ShoppingBag, badgeKey: null, desktopOnly: true },
-  { path: '/world-of-books', label: 'World of Books', icon: Globe2, badgeKey: null, desktopOnly: true },
+  { path: '/assess', label: 'nav.assess', icon: ClipboardList, badgeKey: null, desktopOnly: true },
+  { path: '/love', label: 'nav.wallOfLove', icon: Heart, badgeKey: null, desktopOnly: true },
+  { path: '/shop', label: 'nav.shop', icon: ShoppingBag, badgeKey: null, desktopOnly: true },
+  { path: '/world-of-books', label: 'nav.worldOfBooks', icon: Globe2, badgeKey: null, desktopOnly: true },
 ];
 
 // Persists the desktop (lg+) sidebar collapsed/expanded preference across
@@ -55,6 +58,7 @@ function readSidebarCollapsed(): boolean {
 export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   // Profile-tab unread badge — reflects unread in-app notifications
   // (download ready, etc.). Per-user localStorage; once a server-side
@@ -89,7 +93,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <Link
           to="/library"
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0"
-          aria-label="Go to Learning Hub home"
+          aria-label={t('nav.goHome')}
         >
           <img
             src="/logo/mpb-mark-transparent.png"
@@ -97,7 +101,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             className="w-10 h-10 object-contain"
             draggable={false}
           />
-          <h1 className="font-display text-lg font-extrabold text-foreground tracking-tight">
+          <h1 dir="ltr" className="font-display text-lg font-extrabold text-foreground tracking-tight">
             My<span className="text-primary-ink">Phonics</span>Books
           </h1>
         </Link>
@@ -118,21 +122,22 @@ export default function Layout({ children }: { children: ReactNode }) {
                 }`}
               >
                 <Icon className="w-4 h-4" strokeWidth={isActive ? 2.5 : 2} />
-                {label}
+                {t(label)}
               </Link>
             );
           })}
         </nav>
 
         <div className="flex items-center gap-2 shrink-0">
+          <LanguageSwitcher variant="compact" />
           {!user && (
             <Link
               to="/auth"
               className="flex items-center gap-1 text-sm font-bold text-white gradient-primary px-3 py-1.5 rounded-xl shadow-button hover:opacity-90 transition-opacity"
-              aria-label="Sign in"
+              aria-label={t('actions.signIn')}
             >
               <LogIn className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Sign In</span>
+              <span className="hidden sm:inline">{t('actions.signInTitle')}</span>
             </Link>
           )}
         </div>
@@ -143,7 +148,7 @@ export default function Layout({ children }: { children: ReactNode }) {
        *  lg:pl-60 clears the fixed desktop sidebar. */}
       <main
         className={`flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-4 transition-[padding] duration-300 ease-in-out ${
-          sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-60'
+          sidebarCollapsed ? 'lg:ps-16' : 'lg:ps-60'
         }`}
       >
         {children}
@@ -156,18 +161,18 @@ export default function Layout({ children }: { children: ReactNode }) {
        *  otherwise scroll with the page. Rendering onto body sidesteps it. */}
       {typeof document !== 'undefined' && createPortal(
         <aside
-          className={`hidden lg:flex fixed inset-y-0 left-0 z-40 flex-col bg-card border-r border-border no-select transition-[width] duration-300 ease-in-out ${
+          className={`hidden lg:flex fixed inset-y-0 start-0 z-40 flex-col bg-card border-e border-border no-select transition-[width] duration-300 ease-in-out ${
             sidebarCollapsed ? 'w-16' : 'w-60'
           }`}
         >
           {/* Logo + collapse toggle. When collapsed the wordmark is hidden and
            *  the logo mark centres in the rail; the toggle sits beneath it. */}
-          <div className={`flex shrink-0 ${sidebarCollapsed ? 'flex-col items-center gap-2 px-2 py-4' : 'items-center justify-between pl-5 pr-3 py-5'}`}>
+          <div className={`flex shrink-0 ${sidebarCollapsed ? 'flex-col items-center gap-2 px-2 py-4' : 'items-center justify-between ps-5 pe-3 py-5'}`}>
             <Link
               to="/library"
               className={`flex items-center gap-2.5 hover:opacity-80 transition-opacity min-w-0 ${sidebarCollapsed ? 'justify-center' : ''}`}
-              aria-label="Go to Learning Hub home"
-              title={sidebarCollapsed ? 'MyPhonicsBooks — Home' : undefined}
+              aria-label={t('nav.goHome')}
+              title={sidebarCollapsed ? `MyPhonicsBooks — ${t('nav.home')}` : undefined}
             >
               <img
                 src="/logo/mpb-mark-transparent.png"
@@ -176,7 +181,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 draggable={false}
               />
               {!sidebarCollapsed && (
-                <span className="font-display text-lg font-extrabold text-foreground tracking-tight truncate">
+                <span dir="ltr" className="font-display text-lg font-extrabold text-foreground tracking-tight truncate">
                   My<span className="text-primary-ink">Phonics</span>Books
                 </span>
               )}
@@ -186,14 +191,14 @@ export default function Layout({ children }: { children: ReactNode }) {
               type="button"
               onClick={toggleSidebar}
               aria-expanded={!sidebarCollapsed}
-              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              aria-label={sidebarCollapsed ? t('nav.expandSidebar') : t('nav.collapseSidebar')}
+              title={sidebarCollapsed ? t('nav.expandSidebar') : t('nav.collapseSidebar')}
               className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             >
               {sidebarCollapsed ? (
-                <PanelLeftOpen className="w-5 h-5" strokeWidth={2} />
+                <PanelLeftOpen className="w-5 h-5 rtl:-scale-x-100" strokeWidth={2} />
               ) : (
-                <PanelLeftClose className="w-5 h-5" strokeWidth={2} />
+                <PanelLeftClose className="w-5 h-5 rtl:-scale-x-100" strokeWidth={2} />
               )}
             </button>
           </div>
@@ -206,8 +211,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Link
                   key={path}
                   to={path}
-                  aria-label={sidebarCollapsed ? label : undefined}
-                  title={sidebarCollapsed ? label : undefined}
+                  aria-label={sidebarCollapsed ? t(label) : undefined}
+                  title={sidebarCollapsed ? t(label) : undefined}
                   className={`flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                     sidebarCollapsed ? 'justify-center px-0' : 'px-3'
                   } ${
@@ -219,29 +224,39 @@ export default function Layout({ children }: { children: ReactNode }) {
                   <span className="relative">
                     <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
                     {badgeCount > 0 && (
-                      <span className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
+                      <span className="absolute -top-1.5 -end-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
                         {badgeCount > 9 ? '9+' : badgeCount}
                       </span>
                     )}
                   </span>
-                  {!sidebarCollapsed && label}
+                  {!sidebarCollapsed && t(label)}
                 </Link>
               );
             })}
           </nav>
 
+          {/* Language — always visible so a parent who doesn't read English
+           *  can find it. Collapsed rail shows the icon + language code. */}
+          <div className={sidebarCollapsed ? 'px-2 pt-2 flex justify-center' : 'px-3 pt-3'}>
+            <LanguageSwitcher
+              variant={sidebarCollapsed ? 'compact' : 'full'}
+              align="start"
+              className={sidebarCollapsed ? 'px-1.5' : 'w-full justify-start py-2'}
+            />
+          </div>
+
           {!user && (
             <div className={sidebarCollapsed ? 'p-2' : 'p-3'}>
               <Link
                 to="/auth"
-                aria-label="Sign in"
-                title={sidebarCollapsed ? 'Sign in' : undefined}
+                aria-label={t('actions.signIn')}
+                title={sidebarCollapsed ? t('actions.signIn') : undefined}
                 className={`flex items-center justify-center gap-1.5 text-sm font-bold text-white gradient-primary rounded-xl shadow-button hover:opacity-90 transition-opacity ${
                   sidebarCollapsed ? 'px-0 py-2.5' : 'px-3 py-2.5'
                 }`}
               >
                 <LogIn className="w-4 h-4 shrink-0" />
-                {!sidebarCollapsed && 'Sign In'}
+                {!sidebarCollapsed && t('actions.signInTitle')}
               </Link>
             </div>
           )}
@@ -266,7 +281,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Link
                   key={path}
                   to={path}
-                  aria-label={label}
+                  aria-label={t(label)}
                   onClick={() => { if (!isActive) hapticLight(); }}
                   className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all duration-200 press-scale ${
                     isActive
@@ -277,12 +292,12 @@ export default function Layout({ children }: { children: ReactNode }) {
                   <span className="relative">
                     <Icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
                     {badgeCount > 0 && (
-                      <span className="absolute -top-1.5 -right-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
+                      <span className="absolute -top-1.5 -end-2 min-w-[14px] h-3.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center px-1 ring-2 ring-card">
                         {badgeCount > 9 ? '9+' : badgeCount}
                       </span>
                     )}
                   </span>
-                  <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{shortLabel ?? label}</span>
+                  <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{t(shortLabel ?? label)}</span>
                 </Link>
               );
             })}

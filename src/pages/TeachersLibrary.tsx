@@ -181,7 +181,7 @@ export default function TeachersLibrary() {
               className="w-7 h-7 object-contain"
               draggable={false}
             />
-            <span className="hidden sm:inline">
+            <span dir="ltr" className="hidden sm:inline">
               My<span className="text-primary-ink">Phonics</span>Books
             </span>
           </Link>
