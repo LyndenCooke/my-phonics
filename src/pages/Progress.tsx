@@ -4,6 +4,7 @@ import { useProgressData } from '@/hooks/useBooks';
 import { useNavigate } from 'react-router-dom';
 import { JOURNEY_LEVELS, journeyLevelOf, getJourneyLevel } from '@/lib/levels8';
 import { Flame, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /** Sticker shadow — white border + soft drop, same as /learn and /library. */
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
@@ -12,19 +13,20 @@ export default function Progress() {
   const { user } = useAuth();
   const { data, isLoading } = useProgressData();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation('dashboard');
 
   if (!user) {
     return (
       <Layout>
         <div className="px-4 pt-10 pb-4 max-w-md mx-auto text-center">
-          <h2 className="font-display text-2xl font-extrabold text-foreground mb-3">Progress</h2>
-          <p className="text-sm text-muted-foreground mb-6">Sign in to track your child's reading progress.</p>
+          <h2 className="font-display text-2xl font-extrabold text-foreground mb-3">{t('progress.title')}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{t('progress.signInPrompt')}</p>
           <button
             onClick={() => navigate('/auth')}
             className="py-3 px-8 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
             style={{ background: '#E84B8A', boxShadow: '0 4px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
           >
-            Sign In
+            {t('common:actions.signInTitle')}
           </button>
         </div>
       </Layout>
@@ -69,9 +71,9 @@ export default function Progress() {
   return (
     <Layout>
       <div className="px-4 pt-6 lg:pt-12 pb-8 max-w-md lg:max-w-4xl mx-auto">
-        <div className="text-center lg:text-left mb-6">
-          <h2 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground tracking-tight">Progress</h2>
-          <p className="text-sm text-muted-foreground mt-1">The whole reading journey, level by level.</p>
+        <div className="text-center lg:text-start mb-6">
+          <h2 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground tracking-tight">{t('progress.title')}</h2>
+          <p className="text-sm text-muted-foreground mt-1">{t('progress.subtitle')}</p>
         </div>
 
         {isLoading ? (
@@ -101,18 +103,18 @@ export default function Progress() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="font-display text-2xl font-extrabold text-foreground">{completedCount}</span>
-                  <span className="text-[10px] font-bold text-muted-foreground">of {totalBooks}</span>
+                  <span className="text-[10px] font-bold text-muted-foreground">{t('progress.ofTotal', { total: totalBooks })}</span>
                 </div>
               </div>
               <div>
-                <p className="font-display font-extrabold text-foreground text-lg">Books completed</p>
-                <p className="text-xs text-muted-foreground mt-1">Keep reading to unlock more!</p>
+                <p className="font-display font-extrabold text-foreground text-lg">{t('progress.booksCompleted')}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t('progress.keepReading')}</p>
                 {streakDays > 0 && (
                   <span
                     className="inline-flex items-center gap-1.5 mt-3 rounded-full bg-white px-3 py-1.5 text-xs font-extrabold -rotate-1 text-amber-700"
                     style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #F59E0B30' }}
                   >
-                    <Flame className="w-4 h-4 text-amber-500" /> {streakDays} day streak
+                    <Flame className="w-4 h-4 text-amber-500" /> {t('progress.streak', { count: streakDays })}
                   </span>
                 )}
               </div>
@@ -136,15 +138,15 @@ export default function Progress() {
                         >
                           {lp.level}
                         </span>
-                        <span className="text-sm font-bold text-foreground truncate">{lp.name}</span>
+                        <span lang="en" className="text-sm font-bold text-foreground truncate">{lp.name}</span>
                         {done && <Star className="w-4 h-4 shrink-0" style={{ color: lp.hex, fill: lp.hex }} strokeWidth={0} />}
                       </div>
                       {lp.total > 0 ? (
-                        <span className="text-xs font-bold tabular-nums" style={{ color: lp.inkHex }}>
+                        <span dir="ltr" className="text-xs font-bold tabular-nums" style={{ color: lp.inkHex }}>
                           {lp.completed}/{lp.total}
                         </span>
                       ) : (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-bold">Coming soon</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-bold">{t('progress.comingSoon')}</span>
                       )}
                     </div>
                     {lp.total > 0 && (
@@ -169,9 +171,9 @@ export default function Progress() {
                   className="rounded-[1.5rem] bg-white p-4 mt-6"
                   style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
                 >
-                  <p className="text-sm font-bold text-foreground mb-1">Latest Level Check</p>
+                  <p className="text-sm font-bold text-foreground mb-1">{t('progress.latestCheck')}</p>
                   <p className="text-xs text-muted-foreground">
-                    Recommended Level {journeyRec}{recInfo ? ` · ${recInfo.name}` : ''} · {new Date(data.latestAssessment.completed_at!).toLocaleDateString()}
+                    {t('progress.recommended', { n: journeyRec })}{recInfo ? <> · <span lang="en">{recInfo.name}</span></> : ''} · {new Date(data.latestAssessment.completed_at!).toLocaleDateString(i18n.language)}
                   </p>
                 </div>
               );

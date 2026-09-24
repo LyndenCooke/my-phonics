@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation, Trans } from 'react-i18next';
 
 const EASE: [number, number, number, number] = [0.21, 0.65, 0.36, 1];
 
@@ -142,10 +143,13 @@ export default function ParentDashboard() {
   const queryClient = useQueryClient();
   const [freeMode, setFreeMode] = useState(false);
   const reduceMotion = useReducedMotion();
+  const { t, i18n } = useTranslation('dashboard');
+  const lvlFocus = (l: JourneyLevel) => t(`levels.${l.level}.focus`, { defaultValue: l.focus });
+  const lvlColour = (l: JourneyLevel) => t(`levels.${l.level}.colour`, { defaultValue: l.colourName });
 
   const child = children?.[0] as { id?: string; name?: string; current_level?: number } | undefined;
-  const childName = isDemo ? DEMO_NAME : child?.name ?? 'your child';
-  const displayName = isDemo ? DEMO_NAME : child?.name ?? 'Your child';
+  const childName = isDemo ? DEMO_NAME : child?.name ?? t('parent.yourChild');
+  const displayName = isDemo ? DEMO_NAME : child?.name ?? t('parent.yourChildCap');
 
   // Place every book on the 8-level journey with its mastery state.
   const books = useMemo<JourneyBook[]>(() => {
@@ -239,9 +243,9 @@ export default function ParentDashboard() {
 
   const handleResetCurrent = () => {
     if (!currentBook) return;
-    if (!confirm(`Reset progress for "${currentBook.title}"? This clears stamps and check results.`)) return;
+    if (!confirm(t('parent.toast.resetConfirm', { title: currentBook.title }))) return;
     resetStamps(currentBook.legacySubLevel);
-    toast({ title: 'Progress reset', description: `${currentBook.title} is back to 0 reads.` });
+    toast({ title: t('parent.toast.resetTitle'), description: t('parent.toast.resetDesc', { title: currentBook.title }) });
     queryClient.invalidateQueries({ queryKey: ['user_books'] });
     setTimeout(() => navigate(0), 50);
   };
@@ -251,18 +255,18 @@ export default function ParentDashboard() {
     // bypasses Stripe — out of scope for the dashboard. We surface the
     // controlled message instead of pretending it worked.
     toast({
-      title: 'Coming soon',
-      description: 'Manual unlock will be available once parent override is wired to the backend.',
+      title: t('parent.toast.comingSoonTitle'),
+      description: t('parent.toast.comingSoonDesc'),
     });
   };
 
   const toggleFreeMode = () => {
     setFreeMode(!freeMode);
     toast({
-      title: !freeMode ? 'Free Reading Mode on' : 'Guided Mode on',
+      title: !freeMode ? t('parent.toast.freeOnTitle') : t('parent.toast.guidedOnTitle'),
       description: !freeMode
-        ? 'All books are tappable. Reads and checks are still tracked.'
-        : 'Books unlock only when checks are passed.',
+        ? t('parent.toast.freeOnDesc')
+        : t('parent.toast.guidedOnDesc'),
     });
   };
 
@@ -270,7 +274,7 @@ export default function ParentDashboard() {
     return (
       <Layout>
         <div className="px-4 pt-5 pb-8 max-w-lg mx-auto text-center">
-          <p className="text-sm text-muted-foreground">Sign in to see your dashboard.</p>
+          <p className="text-sm text-muted-foreground">{t('parent.signInPrompt')}</p>
         </div>
       </Layout>
     );
@@ -308,7 +312,7 @@ export default function ParentDashboard() {
             to="/profile"
             className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white/40 hover:text-white/80 transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Profile
+            <ArrowLeft className="w-3.5 h-3.5 rtl:-scale-x-100" /> {t('common:nav.profile')}
           </Link>
 
           {/* ═══ Masthead ═══ */}
@@ -319,22 +323,30 @@ export default function ParentDashboard() {
             <div className="flex items-end justify-between gap-6">
               <div className="min-w-0">
                 <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/40">
-                  Parent dashboard
+                  {t('parent.kicker')}
                 </p>
                 <h1 className="font-display font-extrabold tracking-tight mt-4 text-[clamp(2.2rem,5.5vw,4.25rem)] leading-[1.02] max-w-3xl">
-                  {displayName} is {pct}% of the way to{' '}
-                  <span
-                    className="text-transparent bg-clip-text"
-                    style={{ backgroundImage: `linear-gradient(90deg, ${levelInfo.hex}, #E84B8A)` }}
-                  >
-                    Reading Champion.
-                  </span>
+                  <Trans
+                    t={t}
+                    i18nKey="parent.headline"
+                    values={{ name: displayName, pct }}
+                    components={{
+                      hl: (
+                        <span
+                          dir="ltr"
+                          lang="en"
+                          className="text-transparent bg-clip-text"
+                          style={{ backgroundImage: `linear-gradient(90deg, ${levelInfo.hex}, #E84B8A)` }}
+                        />
+                      ),
+                    }}
+                  />
                 </h1>
               </div>
 
               {/* Current book — desktop only; mobile gets it in the meta strip */}
               {currentBook && (
-                <div className="hidden lg:block relative shrink-0 mr-4">
+                <div className="hidden lg:block relative shrink-0 me-4">
                   <motion.div
                     {...(reduceMotion ? {} : {
                       initial: { opacity: 0, rotate: 10, y: 20 },
@@ -346,8 +358,8 @@ export default function ParentDashboard() {
                   >
                     <BookCover book={currentBook} />
                   </motion.div>
-                  <span className="absolute -bottom-2 -left-4 rounded-full bg-white text-[10px] font-extrabold uppercase tracking-wider text-slate-900 px-2.5 py-1 shadow-xl -rotate-3">
-                    Now reading
+                  <span className="absolute -bottom-2 -start-4 rounded-full bg-white text-[10px] font-extrabold uppercase tracking-wider text-slate-900 px-2.5 py-1 shadow-xl -rotate-3">
+                    {t('parent.nowReading')}
                   </span>
                 </div>
               )}
@@ -355,20 +367,20 @@ export default function ParentDashboard() {
 
             {/* Meta strip — hairline table */}
             <div className="mt-10 lg:mt-12 border-y grid grid-cols-2 lg:grid-cols-4" style={{ borderColor: HAIRLINE }}>
-              <Meta label="Now on" first>
+              <Meta label={t('parent.meta.nowOn')} first>
                 <span className="inline-flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: levelInfo.hex }} />
-                  Level {activeLevel} · {levelInfo.name}
+                  <span>{t('levelN', { n: activeLevel })} · <span dir="ltr" lang="en">{levelInfo.name}</span></span>
                 </span>
               </Meta>
-              <Meta label="Age band">{levelInfo.ageRange.replace('Ages ', '')}</Meta>
-              <Meta label="Now reading">
-                <span className="truncate block max-w-[14rem]">{currentBook ? currentBook.title : '—'}</span>
+              <Meta label={t('parent.meta.ageBand')}><bdi dir="ltr">{levelInfo.ageRange.replace('Ages ', '')}</bdi></Meta>
+              <Meta label={t('parent.meta.nowReading')}>
+                <span dir="ltr" lang="en" className="truncate block max-w-[14rem] text-start rtl:text-end">{currentBook ? currentBook.title : '—'}</span>
               </Meta>
-              <Meta label="Streak">
+              <Meta label={t('parent.meta.streak')}>
                 {activity.streak > 0 ? (
                   <span className="inline-flex items-center gap-1.5">
-                    <Flame className="w-4 h-4 text-amber-400" /> {activity.streak} day{activity.streak === 1 ? '' : 's'}
+                    <Flame className="w-4 h-4 text-amber-400" /> {t('parent.meta.streakDays', { count: activity.streak })}
                   </span>
                 ) : '—'}
               </Meta>
@@ -377,11 +389,11 @@ export default function ParentDashboard() {
 
           {/* ═══ 01 · The journey ═══ */}
           <motion.section {...fadeUp} className="mt-16 lg:mt-24">
-            <Chapter n="01" title="The journey" note={`${pct}% complete`} />
+            <Chapter n="01" title={t('parent.journey.title')} note={t('parent.journey.complete', { pct })} />
 
             {/* Desktop — serpentine map */}
             <div className="hidden lg:block mt-12">
-              <div className="relative w-full" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
+              <div dir="ltr" className="relative w-full" style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}>
                 <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} fill="none" className="absolute inset-0 w-full h-full" aria-hidden>
                   <path d={MAP_PATH} stroke="rgba(255,255,255,0.10)" strokeWidth="3" strokeDasharray="1 10" strokeLinecap="round" />
                   <motion.path
@@ -409,7 +421,7 @@ export default function ParentDashboard() {
 
             {/* Mobile — vertical route */}
             <div className="lg:hidden mt-10 relative">
-              <div className="absolute left-[1.4rem] top-4 bottom-4 w-px border-l-2 border-dashed border-white/15" aria-hidden />
+              <div className="absolute start-[1.4rem] top-4 bottom-4 w-px border-s-2 border-dashed border-white/15" aria-hidden />
               <div className="space-y-7">
                 {levelRollup.map(l => {
                   const state = nodeState(l, activeLevel);
@@ -418,12 +430,12 @@ export default function ParentDashboard() {
                       <NodeDot level={l} state={state} />
                       <div className="flex-1 min-w-0 pt-1.5">
                         <div className="flex items-baseline justify-between gap-3">
-                          <p className={`font-display font-extrabold ${state === 'future' ? 'text-white/35' : 'text-white'}`}>{l.name}</p>
-                          <p className="text-[11px] font-bold text-white/35 tabular-nums shrink-0">
+                          <p lang="en" className={`font-display font-extrabold ${state === 'future' ? 'text-white/35' : 'text-white'}`}>{l.name}</p>
+                          <p dir="ltr" className="text-[11px] font-bold text-white/35 tabular-nums shrink-0">
                             {l.total > 0 ? `${l.mastered}/${l.total}` : '—'}
                           </p>
                         </div>
-                        {state === 'current' && <p className="text-xs text-white/50 mt-1 leading-relaxed">{l.focus}</p>}
+                        {state === 'current' && <p className="text-xs text-white/50 mt-1 leading-relaxed">{lvlFocus(l)}</p>}
                       </div>
                     </div>
                   );
@@ -436,16 +448,18 @@ export default function ParentDashboard() {
               <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
                 <div className="shrink-0">
                   <p className="text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: levelInfo.hex }}>
-                    Now on · {levelInfo.colourName}
+                    {t('parent.journey.nowOn', { colour: lvlColour(levelInfo) })}
                   </p>
-                  <h3 className="font-display text-3xl font-extrabold mt-2">{levelInfo.name}</h3>
-                  <p className="text-sm text-white/50 mt-1 max-w-xs leading-relaxed">{levelInfo.focus}</p>
+                  <h3 lang="en" className="font-display text-3xl font-extrabold mt-2">{levelInfo.name}</h3>
+                  <p className="text-sm text-white/50 mt-1 max-w-xs leading-relaxed">{lvlFocus(levelInfo)}</p>
                 </div>
                 <div className="flex-1 flex flex-wrap gap-2.5 content-start">
                   {levelBooks.map(b => (
                     <span
                       key={b.id}
-                      title={b.mastered ? 'Mastered' : b.unlocked ? `${b.stamps}/${MAX_STAMPS} reads` : 'Locked'}
+                      title={b.mastered ? t('parent.journey.chipMastered') : b.unlocked ? t('parent.journey.chipReads', { stamps: b.stamps, max: MAX_STAMPS }) : t('parent.journey.chipLocked')}
+                      dir="ltr"
+                      lang="en"
                       className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-bold"
                       style={b.mastered
                         ? { background: levelInfo.hex, borderColor: levelInfo.hex, color: '#fff' }
@@ -461,11 +475,11 @@ export default function ParentDashboard() {
                     </span>
                   ))}
                 </div>
-                <div className="shrink-0 lg:text-right">
+                <div className="shrink-0 lg:text-end">
                   <p className="font-display text-6xl font-extrabold leading-none tabular-nums" style={{ color: levelInfo.hex }}>
                     {masteredInLevel}<span className="text-white/30 text-3xl">/{levelBooks.length}</span>
                   </p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 mt-2">Books mastered</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 mt-2">{t('parent.journey.booksMastered')}</p>
                 </div>
               </div>
             </div>
@@ -473,17 +487,17 @@ export default function ParentDashboard() {
 
           {/* ═══ 02 · The rhythm ═══ */}
           <motion.section {...fadeUp} className="mt-16 lg:mt-24">
-            <Chapter n="02" title="The rhythm" note="Last 7 days" />
+            <Chapter n="02" title={t('parent.rhythm.title')} note={t('parent.rhythm.note')} />
             <div className="mt-10 grid grid-cols-2 lg:grid-cols-4">
-              <Figure value={activity.readsThisWeek} label="Reads this week" first />
-              <Figure value={activity.daysActive} label="Days active" suffix="/7" />
-              <Figure value={activity.readingMinutes} label="Minutes reading" />
-              <Figure value={overallMastered} label="Books mastered" />
+              <Figure value={activity.readsThisWeek} label={t('parent.rhythm.readsThisWeek')} first />
+              <Figure value={activity.daysActive} label={t('parent.rhythm.daysActive')} suffix="/7" />
+              <Figure value={activity.readingMinutes} label={t('parent.rhythm.minutesReading')} />
+              <Figure value={overallMastered} label={t('parent.rhythm.booksMastered')} />
             </div>
 
-            {/* 14-day waveform */}
+            {/* 14-day waveform — a chart, so bars stay left-to-right (oldest → today). */}
             <div className="mt-12">
-              <div className="flex items-end gap-[5px] lg:gap-2 h-24 lg:h-32">
+              <div dir="ltr" className="flex items-end gap-[5px] lg:gap-2 h-24 lg:h-32">
                 {(() => {
                   const max = Math.max(1, ...activity.days.map(d => d.reads));
                   return activity.days.map(d => {
@@ -492,7 +506,7 @@ export default function ParentDashboard() {
                     return (
                       <div
                         key={d.iso}
-                        title={`${new Date(`${d.iso}T00:00:00`).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} — ${d.reads} read${d.reads === 1 ? '' : 's'}`}
+                        title={t('parent.rhythm.dayReads', { date: new Date(`${d.iso}T00:00:00`).toLocaleDateString(i18n.language, { weekday: 'short', day: 'numeric', month: 'short' }), count: d.reads })}
                         className="flex-1 rounded-t-md transition-colors"
                         style={{
                           height: `${h}%`,
@@ -503,28 +517,28 @@ export default function ParentDashboard() {
                   });
                 })()}
               </div>
-              <div className="flex gap-[5px] lg:gap-2 mt-2 border-t pt-2" style={{ borderColor: HAIRLINE }}>
+              <div dir="ltr" className="flex gap-[5px] lg:gap-2 mt-2 border-t pt-2" style={{ borderColor: HAIRLINE }}>
                 {activity.days.map(d => (
                   <span key={d.iso} className="flex-1 text-center text-[9px] lg:text-[10px] font-bold uppercase text-white/30">
-                    {new Date(`${d.iso}T00:00:00`).toLocaleDateString(undefined, { weekday: 'narrow' })}
+                    {new Date(`${d.iso}T00:00:00`).toLocaleDateString(i18n.language, { weekday: 'narrow' })}
                   </span>
                 ))}
               </div>
               <p className="text-xs text-white/40 mt-4 max-w-md leading-relaxed">
                 {activity.daysActive > 0
-                  ? `${childName} read on ${activity.daysActive} of the last 7 days. Little and often beats long sessions.`
-                  : 'No reads this week yet — even 5 minutes today keeps the rhythm going.'}
+                  ? t('parent.rhythm.activeNote', { name: childName, count: activity.daysActive })
+                  : t('parent.rhythm.noReads')}
               </p>
             </div>
           </motion.section>
 
           {/* ═══ 03 · The sounds ═══ */}
           <motion.section {...fadeUp} className="mt-16 lg:mt-24">
-            <Chapter n="03" title="The sounds" note={`Level ${activeLevel} · ${levelInfo.colourName}`} />
+            <Chapter n="03" title={t('parent.sounds.title')} note={t('parent.sounds.note', { n: activeLevel, colour: lvlColour(levelInfo) })} />
             <p className="mt-6 text-sm text-white/50 max-w-md leading-relaxed">
-              Every book at {levelInfo.name} is built from these letter-sounds. Point at them anywhere — signs, cereal boxes, this screen.
+              {t('parent.sounds.intro', { level: levelInfo.name })}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3 lg:gap-4">
+            <div dir="ltr" lang="en" className="mt-8 flex flex-wrap gap-3 lg:gap-4">
               {levelInfo.gpcs.map((g, i) => (
                 <span
                   key={g}
@@ -538,13 +552,13 @@ export default function ParentDashboard() {
 
             {/* Tricky-word marquee */}
             {levelInfo.trickyWords.length > 0 && (
-              <div className="mt-12 border-y py-4 overflow-hidden" style={{ borderColor: HAIRLINE }}>
+              <div dir="ltr" className="mt-12 border-y py-4 overflow-hidden" style={{ borderColor: HAIRLINE }}>
                 <div className="mpb-marquee-track flex w-max items-center gap-10 whitespace-nowrap" style={{ animation: 'mpb-marquee 28s linear infinite' }}>
                   {[0, 1].map(copy => (
                     <div key={copy} className="flex items-center gap-10" aria-hidden={copy === 1}>
-                      <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/35">New tricky words</span>
+                      <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/35">{t('parent.sounds.newTrickyWords')}</span>
                       {levelInfo.trickyWords.map(w => (
-                        <span key={w} className="font-child text-xl lg:text-2xl font-bold text-white/80">{w}</span>
+                        <span key={w} lang="en" className="font-child text-xl lg:text-2xl font-bold text-white/80">{w}</span>
                       ))}
                     </div>
                   ))}
@@ -555,66 +569,66 @@ export default function ParentDashboard() {
 
           {/* ═══ 04 · This week ═══ */}
           <motion.section {...fadeUp} className="mt-16 lg:mt-24">
-            <Chapter n="04" title="This week's step" />
+            <Chapter n="04" title={t('parent.step.title')} />
             <blockquote
-              className="mt-8 font-display font-extrabold tracking-tight text-[clamp(1.6rem,3.6vw,2.75rem)] leading-[1.15] max-w-3xl border-l-4 pl-6 lg:pl-8"
+              className="mt-8 font-display font-extrabold tracking-tight text-[clamp(1.6rem,3.6vw,2.75rem)] leading-[1.15] max-w-3xl border-s-4 ps-6 lg:ps-8"
               style={{ borderColor: levelInfo.hex }}
             >
               {!currentBook
-                ? 'Pick a first book in the library to begin the journey.'
+                ? t('parent.step.pickFirst')
                 : currentBook.mastered
                   ? allMastered
-                    ? `Level ${activeLevel} is complete — time for the Level Check.`
-                    : `“${currentBook.title}” is mastered. On to the next book.`
+                    ? t('parent.step.levelComplete', { n: activeLevel })
+                    : t('parent.step.bookMastered', { title: currentBook.title })
                   : currentBook.stamps >= MAX_STAMPS
-                    ? `${displayName} is ready for the final check on “${currentBook.title}”.`
-                    : `Read “${currentBook.title}” ${MAX_STAMPS - currentBook.stamps} more time${MAX_STAMPS - currentBook.stamps === 1 ? '' : 's'} this week.`}
+                    ? t('parent.step.readyForCheck', { name: displayName, title: currentBook.title })
+                    : t('parent.step.readMore', { title: currentBook.title, count: MAX_STAMPS - currentBook.stamps })}
             </blockquote>
-            <p className="mt-5 text-sm text-white/45 max-w-md leading-relaxed pl-6 lg:pl-8">
-              Five spaced reads of the same book builds real fluency — that's the heart of the method.
+            <p className="mt-5 text-sm text-white/45 max-w-md leading-relaxed ps-6 lg:ps-8">
+              {t('parent.step.method')}
             </p>
-            <div className="mt-7 pl-6 lg:pl-8">
+            <div className="mt-7 ps-6 lg:ps-8">
               <Link
                 to="/library"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-extrabold text-slate-900 shadow-2xl press-scale"
               >
-                Open the library <ChevronRight className="w-4 h-4" />
+                {t('parent.step.openLibrary')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
               </Link>
             </div>
           </motion.section>
 
           {/* ═══ 05 · Parent controls ═══ */}
           <motion.section {...fadeUp} className="mt-16 lg:mt-24">
-            <Chapter n="05" title="Parent controls" />
+            <Chapter n="05" title={t('parent.controls.title')} />
             <div className="mt-6 border-t" style={{ borderColor: HAIRLINE }}>
               <ControlRow
                 icon={UnlockIcon}
                 hex={levelInfo.hex}
-                title="Unlock next book"
-                description="Skip ahead when you know they're ready."
+                title={t('parent.controls.unlockTitle')}
+                description={t('parent.controls.unlockDesc')}
                 onClick={handleUnlockNext}
               />
               <ControlRow
                 icon={BookOpen}
                 hex="#F59E0B"
-                title={freeMode ? 'Free Reading Mode — on' : 'Free Reading Mode'}
-                description="Let them browse every unlocked book, no gates."
+                title={freeMode ? t('parent.controls.freeTitleOn') : t('parent.controls.freeTitle')}
+                description={t('parent.controls.freeDesc')}
                 onClick={toggleFreeMode}
                 toggle={freeMode}
               />
               <ControlRow
                 icon={RotateCcw}
                 hex="#94A3B8"
-                title="Reset current book"
-                description={currentBook ? `Clear reads and checks for “${currentBook.title}”.` : 'No active book to reset.'}
+                title={t('parent.controls.resetTitle')}
+                description={currentBook ? t('parent.controls.resetDesc', { title: currentBook.title }) : t('parent.controls.resetNone')}
                 onClick={handleResetCurrent}
               />
             </div>
             {freeMode && (
-              <div className="mt-5 flex items-start gap-2.5 border-l-2 border-amber-400/60 pl-4 py-1">
+              <div className="mt-5 flex items-start gap-2.5 border-s-2 border-amber-400/60 ps-4 py-1">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-200/80 leading-relaxed">
-                  Free Reading Mode is on — Guided Mode is off. {childName} can open any book, but progress is still tracked.
+                  {t('parent.controls.freeWarning', { name: childName })}
                 </p>
               </div>
             )}
@@ -629,21 +643,30 @@ export default function ParentDashboard() {
               : { borderColor: HAIRLINE }}
           >
             {allMastered && (
-              <div aria-hidden className="absolute -top-20 -right-20 w-72 h-72 rounded-full blur-3xl opacity-30" style={{ background: levelInfo.hex }} />
+              <div aria-hidden className="absolute -top-20 -end-20 w-72 h-72 rounded-full blur-3xl opacity-30" style={{ background: levelInfo.hex }} />
             )}
             <div className="relative flex flex-col lg:flex-row lg:items-center gap-6">
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/40">End of level</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-white/40">{t('parent.levelCheck.kicker')}</p>
                 <h3 className="font-display text-2xl lg:text-3xl font-extrabold mt-2">
-                  Level {activeLevel} Check —{' '}
+                  {t('parent.levelCheck.title', { n: activeLevel })}{' '}
                   <span style={{ color: allMastered ? levelInfo.hex : 'rgba(255,255,255,0.35)' }}>
-                    {allMastered ? 'ready' : 'locked'}
+                    {allMastered ? t('parent.levelCheck.ready') : t('parent.levelCheck.locked')}
                   </span>
                 </h3>
                 <p className="text-sm text-white/50 mt-3 max-w-xl leading-relaxed">
-                  {allMastered
-                    ? `${childName} has mastered all ${levelBooks.length} books at this level. A short phonics check moves them up to ${activeLevel < JOURNEY_LEVEL_COUNT ? `Level ${activeLevel + 1} — ${getJourneyLevel(activeLevel + 1)?.name}` : 'the Reading Champion certificate'}.`
-                    : `Master all ${levelBooks.length || ''} books at this level and a short phonics check unlocks ${activeLevel < JOURNEY_LEVEL_COUNT ? `Level ${activeLevel + 1} — ${getJourneyLevel(activeLevel + 1)?.name}` : 'the Reading Champion certificate'}.`}
+                  {(() => {
+                    const hasNext = activeLevel < JOURNEY_LEVEL_COUNT;
+                    const vars = {
+                      name: childName,
+                      count: allMastered ? levelBooks.length : (levelBooks.length || ''),
+                      next: activeLevel + 1,
+                      nextName: getJourneyLevel(activeLevel + 1)?.name,
+                    };
+                    return allMastered
+                      ? t(hasNext ? 'parent.levelCheck.masteredNext' : 'parent.levelCheck.masteredFinal', vars)
+                      : t(hasNext ? 'parent.levelCheck.lockedNext' : 'parent.levelCheck.lockedFinal', vars);
+                  })()}
                 </p>
               </div>
               {allMastered ? (
@@ -652,11 +675,11 @@ export default function ParentDashboard() {
                   className="shrink-0 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-extrabold text-white press-scale"
                   style={{ background: levelInfo.hex, boxShadow: `0 12px 36px -8px ${levelInfo.hex}AA` }}
                 >
-                  Start Level Check <ChevronRight className="w-4 h-4" />
+                  {t('parent.levelCheck.start')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
                 </Link>
               ) : (
                 <div className="shrink-0 inline-flex items-center gap-2 text-sm font-bold text-white/40">
-                  <Lock className="w-4 h-4" /> {masteredInLevel} of {levelBooks.length} mastered
+                  <Lock className="w-4 h-4" /> {t('parent.levelCheck.progress', { mastered: masteredInLevel, total: levelBooks.length })}
                 </div>
               )}
             </div>
@@ -664,7 +687,7 @@ export default function ParentDashboard() {
 
           {/* Colophon */}
           <p className="mt-16 lg:mt-20 text-[11px] font-bold uppercase tracking-[0.25em] text-white/25 text-center">
-            Eight levels · {books.length} books · Curriculum Ledger v2.0
+            {t('parent.colophon', { count: books.length })}
           </p>
         </div>
       </div>
@@ -700,6 +723,7 @@ function NodeDot({ level, state }: { level: LevelRollup; state: NodeState }) {
 function MapNode({ level, state, x, y, index, reduceMotion }: {
   level: LevelRollup; state: NodeState; x: number; y: number; index: number; reduceMotion: boolean;
 }) {
+  const { t } = useTranslation('dashboard');
   return (
     <motion.div
       className="absolute flex flex-col items-center text-center w-40 -translate-x-1/2"
@@ -712,11 +736,11 @@ function MapNode({ level, state, x, y, index, reduceMotion }: {
       })}
     >
       <NodeDot level={level} state={state} />
-      <p className={`font-display font-extrabold text-sm mt-3 ${state === 'future' ? 'text-white/35' : 'text-white'}`}>
+      <p lang="en" className={`font-display font-extrabold text-sm mt-3 ${state === 'future' ? 'text-white/35' : 'text-white'}`}>
         {level.name}
       </p>
-      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/30 mt-1 tabular-nums">
-        {level.total > 0 ? `${level.mastered}/${level.total} books` : 'Coming soon'}
+      <p dir="auto" className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/30 mt-1 tabular-nums">
+        {level.total > 0 ? t('parent.journey.nodeBooks', { mastered: level.mastered, total: level.total }) : t('parent.journey.comingSoon')}
       </p>
     </motion.div>
   );
@@ -728,7 +752,7 @@ function Chapter({ n, title, note }: { n: string; title: string; note?: string }
   return (
     <div className="flex items-baseline justify-between gap-4 border-b pb-4" style={{ borderColor: HAIRLINE }}>
       <h2 className="font-display text-xl lg:text-2xl font-extrabold tracking-tight">
-        <span className="text-white/30 mr-3 font-bold">{n}</span>
+        <span className="text-white/30 me-3 font-bold">{n}</span>
         {title}
       </h2>
       {note && <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/35 tabular-nums shrink-0">{note}</span>}
@@ -738,7 +762,7 @@ function Chapter({ n, title, note }: { n: string; title: string; note?: string }
 
 function Meta({ label, children, first = false }: { label: string; children: ReactNode; first?: boolean }) {
   return (
-    <div className={`py-5 pr-6 ${first ? '' : 'lg:border-l lg:pl-6'}`} style={{ borderColor: HAIRLINE }}>
+    <div className={`py-5 pe-6 ${first ? '' : 'lg:border-s lg:ps-6'}`} style={{ borderColor: HAIRLINE }}>
       <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/35">{label}</p>
       <div className="font-display font-extrabold text-base lg:text-lg mt-1.5 text-white/90">{children}</div>
     </div>
@@ -764,7 +788,7 @@ function Figure({ value, label, suffix = '', first = false }: { value: number; l
   }, [inView, value, reduceMotion]);
 
   return (
-    <div className={`py-2 ${first ? '' : 'lg:border-l lg:pl-8'}`} style={{ borderColor: HAIRLINE }}>
+    <div className={`py-2 ${first ? '' : 'lg:border-s lg:ps-8'}`} style={{ borderColor: HAIRLINE }}>
       <p className="font-display text-5xl lg:text-7xl font-extrabold tabular-nums leading-none">
         <span ref={ref}>0</span>
         <span className="text-white/25 text-2xl lg:text-4xl">{suffix}</span>
@@ -792,7 +816,7 @@ function ControlRow({ icon: Icon, hex, title, description, onClick, toggle }: {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-4 lg:gap-5 py-4 lg:py-5 text-left group border-b hover:bg-white/[0.03] transition-colors px-1"
+      className="w-full flex items-center gap-4 lg:gap-5 py-4 lg:py-5 text-start group border-b hover:bg-white/[0.03] transition-colors px-1"
       style={{ borderColor: HAIRLINE }}
     >
       <span
@@ -811,10 +835,10 @@ function ControlRow({ icon: Icon, hex, title, description, onClick, toggle }: {
           style={{ background: toggle ? hex : 'rgba(255,255,255,0.15)' }}
           aria-hidden
         >
-          <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform ${toggle ? 'translate-x-5' : ''}`} />
+          <span className={`block w-5 h-5 rounded-full bg-white shadow transition-transform ${toggle ? 'translate-x-5 rtl:-translate-x-5' : ''}`} />
         </span>
       ) : (
-        <ChevronRight className="w-4 h-4 text-white/30 group-hover:text-white transition-colors shrink-0" />
+        <ChevronRight className="w-4 h-4 text-white/30 group-hover:text-white transition-colors shrink-0 rtl:-scale-x-100" />
       )}
     </button>
   );

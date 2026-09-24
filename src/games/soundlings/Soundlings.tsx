@@ -13,6 +13,7 @@
  * Views: habitat (home) → play (5-encounter visit) → book (album).
  * Feeding Frenzy (30s) unlocks after 3 hatches.
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, BookOpen, Timer, Play, RotateCcw } from 'lucide-react';
@@ -79,6 +80,7 @@ function meterOf(state: SoundlingState, stage: Stage, glowing: boolean): number 
 interface Celebration { grapheme: string; stage: Stage }
 
 export default function Soundlings({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -273,7 +275,7 @@ export default function Soundlings({ level, onClose }: Props) {
   );
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       {/* Light wash in the habitat: the Soundlings LIVE in this scene, so
           the barn stays vivid; play views get the readable default. */}
       <Scene img="/images/games/soundlings_barn.webp" wash={view === 'habitat' ? 'light' : 'default'} />
@@ -288,7 +290,7 @@ export default function Soundlings({ level, onClose }: Props) {
           </span>
           <div className="flex items-center gap-2">
             {view === 'habitat' && (
-              <button onClick={() => setView('book')} aria-label="Open the Sound Book"
+              <button onClick={() => setView('book')} aria-label={t('play.openSoundBook')}
                 className="h-10 px-4 rounded-full bg-white flex items-center gap-2 press-scale font-extrabold text-sm"
                 style={{ boxShadow: STICKER, color: ink }}>
                 <BookOpen className="w-4 h-4" /> Sound Book
@@ -296,7 +298,7 @@ export default function Soundlings({ level, onClose }: Props) {
             )}
             <button
               onClick={() => (view === 'habitat' ? onClose() : (refresh(), setView('habitat')))}
-              aria-label={view === 'habitat' ? 'Close game' : 'Back to the grove'}
+              aria-label={view === 'habitat' ? t('play.closeGame') : t('play.backToGrove')}
               className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
               style={{ boxShadow: STICKER }}>
               <X className="w-[18px] h-[18px] text-foreground/60" />
@@ -429,7 +431,7 @@ export default function Soundlings({ level, onClose }: Props) {
                         })()
                       : round.word}
                   </span>
-                  <button onClick={() => speakWord(round.word)} aria-label="Hear the word"
+                  <button onClick={() => speakWord(round.word)} aria-label={t('play.hearWord')}
                     className="w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                     style={{ boxShadow: STICKER, color: ink }}>
                     <Volume2 className="w-6 h-6" />
@@ -465,7 +467,7 @@ export default function Soundlings({ level, onClose }: Props) {
                   style={{ boxShadow: STICKER, color: 'hsl(var(--foreground))' }}>
                   {frenzyRounds[frenzyIdx].word}
                 </span>
-                <button onClick={() => speakWord(frenzyRounds[frenzyIdx].word)} aria-label="Hear the word"
+                <button onClick={() => speakWord(frenzyRounds[frenzyIdx].word)} aria-label={t('play.hearWord')}
                   className="w-14 h-14 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                   style={{ boxShadow: STICKER, color: ink }}>
                   <Volume2 className="w-6 h-6" />

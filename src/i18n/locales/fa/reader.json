@@ -1,0 +1,70 @@
+{
+  "closeBook": "بستن کتاب",
+  "pageAlt": "{{title}} — صفحهٔ {{page}}",
+  "pageLoadError": "این صفحه بارگذاری نشد.",
+  "pageLoadErrorHint": "اتصال خود را بررسی کنید و دوباره تلاش کنید.",
+  "pagesUnavailable": "تصاویر صفحه در دسترس نیست",
+  "previousPage": "صفحهٔ قبل",
+  "nextPage": "صفحهٔ بعد",
+  "goToPage": "رفتن به صفحهٔ {{page}}",
+  "finishBook": "پایان کتاب",
+  "tapToHear": "برای شنیدن «{{word}}» ضربه بزنید",
+  "flipbook": {
+    "groupAria": "پیش‌نمایش کتاب — برای ورق زدن از کلیدهای جهت‌نما استفاده کنید"
+  },
+  "quiz": {
+    "saveFailed": "ذخیرهٔ نتایج آزمونک ناموفق بود",
+    "completeAria": "آزمونک تمام شد",
+    "perfect": "نمرهٔ کامل!",
+    "wellDone": "آفرین!",
+    "scored": "شما <b>{{score}}</b> از <b>{{total}}</b> گرفتید",
+    "tryAgain": "دوباره تلاش کنید",
+    "dialogAria": "آزمونک: {{title}}",
+    "close": "بستن آزمونک",
+    "answerOptions": "گزینه‌های پاسخ",
+    "seeResults": "دیدن نتایج"
+  },
+  "audio": {
+    "playSoundTitle": "پخش صدای «{{grapheme}}»",
+    "playSoundAria": "پخش صدای نویسهٔ {{grapheme}}",
+    "playWordTitle": "پخش «{{word}}»",
+    "playWordAria": "پخش کلمهٔ {{word}}"
+  },
+  "soundMap": {
+    "known": "بلد است ({{n}})",
+    "toLearn": "برای یادگیری ({{n}})",
+    "notTestedCount": "سنجیده نشده ({{n}})",
+    "notTested": "سنجیده نشده",
+    "levelHeading": "سطح {{level}}",
+    "levelsNotTested": "سطوح {{levels}} هنوز سنجیده نشده‌اند",
+    "status": {
+      "known": "بلد است",
+      "unknown": "برای یادگیری",
+      "untested": "سنجیده نشده"
+    },
+    "categories": {
+      "sound_recognition": "صداها",
+      "word_reading": "کلمات واقعی",
+      "alien_words": "Alien Words (کلمات ساختگی)",
+      "tricky_words": "Tricky Words (کلمات دشوار)",
+      "speedy_reading": "خواندن سریع",
+      "fluency": "روانی"
+    }
+  },
+  "interactive": {
+    "playSound": "پخش صدای {{sound}}",
+    "playSoundVariant": "پخش صدای {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. برای شنیدن ضربه بزنید.",
+    "illustration": "تصویر داستان",
+    "closeImage": "بستن تصویر",
+    "expandIllustration": "بزرگ کردن تصویر",
+    "hideHints": "پنهان کردن راهنماهای فونیکس",
+    "showHints": "نمایش راهنماهای فونیکس",
+    "checkInPassed": "ارزیابی میانی قبول شد",
+    "checkInPractise": "ارزیابی میانی — به تمرین ادامه دهید"
+  },
+  "prep": {
+    "tapToHear": "روی هر کدام بزنید تا صدایش را بشنوید. این‌ها صداهایی هستند که کودک شما تمرین خواهد کرد.",
+    "tapLevel": "روی یک سطح بزنید تا صداهای آن را ببینید"
+  }
+}

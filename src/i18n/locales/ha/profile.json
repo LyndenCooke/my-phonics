@@ -1,0 +1,197 @@
+{
+  "backToProfile": "Koma zuwa Bayanan Martaba",
+  "hub": {
+    "title": "Bayanan Martaba",
+    "welcome": "Barka da zuwa!",
+    "signInPrompt": "Shiga don buɗe ɗakin karatunka",
+    "signInOrUp": "Shiga / Yi Rajista",
+    "error": "Kuskure",
+    "level": "Mataki na {{level}}",
+    "parentView": "Duban Iyaye",
+    "switchChild": "Canja Yaro",
+    "childNamePlaceholder": "Sunan yaro",
+    "childDobLabel": "Ranar haihuwa",
+    "addChild": "Ƙara bayanan yaronka",
+    "signOut": "Fita"
+  },
+  "links": {
+    "assess": "Tantancewa",
+    "assessSub": "Gano matakin karatun yaronka",
+    "wallOfLove": "Bangon Ƙauna",
+    "wallOfLoveSub": "Abin da iyalai ke faɗa game da mu",
+    "support": "Tallafa wa MyPhonicsBooks",
+    "supportSub": "Komai kyauta ne — ka bar godiya idan ka so",
+    "admin": "Gudanarwa",
+    "adminSub": "CRM da nazari (ma'aikata kaɗai)",
+    "accountSettings": "Saitunan Asusu",
+    "parentViewSub": "Je zuwa dashboard na iyaye",
+    "messages": "Saƙonni",
+    "messagesSub": "Kyaututtuka, shawarwari da sabbin labarai",
+    "rewards": "Kyaututtukana",
+    "rewardsSub": "Duba kyaututtukan da ka buɗe",
+    "referrals": "Gayyata ka Samu",
+    "referralsSub": "Samu kwamishan 50% — raba mahaɗinka",
+    "downloads": "Tarihin Saukewa",
+    "help": "Taimako da Tallafi"
+  },
+  "forYou": {
+    "title": "Domin Kai",
+    "newCount_one": "{{count}} sabo",
+    "newCount_other": "{{count}} sababbi",
+    "dismiss": "Cire sanarwa"
+  },
+  "love": {
+    "title": "Kuna son littattafan?",
+    "body": "Kalamanka suna taimaka wa wasu iyalai su same mu.",
+    "leaveReview": "Rubuta ra'ayi",
+    "seeWall": "Duba Bangon Ƙauna"
+  },
+  "messages": {
+    "title": "Saƙonni",
+    "new": "Sabo",
+    "all": "Duka",
+    "unread": "Ba a karanta ba",
+    "emptyTitle": "Babu saƙonni tukuna",
+    "caughtUp": "Ka ga komai.",
+    "emptyBody": "Sabbin labarai da kyaututtuka za su bayyana a nan.",
+    "types": {
+      "reward": "Kyaututtuka",
+      "video": "Bidiyoyi",
+      "referral": "Gayyata",
+      "progress": "Ci gaba",
+      "offer": "Tayi",
+      "update": "Sabbin labarai"
+    }
+  },
+  "referrals": {
+    "title": "Gayyata ka Samu",
+    "heroTitle": "Gayyaci abokai, ka samu kyaututtuka",
+    "heroBody": "Raba MyPhonicsBooks ka samu kwamishan 50% a kan kowane mai biyan kuɗi da ka kawo — kowane wata a tsarin wata-wata, ko sau ɗaya a tsarin rayuwa gaba ɗaya. Kowa yana amfana.",
+    "resourcesTitle": "Kayan Tallace-tallace",
+    "resourcesBody": "Hotunan kafofin sada zumunta, rubuce-rubucen bayani da saƙonnin talla da aka shirya. Sauke abin da kake buƙata ka fara rabawa.",
+    "openLibrary": "Buɗe ɗakin kayan talla"
+  },
+  "panel": {
+    "copiedToast": "An kwafa!",
+    "copiedLinkBody": "Mahaɗinka na rabawa yana kan allon kwafi.",
+    "copiedMessageBody": "Liƙa shi a WhatsApp, Saƙonni, ko duk inda kake so.",
+    "copyFailed": "Kwafi bai yi nasara ba",
+    "copyFailedBody": "Danna rubutun na ɗan lokaci don zaɓa ka kwafa da hannu.",
+    "pending": "Mahaɗinka na gayyata zai bayyana a nan ba da jimawa ba. Sabunta shafin nan da ɗan lokaci.",
+    "expandedSummary": "Samu 50% a kan gayyata kai tsaye + 10% daga hanyar sadarwarka.",
+    "rates": "50% kai tsaye + 10% hanyar sadarwa",
+    "clicksCount_one": "danna {{count}}",
+    "clicksCount_other": "dannawa {{count}}",
+    "salesCount_one": "saye {{count}}",
+    "salesCount_other": "saye-saye {{count}}",
+    "getLink": "Samo mahaɗina na rabawa",
+    "stats": {
+      "clicks": "Dannawa",
+      "sales": "Saye-saye",
+      "direct": "Kuɗin shiga kai tsaye",
+      "network": "Kuɗin shiga na hanyar sadarwa",
+      "affiliates": "Abokan hulɗarka"
+    },
+    "totalEarned": "Jimillar kuɗin da aka samu",
+    "howItWorks": "Yadda yake aiki",
+    "tier1": "<b>Mataki na 1:</b> Samu kwamishan 50% a kan kowane mai biyan kuɗi da ka gayyata, kowane wata ko sau ɗaya a kan sayayyar rayuwa gaba ɗaya.",
+    "tier2": "<b>Mataki na 2:</b> Idan wanda ka gayyata shi ma ya raba mahaɗinsa ya kawo mai biyan kuɗi, kai ma za ka samu 10% na wannan cinikin.",
+    "shareLink": "Mahaɗinka na rabawa",
+    "copied": "An kwafa",
+    "copy": "Kwafa",
+    "whatsappLabel": "Saƙon WhatsApp",
+    "copiedWhatsapp": "An kwafa — liƙa a WhatsApp",
+    "copyWhatsapp": "Kwafa saƙon WhatsApp",
+    "facebookLabel": "Rubutun Facebook",
+    "copiedFacebook": "An kwafa — liƙa a Facebook",
+    "copyFacebook": "Kwafa rubutun Facebook",
+    "terms": "Ana saka kuɗin shiga cikin awa 24 bayan biyan kuɗi ya yi nasara. Kwamishan na wata-wata yana ci gaba muddin mai biyan kuɗin yana aiki. Ana tura kuɗi zuwa bankinka kowane wata idan ka kai £20. Gayyatar kanka ba ta ƙirgu."
+  },
+  "account": {
+    "signInPrompt": "Shiga don gyara saitunanka.",
+    "language": "Harshe",
+    "languageHint": "Zaɓi harshen menu, maɓallai da jagorar iyaye. Littattafai da kalmomin karatu koyaushe suna zama cikin Turanci — domin abin da yaronka ke koyo ke nan.",
+    "yourDetails": "Bayananka",
+    "yourName": "Sunanka",
+    "parentNamePlaceholder": "Sunan iyaye",
+    "email": "Imel",
+    "emailHint": "Canza imel yana buƙatar tabbatarwa — tuntuɓi tallafi idan kana buƙatar canzawa.",
+    "passwordTitle": "Saita ko canza kalmar sirrinka",
+    "passwordSubtitle": "Zaɓi kalmar sirri don ka iya shiga ba tare da jiran mahaɗin imel ba.",
+    "sendReset": "A maimakon haka, aika imel na sake saita kalmar sirri",
+    "billing": "Biyan kuɗi",
+    "billingBody": "Sabunta katinka, duba takardun kuɗi, ko soke biyan kuɗinka na wata-wata.",
+    "opening": "Ana buɗewa…",
+    "manageSubscription": "Sarrafa biyan kuɗi",
+    "childDetails": "Bayanan yaro",
+    "childName": "Sunan yaro",
+    "dob": "Ranar haihuwa",
+    "noChild": "Ba a ƙara yaro ba tukuna. Koma zuwa bayanan martabarka don ƙarawa.",
+    "saveChanges": "Ajiye canje-canje",
+    "savedToast": "An ajiye",
+    "savedToastBody": "Canje-canjenka sun fara aiki.",
+    "saveFailed": "Ajiyewa bai yi nasara ba",
+    "tryAgain": "Sake gwadawa nan da ɗan lokaci.",
+    "portalFailed": "Ba a iya buɗe shafin biyan kuɗi ba",
+    "resetFailed": "Ba a iya aika imel na sake saitawa ba",
+    "resetSent": "An aika imel na sake saitawa",
+    "resetSentBody": "Duba {{email}} don samun mahaɗin sake saita kalmar sirri."
+  },
+  "downloads": {
+    "signInPrompt": "Shiga don ganin tarihin saukewa da sayayyarka.",
+    "recent": "Saukewa na Kwanan Nan",
+    "emptyTitle": "Babu saukewa tukuna",
+    "emptyBody": "PDF ɗin da ka ajiye za su bayyana a nan don ka sake sauke su cikin sauƙi.",
+    "goToLibrary": "Je zuwa Ɗakin Karatu",
+    "bookFallback": "Littafi",
+    "level": "Mataki na {{level}}",
+    "reDownload": "Sake sauke {{title}}",
+    "preparing": "Ana shirya {{title}}…",
+    "downloaded": "An sauke {{title}}",
+    "notificationBody": "Taɓa don sake saukewa daga tarihinka",
+    "view": "Duba",
+    "failed": "Saukewa bai yi nasara ba",
+    "unavailable": "Fayil ɗin PDF ba ya samuwa",
+    "purchases": "Sayayya",
+    "noPurchases": "Babu sayayya tukuna",
+    "noPurchasesBody": "Odar Create-A-Book da duk wani tallafi da ka bayar za su bayyana a nan.",
+    "purchaseFallback": "Sayayya",
+    "free": "Kyauta",
+    "completed": "An kammala",
+    "receiptHint": "Kana buƙatar rasit ko maido da kuɗi? Tuntuɓi tallafi daga shafin Taimako."
+  },
+  "help": {
+    "talkTitle": "Yi magana da mu",
+    "talkBody": "Muna karanta kowane imel da kanmu. Yawancin amsoshi suna isowa cikin ranar aiki ɗaya.",
+    "emailUs": "Aika imel zuwa",
+    "faqTitle": "Tambayoyin da ake yawan yi",
+    "privacy": "Manufar Sirri",
+    "terms": "Sharuɗɗan Sabis",
+    "faq": {
+      "assessment": {
+        "q": "Yaya tantancewar ke aiki?",
+        "a": "Zaɓi Quick Check (kimanin minti 3) don gano mataki cikin sauri, ko Full Test (kimanin minti 10) don cikakken hoto da ya ƙunshi sautuka, kalmomi na gaske, kalmomin ƙage (alien words) da kalmomi masu wuya (tricky words) a kowane mataki. Sakamakon yana nuna matakin da aka ba da shawara ga yaronka tare da abin da ya riga ya sani."
+      },
+      "progress": {
+        "q": "Yaya yaro na ke ci gaba a cikin littattafan?",
+        "a": "Ana karanta kowane littafi sau 5 don gina iya karatu da sauri, tare da ɗan Check a ƙarshe. Idan ya ci Check, littafi na gaba zai buɗe. Idan ya ƙware a duk littattafan mataki ɗaya, Level Check zai bayyana, wanda idan ya ci shi zai kai yaronka mataki na gaba."
+      },
+      "stamps": {
+        "q": "Mene ne \"tambari\" da \"Checks\"?",
+        "a": "Ana ba da tambari ɗaya a kowace rana dabam da yaronka ya karanta littafin da yake kai — ba za a iya samun tambari biyu a rana ɗaya ba; tsarin yana roƙonsa a hankali ya dawo gobe. Tambari na 3, 4 da 5 kowanne yana da ɗan gwajin shiri don tabbatar da iya karatu da sauri, ba kawai maimaita karatu da haddace ba."
+      },
+      "unlock": {
+        "q": "Zan iya buɗe littafi na gaba da kaina?",
+        "a": "Buɗewa da hannu yana kan Dashboard na Iyaye amma yanzu yana nuna \"Yana zuwa nan ba da jimawa ba\" — muna so mu tabbatar cewa hakan ba zai sa a tsallake giɓin fonics ba bisa kuskure ba. Idan da gaske kana buƙatar a buɗe littafi da wuri, aiko mana da imel za mu yi maka."
+      },
+      "refunds": {
+        "q": "Yaya maido da kuɗi ke aiki?",
+        "a": "Ana iya soke biyan kuɗi na wata-wata a kowane lokaci daga asusunka — za ka ci gaba da amfani har ƙarshen lokacin. Don sayayya ta sau ɗaya (misali cikakken kunshi ko damar amfani ta rayuwa gaba ɗaya), aiko mana da imel cikin kwanaki 14 don a maido maka da duk kuɗinka."
+      },
+      "pwa": {
+        "q": "Me ya sa widget / manhajar allon gida ta yi kama da tsohuwa?",
+        "a": "Manhajojin yanar gizo (PWA) suna ajiye bayanai sosai. Rufe manhajar gaba ɗaya sannan ka sake buɗe ta. Idan har yanzu tana kama da tsohuwa, buɗe shafin a burauzarka ka ja ƙasa don sabuntawa — a buɗewa ta gaba sabon sigar zai fara aiki."
+      }
+    }
+  }
+}

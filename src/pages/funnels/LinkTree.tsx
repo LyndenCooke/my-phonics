@@ -1,32 +1,34 @@
 import { Link } from 'react-router-dom';
 import { BookOpen, AlertTriangle, Clock, HelpCircle, Zap } from 'lucide-react';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const LINKS = [
   {
     to: '/f/wrong-books?ref=linktree',
-    label: 'Are wrong books hurting their confidence?',
+    labelKey: 'linkTree.wrongBooks',
     icon: AlertTriangle,
     gradient: 'from-red-500 to-rose-500',
     shadow: 'shadow-red-500/20',
   },
   {
     to: '/f/free-assessment?ref=linktree',
-    label: 'Free phonics assessment — find their level',
+    labelKey: 'linkTree.freeAssessment',
     icon: HelpCircle,
     gradient: 'from-amber-500 to-orange-500',
     shadow: 'shadow-amber-500/20',
   },
   {
     to: '/f/3-minute-check?ref=linktree',
-    label: '3-minute level check + free resources',
+    labelKey: 'linkTree.threeMinute',
     icon: Clock,
     gradient: 'from-pink-500 to-rose-500',
     shadow: 'shadow-pink-500/20',
   },
   {
     to: '/f/the-gap?ref=linktree',
-    label: 'Books they love that they can actually read',
+    labelKey: 'linkTree.theGap',
     icon: Zap,
     gradient: 'from-violet-500 to-purple-500',
     shadow: 'shadow-violet-500/20',
@@ -35,11 +37,16 @@ const LINKS = [
 
 export default function LinkTree() {
   useFunnelTracker(); // Capture UTM/ref params on landing
+  const { t } = useTranslation('funnels');
   return (
     <div className="min-h-screen bg-[hsl(var(--background))] relative overflow-hidden flex flex-col items-center justify-center px-4 py-12">
       {/* Background */}
       <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-pink-200/30 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[10%] -left-[10%] w-[35%] h-[35%] rounded-full bg-amber-200/20 blur-[120px] pointer-events-none" />
+
+      <div className="absolute top-4 end-4 z-20">
+        <LanguageSwitcher variant="compact" />
+      </div>
 
       <div className="relative z-10 w-full max-w-sm">
         {/* Logo + tagline */}
@@ -47,11 +54,11 @@ export default function LinkTree() {
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[hsl(var(--primary))] to-rose-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-pink-500/20">
             <BookOpen size={28} />
           </div>
-          <h1 className="font-bold text-2xl text-foreground mb-1">
+          <h1 className="font-bold text-2xl text-foreground mb-1" dir="ltr">
             MyPhonicsBooks
           </h1>
           <p className="text-sm text-muted-foreground">
-            Decodable books matched to their exact level
+            {t('linkTree.tagline')}
           </p>
         </div>
 
@@ -65,13 +72,13 @@ export default function LinkTree() {
               style={{ animationDelay: `${100 + i * 80}ms`, animationFillMode: 'backwards' }}
             >
               <link.icon size={20} className="shrink-0" />
-              <span className="text-sm sm:text-base">{link.label}</span>
+              <span className="text-sm sm:text-base">{t(link.labelKey)}</span>
             </Link>
           ))}
         </div>
 
         <p className="text-xs text-muted-foreground text-center mt-8 animate-in fade-in duration-500 delay-500">
-          Based on Letters and Sounds (UK phonics curriculum)
+          {t('linkTree.footer')}
         </p>
       </div>
     </div>

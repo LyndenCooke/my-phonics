@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { SoundStatus, ResultItem } from '@/lib/adaptiveEngine';
 import { LEVEL_NAMES_SHORT } from '@/lib/adaptiveEngine';
 import type { Category } from '@/lib/assessmentData';
@@ -45,6 +46,8 @@ const LEVEL_BG_COLORS: Record<number, string> = {
 const CATEGORY_ORDER: Category[] = ['sound_recognition', 'word_reading', 'alien_words', 'tricky_words'];
 
 export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
+  const { t } = useTranslation('reader');
+  const statusLabel = (st: 'known' | 'unknown' | 'untested') => t(`soundMap.status.${st}`);
   const levels = [1, 2, 3, 4, 5, 6, 7, 8];
 
   // Group sounds by level
@@ -106,16 +109,16 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
       <div className="flex gap-4 justify-center text-xs">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-          Known ({known})
+          {t('soundMap.known', { n: known })}
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-          To learn ({unknown})
+          {t('soundMap.toLearn', { n: unknown })}
         </span>
         {!compact && untested > 0 && (
           <span className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-gray-300 inline-block" />
-            Not tested ({untested})
+            {t('soundMap.notTestedCount', { n: untested })}
           </span>
         )}
       </div>
@@ -140,16 +143,16 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
             {/* Level header — clickable to expand/collapse */}
             <button
               onClick={() => toggleLevel(level)}
-              className="w-full flex items-center justify-between p-3 text-left"
+              className="w-full flex items-center justify-between p-3 text-start"
             >
               <div className="flex items-center gap-2">
                 {isExpanded ? (
                   <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
                 ) : (
-                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+                  <ChevronRight className="w-3.5 h-3.5 text-muted-foreground rtl:-scale-x-100" />
                 )}
                 <p className="text-xs font-bold text-muted-foreground">
-                  Level {level} — {LEVEL_NAMES_SHORT[level]}
+                  {t('soundMap.levelHeading', { level })} — <span lang="en">{LEVEL_NAMES_SHORT[level]}</span>
                 </p>
               </div>
               {/* Summary badges */}
@@ -166,7 +169,7 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
                 )}
                 {isFullyUntested && (
                   <span className="bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold">
-                    Not tested
+                    {t('soundMap.notTested')}
                   </span>
                 )}
               </div>
@@ -180,14 +183,14 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
                   levelCategories.map(({ category, items }) => (
                     <div key={category}>
                       <p className="text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-wider">
-                        {CATEGORY_LABELS[category]}
+                        {t(`soundMap.categories.${category}`, { defaultValue: CATEGORY_LABELS[category] })}
                       </p>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div dir="ltr" lang="en" className="flex flex-wrap gap-1.5">
                         {items.map((item, idx) => (
                           <span
                             key={`${item.item}-${idx}`}
                             className={`inline-flex items-center justify-center px-2 py-1 rounded-full border text-xs font-bold min-w-[36px] ${STATUS_STYLES[item.status]}`}
-                            title={`${item.item}: ${item.status}`}
+                            title={`${item.item}: ${statusLabel(item.status)}`}
                           >
                             {item.item}
                           </span>
@@ -197,12 +200,12 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
                   ))
                 ) : (
                   /* Fallback: sounds only */
-                  <div className="flex flex-wrap gap-1.5">
+                  <div dir="ltr" lang="en" className="flex flex-wrap gap-1.5">
                     {levelSounds.map((sound, idx) => (
                       <span
                         key={`${sound.grapheme}-${idx}`}
                         className={`inline-flex items-center justify-center px-2 py-1 rounded-full border text-xs font-bold min-w-[36px] ${STATUS_STYLES[sound.status]}`}
-                        title={`${sound.displayName}: ${sound.status}`}
+                        title={`${sound.displayName}: ${statusLabel(sound.status)}`}
                       >
                         {sound.displayName}
                       </span>
@@ -219,7 +222,7 @@ export function SoundMap({ sounds, results, compact = false }: SoundMapProps) {
           of one empty card per level. */}
       {compact && compactUntestedLevels.length > 0 && (
         <p className="text-[11px] text-muted-foreground text-center pt-1">
-          Levels {compactUntestedLevels.join(', ')} not yet tested
+          {t('soundMap.levelsNotTested', { levels: compactUntestedLevels.join(', ') })}
         </p>
       )}
     </div>

@@ -1,0 +1,70 @@
+{
+  "closeBook": "关闭书本",
+  "pageAlt": "《{{title}}》— 第 {{page}} 页",
+  "pageLoadError": "无法加载此页面。",
+  "pageLoadErrorHint": "请检查网络连接后重试。",
+  "pagesUnavailable": "暂无页面图片",
+  "previousPage": "上一页",
+  "nextPage": "下一页",
+  "goToPage": "跳转到第 {{page}} 页",
+  "finishBook": "读完这本书",
+  "tapToHear": "点击收听“{{word}}”",
+  "flipbook": {
+    "groupAria": "图书预览——用方向键翻页"
+  },
+  "quiz": {
+    "saveFailed": "测验结果保存失败",
+    "completeAria": "测验完成",
+    "perfect": "满分！",
+    "wellDone": "做得好！",
+    "scored": "你答对了 <b>{{score}}</b> 题，共 <b>{{total}}</b> 题",
+    "tryAgain": "再试一次",
+    "dialogAria": "测验：{{title}}",
+    "close": "关闭测验",
+    "answerOptions": "答案选项",
+    "seeResults": "查看结果"
+  },
+  "audio": {
+    "playSoundTitle": "播放“{{grapheme}}”的发音",
+    "playSoundAria": "播放字母组合 {{grapheme}} 的发音",
+    "playWordTitle": "播放“{{word}}”",
+    "playWordAria": "播放单词 {{word}}"
+  },
+  "soundMap": {
+    "known": "已掌握（{{n}}）",
+    "toLearn": "待学习（{{n}}）",
+    "notTestedCount": "未测试（{{n}}）",
+    "notTested": "未测试",
+    "levelHeading": "级别 {{level}}",
+    "levelsNotTested": "级别 {{levels}} 尚未测试",
+    "status": {
+      "known": "已掌握",
+      "unknown": "待学习",
+      "untested": "未测试"
+    },
+    "categories": {
+      "sound_recognition": "发音",
+      "word_reading": "真实单词",
+      "alien_words": "Alien Words（假词）",
+      "tricky_words": "Tricky Words（特殊词）",
+      "speedy_reading": "快速朗读",
+      "fluency": "流利度"
+    }
+  },
+  "interactive": {
+    "playSound": "播放发音 {{sound}}",
+    "playSoundVariant": "播放发音 {{sound}}（{{variant}}）",
+    "wordTapToHear": "{{word}}。点击收听。",
+    "illustration": "故事插图",
+    "closeImage": "关闭图片",
+    "expandIllustration": "放大插图",
+    "hideHints": "隐藏拼读提示",
+    "showHints": "显示拼读提示",
+    "checkInPassed": "阶段检测已通过",
+    "checkInPractise": "阶段检测——继续练习"
+  },
+  "prep": {
+    "tapToHear": "点击每一个即可收听。这些是孩子将要练习的发音。",
+    "tapLevel": "点击一个级别，查看该级别的发音"
+  }
+}

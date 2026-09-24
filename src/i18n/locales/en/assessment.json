@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "Free · no card · 3–10 minutes",
+    "title": "Find your child's reading level",
+    "subtitle": "Sit together, tap through a few sounds, and we'll find the exact right books — no guessing.",
+    "howItWorks": "How it works",
+    "steps": {
+      "questionsLabel": "A few quick questions",
+      "questionsDesc": "Tell us about your child",
+      "checkLabel": "Quick check",
+      "checkDesc": "Tick which words your child can read",
+      "soundLabel": "Sound test",
+      "soundDesc": "We test every sound at their level",
+      "resultsLabel": "Results",
+      "resultsDesc": "See which sounds they know and need to learn"
+    },
+    "chooseTest": "Choose a test",
+    "chooseTestHint": "Sit with your child — 3 to 10 minutes depending on the test you pick.",
+    "quickTitle": "Quick Check · 3 min",
+    "quickDesc": "Adaptive sound test to find your child's level fast.",
+    "fullTitle": "Full Test · ~10 min",
+    "fullDesc": "Tests sounds, real words, alien words and tricky words at every level.",
+    "privacy": "Your answers are private. See our <link>privacy policy</link>.",
+    "whatYouGet": "What you'll get at the end",
+    "get": {
+      "level": "Your child's reading level on the 8-level journey",
+      "map": "A sound-by-sound map of what they know",
+      "book": "One free book matched to that level",
+      "plan": "A simple \"next steps\" plan"
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "When was your child born?",
+      "hint": "This helps us compare to UK age expectations.",
+      "month": "Month",
+      "year": "Year",
+      "age": "Age: {{age}} years old"
+    },
+    "school": {
+      "title": "What type of school?",
+      "hint": "This helps us tailor recommendations.",
+      "options": {
+        "public": "Public school",
+        "private": "Private school",
+        "international": "International school",
+        "religious": "Religious school",
+        "homeschool": "Homeschool",
+        "notYet": "Not yet in school"
+      }
+    },
+    "needs": {
+      "title": "Any learning needs?",
+      "hint": "So we can support your child's journey.",
+      "options": {
+        "none": "None",
+        "dyslexia": "Dyslexia",
+        "speech": "Speech & language",
+        "eal": "English as additional language",
+        "adhd": "ADHD / focus",
+        "other": "Other"
+      }
+    },
+    "language": {
+      "title": "Language at home?",
+      "hint": "Helps us understand your child's reading context.",
+      "options": {
+        "englishOnly": "English only",
+        "englishPlus": "English + another language",
+        "mostlyOther": "Mostly another language"
+      }
+    },
+    "reading": {
+      "title": "How often do you read together?",
+      "hint": "No judgement — just helps us personalise.",
+      "options": {
+        "daily": "Reads every day",
+        "fewTimes": "A few times a week",
+        "occasionally": "Occasionally",
+        "starting": "Just getting started"
+      }
+    }
+  },
+  "screening": {
+    "title": "Quick Check",
+    "body1": "Which of these words can your child read aloud?",
+    "body2": "Tap the speaker to hear each word, then tick the ones they know.",
+    "skip": "Skip — start from Level 1"
+  },
+  "test": {
+    "level": "Level {{level}}",
+    "stages": {
+      "sounds": "Sounds",
+      "aliens": "Alien Words",
+      "wordCheck": "Word Check",
+      "bonus": "Bonus Round"
+    },
+    "instructions": {
+      "sound_recognition": "Show your child each sound. Ask: \"What sound does this make?\"",
+      "word_reading": "Ask your child to read each real word aloud.",
+      "alien_words": "Tell your child these are made-up words. Ask them to sound out each one."
+    },
+    "progress": "{{current}} of {{total}}",
+    "bonus": "bonus",
+    "madeUp": "(made-up word)",
+    "didTheyGetIt": "Did they get it right?",
+    "notYet": "Not yet",
+    "correct": "Correct",
+    "wrongInARow": "{{n}} wrong in a row — 1 more skips ahead"
+  },
+  "levelPassed": {
+    "title": "Level {{level}} Passed!",
+    "continue": "Continue to Level {{level}}"
+  },
+  "results": {
+    "title": "Assessment Complete",
+    "subtitle": "Here's your child's phonics profile.",
+    "itemsTested": "{{n}} items tested",
+    "recommended": "Recommended starting level",
+    "level": "Level {{level}}",
+    "ageRange": "Ages {{range}}",
+    "ageComparison": "UK Age Comparison — {{age}} years ({{yearGroup}})",
+    "yearGroups": {
+      "receptionAutumn": "Reception (Autumn)",
+      "receptionSpringSummer": "Reception (Spring/Summer)",
+      "year1Autumn": "Year 1 (Autumn)",
+      "year1SpringSummer": "Year 1 (Spring/Summer)",
+      "year2": "Year 2",
+      "year3": "Year 3"
+    },
+    "expectedLevel": "Expected level",
+    "yourChild": "Your child",
+    "status": {
+      "above": "Above expectations",
+      "at": "At expected level",
+      "below": "Below expectations"
+    },
+    "belowNote": "In England, children this age typically work at {{expected}}. Targeted practice with MyPhonicsBooks can help close this gap.",
+    "aboveNote": "Your child is ahead of UK age expectations. Keep up the great work!",
+    "claimBook": "Claim My Free Book",
+    "soundMap": "Sound Map",
+    "levelResults": "Level Results ({{n}})",
+    "passed": "PASSED",
+    "notYet": "NOT YET",
+    "categories": {
+      "sound_recognition": "Sounds",
+      "word_reading": "Real Words",
+      "tricky_words": "Tricky Words"
+    },
+    "notTested": "Not tested",
+    "toPractise": "All items to practise ({{n}})",
+    "personalised": "Personalised for you",
+    "deeperTitle": "Want a deeper analysis?",
+    "deeperBody": "This rapid test finds your child's level. Take the full detailed test to find every gap across all sounds, words, and tricky words.",
+    "saveTitle": "Save your results & get a free book",
+    "saveBody": "Enter your email and we'll unlock a free Level {{level}} book and send you a login link.",
+    "childNamePlaceholder": "Child's name (optional)",
+    "emailPlaceholder": "Your email address",
+    "saving": "Saving...",
+    "unlock": "Unlock My Free Book",
+    "bookFallback": "Level {{level}} Book",
+    "checkEmail": "Check your email at {{email}} for your login link",
+    "browseLibrary": "Browse the Library",
+    "retake": "Retake",
+    "browseLevel": "Browse Level {{level}}"
+  },
+  "errors": {
+    "invalidEmail": "Please enter a valid email address",
+    "signupFailed": "Signup failed",
+    "generic": "Something went wrong"
+  },
+  "tips": {
+    "startTitle": "Start with just {{minutes}} minutes a day",
+    "startBody": "At age {{age}}, even {{minutes}} minutes of daily reading practice makes a huge difference. Try reading together at the same time each day — bedtime or after school works well. Consistency matters more than length.",
+    "dailyTitle": "Try to read every day — aim for {{minutes}} minutes",
+    "dailyBody": "You're already reading regularly, which is brilliant. Making it a daily habit — even for {{minutes}} minutes — will accelerate your child's progress noticeably. Little and often is the key.",
+    "brilliantTitle": "You're doing brilliantly",
+    "brilliantBody": "Daily reading at age {{age}} is one of the best things you can do. Keep it up — {{minutes}} minutes a day is perfect. Your child is building strong reading foundations.",
+    "bilingualTitle": "Bilingualism is a superpower",
+    "bilingualBody": "Speaking two languages at home is a huge advantage for your child's brain development. Keep speaking both languages — it doesn't slow down English reading. Read phonics books in English, but story books in either language.",
+    "moreEnglishTitle": "Extra English reading time will help",
+    "moreEnglishBody": "Since English isn't the main language at home, your child may need a little more daily phonics practice to build fluency. Try to fit in 10–15 minutes of English reading alongside your home language — both are valuable.",
+    "dyslexiaTitle": "Multi-sensory reading works best",
+    "dyslexiaBody": "For children with dyslexia, phonics is especially important — and so is patience. Use the sound buttons, trace letters with fingers, and keep sessions short (5–10 minutes). Celebrate every small win. Progress may be slower but it's very real.",
+    "speechTitle": "Sounds first, then blending",
+    "speechBody": "Children with speech and language needs benefit hugely from hearing sounds clearly. Use the sound buttons often, and give extra time for your child to respond. If they can hear the sound, they can learn to read it — even if speaking it is harder.",
+    "ealTitle": "Phonics works brilliantly for EAL learners",
+    "ealBody": "Systematic phonics is one of the most effective approaches for children learning English as an additional language. The sounds are consistent and predictable. Pair phonics practice with picture books to build vocabulary alongside decoding.",
+    "adhdTitle": "Short bursts, big rewards",
+    "adhdBody": "Keep reading sessions to 5–8 minutes — shorter sessions with full attention beat longer distracted ones. Try adding movement: stand up between pages, use a pointer to track words, or do a star jump after each page. Make it active!",
+    "gapTitle": "Closing the gap is very achievable",
+    "gapBody": "Your child is a little behind UK expectations for their age — but this is completely normal and very fixable. With {{minutes}} minutes of daily phonics practice at Level {{level}}, most children catch up within a term. The key is regular practice, not cramming.",
+    "homeschoolTitle": "Structure your phonics sessions",
+    "homeschoolBody": "As a homeschooling family, you have the advantage of one-to-one attention. Follow the levels in order — each book builds on the last. A short daily phonics session (10–15 minutes) followed by free reading works well.",
+    "schoolSupportTitle": "Phonics at home supports school learning",
+    "schoolSupportBody": "Your child's school may use a different reading approach. MyPhonicsBooks follows the UK phonics curriculum, which is systematic and evidence-based. Even 10 minutes at home will complement what they learn at school.",
+    "headStartTitle": "You're giving them a head start",
+    "headStartBody": "Starting phonics before school is a wonderful gift. Keep it playful — no pressure, just fun with sounds. Your child will arrive at school already confident with letters and sounds, which makes a real difference."
+  },
+  "reveal": {
+    "badge": "Book Unlocked!",
+    "title": "Your free book is ready",
+    "levelName": "Level {{level}} — {{name}}",
+    "body": "Based on your results, you've unlocked this free book.",
+    "continue": "Continue to my results"
+  },
+  "nav": {
+    "level": "Level",
+    "map": "Map",
+    "levels": "Levels",
+    "continue": "Continue"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "youAreHere": "اینجا هستی",
+  "dayOf": "روز {{day}} از {{total}}",
+  "kicker": "مسیر خواندن",
+  "headline": "راه شما به سوی خواندن",
+  "lessonOf": "درس {{n}} از {{total}}",
+  "levelDash": "سطح {{n}} — {{name}}",
+  "progressAria": "درس {{n}} از {{total}}، {{pct}} درصد از مسیر",
+  "levelState": {
+    "complete": "کامل شده",
+    "current": "سطح فعلی، {{done}} از {{total}} درس",
+    "future": "هنوز شروع نشده"
+  },
+  "levelAria": "سطح {{n}}، {{name}}، {{state}}. باز کردن نقشه‌ی سطح.",
+  "lessonsDone": "{{done}} از {{total}} درس",
+  "complete": "کامل شده",
+  "lessons_one": "{{count}} درس",
+  "lessons_other": "{{count}} درس",
+  "panel": {
+    "aria": "طرح درس: {{title}}",
+    "close": "بستن طرح درس",
+    "meta": "درس {{n}} · سطح {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "روزهای این هفته",
+    "dayTabAria": "روز {{day}}: {{title}}",
+    "dayTab": "روز {{day}}",
+    "minutes": "حدود {{minutes}} دقیقه آموزش",
+    "minutesWorksheet": "حدود {{minutes}} دقیقه آموزش، سپس کاربرگ"
+  },
+  "blockState": {
+    "complete": "کامل شده",
+    "current": "اینجا هستی",
+    "future": "در پیش است"
+  },
+  "kind": {
+    "assessment": "ارزیابی",
+    "keepup": "زمان جبران",
+    "lesson": "درس",
+    "soundWeek": "هفته‌ی صدا",
+    "skillsWeek": "هفته‌ی مهارت"
+  },
+  "blockAria": "{{kind}}: {{label}}، {{state}}",
+  "backAria": "بازگشت به کل مسیر",
+  "back": "کل مسیر",
+  "levelTitle": "سطح {{n}}: {{name}}",
+  "error": "نقشه‌ی مسیر در حال حاضر بارگیری نشد. لطفاً کمی بعد دوباره امتحان کنید.",
+  "loading": "در حال بارگیری نقشه‌ی مسیر",
+  "sectionAria": "نقشه‌ی مسیر برنامه‌ی درسی"
+}

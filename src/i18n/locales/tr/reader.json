@@ -1,0 +1,70 @@
+{
+  "closeBook": "Kitabı kapat",
+  "pageAlt": "{{title}} — sayfa {{page}}",
+  "pageLoadError": "Bu sayfa yüklenemedi.",
+  "pageLoadErrorHint": "Bağlantınızı kontrol edip tekrar deneyin.",
+  "pagesUnavailable": "Sayfa görselleri mevcut değil",
+  "previousPage": "Önceki sayfa",
+  "nextPage": "Sonraki sayfa",
+  "goToPage": "{{page}}. sayfaya git",
+  "finishBook": "Kitabı bitir",
+  "tapToHear": "\"{{word}}\" kelimesini duymak için dokun",
+  "flipbook": {
+    "groupAria": "Kitap önizlemesi — sayfaları çevirmek için ok tuşlarını kullanın"
+  },
+  "quiz": {
+    "saveFailed": "Test sonuçları kaydedilemedi",
+    "completeAria": "Test tamamlandı",
+    "perfect": "Tam puan!",
+    "wellDone": "Aferin!",
+    "scored": "<b>{{total}}</b> sorudan <b>{{score}}</b> doğru yaptınız",
+    "tryAgain": "Tekrar dene",
+    "dialogAria": "Test: {{title}}",
+    "close": "Testi kapat",
+    "answerOptions": "Cevap seçenekleri",
+    "seeResults": "Sonuçları gör"
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" sesini çal",
+    "playSoundAria": "{{grapheme}} grafeminin sesini çal",
+    "playWordTitle": "\"{{word}}\" çal",
+    "playWordAria": "{{word}} kelimesini çal"
+  },
+  "soundMap": {
+    "known": "Biliyor ({{n}})",
+    "toLearn": "Öğrenecek ({{n}})",
+    "notTestedCount": "Test edilmedi ({{n}})",
+    "notTested": "Test edilmedi",
+    "levelHeading": "Seviye {{level}}",
+    "levelsNotTested": "{{levels}}. seviyeler henüz test edilmedi",
+    "status": {
+      "known": "biliyor",
+      "unknown": "öğrenecek",
+      "untested": "test edilmedi"
+    },
+    "categories": {
+      "sound_recognition": "Sesler",
+      "word_reading": "Gerçek Kelimeler",
+      "alien_words": "Alien Words (uydurma kelimeler)",
+      "tricky_words": "Tricky Words (zor kelimeler)",
+      "speedy_reading": "Hızlı Okuma",
+      "fluency": "Akıcılık"
+    }
+  },
+  "interactive": {
+    "playSound": "{{sound}} sesini çal",
+    "playSoundVariant": "{{sound}} sesini çal ({{variant}})",
+    "wordTapToHear": "{{word}}. Duymak için dokun.",
+    "illustration": "Hikâye çizimi",
+    "closeImage": "Görseli kapat",
+    "expandIllustration": "Çizimi büyüt",
+    "hideHints": "Fonik ipuçlarını gizle",
+    "showHints": "Fonik ipuçlarını göster",
+    "checkInPassed": "Ara kontrol geçildi",
+    "checkInPractise": "Ara kontrol — pratik yapmaya devam"
+  },
+  "prep": {
+    "tapToHear": "Dinlemek için her birine dokunun. Bunlar çocuğunuzun çalışacağı seslerdir.",
+    "tapLevel": "O seviyenin seslerini görmek için bir seviyeye dokunun"
+  }
+}

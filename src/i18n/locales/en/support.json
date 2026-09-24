@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "A coffee",
+    "book": "A book",
+    "level": "A level",
+    "shelf": "A whole shelf"
+  },
+  "errors": {
+    "amountRange": "Enter an amount between £1 and £500.",
+    "amountRangeShort": "Enter between £1 and £500.",
+    "signInFirst": "Please sign in first.",
+    "checkoutFailed": "Could not start checkout"
+  },
+  "page": {
+    "title": "Support MyPhonicsBooks",
+    "sticker": "Free for every family",
+    "heading": "Everything is free. Support is optional.",
+    "intro": "MyPhonicsBooks is built by one small team. If it helps your child read, a thank-you of any size keeps it free for the next family.",
+    "alwaysFree": "Always free",
+    "free": {
+      "books": "All 33 storybooks, eight levels — read online, no account needed",
+      "games": "Every phonics game, free to play",
+      "pdfs": "Printable PDFs of every book and worksheet — free with a free account",
+      "check": "The 3-minute phonics check and progress tracking"
+    },
+    "downloadsNote": "Downloads need a free account so we can keep the printable PDFs for families and classrooms — they're not for resale.",
+    "createAccount": "Create a free account",
+    "cardTitle": "Support MyPhonicsBooks",
+    "cardSubtitle": "Pay what you like · one-off · no subscription",
+    "alreadySupported": "Thank you — you've already supported us.",
+    "otherAmount": "Or another amount",
+    "customAria": "Custom support amount in pounds",
+    "supportWith": "Support with {{amount}}",
+    "signInToSupport": "Sign in to support",
+    "stripeNote": "Secure card payment by Stripe. Nothing is unlocked or locked by this — it's a thank-you, not a fee.",
+    "createBookNote": "Looking for a personalised book? <link>Create a Book</link> is £4.99, and the World of Books is a one-off £10."
+  },
+  "prompt": {
+    "title": "You're in — everything's free",
+    "body": "Every book, game and worksheet is yours at no cost. If MyPhonicsBooks helps your child, you can leave a small thank-you to keep it free for other families. Completely optional.",
+    "differentAmount": "Choose a different amount",
+    "maybeLater": "Maybe later — take me to the books"
+  }
+}

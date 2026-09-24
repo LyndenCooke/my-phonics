@@ -1,0 +1,180 @@
+{
+  "page": {
+    "title": "المكتبة",
+    "subtitleBooks": "{{count}} كتابًا صغيرًا في ثمانية مستويات — اضغط على أي كتاب لتبدأ القراءة",
+    "subtitleBooksNoCount": "كتب صغيرة في ثمانية مستويات — اضغط على أي كتاب لتبدأ القراءة",
+    "subtitleWorksheets": "لوحات أصوات وأوراق عمل مجانية قابلة للطباعة"
+  },
+  "tabs": {
+    "books": "الكتب",
+    "worksheets": "أوراق العمل"
+  },
+  "guest": {
+    "title": "كل الكتب مجانية للقراءة",
+    "body": "اضغط على أي كتاب لتبدأ. هل تريد ملف PDF للطباعة؟ أنشئ حسابًا مجانيًا للتنزيل.",
+    "signUp": "سجّل مجانًا ←",
+    "findLevel": "اعرف مستوى طفلك ←"
+  },
+  "newUser": {
+    "title": "لست متأكدًا من أين تبدأ؟",
+    "body": "أجرِ اختبارنا القصير (3 دقائق) لمعرفة المستوى المناسب — ثم اقرأ أو نزّل أي كتاب.",
+    "cta": "ابدأ التقييم ←"
+  },
+  "shelf": {
+    "ariaLabel": "المستوى {{level}} — {{name}}",
+    "level": "المستوى {{level}}",
+    "readProgress": "تمت قراءة {{read}} من {{total}}"
+  },
+  "empty": {
+    "title": "لا توجد كتب لهذا المستوى بعد",
+    "body": "عُد قريبًا لترى الإصدارات الجديدة"
+  },
+  "unlockedModal": {
+    "cta": "ابدأ القراءة"
+  },
+  "quiz": {
+    "perfect": "علامة كاملة! {{score}}/{{total}} - أنت نجم في القراءة!",
+    "complete": "انتهى الاختبار! نتيجتك {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "قريبًا",
+    "days_zero": "{{count}} يوم",
+    "days_one": "يوم واحد",
+    "days_two": "يومان",
+    "days_few": "{{count}} أيام",
+    "days_many": "{{count}} يومًا",
+    "days_other": "{{count}} يوم",
+    "hours_zero": "{{count}} ساعة",
+    "hours_one": "ساعة واحدة",
+    "hours_two": "ساعتان",
+    "hours_few": "{{count}} ساعات",
+    "hours_many": "{{count}} ساعة",
+    "hours_other": "{{count}} ساعة"
+  },
+  "downloadErrors": {
+    "signIn": "يُرجى تسجيل الدخول للتنزيل.",
+    "unavailable": "ملف PDF غير متاح",
+    "failed": "تعذّر التنزيل"
+  },
+  "notification": {
+    "title": "تم تنزيل {{title}}",
+    "body": "تم حفظ {{format}} — اضغط لإعادة التنزيل",
+    "cta": "عرض"
+  },
+  "levelFilter": {
+    "all": "كل الكتب"
+  },
+  "levels": {
+    "1": {
+      "focus": "الأصوات الأولى وكلمات بسيطة من 3 أحرف"
+    },
+    "2": {
+      "focus": "بقية الحروف الأبجدية، إضافة إلى ck وff وll وss"
+    },
+    "3": {
+      "focus": "حرفان وصوت واحد — sh وch وth وng…"
+    },
+    "4": {
+      "focus": "مجموعات أحرف العلّة مثل ay وee وigh وoo وar"
+    },
+    "5": {
+      "focus": "الأصوات المنفصلة (a-e وi-e) وتهجئات جديدة"
+    },
+    "6": {
+      "focus": "تهجئات بديلة — wr وkn وph وdge…"
+    },
+    "7": {
+      "focus": "الأصوات الثلاثية (ire وore وear) ونهايات ‎-tion"
+    },
+    "8": {
+      "focus": "اللواحق وبناء الكلمات — ‎-ous و‎-able و‎-ible"
+    }
+  },
+  "agesRange": "الأعمار {{range}}",
+  "card": {
+    "doneAria": "{{title}} — تمت قراءته",
+    "lockedAria": "{{title}} — مقفل",
+    "download": "تنزيل PDF",
+    "downloadAria": "تنزيل ملف PDF لكتاب {{title}}"
+  },
+  "download": {
+    "title": "تنزيل <book>{{title}}</book>",
+    "description": "اختر الشكل الذي يناسب طريقة استخدامك.",
+    "formats": {
+      "a4": {
+        "label": "كتيّب A5",
+        "description": "اطبعه على ورق A4 على الوجهين، ثم اطوِه وثبّته بالدبّاسة لتحصل على كتيّب A5 حقيقي. الصفحة الأخيرة والأولى على الورقة نفسها."
+      },
+      "a5": {
+        "label": "أوراق A4",
+        "description": "كل صفحة على ورقة مستقلة. مناسب للقراءة بحجم كبير أو للاستخدام في الصف."
+      }
+    },
+    "preparing": "جارٍ تجهيز {{format}}…",
+    "preparingPdf": "جارٍ تجهيز ملف PDF…",
+    "successTitle": "تم الحفظ في تنزيلاتك",
+    "successBody": "<book>{{title}}</book> ({{format}}) موجود في سجل التنزيلات — يمكنك فتحه من هناك في أي وقت.",
+    "goToHistory": "الذهاب إلى سجل التنزيلات",
+    "errorTitle": "لم يكتمل التنزيل",
+    "failed": "تعذّر التنزيل"
+  },
+  "worksheets": {
+    "intro": "موارد مجانية قابلة للطباعة لتعليم الأصوات (الفونكس) للآباء والمعلمين: لوحات أصوات وملصقات وأوراق عمل — كلها متوافقة مع منهج Letters and Sounds البريطاني.",
+    "categoriesAria": "فئات الموارد",
+    "categorySoundMats": "لوحات الأصوات",
+    "categoryLevel": "أوراق عمل المستوى {{level}}",
+    "levelHeading": "أوراق عمل المستوى {{level}}",
+    "levelSub": "{{name}} — {{ages}} · اضغط على كتاب لترى حزمة أوراق العمل الخاصة به",
+    "comingSoon": "قريبًا",
+    "levelComingSoon": "أوراق عمل قابلة للطباعة للكتابة اليدوية وفكّ الترميز والكلمات الصعبة للمستوى {{level}}. احفظ هذه الصفحة في المفضلة — نضيف أوراقًا جديدة باستمرار.",
+    "focusSounds": "الأصوات المستهدفة:",
+    "sheetCount_zero": "{{count}} ورقة",
+    "sheetCount_one": "ورقة واحدة",
+    "sheetCount_two": "ورقتان",
+    "sheetCount_few": "{{count}} أوراق",
+    "sheetCount_many": "{{count}} ورقة",
+    "sheetCount_other": "{{count}} ورقة",
+    "bookComingSoon": "أوراق العمل القابلة للطباعة لهذا الكتاب قادمة قريبًا — تمارين للكتابة اليدوية، وقراءة الكلمات الوهمية (alien words)، والكلمات الصعبة، وأوراق للأصوات المفردة: {{sounds}}.",
+    "downloadAllCount_zero": "تنزيل الكل ({{count}} ورقة)",
+    "downloadAllCount_one": "تنزيل الورقة",
+    "downloadAllCount_two": "تنزيل الورقتين",
+    "downloadAllCount_few": "تنزيل الأوراق الـ{{count}} كلها",
+    "downloadAllCount_many": "تنزيل الأوراق الـ{{count}} كلها",
+    "downloadAllCount_other": "تنزيل الأوراق الـ{{count}} كلها",
+    "packHint": "نزّل الحزمة كاملة في ملف PDF واحد، أو اختر أوراقًا منفردة لطباعتها عند الحاجة.",
+    "downloadError": "تعذّر تنزيل ورقة العمل هذه. يُرجى المحاولة مرة أخرى.",
+    "preview": "معاينة {{title}}",
+    "levelPackTitle": "أوراق الأصوات المفردة للمستوى {{level}}",
+    "groups": {
+      "book": "أوراق عمل الكتاب",
+      "singleSound": "أوراق الأصوات المفردة — {{sounds}}",
+      "singleSoundRest": "أوراق الأصوات المفردة — بقية الحروف الأبجدية",
+      "singleSoundSpecial": "أوراق الأصوات المفردة — Special Friends (حرفان بصوت واحد)"
+    },
+    "soundSheet": "الصوت {{sound}}"
+  },
+  "soundMats": {
+    "title": "لوحات الأصوات",
+    "subtitle": "لوحات أصوات قابلة للطباعة للبيت والصف — صور PNG بحجم A3 أفقي",
+    "level": "المستوى {{level}}",
+    "levels23": "المستويان 2 و3",
+    "levels46": "المستويات 4–6",
+    "sounds_zero": "{{count}} صوت",
+    "sounds_one": "صوت واحد",
+    "sounds_two": "صوتان",
+    "sounds_few": "{{count}} أصوات",
+    "sounds_many": "{{count}} صوتًا",
+    "sounds_other": "{{count}} صوت",
+    "combinedChart_zero": "{{count}} صوت — لوحة مجمّعة للمعلم",
+    "combinedChart_one": "صوت واحد — لوحة مجمّعة للمعلم",
+    "combinedChart_two": "صوتان — لوحة مجمّعة للمعلم",
+    "combinedChart_few": "{{count}} أصوات — لوحة مجمّعة للمعلم",
+    "combinedChart_many": "{{count}} صوتًا — لوحة مجمّعة للمعلم",
+    "combinedChart_other": "{{count}} صوت — لوحة مجمّعة للمعلم",
+    "combined": "مجمّعة",
+    "alt": "لوحة أصوات {{title}}"
+  },
+  "resources": {
+    "title": "الموارد"
+  }
+}

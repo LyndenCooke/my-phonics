@@ -1,0 +1,48 @@
+{
+  "youAreHere": "آپ یہاں ہیں",
+  "dayOf": "دن {{day}} از {{total}}",
+  "kicker": "پڑھنے کا سفر",
+  "headline": "پڑھنا سیکھنے کی آپ کی راہ",
+  "lessonOf": "سبق {{n}} از {{total}}",
+  "levelDash": "لیول {{n}} — {{name}}",
+  "progressAria": "سبق {{n}} از {{total}}، سفر کا {{pct}} فیصد",
+  "levelState": {
+    "complete": "مکمل",
+    "current": "موجودہ لیول، {{total}} میں سے {{done}} اسباق",
+    "future": "ابھی شروع نہیں ہوا"
+  },
+  "levelAria": "لیول {{n}}، {{name}}، {{state}}۔ لیول کا نقشہ کھولیں۔",
+  "lessonsDone": "{{total}} میں سے {{done}} اسباق",
+  "complete": "مکمل",
+  "lessons_one": "{{count}} سبق",
+  "lessons_other": "{{count}} اسباق",
+  "panel": {
+    "aria": "سبق کا خاکہ: {{title}}",
+    "close": "سبق کا خاکہ بند کریں",
+    "meta": "سبق {{n}} · لیول {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "اس ہفتے کے دن",
+    "dayTabAria": "دن {{day}}: {{title}}",
+    "dayTab": "دن {{day}}",
+    "minutes": "تقریباً {{minutes}} منٹ کی تدریس",
+    "minutesWorksheet": "تقریباً {{minutes}} منٹ کی تدریس، پھر ورک شیٹ"
+  },
+  "blockState": {
+    "complete": "مکمل",
+    "current": "آپ یہاں ہیں",
+    "future": "ابھی آنا ہے"
+  },
+  "kind": {
+    "assessment": "جائزہ",
+    "keepup": "دہرائی کا وقت",
+    "lesson": "سبق",
+    "soundWeek": "آواز کا ہفتہ",
+    "skillsWeek": "مہارتوں کا ہفتہ"
+  },
+  "blockAria": "{{kind}}: {{label}}، {{state}}",
+  "backAria": "پورے سفر پر واپس جائیں",
+  "back": "پورا سفر",
+  "levelTitle": "لیول {{n}}: {{name}}",
+  "error": "سفر کا نقشہ اس وقت لوڈ نہیں ہو سکا۔ براہِ کرم تھوڑی دیر بعد دوبارہ کوشش کریں۔",
+  "loading": "سفر کا نقشہ لوڈ ہو رہا ہے",
+  "sectionAria": "نصاب کے سفر کا نقشہ"
+}

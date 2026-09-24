@@ -1,0 +1,197 @@
+{
+  "backToProfile": "Profile geri dön",
+  "hub": {
+    "title": "Profil",
+    "welcome": "Hoş geldiniz!",
+    "signInPrompt": "Kitaplığınıza erişmek için giriş yapın",
+    "signInOrUp": "Giriş Yap / Kaydol",
+    "error": "Hata",
+    "level": "Seviye {{level}}",
+    "parentView": "Ebeveyn Görünümü",
+    "switchChild": "Çocuğu Değiştir",
+    "childNamePlaceholder": "Çocuğun adı",
+    "childDobLabel": "Doğum tarihi",
+    "addChild": "Çocuğunuzun bilgilerini ekleyin",
+    "signOut": "Çıkış Yap"
+  },
+  "links": {
+    "assess": "Değerlendirme",
+    "assessSub": "Çocuğunuzun okuma seviyesini öğrenin",
+    "wallOfLove": "Sevgi Duvarı",
+    "wallOfLoveSub": "Aileler bizim hakkımızda ne diyor",
+    "support": "MyPhonicsBooks'a Destek Olun",
+    "supportSub": "Her şey ücretsiz — dilerseniz bir teşekkür bırakın",
+    "admin": "Yönetim",
+    "adminSub": "CRM ve analiz (yalnızca personel)",
+    "accountSettings": "Hesap Ayarları",
+    "parentViewSub": "Ebeveyn paneline gidin",
+    "messages": "Mesajlar",
+    "messagesSub": "Ödüller, ipuçları ve güncellemeler",
+    "rewards": "Ödüllerim",
+    "rewardsSub": "Açılan ödüllerinizi görün",
+    "referrals": "Tavsiye Et, Kazan",
+    "referralsSub": "%50 komisyon kazanın — bağlantınızı paylaşın",
+    "downloads": "İndirme Geçmişi",
+    "help": "Yardım ve Destek"
+  },
+  "forYou": {
+    "title": "Sizin İçin",
+    "newCount_one": "{{count}} yeni",
+    "newCount_other": "{{count}} yeni",
+    "dismiss": "Bildirimi kapat"
+  },
+  "love": {
+    "title": "Kitapları sevdiniz mi?",
+    "body": "Sözleriniz diğer ailelerin bizi bulmasına yardımcı oluyor.",
+    "leaveReview": "Yorum yazın",
+    "seeWall": "Sevgi Duvarı'nı görün"
+  },
+  "messages": {
+    "title": "Mesajlar",
+    "new": "Yeni",
+    "all": "Tümü",
+    "unread": "Okunmamış",
+    "emptyTitle": "Henüz mesaj yok",
+    "caughtUp": "Hepsini okudunuz.",
+    "emptyBody": "Güncellemeler ve ödüller burada görünecek.",
+    "types": {
+      "reward": "Ödüller",
+      "video": "Videolar",
+      "referral": "Tavsiyeler",
+      "progress": "İlerleme",
+      "offer": "Fırsatlar",
+      "update": "Güncellemeler"
+    }
+  },
+  "referrals": {
+    "title": "Tavsiye Et, Kazan",
+    "heroTitle": "Arkadaşlarınızı davet edin, ödül kazanın",
+    "heroBody": "MyPhonicsBooks'u paylaşın ve getirdiğiniz her abone için %50 komisyon kazanın — aylık planda her ay yinelenen, ömür boyu planda tek seferlik. Herkes kazanır.",
+    "resourcesTitle": "Pazarlama Materyalleri",
+    "resourcesBody": "Hazır sosyal medya görselleri, açıklamalar ve tanıtım metinleri. İhtiyacınız olanı indirin ve paylaşmaya başlayın.",
+    "openLibrary": "Görsel kitaplığını aç"
+  },
+  "panel": {
+    "copiedToast": "Kopyalandı!",
+    "copiedLinkBody": "Paylaşım bağlantınız panoya kopyalandı.",
+    "copiedMessageBody": "WhatsApp'a, Mesajlar'a ya da istediğiniz yere yapıştırın.",
+    "copyFailed": "Kopyalanamadı",
+    "copyFailedBody": "Metni seçmek için basılı tutun ve elle kopyalayın.",
+    "pending": "Tavsiye bağlantınız birazdan burada görünecek. Az sonra sayfayı yenileyin.",
+    "expandedSummary": "Doğrudan tavsiyelerden %50 + ağınızdan %10 kazanın.",
+    "rates": "%50 doğrudan + %10 ağ",
+    "clicksCount_one": "{{count}} tıklama",
+    "clicksCount_other": "{{count}} tıklama",
+    "salesCount_one": "{{count}} satış",
+    "salesCount_other": "{{count}} satış",
+    "getLink": "Paylaşım bağlantımı al",
+    "stats": {
+      "clicks": "Tıklamalar",
+      "sales": "Satışlar",
+      "direct": "Doğrudan kazanç",
+      "network": "Ağ kazancı",
+      "affiliates": "Ortaklarınız"
+    },
+    "totalEarned": "Toplam kazanç",
+    "howItWorks": "Nasıl çalışır",
+    "tier1": "<b>1. Kademe:</b> Tavsiye ettiğiniz her abone için %50 komisyon kazanın; aylık planlarda her ay yinelenen, ömür boyu satın alımlarda tek seferlik.",
+    "tier2": "<b>2. Kademe:</b> Tavsiye ettiğiniz biri de kendi bağlantısını paylaşıp bir abone getirdiğinde, o satıştan da %10 kazanırsınız.",
+    "shareLink": "Paylaşım bağlantınız",
+    "copied": "Kopyalandı",
+    "copy": "Kopyala",
+    "whatsappLabel": "WhatsApp mesajı",
+    "copiedWhatsapp": "Kopyalandı — WhatsApp'a yapıştırın",
+    "copyWhatsapp": "WhatsApp mesajını kopyala",
+    "facebookLabel": "Facebook gönderisi",
+    "copiedFacebook": "Kopyalandı — Facebook'a yapıştırın",
+    "copyFacebook": "Facebook gönderisini kopyala",
+    "terms": "Kazançlar, başarılı ödemeden sonraki 24 saat içinde hesabınıza yansır. Aylık komisyonlar abone aktif kaldığı sürece devam eder. £20'ye ulaştığınızda ödemeler her ay banka hesabınıza gönderilir. Kendinizi tavsiye etmeniz geçerli değildir."
+  },
+  "account": {
+    "signInPrompt": "Ayarlarınızı düzenlemek için giriş yapın.",
+    "language": "Dil",
+    "languageHint": "Menüler, düğmeler ve ebeveyn rehberliği için dili seçin. Kitaplar ve okuma kelimeleri her zaman İngilizce kalır — çünkü çocuğunuzun öğrendiği şey bu.",
+    "yourDetails": "Bilgileriniz",
+    "yourName": "Adınız",
+    "parentNamePlaceholder": "Ebeveyn adı",
+    "email": "E-posta",
+    "emailHint": "E-posta değişikliği doğrulama gerektirir — değiştirmeniz gerekirse destek ekibiyle iletişime geçin.",
+    "passwordTitle": "Şifrenizi belirleyin veya değiştirin",
+    "passwordSubtitle": "E-posta bağlantısı beklemeden giriş yapabilmek için bir şifre belirleyin.",
+    "sendReset": "Bunun yerine şifre sıfırlama e-postası gönder",
+    "billing": "Faturalandırma",
+    "billingBody": "Kartınızı güncelleyin, faturaları görüntüleyin veya aboneliğinizi iptal edin.",
+    "opening": "Açılıyor…",
+    "manageSubscription": "Aboneliği yönet",
+    "childDetails": "Çocuğun bilgileri",
+    "childName": "Çocuğun adı",
+    "dob": "Doğum tarihi",
+    "noChild": "Henüz çocuk eklenmedi. Eklemek için profilinize dönün.",
+    "saveChanges": "Değişiklikleri kaydet",
+    "savedToast": "Kaydedildi",
+    "savedToastBody": "Değişiklikleriniz uygulandı.",
+    "saveFailed": "Kaydedilemedi",
+    "tryAgain": "Birazdan tekrar deneyin.",
+    "portalFailed": "Fatura portalı açılamadı",
+    "resetFailed": "Sıfırlama e-postası gönderilemedi",
+    "resetSent": "Sıfırlama e-postası gönderildi",
+    "resetSentBody": "Şifre sıfırlama bağlantısı için {{email}} adresinizi kontrol edin."
+  },
+  "downloads": {
+    "signInPrompt": "İndirme ve satın alma geçmişinizi görmek için giriş yapın.",
+    "recent": "Son İndirmeler",
+    "emptyTitle": "Henüz indirme yok",
+    "emptyBody": "Kaydettiğiniz PDF'ler, kolayca yeniden indirebilmeniz için burada görünecek.",
+    "goToLibrary": "Kitaplığa git",
+    "bookFallback": "Kitap",
+    "level": "Seviye {{level}}",
+    "reDownload": "{{title}} kitabını yeniden indir",
+    "preparing": "{{title}} hazırlanıyor…",
+    "downloaded": "{{title}} indirildi",
+    "notificationBody": "Geçmişinizden yeniden indirmek için dokunun",
+    "view": "Görüntüle",
+    "failed": "İndirme başarısız",
+    "unavailable": "PDF dosyası kullanılamıyor",
+    "purchases": "Satın Almalar",
+    "noPurchases": "Henüz satın alma yok",
+    "noPurchasesBody": "Create-A-Book siparişleriniz ve yaptığınız her türlü destek burada görünecek.",
+    "purchaseFallback": "Satın alma",
+    "free": "Ücretsiz",
+    "completed": "Tamamlandı",
+    "receiptHint": "Makbuz veya iade mi gerekiyor? Yardım sayfasından destek ekibiyle iletişime geçin."
+  },
+  "help": {
+    "talkTitle": "Bize ulaşın",
+    "talkBody": "Her e-postayı kendimiz okuyoruz. Yanıtların çoğu bir iş günü içinde gelir.",
+    "emailUs": "E-posta:",
+    "faqTitle": "Sık sorulanlar",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Hizmet Koşulları",
+    "faq": {
+      "assessment": {
+        "q": "Değerlendirme nasıl işliyor?",
+        "a": "Hızlı bir seviye tespiti için Quick Check'i (~3 dk), her seviyede sesleri, gerçek kelimeleri, uydurma kelimeleri (alien words) ve zor kelimeleri (tricky words) kapsayan daha ayrıntılı bir tablo için Full Test'i (~10 dk) seçin. Sonuçlar, çocuğunuz için önerilen seviyeyi ve zaten bildiklerini gösterir."
+      },
+      "progress": {
+        "q": "Çocuğum kitaplarda nasıl ilerliyor?",
+        "a": "Akıcılık kazanmak için her kitap 5 kez okunur ve sonunda kısa bir Check yapılır. Check geçilince sonraki kitap açılır. Bir seviyedeki tüm kitaplarda ustalaşınca Level Check görünür; geçildiğinde çocuğunuz bir sonraki seviyeye geçer."
+      },
+      "stamps": {
+        "q": "\"Damgalar\" ve \"Check'ler\" nedir?",
+        "a": "Çocuğunuz mevcut kitabı her farklı gün okuduğunda bir damga kazanır — aynı gün iki damga kazanılamaz, sistem nazikçe yarın tekrar gelmesini ister. 3., 4. ve 5. damgaların her birinde, ezbere tekrar değil gerçek akıcılığı doğrulamak için kısa bir hazırlık kontrolü bulunur."
+      },
+      "unlock": {
+        "q": "Sonraki kitabı elle açabilir miyim?",
+        "a": "Elle açma özelliği Ebeveyn Paneli'nde var ama şu an \"Yakında\" olarak görünüyor — bu özelliğin yanlışlıkla fonik eksiklerin atlanmasına yol açmadığından emin olmak istiyoruz. Bir kitabın gerçekten erken açılması gerekiyorsa bize e-posta gönderin, sizin için yapalım."
+      },
+      "refunds": {
+        "q": "İadeler nasıl işliyor?",
+        "a": "Abonelikler hesabınızdan istediğiniz zaman iptal edilebilir — erişiminiz dönem sonuna kadar devam eder. Tek seferlik satın alımlar için (ör. tam paket veya ömür boyu erişim), tam iade için 14 gün içinde bize e-posta gönderin."
+      },
+      "pwa": {
+        "q": "Widget'ım / ana ekran uygulamam neden eski görünüyor?",
+        "a": "Web uygulamaları (PWA) önbelleği yoğun kullanır. Uygulamayı tamamen kapatıp yeniden açın. Hâlâ eski görünüyorsa siteyi tarayıcınızda açın ve yenilemek için aşağı çekin — bir sonraki açılışta yeni sürüm yüklenecektir."
+      }
+    }
+  }
+}

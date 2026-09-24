@@ -1,0 +1,52 @@
+{
+  "youAreHere": "أنت هنا",
+  "dayOf": "اليوم {{day}} من {{total}}",
+  "kicker": "رحلة القراءة",
+  "headline": "طريقك إلى القراءة",
+  "lessonOf": "الدرس {{n}} من {{total}}",
+  "levelDash": "المستوى {{n}} — {{name}}",
+  "progressAria": "الدرس {{n}} من {{total}}، {{pct}} بالمئة من الرحلة",
+  "levelState": {
+    "complete": "مكتمل",
+    "current": "المستوى الحالي، {{done}} من {{total}} درسًا",
+    "future": "لم يبدأ بعد"
+  },
+  "levelAria": "المستوى {{n}}، {{name}}، {{state}}. افتح خريطة المستوى.",
+  "lessonsDone": "{{done}} من {{total}} درسًا",
+  "complete": "مكتمل",
+  "lessons_zero": "{{count}} درس",
+  "lessons_one": "درس واحد",
+  "lessons_two": "درسان",
+  "lessons_few": "{{count}} دروس",
+  "lessons_many": "{{count}} درسًا",
+  "lessons_other": "{{count}} درس",
+  "panel": {
+    "aria": "مخطط الدرس: {{title}}",
+    "close": "إغلاق مخطط الدرس",
+    "meta": "الدرس {{n}} · المستوى {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "أيام هذا الأسبوع",
+    "dayTabAria": "اليوم {{day}}: {{title}}",
+    "dayTab": "اليوم {{day}}",
+    "minutes": "نحو {{minutes}} دقيقة من التدريس",
+    "minutesWorksheet": "نحو {{minutes}} دقيقة من التدريس، ثم ورقة العمل"
+  },
+  "blockState": {
+    "complete": "مكتمل",
+    "current": "أنت هنا",
+    "future": "لاحقًا"
+  },
+  "kind": {
+    "assessment": "تقييم",
+    "keepup": "وقت اللحاق",
+    "lesson": "درس",
+    "soundWeek": "أسبوع صوت",
+    "skillsWeek": "أسبوع مهارات"
+  },
+  "blockAria": "{{kind}}: {{label}}، {{state}}",
+  "backAria": "العودة إلى الرحلة كاملة",
+  "back": "الرحلة كاملة",
+  "levelTitle": "المستوى {{n}}: {{name}}",
+  "error": "تعذّر تحميل خريطة الرحلة الآن. يُرجى المحاولة مرة أخرى بعد قليل.",
+  "loading": "جارٍ تحميل خريطة الرحلة",
+  "sectionAria": "خريطة رحلة المنهج"
+}

@@ -13,6 +13,7 @@
  * Fully client-side, level-parameterised, no auth — safe on the public
  * /games arcade.
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { X, Star, RotateCcw } from 'lucide-react';
@@ -74,6 +75,7 @@ function buildBoard(level: JourneyLevel, bank: Record<string, string[]>): Card[]
 }
 
 export default function SoundPairs({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -155,7 +157,7 @@ export default function SoundPairs({ level, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/pairs_table.webp" />
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
 
@@ -170,7 +172,7 @@ export default function SoundPairs({ level, onClose }: Props) {
           </span>
           <button
             onClick={onClose}
-            aria-label="Close game"
+            aria-label={t('play.closeGame')}
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
             style={{ boxShadow: STICKER }}
           >

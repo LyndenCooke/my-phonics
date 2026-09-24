@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, BookOpen, ClipboardCheck, Layers, Loader2, Users } from 'lucide-react';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { schoolDb } from '../lib/schoolClient';
@@ -19,6 +20,7 @@ function parseLevel(s: string | null): number | null {
 }
 
 export default function SchoolReports() {
+  const { t } = useTranslation('schoolApp');
   const { memberships } = useSchoolMemberships();
   const school = memberships[0]?.school;
   const [students, setStudents] = useState<Student[]>([]);
@@ -62,26 +64,26 @@ export default function SchoolReports() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">Reports</h1>
-        <p className="text-slate-600">A whole-school view of progress across the British phonics progression.</p>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">{t('reports.title')}</h1>
+        <p className="text-slate-600">{t('reports.intro')}</p>
       </header>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Stat icon={<Users className="w-5 h-5" />} value={model.total} label="Pupils tracked" />
-        <Stat icon={<ClipboardCheck className="w-5 h-5" />} value={model.assessed} label="Placed by assessment" />
-        <Stat icon={<ArrowRight className="w-5 h-5" />} value={model.readyUp} label="Ready to move up" />
-        <Stat icon={<Layers className="w-5 h-5" />} value={model.intervention} label="Needing intervention" tone="amber" />
+        <Stat icon={<Users className="w-5 h-5" />} value={model.total} label={t('reports.tracked')} />
+        <Stat icon={<ClipboardCheck className="w-5 h-5" />} value={model.assessed} label={t('reports.placed')} />
+        <Stat icon={<ArrowRight className="w-5 h-5 rtl:-scale-x-100" />} value={model.readyUp} label={t('outcomes.readyUp')} />
+        <Stat icon={<Layers className="w-5 h-5" />} value={model.intervention} label={t('outcomes.intervention')} tone="amber" />
       </section>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Children at each level</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">{t('reports.atEachLevel')}</h2>
         <div className="space-y-2">
           {SCHOOL_LEVELS.map((l) => {
             const n = model.dist[l.level] ?? 0;
             const pct = model.assessed ? Math.round((n / model.assessed) * 100) : 0;
             return (
-              <div key={l.level} className="flex items-center gap-3">
-                <span className="w-24 text-xs font-semibold text-slate-600 flex-shrink-0">L{l.level} {LEVEL_NAME[l.level]}</span>
+              <div key={l.level} dir="ltr" className="flex items-center gap-3">
+                <span lang="en" className="w-24 text-xs font-semibold text-slate-600 flex-shrink-0">L{l.level} {LEVEL_NAME[l.level]}</span>
                 <div className="flex-1 h-5 bg-slate-100 rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${Math.max(pct, n > 0 ? 3 : 0)}%`, backgroundColor: HEX[l.level] }} />
                 </div>
@@ -93,15 +95,23 @@ export default function SchoolReports() {
       </section>
 
       <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-        <div className="flex items-center gap-2 mb-1"><BookOpen className="w-4 h-4 text-slate-500" /><h2 className="font-bold">Programme at a glance</h2></div>
+        <div className="flex items-center gap-2 mb-1"><BookOpen className="w-4 h-4 text-slate-500" /><h2 className="font-bold">{t('reports.glance')}</h2></div>
         <p className="text-sm text-slate-600">
-          A complete {totals.teachingSteps}-step phonics pathway supported by {totals.totalResources}+ linked resources across 8 levels:
-          {' '}{totals.soundBooks} real-photo Sound Books, {totals.blendingBooks} Blending Books, {totals.storybooks} illustrated Storybooks,
-          {' '}{totals.interactiveBooks} interactive digital Storybooks, {totals.matchedWorksheets} matched worksheets,
-          {' '}{totals.soundMats} sound mats, {totals.trickyWordCards} tricky word card sets and {totals.phonemeAudio}+ phoneme audio files.
+          {t('reports.glanceBody', {
+            steps: totals.teachingSteps,
+            resources: totals.totalResources,
+            soundBooks: totals.soundBooks,
+            blendingBooks: totals.blendingBooks,
+            storybooks: totals.storybooks,
+            interactive: totals.interactiveBooks,
+            worksheets: totals.matchedWorksheets,
+            mats: totals.soundMats,
+            tricky: totals.trickyWordCards,
+            audio: totals.phonemeAudio,
+          })}
         </p>
         <Link to="/school/app/pathway" className="inline-flex items-center gap-1.5 mt-3 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800">
-          View the learning pathway <ArrowRight className="w-4 h-4" />
+          {t('reports.viewPathway')} <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
         </Link>
       </section>
     </div>

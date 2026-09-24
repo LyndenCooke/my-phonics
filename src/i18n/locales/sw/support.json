@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "Kikombe cha kahawa",
+    "book": "Kitabu kimoja",
+    "level": "Kiwango kimoja",
+    "shelf": "Rafu nzima"
+  },
+  "errors": {
+    "amountRange": "Weka kiasi kati ya £1 na £500.",
+    "amountRangeShort": "Weka kati ya £1 na £500.",
+    "signInFirst": "Tafadhali ingia kwanza.",
+    "checkoutFailed": "Imeshindikana kuanza malipo"
+  },
+  "page": {
+    "title": "Saidia MyPhonicsBooks",
+    "sticker": "Bure kwa kila familia",
+    "heading": "Kila kitu ni bure. Msaada ni hiari.",
+    "intro": "MyPhonicsBooks imejengwa na timu moja ndogo. Ikiwa inamsaidia mtoto wako kusoma, shukrani ya kiasi chochote huifanya ibaki bure kwa familia inayofuata.",
+    "alwaysFree": "Bure daima",
+    "free": {
+      "books": "Vitabu vyote 33 vya hadithi, viwango vinane — soma mtandaoni, bila kuhitaji akaunti",
+      "games": "Kila mchezo wa fonetiki, bure kucheza",
+      "pdfs": "PDF za kuchapisha za kila kitabu na karatasi ya mazoezi — bure kwa akaunti ya bure",
+      "check": "Tathmini ya fonetiki ya dakika 3 na ufuatiliaji wa maendeleo"
+    },
+    "downloadsNote": "Kupakua kunahitaji akaunti ya bure ili PDF za kuchapisha zibaki kwa familia na madarasa — si za kuuza tena.",
+    "createAccount": "Fungua akaunti ya bure",
+    "cardTitle": "Saidia MyPhonicsBooks",
+    "cardSubtitle": "Lipa unachopenda · mara moja · bila usajili wa kila mwezi",
+    "alreadySupported": "Asante — tayari umetusaidia.",
+    "otherAmount": "Au kiasi kingine",
+    "customAria": "Kiasi chako cha msaada kwa pauni",
+    "supportWith": "Saidia kwa {{amount}}",
+    "signInToSupport": "Ingia ili kusaidia",
+    "stripeNote": "Malipo salama ya kadi kupitia Stripe. Hakuna kinachofunguliwa wala kufungwa kwa hili — ni shukrani, si ada.",
+    "createBookNote": "Unatafuta kitabu cha kibinafsi? <link>Tengeneza Kitabu</link> ni £4.99, na World of Books ni £10 kwa malipo ya mara moja."
+  },
+  "prompt": {
+    "title": "Umejiunga — kila kitu ni bure",
+    "body": "Kila kitabu, mchezo na karatasi ya mazoezi ni chako bila gharama. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo ili ibaki bure kwa familia nyingine. Ni hiari kabisa.",
+    "differentAmount": "Chagua kiasi kingine",
+    "maybeLater": "Labda baadaye — nipeleke kwenye vitabu"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "feedback": {
+    "title": "Yaya muke yi?",
+    "description": "Ra'ayinka yana taimaka mana mu inganta — kuma za a iya nuna kyawawan sharhi a shafinmu na yanar gizo.",
+    "returningTitle": "Kana jin daɗin MyPhonicsBooks?",
+    "returningDescription": "Ka dawo sau da yawa — za mu so ka ba mu ƙimar taurari cikin sauri da duk wani tunaninka. Yana taimakawa ƙwarai.",
+    "stars_one": "tauraro {{count}}",
+    "stars_other": "taurari {{count}}",
+    "lovedLabel": "Me ka so? 💛",
+    "lovedPlaceholder": "Ɓangaren da yaronka (ko kai) ya fi so…",
+    "improveLabel": "Me za a iya ingantawa?",
+    "improvePlaceholder": "Duk abin da ya ɓata maka rai ko kake so a canza (don ƙungiyarmu kaɗai)",
+    "privateNote": "Ƙungiyarmu kaɗai ke ganin wannan — ba a taɓa nuna shi a bainar jama'a ba.",
+    "consentMarketing": "Kuna iya nuna abin da na so a matsayin shaida a shafinku na yanar gizo da kafofin sada zumunta.",
+    "consentNamed": "Kuna iya amfani da sunana na farko tare da shi.",
+    "send": "Aika ra'ayi",
+    "sending": "Ana aikawa…",
+    "pickRating": "Zaɓi ƙimar taurari",
+    "pickRatingBody": "Taɓa tauraro don ƙimanta kwarewarka.",
+    "thanks": "Na gode! 💛",
+    "thanksBody": "An aika ra'ayinka zuwa ƙungiyarmu.",
+    "sendFailed": "Ba a iya aika ra'ayi ba"
+  },
+  "homeScreen": {
+    "dismiss": "Rufe",
+    "title": "Mataki na ƙarshe — sanya shi a taɓawa 1 kawai",
+    "body": "Ajiye MyPhonicsBooks a allon gidanka. Gobe, ba yaronka wayar — zai taɓa alamar ya fara karatu. Babu shiga. Babu rubutu.",
+    "install": "Saka a allon gida",
+    "iosStep1": "Taɓa maɓallin <icon/> <b>Raba</b> a ƙasan Safari",
+    "iosStep2": "Gungura ƙasa → taɓa <icon/> <b>\"Ƙara zuwa Allon Gida\"</b>",
+    "iosStep3": "Taɓa <b>Ƙara</b> a saman dama. Shi ke nan!",
+    "otherDevice": "Buɗe wannan shafi a Chrome (Android) ko Safari (iPhone) a wayarka don saka manhajar a allon gidanka."
+  },
+  "nudges": {
+    "closeNudges": "Rufe sanarwa",
+    "dialogLabel": "Sabbin abubuwa domin kai",
+    "title": "Sannu! Ga sabbin abubuwa",
+    "empty": "Ka ga komai. Za mu sanar da kai idan akwai wani sabon abu.",
+    "moreInMessages": "Ƙarin labarai a Saƙonni",
+    "goToMessages": "Je zuwa Saƙonni"
+  },
+  "bookUnlocked": {
+    "badge": "An Buɗe Littafi!",
+    "title": "Littafinka na kyauta ya shirya",
+    "level": "Mataki na {{level}}",
+    "continue": "Ci gaba zuwa Ɗakin Karatu"
+  }
+}

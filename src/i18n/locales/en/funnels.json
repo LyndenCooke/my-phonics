@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "Child's first name",
+    "childNameOptional": "Child's first name (optional)",
+    "emailPlaceholder": "Your email address",
+    "consent": "I agree to receive free phonics resources by email. Unsubscribe any time.",
+    "sendFreeBook": "Send Me My Free Book",
+    "loginLinkKeep": "We'll email a login link so the book is yours to keep.",
+    "signupFailed": "Signup failed",
+    "checkEmail": "Check {{email}} for your login link",
+    "levelBookFallback": "Level {{level}} Book",
+    "browseLibrary": "Browse the Library"
+  },
+  "emailCapture": {
+    "defaultButton": "Get Started",
+    "footer": "Free — no card required. Based on Letters and Sounds."
+  },
+  "quickScreening": {
+    "title": "Quick Screening",
+    "instructionsNamed": "Ask {{name}} to read each word. Tap the tick if they get it right.",
+    "instructionsAnon": "Ask your child to read each word. Tap the tick if they get it right.",
+    "levelWord": "Level {{level}} word",
+    "hearWord": "Hear the word",
+    "progress": "{{current}} of {{total}}",
+    "notQuite": "Not quite",
+    "gotIt": "Got it!"
+  },
+  "assessmentFunnel": {
+    "title": "Find their <hl>reading level</hl>",
+    "subtitle": "Pick how thorough you want the test to be.",
+    "rapidTitle": "3-minute check",
+    "rapidDesc": "A quick adaptive sound test. Good if you just want a starting point.",
+    "fullTitle": "10-minute deep test",
+    "fullDesc": "Sounds, real words, alien words and tricky words at every level.",
+    "footer": "Free book at their level when you finish. No card needed.",
+    "freeBookTitle": "Where should we send your free book?",
+    "paidTitle": "Just one detail before checkout",
+    "paidSubtitle": "We'll email your login link straight after payment so all 32 books are yours.",
+    "continueToCheckout": "Continue to Checkout",
+    "checkoutFailed": "Could not start checkout",
+    "missingBundle": "Bundle product not found. Please contact support.",
+    "missingMonthly": "Monthly plan not found. Please contact support."
+  },
+  "assessmentResult": {
+    "wellDone": "Well done!",
+    "wellDoneNamed": "Well done, {{name}}!",
+    "isAtNamed": "{{name}} is at <b>Level {{level}}: {{levelName}}</b>",
+    "isAtAnon": "Your child is at <b>Level {{level}}: {{levelName}}</b>",
+    "unlocked": "You've unlocked 1 free interactive book!",
+    "matchedNamed": "A Level {{level}} book matched to exactly what {{name}} can read.",
+    "matchedAnon": "A Level {{level}} book matched to exactly what they can read."
+  },
+  "bundleUpsell": {
+    "coverAlt": "Level {{level}} — {{title}}",
+    "title": "Want to unlock all the books?",
+    "subtitleNamed": "{{count}} books, every level — for {{name}} to grow into.",
+    "subtitleAnon": "{{count}} books, every level — for your child to grow into.",
+    "oneTime": "one-time",
+    "benefitAllBooks": "All {{count}} interactive books across all 6 levels",
+    "benefitQuizzes": "Comprehension quizzes after every story",
+    "benefitProgress": "Progress tracking across the whole library",
+    "benefitForever": "Yours forever — no subscription",
+    "benefitWorld": "Stories from around the world",
+    "accept": "Yes — unlock all books £{{price}}",
+    "decline": "No thanks, just give me my free book"
+  },
+  "monthlyDownsell": {
+    "title": "Wait — how about this?",
+    "body": "Unlock <b>every book across all 6 levels</b> for just £4.99/month. Cancel any time.",
+    "monthlyAccess": "Monthly access",
+    "perMonth": "/month",
+    "allLevels": "All levels. All books. Cancel any time.",
+    "benefitEveryBook": "Every interactive book across all 6 levels",
+    "benefitNewBooks": "New books added as they're published",
+    "benefitMoveUpNamed": "{{name}} moves up levels as they improve",
+    "benefitMoveUpAnon": "Your child moves up levels as they improve",
+    "accept": "Start for £4.99/month",
+    "decline": "No thanks, just my free book"
+  },
+  "freeAssessment": {
+    "resultLabel": "Their reading level",
+    "level": "Level {{level}}",
+    "freeUnlocked": "Free book unlocked",
+    "saveTitle": "Save your results & get your book"
+  },
+  "freeBook": {
+    "pickTitle": "Pick a free book <hl>for your child</hl>",
+    "pickSubtitle": "Tap their level. We'll unlock one matching book — free, no card.",
+    "coverAlt": "Level {{level}} sample cover",
+    "notSure": "Not sure? Take the 3-minute assessment",
+    "emailTitle": "One free Level {{level}} book <hl>on its way</hl>",
+    "emailSubtitle": "Drop your email and we'll unlock it now.",
+    "unlockButton": "Unlock My Free Book",
+    "pickDifferent": "Pick a different level"
+  },
+  "linkTree": {
+    "tagline": "Decodable books matched to their exact level",
+    "wrongBooks": "Are wrong books hurting their confidence?",
+    "freeAssessment": "Free phonics assessment — find their level",
+    "threeMinute": "3-minute level check + free resources",
+    "theGap": "Books they love that they can actually read",
+    "footer": "Based on Letters and Sounds (UK phonics curriculum)"
+  },
+  "theGap": {
+    "boring": "boring",
+    "tooHard": "too hard",
+    "vs": "vs",
+    "title": "Boring books they <em>can</em> read.<br/>Great books they <hl>can't</hl>.",
+    "whyBoth": "Why not both?",
+    "body": "Stories they'll love that are matched to exactly what they can decode. Phonics-perfect and globally-minded.",
+    "diffTitle": "What makes these books different:",
+    "diffDecodable": "Every word decodable at their exact level",
+    "diffStories": "Real stories with emotional journeys, not flat readers",
+    "diffCultures": "Set in cultures around the world — Japan, Kenya, Morocco...",
+    "diffCurriculum": "Based on the UK phonics curriculum",
+    "button": "Get Free Books"
+  },
+  "threeMinute": {
+    "title": "<hl>3 minutes</hl> to find their exact reading level",
+    "subtitle": "Stop guessing. Get a clear answer and free resources matched to them.",
+    "step1": "Quick assessment checks which sounds they know",
+    "step2": "Get their exact level (1-6) instantly",
+    "step3": "Access free books matched to their level",
+    "button": "Check Their Level"
+  },
+  "wrongBooks": {
+    "title": "Wrong books <hl>kill confidence</hl>",
+    "tooHard": "Too hard = frustration. Too easy = boredom.",
+    "body": "Find their exact level in 3 minutes and unlock a free book matched to what they can actually read.",
+    "getTitle": "What you'll get:",
+    "itemScreening": "Quick phonics screening (6 words)",
+    "itemFreeBook": "1 free interactive book at their level",
+    "itemCurriculum": "Based on UK phonics curriculum",
+    "button": "Find Their Level"
+  }
+}

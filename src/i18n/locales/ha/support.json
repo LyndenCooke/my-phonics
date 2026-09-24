@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "Kofi ɗaya",
+    "book": "Littafi ɗaya",
+    "level": "Mataki ɗaya",
+    "shelf": "Cikakken shiryayye"
+  },
+  "errors": {
+    "amountRange": "Shigar da adadi tsakanin £1 da £500.",
+    "amountRangeShort": "Shigar tsakanin £1 da £500.",
+    "signInFirst": "Don Allah ku shiga tukuna.",
+    "checkoutFailed": "An kasa fara biyan kuɗi"
+  },
+  "page": {
+    "title": "Ku tallafa wa MyPhonicsBooks",
+    "sticker": "Kyauta ga kowane iyali",
+    "heading": "Komai kyauta ne. Tallafi zaɓi ne.",
+    "intro": "Ƙaramar ƙungiya ɗaya ce ta gina MyPhonicsBooks. Idan yana taimaka wa yaronku karatu, godiya kowace iri ce za ta sa ya ci gaba da zama kyauta ga iyali na gaba.",
+    "alwaysFree": "Kyauta a koyaushe",
+    "free": {
+      "books": "Duk littattafan labari 33, matakai takwas — ku karanta a yanar gizo, ba sai kuna da asusu ba",
+      "games": "Kowane wasan phonics, kyauta ne a yi",
+      "pdfs": "PDF masu bugawa na kowane littafi da takardar aiki — kyauta tare da asusun kyauta",
+      "check": "Gwajin phonics na minti 3 da bin diddigin cigaba"
+    },
+    "downloadsNote": "Saukewa na buƙatar asusun kyauta domin mu tanadi PDF masu bugawa don iyalai da ajujuwa — ba don sake sayarwa ba ne.",
+    "createAccount": "Buɗe asusun kyauta",
+    "cardTitle": "Ku tallafa wa MyPhonicsBooks",
+    "cardSubtitle": "Ku biya abin da kuke so · sau ɗaya · babu biyan wata-wata",
+    "alreadySupported": "Mun gode — kun riga kun tallafa mana.",
+    "otherAmount": "Ko wani adadi",
+    "customAria": "Adadin tallafin da kuka zaɓa a fam",
+    "supportWith": "Ku tallafa da {{amount}}",
+    "signInToSupport": "Ku shiga don tallafawa",
+    "stripeNote": "Biyan kati mai tsaro ta Stripe. Ba a buɗe ko kulle komai saboda wannan ba — godiya ce, ba kuɗin sabis ba.",
+    "createBookNote": "Kuna neman littafi na musamman? <link>Ƙirƙiri Littafi</link> £4.99 ne, kuma World of Books £10 ne sau ɗaya."
+  },
+  "prompt": {
+    "title": "Kun shigo — komai kyauta ne",
+    "body": "Kowane littafi, wasa da takardar aiki naku ne ba tare da biya ba. Idan MyPhonicsBooks yana taimaka wa yaronku, za ku iya bar ƙaramar godiya don ya ci gaba da zama kyauta ga sauran iyalai. Gaba ɗaya zaɓinku ne.",
+    "differentAmount": "Zaɓi wani adadi daban",
+    "maybeLater": "Watakila daga baya — kai ni wurin littattafai"
+  }
+}

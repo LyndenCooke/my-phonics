@@ -1,4 +1,5 @@
 import { BookOpen, Camera, FileText, Sparkles, Grid3x3, KeySquare, Layers, ShieldCheck, Globe2 } from 'lucide-react';
+import { Trans, useTranslation } from 'react-i18next';
 import { SCHOOL_LEVELS } from '../data/levels';
 import {
   RESOURCE_TYPE_LABEL,
@@ -41,19 +42,35 @@ const TYPE_TONE: Partial<Record<ResourceType, string>> = {
 };
 
 export function ResourceTypeBadge({ type, children }: { type: ResourceType; children?: React.ReactNode }) {
+  const { t } = useTranslation('schoolPublic');
   const Icon = TYPE_ICON[type] ?? BookOpen;
   const tone = TYPE_TONE[type] ?? 'bg-slate-50 text-slate-600 border-slate-200';
   return (
     <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[10px] font-bold uppercase tracking-wider ${tone}`}>
       <Icon className="w-3 h-3" />
-      {children ?? RESOURCE_TYPE_LABEL[type]}
+      {children ?? t(`resourceTypes.${type}`, { defaultValue: RESOURCE_TYPE_LABEL[type] })}
     </span>
   );
 }
 
+/** Translated label for a companion resource; the grapheme stays English. */
+function useCompanionLabel() {
+  const { t } = useTranslation('schoolPublic');
+  return (c: CompanionResource) => {
+    if (c.type === 'sound_book_worksheet') {
+      const grapheme = c.label.includes(': ') ? c.label.slice(c.label.indexOf(': ') + 2) : '';
+      // LRI … PDI keeps the English grapheme left-to-right inside RTL text.
+      return t('companions.sound_book_worksheet', { grapheme: `⁦${grapheme}⁩` });
+    }
+    return t(`companions.${c.type}`, { defaultValue: c.label });
+  };
+}
+
 export function CompanionResourceList({ companions }: { companions: CompanionResource[] }) {
+  const { t } = useTranslation('schoolPublic');
+  const companionLabel = useCompanionLabel();
   if (companions.length === 0) {
-    return <span className="text-[11px] text-slate-400 italic">No companion needed — the blending practice is the resource.</span>;
+    return <span className="text-[11px] text-slate-400 italic">{t('pathwayPieces.noCompanion')}</span>;
   }
   return (
     <ul className="flex flex-wrap gap-1.5">
@@ -62,7 +79,7 @@ export function CompanionResourceList({ companions }: { companions: CompanionRes
         return (
           <li key={c.type} className="inline-flex items-center gap-1 text-[11px] text-slate-600 bg-slate-100 rounded px-1.5 py-0.5">
             <Icon className="w-3 h-3 text-slate-400" />
-            {c.label}
+            {companionLabel(c)}
           </li>
         );
       })}
@@ -71,15 +88,16 @@ export function CompanionResourceList({ companions }: { companions: CompanionRes
 }
 
 export function LevelResourceSummary({ level }: { level: number }) {
+  const { t } = useTranslation('schoolPublic');
   const resources = getLevelResources(level);
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Level resources used throughout this level</div>
+      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">{t('pathwayPieces.levelResourcesTitle')}</div>
       <div className="flex flex-wrap gap-2">
         {resources.map((r: LevelResource) => (
           <span key={r.type} className="inline-flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-slate-700">
             <ResourceTypeBadge type={r.type} />
-            {r.label}
+            {t(`levelResources.${r.type}`, { level, defaultValue: r.label })}
           </span>
         ))}
       </div>
@@ -88,21 +106,23 @@ export function LevelResourceSummary({ level }: { level: number }) {
 }
 
 export function ReviewGateCard({ step }: { step: ResolvedStep }) {
+  const { t } = useTranslation('schoolPublic');
   return (
     <div className="rounded-xl border-2 border-dashed border-amber-300 bg-amber-50 p-4">
       <div className="flex items-center gap-2 mb-1">
         <ShieldCheck className="w-4 h-4 text-amber-700" />
-        <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">Review gate · consolidates the whole level</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">{t('pathwayPieces.reviewGate')}</span>
       </div>
-      <h4 className="font-bold text-amber-900">{step.title}</h4>
+      <h4 dir="ltr" lang="en" className="font-bold text-amber-900 text-start">{step.title}</h4>
       <p className="text-xs text-amber-800 mt-0.5">
-        Requires every other storybook in this level to be completed first.
+        {t('pathwayPieces.reviewGateBody')}
       </p>
     </div>
   );
 }
 
 function StepRow({ step, index }: { step: ResolvedStep; index: number }) {
+  const { t } = useTranslation('schoolPublic');
   return (
     <li className="flex gap-3">
       <span className="flex-none w-7 h-7 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center mt-0.5">
@@ -111,12 +131,12 @@ function StepRow({ step, index }: { step: ResolvedStep; index: number }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
           <ResourceTypeBadge type={step.kind as ResourceType} />
-          <span className="font-bold text-slate-900 text-sm">{step.title}</span>
+          <span dir="ltr" lang="en" className="font-bold text-slate-900 text-sm">{step.title}</span>
         </div>
         {step.companions.length > 0 ? (
           <div className="mt-1"><CompanionResourceList companions={step.companions} /></div>
         ) : step.kind === 'blending_book' ? (
-          <div className="mt-1 text-[11px] text-slate-400 italic">Companion: none needed</div>
+          <div className="mt-1 text-[11px] text-slate-400 italic">{t('pathwayPieces.companionNone')}</div>
         ) : null}
       </div>
     </li>
@@ -124,11 +144,12 @@ function StepRow({ step, index }: { step: ResolvedStep; index: number }) {
 }
 
 export function PathwayBlockCard({ block }: { block: PathwayBlock }) {
+  const { t } = useTranslation('schoolPublic');
   if (block.isReview) {
     return (
       <div data-school-level={block.level} className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <header className="px-4 py-2 bg-amber-100 border-b border-amber-200">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">Review · level gate</span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800">{t('pathwayPieces.reviewHeader')}</span>
         </header>
         <div className="p-4 space-y-2">
           {block.steps.map((s) => <ReviewGateCard key={s.resourceId} step={s} />)}
@@ -153,24 +174,26 @@ export function PathwayBlockCard({ block }: { block: PathwayBlock }) {
     <div data-school-level={block.level} className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
       <header className="s-bg-level text-white px-4 py-2.5 flex items-center justify-between gap-2">
         <span className="font-bold text-sm">
-          Block {block.blockNumber} of {block.totalTeachingBlocks}: {block.focusLabel}
+          {t('pathwayPieces.blockTitle', { n: block.blockNumber, total: block.totalTeachingBlocks })}{' '}
+          <span dir="ltr" lang="en">{block.focusLabel}</span>
         </span>
-        <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{block.steps.length} steps</span>
+        <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5 flex-shrink-0">{t('pathwayPieces.steps', { count: block.steps.length })}</span>
       </header>
       <ol className="p-4 space-y-3">
         {block.steps.map((s, i) => <StepRow key={s.resourceId} step={s} index={i + 1} />)}
       </ol>
       <footer className="px-4 py-2 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500">
-        Resources in this block: {tally.soundBooks} Sound Books · {tally.soundWorksheets} worksheets
-        {tally.blending > 0 && <> · {tally.blending} Blending Book{tally.blending > 1 ? 's' : ''}</>}
-        {tally.storybooks > 0 && <> · {tally.storybooks} Storybook{tally.storybooks > 1 ? 's' : ''} · {tally.packs} pack{tally.packs > 1 ? 's' : ''} · {tally.interactive} interactive</>}
-        {' '}<span className="font-bold text-slate-700">({total} total)</span>
+        {t('pathwayPieces.blockResources', { soundBooks: tally.soundBooks, worksheets: tally.soundWorksheets })}
+        {tally.blending > 0 && t('pathwayPieces.blending', { count: tally.blending })}
+        {tally.storybooks > 0 && <>{t('pathwayPieces.storybooks', { count: tally.storybooks })}{t('pathwayPieces.packs', { count: tally.packs })}{t('pathwayPieces.interactive', { count: tally.interactive })}</>}
+        {' '}<span className="font-bold text-slate-700">{t('pathwayPieces.total', { count: total })}</span>
       </footer>
     </div>
   );
 }
 
 export function ResourceCountSummary({ counts }: { counts: LevelCounts[] }) {
+  const { t } = useTranslation('schoolPublic');
   const totals = counts.reduce((a, c) => ({
     soundBooks: a.soundBooks + c.soundBooks,
     soundBookWorksheets: a.soundBookWorksheets + c.soundBookWorksheets,
@@ -188,16 +211,16 @@ export function ResourceCountSummary({ counts }: { counts: LevelCounts[] }) {
       <table className="w-full text-sm">
         <thead className="bg-slate-50 text-slate-600 text-[11px] uppercase tracking-wider">
           <tr>
-            <th className="text-left px-3 py-2 font-bold">Level</th>
-            <th className="text-right px-2 py-2 font-bold">Sound<br />Books</th>
-            <th className="text-right px-2 py-2 font-bold">Sound bk<br />worksheets</th>
-            <th className="text-right px-2 py-2 font-bold">Blending<br />Books</th>
-            <th className="text-right px-2 py-2 font-bold">Story<br />books</th>
-            <th className="text-right px-2 py-2 font-bold">Worksheet<br />packs</th>
-            <th className="text-right px-2 py-2 font-bold">Inter<br />active</th>
-            <th className="text-right px-2 py-2 font-bold">Sound<br />Mat</th>
-            <th className="text-right px-2 py-2 font-bold">Tricky<br />cards</th>
-            <th className="text-right px-3 py-2 font-bold">Total</th>
+            <th className="text-start px-3 py-2 font-bold">{t('pathwayPieces.table.level')}</th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.soundBooks" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.soundWorksheets" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.blendingBooks" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.storybooks" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.packs" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.interactive" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.soundMat" /></th>
+            <th className="text-end px-2 py-2 font-bold"><Trans t={t} i18nKey="pathwayPieces.table.trickyCards" /></th>
+            <th className="text-end px-3 py-2 font-bold">{t('pathwayPieces.table.total')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
@@ -206,31 +229,31 @@ export function ResourceCountSummary({ counts }: { counts: LevelCounts[] }) {
               <td className="px-3 py-2">
                 <span className="inline-flex items-center gap-1.5 font-semibold">
                   <span className="w-3 h-3 rounded-full" style={{ backgroundColor: HEX[c.level] }} />
-                  L{c.level} {LEVEL_NAME[c.level]}
+                  <span dir="ltr" lang="en">L{c.level} {LEVEL_NAME[c.level]}</span>
                 </span>
               </td>
-              <td className="text-right px-2 py-2">{c.soundBooks}</td>
-              <td className="text-right px-2 py-2">{c.soundBookWorksheets}</td>
-              <td className="text-right px-2 py-2">{c.blendingBooks || '—'}</td>
-              <td className="text-right px-2 py-2">{c.storybooks}</td>
-              <td className="text-right px-2 py-2">{c.storybookWorksheetPacks}</td>
-              <td className="text-right px-2 py-2">{c.interactiveBooks}</td>
-              <td className="text-right px-2 py-2">{c.soundMats}</td>
-              <td className="text-right px-2 py-2">{c.trickyWordCards}</td>
-              <td className="text-right px-3 py-2 font-bold">{c.total}</td>
+              <td className="text-end px-2 py-2">{c.soundBooks}</td>
+              <td className="text-end px-2 py-2">{c.soundBookWorksheets}</td>
+              <td className="text-end px-2 py-2">{c.blendingBooks || '—'}</td>
+              <td className="text-end px-2 py-2">{c.storybooks}</td>
+              <td className="text-end px-2 py-2">{c.storybookWorksheetPacks}</td>
+              <td className="text-end px-2 py-2">{c.interactiveBooks}</td>
+              <td className="text-end px-2 py-2">{c.soundMats}</td>
+              <td className="text-end px-2 py-2">{c.trickyWordCards}</td>
+              <td className="text-end px-3 py-2 font-bold">{c.total}</td>
             </tr>
           ))}
           <tr className="bg-slate-50 font-bold">
-            <td className="px-3 py-2">All levels</td>
-            <td className="text-right px-2 py-2">{totals.soundBooks}</td>
-            <td className="text-right px-2 py-2">{totals.soundBookWorksheets}</td>
-            <td className="text-right px-2 py-2">{totals.blendingBooks}</td>
-            <td className="text-right px-2 py-2">{totals.storybooks}</td>
-            <td className="text-right px-2 py-2">{totals.storybookWorksheetPacks}</td>
-            <td className="text-right px-2 py-2">{totals.interactiveBooks}</td>
-            <td className="text-right px-2 py-2">{totals.soundMats}</td>
-            <td className="text-right px-2 py-2">{totals.trickyWordCards}</td>
-            <td className="text-right px-3 py-2">{totals.total}</td>
+            <td className="px-3 py-2">{t('pathwayPieces.table.allLevels')}</td>
+            <td className="text-end px-2 py-2">{totals.soundBooks}</td>
+            <td className="text-end px-2 py-2">{totals.soundBookWorksheets}</td>
+            <td className="text-end px-2 py-2">{totals.blendingBooks}</td>
+            <td className="text-end px-2 py-2">{totals.storybooks}</td>
+            <td className="text-end px-2 py-2">{totals.storybookWorksheetPacks}</td>
+            <td className="text-end px-2 py-2">{totals.interactiveBooks}</td>
+            <td className="text-end px-2 py-2">{totals.soundMats}</td>
+            <td className="text-end px-2 py-2">{totals.trickyWordCards}</td>
+            <td className="text-end px-3 py-2">{totals.total}</td>
           </tr>
         </tbody>
       </table>
@@ -239,16 +262,15 @@ export function ResourceCountSummary({ counts }: { counts: LevelCounts[] }) {
 }
 
 export function OpenWindowFeatureCard() {
+  const { t } = useTranslation('schoolPublic');
   return (
     <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6">
       <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-slate-900 text-white mb-3">
         <Globe2 className="w-5 h-5" />
       </div>
-      <h3 className="font-bold text-lg mb-1">The Open Window philosophy</h3>
+      <h3 className="font-bold text-lg mb-1">{t('pathwayPieces.openWindowTitle')}</h3>
       <p className="text-slate-600 text-sm leading-relaxed">
-        Every storybook is an open window into a different child, family or community. Children learn through a
-        British phonics progression while seeing diverse, contemporary cultures represented naturally and
-        respectfully — a strength for diverse British-curriculum and international schools alike.
+        {t('pathwayPieces.openWindowBody')}
       </p>
     </div>
   );

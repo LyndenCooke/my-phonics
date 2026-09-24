@@ -1,138 +1,89 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Info } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
+import { setLanguage } from '@/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+const CONTACT_EMAIL = 'hello@myphonicsbooks.com';
+
+// Sections 1–11 are plain text; section 12 (contact) carries the email link.
+const TEXT_SECTIONS = [
+  'about',
+  'signup',
+  'yourContent',
+  'ourContent',
+  'subscriptions',
+  'trials',
+  'acceptableUse',
+  'outcomes',
+  'liability',
+  'changes',
+  'law',
+] as const;
 
 export default function Terms() {
+  const { t, i18n } = useTranslation('legal');
+  const isEnglish = (i18n.resolvedLanguage ?? i18n.language ?? 'en').startsWith('en');
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-trust-ink hover:text-trust-ink/80 mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to home
-        </Link>
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-sm text-trust-ink hover:text-trust-ink/80"
+          >
+            <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {t('backHome')}
+          </Link>
+          <LanguageSwitcher variant="compact" />
+        </div>
+
+        {!isEnglish && (
+          <div className="mb-6 flex items-start gap-2 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-foreground">
+            <Info className="w-4 h-4 mt-0.5 shrink-0 text-muted-foreground" aria-hidden />
+            <p>
+              {t('notice.text')}{' '}
+              <button
+                type="button"
+                onClick={() => { void setLanguage('en'); }}
+                className="font-semibold text-primary underline"
+              >
+                {t('notice.switch')}
+              </button>
+            </p>
+          </div>
+        )}
 
         <h1 className="font-display text-3xl font-extrabold text-foreground tracking-tight mb-2">
-          Terms of Service
+          {t('terms.title')}
         </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Last updated: April 2026
+          {t('terms.lastUpdated')}
         </p>
 
         <div className="prose prose-sm max-w-none text-foreground space-y-5">
-          <section>
-            <h2 className="text-xl font-bold">1. About these terms</h2>
-            <p>
-              These terms govern your use of MyPhonicsBooks. By creating an
-              account, taking the assessment, or buying any product, you
-              agree to them.
-            </p>
-          </section>
+          {TEXT_SECTIONS.map((id, i) => (
+            <section key={id}>
+              <h2 className="text-xl font-bold">
+                {i + 1}. {t(`terms.${id}.title`)}
+              </h2>
+              <p>{t(`terms.${id}.body`)}</p>
+            </section>
+          ))}
 
           <section>
-            <h2 className="text-xl font-bold">2. Who can sign up</h2>
+            <h2 className="text-xl font-bold">
+              {TEXT_SECTIONS.length + 1}. {t('terms.contact.title')}
+            </h2>
             <p>
-              Accounts must be created by a parent or guardian on behalf of
-              a child. You must be 18 or older to enter into this
-              agreement.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">3. Your content</h2>
-            <p>
-              You retain ownership of anything your child creates inside
-              the hub (drawings, quiz answers, progress data). You grant us
-              a limited licence to store and display it inside your account
-              so that the learning hub can function.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">4. Our content</h2>
-            <p>
-              All books, illustrations, audio, and assessment material are
-              the copyright of MyPhonicsBooks. Books, worksheets and games
-              are free to read and play. Downloaded PDFs are licensed for
-              your own family or your own classroom: print as many copies as
-              you need for them. They are not for resale, redistribution or
-              re-upload, individually or as part of any bundle.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">5. Subscriptions and refunds</h2>
-            <p>
-              Monthly and annual subscriptions renew automatically until
-              cancelled. You can cancel at any time from your Profile — you
-              keep access until the end of your paid period. One-time
-              purchases (individual books, bundles) are non-refundable once
-              the PDF has been downloaded, unless required by UK consumer
-              law.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">6. Free trials</h2>
-            <p>
-              Where a free trial is offered, you will not be charged during
-              the trial. We'll send a reminder before the trial ends. If
-              you don't cancel, the subscription begins and your card is
-              charged.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">7. Acceptable use</h2>
-            <p>
-              Please don't attempt to reverse-engineer the site, scrape
-              content, use the service to harass anyone, or access other
-              users' accounts. We may suspend accounts that do.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">8. Educational outcomes</h2>
-            <p>
-              MyPhonicsBooks is a supportive reading resource. We don't
-              guarantee any specific educational outcome or replace the
-              role of a qualified teacher.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">9. Liability</h2>
-            <p>
-              We provide the service "as is" and our liability is limited
-              to the amount you've paid us in the past 12 months, except
-              where law requires otherwise.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">10. Changes</h2>
-            <p>
-              We may update these terms. Material changes will be
-              communicated by email or in-app notice before they take
-              effect.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">11. Governing law</h2>
-            <p>
-              These terms are governed by the laws of England and Wales.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold">12. Contact</h2>
-            <p>
-              Questions? Email{' '}
-              <a href="mailto:hello@myphonicsbooks.com" className="text-primary underline">
-                hello@myphonicsbooks.com
-              </a>
-              .
+              <Trans
+                t={t}
+                i18nKey="terms.contact.body"
+                values={{ email: CONTACT_EMAIL }}
+                components={{
+                  email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary underline" dir="ltr" />,
+                }}
+              />
             </p>
           </section>
         </div>

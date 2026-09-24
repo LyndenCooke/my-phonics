@@ -15,6 +15,7 @@
  * and before the close button (so closing still works while gated).
  */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function isPhonePortrait(): boolean {
   return window.innerHeight > window.innerWidth
@@ -22,6 +23,7 @@ function isPhonePortrait(): boolean {
 }
 
 export default function RotateGate() {
+  const { t, i18n } = useTranslation('games');
   const [portrait, setPortrait] = useState(isPhonePortrait());
 
   useEffect(() => {
@@ -63,7 +65,11 @@ export default function RotateGate() {
 
   if (!portrait) return null;
   return (
+    // Device prompt for whoever is holding the phone — translated, and in
+    // the page language's direction (the game around it is an LTR island).
     <div
+      dir={i18n.dir()}
+      lang={i18n.language}
       className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-10 text-center"
       style={{ background: 'rgba(18,26,40,0.96)' }}
     >
@@ -75,10 +81,10 @@ export default function RotateGate() {
         📱
       </span>
       <p className="font-display text-2xl font-extrabold text-white leading-snug">
-        Turn your phone sideways to play!
+        {t('rotate.title')}
       </p>
       <p className="font-child text-base text-white/70">
-        This game is much bigger in landscape.
+        {t('rotate.body')}
       </p>
       <style>{`
         @keyframes mpb-rotate-hint {

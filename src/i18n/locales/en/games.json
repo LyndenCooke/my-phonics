@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "Free to play · no sign-up",
+    "title": "Phonics games",
+    "intro": "Pick your level, then pick a game. Every game uses the sounds from that level.",
+    "chooseLevel": "Choose your level",
+    "levelAria": "Level {{level}} — {{name}}",
+    "levelSounds": "Level {{level}} sounds",
+    "more": "+{{n}} more",
+    "gamesAria": "Games",
+    "dailyNote": "One go at each game per day — little and often is how reading sticks.",
+    "played": "Played ✓",
+    "vibes": {
+      "collect": "Collect",
+      "arcade": "Arcade",
+      "runner": "Runner",
+      "memory": "Memory",
+      "puzzle": "Puzzle",
+      "seekFind": "Seek & find",
+      "listening": "Listening"
+    },
+    "blurbs": {
+      "soundlings": "Hatch and feed your own sound creatures",
+      "pop": "Fly Buzz the bee to pop the word you hear",
+      "cannon": "Aim and fire the right sound into the word",
+      "run": "Read the doors and run through the right one",
+      "pairs": "Flip the cards and match sounds to words",
+      "finish": "A sound is missing — tap the right one",
+      "spot": "Hunt the scene for things hiding the sound",
+      "tricky": "Listen and catch the tricky word"
+    },
+    "doneBlurb": "Great playing! Come back tomorrow for another go.",
+    "backTomorrow": "Back tomorrow",
+    "play": "Play",
+    "notSure": "Not sure which level?",
+    "notSureBody": "Take the free 3-minute check and we'll place your child on the right one."
+  },
+  "play": {
+    "closeGame": "Close game",
+    "hearWord": "Hear the word",
+    "hearWordAgain": "Hear the word again",
+    "openSoundBook": "Open the Sound Book",
+    "backToGrove": "Back to the grove"
+  },
+  "rotate": {
+    "title": "Turn your phone sideways to play!",
+    "body": "This game is much bigger in landscape."
+  },
+  "childHome": {
+    "openBook": "Open {{title}}",
+    "readsDone": "{{done}} of {{total}} reads done",
+    "currentBook": "{{title}} — your book, {{done}} of {{total}} reads done",
+    "doneBook": "{{title}} — done",
+    "lockedBook": "{{title}} — locked, finish your current book first",
+    "startCheck": "Start your Level Check",
+    "checkLocked": "Level Check — finish your books first"
+  }
+}

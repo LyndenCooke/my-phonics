@@ -1,0 +1,70 @@
+{
+  "closeBook": "বই বন্ধ করুন",
+  "pageAlt": "{{title}} — পৃষ্ঠা {{page}}",
+  "pageLoadError": "এই পৃষ্ঠাটি লোড করা যায়নি।",
+  "pageLoadErrorHint": "আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।",
+  "pagesUnavailable": "পৃষ্ঠার ছবি পাওয়া যাচ্ছে না",
+  "previousPage": "আগের পৃষ্ঠা",
+  "nextPage": "পরের পৃষ্ঠা",
+  "goToPage": "পৃষ্ঠা {{page}}-এ যান",
+  "finishBook": "বই শেষ করুন",
+  "tapToHear": "\"{{word}}\" শুনতে ট্যাপ করুন",
+  "flipbook": {
+    "groupAria": "বইয়ের প্রিভিউ — পাতা ওল্টাতে অ্যারো কী ব্যবহার করুন"
+  },
+  "quiz": {
+    "saveFailed": "কুইজের ফলাফল সংরক্ষণ করা যায়নি",
+    "completeAria": "কুইজ শেষ",
+    "perfect": "পূর্ণ নম্বর!",
+    "wellDone": "দারুণ হয়েছে!",
+    "scored": "আপনি <b>{{total}}</b>-এর মধ্যে <b>{{score}}</b> পেয়েছেন",
+    "tryAgain": "আবার চেষ্টা করুন",
+    "dialogAria": "কুইজ: {{title}}",
+    "close": "কুইজ বন্ধ করুন",
+    "answerOptions": "উত্তরের বিকল্প",
+    "seeResults": "ফলাফল দেখুন"
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" ধ্বনি বাজান",
+    "playSoundAria": "গ্রাফিম {{grapheme}}-এর ধ্বনি বাজান",
+    "playWordTitle": "\"{{word}}\" বাজান",
+    "playWordAria": "শব্দ {{word}} বাজান"
+  },
+  "soundMap": {
+    "known": "জানা ({{n}})",
+    "toLearn": "শিখতে হবে ({{n}})",
+    "notTestedCount": "যাচাই হয়নি ({{n}})",
+    "notTested": "যাচাই হয়নি",
+    "levelHeading": "লেভেল {{level}}",
+    "levelsNotTested": "লেভেল {{levels}} এখনও যাচাই হয়নি",
+    "status": {
+      "known": "জানা",
+      "unknown": "শিখতে হবে",
+      "untested": "যাচাই হয়নি"
+    },
+    "categories": {
+      "sound_recognition": "ধ্বনি",
+      "word_reading": "আসল শব্দ",
+      "alien_words": "Alien Words (বানানো শব্দ)",
+      "tricky_words": "Tricky Words (কঠিন শব্দ)",
+      "speedy_reading": "দ্রুত পড়া",
+      "fluency": "সাবলীলতা"
+    }
+  },
+  "interactive": {
+    "playSound": "ধ্বনি {{sound}} বাজান",
+    "playSoundVariant": "ধ্বনি {{sound}} বাজান ({{variant}})",
+    "wordTapToHear": "{{word}}। শুনতে ট্যাপ করুন।",
+    "illustration": "গল্পের ছবি",
+    "closeImage": "ছবি বন্ধ করুন",
+    "expandIllustration": "ছবি বড় করুন",
+    "hideHints": "ফনিক্স ইঙ্গিত লুকান",
+    "showHints": "ফনিক্স ইঙ্গিত দেখান",
+    "checkInPassed": "চেক-ইন পাস হয়েছে",
+    "checkInPractise": "চেক-ইন — অনুশীলন চালিয়ে যান"
+  },
+  "prep": {
+    "tapToHear": "শুনতে প্রতিটিতে ট্যাপ করুন। এগুলোই সেই ধ্বনি যা আপনার সন্তান অনুশীলন করবে।",
+    "tapLevel": "সেই লেভেলের ধ্বনিগুলো দেখতে একটি লেভেলে ট্যাপ করুন"
+  }
+}

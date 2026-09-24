@@ -18,6 +18,7 @@
  *     programmatic API.
  */
 import { useEffect, useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { Smartphone, Share, Plus, X } from 'lucide-react';
 import { hapticLight } from '@/lib/native';
 
@@ -27,6 +28,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function AddToHomeScreenPrompt() {
+  const { t } = useTranslation('prompts');
   const [dismissed, setDismissed] = useState(false);
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
 
@@ -66,11 +68,11 @@ export default function AddToHomeScreenPrompt() {
   };
 
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-fuchsia-50 to-pink-50 border-2 border-fuchsia-300 p-5 mb-5 text-left relative shadow-card">
+    <div className="rounded-2xl bg-gradient-to-br from-fuchsia-50 to-pink-50 border-2 border-fuchsia-300 p-5 mb-5 text-start relative shadow-card">
       <button
         onClick={() => { hapticLight(); setDismissed(true); }}
-        className="absolute top-3 right-3 w-7 h-7 rounded-full hover:bg-white/60 flex items-center justify-center text-muted-foreground"
-        aria-label="Dismiss"
+        className="absolute top-3 end-3 w-7 h-7 rounded-full hover:bg-white/60 flex items-center justify-center text-muted-foreground"
+        aria-label={t('homeScreen.dismiss')}
       >
         <X className="w-4 h-4" />
       </button>
@@ -79,12 +81,12 @@ export default function AddToHomeScreenPrompt() {
         <div className="w-10 h-10 rounded-xl bg-fuchsia-500 text-white flex items-center justify-center shrink-0">
           <Smartphone className="w-5 h-5" />
         </div>
-        <div className="flex-1 pr-6">
+        <div className="flex-1 pe-6">
           <h3 className="font-display font-extrabold text-base text-foreground leading-tight">
-            One last step — make it 1 tap away
+            {t('homeScreen.title')}
           </h3>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            Save MyPhonicsBooks to your home screen. Tomorrow, hand the phone to your child — they tap the icon and start reading. No logging in. No typing.
+            {t('homeScreen.body')}
           </p>
         </div>
       </div>
@@ -94,26 +96,32 @@ export default function AddToHomeScreenPrompt() {
           onClick={handleAndroidInstall}
           className="w-full py-3 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-extrabold text-sm shadow-button active:scale-[0.97] transition-transform"
         >
-          Install on home screen
+          {t('homeScreen.install')}
         </button>
       ) : isIos ? (
         <ol className="space-y-2.5 text-xs text-foreground bg-white rounded-xl p-3 border border-fuchsia-200">
           <li className="flex items-start gap-2.5">
             <span className="w-5 h-5 rounded-full bg-fuchsia-500 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0">1</span>
-            <span className="leading-relaxed">Tap the <Share className="inline w-3.5 h-3.5 mx-0.5 -mt-0.5" /> <strong>Share</strong> button at the bottom of Safari</span>
+            <span className="leading-relaxed">
+              <Trans t={t} i18nKey="homeScreen.iosStep1" components={{ icon: <Share className="inline w-3.5 h-3.5 mx-0.5 -mt-0.5" />, b: <strong /> }} />
+            </span>
           </li>
           <li className="flex items-start gap-2.5">
             <span className="w-5 h-5 rounded-full bg-fuchsia-500 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0">2</span>
-            <span className="leading-relaxed">Scroll down → tap <Plus className="inline w-3.5 h-3.5 mx-0.5 -mt-0.5" /> <strong>"Add to Home Screen"</strong></span>
+            <span className="leading-relaxed">
+              <Trans t={t} i18nKey="homeScreen.iosStep2" components={{ icon: <Plus className="inline w-3.5 h-3.5 mx-0.5 -mt-0.5" />, b: <strong /> }} />
+            </span>
           </li>
           <li className="flex items-start gap-2.5">
             <span className="w-5 h-5 rounded-full bg-fuchsia-500 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0">3</span>
-            <span className="leading-relaxed">Tap <strong>Add</strong> in the top-right. Done!</span>
+            <span className="leading-relaxed">
+              <Trans t={t} i18nKey="homeScreen.iosStep3" components={{ b: <strong /> }} />
+            </span>
           </li>
         </ol>
       ) : (
         <p className="text-xs text-muted-foreground">
-          Open this page in Chrome (Android) or Safari (iPhone) on your phone to install the app to your home screen.
+          {t('homeScreen.otherDevice')}
         </p>
       )}
     </div>

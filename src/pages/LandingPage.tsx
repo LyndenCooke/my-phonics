@@ -22,6 +22,10 @@ import {
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import LandingTestimonials from '@/components/LandingTestimonials';
+import { useTranslation, Trans } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import EnglishOnly from '@/i18n/EnglishOnly';
+import { LANGUAGES } from '@/i18n/languages';
 
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 const PINK = '#E84B8A';
@@ -96,10 +100,18 @@ function PushButton({ onClick, children, tone = 'pink', className = '' }: {
 export default function LandingPage() {
   useFunnelTracker();
   const navigate = useNavigate();
+  const { t } = useTranslation('landing');
 
   return (
     <div className="min-h-screen bg-background" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <a href="#main" className="skip-link">Skip to main content</a>
+      {/* sr-only rather than the global .skip-link (left:-9999px), which in
+          RTL makes the page ~10,000px wide and scrolls the content away. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-[100] focus:rounded-lg focus:bg-foreground focus:text-background focus:px-3 focus:py-2"
+      >
+        {t('skipToMain')}
+      </a>
 
       <NavBar onBrowse={() => navigate('/library')} />
 
@@ -123,6 +135,7 @@ export default function LandingPage() {
 
 /* ─── PLATFORM VIDEO ─── */
 function PlatformVideo() {
+  const { t } = useTranslation('landing');
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -131,13 +144,13 @@ function PlatformVideo() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3"
             style={{ background: 'rgba(232,75,138,0.10)', color: PINK_INK }}
           >
-            <PlayCircle className="w-3.5 h-3.5" /> Watch the tour
+            <PlayCircle className="w-3.5 h-3.5" /> {t('video.badge')}
           </div>
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            See how it works
+            {t('video.title')}
           </h2>
           <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
-            A quick walkthrough of the all-in-one English learning platform — books, levels and progress, all in one place.
+            {t('video.body')}
           </p>
         </div>
         <div
@@ -152,8 +165,11 @@ function PlatformVideo() {
             className="w-full aspect-video block"
           >
             <source src="/videos/platform-tour.mp4" type="video/mp4" />
-            Your browser doesn’t support embedded video.{' '}
-            <a href="/videos/platform-tour.mp4" className="underline">Watch the tour</a> instead.
+            <Trans
+              t={t}
+              i18nKey="video.fallback"
+              components={{ link: <a href="/videos/platform-tour.mp4" className="underline" /> }}
+            />
           </video>
         </div>
       </div>
@@ -163,6 +179,7 @@ function PlatformVideo() {
 
 /* ─── NAV BAR ─── */
 function NavBar({ onBrowse }: { onBrowse: () => void }) {
+  const { t } = useTranslation('landing');
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -171,9 +188,9 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-top ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 safe-top ${scrolled ? 'bg-card/95 backdrop-blur-xl shadow-card border-b border-border' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0 min-w-0" aria-label="MyPhonicsBooks home">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0 min-w-0" aria-label={t('nav.homeAria')}>
           <img src="/logo/mpb-mark-transparent.png" alt="" className="w-9 h-9 sm:w-10 sm:h-10 object-contain shrink-0" draggable={false} />
           <span dir="ltr" className="font-display text-base sm:text-lg font-extrabold text-foreground tracking-tight truncate hidden xs:inline">
             My<span className="text-primary-ink">Phonics</span>Books
@@ -181,29 +198,30 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <Link to="/create-book" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap inline-flex items-center gap-1">
-            <Sparkles className="w-4 h-4" /> Create a Book
+            <Sparkles className="w-4 h-4" /> {t('nav.createBook')}
           </Link>
           <Link to="/world-of-books" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
-            <Globe2 className="w-4 h-4" /> World of Books
+            <Globe2 className="w-4 h-4" /> {t('nav.worldOfBooks')}
           </Link>
           <Link to="/shop" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
-            <ShoppingBag className="w-4 h-4" /> Shop
+            <ShoppingBag className="w-4 h-4" /> {t('nav.shop')}
           </Link>
           <Link to="/love" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap items-center gap-1 hidden sm:inline-flex">
-            <Heart className="w-4 h-4" /> Wall of Love
+            <Heart className="w-4 h-4" /> {t('nav.wallOfLove')}
           </Link>
           <Link to="/school" className="text-xs sm:text-sm font-bold text-foreground hover:text-primary-ink transition-colors whitespace-nowrap inline-flex items-center gap-1">
             <GraduationCap className="w-4 h-4" />
-            <span className="hidden xs:inline">For Schools</span>
-            <span className="xs:hidden">Schools</span>
+            <span className="hidden xs:inline">{t('nav.forSchools')}</span>
+            <span className="xs:hidden">{t('nav.schools')}</span>
           </Link>
+          <LanguageSwitcher variant="compact" className="shrink-0 px-2 py-1.5" />
           <button
             onClick={onBrowse}
             className="text-xs sm:text-sm font-display font-extrabold text-white px-3 sm:px-4 py-2 rounded-xl transition-all active:translate-y-[2px] whitespace-nowrap"
             style={{ background: PINK, boxShadow: `0 3px 0 ${PINK_INK}` }}
           >
-            <span className="sm:hidden">Explore</span>
-            <span className="hidden sm:inline">Explore the Books</span>
+            <span className="sm:hidden">{t('nav.explore')}</span>
+            <span className="hidden sm:inline">{t('nav.exploreBooks')}</span>
           </button>
         </div>
       </div>
@@ -213,54 +231,69 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
 
 /* ─── HERO ─── */
 function HeroSection({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: () => void }) {
+  const { t } = useTranslation('landing');
   return (
     <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[hsl(338,78%,96%)] via-background to-[hsl(142,60%,97%)]" />
-      <div className="absolute top-20 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-[hsl(var(--level-3))]/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 end-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 start-0 w-72 h-72 bg-[hsl(var(--level-3))]/5 rounded-full blur-3xl" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           {/* Text */}
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-start">
             {/* Audience switch — parents stay here; schools/nurseries jump
                 to their own product. Parent is the active state. */}
             <div className="inline-flex items-center gap-1 p-1 mb-5 rounded-full bg-card border border-border shadow-sm">
               <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-white">
-                For Parents
+                {t('hero.forParents')}
               </span>
               <Link
                 to="/school"
                 className="px-3 py-1.5 rounded-full text-xs font-bold text-muted-foreground hover:text-primary-ink transition-colors inline-flex items-center gap-1"
               >
-                <GraduationCap className="w-3.5 h-3.5" /> For Schools
+                <GraduationCap className="w-3.5 h-3.5" /> {t('hero.forSchools')}
               </Link>
             </div>
 
+            {/* Language sticker — tells parents the site speaks their
+                language (the books themselves stay in English). The pill
+                on the right is the real language picker. */}
+            <div className="flex justify-center md:justify-start mb-5 -mt-1">
+              <div
+                className="inline-flex items-center gap-2 rounded-full bg-white ps-3 pe-1 py-1 -rotate-1"
+                style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}30` }}
+              >
+                <span className="text-xs font-extrabold text-primary-ink whitespace-nowrap">
+                  <span aria-hidden>🌐 </span>{t('hero.languages', { n: LANGUAGES.length })}
+                </span>
+                <LanguageSwitcher variant="full" align="start" className="rounded-full py-1 px-2.5 text-xs" />
+              </div>
+            </div>
+
             <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-foreground tracking-tight leading-[1.05]">
-              Books that grow with your child —{' '}
-              <span className="text-primary-ink">from first sounds to fluent reading.</span>
+              {t('hero.titleA')}{' '}
+              <span className="text-primary-ink">{t('hero.titleB')}</span>
             </h1>
             <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
-              33 decodable phonics books across 8 levels. Check your child's level free,
-              read together on any screen, or print real booklets to hold.
+              {t('hero.body')}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
               <PushButton onClick={onBrowse}>
-                <BookOpen className="w-5 h-5" /> Explore the books
+                <BookOpen className="w-5 h-5" /> {t('hero.exploreBooks')}
               </PushButton>
               <PushButton onClick={onAssess} tone="white">
-                Check their level — free <ChevronRight className="w-4 h-4" />
+                {t('hero.checkLevelFree')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
               </PushButton>
             </div>
             <p className="mt-4 text-xs text-muted-foreground font-semibold">
-              The first books are free and open right now — no signup, no card.
+              {t('hero.freeNote')}
             </p>
           </div>
 
           {/* Floating book shelf — real product-photo cutouts, swipe/drag to browse */}
-          <div className="h-[420px] md:h-[480px]">
+          <div className="h-[420px] md:h-[480px]" dir="ltr">
             <FloatingBookShelf />
           </div>
         </div>
@@ -295,6 +328,7 @@ function HeroSection({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: (
  * handler adds the same for desktop mouse drag; arrows are the only nav
  * chrome. A gentle idle float-bob runs via the `float` keyframe above. */
 function FloatingBookShelf() {
+  const { t } = useTranslation('landing');
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -377,7 +411,7 @@ function FloatingBookShelf() {
       <div
         ref={trackRef}
         role="region"
-        aria-label="Book showcase — drag, swipe, or use the arrow keys to browse"
+        aria-label={t('shelf.regionAria')}
         tabIndex={0}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -396,7 +430,7 @@ function FloatingBookShelf() {
                 <source srcSet={`/shop/cutouts/${b.sku}.webp`} type="image/webp" />
                 <img
                   src={`/shop/cutouts/${b.sku}.png`}
-                  alt={`${b.title} — Level ${b.level} ${b.levelName} booklet`}
+                  alt={t('shelf.coverAlt', { title: b.title, level: b.level, levelName: b.levelName })}
                   className="h-[220px] md:h-[280px] w-auto drop-shadow-[0_22px_28px_rgba(30,20,15,0.22)]"
                   loading={i < 4 ? 'eager' : 'lazy'}
                   decoding="async"
@@ -413,7 +447,7 @@ function FloatingBookShelf() {
         type="button"
         onClick={() => scrollToIndex(Math.max(0, active - 1))}
         disabled={active === 0}
-        aria-label="Previous book"
+        aria-label={t('shelf.prevBook')}
         className="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white flex items-center justify-center text-foreground disabled:opacity-30 transition-opacity hover:opacity-80"
         style={{ boxShadow: STICKER }}
       >
@@ -423,7 +457,7 @@ function FloatingBookShelf() {
         type="button"
         onClick={() => scrollToIndex(Math.min(items.length - 1, active + 1))}
         disabled={active === items.length - 1}
-        aria-label="Next book"
+        aria-label={t('shelf.nextBook')}
         className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white flex items-center justify-center text-foreground disabled:opacity-30 transition-opacity hover:opacity-80"
         style={{ boxShadow: STICKER }}
       >
@@ -443,7 +477,8 @@ function FloatingBookShelf() {
             style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${activeItem.hex}40` }}
           >
             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: activeItem.hex }} />
-            Level {activeItem.level} &middot; {activeItem.title}
+            <span dir="auto">{t('shelf.level', { level: activeItem.level })}</span> &middot;{' '}
+            <span lang="en">{activeItem.title}</span>
           </motion.span>
         </AnimatePresence>
       </div>
@@ -453,33 +488,34 @@ function FloatingBookShelf() {
 
 /* ─── THE THREE THINGS (leaflet message) ─── */
 function ThreeThings({ onAssess, onBrowse }: { onAssess: () => void; onBrowse: () => void }) {
+  const { t } = useTranslation('landing');
   const r = useReveal();
   const cards = [
     {
       icon: ClipboardList,
       hex: '#E84B8A',
       tilt: '-1deg',
-      title: 'Check their level',
-      desc: 'A free 3-minute sound check finds exactly the right starting point. No guessing, no card.',
-      cta: 'Start the free check',
+      title: t('three.check.title'),
+      desc: t('three.check.desc'),
+      cta: t('three.check.cta'),
       onClick: onAssess,
     },
     {
       icon: Volume2,
       hex: '#3B82F6',
       tilt: '1deg',
-      title: 'Read on any screen',
-      desc: 'Interactive books on phone, tablet or laptop — tap any word to hear it sounded out.',
-      cta: 'Explore the books',
+      title: t('three.read.title'),
+      desc: t('three.read.desc'),
+      cta: t('three.read.cta'),
       onClick: onBrowse,
     },
     {
       icon: Printer,
       hex: '#22C55E',
       tilt: '-0.5deg',
-      title: 'Or print and hold',
-      desc: 'Download any book as a fold-and-staple A5 booklet. Real pages for bedtime reading.',
-      cta: 'See the library',
+      title: t('three.print.title'),
+      desc: t('three.print.desc'),
+      cta: t('three.print.cta'),
       onClick: onBrowse,
     },
   ];
@@ -492,12 +528,12 @@ function ThreeThings({ onAssess, onBrowse }: { onAssess: () => void; onBrowse: (
             className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 text-primary-ink"
             style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}30` }}
           >
-            Three ways to use it
+            {t('three.badge')}
           </span>
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight mt-4">
-            Assess. Read. Print.
+            {t('three.title')}
           </h2>
-          <p className="mt-3 text-muted-foreground text-lg">Everything a learning reader needs, in one place.</p>
+          <p className="mt-3 text-muted-foreground text-lg">{t('three.subtitle')}</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
@@ -532,6 +568,7 @@ function ThreeThings({ onAssess, onBrowse }: { onAssess: () => void; onBrowse: (
 
 /* ─── LEVEL JOURNEY — first sounds to last sounds ─── */
 function LevelJourney() {
+  const { t } = useTranslation('landing');
   const r = useReveal();
 
   return (
@@ -539,10 +576,10 @@ function LevelJourney() {
       <div ref={r.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            From first sounds to last sounds
+            {t('journey.title')}
           </h2>
           <p className="mt-3 text-muted-foreground text-lg">
-            Eight levels, one clear path — every book uses only the sounds your child has learned.
+            {t('journey.subtitle')}
           </p>
         </div>
 
@@ -552,23 +589,26 @@ function LevelJourney() {
               key={lv.level}
               className="relative bg-background rounded-2xl p-4 border border-border hover:shadow-card-hover transition-shadow overflow-hidden"
             >
-              <div className="absolute top-0 left-0 right-0 h-1.5" style={{ backgroundColor: lv.hex }} />
+              <div className="absolute top-0 inset-x-0 h-1.5" style={{ backgroundColor: lv.hex }} />
               <div className="flex items-center gap-2.5 mb-2.5 mt-1">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-extrabold text-sm shrink-0" style={{ backgroundColor: lv.hex }}>
                   {lv.level}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-display font-extrabold text-foreground text-sm leading-tight truncate">{lv.name}</h3>
-                  <p className="text-[11px] text-muted-foreground">{lv.ageRange}</p>
+                  <h3 lang="en" className="font-display font-extrabold text-foreground text-sm leading-tight truncate">{lv.name}</h3>
+                  <p className="text-[11px] text-muted-foreground">
+                    {/* LRI…PDI keeps "4–5" reading left-to-right inside RTL text. */}
+                    {t('journey.ages', { range: `\u2066${lv.ageRange.replace(/^Ages\s*/, '')}\u2069` })}
+                  </p>
                 </div>
               </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                <span className="font-child font-bold" style={{ color: lv.inkHex }}>
+                <span dir="ltr" lang="en" className="font-child font-bold" style={{ color: lv.inkHex }}>
                   {lv.gpcs.slice(0, 5).join(' · ')}
                 </span>
               </p>
               <p className="text-[11px] text-muted-foreground mt-1.5 font-semibold">
-                {BOOK_COUNTS[lv.level]} books
+                {t('journey.books', { count: BOOK_COUNTS[lv.level] })}
               </p>
             </div>
           ))}
@@ -580,14 +620,15 @@ function LevelJourney() {
 
 /* ─── FEATURES ─── */
 function FeatureShowcase() {
+  const { t } = useTranslation('landing');
   const r = useReveal();
   const features = [
-    { icon: Volume2, text: 'Tap any word to hear it sounded out phoneme by phoneme' },
-    { icon: BookOpen, text: '33 books across 8 carefully graded reading levels' },
-    { icon: Globe, text: 'Stories set in Japan, Kenya, Morocco, France, Turkey & more' },
-    { icon: Trophy, text: 'Comprehension quizzes and a "What sound is it?" game' },
-    { icon: BarChart3, text: 'Progress tracking so parents can see growth' },
-    { icon: CheckCircle2, text: 'Aligned with the UK Year 1 Phonics Screening Check' },
+    { icon: Volume2, text: t('features.items.soundedOut') },
+    { icon: BookOpen, text: t('features.items.books') },
+    { icon: Globe, text: t('features.items.settings') },
+    { icon: Trophy, text: t('features.items.quizzes') },
+    { icon: BarChart3, text: t('features.items.progress') },
+    { icon: CheckCircle2, text: t('features.items.aligned') },
   ];
 
   return (
@@ -596,11 +637,11 @@ function FeatureShowcase() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-              Everything your child needs to{' '}
-              <span className="text-primary">love reading</span>
+              {t('features.titleA')}{' '}
+              <span className="text-primary">{t('features.titleB')}</span>
             </h2>
             <p className="mt-4 text-muted-foreground text-lg leading-relaxed">
-              Built by phonics experts, designed for real children. Every book uses only sounds your child has learned — so they succeed from the very first page.
+              {t('features.body')}
             </p>
             <div className="mt-8 space-y-4">
               {features.map((f, i) => (
@@ -617,34 +658,34 @@ function FeatureShowcase() {
           {/* Phone mockup */}
           <div className="relative flex justify-center">
             <div className="w-64 md:w-72 bg-foreground rounded-[2.5rem] p-3 shadow-2xl rotate-2">
-              <div className="bg-card rounded-[2rem] overflow-hidden">
+              <div className="bg-card rounded-[2rem] overflow-hidden" dir="ltr">
                 <div className="bg-primary/10 px-4 py-3 flex items-center gap-2">
                   <div className="w-6 h-6 rounded-md gradient-primary flex items-center justify-center">
                     <span className="text-white text-[8px] font-bold">M</span>
                   </div>
-                  <span className="text-xs font-bold text-foreground">The Fish in the Tank</span>
+                  <span lang="en" className="text-xs font-bold text-foreground">The Fish in the Tank</span>
                 </div>
-                <img src="/illustrations/1_3/page1.png" alt="Interactive reading" className="w-full aspect-[4/3] object-cover" loading="lazy" decoding="async" />
+                <img src="/illustrations/1_3/page1.png" alt={t('features.mockAlt')} className="w-full aspect-[4/3] object-cover" loading="lazy" decoding="async" />
                 <div className="px-4 py-3 space-y-2">
-                  <div className="flex flex-wrap gap-1.5">
+                  <EnglishOnly className="flex flex-wrap gap-1.5">
                     {['A', 'big', 'fish', 'is', 'in', 'the', 'tank!'].map(w => (
                       <span key={w} className="text-sm font-bold text-foreground bg-primary/5 px-2 py-0.5 rounded-lg" style={{ fontFamily: "'Andika', sans-serif" }}>
                         {w}
                       </span>
                     ))}
-                  </div>
-                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                    <Volume2 className="w-3 h-3" /> Tap a word to hear it
+                  </EnglishOnly>
+                  <div dir="auto" className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <Volume2 className="w-3 h-3" /> {t('features.tapHint')}
                   </div>
                 </div>
               </div>
             </div>
             {/* Print sticker — the second half of "read OR print" */}
             <span
-              className="absolute -bottom-3 right-2 sm:right-10 rounded-full bg-white px-4 py-2 text-xs font-extrabold -rotate-3 text-emerald-700 inline-flex items-center gap-1.5"
+              className="absolute -bottom-3 end-2 sm:end-10 rounded-full bg-white px-4 py-2 text-xs font-extrabold -rotate-3 text-emerald-700 inline-flex items-center gap-1.5"
               style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #22C55E40' }}
             >
-              <Printer className="w-3.5 h-3.5" /> …or print it as a booklet
+              <Printer className="w-3.5 h-3.5" /> {t('features.printSticker')}
             </span>
           </div>
         </div>
@@ -655,45 +696,46 @@ function FeatureShowcase() {
 
 /* ─── PRICING ─── */
 function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: () => void }) {
+  const { t } = useTranslation('landing');
   const r = useReveal();
 
   return (
     <section className="py-14 md:py-20 bg-card">
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">Free for every family</h2>
-          <p className="mt-3 text-muted-foreground text-lg">No plans, no paywall. Read everything now. Sign up (free) to print.</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">{t('free.title')}</h2>
+          <p className="mt-3 text-muted-foreground text-lg">{t('free.subtitle')}</p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-5">
           {/* Read & play — nothing needed */}
           <div className="bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
-            <h3 className="font-display text-lg font-extrabold text-foreground">Read &amp; play</h3>
-            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ml-1">no account</span></div>
+            <h3 className="font-display text-lg font-extrabold text-foreground">{t('free.read.title')}</h3>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{t('free.read.note')}</span></div>
             <ul className="space-y-3 mb-6 flex-1">
-              {['All 33 books across 8 levels, read online', 'Interactive tap-to-hear reading', 'Every phonics game', 'Free 3-minute phonics check'].map(f => (
+              {[t('free.read.items.books'), t('free.read.items.tapToHear'), t('free.read.items.games'), t('free.read.items.check')].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-[hsl(var(--level-3))] shrink-0" /> {f}
                 </li>
               ))}
             </ul>
             <Link to="/library" className="w-full py-3 rounded-2xl border-2 border-primary text-primary font-display font-extrabold text-sm hover:bg-primary/5 transition-colors text-center">
-              Open the library
+              {t('free.read.cta')}
             </Link>
           </div>
 
           {/* Download — free account */}
           <div className="relative bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: `2px solid ${PINK}`, outline: `4px solid ${PINK}20` }}>
             <span
-              className="absolute -top-3 right-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-primary-ink"
+              className="absolute -top-3 end-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-primary-ink"
               style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}40` }}
             >
-              Still free
+              {t('free.print.badge')}
             </span>
-            <h3 className="font-display text-lg font-extrabold text-foreground">Print at home</h3>
-            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ml-1">free account</span></div>
+            <h3 className="font-display text-lg font-extrabold text-foreground">{t('free.print.title')}</h3>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{t('free.print.note')}</span></div>
             <ul className="space-y-3 mb-6 flex-1">
-              {['Everything in Read & play', 'Download every book as a printable PDF', 'Every worksheet and sound mat', 'Progress tracking and rewards'].map(f => (
+              {[t('free.print.items.everything'), t('free.print.items.download'), t('free.print.items.worksheets'), t('free.print.items.progress')].map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
                 </li>
@@ -704,13 +746,17 @@ function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: 
               className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
               style={{ background: PINK, boxShadow: `0 4px 0 ${PINK_INK}` }}
             >
-              Create a free account
+              {t('free.print.cta')}
             </button>
           </div>
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          Love it? <button onClick={onSupport} className="font-bold text-primary-ink hover:underline">Support MyPhonicsBooks</button> with a one-off thank-you of any size — completely optional.
+          <Trans
+            t={t}
+            i18nKey="free.support"
+            components={{ btn: <button onClick={onSupport} className="font-bold text-primary-ink hover:underline" /> }}
+          />
         </p>
       </div>
     </section>
@@ -719,22 +765,23 @@ function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: 
 
 /* ─── FOOTER CTA ─── */
 function FooterCTA({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: () => void }) {
+  const { t } = useTranslation('landing');
   return (
     <section className="py-16 md:py-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <div className="bg-gradient-to-br from-primary/10 via-background to-[hsl(var(--level-5))]/10 rounded-[2.5rem] p-10 md:p-14 border border-primary/20">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            The first books are already open.
+            {t('footerCta.title')}
           </h2>
           <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
-            Have a look around — and when you're ready, a free 3-minute check finds your child's exact level.
+            {t('footerCta.body')}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <PushButton onClick={onBrowse}>
-              <BookOpen className="w-5 h-5" /> Explore the books
+              <BookOpen className="w-5 h-5" /> {t('footerCta.explore')}
             </PushButton>
             <PushButton onClick={onAssess} tone="white">
-              Check their level <ChevronRight className="w-4 h-4" />
+              {t('footerCta.check')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
             </PushButton>
           </div>
         </div>
@@ -745,31 +792,32 @@ function FooterCTA({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: () 
 
 /* ─── FOOTER ─── */
 function Footer() {
+  const { t } = useTranslation('landing');
   const navigate = useNavigate();
   return (
     <footer className="border-t border-indigo-100 py-8 bg-gradient-to-b from-card to-indigo-50/40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <img src="/logo/mpb-mark-transparent.png" alt="" className="w-8 h-8 object-contain" draggable={false} />
-          <span className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
+          <span dir="ltr" className="font-display text-sm font-bold text-foreground">MyPhonicsBooks</span>
         </div>
-        <div className="flex items-center gap-6 text-xs text-muted-foreground">
-          <Link to="/create-book" className="hover:text-trust-ink transition-colors">Create a Book</Link>
-          <Link to="/world-of-books" className="hover:text-trust-ink transition-colors">World of Books</Link>
-          <Link to="/shop" className="hover:text-trust-ink transition-colors">Shop</Link>
-          <Link to="/love" className="hover:text-trust-ink transition-colors">Wall of Love</Link>
-          <a href="/privacy" className="hover:text-trust-ink transition-colors">Privacy</a>
-          <a href="/terms" className="hover:text-trust-ink transition-colors">Terms</a>
-          <a href="mailto:hello@myphonicsbooks.co.uk" className="hover:text-trust-ink transition-colors">Contact</a>
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+          <Link to="/create-book" className="hover:text-trust-ink transition-colors">{t('footer.createBook')}</Link>
+          <Link to="/world-of-books" className="hover:text-trust-ink transition-colors">{t('footer.worldOfBooks')}</Link>
+          <Link to="/shop" className="hover:text-trust-ink transition-colors">{t('footer.shop')}</Link>
+          <Link to="/love" className="hover:text-trust-ink transition-colors">{t('footer.wallOfLove')}</Link>
+          <a href="/privacy" className="hover:text-trust-ink transition-colors">{t('footer.privacy')}</a>
+          <a href="/terms" className="hover:text-trust-ink transition-colors">{t('footer.terms')}</a>
+          <a href="mailto:hello@myphonicsbooks.co.uk" className="hover:text-trust-ink transition-colors">{t('footer.contact')}</a>
           <button
             onClick={() => navigate('/admin')}
             className="hover:text-foreground transition-colors"
-            aria-label="Admin"
+            aria-label={t('footer.admin')}
           >
-            Admin
+            {t('footer.admin')}
           </button>
         </div>
-        <p className="text-xs text-muted-foreground">Made with care in the UK</p>
+        <p className="text-xs text-muted-foreground">{t('footer.madeWith')}</p>
       </div>
     </footer>
   );

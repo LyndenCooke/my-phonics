@@ -7,6 +7,7 @@ import Assessment from '@/pages/Assessment';
 import BundleUpsell from './BundleUpsell';
 import MonthlyDownsell from './MonthlyDownsell';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation, Trans } from 'react-i18next';
 
 type Mode = 'rapid' | 'full';
 type Stage = 'choose' | 'assess' | 'upsell' | 'downsell' | 'paid-email' | 'monthly-email' | 'free-book-email';
@@ -21,6 +22,7 @@ interface AnswersSummary {
 export default function AssessmentFunnel() {
   useFunnelTracker();
   const navigate = useNavigate();
+  const { t } = useTranslation('funnels');
   const [stage, setStage] = useState<Stage>('choose');
   const [mode, setMode] = useState<Mode>('rapid');
   const [level, setLevel] = useState(1);
@@ -32,56 +34,57 @@ export default function AssessmentFunnel() {
       <FunnelLayout>
         <div className="max-w-md mx-auto text-center pt-8 sm:pt-12 mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            Find their{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500">
-              reading level
-            </span>
+            <Trans
+              t={t}
+              i18nKey="assessmentFunnel.title"
+              components={{ hl: <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500" /> }}
+            />
           </h1>
           <p className="text-muted-foreground mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-            Pick how thorough you want the test to be.
+            {t('assessmentFunnel.subtitle')}
           </p>
         </div>
 
         <div className="max-w-md mx-auto space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
           <button
             onClick={() => { setMode('rapid'); setStage('assess'); }}
-            className="w-full p-5 rounded-2xl border-2 border-[hsl(var(--primary))] bg-white text-left active:scale-[0.98] transition-all shadow-xl shadow-pink-500/10 hover:shadow-2xl hover:shadow-pink-500/20"
+            className="w-full p-5 rounded-2xl border-2 border-[hsl(var(--primary))] bg-white text-start active:scale-[0.98] transition-all shadow-xl shadow-pink-500/10 hover:shadow-2xl hover:shadow-pink-500/20"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--primary))] to-rose-500 flex items-center justify-center shrink-0">
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <p className="text-base font-extrabold text-foreground">3-minute check</p>
+                <p className="text-base font-extrabold text-foreground">{t('assessmentFunnel.rapidTitle')}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  A quick adaptive sound test. Good if you just want a starting point.
+                  {t('assessmentFunnel.rapidDesc')}
                 </p>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+              <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0 rtl:-scale-x-100" />
             </div>
           </button>
 
           <button
             onClick={() => { setMode('full'); setStage('assess'); }}
-            className="w-full p-5 rounded-2xl border-2 border-border bg-white text-left active:scale-[0.98] transition-all shadow-card hover:border-[hsl(var(--primary))]/50"
+            className="w-full p-5 rounded-2xl border-2 border-border bg-white text-start active:scale-[0.98] transition-all shadow-card hover:border-[hsl(var(--primary))]/50"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-foreground flex items-center justify-center shrink-0">
                 <Search className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
-                <p className="text-base font-extrabold text-foreground">10-minute deep test</p>
+                <p className="text-base font-extrabold text-foreground">{t('assessmentFunnel.fullTitle')}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Sounds, real words, alien words and tricky words at every level.
+                  {t('assessmentFunnel.fullDesc')}
                 </p>
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+              <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0 rtl:-scale-x-100" />
             </div>
           </button>
         </div>
 
         <p className="text-xs text-muted-foreground text-center mt-6 max-w-md mx-auto">
-          Free book at their level when you finish. No card needed.
+          {t('assessmentFunnel.footer')}
         </p>
       </FunnelLayout>
     );
@@ -143,7 +146,7 @@ export default function AssessmentFunnel() {
         <PaidCheckoutEmail
           level={level}
           productType="full_bundle"
-          missingProductMsg="Bundle product not found. Please contact support."
+          missingProductMsg={t('assessmentFunnel.missingBundle')}
           onBack={() => setStage('upsell')}
         />
       </FunnelLayout>
@@ -157,7 +160,7 @@ export default function AssessmentFunnel() {
         <PaidCheckoutEmail
           level={level}
           productType="subscription"
-          missingProductMsg="Monthly plan not found. Please contact support."
+          missingProductMsg={t('assessmentFunnel.missingMonthly')}
           onBack={() => setStage('downsell')}
         />
       </FunnelLayout>
@@ -195,6 +198,7 @@ interface FreeBookEmailProps {
 }
 
 function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
+  const { t } = useTranslation('funnels');
   const [childName, setChildName] = useState('');
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
@@ -226,7 +230,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
         }
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Signup failed');
+      if (!res.ok) throw new Error(data.error || t('shared.signupFailed'));
 
       // Auto-login with the one-time token the edge function returned,
       // so the next screen is their library — not an email-check page.
@@ -243,7 +247,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
       }
       onSuccess();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('common:errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -256,10 +260,10 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
         className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-6 sm:p-7"
       >
         <p className="text-lg font-extrabold text-foreground mb-1 text-center">
-          Where should we send your free book?
+          {t('assessmentFunnel.freeBookTitle')}
         </p>
         <p className="text-xs text-muted-foreground mb-5 text-center">
-          We'll email a login link so the book is yours to keep.
+          {t('shared.loginLinkKeep')}
         </p>
 
         <div className="space-y-3">
@@ -267,7 +271,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
             type="text"
             value={childName}
             onChange={(e) => setChildName(e.target.value)}
-            placeholder="Child's first name (optional)"
+            placeholder={t('shared.childNameOptional')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
           />
           <input
@@ -285,7 +289,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
               onChange={(e) => setConsent(e.target.checked)}
               className="mt-0.5 w-4 h-4 rounded border-pink-300 text-[hsl(var(--primary))] focus:ring-pink-500/20"
             />
-            <span>I agree to receive free phonics resources by email. Unsubscribe any time.</span>
+            <span>{t('shared.consent')}</span>
           </label>
 
           {error && <p className="text-sm text-destructive text-center">{error}</p>}
@@ -298,7 +302,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
             {loading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
-              <>Send Me My Free Book <ArrowRight size={20} /></>
+              <>{t('shared.sendFreeBook')} <ArrowRight size={20} className="rtl:-scale-x-100" /></>
             )}
           </button>
         </div>
@@ -319,6 +323,7 @@ interface PaidCheckoutEmailProps {
 }
 
 function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: PaidCheckoutEmailProps) {
+  const { t } = useTranslation('funnels');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -372,11 +377,11 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
         }
       );
       const data = await res.json();
-      if (!res.ok || !data.url) throw new Error(data.error || 'Could not start checkout');
+      if (!res.ok || !data.url) throw new Error(data.error || t('assessmentFunnel.checkoutFailed'));
 
       window.location.href = data.url;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('common:errors.generic'));
       setLoading(false);
     }
   };
@@ -388,10 +393,10 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
         className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-6 sm:p-7"
       >
         <p className="text-lg font-extrabold text-foreground mb-1 text-center">
-          Just one detail before checkout
+          {t('assessmentFunnel.paidTitle')}
         </p>
         <p className="text-xs text-muted-foreground mb-5 text-center">
-          We'll email your login link straight after payment so all 32 books are yours.
+          {t('assessmentFunnel.paidSubtitle')}
         </p>
 
         <div className="space-y-3">
@@ -415,7 +420,7 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
             {loading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
-              <>Continue to Checkout <ArrowRight size={20} /></>
+              <>{t('assessmentFunnel.continueToCheckout')} <ArrowRight size={20} className="rtl:-scale-x-100" /></>
             )}
           </button>
 
@@ -424,7 +429,7 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
             onClick={onBack}
             className="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← Back
+            <span className="inline-block rtl:-scale-x-100" aria-hidden="true">←</span> {t('common:actions.back')}
           </button>
         </div>
         {/* level is held by the caller for the celebration accent; we don't

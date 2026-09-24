@@ -1,0 +1,133 @@
+{
+  "skipToMain": "Ana içeriğe geç",
+  "nav": {
+    "homeAria": "MyPhonicsBooks ana sayfa",
+    "createBook": "Kitap Oluştur",
+    "worldOfBooks": "Kitaplar Dünyası",
+    "shop": "Mağaza",
+    "wallOfLove": "Sevgi Duvarı",
+    "forSchools": "Okullar İçin",
+    "schools": "Okullar",
+    "explore": "Keşfet",
+    "exploreBooks": "Kitapları Keşfedin"
+  },
+  "video": {
+    "badge": "Tanıtımı izleyin",
+    "title": "Nasıl çalıştığını görün",
+    "body": "Hepsi bir arada İngilizce öğrenme platformuna kısa bir bakış — kitaplar, seviyeler ve ilerleme, hepsi tek bir yerde.",
+    "fallback": "Tarayıcınız gömülü videoyu desteklemiyor. Bunun yerine <link>tanıtımı izleyin</link>."
+  },
+  "hero": {
+    "forParents": "Ebeveynler İçin",
+    "forSchools": "Okullar İçin",
+    "languages": "{{n}} dilde kullanılabilir",
+    "titleA": "Çocuğunuzla birlikte büyüyen kitaplar —",
+    "titleB": "ilk seslerden akıcı okumaya.",
+    "body": "8 seviyede 33 çözümlenebilir fonetik kitap. Çocuğunuzun seviyesini ücretsiz belirleyin, her ekranda birlikte okuyun ya da elde tutulacak gerçek kitapçıklar yazdırın.",
+    "exploreBooks": "Kitapları keşfedin",
+    "checkLevelFree": "Seviyesini belirleyin — ücretsiz",
+    "freeNote": "İlk kitaplar şu anda ücretsiz ve açık — kayıt yok, kart yok."
+  },
+  "shelf": {
+    "regionAria": "Kitap vitrini — göz atmak için sürükleyin, kaydırın veya ok tuşlarını kullanın",
+    "coverAlt": "{{title}} — Seviye {{level}} {{levelName}} kitapçığı",
+    "prevBook": "Önceki kitap",
+    "nextBook": "Sonraki kitap",
+    "level": "Seviye {{level}}"
+  },
+  "three": {
+    "badge": "Kullanmanın üç yolu",
+    "title": "Değerlendirin. Okuyun. Yazdırın.",
+    "subtitle": "Okumayı öğrenen bir çocuğun ihtiyacı olan her şey, tek bir yerde.",
+    "check": {
+      "title": "Seviyesini belirleyin",
+      "desc": "Ücretsiz 3 dakikalık ses testi tam doğru başlangıç noktasını bulur. Tahmin yok, kart yok.",
+      "cta": "Ücretsiz testi başlatın"
+    },
+    "read": {
+      "title": "Her ekranda okuyun",
+      "desc": "Telefonda, tablette veya dizüstü bilgisayarda etkileşimli kitaplar — herhangi bir kelimeye dokunun, ses ses okunuşunu dinleyin.",
+      "cta": "Kitapları keşfedin"
+    },
+    "print": {
+      "title": "Ya da yazdırıp elinize alın",
+      "desc": "Herhangi bir kitabı katlanıp zımbalanan A5 kitapçık olarak indirin. Uyku öncesi okumalar için gerçek sayfalar.",
+      "cta": "Kütüphaneye göz atın"
+    }
+  },
+  "testimonials": {
+    "title": "Müşterilerimiz ne diyor",
+    "subtitle": "MyPhonicsBooks kullanan ailelerden ve öğretmenlerden gerçek sözler.",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "aParent": "Bir ebeveyn"
+  },
+  "journey": {
+    "title": "İlk seslerden son seslere",
+    "subtitle": "Sekiz seviye, tek bir net yol — her kitap yalnızca çocuğunuzun öğrendiği sesleri kullanır.",
+    "ages": "Yaş {{range}}",
+    "books_one": "{{count}} kitap",
+    "books_other": "{{count}} kitap"
+  },
+  "features": {
+    "titleA": "Çocuğunuzun",
+    "titleB": "okumayı sevmesi için gereken her şey",
+    "body": "Fonetik uzmanları tarafından, gerçek çocuklar için tasarlandı. Her kitap yalnızca çocuğunuzun öğrendiği sesleri kullanır — böylece ilk sayfadan itibaren başarılı olur.",
+    "items": {
+      "soundedOut": "Herhangi bir kelimeye dokunun, ses ses okunuşunu dinleyin",
+      "books": "Özenle derecelendirilmiş 8 okuma seviyesinde 33 kitap",
+      "settings": "Japonya, Kenya, Fas, Fransa, Türkiye ve daha fazlasında geçen hikâyeler",
+      "quizzes": "Okuduğunu anlama testleri ve \"What sound is it?\" oyunu",
+      "progress": "Ebeveynlerin gelişimi görebilmesi için ilerleme takibi",
+      "aligned": "Birleşik Krallık 1. sınıf Phonics Screening Check ile uyumlu"
+    },
+    "mockAlt": "Etkileşimli okuma",
+    "tapHint": "Dinlemek için bir kelimeye dokunun",
+    "printSticker": "…ya da kitapçık olarak yazdırın"
+  },
+  "free": {
+    "title": "Her aile için ücretsiz",
+    "subtitle": "Paket yok, ödeme duvarı yok. Her şeyi şimdi okuyun. Yazdırmak için (ücretsiz) kaydolun.",
+    "read": {
+      "title": "Oku ve oyna",
+      "note": "hesap gerekmez",
+      "items": {
+        "books": "8 seviyedeki 33 kitabın tamamı, çevrimiçi okuma",
+        "tapToHear": "Dokun-dinle etkileşimli okuma",
+        "games": "Tüm fonetik oyunlar",
+        "check": "Ücretsiz 3 dakikalık fonetik testi"
+      },
+      "cta": "Kütüphaneyi açın"
+    },
+    "print": {
+      "badge": "Yine ücretsiz",
+      "title": "Evde yazdırın",
+      "note": "ücretsiz hesap",
+      "items": {
+        "everything": "Oku ve oyna'daki her şey",
+        "download": "Her kitabı yazdırılabilir PDF olarak indirin",
+        "worksheets": "Tüm çalışma kâğıtları ve ses kartları",
+        "progress": "İlerleme takibi ve ödüller"
+      },
+      "cta": "Ücretsiz hesap oluşturun"
+    },
+    "support": "Beğendiniz mi? Dilediğiniz tutarda tek seferlik bir teşekkürle <btn>MyPhonicsBooks'u destekleyin</btn> — tamamen isteğe bağlı."
+  },
+  "footerCta": {
+    "title": "İlk kitaplar zaten açık.",
+    "body": "Etrafa bir göz atın — hazır olduğunuzda ücretsiz 3 dakikalık test çocuğunuzun tam seviyesini bulur.",
+    "explore": "Kitapları keşfedin",
+    "check": "Seviyesini belirleyin"
+  },
+  "footer": {
+    "createBook": "Kitap Oluştur",
+    "worldOfBooks": "Kitaplar Dünyası",
+    "shop": "Mağaza",
+    "wallOfLove": "Sevgi Duvarı",
+    "privacy": "Gizlilik",
+    "terms": "Koşullar",
+    "contact": "İletişim",
+    "admin": "Yönetici",
+    "madeWith": "Birleşik Krallık'ta özenle hazırlandı"
+  }
+}

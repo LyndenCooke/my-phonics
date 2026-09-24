@@ -23,6 +23,7 @@
  */
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Sparkles, Lock, BookOpen, Star, Check } from 'lucide-react';
 import Soundlings from '@/games/soundlings/Soundlings';
@@ -70,6 +71,7 @@ const GAMES: { id: GameId; emoji: string; name: string; blurb: string }[] = [
 ];
 
 export default function ChildHomeScreen({ books, onBookSelect }: Props) {
+  const { t } = useTranslation('games');
   const navigate = useNavigate();
   const stamps = useMemo(() => getAllStamps(), []);
   const { data: children } = useChildren();
@@ -147,7 +149,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   // ─── Empty state ────────────────────────────────────────────
   if (levelBooks.length === 0) {
     return (
-      <div className="px-4 pt-10 pb-24 max-w-md mx-auto text-center">
+      <div dir="ltr" lang="en" className="px-4 pt-10 pb-24 max-w-md mx-auto text-center">
         <Sparkles className="w-10 h-10 text-primary mx-auto mb-4" />
         <h2 className="font-display text-2xl font-extrabold text-foreground">No books yet!</h2>
         <p className="text-sm text-muted-foreground mt-2">Ask a grown-up to unlock your first book.</p>
@@ -201,8 +203,12 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         transition: { duration: 0.55, delay, ease: EASE },
       };
 
+  // The child's own screen: child-tested English copy, always LTR (the trail
+  // runs book 1 → Level Check left-to-right) — an English island even when
+  // the site around it is Arabic/Urdu/Persian. Only screen-reader labels
+  // on controls are translated.
   return (
-    <div className="px-5 pt-5 lg:pt-12 pb-10 max-w-md lg:max-w-3xl mx-auto overflow-x-clip">
+    <div dir="ltr" lang="en" className="px-5 pt-5 lg:pt-12 pb-10 max-w-md lg:max-w-3xl mx-auto overflow-x-clip">
       {/* ── 1. Greeting ─────────────────────────────────────────── */}
       <motion.div {...fade(0)} className="text-center">
         <span
@@ -228,7 +234,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         {coverUrl && (
           <motion.button
             onClick={primaryAction}
-            aria-label={`Open ${heroBook.title}`}
+            aria-label={t('childHome.openBook', { title: heroBook.title })}
             className="relative block mx-auto w-[55%] max-w-[14rem] press-scale"
             {...(reduceMotion ? {} : {
               initial: { opacity: 0, y: 24, rotate: -3 },
@@ -255,7 +261,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         </h2>
 
         {/* Five star stamps — sticker stars */}
-        <div className="flex items-center justify-center gap-2 mt-4" aria-label={`${heroStamps} of ${MAX_STAMPS} reads done`}>
+        <div className="flex items-center justify-center gap-2 mt-4" aria-label={t('childHome.readsDone', { done: heroStamps, total: MAX_STAMPS })}>
           {Array.from({ length: MAX_STAMPS }).map((_, i) => {
             const earned = i < heroStamps;
             const tilt = [-8, 5, -4, 7, -6][i];
@@ -380,7 +386,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                   // Current stop = a mini BOOK (rectangle — covers never crop)
                   <motion.button
                     onClick={() => onBookSelect(book)}
-                    aria-label={`${book.title} — your book, ${s.count} of ${MAX_STAMPS} reads done`}
+                    aria-label={t('childHome.currentBook', { title: book.title, done: s.count, total: MAX_STAMPS })}
                     className="relative w-14 lg:w-16 aspect-[3/4] rounded-md overflow-hidden press-scale bg-white"
                     style={{ boxShadow: STICKER, border: '3px solid #fff', outline: `3px solid ${hex}` }}
                     {...(reduceMotion ? {} : {
@@ -395,7 +401,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 ) : isMastered ? (
                   <button
                     onClick={() => onBookSelect(book)}
-                    aria-label={`${book.title} — done`}
+                    aria-label={t('childHome.doneBook', { title: book.title })}
                     className="w-10 h-10 lg:w-11 lg:h-11 rounded-full flex items-center justify-center text-white press-scale"
                     style={{ background: hex, boxShadow: STICKER, border: '3px solid #fff' }}
                   >
@@ -403,7 +409,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                   </button>
                 ) : (
                   <span
-                    aria-label={`${book.title} — locked, finish your current book first`}
+                    aria-label={t('childHome.lockedBook', { title: book.title })}
                     className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white flex items-center justify-center"
                     style={{ boxShadow: STICKER, border: '3px solid #fff', outline: '2px solid hsl(var(--border))' }}
                   >
@@ -429,7 +435,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 <motion.button
                   onClick={() => allMastered && navigate(`/assess?level=${assessLevel}`)}
                   disabled={!allMastered}
-                  aria-label={allMastered ? 'Start your Level Check' : 'Level Check — finish your books first'}
+                  aria-label={allMastered ? t('childHome.startCheck') : t('childHome.checkLocked')}
                   className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center press-scale"
                   style={allMastered
                     ? { background: hex, boxShadow: STICKER, border: '3px solid #fff' }

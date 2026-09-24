@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Volume2, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // All sounds are MP3 files in /sounds/
 // Split digraphs use underscore in filenames: a-e -> a_e
@@ -19,6 +20,7 @@ export function PhonemePlayer({
   className = '',
   size = 'md',
 }: PhonemePlayerProps) {
+  const { t } = useTranslation('reader');
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -81,8 +83,8 @@ export function PhonemePlayer({
         ${isPlaying ? 'ring-4 ring-pink-300 animate-pulse' : ''}
         ${className}
       `}
-      title={`Play "${grapheme}" sound`}
-      aria-label={`Play sound for grapheme ${grapheme}`}
+      title={t('audio.playSoundTitle', { grapheme })}
+      aria-label={t('audio.playSoundAria', { grapheme })}
     >
       {isLoading ? (
         <Loader2 className={`${iconSizes[size]} text-white animate-spin`} />

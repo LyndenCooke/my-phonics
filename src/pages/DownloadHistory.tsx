@@ -8,6 +8,8 @@
  *     Help & Support.
  */
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePurchases, useDownloadLog } from '@/hooks/useBooks';
@@ -22,16 +24,16 @@ import {
 import { useState } from 'react';
 import { LEVELS } from '@/lib/types';
 
-function formatGbp(pence?: number | null): string {
+function formatGbp(pence: number | null | undefined, freeLabel: string): string {
   if (pence == null) return '—';
-  if (pence === 0) return 'Free';
+  if (pence === 0) return freeLabel;
   return `£${(pence / 100).toFixed(2)}`;
 }
 
 function formatDate(iso?: string | null): string {
   if (!iso) return '';
   try {
-    return new Date(iso).toLocaleDateString('en-GB', {
+    return new Date(iso).toLocaleDateString(i18n.language, {
       day: 'numeric', month: 'short', year: 'numeric',
     });
   } catch { return iso; }
@@ -43,6 +45,7 @@ const levelBgs: Record<number, string> = {
 };
 
 export default function DownloadHistory() {
+  const { t } = useTranslation('profile');
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -61,7 +64,7 @@ export default function DownloadHistory() {
 
   const reDownload = async (bookId: string, title: string) => {
     setBusyBookId(bookId);
-    const tid = toast.loading(`Preparing ${title}…`);
+    const tid = toast.loading(t('downloads.preparing', { title }));
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const res = await fetch(
@@ -76,10 +79,10 @@ export default function DownloadHistory() {
         }
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || data?.error || 'Download failed');
+      if (!res.ok) throw new Error(data?.message || data?.error || t('downloads.failed'));
 
       const pdfRes = await fetch(data.url);
-      if (!pdfRes.ok) throw new Error('PDF file unavailable');
+      if (!pdfRes.ok) throw new Error(t('downloads.unavailable'));
       const blob = await pdfRes.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -99,17 +102,23 @@ export default function DownloadHistory() {
         if (logErr) console.warn('download_log insert failed (client):', logErr);
       }
 
-      toast.success(`${title} downloaded`, { id: tid });
+      toast.success(t('downloads.downloaded', { title }), { id: tid });
+      // English text is the stored fallback; the keys let Profile show the
+      // notification in whatever language the parent is using later.
       addNotification({
         icon: 'download',
         title: `${title} downloaded`,
         body: 'Tap to re-download from your history',
         ctaLabel: 'View',
         ctaHref: '/profile/downloads',
+        titleKey: 'downloads.downloaded',
+        bodyKey: 'downloads.notificationBody',
+        ctaKey: 'downloads.view',
+        params: { title },
       });
       queryClient.invalidateQueries({ queryKey: ['download_log'] });
     } catch (err) {
-      toast.error((err as Error).message || 'Download failed', { id: tid });
+      toast.error((err as Error).message || t('downloads.failed'), { id: tid });
     } finally {
       setBusyBookId(null);
     }
@@ -121,24 +130,24 @@ export default function DownloadHistory() {
         <div className="flex items-center gap-3">
           <Link
             to="/profile"
-            aria-label="Back to Profile"
+            aria-label={t('backToProfile')}
             className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 text-foreground" />
+            <ArrowLeft className="w-4 h-4 text-foreground rtl:-scale-x-100" />
           </Link>
-          <h1 className="font-display text-xl font-extrabold text-foreground">Download History</h1>
+          <h1 className="font-display text-xl font-extrabold text-foreground">{t('links.downloads')}</h1>
         </div>
 
         {!user ? (
           <div className="bg-card rounded-3xl border border-border p-8 text-center shadow-card">
-            <p className="text-sm text-muted-foreground">Sign in to see your download and purchase history.</p>
+            <p className="text-sm text-muted-foreground">{t('downloads.signInPrompt')}</p>
           </div>
         ) : (
           <>
             {/* Recent downloads */}
             <section>
               <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 px-1">
-                Recent Downloads
+                {t('downloads.recent')}
               </h2>
               {downloadsLoading ? (
                 <div className="space-y-2">
@@ -151,19 +160,19 @@ export default function DownloadHistory() {
                   <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center mx-auto mb-2">
                     <FileText className="w-5 h-5 text-muted-foreground" />
                   </div>
-                  <p className="text-sm font-medium text-foreground">No downloads yet</p>
-                  <p className="text-[11px] text-muted-foreground mt-1">PDFs you save will show up here for easy re-download.</p>
+                  <p className="text-sm font-medium text-foreground">{t('downloads.emptyTitle')}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{t('downloads.emptyBody')}</p>
                   <button
                     onClick={() => navigate('/library')}
                     className="mt-3 text-xs font-bold text-primary-ink hover:underline"
                   >
-                    Go to Library →
+                    {t('downloads.goToLibrary')} <span className="inline-block rtl:-scale-x-100">→</span>
                   </button>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {downloads.map((d: any) => {
-                    const title = d.books?.title ?? 'Book';
+                    const title = d.books?.title ?? t('downloads.bookFallback');
                     const level = d.books?.level ?? 1;
                     const levelInfo = LEVELS.find(l => l.level === level);
                     const isBusy = busyBookId === d.book_id;
@@ -173,15 +182,17 @@ export default function DownloadHistory() {
                           <FileText className="w-5 h-5" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-foreground truncate">{title}</p>
+                          <p className="text-sm font-bold text-foreground truncate" dir="ltr" lang="en">{title}</p>
                           <p className="text-[11px] text-muted-foreground">
-                            Level {level}{levelInfo ? ` · ${levelInfo.name}` : ''} · {formatDate(d.downloaded_at)}
+                            {t('downloads.level', { level })}
+                            {levelInfo ? <> · <span dir="ltr" lang="en">{levelInfo.name}</span></> : null}
+                            {' · '}{formatDate(d.downloaded_at)}
                           </p>
                         </div>
                         <button
                           onClick={() => reDownload(d.book_id, title)}
                           disabled={isBusy}
-                          aria-label={`Re-download ${title}`}
+                          aria-label={t('downloads.reDownload', { title })}
                           className="shrink-0 w-9 h-9 rounded-full bg-tint-pink text-primary-ink flex items-center justify-center hover:bg-primary/20 transition-colors disabled:opacity-50"
                         >
                           {isBusy
@@ -198,7 +209,7 @@ export default function DownloadHistory() {
             {/* Purchases */}
             <section>
               <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 px-1">
-                Purchases
+                {t('downloads.purchases')}
               </h2>
               {purchasesLoading ? (
                 <div className="space-y-3">
@@ -211,13 +222,13 @@ export default function DownloadHistory() {
                   <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center mx-auto mb-2">
                     <ShoppingBag className="w-5 h-5 text-muted-foreground" />
                   </div>
-                  <p className="text-sm font-medium text-foreground">No purchases yet</p>
-                  <p className="text-[11px] text-muted-foreground mt-1">Create-A-Book orders and any support you give will appear here.</p>
+                  <p className="text-sm font-medium text-foreground">{t('downloads.noPurchases')}</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{t('downloads.noPurchasesBody')}</p>
                   <Link
                     to="/support"
                     className="inline-block mt-3 px-4 py-2 rounded-xl gradient-primary text-primary-foreground font-bold text-xs shadow-button"
                   >
-                    Support MyPhonicsBooks
+                    {t('links.support')}
                   </Link>
                 </div>
               ) : (
@@ -233,10 +244,10 @@ export default function DownloadHistory() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2">
                               <p className="text-sm font-bold text-foreground truncate">
-                                {p.products?.name ?? 'Purchase'}
+                                {p.products?.name ?? t('downloads.purchaseFallback')}
                               </p>
                               <span className="text-sm font-extrabold text-foreground tabular-nums shrink-0">
-                                {formatGbp(p.amount_pence)}
+                                {formatGbp(p.amount_pence, t('downloads.free'))}
                               </span>
                             </div>
                             {p.products?.description && (
@@ -251,7 +262,7 @@ export default function DownloadHistory() {
                               </span>
                               {completed && (
                                 <span className="flex items-center gap-1 text-emerald-700 font-bold">
-                                  <CheckCircle2 className="w-3 h-3" /> Completed
+                                  <CheckCircle2 className="w-3 h-3" /> {t('downloads.completed')}
                                 </span>
                               )}
                             </div>
@@ -262,7 +273,7 @@ export default function DownloadHistory() {
                   })}
 
                   <p className="text-[11px] text-muted-foreground text-center mt-3 leading-relaxed">
-                    Need a receipt or refund? Contact support from the Help page.
+                    {t('downloads.receiptHint')}
                   </p>
                 </div>
               )}

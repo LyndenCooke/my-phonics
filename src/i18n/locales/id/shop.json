@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "homeAria": "Beranda MyPhonicsBooks",
+    "skipToMain": "Langsung ke konten utama"
+  },
+  "nav": {
+    "readOnline": "Baca online",
+    "freeCheck": "Tes gratis",
+    "checkLevelFree": "Cek level anak gratis"
+  },
+  "common": {
+    "close": "Tutup",
+    "preorderSave": "Pesan di muka · Hemat {{pct}}%",
+    "seeDetails": "Lihat detail",
+    "peekInside": "Intip isinya",
+    "takeAPeekInside": "Intip isinya",
+    "viewProduct": "Lihat {{name}}",
+    "levelBadge": "Level {{level}} · {{name}}",
+    "levelChip": "L{{level}} {{name}}",
+    "findLevelFree": "Temukan level anak gratis"
+  },
+  "interest": {
+    "dialogLabel": "Pesan di muka {{name}}",
+    "doneTitle": "Diskon Anda sudah dipesan",
+    "doneBody": "Kami akan mengirim email kepada Anda begitu {{name}} siap dipesan, dengan potongan {{pct}}% yang disimpan khusus untuk Anda.",
+    "done": "Selesai",
+    "body": "Rangkaian cetak sedang masuk percetakan. Pesan sekarang dan kami akan menyimpan potongan {{pct}}% dari harga ini untuk Anda hingga siap dipesan — tanpa pembayaran hari ini.",
+    "preorderPrice": "harga pesan di muka",
+    "emailPlaceholder": "Alamat email Anda",
+    "consent": "Kirimi saya email saat produk ini diluncurkan, beserta materi fonik gratis. Berhenti berlangganan kapan saja.",
+    "submit": "Pesan diskon {{pct}}% saya",
+    "noPayment": "Tanpa pembayaran sekarang. Lihat <link>kebijakan privasi</link> kami.",
+    "error": "Terjadi kesalahan. Silakan coba lagi."
+  },
+  "detail": {
+    "returns": "Pengembalian 30 hari tanpa ribet · Pengiriman di Inggris",
+    "inTheBox": "Isi dalam kotak",
+    "details": "Detail",
+    "goesWellWith": "Cocok dipadukan dengan"
+  },
+  "hero": {
+    "pill": "Pesan sekarang · Hemat {{pct}}% · Tanpa pembayaran hari ini",
+    "title": "Buku sungguhan, di tangan sungguhan.",
+    "titleAccent": "Versi cetak segera hadir.",
+    "body": "Buku decodable yang dibaca anak Anda di layar, dicetak untuk disimpan: set buku cerita, buku latihan yang bisa dihapus, dan kartu, sesuai dengan level membaca anak Anda. Ditulis oleh guru SD aktif di Inggris bersertifikat QTS (guru berkualifikasi). Pesan hari ini dan kami akan menyimpan potongan {{pct}}% untuk Anda hingga siap dikirim — tanpa pembayaran sekarang.",
+    "seeBundles": "Lihat paket",
+    "notSure": "Belum tahu harus mulai dari mana? Ikuti asesmen gratis 3 menit dan kami akan memberi tahu level yang tepat untuk anak Anda.",
+    "spotlightSticker": "Pilihan kebanyakan keluarga",
+    "anchorLibrary": "Perpustakaan lengkap 33 buku £129",
+    "anchorFamily": "Paket keluarga seluruh program £349"
+  },
+  "trust": {
+    "decodable": "Setiap kata di setiap buku dapat dibaca sesuai level anak Anda atau merupakan Tricky Word yang sudah diajarkan. Tanpa menebak, tanpa frustrasi.",
+    "teacher": "Ditulis oleh guru SD aktif di Inggris bersertifikat QTS dan disesuaikan dengan Letters and Sounds.",
+    "returns": "Pengembalian 30 hari tanpa ribet."
+  },
+  "bundles": {
+    "eyebrow": "Penawaran utama",
+    "title": "Paket Awal per Level",
+    "intro": "Satu kotak berisi semua yang dibutuhkan anak Anda untuk levelnya: setiap buku cerita, buku latihan yang bisa dihapus beserta pena, dan set kartu kata. Lebih hemat dibeli bersama."
+  },
+  "readers": {
+    "eyebrow": "Buku cerita",
+    "title": "Buku bacaan cetak",
+    "intro": "Buku cerita A5 dengan sampul laminasi doff, dibuat untuk dibaca berulang kali dan disimpan. Beli satu judul, satu set level, atau seluruh perpustakaan.",
+    "libraryEyebrow": "Semua 33 buku cerita",
+    "singlesTitle": "Buku cerita satuan",
+    "singlesIntro": "Level 1 sampai 3 seharga £5.99 per buku; Level 4 sampai 8 seharga £6.99. Pilih levelnya, pilih ceritanya."
+  },
+  "workbooks": {
+    "eyebrow": "Beli sekali, latihan selamanya",
+    "title": "Buku latihan yang bisa dihapus",
+    "intro": "Setiap halaman dilaminasi mengilap. Anak Anda menulis dengan pena wet-erase yang disertakan, Anda menghapusnya dengan kain lembap, lalu mereka berlatih lagi.",
+    "f1Title": "Awet sepanjang level",
+    "f1Text": "Buku latihan biasa habis dalam dua minggu. Yang ini bertahan sepanjang level dan untuk setiap adik sesudahnya: menulis tangan, tes mengeja, dikte, dan latihan kalimat, sesuai halaman demi halaman dengan bukunya.",
+    "f2Title": "Jilid spiral terbuka rata",
+    "f2Text": "Buku terbuka benar-benar rata, sehingga tangan kecil bisa menulis di setiap baris di setiap halaman. Tidak perlu berjuang melawan punggung buku.",
+    "f3Title": "Wet-erase, bukan dry-wipe",
+    "f3Text": "Tinta wet-erase tidak luntur di bawah tangan anak saat menulis dan hanya terhapus dengan kain lembap. Tidak ada huruf yang tercoreng di tengah kata.",
+    "warning": "Hanya gunakan pena wet-erase atau dry-wipe. Spidol permanen akan merusak permukaannya.",
+    "penEyebrow": "Yang selalu dibutuhkan"
+  },
+  "cards": {
+    "eyebrow": "Dua menit sehari",
+    "title": "Set kartu",
+    "intro": "Kartu A7 premium, dilaminasi doff agar tahan bertahun-tahun di tangan kecil. Set kartu bunyi mencakup seluruh program; set kartu kata sesuai dengan tiap level.",
+    "soundEyebrow": "150 kartu, setiap bunyi",
+    "wordTitle": "Set kartu kata, satu per level",
+    "wordIntro": "Delapan kartu per bunyi: kartu bunyi ditambah tujuh kata latihan. Polos di depan, bertanda di belakang agar Anda tahu cara membantu."
+  },
+  "family": {
+    "eyebrow": "Sekali beli, untuk setiap anak",
+    "title": "Paket keluarga seluruh program",
+    "intro": "Semua yang ada di halaman ini dalam satu kiriman, dari Reception hingga Year 2 (usia 4–7 tahun) dan seterusnya. Karena buku latihannya bisa dihapus, seluruh program bisa diwariskan ke adik berikutnya."
+  },
+  "closing": {
+    "title": "Belum yakin level mana yang harus dibeli?",
+    "body": "Ikuti asesmen gratis 3 menit dan kami akan memberi tahu level yang tepat untuk anak Anda. Setelah itu, satu paket sudah mencakup semuanya.",
+    "readOnline": "Baca bukunya secara online"
+  },
+  "footer": {
+    "wallOfLove": "Wall of Love",
+    "privacy": "Privasi",
+    "terms": "Ketentuan",
+    "contact": "Kontak",
+    "madeInUk": "Dibuat dengan sepenuh hati di Inggris"
+  },
+  "preview": {
+    "bookLockTitle": "Itu sekilas rasa ceritanya.",
+    "cardsLockTitle": "Sisanya ada di set lengkap.",
+    "bookLockBody": "Baca seluruh buku gratis di layar apa pun, atau daftarkan minat Anda pada set cetaknya.",
+    "cardsLockBody": "Setiap bunyi dan kata ada di set kartu cetak. Daftarkan minat Anda di bawah.",
+    "readFree": "Baca gratis online",
+    "registerInterest": "Daftarkan minat",
+    "pageAlt": "Halaman {{n}}",
+    "previousPage": "Halaman sebelumnya",
+    "nextPage": "Halaman berikutnya",
+    "pageCounter": "{{n}} / {{total}} · contoh",
+    "cardFrontAlt": "Kartu {{n}} bagian depan",
+    "cardBackAlt": "Kartu {{n}} bagian belakang",
+    "front": "Depan",
+    "backMarked": "Belakang · bunyi ditandai",
+    "nextCard": "Kartu berikutnya",
+    "flipIt": "Balik kartunya",
+    "cardCounter": "Kartu {{n}} dari {{total}} · contoh"
+  },
+  "catalogue": {
+    "soundsAll": "semua bunyi Level {{level}}",
+    "suffixesAll": "semua akhiran Level {{level}}",
+    "spec": {
+      "size": "Ukuran",
+      "pages": "Halaman",
+      "cover": "Sampul",
+      "inside": "Isi",
+      "binding": "Jilid",
+      "books": "Buku",
+      "workbook": "Buku latihan",
+      "workbooks": "Buku latihan",
+      "cards": "Kartu",
+      "finish": "Lapisan",
+      "box": "Kotak",
+      "tip": "Ujung pena",
+      "ink": "Tinta",
+      "pen": "Pena",
+      "care": "Perawatan"
+    },
+    "specValue": {
+      "matt250": "Laminasi doff, 250gsm",
+      "matt": "Laminasi doff",
+      "silk": "Kertas silk 150gsm, berwarna penuh",
+      "saddle": "Jilid kawat tengah (staples)",
+      "a5Boxed": "A5, dalam kotak",
+      "wiroFlat": "Spiral, terbuka rata",
+      "glossBoth": "Laminasi mengilap di kedua sisi",
+      "penIncluded": "Wet-erase, ujung halus, disertakan",
+      "care": "Lap dengan kain lembap",
+      "a7": "A7 (74 x 105mm)",
+      "mattBoth": "Laminasi doff, dicetak bolak-balik",
+      "tuckIncluded": "Termasuk kotak kartu",
+      "readersA5": "{{n}} x buku bacaan A5",
+      "workbookBundle": "A4 spiral, laminasi mengilap, termasuk pena",
+      "cardsBoxed": "{{cards}} x A7, dalam kotak",
+      "readersBoxed": "33 x buku bacaan A5, dalam kotak",
+      "workbooks8": "8 x A4 spiral, laminasi mengilap",
+      "cardsAll": "734 kartu dalam 9 set",
+      "tipFine": "Halus, untuk membentuk huruf",
+      "inkWet": "Wet-erase: terhapus dengan kain lembap"
+    },
+    "reader": {
+      "blurb": "Buku cerita Level {{level}} untuk berlatih {{sounds}}. Setiap kata dapat dibaca di level ini atau merupakan Tricky Word yang sudah diajarkan.",
+      "d1": "{{title}} adalah cerita sungguhan, bukan latihan membaca. Buku ini melatih {{sounds}} di dalam alur cerita yang ingin diselesaikan anak Anda, dengan momen seru di setiap halaman dan perjalanan yang menyentuh hati.",
+      "d2": "Karena setiap kata dapat dibaca di level ini atau merupakan Tricky Word yang sudah diajarkan, anak Anda membaca seluruh buku sendiri. Tanpa menebak dan tanpa frustrasi; hanya rasa bangga karena menyelesaikan buku sungguhan.",
+      "d3": "Dicetak sebagai kenang-kenangan: kertas silk di dalam, sampul laminasi doff yang tahan di tangan kecil, dan ukuran yang muat di tas buku.",
+      "c1": "1 buku cerita: {{title}}",
+      "c2": "Bunyi fokus: {{sounds}}",
+      "c3": "Halaman aktivitas dan menulis di bagian belakang",
+      "c4": "Sertifikat Reading Star"
+    },
+    "readerSet": {
+      "valueNote": "yaitu {{price}} per buku",
+      "blurb": "Semua {{n}} buku cerita Level {{level}} sesuai urutan membaca. Semua yang dibaca anak Anda di {{levelName}}, dalam satu set.",
+      "d1": "Set lengkap buku cerita Level {{level}}, sesuai urutan yang sebaiknya dibaca anak Anda. Setiap buku memperkenalkan bunyinya melalui cerita sungguhan, dan set ini membawa anak Anda dari awal {{levelName}} hingga siap naik ke level berikutnya.",
+      "d2": "Setiap kata di setiap buku dapat dibaca di level ini atau merupakan Tricky Word yang sudah diajarkan, sehingga anak Anda yang membacakan untuk Anda, bukan sebaliknya.",
+      "book": "Buku {{n}}: {{title}}"
+    },
+    "library": {
+      "valueNote": "yaitu sekitar £3.90 per buku",
+      "blurb": "Semua 33 buku cerita, Level 1 hingga Level 8, dalam kotak kenang-kenangan. Seluruh perjalanan dari bunyi pertama hingga lancar membaca.",
+      "d1": "Setiap buku cerita dalam program ini, dikemas dalam kotak sesuai urutan membaca. Anak Anda mulai dari {{first}} dengan enam bunyi dan akhirnya membaca {{last}} sendiri.",
+      "d2": "Tiga puluh tiga buku terdengar banyak sampai Anda melihat seorang anak menyelesaikannya satu per satu. Dua atau tiga buku per level, masing-masing terjangkau, masing-masing sedikit lebih maju dari sebelumnya. Kotak di rak menjadi catatan seberapa jauh mereka telah melangkah.",
+      "d3": "Jika dibeli satu per satu, buku-buku ini berharga lebih dari £215. Dalam kotak, seluruh perpustakaan seharga £129: sekitar £3.90 per buku.",
+      "c1": "Semua 33 buku cerita dari Level 1 hingga 8",
+      "c2": "Dikemas dalam kotak sesuai urutan membaca",
+      "c3": "Level 1: 2 buku · Level 2: 5 · Level 3: 3 · Level 4: 6",
+      "c4": "Level 5: 5 buku · Level 6: 4 · Level 7: 4 · Level 8: 4",
+      "badge": "Seluruh perjalanan"
+    },
+    "workbook": {
+      "blurb": "Setiap halaman dilaminasi mengilap. Anak Anda menulis dengan pena wet-erase yang disertakan, Anda menghapusnya dengan kain lembap, lalu mereka berlatih lagi.",
+      "d1": "Buku latihan A4 berjilid spiral yang setiap halamannya dilaminasi mengilap. Anak Anda menulis dengan pena wet-erase yang disertakan, Anda menghapusnya dengan kain lembap, lalu mereka berlatih lagi. Menulis tangan, tes mengeja, dikte, dan latihan kalimat untuk seluruh Level {{level}}, sesuai halaman demi halaman dengan bukunya.",
+      "d2": "Beli sekali, latihan selamanya. Buku latihan biasa habis dalam dua minggu; yang ini bertahan sepanjang level dan untuk setiap adik sesudahnya.",
+      "d3": "Jilid spiral itu penting: buku terbuka benar-benar rata, sehingga tangan kecil bisa menulis di setiap baris di setiap halaman.",
+      "d4": "Penanya juga penting. Tinta wet-erase tidak luntur di bawah tangan anak saat menulis dan hanya terhapus dengan kain lembap, jadi tidak ada huruf yang tercoreng di tengah kata.",
+      "d5": "Satu peringatan, terus terang: hanya gunakan pena wet-erase atau dry-wipe. Spidol permanen akan merusak permukaannya.",
+      "c1": "1 buku latihan yang bisa dihapus dan dipakai ulang",
+      "c2": "1 pena wet-erase ujung halus",
+      "c3": "Menulis tangan, mengeja, dikte, dan latihan kalimat untuk Level {{level}}: {{levelName}}"
+    },
+    "soundDeck": {
+      "blurb": "Setiap bunyi dalam program ini pada 150 kartu A7 premium, termasuk sisipan tujuh kartu istimewa ough.",
+      "d1": "Satu kartu untuk setiap bunyi yang ditemui anak Anda dari Level 1 hingga Level 8. Angkat sebuah kartu, anak Anda mengucapkan bunyinya; latihan satu menit setiap hari itulah penggerak kemampuan membaca awal.",
+      "d2": "Set kartu ini tumbuh bersama anak Anda. Mulailah dengan huruf tunggal, tambahkan bunyi dua huruf saat mereka mencapai Level 3, dan terus sampai akhiran di Level 8. Sisipan ough adalah trik andalannya: satu ejaan, tujuh bunyi, dan anak-anak senang mengoleksinya.",
+      "d3": "Kartu A7 premium, dicetak bolak-balik dan dilaminasi doff agar tahan bertahun-tahun di tangan kecil.",
+      "c1": "143 kartu bunyi untuk Level 1 hingga 8",
+      "c2": "Sisipan 7 kartu istimewa ough",
+      "c3": "Kotak kartu"
+    },
+    "wordDeck": {
+      "blurb": "{{n}} kartu untuk Level {{level}}: setiap bunyi beserta kata latihannya, polos di depan dan bertanda di belakang.",
+      "d1": "Delapan kartu per bunyi: satu kartu bunyi dan tujuh kata latihan yang bisa dibaca anak Anda di Level {{level}}. Bagian depan menampilkan kata persis seperti di buku; balik kartunya dan bagian belakang menampilkan kata yang sama dengan bunyinya ditandai, sehingga Anda langsung tahu cara membantu.",
+      "d2": "Gunakan untuk permainan dua menit: baca katanya, temukan bunyinya, kalahkan tumpukan kemarin. Singkat tapi sering lebih baik daripada lama tapi jarang.",
+      "c1": "{{n}} kartu: kartu bunyi ditambah kata latihan",
+      "c2": "Depan polos, belakang bertanda",
+      "c3": "Kotak kartu"
+    },
+    "bundle": {
+      "valueNote": "hemat {{amount}} dibanding membeli terpisah",
+      "blurb": "Semua yang dibutuhkan anak Anda untuk Level {{level}}: semua {{n}} buku cerita, buku latihan yang bisa dihapus beserta pena, dan set kartu kata.",
+      "d1": "Satu kotak, satu level, semuanya ada di dalamnya. Set lengkap buku bacaan {{levelName}}, buku latihan yang bisa dihapus dan dipakai ulang beserta pena wet-erase, dan set kartu kata Level {{level}}.",
+      "d2": "Ketiganya saling melengkapi: kartu untuk latihan harian yang singkat, buku untuk membaca sungguhan, buku latihan untuk menuliskan semuanya (lalu menghapusnya, dan mengulanginya lagi).",
+      "d3": "Jika Anda tahu level anak Anda, inilah yang sebaiknya dibeli.",
+      "c1": "Semua {{n}} buku cerita Level {{level}}",
+      "c2": "Buku latihan yang bisa dihapus dengan pena wet-erase",
+      "c3": "Set kartu kata ({{cards}} kartu)",
+      "badge": "Awal terbaik"
+    },
+    "family": {
+      "blurb": "Seluruh program dalam satu kiriman: perpustakaan dalam kotak, 8 buku latihan yang bisa dihapus beserta pena, set lengkap kartu bunyi, dan setiap set kartu kata.",
+      "d1": "Semuanya, sekali beli, untuk setiap anak di rumah. Perpustakaan lengkap 33 buku, buku latihan yang bisa dihapus dan pena untuk masing-masing dari 8 level, set lengkap kartu bunyi, dan semua 8 set kartu kata.",
+      "d2": "Karena buku latihannya bisa dihapus dan bukunya dibuat awet, seluruh program bisa langsung diwariskan ke adik berikutnya. Sekali beli, dari Reception hingga Year 2 (usia 4–7 tahun) dan seterusnya, dari anak ke anak.",
+      "c1": "Perpustakaan buku bacaan lengkap, dalam kotak (33 buku)",
+      "c2": "8 buku latihan yang bisa dihapus, masing-masing dengan pena wet-erase",
+      "c3": "Set lengkap kartu bunyi (150 kartu)",
+      "c4": "Semua 8 set kartu kata (584 kartu)",
+      "badge": "Semuanya"
+    },
+    "pens": {
+      "blurb": "Tiga pena wet-erase ujung halus untuk buku latihan yang bisa dihapus. Pena sering hilang; buku latihan tidak perlu menunggu.",
+      "d1": "Tiga pena wet-erase ujung halus, jenis yang sama dengan yang disertakan di setiap buku latihan. Tintanya tidak luntur saat anak Anda menulis dan terhapus dengan kain lembap.",
+      "d2": "Pengingat yang menyelamatkan buku latihan: hanya gunakan pena wet-erase atau dry-wipe. Spidol permanen akan merusak permukaan laminasinya.",
+      "c1": "3 pena wet-erase ujung halus"
+    },
+    "preview": {
+      "cards": "Intip kartunya",
+      "book": "Intip isinya",
+      "sampleBook": "Intip isi buku contoh"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "Ücretsiz oyna · kayıt gerekmez",
+    "title": "Fonik oyunları",
+    "intro": "Önce seviyenizi, sonra bir oyun seçin. Her oyun o seviyenin seslerini kullanır.",
+    "chooseLevel": "Seviyenizi seçin",
+    "levelAria": "Seviye {{level}} — {{name}}",
+    "levelSounds": "Seviye {{level}} sesleri",
+    "more": "+{{n}} tane daha",
+    "gamesAria": "Oyunlar",
+    "dailyNote": "Her oyun günde bir kez — az ve sık tekrar, okumanın kalıcı olmasını sağlar.",
+    "played": "Oynandı ✓",
+    "vibes": {
+      "collect": "Topla",
+      "arcade": "Arcade",
+      "runner": "Koşu",
+      "memory": "Hafıza",
+      "puzzle": "Bulmaca",
+      "seekFind": "Ara ve bul",
+      "listening": "Dinleme"
+    },
+    "blurbs": {
+      "soundlings": "Kendi ses yaratıklarını yumurtadan çıkar ve besle",
+      "pop": "Arı Buzz'ı uçurup duyduğun kelimeyi patlat",
+      "cannon": "Nişan al ve doğru sesi kelimenin içine ateşle",
+      "run": "Kapıları oku ve doğru kapıdan koş",
+      "pairs": "Kartları çevir, sesleri kelimelerle eşleştir",
+      "finish": "Bir ses eksik — doğru olana dokun",
+      "spot": "Sahnede sesi saklayan şeyleri ara",
+      "tricky": "Dinle ve Tricky Word'ü (zor kelime) yakala"
+    },
+    "doneBlurb": "Harika oynadın! Yarın yine gel.",
+    "backTomorrow": "Yarın yine",
+    "play": "Oyna",
+    "notSure": "Hangi seviye olduğundan emin değil misiniz?",
+    "notSureBody": "Ücretsiz 3 dakikalık kontrolü yapın, çocuğunuzu doğru seviyeye yerleştirelim."
+  },
+  "play": {
+    "closeGame": "Oyunu kapat",
+    "hearWord": "Kelimeyi dinle",
+    "hearWordAgain": "Kelimeyi tekrar dinle",
+    "openSoundBook": "Sound Book'u aç",
+    "backToGrove": "Koruluğa dön"
+  },
+  "rotate": {
+    "title": "Oynamak için telefonunu yan çevir!",
+    "body": "Bu oyun yatay ekranda çok daha büyük görünür."
+  },
+  "childHome": {
+    "openBook": "{{title}} kitabını aç",
+    "readsDone": "{{total}} okumadan {{done}} tanesi tamam",
+    "currentBook": "{{title}} — senin kitabın, {{total}} okumadan {{done}} tanesi tamam",
+    "doneBook": "{{title}} — tamamlandı",
+    "lockedBook": "{{title}} — kilitli, önce şu anki kitabını bitir",
+    "startCheck": "Level Check'i (seviye kontrolü) başlat",
+    "checkLocked": "Level Check (seviye kontrolü) — önce kitaplarını bitir"
+  }
+}

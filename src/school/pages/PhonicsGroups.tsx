@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, CalendarCheck, ClipboardCheck, Loader2, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
@@ -7,19 +8,21 @@ import { schoolDb, type SchoolStudentRow } from '../lib/schoolClient';
 import { SCHOOL_LEVELS } from '../data/levels';
 import { getBlocks } from '../data/pathway';
 import RegisterDialog from '../components/RegisterDialog';
+import { focusLabel } from '../lib/schoolI18n';
 
 const LEVEL_NAME: Record<number, string> = Object.fromEntries(SCHOOL_LEVELS.map((l) => [l.level, l.name]));
 
 // First teaching block focus + the level's first storybook — a sensible
 // "what this group is working towards" line for the column header.
 function GroupFocusLine({ level }: { level: number }) {
+  const { t } = useTranslation('schoolApp');
   const block = getBlocks(level).find((b) => !b.isReview);
   if (!block) return null;
   const story = block.steps.find((s) => s.kind === 'storybook');
   return (
     <div className="px-3 py-1.5 bg-slate-50 border-b border-slate-100 text-[11px] text-slate-500">
-      <span className="font-semibold text-slate-600">Block {block.blockNumber} of {block.totalTeachingBlocks}:</span> {block.focusLabel}
-      {story && <> · <span className="text-slate-400">towards</span> {story.title}</>}
+      <span className="font-semibold text-slate-600">{t('block.blockOf', { n: block.blockNumber, total: block.totalTeachingBlocks })}:</span> <bdi dir="ltr" lang="en">{focusLabel(t, block.focusLabel)}</bdi>
+      {story && <> · <span className="text-slate-400">{t('groups.towards')}</span> <bdi dir="ltr" lang="en">{story.title}</bdi></>}
     </div>
   );
 }
@@ -49,6 +52,7 @@ function parseLevel(s: string | null | undefined): Level | typeof UNASSIGNED {
 }
 
 export default function PhonicsGroups() {
+  const { t } = useTranslation('schoolApp');
   const { memberships } = useSchoolMemberships();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -131,10 +135,10 @@ export default function PhonicsGroups() {
     setSaving(false);
     if (error) {
       setStudents(previous);
-      toast({ title: 'Could not move student', description: (error as { message?: string }).message, variant: 'destructive' });
+      toast({ title: t('groups.moveFailed'), description: (error as { message?: string }).message, variant: 'destructive' });
       return;
     }
-    toast({ title: `Moved to ${newLevel === UNASSIGNED ? 'unassigned' : `L${newLevel}`}` });
+    toast({ title: t('groups.moved', { target: newLevel === UNASSIGNED ? t('groups.unassigned') : `L${newLevel}` }) });
   };
 
   if (loading) {
@@ -147,18 +151,18 @@ export default function PhonicsGroups() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">Phonics groups</h1>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">{t('groups.title')}</h1>
         <p className="text-slate-600">
-          {totalStudents} student{totalStudents === 1 ? '' : 's'} grouped by current level — across year groups, the way schools actually teach phonics.
+          {t('groups.intro', { students: t('counts.student', { count: totalStudents }) })}
           {unassessedCount > 0 && (
-            <> <span className="text-amber-700 font-semibold">{unassessedCount} not yet assessed.</span></>
+            <> <span className="text-amber-700 font-semibold">{t('groups.notYetAssessed', { count: unassessedCount })}</span></>
           )}
         </p>
-        <p className="text-xs text-slate-400 mt-1">Drag a name into another group to move them · click a name to open their profile.</p>
+        <p className="text-xs text-slate-400 mt-1">{t('groups.hint')}</p>
       </header>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Class:</span>
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('groups.classLabel')}</span>
         <button
           onClick={() => setClassroomFilter('all')}
           className={[
@@ -166,7 +170,7 @@ export default function PhonicsGroups() {
             classroomFilter === 'all' ? 'bg-slate-900 text-white' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50',
           ].join(' ')}
         >
-          All classes
+          {t('groups.allClasses')}
         </button>
         {classrooms.map((c) => (
           <button
@@ -194,9 +198,9 @@ export default function PhonicsGroups() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <h2 className="font-bold text-amber-900 flex items-center gap-1.5">
-                <ClipboardCheck className="w-4 h-4" /> Needs initial assessment
+                <ClipboardCheck className="w-4 h-4" /> {t('groups.needsInitial')}
               </h2>
-              <p className="text-xs text-amber-800">Run the screener to assign each child a starting level.</p>
+              <p className="text-xs text-amber-800">{t('groups.needsInitialBody')}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -223,15 +227,15 @@ export default function PhonicsGroups() {
               className={['bg-white border rounded-2xl overflow-hidden transition-all', isDropTarget ? 's-border ring-2 s-ring' : 'border-slate-200'].join(' ')}
             >
               <header className="s-bg-level text-white px-4 py-2 flex items-center justify-between gap-2">
-                <span className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
+                <span dir="ltr" lang="en" className="font-bold text-sm truncate">L{level} {LEVEL_NAME[level]}</span>
                 <span className="flex items-center gap-1.5 flex-shrink-0">
                   {list.length > 0 && (
                     <button
                       onClick={() => setRegisterLevel(level)}
-                      title="Take the register for this group"
+                      title={t('groups.registerTitle')}
                       className="inline-flex items-center gap-1 bg-white/25 hover:bg-white/40 rounded-full px-2 py-0.5 text-[11px] font-bold transition-colors"
                     >
-                      <CalendarCheck className="w-3 h-3" /> Register
+                      <CalendarCheck className="w-3 h-3" /> {t('groups.register')}
                     </button>
                   )}
                   <span className="text-xs font-bold bg-white/25 rounded-full px-2 py-0.5">{list.length}</span>
@@ -240,13 +244,13 @@ export default function PhonicsGroups() {
               {list.length > 0 && <GroupFocusLine level={level} />}
               {mixedYears > 1 && (
                 <div className="px-3 py-1 bg-slate-50 border-b border-slate-100 text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
-                  Mixed years: {[...(yearSpreadByLevel[String(level)] ?? [])].sort().join(' · ')}
+                  {t('groups.mixedYears', { years: [...(yearSpreadByLevel[String(level)] ?? [])].sort().join(' · ') })}
                 </div>
               )}
               <div className="p-3 min-h-[120px] flex flex-wrap gap-1.5 content-start">
                 {list.length === 0 ? (
                   <p className={['text-xs italic w-full text-center py-6', isDropTarget ? 's-text-ink font-semibold' : 'text-slate-400'].join(' ')}>
-                    {isDropTarget ? 'Drop to move here' : 'No students at this level yet.'}
+                    {isDropTarget ? t('groups.dropHere') : t('groups.emptyLevel')}
                   </p>
                 ) : (
                   list.map((s) => (
@@ -262,13 +266,13 @@ export default function PhonicsGroups() {
       {totalStudents === 0 && (
         <div className="bg-white border border-slate-200 border-dashed rounded-2xl p-10 text-center">
           <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-          <h3 className="font-bold text-lg mb-1">No students yet</h3>
-          <p className="text-slate-600 text-sm mb-4">Add students to a classroom first, then group them by level here.</p>
+          <h3 className="font-bold text-lg mb-1">{t('groups.emptyTitle')}</h3>
+          <p className="text-slate-600 text-sm mb-4">{t('groups.emptyBody')}</p>
           <Link
             to="/school/app/classrooms"
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
           >
-            Go to classrooms <ArrowRight className="w-4 h-4" />
+            {t('groups.goToClassrooms')} <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
           </Link>
         </div>
       )}
@@ -279,7 +283,7 @@ export default function PhonicsGroups() {
           open
           onClose={() => setRegisterLevel(null)}
           schoolId={school.id}
-          title={`L${registerLevel} ${LEVEL_NAME[registerLevel]} — phonics group`}
+          title={t('groups.registerDialogTitle', { level: `L${registerLevel} ${LEVEL_NAME[registerLevel]}` })}
           students={filtered.filter((s) => parseLevel(s.current_level) === registerLevel).map((s) => ({ id: s.id, first_name: s.first_name, last_name: s.last_name }))}
           context={{ type: 'group', level: registerLevel }}
         />
@@ -305,7 +309,8 @@ function StudentChip({
   onDragStart: () => void;
   onDragEnd: () => void;
 }) {
-  const baseClasses = 'inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-grab active:cursor-grabbing select-none';
+  const { t } = useTranslation('schoolApp');
+  const baseClasses = 'inline-flex items-center gap-1.5 ps-1 pe-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-grab active:cursor-grabbing select-none';
   const variantClasses =
     variant === 'amber'
       ? 'bg-white border border-amber-300 text-amber-900 hover:bg-amber-100'
@@ -319,7 +324,7 @@ function StudentChip({
       onDragStart={(e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', student.id); onDragStart(); }}
       onDragEnd={onDragEnd}
       className={[baseClasses, variantClasses].join(' ')}
-      title={`${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''} — drag to move, click for profile`}
+      title={t('groups.chipTitle', { name: `${student.first_name} ${student.last_name ?? ''}${year ? ` (${year})` : ''}` })}
     >
       {year && (
         <span className="inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 rounded-full bg-slate-900 text-white text-[10px]">{year}</span>

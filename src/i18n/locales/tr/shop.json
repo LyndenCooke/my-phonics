@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "homeAria": "MyPhonicsBooks ana sayfa",
+    "skipToMain": "Ana içeriğe geç"
+  },
+  "nav": {
+    "readOnline": "Çevrimiçi okuyun",
+    "freeCheck": "Ücretsiz test",
+    "checkLevelFree": "Seviyesini ücretsiz öğrenin"
+  },
+  "common": {
+    "close": "Kapat",
+    "preorderSave": "Ön sipariş · %{{pct}} tasarruf",
+    "seeDetails": "Ayrıntıları görün",
+    "peekInside": "İçine göz atın",
+    "takeAPeekInside": "İçine göz atın",
+    "viewProduct": "{{name}} ürününü görüntüleyin",
+    "levelBadge": "Seviye {{level}} · {{name}}",
+    "levelChip": "S{{level}} {{name}}",
+    "findLevelFree": "Seviyesini ücretsiz bulun"
+  },
+  "interest": {
+    "dialogLabel": "{{name}} için ön sipariş",
+    "doneTitle": "İndiriminiz ayrıldı",
+    "doneBody": "{{name}} sipariş için hazır olduğu anda size e-posta göndereceğiz; %{{pct}} indiriminiz sizin için saklanacak.",
+    "done": "Tamam",
+    "body": "Basılı seri baskıya giriyor. Şimdi yerinizi ayırtın, siparişe açılana kadar bu fiyattan %{{pct}} indirimi sizin için saklayalım — bugün ödeme yok.",
+    "preorderPrice": "ön sipariş fiyatı",
+    "emailPlaceholder": "E-posta adresiniz",
+    "consent": "Ürün çıktığında bana e-posta gönderin, ücretsiz fonetik kaynaklarıyla birlikte. İstediğiniz zaman abonelikten çıkabilirsiniz.",
+    "submit": "%{{pct}} indirimimi ayırın",
+    "noPayment": "Şimdi ödeme yok. <link>Gizlilik politikamıza</link> göz atın.",
+    "error": "Bir sorun oluştu. Lütfen tekrar deneyin."
+  },
+  "detail": {
+    "returns": "30 gün koşulsuz iade · Birleşik Krallık içi teslimat",
+    "inTheBox": "Kutunun içinde neler var",
+    "details": "Ayrıntılar",
+    "goesWellWith": "Şunlarla iyi gider"
+  },
+  "hero": {
+    "pill": "Şimdi ön sipariş verin · %{{pct}} tasarruf · Bugün ödeme yok",
+    "title": "Gerçek kitaplar, gerçek ellerde.",
+    "titleAccent": "Basılı seri geliyor.",
+    "body": "Çocuğunuzun ekranda okuduğu, kolayca sökülebilir (decodable) kitaplar, saklanmak üzere basılıyor: hikâye kitabı setleri, silinebilir çalışma kitapları ve kart desteleri, tam okuma seviyesine uygun. Birleşik Krallık'ta görev yapan, QTS (öğretmenlik yeterlilik belgesi) sahibi bir sınıf öğretmeni tarafından yazıldı. Bugün ön sipariş verin, gönderime hazır olana kadar %{{pct}} indirimi sizin için saklayalım — şimdi ödeme yok.",
+    "seeBundles": "Paketleri görün",
+    "notSure": "Nereden başlayacağınızdan emin değil misiniz? Ücretsiz 3 dakikalık değerlendirmeyi yapın, çocuğunuzun hangi seviyeye ihtiyacı olduğunu size tam olarak söyleyelim.",
+    "spotlightSticker": "Ailelerin çoğunun tercihi",
+    "anchorLibrary": "33 kitaplık tam kütüphane £129",
+    "anchorFamily": "Tüm programı kapsayan aile paketi £349"
+  },
+  "trust": {
+    "decodable": "Her kitaptaki her kelime çocuğunuzun seviyesinde okunabilir ya da öğretilmiş bir Tricky Word'dür. Tahmin yok, hayal kırıklığı yok.",
+    "teacher": "Birleşik Krallık'ta görev yapan, QTS sahibi bir sınıf öğretmeni tarafından yazıldı ve Letters and Sounds programıyla uyumludur.",
+    "returns": "30 gün koşulsuz iade."
+  },
+  "bundles": {
+    "eyebrow": "Öne çıkan teklif",
+    "title": "Seviye Başlangıç Paketleri",
+    "intro": "Çocuğunuzun seviyesi için ihtiyaç duyduğu her şey tek kutuda: her hikâye kitabı, kalemiyle birlikte silinebilir çalışma kitabı ve kelime kartı destesi. Birlikte almak ayrı ayrı almaktan daha ucuz."
+  },
+  "readers": {
+    "eyebrow": "Hikâye kitapları",
+    "title": "Basılı okuma kitapları",
+    "intro": "Mat laminasyonlu kapaklı A5 hikâye kitapları; tekrar tekrar okunmak ve saklanmak için yapıldı. Tek bir kitap, bir seviye seti ya da tüm kütüphaneyi alın.",
+    "libraryEyebrow": "33 hikâye kitabının tamamı",
+    "singlesTitle": "Tek hikâye kitapları",
+    "singlesIntro": "Seviye 1-3 kitap başına £5.99; Seviye 4-8 ise £6.99. Seviyeyi seçin, hikâyeyi seçin."
+  },
+  "workbooks": {
+    "eyebrow": "Bir kez alın, sonsuza dek çalışın",
+    "title": "Silinebilir çalışma kitapları",
+    "intro": "Her sayfa parlak laminasyonludur. Çocuğunuz ürünle gelen ıslak silinir kalemle yazar, siz nemli bir bezle silersiniz ve yeniden çalışır.",
+    "f1Title": "Tüm seviye boyunca dayanır",
+    "f1Text": "Sıradan bir çalışma kitabı iki haftada biter. Bu, tüm seviye boyunca ve sonraki her kardeş için dayanır: el yazısı, heceleme testleri, dikte ve cümle çalışmaları, kitaplarla sayfa sayfa uyumlu.",
+    "f2Title": "Spiral cilt düz açılır",
+    "f2Text": "Kitap tamamen düz açılır, böylece küçük eller her sayfanın her satırına yazabilir. Kitap sırtıyla uğraşmak yok.",
+    "f3Title": "Islak silinir, kuru silinir değil",
+    "f3Text": "Islak silinir mürekkep, çocuk yazarken elinin altında bozulmaz ve yalnızca nemli bir bezle çıkar. Kelimenin ortasında bulaşmış harf yok.",
+    "warning": "Yalnızca ıslak silinir veya kuru silinir kalem kullanın. Kalıcı kalem yüzeye zarar verir.",
+    "penEyebrow": "Sürekli gereken"
+  },
+  "cards": {
+    "eyebrow": "Günde iki dakika",
+    "title": "Kart desteleri",
+    "intro": "Küçük ellerin yıllarca kullanımına dayanması için mat laminasyonlu, birinci sınıf A7 kartlar. Ses destesi tüm programı kapsar; kelime desteleri her seviyeye uygundur.",
+    "soundEyebrow": "150 kart, her ses",
+    "wordTitle": "Kelime kartı desteleri, her seviyeye bir tane",
+    "wordIntro": "Ses başına sekiz kart: ses kartı artı yedi alıştırma kelimesi. Önü sade, arkası işaretli; böylece nasıl yardım edeceğinizi görebilirsiniz."
+  },
+  "family": {
+    "eyebrow": "Tek alışveriş, her çocuk için",
+    "title": "Tüm programı kapsayan aile paketi",
+    "intro": "Bu sayfadaki her şey tek teslimatta, Reception'dan Year 2'ye (4–7 yaş) ve ötesine. Çalışma kitapları silinebildiği için tüm program bir sonraki kardeşe aktarılabilir."
+  },
+  "closing": {
+    "title": "Hangi seviyeyi alacağınızdan emin değil misiniz?",
+    "body": "Ücretsiz 3 dakikalık değerlendirmeyi yapın, çocuğunuzun hangi seviyeye ihtiyacı olduğunu size tam olarak söyleyelim. Sonra tek bir paket her şeyi karşılar.",
+    "readOnline": "Kitapları çevrimiçi okuyun"
+  },
+  "footer": {
+    "wallOfLove": "Wall of Love",
+    "privacy": "Gizlilik",
+    "terms": "Koşullar",
+    "contact": "İletişim",
+    "madeInUk": "Birleşik Krallık'ta özenle yapıldı"
+  },
+  "preview": {
+    "bookLockTitle": "Hikâyeden küçük bir tadımlık.",
+    "cardsLockTitle": "Gerisi tam destede.",
+    "bookLockBody": "Kitabın tamamını herhangi bir ekranda ücretsiz okuyun ya da basılı set için ilginizi kaydedin.",
+    "cardsLockBody": "Her ses ve kelime basılı destede. İlginizi aşağıdan kaydedin.",
+    "readFree": "Çevrimiçi ücretsiz okuyun",
+    "registerInterest": "İlgimi kaydet",
+    "pageAlt": "Sayfa {{n}}",
+    "previousPage": "Önceki sayfa",
+    "nextPage": "Sonraki sayfa",
+    "pageCounter": "{{n}} / {{total}} · örnek",
+    "cardFrontAlt": "Kart {{n}} ön yüz",
+    "cardBackAlt": "Kart {{n}} arka yüz",
+    "front": "Ön",
+    "backMarked": "Arka · sesler işaretli",
+    "nextCard": "Sonraki kart",
+    "flipIt": "Kartı çevirin",
+    "cardCounter": "Kart {{n}} / {{total}} · örnek"
+  },
+  "catalogue": {
+    "soundsAll": "Seviye {{level}}'in tüm sesleri",
+    "suffixesAll": "Seviye {{level}}'in tüm ekleri",
+    "spec": {
+      "size": "Boyut",
+      "pages": "Sayfalar",
+      "cover": "Kapak",
+      "inside": "İç sayfalar",
+      "binding": "Cilt",
+      "books": "Kitaplar",
+      "workbook": "Çalışma kitabı",
+      "workbooks": "Çalışma kitapları",
+      "cards": "Kartlar",
+      "finish": "Yüzey",
+      "box": "Kutu",
+      "tip": "Uç",
+      "ink": "Mürekkep",
+      "pen": "Kalem",
+      "care": "Bakım"
+    },
+    "specValue": {
+      "matt250": "Mat laminasyonlu, 250gsm",
+      "matt": "Mat laminasyonlu",
+      "silk": "150gsm ipek kâğıt, tam renkli",
+      "saddle": "Tel dikiş",
+      "a5Boxed": "A5, kutulu",
+      "wiroFlat": "Spiral, düz açılır",
+      "glossBoth": "İki yüzü parlak laminasyonlu",
+      "penIncluded": "Islak silinir, ince uçlu, dahil",
+      "care": "Nemli bir bezle silin",
+      "a7": "A7 (74 x 105mm)",
+      "mattBoth": "Mat laminasyonlu, iki yüzü baskılı",
+      "tuckIncluded": "Kart kutusu dahil",
+      "readersA5": "{{n}} x A5 okuma kitabı",
+      "workbookBundle": "A4 spiral, parlak laminasyonlu, kalem dahil",
+      "cardsBoxed": "{{cards}} x A7, kutulu",
+      "readersBoxed": "33 x A5 okuma kitabı, kutulu",
+      "workbooks8": "8 x A4 spiral, parlak laminasyonlu",
+      "cardsAll": "9 destede 734 kart",
+      "tipFine": "İnce, harf şekillendirme için",
+      "inkWet": "Islak silinir: nemli bir bezle çıkar"
+    },
+    "reader": {
+      "blurb": "{{sounds}} seslerini çalıştıran Seviye {{level}} hikâye kitabı. Her kelime bu seviyede okunabilir ya da öğretilmiş bir Tricky Word'dür.",
+      "d1": "{{title}} bir okuma alıştırması değil, gerçek bir hikâye. {{sounds}} seslerini, çocuğunuzun bitirmek isteyeceği bir anlatının içinde, sayfa çevirtecek anlar ve duygusal bir yolculukla çalıştırır.",
+      "d2": "Her kelime bu seviyede okunabilir ya da öğretilmiş bir Tricky Word olduğu için çocuğunuz kitabın tamamını kendisi okur. Tahmin yok, hayal kırıklığı yok; yalnızca gerçek bir kitabı bitirmenin sessiz gururu.",
+      "d3": "Bir hatıra olarak basıldı: içinde ipek kâğıt, küçük ellere dayanan mat laminasyonlu bir kapak ve okul çantasına sığan bir boyut.",
+      "c1": "1 hikâye kitabı: {{title}}",
+      "c2": "Odak sesler: {{sounds}}",
+      "c3": "Arkada etkinlik ve yazma sayfaları",
+      "c4": "Reading Star sertifikası"
+    },
+    "readerSet": {
+      "valueNote": "kitap başına {{price}}",
+      "blurb": "Okuma sırasına göre {{n}} Seviye {{level}} hikâye kitabının tamamı. Çocuğunuzun {{levelName}} aşamasında okuduğu her şey tek sette.",
+      "d1": "Çocuğunuzun okuması gereken sırayla Seviye {{level}} hikâye kitaplarının tam seti. Her kitap seslerini gerçek bir hikâyeyle tanıtır ve set, çocuğunuzu {{levelName}} başlangıcından bir sonraki seviyeye hazır hâle getirir.",
+      "d2": "Her kitaptaki her kelime bu seviyede okunabilir ya da öğretilmiş bir Tricky Word'dür; böylece siz ona değil, çocuğunuz size okur.",
+      "book": "Kitap {{n}}: {{title}}"
+    },
+    "library": {
+      "valueNote": "kitap başına yaklaşık £3.90",
+      "blurb": "Seviye 1'den Seviye 8'e 33 hikâye kitabının tamamı, hatıralık bir kutuda. İlk seslerden akıcı okumaya tüm yolculuk.",
+      "d1": "Programdaki her hikâye kitabı, okuma sırasına göre kutulanmış. Çocuğunuz altı sesle {{first}} kitabından başlar ve {{last}} kitabını kendi başına okuyarak bitirir.",
+      "d2": "Otuz üç kitap, bir çocuğun onları tek tek bitirdiğini görene kadar çok gibi gelir. Seviye başına iki ya da üç kitap; her biri ulaşılabilir, her biri bir öncekinden biraz daha ileride. Raftaki kutu, ne kadar yol aldıklarının kaydı olur.",
+      "d3": "Tek tek alındığında bu kitaplar £215'in üzerinde tutar. Kutulu olarak tüm kütüphane £129: kitap başına yaklaşık £3.90.",
+      "c1": "Seviye 1-8 arası 33 hikâye kitabının tamamı",
+      "c2": "Okuma sırasına göre kutulu",
+      "c3": "Seviye 1: 2 kitap · Seviye 2: 5 · Seviye 3: 3 · Seviye 4: 6",
+      "c4": "Seviye 5: 5 kitap · Seviye 6: 4 · Seviye 7: 4 · Seviye 8: 4",
+      "badge": "Tüm yolculuk"
+    },
+    "workbook": {
+      "blurb": "Her sayfa parlak laminasyonludur. Çocuğunuz ürünle gelen ıslak silinir kalemle yazar, siz nemli bir bezle silersiniz ve yeniden çalışır.",
+      "d1": "Her sayfası parlak laminasyonlu, A4 spiral ciltli bir çalışma kitabı. Çocuğunuz ürünle gelen ıslak silinir kalemle yazar, siz nemli bir bezle silersiniz ve yeniden çalışır. Seviye {{level}}'in tamamı için el yazısı, heceleme testleri, dikte ve cümle çalışmaları, kitaplarla sayfa sayfa uyumlu.",
+      "d2": "Bir kez alın, sonsuza dek çalışın. Sıradan bir çalışma kitabı iki haftada biter; bu, tüm seviye boyunca ve sonraki her kardeş için dayanır.",
+      "d3": "Spiral cilt önemlidir: tamamen düz açılır, böylece küçük eller her sayfanın her satırına yazabilir.",
+      "d4": "Kalem de önemlidir. Islak silinir mürekkep, çocuk yazarken elinin altında bozulmaz ve yalnızca nemli bir bezle çıkar; kelimenin ortasında bulaşmış harf olmaz.",
+      "d5": "Açıkça belirtelim: yalnızca ıslak silinir veya kuru silinir kalem kullanın. Kalıcı kalem yüzeye zarar verir.",
+      "c1": "1 tekrar kullanılabilir, silinebilir çalışma kitabı",
+      "c2": "1 ince uçlu ıslak silinir kalem",
+      "c3": "Seviye {{level}} için el yazısı, heceleme, dikte ve cümle çalışmaları: {{levelName}}"
+    },
+    "soundDeck": {
+      "blurb": "Programdaki her ses, yedi kartlık ough joker eki dahil 150 birinci sınıf A7 kartta.",
+      "d1": "Çocuğunuzun Seviye 1'den Seviye 8'e kadar karşılaştığı her ses için bir kart. Bir kartı kaldırın, çocuğunuz sesi söylesin; o günlük bir dakikalık alıştırma erken okumanın motorudur.",
+      "d2": "Deste çocuğunuzla birlikte büyür. Tek harflerle başlayın, Seviye 3'e geldiğinde iki harfli sesleri ekleyin ve Seviye 8'deki eklere kadar devam edin. Ough eki destenin sürprizi: tek yazılış, yedi ses; çocuklar bunları toplamaya bayılır.",
+      "d3": "İki yüzü baskılı ve küçük ellerin yıllarca kullanımına dayanması için mat laminasyonlu birinci sınıf A7 kartlar.",
+      "c1": "Seviye 1-8'i kapsayan 143 ses kartı",
+      "c2": "7 kartlık ough joker eki",
+      "c3": "Kart kutusu"
+    },
+    "wordDeck": {
+      "blurb": "Seviye {{level}} için {{n}} kart: her ses ve alıştırma kelimeleri, önü sade ve arkası işaretli.",
+      "d1": "Ses başına sekiz kart: bir ses kartı ve çocuğunuzun Seviye {{level}}'de okuyabileceği yedi alıştırma kelimesi. Ön yüz kelimeyi tam kitapta göründüğü gibi gösterir; çevirdiğinizde arka yüz aynı kelimeyi sesleri işaretlenmiş olarak gösterir, böylece nasıl yardım edeceğinizi bir bakışta görürsünüz.",
+      "d2": "İki dakikalık oyunlar için kullanın: kelimeyi okuyun, sesi bulun, dünkü yığını geçin. Kısa ve sık, uzun ve seyrekten iyidir.",
+      "c1": "{{n}} kart: ses kartları ve alıştırma kelimeleri",
+      "c2": "Önü sade, arkası işaretli",
+      "c3": "Kart kutusu"
+    },
+    "bundle": {
+      "valueNote": "ayrı ayrı almaya göre {{amount}} tasarruf",
+      "blurb": "Çocuğunuzun Seviye {{level}} için ihtiyaç duyduğu her şey: {{n}} hikâye kitabının tamamı, kalemiyle silinebilir çalışma kitabı ve kelime kartı destesi.",
+      "d1": "Tek kutu, tek seviye, içinde her şey. Eksiksiz {{levelName}} okuma seti, ıslak silinir kalemiyle tekrar kullanılabilir silinebilir çalışma kitabı ve Seviye {{level}} kelime kartı destesi.",
+      "d2": "Üç parça birlikte çalışır: hızlı günlük alıştırma için kartlar, gerçek okuma için kitaplar, hepsini yazmak için çalışma kitabı (sonra silip yeniden yapmak için).",
+      "d3": "Çocuğunuzun seviyesini biliyorsanız, alınacak paket bu.",
+      "c1": "{{n}} Seviye {{level}} hikâye kitabının tamamı",
+      "c2": "Islak silinir kalemli silinebilir çalışma kitabı",
+      "c3": "Kelime kartı destesi ({{cards}} kart)",
+      "badge": "En iyi başlangıç"
+    },
+    "family": {
+      "blurb": "Tüm program tek teslimatta: kutulu kütüphane, kalemleriyle 8 silinebilir çalışma kitabının tamamı, eksiksiz ses kartı destesi ve her kelime kartı destesi.",
+      "d1": "Evdeki her çocuk için, bir kerede her şey. 33 kitaplık tam kütüphane, 8 seviyenin her biri için silinebilir bir çalışma kitabı ve kalem, eksiksiz ses kartı destesi ve 8 kelime kartı destesinin tamamı.",
+      "d2": "Çalışma kitapları silinebildiği ve kitaplar dayanıklı yapıldığı için tüm program doğrudan bir sonraki kardeşe geçer. Tek alışveriş; Reception'dan Year 2'ye (4–7 yaş) ve ötesine, çocuktan çocuğa.",
+      "c1": "Tam okuma kütüphanesi, kutulu (33 kitap)",
+      "c2": "Her biri ıslak silinir kalemli 8 silinebilir çalışma kitabı",
+      "c3": "Eksiksiz ses kartı destesi (150 kart)",
+      "c4": "8 kelime kartı destesinin tamamı (584 kart)",
+      "badge": "Her şey"
+    },
+    "pens": {
+      "blurb": "Silinebilir çalışma kitapları için üç ince uçlu ıslak silinir kalem. Kalemler kaybolur; çalışma kitabının beklemesi gerekmez.",
+      "d1": "Her silinebilir çalışma kitabıyla gelenle aynı türden üç ince uçlu ıslak silinir kalem. Mürekkep çocuğunuz yazarken bozulmaz ve nemli bir bezle çıkar.",
+      "d2": "Çalışma kitaplarını kurtaran bir hatırlatma: yalnızca ıslak silinir veya kuru silinir kalem kullanın. Kalıcı kalem laminasyonlu yüzeye zarar verir.",
+      "c1": "3 ince uçlu ıslak silinir kalem"
+    },
+    "preview": {
+      "cards": "Kartlara göz atın",
+      "book": "İçine göz atın",
+      "sampleBook": "Örnek bir kitabın içine göz atın"
+    }
+  }
+}

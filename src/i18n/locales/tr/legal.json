@@ -1,0 +1,106 @@
+{
+  "backHome": "Ana sayfaya dön",
+  "notice": {
+    "text": "Bu çeviri yalnızca kolaylık sağlamak amacıyla sunulmuştur. Herhangi bir farklılık olması durumunda İngilizce metin geçerlidir.",
+    "switch": "İngilizce oku"
+  },
+  "privacy": {
+    "title": "Gizlilik Politikası",
+    "lastUpdated": "Son güncelleme: Nisan 2026",
+    "whoWeAre": {
+      "title": "Biz kimiz",
+      "body": "MyPhonicsBooks, Lynden Cooke tarafından işletilmektedir. Bu politika, hangi bilgileri topladığımızı, neden topladığımızı ve UK GDPR (Birleşik Krallık Genel Veri Koruma Tüzüğü) kapsamındaki haklarınızı nasıl kullanabileceğinizi açıklar."
+    },
+    "collect": {
+      "title": "Topladığımız bilgiler",
+      "items": {
+        "email": "<b>Ebeveyn e-posta adresi</b> — çocuğunuzun değerlendirme sonuçlarını, hesap erişim bilgilerini ve satın alma makbuzlarını gönderebilmemiz için.",
+        "child": "<b>Çocuğun adı ve yaşı</b> — değerlendirme ve öğrenme merkezi içinde deneyimi kişiselleştirmek için kullanılır. Bu bilgileri üçüncü taraflarla paylaşmayız.",
+        "activity": "<b>Değerlendirme cevapları ve okuma etkinliği</b> — doğru okuma seviyesini önerebilmemiz ve zaman içindeki ilerlemeyi gösterebilmemiz için.",
+        "payment": "<b>Ödeme bilgileri</b> — Stripe tarafından işlenir. Tam kart numaralarını asla görmeyiz ve saklamayız.",
+        "analytics": "<b>Temel analizler</b> — ürünü geliştirebilmemiz için anonimleştirilmiş sayfa görüntüleme ve kullanım akışı verileri."
+      }
+    },
+    "use": {
+      "title": "Verilerinizi nasıl kullanırız",
+      "body": "Bilgilerinizi yalnızca hizmeti sunmak için kullanırız: kitapları sunmak, ilerlemeyi kaydetmek, ödemeleri işlemek ve hesapla ilgili e-postalar göndermek. Verilerinizi satmayız ve pazarlama ortaklarıyla paylaşmayız."
+    },
+    "processors": {
+      "title": "Kullandığımız veri işleyenler",
+      "items": {
+        "supabase": "veritabanı, kimlik doğrulama, dosya depolama",
+        "stripe": "ödeme işleme",
+        "vercel": "barındırma",
+        "elevenlabs": "okumayı desteklemek için ses sentezi"
+      }
+    },
+    "rights": {
+      "title": "Haklarınız",
+      "body": "Dilediğiniz zaman verilerinizin bir kopyasını talep edebilir, düzeltilmesini isteyebilir veya hesabınızın silinmesini isteyebilirsiniz. <email>{{email}}</email> adresine e-posta gönderin; 30 gün içinde yanıt vereceğiz."
+    },
+    "children": {
+      "title": "Çocuklar",
+      "body": "Hesaplar ebeveynler veya veliler tarafından oluşturulur. Çocuklardan asla kendi başlarına kaydolmalarını istemeyiz ve bir çocukla ilgili pazarlama e-postalarını asla başka bir aileye göndermeyiz."
+    },
+    "cookies": {
+      "title": "Çerezler",
+      "body": "Oturumunuzun açık kalması için az sayıda zorunlu çerez kullanırız. Üçüncü taraf reklam çerezleri kullanmayız."
+    },
+    "contact": {
+      "title": "İletişim",
+      "body": "Bu politika hakkında sorularınız mı var? <email>{{email}}</email> adresine e-posta gönderin."
+    }
+  },
+  "terms": {
+    "title": "Hizmet Koşulları",
+    "lastUpdated": "Son güncelleme: Nisan 2026",
+    "about": {
+      "title": "Bu koşullar hakkında",
+      "body": "Bu koşullar, MyPhonicsBooks'u kullanımınızı düzenler. Bir hesap oluşturarak, değerlendirmeye katılarak veya herhangi bir ürün satın alarak bu koşulları kabul etmiş olursunuz."
+    },
+    "signup": {
+      "title": "Kimler kaydolabilir",
+      "body": "Hesaplar, bir çocuk adına ebeveyn veya veli tarafından oluşturulmalıdır. Bu sözleşmeyi yapabilmek için 18 yaşında veya daha büyük olmanız gerekir."
+    },
+    "yourContent": {
+      "title": "Sizin içeriğiniz",
+      "body": "Çocuğunuzun öğrenme merkezi içinde oluşturduğu her şeyin (çizimler, test cevapları, ilerleme verileri) mülkiyeti sizde kalır. Öğrenme merkezinin çalışabilmesi için bunları hesabınızda saklamamız ve görüntülememiz amacıyla bize sınırlı bir lisans verirsiniz."
+    },
+    "ourContent": {
+      "title": "Bizim içeriğimiz",
+      "body": "Tüm kitapların, çizimlerin, seslerin ve değerlendirme materyallerinin telif hakkı MyPhonicsBooks'a aittir. Kitaplar, çalışma kâğıtları ve oyunlar ücretsiz olarak okunabilir ve oynanabilir. İndirilen PDF'ler yalnızca kendi aileniz veya kendi sınıfınız için lisanslanmıştır: onlar için ihtiyaç duyduğunuz kadar kopya basabilirsiniz. Tek tek veya herhangi bir paketin parçası olarak yeniden satılamaz, yeniden dağıtılamaz veya yeniden yüklenemez."
+    },
+    "subscriptions": {
+      "title": "Abonelikler ve iadeler",
+      "body": "Aylık ve yıllık abonelikler iptal edilene kadar otomatik olarak yenilenir. Profilinizden istediğiniz zaman iptal edebilirsiniz — ödemesini yaptığınız dönemin sonuna kadar erişiminiz devam eder. Tek seferlik satın almalar (tekil kitaplar, paketler), Birleşik Krallık tüketici hukuku gerektirmedikçe PDF indirildikten sonra iade edilmez."
+    },
+    "trials": {
+      "title": "Ücretsiz denemeler",
+      "body": "Ücretsiz deneme sunulduğunda, deneme süresince sizden ücret alınmaz. Deneme sona ermeden önce size bir hatırlatma göndeririz. İptal etmezseniz abonelik başlar ve kartınızdan ödeme alınır."
+    },
+    "acceptableUse": {
+      "title": "Kabul edilebilir kullanım",
+      "body": "Lütfen siteye tersine mühendislik uygulamaya, içeriği otomatik olarak toplamaya (scraping), hizmeti herhangi birini taciz etmek için kullanmaya veya diğer kullanıcıların hesaplarına erişmeye çalışmayın. Bunu yapan hesapları askıya alabiliriz."
+    },
+    "outcomes": {
+      "title": "Eğitim sonuçları",
+      "body": "MyPhonicsBooks destekleyici bir okuma kaynağıdır. Belirli bir eğitim sonucunu garanti etmeyiz ve nitelikli bir öğretmenin rolünün yerini tutmayız."
+    },
+    "liability": {
+      "title": "Sorumluluk",
+      "body": "Hizmeti \"olduğu gibi\" sunarız ve sorumluluğumuz, kanunun aksini gerektirdiği durumlar dışında, son 12 ayda bize ödediğiniz tutarla sınırlıdır."
+    },
+    "changes": {
+      "title": "Değişiklikler",
+      "body": "Bu koşulları güncelleyebiliriz. Önemli değişiklikler, yürürlüğe girmeden önce e-posta veya uygulama içi bildirim yoluyla size iletilecektir."
+    },
+    "law": {
+      "title": "Uygulanacak hukuk",
+      "body": "Bu koşullar İngiltere ve Galler kanunlarına tabidir."
+    },
+    "contact": {
+      "title": "İletişim",
+      "body": "Sorularınız mı var? <email>{{email}}</email> adresine e-posta gönderin."
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "Oops! Page not found",
+    "home": "Return to Home"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — Book Showcase",
+    "subtitle": "Decodable phonics books for children aged 4-8",
+    "tagline": "Every book is a window into a different contemporary culture",
+    "overview": "Brand Overview",
+    "labels": {
+      "mission": "Mission:",
+      "tagline": "Tagline:",
+      "voice": "Voice:",
+      "target": "Target:",
+      "artStyle": "Art style:",
+      "curriculum": "Curriculum:",
+      "fonts": "Fonts:",
+      "differentiator": "Differentiator:"
+    },
+    "values": {
+      "mission": "Every child deserves a reading book matched to exactly what they can decode today.",
+      "tagline": "Decodable phonics books. Print at home.",
+      "voice": "Warm, encouraging, like a friendly Year 1 teacher. British English. Never salesy.",
+      "target": "Parents of 4-8 year olds, British expats, international schools.",
+      "artStyle": "Whimsical hand-drawn cartoon with soft watercolour backgrounds, clean black outlines, solid black dot eyes.",
+      "curriculum": "Based on Letters and Sounds (UK). 6 levels, 32 books, progressive phonics.",
+      "fonts": "Plus Jakarta Sans (web), Outfit (headings), Andika (books — single-storey a and g).",
+      "differentiator": "Every word decodable + genuine cultural diversity + print at home."
+    },
+    "levelColours": "Level Colour System:",
+    "allBooks": "All 32 Books — Covers & PDF Downloads",
+    "level": "Level {{level}}",
+    "viewPdf": "View PDF",
+    "readerTitle": "Interactive Book Reader",
+    "readerBody": "Browse the full library with interactive word-by-word reading, audio narration, and phonics activities.",
+    "openLibrary": "Open Library",
+    "footer": "MyPhonicsBooks — Based on Letters and Sounds (DfE 2007). Not affiliated with Read Write Inc or Oxford Reading Tree.",
+    "cultures": {
+      "uk": "UK",
+      "middleEast": "Middle East",
+      "nepal": "Nepal",
+      "pakistan": "Pakistan",
+      "trinidad": "Trinidad",
+      "japan": "Japan",
+      "england": "England",
+      "kenya": "Kenya",
+      "iceland": "Iceland",
+      "france": "France",
+      "thailand": "Thailand",
+      "ghana": "Ghana",
+      "southKorea": "South Korea",
+      "turkey": "Turkey",
+      "ukWoodland": "UK Woodland",
+      "mexico": "Mexico",
+      "londonJewish": "London Jewish",
+      "sweden": "Sweden",
+      "india": "India",
+      "brazil": "Brazil",
+      "egypt": "Egypt",
+      "china": "China",
+      "italy": "Italy",
+      "australia": "Australia"
+    }
+  }
+}

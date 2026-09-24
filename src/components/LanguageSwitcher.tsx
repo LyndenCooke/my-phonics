@@ -30,7 +30,7 @@ export default function LanguageSwitcher({
   align?: 'start' | 'center' | 'end';
 }) {
   const { t, i18n } = useTranslation();
-  const current = getLanguage(i18n.resolvedLanguage ?? i18n.language);
+  const current = getLanguage(i18n.language ?? i18n.resolvedLanguage);
 
   return (
     <DropdownMenu>

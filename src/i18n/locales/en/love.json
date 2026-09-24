@@ -1,0 +1,18 @@
+{
+  "badge": "Wall of Love",
+  "title": "Real words from real families",
+  "rating_one": "{{avg}} from {{count}} family and teachers",
+  "rating_other": "{{avg}} from {{count}} families and teachers",
+  "empty": {
+    "title": "The wall is just getting started",
+    "body": "Be one of the first families to share your story."
+  },
+  "aParent": "A parent",
+  "cta": {
+    "addStory": "Want to add your story?",
+    "ownStory": "Want a story of your own?",
+    "leaveReview": "Leave a review",
+    "tryCheck": "Try the free 3-minute check",
+    "support": "Support MyPhonicsBooks"
+  }
+}

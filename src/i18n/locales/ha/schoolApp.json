@@ -1,0 +1,430 @@
+{
+  "backToDashboard": "Koma zuwa dashbod",
+  "couldNotSave": "Ba a iya adanawa ba",
+  "errors": {
+    "downloadUnavailable": "Ba a iya saukewa yanzu ba",
+    "unavailable": "Babu shi"
+  },
+  "counts": {
+    "classroom_one": "aji {{count}}",
+    "classroom_other": "azuzuwa {{count}}",
+    "student_one": "ɗalibi {{count}}",
+    "student_other": "ɗalibai {{count}}",
+    "book_one": "littafi {{count}}",
+    "book_other": "littattafai {{count}}",
+    "admin_one": "mai gudanarwa {{count}}",
+    "admin_other": "masu gudanarwa {{count}}",
+    "teacher_one": "malami {{count}}",
+    "teacher_other": "malamai {{count}}"
+  },
+  "block": {
+    "blockOf": "Kashi {{n}} cikin {{total}}",
+    "block": "Kashi {{n}}",
+    "levelReview": "Bitar mataki",
+    "reviewGate": "Bita · ƙofar mataki"
+  },
+  "judgement": {
+    "continue": "Ci gaba",
+    "ready_soon": "Zai shirya nan ba da jimawa ba",
+    "needs_support": "Yana buƙatar taimako"
+  },
+  "windows": {
+    "autumn1": "Zangon Kaka 1",
+    "autumn2": "Zangon Kaka 2",
+    "spring1": "Zangon Bazara 1",
+    "spring2": "Zangon Bazara 2",
+    "summer1": "Zangon Rani 1",
+    "summer2": "Zangon Rani 2"
+  },
+  "colours": {
+    "pink": "Ruwan hoda",
+    "coral": "Launin murjani",
+    "amber": "Launin amba",
+    "green": "Kore",
+    "blue": "Shuɗi",
+    "indigo": "Shuɗi mai duhu",
+    "purple": "Shunayya",
+    "teal": "Kore-shuɗi"
+  },
+  "status": {
+    "complete": "An kammala",
+    "inProgress": "Ana ci gaba",
+    "notStarted": "Ba a fara ba",
+    "next": "Na gaba",
+    "upcoming": "Mai zuwa"
+  },
+  "outcomes": {
+    "readyUp": "A shirye don hawa mataki",
+    "staying": "Yana nan a matakinsa",
+    "intervention": "Yana buƙatar ƙarin tallafi",
+    "stillToAssess": "Ba a tantance ba tukuna"
+  },
+  "home": {
+    "loadFailed": "Ba a iya loda azuzuwa ba",
+    "createFailed": "Ba a iya ƙirƙirar aji ba",
+    "created": "An ƙirƙiri aji",
+    "seed": {
+      "confirm": "A saka bayanan gwaji?\n\nWannan zai GOGE kowane aji da kowane ɗalibi a wannan makaranta, ya maye gurbinsu da saitin gwaji. Ba za a iya mayar da shi ba.\n\nKa yi haka ne kawai a makarantar gwaji.",
+      "failed": "Saka bayanai ya gaza",
+      "done": "An saka bayanan gwaji",
+      "doneBody": "Azuzuwa {{classrooms}}, ɗalibai {{students}}.",
+      "title": "Kafa makarantar gwaji",
+      "body": "Yana cika wannan makaranta da saiti mai kama da na gaske mai rukunoni biyu a kowace shekara — azuzuwa 6, kusan ɗalibai 160 da aka tara bisa mataki a cikin shekaru daban-daban. Yana maye gurbin duk azuzuwan da ke akwai.",
+      "button": "Saka bayanan gwaji"
+    },
+    "welcome": "Barka da zuwa {{school}}",
+    "yourSchool": "makarantarku",
+    "firstClassroom": "Bari mu kafa ajinku na farko.",
+    "stats": {
+      "total": "Jimillar ɗalibai",
+      "assessed": "An tantance",
+      "notAssessed": "Ba a tantance ba tukuna",
+      "levelsActive": "Matakai masu aiki"
+    },
+    "actions": {
+      "title": "Abubuwan da ake buƙata",
+      "unassessed_one": "Yaro {{count}} ba a tantance shi ba tukuna",
+      "unassessed_other": "Yara {{count}} ba a tantance su ba tukuna",
+      "stuck_one": "Yaro {{count}} yana mataki ɗaya tsawon mako 4+",
+      "stuck_other": "Yara {{count}} suna mataki ɗaya tsawon mako 4+",
+      "stale_one": "Aji {{count}} babu tantancewa a wannan wata",
+      "stale_other": "Azuzuwa {{count}} babu tantancewa a wannan wata",
+      "assess": "Tantance",
+      "review": "Duba",
+      "open": "Buɗe"
+    },
+    "distribution": "Rarraba matakai a duk makarantar",
+    "quick": {
+      "groups": {
+        "title": "Ƙungiyoyin fonikis",
+        "body": "Tara ɗalibai bisa mataki don ƙarin tallafi."
+      },
+      "pathway": {
+        "title": "Hanyar koyarwa",
+        "body": "Littafin Sauti → Littafin Haɗa Sauti → Littafin Labari."
+      },
+      "library": {
+        "title": "Ɗakin karatu",
+        "body": "Littattafai 118 + takardun aiki, a shirye don bugawa."
+      },
+      "curriculum": {
+        "title": "Manhaja",
+        "body": "Ya dace da Birtaniya, Gulf, Pakistan, Amurka da IB."
+      }
+    },
+    "classrooms": "Azuzuwa",
+    "newClassroom": "Sabon aji",
+    "className": "Sunan aji",
+    "classNamePlaceholder": "misali Ajin Ceri",
+    "yearGroup": "Shekarar karatu",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "Ƙirƙira",
+    "emptyTitle": "Babu azuzuwa tukuna",
+    "emptyBody": "Ƙirƙiri ajinku na farko don ƙara ɗalibai da gudanar da tantancewa.",
+    "createClassroom": "Ƙirƙiri aji",
+    "toAssess": "{{count}} da za a tantance"
+  },
+  "dashboard": {
+    "title": "Manhajar matakai 8",
+    "intro": "Tsarin ci gaban fonikis na Birtaniya mai tsari irin na Letters and Sounds — matakai takwas na Littattafan Sauti, Littattafan Haɗa Sauti da Littattafan Labari, tare da takardun aiki masu dacewa, tabarmar sauti da katunan Tricky Words (kalmomi masu wuya).",
+    "levels": "Matakai",
+    "resourcesPlanned": "Kayan koyo da aka tsara",
+    "stats": {
+      "storybooks": "Littattafan Labari",
+      "storybooksHint": "labarai masu hotuna",
+      "soundBooks": "Littattafan Sauti",
+      "soundBooksHint": "hotuna na gaske, 1 ga kowace haɗin harafi da sauti",
+      "blendingBooks": "Littattafan Haɗa Sauti",
+      "blendingBooksHint": "atisayen A6 kafin littafin labari",
+      "total": "Jimillar littattafai",
+      "totalHint": "a cikin matakai 8"
+    },
+    "nav": {
+      "levels": {
+        "title": "Matakai",
+        "body": "Matakai {{count}} tare da haɗin harafi da sauti, kalmomi masu wuya da cikakken tsarin kayan koyo."
+      },
+      "library": {
+        "title": "Ɗakin karatu",
+        "body": "Littattafan labari {{count}} da aka tara ƙarƙashin sabon tsari."
+      },
+      "mapping": {
+        "title": "Daidaita manhaja",
+        "body": "Tsarin kayan koyo na kowane mataki, zagayowar rayuwar takardun aiki, daidai da na ƙasashen duniya."
+      }
+    },
+    "devNotice": "<b>Ana kan haɓakawa.</b> Wannan samfoti na masu gudanarwa ne kawai kuma ba ya rubuta komai a cikin rumbun bayanai. Shafin iyaye a <code>/library</code> da <code>/assessment</code> har yanzu yana amfani da ainihin tsarin matakai 6, ba tare da canji ba."
+  },
+  "classroom": {
+    "notFound": "Ba a sami aji ba",
+    "notFoundBody": "Ba a sami aji ba.",
+    "addFailed": "Ba a iya ƙara ɗalibi ba",
+    "added": "An ƙara {{name}}",
+    "allClassrooms": "Duk azuzuwa",
+    "students": "Ɗalibai",
+    "takeRegister": "Ɗauki halartar aji",
+    "addStudent": "Ƙara ɗalibi",
+    "firstName": "Suna na farko",
+    "lastName": "Sunan iyali",
+    "dob": "Ranar haihuwa",
+    "add": "Ƙara",
+    "empty": "Babu ɗalibai tukuna. Ƙara na farko a sama.",
+    "viewReport": "Duba rahoto",
+    "assess": "Tantance",
+    "reassess": "Sake tantancewa",
+    "booksTitle": "Littattafai don wannan aji",
+    "booksBody": "Duba duk littattafan labari 33 + takardun aiki a <library>ɗakin karatun makaranta</library>. Yi amfani da <groups>Ƙungiyoyin fonikis</groups> don tsara wannan aji bisa matakin iyawa.",
+    "registerTitle": "{{name}} — halartar aji"
+  },
+  "groups": {
+    "title": "Ƙungiyoyin fonikis",
+    "towards": "zuwa",
+    "moveFailed": "Ba a iya motsa ɗalibi ba",
+    "moved": "An motsa zuwa {{target}}",
+    "unassigned": "ba a sanya ba",
+    "intro": "{{students}} an tara su bisa matakin yanzu — a cikin shekaru daban-daban, kamar yadda makarantu ke koyar da fonikis a zahiri.",
+    "notYetAssessed": "{{count}} ba a tantance ba tukuna.",
+    "hint": "Ja suna zuwa wata ƙungiya don motsa shi · danna suna don buɗe bayanansa.",
+    "classLabel": "Aji:",
+    "allClasses": "Duk azuzuwa",
+    "needsInitial": "Yana buƙatar tantancewar farko",
+    "needsInitialBody": "Gudanar da gwajin tantancewa don ba kowane yaro matakin farawa.",
+    "registerTitle": "Ɗauki halartar wannan ƙungiya",
+    "register": "Halarta",
+    "mixedYears": "Shekaru gauraye: {{years}}",
+    "dropHere": "Saki a nan don motsawa",
+    "emptyLevel": "Babu ɗalibai a wannan mataki tukuna.",
+    "emptyTitle": "Babu ɗalibai tukuna",
+    "emptyBody": "Da farko ƙara ɗalibai zuwa aji, sannan a tara su bisa mataki a nan.",
+    "goToClassrooms": "Je zuwa azuzuwa",
+    "registerDialogTitle": "{{level}} — ƙungiyar fonikis",
+    "chipTitle": "{{name}} — ja don motsawa, danna don bayanai"
+  },
+  "windowsPage": {
+    "title": "Lokutan Tantancewa",
+    "intro": "Makarantu na tantancewa lokacin shiga da kuma a kowane rabin zango. Tsakanin waɗannan lokuta, malamai na ciyar da yara gaba a kan hanya ta amfani da hukuncinsu na ƙwararru — ba a yi wa yara jarrabawa ta hukuma bayan kowane littafi.",
+    "rolling": "Duba makonni 6 da suka gabata",
+    "recent": "Ayyukan tantancewa na baya-bayan nan",
+    "allClasses": "duk azuzuwa",
+    "assessedLast6": "an tantance (makonni 6 da suka gabata)",
+    "remaining": "{{count}} sun rage",
+    "allAssessed": "An tantance duka",
+    "indicators": "Alamomin sake tarawa",
+    "leadSummary": "Taƙaitaccen bayani na shugaban fonikis",
+    "summary": "Yara {{total}} a cikin azuzuwa {{classes}}. An tantance {{assessed}} a makonni 6 da suka gabata, {{remaining}} har yanzu ba a kammala ba. {{readyUp}} a shirye suke su hau mataki, an yi wa {{intervention}} alamar buƙatar ƙarin tallafi.",
+    "regroupingView": "Duba sake tara aji — yara a kowane mataki",
+    "openGroups": "Buɗe ƙungiyoyin fonikis"
+  },
+  "libraryPreview": {
+    "title": "Ɗakin karatu — littattafai 33",
+    "intro": "Littattafai da PDF iri ɗaya da na shafin hukuma, an sake tara su ƙarƙashin tsarin matakai 8. Alamar da ke kan kowane kati tana nuna ainihin ƙaramin mataki (iyaye-6) don kwatantawa.",
+    "free": "kyauta",
+    "was": "a da"
+  },
+  "library": {
+    "downloadFailed": "Saukewa ya gaza",
+    "openFailed": "Ba a iya buɗewa ba",
+    "cats": {
+      "soundBooks": "Littattafan Sauti",
+      "blendingBooks": "Littattafan Haɗa Sauti",
+      "storybooks": "Littattafan Labari",
+      "interactive": "Littattafai Masu Mu'amala",
+      "soundWorksheets": "Takardun aiki na Littafin Sauti",
+      "storyPacks": "Fakitin takardun aiki na littafin labari",
+      "soundMats": "Tabarmar sauti",
+      "trickyCards": "Katunan kalmomi masu wuya"
+    },
+    "title": "Ɗakin karatu",
+    "intro": "Kayan koyo {{count}}+ masu alaƙa a cikin matakai 8 — kowane Littafin Sauti, Littafin Haɗa Sauti, Littafin Labari, sigar mu'amala, takardar aiki, tabarmar sauti da saitin kalmomi masu wuya, an tsara su bisa nau'i.",
+    "levelLabel": "Mataki:",
+    "all": "Duka",
+    "focus": "Abin da aka mayar da hankali:",
+    "eg": "misali",
+    "companion": "Abokin tafiya:",
+    "soundBookWorksheet": "Takardar aiki ta Littafin Sauti",
+    "playSlides": "Kunna nunin faifai",
+    "onScreen": "A kan allo",
+    "printBooklet": "Buga ƙaramin littafi",
+    "worksheetSoon": "Takardar aiki na zuwa",
+    "worksheetTitle": "Takardar aiki:",
+    "soundWorksheetDesc": "Rubuta haruffa, gina kalmomi da rarraba sautuka. Abokin tafiyar <book>{{title}}</book>.",
+    "comingSoon": "Na zuwa nan ba da jimawa ba",
+    "blendingDesc": "Ƙaramin littafin A6 mai bayyana kalmomi. Babu takardar aiki daban — atisayen haɗa sauti shi ne kayan koyon kansa.",
+    "viewBook": "Duba littafi",
+    "a5Booklet": "Ƙaramin littafi A5",
+    "a4Sheets": "Takardun A4",
+    "worksheetPack": "Fakitin takardun aiki",
+    "interactiveDesc": "Kalmomin da ake iya taɓawa, bayyanar sautuka, sauti, rubutun kalma, jera labari, fahimta da atisayen rubutu.",
+    "interactiveDescGrammar": "Kalmomin da ake iya taɓawa, bayyanar sautuka, sauti, rubutun kalma, jera labari, fahimta, jerin kalmomi bisa nahawu da atisayen rubutu.",
+    "openInteractive": "Buɗe sigar mu'amala",
+    "pack": "fakiti",
+    "packDesc": "Fakitin A4 mai shafuka 5: farautar sauti, bi layi ka rubuta, karanta ka aikata, kalmomin baƙi (na ƙirƙira), labari da zane.",
+    "printWorksheetPack": "Buga fakitin takardun aiki",
+    "soundMatTitle": "Tabarmar Sauti ta {{level}}",
+    "trickyCardsTitle": "Katunan Kalmomi Masu Wuya na {{level}}",
+    "soundMatDesc": "Jadawalin haɗin harafi da sauti mai tarawa wanda ke nuna sautukan da aka koyar a wannan mataki da matakan da suka gabata.",
+    "trickyCardsDesc": "Katunan kalmomi masu wuya da aka gabatar a wannan mataki.",
+    "usedThroughout": "Ana amfani da shi a duk tsawon matakin."
+  },
+  "read": {
+    "unavailable": "Wannan littafi bai samu don karatu ba tukuna.",
+    "backToLibrary": "Koma zuwa ɗakin karatu"
+  },
+  "reports": {
+    "title": "Rahotanni",
+    "intro": "Duban ci gaban duk makarantar a cikin tsarin fonikis na Birtaniya.",
+    "tracked": "Ɗaliban da ake bibiya",
+    "placed": "An sanya su ta hanyar tantancewa",
+    "atEachLevel": "Yara a kowane mataki",
+    "glance": "Shirin a taƙaice",
+    "glanceBody": "Cikakkiyar hanyar fonikis mai matakai {{steps}} wadda kayan koyo {{resources}}+ masu alaƙa ke tallafawa a cikin matakai 8: Littattafan Sauti {{soundBooks}} masu hotuna na gaske, Littattafan Haɗa Sauti {{blendingBooks}}, Littattafan Labari {{storybooks}} masu zane, Littattafan Labari na dijital masu mu'amala {{interactive}}, takardun aiki masu dacewa {{worksheets}}, tabarmar sauti {{mats}}, saitin katunan kalmomi masu wuya {{tricky}} da fayilolin sautin fonim {{audio}}+.",
+    "viewPathway": "Duba hanyar koyo"
+  },
+  "settings": {
+    "saved": "An adana saituna",
+    "codeCopied": "An kwafi lambar shiga",
+    "regenFailed": "Ba a iya sake ƙirƙira ba",
+    "regenDone": "An ƙirƙiri sabuwar lambar shiga",
+    "regenDoneBody": "Lambar da ta gabata ba ta aiki yanzu.",
+    "title": "Saituna",
+    "intro": "Bayanan makarantarku, damar ma'aikata da shekarar karatu.",
+    "joinCode": "Lambar shiga ta ma'aikata",
+    "joinCodeBody": "Raba wannan lambar da malamanku. Suna yin rajista a <path>/school/signup</path>, su zaɓi “Shiga da lamba”, sannan a ƙara su zuwa {{school}} a matsayin malami.",
+    "copy": "Kwafa",
+    "regenerate": "Sake ƙirƙira",
+    "invitesSoon": "Gayyata ta imel na zuwa nan ba da jimawa ba. A yanzu, raba lambar ita ce hanya mafi sauri ta ƙara ma'aikata.",
+    "staff": "Ma'aikata",
+    "you": "Kai/Ke",
+    "staffMember": "Ma'aikaci",
+    "roles": {
+      "admin": "mai gudanarwa",
+      "teacher": "malami"
+    },
+    "details": "Bayanan makaranta",
+    "schoolName": "Sunan makaranta",
+    "country": "Ƙasa",
+    "places": "Gurabun ɗalibai",
+    "academicYear": "Shekarar karatu",
+    "save": "Adana saituna",
+    "yourAccount": "Asusunku",
+    "administrator": "Mai gudanarwa",
+    "role": "Matsayi: {{role}}"
+  },
+  "assess": {
+    "notFound": "Ba a sami ɗalibi ba",
+    "notFoundBody": "Ba a sami ɗalibi ba.",
+    "saveFailed": "Ba a iya adana tantancewa ba",
+    "updateFailed": "Ba a iya sabunta mataki ba",
+    "backToClassroom": "Koma zuwa aji",
+    "title": "Tantance {{name}}",
+    "currentLevel": "Matakin yanzu:",
+    "quickScreener": "Gwajin tantancewa mai sauri",
+    "quickScreenerBody": "Minti 2. Bari yaron ya karanta kalmomi 6 na misali — za mu gano matakinsa daidai.",
+    "manual": "Saita mataki da hannu",
+    "manualBody": "Kun riga kun san inda yake? Zaɓi matakin kuma ƙara bayani.",
+    "screener": "Gwajin tantancewa",
+    "screenerBody": "Nemi {{name}} ya karanta kowace kalma. Yi alama a kan waɗanda ya karanta daidai.",
+    "level": "Mataki {{n}}",
+    "notes": "Bayanai (na zaɓi)",
+    "notesPlaceholder": "Duk wani abin lura...",
+    "saveRecommend": "Adana kuma ba da shawarar mataki",
+    "manualChoose": "Zaɓi matakin da ya dace da iyawar {{name}} ta yanzu.",
+    "setTo": "Saita {{name}} zuwa {{level}}",
+    "saved": "An adana tantancewa",
+    "nowOn": "{{name}} yanzu yana <b>{{level}}</b>.",
+    "savedBody": "Mun adana sakamakon kuma mun sabunta bayanansa. Kuna iya sake tantancewa a kowane lokaci."
+  },
+  "profile": {
+    "stepComplete": "An yi wa mataki alamar an kammala",
+    "marked": "An yi alama “{{label}}”",
+    "noteSaved": "An adana bayani",
+    "notFound": "Ba a sami ɗalibi ba.",
+    "backToClass": "Koma zuwa aji",
+    "snap": {
+      "placement": "Matakin yanzu",
+      "block": "Kashin yanzu",
+      "step": "Matakin aiki na yanzu",
+      "next": "Kayan koyo na gaba",
+      "lastAssessed": "Tantancewa ta ƙarshe",
+      "judgement": "Hukuncin malami na yanzu"
+    },
+    "levelComplete": "An kammala mataki",
+    "readyNextLevel": "A shirye don mataki na gaba",
+    "windowLabel": "Lokacin tantancewa na {{window}}",
+    "notYetAssessed": "Ba a tantance ba tukuna",
+    "suggestedAction": "Matakin da aka ba da shawara:",
+    "suggested": {
+      "continue": "Ci gaba da kashin yanzu",
+      "ready_soon": "Kusan a shirye — shirya don kashi na gaba / lokacin tantancewa",
+      "needs_support": "Ba da tallafi na musamman kafin a ci gaba (duba tsarin tallafi)"
+    },
+    "notAssessedBody": "Ba a tantance ba tukuna — gudanar da tantancewa don sanya {{name}} a kan hanya.",
+    "assessNow": "Tantance yanzu",
+    "nextActions": "Matakan koyarwa na gaba",
+    "readNext": "Karanta na gaba",
+    "printNext": "Buga na gaba",
+    "worksheetPackFor": "Fakitin takardun aiki na {{sub}}",
+    "useDuring": "Yi amfani lokacin karatu",
+    "practise": "Atisaye",
+    "openInteractive": "Buɗe littafin mu'amala",
+    "printA5": "Buga ƙaramin littafi A5",
+    "markComplete": "Yi wa matakin yanzu alamar an kammala",
+    "teacherNoteLabel": "Bayanin malami:",
+    "wholePathway": "Ci gaba a duk hanyar",
+    "stepsOf": "Matakai {{done}} cikin {{total}}",
+    "teacherJudgement": "Hukuncin malami",
+    "judgeDesc": {
+      "continue": "Yana ci gaba a cikin kashi",
+      "ready_soon": "Kusan a shirye don kashi / mataki na gaba",
+      "needs_support": "Ƙarin atisaye kafin a ci gaba"
+    },
+    "teacherNote": "Bayanin malami",
+    "notePlaceholder": "misali Yana karanta kalmomin sh da ƙarfin gwiwa amma har yanzu yana hasashen kalmomin th.",
+    "saveNote": "Adana bayani",
+    "supportPlan": "Tsarin tallafi",
+    "recommended": "Kayan koyo da aka ba da shawara",
+    "routine": "Tsarin yau da kullum da aka ba da shawara",
+    "routineBody": "Minti 10 kowace rana: bitar katunan sauti · haɗa kalmomi 5 · karanta shafi 1 · maimaita na kwana 3 · malami ya sake saurara.",
+    "history": "Tarihin lokutan tantancewa",
+    "noAssessments": "Ba a rubuta wani tantancewa ba tukuna.",
+    "table": {
+      "window": "Lokaci",
+      "level": "Matakin da aka sanya",
+      "notes": "Bayanai",
+      "resource": "Kayan koyo",
+      "status": "Matsayi",
+      "companion": "Abokin tafiya"
+    },
+    "initialPlacement": "Sanyawa ta farko",
+    "wholeSchoolWindow": "Lokacin duk makaranta",
+    "movement": "Ci gaba:",
+    "completed": "Kayan koyo da aka kammala",
+    "tally": {
+      "interactive": "Littattafai masu mu'amala",
+      "packs": "Fakitin takardun aiki",
+      "certificates": "Takardun shaida da aka samu"
+    },
+    "attendance": "Halarta",
+    "noRegister": "Ba a ɗauki halarta ba tukuna.",
+    "present": "halarta",
+    "attendanceSummary": "Ya halarci {{present}} · bai halarta ba {{absent}} · zama {{total}}",
+    "homeReading": "Karatu a gida",
+    "homeBook": "Littafin gida na yanzu",
+    "format": "Tsari",
+    "formatValue": "Ƙaramin littafi A5 da ake iya bugawa",
+    "linkCopied": "An kwafi hanyar karatu ta iyaye",
+    "copyLink": "Kwafi hanyar iyaye",
+    "printHome": "Buga ƙaramin littafin gida",
+    "homeNote": "Ana raba shi da iyaye ta makaranta domin atisayen gida ya dace da koyarwar aji.",
+    "companion": {
+      "none": "Babu abokin tafiya",
+      "storybook": "Fakitin takardun aiki + littafin mu'amala"
+    }
+  },
+  "presenter": {
+    "openFailed": "Ba a iya buɗe wannan littafi ba.",
+    "notFound": "Ba a samu ba ({{status}})",
+    "onScreen": "a kan allo",
+    "closeEsc": "Rufe (Esc)"
+  }
+}

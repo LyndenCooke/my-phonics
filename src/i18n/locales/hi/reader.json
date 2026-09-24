@@ -1,0 +1,70 @@
+{
+  "closeBook": "किताब बंद करें",
+  "pageAlt": "{{title}} — पृष्ठ {{page}}",
+  "pageLoadError": "यह पृष्ठ लोड नहीं हो सका।",
+  "pageLoadErrorHint": "अपना कनेक्शन जाँचें और फिर से कोशिश करें।",
+  "pagesUnavailable": "पृष्ठ की तस्वीरें उपलब्ध नहीं हैं",
+  "previousPage": "पिछला पृष्ठ",
+  "nextPage": "अगला पृष्ठ",
+  "goToPage": "पृष्ठ {{page}} पर जाएँ",
+  "finishBook": "किताब पूरी करें",
+  "tapToHear": "\"{{word}}\" सुनने के लिए टैप करें",
+  "flipbook": {
+    "groupAria": "किताब का पूर्वावलोकन — पन्ने पलटने के लिए ऐरो कुंजियों का उपयोग करें"
+  },
+  "quiz": {
+    "saveFailed": "क्विज़ के नतीजे सहेजे नहीं जा सके",
+    "completeAria": "क्विज़ पूरा हुआ",
+    "perfect": "पूरे अंक!",
+    "wellDone": "बहुत बढ़िया!",
+    "scored": "आपने <b>{{total}}</b> में से <b>{{score}}</b> अंक पाए",
+    "tryAgain": "फिर से कोशिश करें",
+    "dialogAria": "क्विज़: {{title}}",
+    "close": "क्विज़ बंद करें",
+    "answerOptions": "उत्तर के विकल्प",
+    "seeResults": "नतीजे देखें"
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" ध्वनि चलाएँ",
+    "playSoundAria": "ग्रैफ़ीम {{grapheme}} की ध्वनि चलाएँ",
+    "playWordTitle": "\"{{word}}\" चलाएँ",
+    "playWordAria": "शब्द {{word}} चलाएँ"
+  },
+  "soundMap": {
+    "known": "आता है ({{n}})",
+    "toLearn": "सीखना है ({{n}})",
+    "notTestedCount": "जाँचा नहीं गया ({{n}})",
+    "notTested": "जाँचा नहीं गया",
+    "levelHeading": "लेवल {{level}}",
+    "levelsNotTested": "लेवल {{levels}} अभी जाँचे नहीं गए",
+    "status": {
+      "known": "आता है",
+      "unknown": "सीखना है",
+      "untested": "जाँचा नहीं गया"
+    },
+    "categories": {
+      "sound_recognition": "ध्वनियाँ",
+      "word_reading": "असली शब्द",
+      "alien_words": "Alien Words (बनावटी शब्द)",
+      "tricky_words": "Tricky Words (कठिन शब्द)",
+      "speedy_reading": "तेज़ पढ़ना",
+      "fluency": "धाराप्रवाह पढ़ना"
+    }
+  },
+  "interactive": {
+    "playSound": "ध्वनि {{sound}} चलाएँ",
+    "playSoundVariant": "ध्वनि {{sound}} चलाएँ ({{variant}})",
+    "wordTapToHear": "{{word}}। सुनने के लिए टैप करें।",
+    "illustration": "कहानी का चित्र",
+    "closeImage": "चित्र बंद करें",
+    "expandIllustration": "चित्र बड़ा करें",
+    "hideHints": "फ़ोनिक्स संकेत छिपाएँ",
+    "showHints": "फ़ोनिक्स संकेत दिखाएँ",
+    "checkInPassed": "चेक-इन पास हुआ",
+    "checkInPractise": "चेक-इन — अभ्यास जारी रखें"
+  },
+  "prep": {
+    "tapToHear": "सुनने के लिए हर एक पर टैप करें। ये वे ध्वनियाँ हैं जिनका आपका बच्चा अभ्यास करेगा।",
+    "tapLevel": "उस स्तर की ध्वनियाँ देखने के लिए किसी स्तर पर टैप करें"
+  }
+}

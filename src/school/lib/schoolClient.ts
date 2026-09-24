@@ -5,6 +5,7 @@
  * generated file.
  */
 import { supabase } from '@/integrations/supabase/client';
+import i18n from '@/i18n';
 
 export type SchoolRow = {
   id: string;
@@ -144,11 +145,11 @@ export async function downloadSchoolResource(params: {
   });
   if (error) return { ok: false, error: error.message };
   const signed = (data as { signed_url?: string; error?: string } | null)?.signed_url;
-  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? 'Download unavailable' };
+  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? i18n.t('schoolApp:errors.downloadUnavailable', { defaultValue: 'Download unavailable' }) };
 
   try {
     const res = await fetch(signed);
-    if (!res.ok) return { ok: false, error: `Not found (${res.status})` };
+    if (!res.ok) return { ok: false, error: i18n.t('schoolApp:presenter.notFound', { status: res.status, defaultValue: `Not found (${res.status})` }) };
     const blob = await res.blob();
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -181,7 +182,7 @@ export async function viewSchoolResource(params: {
   });
   if (error) return { ok: false, error: error.message };
   const signed = (data as { signed_url?: string; error?: string } | null)?.signed_url;
-  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? 'Unavailable' };
+  if (!signed) return { ok: false, error: (data as { error?: string } | null)?.error ?? i18n.t('schoolApp:errors.unavailable', { defaultValue: 'Unavailable' }) };
   return { ok: true, url: signed };
 }
 

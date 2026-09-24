@@ -25,6 +25,7 @@ import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ClipboardList } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { JOURNEY_LEVELS, getJourneyLevel } from '@/lib/levels8';
@@ -47,16 +48,18 @@ type GameId = 'soundlings' | 'pop' | 'cannon' | 'run' | 'pairs' | 'finish' | 'sp
 
 /** Arcade order: flagship first, then arcade energy, then the calmer
  *  skill games. `vibe` is the little caption under the name. */
-const GAMES: { id: GameId; emoji: string; name: string; blurb: string; vibe: string }[] = [
-  { id: 'soundlings', emoji: '🥚', name: 'Soundlings', blurb: 'Hatch and feed your own sound creatures', vibe: 'Collect' },
-  { id: 'pop', emoji: '🫧', name: 'Word Pop', blurb: 'Fly Buzz the bee to pop the word you hear', vibe: 'Arcade' },
-  { id: 'cannon', emoji: '🎯', name: "Milo's Cannon", blurb: 'Aim and fire the right sound into the word', vibe: 'Arcade' },
-  { id: 'run', emoji: '🚪', name: 'Door Dash', blurb: 'Read the doors and run through the right one', vibe: 'Runner' },
-  { id: 'pairs', emoji: '🃏', name: 'Sound Pairs', blurb: 'Flip the cards and match sounds to words', vibe: 'Memory' },
-  { id: 'finish', emoji: '🧩', name: 'Finish the Word', blurb: 'A sound is missing — tap the right one', vibe: 'Puzzle' },
-  { id: 'spot', emoji: '🔍', name: 'Sound Spotter', blurb: 'Hunt the scene for things hiding the sound', vibe: 'Seek & find' },
-  { id: 'tricky', emoji: '👂', name: 'Hear It, Find It', blurb: 'Listen and catch the tricky word', vibe: 'Listening' },
+const GAMES: { id: GameId; emoji: string; name: string; vibe: string }[] = [
+  { id: 'soundlings', emoji: '🥚', name: 'Soundlings', vibe: 'collect' },
+  { id: 'pop', emoji: '🫧', name: 'Word Pop', vibe: 'arcade' },
+  { id: 'cannon', emoji: '🎯', name: "Milo's Cannon", vibe: 'arcade' },
+  { id: 'run', emoji: '🚪', name: 'Door Dash', vibe: 'runner' },
+  { id: 'pairs', emoji: '🃏', name: 'Sound Pairs', vibe: 'memory' },
+  { id: 'finish', emoji: '🧩', name: 'Finish the Word', vibe: 'puzzle' },
+  { id: 'spot', emoji: '🔍', name: 'Sound Spotter', vibe: 'seekFind' },
+  { id: 'tricky', emoji: '👂', name: 'Hear It, Find It', vibe: 'listening' },
 ];
+// Game NAMES stay English (brand); blurbs + vibe tags are translated
+// from games:arcade.blurbs.<id> / games:arcade.vibes.<vibe>.
 
 /** The games draw themselves `fixed inset-0`, but the page-transition
  *  wrapper's transform creates a containing block, so "fixed" resolves
@@ -100,6 +103,7 @@ function savedLevel(): number {
 }
 
 export default function Games() {
+  const { t, i18n } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const [levelNum, setLevelNum] = useState<number>(savedLevel);
   const [activeGame, setActiveGame] = useState<GameId | null>(null);
@@ -151,18 +155,18 @@ export default function Games() {
             className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-2"
             style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}
           >
-            Free to play · no sign-up
+            {t('arcade.badge')}
           </span>
           <h1 className="font-display text-3xl lg:text-[2.6rem] font-extrabold text-foreground tracking-tight mt-3 leading-tight">
-            Phonics games <span aria-hidden>🎮</span>
+            {t('arcade.title')} <span aria-hidden>🎮</span>
           </h1>
           <p className="font-child text-lg lg:text-xl text-foreground/60 mt-2 max-w-md mx-auto">
-            Pick your level, then pick a game. Every game uses the sounds from that level.
+            {t('arcade.intro')}
           </p>
         </motion.div>
 
         {/* ── Level picker — fridge magnets ── */}
-        <motion.section {...fade(0.08)} className="mt-8" aria-label="Choose your level">
+        <motion.section {...fade(0.08)} className="mt-8" aria-label={t('arcade.chooseLevel')}>
           <div className="grid grid-cols-4 gap-2.5 lg:gap-3">
             {JOURNEY_LEVELS.map((l, i) => {
               const selected = l.level === levelNum;
@@ -171,7 +175,7 @@ export default function Games() {
                   key={l.level}
                   onClick={() => chooseLevel(l.level)}
                   aria-pressed={selected}
-                  aria-label={`Level ${l.level} — ${l.name}`}
+                  aria-label={t('arcade.levelAria', { level: l.level, name: l.name })}
                   className="rounded-2xl px-1 py-3 lg:py-3.5 flex flex-col items-center transition-all active:translate-y-[3px]"
                   style={selected
                     ? { background: l.hex, boxShadow: `0 4px 0 ${l.inkHex}, ${STICKER}`, border: '2px solid #fff' }
@@ -184,6 +188,7 @@ export default function Games() {
                     {l.level}
                   </span>
                   <span
+                    lang="en"
                     className="text-[9px] lg:text-[10px] font-extrabold mt-1 leading-tight text-center"
                     style={{ color: selected ? '#ffffffd9' : 'hsl(var(--muted-foreground))' }}
                   >
@@ -195,7 +200,8 @@ export default function Games() {
           </div>
 
           {/* This level's sounds, as a quiet strip of magnets */}
-          <div className="mt-4 flex flex-wrap justify-center gap-1.5" aria-label={`Level ${level.level} sounds`}>
+          {/* LTR island: the sound chips read left-to-right even in Arabic/Urdu/Persian. */}
+          <div dir="ltr" lang="en" className="mt-4 flex flex-wrap justify-center gap-1.5" role="group" aria-label={t('arcade.levelSounds', { level: level.level })}>
             {level.gpcs.slice(0, 10).map((g, i) => (
               <span
                 key={g}
@@ -211,20 +217,20 @@ export default function Games() {
               </span>
             ))}
             {level.gpcs.length > 10 && (
-              <span className="text-xs font-bold text-muted-foreground self-center">+{level.gpcs.length - 10} more</span>
+              <span dir="auto" lang={i18n.language} className="text-xs font-bold text-muted-foreground self-center">{t('arcade.more', { n: level.gpcs.length - 10 })}</span>
             )}
           </div>
         </motion.section>
 
         {/* ── The arcade ── */}
-        <motion.section {...fade(0.14)} className="mt-9 lg:mt-12" aria-label="Games">
+        <motion.section {...fade(0.14)} className="mt-9 lg:mt-12" aria-label={t('arcade.gamesAria')}>
           {limited && (
             <p className="font-child text-sm text-foreground/50 text-center mb-4">
-              One go at each game per day — little and often is how reading sticks.
+              {t('arcade.dailyNote')}
             </p>
           )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 lg:gap-4">
-            {GAMES.map(({ id, emoji, name, blurb, vibe }, i) => {
+            {GAMES.map(({ id, emoji, name, vibe }, i) => {
               const done = limited && played.has(id);
               return (
               <button
@@ -241,17 +247,17 @@ export default function Games() {
                 }}
               >
                 <span
-                  className="absolute top-3 right-3 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold"
+                  className="absolute top-3 end-3 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold"
                   style={done ? { background: 'rgba(40,30,40,0.08)', color: 'rgba(40,30,40,0.55)' } : { background: `${hex}18`, color: ink }}
                 >
-                  {done ? 'Played ✓' : vibe}
+                  {done ? t('arcade.played') : t(`arcade.vibes.${vibe}`)}
                 </span>
                 <span className="text-5xl" aria-hidden style={done ? { filter: 'grayscale(0.6)' } : undefined}>{emoji}</span>
-                <span className="font-display text-xl font-extrabold mt-2.5 leading-tight" style={{ color: done ? 'rgba(40,30,40,0.5)' : ink }}>
+                <span lang="en" dir="ltr" className="font-display text-xl font-extrabold mt-2.5 leading-tight" style={{ color: done ? 'rgba(40,30,40,0.5)' : ink }}>
                   {name}
                 </span>
                 <span className="font-child text-sm lg:text-base text-foreground/60 mt-1 leading-snug min-h-[2.5rem]">
-                  {done ? 'Great playing! Come back tomorrow for another go.' : blurb}
+                  {done ? t('arcade.doneBlurb') : t(`arcade.blurbs.${id}`)}
                 </span>
                 <span
                   className="mt-3 inline-flex items-center justify-center rounded-full px-6 py-1.5 font-display text-sm font-extrabold"
@@ -259,7 +265,7 @@ export default function Games() {
                     ? { background: 'rgba(40,30,40,0.08)', color: 'rgba(40,30,40,0.5)' }
                     : { background: hex, boxShadow: `0 3px 0 ${ink}`, color: '#fff' }}
                 >
-                  {done ? 'Back tomorrow' : 'Play'}
+                  {done ? t('arcade.backTomorrow') : t('arcade.play')}
                 </span>
               </button>
               );
@@ -275,9 +281,9 @@ export default function Games() {
             style={{ boxShadow: STICKER, border: '2px dashed hsl(var(--border))' }}
           >
             <ClipboardList className="w-6 h-6 mx-auto" style={{ color: ink }} />
-            <p className="font-display text-lg font-extrabold text-foreground mt-2">Not sure which level?</p>
+            <p className="font-display text-lg font-extrabold text-foreground mt-2">{t('arcade.notSure')}</p>
             <p className="font-child text-sm text-foreground/60 mt-1">
-              Take the free 3-minute check and we'll place your child on the right one.
+              {t('arcade.notSureBody')}
             </p>
           </Link>
         </motion.section>

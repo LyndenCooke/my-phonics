@@ -14,7 +14,7 @@ export default function LanguageNotice() {
 
   useEffect(() => {
     if (!languageWasAutoDetected) return;
-    const lang = getLanguage(i18n.resolvedLanguage ?? i18n.language);
+    const lang = getLanguage(i18n.language ?? i18n.resolvedLanguage);
     if (lang.code === 'en') return;
     const id = window.setTimeout(() => {
       toast(t('language.autoDetected', { language: lang.nativeName }), {

@@ -1,0 +1,70 @@
+{
+  "closeBook": "Rufe littafi",
+  "pageAlt": "{{title}} — shafi {{page}}",
+  "pageLoadError": "Ba mu iya loda wannan shafin ba.",
+  "pageLoadErrorHint": "Duba haɗin intanet ɗinka sannan ka sake gwadawa.",
+  "pagesUnavailable": "Hotunan shafuka ba su samu ba",
+  "previousPage": "Shafin baya",
+  "nextPage": "Shafi na gaba",
+  "goToPage": "Je shafi {{page}}",
+  "finishBook": "Kammala littafi",
+  "tapToHear": "Taɓa don jin \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Duba littafi — yi amfani da maɓallan kibiya don juya shafuka"
+  },
+  "quiz": {
+    "saveFailed": "An kasa adana sakamakon tambayoyi",
+    "completeAria": "An gama tambayoyi",
+    "perfect": "Cikakken maki!",
+    "wellDone": "Madalla!",
+    "scored": "Ka samu <b>{{score}}</b> cikin <b>{{total}}</b>",
+    "tryAgain": "Sake gwadawa",
+    "dialogAria": "Tambayoyi: {{title}}",
+    "close": "Rufe tambayoyi",
+    "answerOptions": "Zaɓuɓɓukan amsa",
+    "seeResults": "Duba sakamako"
+  },
+  "audio": {
+    "playSoundTitle": "Kunna sautin \"{{grapheme}}\"",
+    "playSoundAria": "Kunna sautin harafi {{grapheme}}",
+    "playWordTitle": "Kunna \"{{word}}\"",
+    "playWordAria": "Kunna kalmar {{word}}"
+  },
+  "soundMap": {
+    "known": "Ya sani ({{n}})",
+    "toLearn": "Zai koya ({{n}})",
+    "notTestedCount": "Ba a gwada ba ({{n}})",
+    "notTested": "Ba a gwada ba",
+    "levelHeading": "Mataki {{level}}",
+    "levelsNotTested": "Ba a gwada Matakai {{levels}} ba tukuna",
+    "status": {
+      "known": "ya sani",
+      "unknown": "zai koya",
+      "untested": "ba a gwada ba"
+    },
+    "categories": {
+      "sound_recognition": "Sautuka",
+      "word_reading": "Kalmomi Na Gaske",
+      "alien_words": "Alien Words (kalmomin ƙage)",
+      "tricky_words": "Tricky Words (kalmomi masu wuya)",
+      "speedy_reading": "Karatu Cikin Sauri",
+      "fluency": "Ƙwarewar karatu"
+    }
+  },
+  "interactive": {
+    "playSound": "Kunna sauti {{sound}}",
+    "playSoundVariant": "Kunna sauti {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Taɓa don ji.",
+    "illustration": "Hoton labari",
+    "closeImage": "Rufe hoto",
+    "expandIllustration": "Faɗaɗa hoto",
+    "hideHints": "Ɓoye alamun fonetik",
+    "showHints": "Nuna alamun fonetik",
+    "checkInPassed": "An ci gwajin tsakiya",
+    "checkInPractise": "Gwajin tsakiya — ci gaba da atisaye"
+  },
+  "prep": {
+    "tapToHear": "Taɓa kowanne don jin sa. Waɗannan su ne sautukan da yaronka zai yi atisaye a kai.",
+    "tapLevel": "Taɓa wani mataki don ganin sautukansa"
+  }
+}

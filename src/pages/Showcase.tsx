@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const BOOKS = [
   { level: 1, sub: '1.1', title: 'Tap! Tap! Tap!', culture: 'UK' },
@@ -35,6 +36,16 @@ const BOOKS = [
   { level: 6, sub: '6.4', title: 'The Incredible Bush Walk', culture: 'Australia' },
 ];
 
+/** Culture label → i18n key (misc:showcase.cultures.*). */
+const CULTURE_KEYS: Record<string, string> = {
+  'UK': 'uk', 'Middle East': 'middleEast', 'Nepal': 'nepal', 'Pakistan': 'pakistan',
+  'Trinidad': 'trinidad', 'Japan': 'japan', 'England': 'england', 'Kenya': 'kenya',
+  'Iceland': 'iceland', 'France': 'france', 'Thailand': 'thailand', 'Ghana': 'ghana',
+  'South Korea': 'southKorea', 'Turkey': 'turkey', 'UK Woodland': 'ukWoodland',
+  'Mexico': 'mexico', 'London Jewish': 'londonJewish', 'Sweden': 'sweden', 'India': 'india',
+  'Brazil': 'brazil', 'Egypt': 'egypt', 'China': 'china', 'Italy': 'italy', 'Australia': 'australia',
+};
+
 const LEVEL_COLOURS: Record<number, string> = {
   1: '#E84B8A', 2: '#F59E0B', 3: '#22C55E',
   4: '#3B82F6', 5: '#8B5CF6', 6: '#14B8A6',
@@ -46,45 +57,46 @@ const LEVEL_NAMES: Record<number, string> = {
 };
 
 export default function Showcase() {
-  useEffect(() => { document.title = 'MyPhonicsBooks — Book Showcase'; }, []);
+  const { t, i18n } = useTranslation('misc');
+  useEffect(() => { document.title = t('showcase.docTitle'); }, [t, i18n.language]);
 
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-indigo-900 to-violet-800 text-white py-12 px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-3">MyPhonicsBooks</h1>
-          <p className="text-xl text-indigo-200 mb-2">Decodable phonics books for children aged 4-8</p>
-          <p className="text-indigo-300">Every book is a window into a different contemporary culture</p>
+          <h1 dir="ltr" className="text-4xl font-bold mb-3">MyPhonicsBooks</h1>
+          <p className="text-xl text-indigo-200 mb-2">{t('showcase.subtitle')}</p>
+          <p className="text-indigo-300">{t('showcase.tagline')}</p>
         </div>
       </header>
 
       {/* Brand summary */}
       <section className="max-w-5xl mx-auto px-6 py-10">
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-10">
-          <h2 className="text-2xl font-bold text-indigo-900 mb-4">Brand Overview</h2>
+          <h2 className="text-2xl font-bold text-indigo-900 mb-4">{t('showcase.overview')}</h2>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-slate-700">
             <div>
-              <p className="mb-2"><strong>Mission:</strong> Every child deserves a reading book matched to exactly what they can decode today.</p>
-              <p className="mb-2"><strong>Tagline:</strong> <em>Decodable phonics books. Print at home.</em></p>
-              <p className="mb-2"><strong>Voice:</strong> Warm, encouraging, like a friendly Year 1 teacher. British English. Never salesy.</p>
-              <p className="mb-2"><strong>Target:</strong> Parents of 4-8 year olds, British expats, international schools.</p>
+              <p className="mb-2"><strong>{t('showcase.labels.mission')}</strong> {t('showcase.values.mission')}</p>
+              <p className="mb-2"><strong>{t('showcase.labels.tagline')}</strong> <em>{t('showcase.values.tagline')}</em></p>
+              <p className="mb-2"><strong>{t('showcase.labels.voice')}</strong> {t('showcase.values.voice')}</p>
+              <p className="mb-2"><strong>{t('showcase.labels.target')}</strong> {t('showcase.values.target')}</p>
             </div>
             <div>
-              <p className="mb-2"><strong>Art style:</strong> Whimsical hand-drawn cartoon with soft watercolour backgrounds, clean black outlines, solid black dot eyes.</p>
-              <p className="mb-2"><strong>Curriculum:</strong> Based on Letters and Sounds (UK). 6 levels, 32 books, progressive phonics.</p>
-              <p className="mb-2"><strong>Fonts:</strong> Plus Jakarta Sans (web), Outfit (headings), Andika (books — single-storey a and g).</p>
-              <p className="mb-2"><strong>Differentiator:</strong> Every word decodable + genuine cultural diversity + print at home.</p>
+              <p className="mb-2"><strong>{t('showcase.labels.artStyle')}</strong> {t('showcase.values.artStyle')}</p>
+              <p className="mb-2"><strong>{t('showcase.labels.curriculum')}</strong> {t('showcase.values.curriculum')}</p>
+              <p className="mb-2"><strong>{t('showcase.labels.fonts')}</strong> {t('showcase.values.fonts')}</p>
+              <p className="mb-2"><strong>{t('showcase.labels.differentiator')}</strong> {t('showcase.values.differentiator')}</p>
             </div>
           </div>
 
           {/* Level colours */}
           <div className="mt-6">
-            <p className="text-sm font-semibold text-slate-600 mb-2">Level Colour System:</p>
+            <p className="text-sm font-semibold text-slate-600 mb-2">{t('showcase.levelColours')}</p>
             <div className="flex gap-2 flex-wrap">
               {[1,2,3,4,5,6].map(l => (
                 <div key={l} className="px-4 py-2 rounded-lg text-white text-xs font-bold" style={{ backgroundColor: LEVEL_COLOURS[l] }}>
-                  L{l} — {LEVEL_NAMES[l]}
+                  <span dir="ltr" lang="en">L{l} — {LEVEL_NAMES[l]}</span>
                 </div>
               ))}
             </div>
@@ -92,14 +104,14 @@ export default function Showcase() {
         </div>
 
         {/* Books grid by level */}
-        <h2 className="text-2xl font-bold text-indigo-900 mb-6">All 32 Books — Covers & PDF Downloads</h2>
+        <h2 className="text-2xl font-bold text-indigo-900 mb-6">{t('showcase.allBooks')}</h2>
 
         {[1,2,3,4,5,6].map(level => (
           <div key={level} className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: LEVEL_COLOURS[level] }} />
               <h3 className="text-lg font-bold text-slate-800">
-                Level {level} — {LEVEL_NAMES[level]}
+                {t('showcase.level', { level })} — <span lang="en">{LEVEL_NAMES[level]}</span>
               </h3>
             </div>
 
@@ -119,13 +131,17 @@ export default function Showcase() {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
-                      <span className="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/90 text-slate-800 shadow-sm">
+                      <span className="absolute top-2 start-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/90 text-slate-800 shadow-sm">
                         L{book.sub}
                       </span>
                     </div>
                     <div className="p-3">
-                      <p className="text-xs font-bold text-slate-800 truncate">{book.title}</p>
-                      <p className="text-[10px] text-slate-500">{book.culture}</p>
+                      <p dir="ltr" lang="en" className="text-xs font-bold text-slate-800 truncate text-start">{book.title}</p>
+                      <p className="text-[10px] text-slate-500">
+                        {CULTURE_KEYS[book.culture]
+                          ? t(`showcase.cultures.${CULTURE_KEYS[book.culture]}`, { defaultValue: book.culture })
+                          : book.culture}
+                      </p>
                       <a
                         href={pdfUrl}
                         target="_blank"
@@ -133,7 +149,7 @@ export default function Showcase() {
                         className="mt-2 block text-center text-[10px] font-semibold py-1.5 rounded-lg text-white"
                         style={{ backgroundColor: LEVEL_COLOURS[level] }}
                       >
-                        View PDF
+                        {t('showcase.viewPdf')}
                       </a>
                     </div>
                   </div>
@@ -145,17 +161,17 @@ export default function Showcase() {
 
         {/* Interactive reader link */}
         <div className="bg-indigo-50 rounded-2xl p-8 text-center mt-10">
-          <h3 className="text-xl font-bold text-indigo-900 mb-2">Interactive Book Reader</h3>
-          <p className="text-sm text-slate-600 mb-4">Browse the full library with interactive word-by-word reading, audio narration, and phonics activities.</p>
+          <h3 className="text-xl font-bold text-indigo-900 mb-2">{t('showcase.readerTitle')}</h3>
+          <p className="text-sm text-slate-600 mb-4">{t('showcase.readerBody')}</p>
           <a href="/library" className="inline-block px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-xl font-semibold hover:shadow-lg transition-shadow">
-            Open Library
+            {t('showcase.openLibrary')}
           </a>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="bg-slate-100 border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        <p>MyPhonicsBooks — Based on Letters and Sounds (DfE 2007). Not affiliated with Read Write Inc or Oxford Reading Tree.</p>
+        <p>{t('showcase.footer')}</p>
       </footer>
     </div>
   );

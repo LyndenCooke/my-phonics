@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "Kyauta · ba katin banki · minti 3–10",
+    "title": "Gano matakin karatun ɗanku",
+    "subtitle": "Ku zauna tare, ku taɓa ƴan sautuka, mu kuma za mu nemo muku littattafan da suka dace daidai — ba tare da zato ba.",
+    "howItWorks": "Yadda yake aiki",
+    "steps": {
+      "questionsLabel": "Ƴan tambayoyi masu sauri",
+      "questionsDesc": "Ku gaya mana game da ɗanku",
+      "checkLabel": "Duba cikin sauri",
+      "checkDesc": "Yi alama a kan kalmomin da ɗanku zai iya karantawa",
+      "soundLabel": "Gwajin sauti",
+      "soundDesc": "Muna gwada kowane sauti a matakinsa",
+      "resultsLabel": "Sakamako",
+      "resultsDesc": "Duba sautukan da ya sani da waɗanda yake buƙatar koya"
+    },
+    "chooseTest": "Zaɓi gwaji",
+    "chooseTestHint": "Ku zauna tare da ɗanku — minti 3 zuwa 10 gwargwadon gwajin da kuka zaɓa.",
+    "quickTitle": "Duba Cikin Sauri · minti 3",
+    "quickDesc": "Gwajin sauti mai daidaitawa don gano matakin ɗanku da sauri.",
+    "fullTitle": "Cikakken Gwaji · kusan minti 10",
+    "fullDesc": "Yana gwada sautuka, kalmomi na gaske, kalmomin baƙi (ƙagaggun kalmomi) da Tricky Words (kalmomi masu wuya) a kowane mataki.",
+    "privacy": "Amsoshinku na sirri ne. Duba <link>manufofinmu na sirri</link>.",
+    "whatYouGet": "Abin da za ku samu a ƙarshe",
+    "get": {
+      "level": "Matakin karatun ɗanku a cikin tafiyar matakai 8",
+      "map": "Taswirar sauti-bayan-sauti ta abin da ya sani",
+      "book": "Littafi ɗaya kyauta da ya dace da wannan matakin",
+      "plan": "Tsari mai sauƙi na \"matakai na gaba\""
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "Yaushe aka haifi ɗanku?",
+      "hint": "Wannan yana taimaka mana mu kwatanta da tsammanin shekaru na Birtaniya.",
+      "month": "Wata",
+      "year": "Shekara",
+      "age": "Shekaru: {{age}}"
+    },
+    "school": {
+      "title": "Wace irin makaranta?",
+      "hint": "Wannan yana taimaka mana mu daidaita shawarwari.",
+      "options": {
+        "public": "Makarantar gwamnati",
+        "private": "Makarantar kuɗi",
+        "international": "Makarantar ƙasa da ƙasa",
+        "religious": "Makarantar addini",
+        "homeschool": "Karatu a gida",
+        "notYet": "Bai fara makaranta ba tukuna"
+      }
+    },
+    "needs": {
+      "title": "Akwai buƙatun koyo na musamman?",
+      "hint": "Don mu iya tallafa wa tafiyar ɗanku.",
+      "options": {
+        "none": "Babu",
+        "dyslexia": "Matsalar karatu (dyslexia)",
+        "speech": "Magana da harshe",
+        "eal": "Turanci a matsayin ƙarin harshe",
+        "adhd": "ADHD / mayar da hankali",
+        "other": "Wani daban"
+      }
+    },
+    "language": {
+      "title": "Harshen gida?",
+      "hint": "Yana taimaka mana mu fahimci yanayin karatun ɗanku.",
+      "options": {
+        "englishOnly": "Turanci kaɗai",
+        "englishPlus": "Turanci + wani harshe",
+        "mostlyOther": "Galibi wani harshe"
+      }
+    },
+    "reading": {
+      "title": "Sau nawa kuke karatu tare?",
+      "hint": "Ba hukunci — kawai yana taimaka mana mu keɓance shawarwari.",
+      "options": {
+        "daily": "Yana karatu kowace rana",
+        "fewTimes": "Sau kaɗan a mako",
+        "occasionally": "Lokaci-lokaci",
+        "starting": "Yanzu ya fara"
+      }
+    }
+  },
+  "screening": {
+    "title": "Duba Cikin Sauri",
+    "body1": "Wanne daga cikin waɗannan kalmomin ɗanku zai iya karantawa da babbar murya?",
+    "body2": "Taɓa lasifika don jin kowace kalma, sannan yi alama a kan waɗanda ya sani.",
+    "skip": "Tsallake — fara daga Mataki na 1"
+  },
+  "test": {
+    "level": "Mataki na {{level}}",
+    "stages": {
+      "sounds": "Sautuka",
+      "aliens": "Kalmomin Baƙi",
+      "wordCheck": "Duba Kalmomi",
+      "bonus": "Zagayen Kari"
+    },
+    "instructions": {
+      "sound_recognition": "Nuna wa ɗanku kowane sauti. Ku tambaya: \"Wane sauti wannan yake yi?\"",
+      "word_reading": "Ku roƙi ɗanku ya karanta kowace kalma ta gaske da babbar murya.",
+      "alien_words": "Ku gaya wa ɗanku cewa waɗannan ƙagaggun kalmomi ne. Ku roƙe shi ya furta sautukan kowace ɗaya."
+    },
+    "progress": "{{current}} cikin {{total}}",
+    "bonus": "kari",
+    "madeUp": "(ƙagaggiyar kalma)",
+    "didTheyGetIt": "Ya amsa daidai?",
+    "notYet": "Tukuna",
+    "correct": "Daidai",
+    "wrongInARow": "Kuskure {{n}} a jere — ƙarin 1 kuma za a tsallake gaba"
+  },
+  "levelPassed": {
+    "title": "An Wuce Mataki na {{level}}!",
+    "continue": "Ci gaba zuwa Mataki na {{level}}"
+  },
+  "results": {
+    "title": "An Kammala Tantancewa",
+    "subtitle": "Ga bayanin fonikis na ɗanku.",
+    "itemsTested": "An gwada abubuwa {{n}}",
+    "recommended": "Matakin farawa da aka ba da shawara",
+    "level": "Mataki na {{level}}",
+    "ageRange": "Shekaru {{range}}",
+    "ageComparison": "Kwatancen Shekaru na Birtaniya — shekaru {{age}} ({{yearGroup}})",
+    "yearGroups": {
+      "receptionAutumn": "Aji na Share Fage (Kaka)",
+      "receptionSpringSummer": "Aji na Share Fage (Bazara/Rani)",
+      "year1Autumn": "Aji na 1 (Kaka)",
+      "year1SpringSummer": "Aji na 1 (Bazara/Rani)",
+      "year2": "Aji na 2",
+      "year3": "Aji na 3"
+    },
+    "expectedLevel": "Matakin da ake tsammani",
+    "yourChild": "Ɗanku",
+    "status": {
+      "above": "Sama da abin da ake tsammani",
+      "at": "A matakin da ake tsammani",
+      "below": "Ƙasa da abin da ake tsammani"
+    },
+    "belowNote": "A Ingila, yara masu wannan shekarun galibi suna a {{expected}}. Atisaye na musamman tare da MyPhonicsBooks zai iya taimakawa wajen rufe wannan giɓi.",
+    "aboveNote": "Ɗanku ya wuce tsammanin shekaru na Birtaniya. Ku ci gaba da wannan kyakkyawan aiki!",
+    "claimBook": "Karɓi Littafina na Kyauta",
+    "soundMap": "Taswirar Sautuka",
+    "levelResults": "Sakamakon Matakai ({{n}})",
+    "passed": "YA WUCE",
+    "notYet": "TUKUNA",
+    "categories": {
+      "sound_recognition": "Sautuka",
+      "word_reading": "Kalmomi na Gaske",
+      "tricky_words": "Tricky Words (kalmomi masu wuya)"
+    },
+    "notTested": "Ba a gwada ba",
+    "toPractise": "Duk abubuwan da za a yi atisaye a kansu ({{n}})",
+    "personalised": "An keɓance muku",
+    "deeperTitle": "Kuna son ƙarin zurfin nazari?",
+    "deeperBody": "Wannan gwaji mai sauri yana gano matakin ɗanku. Ku yi cikakken gwaji dalla-dalla don gano kowane giɓi a dukkan sautuka, kalmomi da Tricky Words.",
+    "saveTitle": "Ajiye sakamakonku kuma ku sami littafi kyauta",
+    "saveBody": "Shigar da imel ɗinku, za mu buɗe muku littafi kyauta na Mataki na {{level}} kuma mu aiko muku da hanyar shiga.",
+    "childNamePlaceholder": "Sunan yaro (ba dole ba)",
+    "emailPlaceholder": "Adireshin imel ɗinku",
+    "saving": "Ana ajiyewa...",
+    "unlock": "Buɗe Littafina na Kyauta",
+    "bookFallback": "Littafin Mataki na {{level}}",
+    "checkEmail": "Duba imel ɗinku a {{email}} don samun hanyar shiga",
+    "browseLibrary": "Duba Ɗakin Karatu",
+    "retake": "Sake Yi",
+    "browseLevel": "Duba Mataki na {{level}}"
+  },
+  "errors": {
+    "invalidEmail": "Da fatan za a shigar da ingantaccen adireshin imel",
+    "signupFailed": "Rajista ta kasa",
+    "generic": "Wani abu ya faru ba daidai ba"
+  },
+  "tips": {
+    "startTitle": "Fara da minti {{minutes}} kawai a rana",
+    "startBody": "A shekaru {{age}}, ko minti {{minutes}} na atisayen karatu a kowace rana yana kawo babban bambanci. Ku gwada karatu tare a lokaci ɗaya kowace rana — kafin barci ko bayan makaranta yana da kyau. Dagewa ya fi tsawon lokaci muhimmanci.",
+    "dailyTitle": "Ku yi ƙoƙarin karatu kowace rana — burin minti {{minutes}}",
+    "dailyBody": "Kun riga kun saba da karatu akai-akai, wannan abin a yaba ne. Mayar da shi al'adar yau da kullum — ko da minti {{minutes}} ne — zai ƙara saurin ci gaban ɗanku sosai. Kaɗan-kaɗan akai-akai shi ne sirrin.",
+    "brilliantTitle": "Kuna yin aiki mai kyau ƙwarai",
+    "brilliantBody": "Karatu kowace rana a shekaru {{age}} yana ɗaya daga cikin abubuwa mafi kyau da za ku iya yi. Ku ci gaba — minti {{minutes}} a rana ya isa sosai. Ɗanku yana gina ginshiƙai masu ƙarfi na karatu.",
+    "bilingualTitle": "Harsuna biyu babban ƙarfi ne",
+    "bilingualBody": "Yin magana da harsuna biyu a gida babban amfani ne ga ci gaban ƙwaƙwalwar ɗanku. Ku ci gaba da magana da harsunan biyu — ba ya rage saurin karatun Turanci. Ku karanta littattafan fonikis da Turanci, amma littattafan labari da kowane ɗaya daga cikin harsunan.",
+    "moreEnglishTitle": "Ƙarin lokacin karatun Turanci zai taimaka",
+    "moreEnglishBody": "Tunda Turanci ba shi ne babban harshen gida ba, ɗanku zai iya buƙatar ɗan ƙarin atisayen fonikis kowace rana don samun ƙwarewa. Ku yi ƙoƙarin samar da minti 10–15 na karatun Turanci tare da harshen gidanku — dukansu suna da amfani.",
+    "dyslexiaTitle": "Karatu ta hanyoyin ji da yawa ya fi dacewa",
+    "dyslexiaBody": "Ga yara masu matsalar karatu (dyslexia), fonikis yana da muhimmanci musamman — haka ma haƙuri. Ku yi amfani da maɓallan sauti, ku bi siffar haruffa da yatsu, kuma ku riƙa gajarta zama (minti 5–10). Ku yi murnar kowace ƙaramar nasara. Ci gaba zai iya yin jinkiri amma na gaske ne.",
+    "speechTitle": "Sautuka da farko, sannan haɗawa",
+    "speechBody": "Yara masu buƙatun magana da harshe suna amfana sosai daga jin sautuka a sarari. Ku riƙa amfani da maɓallan sauti akai-akai, kuma ku ba ɗanku ƙarin lokaci don amsawa. Idan zai iya jin sautin, zai iya koyon karanta shi — ko da furta shi ya fi wuya.",
+    "ealTitle": "Fonikis yana aiki sosai ga masu koyon Turanci a matsayin ƙarin harshe",
+    "ealBody": "Fonikis mai tsari yana ɗaya daga cikin hanyoyi mafi tasiri ga yaran da ke koyon Turanci a matsayin ƙarin harshe. Sautukan suna daidai kuma ana iya hasashensu. Ku haɗa atisayen fonikis da littattafan hotuna don gina kalmomi tare da koyon karanta su.",
+    "adhdTitle": "Gajerun zama, manyan lada",
+    "adhdBody": "Ku riƙe zaman karatu a minti 5–8 — gajerun zama da cikakken hankali sun fi dogayen zama masu raba hankali. Ku gwada ƙara motsi: tashi tsaye tsakanin shafuka, yi amfani da abin nuni don bin kalmomi, ko yi tsallen tauraro bayan kowane shafi. Ku sa ya zama mai motsi!",
+    "gapTitle": "Rufe giɓin abu ne mai yiwuwa sosai",
+    "gapBody": "Ɗanku ya ɗan baya a kan tsammanin Birtaniya na shekarunsa — amma wannan abu ne na al'ada kuma ana iya gyara shi cikin sauƙi. Da minti {{minutes}} na atisayen fonikis kowace rana a Mataki na {{level}}, yawancin yara suna kamo sauran cikin zangon karatu ɗaya. Mabuɗin shi ne atisaye akai-akai, ba haddace cikin gaggawa ba.",
+    "homeschoolTitle": "Ku tsara zaman fonikis ɗinku",
+    "homeschoolBody": "A matsayinku na iyalin da ke karatu a gida, kuna da damar kulawa ɗaya-da-ɗaya. Ku bi matakan bisa tsari — kowane littafi yana gina kan wanda ya gabace shi. Gajeren zaman fonikis kowace rana (minti 10–15) sannan karatu na sakin jiki yana aiki sosai.",
+    "schoolSupportTitle": "Fonikis a gida yana tallafa wa karatun makaranta",
+    "schoolSupportBody": "Makarantar ɗanku na iya amfani da wata hanyar koyar da karatu daban. MyPhonicsBooks yana bin tsarin karatun fonikis na Birtaniya, wanda ke da tsari kuma an tabbatar da shi da hujjoji. Ko minti 10 a gida zai ƙarfafa abin da yake koya a makaranta.",
+    "headStartTitle": "Kuna ba shi damar fara gaba",
+    "headStartBody": "Fara fonikis kafin makaranta kyauta ce mai ban mamaki. Ku sa ya zama wasa — babu matsi, sai nishaɗi da sautuka. Ɗanku zai isa makaranta yana da ƙwarin gwiwa da haruffa da sautuka, wanda ke kawo bambanci na gaske."
+  },
+  "reveal": {
+    "badge": "An Buɗe Littafi!",
+    "title": "Littafinku na kyauta ya shirya",
+    "levelName": "Mataki na {{level}} — {{name}}",
+    "body": "Bisa sakamakonku, kun buɗe wannan littafin kyauta.",
+    "continue": "Ci gaba zuwa sakamakona"
+  },
+  "nav": {
+    "level": "Mataki",
+    "map": "Taswira",
+    "levels": "Matakai",
+    "continue": "Ci gaba"
+  }
+}

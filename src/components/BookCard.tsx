@@ -13,6 +13,7 @@ import { Lock, Check, Download } from 'lucide-react';
 import { Book } from '@/lib/types';
 import { getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
 import { getCoverImageUrl } from '@/lib/imageResolver';
+import { useTranslation } from 'react-i18next';
 
 interface BookCardProps {
   book: Book;
@@ -30,6 +31,7 @@ export default function BookCard({ book, onSelect, onDownload }: BookCardProps) 
   const journey = getJourneyLevel(journeyLevelOf(book.subLevel));
   const hex = journey?.hex ?? '#E84B8A';
   const [imgError, setImgError] = useState(false);
+  const { t } = useTranslation('library');
 
   const resolvedCover = getCoverImageUrl(book.subLevel, book.coverImageUrl);
   const showImage = resolvedCover && !imgError;
@@ -51,8 +53,10 @@ export default function BookCard({ book, onSelect, onDownload }: BookCardProps) 
       tabIndex={0}
       onClick={() => onSelect(book)}
       onKeyDown={handleKey}
-      aria-label={`${book.title}${book.completed ? ' — done' : book.unlocked ? '' : ' — locked'}`}
-      className="group text-left w-full cursor-pointer"
+      aria-label={book.completed
+        ? t('card.doneAria', { title: book.title })
+        : book.unlocked ? book.title : t('card.lockedAria', { title: book.title })}
+      className="group text-start w-full cursor-pointer"
     >
       {/* The book object */}
       <div className="relative px-1 pt-1 transition-transform duration-200 group-hover:-translate-y-1.5 group-hover:rotate-[-1deg] group-active:scale-[0.97]">
@@ -74,7 +78,7 @@ export default function BookCard({ book, onSelect, onDownload }: BookCardProps) 
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center p-3 text-center">
-              <p className="font-child text-base font-bold leading-snug text-white drop-shadow-md">
+              <p dir="ltr" lang="en" className="font-child text-base font-bold leading-snug text-white drop-shadow-md">
                 {book.title}
               </p>
             </div>
@@ -112,7 +116,9 @@ export default function BookCard({ book, onSelect, onDownload }: BookCardProps) 
       {/* Title row */}
       <div className="mt-3 px-1 flex items-start gap-1.5">
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-display font-bold text-foreground leading-snug truncate">
+          {/* English title: LTR island (so truncation clips the END), but
+              aligned to the page's start edge in RTL layouts. */}
+          <p dir="ltr" lang="en" className="text-[13px] font-display font-bold text-foreground leading-snug truncate text-left rtl:text-right">
             {book.title}
           </p>
           {book.unlocked && book.lastPageRead > 0 && !book.completed && (
@@ -135,8 +141,8 @@ export default function BookCard({ book, onSelect, onDownload }: BookCardProps) 
               e.stopPropagation();
               onDownload(book);
             }}
-            aria-label={`Download ${book.title} PDF`}
-            title="Download PDF"
+            aria-label={t('card.downloadAria', { title: book.title })}
+            title={t('card.download')}
             className="shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-lg text-muted-foreground/50 hover:text-foreground hover:bg-black/5 active:scale-95 transition-all"
           >
             <Download className="w-3.5 h-3.5" />

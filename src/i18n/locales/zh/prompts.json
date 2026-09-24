@@ -1,0 +1,47 @@
+{
+  "feedback": {
+    "title": "您觉得我们做得怎么样？",
+    "description": "您的反馈能帮助我们不断改进——精彩的评价还可能展示在我们的网站上。",
+    "returningTitle": "喜欢 MyPhonicsBooks 吗？",
+    "returningDescription": "您已经回来好几次了——希望您能给个星级评分，并分享任何想法。这对我们真的很有帮助。",
+    "stars_other": "{{count}} 星",
+    "lovedLabel": "您最喜欢什么？💛",
+    "lovedPlaceholder": "孩子（或您）最喜欢的部分…",
+    "improveLabel": "哪些地方可以做得更好？",
+    "improvePlaceholder": "任何让您不满意或想要改变的地方（仅供我们团队查看）",
+    "privateNote": "只有我们团队能看到——绝不会公开展示。",
+    "consentMarketing": "我同意你们将我喜欢的内容作为用户评价展示在网站和社交媒体上。",
+    "consentNamed": "我同意同时显示我的名字（不含姓氏）。",
+    "send": "发送反馈",
+    "sending": "正在发送…",
+    "pickRating": "请选择星级",
+    "pickRatingBody": "点击星星为您的体验评分。",
+    "thanks": "谢谢您！💛",
+    "thanksBody": "您的反馈已发送给我们的团队。",
+    "sendFailed": "反馈发送失败"
+  },
+  "homeScreen": {
+    "dismiss": "关闭",
+    "title": "最后一步——一键即可打开",
+    "body": "把 MyPhonicsBooks 添加到主屏幕。明天把手机交给孩子——点一下图标就能开始阅读。无需登录，无需输入。",
+    "install": "安装到主屏幕",
+    "iosStep1": "点击 Safari 底部的 <icon/> <b>分享</b> 按钮",
+    "iosStep2": "向下滚动 → 点击 <icon/> <b>“添加到主屏幕”</b>",
+    "iosStep3": "点击右上角的 <b>添加</b>。完成！",
+    "otherDevice": "请在手机上用 Chrome（安卓）或 Safari（iPhone）打开此页面，将应用安装到主屏幕。"
+  },
+  "nudges": {
+    "closeNudges": "关闭提醒",
+    "dialogLabel": "为您准备的新内容",
+    "title": "您好！看看有什么新内容",
+    "empty": "暂无新内容。有新消息时我们会通知您。",
+    "moreInMessages": "更多更新请查看消息",
+    "goToMessages": "前往消息"
+  },
+  "bookUnlocked": {
+    "badge": "图书已解锁！",
+    "title": "您的免费图书已准备好",
+    "level": "第 {{level}} 级",
+    "continue": "继续前往书库"
+  }
+}

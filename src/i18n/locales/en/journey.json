@@ -1,0 +1,48 @@
+{
+  "youAreHere": "You are here",
+  "dayOf": "Day {{day}} of {{total}}",
+  "kicker": "The reading journey",
+  "headline": "Your road to reading",
+  "lessonOf": "Lesson {{n}} of {{total}}",
+  "levelDash": "Level {{n}} — {{name}}",
+  "progressAria": "Lesson {{n}} of {{total}}, {{pct}} percent of the journey",
+  "levelState": {
+    "complete": "complete",
+    "current": "current level, {{done}} of {{total}} lessons",
+    "future": "not started yet"
+  },
+  "levelAria": "Level {{n}}, {{name}}, {{state}}. Open level map.",
+  "lessonsDone": "{{done}} of {{total}} lessons",
+  "complete": "Complete",
+  "lessons_one": "{{count}} lesson",
+  "lessons_other": "{{count}} lessons",
+  "panel": {
+    "aria": "Lesson outline: {{title}}",
+    "close": "Close lesson outline",
+    "meta": "Lesson {{n}} · Level {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "Days this week",
+    "dayTabAria": "Day {{day}}: {{title}}",
+    "dayTab": "Day {{day}}",
+    "minutes": "About {{minutes}} minutes taught",
+    "minutesWorksheet": "About {{minutes}} minutes taught, then the worksheet"
+  },
+  "blockState": {
+    "complete": "complete",
+    "current": "you are here",
+    "future": "still to come"
+  },
+  "kind": {
+    "assessment": "Assessment",
+    "keepup": "Keep-up time",
+    "lesson": "Lesson",
+    "soundWeek": "Sound week",
+    "skillsWeek": "Skills week"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "Back to the whole journey",
+  "back": "Whole journey",
+  "levelTitle": "Level {{n}}: {{name}}",
+  "error": "The journey map could not load right now. Please try again shortly.",
+  "loading": "Loading the journey map",
+  "sectionAria": "Curriculum journey map"
+}

@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { Book } from '@/lib/types';
 import { ChevronLeft, ChevronRight, X, RefreshCw } from 'lucide-react';
 import { useUpdateReadingProgress } from '@/hooks/useBooks';
+import { useTranslation } from 'react-i18next';
 
 interface BookReaderProps {
   book: Book;
@@ -28,6 +29,7 @@ function subLevelToKey(subLevel: string): string | null {
 }
 
 export default function BookReader({ book, onClose, onFinish }: BookReaderProps) {
+  const { t, i18n } = useTranslation('reader');
   const [currentPage, setCurrentPage] = useState(0);
   const [imgError, setImgError] = useState(false);
   const [imgRetry, setImgRetry] = useState(0);
@@ -131,7 +133,11 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
   const isLast = currentPage === totalPages - 1;
 
   return (
+    // The book is English and reads left-to-right even on an RTL site:
+    // page turns, arrows and swipes stay physical (LTR island).
     <div
+      dir="ltr"
+      lang="en"
       className="fixed inset-0 z-[9999] bg-slate-900 flex flex-col"
       style={{ isolation: 'isolate' }}
       onTouchStart={handleTouchStart}
@@ -142,7 +148,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
         <button
           onClick={onClose}
           className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-          aria-label="Close book"
+          aria-label={t('closeBook')}
         >
           <X className="w-5 h-5 text-white" />
         </button>
@@ -160,28 +166,28 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           <img
             key={`${currentPage}-${imgRetry}`}
             src={pageUrl}
-            alt={`${book.title} — page ${currentPage + 1}`}
+            alt={t('pageAlt', { title: book.title, page: currentPage + 1 })}
             className="max-w-full max-h-full object-contain select-none"
             draggable={false}
             onError={() => setImgError(true)}
           />
         ) : pageUrl && imgError ? (
-          <div className="text-white/70 text-center px-6">
-            <p className="text-base font-semibold">We couldn't load this page.</p>
+          <div dir={i18n.dir()} lang={i18n.language} className="text-white/70 text-center px-6">
+            <p className="text-base font-semibold">{t('pageLoadError')}</p>
             <p className="text-sm text-white/50 mt-1">
-              Check your connection and try again.
+              {t('pageLoadErrorHint')}
             </p>
             <button
               onClick={() => setImgRetry((r) => r + 1)}
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white/15 hover:bg-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors"
             >
-              <RefreshCw className="w-4 h-4" /> Try again
+              <RefreshCw className="w-4 h-4" /> {t('common:actions.retry')}
             </button>
           </div>
         ) : (
           <div className="text-white/50 text-center">
             <p className="text-lg font-bold">{book.title}</p>
-            <p className="text-sm mt-2">Page images not available</p>
+            <p dir={i18n.dir()} lang={i18n.language} className="text-sm mt-2">{t('pagesUnavailable')}</p>
           </div>
         )}
 
@@ -190,7 +196,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           <button
             onClick={goPrev}
             className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/25 transition-colors z-10 hidden md:flex"
-            aria-label="Previous page"
+            aria-label={t('previousPage')}
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
@@ -199,7 +205,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           <button
             onClick={goNext}
             className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center hover:bg-white/25 transition-colors z-10 hidden md:flex"
-            aria-label="Next page"
+            aria-label={t('nextPage')}
           >
             <ChevronRight className="w-6 h-6 text-white" />
           </button>
@@ -224,6 +230,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           onClick={goPrev}
           disabled={isFirst}
           className="p-2 rounded-lg hover:bg-white/10 disabled:opacity-20 transition-colors mr-2"
+          aria-label={t('previousPage')}
         >
           <ChevronLeft className="w-5 h-5 text-white" />
         </button>
@@ -238,7 +245,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
                   ? `w-5 h-2 ${levelBg}`
                   : 'w-2 h-2 bg-white/25 hover:bg-white/40'
               }`}
-              aria-label={`Go to page ${i + 1}`}
+              aria-label={t('goToPage', { page: i + 1 })}
             />
           ))}
         </div>
@@ -248,6 +255,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           className={`p-2 rounded-lg transition-colors ml-2 ${
             isLast ? `${levelBg} text-white` : 'hover:bg-white/10 text-white'
           }`}
+          aria-label={isLast ? t('finishBook') : t('nextPage')}
         >
           <ChevronRight className="w-5 h-5" />
         </button>

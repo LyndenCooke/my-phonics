@@ -29,6 +29,7 @@
  * ARCH_X / SIGN geometry is MEASURED from the PNG — re-measure if the
  * scene is regenerated. Procedural fallbacks draw if any asset is missing.
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -135,6 +136,7 @@ function pickDistractors(target: string, pool: string[], hardness: number): stri
 }
 
 export default function PunctuationRun({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ended, setEnded] = useState<{ stars: number; newBest: boolean } | null>(null);
   const endedRef = useRef(setEnded);
@@ -516,12 +518,12 @@ export default function PunctuationRun({ level, onClose }: Props) {
   const restart = () => (canvasRef.current as unknown as { __restart?: () => void })?.__restart?.();
 
   return createPortal(
-    <div className="fixed inset-0 z-[70]" style={{ background: '#173049' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70]" style={{ background: '#173049' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }} />
       <RotateGate />
       <button
         onClick={onClose}
-        aria-label="Close game"
+        aria-label={t('play.closeGame')}
         className="absolute top-3.5 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
         style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', top: 'max(0.875rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
       >

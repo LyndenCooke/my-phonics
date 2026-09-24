@@ -1,0 +1,156 @@
+{
+  "page": {
+    "title": "Ɗakin Karatu",
+    "subtitleBooks": "Ƙananan littattafai {{count}}, matakai takwas — taɓa ɗaya don fara karatu",
+    "subtitleBooksNoCount": "Ƙananan littattafai, matakai takwas — taɓa ɗaya don fara karatu",
+    "subtitleWorksheets": "Taswirorin sauti da takardun aiki kyauta da za a iya bugawa"
+  },
+  "tabs": {
+    "books": "Littattafai",
+    "worksheets": "Takardun aiki"
+  },
+  "guest": {
+    "title": "Karanta kowane littafi kyauta",
+    "body": "Taɓa kowane littafi don farawa. Kuna son PDF da za a buga? Buɗe asusu kyauta don saukewa.",
+    "signUp": "Yi rajista kyauta →",
+    "findLevel": "Gano matakin yaronku →"
+  },
+  "newUser": {
+    "title": "Ba ku da tabbacin inda za ku fara?",
+    "body": "Yi gwajinmu na minti 3 don gano matakin da ya dace — sannan ku karanta ko ku sauke kowane littafi.",
+    "cta": "Fara Tantancewa →"
+  },
+  "shelf": {
+    "ariaLabel": "Mataki {{level}} — {{name}}",
+    "level": "Mataki {{level}}",
+    "readProgress": "An karanta {{read}} cikin {{total}}"
+  },
+  "empty": {
+    "title": "Babu littattafai na wannan matakin tukuna",
+    "body": "Ku dawo nan ba da jimawa ba don sababbin littattafai"
+  },
+  "unlockedModal": {
+    "cta": "Fara Karatu"
+  },
+  "quiz": {
+    "perfect": "Cikakken maki! {{score}}/{{total}} - Kai tauraron karatu ne!",
+    "complete": "An gama tambayoyi! Makinku {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "nan ba da jimawa ba",
+    "days_one": "kwana {{count}}",
+    "days_other": "kwanaki {{count}}",
+    "hours_one": "awa {{count}}",
+    "hours_other": "awanni {{count}}"
+  },
+  "downloadErrors": {
+    "signIn": "Da fatan za a shiga don saukewa.",
+    "unavailable": "Babu fayil ɗin PDF",
+    "failed": "Saukewa ya kasa"
+  },
+  "notification": {
+    "title": "An sauke {{title}}",
+    "body": "An adana {{format}} — taɓa don sake saukewa",
+    "cta": "Duba"
+  },
+  "levelFilter": {
+    "all": "Duk littattafai"
+  },
+  "levels": {
+    "1": {
+      "focus": "Sautuka na farko da kalmomi masu sauƙi na haruffa 3"
+    },
+    "2": {
+      "focus": "Sauran haruffan baƙaƙe, tare da ck, ff, ll, ss"
+    },
+    "3": {
+      "focus": "Haruffa biyu, sauti ɗaya — sh, ch, th, ng…"
+    },
+    "4": {
+      "focus": "Haɗaɗɗun wasula kamar ay, ee, igh, oo da ar"
+    },
+    "5": {
+      "focus": "Rabuwar haruffa biyu (a-e, i-e) da sababbin rubutu"
+    },
+    "6": {
+      "focus": "Wasu hanyoyin rubutu — wr, kn, ph, dge…"
+    },
+    "7": {
+      "focus": "Haruffa uku (ire, ore, ear) da ƙarshen -tion"
+    },
+    "8": {
+      "focus": "Ƙarin ƙarshe da gina kalmomi — -ous, -able, -ible"
+    }
+  },
+  "agesRange": "Shekaru {{range}}",
+  "card": {
+    "doneAria": "{{title}} — an gama",
+    "lockedAria": "{{title}} — a kulle",
+    "download": "Sauke PDF",
+    "downloadAria": "Sauke PDF na {{title}}"
+  },
+  "download": {
+    "title": "Sauke <book>{{title}}</book>",
+    "description": "Zaɓi tsarin da ya dace da yadda za ku yi amfani da shi.",
+    "formats": {
+      "a4": {
+        "label": "Ƙaramin Littafi A5",
+        "description": "Buga a kan takardar A4 ta fuska biyu, ninka kuma ka ɗaure da sitafula don samun ƙaramin littafi na A5 na gaske. Shafin ƙarshe da na farko suna kan takarda ɗaya."
+      },
+      "a5": {
+        "label": "Takardun A4",
+        "description": "Kowane shafi a kan takardarsa. Yana da kyau don karatu da babban girma ko amfani a aji."
+      }
+    },
+    "preparing": "Ana shirya {{format}}…",
+    "preparingPdf": "Ana shirya PDF…",
+    "successTitle": "An adana a cikin abubuwan da kuka sauke",
+    "successBody": "<book>{{title}}</book> ({{format}}) yana cikin Tarihin Saukewarku — buɗe shi daga can a kowane lokaci.",
+    "goToHistory": "Je zuwa Tarihin Saukewa",
+    "errorTitle": "Saukewa bai yi nasara ba",
+    "failed": "Saukewa ya kasa"
+  },
+  "worksheets": {
+    "intro": "Kayan koyon sautin haruffa (phonics) kyauta da za a iya bugawa, don iyaye da malamai. Taswirorin sauti, fastoci da takardun aiki — duk sun dace da manhajar Letters and Sounds ta Birtaniya.",
+    "categoriesAria": "Rukunan kayan koyo",
+    "categorySoundMats": "Taswirorin sauti",
+    "categoryLevel": "Takardun aiki na M{{level}}",
+    "levelHeading": "Takardun aiki na Mataki {{level}}",
+    "levelSub": "{{name}} — {{ages}} · danna littafi don ganin kunshin takardun aikinsa",
+    "comingSoon": "Yana zuwa nan ba da jimawa ba",
+    "levelComingSoon": "Takardun aiki na rubutun hannu, karanta kalmomi da Tricky Words da za a iya bugawa don Mataki {{level}}. Ajiye wannan shafi — ana ƙara sababbin takardu a nan akai-akai.",
+    "focusSounds": "Sautukan da ake mai da hankali:",
+    "sheetCount_one": "takarda {{count}}",
+    "sheetCount_other": "takardu {{count}}",
+    "bookComingSoon": "Takardun aiki na wannan littafi suna zuwa nan ba da jimawa ba — atisayen rubutun hannu, karanta alien words, Tricky Words da takardun sauti ɗaya na {{sounds}}.",
+    "downloadAllCount_one": "Sauke takarda {{count}}",
+    "downloadAllCount_other": "Sauke duk takardu {{count}}",
+    "packHint": "Sauke dukan kunshin a matsayin PDF ɗaya, ko ɗauki takarda ɗaya-ɗaya don bugawa idan an buƙata.",
+    "downloadError": "Ba a iya sauke wannan takardar aiki ba. Da fatan za a sake gwadawa.",
+    "preview": "Samfoti na {{title}}",
+    "levelPackTitle": "Takardun sauti ɗaya na Mataki {{level}}",
+    "groups": {
+      "book": "Takardun aiki na littafi",
+      "singleSound": "Takardun sauti ɗaya — {{sounds}}",
+      "singleSoundRest": "Takardun sauti ɗaya — sauran haruffan baƙaƙe",
+      "singleSoundSpecial": "Takardun sauti ɗaya — Special Friends (haruffa biyu, sauti ɗaya)"
+    },
+    "soundSheet": "Sauti {{sound}}"
+  },
+  "soundMats": {
+    "title": "Taswirorin sauti",
+    "subtitle": "Taswirorin sauti da za a iya bugawa don gida da aji — PNG na A3 a kwance",
+    "level": "Mataki {{level}}",
+    "levels23": "Mataki 2 da 3",
+    "levels46": "Mataki 4–6",
+    "sounds_one": "sauti {{count}}",
+    "sounds_other": "sautuka {{count}}",
+    "combinedChart_one": "sauti {{count}} — haɗaɗɗen jadawalin malami",
+    "combinedChart_other": "sautuka {{count}} — haɗaɗɗen jadawalin malami",
+    "combined": "Haɗaɗɗe",
+    "alt": "Taswirar sauti ta {{title}}"
+  },
+  "resources": {
+    "title": "Kayan Koyo"
+  }
+}

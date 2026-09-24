@@ -1,0 +1,133 @@
+{
+  "skipToMain": "Skip to main content",
+  "nav": {
+    "homeAria": "MyPhonicsBooks home",
+    "createBook": "Create a Book",
+    "worldOfBooks": "World of Books",
+    "shop": "Shop",
+    "wallOfLove": "Wall of Love",
+    "forSchools": "For Schools",
+    "schools": "Schools",
+    "explore": "Explore",
+    "exploreBooks": "Explore the Books"
+  },
+  "video": {
+    "badge": "Watch the tour",
+    "title": "See how it works",
+    "body": "A quick walkthrough of the all-in-one English learning platform — books, levels and progress, all in one place.",
+    "fallback": "Your browser doesn’t support embedded video. <link>Watch the tour</link> instead."
+  },
+  "hero": {
+    "forParents": "For Parents",
+    "forSchools": "For Schools",
+    "languages": "Available in {{n}} languages",
+    "titleA": "Books that grow with your child —",
+    "titleB": "from first sounds to fluent reading.",
+    "body": "33 decodable phonics books across 8 levels. Check your child's level free, read together on any screen, or print real booklets to hold.",
+    "exploreBooks": "Explore the books",
+    "checkLevelFree": "Check their level — free",
+    "freeNote": "The first books are free and open right now — no signup, no card."
+  },
+  "shelf": {
+    "regionAria": "Book showcase — drag, swipe, or use the arrow keys to browse",
+    "coverAlt": "{{title}} — Level {{level}} {{levelName}} booklet",
+    "prevBook": "Previous book",
+    "nextBook": "Next book",
+    "level": "Level {{level}}"
+  },
+  "three": {
+    "badge": "Three ways to use it",
+    "title": "Assess. Read. Print.",
+    "subtitle": "Everything a learning reader needs, in one place.",
+    "check": {
+      "title": "Check their level",
+      "desc": "A free 3-minute sound check finds exactly the right starting point. No guessing, no card.",
+      "cta": "Start the free check"
+    },
+    "read": {
+      "title": "Read on any screen",
+      "desc": "Interactive books on phone, tablet or laptop — tap any word to hear it sounded out.",
+      "cta": "Explore the books"
+    },
+    "print": {
+      "title": "Or print and hold",
+      "desc": "Download any book as a fold-and-staple A5 booklet. Real pages for bedtime reading.",
+      "cta": "See the library"
+    }
+  },
+  "testimonials": {
+    "title": "What our customers say",
+    "subtitle": "Real words from the families and teachers using MyPhonicsBooks.",
+    "previous": "Previous",
+    "next": "Next",
+    "aParent": "A parent"
+  },
+  "journey": {
+    "title": "From first sounds to last sounds",
+    "subtitle": "Eight levels, one clear path — every book uses only the sounds your child has learned.",
+    "ages": "Ages {{range}}",
+    "books_one": "{{count}} book",
+    "books_other": "{{count}} books"
+  },
+  "features": {
+    "titleA": "Everything your child needs to",
+    "titleB": "love reading",
+    "body": "Built by phonics experts, designed for real children. Every book uses only sounds your child has learned — so they succeed from the very first page.",
+    "items": {
+      "soundedOut": "Tap any word to hear it sounded out phoneme by phoneme",
+      "books": "33 books across 8 carefully graded reading levels",
+      "settings": "Stories set in Japan, Kenya, Morocco, France, Turkey & more",
+      "quizzes": "Comprehension quizzes and a \"What sound is it?\" game",
+      "progress": "Progress tracking so parents can see growth",
+      "aligned": "Aligned with the UK Year 1 Phonics Screening Check"
+    },
+    "mockAlt": "Interactive reading",
+    "tapHint": "Tap a word to hear it",
+    "printSticker": "…or print it as a booklet"
+  },
+  "free": {
+    "title": "Free for every family",
+    "subtitle": "No plans, no paywall. Read everything now. Sign up (free) to print.",
+    "read": {
+      "title": "Read & play",
+      "note": "no account",
+      "items": {
+        "books": "All 33 books across 8 levels, read online",
+        "tapToHear": "Interactive tap-to-hear reading",
+        "games": "Every phonics game",
+        "check": "Free 3-minute phonics check"
+      },
+      "cta": "Open the library"
+    },
+    "print": {
+      "badge": "Still free",
+      "title": "Print at home",
+      "note": "free account",
+      "items": {
+        "everything": "Everything in Read & play",
+        "download": "Download every book as a printable PDF",
+        "worksheets": "Every worksheet and sound mat",
+        "progress": "Progress tracking and rewards"
+      },
+      "cta": "Create a free account"
+    },
+    "support": "Love it? <btn>Support MyPhonicsBooks</btn> with a one-off thank-you of any size — completely optional."
+  },
+  "footerCta": {
+    "title": "The first books are already open.",
+    "body": "Have a look around — and when you're ready, a free 3-minute check finds your child's exact level.",
+    "explore": "Explore the books",
+    "check": "Check their level"
+  },
+  "footer": {
+    "createBook": "Create a Book",
+    "worldOfBooks": "World of Books",
+    "shop": "Shop",
+    "wallOfLove": "Wall of Love",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "admin": "Admin",
+    "madeWith": "Made with care in the UK"
+  }
+}

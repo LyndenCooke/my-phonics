@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "免费 · 无需银行卡 · 3–10 分钟",
+    "title": "了解孩子的阅读水平",
+    "subtitle": "和孩子坐在一起，点一点几个发音，我们就能为孩子找到最合适的书——不用猜。",
+    "howItWorks": "如何进行",
+    "steps": {
+      "questionsLabel": "几个简单问题",
+      "questionsDesc": "告诉我们孩子的情况",
+      "checkLabel": "快速检查",
+      "checkDesc": "勾选孩子能读出的单词",
+      "soundLabel": "发音测试",
+      "soundDesc": "我们会测试孩子所在级别的每一个发音",
+      "resultsLabel": "结果",
+      "resultsDesc": "了解孩子已掌握和还需学习的发音"
+    },
+    "chooseTest": "选择测试",
+    "chooseTestHint": "请陪孩子一起完成——根据所选测试，需要 3 到 10 分钟。",
+    "quickTitle": "快速检查 · 3 分钟",
+    "quickDesc": "自适应发音测试，快速找到孩子的级别。",
+    "fullTitle": "完整测试 · 约 10 分钟",
+    "fullDesc": "在每个级别测试发音、真实单词、外星词（自造词）和 Tricky Words（特殊词）。",
+    "privacy": "您的回答将被保密。请查看我们的<link>隐私政策</link>。",
+    "whatYouGet": "完成后您将获得",
+    "get": {
+      "level": "孩子在 8 级阅读旅程中的级别",
+      "map": "一份逐个发音的掌握情况图",
+      "book": "一本与该级别匹配的免费图书",
+      "plan": "一份简单的“下一步”计划"
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "孩子是什么时候出生的？",
+      "hint": "这有助于我们与英国同龄儿童的预期水平进行比较。",
+      "month": "月份",
+      "year": "年份",
+      "age": "年龄：{{age}} 岁"
+    },
+    "school": {
+      "title": "孩子上的是哪类学校？",
+      "hint": "这有助于我们提供更贴合的建议。",
+      "options": {
+        "public": "公立学校",
+        "private": "私立学校",
+        "international": "国际学校",
+        "religious": "宗教学校",
+        "homeschool": "在家教育",
+        "notYet": "尚未上学"
+      }
+    },
+    "needs": {
+      "title": "孩子有特殊学习需求吗？",
+      "hint": "以便我们更好地支持孩子的成长。",
+      "options": {
+        "none": "没有",
+        "dyslexia": "阅读障碍",
+        "speech": "言语与语言",
+        "eal": "英语为附加语言",
+        "adhd": "多动症 / 注意力",
+        "other": "其他"
+      }
+    },
+    "language": {
+      "title": "家里说什么语言？",
+      "hint": "帮助我们了解孩子的阅读环境。",
+      "options": {
+        "englishOnly": "只说英语",
+        "englishPlus": "英语 + 另一种语言",
+        "mostlyOther": "主要说另一种语言"
+      }
+    },
+    "reading": {
+      "title": "你们多久一起读一次书？",
+      "hint": "没有评判——只是帮助我们提供个性化建议。",
+      "options": {
+        "daily": "每天阅读",
+        "fewTimes": "每周几次",
+        "occasionally": "偶尔",
+        "starting": "刚刚开始"
+      }
+    }
+  },
+  "screening": {
+    "title": "快速检查",
+    "body1": "孩子能大声读出下面哪些单词？",
+    "body2": "点击喇叭听每个单词的读音，然后勾选孩子认识的单词。",
+    "skip": "跳过——从第 1 级开始"
+  },
+  "test": {
+    "level": "第 {{level}} 级",
+    "stages": {
+      "sounds": "发音",
+      "aliens": "外星词",
+      "wordCheck": "单词检查",
+      "bonus": "加分轮"
+    },
+    "instructions": {
+      "sound_recognition": "给孩子看每个发音，问：“这个发什么音？”",
+      "word_reading": "请孩子大声读出每个真实单词。",
+      "alien_words": "告诉孩子这些是编出来的词，请他们逐个拼读出来。"
+    },
+    "progress": "第 {{current}} 个，共 {{total}} 个",
+    "bonus": "加分",
+    "madeUp": "（编出来的词）",
+    "didTheyGetIt": "孩子答对了吗？",
+    "notYet": "还没有",
+    "correct": "正确",
+    "wrongInARow": "已连续答错 {{n}} 个——再错 1 个将跳到下一步"
+  },
+  "levelPassed": {
+    "title": "第 {{level}} 级通过！",
+    "continue": "继续第 {{level}} 级"
+  },
+  "results": {
+    "title": "评估完成",
+    "subtitle": "这是孩子的自然拼读档案。",
+    "itemsTested": "共测试 {{n}} 项",
+    "recommended": "建议起始级别",
+    "level": "第 {{level}} 级",
+    "ageRange": "适合 {{range}} 岁",
+    "ageComparison": "英国同龄对比——{{age}} 岁（{{yearGroup}}）",
+    "yearGroups": {
+      "receptionAutumn": "学前班（秋季）",
+      "receptionSpringSummer": "学前班（春季/夏季）",
+      "year1Autumn": "一年级（秋季）",
+      "year1SpringSummer": "一年级（春季/夏季）",
+      "year2": "二年级",
+      "year3": "三年级"
+    },
+    "expectedLevel": "预期级别",
+    "yourChild": "您的孩子",
+    "status": {
+      "above": "高于预期",
+      "at": "达到预期水平",
+      "below": "低于预期"
+    },
+    "belowNote": "在英格兰，这个年龄的孩子通常处于{{expected}}。使用 MyPhonicsBooks 进行有针对性的练习可以帮助缩小差距。",
+    "aboveNote": "您的孩子已超过英国同龄预期水平。继续保持！",
+    "claimBook": "领取我的免费图书",
+    "soundMap": "发音地图",
+    "levelResults": "各级别结果（{{n}}）",
+    "passed": "已通过",
+    "notYet": "尚未通过",
+    "categories": {
+      "sound_recognition": "发音",
+      "word_reading": "真实单词",
+      "tricky_words": "Tricky Words（特殊词）"
+    },
+    "notTested": "未测试",
+    "toPractise": "所有需要练习的项目（{{n}}）",
+    "personalised": "为您量身定制",
+    "deeperTitle": "想要更深入的分析吗？",
+    "deeperBody": "这个快速测试可以找到孩子的级别。参加完整详细测试，可以找出所有发音、单词和 Tricky Words 中的每一个薄弱点。",
+    "saveTitle": "保存结果并获得一本免费图书",
+    "saveBody": "输入您的邮箱，我们将为您解锁一本第 {{level}} 级免费图书，并发送登录链接。",
+    "childNamePlaceholder": "孩子的名字（可选）",
+    "emailPlaceholder": "您的邮箱地址",
+    "saving": "正在保存...",
+    "unlock": "解锁我的免费图书",
+    "bookFallback": "第 {{level}} 级图书",
+    "checkEmail": "请查收 {{email}} 中的登录链接",
+    "browseLibrary": "浏览图书馆",
+    "retake": "重新测试",
+    "browseLevel": "浏览第 {{level}} 级"
+  },
+  "errors": {
+    "invalidEmail": "请输入有效的邮箱地址",
+    "signupFailed": "注册失败",
+    "generic": "出了点问题"
+  },
+  "tips": {
+    "startTitle": "每天只需 {{minutes}} 分钟",
+    "startBody": "在 {{age}} 岁时，每天哪怕只练习 {{minutes}} 分钟阅读，也会带来巨大变化。试着每天在同一时间一起阅读——睡前或放学后都很合适。坚持比时长更重要。",
+    "dailyTitle": "尽量每天阅读——目标 {{minutes}} 分钟",
+    "dailyBody": "你们已经在规律阅读了，这非常棒。把它变成每天的习惯——哪怕只有 {{minutes}} 分钟——都会明显加快孩子的进步。少量多次是关键。",
+    "brilliantTitle": "您做得非常好",
+    "brilliantBody": "在 {{age}} 岁时坚持每天阅读，是您能做的最好的事情之一。继续保持——每天 {{minutes}} 分钟正合适。孩子正在打下坚实的阅读基础。",
+    "bilingualTitle": "双语是一种超能力",
+    "bilingualBody": "在家说两种语言对孩子的大脑发育大有好处。请继续使用两种语言——这不会拖慢英语阅读。自然拼读书用英语读，故事书用哪种语言都可以。",
+    "moreEnglishTitle": "多一些英语阅读时间会有帮助",
+    "moreEnglishBody": "由于英语不是家中的主要语言，孩子可能需要每天多一点自然拼读练习来提高流利度。试着在母语之外每天安排 10–15 分钟英语阅读——两者都很宝贵。",
+    "dyslexiaTitle": "多感官阅读效果最好",
+    "dyslexiaBody": "对于有阅读障碍的孩子，自然拼读尤其重要——耐心也同样重要。多用发音按钮，用手指描写字母，并让每次练习保持简短（5–10 分钟）。为每一个小进步庆祝。进步也许慢一些，但非常真实。",
+    "speechTitle": "先听发音，再拼读",
+    "speechBody": "有言语和语言需求的孩子，清楚地听到发音会让他们受益良多。经常使用发音按钮，并给孩子更多时间作答。只要能听出这个音，他们就能学会读——即使说出来更难。",
+    "ealTitle": "自然拼读非常适合以英语为附加语言的孩子",
+    "ealBody": "对于把英语作为附加语言来学习的孩子，系统的自然拼读是最有效的方法之一。发音规律一致、可预测。把自然拼读练习和图画书结合起来，在学习解码的同时积累词汇。",
+    "adhdTitle": "短时专注，大大奖励",
+    "adhdBody": "每次阅读保持在 5–8 分钟——短时间全神贯注胜过长时间心不在焉。试着加入一些动作：每读完一页站起来、用指读棒跟着单词走，或每页之后做一个开合跳。让阅读动起来！",
+    "gapTitle": "缩小差距完全可以做到",
+    "gapBody": "您的孩子比英国同龄预期稍稍落后——但这非常正常，也很容易赶上。每天在第 {{level}} 级进行 {{minutes}} 分钟自然拼读练习，大多数孩子一个学期内就能赶上。关键在于规律练习，而不是突击。",
+    "homeschoolTitle": "为自然拼读练习安排好结构",
+    "homeschoolBody": "作为在家教育的家庭，您拥有一对一关注的优势。请按顺序学习各级别——每本书都建立在上一本的基础上。每天一次简短的自然拼读练习（10–15 分钟），再加上自由阅读，效果很好。",
+    "schoolSupportTitle": "在家学自然拼读，支持学校学习",
+    "schoolSupportBody": "孩子的学校可能采用不同的阅读方法。MyPhonicsBooks 遵循英国自然拼读课程，系统且有实证依据。在家哪怕 10 分钟，也能与学校所学相辅相成。",
+    "headStartTitle": "您正在让孩子赢在起点",
+    "headStartBody": "入学前开始学习自然拼读是一份美好的礼物。保持轻松有趣——没有压力，只是和发音一起玩。孩子入学时就能自信地认识字母和发音，这会带来真正的不同。"
+  },
+  "reveal": {
+    "badge": "图书已解锁！",
+    "title": "您的免费图书已准备好",
+    "levelName": "第 {{level}} 级——{{name}}",
+    "body": "根据您的测试结果，您已解锁这本免费图书。",
+    "continue": "继续查看我的结果"
+  },
+  "nav": {
+    "level": "级别",
+    "map": "地图",
+    "levels": "各级别",
+    "continue": "继续"
+  }
+}

@@ -13,14 +13,17 @@ import { Heart, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import {
   SUPPORT_AMOUNTS,
   clearSupportPrompt,
   isSupportPromptPending,
   startSupportCheckout,
 } from '@/lib/support';
+import { SUPPORT_ERROR_KEYS, SUPPORT_NOTE_KEYS } from '@/components/supportText';
 
 export default function SupportPrompt() {
+  const { t } = useTranslation('support');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -47,7 +50,8 @@ export default function SupportPrompt() {
       clearSupportPrompt();
       await startSupportCheckout(pence);
     } catch (err) {
-      toast.error((err as Error).message);
+      const msg = (err as Error).message;
+      toast.error(SUPPORT_ERROR_KEYS[msg] ? t(SUPPORT_ERROR_KEYS[msg]) : msg);
       setBusy(null);
     }
   };
@@ -60,12 +64,10 @@ export default function SupportPrompt() {
             <Heart className="w-6 h-6 text-primary fill-current" />
           </div>
           <DialogTitle className="font-display text-xl font-extrabold text-foreground">
-            You're in — everything's free
+            {t('prompt.title')}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
-            Every book, game and worksheet is yours at no cost. If MyPhonicsBooks
-            helps your child, you can leave a small thank-you to keep it free for
-            other families. Completely optional.
+            {t('prompt.body')}
           </DialogDescription>
         </DialogHeader>
 
@@ -85,7 +87,9 @@ export default function SupportPrompt() {
               ) : (
                 <>
                   <span className="block font-display font-extrabold text-base text-foreground">{a.label}</span>
-                  <span className="block text-[10px] text-muted-foreground mt-0.5">{a.note}</span>
+                  <span className="block text-[10px] text-muted-foreground mt-0.5">
+                    {SUPPORT_NOTE_KEYS[a.pence] ? t(`amounts.${SUPPORT_NOTE_KEYS[a.pence]}`, { defaultValue: a.note }) : a.note}
+                  </span>
                 </>
               )}
             </button>
@@ -98,14 +102,14 @@ export default function SupportPrompt() {
             onClick={() => { close(); navigate('/support'); }}
             className="text-xs font-bold text-primary-ink hover:underline"
           >
-            Choose a different amount
+            {t('prompt.differentAmount')}
           </button>
           <button
             type="button"
             onClick={close}
             className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-foreground bg-muted hover:bg-muted/70 transition-colors"
           >
-            Maybe later — take me to the books
+            {t('prompt.maybeLater')}
           </button>
         </div>
       </DialogContent>

@@ -1,0 +1,70 @@
+{
+  "closeBook": "Funga kitabu",
+  "pageAlt": "{{title}} — ukurasa {{page}}",
+  "pageLoadError": "Hatukuweza kupakia ukurasa huu.",
+  "pageLoadErrorHint": "Angalia muunganisho wako kisha ujaribu tena.",
+  "pagesUnavailable": "Picha za kurasa hazipatikani",
+  "previousPage": "Ukurasa uliopita",
+  "nextPage": "Ukurasa unaofuata",
+  "goToPage": "Nenda ukurasa {{page}}",
+  "finishBook": "Maliza kitabu",
+  "tapToHear": "Gusa ili kusikia \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Hakikisho la kitabu — tumia vitufe vya mishale kugeuza kurasa"
+  },
+  "quiz": {
+    "saveFailed": "Imeshindikana kuhifadhi matokeo ya jaribio",
+    "completeAria": "Jaribio limekamilika",
+    "perfect": "Alama kamili!",
+    "wellDone": "Umefanya vizuri!",
+    "scored": "Umepata <b>{{score}}</b> kati ya <b>{{total}}</b>",
+    "tryAgain": "Jaribu tena",
+    "dialogAria": "Jaribio: {{title}}",
+    "close": "Funga jaribio",
+    "answerOptions": "Machaguo ya majibu",
+    "seeResults": "Ona matokeo"
+  },
+  "audio": {
+    "playSoundTitle": "Cheza sauti ya \"{{grapheme}}\"",
+    "playSoundAria": "Cheza sauti ya grafimu {{grapheme}}",
+    "playWordTitle": "Cheza \"{{word}}\"",
+    "playWordAria": "Cheza neno {{word}}"
+  },
+  "soundMap": {
+    "known": "Anajua ({{n}})",
+    "toLearn": "Ajifunze ({{n}})",
+    "notTestedCount": "Haijajaribiwa ({{n}})",
+    "notTested": "Haijajaribiwa",
+    "levelHeading": "Kiwango {{level}}",
+    "levelsNotTested": "Viwango {{levels}} bado havijajaribiwa",
+    "status": {
+      "known": "anajua",
+      "unknown": "ajifunze",
+      "untested": "haijajaribiwa"
+    },
+    "categories": {
+      "sound_recognition": "Sauti",
+      "word_reading": "Maneno Halisi",
+      "alien_words": "Alien Words (maneno ya kubuni)",
+      "tricky_words": "Tricky Words (maneno magumu)",
+      "speedy_reading": "Kusoma kwa Kasi",
+      "fluency": "Ufasaha"
+    }
+  },
+  "interactive": {
+    "playSound": "Cheza sauti {{sound}}",
+    "playSoundVariant": "Cheza sauti {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Gusa ili kusikia.",
+    "illustration": "Mchoro wa hadithi",
+    "closeImage": "Funga picha",
+    "expandIllustration": "Panua mchoro",
+    "hideHints": "Ficha vidokezo vya fonetiki",
+    "showHints": "Onyesha vidokezo vya fonetiki",
+    "checkInPassed": "Ukaguzi umefaulu",
+    "checkInPractise": "Ukaguzi — endelea kufanya mazoezi"
+  },
+  "prep": {
+    "tapToHear": "Gusa kila moja ili ulisikie. Hizi ndizo sauti ambazo mtoto wako atazifanyia mazoezi.",
+    "tapLevel": "Gusa kiwango ili uone sauti zake"
+  }
+}

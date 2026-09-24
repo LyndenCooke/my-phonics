@@ -15,6 +15,7 @@
  *  - Relax  — 5 words, collect a star per first-try answer
  *  - Speedy — 30 seconds, how many can you find?
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
@@ -37,6 +38,7 @@ const SPEEDY_SECONDS = 30;
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function TrickyWordGame({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -131,7 +133,7 @@ export default function TrickyWordGame({ level, onClose }: Props) {
   const starsEarned = stars.filter(Boolean).length;
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/tricky_night.webp" wash="strong" />
       {/* soft level wash */}
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
@@ -147,7 +149,7 @@ export default function TrickyWordGame({ level, onClose }: Props) {
           </span>
           <button
             onClick={onClose}
-            aria-label="Close game"
+            aria-label={t('play.closeGame')}
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
             style={{ boxShadow: STICKER }}
           >
@@ -229,7 +231,7 @@ export default function TrickyWordGame({ level, onClose }: Props) {
               <motion.button
                 key={`speak-${roundIdx}`}
                 onClick={() => speakWord(round.target)}
-                aria-label="Hear the word again"
+                aria-label={t('play.hearWordAgain')}
                 className="mt-5 w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-white flex items-center justify-center press-scale"
                 style={{ boxShadow: `0 5px 0 ${hex}40, ${STICKER}`, border: `3px solid ${hex}50`, color: ink }}
                 {...(reduceMotion ? {} : {

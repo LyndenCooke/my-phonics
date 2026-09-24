@@ -1,0 +1,132 @@
+{
+  "skipToMain": "跳到主要内容",
+  "nav": {
+    "homeAria": "MyPhonicsBooks 首页",
+    "createBook": "创作一本书",
+    "worldOfBooks": "图书世界",
+    "shop": "商店",
+    "wallOfLove": "爱心墙",
+    "forSchools": "学校专区",
+    "schools": "学校",
+    "explore": "探索",
+    "exploreBooks": "探索图书"
+  },
+  "video": {
+    "badge": "观看导览",
+    "title": "看看如何使用",
+    "body": "快速了解这个一站式英语学习平台——图书、级别和学习进度，尽在一处。",
+    "fallback": "你的浏览器不支持内嵌视频。请改为<link>观看导览</link>。"
+  },
+  "hero": {
+    "forParents": "家长专区",
+    "forSchools": "学校专区",
+    "languages": "支持 {{n}} 种语言",
+    "titleA": "与孩子一起成长的书——",
+    "titleB": "从认识第一个音，到流利阅读。",
+    "body": "8 个级别，共 33 本可解码自然拼读图书。免费测一测孩子的级别，在任何屏幕上一起阅读，或打印成真正能拿在手里的小册子。",
+    "exploreBooks": "探索图书",
+    "checkLevelFree": "测一测孩子的级别——免费",
+    "freeNote": "入门图书现已免费开放——无需注册，无需银行卡。"
+  },
+  "shelf": {
+    "regionAria": "图书展示——拖动、滑动或使用方向键浏览",
+    "coverAlt": "{{title}}——第 {{level}} 级 {{levelName}} 小册子",
+    "prevBook": "上一本",
+    "nextBook": "下一本",
+    "level": "第 {{level}} 级"
+  },
+  "three": {
+    "badge": "三种使用方式",
+    "title": "测评。阅读。打印。",
+    "subtitle": "初学阅读所需的一切，尽在一处。",
+    "check": {
+      "title": "测一测级别",
+      "desc": "免费的 3 分钟发音测试，精准找到最合适的起点。无需猜测，无需银行卡。",
+      "cta": "开始免费测试"
+    },
+    "read": {
+      "title": "在任何屏幕上阅读",
+      "desc": "手机、平板或电脑上的互动图书——点击任意单词，就能听到逐音拼读。",
+      "cta": "探索图书"
+    },
+    "print": {
+      "title": "或打印出来拿在手里",
+      "desc": "任意图书都可下载为可折叠装订的 A5 小册子。睡前阅读的真实书页。",
+      "cta": "查看图书馆"
+    }
+  },
+  "testimonials": {
+    "title": "用户怎么说",
+    "subtitle": "来自使用 MyPhonicsBooks 的家庭和老师的真实评价。",
+    "previous": "上一条",
+    "next": "下一条",
+    "aParent": "一位家长"
+  },
+  "journey": {
+    "title": "从第一个音到最后一个音",
+    "subtitle": "八个级别，一条清晰的路径——每本书只使用孩子已经学过的音。",
+    "ages": "{{range}} 岁",
+    "books_other": "{{count}} 本书"
+  },
+  "features": {
+    "titleA": "孩子",
+    "titleB": "爱上阅读所需的一切",
+    "body": "由自然拼读专家打造，为真实的孩子设计。每本书只使用孩子学过的音——让他们从第一页起就能读成功。",
+    "items": {
+      "soundedOut": "点击任意单词，逐个音素听它的拼读",
+      "books": "33 本书，覆盖 8 个精心分级的阅读级别",
+      "settings": "故事发生在日本、肯尼亚、摩洛哥、法国、土耳其等地",
+      "quizzes": "阅读理解小测验和 \"What sound is it?\" 游戏",
+      "progress": "学习进度追踪，让家长看到孩子的成长",
+      "aligned": "与英国一年级自然拼读筛查测试（Phonics Screening Check）接轨"
+    },
+    "mockAlt": "互动阅读",
+    "tapHint": "点击单词即可收听",
+    "printSticker": "……也可以打印成小册子"
+  },
+  "free": {
+    "title": "每个家庭都免费",
+    "subtitle": "没有套餐，没有付费墙。现在就能阅读全部内容。免费注册即可打印。",
+    "read": {
+      "title": "阅读与游戏",
+      "note": "无需账户",
+      "items": {
+        "books": "8 个级别全部 33 本书，在线阅读",
+        "tapToHear": "点击即听的互动阅读",
+        "games": "所有自然拼读游戏",
+        "check": "免费 3 分钟自然拼读测试"
+      },
+      "cta": "打开图书馆"
+    },
+    "print": {
+      "badge": "依然免费",
+      "title": "在家打印",
+      "note": "免费账户",
+      "items": {
+        "everything": "包含“阅读与游戏”的全部内容",
+        "download": "每本书都可下载为可打印 PDF",
+        "worksheets": "所有练习单和发音卡",
+        "progress": "学习进度追踪和奖励"
+      },
+      "cta": "创建免费账户"
+    },
+    "support": "喜欢吗？欢迎以任意金额一次性<btn>支持 MyPhonicsBooks</btn>表达谢意——完全自愿。"
+  },
+  "footerCta": {
+    "title": "入门图书已经开放。",
+    "body": "先随便看看——准备好后，免费的 3 分钟测试会找到孩子的确切级别。",
+    "explore": "探索图书",
+    "check": "测一测级别"
+  },
+  "footer": {
+    "createBook": "创作一本书",
+    "worldOfBooks": "图书世界",
+    "shop": "商店",
+    "wallOfLove": "爱心墙",
+    "privacy": "隐私",
+    "terms": "条款",
+    "contact": "联系我们",
+    "admin": "管理",
+    "madeWith": "在英国用心制作"
+  }
+}

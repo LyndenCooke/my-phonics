@@ -1,0 +1,106 @@
+{
+  "backHome": "Rudi kwenye ukurasa wa mwanzo",
+  "notice": {
+    "text": "Tafsiri hii imetolewa kwa urahisi tu. Ikiwa kuna tofauti yoyote, toleo la Kiingereza ndilo litakalotumika.",
+    "switch": "Soma kwa Kiingereza"
+  },
+  "privacy": {
+    "title": "Sera ya Faragha",
+    "lastUpdated": "Ilisasishwa mwisho: Aprili 2026",
+    "whoWeAre": {
+      "title": "Sisi ni nani",
+      "body": "MyPhonicsBooks inaendeshwa na Lynden Cooke. Sera hii inaeleza ni taarifa gani tunazokusanya, kwa nini tunazikusanya, na jinsi unavyoweza kutumia haki zako chini ya UK GDPR (kanuni za ulinzi wa data za Uingereza)."
+    },
+    "collect": {
+      "title": "Taarifa tunazokusanya",
+      "items": {
+        "email": "<b>Anwani ya barua pepe ya mzazi</b> — ili tuweze kukutumia matokeo ya tathmini ya mtoto wako, ufikiaji wa akaunti na stakabadhi za ununuzi.",
+        "child": "<b>Jina la kwanza na umri wa mtoto</b> — hutumika ndani ya tathmini na kituo cha kujifunzia ili kumfanya mtoto apate uzoefu unaomfaa. Hatushiriki taarifa hizi na wahusika wengine.",
+        "activity": "<b>Majibu ya tathmini na shughuli za kusoma</b> — ili tuweze kupendekeza kiwango sahihi cha kusoma na kuonyesha maendeleo kadiri muda unavyokwenda.",
+        "payment": "<b>Maelezo ya malipo</b> — hushughulikiwa na Stripe. Hatuwahi kuona wala kuhifadhi namba kamili za kadi.",
+        "analytics": "<b>Takwimu za msingi</b> — data isiyomtambulisha mtu kuhusu kutazamwa kwa kurasa na hatua za matumizi, ili tuweze kuboresha huduma."
+      }
+    },
+    "use": {
+      "title": "Jinsi tunavyotumia data yako",
+      "body": "Tunatumia taarifa zako kwa ajili ya kutoa huduma pekee: kuwasilisha vitabu, kuhifadhi maendeleo, kushughulikia malipo na kutuma barua pepe zinazohusu akaunti. Hatuuzi data yako na hatuishiriki na washirika wa masoko."
+    },
+    "processors": {
+      "title": "Wachakataji wa data tunaowatumia",
+      "items": {
+        "supabase": "hifadhidata, uthibitishaji, uhifadhi wa faili",
+        "stripe": "uchakataji wa malipo",
+        "vercel": "upangishaji wa tovuti",
+        "elevenlabs": "utengenezaji wa sauti kusaidia kusoma"
+      }
+    },
+    "rights": {
+      "title": "Haki zako",
+      "body": "Unaweza kuomba nakala ya data yako, kutuomba tuirekebishe, au kutuomba tufute akaunti yako wakati wowote. Tuma barua pepe kwa <email>{{email}}</email> nasi tutajibu ndani ya siku 30."
+    },
+    "children": {
+      "title": "Watoto",
+      "body": "Akaunti hufunguliwa na wazazi au walezi. Hatuwahi kuwaomba watoto wajisajili wenyewe, na hatuwahi kutuma barua pepe za matangazo kuhusu mtoto mmoja kwa familia nyingine."
+    },
+    "cookies": {
+      "title": "Vidakuzi (cookies)",
+      "body": "Tunatumia idadi ndogo ya vidakuzi muhimu ili kukuweka ukiwa umeingia. Hatutumii vidakuzi vya matangazo vya wahusika wengine."
+    },
+    "contact": {
+      "title": "Mawasiliano",
+      "body": "Una maswali kuhusu sera hii? Tuma barua pepe kwa <email>{{email}}</email>."
+    }
+  },
+  "terms": {
+    "title": "Masharti ya Huduma",
+    "lastUpdated": "Ilisasishwa mwisho: Aprili 2026",
+    "about": {
+      "title": "Kuhusu masharti haya",
+      "body": "Masharti haya yanaongoza matumizi yako ya MyPhonicsBooks. Kwa kufungua akaunti, kufanya tathmini, au kununua bidhaa yoyote, unakubali masharti haya."
+    },
+    "signup": {
+      "title": "Nani anaweza kujisajili",
+      "body": "Akaunti lazima zifunguliwe na mzazi au mlezi kwa niaba ya mtoto. Lazima uwe na umri wa miaka 18 au zaidi ili kuingia katika makubaliano haya."
+    },
+    "yourContent": {
+      "title": "Maudhui yako",
+      "body": "Unabaki kuwa mmiliki wa chochote anachokiunda mtoto wako ndani ya kituo (michoro, majibu ya maswali, data ya maendeleo). Unatupa leseni yenye mipaka ya kuvihifadhi na kuvionyesha ndani ya akaunti yako ili kituo cha kujifunzia kiweze kufanya kazi."
+    },
+    "ourContent": {
+      "title": "Maudhui yetu",
+      "body": "Vitabu vyote, michoro, sauti na nyenzo za tathmini ni hakimiliki ya MyPhonicsBooks. Vitabu, karatasi za mazoezi na michezo ni bure kusoma na kucheza. PDF zinazopakuliwa zimepewa leseni kwa ajili ya familia yako mwenyewe au darasa lako mwenyewe: chapisha nakala nyingi kadiri unavyohitaji kwa ajili yao. Haziruhusiwi kuuzwa tena, kusambazwa upya au kupakiwa upya, moja moja au kama sehemu ya kifurushi chochote."
+    },
+    "subscriptions": {
+      "title": "Usajili wa kulipia na marejesho ya pesa",
+      "body": "Usajili wa kila mwezi na wa kila mwaka hujisasisha wenyewe hadi utakapoughairi. Unaweza kughairi wakati wowote kupitia Wasifu wako — utaendelea kuwa na ufikiaji hadi mwisho wa kipindi ulicholipia. Ununuzi wa mara moja (vitabu kimoja kimoja, vifurushi) hauna marejesho ya pesa baada ya PDF kupakuliwa, isipokuwa kama inahitajika na sheria ya watumiaji ya Uingereza."
+    },
+    "trials": {
+      "title": "Majaribio ya bure",
+      "body": "Pale ambapo jaribio la bure linatolewa, hutatozwa chochote wakati wa jaribio. Tutakutumia ukumbusho kabla jaribio halijaisha. Usipoghairi, usajili utaanza na kadi yako itatozwa."
+    },
+    "acceptableUse": {
+      "title": "Matumizi yanayokubalika",
+      "body": "Tafadhali usijaribu kuchambua tovuti kinyume (reverse-engineer), kunakili maudhui kwa njia za kiotomatiki, kutumia huduma kumnyanyasa mtu yeyote, au kufikia akaunti za watumiaji wengine. Tunaweza kusimamisha akaunti zinazofanya hivyo."
+    },
+    "outcomes": {
+      "title": "Matokeo ya kielimu",
+      "body": "MyPhonicsBooks ni nyenzo ya kusaidia kusoma. Hatuhakikishi matokeo yoyote mahususi ya kielimu wala kuchukua nafasi ya mwalimu aliyehitimu."
+    },
+    "liability": {
+      "title": "Dhima",
+      "body": "Tunatoa huduma \"kama ilivyo\" na dhima yetu ni kwa kiasi ulichotulipa katika miezi 12 iliyopita tu, isipokuwa pale sheria inapohitaji vinginevyo."
+    },
+    "changes": {
+      "title": "Mabadiliko",
+      "body": "Tunaweza kusasisha masharti haya. Mabadiliko makubwa yatawasilishwa kwa barua pepe au taarifa ndani ya programu kabla hayajaanza kutumika."
+    },
+    "law": {
+      "title": "Sheria inayoongoza",
+      "body": "Masharti haya yanaongozwa na sheria za Uingereza (England) na Wales."
+    },
+    "contact": {
+      "title": "Mawasiliano",
+      "body": "Una maswali? Tuma barua pepe kwa <email>{{email}}</email>."
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "badge": "Sevgi Duvarı",
+  "title": "Gerçek ailelerden gerçek sözler",
+  "rating_one": "{{count}} aile ve öğretmenlerden {{avg}}",
+  "rating_other": "{{count}} aile ve öğretmenlerden {{avg}}",
+  "empty": {
+    "title": "Duvar daha yeni başlıyor",
+    "body": "Hikâyesini paylaşan ilk ailelerden biri olun."
+  },
+  "aParent": "Bir ebeveyn",
+  "cta": {
+    "addStory": "Hikâyenizi eklemek ister misiniz?",
+    "ownStory": "Kendi hikâyenizi ister misiniz?",
+    "leaveReview": "Yorum yazın",
+    "tryCheck": "Ücretsiz 3 dakikalık testi deneyin",
+    "support": "MyPhonicsBooks'u destekleyin"
+  }
+}

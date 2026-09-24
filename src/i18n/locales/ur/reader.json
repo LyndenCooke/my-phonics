@@ -1,0 +1,70 @@
+{
+  "closeBook": "کتاب بند کریں",
+  "pageAlt": "{{title}} — صفحہ {{page}}",
+  "pageLoadError": "یہ صفحہ لوڈ نہیں ہو سکا۔",
+  "pageLoadErrorHint": "اپنا کنکشن چیک کریں اور دوبارہ کوشش کریں۔",
+  "pagesUnavailable": "صفحات کی تصاویر دستیاب نہیں",
+  "previousPage": "پچھلا صفحہ",
+  "nextPage": "اگلا صفحہ",
+  "goToPage": "صفحہ {{page}} پر جائیں",
+  "finishBook": "کتاب مکمل کریں",
+  "tapToHear": "\"{{word}}\" سننے کے لیے ٹیپ کریں",
+  "flipbook": {
+    "groupAria": "کتاب کا پیش منظر — صفحے پلٹنے کے لیے ایرو کیز استعمال کریں"
+  },
+  "quiz": {
+    "saveFailed": "کوئز کے نتائج محفوظ نہیں ہو سکے",
+    "completeAria": "کوئز مکمل",
+    "perfect": "پورے نمبر!",
+    "wellDone": "شاباش!",
+    "scored": "آپ نے <b>{{total}}</b> میں سے <b>{{score}}</b> حاصل کیے",
+    "tryAgain": "دوبارہ کوشش کریں",
+    "dialogAria": "کوئز: {{title}}",
+    "close": "کوئز بند کریں",
+    "answerOptions": "جواب کے اختیارات",
+    "seeResults": "نتائج دیکھیں"
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" کی آواز چلائیں",
+    "playSoundAria": "گریفیم {{grapheme}} کی آواز چلائیں",
+    "playWordTitle": "\"{{word}}\" چلائیں",
+    "playWordAria": "لفظ {{word}} چلائیں"
+  },
+  "soundMap": {
+    "known": "آتا ہے ({{n}})",
+    "toLearn": "سیکھنا ہے ({{n}})",
+    "notTestedCount": "جانچا نہیں گیا ({{n}})",
+    "notTested": "جانچا نہیں گیا",
+    "levelHeading": "لیول {{level}}",
+    "levelsNotTested": "لیول {{levels}} ابھی جانچے نہیں گئے",
+    "status": {
+      "known": "آتا ہے",
+      "unknown": "سیکھنا ہے",
+      "untested": "جانچا نہیں گیا"
+    },
+    "categories": {
+      "sound_recognition": "آوازیں",
+      "word_reading": "اصل الفاظ",
+      "alien_words": "Alien Words (فرضی الفاظ)",
+      "tricky_words": "Tricky Words (مشکل الفاظ)",
+      "speedy_reading": "تیز پڑھنا",
+      "fluency": "روانی"
+    }
+  },
+  "interactive": {
+    "playSound": "آواز {{sound}} چلائیں",
+    "playSoundVariant": "آواز {{sound}} چلائیں ({{variant}})",
+    "wordTapToHear": "{{word}}۔ سننے کے لیے ٹیپ کریں۔",
+    "illustration": "کہانی کی تصویر",
+    "closeImage": "تصویر بند کریں",
+    "expandIllustration": "تصویر بڑی کریں",
+    "hideHints": "فونکس اشارے چھپائیں",
+    "showHints": "فونکس اشارے دکھائیں",
+    "checkInPassed": "چیک اِن پاس ہو گیا",
+    "checkInPractise": "چیک اِن — مشق جاری رکھیں"
+  },
+  "prep": {
+    "tapToHear": "سننے کے لیے ہر ایک پر ٹیپ کریں۔ یہ وہ آوازیں ہیں جن کی آپ کا بچہ مشق کرے گا۔",
+    "tapLevel": "اس لیول کی آوازیں دیکھنے کے لیے کسی لیول پر ٹیپ کریں"
+  }
+}

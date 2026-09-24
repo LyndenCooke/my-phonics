@@ -1,0 +1,194 @@
+{
+  "backToProfile": "返回个人资料",
+  "hub": {
+    "title": "个人资料",
+    "welcome": "欢迎！",
+    "signInPrompt": "登录即可访问您的书库",
+    "signInOrUp": "登录 / 注册",
+    "error": "出错了",
+    "level": "第 {{level}} 级",
+    "parentView": "家长视图",
+    "switchChild": "切换孩子",
+    "childNamePlaceholder": "孩子的名字",
+    "childDobLabel": "出生日期",
+    "addChild": "添加孩子的信息",
+    "signOut": "退出登录"
+  },
+  "links": {
+    "assess": "评估",
+    "assessSub": "了解孩子的阅读水平",
+    "wallOfLove": "好评墙",
+    "wallOfLoveSub": "看看其他家庭怎么说",
+    "support": "支持 MyPhonicsBooks",
+    "supportSub": "一切免费——如果愿意，可以留下一份谢意",
+    "admin": "管理",
+    "adminSub": "客户管理与数据分析（仅限员工）",
+    "accountSettings": "账户设置",
+    "parentViewSub": "前往家长面板",
+    "messages": "消息",
+    "messagesSub": "奖励、小贴士和更新",
+    "rewards": "我的奖励",
+    "rewardsSub": "查看已解锁的奖励",
+    "referrals": "推荐赚佣金",
+    "referralsSub": "赚取 50% 佣金——分享您的链接",
+    "downloads": "下载记录",
+    "help": "帮助与支持"
+  },
+  "forYou": {
+    "title": "为您推荐",
+    "newCount_other": "{{count}} 条新消息",
+    "dismiss": "关闭通知"
+  },
+  "love": {
+    "title": "喜欢这些书吗？",
+    "body": "您的评价能帮助更多家庭找到我们。",
+    "leaveReview": "写评价",
+    "seeWall": "查看好评墙"
+  },
+  "messages": {
+    "title": "消息",
+    "new": "新",
+    "all": "全部",
+    "unread": "未读",
+    "emptyTitle": "暂无消息",
+    "caughtUp": "您已看完所有消息。",
+    "emptyBody": "更新和奖励会显示在这里。",
+    "types": {
+      "reward": "奖励",
+      "video": "视频",
+      "referral": "推荐",
+      "progress": "进度",
+      "offer": "优惠",
+      "update": "更新"
+    }
+  },
+  "referrals": {
+    "title": "推荐赚佣金",
+    "heroTitle": "邀请好友，赢取奖励",
+    "heroBody": "分享 MyPhonicsBooks，您带来的每位订阅用户都能为您赚取 50% 佣金——月度订阅按月持续返佣，终身会员一次性返佣。皆大欢喜。",
+    "resourcesTitle": "推广素材",
+    "resourcesBody": "现成的社交媒体图片、配文和推广文案。下载所需素材，马上开始分享。",
+    "openLibrary": "打开素材库"
+  },
+  "panel": {
+    "copiedToast": "已复制！",
+    "copiedLinkBody": "您的分享链接已复制到剪贴板。",
+    "copiedMessageBody": "粘贴到 WhatsApp、短信或任何您喜欢的地方。",
+    "copyFailed": "复制失败",
+    "copyFailedBody": "长按文字即可手动选择并复制。",
+    "pending": "您的推荐链接很快会显示在这里，请稍后刷新页面。",
+    "expandedSummary": "直接推荐赚 50%，再从您的推荐网络中赚 10%。",
+    "rates": "直接 50% + 网络 10%",
+    "clicksCount_other": "{{count}} 次点击",
+    "salesCount_other": "{{count}} 笔成交",
+    "getLink": "获取我的分享链接",
+    "stats": {
+      "clicks": "点击",
+      "sales": "成交",
+      "direct": "直接收益",
+      "network": "网络收益",
+      "affiliates": "您的推广伙伴"
+    },
+    "totalEarned": "累计收益",
+    "howItWorks": "规则说明",
+    "tier1": "<b>第一级：</b>您推荐的每位订阅用户都可为您带来 50% 佣金，月度订阅按月持续返佣，终身购买一次性返佣。",
+    "tier2": "<b>第二级：</b>当您推荐的人也分享了他们的链接并带来订阅用户时，您还能获得该笔交易的 10%。",
+    "shareLink": "您的分享链接",
+    "copied": "已复制",
+    "copy": "复制",
+    "whatsappLabel": "WhatsApp 消息",
+    "copiedWhatsapp": "已复制——粘贴到 WhatsApp",
+    "copyWhatsapp": "复制 WhatsApp 消息",
+    "facebookLabel": "Facebook 帖子",
+    "copiedFacebook": "已复制——粘贴到 Facebook",
+    "copyFacebook": "复制 Facebook 帖子",
+    "terms": "付款成功后 24 小时内计入收益。只要订阅用户保持有效，月度佣金就会持续产生。累计达到 £20 后，每月打款至您的银行账户。自我推荐不计入。"
+  },
+  "account": {
+    "signInPrompt": "登录后即可修改设置。",
+    "language": "语言",
+    "languageHint": "选择菜单、按钮和家长指导所用的语言。图书和阅读词汇始终保持英文——这正是孩子要学习的内容。",
+    "yourDetails": "您的信息",
+    "yourName": "您的姓名",
+    "parentNamePlaceholder": "家长姓名",
+    "email": "邮箱",
+    "emailHint": "更改邮箱需要验证——如需更换，请联系客服。",
+    "passwordTitle": "设置或修改密码",
+    "passwordSubtitle": "设置密码后，登录无需再等待邮件链接。",
+    "sendReset": "改为发送密码重置邮件",
+    "billing": "账单",
+    "billingBody": "更新银行卡、查看发票或取消订阅。",
+    "opening": "正在打开…",
+    "manageSubscription": "管理订阅",
+    "childDetails": "孩子的信息",
+    "childName": "孩子的名字",
+    "dob": "出生日期",
+    "noChild": "尚未添加孩子。请返回个人资料添加。",
+    "saveChanges": "保存更改",
+    "savedToast": "已保存",
+    "savedToastBody": "您的更改已生效。",
+    "saveFailed": "保存失败",
+    "tryAgain": "请稍后再试。",
+    "portalFailed": "无法打开账单页面",
+    "resetFailed": "无法发送重置邮件",
+    "resetSent": "重置邮件已发送",
+    "resetSentBody": "请查看 {{email}} 中的密码重置链接。"
+  },
+  "downloads": {
+    "signInPrompt": "登录后即可查看下载和购买记录。",
+    "recent": "最近下载",
+    "emptyTitle": "暂无下载",
+    "emptyBody": "您保存的 PDF 会显示在这里，方便再次下载。",
+    "goToLibrary": "前往书库",
+    "bookFallback": "图书",
+    "level": "第 {{level}} 级",
+    "reDownload": "重新下载 {{title}}",
+    "preparing": "正在准备 {{title}}…",
+    "downloaded": "{{title}} 已下载",
+    "notificationBody": "点击可从下载记录中重新下载",
+    "view": "查看",
+    "failed": "下载失败",
+    "unavailable": "PDF 文件不可用",
+    "purchases": "购买记录",
+    "noPurchases": "暂无购买记录",
+    "noPurchasesBody": "Create-A-Book 订单以及您给予的任何支持都会显示在这里。",
+    "purchaseFallback": "购买",
+    "free": "免费",
+    "completed": "已完成",
+    "receiptHint": "需要收据或退款？请通过帮助页面联系客服。"
+  },
+  "help": {
+    "talkTitle": "联系我们",
+    "talkBody": "每封邮件我们都会亲自阅读，大多数回复会在一个工作日内送达。",
+    "emailUs": "发送邮件至",
+    "faqTitle": "常见问题",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "faq": {
+      "assessment": {
+        "q": "测评是怎样进行的？",
+        "a": "选择 Quick Check（快速测评，约 3 分钟）快速了解水平，或选择 Full Test（完整测评，约 10 分钟）获得更全面的结果，涵盖每个级别的发音、真词、假词（alien words）和特殊词（tricky words）。结果会显示为孩子推荐的级别，以及孩子已经掌握的内容。"
+      },
+      "progress": {
+        "q": "孩子如何在书中逐步进阶？",
+        "a": "每本书读 5 遍以培养流利度，最后有一个简短的小测（Check）。通过小测后解锁下一本书。掌握一个级别的全部图书后会出现级别测试（Level Check），通过后孩子即进入下一级别。"
+      },
+      "stamps": {
+        "q": "什么是“印章”和“小测”（Checks）？",
+        "a": "孩子每在不同的一天阅读当前的书，就会获得一枚印章——同一天不能获得两枚印章，系统会温和地提醒孩子明天再来。第 3、4、5 枚印章各包含一个简短的准备度检查，用来确认孩子真正读得流利，而不只是机械地重复阅读。"
+      },
+      "unlock": {
+        "q": "我可以手动解锁下一本书吗？",
+        "a": "家长面板中有手动解锁功能，但目前显示为“即将推出”——我们要确保手动跳过不会意外遗漏自然拼读的薄弱环节。如果您确实需要提前解锁某本书，请发邮件给我们，我们会为您处理。"
+      },
+      "refunds": {
+        "q": "如何退款？",
+        "a": "订阅可随时在您的账户中取消——在当期结束前您仍可继续使用。一次性购买（例如完整套装或终身会员）请在 14 天内发邮件给我们，即可全额退款。"
+      },
+      "pwa": {
+        "q": "为什么我的小组件 / 主屏幕应用看起来是旧版本？",
+        "a": "网页应用（PWA）的缓存很强。请彻底关闭应用后重新打开。如果仍是旧版，请在浏览器中打开网站并下拉刷新——下次启动时就会加载新版本。"
+      }
+    }
+  }
+}

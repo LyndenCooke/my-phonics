@@ -8,6 +8,7 @@
  * the referrals page so we want it open.
  */
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Layout from '@/components/Layout';
 import { ArrowLeft, Gift, ExternalLink, Image, FileText } from 'lucide-react';
 import { ReferralPanel } from '@/components/profile/ReferralPanel';
@@ -17,18 +18,19 @@ import { ReferralPanel } from '@/components/profile/ReferralPanel';
 const CREATIVES_URL = 'https://drive.google.com/drive/folders/REPLACE_ME';
 
 export default function Referrals() {
+  const { t } = useTranslation('profile');
   return (
     <Layout>
       <div className="px-4 pt-5 pb-8 max-w-lg mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <Link
             to="/profile"
-            aria-label="Back to Profile"
+            aria-label={t('backToProfile')}
             className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 text-foreground" />
+            <ArrowLeft className="w-4 h-4 text-foreground rtl:-scale-x-100" />
           </Link>
-          <h1 className="font-display text-xl font-extrabold text-foreground">Refer & Earn</h1>
+          <h1 className="font-display text-xl font-extrabold text-foreground">{t('referrals.title')}</h1>
         </div>
 
         {/* Hero — sets the tone before the stats */}
@@ -37,21 +39,20 @@ export default function Referrals() {
             <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
               <Gift className="w-5 h-5" />
             </div>
-            <h2 className="font-display text-xl font-extrabold">Invite friends, earn rewards</h2>
+            <h2 className="font-display text-xl font-extrabold">{t('referrals.heroTitle')}</h2>
           </div>
           <p className="text-sm text-white/90 leading-relaxed">
-            Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in —
-            recurring monthly, or one-time on lifetime. Everyone wins.
+            {t('referrals.heroBody')}
           </p>
         </div>
 
         {/* Marketing resources card */}
         <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
           <h3 className="text-sm font-bold text-foreground mb-1 flex items-center gap-2">
-            <Image className="w-4 h-4 text-primary" /> Marketing Resources
+            <Image className="w-4 h-4 text-primary" /> {t('referrals.resourcesTitle')}
           </h3>
           <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-            Ready-made social media graphics, captions and swipe copy. Download what you need and start sharing.
+            {t('referrals.resourcesBody')}
           </p>
           <a
             href={CREATIVES_URL}
@@ -60,7 +61,7 @@ export default function Referrals() {
             className="w-full py-2.5 rounded-xl bg-foreground text-background text-sm font-bold shadow-button active:scale-[0.97] transition-transform flex items-center justify-center gap-2"
           >
             <FileText className="w-4 h-4" />
-            Open creative library
+            {t('referrals.openLibrary')}
             <ExternalLink className="w-3.5 h-3.5 opacity-60" />
           </a>
         </div>

@@ -1,0 +1,197 @@
+{
+  "backToProfile": "Back to Profile",
+  "hub": {
+    "title": "Profile",
+    "welcome": "Welcome!",
+    "signInPrompt": "Sign in to access your library",
+    "signInOrUp": "Sign In / Sign Up",
+    "error": "Error",
+    "level": "Level {{level}}",
+    "parentView": "Parent View",
+    "switchChild": "Switch Child",
+    "childNamePlaceholder": "Child's name",
+    "childDobLabel": "Date of birth",
+    "addChild": "Add child's details",
+    "signOut": "Sign Out"
+  },
+  "links": {
+    "assess": "Assess",
+    "assessSub": "Find your child's reading level",
+    "wallOfLove": "Wall of Love",
+    "wallOfLoveSub": "What families say about us",
+    "support": "Support MyPhonicsBooks",
+    "supportSub": "Everything's free — leave a thank-you if you like",
+    "admin": "Admin",
+    "adminSub": "CRM & analytics (staff only)",
+    "accountSettings": "Account Settings",
+    "parentViewSub": "Go to parent dashboard",
+    "messages": "Messages",
+    "messagesSub": "Rewards, tips & updates",
+    "rewards": "My Rewards",
+    "rewardsSub": "See your unlocked rewards",
+    "referrals": "Refer & Earn",
+    "referralsSub": "Earn 50% commission — share your link",
+    "downloads": "Download History",
+    "help": "Help & Support"
+  },
+  "forYou": {
+    "title": "For You",
+    "newCount_one": "{{count}} new",
+    "newCount_other": "{{count}} new",
+    "dismiss": "Dismiss notification"
+  },
+  "love": {
+    "title": "Loving the books?",
+    "body": "Your words help other families find us.",
+    "leaveReview": "Leave a review",
+    "seeWall": "See the Wall of Love"
+  },
+  "messages": {
+    "title": "Messages",
+    "new": "New",
+    "all": "All",
+    "unread": "Unread",
+    "emptyTitle": "No messages yet",
+    "caughtUp": "You're all caught up.",
+    "emptyBody": "Updates and rewards will appear here.",
+    "types": {
+      "reward": "Rewards",
+      "video": "Videos",
+      "referral": "Referrals",
+      "progress": "Progress",
+      "offer": "Offers",
+      "update": "Updates"
+    }
+  },
+  "referrals": {
+    "title": "Refer & Earn",
+    "heroTitle": "Invite friends, earn rewards",
+    "heroBody": "Share MyPhonicsBooks and earn 50% commission on every subscriber you bring in — recurring monthly, or one-time on lifetime. Everyone wins.",
+    "resourcesTitle": "Marketing Resources",
+    "resourcesBody": "Ready-made social media graphics, captions and swipe copy. Download what you need and start sharing.",
+    "openLibrary": "Open creative library"
+  },
+  "panel": {
+    "copiedToast": "Copied!",
+    "copiedLinkBody": "Your share link is on the clipboard.",
+    "copiedMessageBody": "Paste it into WhatsApp, Messages, or anywhere you like.",
+    "copyFailed": "Copy failed",
+    "copyFailedBody": "Long-press the text to select and copy manually.",
+    "pending": "Your referral link will appear here shortly. Refresh the page in a moment.",
+    "expandedSummary": "Earn 50% on direct referrals + 10% from your network.",
+    "rates": "50% direct + 10% network",
+    "clicksCount_one": "{{count}} click",
+    "clicksCount_other": "{{count}} clicks",
+    "salesCount_one": "{{count}} sale",
+    "salesCount_other": "{{count}} sales",
+    "getLink": "Get my share link",
+    "stats": {
+      "clicks": "Clicks",
+      "sales": "Sales",
+      "direct": "Direct earnings",
+      "network": "Network earnings",
+      "affiliates": "Your affiliates"
+    },
+    "totalEarned": "Total earned",
+    "howItWorks": "How it works",
+    "tier1": "<b>Tier 1:</b> Earn 50% commission on every subscriber you refer, recurring monthly or one-time on lifetime purchases.",
+    "tier2": "<b>Tier 2:</b> When someone you referred also shares their link and brings in a subscriber, you earn 10% of that sale too.",
+    "shareLink": "Your share link",
+    "copied": "Copied",
+    "copy": "Copy",
+    "whatsappLabel": "WhatsApp message",
+    "copiedWhatsapp": "Copied — paste into WhatsApp",
+    "copyWhatsapp": "Copy WhatsApp message",
+    "facebookLabel": "Facebook post",
+    "copiedFacebook": "Copied — paste into Facebook",
+    "copyFacebook": "Copy Facebook post",
+    "terms": "Earnings are credited within 24 hours of a successful payment. Monthly commissions recur for as long as the subscriber stays active. Payouts go to your bank monthly once you reach £20. Self-referrals don't count."
+  },
+  "account": {
+    "signInPrompt": "Sign in to edit your settings.",
+    "language": "Language",
+    "languageHint": "Choose the language for menus, buttons and parent guidance. Books and reading words always stay in English — that's what your child is learning.",
+    "yourDetails": "Your details",
+    "yourName": "Your name",
+    "parentNamePlaceholder": "Parent name",
+    "email": "Email",
+    "emailHint": "Email changes need verification — contact support if you need to switch.",
+    "passwordTitle": "Set or change your password",
+    "passwordSubtitle": "Pick a password so you can sign in without waiting for an email link.",
+    "sendReset": "Send password reset email instead",
+    "billing": "Billing",
+    "billingBody": "Update your card, view invoices, or cancel your subscription.",
+    "opening": "Opening…",
+    "manageSubscription": "Manage subscription",
+    "childDetails": "Child's details",
+    "childName": "Child's name",
+    "dob": "Date of birth",
+    "noChild": "No child added yet. Head back to your profile to add one.",
+    "saveChanges": "Save changes",
+    "savedToast": "Saved",
+    "savedToastBody": "Your changes are live.",
+    "saveFailed": "Save failed",
+    "tryAgain": "Try again in a moment.",
+    "portalFailed": "Could not open billing portal",
+    "resetFailed": "Could not send reset",
+    "resetSent": "Reset email sent",
+    "resetSentBody": "Check {{email}} for a password-reset link."
+  },
+  "downloads": {
+    "signInPrompt": "Sign in to see your download and purchase history.",
+    "recent": "Recent Downloads",
+    "emptyTitle": "No downloads yet",
+    "emptyBody": "PDFs you save will show up here for easy re-download.",
+    "goToLibrary": "Go to Library",
+    "bookFallback": "Book",
+    "level": "Level {{level}}",
+    "reDownload": "Re-download {{title}}",
+    "preparing": "Preparing {{title}}…",
+    "downloaded": "{{title}} downloaded",
+    "notificationBody": "Tap to re-download from your history",
+    "view": "View",
+    "failed": "Download failed",
+    "unavailable": "PDF file unavailable",
+    "purchases": "Purchases",
+    "noPurchases": "No purchases yet",
+    "noPurchasesBody": "Create-A-Book orders and any support you give will appear here.",
+    "purchaseFallback": "Purchase",
+    "free": "Free",
+    "completed": "Completed",
+    "receiptHint": "Need a receipt or refund? Contact support from the Help page."
+  },
+  "help": {
+    "talkTitle": "Talk to us",
+    "talkBody": "We read every email personally. Most replies arrive within one working day.",
+    "emailUs": "Email",
+    "faqTitle": "Frequently asked",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "faq": {
+      "assessment": {
+        "q": "How does the assessment work?",
+        "a": "Pick the Quick Check (~3 min) for a fast level read, or the Full Test (~10 min) for a deeper picture covering sounds, real words, alien words and tricky words at every level. Results show your child's recommended level plus what they already know."
+      },
+      "progress": {
+        "q": "How does my child progress through the books?",
+        "a": "Each book is read 5 times to build fluency, with a quick Check at the end. Pass the Check and the next book unlocks. Master every book in a level and the Level Check appears, which moves your child to the next level when passed."
+      },
+      "stamps": {
+        "q": "What are \"stamps\" and \"Checks\"?",
+        "a": "A stamp is awarded for each unique day your child reads the current book — you can't earn two stamps in one day, the system gently asks them to come back tomorrow. Stamps 3, 4 and 5 each include a brief readiness check to confirm fluency, not just rote re-reading."
+      },
+      "unlock": {
+        "q": "Can I unlock the next book manually?",
+        "a": "Manual unlock is on the Parent Dashboard but currently shows \"Coming soon\" — we want to make sure overrides don't accidentally skip phonics gaps. If you genuinely need a book unlocked early, email us and we'll do it for you."
+      },
+      "refunds": {
+        "q": "How do refunds work?",
+        "a": "Subscriptions can be cancelled any time from your account — you keep access until the period ends. For one-time purchases (e.g. the full bundle or lifetime access), email us within 14 days for a full refund."
+      },
+      "pwa": {
+        "q": "Why does my widget / home-screen app look out of date?",
+        "a": "PWAs cache aggressively. Force-close the app and reopen it. If it still looks old, open the site in your browser and pull-to-refresh — the next launch will pick up the new version."
+      }
+    }
+  }
+}

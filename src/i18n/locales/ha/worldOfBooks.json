@@ -1,0 +1,92 @@
+{
+  "header": {
+    "badge": "Duniyar Littattafai",
+    "title": "Kowane littafi yana kai ku wani wuri",
+    "lead": "Ku juya duniya ku taɓa tuta don ganin littattafan da ke zaune a can — daga ɗakin karatunmu, da waɗanda iyalai irin naku suka yi.",
+    "globe": "Duniya",
+    "byLevel": "Bisa mataki"
+  },
+  "popup": {
+    "tapBook": "Ku taɓa littafi don karanta shi a intanet ko buga shi a gida."
+  },
+  "shelf": {
+    "booksFrom": "Littattafai daga {{country}}"
+  },
+  "levelN": "Mataki na {{level}}",
+  "levelShort": "M{{level}}",
+  "familyMade": "iyali ne suka yi",
+  "untitled": "Babu suna",
+  "ownBook": "Littafin {{name}} na kansa",
+  "chooser": {
+    "readPlay": "Karanta ka yi wasa — taɓa kowace kalma",
+    "turnPages": "Juya shafuka",
+    "readOnline": "Karanta a intanet",
+    "print": "Buga a gida",
+    "signInToRead": "Ku shiga don karanta wannan littafi.",
+    "freeInLibrary": "Ana karanta wannan littafi kyauta a ɗakin karatu.",
+    "openLibrary": "Buɗe ɗakin karatu",
+    "familyLocked": "Littattafan da iyalai suka yi suna buɗewa da damar Duniyar Littattafai."
+  },
+  "download": {
+    "notAvailable": "Ba a iya saukewa ba.",
+    "tryAgainSoon": "Ku sake gwadawa nan ba da jimawa ba.",
+    "failed": "Saukewa ya kasa",
+    "pdfUnavailable": "Babu fayil ɗin PDF"
+  },
+  "wall": {
+    "title": "Bangon Ƙauna",
+    "lead": "Kalmomi na gaske daga iyalai na gaske.",
+    "aParent": "Wani mahaifi",
+    "readAll": "Karanta bangon gaba ɗaya"
+  },
+  "cta": {
+    "title": "Tuta ta gaba a wannan duniya na iya zama taku",
+    "body": "Ku yi littafi na gaske mai karantuwa inda yaronku ne tauraro — sunansa, gidansa, labarinsa.",
+    "button": "Ƙirƙiri littafinsa — {{price}}"
+  },
+  "globe": {
+    "aria": "Duniya da ke nuna inda labarin kowane littafi yake",
+    "pinTitle_one": "{{country}} — littafi {{count}}",
+    "pinTitle_other": "{{country}} — littattafai {{count}}",
+    "zoomIn": "Ƙara girma",
+    "zoomOut": "Rage girma",
+    "reset": "Sake saita duniya",
+    "hint": "ja don juyawa · gungura don girma · taɓa tuta",
+    "alsoFrom": "Har ila yau daga {{list}}"
+  },
+  "settings": {
+    "L1_1": "Safiya mai cike da aiki a gida",
+    "L1_2": "Lambun Birtaniya mai laka",
+    "L1_3": "Sabuwar dabbar gida ta iso",
+    "L1_4": "Wasan yara a ranar wanki a gida",
+    "L1_5": "Gudu cikin wurin shaƙatawa na Birtaniya",
+    "L1_6": "Kasada a cikin dajin Birtaniya",
+    "L1_7": "Kasuwa mai hayaniya",
+    "L1_8": "Ƙauyen Himalaya a Nepal",
+    "L1_9": "Kicin ɗin iyali a Pakistan",
+    "L1_10": "Lambun Karibiya a Trinidad",
+    "L2_1": "Lambun Japan bayan duhu",
+    "L2_2": "Kasuwar dare ta abincin titi a Birtaniya",
+    "L2_3": "Gona a tsaunukan Kenya",
+    "L2_4": "Bikin ƙauye a Ingila",
+    "L2_5": "Reykjavik mai dusar ƙanƙara, Iceland",
+    "L2_6": "Kasuwar dare irin ta Marrakech",
+    "L3_1": "Karkarar Faransa a tsakiyar tsere",
+    "L3_2": "Kasuwar dare ta Bangkok",
+    "L3_3": "Unguwar gidaje a Accra",
+    "L3_4": "Ɗakin zane a Seoul",
+    "L3_5": "Bakin tekun Gulf of Paria, Port of Spain",
+    "L4_1": "Titunan Istanbul",
+    "L4_2": "Dajin Birtaniya da magariba",
+    "L4_3": "Gidan iyali a Oaxaca",
+    "L4_4": "Putrajaya, Malaysia",
+    "L5_1": "Al'ummar Yahudawa a Arewacin London",
+    "L5_2": "Lokacin sanyi mai dusar ƙanƙara a Stockholm",
+    "L5_3": "Saman rufin gida a Jaipur lokacin bikin shillo",
+    "L5_4": "Kasuwar 'ya'yan itace ta safe a Cartagena",
+    "L6_1": "Wata unguwa a Alƙahira",
+    "L6_2": "Bikin Fitilu a Guilin",
+    "L6_3": "Ƙauye a saman dutse a Gaɓar Amalfi",
+    "L6_4": "Dajin Blue Mountains"
+  }
+}

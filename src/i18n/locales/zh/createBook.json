@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "书库",
+    "worldOfBooks": "图书世界"
+  },
+  "errors": {
+    "unreachable": "暂时无法连接 Create-A-Book 服务——请稍等片刻后刷新页面。",
+    "noCheckoutLink": "结账未返回付款链接。"
+  },
+  "yourChild": "你的孩子",
+  "intro": {
+    "sampleCover": "示例书封面",
+    "samplePage": "示例书第 {{n}} 页",
+    "flipHint": "一本完整的 MyPhonicsBooks 故事书，从封面到封底——点击或滑动即可翻页",
+    "titleStart": "你的孩子，",
+    "titleHighlight": "就是故事主角",
+    "lead": "一本真正可拼读的自然拼读书——几分钟内为你的孩子写好、画好、检查好。",
+    "features": {
+      "mainCharacter": {
+        "title": "你的孩子就是主角",
+        "desc": "用我们的招牌画风绘制，连圆点眼睛也不例外"
+      },
+      "decodable": {
+        "title": "完全符合孩子水平的可拼读内容",
+        "desc": "每个单词都对照孩子已掌握的发音检查过"
+      },
+      "meetStar": {
+        "title": "书末的「认识小明星」页",
+        "desc": "他们的国家、文化和地标"
+      },
+      "share": {
+        "title": "分享到图书世界",
+        "desc": "在家人的祝福下，点亮地球上的一盏灯"
+      }
+    },
+    "cta": "开始制作——{{price}}",
+    "ctaNote": "一本书，永久属于你，可随时打印。"
+  },
+  "child": {
+    "title": "谁是小明星？",
+    "randomise": "随机填写（测试）",
+    "randomiseTitle": "用随机测试数据填写所有步骤",
+    "lead": "这些信息将决定故事、插图以及书末的个人介绍页。",
+    "firstName": "名字",
+    "firstNamePlaceholder": "例如 Maryam",
+    "age": "年龄",
+    "from": "你们来自哪里？",
+    "city": "城市 / 城镇",
+    "optional": "（可选）",
+    "cityPlaceholder": "例如 摩加迪沙、拉各斯、克拉科夫",
+    "familyWorld": "你们家庭的世界",
+    "familyWorldHint": "（文化、食物、地方、传统）",
+    "familyWorldPlaceholder": "例如：我们是住在伦敦的索马里家庭——我们喜欢 suqaar、开斋节的早晨和去清真寺",
+    "loves": "他们喜欢……",
+    "lovesPlaceholder": "猫、足球、烘焙",
+    "faith": "信仰",
+    "faithPlaceholder": "例如 穆斯林、基督徒",
+    "lookLike": "他们长什么样？",
+    "gender": {
+      "girl": "女孩",
+      "boy": "男孩"
+    },
+    "skinTones": {
+      "light": "浅",
+      "lightMedium": "浅中",
+      "medium": "中等",
+      "mediumDark": "中深",
+      "dark": "深",
+      "veryDark": "很深"
+    },
+    "hairPlaceholder": "头发——例如 黑色卷发、头巾、棕色短发",
+    "changePhoto": "更换照片",
+    "addPhoto": "添加照片（可选）",
+    "photoAdded": "已添加照片",
+    "photoPrivacy": "照片仅用于绘制卡通人物，绝不会被保存、发布或展示给任何人。"
+  },
+  "level": {
+    "title": "选择一个级别和一个重点发音",
+    "lead": "一个发音能让故事自由又有趣——它只需要出现几次。",
+    "notSure": "不确定级别？<link>做一下 3 分钟测评</link>。",
+    "levelN": "级别 {{level}}",
+    "focusSound": "本书的重点发音",
+    "longerTitle": "更长的故事——8 页而不是 6 页",
+    "longerDesc": "多两页插图，书末附更丰富的 20 页活动套装。"
+  },
+  "review": {
+    "title": "快完成了！",
+    "lead": "核对信息，选择分享方式，我们就开始制作。",
+    "email": "你的邮箱（用于接收收据和图书链接）",
+    "shareTitle": "把我们的书分享到图书世界",
+    "shareBody": "经我们团队快速审核后，其他家庭就能阅读 {{name}} 的书。一个故事接一个故事，把世界连在一起。",
+    "wallTitle": "在好评墙上展示我们",
+    "wallBody": "「认识小明星」页（仅卡通人物——绝不使用照片）会出现在社区展示区。",
+    "continueToPayment": "继续付款"
+  },
+  "pay": {
+    "title": "制作 {{name}} 的书",
+    "oneBook": "一本个性化图书 · 永久属于你",
+    "features": {
+      "story": "围绕发音 \"{{sound}}\" 的完整可拼读故事",
+      "longer": "更长的故事：8 页插图 + 更完整的活动套装",
+      "hero": "{{name}} 在每一页都被画成主角",
+      "qa": "每一页都经过眼睛画法和拼读质量检查",
+      "meetStar": "书末的「认识小明星」家庭页",
+      "forever": "立即在屏幕上阅读，永久有效"
+    },
+    "button": "制作我的书——{{price}}",
+    "haveCode": "有兑换码？",
+    "enterCode": "输入兑换码",
+    "apply": "使用",
+    "devFree": "免费制作（开发测试模式——不收费）"
+  },
+  "generating": {
+    "title": "正在绘制 {{name}} 的书",
+    "lead": "逐页撰写、绘制并检查——没错，连眼睛都会检查。请保持此页面打开，需要几分钟时间。",
+    "warmingUp": "正在调颜料……",
+    "failedRetry": "出了点小问题——从中断处继续（免费）",
+    "needsReviewTitle": "快好了——有一页正在人工审核",
+    "needsReviewBody": "{{name}} 的故事和插图都已完成，但我们的编辑希望在印制前人工检查其中一页。你无需做任何事——保存好这个链接，审核通过后书就会出现在这里，通常在几小时内。",
+    "rejectedTitle": "我们没能让这个故事达到我们的质量标准。",
+    "rejectedBody": "你的图书额度没有被使用。你可以再试一次同样的创意，或者换一个故事创意。",
+    "tryAgain": "再试一次同样的创意（免费）",
+    "changeIdea": "换一个故事创意（额度保留）",
+    "paused": "你的书安全保存着。这次比平时稍慢一些——它会从中断处继续，完成后我们会发邮件通知你。"
+  },
+  "ready": {
+    "title": "他们的书做好了！",
+    "madeFor": "为 {{name}} 一家制作",
+    "pdfSoon": "可打印的 PDF 即将推出——现在请先在这里欣赏这本书。",
+    "typesetting": "正在排版……",
+    "openPdf": "打开这本书 📕（完整自然拼读书 PDF）",
+    "play": "玩互动版——点击每个单词",
+    "readHere": "在这里阅读——翻页浏览",
+    "saved": "已保存到你的账户",
+    "addToAccount": "添加到我的账户",
+    "inReview": "你的书正在由我们团队快速审核，之后将出现在图书世界。",
+    "live": "你的书已在图书世界上线！",
+    "unlockTitle": "解锁图书世界",
+    "unlockBody": "阅读世界各地家庭制作的每一本书——以及你之后制作的每一本。一次付费，永久有效。",
+    "signInNote": "你需要登录——这样你的访问权限会跟随你，并始终属于你。",
+    "unlockButton": "解锁世界——{{price}}，一次付清",
+    "signInUnlockButton": "登录以解锁世界——{{price}}",
+    "devUnlock": "开发：免费解锁",
+    "enter": "进入图书世界"
+  },
+  "progress": {
+    "story": "正在编写{{name}}的故事…",
+    "phonics_qa": "正在检查每个单词在此级别是否可拼读…",
+    "plausibility_qa": "正在检查故事是否合情合理…",
+    "story_editor": "绘制插图前，编辑正在审读故事…",
+    "directing": "正在规划场景…",
+    "awaiting_imagery_approval": "故事已通过——插图正在等待最后审核…",
+    "hero": "正在把{{name}}画成书中角色…",
+    "scenes": "正在绘制第 {{page}} 页，共 {{total}} 页…",
+    "cover": "正在绘制封面…",
+    "country": "正在加入来自{{name}}的国家的图片…",
+    "editor": "编辑正在审读完成的书…",
+    "assemble": "正在装订图书…",
+    "done": "您的书已完成！",
+    "busy": "仍在处理中——这一步需要一点时间…",
+    "paused": "您的书已安全保存——很快会继续制作。",
+    "paused_budget": "比平时稍慢一些——团队已收到提醒，您的书很快会继续制作。",
+    "paused_provider_credit": "比平时稍慢一些——团队已收到提醒，您的书很快会继续制作。",
+    "needs_review": "快好了——有一页正在由人工做最后检查。完成后我们会立即发邮件通知您。",
+    "content_rejected": "这个故事未能达到我们的质量标准。您的制书额度没有被使用——可以再试一次同样的想法，或换一个想法。",
+    "repair": "正在修饰几页内容…",
+    "working": "正在制作图书…"
+  }
+}

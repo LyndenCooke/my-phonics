@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "Sunan farko na yaro",
+    "childNameOptional": "Sunan farko na yaro (ba dole ba)",
+    "emailPlaceholder": "Adireshin imel ɗinku",
+    "consent": "Na yarda in karɓi kayan koyon phonics kyauta ta imel. Za a iya daina karɓa a kowane lokaci.",
+    "sendFreeBook": "Aiko Min Littafina Na Kyauta",
+    "loginLinkKeep": "Za mu aiko muku da hanyar shiga ta imel domin littafin ya zama naku har abada.",
+    "signupFailed": "Rajista ba ta yi nasara ba",
+    "checkEmail": "Duba {{email}} don samun hanyar shigarku",
+    "levelBookFallback": "Littafin Mataki na {{level}}",
+    "browseLibrary": "Duba Ɗakin Karatu"
+  },
+  "emailCapture": {
+    "defaultButton": "Fara Yanzu",
+    "footer": "Kyauta — ba a buƙatar kati. An gina shi bisa Letters and Sounds."
+  },
+  "quickScreening": {
+    "title": "Gwaji Cikin Sauri",
+    "instructionsNamed": "Ku ce wa {{name}} ya karanta kowace kalma. Ku taɓa alamar daidai idan ya karanta daidai.",
+    "instructionsAnon": "Ku ce wa yaronku ya karanta kowace kalma. Ku taɓa alamar daidai idan ya karanta daidai.",
+    "levelWord": "Kalmar Mataki na {{level}}",
+    "hearWord": "Saurari kalmar",
+    "progress": "{{current}} cikin {{total}}",
+    "notQuite": "Bai kai ba tukuna",
+    "gotIt": "Daidai ne!"
+  },
+  "assessmentFunnel": {
+    "title": "Gano <hl>matakin karatunsa</hl>",
+    "subtitle": "Zaɓi yadda kuke son gwajin ya zurfafa.",
+    "rapidTitle": "Gwajin minti 3",
+    "rapidDesc": "Gwajin sauti mai sauri da ke daidaita kansa. Ya dace idan kuna son sanin inda za a fara kawai.",
+    "fullTitle": "Cikakken gwajin minti 10",
+    "fullDesc": "Sautuka, kalmomi na gaske, kalmomin ƙirƙira da Tricky Words a kowane mataki.",
+    "footer": "Littafi kyauta a matakinsa idan kun gama. Ba a buƙatar kati.",
+    "freeBookTitle": "Ina za mu aika littafinku na kyauta?",
+    "paidTitle": "Bayani ɗaya kawai kafin biya",
+    "paidSubtitle": "Za mu aiko muku da hanyar shiga ta imel nan da nan bayan biya, domin dukkan littattafai 32 su zama naku.",
+    "continueToCheckout": "Ci Gaba Zuwa Biya",
+    "checkoutFailed": "An kasa fara biya",
+    "missingBundle": "Ba a sami tarin littattafan ba. Da fatan za ku tuntuɓi sashen taimako.",
+    "missingMonthly": "Ba a sami tsarin wata-wata ba. Da fatan za ku tuntuɓi sashen taimako."
+  },
+  "assessmentResult": {
+    "wellDone": "Madalla!",
+    "wellDoneNamed": "Madalla, {{name}}!",
+    "isAtNamed": "{{name}} yana <b>Mataki na {{level}}: {{levelName}}</b>",
+    "isAtAnon": "Yaronku yana <b>Mataki na {{level}}: {{levelName}}</b>",
+    "unlocked": "Kun buɗe littafi 1 mai mu'amala kyauta!",
+    "matchedNamed": "Littafin Mataki na {{level}} da ya dace daidai da abin da {{name}} zai iya karantawa.",
+    "matchedAnon": "Littafin Mataki na {{level}} da ya dace daidai da abin da yaronku zai iya karantawa."
+  },
+  "bundleUpsell": {
+    "coverAlt": "Mataki na {{level}} — {{title}}",
+    "title": "Kuna son buɗe dukkan littattafan?",
+    "subtitleNamed": "Littattafai {{count}}, kowane mataki — domin {{name}} ya girma da su.",
+    "subtitleAnon": "Littattafai {{count}}, kowane mataki — domin yaronku ya girma da su.",
+    "oneTime": "biya sau ɗaya",
+    "benefitAllBooks": "Dukkan littattafai {{count}} masu mu'amala a matakai 6",
+    "benefitQuizzes": "Tambayoyin fahimta bayan kowane labari",
+    "benefitProgress": "Bin diddigin ci gaba a duk ɗakin karatu",
+    "benefitForever": "Naku har abada — babu biyan kuɗi na wata-wata",
+    "benefitWorld": "Labarai daga ko'ina a duniya",
+    "accept": "Eh — buɗe dukkan littattafai £{{price}}",
+    "decline": "A'a na gode, ku ba ni littafina na kyauta kawai"
+  },
+  "monthlyDownsell": {
+    "title": "Dakata — yaya game da wannan?",
+    "body": "Buɗe <b>kowane littafi a dukkan matakai 6</b> da £4.99 kacal a wata. Soke a kowane lokaci.",
+    "monthlyAccess": "Samun dama na wata-wata",
+    "perMonth": "/wata",
+    "allLevels": "Dukkan matakai. Dukkan littattafai. Soke a kowane lokaci.",
+    "benefitEveryBook": "Kowane littafi mai mu'amala a dukkan matakai 6",
+    "benefitNewBooks": "Ana ƙara sababbin littattafai da zarar an wallafa su",
+    "benefitMoveUpNamed": "{{name}} zai hau matakai yayin da yake ƙwarewa",
+    "benefitMoveUpAnon": "Yaronku zai hau matakai yayin da yake ƙwarewa",
+    "accept": "Fara da £4.99/wata",
+    "decline": "A'a na gode, littafina na kyauta kawai"
+  },
+  "freeAssessment": {
+    "resultLabel": "Matakin karatunsa",
+    "level": "Mataki na {{level}}",
+    "freeUnlocked": "An buɗe littafi kyauta",
+    "saveTitle": "Adana sakamakonku & karɓi littafinku"
+  },
+  "freeBook": {
+    "pickTitle": "Zaɓi littafi kyauta <hl>don yaronku</hl>",
+    "pickSubtitle": "Taɓa matakinsa. Za mu buɗe littafi ɗaya da ya dace — kyauta, ba kati.",
+    "coverAlt": "Misalin bango na Mataki na {{level}}",
+    "notSure": "Ba ku da tabbas? Yi gwajin minti 3",
+    "emailTitle": "Littafi ɗaya kyauta na Mataki na {{level}} <hl>yana kan hanya</hl>",
+    "emailSubtitle": "Shigar da imel ɗinku kuma za mu buɗe shi yanzu.",
+    "unlockButton": "Buɗe Littafina Na Kyauta",
+    "pickDifferent": "Zaɓi wani mataki"
+  },
+  "linkTree": {
+    "tagline": "Littattafan da za a iya karantawa ta phonics, daidai da matakinsa",
+    "wrongBooks": "Shin littattafan da ba su dace ba suna rage kwarin gwiwarsa?",
+    "freeAssessment": "Gwajin phonics kyauta — gano matakinsa",
+    "threeMinute": "Gwajin mataki na minti 3 + kayan koyo kyauta",
+    "theGap": "Littattafan da suke so kuma suke iya karantawa da gaske",
+    "footer": "An gina shi bisa Letters and Sounds (manhajar phonics ta Birtaniya)"
+  },
+  "theGap": {
+    "boring": "mai gundura",
+    "tooHard": "ya yi wuya",
+    "vs": "ko",
+    "title": "Littattafai masu gundura da suke <em>iya</em> karantawa.<br/>Littattafai masu kyau da <hl>ba sa iya</hl> karantawa.",
+    "whyBoth": "Me zai hana duka biyun?",
+    "body": "Labaran da za su so, kuma sun dace daidai da abin da za su iya karantawa. Daidai a phonics, masu hangen duniya.",
+    "diffTitle": "Abin da ya bambanta waɗannan littattafai:",
+    "diffDecodable": "Kowace kalma ana iya karanta ta a daidai matakinsu",
+    "diffStories": "Labarai na gaske masu tafiyar zuci, ba littattafan karatu marasa armashi ba",
+    "diffCultures": "An shirya su a al'adun duniya — Japan, Kenya, Moroko...",
+    "diffCurriculum": "An gina su bisa manhajar phonics ta Birtaniya",
+    "button": "Karɓi Littattafai Kyauta"
+  },
+  "threeMinute": {
+    "title": "<hl>Minti 3</hl> don gano ainihin matakin karatunsa",
+    "subtitle": "Ku daina hasashe. Ku sami amsa bayyananniya da kayan koyo kyauta da suka dace da shi.",
+    "step1": "Gwaji mai sauri yana duba sautukan da ya sani",
+    "step2": "Ku san ainihin matakinsa (1-6) nan take",
+    "step3": "Ku sami littattafai kyauta da suka dace da matakinsa",
+    "button": "Duba Matakinsa"
+  },
+  "wrongBooks": {
+    "title": "Littattafan da ba su dace ba <hl>suna kashe kwarin gwiwa</hl>",
+    "tooHard": "Ya yi wuya = takaici. Ya yi sauƙi = gundura.",
+    "body": "Gano ainihin matakinsa cikin minti 3 kuma ku buɗe littafi kyauta da ya dace da abin da zai iya karantawa da gaske.",
+    "getTitle": "Abin da za ku samu:",
+    "itemScreening": "Gwajin phonics cikin sauri (kalmomi 6)",
+    "itemFreeBook": "Littafi 1 mai mu'amala kyauta a matakinsa",
+    "itemCurriculum": "An gina shi bisa manhajar phonics ta Birtaniya",
+    "button": "Gano Matakinsa"
+  }
+}

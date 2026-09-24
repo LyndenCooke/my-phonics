@@ -16,6 +16,7 @@
  *
  * Five rounds; a round with at most one wrong tap earns its star.
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, RotateCcw, Search } from 'lucide-react';
@@ -84,6 +85,7 @@ function Highlight({ word, target, hex }: { word: string; target: string; hex: s
 }
 
 export default function SoundSafari({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -159,7 +161,7 @@ export default function SoundSafari({ level, onClose }: Props) {
   const shown = round ? displayGrapheme(round.target) : '';
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-hidden flex flex-col" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-hidden flex flex-col" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/spotter_study.webp" wash="light" />
 
       {/* Top bar */}
@@ -172,7 +174,7 @@ export default function SoundSafari({ level, onClose }: Props) {
         </span>
         <button
           onClick={onClose}
-          aria-label="Close game"
+          aria-label={t('play.closeGame')}
           className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
           style={{ boxShadow: STICKER }}
         >

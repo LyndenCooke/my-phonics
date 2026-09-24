@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "Wasa kyauta · babu rajista",
+    "title": "Wasannin fonetik",
+    "intro": "Zaɓi matakinka, sannan ka zaɓi wasa. Kowane wasa yana amfani da sautukan wannan matakin.",
+    "chooseLevel": "Zaɓi matakinka",
+    "levelAria": "Mataki {{level}} — {{name}}",
+    "levelSounds": "Sautukan Mataki {{level}}",
+    "more": "+{{n}} ƙari",
+    "gamesAria": "Wasanni",
+    "dailyNote": "Sau ɗaya a kowane wasa kowace rana — kaɗan-kaɗan akai-akai ne ke sa karatu ya kafu.",
+    "played": "An buga ✓",
+    "vibes": {
+      "collect": "Tattara",
+      "arcade": "Arcade",
+      "runner": "Gudu",
+      "memory": "Ƙwaƙwalwa",
+      "puzzle": "Wuyar warwarewa",
+      "seekFind": "Nemo ka samu",
+      "listening": "Saurare"
+    },
+    "blurbs": {
+      "soundlings": "Ƙyanƙyashe kuma ka ciyar da halittun sautinka",
+      "pop": "Tashi da kudan zuma Buzz don ka fasa kalmar da ka ji",
+      "cannon": "Nufa kuma ka harba sautin da ya dace cikin kalmar",
+      "run": "Karanta ƙofofin kuma ka gudu ta ƙofar da ta dace",
+      "pairs": "Juya katunan kuma ka haɗa sautuka da kalmomi",
+      "finish": "Wani sauti ya ɓace — taɓa wanda ya dace",
+      "spot": "Bincika hoton don abubuwan da ke ɓoye sautin",
+      "tricky": "Saurara kuma ka kama Tricky Word (kalma mai wuya)"
+    },
+    "doneBlurb": "Ka yi wasa sosai! Ka dawo gobe don sake gwadawa.",
+    "backTomorrow": "Sai gobe",
+    "play": "Yi wasa",
+    "notSure": "Ba ka tabbatar da wane mataki ba?",
+    "notSureBody": "Yi gwajin kyauta na minti 3 kuma za mu sanya yaronka a matakin da ya dace."
+  },
+  "play": {
+    "closeGame": "Rufe wasa",
+    "hearWord": "Saurari kalmar",
+    "hearWordAgain": "Sake sauraron kalmar",
+    "openSoundBook": "Buɗe Sound Book",
+    "backToGrove": "Koma kurmi"
+  },
+  "rotate": {
+    "title": "Juya wayarka a kwance don ka yi wasa!",
+    "body": "Wannan wasan ya fi girma sosai idan wayar na kwance."
+  },
+  "childHome": {
+    "openBook": "Buɗe {{title}}",
+    "readsDone": "An gama karatu {{done}} cikin {{total}}",
+    "currentBook": "{{title}} — littafinka, an gama karatu {{done}} cikin {{total}}",
+    "doneBook": "{{title}} — an gama",
+    "lockedBook": "{{title}} — a kulle, ka gama littafinka na yanzu tukuna",
+    "startCheck": "Fara Level Check ɗinka (gwajin mataki)",
+    "checkLocked": "Level Check (gwajin mataki) — ka gama littattafanka tukuna"
+  }
+}

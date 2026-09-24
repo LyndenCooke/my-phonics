@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "Samahani! Ukurasa haupatikani",
+    "home": "Rudi Nyumbani"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — Onyesho la Vitabu",
+    "subtitle": "Vitabu vya fonetiki vinavyosomeka kwa sauti kwa watoto wa miaka 4-8",
+    "tagline": "Kila kitabu ni dirisha la utamaduni tofauti wa kisasa",
+    "overview": "Muhtasari wa Chapa",
+    "labels": {
+      "mission": "Dhamira:",
+      "tagline": "Kauli mbiu:",
+      "voice": "Mtindo wa lugha:",
+      "target": "Walengwa:",
+      "artStyle": "Mtindo wa michoro:",
+      "curriculum": "Mtaala:",
+      "fonts": "Fonti:",
+      "differentiator": "Kinachotutofautisha:"
+    },
+    "values": {
+      "mission": "Kila mtoto anastahili kitabu cha kusoma kinacholingana hasa na kile anachoweza kusoma leo.",
+      "tagline": "Vitabu vya fonetiki vinavyosomeka. Chapisha nyumbani.",
+      "voice": "Changamfu, chenye kutia moyo, kama mwalimu mwema wa Mwaka wa 1. Kiingereza cha Uingereza. Kamwe si cha kibiashara.",
+      "target": "Wazazi wa watoto wa miaka 4-8, Waingereza wanaoishi ughaibuni, shule za kimataifa.",
+      "artStyle": "Katuni za kuchekesha zilizochorwa kwa mkono, mandhari laini ya rangi za maji, mistari safi myeusi, macho ya nukta nyeusi.",
+      "curriculum": "Inatokana na Letters and Sounds (Uingereza). Viwango 6, vitabu 32, fonetiki ya hatua kwa hatua.",
+      "fonts": "Plus Jakarta Sans (wavuti), Outfit (vichwa), Andika (vitabu — a na g za ghorofa moja).",
+      "differentiator": "Kila neno linasomeka + utofauti halisi wa tamaduni + kuchapisha nyumbani."
+    },
+    "levelColours": "Mfumo wa Rangi za Viwango:",
+    "allBooks": "Vitabu Vyote 32 — Majalada na Upakuaji wa PDF",
+    "level": "Kiwango {{level}}",
+    "viewPdf": "Tazama PDF",
+    "readerTitle": "Kisomaji Shirikishi cha Vitabu",
+    "readerBody": "Vinjari maktaba nzima kwa usomaji shirikishi wa neno kwa neno, usimulizi wa sauti na shughuli za fonetiki.",
+    "openLibrary": "Fungua Maktaba",
+    "footer": "MyPhonicsBooks — Inatokana na Letters and Sounds (DfE 2007). Haihusiani na Read Write Inc wala Oxford Reading Tree.",
+    "cultures": {
+      "uk": "Uingereza",
+      "middleEast": "Mashariki ya Kati",
+      "nepal": "Nepali",
+      "pakistan": "Pakistani",
+      "trinidad": "Trinidad",
+      "japan": "Japani",
+      "england": "Uingereza (England)",
+      "kenya": "Kenya",
+      "iceland": "Aisilandi",
+      "france": "Ufaransa",
+      "thailand": "Tailandi",
+      "ghana": "Ghana",
+      "southKorea": "Korea Kusini",
+      "turkey": "Uturuki",
+      "ukWoodland": "Misitu ya Uingereza",
+      "mexico": "Meksiko",
+      "londonJewish": "Jamii ya Kiyahudi ya London",
+      "sweden": "Uswidi",
+      "india": "India",
+      "brazil": "Brazili",
+      "egypt": "Misri",
+      "china": "China",
+      "italy": "Italia",
+      "australia": "Australia"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "免费畅玩 · 无需注册",
+    "title": "自然拼读游戏",
+    "intro": "先选级别，再选游戏。每个游戏都使用该级别的发音。",
+    "chooseLevel": "选择级别",
+    "levelAria": "级别 {{level}} — {{name}}",
+    "levelSounds": "级别 {{level}} 的发音",
+    "more": "还有 {{n}} 个",
+    "gamesAria": "游戏",
+    "dailyNote": "每个游戏每天玩一次——少量多次，阅读才能记得牢。",
+    "played": "已玩 ✓",
+    "vibes": {
+      "collect": "收集",
+      "arcade": "街机",
+      "runner": "跑酷",
+      "memory": "记忆",
+      "puzzle": "益智",
+      "seekFind": "寻物",
+      "listening": "听力"
+    },
+    "blurbs": {
+      "soundlings": "孵化并喂养属于你的发音小生物",
+      "pop": "驾驶小蜜蜂 Buzz，戳破你听到的单词",
+      "cannon": "瞄准，把正确的发音射进单词里",
+      "run": "读出门上的字，冲进正确的那扇门",
+      "pairs": "翻开卡片，把发音和单词配对",
+      "finish": "单词缺了一个发音——点出正确的那个",
+      "spot": "在画面中寻找藏着这个发音的东西",
+      "tricky": "仔细听，找出那个 Tricky Word（特殊词）"
+    },
+    "doneBlurb": "玩得真棒！明天再来玩一次吧。",
+    "backTomorrow": "明天再来",
+    "play": "开始玩",
+    "notSure": "不确定选哪个级别？",
+    "notSureBody": "做一个免费的 3 分钟小测试，我们会帮孩子找到合适的级别。"
+  },
+  "play": {
+    "closeGame": "关闭游戏",
+    "hearWord": "听单词",
+    "hearWordAgain": "再听一遍单词",
+    "openSoundBook": "打开 Sound Book（发音图鉴）",
+    "backToGrove": "返回小树林"
+  },
+  "rotate": {
+    "title": "把手机横过来玩吧！",
+    "body": "横屏时游戏画面大得多。"
+  },
+  "childHome": {
+    "openBook": "打开《{{title}}》",
+    "readsDone": "已读 {{done}}/{{total}} 遍",
+    "currentBook": "{{title}} — 你的书，已读 {{done}}/{{total}} 遍",
+    "doneBook": "{{title}} — 已完成",
+    "lockedBook": "{{title}} — 未解锁，请先读完当前这本书",
+    "startCheck": "开始 Level Check（级别测试）",
+    "checkLocked": "Level Check（级别测试）— 请先读完你的书"
+  }
+}

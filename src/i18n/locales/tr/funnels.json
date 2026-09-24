@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "Çocuğunuzun adı",
+    "childNameOptional": "Çocuğunuzun adı (isteğe bağlı)",
+    "emailPlaceholder": "E-posta adresiniz",
+    "consent": "Ücretsiz phonics kaynaklarını e-postayla almayı kabul ediyorum. Aboneliğimi istediğim zaman iptal edebilirim.",
+    "sendFreeBook": "Ücretsiz Kitabımı Gönderin",
+    "loginLinkKeep": "Kitap sonsuza dek sizin olsun diye size bir giriş bağlantısı e-postalayacağız.",
+    "signupFailed": "Kayıt başarısız oldu",
+    "checkEmail": "Giriş bağlantınız için {{email}} adresini kontrol edin",
+    "levelBookFallback": "Seviye {{level}} Kitabı",
+    "browseLibrary": "Kütüphaneye Göz Atın"
+  },
+  "emailCapture": {
+    "defaultButton": "Hemen Başlayın",
+    "footer": "Ücretsiz — kart gerekmez. Letters and Sounds programına dayanır."
+  },
+  "quickScreening": {
+    "title": "Hızlı Tarama",
+    "instructionsNamed": "{{name}} adlı çocuğunuzdan her kelimeyi okumasını isteyin. Doğru okursa onay işaretine dokunun.",
+    "instructionsAnon": "Çocuğunuzdan her kelimeyi okumasını isteyin. Doğru okursa onay işaretine dokunun.",
+    "levelWord": "Seviye {{level}} kelimesi",
+    "hearWord": "Kelimeyi dinleyin",
+    "progress": "{{current}} / {{total}}",
+    "notQuite": "Tam değil",
+    "gotIt": "Doğru!"
+  },
+  "assessmentFunnel": {
+    "title": "Çocuğunuzun <hl>okuma seviyesini</hl> bulun",
+    "subtitle": "Testin ne kadar kapsamlı olmasını istediğinizi seçin.",
+    "rapidTitle": "3 dakikalık kontrol",
+    "rapidDesc": "Çocuğunuza uyum sağlayan hızlı bir ses testi. Sadece bir başlangıç noktası istiyorsanız ideal.",
+    "fullTitle": "10 dakikalık kapsamlı test",
+    "fullDesc": "Her seviyede sesler, gerçek kelimeler, uzaylı kelimeler ve Tricky Words.",
+    "footer": "Bitirdiğinizde seviyesine uygun ücretsiz bir kitap. Kart gerekmez.",
+    "freeBookTitle": "Ücretsiz kitabınızı nereye gönderelim?",
+    "paidTitle": "Ödemeden önce tek bir bilgi",
+    "paidSubtitle": "Ödemenin hemen ardından giriş bağlantınızı e-postalayacağız; böylece 32 kitabın hepsi sizin olacak.",
+    "continueToCheckout": "Ödemeye Geç",
+    "checkoutFailed": "Ödeme başlatılamadı",
+    "missingBundle": "Paket ürünü bulunamadı. Lütfen destek ekibiyle iletişime geçin.",
+    "missingMonthly": "Aylık plan bulunamadı. Lütfen destek ekibiyle iletişime geçin."
+  },
+  "assessmentResult": {
+    "wellDone": "Harika!",
+    "wellDoneNamed": "Harika, {{name}}!",
+    "isAtNamed": "{{name}} şu anda <b>Seviye {{level}}: {{levelName}}</b> düzeyinde",
+    "isAtAnon": "Çocuğunuz şu anda <b>Seviye {{level}}: {{levelName}}</b> düzeyinde",
+    "unlocked": "1 ücretsiz etkileşimli kitabın kilidini açtınız!",
+    "matchedNamed": "{{name}} adlı çocuğunuzun okuyabildiklerine birebir uygun bir Seviye {{level}} kitabı.",
+    "matchedAnon": "Çocuğunuzun okuyabildiklerine birebir uygun bir Seviye {{level}} kitabı."
+  },
+  "bundleUpsell": {
+    "coverAlt": "Seviye {{level}} — {{title}}",
+    "title": "Tüm kitapların kilidini açmak ister misiniz?",
+    "subtitleNamed": "{{count}} kitap, her seviye — {{name}} büyüdükçe yanında.",
+    "subtitleAnon": "{{count}} kitap, her seviye — çocuğunuz büyüdükçe yanında.",
+    "oneTime": "tek seferlik",
+    "benefitAllBooks": "6 seviyedeki {{count}} etkileşimli kitabın tamamı",
+    "benefitQuizzes": "Her hikâyeden sonra anlama soruları",
+    "benefitProgress": "Tüm kütüphanede ilerleme takibi",
+    "benefitForever": "Sonsuza dek sizin — abonelik yok",
+    "benefitWorld": "Dünyanın dört bir yanından hikâyeler",
+    "accept": "Evet — tüm kitapları £{{price}} karşılığında açın",
+    "decline": "Hayır teşekkürler, sadece ücretsiz kitabımı istiyorum"
+  },
+  "monthlyDownsell": {
+    "title": "Bir dakika — buna ne dersiniz?",
+    "body": "Ayda sadece £4.99 ile <b>6 seviyedeki tüm kitapların</b> kilidini açın. İstediğiniz zaman iptal edin.",
+    "monthlyAccess": "Aylık erişim",
+    "perMonth": "/ay",
+    "allLevels": "Tüm seviyeler. Tüm kitaplar. İstediğiniz zaman iptal edin.",
+    "benefitEveryBook": "6 seviyedeki tüm etkileşimli kitaplar",
+    "benefitNewBooks": "Yeni kitaplar yayımlandıkça eklenir",
+    "benefitMoveUpNamed": "{{name}} geliştikçe bir üst seviyeye geçer",
+    "benefitMoveUpAnon": "Çocuğunuz geliştikçe bir üst seviyeye geçer",
+    "accept": "Ayda £4.99 ile başlayın",
+    "decline": "Hayır teşekkürler, sadece ücretsiz kitabım"
+  },
+  "freeAssessment": {
+    "resultLabel": "Okuma seviyesi",
+    "level": "Seviye {{level}}",
+    "freeUnlocked": "Ücretsiz kitabın kilidi açıldı",
+    "saveTitle": "Sonuçlarınızı kaydedin ve kitabınızı alın"
+  },
+  "freeBook": {
+    "pickTitle": "<hl>Çocuğunuz için</hl> ücretsiz bir kitap seçin",
+    "pickSubtitle": "Seviyesine dokunun. Uygun bir kitabın kilidini açalım — ücretsiz, kart gerekmez.",
+    "coverAlt": "Seviye {{level}} örnek kapak",
+    "notSure": "Emin değil misiniz? 3 dakikalık değerlendirmeyi yapın",
+    "emailTitle": "Ücretsiz bir Seviye {{level}} kitabı <hl>yolda</hl>",
+    "emailSubtitle": "E-postanızı bırakın, hemen kilidini açalım.",
+    "unlockButton": "Ücretsiz Kitabımın Kilidini Aç",
+    "pickDifferent": "Başka bir seviye seçin"
+  },
+  "linkTree": {
+    "tagline": "Tam seviyesine uygun, kolayca çözümlenebilen kitaplar",
+    "wrongBooks": "Yanlış kitaplar çocuğunuzun özgüvenini mi zedeliyor?",
+    "freeAssessment": "Ücretsiz phonics değerlendirmesi — seviyesini bulun",
+    "threeMinute": "3 dakikalık seviye kontrolü + ücretsiz kaynaklar",
+    "theGap": "Sevdikleri ve gerçekten okuyabildikleri kitaplar",
+    "footer": "Letters and Sounds (Birleşik Krallık phonics müfredatı) temel alınmıştır"
+  },
+  "theGap": {
+    "boring": "sıkıcı",
+    "tooHard": "çok zor",
+    "vs": "ya da",
+    "title": "<em>Okuyabildikleri</em> sıkıcı kitaplar.<br/><hl>Okuyamadıkları</hl> harika kitaplar.",
+    "whyBoth": "Neden ikisi birden olmasın?",
+    "body": "Çocukların seveceği, tam da çözebildikleri düzeye göre hazırlanmış hikâyeler. Phonics açısından kusursuz, dünyaya açık.",
+    "diffTitle": "Bu kitapları farklı kılan nedir:",
+    "diffDecodable": "Her kelime tam seviyelerinde okunabilir",
+    "diffStories": "Duygusal yolculukları olan gerçek hikâyeler, sıradan okuma metinleri değil",
+    "diffCultures": "Dünyanın dört bir yanındaki kültürlerde geçer — Japonya, Kenya, Fas...",
+    "diffCurriculum": "Birleşik Krallık phonics müfredatına dayanır",
+    "button": "Ücretsiz Kitapları Alın"
+  },
+  "threeMinute": {
+    "title": "Tam okuma seviyesini bulmak için <hl>3 dakika</hl>",
+    "subtitle": "Tahmin etmeyi bırakın. Net bir yanıt ve ona uygun ücretsiz kaynaklar alın.",
+    "step1": "Hızlı değerlendirme hangi sesleri bildiğini kontrol eder",
+    "step2": "Tam seviyesini (1-6) anında öğrenin",
+    "step3": "Seviyesine uygun ücretsiz kitaplara erişin",
+    "button": "Seviyesini Kontrol Edin"
+  },
+  "wrongBooks": {
+    "title": "Yanlış kitaplar <hl>özgüveni öldürür</hl>",
+    "tooHard": "Çok zor = hayal kırıklığı. Çok kolay = sıkıntı.",
+    "body": "3 dakikada tam seviyesini bulun ve gerçekten okuyabileceği ücretsiz bir kitabın kilidini açın.",
+    "getTitle": "Neler alacaksınız:",
+    "itemScreening": "Hızlı phonics taraması (6 kelime)",
+    "itemFreeBook": "Seviyesine uygun 1 ücretsiz etkileşimli kitap",
+    "itemCurriculum": "Birleşik Krallık phonics müfredatına dayanır",
+    "button": "Seviyesini Bulun"
+  }
+}

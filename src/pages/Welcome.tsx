@@ -7,6 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { ChevronRight, Loader2, BookOpen, Mail, Download } from 'lucide-react';
 import { getJourneyLevel, journeyLevelOf, JOURNEY_LEVELS } from '@/lib/levels8';
 import PasswordSetup from '@/components/PasswordSetup';
+import { useTranslation } from 'react-i18next';
+import { authErrorMessage } from '@/lib/authErrors';
 
 /** Sticker shadow — white border + soft drop, same as the rest of the
  *  paper-and-stickers surfaces. */
@@ -14,6 +16,7 @@ const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const { t } = useTranslation('auth');
   const [searchParams] = useSearchParams();
   const emailParam = searchParams.get('email') ?? '';
   const { user, loading: authLoading } = useAuth();
@@ -56,7 +59,7 @@ export default function Welcome() {
         options: { emailRedirectTo: `${window.location.origin}/welcome` },
       })
       .then(({ error }) => {
-        if (error) setLinkError(error.message);
+        if (error) setLinkError(authErrorMessage(error));
         else setLinkSent(true);
       })
       .finally(() => setLinkSending(false));
@@ -79,20 +82,20 @@ export default function Welcome() {
               <Mail className="w-7 h-7 text-primary" />
             </div>
             <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">
-              Check your inbox
+              {t('welcome.checkInbox')}
             </h1>
             <p className="text-sm text-muted-foreground mb-1">
-              We've sent a one-tap login link to
+              {t('welcome.sentTo')}
             </p>
-            <p className="text-sm font-bold text-foreground mb-5 break-all">{emailParam}</p>
+            <p dir="ltr" className="text-sm font-bold text-foreground mb-5 break-all">{emailParam}</p>
             {linkSending && (
               <p className="text-xs text-muted-foreground flex items-center justify-center gap-2">
-                <Loader2 className="w-3 h-3 animate-spin" /> Sending link…
+                <Loader2 className="w-3 h-3 animate-spin" /> {t('welcome.sending')}
               </p>
             )}
             {linkSent && !linkSending && (
               <p className="text-xs text-muted-foreground">
-                Tap the button in that email to log in and unlock your book.
+                {t('welcome.tapButton')}
               </p>
             )}
             {linkError && (
@@ -141,20 +144,20 @@ export default function Welcome() {
             className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 mb-4"
             style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}
           >
-            You're in! 🎉
+            {t('welcome.badge')}
           </span>
           <h1 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">
-            Your free book is ready
+            {t('welcome.title')}
           </h1>
           <p className="text-sm lg:text-base text-muted-foreground mt-2">
-            We've unlocked a book at your child's level. Tap to start reading.
+            {t('welcome.subtitle')}
           </p>
         </div>
 
         {unlockedBook ? (
           // Landscape: the book object on the left, actions on the right —
           // one balanced spread. Mobile keeps the single centred column.
-          <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:text-left">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:text-start">
             {/* The book as a physical object */}
             <div className="relative mb-6 lg:mb-0">
               <div
@@ -164,7 +167,7 @@ export default function Welcome() {
               />
               <button
                 onClick={() => navigate('/library', { state: { filterLevel: journeyLevel, openBookId: unlockedBook.id } })}
-                aria-label={`Open ${unlockedBook.title}`}
+                aria-label={t('welcome.openBook', { title: unlockedBook.title })}
                 className="relative block mx-auto w-[58%] max-w-[15rem] press-scale"
                 style={{ rotate: '-2deg' }}
               >
@@ -188,11 +191,11 @@ export default function Welcome() {
             </div>
 
             {/* Title + level + actions */}
-            <div className="lg:pr-4">
+            <div className="lg:pe-4">
               <p className="text-xs font-extrabold uppercase tracking-wide" style={{ color: ink }}>
-                Level {journeyLevel} · {levelInfo.name}
+                {t('welcome.level', { level: journeyLevel })} · <span dir="ltr" lang="en">{levelInfo.name}</span>
               </p>
-              <h2 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground mt-1">
+              <h2 dir="ltr" lang="en" className="font-display text-2xl lg:text-3xl font-extrabold text-foreground mt-1">
                 {unlockedBook.title}
               </h2>
 
@@ -213,7 +216,7 @@ export default function Welcome() {
                       className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-white font-bold text-sm text-foreground transition-all active:translate-y-[2px]"
                       style={{ boxShadow: `0 3px 0 rgba(40,30,40,0.08), ${STICKER}`, border: '1px solid rgba(40,30,40,0.06)' }}
                     >
-                      <Download className="w-4 h-4" /> Read on screen / print A5
+                      <Download className="w-4 h-4" /> {t('welcome.readA5')}
                     </a>
                     <a
                       href={`${BUCKET}/a4/${slug}.pdf`}
@@ -223,7 +226,7 @@ export default function Welcome() {
                       className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl bg-white font-bold text-sm text-foreground transition-all active:translate-y-[2px]"
                       style={{ boxShadow: `0 3px 0 rgba(40,30,40,0.08), ${STICKER}`, border: '1px solid rgba(40,30,40,0.06)' }}
                     >
-                      <Download className="w-4 h-4" /> Print and fold (A4 booklet)
+                      <Download className="w-4 h-4" /> {t('welcome.printA4')}
                     </a>
                   </div>
                 );
@@ -239,7 +242,7 @@ export default function Welcome() {
                 className="mt-4 w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                Continue to Library <ChevronRight className="w-5 h-5" />
+                {t('welcome.continueLibrary')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
               </button>
             </div>
           </div>
@@ -250,7 +253,7 @@ export default function Welcome() {
               style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
             >
               <p className="text-sm text-muted-foreground">
-                Your book is being prepared. Head to the library to browse what's available.
+                {t('welcome.preparing')}
               </p>
             </div>
             <button
@@ -258,7 +261,7 @@ export default function Welcome() {
               className="w-full max-w-md mx-auto h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2 transition-all active:translate-y-[4px]"
               style={{ background: '#E84B8A', boxShadow: '0 5px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
             >
-              Continue to Library <ChevronRight className="w-5 h-5" />
+              {t('welcome.continueLibrary')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
             </button>
           </>
         )}
@@ -267,7 +270,7 @@ export default function Welcome() {
         <div className="max-w-md mx-auto">
           <PasswordSetup />
           <p className="text-xs text-muted-foreground mt-4">
-            Your progress is saved. Come back anytime to pick up where you left off.
+            {t('welcome.progressSaved')}
           </p>
         </div>
       </div>

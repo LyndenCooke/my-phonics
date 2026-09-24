@@ -8,6 +8,7 @@ import BundleUpsell from './BundleUpsell';
 import MonthlyDownsell from './MonthlyDownsell';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
+import { useTranslation, Trans } from 'react-i18next';
 
 const HUB_URL = import.meta.env.VITE_HUB_URL || '/library';
 
@@ -24,6 +25,7 @@ const LEVEL_PREVIEWS: { level: number; key: string; title: string; colour: strin
 
 export default function FreeBook() {
   useFunnelTracker();
+  const { t } = useTranslation('funnels');
   const [step, setStep] = useState<Step>('pick');
   const [level, setLevel] = useState(1);
   const [childName, setChildName] = useState('');
@@ -50,13 +52,10 @@ export default function FreeBook() {
             <BookOpen size={32} />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            Pick a free book{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500">
-              for your child
-            </span>
+            <Trans t={t} i18nKey="freeBook.pickTitle" components={{ hl: <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500" /> }} />
           </h1>
           <p className="text-muted-foreground mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-            Tap their level. We'll unlock one matching book — free, no card.
+            {t('freeBook.pickSubtitle')}
           </p>
         </div>
 
@@ -65,12 +64,12 @@ export default function FreeBook() {
             <button
               key={p.level}
               onClick={() => handlePickLevel(p.level)}
-              className="group relative bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all overflow-hidden text-left active:scale-[0.98] border-2 border-transparent hover:border-[hsl(var(--primary))]"
+              className="group relative bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all overflow-hidden text-start active:scale-[0.98] border-2 border-transparent hover:border-[hsl(var(--primary))]"
             >
               <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                 <img
                   src={`/illustrations/${p.key}/cover.png`}
-                  alt={`Level ${p.level} sample cover`}
+                  alt={t('freeBook.coverAlt', { level: p.level })}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                   draggable={false}
@@ -84,9 +83,9 @@ export default function FreeBook() {
                   >
                     {p.level}
                   </span>
-                  <span className="text-xs font-bold text-foreground truncate">{p.title}</span>
+                  <span className="text-xs font-bold text-foreground truncate" dir="ltr" lang="en">{p.title}</span>
                 </div>
-                <p className="text-[10px] text-muted-foreground truncate">{p.sounds}</p>
+                <p className="text-[10px] text-muted-foreground truncate" dir="ltr" lang="en">{p.sounds}</p>
               </div>
             </button>
           ))}
@@ -98,7 +97,7 @@ export default function FreeBook() {
             className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors py-3 px-4 rounded-xl"
           >
             <HelpCircle size={16} />
-            Not sure? Take the 3-minute assessment
+            {t('freeBook.notSure')}
           </Link>
         </div>
       </FunnelLayout>
@@ -121,20 +120,22 @@ export default function FreeBook() {
             />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            One free Level {level} book{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500">
-              on its way
-            </span>
+            <Trans
+              t={t}
+              i18nKey="freeBook.emailTitle"
+              values={{ level }}
+              components={{ hl: <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500" /> }}
+            />
           </h1>
           <p className="text-muted-foreground mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-            Drop your email and we'll unlock it now.
+            {t('freeBook.emailSubtitle')}
           </p>
         </div>
 
         <EmailCapture
           source={`free-book-l${level}`}
           onSuccess={handleEmailSuccess}
-          buttonText="Unlock My Free Book"
+          buttonText={t('freeBook.unlockButton')}
         />
 
         <div className="max-w-md mx-auto text-center mt-4">
@@ -142,7 +143,7 @@ export default function FreeBook() {
             onClick={() => setStep('pick')}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← Pick a different level
+            <span className="inline-block rtl:-scale-x-100" aria-hidden="true">←</span> {t('freeBook.pickDifferent')}
           </button>
         </div>
       </FunnelLayout>
@@ -187,11 +188,11 @@ export default function FreeBook() {
         open={true}
         onClose={goToHub}
         onContinue={goToHub}
-        title={firstBook?.title ?? `Level ${level} Book`}
+        title={firstBook?.title ?? t('shared.levelBookFallback', { level })}
         level={level}
         coverUrl={coverUrl}
-        subtitle={`Check ${email} for your login link`}
-        ctaLabel="Browse the Library"
+        subtitle={t('shared.checkEmail', { email })}
+        ctaLabel={t('shared.browseLibrary')}
       />
     </FunnelLayout>
   );

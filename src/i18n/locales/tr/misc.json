@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "Hay aksi! Sayfa bulunamadı",
+    "home": "Ana Sayfaya Dön"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — Kitap Vitrini",
+    "subtitle": "4-8 yaş çocuklar için çözümlenebilir fonetik kitaplar",
+    "tagline": "Her kitap farklı bir çağdaş kültüre açılan bir pencere",
+    "overview": "Marka Özeti",
+    "labels": {
+      "mission": "Misyon:",
+      "tagline": "Slogan:",
+      "voice": "Üslup:",
+      "target": "Hedef kitle:",
+      "artStyle": "Çizim tarzı:",
+      "curriculum": "Müfredat:",
+      "fonts": "Yazı tipleri:",
+      "differentiator": "Farkımız:"
+    },
+    "values": {
+      "mission": "Her çocuk, bugün çözümleyebildiği düzeye tam uyan bir okuma kitabını hak eder.",
+      "tagline": "Çözümlenebilir fonetik kitaplar. Evde yazdırın.",
+      "voice": "Sıcak, cesaret verici; samimi bir 1. sınıf öğretmeni gibi. İngiliz İngilizcesi. Asla satış odaklı değil.",
+      "target": "4-8 yaş çocukların ebeveynleri, yurt dışındaki İngilizler, uluslararası okullar.",
+      "artStyle": "Yumuşak suluboya arka planlı, temiz siyah çizgili, dolu siyah nokta gözlü eğlenceli el çizimi karikatürler.",
+      "curriculum": "Letters and Sounds (Birleşik Krallık) temelli. 6 seviye, 32 kitap, aşamalı fonetik.",
+      "fonts": "Plus Jakarta Sans (web), Outfit (başlıklar), Andika (kitaplar — tek katlı a ve g).",
+      "differentiator": "Her kelime çözümlenebilir + gerçek kültürel çeşitlilik + evde yazdırma."
+    },
+    "levelColours": "Seviye Renk Sistemi:",
+    "allBooks": "32 Kitabın Tamamı — Kapaklar ve PDF İndirmeleri",
+    "level": "Seviye {{level}}",
+    "viewPdf": "PDF'yi Görüntüle",
+    "readerTitle": "Etkileşimli Kitap Okuyucu",
+    "readerBody": "Kelime kelime etkileşimli okuma, sesli anlatım ve fonetik etkinliklerle tüm kütüphaneye göz atın.",
+    "openLibrary": "Kütüphaneyi Aç",
+    "footer": "MyPhonicsBooks — Letters and Sounds (DfE 2007) temellidir. Read Write Inc veya Oxford Reading Tree ile bağlantılı değildir.",
+    "cultures": {
+      "uk": "Birleşik Krallık",
+      "middleEast": "Orta Doğu",
+      "nepal": "Nepal",
+      "pakistan": "Pakistan",
+      "trinidad": "Trinidad",
+      "japan": "Japonya",
+      "england": "İngiltere",
+      "kenya": "Kenya",
+      "iceland": "İzlanda",
+      "france": "Fransa",
+      "thailand": "Tayland",
+      "ghana": "Gana",
+      "southKorea": "Güney Kore",
+      "turkey": "Türkiye",
+      "ukWoodland": "Birleşik Krallık Ormanları",
+      "mexico": "Meksika",
+      "londonJewish": "Londra Yahudi Toplumu",
+      "sweden": "İsveç",
+      "india": "Hindistan",
+      "brazil": "Brezilya",
+      "egypt": "Mısır",
+      "china": "Çin",
+      "italy": "İtalya",
+      "australia": "Avustralya"
+    }
+  }
+}

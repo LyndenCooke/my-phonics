@@ -9,6 +9,7 @@
  * unchanged.
  */
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Gift, PlayCircle, Users, TrendingUp, Tag, BookOpen, ArrowLeft, ChevronRight, Inbox } from 'lucide-react';
@@ -35,6 +36,7 @@ const TONE_BY_TYPE: Record<ParentMessageType, string> = {
 type Filter = 'all' | 'unread';
 
 function MessageCard({ m }: { m: ParentMessage }) {
+  const { t } = useTranslation('profile');
   const Icon = ICON_BY_TYPE[m.type];
   const tone = TONE_BY_TYPE[m.type];
 
@@ -49,7 +51,7 @@ function MessageCard({ m }: { m: ParentMessage }) {
             <p className="text-sm font-bold text-foreground leading-snug">{m.title}</p>
             {!m.read && (
               <span className="text-[9px] font-extrabold uppercase tracking-wider bg-rose-500 text-white px-1.5 py-0.5 rounded-full shrink-0">
-                New
+                {t('messages.new')}
               </span>
             )}
           </div>
@@ -59,7 +61,7 @@ function MessageCard({ m }: { m: ParentMessage }) {
               to={m.ctaHref}
               className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary-ink hover:underline"
             >
-              {m.ctaLabel} <ChevronRight className="w-3.5 h-3.5" />
+              {m.ctaLabel} <ChevronRight className="w-3.5 h-3.5 rtl:-scale-x-100" />
             </Link>
           )}
         </div>
@@ -69,6 +71,7 @@ function MessageCard({ m }: { m: ParentMessage }) {
 }
 
 export default function Messages() {
+  const { t } = useTranslation('profile');
   const [filter, setFilter] = useState<Filter>('all');
   const [searchParams] = useSearchParams();
   // Optional ?type=reward filter so /profile/messages?type=reward shows
@@ -82,7 +85,9 @@ export default function Messages() {
   }, [typeFilter]);
   const visible = filter === 'unread' ? all.filter(m => !m.read) : all;
   const unreadCount = all.filter(m => !m.read).length;
-  const titleSuffix = typeFilter ? ` · ${typeFilter[0].toUpperCase()}${typeFilter.slice(1)}s` : '';
+  const titleSuffix = typeFilter
+    ? ` · ${t(`messages.types.${typeFilter}`, { defaultValue: `${typeFilter[0].toUpperCase()}${typeFilter.slice(1)}s` })}`
+    : '';
 
   return (
     <Layout>
@@ -91,12 +96,12 @@ export default function Messages() {
         <div className="flex items-center gap-3 mb-4">
           <Link
             to="/profile"
-            aria-label="Back to Profile"
+            aria-label={t('backToProfile')}
             className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 text-foreground" />
+            <ArrowLeft className="w-4 h-4 text-foreground rtl:-scale-x-100" />
           </Link>
-          <h1 className="font-display text-xl font-extrabold text-foreground">Messages{titleSuffix}</h1>
+          <h1 className="font-display text-xl font-extrabold text-foreground">{t('messages.title')}{titleSuffix}</h1>
         </div>
 
         {/* Filter tabs */}
@@ -107,7 +112,7 @@ export default function Messages() {
               filter === 'all' ? 'bg-card text-foreground shadow-card' : 'text-muted-foreground'
             }`}
           >
-            All
+            {t('messages.all')}
           </button>
           <button
             onClick={() => setFilter('unread')}
@@ -115,7 +120,7 @@ export default function Messages() {
               filter === 'unread' ? 'bg-card text-foreground shadow-card' : 'text-muted-foreground'
             }`}
           >
-            Unread
+            {t('messages.unread')}
             {unreadCount > 0 && (
               <span className="min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center px-1">
                 {unreadCount}
@@ -129,9 +134,9 @@ export default function Messages() {
             <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-3">
               <Inbox className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-sm font-medium text-foreground">No messages yet</p>
+            <p className="text-sm font-medium text-foreground">{t('messages.emptyTitle')}</p>
             <p className="text-xs text-muted-foreground mt-1">
-              {filter === 'unread' ? "You're all caught up." : 'Updates and rewards will appear here.'}
+              {filter === 'unread' ? t('messages.caughtUp') : t('messages.emptyBody')}
             </p>
           </div>
         ) : (

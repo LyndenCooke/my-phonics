@@ -30,6 +30,7 @@
  */
 import { useMemo } from 'react';
 import { Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   /** Child's age in months at time of test. */
@@ -76,6 +77,7 @@ function buildPath(curve: number[]): string {
 }
 
 export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCode }: Props) {
+  const { t } = useTranslation('dashboard');
   const ageYears = useMemo(() => ageMonths / 12, [ageMonths]);
   const childX = xScale(Math.min(Math.max(ageYears, X_MIN), X_MAX));
   const childY = yScale(Math.min(Math.max(childLevel, Y_MIN), Y_MAX));
@@ -97,9 +99,9 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
   const status: 'above' | 'at' | 'below' =
     delta > 0.6 ? 'above' : delta < -0.6 ? 'below' : 'at';
   const statusCopy = {
-    above: { label: 'Above UK expectations', color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-    at:    { label: 'On track for UK average',  color: 'text-blue-700',    bg: 'bg-blue-50',    border: 'border-blue-200' },
-    below: { label: 'A little behind UK average', color: 'text-amber-700',  bg: 'bg-amber-50',   border: 'border-amber-200' },
+    above: { label: t('chart.above'), color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+    at:    { label: t('chart.at'),  color: 'text-blue-700',    bg: 'bg-blue-50',    border: 'border-blue-200' },
+    below: { label: t('chart.below'), color: 'text-amber-700',  bg: 'bg-amber-50',   border: 'border-amber-200' },
   }[status];
 
   return (
@@ -107,10 +109,10 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
       <div className="flex items-start justify-between gap-3 mb-2">
         <div>
           <h3 className="font-display font-extrabold text-base text-foreground leading-tight">
-            How your child compares
+            {t('chart.title')}
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Phonics level by age — UK and international averages
+            {t('chart.subtitle')}
           </p>
         </div>
         <div className={`text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full border ${statusCopy.color} ${statusCopy.bg} ${statusCopy.border}`}>
@@ -118,8 +120,8 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
         </div>
       </div>
 
-      {/* Chart */}
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" aria-label="Phonics level by age comparison chart">
+      {/* Chart — axes stay left-to-right in every language (dir also steers SVG text-anchor). */}
+      <svg style={{ direction: 'ltr' }} viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" aria-label={t('chart.ariaLabel')}>
         {/* Y-axis grid lines */}
         {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((y) => (
           <g key={y}>
@@ -135,7 +137,7 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
             <text x={xScale(age)} y={H - 14} textAnchor="middle" fontSize={9} fill="hsl(0, 0%, 50%)">{age}</text>
           </g>
         ))}
-        <text x={W / 2} y={H - 2} textAnchor="middle" fontSize={9} fill="hsl(0, 0%, 50%)">Age (years)</text>
+        <text x={W / 2} y={H - 2} textAnchor="middle" fontSize={9} fill="hsl(0, 0%, 50%)">{t('chart.ageAxis')}</text>
 
         {/* Trajectory lines */}
         <path d={buildPath(UK_GREATER_DEPTH)} fill="none" stroke="hsl(142, 60%, 45%)" strokeWidth={2} strokeDasharray="4 3" />
@@ -148,7 +150,7 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
             <circle cx={childX} cy={childY} r={9} fill="hsl(338, 78%, 57%)" opacity={0.2} />
             <circle cx={childX} cy={childY} r={5} fill="hsl(338, 78%, 57%)" stroke="white" strokeWidth={2} />
             <text x={childX} y={childY - 12} textAnchor="middle" fontSize={10} fontWeight={800} fill="hsl(338, 78%, 47%)">
-              You · L{childLevel}
+              {t('chart.you', { level: childLevel })}
             </text>
           </g>
         )}
@@ -157,16 +159,16 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
       {/* Legend */}
       <div className="flex flex-wrap gap-3 mt-2 text-[10px]">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-pink-500 rounded-full" /> Your child
+          <span className="w-3 h-0.5 bg-pink-500 rounded-full" /> {t('chart.legendChild')}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-emerald-600 rounded-full" style={{ backgroundImage: 'linear-gradient(to right, currentColor 50%, transparent 50%)', backgroundSize: '4px 1px' }} /> UK Greater Depth (top 20%)
+          <span className="w-3 h-0.5 bg-emerald-600 rounded-full" style={{ backgroundImage: 'linear-gradient(to right, currentColor 50%, transparent 50%)', backgroundSize: '4px 1px' }} /> {t('chart.legendGreater')}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-blue-600 rounded-full" /> UK Expected (avg)
+          <span className="w-3 h-0.5 bg-blue-600 rounded-full" /> {t('chart.legendExpected')}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-0.5 bg-amber-500 rounded-full" /> International avg
+          <span className="w-3 h-0.5 bg-amber-500 rounded-full" /> {t('chart.legendInternational')}
         </span>
       </div>
 
@@ -174,11 +176,8 @@ export default function PhonicsAveragesChart({ ageMonths, childLevel, countryCod
       <div className="mt-3 pt-3 border-t border-border flex items-start gap-1.5">
         <Info className="w-3 h-3 text-muted-foreground mt-0.5 shrink-0" />
         <p className="text-[10px] text-muted-foreground leading-relaxed">
-          Reference data: UK DfE Phonics Screening Check 2024 (national pass rate ≈80% at end of Year&nbsp;1)
-          + NFER reading benchmarks. International line interpolated from IEA PIRLS 2021 reading literacy
-          (UK 558 vs international avg 520). Phonics levels are mapped to our 1–8 curriculum, not standardised test scores.
-          Your child is a snapshot, not a label — talk to their teacher for the full picture.
-          {countryCode ? ` Country context: ${countryCode}.` : ''}
+          {t('chart.disclaimer')}
+          {countryCode ? t('chart.country', { code: countryCode }) : ''}
         </p>
       </div>
     </div>

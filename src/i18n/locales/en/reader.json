@@ -1,0 +1,70 @@
+{
+  "closeBook": "Close book",
+  "pageAlt": "{{title}} — page {{page}}",
+  "pageLoadError": "We couldn't load this page.",
+  "pageLoadErrorHint": "Check your connection and try again.",
+  "pagesUnavailable": "Page images not available",
+  "previousPage": "Previous page",
+  "nextPage": "Next page",
+  "goToPage": "Go to page {{page}}",
+  "finishBook": "Finish book",
+  "tapToHear": "Tap to hear \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Book preview — use the arrow keys to turn the pages"
+  },
+  "quiz": {
+    "saveFailed": "Failed to save quiz results",
+    "completeAria": "Quiz complete",
+    "perfect": "Perfect Score!",
+    "wellDone": "Well done!",
+    "scored": "You scored <b>{{score}}</b> out of <b>{{total}}</b>",
+    "tryAgain": "Try Again",
+    "dialogAria": "Quiz: {{title}}",
+    "close": "Close quiz",
+    "answerOptions": "Answer options",
+    "seeResults": "See Results"
+  },
+  "audio": {
+    "playSoundTitle": "Play \"{{grapheme}}\" sound",
+    "playSoundAria": "Play sound for grapheme {{grapheme}}",
+    "playWordTitle": "Play \"{{word}}\"",
+    "playWordAria": "Play word {{word}}"
+  },
+  "soundMap": {
+    "known": "Known ({{n}})",
+    "toLearn": "To learn ({{n}})",
+    "notTestedCount": "Not tested ({{n}})",
+    "notTested": "Not tested",
+    "levelHeading": "Level {{level}}",
+    "levelsNotTested": "Levels {{levels}} not yet tested",
+    "status": {
+      "known": "known",
+      "unknown": "unknown",
+      "untested": "untested"
+    },
+    "categories": {
+      "sound_recognition": "Sounds",
+      "word_reading": "Real Words",
+      "alien_words": "Alien Words",
+      "tricky_words": "Tricky Words",
+      "speedy_reading": "Speedy Reading",
+      "fluency": "Fluency"
+    }
+  },
+  "interactive": {
+    "playSound": "Play sound {{sound}}",
+    "playSoundVariant": "Play sound {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Tap to hear.",
+    "illustration": "Story illustration",
+    "closeImage": "Close image",
+    "expandIllustration": "Expand illustration",
+    "hideHints": "Hide phonics hints",
+    "showHints": "Show phonics hints",
+    "checkInPassed": "Check-in passed",
+    "checkInPractise": "Check-in — keep practising"
+  },
+  "prep": {
+    "tapToHear": "Tap each one to hear it. These are the sounds your child will practise.",
+    "tapLevel": "Tap a level to see those sounds"
+  }
+}

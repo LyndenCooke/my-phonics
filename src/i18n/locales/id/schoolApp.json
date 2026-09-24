@@ -1,0 +1,422 @@
+{
+  "backToDashboard": "Kembali ke dasbor",
+  "couldNotSave": "Tidak dapat menyimpan",
+  "errors": {
+    "downloadUnavailable": "Unduhan tidak tersedia",
+    "unavailable": "Tidak tersedia"
+  },
+  "counts": {
+    "classroom_other": "{{count}} kelas",
+    "student_other": "{{count}} siswa",
+    "book_other": "{{count}} buku",
+    "admin_other": "{{count}} admin",
+    "teacher_other": "{{count}} guru"
+  },
+  "block": {
+    "blockOf": "Blok {{n}} dari {{total}}",
+    "block": "Blok {{n}}",
+    "levelReview": "Tinjauan level",
+    "reviewGate": "Tinjauan · gerbang level"
+  },
+  "judgement": {
+    "continue": "Lanjutkan",
+    "ready_soon": "Segera siap",
+    "needs_support": "Perlu dukungan"
+  },
+  "windows": {
+    "autumn1": "Musim Gugur 1",
+    "autumn2": "Musim Gugur 2",
+    "spring1": "Musim Semi 1",
+    "spring2": "Musim Semi 2",
+    "summer1": "Musim Panas 1",
+    "summer2": "Musim Panas 2"
+  },
+  "colours": {
+    "pink": "Merah muda",
+    "coral": "Koral",
+    "amber": "Kuning amber",
+    "green": "Hijau",
+    "blue": "Biru",
+    "indigo": "Nila",
+    "purple": "Ungu",
+    "teal": "Hijau toska"
+  },
+  "status": {
+    "complete": "Selesai",
+    "inProgress": "Sedang berjalan",
+    "notStarted": "Belum dimulai",
+    "next": "Berikutnya",
+    "upcoming": "Akan datang"
+  },
+  "outcomes": {
+    "readyUp": "Siap naik level",
+    "staying": "Tetap di level",
+    "intervention": "Perlu intervensi",
+    "stillToAssess": "Belum dinilai"
+  },
+  "home": {
+    "loadFailed": "Tidak dapat memuat kelas",
+    "createFailed": "Tidak dapat membuat kelas",
+    "created": "Kelas dibuat",
+    "seed": {
+      "confirm": "Isi data demo?\n\nIni akan MENGHAPUS setiap kelas dan murid di sekolah ini dan menggantinya dengan set demo. Tindakan ini tidak dapat dibatalkan.\n\nLakukan ini hanya di sekolah demo/uji coba.",
+      "failed": "Pengisian data gagal",
+      "done": "Data demo telah diisi",
+      "doneBody": "{{classrooms}} kelas, {{students}} siswa.",
+      "title": "Siapkan sekolah demo",
+      "body": "Mengisi sekolah ini dengan set realistis dua rombel per angkatan — 6 kelas, ~160 murid yang dikelompokkan berdasarkan level lintas angkatan. Menggantikan semua kelas yang ada.",
+      "button": "Isi data demo"
+    },
+    "welcome": "Selamat datang di {{school}}",
+    "yourSchool": "sekolah Anda",
+    "firstClassroom": "Mari siapkan kelas pertama Anda.",
+    "stats": {
+      "total": "Total siswa",
+      "assessed": "Sudah dinilai",
+      "notAssessed": "Belum dinilai",
+      "levelsActive": "Level aktif"
+    },
+    "actions": {
+      "title": "Tindakan yang diperlukan",
+      "unassessed_other": "{{count}} anak belum dinilai",
+      "stuck_other": "{{count}} anak di level yang sama selama 4+ minggu",
+      "stale_other": "{{count}} kelas tanpa penilaian bulan ini",
+      "assess": "Nilai",
+      "review": "Tinjau",
+      "open": "Buka"
+    },
+    "distribution": "Sebaran level di seluruh sekolah",
+    "quick": {
+      "groups": {
+        "title": "Kelompok fonik",
+        "body": "Kelompokkan siswa berdasarkan level untuk intervensi."
+      },
+      "pathway": {
+        "title": "Jalur pengajaran",
+        "body": "Buku Bunyi → Buku Blending → Buku Cerita."
+      },
+      "library": {
+        "title": "Perpustakaan",
+        "body": "118 buku + lembar kerja, siap dicetak."
+      },
+      "curriculum": {
+        "title": "Kurikulum",
+        "body": "Selaras dengan kurikulum Inggris, Teluk, Pakistan, AS, dan IB."
+      }
+    },
+    "classrooms": "Kelas",
+    "newClassroom": "Kelas baru",
+    "className": "Nama kelas",
+    "classNamePlaceholder": "mis. Kelas Ceri",
+    "yearGroup": "Angkatan",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "Buat",
+    "emptyTitle": "Belum ada kelas",
+    "emptyBody": "Buat kelas pertama Anda untuk menambahkan siswa dan melakukan penilaian.",
+    "createClassroom": "Buat kelas",
+    "toAssess": "{{count}} perlu dinilai"
+  },
+  "dashboard": {
+    "title": "Kurikulum 8 level",
+    "intro": "Progresi fonik Inggris dengan struktur bergaya Letters and Sounds — delapan level Buku Bunyi, Buku Blending, dan Buku Cerita, dilengkapi lembar kerja yang sesuai, alas bunyi (sound mat), dan kartu Tricky Words (kata sulit).",
+    "levels": "Level",
+    "resourcesPlanned": "Sumber belajar yang direncanakan",
+    "stats": {
+      "storybooks": "Buku Cerita",
+      "storybooksHint": "narasi bergambar",
+      "soundBooks": "Buku Bunyi",
+      "soundBooksHint": "foto asli, 1 per pasangan huruf-bunyi",
+      "blendingBooks": "Buku Blending",
+      "blendingBooksHint": "latihan A6 sebelum buku cerita",
+      "total": "Total buku",
+      "totalHint": "di 8 level"
+    },
+    "nav": {
+      "levels": {
+        "title": "Level",
+        "body": "{{count}} level dengan pasangan huruf-bunyi, kata sulit, dan rencana sumber belajar lengkap."
+      },
+      "library": {
+        "title": "Perpustakaan",
+        "body": "{{count}} buku cerita dikelompokkan menurut struktur baru."
+      },
+      "mapping": {
+        "title": "Pemetaan kurikulum",
+        "body": "Rencana sumber belajar per level, siklus hidup lembar kerja, padanan internasional."
+      }
+    },
+    "devNotice": "<b>Dalam pengembangan.</b> Pratinjau ini hanya untuk admin dan tidak menulis apa pun ke basis data. Situs untuk orang tua di <code>/library</code> dan <code>/assessment</code> masih menjalankan struktur 6 level asli, tanpa perubahan."
+  },
+  "classroom": {
+    "notFound": "Kelas tidak ditemukan",
+    "notFoundBody": "Kelas tidak ditemukan.",
+    "addFailed": "Tidak dapat menambahkan siswa",
+    "added": "{{name}} ditambahkan",
+    "allClassrooms": "Semua kelas",
+    "students": "Siswa",
+    "takeRegister": "Catat kehadiran",
+    "addStudent": "Tambah siswa",
+    "firstName": "Nama depan",
+    "lastName": "Nama belakang",
+    "dob": "Tanggal lahir",
+    "add": "Tambah",
+    "empty": "Belum ada siswa. Tambahkan siswa pertama Anda di atas.",
+    "viewReport": "Lihat laporan",
+    "assess": "Nilai",
+    "reassess": "Nilai ulang",
+    "booksTitle": "Buku untuk kelas ini",
+    "booksBody": "Jelajahi ke-33 buku cerita + lembar kerja di <library>perpustakaan sekolah</library>. Gunakan <groups>Kelompok fonik</groups> untuk menata kelas ini berdasarkan tingkat kemampuan.",
+    "registerTitle": "{{name}} — daftar hadir kelas"
+  },
+  "groups": {
+    "title": "Kelompok fonik",
+    "towards": "menuju",
+    "moveFailed": "Tidak dapat memindahkan siswa",
+    "moved": "Dipindahkan ke {{target}}",
+    "unassigned": "belum ditentukan",
+    "intro": "{{students}} dikelompokkan berdasarkan level saat ini — lintas angkatan, sebagaimana sekolah benar-benar mengajarkan fonik.",
+    "notYetAssessed": "{{count}} belum dinilai.",
+    "hint": "Seret nama ke kelompok lain untuk memindahkannya · klik nama untuk membuka profilnya.",
+    "classLabel": "Kelas:",
+    "allClasses": "Semua kelas",
+    "needsInitial": "Perlu penilaian awal",
+    "needsInitialBody": "Jalankan tes penyaringan untuk menentukan level awal setiap anak.",
+    "registerTitle": "Catat kehadiran kelompok ini",
+    "register": "Kehadiran",
+    "mixedYears": "Angkatan campuran: {{years}}",
+    "dropHere": "Lepas untuk memindahkan ke sini",
+    "emptyLevel": "Belum ada siswa di level ini.",
+    "emptyTitle": "Belum ada siswa",
+    "emptyBody": "Tambahkan siswa ke kelas terlebih dahulu, lalu kelompokkan berdasarkan level di sini.",
+    "goToClassrooms": "Buka kelas",
+    "registerDialogTitle": "{{level}} — kelompok fonik",
+    "chipTitle": "{{name}} — seret untuk memindahkan, klik untuk profil"
+  },
+  "windowsPage": {
+    "title": "Periode Penilaian",
+    "intro": "Sekolah menilai saat masuk dan pada periode setengah semester. Di antara periode tersebut, guru memajukan anak di sepanjang jalur berdasarkan penilaian profesional — anak tidak diuji secara formal setelah setiap buku.",
+    "rolling": "Tampilan bergulir 6 minggu",
+    "recent": "Aktivitas penilaian terbaru",
+    "allClasses": "semua kelas",
+    "assessedLast6": "dinilai (6 minggu terakhir)",
+    "remaining": "{{count}} tersisa",
+    "allAssessed": "Semua sudah dinilai",
+    "indicators": "Indikator pengelompokan ulang",
+    "leadSummary": "Ringkasan koordinator fonik",
+    "summary": "{{total}} anak di {{classes}} kelas. {{assessed}} dinilai dalam 6 minggu terakhir, {{remaining}} belum selesai. {{readyUp}} siap naik level, {{intervention}} ditandai perlu intervensi.",
+    "regroupingView": "Tampilan pengelompokan ulang kelas — anak di setiap level",
+    "openGroups": "Buka kelompok fonik"
+  },
+  "libraryPreview": {
+    "title": "Perpustakaan — 33 buku",
+    "intro": "Buku dan PDF yang sama dengan versi produksi, dikelompokkan ulang menurut struktur 8 level. Label pada setiap kartu menunjukkan sub-level asli (orang tua-6) sebagai rujukan silang.",
+    "free": "gratis",
+    "was": "sebelumnya"
+  },
+  "library": {
+    "downloadFailed": "Unduhan gagal",
+    "openFailed": "Tidak dapat dibuka",
+    "cats": {
+      "soundBooks": "Buku Bunyi",
+      "blendingBooks": "Buku Blending",
+      "storybooks": "Buku Cerita",
+      "interactive": "Buku Interaktif",
+      "soundWorksheets": "Lembar kerja Buku Bunyi",
+      "storyPacks": "Paket lembar kerja Buku Cerita",
+      "soundMats": "Alas bunyi",
+      "trickyCards": "Kartu kata sulit"
+    },
+    "title": "Perpustakaan",
+    "intro": "{{count}}+ sumber belajar yang saling terhubung di 8 level — setiap Buku Bunyi, Buku Blending, Buku Cerita, versi interaktif, lembar kerja, alas bunyi, dan set kata sulit, disusun menurut jenisnya.",
+    "levelLabel": "Level:",
+    "all": "Semua",
+    "focus": "Fokus:",
+    "eg": "mis.",
+    "companion": "Pendamping:",
+    "soundBookWorksheet": "Lembar kerja Buku Bunyi",
+    "playSlides": "Putar slide",
+    "onScreen": "Di layar",
+    "printBooklet": "Cetak buklet",
+    "worksheetSoon": "Lembar kerja segera hadir",
+    "worksheetTitle": "Lembar kerja:",
+    "soundWorksheetDesc": "Membentuk huruf, menyusun kata, dan memilah bunyi. Pendamping untuk <book>{{title}}</book>.",
+    "comingSoon": "Segera hadir",
+    "blendingDesc": "Buklet A6 pengungkap kata. Tidak ada lembar kerja terpisah — latihan blending itulah sumber belajarnya.",
+    "viewBook": "Lihat buku",
+    "a5Booklet": "Buklet A5",
+    "a4Sheets": "Lembar A4",
+    "worksheetPack": "Paket lembar kerja",
+    "interactiveDesc": "Kata yang bisa diketuk, pop-up fonem, audio, ejaan, mengurutkan cerita, pemahaman, dan latihan menulis.",
+    "interactiveDescGrammar": "Kata yang bisa diketuk, pop-up fonem, audio, ejaan, mengurutkan cerita, pemahaman, urutan kata tata bahasa, dan latihan menulis.",
+    "openInteractive": "Buka versi interaktif",
+    "pack": "paket",
+    "packDesc": "Paket A4 5 halaman: berburu bunyi, jiplak dan tulis, baca dan lakukan, kata alien (kata rekaan), cerita dan gambar.",
+    "printWorksheetPack": "Cetak paket lembar kerja",
+    "soundMatTitle": "Alas Bunyi {{level}}",
+    "trickyCardsTitle": "Kartu Kata Sulit {{level}}",
+    "soundMatDesc": "Bagan kumulatif pasangan huruf-bunyi yang menunjukkan bunyi yang diajarkan di level ini dan level sebelumnya.",
+    "trickyCardsDesc": "Kartu kata sulit untuk kata-kata yang diperkenalkan di level ini.",
+    "usedThroughout": "Digunakan sepanjang level."
+  },
+  "read": {
+    "unavailable": "Buku ini belum dapat dibaca.",
+    "backToLibrary": "Kembali ke perpustakaan"
+  },
+  "reports": {
+    "title": "Laporan",
+    "intro": "Gambaran perkembangan seluruh sekolah dalam progresi fonik Inggris.",
+    "tracked": "Murid yang dipantau",
+    "placed": "Ditempatkan melalui penilaian",
+    "atEachLevel": "Anak di setiap level",
+    "glance": "Sekilas program",
+    "glanceBody": "Jalur fonik lengkap {{steps}} langkah yang didukung {{resources}}+ sumber belajar terhubung di 8 level: {{soundBooks}} Buku Bunyi berfoto asli, {{blendingBooks}} Buku Blending, {{storybooks}} Buku Cerita bergambar, {{interactive}} Buku Cerita digital interaktif, {{worksheets}} lembar kerja yang sesuai, {{mats}} alas bunyi, {{tricky}} set kartu kata sulit, dan {{audio}}+ berkas audio fonem.",
+    "viewPathway": "Lihat jalur belajar"
+  },
+  "settings": {
+    "saved": "Pengaturan disimpan",
+    "codeCopied": "Kode bergabung disalin",
+    "regenFailed": "Tidak dapat membuat ulang",
+    "regenDone": "Kode bergabung baru dibuat",
+    "regenDoneBody": "Kode sebelumnya tidak berlaku lagi.",
+    "title": "Pengaturan",
+    "intro": "Detail sekolah, akses staf, dan tahun ajaran Anda.",
+    "joinCode": "Kode bergabung staf",
+    "joinCodeBody": "Bagikan kode ini kepada guru Anda. Mereka mendaftar di <path>/school/signup</path>, memilih “Bergabung dengan kode”, lalu ditambahkan ke {{school}} sebagai guru.",
+    "copy": "Salin",
+    "regenerate": "Buat ulang",
+    "invitesSoon": "Undangan lewat email segera hadir. Untuk saat ini, membagikan kode adalah cara tercepat untuk menambahkan staf.",
+    "staff": "Staf",
+    "you": "Anda",
+    "staffMember": "Anggota staf",
+    "roles": {
+      "admin": "admin",
+      "teacher": "guru"
+    },
+    "details": "Detail sekolah",
+    "schoolName": "Nama sekolah",
+    "country": "Negara",
+    "places": "Kuota murid",
+    "academicYear": "Tahun ajaran",
+    "save": "Simpan pengaturan",
+    "yourAccount": "Akun Anda",
+    "administrator": "Administrator",
+    "role": "Peran: {{role}}"
+  },
+  "assess": {
+    "notFound": "Siswa tidak ditemukan",
+    "notFoundBody": "Siswa tidak ditemukan.",
+    "saveFailed": "Tidak dapat menyimpan penilaian",
+    "updateFailed": "Tidak dapat memperbarui level",
+    "backToClassroom": "Kembali ke kelas",
+    "title": "Nilai {{name}}",
+    "currentLevel": "Level saat ini:",
+    "quickScreener": "Tes penyaringan cepat",
+    "quickScreenerBody": "2 menit. Minta anak membaca 6 kata contoh — kami akan menentukan levelnya dengan tepat.",
+    "manual": "Tetapkan level secara manual",
+    "manualBody": "Sudah tahu posisinya? Pilih level dan tambahkan catatan.",
+    "screener": "Tes penyaringan",
+    "screenerBody": "Minta {{name}} membaca setiap kata. Centang kata yang dibaca dengan benar.",
+    "level": "Level {{n}}",
+    "notes": "Catatan (opsional)",
+    "notesPlaceholder": "Pengamatan apa pun...",
+    "saveRecommend": "Simpan & rekomendasikan level",
+    "manualChoose": "Pilih level yang sesuai dengan kemampuan {{name}} saat ini.",
+    "setTo": "Tetapkan {{name}} ke {{level}}",
+    "saved": "Penilaian disimpan",
+    "nowOn": "{{name}} sekarang berada di <b>{{level}}</b>.",
+    "savedBody": "Kami telah menyimpan hasilnya dan memperbarui catatannya. Anda dapat menilai ulang kapan saja."
+  },
+  "profile": {
+    "stepComplete": "Langkah ditandai selesai",
+    "marked": "Ditandai “{{label}}”",
+    "noteSaved": "Catatan disimpan",
+    "notFound": "Murid tidak ditemukan.",
+    "backToClass": "Kembali ke kelas",
+    "snap": {
+      "placement": "Penempatan saat ini",
+      "block": "Blok saat ini",
+      "step": "Langkah saat ini",
+      "next": "Sumber belajar berikutnya",
+      "lastAssessed": "Terakhir dinilai",
+      "judgement": "Penilaian guru saat ini"
+    },
+    "levelComplete": "Level selesai",
+    "readyNextLevel": "Siap untuk level berikutnya",
+    "windowLabel": "Periode penilaian {{window}}",
+    "notYetAssessed": "Belum dinilai",
+    "suggestedAction": "Tindakan yang disarankan:",
+    "suggested": {
+      "continue": "Lanjutkan blok saat ini",
+      "ready_soon": "Hampir siap — persiapkan untuk blok / periode penilaian berikutnya",
+      "needs_support": "Berikan dukungan terarah sebelum melanjutkan (lihat rencana dukungan)"
+    },
+    "notAssessedBody": "Belum dinilai — lakukan penilaian untuk menempatkan {{name}} di jalur belajar.",
+    "assessNow": "Nilai sekarang",
+    "nextActions": "Tindakan pengajaran berikutnya",
+    "readNext": "Baca berikutnya",
+    "printNext": "Cetak berikutnya",
+    "worksheetPackFor": "Paket lembar kerja {{sub}}",
+    "useDuring": "Gunakan saat membaca",
+    "practise": "Latihan",
+    "openInteractive": "Buka buku interaktif",
+    "printA5": "Cetak buklet A5",
+    "markComplete": "Tandai langkah saat ini selesai",
+    "teacherNoteLabel": "Catatan guru:",
+    "wholePathway": "Kemajuan seluruh jalur",
+    "stepsOf": "{{done}} dari {{total}} langkah",
+    "teacherJudgement": "Penilaian guru",
+    "judgeDesc": {
+      "continue": "Sedang menjalani blok",
+      "ready_soon": "Hampir siap untuk blok / level berikutnya",
+      "needs_support": "Latihan tambahan sebelum melanjutkan"
+    },
+    "teacherNote": "Catatan guru",
+    "notePlaceholder": "mis. Membaca kata sh dengan percaya diri tetapi masih menebak kata th.",
+    "saveNote": "Simpan catatan",
+    "supportPlan": "Rencana dukungan",
+    "recommended": "Sumber belajar yang disarankan",
+    "routine": "Rutinitas yang disarankan",
+    "routineBody": "10 menit setiap hari: ulas kartu bunyi · blending 5 kata · baca 1 halaman · ulangi selama 3 hari · guru menyimak lagi.",
+    "history": "Riwayat periode penilaian",
+    "noAssessments": "Belum ada penilaian yang tercatat.",
+    "table": {
+      "window": "Periode",
+      "level": "Level penempatan",
+      "notes": "Catatan",
+      "resource": "Sumber belajar",
+      "status": "Status",
+      "companion": "Pendamping"
+    },
+    "initialPlacement": "Penempatan awal",
+    "wholeSchoolWindow": "Periode seluruh sekolah",
+    "movement": "Perkembangan:",
+    "completed": "Sumber belajar yang diselesaikan",
+    "tally": {
+      "interactive": "Buku interaktif",
+      "packs": "Paket lembar kerja",
+      "certificates": "Sertifikat diperoleh"
+    },
+    "attendance": "Kehadiran",
+    "noRegister": "Belum ada catatan kehadiran.",
+    "present": "hadir",
+    "attendanceSummary": "{{present}} hadir · {{absent}} tidak hadir · {{total}} sesi",
+    "homeReading": "Membaca di rumah",
+    "homeBook": "Buku rumah saat ini",
+    "format": "Format",
+    "formatValue": "Buklet A5 siap cetak",
+    "linkCopied": "Tautan membaca untuk orang tua disalin",
+    "copyLink": "Salin tautan orang tua",
+    "printHome": "Cetak buklet rumah",
+    "homeNote": "Dibagikan kepada orang tua melalui sekolah agar latihan di rumah selaras dengan pengajaran di kelas.",
+    "companion": {
+      "none": "Tanpa pendamping",
+      "storybook": "Paket lembar kerja + buku interaktif"
+    }
+  },
+  "presenter": {
+    "openFailed": "Tidak dapat membuka buku ini.",
+    "notFound": "Tidak ditemukan ({{status}})",
+    "onScreen": "di layar",
+    "closeEsc": "Tutup (Esc)"
+  }
+}

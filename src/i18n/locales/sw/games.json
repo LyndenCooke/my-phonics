@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "Bure kucheza · bila kujisajili",
+    "title": "Michezo ya fonetiki",
+    "intro": "Chagua kiwango chako, kisha uchague mchezo. Kila mchezo unatumia sauti za kiwango hicho.",
+    "chooseLevel": "Chagua kiwango chako",
+    "levelAria": "Kiwango {{level}} — {{name}}",
+    "levelSounds": "Sauti za Kiwango {{level}}",
+    "more": "+{{n}} zaidi",
+    "gamesAria": "Michezo",
+    "dailyNote": "Mara moja kwa kila mchezo kwa siku — kidogo na mara kwa mara ndivyo usomaji unavyoshika.",
+    "played": "Umechezwa ✓",
+    "vibes": {
+      "collect": "Kusanya",
+      "arcade": "Arcade",
+      "runner": "Mbio",
+      "memory": "Kumbukumbu",
+      "puzzle": "Fumbo",
+      "seekFind": "Tafuta upate",
+      "listening": "Kusikiliza"
+    },
+    "blurbs": {
+      "soundlings": "Angua na ulishe viumbe vyako vya sauti",
+      "pop": "Mrushe nyuki Buzz apasue neno unalolisikia",
+      "cannon": "Lenga na urushe sauti sahihi ndani ya neno",
+      "run": "Soma milango na ukimbie kupitia ule sahihi",
+      "pairs": "Geuza kadi na ulinganishe sauti na maneno",
+      "finish": "Sauti moja haipo — gusa ile sahihi",
+      "spot": "Tafuta katika picha vitu vinavyoficha sauti",
+      "tricky": "Sikiliza na ukamate Tricky Word (neno gumu)"
+    },
+    "doneBlurb": "Umecheza vizuri sana! Rudi kesho ucheze tena.",
+    "backTomorrow": "Rudi kesho",
+    "play": "Cheza",
+    "notSure": "Huna uhakika ni kiwango gani?",
+    "notSureBody": "Fanya jaribio la bure la dakika 3 na tutamweka mtoto wako katika kiwango kinachofaa."
+  },
+  "play": {
+    "closeGame": "Funga mchezo",
+    "hearWord": "Sikiliza neno",
+    "hearWordAgain": "Sikiliza neno tena",
+    "openSoundBook": "Fungua Sound Book",
+    "backToGrove": "Rudi kichakani"
+  },
+  "rotate": {
+    "title": "Geuza simu yako ilale ubavu ili ucheze!",
+    "body": "Mchezo huu ni mkubwa zaidi ukiwa katika mlalo."
+  },
+  "childHome": {
+    "openBook": "Fungua {{title}}",
+    "readsDone": "Usomaji {{done}} kati ya {{total}} umekamilika",
+    "currentBook": "{{title}} — kitabu chako, usomaji {{done}} kati ya {{total}} umekamilika",
+    "doneBook": "{{title}} — kimekamilika",
+    "lockedBook": "{{title}} — kimefungwa, maliza kitabu chako cha sasa kwanza",
+    "startCheck": "Anza Level Check yako (jaribio la kiwango)",
+    "checkLocked": "Level Check (jaribio la kiwango) — maliza vitabu vyako kwanza"
+  }
+}

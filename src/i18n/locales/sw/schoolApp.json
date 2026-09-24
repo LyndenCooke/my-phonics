@@ -1,0 +1,430 @@
+{
+  "backToDashboard": "Rudi kwenye dashibodi",
+  "couldNotSave": "Imeshindikana kuhifadhi",
+  "errors": {
+    "downloadUnavailable": "Upakuaji haupatikani",
+    "unavailable": "Haipatikani"
+  },
+  "counts": {
+    "classroom_one": "darasa {{count}}",
+    "classroom_other": "madarasa {{count}}",
+    "student_one": "mwanafunzi {{count}}",
+    "student_other": "wanafunzi {{count}}",
+    "book_one": "kitabu {{count}}",
+    "book_other": "vitabu {{count}}",
+    "admin_one": "msimamizi {{count}}",
+    "admin_other": "wasimamizi {{count}}",
+    "teacher_one": "mwalimu {{count}}",
+    "teacher_other": "walimu {{count}}"
+  },
+  "block": {
+    "blockOf": "Kitengo {{n}} kati ya {{total}}",
+    "block": "Kitengo {{n}}",
+    "levelReview": "Marudio ya kiwango",
+    "reviewGate": "Marudio · lango la kiwango"
+  },
+  "judgement": {
+    "continue": "Endelea",
+    "ready_soon": "Tayari hivi karibuni",
+    "needs_support": "Anahitaji msaada"
+  },
+  "windows": {
+    "autumn1": "Muhula wa Vuli 1",
+    "autumn2": "Muhula wa Vuli 2",
+    "spring1": "Muhula wa Machipuko 1",
+    "spring2": "Muhula wa Machipuko 2",
+    "summer1": "Muhula wa Kiangazi 1",
+    "summer2": "Muhula wa Kiangazi 2"
+  },
+  "colours": {
+    "pink": "Waridi",
+    "coral": "Rangi ya matumbawe",
+    "amber": "Kaharabu",
+    "green": "Kijani",
+    "blue": "Buluu",
+    "indigo": "Nili",
+    "purple": "Zambarau",
+    "teal": "Kijani-buluu"
+  },
+  "status": {
+    "complete": "Imekamilika",
+    "inProgress": "Inaendelea",
+    "notStarted": "Haijaanza",
+    "next": "Inayofuata",
+    "upcoming": "Ijayo"
+  },
+  "outcomes": {
+    "readyUp": "Tayari kupanda kiwango",
+    "staying": "Anabaki kwenye kiwango",
+    "intervention": "Anahitaji uingiliaji",
+    "stillToAssess": "Bado kutathminiwa"
+  },
+  "home": {
+    "loadFailed": "Imeshindikana kupakia madarasa",
+    "createFailed": "Imeshindikana kuunda darasa",
+    "created": "Darasa limeundwa",
+    "seed": {
+      "confirm": "Weka data ya majaribio?\n\nHii INAFUTA kila darasa na kila mwanafunzi katika shule hii na kuweka seti ya majaribio badala yake. Haiwezi kutenduliwa.\n\nFanya hivi tu kwenye shule ya majaribio.",
+      "failed": "Kuweka data kumeshindikana",
+      "done": "Data ya majaribio imewekwa",
+      "doneBody": "Madarasa {{classrooms}}, wanafunzi {{students}}.",
+      "title": "Andaa shule ya majaribio",
+      "body": "Hujaza shule hii kwa seti halisi yenye mikondo miwili kwa kila mwaka — madarasa 6, takriban wanafunzi 160 waliopangwa kwa kiwango katika miaka mbalimbali. Inachukua nafasi ya madarasa yote yaliyopo.",
+      "button": "Weka data ya majaribio"
+    },
+    "welcome": "Karibu {{school}}",
+    "yourSchool": "shule yako",
+    "firstClassroom": "Tuandae darasa lako la kwanza.",
+    "stats": {
+      "total": "Jumla ya wanafunzi",
+      "assessed": "Wametathminiwa",
+      "notAssessed": "Bado hawajatathminiwa",
+      "levelsActive": "Viwango vinavyotumika"
+    },
+    "actions": {
+      "title": "Hatua zinazohitajika",
+      "unassessed_one": "Mtoto {{count}} bado hajatathminiwa",
+      "unassessed_other": "Watoto {{count}} bado hawajatathminiwa",
+      "stuck_one": "Mtoto {{count}} yuko kwenye kiwango kimoja kwa wiki 4+",
+      "stuck_other": "Watoto {{count}} wako kwenye kiwango kimoja kwa wiki 4+",
+      "stale_one": "Darasa {{count}} halijafanya tathmini mwezi huu",
+      "stale_other": "Madarasa {{count}} hayajafanya tathmini mwezi huu",
+      "assess": "Tathmini",
+      "review": "Kagua",
+      "open": "Fungua"
+    },
+    "distribution": "Mgawanyo wa viwango katika shule nzima",
+    "quick": {
+      "groups": {
+        "title": "Vikundi vya fonetiki",
+        "body": "Panga wanafunzi kwa kiwango kwa ajili ya uingiliaji."
+      },
+      "pathway": {
+        "title": "Njia ya ufundishaji",
+        "body": "Kitabu cha Sauti → Kitabu cha Kuunganisha → Kitabu cha Hadithi."
+      },
+      "library": {
+        "title": "Maktaba",
+        "body": "Vitabu 118 + karatasi za mazoezi, tayari kuchapishwa."
+      },
+      "curriculum": {
+        "title": "Mtaala",
+        "body": "Unaoendana na Uingereza, Ghuba, Pakistani, Marekani na IB."
+      }
+    },
+    "classrooms": "Madarasa",
+    "newClassroom": "Darasa jipya",
+    "className": "Jina la darasa",
+    "classNamePlaceholder": "k.m. Darasa la Cheri",
+    "yearGroup": "Mwaka wa masomo",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "Unda",
+    "emptyTitle": "Bado hakuna madarasa",
+    "emptyBody": "Unda darasa lako la kwanza ili kuongeza wanafunzi na kufanya tathmini.",
+    "createClassroom": "Unda darasa",
+    "toAssess": "{{count}} wa kutathminiwa"
+  },
+  "dashboard": {
+    "title": "Mtaala wa viwango 8",
+    "intro": "Mfuatano wa fonetiki wa Uingereza wenye muundo wa mtindo wa Letters and Sounds — viwango vinane vya Vitabu vya Sauti, Vitabu vya Kuunganisha na Vitabu vya Hadithi, pamoja na karatasi za mazoezi zinazolingana, mikeka ya sauti na kadi za Tricky Words (maneno magumu).",
+    "levels": "Viwango",
+    "resourcesPlanned": "Rasilimali zilizopangwa",
+    "stats": {
+      "storybooks": "Vitabu vya Hadithi",
+      "storybooksHint": "hadithi zenye picha",
+      "soundBooks": "Vitabu vya Sauti",
+      "soundBooksHint": "picha halisi, 1 kwa kila uhusiano wa herufi na sauti",
+      "blendingBooks": "Vitabu vya Kuunganisha",
+      "blendingBooksHint": "mazoezi ya A6 kabla ya vitabu vya hadithi",
+      "total": "Jumla ya vitabu",
+      "totalHint": "katika viwango 8"
+    },
+    "nav": {
+      "levels": {
+        "title": "Viwango",
+        "body": "Viwango {{count}} vyenye uhusiano wa herufi na sauti, maneno magumu na mpango kamili wa rasilimali."
+      },
+      "library": {
+        "title": "Maktaba",
+        "body": "Vitabu vya hadithi {{count}} vilivyopangwa chini ya muundo mpya."
+      },
+      "mapping": {
+        "title": "Ulinganishaji wa mtaala",
+        "body": "Mpango wa rasilimali kwa kila kiwango, mzunguko wa maisha wa karatasi za mazoezi, viwango sawa vya kimataifa."
+      }
+    },
+    "devNotice": "<b>Bado inaendelezwa.</b> Onyesho hili ni kwa wasimamizi tu na haliandiki chochote kwenye hifadhidata. Tovuti ya wazazi katika <code>/library</code> na <code>/assessment</code> bado inatumia muundo wa awali wa viwango 6, bila mabadiliko."
+  },
+  "classroom": {
+    "notFound": "Darasa halikupatikana",
+    "notFoundBody": "Darasa halikupatikana.",
+    "addFailed": "Imeshindikana kuongeza mwanafunzi",
+    "added": "{{name}} ameongezwa",
+    "allClassrooms": "Madarasa yote",
+    "students": "Wanafunzi",
+    "takeRegister": "Chukua mahudhurio",
+    "addStudent": "Ongeza mwanafunzi",
+    "firstName": "Jina la kwanza",
+    "lastName": "Jina la ukoo",
+    "dob": "Tarehe ya kuzaliwa",
+    "add": "Ongeza",
+    "empty": "Bado hakuna wanafunzi. Ongeza wa kwanza hapo juu.",
+    "viewReport": "Tazama ripoti",
+    "assess": "Tathmini",
+    "reassess": "Tathmini upya",
+    "booksTitle": "Vitabu vya darasa hili",
+    "booksBody": "Pitia vitabu vyote 33 vya hadithi + karatasi za mazoezi katika <library>maktaba ya shule</library>. Tumia <groups>Vikundi vya fonetiki</groups> kupanga darasa hili kwa kiwango cha uwezo.",
+    "registerTitle": "{{name}} — mahudhurio ya darasa"
+  },
+  "groups": {
+    "title": "Vikundi vya fonetiki",
+    "towards": "kuelekea",
+    "moveFailed": "Imeshindikana kumhamisha mwanafunzi",
+    "moved": "Amehamishiwa {{target}}",
+    "unassigned": "bila kundi",
+    "intro": "{{students}} wamepangwa kwa kiwango cha sasa — katika miaka mbalimbali, jinsi shule zinavyofundisha fonetiki kwa kweli.",
+    "notYetAssessed": "{{count}} bado hawajatathminiwa.",
+    "hint": "Buruta jina hadi kikundi kingine ili kumhamisha · bofya jina kufungua wasifu wake.",
+    "classLabel": "Darasa:",
+    "allClasses": "Madarasa yote",
+    "needsInitial": "Anahitaji tathmini ya awali",
+    "needsInitialBody": "Endesha jaribio la uchunguzi ili kumpa kila mtoto kiwango cha kuanzia.",
+    "registerTitle": "Chukua mahudhurio ya kikundi hiki",
+    "register": "Mahudhurio",
+    "mixedYears": "Miaka mchanganyiko: {{years}}",
+    "dropHere": "Achia hapa ili kuhamisha",
+    "emptyLevel": "Bado hakuna wanafunzi katika kiwango hiki.",
+    "emptyTitle": "Bado hakuna wanafunzi",
+    "emptyBody": "Ongeza wanafunzi kwenye darasa kwanza, kisha uwapange kwa kiwango hapa.",
+    "goToClassrooms": "Nenda kwenye madarasa",
+    "registerDialogTitle": "{{level}} — kikundi cha fonetiki",
+    "chipTitle": "{{name}} — buruta ili kuhamisha, bofya kwa wasifu"
+  },
+  "windowsPage": {
+    "title": "Vipindi vya Tathmini",
+    "intro": "Shule hutathmini wakati wa kujiunga na katika vipindi vya kila nusu muhula. Kati ya vipindi hivyo, walimu huwasogeza watoto kwenye njia kwa kutumia busara yao ya kitaaluma — watoto hawafanyiwi jaribio rasmi baada ya kila kitabu.",
+    "rolling": "Mwonekano wa wiki 6 zilizopita",
+    "recent": "Shughuli za hivi karibuni za tathmini",
+    "allClasses": "madarasa yote",
+    "assessedLast6": "wametathminiwa (wiki 6 zilizopita)",
+    "remaining": "{{count}} wamebaki",
+    "allAssessed": "Wote wametathminiwa",
+    "indicators": "Viashiria vya kupanga upya",
+    "leadSummary": "Muhtasari wa mratibu wa fonetiki",
+    "summary": "Watoto {{total}} katika madarasa {{classes}}. {{assessed}} wametathminiwa katika wiki 6 zilizopita, {{remaining}} bado hawajakamilisha. {{readyUp}} wako tayari kupanda kiwango, {{intervention}} wamewekewa alama ya kuhitaji uingiliaji.",
+    "regroupingView": "Mwonekano wa kupanga upya darasa — watoto katika kila kiwango",
+    "openGroups": "Fungua vikundi vya fonetiki"
+  },
+  "libraryPreview": {
+    "title": "Maktaba — vitabu 33",
+    "intro": "Vitabu na PDF zilezile za tovuti rasmi, zimepangwa upya chini ya muundo wa viwango 8. Kibandiko kwenye kila kadi kinaonyesha kiwango kidogo cha awali (wazazi-6) kwa ulinganisho.",
+    "free": "bure",
+    "was": "awali"
+  },
+  "library": {
+    "downloadFailed": "Upakuaji umeshindikana",
+    "openFailed": "Imeshindikana kufungua",
+    "cats": {
+      "soundBooks": "Vitabu vya Sauti",
+      "blendingBooks": "Vitabu vya Kuunganisha",
+      "storybooks": "Vitabu vya Hadithi",
+      "interactive": "Vitabu Shirikishi",
+      "soundWorksheets": "Karatasi za mazoezi za Vitabu vya Sauti",
+      "storyPacks": "Vifurushi vya mazoezi vya vitabu vya hadithi",
+      "soundMats": "Mikeka ya sauti",
+      "trickyCards": "Kadi za maneno magumu"
+    },
+    "title": "Maktaba",
+    "intro": "Rasilimali {{count}}+ zilizounganishwa katika viwango 8 — kila Kitabu cha Sauti, Kitabu cha Kuunganisha, Kitabu cha Hadithi, toleo shirikishi, karatasi ya mazoezi, mkeka wa sauti na seti ya maneno magumu, zimepangwa kwa aina.",
+    "levelLabel": "Kiwango:",
+    "all": "Vyote",
+    "focus": "Lengo:",
+    "eg": "k.m.",
+    "companion": "Kiambatanishi:",
+    "soundBookWorksheet": "Karatasi ya mazoezi ya Kitabu cha Sauti",
+    "playSlides": "Cheza slaidi",
+    "onScreen": "Kwenye skrini",
+    "printBooklet": "Chapisha kijitabu",
+    "worksheetSoon": "Karatasi ya mazoezi inakuja",
+    "worksheetTitle": "Karatasi ya mazoezi:",
+    "soundWorksheetDesc": "Kuunda herufi, kujenga maneno na kupanga sauti. Kiambatanishi cha <book>{{title}}</book>.",
+    "comingSoon": "Inakuja hivi karibuni",
+    "blendingDesc": "Kijitabu cha A6 cha kufunua maneno. Hakuna karatasi tofauti ya mazoezi — mazoezi ya kuunganisha sauti ndiyo rasilimali yenyewe.",
+    "viewBook": "Tazama kitabu",
+    "a5Booklet": "Kijitabu A5",
+    "a4Sheets": "Kurasa A4",
+    "worksheetPack": "Kifurushi cha mazoezi",
+    "interactiveDesc": "Maneno ya kugusa, madirisha ya sauti, sauti iliyorekodiwa, tahajia, kupanga hadithi, ufahamu na mazoezi ya kuandika.",
+    "interactiveDescGrammar": "Maneno ya kugusa, madirisha ya sauti, sauti iliyorekodiwa, tahajia, kupanga hadithi, ufahamu, mpangilio wa maneno kisarufi na mazoezi ya kuandika.",
+    "openInteractive": "Fungua toleo shirikishi",
+    "pack": "kifurushi",
+    "packDesc": "Kifurushi cha A4 cha kurasa 5: kuwinda sauti, fuatisha na uandike, soma na ufanye, maneno ya kigeni (ya kubuni), hadithi na mchoro.",
+    "printWorksheetPack": "Chapisha kifurushi cha mazoezi",
+    "soundMatTitle": "Mkeka wa Sauti {{level}}",
+    "trickyCardsTitle": "Kadi za Maneno Magumu {{level}}",
+    "soundMatDesc": "Chati limbikizi ya herufi na sauti inayoonyesha sauti zilizofundishwa katika kiwango hiki na viwango vilivyotangulia.",
+    "trickyCardsDesc": "Kadi za maneno magumu yaliyoanzishwa katika kiwango hiki.",
+    "usedThroughout": "Hutumika katika kiwango chote."
+  },
+  "read": {
+    "unavailable": "Kitabu hiki bado hakipatikani kusomwa.",
+    "backToLibrary": "Rudi kwenye maktaba"
+  },
+  "reports": {
+    "title": "Ripoti",
+    "intro": "Mwonekano wa maendeleo ya shule nzima katika mfuatano wa fonetiki wa Uingereza.",
+    "tracked": "Wanafunzi wanaofuatiliwa",
+    "placed": "Waliopangwa kwa tathmini",
+    "atEachLevel": "Watoto katika kila kiwango",
+    "glance": "Programu kwa muhtasari",
+    "glanceBody": "Njia kamili ya fonetiki ya hatua {{steps}} inayoungwa mkono na rasilimali {{resources}}+ zilizounganishwa katika viwango 8: Vitabu vya Sauti {{soundBooks}} vyenye picha halisi, Vitabu vya Kuunganisha {{blendingBooks}}, Vitabu vya Hadithi {{storybooks}} vyenye michoro, Vitabu vya Hadithi {{interactive}} shirikishi vya kidijitali, karatasi za mazoezi {{worksheets}} zinazolingana, mikeka ya sauti {{mats}}, seti {{tricky}} za kadi za maneno magumu na faili {{audio}}+ za sauti za fonimu.",
+    "viewPathway": "Tazama njia ya kujifunza"
+  },
+  "settings": {
+    "saved": "Mipangilio imehifadhiwa",
+    "codeCopied": "Msimbo wa kujiunga umenakiliwa",
+    "regenFailed": "Imeshindikana kuunda upya",
+    "regenDone": "Msimbo mpya wa kujiunga umeundwa",
+    "regenDoneBody": "Msimbo wa awali haufanyi kazi tena.",
+    "title": "Mipangilio",
+    "intro": "Maelezo ya shule yako, ufikiaji wa wafanyakazi na mwaka wa masomo.",
+    "joinCode": "Msimbo wa kujiunga kwa wafanyakazi",
+    "joinCodeBody": "Shiriki msimbo huu na walimu wako. Wanajisajili katika <path>/school/signup</path>, wanachagua “Jiunge kwa msimbo”, na wanaongezwa kwenye {{school}} kama mwalimu.",
+    "copy": "Nakili",
+    "regenerate": "Unda upya",
+    "invitesSoon": "Mialiko kwa barua pepe inakuja hivi karibuni. Kwa sasa, kushiriki msimbo ndiyo njia ya haraka zaidi ya kuongeza wafanyakazi.",
+    "staff": "Wafanyakazi",
+    "you": "Wewe",
+    "staffMember": "Mfanyakazi",
+    "roles": {
+      "admin": "msimamizi",
+      "teacher": "mwalimu"
+    },
+    "details": "Maelezo ya shule",
+    "schoolName": "Jina la shule",
+    "country": "Nchi",
+    "places": "Nafasi za wanafunzi",
+    "academicYear": "Mwaka wa masomo",
+    "save": "Hifadhi mipangilio",
+    "yourAccount": "Akaunti yako",
+    "administrator": "Msimamizi",
+    "role": "Jukumu: {{role}}"
+  },
+  "assess": {
+    "notFound": "Mwanafunzi hakupatikana",
+    "notFoundBody": "Mwanafunzi hakupatikana.",
+    "saveFailed": "Imeshindikana kuhifadhi tathmini",
+    "updateFailed": "Imeshindikana kusasisha kiwango",
+    "backToClassroom": "Rudi darasani",
+    "title": "Tathmini {{name}}",
+    "currentLevel": "Kiwango cha sasa:",
+    "quickScreener": "Uchunguzi wa haraka",
+    "quickScreenerBody": "Dakika 2. Mwombe mtoto asome maneno 6 ya mfano — tutabainisha kiwango chake kwa usahihi.",
+    "manual": "Weka kiwango mwenyewe",
+    "manualBody": "Tayari unajua yuko wapi? Chagua kiwango na uongeze dokezo.",
+    "screener": "Uchunguzi",
+    "screenerBody": "Mwombe {{name}} asome kila neno. Weka alama kwa yale aliyosoma kwa usahihi.",
+    "level": "Kiwango {{n}}",
+    "notes": "Madokezo (si lazima)",
+    "notesPlaceholder": "Maoni yoyote...",
+    "saveRecommend": "Hifadhi na pendekeza kiwango",
+    "manualChoose": "Chagua kiwango kinacholingana na uwezo wa sasa wa {{name}}.",
+    "setTo": "Mweke {{name}} kwenye {{level}}",
+    "saved": "Tathmini imehifadhiwa",
+    "nowOn": "{{name}} sasa yuko kwenye <b>{{level}}</b>.",
+    "savedBody": "Tumehifadhi matokeo na kusasisha rekodi yake. Unaweza kutathmini upya wakati wowote."
+  },
+  "profile": {
+    "stepComplete": "Hatua imewekwa alama kuwa imekamilika",
+    "marked": "Imewekwa alama “{{label}}”",
+    "noteSaved": "Dokezo limehifadhiwa",
+    "notFound": "Mwanafunzi hakupatikana.",
+    "backToClass": "Rudi darasani",
+    "snap": {
+      "placement": "Kiwango cha sasa",
+      "block": "Kitengo cha sasa",
+      "step": "Hatua ya sasa",
+      "next": "Rasilimali inayofuata",
+      "lastAssessed": "Tathmini ya mwisho",
+      "judgement": "Maoni ya sasa ya mwalimu"
+    },
+    "levelComplete": "Kiwango kimekamilika",
+    "readyNextLevel": "Tayari kwa kiwango kinachofuata",
+    "windowLabel": "Kipindi cha tathmini cha {{window}}",
+    "notYetAssessed": "Bado hajatathminiwa",
+    "suggestedAction": "Hatua inayopendekezwa:",
+    "suggested": {
+      "continue": "Endelea na kitengo cha sasa",
+      "ready_soon": "Karibu tayari — jiandae kwa kitengo kinachofuata / kipindi cha tathmini",
+      "needs_support": "Toa msaada unaolenga kabla ya kuendelea (tazama mpango wa msaada)"
+    },
+    "notAssessedBody": "Bado hajatathminiwa — fanya tathmini ili kumweka {{name}} kwenye njia.",
+    "assessNow": "Tathmini sasa",
+    "nextActions": "Hatua zinazofuata za ufundishaji",
+    "readNext": "Soma kinachofuata",
+    "printNext": "Chapisha kinachofuata",
+    "worksheetPackFor": "Kifurushi cha mazoezi cha {{sub}}",
+    "useDuring": "Tumia wakati wa kusoma",
+    "practise": "Fanya mazoezi",
+    "openInteractive": "Fungua kitabu shirikishi",
+    "printA5": "Chapisha kijitabu A5",
+    "markComplete": "Weka alama hatua ya sasa kuwa imekamilika",
+    "teacherNoteLabel": "Dokezo la mwalimu:",
+    "wholePathway": "Maendeleo ya njia nzima",
+    "stepsOf": "Hatua {{done}} kati ya {{total}}",
+    "teacherJudgement": "Maoni ya mwalimu",
+    "judgeDesc": {
+      "continue": "Anaendelea ndani ya kitengo",
+      "ready_soon": "Karibu tayari kwa kitengo / kiwango kinachofuata",
+      "needs_support": "Mazoezi ya ziada kabla ya kuendelea"
+    },
+    "teacherNote": "Dokezo la mwalimu",
+    "notePlaceholder": "k.m. Anasoma maneno ya sh kwa kujiamini lakini bado anabahatisha maneno ya th.",
+    "saveNote": "Hifadhi dokezo",
+    "supportPlan": "Mpango wa msaada",
+    "recommended": "Rasilimali zinazopendekezwa",
+    "routine": "Utaratibu unaopendekezwa",
+    "routineBody": "Dakika 10 kila siku: pitia kadi za sauti · unganisha maneno 5 · soma ukurasa 1 · rudia kwa siku 3 · mwalimu asikilize tena.",
+    "history": "Historia ya vipindi vya tathmini",
+    "noAssessments": "Bado hakuna tathmini zilizorekodiwa.",
+    "table": {
+      "window": "Kipindi",
+      "level": "Kiwango alichowekwa",
+      "notes": "Madokezo",
+      "resource": "Rasilimali",
+      "status": "Hali",
+      "companion": "Kiambatanishi"
+    },
+    "initialPlacement": "Upangaji wa awali",
+    "wholeSchoolWindow": "Kipindi cha shule nzima",
+    "movement": "Mabadiliko:",
+    "completed": "Rasilimali zilizokamilishwa",
+    "tally": {
+      "interactive": "Vitabu shirikishi",
+      "packs": "Vifurushi vya mazoezi",
+      "certificates": "Vyeti vilivyopatikana"
+    },
+    "attendance": "Mahudhurio",
+    "noRegister": "Bado mahudhurio hayajachukuliwa.",
+    "present": "alihudhuria",
+    "attendanceSummary": "Alihudhuria {{present}} · hakuhudhuria {{absent}} · vipindi {{total}}",
+    "homeReading": "Kusoma nyumbani",
+    "homeBook": "Kitabu cha sasa cha nyumbani",
+    "format": "Muundo",
+    "formatValue": "Kijitabu A5 cha kuchapisha",
+    "linkCopied": "Kiungo cha kusoma cha mzazi kimenakiliwa",
+    "copyLink": "Nakili kiungo cha mzazi",
+    "printHome": "Chapisha kijitabu cha nyumbani",
+    "homeNote": "Hushirikiwa na wazazi kupitia shule ili mazoezi ya nyumbani yaendane na ufundishaji wa darasani.",
+    "companion": {
+      "none": "Hakuna kiambatanishi",
+      "storybook": "Kifurushi cha mazoezi + kitabu shirikishi"
+    }
+  },
+  "presenter": {
+    "openFailed": "Imeshindikana kufungua kitabu hiki.",
+    "notFound": "Haikupatikana ({{status}})",
+    "onScreen": "kwenye skrini",
+    "closeEsc": "Funga (Esc)"
+  }
+}

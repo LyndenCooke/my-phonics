@@ -15,6 +15,7 @@
  *  - Relax  — 5 words, collect a star per first-try answer
  *  - Speedy — 30 seconds, how many can you finish?
  */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
@@ -37,6 +38,7 @@ const SPEEDY_SECONDS = 30;
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function FinishWordGame({ level, onClose }: Props) {
+  const { t } = useTranslation('games');
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -132,7 +134,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
   const wordSizeClass = round && round.word.length > 8 ? 'text-4xl lg:text-6xl' : 'text-6xl lg:text-7xl';
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/finish_workshop.webp" />
       {/* soft level wash */}
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
@@ -148,7 +150,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
           </span>
           <button
             onClick={onClose}
-            aria-label="Close game"
+            aria-label={t('play.closeGame')}
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
             style={{ boxShadow: STICKER }}
           >
@@ -266,7 +268,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
                   </span>
                   <button
                     onClick={() => speakWord(round.word)}
-                    aria-label="Hear the word"
+                    aria-label={t('play.hearWord')}
                     className="w-14 h-14 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                     style={{ boxShadow: STICKER, color: ink }}
                   >

@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "homeAria": "MyPhonicsBooks home",
+    "skipToMain": "Skip to main content"
+  },
+  "nav": {
+    "readOnline": "Read online",
+    "freeCheck": "Free check",
+    "checkLevelFree": "Check their level free"
+  },
+  "common": {
+    "close": "Close",
+    "preorderSave": "Pre-order · Save {{pct}}%",
+    "seeDetails": "See details",
+    "peekInside": "Peek inside",
+    "takeAPeekInside": "Take a peek inside",
+    "viewProduct": "View {{name}}",
+    "levelBadge": "Level {{level}} · {{name}}",
+    "levelChip": "L{{level}} {{name}}",
+    "findLevelFree": "Find their level free"
+  },
+  "interest": {
+    "dialogLabel": "Pre-order {{name}}",
+    "doneTitle": "Your discount is reserved",
+    "doneBody": "We will email you the moment {{name}} is ready to order, with {{pct}}% off held just for you.",
+    "done": "Done",
+    "body": "The printed range is going to press. Reserve your copy now and we will hold {{pct}}% off this price for you until it is ready to order — no payment today.",
+    "preorderPrice": "pre-order price",
+    "emailPlaceholder": "Your email address",
+    "consent": "Email me when this launches, plus free phonics resources. Unsubscribe any time.",
+    "submit": "Reserve my {{pct}}% discount",
+    "noPayment": "No payment now. See our <link>privacy policy</link>.",
+    "error": "Something went wrong. Please try again."
+  },
+  "detail": {
+    "returns": "30-day no-quibble returns · UK delivery",
+    "inTheBox": "What is in the box",
+    "details": "Details",
+    "goesWellWith": "Goes well with"
+  },
+  "hero": {
+    "pill": "Pre-order now · Save {{pct}}% · No payment today",
+    "title": "Real books, in real hands.",
+    "titleAccent": "The printed range is coming.",
+    "body": "The decodable books your child reads on screen, printed to keep: storybook sets, wipe-clean workbooks and card decks, matched to their exact reading level. Written by a serving UK primary teacher with QTS. Pre-order today and we will hold {{pct}}% off for you until it is ready to ship — no payment now.",
+    "seeBundles": "See the bundles",
+    "notSure": "Not sure where to start? Take the free 3-minute assessment and we will tell you exactly which level your child needs.",
+    "spotlightSticker": "The one most families choose",
+    "anchorLibrary": "Full 33-book library £129",
+    "anchorFamily": "Whole-scheme family bundle £349"
+  },
+  "trust": {
+    "decodable": "Every word in every book is decodable at your child’s level or a taught tricky word. No guessing, no frustration.",
+    "teacher": "Written by a serving UK primary teacher with QTS and matched to Letters and Sounds.",
+    "returns": "30-day no-quibble returns."
+  },
+  "bundles": {
+    "eyebrow": "The hero offer",
+    "title": "Level Starter Bundles",
+    "intro": "One box with everything your child needs for their level: every storybook, the wipe-clean workbook with pen and the word card deck. Cheaper together than apart."
+  },
+  "readers": {
+    "eyebrow": "The storybooks",
+    "title": "Printed readers",
+    "intro": "A5 storybooks with matt-laminated covers, made to be read again and kept. Buy a single title, a level set or the whole library.",
+    "libraryEyebrow": "All 33 storybooks",
+    "singlesTitle": "Single storybooks",
+    "singlesIntro": "Levels 1 to 3 are £5.99 a book; Levels 4 to 8 are £6.99. Pick the level, pick the story."
+  },
+  "workbooks": {
+    "eyebrow": "Buy once, practise forever",
+    "title": "Wipe-clean workbooks",
+    "intro": "Every page is gloss-laminated. Your child writes with the included wet-erase pen, you wipe it clean with a damp cloth, and they practise again.",
+    "f1Title": "Lasts the whole level",
+    "f1Text": "An ordinary workbook is finished in a fortnight. This one lasts the whole level and every sibling after: handwriting, spelling tests, dictation and sentence work, matched page for page to the books.",
+    "f2Title": "Wiro binding lies flat",
+    "f2Text": "The book opens completely flat, so small hands can write on every line of every page. No fighting the spine.",
+    "f3Title": "Wet-erase, not dry-wipe",
+    "f3Text": "Wet-erase ink stays put under a child’s hand while they write and only comes off with a damp cloth. No smudged letters mid-word.",
+    "warning": "Wet-erase or dry-wipe pens only. A permanent marker will ruin the surface.",
+    "penEyebrow": "The recurring one"
+  },
+  "cards": {
+    "eyebrow": "Two minutes a day",
+    "title": "Card decks",
+    "intro": "Premium A7 cards, matt-laminated to survive years of small hands. The sound deck covers the whole programme; the word decks match each level.",
+    "soundEyebrow": "150 cards, every sound",
+    "wordTitle": "Word card decks, one per level",
+    "wordIntro": "Eight cards per sound: the sound card plus seven practice words. Plain on the front, marked on the back so you can see how to help."
+  },
+  "family": {
+    "eyebrow": "One purchase, every child",
+    "title": "The family full-scheme bundle",
+    "intro": "Everything on this page in one delivery, Reception to Year 2 and beyond. Because the workbooks wipe clean, the whole scheme passes down to the next sibling."
+  },
+  "closing": {
+    "title": "Not sure which level to buy?",
+    "body": "Take the free 3-minute assessment and we will tell you exactly which level your child needs. Then one bundle covers everything.",
+    "readOnline": "Read the books online"
+  },
+  "footer": {
+    "wallOfLove": "Wall of Love",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "madeInUk": "Made with care in the UK"
+  },
+  "preview": {
+    "bookLockTitle": "That is a taste of the story.",
+    "cardsLockTitle": "The rest is in the full deck.",
+    "bookLockBody": "Read the whole book free on any screen, or register interest in the printed set.",
+    "cardsLockBody": "Every sound and word is in the printed deck. Register your interest below.",
+    "readFree": "Read it free online",
+    "registerInterest": "Register interest",
+    "pageAlt": "Page {{n}}",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageCounter": "{{n}} / {{total}} · sample",
+    "cardFrontAlt": "Card {{n}} front",
+    "cardBackAlt": "Card {{n}} back",
+    "front": "Front",
+    "backMarked": "Back · sounds marked",
+    "nextCard": "Next card",
+    "flipIt": "Flip it over",
+    "cardCounter": "Card {{n}} of {{total}} · sample"
+  },
+  "catalogue": {
+    "soundsAll": "all Level {{level}} sounds",
+    "suffixesAll": "all Level {{level}} suffixes",
+    "spec": {
+      "size": "Size",
+      "pages": "Pages",
+      "cover": "Cover",
+      "inside": "Inside",
+      "binding": "Binding",
+      "books": "Books",
+      "workbook": "Workbook",
+      "workbooks": "Workbooks",
+      "cards": "Cards",
+      "finish": "Finish",
+      "box": "Box",
+      "tip": "Tip",
+      "ink": "Ink",
+      "pen": "Pen",
+      "care": "Care"
+    },
+    "specValue": {
+      "matt250": "Matt-laminated, 250gsm",
+      "matt": "Matt-laminated",
+      "silk": "150gsm silk, full colour",
+      "saddle": "Saddle-stitched",
+      "a5Boxed": "A5, boxed",
+      "wiroFlat": "Wiro, lies flat",
+      "glossBoth": "Gloss-laminated both sides",
+      "penIncluded": "Wet-erase, fine tip, included",
+      "care": "Wipe with a damp cloth",
+      "a7": "A7 (74 x 105mm)",
+      "mattBoth": "Matt-laminated, printed both sides",
+      "tuckIncluded": "Tuck box included",
+      "readersA5": "{{n}} x A5 readers",
+      "workbookBundle": "A4 wiro, gloss-laminated, pen included",
+      "cardsBoxed": "{{cards}} x A7, boxed",
+      "readersBoxed": "33 x A5 readers, boxed",
+      "workbooks8": "8 x A4 wiro, gloss-laminated",
+      "cardsAll": "734 across 9 decks",
+      "tipFine": "Fine, for letter formation",
+      "inkWet": "Wet-erase: wipes off with a damp cloth"
+    },
+    "reader": {
+      "blurb": "A Level {{level}} storybook practising {{sounds}}. Every word is decodable at this level or a taught tricky word.",
+      "d1": "{{title}} is a real story, not a reading drill. It practises {{sounds}} inside a narrative your child will want to finish, with page-turn moments and an emotional journey.",
+      "d2": "Because every word is decodable at this level or a taught tricky word, your child reads the whole book themselves. No guessing and no frustration; just the quiet pride of finishing a real book.",
+      "d3": "Printed as a keepsake: silk paper inside, a matt-laminated cover that shrugs off small hands, and a size that fits a book bag.",
+      "c1": "1 storybook: {{title}}",
+      "c2": "Focus sounds: {{sounds}}",
+      "c3": "Activity and writing pages at the back",
+      "c4": "Reading Star certificate"
+    },
+    "readerSet": {
+      "valueNote": "that is {{price}} a book",
+      "blurb": "All {{n}} Level {{level}} storybooks in reading order. Everything your child reads at {{levelName}}, in one set.",
+      "d1": "The complete set of Level {{level}} storybooks, in the order your child should read them. Each book introduces its sounds through a real story, and the set carries your child from the start of {{levelName}} to ready-for-the-next-level.",
+      "d2": "Every word in every book is decodable at this level or a taught tricky word, so your child reads to you rather than the other way round.",
+      "book": "Book {{n}}: {{title}}"
+    },
+    "library": {
+      "valueNote": "that is about £3.90 a book",
+      "blurb": "All 33 storybooks, Level 1 to Level 8, in a keepsake box. The whole journey from first sounds to fluent reading.",
+      "d1": "Every storybook in the programme, boxed in reading order. Your child starts at {{first}} with six sounds and finishes reading {{last}} on their own.",
+      "d2": "Thirty-three books sounds like a lot until you watch a child work through them. Two or three books a level, each one within reach, each one a little further than the last. The box on the shelf becomes the record of how far they have come.",
+      "d3": "Bought one at a time these books cost over £215. Boxed, the whole library is £129: about £3.90 a book.",
+      "c1": "All 33 storybooks across Levels 1 to 8",
+      "c2": "Boxed in reading order",
+      "c3": "Level 1: 2 books · Level 2: 5 · Level 3: 3 · Level 4: 6",
+      "c4": "Level 5: 5 books · Level 6: 4 · Level 7: 4 · Level 8: 4",
+      "badge": "The whole journey"
+    },
+    "workbook": {
+      "blurb": "Every page is gloss-laminated. Your child writes with the included wet-erase pen, you wipe it clean with a damp cloth, and they practise again.",
+      "d1": "An A4 wiro-bound workbook where every page is gloss-laminated. Your child writes on it with the included wet-erase pen, you wipe it clean with a damp cloth, and they practise again. Handwriting, spelling tests, dictation and sentence work for the whole of Level {{level}}, matched page for page to the books.",
+      "d2": "Buy once, practise forever. An ordinary workbook is finished in a fortnight; this one lasts the whole level and every sibling after.",
+      "d3": "The wiro binding matters: it lies completely flat, so small hands can write on every line of every page.",
+      "d4": "The pen matters too. Wet-erase ink stays put under a child’s hand while they write and only comes off with a damp cloth, so no smudged letters mid-word.",
+      "d5": "One warning, stated plainly: wet-erase or dry-wipe pens only. A permanent marker will ruin the surface.",
+      "c1": "1 reusable wipe-clean workbook",
+      "c2": "1 fine-tip wet-erase pen",
+      "c3": "Handwriting, spelling, dictation and sentence work for Level {{level}}: {{levelName}}"
+    },
+    "soundDeck": {
+      "blurb": "Every sound in the programme on 150 premium A7 cards, including the seven-card ough wildcard insert.",
+      "d1": "One card per sound, for every sound your child meets from Level 1 to Level 8. Hold a card up, your child says the sound; that daily minute of practice is the engine of early reading.",
+      "d2": "The deck grows with your child. Start with the single letters, add the two-letter sounds when they reach Level 3, and keep going to the suffixes at Level 8. The ough insert is the party trick: one spelling, seven sounds, and children love collecting them.",
+      "d3": "Premium A7 cards, printed both sides and matt-laminated to survive years of small hands.",
+      "c1": "143 sound cards covering Levels 1 to 8",
+      "c2": "7-card ough wildcard insert",
+      "c3": "Tuck box"
+    },
+    "wordDeck": {
+      "blurb": "{{n}} cards for Level {{level}}: each sound with its practice words, plain on the front and marked on the back.",
+      "d1": "Eight cards per sound: one sound card and seven practice words your child can read at Level {{level}}. The front shows the word exactly as it appears in a book; turn it over and the back shows the same word with its sounds marked, so you can see at a glance how to help.",
+      "d2": "Use them for two-minute games: read the word, find the sound, beat yesterday’s pile. Short and often beats long and rarely.",
+      "c1": "{{n}} cards: sound cards plus practice words",
+      "c2": "Plain fronts, marked backs",
+      "c3": "Tuck box"
+    },
+    "bundle": {
+      "valueNote": "saves {{amount}} against buying separately",
+      "blurb": "Everything your child needs for Level {{level}}: all {{n}} storybooks, the wipe-clean workbook with pen and the word card deck.",
+      "d1": "One box, one level, everything in it. The complete {{levelName}} reader set, the reusable wipe-clean workbook with its wet-erase pen, and the Level {{level}} word card deck.",
+      "d2": "The three pieces work together: the cards for quick daily practice, the books for real reading, the workbook for writing it all down (and wiping it off, and doing it again).",
+      "d3": "If you know your child’s level, this is the one to buy.",
+      "c1": "All {{n}} Level {{level}} storybooks",
+      "c2": "Wipe-clean workbook with wet-erase pen",
+      "c3": "Word card deck ({{cards}} cards)",
+      "badge": "Best start"
+    },
+    "family": {
+      "blurb": "The whole programme in one delivery: the boxed library, all 8 wipe-clean workbooks with pens, the complete sound card deck and every word card deck.",
+      "d1": "Everything, once, for every child in the house. The full 33-book library, a wipe-clean workbook and pen for each of the 8 levels, the complete sound card deck and all 8 word card decks.",
+      "d2": "Because the workbooks wipe clean and the books are made to last, the whole scheme passes straight down to the next sibling. One purchase, Reception to Year 2 and beyond, child after child.",
+      "c1": "Full reader library, boxed (33 books)",
+      "c2": "8 wipe-clean workbooks, each with a wet-erase pen",
+      "c3": "Complete sound card deck (150 cards)",
+      "c4": "All 8 word card decks (584 cards)",
+      "badge": "Everything"
+    },
+    "pens": {
+      "blurb": "Three fine-tip wet-erase pens for the wipe-clean workbooks. Pens wander; the workbook should not have to wait.",
+      "d1": "Three fine-tip wet-erase pens, the same type that comes with every wipe-clean workbook. The ink stays put while your child writes and wipes off with a damp cloth.",
+      "d2": "A reminder that saves workbooks: wet-erase or dry-wipe pens only. A permanent marker will ruin the laminated surface.",
+      "c1": "3 fine-tip wet-erase pens"
+    },
+    "preview": {
+      "cards": "Take a peek at the cards",
+      "book": "Take a peek inside",
+      "sampleBook": "Take a peek inside a sample book"
+    }
+  }
+}

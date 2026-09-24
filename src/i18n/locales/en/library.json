@@ -1,0 +1,156 @@
+{
+  "page": {
+    "title": "Library",
+    "subtitleBooks": "{{count}} little books, eight levels — tap one to start reading",
+    "subtitleBooksNoCount": "Little books, eight levels — tap one to start reading",
+    "subtitleWorksheets": "Free printable sound mats and worksheets"
+  },
+  "tabs": {
+    "books": "Books",
+    "worksheets": "Worksheets"
+  },
+  "guest": {
+    "title": "Every book is free to read",
+    "body": "Tap any book to start. Want the printable PDF? Create a free account to download.",
+    "signUp": "Sign up free →",
+    "findLevel": "Find your child's level →"
+  },
+  "newUser": {
+    "title": "Not sure where to start?",
+    "body": "Take our 3-minute check to find the right level — then read or download any book.",
+    "cta": "Start Assessment →"
+  },
+  "shelf": {
+    "ariaLabel": "Level {{level}} — {{name}}",
+    "level": "Level {{level}}",
+    "readProgress": "{{read}} of {{total}} read"
+  },
+  "empty": {
+    "title": "No books found for this level yet",
+    "body": "Check back soon for new releases"
+  },
+  "unlockedModal": {
+    "cta": "Start Reading"
+  },
+  "quiz": {
+    "perfect": "Perfect score! {{score}}/{{total}} - You're a reading star!",
+    "complete": "Quiz complete! You scored {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "soon",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "hours_one": "{{count}} hour",
+    "hours_other": "{{count}} hours"
+  },
+  "downloadErrors": {
+    "signIn": "Please sign in to download.",
+    "unavailable": "PDF file unavailable",
+    "failed": "Download failed"
+  },
+  "notification": {
+    "title": "{{title}} downloaded",
+    "body": "{{format}} saved — tap to re-download",
+    "cta": "View"
+  },
+  "levelFilter": {
+    "all": "All books"
+  },
+  "levels": {
+    "1": {
+      "focus": "First sounds and simple 3-letter words"
+    },
+    "2": {
+      "focus": "The rest of the alphabet, plus ck, ff, ll, ss"
+    },
+    "3": {
+      "focus": "Two letters, one sound — sh, ch, th, ng…"
+    },
+    "4": {
+      "focus": "Vowel teams like ay, ee, igh, oo and ar"
+    },
+    "5": {
+      "focus": "Split digraphs (a-e, i-e) and new spellings"
+    },
+    "6": {
+      "focus": "Alternative spellings — wr, kn, ph, dge…"
+    },
+    "7": {
+      "focus": "Trigraphs (ire, ore, ear) and -tion endings"
+    },
+    "8": {
+      "focus": "Suffixes and word-building — -ous, -able, -ible"
+    }
+  },
+  "agesRange": "Ages {{range}}",
+  "card": {
+    "doneAria": "{{title}} — done",
+    "lockedAria": "{{title}} — locked",
+    "download": "Download PDF",
+    "downloadAria": "Download {{title}} PDF"
+  },
+  "download": {
+    "title": "Download <book>{{title}}</book>",
+    "description": "Pick the format that suits how you'll use it.",
+    "formats": {
+      "a4": {
+        "label": "A5 Booklet",
+        "description": "Print on A4 double-sided, fold + staple to make a proper A5 booklet. Last + first page sit on the same sheet."
+      },
+      "a5": {
+        "label": "A4 Sheets",
+        "description": "Each page on its own sheet. Good for large-format reading or classroom use."
+      }
+    },
+    "preparing": "Preparing {{format}}…",
+    "preparingPdf": "Preparing PDF…",
+    "successTitle": "Saved to your downloads",
+    "successBody": "<book>{{title}}</book> ({{format}}) is in your Download History — open it from there any time.",
+    "goToHistory": "Go to Download History",
+    "errorTitle": "Download didn't go through",
+    "failed": "Download failed"
+  },
+  "worksheets": {
+    "intro": "Free printable phonics resources for parents and teachers. Sound mats, posters, and worksheets — all aligned with the UK Letters and Sounds curriculum.",
+    "categoriesAria": "Resource categories",
+    "categorySoundMats": "Sound mats",
+    "categoryLevel": "L{{level}} worksheets",
+    "levelHeading": "Level {{level}} worksheets",
+    "levelSub": "{{name}} — {{ages}} · click a book to see its worksheet pack",
+    "comingSoon": "Coming soon",
+    "levelComingSoon": "Printable handwriting, decoding and tricky-word worksheets for Level {{level}}. Bookmark this page — new sheets land here regularly.",
+    "focusSounds": "Focus sounds:",
+    "sheetCount_one": "{{count}} sheet",
+    "sheetCount_other": "{{count}} sheets",
+    "bookComingSoon": "Printable worksheets for this book are coming soon — handwriting drills, alien-word reading, tricky words and single-sound sheets for {{sounds}}.",
+    "downloadAllCount_one": "Download all {{count}} sheet",
+    "downloadAllCount_other": "Download all {{count}} sheets",
+    "packHint": "Download the whole pack as one PDF, or grab single sheets to print as needed.",
+    "downloadError": "That worksheet couldn't be downloaded. Please try again.",
+    "preview": "{{title}} preview",
+    "levelPackTitle": "Level {{level}} single-sound sheets",
+    "groups": {
+      "book": "Book worksheets",
+      "singleSound": "Single-sound sheets — {{sounds}}",
+      "singleSoundRest": "Single-sound sheets — the rest of the alphabet",
+      "singleSoundSpecial": "Single-sound sheets — special friends"
+    },
+    "soundSheet": "Sound {{sound}}"
+  },
+  "soundMats": {
+    "title": "Sound mats",
+    "subtitle": "Printable sound mats for home and classroom — A3 landscape PNGs",
+    "level": "Level {{level}}",
+    "levels23": "Levels 2 & 3",
+    "levels46": "Levels 4–6",
+    "sounds_one": "{{count}} sound",
+    "sounds_other": "{{count}} sounds",
+    "combinedChart_one": "{{count}} sound — combined teacher chart",
+    "combinedChart_other": "{{count}} sounds — combined teacher chart",
+    "combined": "Combined",
+    "alt": "{{title}} sound mat"
+  },
+  "resources": {
+    "title": "Resources"
+  }
+}

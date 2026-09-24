@@ -13,6 +13,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { usePurchases } from '@/hooks/useBooks';
 import { Heart, Loader2, Check, BookOpen, Gamepad2, Download, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation, Trans } from 'react-i18next';
+import { SUPPORT_ERROR_KEYS, SUPPORT_NOTE_KEYS } from '@/components/supportText';
 import {
   SUPPORT_AMOUNTS,
   formatSupportAmount,
@@ -23,13 +25,15 @@ import {
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 const FREE_ITEMS = [
-  { icon: BookOpen, text: 'All 33 storybooks, eight levels — read online, no account needed' },
-  { icon: Gamepad2, text: 'Every phonics game, free to play' },
-  { icon: Download, text: 'Printable PDFs of every book and worksheet — free with a free account' },
-  { icon: Sparkles, text: 'The 3-minute phonics check and progress tracking' },
-];
+  { icon: BookOpen, key: 'books' },
+  { icon: Gamepad2, key: 'games' },
+  { icon: Download, key: 'pdfs' },
+  { icon: Sparkles, key: 'check' },
+] as const;
+
 
 export default function Support() {
+  const { t } = useTranslation('support');
   const { user } = useAuth();
   const { data: purchases } = usePurchases();
   const navigate = useNavigate();
@@ -52,14 +56,15 @@ export default function Support() {
       return;
     }
     if (!amount) {
-      toast.error('Enter an amount between £1 and £500.');
+      toast.error(t('errors.amountRange'));
       return;
     }
     setBusy(true);
     try {
       await startSupportCheckout(amount);
     } catch (err) {
-      toast.error((err as Error).message);
+      const msg = (err as Error).message;
+      toast.error(SUPPORT_ERROR_KEYS[msg] ? t(SUPPORT_ERROR_KEYS[msg]) : msg);
       setBusy(false);
     }
   };
@@ -72,41 +77,39 @@ export default function Support() {
             className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold rotate-1 text-primary-ink"
             style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
           >
-            Free for every family
+            {t('page.sticker')}
           </span>
           <h1 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight leading-tight mt-4">
-            Everything is free. Support is optional.
+            {t('page.heading')}
           </h1>
           <p className="text-sm lg:text-base text-muted-foreground mt-2 leading-relaxed">
-            MyPhonicsBooks is built by one small team. If it helps your child read,
-            a thank-you of any size keeps it free for the next family.
+            {t('page.intro')}
           </p>
         </div>
 
         <div className="lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start space-y-5 lg:space-y-0">
           {/* What you get — all of it, free */}
           <div className="rounded-[2rem] bg-white p-6" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
-            <p className="text-[11px] uppercase tracking-wide font-bold text-muted-foreground mb-3">Always free</p>
+            <p className="text-[11px] uppercase tracking-wide font-bold text-muted-foreground mb-3">{t('page.alwaysFree')}</p>
             <ul className="space-y-3">
-              {FREE_ITEMS.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-start gap-3 text-sm text-foreground">
+              {FREE_ITEMS.map(({ icon: Icon, key }) => (
+                <li key={key} className="flex items-start gap-3 text-sm text-foreground">
                   <span className="w-7 h-7 rounded-lg bg-tint-pink flex items-center justify-center shrink-0">
                     <Icon className="w-3.5 h-3.5 text-primary" />
                   </span>
-                  <span className="leading-snug">{text}</span>
+                  <span className="leading-snug">{t(`page.free.${key}`)}</span>
                 </li>
               ))}
             </ul>
             <p className="text-xs text-muted-foreground mt-5 leading-relaxed">
-              Downloads need a free account so we can keep the printable PDFs for
-              families and classrooms — they're not for resale.
+              {t('page.downloadsNote')}
             </p>
             {!user && (
               <button
                 onClick={() => navigate(`/auth?redirect=${encodeURIComponent('/library')}`)}
                 className="mt-4 w-full h-11 rounded-2xl font-display font-extrabold text-sm text-primary-ink bg-tint-pink hover:bg-tint-pink/70 transition-colors"
               >
-                Create a free account
+                {t('page.createAccount')}
               </button>
             )}
           </div>
@@ -118,14 +121,14 @@ export default function Support() {
                 <Heart className="w-5 h-5 text-primary fill-current" />
               </div>
               <div>
-                <h2 className="font-display font-extrabold text-lg text-foreground leading-tight">Support MyPhonicsBooks</h2>
-                <p className="text-xs text-muted-foreground">Pay what you like · one-off · no subscription</p>
+                <h2 className="font-display font-extrabold text-lg text-foreground leading-tight">{t('page.cardTitle')}</h2>
+                <p className="text-xs text-muted-foreground">{t('page.cardSubtitle')}</p>
               </div>
             </div>
 
             {hasSupported && (
               <div className="mb-4 rounded-2xl bg-emerald-50 border border-emerald-200 p-3 flex items-center gap-2 text-sm text-emerald-800 font-bold">
-                <Check className="w-4 h-4 shrink-0" /> Thank you — you've already supported us.
+                <Check className="w-4 h-4 shrink-0" /> {t('page.alreadySupported')}
               </div>
             )}
 
@@ -143,15 +146,17 @@ export default function Support() {
                     aria-pressed={active}
                   >
                     <span className="block font-display font-extrabold text-base text-foreground">{a.label}</span>
-                    <span className="block text-[10px] text-muted-foreground mt-0.5">{a.note}</span>
+                    <span className="block text-[10px] text-muted-foreground mt-0.5">
+                      {SUPPORT_NOTE_KEYS[a.pence] ? t(`amounts.${SUPPORT_NOTE_KEYS[a.pence]}`, { defaultValue: a.note }) : a.note}
+                    </span>
                   </button>
                 );
               })}
             </div>
 
             <label className="block mt-3">
-              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide">Or another amount</span>
-              <div className="mt-1 flex items-center rounded-2xl border-2 border-border bg-card px-3 h-11 focus-within:border-primary">
+              <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide">{t('page.otherAmount')}</span>
+              <div dir="ltr" className="mt-1 flex items-center rounded-2xl border-2 border-border bg-card px-3 h-11 focus-within:border-primary">
                 <span className="font-display font-extrabold text-foreground mr-1">£</span>
                 <input
                   inputMode="decimal"
@@ -159,11 +164,11 @@ export default function Support() {
                   onChange={(e) => setCustom(e.target.value)}
                   placeholder="7.50"
                   className="flex-1 bg-transparent outline-none text-sm font-bold text-foreground placeholder:text-muted-foreground/60"
-                  aria-label="Custom support amount in pounds"
+                  aria-label={t('page.customAria')}
                 />
               </div>
               {custom.trim() && !customPence && (
-                <span className="block text-[11px] text-destructive mt-1">Enter between £1 and £500.</span>
+                <span className="block text-[11px] text-destructive mt-1">{t('errors.amountRangeShort')}</span>
               )}
             </label>
 
@@ -175,20 +180,23 @@ export default function Support() {
             >
               {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <Heart className="w-4 h-4 fill-current" />}
               {user
-                ? `Support with ${amount ? formatSupportAmount(amount) : '…'}`
-                : 'Sign in to support'}
+                ? t('page.supportWith', { amount: amount ? formatSupportAmount(amount) : '…' })
+                : t('page.signInToSupport')}
             </button>
             <p className="text-[11px] text-muted-foreground text-center mt-3 leading-relaxed">
-              Secure card payment by Stripe. Nothing is unlocked or locked by this —
-              it's a thank-you, not a fee.
+              {t('page.stripeNote')}
             </p>
           </div>
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-8">
-          Looking for a personalised book?{' '}
-          <button onClick={() => navigate('/create-book')} className="font-bold text-primary-ink hover:underline">Create a Book</button>
-          {' '}is £4.99, and the World of Books is a one-off £10.
+          <Trans
+            t={t}
+            i18nKey="page.createBookNote"
+            components={{
+              link: <button onClick={() => navigate('/create-book')} className="font-bold text-primary-ink hover:underline" />,
+            }}
+          />
         </p>
       </div>
     </Layout>

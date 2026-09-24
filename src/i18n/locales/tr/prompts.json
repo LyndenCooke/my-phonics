@@ -1,0 +1,48 @@
+{
+  "feedback": {
+    "title": "Nasıl gidiyoruz?",
+    "description": "Geri bildiriminiz gelişmemize yardımcı olur — güzel yorumlar web sitemizde de yer alabilir.",
+    "returningTitle": "MyPhonicsBooks'u beğendiniz mi?",
+    "returningDescription": "Birkaç kez geri geldiniz — kısa bir yıldız puanı ve düşüncelerinizi duymayı çok isteriz. Gerçekten çok faydalı oluyor.",
+    "stars_one": "{{count}} yıldız",
+    "stars_other": "{{count}} yıldız",
+    "lovedLabel": "En çok neyi sevdiniz? 💛",
+    "lovedPlaceholder": "Çocuğunuzun (ya da sizin) en çok sevdiği kısım…",
+    "improveLabel": "Ne daha iyi olabilir?",
+    "improvePlaceholder": "Sizi rahatsız eden ya da değiştirmek istediğiniz her şey (yalnızca ekibimiz için)",
+    "privateNote": "Bunu yalnızca ekibimiz görür — asla herkese açık gösterilmez.",
+    "consentMarketing": "Sevdiğim şeyi web sitenizde ve sosyal medya hesaplarınızda kullanıcı yorumu olarak paylaşabilirsiniz.",
+    "consentNamed": "Yanında adımı (yalnızca ilk adımı) kullanabilirsiniz.",
+    "send": "Geri bildirim gönder",
+    "sending": "Gönderiliyor…",
+    "pickRating": "Bir yıldız puanı seçin",
+    "pickRatingBody": "Deneyiminizi puanlamak için bir yıldıza dokunun.",
+    "thanks": "Teşekkürler! 💛",
+    "thanksBody": "Geri bildiriminiz ekibimize iletildi.",
+    "sendFailed": "Geri bildirim gönderilemedi"
+  },
+  "homeScreen": {
+    "dismiss": "Kapat",
+    "title": "Son bir adım — 1 dokunuş uzağınızda olsun",
+    "body": "MyPhonicsBooks'u ana ekranınıza ekleyin. Yarın telefonu çocuğunuza verin — simgeye dokunsun ve okumaya başlasın. Giriş yok. Yazmak yok.",
+    "install": "Ana ekrana yükle",
+    "iosStep1": "Safari'nin altındaki <icon/> <b>Paylaş</b> düğmesine dokunun",
+    "iosStep2": "Aşağı kaydırın → <icon/> <b>\"Ana Ekrana Ekle\"</b> seçeneğine dokunun",
+    "iosStep3": "Sağ üstteki <b>Ekle</b>'ye dokunun. Hepsi bu!",
+    "otherDevice": "Uygulamayı ana ekranınıza yüklemek için bu sayfayı telefonunuzda Chrome (Android) veya Safari (iPhone) ile açın."
+  },
+  "nudges": {
+    "closeNudges": "Bildirimleri kapat",
+    "dialogLabel": "Sizin için yenilikler",
+    "title": "Merhaba! İşte yenilikler",
+    "empty": "Her şeyi gördünüz. Yeni bir şey olduğunda size haber vereceğiz.",
+    "moreInMessages": "Diğer güncellemeler Mesajlar'da",
+    "goToMessages": "Mesajlar'a git"
+  },
+  "bookUnlocked": {
+    "badge": "Kitap Açıldı!",
+    "title": "Ücretsiz kitabınız hazır",
+    "level": "Seviye {{level}}",
+    "continue": "Kitaplığa devam et"
+  }
+}

@@ -1,6 +1,7 @@
 import { X, Heart } from "lucide-react";
 import type { CustomBookPage } from "@/lib/forgeApi";
 import FlipBook from "@/components/FlipBook";
+import { useTranslation } from "react-i18next";
 
 /**
  * Full-screen reader for custom (family-made) books. Pages turn like a real
@@ -18,13 +19,16 @@ export default function CustomBookReader({
   pages: CustomBookPage[];
   onClose: () => void;
 }) {
+  const { t } = useTranslation("reader");
   const colour = pages[0]?.levelColour || "#3B82F6";
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-slate-100">
+    // The family's book is English (title, story, back-page profile) and
+    // reads left-to-right — an LTR island even on an RTL site.
+    <div dir="ltr" lang="en" className="fixed inset-0 z-50 flex flex-col bg-slate-100">
       <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: colour }}>
         <span className="truncate font-bold text-white">{pages[0]?.title || "My Book"}</span>
-        <button onClick={onClose} aria-label="Close" className="rounded-full bg-white/20 p-1.5 text-white">
+        <button onClick={onClose} aria-label={t("closeBook")} className="rounded-full bg-white/20 p-1.5 text-white">
           <X className="h-5 w-5" />
         </button>
       </div>

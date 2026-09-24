@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "Library",
+    "worldOfBooks": "World of Books"
+  },
+  "errors": {
+    "unreachable": "The Create-A-Book service isn't reachable right now — give it a moment and refresh.",
+    "noCheckoutLink": "Checkout did not return a payment link."
+  },
+  "yourChild": "your child",
+  "intro": {
+    "sampleCover": "Sample book cover",
+    "samplePage": "Sample book page {{n}}",
+    "flipHint": "A whole MyPhonicsBooks story, cover to cover — tap or swipe to turn the pages",
+    "titleStart": "Your child,",
+    "titleHighlight": "the main character",
+    "lead": "A real, properly decodable phonics book — written, illustrated and checked for your child, in minutes.",
+    "features": {
+      "mainCharacter": {
+        "title": "Your child is the main character",
+        "desc": "Drawn in our house style, dot eyes and all"
+      },
+      "decodable": {
+        "title": "Properly decodable at their level",
+        "desc": "Every word checked against the sounds they know"
+      },
+      "meetStar": {
+        "title": "'Meet the star' page at the back",
+        "desc": "Their country, their culture, their landmark"
+      },
+      "share": {
+        "title": "Share it to the World of Books",
+        "desc": "A light on the globe with the family's blessing"
+      }
+    },
+    "cta": "Start their book — {{price}}",
+    "ctaNote": "One book, yours to keep and print, forever."
+  },
+  "child": {
+    "title": "Who is the star?",
+    "randomise": "Randomise (test)",
+    "randomiseTitle": "Fill every step with random test data",
+    "lead": "This shapes the story, the pictures, and the profile page at the back.",
+    "firstName": "First name",
+    "firstNamePlaceholder": "e.g. Maryam",
+    "age": "Age",
+    "from": "Where are you from?",
+    "city": "City / town",
+    "optional": "(optional)",
+    "cityPlaceholder": "e.g. Mogadishu, Lagos, Kraków",
+    "familyWorld": "Your family's world",
+    "familyWorldHint": "(culture, food, places, traditions)",
+    "familyWorldPlaceholder": "e.g. We're a Somali family in London — we love suqaar, Eid mornings and trips to the mosque",
+    "loves": "They love...",
+    "lovesPlaceholder": "cats, football, baking",
+    "faith": "Faith",
+    "faithPlaceholder": "e.g. Muslim, Christian",
+    "lookLike": "What do they look like?",
+    "gender": {
+      "girl": "girl",
+      "boy": "boy"
+    },
+    "skinTones": {
+      "light": "Light",
+      "lightMedium": "Light-medium",
+      "medium": "Medium",
+      "mediumDark": "Medium-dark",
+      "dark": "Dark",
+      "veryDark": "Very dark"
+    },
+    "hairPlaceholder": "Hair — e.g. curly black hair, hijab, short brown hair",
+    "changePhoto": "Change photo",
+    "addPhoto": "Add a photo (optional)",
+    "photoAdded": "Photo added",
+    "photoPrivacy": "The photo is only used to draw the cartoon character. It is never stored, published or shown to anyone."
+  },
+  "level": {
+    "title": "Pick a level and one focus sound",
+    "lead": "One sound keeps the story free and fun — it only needs to appear a few times.",
+    "notSure": "Not sure of the level? <link>Take the 3-minute check</link>.",
+    "levelN": "Level {{level}}",
+    "focusSound": "Focus sound for this book",
+    "longerTitle": "Longer story — 8 pages instead of 6",
+    "longerDesc": "Two more illustrated pages, and the bigger 20-page activity set at the back."
+  },
+  "review": {
+    "title": "Nearly there!",
+    "lead": "Check the details, choose how you'd like to share, and we'll start the presses.",
+    "email": "Your email (for your receipt + book link)",
+    "shareTitle": "Share our book to the World of Books",
+    "shareBody": "After a quick review by our team, other families can read {{name}}'s book. Bring the world together, one story at a time.",
+    "wallTitle": "Show us on the Wall of Love",
+    "wallBody": "The \"Meet the star\" page (cartoon character only — never the photo) appears in the community gallery.",
+    "continueToPayment": "Continue to payment"
+  },
+  "pay": {
+    "title": "Create {{name}}'s book",
+    "oneBook": "One personalised book · yours to keep",
+    "features": {
+      "story": "A full decodable story around the sound \"{{sound}}\"",
+      "longer": "Longer story: 8 illustrated pages + the fuller activity set",
+      "hero": "{{name}} illustrated as the hero on every page",
+      "qa": "Eye-rule + phonics QA on every single page",
+      "meetStar": "The 'Meet the star' family page at the back",
+      "forever": "Read it instantly on screen, forever"
+    },
+    "button": "Create my book — {{price}}",
+    "haveCode": "Have a code?",
+    "enterCode": "Enter code",
+    "apply": "Apply",
+    "devFree": "Create free (dev test mode — no charge)"
+  },
+  "generating": {
+    "title": "Painting {{name}}'s book",
+    "lead": "Written, illustrated and checked page by page — yes, we check the eyes. Keep this page open; it takes a few minutes.",
+    "warmingUp": "Warming up the paints...",
+    "failedRetry": "Something hiccupped — pick up where it stopped (free)",
+    "needsReviewTitle": "Nearly done — one page is with a person",
+    "needsReviewBody": "{{name}}'s story and pictures are finished, but our editor wants one page checked by hand before we print it. Nothing for you to do — keep this link and the book appears here as soon as it is signed off, usually within a few hours.",
+    "rejectedTitle": "We couldn't get this story to meet our quality standard.",
+    "rejectedBody": "Your book credit has not been used. You can try the same idea again or choose a different story idea.",
+    "tryAgain": "Try the same idea again (free)",
+    "changeIdea": "Change the story idea (credit carries over)",
+    "paused": "Your book is safe and saved. It's taking a little longer than usual — it will continue from exactly where it stopped, and we'll email you when it's ready."
+  },
+  "ready": {
+    "title": "Their book is ready!",
+    "madeFor": "Made for the {{name}} family",
+    "pdfSoon": "Printable PDFs are coming soon — for now, enjoy the book right here.",
+    "typesetting": "Typesetting the book...",
+    "openPdf": "Open the book 📕 (full phonics book PDF)",
+    "play": "Play the interactive book — tap every word",
+    "readHere": "Read it here — turn the pages",
+    "saved": "Saved to your account",
+    "addToAccount": "Add to my account",
+    "inReview": "Your book is with our team for a quick review before it appears in the World of Books.",
+    "live": "Your book is live in the World of Books!",
+    "unlockTitle": "Unlock the World of Books",
+    "unlockBody": "Read every book made by families around the world — and every one made after you. One payment, forever.",
+    "signInNote": "You'll need to sign in — it's how your access travels with you and stays yours.",
+    "unlockButton": "Unlock the world — {{price}}, once",
+    "signInUnlockButton": "Sign in to unlock the world — {{price}}",
+    "devUnlock": "dev: unlock free",
+    "enter": "Enter the World of Books"
+  },
+  "progress": {
+    "story": "Writing {{name}}'s story…",
+    "phonics_qa": "Checking every word is decodable at this level…",
+    "plausibility_qa": "Checking the story actually makes sense…",
+    "story_editor": "An editor is reading the story before any pictures are painted…",
+    "directing": "Planning the scenes…",
+    "awaiting_imagery_approval": "The story is approved — the pictures are waiting for a final check…",
+    "hero": "Drawing {{name}} as a book character…",
+    "scenes": "Illustrating page {{page}} of {{total}}…",
+    "cover": "Painting the cover…",
+    "country": "Adding pictures from {{name}}'s country…",
+    "editor": "An editor is reading the finished book…",
+    "assemble": "Binding the book…",
+    "done": "Your book is ready!",
+    "busy": "Still working — this step takes a little while…",
+    "paused": "Your book is safe and saved — it will carry on shortly.",
+    "paused_budget": "Taking a little longer than usual — the team has been alerted and your book will continue shortly.",
+    "paused_provider_credit": "Taking a little longer than usual — the team has been alerted and your book will continue shortly.",
+    "needs_review": "Almost there — one page is getting a final check by a person. We'll email you the moment it's ready.",
+    "content_rejected": "We couldn't get this story to meet our quality standard. Your book credit has not been used — try the same idea again or choose a different one.",
+    "repair": "Touching up a few pages…",
+    "working": "Working on the book…"
+  }
+}

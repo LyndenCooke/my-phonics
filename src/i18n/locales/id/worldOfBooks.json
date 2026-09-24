@@ -1,0 +1,91 @@
+{
+  "header": {
+    "badge": "Dunia Buku",
+    "title": "Setiap buku membawa Anda ke suatu tempat",
+    "lead": "Putar bola dunia dan ketuk sebuah bendera untuk mengenal buku-buku dari sana — dari perpustakaan kami sendiri, dan buatan keluarga seperti keluarga Anda.",
+    "globe": "Bola dunia",
+    "byLevel": "Per level"
+  },
+  "popup": {
+    "tapBook": "Ketuk buku untuk membacanya secara online atau mencetaknya di rumah."
+  },
+  "shelf": {
+    "booksFrom": "Buku dari {{country}}"
+  },
+  "levelN": "Level {{level}}",
+  "levelShort": "L{{level}}",
+  "familyMade": "buatan keluarga",
+  "untitled": "Tanpa judul",
+  "ownBook": "Buku milik {{name}}",
+  "chooser": {
+    "readPlay": "Baca & main — ketuk setiap kata",
+    "turnPages": "Balik halamannya",
+    "readOnline": "Baca online",
+    "print": "Cetak di rumah",
+    "signInToRead": "Masuk untuk membaca buku ini.",
+    "freeInLibrary": "Buku ini gratis dibaca di perpustakaan.",
+    "openLibrary": "Buka perpustakaan",
+    "familyLocked": "Buku buatan keluarga terbuka dengan akses Dunia Buku."
+  },
+  "download": {
+    "notAvailable": "Unduhan tidak tersedia.",
+    "tryAgainSoon": "Coba lagi sebentar lagi.",
+    "failed": "Unduhan gagal",
+    "pdfUnavailable": "File PDF tidak tersedia"
+  },
+  "wall": {
+    "title": "Dinding Cinta",
+    "lead": "Kata-kata nyata dari keluarga nyata.",
+    "aParent": "Seorang orang tua",
+    "readAll": "Baca seluruh dinding"
+  },
+  "cta": {
+    "title": "Bendera berikutnya di bola dunia ini bisa jadi milik Anda",
+    "body": "Buat buku sungguhan yang bisa dieja dengan anak Anda sebagai bintangnya — namanya, rumahnya, ceritanya.",
+    "button": "Buat bukunya — {{price}}"
+  },
+  "globe": {
+    "aria": "Bola dunia yang menunjukkan tempat cerita setiap buku berlangsung",
+    "pinTitle_other": "{{country}} — {{count}} buku",
+    "zoomIn": "Perbesar",
+    "zoomOut": "Perkecil",
+    "reset": "Atur ulang bola dunia",
+    "hint": "seret untuk memutar · gulir untuk zoom · ketuk bendera",
+    "alsoFrom": "Juga dari {{list}}"
+  },
+  "settings": {
+    "L1_1": "Pagi yang sibuk di rumah",
+    "L1_2": "Taman Inggris yang berlumpur",
+    "L1_3": "Hewan peliharaan baru tiba di rumah",
+    "L1_4": "Keisengan hari mencuci di rumah",
+    "L1_5": "Berlari melintasi taman Inggris",
+    "L1_6": "Petualangan di hutan Inggris",
+    "L1_7": "Pasar tradisional yang ramai",
+    "L1_8": "Desa Himalaya di Nepal",
+    "L1_9": "Dapur keluarga di Pakistan",
+    "L1_10": "Taman Karibia di Trinidad",
+    "L2_1": "Taman Jepang saat malam",
+    "L2_2": "Pasar malam jajanan kaki lima Inggris",
+    "L2_3": "Pertanian di dataran tinggi Kenya",
+    "L2_4": "Pekan raya desa di Inggris",
+    "L2_5": "Reykjavik bersalju, Islandia",
+    "L2_6": "Pasar malam bergaya Marrakesh",
+    "L3_1": "Pedesaan Prancis di tengah balapan",
+    "L3_2": "Pasar malam Bangkok",
+    "L3_3": "Kompleks perumahan di Accra",
+    "L3_4": "Ruang seni di Seoul",
+    "L3_5": "Tepi laut Teluk Paria, Port of Spain",
+    "L4_1": "Jalanan Istanbul",
+    "L4_2": "Hutan Inggris saat senja",
+    "L4_3": "Rumah keluarga di Oaxaca",
+    "L4_4": "Putrajaya, Malaysia",
+    "L5_1": "Komunitas Yahudi di London Utara",
+    "L5_2": "Musim dingin bersalju di Stockholm",
+    "L5_3": "Atap rumah di Jaipur saat festival layang-layang",
+    "L5_4": "Pasar buah pagi di Cartagena",
+    "L6_1": "Sebuah lingkungan di Kairo",
+    "L6_2": "Festival Lampion di Guilin",
+    "L6_3": "Desa di puncak tebing di Pantai Amalfi",
+    "L6_4": "Semak belantara Blue Mountains"
+  }
+}

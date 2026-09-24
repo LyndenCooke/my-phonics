@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Lock, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { authErrorMessage } from '@/lib/authErrors';
 
 interface PasswordSetupProps {
   /** Override the title — defaults to "Create a password". */
@@ -20,10 +22,11 @@ interface PasswordSetupProps {
  * Settings as the fallback entry point for anyone who skipped initially.
  */
 export default function PasswordSetup({
-  title = 'Create a password',
-  subtitle = 'So you can sign in next time without a magic link.',
+  title,
+  subtitle,
   required = false,
 }: PasswordSetupProps) {
+  const { t } = useTranslation('auth');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [saving, setSaving] = useState(false);
@@ -34,7 +37,7 @@ export default function PasswordSetup({
     return (
       <div className="mt-5 flex items-center justify-center gap-2 text-sm text-green-600">
         <Check className="w-4 h-4" />
-        Password set — you can now sign in with email &amp; password
+        {t('passwordSetup.done')}
       </div>
     );
   }
@@ -42,34 +45,36 @@ export default function PasswordSetup({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (password.length < 6) { setError('At least 6 characters'); return; }
-    if (password !== confirm) { setError('Passwords don\'t match'); return; }
+    if (password.length < 6) { setError(t('passwordSetup.tooShort')); return; }
+    if (password !== confirm) { setError(t('passwordSetup.mismatch')); return; }
     setSaving(true);
     const { error: err } = await supabase.auth.updateUser({ password });
     setSaving(false);
-    if (err) { setError(err.message); return; }
+    if (err) { setError(authErrorMessage(err)); return; }
     setDone(true);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 bg-card border border-border rounded-xl p-4 text-left">
+    <form onSubmit={handleSubmit} className="mt-6 bg-card border border-border rounded-xl p-4 text-start">
       <div className="flex items-center gap-2 mb-3">
         <Lock className="w-4 h-4 text-muted-foreground" />
-        <p className="text-sm font-bold text-foreground">{title}</p>
+        <p className="text-sm font-bold text-foreground">{title ?? t('passwordSetup.title')}</p>
       </div>
       <p className="text-xs text-muted-foreground mb-3">
-        {subtitle}
+        {subtitle ?? t('passwordSetup.subtitle')}
       </p>
       <input
         type="password"
-        placeholder="Password (min 6 characters)"
+        placeholder={t('passwordSetup.placeholder')}
+        aria-label={t('passwordSetup.placeholder')}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm mb-2"
       />
       <input
         type="password"
-        placeholder="Confirm password"
+        placeholder={t('passwordSetup.confirm')}
+        aria-label={t('passwordSetup.confirm')}
         value={confirm}
         onChange={(e) => setConfirm(e.target.value)}
         className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm mb-3"
@@ -80,10 +85,10 @@ export default function PasswordSetup({
         disabled={saving}
         className="w-full py-2.5 rounded-lg gradient-primary text-primary-foreground font-bold text-sm disabled:opacity-50"
       >
-        {saving ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : 'Set Password'}
+        {saving ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : t('passwordSetup.submit')}
       </button>
       {!required && (
-        <p className="text-xs text-muted-foreground mt-2 text-center">Optional — you can skip this</p>
+        <p className="text-xs text-muted-foreground mt-2 text-center">{t('passwordSetup.optional')}</p>
       )}
     </form>
   );

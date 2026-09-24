@@ -1,0 +1,106 @@
+{
+  "backHome": "Koma zuwa shafin farko",
+  "notice": {
+    "text": "An bayar da wannan fassarar ne don sauƙi kawai. Idan akwai wani bambanci, sigar Turanci ce za ta yi aiki.",
+    "switch": "Karanta da Turanci"
+  },
+  "privacy": {
+    "title": "Manufar Sirri",
+    "lastUpdated": "Sabuntawa ta ƙarshe: Afrilu 2026",
+    "whoWeAre": {
+      "title": "Su wane ne mu",
+      "body": "Lynden Cooke ne ke gudanar da MyPhonicsBooks. Wannan manufa tana bayyana irin bayanan da muke tattarawa, dalilin da ya sa muke tattara su, da yadda za ku iya amfani da haƙƙoƙinku a ƙarƙashin UK GDPR (dokar kare bayanai ta Birtaniya)."
+    },
+    "collect": {
+      "title": "Bayanan da muke tattarawa",
+      "items": {
+        "email": "<b>Adireshin imel na iyaye</b> — domin mu iya aika muku sakamakon tantancewar yaronku, hanyar shiga asusu, da rasitin sayayya.",
+        "child": "<b>Sunan farko da shekarun yaro</b> — ana amfani da su a cikin tantancewa da cibiyar koyo don daidaita abubuwan da yaron zai gani. Ba ma raba waɗannan bayanai da wasu ɓangarori na uku.",
+        "activity": "<b>Amsoshin tantancewa da ayyukan karatu</b> — domin mu iya ba da shawarar matakin karatu da ya dace da kuma nuna ci gaba a tsawon lokaci.",
+        "payment": "<b>Bayanan biyan kuɗi</b> — Stripe ne ke kula da su. Ba ma taɓa gani ko adana cikakkun lambobin kati.",
+        "analytics": "<b>Ƙididdiga na asali</b> — bayanan da ba sa bayyana ko wane ne game da ziyarar shafuka da matakan amfani, domin mu inganta samfurin."
+      }
+    },
+    "use": {
+      "title": "Yadda muke amfani da bayananku",
+      "body": "Muna amfani da bayananku ne kawai don samar da sabis: isar da littattafai, adana ci gaba, sarrafa biyan kuɗi, da aika imel masu alaƙa da asusu. Ba ma sayar da bayananku kuma ba ma raba su da abokan hulɗar tallace-tallace."
+    },
+    "processors": {
+      "title": "Masu sarrafa bayanai da muke amfani da su",
+      "items": {
+        "supabase": "rumbun bayanai, tabbatar da shaida, adana fayiloli",
+        "stripe": "sarrafa biyan kuɗi",
+        "vercel": "ɗaukar nauyin gidan yanar gizo",
+        "elevenlabs": "samar da sauti don taimakawa karatu"
+      }
+    },
+    "rights": {
+      "title": "Haƙƙoƙinku",
+      "body": "Kuna iya neman kwafin bayananku, ku nemi mu gyara su, ko ku nemi mu goge asusunku a kowane lokaci. Ku aika imel zuwa <email>{{email}}</email> kuma za mu amsa cikin kwanaki 30."
+    },
+    "children": {
+      "title": "Yara",
+      "body": "Iyaye ko masu kula ne ke buɗe asusu. Ba ma taɓa neman yara su yi rajista da kansu, kuma ba ma taɓa aika imel na talla game da wani yaro zuwa wani iyali."
+    },
+    "cookies": {
+      "title": "Kukis",
+      "body": "Muna amfani da ƙananan kukis masu muhimmanci don ci gaba da kasancewarku a shiga. Ba ma amfani da kukis na talla na wasu ɓangarori na uku."
+    },
+    "contact": {
+      "title": "Tuntuɓe mu",
+      "body": "Kuna da tambayoyi game da wannan manufa? Ku aika imel zuwa <email>{{email}}</email>."
+    }
+  },
+  "terms": {
+    "title": "Sharuɗɗan Sabis",
+    "lastUpdated": "Sabuntawa ta ƙarshe: Afrilu 2026",
+    "about": {
+      "title": "Game da waɗannan sharuɗɗa",
+      "body": "Waɗannan sharuɗɗa ne ke jagorantar amfaninku da MyPhonicsBooks. Ta hanyar buɗe asusu, yin tantancewa, ko sayen kowane samfuri, kun amince da su."
+    },
+    "signup": {
+      "title": "Wa zai iya yin rajista",
+      "body": "Dole ne iyaye ko mai kula su buɗe asusu a madadin yaro. Dole ne shekarunku su kai 18 ko fiye kafin ku shiga wannan yarjejeniya."
+    },
+    "yourContent": {
+      "title": "Abubuwanku",
+      "body": "Kuna ci gaba da mallakar duk abin da yaronku ya ƙirƙira a cikin cibiyar (zane-zane, amsoshin tambayoyi, bayanan ci gaba). Kuna ba mu takaitaccen lasisi don adana su da nuna su a cikin asusunku domin cibiyar koyo ta iya aiki."
+    },
+    "ourContent": {
+      "title": "Abubuwanmu",
+      "body": "Duk littattafai, zane-zane, sauti, da kayan tantancewa haƙƙin mallakar MyPhonicsBooks ne. Littattafai, takardun aiki da wasanni kyauta ne don karantawa da wasa. Fayilolin PDF da aka sauke an ba da lasisinsu ne don iyalinku ko ajinku kawai: ku buga kwafi gwargwadon yadda kuke buƙata a gare su. Ba don sake sayarwa, sake rarrabawa ko sake lodawa ba ne, ɗaya-ɗaya ko a matsayin wani ɓangare na kowane kunshi."
+    },
+    "subscriptions": {
+      "title": "Biyan kuɗin rajista da mayar da kuɗi",
+      "body": "Rajistar wata-wata da ta shekara-shekara tana sabunta kanta kai tsaye har sai an soke ta. Kuna iya sokewa a kowane lokaci daga Bayanan Martabarku — za ku ci gaba da samun dama har zuwa ƙarshen lokacin da kuka biya. Sayayyar lokaci ɗaya (littattafai ɗaya-ɗaya, kunshi) ba a mayar da kuɗinsu bayan an sauke PDF, sai dai idan dokar masu sayayya ta Birtaniya ta buƙaci hakan."
+    },
+    "trials": {
+      "title": "Gwaji kyauta",
+      "body": "Inda aka ba da gwaji kyauta, ba za a caje ku ba a lokacin gwajin. Za mu aika muku da tunatarwa kafin gwajin ya ƙare. Idan ba ku soke ba, rajistar za ta fara kuma za a caji katinku."
+    },
+    "acceptableUse": {
+      "title": "Amfani da aka yarda da shi",
+      "body": "Don Allah kada ku yi ƙoƙarin warware yadda aka gina shafin (reverse-engineer), ɗibar abubuwan ciki ta na'ura (scraping), amfani da sabis don cin zarafin kowa, ko shiga asusun wasu masu amfani. Za mu iya dakatar da asusun da suka yi haka."
+    },
+    "outcomes": {
+      "title": "Sakamakon ilimi",
+      "body": "MyPhonicsBooks kayan tallafi ne na karatu. Ba mu da tabbacin wani takamaiman sakamakon ilimi, kuma ba ya maye gurbin aikin ƙwararren malami."
+    },
+    "liability": {
+      "title": "Alhaki",
+      "body": "Muna samar da sabis \"yadda yake\" kuma alhakinmu yana iyakance ga adadin kuɗin da kuka biya mu a cikin watanni 12 da suka gabata, sai dai inda doka ta buƙaci wani abu daban."
+    },
+    "changes": {
+      "title": "Canje-canje",
+      "body": "Za mu iya sabunta waɗannan sharuɗɗa. Za a sanar da manyan canje-canje ta imel ko sanarwa a cikin manhaja kafin su fara aiki."
+    },
+    "law": {
+      "title": "Dokar da ke aiki",
+      "body": "Dokokin Ingila da Wales ne ke jagorantar waɗannan sharuɗɗa."
+    },
+    "contact": {
+      "title": "Tuntuɓe mu",
+      "body": "Kuna da tambayoyi? Ku aika imel zuwa <email>{{email}}</email>."
+    }
+  }
+}

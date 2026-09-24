@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "Secangkir kopi",
+    "book": "Satu buku",
+    "level": "Satu level",
+    "shelf": "Satu rak penuh"
+  },
+  "errors": {
+    "amountRange": "Masukkan jumlah antara £1 dan £500.",
+    "amountRangeShort": "Masukkan antara £1 dan £500.",
+    "signInFirst": "Silakan masuk terlebih dahulu.",
+    "checkoutFailed": "Tidak dapat memulai pembayaran"
+  },
+  "page": {
+    "title": "Dukung MyPhonicsBooks",
+    "sticker": "Gratis untuk setiap keluarga",
+    "heading": "Semuanya gratis. Dukungan bersifat sukarela.",
+    "intro": "MyPhonicsBooks dibuat oleh satu tim kecil. Jika ini membantu anak Anda membaca, ucapan terima kasih berapa pun jumlahnya membuatnya tetap gratis untuk keluarga berikutnya.",
+    "alwaysFree": "Selalu gratis",
+    "free": {
+      "books": "Semua 33 buku cerita, delapan level — baca online, tanpa perlu akun",
+      "games": "Semua permainan fonik, gratis dimainkan",
+      "pdfs": "PDF siap cetak untuk setiap buku dan lembar kerja — gratis dengan akun gratis",
+      "check": "Tes fonik 3 menit dan pemantauan perkembangan"
+    },
+    "downloadsNote": "Unduhan memerlukan akun gratis agar PDF siap cetak tetap untuk keluarga dan kelas — bukan untuk dijual kembali.",
+    "createAccount": "Buat akun gratis",
+    "cardTitle": "Dukung MyPhonicsBooks",
+    "cardSubtitle": "Bayar sesuka Anda · sekali bayar · tanpa langganan",
+    "alreadySupported": "Terima kasih — Anda sudah mendukung kami.",
+    "otherAmount": "Atau jumlah lain",
+    "customAria": "Jumlah dukungan pilihan Anda dalam pound",
+    "supportWith": "Dukung dengan {{amount}}",
+    "signInToSupport": "Masuk untuk mendukung",
+    "stripeNote": "Pembayaran kartu yang aman melalui Stripe. Tidak ada yang dibuka atau dikunci karena ini — ini ucapan terima kasih, bukan biaya.",
+    "createBookNote": "Mencari buku yang dipersonalisasi? <link>Buat Buku</link> seharga £4.99, dan World of Books sekali bayar £10."
+  },
+  "prompt": {
+    "title": "Anda sudah bergabung — semuanya gratis",
+    "body": "Setiap buku, permainan, dan lembar kerja menjadi milik Anda tanpa biaya. Jika MyPhonicsBooks membantu anak Anda, Anda dapat memberikan sedikit ucapan terima kasih agar tetap gratis untuk keluarga lain. Sepenuhnya sukarela.",
+    "differentAmount": "Pilih jumlah lain",
+    "maybeLater": "Nanti saja — bawa saya ke buku-buku"
+  }
+}

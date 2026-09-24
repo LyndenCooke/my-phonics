@@ -7,11 +7,13 @@ import { CheckCircle, BookOpen, ArrowRight, Loader2, Heart } from 'lucide-react'
 import { hapticSuccess } from '@/lib/native';
 import { supabase } from '@/integrations/supabase/client';
 import AddToHomeScreenPrompt from '@/components/AddToHomeScreenPrompt';
+import { useTranslation } from 'react-i18next';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation('auth');
   const queryClient = useQueryClient();
   const sessionId = searchParams.get('session_id');
   // ?support=1 — a pay-what-you-like thank-you, not a purchase that unlocks
@@ -116,17 +118,16 @@ export default function PaymentSuccess() {
           <div className="w-16 h-16 rounded-full bg-tint-pink flex items-center justify-center mx-auto mb-4">
             <Heart className="w-8 h-8 text-primary fill-current" />
           </div>
-          <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">Thank you!</h1>
+          <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">{t('payment.thankYou')}</h1>
           <p className="text-sm text-muted-foreground mb-6">
-            Your support keeps every book, game and worksheet free for the next family.
-            A receipt is on its way from Stripe.
+            {t('payment.supportBody')}
           </p>
           <button
             onClick={() => navigate('/library')}
             className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
           >
             <BookOpen className="w-4 h-4" />
-            Back to the Library
+            {t('payment.backToLibrary')}
           </button>
         </div>
       </Layout>
@@ -144,14 +145,14 @@ export default function PaymentSuccess() {
           )}
         </div>
         <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">
-          {unlocking ? 'Unlocking your books…' : 'You\'re in! 🎉'}
+          {unlocking ? t('payment.unlocking') : t('payment.youreIn')}
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
           {unlocking
-            ? 'This usually takes a few seconds — hang tight.'
+            ? t('payment.hangTight')
             : user
-            ? "All your books are unlocked and ready to read."
-            : "We've sent you an email to set your password and access your books."}
+            ? t('payment.allUnlocked')
+            : t('payment.emailSent')}
         </p>
 
         {/* Add-to-Home-Screen prompt — fires when unlocking completes.
@@ -171,7 +172,7 @@ export default function PaymentSuccess() {
                 className="w-full py-3 rounded-xl font-bold text-sm border-2 border-amber-400 bg-amber-50 text-amber-800 active:scale-[0.97] transition-transform disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {retrying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                {retrying ? 'Unlocking…' : 'Books not showing? Tap to unlock now'}
+                {retrying ? t('payment.unlockingShort') : t('payment.notShowing')}
               </button>
             )}
             <button
@@ -179,7 +180,7 @@ export default function PaymentSuccess() {
               className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
             >
               <BookOpen className="w-4 h-4" />
-              Open My Library
+              {t('payment.openLibrary')}
             </button>
           </div>
         ) : (
@@ -188,11 +189,11 @@ export default function PaymentSuccess() {
               onClick={() => navigate('/auth')}
               className="w-full py-3 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2"
             >
-              Sign In to Access Books
-              <ArrowRight className="w-4 h-4" />
+              {t('payment.signInToAccess')}
+              <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
             </button>
             <p className="text-xs text-muted-foreground">
-              Check your email for a link to set your password.
+              {t('payment.checkEmailLink')}
             </p>
           </div>
         ))}

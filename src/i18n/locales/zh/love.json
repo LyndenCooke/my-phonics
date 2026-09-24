@@ -1,0 +1,17 @@
+{
+  "badge": "爱心墙",
+  "title": "来自真实家庭的真实声音",
+  "rating_other": "{{avg}} 分，来自 {{count}} 个家庭和老师",
+  "empty": {
+    "title": "爱心墙刚刚开始",
+    "body": "成为最早分享故事的家庭之一吧。"
+  },
+  "aParent": "一位家长",
+  "cta": {
+    "addStory": "想分享你的故事吗？",
+    "ownStory": "想拥有属于你的故事吗？",
+    "leaveReview": "写评价",
+    "tryCheck": "试试免费 3 分钟测试",
+    "support": "支持 MyPhonicsBooks"
+  }
+}

@@ -21,6 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Book } from '@/lib/types';
+import { useTranslation } from 'react-i18next';
 import { LEVELS } from '@/lib/types';
 import { JOURNEY_LEVELS, getJourneyLevel, journeyLevelOf, journeySortKey } from '@/lib/levels8';
 import {
@@ -59,6 +60,7 @@ export default function Index() {
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
   const { add: addNotification } = useNotifications();
+  const { t } = useTranslation('library');
 
   // Automated stress-test bypass: the seeded QA account has every book
   // unlocked regardless of the books/user_books seed state. This only
@@ -234,11 +236,11 @@ export default function Index() {
   // throttle we render the cooldown / upgrade prompt as a toast.
   const formatCooldown = (iso: string): string => {
     const ms = new Date(iso).getTime() - Date.now();
-    if (ms <= 0) return 'soon';
+    if (ms <= 0) return t('cooldown.soon');
     const days = Math.floor(ms / (24 * 60 * 60 * 1000));
     const hours = Math.ceil((ms % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-    if (days >= 1) return `${days} day${days === 1 ? '' : 's'}`;
-    return `${hours} hour${hours === 1 ? '' : 's'}`;
+    if (days >= 1) return t('cooldown.days', { count: days });
+    return t('cooldown.hours', { count: hours });
   };
 
   // Triggered when a book's Download button is tapped. We don't kick off
@@ -268,7 +270,7 @@ export default function Index() {
       // old free/monthly/bundle tiers and required a user_books row). The
       // book-pdfs bucket is public; the key is built from sub_level the same
       // way TeachersLibrary does it: "L1.1" -> "1_1".
-      if (!user) return { success: false, error: 'Please sign in to download.' };
+      if (!user) return { success: false, error: t('downloadErrors.signIn') };
       const storageKey = book.subLevel.replace(/^L/i, '').replace('.', '_');
       const data = {
         url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/book-pdfs/${format}/${storageKey}.pdf`,
@@ -278,7 +280,7 @@ export default function Index() {
       // a hidden <a download>. window.open(url) after an await chain is
       // silently popup-blocked by Safari/Chrome and on installed PWAs.
       const pdfRes = await fetch(data.url);
-      if (!pdfRes.ok) return { success: false, error: 'PDF file unavailable' };
+      if (!pdfRes.ok) return { success: false, error: t('downloadErrors.unavailable') };
       const blob = await pdfRes.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -310,15 +312,15 @@ export default function Index() {
       // discoverable even if the user closes the success modal.
       addNotification({
         icon: 'download',
-        title: `${book.title} downloaded`,
-        body: `${formatDisplayLabel(format)} saved — tap to re-download`,
-        ctaLabel: 'View',
+        title: t('notification.title', { title: book.title }),
+        body: t('notification.body', { format: t(`download.formats.${format}.label`) }),
+        ctaLabel: t('notification.cta'),
         ctaHref: '/profile/downloads',
       });
       queryClient.invalidateQueries({ queryKey: ['download_log'] });
       return { success: true };
     } catch (err) {
-      return { success: false, error: (err as Error).message || 'Download failed' };
+      return { success: false, error: (err as Error).message || t('downloadErrors.failed') };
     }
   };
 
@@ -329,8 +331,8 @@ export default function Index() {
     // Show success toast
     toast.success(
       isPerfect 
-        ? `Perfect score! ${score}/${total} - You're a reading star!` 
-        : `Quiz complete! You scored ${score}/${total}`,
+        ? t('quiz.perfect', { score, total })
+        : t('quiz.complete', { score, total }),
       {
         icon: <Trophy className="w-4 h-4" />,
         duration: 4000,
@@ -423,18 +425,20 @@ export default function Index() {
           title={unlockedModalBook.title}
           level={unlockedModalBook.level}
           coverUrl={unlockedModalBook.coverUrl}
-          ctaLabel="Start Reading"
+          ctaLabel={t('unlockedModal.cta')}
         />
       )}
 
       <div className="px-4 lg:px-8 pt-6 lg:pt-9 pb-2 max-w-2xl lg:max-w-6xl mx-auto">
         <div className="mb-6 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <h2 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Library</h2>
+            <h2 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">{t('page.title')}</h2>
             <p className="text-sm text-muted-foreground mt-1.5">
               {libraryTab === 'books'
-                ? `${books.length || ''} little books, eight levels — tap one to start reading`
-                : 'Free printable sound mats and worksheets'}
+                ? (books.length
+                    ? t('page.subtitleBooks', { count: books.length })
+                    : t('page.subtitleBooksNoCount'))
+                : t('page.subtitleWorksheets')}
             </p>
           </div>
 
@@ -452,7 +456,7 @@ export default function Index() {
               aria-pressed={libraryTab === 'books'}
             >
               <BookOpen className="w-4 h-4" />
-              Books
+              {t('tabs.books')}
             </button>
             <button
               type="button"
@@ -465,7 +469,7 @@ export default function Index() {
               aria-pressed={libraryTab === 'worksheets'}
             >
               <FileText className="w-4 h-4" />
-              Worksheets
+              {t('tabs.worksheets')}
             </button>
           </div>
         </div>
@@ -479,27 +483,27 @@ export default function Index() {
         </div>
 
         {!user && (
-          <div className="mb-5 bg-card rounded-xl p-4 flex items-start gap-3 shadow-card border-l-4 border-primary">
+          <div className="mb-5 bg-card rounded-xl p-4 flex items-start gap-3 shadow-card border-s-4 border-primary">
             <div className="w-8 h-8 rounded-lg bg-tint-pink flex items-center justify-center shrink-0 mt-0.5">
               <BookOpen className="w-4 h-4 text-primary" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">Every book is free to read</p>
+              <p className="text-sm font-bold text-foreground">{t('guest.title')}</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Tap any book to start. Want the printable PDF? Create a free account to download.
+                {t('guest.body')}
               </p>
               <div className="mt-2 flex flex-wrap gap-3">
                 <button
                   onClick={() => navigate(`/auth?mode=signup&redirect=${encodeURIComponent('/library')}`)}
                   className="text-xs font-bold text-primary-ink hover:underline"
                 >
-                  Sign up free →
+                  {t('guest.signUp')}
                 </button>
                 <button
                   onClick={() => navigate('/assess')}
                   className="text-xs font-bold text-primary-ink hover:underline"
                 >
-                  Find your child's level →
+                  {t('guest.findLevel')}
                 </button>
               </div>
             </div>
@@ -507,20 +511,20 @@ export default function Index() {
         )}
 
         {user && !userBooksData?.length && (
-          <div className="mb-5 bg-card rounded-xl p-4 flex items-start gap-3 shadow-card border-l-4 border-primary">
+          <div className="mb-5 bg-card rounded-xl p-4 flex items-start gap-3 shadow-card border-s-4 border-primary">
             <div className="w-8 h-8 rounded-lg bg-tint-pink flex items-center justify-center shrink-0 mt-0.5">
               <BookOpen className="w-4 h-4 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-bold text-foreground">Not sure where to start?</p>
+              <p className="text-sm font-bold text-foreground">{t('newUser.title')}</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Take our 3-minute check to find the right level — then read or download any book.
+                {t('newUser.body')}
               </p>
               <button
                 onClick={() => navigate('/assess')}
                 className="mt-2 text-xs font-bold text-primary hover:underline"
               >
-                Start Assessment →
+                {t('newUser.cta')}
               </button>
             </div>
           </div>
@@ -539,14 +543,14 @@ export default function Index() {
               return (
                 <section
                   key={level.level}
-                  aria-label={`Level ${level.level} — ${level.name}`}
+                  aria-label={t('shelf.ariaLabel', { level: level.level, name: level.name })}
                   className="relative overflow-hidden rounded-[1.75rem] lg:rounded-[2rem] p-5 lg:p-7"
                   style={{ background: `${level.hex}0D`, border: `1px solid ${level.hex}26` }}
                 >
                   {/* Giant watermark numeral */}
                   <span
                     aria-hidden
-                    className="absolute -top-12 -right-3 font-display font-extrabold leading-none select-none pointer-events-none text-[9rem] lg:text-[12rem]"
+                    className="absolute -top-12 -end-3 font-display font-extrabold leading-none select-none pointer-events-none text-[9rem] lg:text-[12rem]"
                     style={{ color: level.hex, opacity: 0.10 }}
                   >
                     {level.level}
@@ -556,15 +560,15 @@ export default function Index() {
                   <div className="relative flex items-end justify-between gap-4 mb-5">
                     <div className="min-w-0">
                       <p className="text-[10px] font-extrabold uppercase tracking-[0.2em]" style={{ color: level.inkHex }}>
-                        Level {level.level}
+                        {t('shelf.level', { level: level.level })}
                       </p>
-                      <h3 className="font-display text-xl lg:text-2xl font-extrabold text-foreground leading-tight mt-0.5">
+                      <h3 lang="en" className="font-display text-xl lg:text-2xl font-extrabold text-foreground leading-tight mt-0.5">
                         {level.name}
                       </h3>
-                      <p className="text-xs text-muted-foreground mt-1 truncate">{level.focus}</p>
+                      <p className="text-xs text-muted-foreground mt-1 truncate">{t(`levels.${level.level}.focus`, { defaultValue: level.focus })}</p>
                     </div>
                     {/* One dot per book — filled when read */}
-                    <div className="flex items-center gap-1.5 shrink-0 pb-1" aria-label={`${readCount} of ${items.length} read`}>
+                    <div className="flex items-center gap-1.5 shrink-0 pb-1" aria-label={t('shelf.readProgress', { read: readCount, total: items.length })}>
                       {items.map(b => (
                         <span
                           key={b.id}
@@ -598,8 +602,8 @@ export default function Index() {
             <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-3">
               <BookOpen className="w-8 h-8 text-muted-foreground" />
             </div>
-            <p className="text-sm font-medium">No books found for this level yet</p>
-            <p className="text-xs text-muted-foreground mt-1">Check back soon for new releases</p>
+            <p className="text-sm font-medium">{t('empty.title')}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t('empty.body')}</p>
           </div>
         )}
         </>

@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { authErrorMessage } from '@/lib/authErrors';
 import { supabase } from '@/integrations/supabase/client';
 import { Mail, Lock, User, ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { markSupportPromptPending } from '@/lib/support';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useTranslation, Trans } from 'react-i18next';
 
 type Mode = 'signin' | 'signup' | 'forgot';
 
@@ -22,6 +25,7 @@ export default function Auth() {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation('auth');
   // Where to land after a successful sign-in — e.g. the World of Books wizard
   // sends guests here with ?redirect=/create-book?resume=1&want=world so they
   // pick up right where they left off instead of losing their in-progress book.
@@ -49,8 +53,8 @@ export default function Auth() {
       if (error) throw error;
       // signInWithOAuth redirects the page; we won't reach this line
       // unless something blocked the redirect.
-    } catch (err: any) {
-      toast({ title: 'Google sign-in failed', description: err.message, variant: 'destructive' });
+    } catch (err) {
+      toast({ title: t('toast.googleFailed'), description: authErrorMessage(err), variant: 'destructive' });
       setSubmitting(false);
     }
   };
@@ -63,7 +67,7 @@ export default function Auth() {
       if (mode === 'forgot') {
         const { error } = await resetPassword(email);
         if (error) throw error;
-        toast({ title: 'Check your email', description: 'We sent you a password reset link.' });
+        toast({ title: t('toast.checkEmail'), description: t('toast.resetSent') });
         setMode('signin');
       } else if (mode === 'signup') {
         const { error } = await signUp(email, password, fullName);
@@ -71,7 +75,7 @@ export default function Auth() {
         // Show the one-time optional "support us" pop-up once they land
         // (SupportPrompt in Layout waits for a live session).
         markSupportPromptPending();
-        toast({ title: 'Account created!', description: 'Please check your email to confirm your account.' });
+        toast({ title: t('toast.accountCreated'), description: t('toast.confirmEmail') });
         // If email confirmation is off, signUp already left us a live session
         // — carry on to redirectTo. If confirmation is required there's no
         // session yet, but this is harmless: the destination just shows its
@@ -82,8 +86,8 @@ export default function Auth() {
         if (error) throw error;
         navigate(redirectTo);
       }
-    } catch (err: any) {
-      toast({ title: 'Error', description: err.message, variant: 'destructive' });
+    } catch (err) {
+      toast({ title: t('toast.error'), description: authErrorMessage(err), variant: 'destructive' });
     } finally {
       setSubmitting(false);
     }
@@ -91,32 +95,36 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative">
-      {/* Top-left back arrow — always a way out of the auth screen */}
+      {/* Top-start back arrow — always a way out of the auth screen */}
       <Link
         to="/"
-        className="absolute top-4 left-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
-        aria-label="Back to home"
+        className="absolute top-4 start-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
+        aria-label={t('page.backToHome')}
       >
-        <ArrowLeft className="w-4 h-4" /> Back
+        <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {t('page.back')}
       </Link>
+      {/* Language first, so a parent can switch before signing up */}
+      <div className="absolute top-4 end-4">
+        <LanguageSwitcher variant="compact" />
+      </div>
 
       <div className="w-full max-w-sm">
         {/* Logo (clickable — returns to landing) */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-block hover:opacity-80 transition-opacity" aria-label="MyPhonicsBooks home">
+          <Link to="/" className="inline-block hover:opacity-80 transition-opacity" aria-label={t('page.homeAria')}>
             <img src="/logo/mpb-mark-transparent.png" alt="" className="w-20 h-20 object-contain mx-auto mb-2" draggable={false} />
             <h1 dir="ltr" className="font-display text-2xl font-extrabold text-foreground tracking-tight">
               My<span className="text-primary-ink">Phonics</span>Books
             </h1>
           </Link>
           <p className="text-sm text-muted-foreground mt-1">
-            {mode === 'signin' ? 'Welcome back!' : mode === 'signup' ? 'Create your account' : 'Reset your password'}
+            {mode === 'signin' ? t('page.welcomeBack') : mode === 'signup' ? t('page.createYourAccount') : t('page.resetYourPassword')}
           </p>
 
           {/* Trust strip — indigo accent, brand "we handle your data with care" voice. */}
           <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-trust-tint text-trust-ink text-[11px] font-semibold">
             <ShieldCheck className="w-3.5 h-3.5" />
-            Your family's data stays private
+            {t('page.trust')}
           </div>
         </div>
 
@@ -128,12 +136,12 @@ export default function Auth() {
               disabled={submitting}
               onFallback={handleGoogleRedirect}
               onSignedIn={() => navigate(redirectTo)}
-              onError={(message) => toast({ title: 'Google sign-in failed', description: message, variant: 'destructive' })}
+              onError={(message) => toast({ title: t('toast.googleFailed'), description: message, variant: 'destructive' })}
             />
 
             <div className="relative my-1">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border" /></div>
-              <div className="relative flex justify-center"><span className="bg-background px-3 text-xs text-muted-foreground">or use email</span></div>
+              <div className="relative flex justify-center"><span className="bg-background px-3 text-xs text-muted-foreground">{t('page.orUseEmail')}</span></div>
             </div>
           </>
         )}
@@ -141,45 +149,49 @@ export default function Auth() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <User className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Full name"
+                placeholder={t('page.fullName')}
+                aria-label={t('page.fullName')}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full ps-10 pe-4 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
             </div>
           )}
 
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder={t('page.email')}
+              aria-label={t('page.email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+              className="w-full ps-10 pe-4 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
             />
           </div>
 
           {mode !== 'forgot' && (
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Lock className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder={t('page.password')}
+                aria-label={t('page.password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full pl-10 pr-10 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                className="w-full ps-10 pe-10 py-3 rounded-xl bg-card border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                aria-label={showPassword ? t('page.hidePassword') : t('page.showPassword')}
+                className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -188,7 +200,7 @@ export default function Auth() {
 
           {mode === 'signin' && (
             <button type="button" onClick={() => setMode('forgot')} className="text-xs text-primary font-medium">
-              Forgot password?
+              {t('page.forgotPassword')}
             </button>
           )}
 
@@ -198,19 +210,24 @@ export default function Auth() {
             className="w-full py-3.5 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button active:scale-[0.97] transition-transform duration-200 disabled:opacity-60"
           >
             {submitting
-              ? 'Please wait...'
+              ? t('page.pleaseWait')
               : mode === 'signin'
-              ? 'Sign In'
+              ? t('page.signIn')
               : mode === 'signup'
-              ? 'Create Account'
-              : 'Send Reset Link'}
+              ? t('page.createAccount')
+              : t('page.sendResetLink')}
           </button>
 
           {mode === 'signup' && (
             <p className="text-[11px] text-muted-foreground text-center">
-              By creating an account you agree to our{' '}
-              <a href="/terms" className="underline">Terms</a> and{' '}
-              <a href="/privacy" className="underline">Privacy Policy</a>.
+              <Trans
+                t={t}
+                i18nKey="page.agree"
+                components={{
+                  terms: <a href="/terms" className="underline" />,
+                  privacy: <a href="/privacy" className="underline" />,
+                }}
+              />
             </p>
           )}
         </form>
@@ -218,16 +235,16 @@ export default function Auth() {
         <div className="text-center mt-6">
           {mode === 'forgot' ? (
             <button onClick={() => setMode('signin')} className="text-sm text-muted-foreground flex items-center gap-1 mx-auto">
-              <ArrowLeft className="w-3 h-3" /> Back to sign in
+              <ArrowLeft className="w-3 h-3 rtl:-scale-x-100" /> {t('page.backToSignIn')}
             </button>
           ) : (
             <p className="text-sm text-muted-foreground">
-              {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
+              {mode === 'signin' ? t('page.noAccount') : t('page.haveAccount')}{' '}
               <button
                 onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
                 className="text-primary font-bold"
               >
-                {mode === 'signin' ? 'Sign Up' : 'Sign In'}
+                {mode === 'signin' ? t('page.signUp') : t('page.signIn')}
               </button>
             </p>
           )}

@@ -46,7 +46,9 @@ export default function SoundBookExperience({ content, onClose }: { content: Sou
   };
 
   return (
-    <div className={`fixed inset-0 z-[9999] ${t.bg} flex flex-col select-none`}>
+    // Child-facing play surface: always English and left-to-right, even inside
+    // a translated (possibly RTL) school app.
+    <div dir="ltr" lang="en" className={`fixed inset-0 z-[9999] ${t.bg} flex flex-col select-none`}>
       {/* top bar */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 flex-shrink-0">
         <button onClick={onClose} aria-label="Close" className="bg-white/70 backdrop-blur text-slate-700 rounded-full p-2 shadow hover:bg-white">

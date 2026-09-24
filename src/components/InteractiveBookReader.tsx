@@ -11,6 +11,14 @@ import {
 import TappableWord from '@/components/interactive/TappableWord';
 import { awardStamp, getStamps, isReadyToMoveUp, MAX_STAMPS, needsCheckIn, type BookStamps } from '@/lib/stamps';
 import { JOURNEY_LEVELS, getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
+
+/** Translated screen-reader labels / tooltips for the reader's controls.
+ *  The book itself (every visible page) stays English — the reader root is
+ *  an LTR island. The main component's useTranslation('reader') guarantees
+ *  the namespace is loaded before any page renders. */
+const tr = (key: string, opts?: Record<string, unknown>) => i18n.t(`reader:${key}`, opts);
 
 // ─── Audio helpers ──────────────────────────────────────────────────────────
 
@@ -342,7 +350,7 @@ function FocusSoundCard({ group, focusSounds, isPlaying, theme, onTap }: {
   return (
     <button
       onClick={onTap}
-      aria-label={`Play sound ${display.join(' or ')}`}
+      aria-label={tr('interactive.playSound', { sound: display.join(' / ') })}
       className={`relative flex items-center justify-center rounded-2xl py-5 md:py-6 lg:py-8 px-3 transition-all duration-200 shadow-md active:scale-95
         ${isPlaying
           ? `bg-gradient-to-br ${theme.heroBgActive} text-white scale-[1.06]`
@@ -367,7 +375,7 @@ function ReviewSoundCard({ group, isPlaying, theme, onTap }: {
   return (
     <button
       onClick={onTap}
-      aria-label={`Play sound ${sounds.join(' or ')}`}
+      aria-label={tr('interactive.playSound', { sound: sounds.join(' / ') })}
       className={`flex items-center justify-center rounded-lg border px-2 py-2 transition-all duration-200 active:scale-95
         ${isPlaying
           ? `${theme.solidBg} text-white scale-110 shadow border-transparent`
@@ -426,8 +434,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
         <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${theme.textAccentMuted}`} />
         <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">New sounds in this book</h2>
       </div>
-      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
-        Tap each one to hear it. These are the sounds your child will practise.
+      {/* Grown-up guidance — translated (the page itself stays an English LTR island). */}
+      <p dir="auto" lang={i18n.language} className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
+        {tr('prep.tapToHear')}
       </p>
       {/* Optional teaching note — used when one grapheme has multiple sounds
        *  (e.g. L5.3 'ure' has both /jʊər/ and /ər/). */}
@@ -453,8 +462,8 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
       {/* ── Review sounds — accordion grouped by level ── */}
       {populatedLevels.length > 0 && (
         <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto">
-          <p className="text-xs md:text-sm text-slate-400 text-center mb-1 shrink-0">
-            Tap a level to see those sounds
+          <p dir="auto" lang={i18n.language} className="text-xs md:text-sm text-slate-400 text-center mb-1 shrink-0">
+            {tr('prep.tapLevel')}
           </p>
           {populatedLevels.map((lvl) => {
             const isOpen = openLevel === lvl;
@@ -610,7 +619,7 @@ function VocabCard({ word: w, size, isActive, theme, style, onTap }: {
       role="button"
       tabIndex={0}
       aria-pressed={isActive}
-      aria-label={`${w.word}. Tap to hear.`}
+      aria-label={tr('interactive.wordTapToHear', { word: w.word })}
       onClick={onTap}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -808,9 +817,9 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6"
           onClick={() => setImageExpanded(false)}>
           <div className="relative max-w-[90vw] max-h-[85vh]">
-            <img src={page.imageUrl} alt="Story illustration" className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
+            <img src={page.imageUrl} alt={tr('interactive.illustration')} className="max-w-full max-h-[85vh] rounded-3xl shadow-2xl object-contain" />
             <button onClick={(e) => { e.stopPropagation(); setImageExpanded(false); }}
-              aria-label="Close image"
+              aria-label={tr('interactive.closeImage')}
               className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white/80 hover:bg-white/30 hover:text-white transition-all shadow-lg">
               <X className="w-4 h-4" />
             </button>
@@ -823,10 +832,10 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
       <div className="hidden md:flex md:items-center md:justify-center md:flex-none md:p-4 md:h-full">
         <button
           onClick={() => setImageExpanded(true)}
-          aria-label="Expand illustration"
+          aria-label={tr('interactive.expandIllustration')}
           className={`${imgSize} rounded-3xl overflow-hidden shadow-xl flex-shrink-0 cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-200`}
         >
-          <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
+          <img src={page.imageUrl} alt={tr('interactive.illustration')} className="w-full h-full object-cover" draggable={false} />
         </button>
       </div>
 
@@ -840,8 +849,8 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
             ${showAnnotations
               ? 'bg-pink-500 text-white hover:bg-pink-600'
               : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-600'}`}
-          aria-label={showAnnotations ? 'Hide phonics hints' : 'Show phonics hints'}
-          title={showAnnotations ? 'Hide phonics hints' : 'Show phonics hints'}
+          aria-label={showAnnotations ? tr('interactive.hideHints') : tr('interactive.showHints')}
+          title={showAnnotations ? tr('interactive.hideHints') : tr('interactive.showHints')}
         >
           {showAnnotations ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
         </button>
@@ -883,10 +892,10 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
         <div className="md:hidden flex items-center justify-center p-2 flex-shrink-0">
           <button
             onClick={() => setImageExpanded(true)}
-            aria-label="Expand illustration"
+            aria-label={tr('interactive.expandIllustration')}
             className={`${imgSize} rounded-2xl overflow-hidden shadow-lg flex-shrink-0 cursor-pointer hover:shadow-2xl active:scale-[0.98] transition-all duration-200`}
           >
-            <img src={page.imageUrl} alt="Story illustration" className="w-full h-full object-cover" draggable={false} />
+            <img src={page.imageUrl} alt={tr('interactive.illustration')} className="w-full h-full object-cover" draggable={false} />
           </button>
         </div>
       </div>
@@ -947,7 +956,7 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
                     ${isPlaying
                       ? `${theme.heroBgActive} text-white scale-105 shadow-xl`
                       : `${theme.heroBgIdle} ${theme.heroText} shadow-md hover:shadow-lg hover:scale-[1.02]`}`}
-                  aria-label={`Play sound ${page.sound} (${v.label})`}
+                  aria-label={tr('interactive.playSoundVariant', { sound: page.sound, variant: v.label })}
                 >
                   <span className="text-2xl md:text-3xl lg:text-4xl">{page.sound}</span>
                 </button>
@@ -1014,7 +1023,7 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
             ${playingVariant === 'default'
               ? `${theme.heroBgActive} text-white scale-105 shadow-2xl`
               : `${theme.heroBgIdle} ${theme.heroText} shadow-xl hover:shadow-2xl hover:scale-[1.02]`}`}
-          aria-label={`Play sound ${page.sound}`}
+          aria-label={tr('interactive.playSound', { sound: page.sound })}
         >
           <span className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center">{page.sound}</span>
         </button>
@@ -1974,7 +1983,7 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
                     <span
                       className={`absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center text-xs font-bold shadow
                         ${checkInPassed ? 'bg-green-500 text-white' : 'bg-amber-400 text-white'}`}
-                      title={checkInPassed ? 'Check-in passed' : 'Check-in — keep practising'}
+                      title={checkInPassed ? tr('interactive.checkInPassed') : tr('interactive.checkInPractise')}
                     >
                       {checkInPassed ? '\u2713' : '\u2715'}
                     </span>
@@ -2038,6 +2047,7 @@ interface InteractiveBookReaderProps {
 const SWIPE_THRESHOLD = 50;
 
 export default function InteractiveBookReader({ book, onClose, onFinish, pages: pagesProp }: InteractiveBookReaderProps) {
+  const { t } = useTranslation('reader');
   const pages = pagesProp ?? INTERACTIVE_BOOKS[book.subLevel] ?? [];
   // Theme, header band and sound-grid grouping all follow the 8-level journey.
   // Library books still carry the legacy 6-level catalogue level, so place
@@ -2123,10 +2133,12 @@ export default function InteractiveBookReader({ book, onClose, onFinish, pages: 
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-amber-50 flex flex-col" style={{ ...ANDIKA, isolation: 'isolate' }}
+    // The whole book is English and turns left-to-right, even on an RTL site
+    // (LTR island). Only the controls' screen-reader labels are translated.
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[9999] bg-amber-50 flex flex-col" style={{ ...ANDIKA, isolation: 'isolate' }}
       onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div className="flex items-center justify-between px-4 py-2 z-10 shrink-0" style={{ backgroundColor: levelHex }}>
-        <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30" aria-label="Close book">
+        <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30" aria-label={t('closeBook')}>
           <X className="w-5 h-5 text-white" />
         </button>
         <h2 className="text-white font-semibold text-base truncate max-w-[240px]">{book.title}</h2>
@@ -2145,7 +2157,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish, pages: 
         <button
           onClick={goPrev}
           disabled={isFirst}
-          aria-label="Previous page"
+          aria-label={t('previousPage')}
           className="p-2 rounded-lg hover:bg-slate-100 disabled:opacity-20 mr-2"
         >
           <ChevronLeft className="w-5 h-5 text-slate-600" />
@@ -2157,7 +2169,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish, pages: 
         <span className="text-xs text-slate-400 font-medium ml-2 min-w-[40px]">{currentPage + 1}/{totalPages}</span>
         <button
           onClick={goNext}
-          aria-label={isLast ? 'Finish book' : 'Next page'}
+          aria-label={isLast ? t('finishBook') : t('nextPage')}
           className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? 'text-white rounded-xl px-4' : 'hover:bg-slate-100 text-slate-600'}`}
           style={isLast ? { backgroundColor: levelHex } : undefined}
         >

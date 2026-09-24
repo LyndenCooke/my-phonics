@@ -2,6 +2,7 @@ import {
   useCallback, useEffect, useMemo, useRef, useState, type ReactNode,
 } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 /**
  * FlipBook — a real book you can turn the pages of.
@@ -50,6 +51,7 @@ export default function FlipBook({
   className = "",
   onPageChange,
 }: FlipBookProps) {
+  const { t } = useTranslation("reader");
   const [wide, setWide] = useState(
     () => typeof window === "undefined" || window.matchMedia("(min-width: 640px)").matches,
   );
@@ -211,8 +213,12 @@ export default function FlipBook({
   );
 
   return (
+    // Books are English and bound on the left: the whole book (turns,
+    // swipes, arrow keys, counter) is an LTR island even on an RTL site.
     <div
       ref={fitRef}
+      dir="ltr"
+      lang="en"
       className={`flex w-full flex-col justify-center select-none ${fitHeight ? "h-full" : ""} ${className}`}
       style={fitHeight && fit.h ? { maxHeight: fit.h } : undefined}
     >
@@ -225,7 +231,7 @@ export default function FlipBook({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         role="group"
-        aria-label="Book preview — use the arrow keys to turn the pages"
+        aria-label={t("flipbook.groupAria")}
         className="relative mx-auto cursor-pointer outline-none"
         style={{
           width: bookWidth,
@@ -303,7 +309,7 @@ export default function FlipBook({
               type="button"
               onClick={prev}
               disabled={!canPrev}
-              aria-label="Previous page"
+              aria-label={t("previousPage")}
               className="rounded-full bg-white p-2 shadow-md transition disabled:opacity-30"
             >
               <ChevronLeft className="h-5 w-5 text-slate-700" />
@@ -321,7 +327,7 @@ export default function FlipBook({
               type="button"
               onClick={next}
               disabled={!canNext}
-              aria-label="Next page"
+              aria-label={t("nextPage")}
               className="rounded-full bg-white p-2 shadow-md transition disabled:opacity-30"
             >
               <ChevronRight className="h-5 w-5 text-slate-700" />

@@ -1,0 +1,92 @@
+{
+  "header": {
+    "badge": "Ulimwengu wa Vitabu",
+    "title": "Kila kitabu kinakupeleka mahali fulani",
+    "lead": "Zungusha dunia na uguse bendera ili kukutana na vitabu vinavyoishi huko — kutoka maktaba yetu, na vilivyotengenezwa na familia kama yako.",
+    "globe": "Dunia",
+    "byLevel": "Kwa kiwango"
+  },
+  "popup": {
+    "tapBook": "Gusa kitabu ili ukisome mtandaoni au ukichapishe nyumbani."
+  },
+  "shelf": {
+    "booksFrom": "Vitabu kutoka {{country}}"
+  },
+  "levelN": "Kiwango {{level}}",
+  "levelShort": "K{{level}}",
+  "familyMade": "cha familia",
+  "untitled": "Bila jina",
+  "ownBook": "Kitabu cha {{name}} mwenyewe",
+  "chooser": {
+    "readPlay": "Soma na ucheze — gusa kila neno",
+    "turnPages": "Fungua kurasa",
+    "readOnline": "Soma mtandaoni",
+    "print": "Chapisha nyumbani",
+    "signInToRead": "Ingia ili usome kitabu hiki.",
+    "freeInLibrary": "Kitabu hiki kinasomwa bure kwenye maktaba.",
+    "openLibrary": "Fungua maktaba",
+    "familyLocked": "Vitabu vya familia hufunguka kwa ufikiaji wa Ulimwengu wa Vitabu."
+  },
+  "download": {
+    "notAvailable": "Upakuaji haupatikani.",
+    "tryAgainSoon": "Jaribu tena baada ya muda mfupi.",
+    "failed": "Upakuaji umeshindwa",
+    "pdfUnavailable": "Faili ya PDF haipatikani"
+  },
+  "wall": {
+    "title": "Ukuta wa Upendo",
+    "lead": "Maneno halisi kutoka kwa familia halisi.",
+    "aParent": "Mzazi",
+    "readAll": "Soma ukuta wote"
+  },
+  "cta": {
+    "title": "Bendera inayofuata kwenye dunia hii inaweza kuwa yako",
+    "body": "Tengeneza kitabu halisi kinachosomeka chenye mtoto wako kama nyota — jina lake, nyumbani kwake, hadithi yake.",
+    "button": "Tengeneza kitabu chake — {{price}}"
+  },
+  "globe": {
+    "aria": "Dunia inayoonyesha mahali hadithi ya kila kitabu inapotokea",
+    "pinTitle_one": "{{country}} — kitabu {{count}}",
+    "pinTitle_other": "{{country}} — vitabu {{count}}",
+    "zoomIn": "Kuza",
+    "zoomOut": "Punguza",
+    "reset": "Weka dunia upya",
+    "hint": "buruta kuzungusha · sogeza kukuza · gusa bendera",
+    "alsoFrom": "Pia kutoka {{list}}"
+  },
+  "settings": {
+    "L1_1": "Asubuhi yenye shughuli nyumbani",
+    "L1_2": "Bustani ya Uingereza yenye matope",
+    "L1_3": "Mnyama kipenzi mpya anafika nyumbani",
+    "L1_4": "Utundu wa siku ya kufua nyumbani",
+    "L1_5": "Mbio katika bustani ya Uingereza",
+    "L1_6": "Safari ya kusisimua katika msitu wa Uingereza",
+    "L1_7": "Soko lenye shamrashamra",
+    "L1_8": "Kijiji cha Himalaya nchini Nepal",
+    "L1_9": "Jiko la familia nchini Pakistan",
+    "L1_10": "Bustani ya Karibiani huko Trinidad",
+    "L2_1": "Bustani ya Kijapani baada ya giza",
+    "L2_2": "Soko la usiku la vyakula vya mitaani la Uingereza",
+    "L2_3": "Shamba katika nyanda za juu za Kenya",
+    "L2_4": "Maonyesho ya kijiji nchini Uingereza",
+    "L2_5": "Reykjavik yenye theluji, Aisilandi",
+    "L2_6": "Soko la usiku la mtindo wa Marrakech",
+    "L3_1": "Mashambani mwa Ufaransa katikati ya mbio",
+    "L3_2": "Soko la usiku la Bangkok",
+    "L3_3": "Makazi ya familia huko Accra",
+    "L3_4": "Chumba cha sanaa huko Seoul",
+    "L3_5": "Ufukwe wa Ghuba ya Paria, Port of Spain",
+    "L4_1": "Mitaa ya Istanbul",
+    "L4_2": "Msitu wa Uingereza wakati wa machweo",
+    "L4_3": "Nyumba ya familia huko Oaxaca",
+    "L4_4": "Putrajaya, Malaysia",
+    "L5_1": "Jumuiya ya Kiyahudi Kaskazini mwa London",
+    "L5_2": "Majira ya baridi yenye theluji huko Stockholm",
+    "L5_3": "Paa la nyumba huko Jaipur wakati wa tamasha la tiara",
+    "L5_4": "Soko la matunda la asubuhi huko Cartagena",
+    "L6_1": "Mtaa mmoja huko Cairo",
+    "L6_2": "Tamasha la Taa huko Guilin",
+    "L6_3": "Kijiji juu ya genge katika Pwani ya Amalfi",
+    "L6_4": "Pori la Blue Mountains"
+  }
+}

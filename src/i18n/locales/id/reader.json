@@ -1,0 +1,70 @@
+{
+  "closeBook": "Tutup buku",
+  "pageAlt": "{{title}} — halaman {{page}}",
+  "pageLoadError": "Halaman ini tidak dapat dimuat.",
+  "pageLoadErrorHint": "Periksa koneksi Anda dan coba lagi.",
+  "pagesUnavailable": "Gambar halaman tidak tersedia",
+  "previousPage": "Halaman sebelumnya",
+  "nextPage": "Halaman berikutnya",
+  "goToPage": "Ke halaman {{page}}",
+  "finishBook": "Selesaikan buku",
+  "tapToHear": "Ketuk untuk mendengar \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Pratinjau buku — gunakan tombol panah untuk membalik halaman"
+  },
+  "quiz": {
+    "saveFailed": "Gagal menyimpan hasil kuis",
+    "completeAria": "Kuis selesai",
+    "perfect": "Nilai sempurna!",
+    "wellDone": "Bagus sekali!",
+    "scored": "Anda mendapat <b>{{score}}</b> dari <b>{{total}}</b>",
+    "tryAgain": "Coba lagi",
+    "dialogAria": "Kuis: {{title}}",
+    "close": "Tutup kuis",
+    "answerOptions": "Pilihan jawaban",
+    "seeResults": "Lihat hasil"
+  },
+  "audio": {
+    "playSoundTitle": "Putar bunyi \"{{grapheme}}\"",
+    "playSoundAria": "Putar bunyi untuk grafem {{grapheme}}",
+    "playWordTitle": "Putar \"{{word}}\"",
+    "playWordAria": "Putar kata {{word}}"
+  },
+  "soundMap": {
+    "known": "Sudah dikuasai ({{n}})",
+    "toLearn": "Perlu dipelajari ({{n}})",
+    "notTestedCount": "Belum diuji ({{n}})",
+    "notTested": "Belum diuji",
+    "levelHeading": "Level {{level}}",
+    "levelsNotTested": "Level {{levels}} belum diuji",
+    "status": {
+      "known": "sudah dikuasai",
+      "unknown": "perlu dipelajari",
+      "untested": "belum diuji"
+    },
+    "categories": {
+      "sound_recognition": "Bunyi",
+      "word_reading": "Kata Nyata",
+      "alien_words": "Alien Words (kata rekaan)",
+      "tricky_words": "Tricky Words (kata sulit)",
+      "speedy_reading": "Membaca Cepat",
+      "fluency": "Kelancaran"
+    }
+  },
+  "interactive": {
+    "playSound": "Putar bunyi {{sound}}",
+    "playSoundVariant": "Putar bunyi {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Ketuk untuk mendengar.",
+    "illustration": "Ilustrasi cerita",
+    "closeImage": "Tutup gambar",
+    "expandIllustration": "Perbesar ilustrasi",
+    "hideHints": "Sembunyikan petunjuk fonik",
+    "showHints": "Tampilkan petunjuk fonik",
+    "checkInPassed": "Cek berkala lulus",
+    "checkInPractise": "Cek berkala — terus berlatih"
+  },
+  "prep": {
+    "tapToHear": "Ketuk masing-masing untuk mendengarnya. Inilah bunyi-bunyi yang akan dilatih anak Anda.",
+    "tapLevel": "Ketuk sebuah level untuk melihat bunyi-bunyinya"
+  }
+}

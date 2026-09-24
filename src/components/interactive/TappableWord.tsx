@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { StoryWord } from '@/lib/interactiveBookData';
 import { hapticLight } from '@/lib/native';
+import { useTranslation } from 'react-i18next';
 
 // ─── Audio helpers ─────────────────────────────────────────────────────
 
@@ -177,6 +178,7 @@ export default function TappableWord({
   showAnnotations = false,
   wholeWordOnly = false,
 }: TappableWordProps) {
+  const { t } = useTranslation('reader');
   const [isSoundingOut, setIsSoundingOut] = useState(false);
   const [activePhonemeIdx, setActivePhonemeIdx] = useState<number | null>(null);
   const [tapped, setTapped] = useState(false);
@@ -298,7 +300,7 @@ export default function TappableWord({
           onClick={handleTap}
           className={`${textSize} font-bold ${wordPad} rounded-xl transition-colors duration-200 ${colour} hover:bg-pink-50`}
           style={{ fontFamily: "'Andika', sans-serif" }}
-          aria-label={`Tap to hear "${wordData.word}"`}
+          aria-label={t('tapToHear', { word: wordData.word })}
         >
           {wordData.display}
         </button>
@@ -335,7 +337,7 @@ export default function TappableWord({
                 : 'text-slate-800 hover:bg-pink-50 active:scale-95'
           }
         `}
-        aria-label={`Tap to hear "${wordData.word}"`}
+        aria-label={t('tapToHear', { word: wordData.word })}
         style={{ fontFamily: "'Andika', sans-serif" }}
       >
         {(showAnnotations && spans) ? (

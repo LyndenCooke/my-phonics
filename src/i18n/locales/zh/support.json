@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "一杯咖啡",
+    "book": "一本书",
+    "level": "一个级别",
+    "shelf": "一整个书架"
+  },
+  "errors": {
+    "amountRange": "请输入 £1 到 £500 之间的金额。",
+    "amountRangeShort": "请输入 £1 到 £500 之间的金额。",
+    "signInFirst": "请先登录。",
+    "checkoutFailed": "无法开始付款"
+  },
+  "page": {
+    "title": "支持 MyPhonicsBooks",
+    "sticker": "每个家庭都免费",
+    "heading": "一切免费，支持随意。",
+    "intro": "MyPhonicsBooks 由一个小团队打造。如果它帮助了您的孩子学会阅读，任何金额的心意都能让下一个家庭继续免费使用。",
+    "alwaysFree": "永远免费",
+    "free": {
+      "books": "全部 33 本故事书，共八个级别——在线阅读，无需注册账户",
+      "games": "所有自然拼读游戏，免费畅玩",
+      "pdfs": "每本书和每张练习纸的可打印 PDF——注册免费账户即可免费下载",
+      "check": "3 分钟自然拼读水平测试和学习进度跟踪"
+    },
+    "downloadsNote": "下载需要一个免费账户，这样我们才能确保可打印的 PDF 只供家庭和课堂使用——不得转售。",
+    "createAccount": "创建免费账户",
+    "cardTitle": "支持 MyPhonicsBooks",
+    "cardSubtitle": "金额随意 · 一次性 · 不是订阅",
+    "alreadySupported": "谢谢您——您已经支持过我们了。",
+    "otherAmount": "或输入其他金额",
+    "customAria": "自定义支持金额（英镑）",
+    "supportWith": "支持 {{amount}}",
+    "signInToSupport": "登录后支持",
+    "stripeNote": "由 Stripe 提供安全的银行卡支付。付款不会解锁或锁定任何内容——这是一份感谢，不是收费。",
+    "createBookNote": "想要一本专属定制的书吗？<link>定制一本书</link>只需 £4.99，World of Books 一次性 £10。"
+  },
+  "prompt": {
+    "title": "注册成功——一切都免费",
+    "body": "每一本书、每一个游戏和每一张练习纸都免费供您使用。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点小小的心意，让其他家庭也能继续免费使用。完全自愿。",
+    "differentAmount": "选择其他金额",
+    "maybeLater": "以后再说——带我去看书"
+  }
+}

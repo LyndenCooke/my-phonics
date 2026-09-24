@@ -22,6 +22,7 @@ import { useMemo, useState } from 'react';
 import { getAllStamps, type BookStamps } from '@/lib/stamps';
 import { INTERACTIVE_BOOKS, type InteractivePage } from '@/lib/interactiveBookData';
 import { Calendar, Volume2, BookOpen, Star, ToggleLeft, ToggleRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // ─── Curriculum sound mapping (used by SoundBreakdown) ──────────────────
 // Source of truth lives in InteractiveBookReader.tsx (GRAPHEME_LEVEL); this
@@ -106,6 +107,11 @@ function cellShade(count: number): string {
 }
 
 function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> }) {
+  const { t, i18n } = useTranslation('dashboard');
+  // Mon→Sun short names in the parent's language (2024-01-01 was a Monday).
+  const weekdayLabels = Array.from({ length: 7 }, (_, i) =>
+    new Date(2024, 0, 1 + i).toLocaleDateString(i18n.language, { weekday: 'short' }),
+  );
   const weeks = useMemo(() => buildHeatMap(allStamps), [allStamps]);
   const totalReads = useMemo(
     () => Object.values(allStamps).reduce((sum, s) => sum + s.readDates.length, 0),
@@ -125,7 +131,7 @@ function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> 
     const firstDate = new Date(col[0].date);
     const m = firstDate.getMonth();
     if (m !== lastMonth) {
-      monthLabels.push({ col: ci, label: firstDate.toLocaleString('en', { month: 'short' }) });
+      monthLabels.push({ col: ci, label: firstDate.toLocaleString(i18n.language, { month: 'short' }) });
       lastMonth = m;
     }
   });
@@ -134,14 +140,15 @@ function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> 
     <div className="bg-card rounded-2xl border border-border p-5 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-primary" /> Reading Activity
+          <Calendar className="w-4 h-4 text-primary" /> {t('child.activity')}
         </h3>
         <span className="text-xs text-muted-foreground">
-          {activeDays} {activeDays === 1 ? 'day' : 'days'} · {totalReads} {totalReads === 1 ? 'read' : 'reads'}
+          {t('child.days', { count: activeDays })} · {t('child.reads', { count: totalReads })}
         </span>
       </div>
 
-      <div className="overflow-x-auto -mx-2 px-2">
+      {/* The calendar grid is a chart — it stays left-to-right (oldest → today). */}
+      <div dir="ltr" className="overflow-x-auto -mx-2 px-2">
         <div className="inline-block min-w-full">
           {/* Month labels row */}
           <div className="flex gap-[2px] ml-7 mb-1 select-none">
@@ -158,8 +165,8 @@ function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> 
           <div className="flex">
             {/* Day-of-week labels */}
             <div className="flex flex-col gap-[2px] mr-1 select-none">
-              {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => (
-                <div key={d} className="h-[10px] text-[9px] text-muted-foreground leading-[10px] pr-1 text-right w-6">
+              {weekdayLabels.map((d, i) => (
+                <div key={i} className="h-[10px] text-[9px] text-muted-foreground leading-[10px] pr-1 text-right w-6">
                   {i % 2 === 0 ? d : ''}
                 </div>
               ))}
@@ -172,7 +179,7 @@ function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> 
                     <div
                       key={cell.date}
                       className={`w-[10px] h-[10px] rounded-[2px] ${cellShade(cell.count)}`}
-                      title={`${cell.date}: ${cell.count} ${cell.count === 1 ? 'read' : 'reads'}`}
+                      title={t('child.cellTitle', { date: new Date(`${cell.date}T00:00:00`).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short', year: 'numeric' }), count: cell.count })}
                     />
                   ))}
                 </div>
@@ -183,12 +190,12 @@ function ActivityHeatMap({ allStamps }: { allStamps: Record<string, BookStamps> 
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-1.5 mt-3 text-xs text-muted-foreground">
-        <span>Less</span>
+      <div dir="ltr" className="flex items-center justify-end gap-1.5 mt-3 text-xs text-muted-foreground">
+        <span>{t('child.less')}</span>
         {['bg-slate-200','bg-emerald-300','bg-emerald-400','bg-emerald-500','bg-emerald-600'].map(c => (
           <div key={c} className={`w-[10px] h-[10px] rounded-[2px] ${c}`} />
         ))}
-        <span>More</span>
+        <span>{t('child.more')}</span>
       </div>
     </div>
   );
@@ -214,6 +221,7 @@ function buildSoundIndex(): Map<string, Set<string>> {
 
 function SoundBreakdown({ allStamps }: { allStamps: Record<string, BookStamps> }) {
   const [showOnly, setShowOnly] = useState<'all' | 'practised'>('all');
+  const { t } = useTranslation('dashboard');
 
   const soundIndex = useMemo(() => buildSoundIndex(), []);
   // Books with at least one stamp = books the child has opened and read.
@@ -238,14 +246,14 @@ function SoundBreakdown({ allStamps }: { allStamps: Record<string, BookStamps> }
     <div className="bg-card rounded-2xl border border-border p-5 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-          <Volume2 className="w-4 h-4 text-primary" /> Sounds Covered
+          <Volume2 className="w-4 h-4 text-primary" /> {t('child.soundsCovered')}
         </h3>
         <button
           onClick={() => setShowOnly(showOnly === 'all' ? 'practised' : 'all')}
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5"
         >
           {showOnly === 'all' ? <ToggleLeft className="w-5 h-5" /> : <ToggleRight className="w-5 h-5 text-primary" />}
-          <span>{showOnly === 'all' ? 'All sounds' : 'Practised only'}</span>
+          <span>{showOnly === 'all' ? t('child.allSounds') : t('child.practisedOnly')}</span>
         </button>
       </div>
 
@@ -261,11 +269,11 @@ function SoundBreakdown({ allStamps }: { allStamps: Record<string, BookStamps> }
             <div key={lvl}>
               <div className="flex items-center gap-2 mb-2">
                 <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${accent}`}>
-                  Level {lvl}
+                  {t('levelN', { n: lvl })}
                 </span>
-                <span className="text-xs text-muted-foreground">{LEVEL_NAMES[lvl]}</span>
+                <span lang="en" className="text-xs text-muted-foreground">{LEVEL_NAMES[lvl]}</span>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div dir="ltr" lang="en" className="flex flex-wrap gap-1.5">
                 {visibleSounds.map((s) => {
                   const n = soundReadBookCount(s);
                   const practised = n > 0;
@@ -274,7 +282,7 @@ function SoundBreakdown({ allStamps }: { allStamps: Record<string, BookStamps> }
                       key={s}
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-sm font-bold border
                         ${practised ? `${accent}` : 'border-slate-200 bg-slate-50 text-slate-400'}`}
-                      title={practised ? `${n} ${n === 1 ? 'book' : 'books'} read with this sound` : 'Not yet practised'}
+                      title={practised ? t('child.soundBooks', { count: n }) : t('child.notPractised')}
                     >
                       {s}
                       {practised && (
@@ -295,6 +303,7 @@ function SoundBreakdown({ allStamps }: { allStamps: Record<string, BookStamps> }
 // ─── Top-line summary cards ─────────────────────────────────────────────
 
 function ProgressSummary({ allStamps }: { allStamps: Record<string, BookStamps> }) {
+  const { t } = useTranslation('dashboard');
   const stats = useMemo(() => {
     const booksOpened = Object.values(allStamps).filter(s => s.count > 0).length;
     const champions = Object.values(allStamps).filter(s => s.count >= 5).length;
@@ -324,10 +333,10 @@ function ProgressSummary({ allStamps }: { allStamps: Record<string, BookStamps> 
 
   return (
     <div className="grid grid-cols-4 gap-2 mb-4">
-      <Card icon={BookOpen} label="Books read" value={stats.booksOpened} accent="bg-tint-pink text-primary" />
-      <Card icon={Star} label="Stamps" value={stats.totalStamps} accent="bg-amber-100 text-amber-600" />
-      <Card icon={Volume2} label="Champions" value={stats.champions} accent="bg-emerald-100 text-emerald-600" />
-      <Card icon={Calendar} label="At level" value={stats.highestLevel || '—'} accent="bg-purple-100 text-purple-600" />
+      <Card icon={BookOpen} label={t('child.booksRead')} value={stats.booksOpened} accent="bg-tint-pink text-primary" />
+      <Card icon={Star} label={t('child.stamps')} value={stats.totalStamps} accent="bg-amber-100 text-amber-600" />
+      <Card icon={Volume2} label={t('child.champions')} value={stats.champions} accent="bg-emerald-100 text-emerald-600" />
+      <Card icon={Calendar} label={t('child.atLevel')} value={stats.highestLevel || '—'} accent="bg-purple-100 text-purple-600" />
     </div>
   );
 }
@@ -338,18 +347,18 @@ export function ChildProgress({ childName }: { childName?: string }) {
   // Re-read on mount; the parent component is unlikely to keep this open
   // while a child is reading, and stamps.ts has no notification mechanism.
   const allStamps = useMemo(() => getAllStamps(), []);
+  const { t } = useTranslation('dashboard');
   const hasAny = Object.keys(allStamps).length > 0;
 
   return (
     <div className="space-y-4 mb-6">
       <h3 className="text-sm font-bold text-foreground">
-        {childName ? `${childName}'s Progress` : "Child's Progress"}
+        {childName ? t('child.titleNamed', { name: childName }) : t('child.title')}
       </h3>
       {!hasAny && (
         <div className="bg-card rounded-2xl border border-border p-5 shadow-card text-center">
           <p className="text-sm text-muted-foreground">
-            No reading activity yet on this device. Once your child reads a book, stamps
-            and progress will appear here.
+            {t('child.empty')}
           </p>
         </div>
       )}

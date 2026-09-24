@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "Nama depan anak",
+    "childNameOptional": "Nama depan anak (opsional)",
+    "emailPlaceholder": "Alamat email Anda",
+    "consent": "Saya setuju menerima materi phonics gratis melalui email. Bisa berhenti berlangganan kapan saja.",
+    "sendFreeBook": "Kirimkan Buku Gratis Saya",
+    "loginLinkKeep": "Kami akan mengirim tautan login lewat email agar buku ini menjadi milik Anda selamanya.",
+    "signupFailed": "Pendaftaran gagal",
+    "checkEmail": "Cek {{email}} untuk tautan login Anda",
+    "levelBookFallback": "Buku Level {{level}}",
+    "browseLibrary": "Jelajahi Perpustakaan"
+  },
+  "emailCapture": {
+    "defaultButton": "Mulai Sekarang",
+    "footer": "Gratis — tanpa kartu kredit. Berdasarkan Letters and Sounds."
+  },
+  "quickScreening": {
+    "title": "Tes Singkat",
+    "instructionsNamed": "Minta {{name}} membaca setiap kata. Ketuk tanda centang jika benar.",
+    "instructionsAnon": "Minta anak Anda membaca setiap kata. Ketuk tanda centang jika benar.",
+    "levelWord": "Kata Level {{level}}",
+    "hearWord": "Dengarkan kata",
+    "progress": "{{current}} dari {{total}}",
+    "notQuite": "Belum tepat",
+    "gotIt": "Benar!"
+  },
+  "assessmentFunnel": {
+    "title": "Temukan <hl>level membaca</hl> anak Anda",
+    "subtitle": "Pilih seberapa mendalam tes yang Anda inginkan.",
+    "rapidTitle": "Cek 3 menit",
+    "rapidDesc": "Tes bunyi adaptif yang cepat. Cocok jika Anda hanya ingin tahu titik awalnya.",
+    "fullTitle": "Tes mendalam 10 menit",
+    "fullDesc": "Bunyi, kata nyata, kata alien, dan Tricky Words di setiap level.",
+    "footer": "Dapatkan buku gratis sesuai levelnya setelah selesai. Tanpa kartu kredit.",
+    "freeBookTitle": "Ke mana kami kirimkan buku gratis Anda?",
+    "paidTitle": "Satu langkah lagi sebelum pembayaran",
+    "paidSubtitle": "Kami akan mengirim tautan login segera setelah pembayaran, sehingga ke-32 buku menjadi milik Anda.",
+    "continueToCheckout": "Lanjut ke Pembayaran",
+    "checkoutFailed": "Tidak dapat memulai pembayaran",
+    "missingBundle": "Paket buku tidak ditemukan. Silakan hubungi dukungan.",
+    "missingMonthly": "Paket bulanan tidak ditemukan. Silakan hubungi dukungan."
+  },
+  "assessmentResult": {
+    "wellDone": "Hebat!",
+    "wellDoneNamed": "Hebat, {{name}}!",
+    "isAtNamed": "{{name}} berada di <b>Level {{level}}: {{levelName}}</b>",
+    "isAtAnon": "Anak Anda berada di <b>Level {{level}}: {{levelName}}</b>",
+    "unlocked": "Anda telah membuka 1 buku interaktif gratis!",
+    "matchedNamed": "Buku Level {{level}} yang sangat pas dengan kemampuan membaca {{name}}.",
+    "matchedAnon": "Buku Level {{level}} yang sangat pas dengan kemampuan membaca anak Anda."
+  },
+  "bundleUpsell": {
+    "coverAlt": "Level {{level}} — {{title}}",
+    "title": "Ingin membuka semua buku?",
+    "subtitleNamed": "{{count}} buku, semua level — untuk menemani {{name}} bertumbuh.",
+    "subtitleAnon": "{{count}} buku, semua level — untuk menemani anak Anda bertumbuh.",
+    "oneTime": "sekali bayar",
+    "benefitAllBooks": "Semua {{count}} buku interaktif di keenam level",
+    "benefitQuizzes": "Kuis pemahaman setelah setiap cerita",
+    "benefitProgress": "Pantau kemajuan di seluruh perpustakaan",
+    "benefitForever": "Milik Anda selamanya — tanpa langganan",
+    "benefitWorld": "Cerita dari seluruh dunia",
+    "accept": "Ya — buka semua buku £{{price}}",
+    "decline": "Tidak, terima kasih. Buku gratis saja"
+  },
+  "monthlyDownsell": {
+    "title": "Tunggu — bagaimana dengan ini?",
+    "body": "Buka <b>semua buku di keenam level</b> hanya £4.99/bulan. Bisa dibatalkan kapan saja.",
+    "monthlyAccess": "Akses bulanan",
+    "perMonth": "/bulan",
+    "allLevels": "Semua level. Semua buku. Batalkan kapan saja.",
+    "benefitEveryBook": "Semua buku interaktif di keenam level",
+    "benefitNewBooks": "Buku baru ditambahkan begitu terbit",
+    "benefitMoveUpNamed": "{{name}} naik level seiring kemajuannya",
+    "benefitMoveUpAnon": "Anak Anda naik level seiring kemajuannya",
+    "accept": "Mulai dengan £4.99/bulan",
+    "decline": "Tidak, terima kasih. Buku gratis saja"
+  },
+  "freeAssessment": {
+    "resultLabel": "Level membacanya",
+    "level": "Level {{level}}",
+    "freeUnlocked": "Buku gratis terbuka",
+    "saveTitle": "Simpan hasil & dapatkan buku Anda"
+  },
+  "freeBook": {
+    "pickTitle": "Pilih buku gratis <hl>untuk anak Anda</hl>",
+    "pickSubtitle": "Ketuk levelnya. Kami akan membuka satu buku yang sesuai — gratis, tanpa kartu.",
+    "coverAlt": "Contoh sampul Level {{level}}",
+    "notSure": "Belum yakin? Ikuti penilaian 3 menit",
+    "emailTitle": "Satu buku Level {{level}} gratis <hl>segera hadir</hl>",
+    "emailSubtitle": "Masukkan email Anda dan kami akan membukanya sekarang.",
+    "unlockButton": "Buka Buku Gratis Saya",
+    "pickDifferent": "Pilih level lain"
+  },
+  "linkTree": {
+    "tagline": "Buku decodable yang pas dengan level anak Anda",
+    "wrongBooks": "Apakah buku yang salah melemahkan rasa percaya diri anak?",
+    "freeAssessment": "Penilaian phonics gratis — temukan levelnya",
+    "threeMinute": "Cek level 3 menit + materi gratis",
+    "theGap": "Buku yang mereka sukai dan benar-benar bisa mereka baca",
+    "footer": "Berdasarkan Letters and Sounds (kurikulum phonics Inggris)"
+  },
+  "theGap": {
+    "boring": "membosankan",
+    "tooHard": "terlalu sulit",
+    "vs": "vs",
+    "title": "Buku membosankan yang <em>bisa</em> mereka baca.<br/>Buku seru yang <hl>tidak bisa</hl>.",
+    "whyBoth": "Kenapa tidak keduanya?",
+    "body": "Cerita yang akan mereka sukai dan sesuai persis dengan apa yang bisa mereka baca. Tepat secara phonics dan berwawasan global.",
+    "diffTitle": "Yang membuat buku-buku ini berbeda:",
+    "diffDecodable": "Setiap kata bisa dibaca sesuai level mereka",
+    "diffStories": "Cerita sungguhan dengan perjalanan emosional, bukan bacaan datar",
+    "diffCultures": "Berlatar budaya dari seluruh dunia — Jepang, Kenya, Maroko...",
+    "diffCurriculum": "Berdasarkan kurikulum phonics Inggris",
+    "button": "Dapatkan Buku Gratis"
+  },
+  "threeMinute": {
+    "title": "<hl>3 menit</hl> untuk menemukan level membaca anak yang tepat",
+    "subtitle": "Berhenti menebak. Dapatkan jawaban pasti dan materi gratis yang sesuai untuknya.",
+    "step1": "Penilaian singkat mengecek bunyi apa saja yang sudah dikuasai",
+    "step2": "Langsung ketahui level tepatnya (1-6)",
+    "step3": "Akses buku gratis sesuai levelnya",
+    "button": "Cek Levelnya"
+  },
+  "wrongBooks": {
+    "title": "Buku yang salah <hl>mematikan rasa percaya diri</hl>",
+    "tooHard": "Terlalu sulit = frustrasi. Terlalu mudah = bosan.",
+    "body": "Temukan level tepatnya dalam 3 menit dan buka buku gratis yang sesuai dengan kemampuan membacanya.",
+    "getTitle": "Yang akan Anda dapatkan:",
+    "itemScreening": "Tes phonics singkat (6 kata)",
+    "itemFreeBook": "1 buku interaktif gratis sesuai levelnya",
+    "itemCurriculum": "Berdasarkan kurikulum phonics Inggris",
+    "button": "Temukan Levelnya"
+  }
+}

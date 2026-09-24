@@ -1,0 +1,430 @@
+{
+  "backToDashboard": "Panoya dön",
+  "couldNotSave": "Kaydedilemedi",
+  "errors": {
+    "downloadUnavailable": "İndirme kullanılamıyor",
+    "unavailable": "Kullanılamıyor"
+  },
+  "counts": {
+    "classroom_one": "{{count}} sınıf",
+    "classroom_other": "{{count}} sınıf",
+    "student_one": "{{count}} öğrenci",
+    "student_other": "{{count}} öğrenci",
+    "book_one": "{{count}} kitap",
+    "book_other": "{{count}} kitap",
+    "admin_one": "{{count}} yönetici",
+    "admin_other": "{{count}} yönetici",
+    "teacher_one": "{{count}} öğretmen",
+    "teacher_other": "{{count}} öğretmen"
+  },
+  "block": {
+    "blockOf": "Blok {{n}} / {{total}}",
+    "block": "Blok {{n}}",
+    "levelReview": "Seviye tekrarı",
+    "reviewGate": "Tekrar · seviye kapısı"
+  },
+  "judgement": {
+    "continue": "Devam",
+    "ready_soon": "Yakında hazır",
+    "needs_support": "Desteğe ihtiyacı var"
+  },
+  "windows": {
+    "autumn1": "Güz 1",
+    "autumn2": "Güz 2",
+    "spring1": "Bahar 1",
+    "spring2": "Bahar 2",
+    "summer1": "Yaz 1",
+    "summer2": "Yaz 2"
+  },
+  "colours": {
+    "pink": "Pembe",
+    "coral": "Mercan",
+    "amber": "Kehribar",
+    "green": "Yeşil",
+    "blue": "Mavi",
+    "indigo": "Çivit mavisi",
+    "purple": "Mor",
+    "teal": "Camgöbeği"
+  },
+  "status": {
+    "complete": "Tamamlandı",
+    "inProgress": "Devam ediyor",
+    "notStarted": "Başlanmadı",
+    "next": "Sıradaki",
+    "upcoming": "Yaklaşan"
+  },
+  "outcomes": {
+    "readyUp": "Üst seviyeye geçmeye hazır",
+    "staying": "Seviyede kalıyor",
+    "intervention": "Müdahale gerekiyor",
+    "stillToAssess": "Henüz değerlendirilmedi"
+  },
+  "home": {
+    "loadFailed": "Sınıflar yüklenemedi",
+    "createFailed": "Sınıf oluşturulamadı",
+    "created": "Sınıf oluşturuldu",
+    "seed": {
+      "confirm": "Demo veriler yüklensin mi?\n\nBu işlem bu okuldaki TÜM sınıfları ve öğrencileri SİLER ve yerlerine bir demo set koyar. Geri alınamaz.\n\nBunu yalnızca demo/test okulunda yapın.",
+      "failed": "Veri yükleme başarısız oldu",
+      "done": "Demo veriler yüklendi",
+      "doneBody": "{{classrooms}} sınıf, {{students}} öğrenci.",
+      "title": "Demo okul kurun",
+      "body": "Bu okulu gerçekçi, her sınıf düzeyinde iki şubeli bir setle doldurur — 6 sınıf, sınıf düzeyleri arasında seviyeye göre gruplanmış yaklaşık 160 öğrenci. Mevcut tüm sınıfların yerini alır.",
+      "button": "Demo veri yükle"
+    },
+    "welcome": "{{school}} okuluna hoş geldiniz",
+    "yourSchool": "okulunuz",
+    "firstClassroom": "Haydi ilk sınıfınızı oluşturalım.",
+    "stats": {
+      "total": "Toplam öğrenci",
+      "assessed": "Değerlendirildi",
+      "notAssessed": "Henüz değerlendirilmedi",
+      "levelsActive": "Etkin seviyeler"
+    },
+    "actions": {
+      "title": "Yapılması gerekenler",
+      "unassessed_one": "{{count}} çocuk henüz değerlendirilmedi",
+      "unassessed_other": "{{count}} çocuk henüz değerlendirilmedi",
+      "stuck_one": "{{count}} çocuk 4+ haftadır aynı seviyede",
+      "stuck_other": "{{count}} çocuk 4+ haftadır aynı seviyede",
+      "stale_one": "{{count}} sınıfta bu ay değerlendirme yapılmadı",
+      "stale_other": "{{count}} sınıfta bu ay değerlendirme yapılmadı",
+      "assess": "Değerlendir",
+      "review": "İncele",
+      "open": "Aç"
+    },
+    "distribution": "Okul genelinde seviye dağılımı",
+    "quick": {
+      "groups": {
+        "title": "Fonik grupları",
+        "body": "Destek çalışmaları için öğrencileri seviyeye göre gruplayın."
+      },
+      "pathway": {
+        "title": "Öğretim yolu",
+        "body": "Ses Kitabı → Birleştirme Kitabı → Hikâye Kitabı."
+      },
+      "library": {
+        "title": "Kütüphane",
+        "body": "118 kitap + çalışma kâğıdı, yazdırmaya hazır."
+      },
+      "curriculum": {
+        "title": "Müfredat",
+        "body": "Birleşik Krallık, Körfez, Pakistan, ABD ve IB ile uyumlu."
+      }
+    },
+    "classrooms": "Sınıflar",
+    "newClassroom": "Yeni sınıf",
+    "className": "Sınıf adı",
+    "classNamePlaceholder": "ör. Kiraz Sınıfı",
+    "yearGroup": "Sınıf düzeyi",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "Oluştur",
+    "emptyTitle": "Henüz sınıf yok",
+    "emptyBody": "Öğrenci eklemek ve değerlendirme yapmak için ilk sınıfınızı oluşturun.",
+    "createClassroom": "Sınıf oluştur",
+    "toAssess": "{{count}} değerlendirilecek"
+  },
+  "dashboard": {
+    "title": "8 seviyeli müfredat",
+    "intro": "Letters and Sounds tarzı bir yapıda İngiliz fonik ilerlemesi — Ses Kitapları, Birleştirme Kitapları ve Hikâye Kitaplarından oluşan sekiz seviye; uyumlu çalışma kâğıtları, ses panoları ve Tricky Words (zor kelimeler) kartlarıyla birlikte.",
+    "levels": "Seviyeler",
+    "resourcesPlanned": "Planlanan kaynaklar",
+    "stats": {
+      "storybooks": "Hikâye Kitapları",
+      "storybooksHint": "resimli anlatılar",
+      "soundBooks": "Ses Kitapları",
+      "soundBooksHint": "gerçek fotoğraf, her harf-ses eşleşmesi için 1",
+      "blendingBooks": "Birleştirme Kitapları",
+      "blendingBooksHint": "A6 hikâye öncesi alıştırma",
+      "total": "Toplam kitap",
+      "totalHint": "8 seviyede"
+    },
+    "nav": {
+      "levels": {
+        "title": "Seviyeler",
+        "body": "Harf-ses eşleşmeleri, zor kelimeler ve eksiksiz kaynak planıyla {{count}} seviye."
+      },
+      "library": {
+        "title": "Kütüphane",
+        "body": "Yeni yapıya göre gruplanmış {{count}} hikâye kitabı."
+      },
+      "mapping": {
+        "title": "Müfredat eşleştirme",
+        "body": "Seviye bazında kaynak planı, çalışma kâğıdı yaşam döngüsü, uluslararası karşılıklar."
+      }
+    },
+    "devNotice": "<b>Geliştirme aşamasında.</b> Bu önizleme yalnızca yöneticilere açıktır ve veritabanına hiçbir şey yazmaz. <code>/library</code> ve <code>/assessment</code> adresindeki veli sitesi hâlâ orijinal 6 seviyeli yapıyla, değiştirilmeden çalışıyor."
+  },
+  "classroom": {
+    "notFound": "Sınıf bulunamadı",
+    "notFoundBody": "Sınıf bulunamadı.",
+    "addFailed": "Öğrenci eklenemedi",
+    "added": "{{name}} eklendi",
+    "allClassrooms": "Tüm sınıflar",
+    "students": "Öğrenciler",
+    "takeRegister": "Yoklama al",
+    "addStudent": "Öğrenci ekle",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "dob": "Doğum tarihi",
+    "add": "Ekle",
+    "empty": "Henüz öğrenci yok. İlk öğrencinizi yukarıdan ekleyin.",
+    "viewReport": "Raporu gör",
+    "assess": "Değerlendir",
+    "reassess": "Yeniden değerlendir",
+    "booksTitle": "Bu sınıf için kitaplar",
+    "booksBody": "33 hikâye kitabının tamamına + çalışma kâğıtlarına <library>okul kütüphanesinden</library> göz atın. Bu sınıfı yetenek seviyesine göre düzenlemek için <groups>Fonik grupları</groups> bölümünü kullanın.",
+    "registerTitle": "{{name}} — sınıf yoklaması"
+  },
+  "groups": {
+    "title": "Fonik grupları",
+    "towards": "hedef",
+    "moveFailed": "Öğrenci taşınamadı",
+    "moved": "{{target}} grubuna taşındı",
+    "unassigned": "atanmamış",
+    "intro": "{{students}} mevcut seviyeye göre gruplandı — sınıf düzeyleri arasında, tıpkı okulların foniği gerçekte öğrettiği gibi.",
+    "notYetAssessed": "{{count}} kişi henüz değerlendirilmedi.",
+    "hint": "Taşımak için bir adı başka bir gruba sürükleyin · profili açmak için ada tıklayın.",
+    "classLabel": "Sınıf:",
+    "allClasses": "Tüm sınıflar",
+    "needsInitial": "İlk değerlendirme gerekiyor",
+    "needsInitialBody": "Her çocuğa bir başlangıç seviyesi atamak için tarama testini uygulayın.",
+    "registerTitle": "Bu grubun yoklamasını al",
+    "register": "Yoklama",
+    "mixedYears": "Karma sınıf düzeyleri: {{years}}",
+    "dropHere": "Buraya taşımak için bırakın",
+    "emptyLevel": "Bu seviyede henüz öğrenci yok.",
+    "emptyTitle": "Henüz öğrenci yok",
+    "emptyBody": "Önce bir sınıfa öğrenci ekleyin, ardından burada onları seviyeye göre gruplayın.",
+    "goToClassrooms": "Sınıflara git",
+    "registerDialogTitle": "{{level}} — fonik grubu",
+    "chipTitle": "{{name}} — taşımak için sürükleyin, profil için tıklayın"
+  },
+  "windowsPage": {
+    "title": "Değerlendirme Dönemleri",
+    "intro": "Okullar kayıt sırasında ve yarım dönemlik aralıklarla değerlendirme yapar. Bu dönemler arasında öğretmenler, mesleki yargılarıyla çocukları yol boyunca ilerletir — çocuklar her kitaptan sonra resmî olarak sınanmaz.",
+    "rolling": "Son 6 haftalık görünüm",
+    "recent": "Son değerlendirme etkinliği",
+    "allClasses": "tüm sınıflar",
+    "assessedLast6": "değerlendirildi (son 6 hafta)",
+    "remaining": "{{count}} kaldı",
+    "allAssessed": "Hepsi değerlendirildi",
+    "indicators": "Yeniden gruplama göstergeleri",
+    "leadSummary": "Fonik sorumlusu özeti",
+    "summary": "{{classes}} sınıfta {{total}} çocuk. Son 6 haftada {{assessed}} çocuk değerlendirildi, {{remaining}} çocuk hâlâ bekliyor. {{readyUp}} çocuk üst seviyeye geçmeye hazır, {{intervention}} çocuk müdahale için işaretlendi.",
+    "regroupingView": "Sınıf yeniden gruplama görünümü — her seviyedeki çocuklar",
+    "openGroups": "Fonik gruplarını aç"
+  },
+  "libraryPreview": {
+    "title": "Kütüphane — 33 kitap",
+    "intro": "Canlı sitedeki kitapların ve PDF'lerin aynısı, 8 seviyeli yapıya göre yeniden gruplandı. Her karttaki etiket, karşılaştırma için orijinal (veli-6) alt seviyeyi gösterir.",
+    "free": "ücretsiz",
+    "was": "eskiden"
+  },
+  "library": {
+    "downloadFailed": "İndirme başarısız oldu",
+    "openFailed": "Açılamadı",
+    "cats": {
+      "soundBooks": "Ses Kitapları",
+      "blendingBooks": "Birleştirme Kitapları",
+      "storybooks": "Hikâye Kitapları",
+      "interactive": "Etkileşimli Kitaplar",
+      "soundWorksheets": "Ses Kitabı çalışma kâğıtları",
+      "storyPacks": "Hikâye kitabı çalışma paketleri",
+      "soundMats": "Ses panoları",
+      "trickyCards": "Zor kelime kartları"
+    },
+    "title": "Kütüphane",
+    "intro": "8 seviyede {{count}}+ bağlantılı kaynak — her Ses Kitabı, Birleştirme Kitabı, Hikâye Kitabı, etkileşimli sürüm, çalışma kâğıdı, ses panosu ve zor kelime seti türe göre düzenlendi.",
+    "levelLabel": "Seviye:",
+    "all": "Tümü",
+    "focus": "Odak:",
+    "eg": "ör.",
+    "companion": "Tamamlayıcı:",
+    "soundBookWorksheet": "Ses Kitabı çalışma kâğıdı",
+    "playSlides": "Slaytları oynat",
+    "onScreen": "Ekranda",
+    "printBooklet": "Kitapçığı yazdır",
+    "worksheetSoon": "Çalışma kâğıdı yakında",
+    "worksheetTitle": "Çalışma kâğıdı:",
+    "soundWorksheetDesc": "Harf yazımı, kelime oluşturma ve ses ayırma. <book>{{title}}</book> için tamamlayıcı.",
+    "comingSoon": "Yakında",
+    "blendingDesc": "A6 kelime açma kitapçığı. Ayrı bir çalışma kâğıdı yok — birleştirme alıştırmasının kendisi kaynaktır.",
+    "viewBook": "Kitabı görüntüle",
+    "a5Booklet": "A5 kitapçık",
+    "a4Sheets": "A4 sayfalar",
+    "worksheetPack": "Çalışma paketi",
+    "interactiveDesc": "Dokunulabilir kelimeler, ses açılır pencereleri, sesli okuma, yazım, hikâye sıralama, okuduğunu anlama ve yazma alıştırması.",
+    "interactiveDescGrammar": "Dokunulabilir kelimeler, ses açılır pencereleri, sesli okuma, yazım, hikâye sıralama, okuduğunu anlama, dil bilgisi kelime sırası ve yazma alıştırması.",
+    "openInteractive": "Etkileşimli sürümü aç",
+    "pack": "paket",
+    "packDesc": "5 sayfalık A4 paket: ses avı, iz sür ve yaz, oku ve yap, uzaylı (uydurma) kelimeler, hikâye ve çizim.",
+    "printWorksheetPack": "Çalışma paketini yazdır",
+    "soundMatTitle": "{{level}} Ses Panosu",
+    "trickyCardsTitle": "{{level}} Zor Kelime Kartları",
+    "soundMatDesc": "Bu seviyede ve önceki seviyelerde öğretilen sesleri gösteren birikimli harf-ses tablosu.",
+    "trickyCardsDesc": "Bu seviyede tanıtılan zor kelimeler için kartlar.",
+    "usedThroughout": "Seviye boyunca kullanılır."
+  },
+  "read": {
+    "unavailable": "Bu kitap henüz okunmaya hazır değil.",
+    "backToLibrary": "Kütüphaneye dön"
+  },
+  "reports": {
+    "title": "Raporlar",
+    "intro": "İngiliz fonik ilerlemesinde okul genelindeki gelişimin bir görünümü.",
+    "tracked": "İzlenen öğrenciler",
+    "placed": "Değerlendirmeyle yerleştirilen",
+    "atEachLevel": "Her seviyedeki çocuklar",
+    "glance": "Bir bakışta program",
+    "glanceBody": "8 seviyede {{resources}}+ bağlantılı kaynakla desteklenen, {{steps}} adımlı eksiksiz bir fonik yolu: {{soundBooks}} gerçek fotoğraflı Ses Kitabı, {{blendingBooks}} Birleştirme Kitabı, {{storybooks}} resimli Hikâye Kitabı, {{interactive}} etkileşimli dijital Hikâye Kitabı, {{worksheets}} uyumlu çalışma kâğıdı, {{mats}} ses panosu, {{tricky}} zor kelime kartı seti ve {{audio}}+ ses (fonem) dosyası.",
+    "viewPathway": "Öğrenme yolunu gör"
+  },
+  "settings": {
+    "saved": "Ayarlar kaydedildi",
+    "codeCopied": "Katılım kodu kopyalandı",
+    "regenFailed": "Yeni kod oluşturulamadı",
+    "regenDone": "Yeni katılım kodu oluşturuldu",
+    "regenDoneBody": "Önceki kod artık çalışmıyor.",
+    "title": "Ayarlar",
+    "intro": "Okul bilgileriniz, personel erişimi ve öğretim yılı.",
+    "joinCode": "Personel katılım kodu",
+    "joinCodeBody": "Bu kodu öğretmenlerinizle paylaşın. <path>/school/signup</path> adresinden kaydolup “Kodla katıl” seçeneğini seçtiklerinde {{school}} okuluna öğretmen olarak eklenirler.",
+    "copy": "Kopyala",
+    "regenerate": "Yeniden oluştur",
+    "invitesSoon": "E-posta davetleri yakında geliyor. Şimdilik personel eklemenin en hızlı yolu kodu paylaşmaktır.",
+    "staff": "Personel",
+    "you": "Siz",
+    "staffMember": "Personel üyesi",
+    "roles": {
+      "admin": "yönetici",
+      "teacher": "öğretmen"
+    },
+    "details": "Okul bilgileri",
+    "schoolName": "Okul adı",
+    "country": "Ülke",
+    "places": "Öğrenci kontenjanı",
+    "academicYear": "Öğretim yılı",
+    "save": "Ayarları kaydet",
+    "yourAccount": "Hesabınız",
+    "administrator": "Yönetici",
+    "role": "Rol: {{role}}"
+  },
+  "assess": {
+    "notFound": "Öğrenci bulunamadı",
+    "notFoundBody": "Öğrenci bulunamadı.",
+    "saveFailed": "Değerlendirme kaydedilemedi",
+    "updateFailed": "Seviye güncellenemedi",
+    "backToClassroom": "Sınıfa dön",
+    "title": "{{name}} değerlendirmesi",
+    "currentLevel": "Mevcut seviye:",
+    "quickScreener": "Hızlı tarama",
+    "quickScreenerBody": "2 dakika. Çocuğa 6 örnek kelime okutun — seviyesini net olarak belirleyelim.",
+    "manual": "Seviyeyi elle belirle",
+    "manualBody": "Nerede olduğunu zaten biliyor musunuz? Seviyeyi seçin ve bir not ekleyin.",
+    "screener": "Tarama",
+    "screenerBody": "{{name}} adlı öğrenciden her kelimeyi okumasını isteyin. Doğru okuduklarını işaretleyin.",
+    "level": "Seviye {{n}}",
+    "notes": "Notlar (isteğe bağlı)",
+    "notesPlaceholder": "Gözlemleriniz...",
+    "saveRecommend": "Kaydet ve seviye öner",
+    "manualChoose": "{{name}} adlı öğrencinin mevcut becerisine uyan seviyeyi seçin.",
+    "setTo": "{{name}} → {{level}} olarak ayarla",
+    "saved": "Değerlendirme kaydedildi",
+    "nowOn": "{{name}} artık <b>{{level}}</b> seviyesinde.",
+    "savedBody": "Sonucu kaydettik ve kaydını güncelledik. İstediğiniz zaman yeniden değerlendirebilirsiniz."
+  },
+  "profile": {
+    "stepComplete": "Adım tamamlandı olarak işaretlendi",
+    "marked": "“{{label}}” olarak işaretlendi",
+    "noteSaved": "Not kaydedildi",
+    "notFound": "Öğrenci bulunamadı.",
+    "backToClass": "Sınıfa dön",
+    "snap": {
+      "placement": "Mevcut seviye",
+      "block": "Mevcut blok",
+      "step": "Mevcut adım",
+      "next": "Sonraki kaynak",
+      "lastAssessed": "Son değerlendirme",
+      "judgement": "Mevcut öğretmen görüşü"
+    },
+    "levelComplete": "Seviye tamamlandı",
+    "readyNextLevel": "Sonraki seviyeye hazır",
+    "windowLabel": "{{window}} değerlendirme dönemi",
+    "notYetAssessed": "Henüz değerlendirilmedi",
+    "suggestedAction": "Önerilen adım:",
+    "suggested": {
+      "continue": "Mevcut blokla devam edin",
+      "ready_soon": "Neredeyse hazır — sonraki blok / değerlendirme dönemi için hazırlanın",
+      "needs_support": "İlerlemeden önce hedefli destek verin (destek planına bakın)"
+    },
+    "notAssessedBody": "Henüz değerlendirilmedi — {{name}} adlı öğrenciyi yola yerleştirmek için bir değerlendirme yapın.",
+    "assessNow": "Şimdi değerlendir",
+    "nextActions": "Sonraki öğretim adımları",
+    "readNext": "Sıradaki okuma",
+    "printNext": "Sıradaki çıktı",
+    "worksheetPackFor": "{{sub}} çalışma paketi",
+    "useDuring": "Okuma sırasında kullanın",
+    "practise": "Alıştırma",
+    "openInteractive": "Etkileşimli kitabı aç",
+    "printA5": "A5 kitapçığı yazdır",
+    "markComplete": "Mevcut adımı tamamlandı olarak işaretle",
+    "teacherNoteLabel": "Öğretmen notu:",
+    "wholePathway": "Tüm yol boyunca ilerleme",
+    "stepsOf": "{{total}} adımdan {{done}}",
+    "teacherJudgement": "Öğretmen görüşü",
+    "judgeDesc": {
+      "continue": "Blokta ilerliyor",
+      "ready_soon": "Sonraki blok / seviye için neredeyse hazır",
+      "needs_support": "İlerlemeden önce ek alıştırma"
+    },
+    "teacherNote": "Öğretmen notu",
+    "notePlaceholder": "ör. sh kelimelerini güvenle okuyor ama th kelimelerinde hâlâ tahmin ediyor.",
+    "saveNote": "Notu kaydet",
+    "supportPlan": "Destek planı",
+    "recommended": "Önerilen kaynaklar",
+    "routine": "Önerilen rutin",
+    "routineBody": "Her gün 10 dakika: ses kartlarını tekrar edin · 5 kelime birleştirin · 1 sayfa okuyun · 3 gün tekrarlayın · öğretmen yeniden dinlesin.",
+    "history": "Değerlendirme dönemi geçmişi",
+    "noAssessments": "Henüz kayıtlı değerlendirme yok.",
+    "table": {
+      "window": "Dönem",
+      "level": "Yerleştirilen seviye",
+      "notes": "Notlar",
+      "resource": "Kaynak",
+      "status": "Durum",
+      "companion": "Tamamlayıcı"
+    },
+    "initialPlacement": "İlk yerleştirme",
+    "wholeSchoolWindow": "Okul geneli dönem",
+    "movement": "Gelişim:",
+    "completed": "Tamamlanan kaynaklar",
+    "tally": {
+      "interactive": "Etkileşimli kitaplar",
+      "packs": "Çalışma paketleri",
+      "certificates": "Kazanılan sertifikalar"
+    },
+    "attendance": "Devam",
+    "noRegister": "Henüz yoklama alınmadı.",
+    "present": "katılım",
+    "attendanceSummary": "{{present}} katıldı · {{absent}} kaçırdı · {{total}} oturum",
+    "homeReading": "Evde okuma",
+    "homeBook": "Güncel ev kitabı",
+    "format": "Biçim",
+    "formatValue": "Yazdırılabilir A5 kitapçık",
+    "linkCopied": "Veli okuma bağlantısı kopyalandı",
+    "copyLink": "Veli bağlantısını kopyala",
+    "printHome": "Ev kitapçığını yazdır",
+    "homeNote": "Evdeki alıştırmanın sınıftaki öğretimle uyumlu olması için okul aracılığıyla velilerle paylaşılır.",
+    "companion": {
+      "none": "Tamamlayıcı yok",
+      "storybook": "Çalışma paketi + etkileşimli kitap"
+    }
+  },
+  "presenter": {
+    "openFailed": "Bu kitap açılamadı.",
+    "notFound": "Bulunamadı ({{status}})",
+    "onScreen": "ekranda",
+    "closeEsc": "Kapat (Esc)"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "amounts": {
+    "coffee": "Bir kahve",
+    "book": "Bir kitap",
+    "level": "Bir seviye",
+    "shelf": "Koca bir raf"
+  },
+  "errors": {
+    "amountRange": "£1 ile £500 arasında bir tutar girin.",
+    "amountRangeShort": "£1 ile £500 arasında girin.",
+    "signInFirst": "Lütfen önce giriş yapın.",
+    "checkoutFailed": "Ödeme başlatılamadı"
+  },
+  "page": {
+    "title": "MyPhonicsBooks'u Destekleyin",
+    "sticker": "Her aile için ücretsiz",
+    "heading": "Her şey ücretsiz. Destek isteğe bağlı.",
+    "intro": "MyPhonicsBooks küçük bir ekip tarafından hazırlanıyor. Çocuğunuzun okumasına yardımcı oluyorsa, her büyüklükteki bir teşekkür onu bir sonraki aile için de ücretsiz tutar.",
+    "alwaysFree": "Her zaman ücretsiz",
+    "free": {
+      "books": "33 hikâye kitabının tamamı, sekiz seviye — çevrimiçi okuyun, hesap gerekmez",
+      "games": "Tüm fonetik oyunları, ücretsiz oynayın",
+      "pdfs": "Her kitabın ve çalışma sayfasının yazdırılabilir PDF'leri — ücretsiz hesapla ücretsiz",
+      "check": "3 dakikalık fonetik değerlendirmesi ve ilerleme takibi"
+    },
+    "downloadsNote": "İndirmeler için ücretsiz bir hesap gerekir; böylece yazdırılabilir PDF'ler aileler ve sınıflar için kalır — yeniden satış için değildir.",
+    "createAccount": "Ücretsiz hesap oluşturun",
+    "cardTitle": "MyPhonicsBooks'u Destekleyin",
+    "cardSubtitle": "Dilediğiniz kadar ödeyin · tek seferlik · abonelik yok",
+    "alreadySupported": "Teşekkürler — bizi zaten desteklediniz.",
+    "otherAmount": "Ya da başka bir tutar",
+    "customAria": "Sterlin cinsinden özel destek tutarı",
+    "supportWith": "{{amount}} ile destekleyin",
+    "signInToSupport": "Desteklemek için giriş yapın",
+    "stripeNote": "Stripe ile güvenli kartla ödeme. Bununla hiçbir şeyin kilidi açılmaz ya da kilitlenmez — bu bir ücret değil, bir teşekkür.",
+    "createBookNote": "Kişiye özel bir kitap mı arıyorsunuz? <link>Kitap Oluştur</link> £4.99, World of Books ise tek seferlik £10."
+  },
+  "prompt": {
+    "title": "Aramıza hoş geldiniz — her şey ücretsiz",
+    "body": "Her kitap, oyun ve çalışma sayfası hiçbir ücret ödemeden sizin. MyPhonicsBooks çocuğunuza yardımcı oluyorsa, başka aileler için de ücretsiz kalması adına küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
+    "differentAmount": "Farklı bir tutar seçin",
+    "maybeLater": "Belki sonra — beni kitaplara götürün"
+  }
+}

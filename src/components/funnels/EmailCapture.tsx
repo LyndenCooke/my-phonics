@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { syncToGHL } from '@/lib/ghlClient';
+import { useTranslation } from 'react-i18next';
 
 interface EmailCaptureProps {
   source: string;
@@ -13,9 +14,10 @@ interface EmailCaptureProps {
 export default function EmailCapture({
   source,
   onSuccess,
-  buttonText = 'Get Started',
+  buttonText,
   collectName = true,
 }: EmailCaptureProps) {
+  const { t } = useTranslation('funnels');
   const [childName, setChildName] = useState('');
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
@@ -58,7 +60,7 @@ export default function EmailCapture({
 
       onSuccess({ childName: childName.trim(), email: email.trim() });
     } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+      setError(err.message || t('common:errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -75,7 +77,7 @@ export default function EmailCapture({
             type="text"
             value={childName}
             onChange={(e) => setChildName(e.target.value)}
-            placeholder="Child's first name"
+            placeholder={t('shared.childNamePlaceholder')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
             required={collectName}
           />
@@ -85,7 +87,7 @@ export default function EmailCapture({
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email address"
+          placeholder={t('shared.emailPlaceholder')}
           className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
           required
         />
@@ -97,7 +99,7 @@ export default function EmailCapture({
             onChange={(e) => setConsent(e.target.checked)}
             className="mt-0.5 w-4 h-4 rounded border-pink-300 text-[hsl(var(--primary))] focus:ring-pink-500/20"
           />
-          <span>I agree to receive free phonics resources by email. Unsubscribe any time.</span>
+          <span>{t('shared.consent')}</span>
         </label>
 
         {error && (
@@ -113,15 +115,15 @@ export default function EmailCapture({
             <Loader2 size={20} className="animate-spin" />
           ) : (
             <>
-              {buttonText}
-              <ArrowRight size={20} />
+              {buttonText ?? t('emailCapture.defaultButton')}
+              <ArrowRight size={20} className="rtl:-scale-x-100" />
             </>
           )}
         </button>
       </div>
 
       <p className="text-xs text-muted-foreground text-center mt-4">
-        Free — no card required. Based on Letters and Sounds.
+        {t('emailCapture.footer')}
       </p>
     </form>
   );

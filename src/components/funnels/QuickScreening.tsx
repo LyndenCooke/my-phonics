@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Check, X, Volume2, ArrowRight } from 'lucide-react';
 import { SCREENING_WORDS, calculateStartLevel } from '@/lib/adaptiveEngine';
+import { useTranslation } from 'react-i18next';
+import EnglishOnly from '@/i18n/EnglishOnly';
 
 const LEVEL_COLOURS: Record<number, string> = {
   1: '#E84B8A', 2: '#F5A623', 3: '#4ABD6D',
@@ -14,6 +16,7 @@ interface QuickScreeningProps {
 }
 
 export default function QuickScreening({ childName, onComplete, onBack }: QuickScreeningProps) {
+  const { t } = useTranslation('funnels');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [checks, setChecks] = useState<Record<number, boolean>>({});
 
@@ -49,10 +52,12 @@ export default function QuickScreening({ childName, onComplete, onBack }: QuickS
       {/* Header */}
       <div className="text-center mb-6">
         <h2 className="text-xl font-bold text-foreground mb-1">
-          Quick Screening
+          {t('quickScreening.title')}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Ask {childName || 'your child'} to read each word. Tap the tick if they get it right.
+          {childName
+            ? t('quickScreening.instructionsNamed', { name: childName })
+            : t('quickScreening.instructionsAnon')}
         </p>
       </div>
 
@@ -70,24 +75,25 @@ export default function QuickScreening({ childName, onComplete, onBack }: QuickS
       {/* Word card */}
       <div className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-8 text-center mb-6">
         <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wide">
-          Level {currentWord?.level} word
+          {t('quickScreening.levelWord', { level: currentWord?.level })}
         </p>
 
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <p className="text-4xl sm:text-5xl font-bold text-foreground">
+        <div className="flex items-center justify-center gap-3 mb-6" dir="ltr">
+          <EnglishOnly as="span" className="text-4xl sm:text-5xl font-bold text-foreground">
             {currentWord?.word}
-          </p>
+          </EnglishOnly>
           <button
             onClick={() => speak(currentWord?.word || '')}
             className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-muted-foreground transition-colors"
-            title="Hear the word"
+            title={t('quickScreening.hearWord')}
+            aria-label={t('quickScreening.hearWord')}
           >
             <Volume2 size={18} />
           </button>
         </div>
 
         <p className="text-sm text-muted-foreground">
-          {currentIndex + 1} of {total}
+          {t('quickScreening.progress', { current: currentIndex + 1, total })}
         </p>
       </div>
 
@@ -98,14 +104,14 @@ export default function QuickScreening({ childName, onComplete, onBack }: QuickS
           className="py-4 bg-white border-2 border-red-200 text-red-600 font-semibold rounded-xl hover:bg-red-50 hover:border-red-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
         >
           <X size={20} />
-          Not quite
+          {t('quickScreening.notQuite')}
         </button>
         <button
           onClick={() => handleAnswer(true)}
           className="py-4 bg-white border-2 border-green-200 text-green-600 font-semibold rounded-xl hover:bg-green-50 hover:border-green-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
         >
           <Check size={20} />
-          Got it!
+          {t('quickScreening.gotIt')}
         </button>
       </div>
 
@@ -113,7 +119,7 @@ export default function QuickScreening({ childName, onComplete, onBack }: QuickS
         onClick={onBack}
         className="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        Back
+        {t('common:actions.back')}
       </button>
     </div>
   );

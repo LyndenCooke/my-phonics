@@ -161,10 +161,17 @@
   }
 
   /* Skip-to-content link for keyboard / screen-reader users. */
+  /* Logical inset + clip: a physical left:-9999px becomes a 10,000px
+     horizontal scroll when the page is right-to-left (Arabic/Urdu/Persian). */
   .skip-link {
     position: absolute;
-    left: -9999px;
-    top: -9999px;
+    inset-inline-start: 0.5rem;
+    top: 0.5rem;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
     background: hsl(var(--foreground));
     color: hsl(var(--background));
     padding: 0.5rem 0.75rem;
@@ -172,8 +179,10 @@
     z-index: 100;
   }
   .skip-link:focus {
-    left: 0.5rem;
-    top: 0.5rem;
+    clip-path: none;
+    width: auto;
+    height: auto;
+    overflow: visible;
   }
 }
 

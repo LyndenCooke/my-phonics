@@ -1,0 +1,58 @@
+{
+  "arcade": {
+    "badge": "Gratis dimainkan · tanpa daftar",
+    "title": "Permainan fonik",
+    "intro": "Pilih level Anda, lalu pilih permainan. Setiap permainan memakai bunyi dari level tersebut.",
+    "chooseLevel": "Pilih level Anda",
+    "levelAria": "Level {{level}} — {{name}}",
+    "levelSounds": "Bunyi Level {{level}}",
+    "more": "+{{n}} lagi",
+    "gamesAria": "Permainan",
+    "dailyNote": "Satu kali main untuk setiap permainan per hari — sedikit tapi sering adalah cara agar kemampuan membaca melekat.",
+    "played": "Sudah dimainkan ✓",
+    "vibes": {
+      "collect": "Koleksi",
+      "arcade": "Arkade",
+      "runner": "Lari",
+      "memory": "Memori",
+      "puzzle": "Teka-teki",
+      "seekFind": "Cari & temukan",
+      "listening": "Mendengar"
+    },
+    "blurbs": {
+      "soundlings": "Tetaskan dan beri makan makhluk bunyimu sendiri",
+      "pop": "Terbangkan Buzz si lebah untuk memecahkan kata yang kamu dengar",
+      "cannon": "Bidik dan tembakkan bunyi yang tepat ke dalam kata",
+      "run": "Baca pintunya dan lari melewati pintu yang benar",
+      "pairs": "Balik kartunya dan cocokkan bunyi dengan kata",
+      "finish": "Ada bunyi yang hilang — ketuk yang benar",
+      "spot": "Telusuri pemandangan untuk benda yang menyembunyikan bunyinya",
+      "tricky": "Dengarkan dan tangkap Tricky Word (kata sulit)"
+    },
+    "doneBlurb": "Hebat mainnya! Kembali besok untuk main lagi.",
+    "backTomorrow": "Kembali besok",
+    "play": "Main",
+    "notSure": "Tidak yakin level mana?",
+    "notSureBody": "Ikuti tes gratis 3 menit dan kami akan menempatkan anak Anda di level yang tepat."
+  },
+  "play": {
+    "closeGame": "Tutup permainan",
+    "hearWord": "Dengarkan katanya",
+    "hearWordAgain": "Dengarkan katanya lagi",
+    "openSoundBook": "Buka Sound Book",
+    "backToGrove": "Kembali ke kebun"
+  },
+  "rotate": {
+    "title": "Miringkan ponselmu untuk bermain!",
+    "body": "Permainan ini jauh lebih besar dalam mode lanskap."
+  },
+  "childHome": {
+    "openBook": "Buka {{title}}",
+    "readsDone": "{{done}} dari {{total}} kali baca selesai",
+    "currentBook": "{{title}} — bukumu, {{done}} dari {{total}} kali baca selesai",
+    "doneBook": "{{title}} — selesai",
+    "lockedBook": "{{title}} — terkunci, selesaikan bukumu yang sekarang dulu",
+    "startCheck": "Mulai Level Check-mu",
+    "checkLocked": "Level Check — selesaikan buku-bukumu dulu"
+  }
+}

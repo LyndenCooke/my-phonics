@@ -6,6 +6,7 @@
  * parents navigate by colour/name, never by internal codes.
  */
 import { JOURNEY_LEVELS } from '@/lib/levels8';
+import { useTranslation } from 'react-i18next';
 
 interface LevelFilterProps {
   selected: number | null;
@@ -13,6 +14,7 @@ interface LevelFilterProps {
 }
 
 export default function LevelFilter({ selected, onSelect }: LevelFilterProps) {
+  const { t } = useTranslation('library');
   return (
     <div className="flex gap-2 overflow-x-auto pb-1.5 scrollbar-hide">
       <button
@@ -23,7 +25,7 @@ export default function LevelFilter({ selected, onSelect }: LevelFilterProps) {
             : 'border-border bg-card text-muted-foreground hover:text-foreground'
         }`}
       >
-        All books
+        {t('levelFilter.all')}
       </button>
       {JOURNEY_LEVELS.map((level) => {
         const active = selected === level.level;
@@ -32,6 +34,7 @@ export default function LevelFilter({ selected, onSelect }: LevelFilterProps) {
             key={level.level}
             onClick={() => onSelect(level.level)}
             aria-pressed={active}
+            title={t('shelf.level', { level: level.level })}
             className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold transition-all duration-200 border"
             style={active
               ? { background: level.hex, borderColor: level.hex, color: '#fff' }
@@ -41,7 +44,7 @@ export default function LevelFilter({ selected, onSelect }: LevelFilterProps) {
               className="w-2 h-2 rounded-full shrink-0"
               style={{ background: active ? '#fff' : level.hex }}
             />
-            {level.name}
+            <span lang="en">{level.name}</span>
           </button>
         );
       })}

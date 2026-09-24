@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "homeAria": "Shafin farko na MyPhonicsBooks",
+    "skipToMain": "Tsallaka zuwa babban abun ciki"
+  },
+  "nav": {
+    "readOnline": "Karanta a yanar gizo",
+    "freeCheck": "Gwaji kyauta",
+    "checkLevelFree": "Duba matakinsa kyauta"
+  },
+  "common": {
+    "close": "Rufe",
+    "preorderSave": "Yi oda da wuri · Ajiye {{pct}}%",
+    "seeDetails": "Duba cikakken bayani",
+    "peekInside": "Leƙa ciki",
+    "takeAPeekInside": "Leƙa ciki",
+    "viewProduct": "Duba {{name}}",
+    "levelBadge": "Mataki {{level}} · {{name}}",
+    "levelChip": "M{{level}} {{name}}",
+    "findLevelFree": "Nemo matakinsa kyauta"
+  },
+  "interest": {
+    "dialogLabel": "Yi odar {{name}} da wuri",
+    "doneTitle": "An ajiye muku ragin farashi",
+    "doneBody": "Za mu aiko muku da imel da zarar {{name}} ya shirya don oda, tare da ragin {{pct}}% da aka ajiye muku musamman.",
+    "done": "An gama",
+    "body": "Ana kai kayan bugawa zuwa madaba'a. Ku ajiye naku yanzu kuma za mu riƙe muku ragin {{pct}}% na wannan farashi har sai ya shirya don oda — babu biyan kuɗi yau.",
+    "preorderPrice": "farashin oda da wuri",
+    "emailPlaceholder": "Adireshin imel ɗinku",
+    "consent": "Ku aiko min da imel idan wannan ya fito, tare da kayan koyon phonics kyauta. Kuna iya daina karɓa a kowane lokaci.",
+    "submit": "Ajiye min ragin {{pct}}%",
+    "noPayment": "Babu biyan kuɗi yanzu. Duba <link>manufofinmu na sirri</link>.",
+    "error": "Wani abu ya faru ba daidai ba. Don Allah a sake gwadawa."
+  },
+  "detail": {
+    "returns": "Mayarwa cikin kwana 30 ba tare da tambaya ba · Isarwa a Birtaniya",
+    "inTheBox": "Abin da ke cikin akwatin",
+    "details": "Bayani",
+    "goesWellWith": "Yana tafiya da kyau tare da"
+  },
+  "hero": {
+    "pill": "Yi oda da wuri yanzu · Ajiye {{pct}}% · Babu biyan kuɗi yau",
+    "title": "Littattafai na gaske, a hannu na gaske.",
+    "titleAccent": "Littattafai bugaggu suna zuwa.",
+    "body": "Littattafan da ake iya karantawa ta sautuka (decodable) waɗanda yaronku ke karantawa a allo, an buga su don a ajiye: saitin littattafan labari, littattafan aiki masu gogewa da tarin katuna, daidai da matakin karatunsa. Wani malamin firamare mai koyarwa a Birtaniya mai takardar QTS (cancantar koyarwa) ne ya rubuta su. Ku yi oda da wuri yau kuma za mu riƙe muku ragin {{pct}}% har sai ya shirya don aikawa — babu biyan kuɗi yanzu.",
+    "seeBundles": "Duba fakitoci",
+    "notSure": "Ba ku da tabbacin inda za ku fara? Ku yi gwajin kyauta na minti 3 kuma za mu gaya muku daidai matakin da yaronku ke buƙata.",
+    "spotlightSticker": "Wanda yawancin iyalai ke zaɓa",
+    "anchorLibrary": "Cikakken ɗakin karatu na littattafai 33 £129",
+    "anchorFamily": "Fakitin iyali na dukan shirin £349"
+  },
+  "trust": {
+    "decodable": "Kowace kalma a kowane littafi ana iya karanta ta a matakin yaronku ko kuma Tricky Word ce da aka koyar. Babu hasashe, babu takaici.",
+    "teacher": "Wani malamin firamare mai koyarwa a Birtaniya mai takardar QTS ne ya rubuta, kuma ya dace da Letters and Sounds.",
+    "returns": "Mayarwa cikin kwana 30 ba tare da tambaya ba."
+  },
+  "bundles": {
+    "eyebrow": "Babban tayi",
+    "title": "Fakitin Farawa na Kowane Mataki",
+    "intro": "Akwati ɗaya mai ɗauke da duk abin da yaronku ke buƙata don matakinsa: kowane littafin labari, littafin aiki mai gogewa tare da alƙalami, da tarin katunan kalmomi. Ya fi arha idan aka saya tare fiye da daban-daban."
+  },
+  "readers": {
+    "eyebrow": "Littattafan labari",
+    "title": "Littattafan karatu bugaggu",
+    "intro": "Littattafan labari na A5 masu bango da aka shafe da laminashan mara sheƙi, an yi su don a sake karantawa kuma a ajiye. Ku sayi littafi ɗaya, saitin mataki ɗaya ko dukan ɗakin karatu.",
+    "libraryEyebrow": "Duk littattafan labari 33",
+    "singlesTitle": "Littattafan labari ɗaya-ɗaya",
+    "singlesIntro": "Matakai 1 zuwa 3 £5.99 ne kowane littafi; Matakai 4 zuwa 8 £6.99 ne. Zaɓi mataki, zaɓi labari."
+  },
+  "workbooks": {
+    "eyebrow": "Saya sau ɗaya, yi aiki har abada",
+    "title": "Littattafan aiki masu gogewa",
+    "intro": "Kowane shafi an shafe shi da laminashan mai sheƙi. Yaronku yana rubutu da alƙalamin wet-erase da ke tare da shi, ku goge da rigar tsumma, sannan ya sake yin aiki.",
+    "f1Title": "Yana ɗorewa dukan matakin",
+    "f1Text": "Littafin aiki na yau da kullum yakan ƙare cikin sati biyu. Wannan yana ɗorewa dukan matakin da kuma kowane ƙane ko ƙanwa da zai biyo baya: rubutun hannu, gwajin haruffan kalmomi, rubutun jin magana da aikin jimla, daidai shafi da shafi da littattafan.",
+    "f2Title": "Ɗaurin waya yana kwanciya shimfiɗe",
+    "f2Text": "Littafin yana buɗewa shimfiɗe gaba ɗaya, don ƙananan hannaye su iya rubutu a kowane layi na kowane shafi. Babu fama da gindin littafi.",
+    "f3Title": "Wet-erase, ba dry-wipe ba",
+    "f3Text": "Tawadar wet-erase ba ta ɓaci a ƙarƙashin hannun yaro yayin da yake rubutu, kuma rigar tsumma kaɗai ke goge ta. Babu haruffan da za su ɓaɓɓace a tsakiyar kalma.",
+    "warning": "Alƙalaman wet-erase ko dry-wipe kaɗai. Alƙalamin tawada na dindindin zai lalata saman.",
+    "penEyebrow": "Wanda ake yawan buƙata"
+  },
+  "cards": {
+    "eyebrow": "Minti biyu a rana",
+    "title": "Tarin katuna",
+    "intro": "Katunan A7 masu inganci, an shafe su da laminashan mara sheƙi don su jure shekaru a ƙananan hannaye. Tarin sautuka ya ƙunshi dukan shirin; tarin kalmomi ya dace da kowane mataki.",
+    "soundEyebrow": "Katuna 150, kowane sauti",
+    "wordTitle": "Tarin katunan kalmomi, ɗaya ga kowane mataki",
+    "wordIntro": "Katuna takwas ga kowane sauti: katin sautin tare da kalmomi bakwai na aiki. Gaba babu alama, baya da alama don ku ga yadda za ku taimaka."
+  },
+  "family": {
+    "eyebrow": "Saye ɗaya, kowane yaro",
+    "title": "Fakitin iyali na dukan shirin",
+    "intro": "Duk abin da ke wannan shafin a isarwa ɗaya, daga Reception zuwa Year 2 (shekaru 4–7) da ma gaba. Saboda littattafan aiki suna gogewa, dukan shirin yana iya komawa ga ƙane ko ƙanwa na gaba."
+  },
+  "closing": {
+    "title": "Ba ku da tabbacin wane mataki za ku saya?",
+    "body": "Ku yi gwajin kyauta na minti 3 kuma za mu gaya muku daidai matakin da yaronku ke buƙata. Sannan fakiti ɗaya zai isa ga komai.",
+    "readOnline": "Karanta littattafan a yanar gizo"
+  },
+  "footer": {
+    "wallOfLove": "Wall of Love",
+    "privacy": "Sirri",
+    "terms": "Sharuɗɗa",
+    "contact": "Tuntuɓe mu",
+    "madeInUk": "An yi shi da kulawa a Birtaniya"
+  },
+  "preview": {
+    "bookLockTitle": "Wannan ɗan ɗanɗano ne na labarin.",
+    "cardsLockTitle": "Sauran suna cikin cikakken tarin.",
+    "bookLockBody": "Karanta dukan littafin kyauta a kowane allo, ko ku yi rajistar sha'awarku ga saitin da aka buga.",
+    "cardsLockBody": "Kowane sauti da kalma suna cikin tarin da aka buga. Ku yi rajistar sha'awarku a ƙasa.",
+    "readFree": "Karanta shi kyauta a yanar gizo",
+    "registerInterest": "Yi rajistar sha'awa",
+    "pageAlt": "Shafi {{n}}",
+    "previousPage": "Shafin da ya gabata",
+    "nextPage": "Shafi na gaba",
+    "pageCounter": "{{n}} / {{total}} · samfuri",
+    "cardFrontAlt": "Kati {{n}} gaba",
+    "cardBackAlt": "Kati {{n}} baya",
+    "front": "Gaba",
+    "backMarked": "Baya · an yi wa sautuka alama",
+    "nextCard": "Kati na gaba",
+    "flipIt": "Juya shi",
+    "cardCounter": "Kati {{n}} cikin {{total}} · samfuri"
+  },
+  "catalogue": {
+    "soundsAll": "duk sautukan Mataki {{level}}",
+    "suffixesAll": "duk ƙarin-ƙarshen Mataki {{level}}",
+    "spec": {
+      "size": "Girma",
+      "pages": "Shafuka",
+      "cover": "Bango",
+      "inside": "Ciki",
+      "binding": "Ɗauri",
+      "books": "Littattafai",
+      "workbook": "Littafin aiki",
+      "workbooks": "Littattafan aiki",
+      "cards": "Katuna",
+      "finish": "Kammalawa",
+      "box": "Akwati",
+      "tip": "Baki",
+      "ink": "Tawada",
+      "pen": "Alƙalami",
+      "care": "Kulawa"
+    },
+    "specValue": {
+      "matt250": "Laminashan mara sheƙi, 250gsm",
+      "matt": "Laminashan mara sheƙi",
+      "silk": "Takardar silk 150gsm, cikakken launi",
+      "saddle": "An ɗinka da fil a tsakiya",
+      "a5Boxed": "A5, a cikin akwati",
+      "wiroFlat": "Ɗaurin waya, yana kwanciya shimfiɗe",
+      "glossBoth": "Laminashan mai sheƙi a gefe biyu",
+      "penIncluded": "Wet-erase, siririn baki, an haɗa",
+      "care": "Goge da rigar tsumma",
+      "a7": "A7 (74 x 105mm)",
+      "mattBoth": "Laminashan mara sheƙi, an buga gefe biyu",
+      "tuckIncluded": "An haɗa akwatin katuna",
+      "readersA5": "Littattafan karatu {{n}} na A5",
+      "workbookBundle": "A4 ɗaurin waya, laminashan mai sheƙi, an haɗa alƙalami",
+      "cardsBoxed": "{{cards}} x A7, a cikin akwati",
+      "readersBoxed": "Littattafan karatu 33 na A5, a cikin akwati",
+      "workbooks8": "8 x A4 ɗaurin waya, laminashan mai sheƙi",
+      "cardsAll": "734 a cikin tarin 9",
+      "tipFine": "Siriri, don siffanta haruffa",
+      "inkWet": "Wet-erase: rigar tsumma na goge shi"
+    },
+    "reader": {
+      "blurb": "Littafin labari na Mataki {{level}} mai koyar da {{sounds}}. Kowace kalma ana iya karanta ta a wannan mataki ko kuma Tricky Word ce da aka koyar.",
+      "d1": "{{title}} labari ne na gaske, ba darasin karatu kawai ba. Yana koyar da {{sounds}} a cikin labarin da yaronku zai so ya gama, mai lokutan ban sha'awa a kowane shafi da tafiya mai taɓa zuciya.",
+      "d2": "Saboda kowace kalma ana iya karanta ta a wannan mataki ko kuma Tricky Word ce da aka koyar, yaronku yana karanta dukan littafin da kansa. Babu hasashe kuma babu takaici; sai dai alfahari na gama littafi na gaske.",
+      "d3": "An buga shi don ajiya: takardar silk a ciki, bango mai laminashan mara sheƙi da ke jure ƙananan hannaye, da girman da ya dace da jakar littattafai.",
+      "c1": "Littafin labari 1: {{title}}",
+      "c2": "Sautukan da aka mai da hankali: {{sounds}}",
+      "c3": "Shafukan ayyuka da rubutu a baya",
+      "c4": "Takardar shaidar Reading Star"
+    },
+    "readerSet": {
+      "valueNote": "wato {{price}} kowane littafi",
+      "blurb": "Duk littattafan labari {{n}} na Mataki {{level}} bisa tsarin karatu. Duk abin da yaronku ke karantawa a {{levelName}}, a saiti ɗaya.",
+      "d1": "Cikakken saitin littattafan labari na Mataki {{level}}, bisa tsarin da ya kamata yaronku ya karanta su. Kowane littafi yana gabatar da sautukansa ta hanyar labari na gaske, kuma saitin yana ɗaukar yaronku daga farkon {{levelName}} har zuwa shirye don mataki na gaba.",
+      "d2": "Kowace kalma a kowane littafi ana iya karanta ta a wannan mataki ko kuma Tricky Word ce da aka koyar, don haka yaronku ne ke karanta muku, ba ku ne ke karanta masa ba.",
+      "book": "Littafi {{n}}: {{title}}"
+    },
+    "library": {
+      "valueNote": "wato kusan £3.90 kowane littafi",
+      "blurb": "Duk littattafan labari 33, daga Mataki 1 zuwa Mataki 8, a cikin akwatin ajiya. Dukan tafiya daga sautukan farko zuwa karatu mai sauƙi.",
+      "d1": "Kowane littafin labari a cikin shirin, a cikin akwati bisa tsarin karatu. Yaronku yana farawa da {{first}} da sautuka shida kuma ya ƙare da karanta {{last}} da kansa.",
+      "d2": "Littattafai talatin da uku suna kamar da yawa har sai kun ga yaro yana bi da su ɗaya bayan ɗaya. Littattafai biyu ko uku a kowane mataki, kowanne a cikin ƙarfinsa, kowanne ya ɗan wuce na baya. Akwatin a kan shiryayye ya zama shaidar nisan da ya kai.",
+      "d3": "Idan aka saya ɗaya-ɗaya waɗannan littattafai sun fi £215. A cikin akwati, dukan ɗakin karatu £129 ne: kusan £3.90 kowane littafi.",
+      "c1": "Duk littattafan labari 33 daga Matakai 1 zuwa 8",
+      "c2": "A cikin akwati bisa tsarin karatu",
+      "c3": "Mataki 1: littattafai 2 · Mataki 2: 5 · Mataki 3: 3 · Mataki 4: 6",
+      "c4": "Mataki 5: littattafai 5 · Mataki 6: 4 · Mataki 7: 4 · Mataki 8: 4",
+      "badge": "Dukan tafiya"
+    },
+    "workbook": {
+      "blurb": "Kowane shafi an shafe shi da laminashan mai sheƙi. Yaronku yana rubutu da alƙalamin wet-erase da ke tare da shi, ku goge da rigar tsumma, sannan ya sake yin aiki.",
+      "d1": "Littafin aiki na A4 mai ɗaurin waya wanda kowane shafinsa an shafe shi da laminashan mai sheƙi. Yaronku yana rubutu a kansa da alƙalamin wet-erase da ke tare da shi, ku goge da rigar tsumma, sannan ya sake yin aiki. Rubutun hannu, gwajin haruffan kalmomi, rubutun jin magana da aikin jimla don dukan Mataki {{level}}, daidai shafi da shafi da littattafan.",
+      "d2": "Saya sau ɗaya, yi aiki har abada. Littafin aiki na yau da kullum yakan ƙare cikin sati biyu; wannan yana ɗorewa dukan matakin da kuma kowane ƙane ko ƙanwa da zai biyo baya.",
+      "d3": "Ɗaurin waya yana da muhimmanci: yana kwanciya shimfiɗe gaba ɗaya, don ƙananan hannaye su iya rubutu a kowane layi na kowane shafi.",
+      "d4": "Alƙalamin ma yana da muhimmanci. Tawadar wet-erase ba ta ɓaci a ƙarƙashin hannun yaro yayin da yake rubutu, kuma rigar tsumma kaɗai ke goge ta, don haka babu haruffan da za su ɓaɓɓace a tsakiyar kalma.",
+      "d5": "Gargaɗi ɗaya, a fili: alƙalaman wet-erase ko dry-wipe kaɗai. Alƙalamin tawada na dindindin zai lalata saman.",
+      "c1": "Littafin aiki 1 mai gogewa da za a sake amfani da shi",
+      "c2": "Alƙalamin wet-erase 1 mai siririn baki",
+      "c3": "Rubutun hannu, haruffan kalmomi, rubutun jin magana da aikin jimla don Mataki {{level}}: {{levelName}}"
+    },
+    "soundDeck": {
+      "blurb": "Kowane sauti a cikin shirin a kan katunan A7 masu inganci 150, har da ƙarin katuna bakwai na musamman na ough.",
+      "d1": "Kati ɗaya ga kowane sauti da yaronku zai haɗu da shi daga Mataki 1 zuwa Mataki 8. Ɗaga kati, yaronku ya faɗi sautin; wannan minti ɗaya na aiki kowace rana shi ne injin karatun farko.",
+      "d2": "Tarin yana girma tare da yaronku. Fara da haruffa ɗaya-ɗaya, ƙara sautukan haruffa biyu idan ya kai Mataki 3, kuma ci gaba har zuwa ƙarin-ƙarshe a Mataki 8. Ƙarin ough shi ne abin mamaki: rubutu ɗaya, sautuka bakwai, kuma yara suna son tattara su.",
+      "d3": "Katunan A7 masu inganci, an buga su gefe biyu kuma an shafe su da laminashan mara sheƙi don su jure shekaru a ƙananan hannaye.",
+      "c1": "Katunan sauti 143 na Matakai 1 zuwa 8",
+      "c2": "Ƙarin katuna 7 na musamman na ough",
+      "c3": "Akwatin katuna"
+    },
+    "wordDeck": {
+      "blurb": "Katuna {{n}} na Mataki {{level}}: kowane sauti tare da kalmominsa na aiki, gaba babu alama, baya da alama.",
+      "d1": "Katuna takwas ga kowane sauti: katin sauti ɗaya da kalmomi bakwai na aiki da yaronku zai iya karantawa a Mataki {{level}}. Gaban katin yana nuna kalmar daidai yadda take a littafi; idan kun juya shi, baya yana nuna kalmar guda da aka yi wa sautukanta alama, don ku ga nan take yadda za ku taimaka.",
+      "d2": "Ku yi amfani da su don wasannin minti biyu: karanta kalmar, nemo sautin, doke tarin jiya. Kaɗan-kaɗan akai-akai ya fi yawa lokaci-lokaci.",
+      "c1": "Katuna {{n}}: katunan sauti tare da kalmomin aiki",
+      "c2": "Gaba babu alama, baya da alama",
+      "c3": "Akwatin katuna"
+    },
+    "bundle": {
+      "valueNote": "yana ajiye {{amount}} idan aka kwatanta da saye daban-daban",
+      "blurb": "Duk abin da yaronku ke buƙata don Mataki {{level}}: duk littattafan labari {{n}}, littafin aiki mai gogewa tare da alƙalami da tarin katunan kalmomi.",
+      "d1": "Akwati ɗaya, mataki ɗaya, komai a ciki. Cikakken saitin littattafan karatu na {{levelName}}, littafin aiki mai gogewa da za a sake amfani da shi tare da alƙalaminsa na wet-erase, da tarin katunan kalmomi na Mataki {{level}}.",
+      "d2": "Abubuwa uku suna aiki tare: katunan don gajeren aiki na yau da kullum, littattafan don karatu na gaske, littafin aiki don rubuta komai (sannan a goge, a sake yi).",
+      "d3": "Idan kun san matakin yaronku, wannan shi ne ya kamata ku saya.",
+      "c1": "Duk littattafan labari {{n}} na Mataki {{level}}",
+      "c2": "Littafin aiki mai gogewa tare da alƙalamin wet-erase",
+      "c3": "Tarin katunan kalmomi (katuna {{cards}})",
+      "badge": "Mafi kyawun farawa"
+    },
+    "family": {
+      "blurb": "Dukan shirin a isarwa ɗaya: ɗakin karatu a cikin akwati, duk littattafan aiki 8 masu gogewa tare da alƙalamai, cikakken tarin katunan sauti da kowane tarin katunan kalmomi.",
+      "d1": "Komai, sau ɗaya, ga kowane yaro a gida. Cikakken ɗakin karatu na littattafai 33, littafin aiki mai gogewa da alƙalami ga kowanne daga cikin matakai 8, cikakken tarin katunan sauti da duk tarin katunan kalmomi 8.",
+      "d2": "Saboda littattafan aiki suna gogewa kuma an yi littattafan don su ɗore, dukan shirin yana komawa kai tsaye ga ƙane ko ƙanwa na gaba. Saye ɗaya, daga Reception zuwa Year 2 (shekaru 4–7) da ma gaba, yaro bayan yaro.",
+      "c1": "Cikakken ɗakin karatu, a cikin akwati (littattafai 33)",
+      "c2": "Littattafan aiki 8 masu gogewa, kowanne da alƙalamin wet-erase",
+      "c3": "Cikakken tarin katunan sauti (katuna 150)",
+      "c4": "Duk tarin katunan kalmomi 8 (katuna 584)",
+      "badge": "Komai"
+    },
+    "pens": {
+      "blurb": "Alƙalaman wet-erase uku masu siririn baki don littattafan aiki masu gogewa. Alƙalamai kan ɓace; bai kamata littafin aiki ya jira ba.",
+      "d1": "Alƙalaman wet-erase uku masu siririn baki, iri ɗaya da wanda ke zuwa da kowane littafin aiki mai gogewa. Tawadar ba ta ɓaci yayin da yaronku ke rubutu kuma rigar tsumma na goge ta.",
+      "d2": "Tunatarwa da ke ceton littattafan aiki: alƙalaman wet-erase ko dry-wipe kaɗai. Alƙalamin tawada na dindindin zai lalata saman laminashan.",
+      "c1": "Alƙalaman wet-erase 3 masu siririn baki"
+    },
+    "preview": {
+      "cards": "Leƙa katunan",
+      "book": "Leƙa ciki",
+      "sampleBook": "Leƙa cikin littafin samfuri"
+    }
+  }
+}

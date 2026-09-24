@@ -1,0 +1,150 @@
+{
+  "page": {
+    "title": "图书馆",
+    "subtitleBooks": "{{count}} 本小书，八个级别 — 点一本就能开始阅读",
+    "subtitleBooksNoCount": "小书，八个级别 — 点一本就能开始阅读",
+    "subtitleWorksheets": "免费可打印的发音卡和练习纸"
+  },
+  "tabs": {
+    "books": "图书",
+    "worksheets": "练习纸"
+  },
+  "guest": {
+    "title": "所有图书都可免费阅读",
+    "body": "点任意一本书即可开始。想要可打印的 PDF？创建一个免费账户即可下载。",
+    "signUp": "免费注册 →",
+    "findLevel": "找到孩子的级别 →"
+  },
+  "newUser": {
+    "title": "不知道从哪里开始？",
+    "body": "花 3 分钟做个小测评，找到合适的级别 — 然后阅读或下载任意图书。",
+    "cta": "开始测评 →"
+  },
+  "shelf": {
+    "ariaLabel": "第 {{level}} 级 — {{name}}",
+    "level": "第 {{level}} 级",
+    "readProgress": "已读 {{read}} / {{total}}"
+  },
+  "empty": {
+    "title": "这个级别暂时还没有图书",
+    "body": "新书即将上线，请稍后再来看看"
+  },
+  "unlockedModal": {
+    "cta": "开始阅读"
+  },
+  "quiz": {
+    "perfect": "满分！{{score}}/{{total}} - 你是阅读小明星！",
+    "complete": "测验完成！你的得分是 {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "很快",
+    "days_other": "{{count}} 天",
+    "hours_other": "{{count}} 小时"
+  },
+  "downloadErrors": {
+    "signIn": "请登录后下载。",
+    "unavailable": "PDF 文件暂不可用",
+    "failed": "下载失败"
+  },
+  "notification": {
+    "title": "已下载 {{title}}",
+    "body": "{{format}} 已保存 — 点击可重新下载",
+    "cta": "查看"
+  },
+  "levelFilter": {
+    "all": "全部图书"
+  },
+  "levels": {
+    "1": {
+      "focus": "最初的发音和简单的三字母单词"
+    },
+    "2": {
+      "focus": "其余字母，以及 ck、ff、ll、ss"
+    },
+    "3": {
+      "focus": "两个字母，一个发音 — sh、ch、th、ng…"
+    },
+    "4": {
+      "focus": "元音组合，如 ay、ee、igh、oo 和 ar"
+    },
+    "5": {
+      "focus": "分离双字母组合（a-e、i-e）和新拼写"
+    },
+    "6": {
+      "focus": "其他拼写方式 — wr、kn、ph、dge…"
+    },
+    "7": {
+      "focus": "三字母组合（ire、ore、ear）和 -tion 结尾"
+    },
+    "8": {
+      "focus": "后缀与构词 — -ous、-able、-ible"
+    }
+  },
+  "agesRange": "{{range}} 岁",
+  "card": {
+    "doneAria": "{{title}} — 已读完",
+    "lockedAria": "{{title}} — 未解锁",
+    "download": "下载 PDF",
+    "downloadAria": "下载《{{title}}》PDF"
+  },
+  "download": {
+    "title": "下载 <book>{{title}}</book>",
+    "description": "请选择最适合您使用方式的格式。",
+    "formats": {
+      "a4": {
+        "label": "A5 小册子",
+        "description": "用 A4 纸双面打印，对折并装订，就是一本真正的 A5 小册子。最后一页和第一页在同一张纸上。"
+      },
+      "a5": {
+        "label": "A4 单页",
+        "description": "每页单独一张纸。适合大尺寸阅读或课堂使用。"
+      }
+    },
+    "preparing": "正在准备{{format}}…",
+    "preparingPdf": "正在准备 PDF…",
+    "successTitle": "已保存到您的下载",
+    "successBody": "<book>{{title}}</book>（{{format}}）已在您的下载记录中 — 随时可以从那里打开。",
+    "goToHistory": "前往下载记录",
+    "errorTitle": "下载没有成功",
+    "failed": "下载失败"
+  },
+  "worksheets": {
+    "intro": "面向家长和老师的免费可打印自然拼读资源。发音卡、海报和练习纸 — 全部与英国 Letters and Sounds 课程一致。",
+    "categoriesAria": "资源分类",
+    "categorySoundMats": "发音卡",
+    "categoryLevel": "第 {{level}} 级练习纸",
+    "levelHeading": "第 {{level}} 级练习纸",
+    "levelSub": "{{name}} — {{ages}} · 点击一本书查看它的练习包",
+    "comingSoon": "即将推出",
+    "levelComingSoon": "第 {{level}} 级的可打印书写、解码和 Tricky Words（特殊词）练习纸。请收藏此页 — 新练习纸会定期上线。",
+    "focusSounds": "重点发音：",
+    "sheetCount_other": "{{count}} 张",
+    "bookComingSoon": "本书的可打印练习纸即将推出 — 包括书写练习、alien words 朗读、Tricky Words，以及 {{sounds}} 的单音练习纸。",
+    "downloadAllCount_other": "下载全部 {{count}} 张",
+    "packHint": "可将整个练习包下载为一个 PDF，也可按需下载单张打印。",
+    "downloadError": "这张练习纸无法下载，请重试。",
+    "preview": "{{title}} 预览",
+    "levelPackTitle": "第 {{level}} 级单音练习纸",
+    "groups": {
+      "book": "图书练习纸",
+      "singleSound": "单音练习纸 — {{sounds}}",
+      "singleSoundRest": "单音练习纸 — 其余字母",
+      "singleSoundSpecial": "单音练习纸 — Special Friends（两个字母一个音）"
+    },
+    "soundSheet": "发音 {{sound}}"
+  },
+  "soundMats": {
+    "title": "发音卡",
+    "subtitle": "适用于家庭和课堂的可打印发音卡 — A3 横版 PNG",
+    "level": "第 {{level}} 级",
+    "levels23": "第 2 和 3 级",
+    "levels46": "第 4–6 级",
+    "sounds_other": "{{count}} 个发音",
+    "combinedChart_other": "{{count}} 个发音 — 教师合并图表",
+    "combined": "合并版",
+    "alt": "{{title}} 发音卡"
+  },
+  "resources": {
+    "title": "资源"
+  }
+}

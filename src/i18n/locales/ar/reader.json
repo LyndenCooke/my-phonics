@@ -1,0 +1,70 @@
+{
+  "closeBook": "إغلاق الكتاب",
+  "pageAlt": "{{title}} — الصفحة {{page}}",
+  "pageLoadError": "تعذّر تحميل هذه الصفحة.",
+  "pageLoadErrorHint": "تحقّق من اتصالك بالإنترنت ثم حاول مرة أخرى.",
+  "pagesUnavailable": "صور الصفحات غير متوفرة",
+  "previousPage": "الصفحة السابقة",
+  "nextPage": "الصفحة التالية",
+  "goToPage": "الانتقال إلى الصفحة {{page}}",
+  "finishBook": "إنهاء الكتاب",
+  "tapToHear": "اضغط لسماع \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "معاينة الكتاب — استخدم مفاتيح الأسهم لتقليب الصفحات"
+  },
+  "quiz": {
+    "saveFailed": "تعذّر حفظ نتائج الاختبار",
+    "completeAria": "اكتمل الاختبار",
+    "perfect": "درجة كاملة!",
+    "wellDone": "أحسنت!",
+    "scored": "حصلت على <b>{{score}}</b> من <b>{{total}}</b>",
+    "tryAgain": "حاول مرة أخرى",
+    "dialogAria": "اختبار: {{title}}",
+    "close": "إغلاق الاختبار",
+    "answerOptions": "خيارات الإجابة",
+    "seeResults": "عرض النتائج"
+  },
+  "audio": {
+    "playSoundTitle": "تشغيل صوت \"{{grapheme}}\"",
+    "playSoundAria": "تشغيل صوت الحرف {{grapheme}}",
+    "playWordTitle": "تشغيل \"{{word}}\"",
+    "playWordAria": "تشغيل كلمة {{word}}"
+  },
+  "soundMap": {
+    "known": "معروف ({{n}})",
+    "toLearn": "للتعلّم ({{n}})",
+    "notTestedCount": "لم يُختبر ({{n}})",
+    "notTested": "لم يُختبر",
+    "levelHeading": "المستوى {{level}}",
+    "levelsNotTested": "المستويات {{levels}} لم تُختبر بعد",
+    "status": {
+      "known": "معروف",
+      "unknown": "للتعلّم",
+      "untested": "لم يُختبر"
+    },
+    "categories": {
+      "sound_recognition": "الأصوات",
+      "word_reading": "كلمات حقيقية",
+      "alien_words": "Alien Words (كلمات وهمية)",
+      "tricky_words": "Tricky Words (كلمات صعبة)",
+      "speedy_reading": "القراءة السريعة",
+      "fluency": "الطلاقة"
+    }
+  },
+  "interactive": {
+    "playSound": "تشغيل الصوت {{sound}}",
+    "playSoundVariant": "تشغيل الصوت {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. اضغط للاستماع.",
+    "illustration": "رسم توضيحي للقصة",
+    "closeImage": "إغلاق الصورة",
+    "expandIllustration": "تكبير الرسم التوضيحي",
+    "hideHints": "إخفاء تلميحات الصوتيات",
+    "showHints": "إظهار تلميحات الصوتيات",
+    "checkInPassed": "تم اجتياز المراجعة",
+    "checkInPractise": "المراجعة — استمر في التدرّب"
+  },
+  "prep": {
+    "tapToHear": "اضغط على كل صوت لسماعه. هذه هي الأصوات التي سيتدرّب عليها طفلك.",
+    "tapLevel": "اضغط على مستوى لرؤية أصواته"
+  }
+}

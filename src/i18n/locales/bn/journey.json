@@ -1,0 +1,48 @@
+{
+  "youAreHere": "আপনি এখানে",
+  "dayOf": "দিন {{day}} / {{total}}",
+  "kicker": "পড়ার যাত্রা",
+  "headline": "পড়তে শেখার পথে আপনার যাত্রা",
+  "lessonOf": "পাঠ {{n}} / {{total}}",
+  "levelDash": "লেভেল {{n}} — {{name}}",
+  "progressAria": "পাঠ {{n}} / {{total}}, যাত্রার {{pct}} শতাংশ",
+  "levelState": {
+    "complete": "সম্পন্ন",
+    "current": "বর্তমান লেভেল, {{total}}টির মধ্যে {{done}}টি পাঠ",
+    "future": "এখনও শুরু হয়নি"
+  },
+  "levelAria": "লেভেল {{n}}, {{name}}, {{state}}। লেভেলের মানচিত্র খুলুন।",
+  "lessonsDone": "{{total}}টির মধ্যে {{done}}টি পাঠ",
+  "complete": "সম্পন্ন",
+  "lessons_one": "{{count}}টি পাঠ",
+  "lessons_other": "{{count}}টি পাঠ",
+  "panel": {
+    "aria": "পাঠের রূপরেখা: {{title}}",
+    "close": "পাঠের রূপরেখা বন্ধ করুন",
+    "meta": "পাঠ {{n}} · লেভেল {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "এই সপ্তাহের দিনগুলো",
+    "dayTabAria": "দিন {{day}}: {{title}}",
+    "dayTab": "দিন {{day}}",
+    "minutes": "প্রায় {{minutes}} মিনিট পড়ানো",
+    "minutesWorksheet": "প্রায় {{minutes}} মিনিট পড়ানো, তারপর ওয়ার্কশিট"
+  },
+  "blockState": {
+    "complete": "সম্পন্ন",
+    "current": "আপনি এখানে",
+    "future": "সামনে আসছে"
+  },
+  "kind": {
+    "assessment": "মূল্যায়ন",
+    "keepup": "ঝালিয়ে নেওয়ার সময়",
+    "lesson": "পাঠ",
+    "soundWeek": "ধ্বনি সপ্তাহ",
+    "skillsWeek": "দক্ষতা সপ্তাহ"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "পুরো যাত্রায় ফিরে যান",
+  "back": "পুরো যাত্রা",
+  "levelTitle": "লেভেল {{n}}: {{name}}",
+  "error": "যাত্রার মানচিত্র এই মুহূর্তে লোড করা যায়নি। একটু পরে আবার চেষ্টা করুন।",
+  "loading": "যাত্রার মানচিত্র লোড হচ্ছে",
+  "sectionAria": "পাঠ্যক্রম যাত্রার মানচিত্র"
+}

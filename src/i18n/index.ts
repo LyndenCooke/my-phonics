@@ -101,15 +101,15 @@ void i18n
       caches: ['localStorage'],
     },
     interpolation: { escapeValue: false },
-    react: { useSuspense: true },
+    react: { useSuspense: true, bindI18n: 'languageChanged loaded' },
     returnNull: false,
   });
 
-applyDocumentLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+applyDocumentLanguage(i18n.language ?? 'en');
 
 /** Current language as one of ours (never a raw `ar-SA`). */
 export function currentLanguage() {
-  return getLanguage(i18n.resolvedLanguage ?? i18n.language);
+  return getLanguage(i18n.language ?? i18n.resolvedLanguage);
 }
 
 /** Switch language and remember it (localStorage via the detector cache). */
