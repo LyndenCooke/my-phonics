@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "Belum ada buku!",
+    "body": "Minta orang dewasa membuka buku pertamamu."
+  },
+  "levelLabel": "Level {{level}}",
+  "greeting": "Waktunya membaca, {{name}}!",
+  "greetingNoName": "Waktunya membaca!",
+  "cta": {
+    "startLevelCheck": "Mulai Cek Level",
+    "nextBook": "Buku Berikutnya",
+    "startCheck": "Mulai Cek",
+    "readBook": "Baca Buku",
+    "readAgain": "Baca Lagi",
+    "lastRead": "Bacaan Terakhir!"
+  },
+  "sub": {
+    "allDone": "Kamu sudah menyelesaikan semua bukumu!",
+    "nextUnlocked": "Buku berikutnya terbuka!",
+    "readyCheck": "Siap untuk Cek!",
+    "read0": "Baca buku ini 5 kali.",
+    "read1": "Awal yang hebat. 4 kali lagi.",
+    "read2": "Kamu hebat. 3 kali lagi.",
+    "read3": "Kamu makin cepat. 2 kali lagi.",
+    "read4": "Hampir sampai. Bacaan terakhir!"
+  },
+  "games": {
+    "heading": "Main game",
+    "play": "Main",
+    "soundlings": {
+      "blurb": "Beri makan makhluk bunyimu!"
+    },
+    "finish": {
+      "name": "Lengkapi kata",
+      "blurb": "Ketuk bunyi yang hilang"
+    },
+    "tricky": {
+      "name": "Dengar, lalu temukan",
+      "blurb": "Dengarkan dan temukan kata sulitnya"
+    },
+    "cannon": {
+      "blurb": "Tembakkan bunyi yang benar ke dalam kata"
+    }
+  },
+  "path": {
+    "heading": "Jalanmu",
+    "progress": "{{done}} dari {{total}} selesai",
+    "reads": "{{done}}/{{total}} kali baca",
+    "done": "Selesai!",
+    "book": "Buku {{n}}",
+    "levelCheck": "Cek Level"
+  },
+  "sounds": {
+    "heading": "Bunyi yang sedang kamu pelajari"
+  },
+  "aria": {
+    "openBook": "Buka {{title}}",
+    "readsDone": "{{done}} dari {{total}} kali baca selesai",
+    "currentBook": "{{title}} — bukumu, {{done}} dari {{total}} kali baca selesai",
+    "doneBook": "{{title}} — selesai",
+    "lockedBook": "{{title}} — terkunci, selesaikan bukumu yang sekarang dulu",
+    "startCheck": "Mulai Cek Level-mu",
+    "checkLocked": "Cek Level — selesaikan dulu buku-bukumu"
+  }
+}

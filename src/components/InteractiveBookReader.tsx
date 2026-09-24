@@ -11,7 +11,7 @@ import {
 import TappableWord from '@/components/interactive/TappableWord';
 import { awardStamp, getStamps, isReadyToMoveUp, MAX_STAMPS, needsCheckIn, type BookStamps } from '@/lib/stamps';
 import { JOURNEY_LEVELS, getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 
 /** Translated screen-reader labels / tooltips for the reader's controls.
@@ -19,6 +19,40 @@ import i18n from '@/i18n';
  *  an LTR island. The main component's useTranslation('reader') guarantees
  *  the namespace is loaded before any page renders. */
 const tr = (key: string, opts?: Record<string, unknown>) => i18n.t(`reader:${key}`, opts);
+
+/** Attributes for a translated UI line inside the English LTR island — the
+ *  line lays itself out in the parent's language direction (Arabic/Urdu/
+ *  Persian read right-to-left) while the book around it stays LTR. */
+const ui = () => ({ dir: 'auto' as const, lang: i18n.language });
+
+/** Unicode-isolate an English fragment (level name, sound, hero's name)
+ *  so it keeps its own LTR order inside a translated RTL sentence. */
+const iso = (s: string | number) => `⁨${s}⁩`;
+
+/** Cover subtitles come from data in two known English shapes:
+ *  curated "Level 1 · Ditties" and family-made
+ *  'A book made for Amir · Level 3 · Sound "sh"'. Translate the chrome,
+ *  keep the level name / hero / sound English. Unknown shapes pass through. */
+function coverSubtitle(s: string): string {
+  let m = s.match(/^Level (\d+) · (.+)$/);
+  if (m) return tr('book.cover.levelSubtitle', { level: m[1], name: iso(m[2]) });
+  m = s.match(/^A book made for (.+) · Level (\d+) · Sound "(.+)"$/);
+  if (m) return tr('book.cover.madeFor', { hero: iso(m[1]), level: m[2], sound: iso(m[3]) });
+  return s;
+}
+
+/** Drawing prompts are generic UI headings in the data. */
+function drawingPrompt(p: string): string {
+  if (p === 'Draw Your Favourite Part') return tr('book.drawing.favourite');
+  const m = p.match(/^Draw (.+)'s favourite part$/);
+  if (m) return tr('book.drawing.heroFavourite', { hero: iso(m[1]) });
+  return p;
+}
+
+/** Known grown-up teaching notes on sound-grid pages (data text → key). */
+const SOUND_NOTE_KEYS: Record<string, string> = {
+  "The letters 'ure' have two sounds! At the end of a word it can sound like 'yoor' (as in pure) OR like 'ur' (as in nature). You'll meet both in this book.": 'book.sounds.noteUre',
+};
 
 // ─── Audio helpers ──────────────────────────────────────────────────────────
 
@@ -204,8 +238,8 @@ function CoverPage({ page, level }: { page: Extract<InteractivePage, { type: 'co
       </div>
       <div className="flex flex-col items-center gap-1 md:gap-2 mt-3 md:mt-4 shrink-0">
         <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight max-w-4xl">{page.title}</h1>
-        <p className={`text-sm md:text-base lg:text-lg font-semibold ${theme.textAccentMuted} uppercase tracking-wider`}>{page.subtitle}</p>
-        <p className={`text-sm md:text-base font-bold ${theme.textAccent} animate-bounce mt-1`}>Swipe to start &rarr;</p>
+        <p {...ui()} className={`text-sm md:text-base lg:text-lg font-semibold ${theme.textAccentMuted} uppercase tracking-wider text-balance`}>{coverSubtitle(page.subtitle)}</p>
+        <p className={`text-sm md:text-base font-bold ${theme.textAccent} animate-bounce mt-1`}><span {...ui()}>{tr('book.cover.swipe')}</span> &rarr;</p>
       </div>
     </div>
   );
@@ -234,9 +268,13 @@ const GRAPHEME_LEVEL: Record<string, number> = (() => {
   return map;
 })();
 
-const LEVEL_LABEL: Record<number, string> = Object.fromEntries(
-  JOURNEY_LEVELS.map((l) => [l.level, `Level ${l.level} — ${l.name}`]),
+const LEVEL_NAME: Record<number, string> = Object.fromEntries(
+  JOURNEY_LEVELS.map((l) => [l.level, l.name]),
 );
+/** "Level 3 — Special Friends": the word "Level" is translated, the name stays English. */
+const levelLabel = (lvl: number) => LEVEL_NAME[lvl]
+  ? tr('book.levelLabel', { level: lvl, name: iso(LEVEL_NAME[lvl]) })
+  : tr('book.level', { level: lvl });
 
 // Sound → clipart card map. The clipart pack lives in /public/clipart/level_N/cards/
 // with filenames `<sound>_<cueword>.png`. Cards visually match the printed
@@ -430,9 +468,10 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
   return (
     <div className="flex flex-col h-full px-5 md:px-10 lg:px-16 py-3 md:py-4 overflow-hidden" style={{ fontFamily: "'Andika', sans-serif" }}>
       {/* ── New sounds (focus row — clipart cards) ── */}
-      <div className="flex items-center gap-2 mb-0.5 shrink-0">
+      {/* Heading row follows the parent's language direction so it lines up with the hint below. */}
+      <div dir={i18n.dir()} className="flex items-center gap-2 mb-0.5 shrink-0">
         <Sparkles className={`w-5 h-5 md:w-6 md:h-6 ${theme.textAccentMuted}`} />
-        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">New sounds in this book</h2>
+        <h2 {...ui()} className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">{tr('book.sounds.title')}</h2>
       </div>
       {/* Grown-up guidance — translated (the page itself stays an English LTR island). */}
       <p dir="auto" lang={i18n.language} className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
@@ -442,7 +481,10 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
        *  (e.g. L5.3 'ure' has both /jʊər/ and /ər/). */}
       {page.note && (
         <div className={`shrink-0 mb-3 md:mb-4 px-3 md:px-4 py-2 md:py-2.5 rounded-xl bg-gradient-to-br ${theme.softGradient} border-2 ${theme.cardBorderActive} text-sm md:text-base text-slate-700 leading-snug`}>
-          <span className="font-bold">Heads up: </span>{page.note}
+          <span {...ui()} className="font-bold">{tr('book.sounds.headsUp')} </span>
+          {SOUND_NOTE_KEYS[page.note]
+            ? <span {...ui()}>{tr(SOUND_NOTE_KEYS[page.note])}</span>
+            : page.note}
         </div>
       )}
 
@@ -476,9 +518,9 @@ function SoundGridPage({ page, level }: { page: Extract<InteractivePage, { type:
                   className={`w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-2.5 text-left transition-colors
                     ${isOpen ? 'bg-slate-50' : 'hover:bg-slate-50'}`}
                 >
-                  <span className="text-sm md:text-base font-semibold text-slate-700">
-                    {LEVEL_LABEL[lvl] ?? `Level ${lvl}`}
-                    <span className="ml-2 text-xs text-slate-400 font-normal">({groups.length})</span>
+                  <span {...ui()} className="text-sm md:text-base font-semibold text-slate-700">
+                    {levelLabel(lvl)}
+                    <span className="ms-2 text-xs text-slate-400 font-normal">({groups.length})</span>
                   </span>
                   <ChevronRight
                     className={`w-4 h-4 md:w-5 md:h-5 text-slate-400 transition-transform ${isOpen ? 'rotate-90' : ''}`}
@@ -563,12 +605,13 @@ function VocabPreviewPage({ page, level }: { page: Extract<InteractivePage, { ty
 
   return (
     <div className="flex flex-col h-full px-4 md:px-8 lg:px-12 py-3 md:py-4" style={{ fontFamily: "'Andika', sans-serif" }}>
-      <div className="flex items-center gap-2 mb-0.5 shrink-0">
+      {/* Heading row follows the parent's language direction so it lines up with the hint below. */}
+      <div dir={i18n.dir()} className="flex items-center gap-2 mb-0.5 shrink-0">
         <BookOpenIcon className={theme.textAccentMuted} />
-        <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">Story Words</h2>
+        <h2 {...ui()} className="text-xl md:text-2xl lg:text-3xl font-extrabold text-slate-800">{tr('book.vocab.title')}</h2>
       </div>
-      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
-        Tap a card to hear the word. You'll meet all of these in the story.
+      <p {...ui()} className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 shrink-0">
+        {tr('book.vocab.hint')}
       </p>
       <div className="flex flex-wrap justify-center content-start flex-1 min-h-0" style={{ gap }}>
         {page.words.map((w, i) => {
@@ -884,7 +927,7 @@ function StoryPage({ page, focusSounds, level = 1 }: { page: Extract<Interactive
           <button onClick={handleNarrate} disabled={isNarrating}
             className={`w-full py-2 md:py-3.5 rounded-2xl font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-200
               ${isNarrating ? 'bg-pink-500 text-white opacity-80 cursor-not-allowed' : 'bg-pink-100 text-pink-700 hover:bg-pink-200 active:scale-[0.98]'}`}>
-            <Volume2 className="w-4 h-4 md:w-5 md:h-5" /> {isNarrating ? 'Reading...' : 'Read to me'}
+            <Volume2 className="w-4 h-4 md:w-5 md:h-5 shrink-0" /> <span {...ui()}>{isNarrating ? tr('book.story.reading') : tr('book.story.readToMe')}</span>
           </button>
         </div>
 
@@ -1027,7 +1070,7 @@ function SoundSpotlightPage({ page, level }: { page: Extract<InteractivePage, { 
         >
           <span className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center">{page.sound}</span>
         </button>
-        <p className="text-sm md:text-base lg:text-lg text-slate-500 font-medium">Tap the sound!</p>
+        <p {...ui()} className="text-sm md:text-base lg:text-lg text-slate-500 font-medium text-center">{tr('book.spotlight.tapSound')}</p>
       </div>
 
       {/* ── WORD CARDS RIGHT — 2x2 grid. Audio is George's voice (whole word)
@@ -1100,11 +1143,11 @@ function WordReadingPage({ page, focusSounds, level }: { page: Extract<Interacti
       {/* ── Top banner ── */}
       <div className={`flex items-center justify-center gap-2 md:gap-3 mb-1 shrink-0`}>
         <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800">Can You Read These?</h2>
+        <h2 {...ui()} className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800 text-center text-balance">{tr('book.wordReading.title')}</h2>
         <Sparkles className={`w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 ${theme.textAccentMuted}`} />
       </div>
-      <p className="text-xs md:text-sm lg:text-base text-slate-500 text-center mb-3 md:mb-4 shrink-0">
-        Tap each word to blend it together. Use the dots to sound it out.
+      <p {...ui()} className="text-xs md:text-sm lg:text-base text-slate-500 text-center mb-3 md:mb-4 shrink-0">
+        {tr('book.wordReading.hint')}
       </p>
 
       {/* ── Flashcard grid — scaled-down padding/size from old word_reading
@@ -1157,9 +1200,9 @@ function TrickyWordsPage({ page }: { page: Extract<InteractivePage, { type: 'tri
           <Star className="absolute -top-2 -right-2 md:-top-3 md:-right-3 w-6 h-6 md:w-8 md:h-8 text-amber-300 fill-amber-300 animate-pulse" />
           <Star className="absolute -bottom-1 -left-3 md:-bottom-2 md:-left-5 w-5 h-5 md:w-7 md:h-7 text-amber-200 fill-amber-200 animate-pulse" style={{ animationDelay: '0.5s' }} />
         </div>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-purple-800">Tricky Words</h2>
-        <p className="text-sm md:text-base lg:text-lg text-purple-600 text-center max-w-xs">
-          These don't sound how they look &mdash; just know them by sight!
+        <h2 {...ui()} className="text-2xl md:text-3xl lg:text-4xl font-bold text-purple-800 text-center">{tr('book.tricky.title')}</h2>
+        <p {...ui()} className="text-sm md:text-base lg:text-lg text-purple-600 text-center max-w-xs">
+          {tr('book.tricky.hint')}
         </p>
       </div>
 
@@ -1205,11 +1248,11 @@ function NonsenseWordsPage({ page, focusSounds }: { page: Extract<InteractivePag
     <div className="flex flex-col h-full w-full px-5 md:px-10 lg:px-16 py-3 md:py-5 overflow-hidden">
       <div className="flex items-center justify-center gap-2 md:gap-3 mb-0.5 shrink-0">
         <Sparkles className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-green-500" />
-        <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-slate-800">Alien Words</h2>
+        <h2 {...ui()} className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-slate-800 text-center">{tr('book.alien.title')}</h2>
         <Sparkles className="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 text-green-500" />
       </div>
-      <p className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 text-center shrink-0">
-        Not real words &mdash; just sound them out!
+      <p {...ui()} className="text-xs md:text-sm lg:text-base text-slate-500 mb-3 md:mb-4 text-center shrink-0">
+        {tr('book.alien.hint')}
       </p>
       {/* content-start instead of items-center stops the grid from growing
        * upward and overlapping the subtitle when it has many cards. */}
@@ -1266,8 +1309,8 @@ function QuizPage({ page, level }: { page: Extract<InteractivePage, { type: 'qui
           <img src={q.imageUrl} alt="" className="w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 object-contain flex-shrink-0 rounded-2xl" />
         )}
         <div className="flex-1 text-center md:text-left">
-          <p className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider`}>
-            Question {qIdx + 1} of {page.questions.length}
+          <p {...ui()} className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider md:text-start`}>
+            {tr('book.quiz.progress', { n: qIdx + 1, total: page.questions.length })}
           </p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800 leading-tight">
             {q.question}
@@ -1308,16 +1351,16 @@ function QuizPage({ page, level }: { page: Extract<InteractivePage, { type: 'qui
       {selected !== null && (
         <div className="mt-5 md:mt-6 flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 flex-shrink-0">
           {correct ? (
-            <p className="text-green-600 font-bold text-xl md:text-2xl lg:text-3xl">Well done! &#11088;</p>
+            <p {...ui()} className="text-green-600 font-bold text-xl md:text-2xl lg:text-3xl text-center">{tr('book.quiz.right')} &#11088;</p>
           ) : (
-            <p className="text-amber-600 font-bold text-xl md:text-2xl lg:text-3xl">Not quite — the green one is right!</p>
+            <p {...ui()} className="text-amber-600 font-bold text-xl md:text-2xl lg:text-3xl text-center">{tr('book.quiz.wrong')}</p>
           )}
           {!isLast && (
             <button
               onClick={handleNext}
               className={`px-6 md:px-8 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
             >
-              Next Question &rarr;
+              <span {...ui()}>{tr('book.quiz.next')}</span> &rarr;
             </button>
           )}
         </div>
@@ -1388,9 +1431,9 @@ function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 
           alt={w.word}
           className="w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-contain drop-shadow-xl"
         />
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800">Spell the Word!</h2>
+        <h2 {...ui()} className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 text-center">{tr('book.spelling.title')}</h2>
         {isCorrect && (
-          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; Correct!</p>
+          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; <span {...ui()}>{tr('book.correct')}</span></p>
         )}
       </div>
 
@@ -1454,7 +1497,7 @@ function SpellingPage({ page, level }: { page: Extract<InteractivePage, { type: 
             onClick={() => setWordIdx(i => i + 1)}
             className={`px-8 md:px-10 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
           >
-            Next Word &rarr;
+            <span {...ui()}>{tr('book.spelling.next')}</span> &rarr;
           </button>
         )}
       </div>
@@ -1522,7 +1565,9 @@ function GrammarWordOrderPage({ page, level }: { page: Extract<InteractivePage, 
     setAvailable([...available, word]);
   };
 
-  const title = page.title ?? 'Build the sentence!';
+  // Every data title so far is the generic heading; translate that, keep any
+  // bespoke data title as written.
+  const title = !page.title || page.title === 'Build the sentence!' ? tr('book.grammar.title') : page.title;
 
   return (
     <div className="flex flex-col md:flex-row h-full w-full">
@@ -1537,12 +1582,12 @@ function GrammarWordOrderPage({ page, level }: { page: Extract<InteractivePage, 
             <span className="text-7xl md:text-8xl lg:text-9xl">&#x1F4DD;</span>
           </div>
         )}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 text-center">{title}</h2>
-        <p className={`text-base md:text-lg lg:text-xl font-medium ${theme.textAccentMuted} uppercase tracking-wider`}>
-          Sentence {itemIdx + 1} of {page.items.length}
+        <h2 {...ui()} className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-800 text-center">{title}</h2>
+        <p {...ui()} className={`text-base md:text-lg lg:text-xl font-medium ${theme.textAccentMuted} uppercase tracking-wider text-center`}>
+          {tr('book.grammar.progress', { n: itemIdx + 1, total: page.items.length })}
         </p>
         {isCorrect && (
-          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; Correct!</p>
+          <p className="text-green-600 font-bold text-2xl md:text-3xl lg:text-4xl animate-bounce">&#11088; <span {...ui()}>{tr('book.correct')}</span></p>
         )}
       </div>
 
@@ -1586,7 +1631,7 @@ function GrammarWordOrderPage({ page, level }: { page: Extract<InteractivePage, 
             onClick={() => setItemIdx(i => i + 1)}
             className={`px-8 md:px-10 py-3 md:py-4 rounded-2xl ${theme.solidBg} ${theme.solidBgHover} text-white font-bold text-lg md:text-xl transition-colors shadow-lg`}
           >
-            Next Sentence &rarr;
+            <span {...ui()}>{tr('book.grammar.next')}</span> &rarr;
           </button>
         )}
       </div>
@@ -1630,13 +1675,13 @@ function StoryOrderingPage({ page }: { page: Extract<InteractivePage, { type: 's
 
   return (
     <div className="flex flex-col h-full px-5 py-4">
-      <h2 className="text-2xl font-bold text-slate-800 mb-1">Put the Story in Order!</h2>
-      <p className="text-sm text-slate-500 mb-3">Tap two to swap them.</p>
+      <h2 {...ui()} className="text-2xl font-bold text-slate-800 mb-1">{tr('book.ordering.title')}</h2>
+      <p {...ui()} className="text-sm text-slate-500 mb-3">{tr('book.ordering.hint')}</p>
 
       {isCorrect && (
         <div className="flex items-center gap-2 mb-3 px-4 py-2 bg-green-100 rounded-2xl">
-          <Check className="w-5 h-5 text-green-600" />
-          <span className="text-green-700 font-bold text-sm">That's the right order!</span>
+          <Check className="w-5 h-5 text-green-600 shrink-0" />
+          <span {...ui()} className="text-green-700 font-bold text-sm">{tr('book.ordering.done')}</span>
         </div>
       )}
 
@@ -1663,7 +1708,7 @@ function StoryOrderingPage({ page }: { page: Extract<InteractivePage, { type: 's
       <div className="flex justify-center mt-2">
         <button onClick={handleReset}
           className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-100 text-slate-600 text-sm font-medium hover:bg-slate-200 transition-colors">
-          <RotateCcw className="w-4 h-4" /> Shuffle
+          <RotateCcw className="w-4 h-4" /> <span {...ui()}>{tr('book.ordering.shuffle')}</span>
         </button>
       </div>
     </div>
@@ -1701,7 +1746,7 @@ function DrawingCanvas({ prompt }: { prompt: string }) {
 
   return (
     <div className="flex flex-col h-full px-5 py-4">
-      <h2 className="text-2xl font-bold text-slate-800 mb-3">{prompt}</h2>
+      <h2 {...ui()} className="text-2xl font-bold text-slate-800 mb-3">{drawingPrompt(prompt)}</h2>
       <div className="flex items-center gap-2.5 mb-3">
         {colors.map(c => (
           <button key={c} onClick={() => setColor(c)}
@@ -1709,7 +1754,7 @@ function DrawingCanvas({ prompt }: { prompt: string }) {
             style={{ backgroundColor: c }} />
         ))}
         <button onClick={clearCanvas} className="ml-auto flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-base font-medium hover:bg-slate-200">
-          <Trash2 className="w-4 h-4" /> Clear
+          <Trash2 className="w-4 h-4" /> <span {...ui()}>{tr('book.drawing.clear')}</span>
         </button>
       </div>
       <canvas ref={canvasRef} className="flex-1 rounded-2xl border-2 border-dashed border-slate-300 bg-white touch-none cursor-crosshair"
@@ -1725,8 +1770,8 @@ function WritingPracticePage({ page }: { page: Extract<InteractivePage, { type: 
   const [activeIdx, setActiveIdx] = useState(0);
   return (
     <div className="flex flex-col h-full px-5 py-4">
-      <h2 className="text-2xl font-bold text-slate-800 mb-1">Writing Practice</h2>
-      <p className="text-base text-slate-500 mb-4">Tap a letter, then trace it!</p>
+      <h2 {...ui()} className="text-2xl font-bold text-slate-800 mb-1">{tr('book.writing.title')}</h2>
+      <p {...ui()} className="text-base text-slate-500 mb-4">{tr('book.writing.hint')}</p>
       <div className="flex gap-3 mb-4">
         {page.letters.map((letter, i) => (
           <button key={i} onClick={async () => { setActiveIdx(i); await playPhoneme(letter); }}
@@ -1836,8 +1881,8 @@ function CheckInPhase({
       <div className={`rounded-3xl bg-gradient-to-br ${theme.softGradient} p-5 md:p-7 lg:p-9 mb-5 md:mb-6 flex flex-col md:flex-row items-center gap-5 md:gap-8 shadow-sm flex-shrink-0`}>
         <div className="text-5xl md:text-6xl lg:text-7xl flex-shrink-0">&#x1F9E0;</div>
         <div className="flex-1 text-center md:text-left">
-          <p className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider`}>
-            Check-in {qIdx + 1} of {qs.length} &middot; Day {stampNumber}
+          <p {...ui()} className={`text-sm md:text-base lg:text-lg font-bold ${theme.textAccentMuted} mb-1 md:mb-2 uppercase tracking-wider md:text-start`}>
+            {tr('book.checkIn.progress', { n: qIdx + 1, total: qs.length, day: stampNumber })}
           </p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-800 leading-tight">
             {q.question}
@@ -1933,9 +1978,10 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
   const isChampion = stampState.count >= MAX_STAMPS;
   const readyToMoveUp = isReadyToMoveUp(stampState);
   const confettiCount = isChampion ? 30 : 14;
-  const title = isChampion ? 'Reading Champion!'
-    : awardedNow ? 'Great Reading!'
-    : 'Already Read Today';
+  const title = isChampion ? tr('book.cert.champion')
+    : awardedNow ? tr('book.cert.great')
+    : tr('book.cert.already');
+  const accent = <span className={`font-bold ${theme.textAccent}`} />;
   const emoji = isChampion ? '\u{1F3C6}' : awardedNow ? '\u{1F389}' : '\u{1F4DA}';
 
   return (
@@ -1955,7 +2001,7 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
         p-5 md:p-7 lg:p-9 shadow-2xl max-w-3xl w-full flex flex-col items-center gap-3 md:gap-4`}>
 
         <div className="text-4xl md:text-5xl lg:text-6xl">{emoji}</div>
-        <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold ${isChampion ? 'text-amber-600' : theme.textAccent}`}>
+        <h1 {...ui()} className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold ${isChampion ? 'text-amber-600' : theme.textAccent}`}>
           {title}
         </h1>
         <p className="text-lg md:text-xl lg:text-2xl font-bold italic text-slate-700 px-4">{page.bookTitle}</p>
@@ -1989,8 +2035,8 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] md:text-xs font-medium ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
-                  Day {stampNum}
+                <span {...ui()} className={`text-[10px] md:text-xs font-medium whitespace-nowrap ${earned ? 'text-slate-600' : 'text-slate-300'}`}>
+                  {tr('book.cert.day', { n: stampNum })}
                 </span>
               </div>
             );
@@ -2000,28 +2046,28 @@ function CertificatePage({ page, level, bookId, quizQuestions }: { page: Extract
         {isChampion && readyToMoveUp && (
           <div className="flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-gradient-to-r from-amber-200 to-amber-300 border-2 border-amber-400 shadow-lg">
             <span className="text-xl md:text-2xl">&#x1F680;</span>
-            <span className="text-sm md:text-base lg:text-lg font-bold text-amber-800">Ready to Move Up!</span>
+            <span {...ui()} className="text-sm md:text-base lg:text-lg font-bold text-amber-800">{tr('book.cert.moveUp')}</span>
           </div>
         )}
 
-        <div className="max-w-xl">
+        <div className="max-w-xl" {...ui()}>
           {isChampion && readyToMoveUp ? (
             <p className="text-base md:text-lg lg:text-xl font-bold text-amber-700">
-              5 reads, 3 check-ins passed. You've really mastered this book!
+              {tr('book.cert.mastered', { reads: MAX_STAMPS, checkIns: 3 })}
             </p>
           ) : isChampion ? (
             <p className="text-base md:text-lg lg:text-xl font-bold text-amber-700">
-              5 reads complete! A few more reads at this level will build real fluency.
+              {tr('book.cert.fluency', { reads: MAX_STAMPS })}
             </p>
           ) : awardedNow ? (
             <p className="text-sm md:text-base lg:text-lg text-slate-600">
-              Stamp <span className={`font-bold ${theme.textAccent}`}>{stampState.count} of {MAX_STAMPS}</span> unlocked!
-              Come back tomorrow for stamp {stampState.count + 1}.
+              <Trans ns="reader" i18nKey="book.cert.stampUnlocked"
+                values={{ n: stampState.count, total: MAX_STAMPS, next: stampState.count + 1 }}
+                components={{ b: accent }} />
             </p>
           ) : (
             <p className="text-sm md:text-base lg:text-lg text-slate-600">
-              You've already earned today's stamp &mdash; great work!
-              Come back tomorrow for stamp {stampState.count + 1}.
+              {tr('book.cert.alreadyEarned', { next: stampState.count + 1 })}
             </p>
           )}
         </div>
@@ -2173,7 +2219,7 @@ export default function InteractiveBookReader({ book, onClose, onFinish, pages: 
           className={`p-2 rounded-lg transition-colors ml-2 ${isLast ? 'text-white rounded-xl px-4' : 'hover:bg-slate-100 text-slate-600'}`}
           style={isLast ? { backgroundColor: levelHex } : undefined}
         >
-          {isLast ? <span className="text-base font-bold">Finish</span> : <ChevronRight className="w-5 h-5" />}
+          {isLast ? <span {...ui()} className="text-base font-bold">{t('book.finish')}</span> : <ChevronRight className="w-5 h-5" />}
         </button>
       </div>
     </div>

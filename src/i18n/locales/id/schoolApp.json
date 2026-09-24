@@ -418,5 +418,44 @@
     "notFound": "Tidak ditemukan ({{status}})",
     "onScreen": "di layar",
     "closeEsc": "Tutup (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Tutup",
+    "back": "Kembali",
+    "next": "Lanjut",
+    "steps": {
+      "meet": "Kenali bunyinya",
+      "pop": "Dengarkan",
+      "blend": "Gabungkan",
+      "hunt": "Cari bunyi",
+      "build": "Susun kata",
+      "finish": "Selesai"
+    },
+    "meetTap": "Ketuk hurufnya untuk mendengarnya",
+    "popTitle": "Ketuk gambar — bisakah kamu mendengar bunyi <g>{{sound}}</g>?",
+    "blendTitle": "Eja bunyinya… lalu <hl>gabungkan</hl>!",
+    "nextWord": "Kata berikutnya",
+    "blendButton": "Gabungkan!",
+    "huntTitle": "Cari <g>{{sound}}</g>! Ketuk setiap gambar yang ada bunyinya.",
+    "allFound": "Kamu menemukan semuanya!",
+    "foundCount": "Ketemu {{found}} dari {{total}}",
+    "buildTitle": "Susun katanya!",
+    "hearIt": "dengarkan",
+    "didIt": "Kamu berhasil!",
+    "learned": "Kamu sudah belajar bunyi <g>{{sound}}</g>.",
+    "playAgain": "Main lagi",
+    "done": "Selesai",
+    "hints": {
+      "s": "Mendesis seperti ular — ssss",
+      "a": "Buka mulut lebar — a-a-a",
+      "t": "Ketukan lidah — t-t-t",
+      "p": "Letupkan bibir — p-p-p",
+      "i": "Pendek dan cepat — i-i-i",
+      "n": "Bersenandung — nnnn",
+      "m": "Rapatkan bibir — mmmm",
+      "d": "Ketukan lidah, bersuara — d-d-d",
+      "g": "Dari belakang tenggorokan — g-g-g",
+      "o": "Mulut bulat — o-o-o"
+    }
   }
 }

@@ -247,8 +247,8 @@ export default function ComprehensionQuiz({
             className="mt-6 animate-slide-up"
             aria-live="polite"
           >
-            <p className={`text-center font-bold mb-4 ${isCorrect ? 'text-level-3' : 'text-destructive'}`}>
-              {isCorrect ? 'Brilliant!' : 'Nearly! Have another go next time.'}
+            <p dir="auto" lang={i18n.language} className={`text-center font-bold mb-4 ${isCorrect ? 'text-level-3' : 'text-destructive'}`}>
+              {isCorrect ? t('quiz.brilliant') : t('quiz.nearly')}
             </p>
             <button
               onClick={handleNext}

@@ -21,6 +21,7 @@
  * No data writes — pure practice, same as the other three games.
  */
 import { useTranslation } from 'react-i18next';
+import { fillLabel, gameTx, labelFont, useLiveT } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -178,7 +179,9 @@ const HEX_FALLBACK = '#E84B8A';
 const INK_FALLBACK = '#BE1862';
 
 export default function WordCannonGame({ level, onClose }: Props) {
-  const { t } = useTranslation('games');
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const live = useLiveT(t, i18n);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [showPicker, setShowPicker] = useState(true);
@@ -728,7 +731,7 @@ export default function WordCannonGame({ level, onClose }: Props) {
       ctx!.fillText("Milo's Cannon", 0, 0); ctx!.restore();
       if (state.mode === 'speedy' && state.phase === 'play') {
         ctx!.fillStyle = state.INK; ctx!.font = '800 14px ' + ofont; ctx!.textAlign = 'left';
-        ctx!.fillText(state.timeLeft + 's', 24, 52);
+        ctx!.fillText(live.current.t('ui.seconds', { n: state.timeLeft }), 24, 52);
       }
 
       const inE = easeOutBack(state.roundIn);
@@ -757,12 +760,12 @@ export default function WordCannonGame({ level, onClose }: Props) {
         ctx!.fillStyle = '#fff'; ctx!.font = '700 14px sans-serif'; ctx!.textAlign = 'center'; ctx!.fillText('\uD83D\uDD0A', bw - 6, bw - 5);
         ctx!.restore();
         ctx!.textAlign = 'center'; ctx!.fillStyle = 'rgba(90,78,86,0.95)'; ctx!.font = '700 15px ' + ofont;
-        ctx!.fillText('Pop the sound you hear!', W / 2, by + bw + 24 * inE);
+        fillLabel(ctx!, live.current.t('cannon.popSound'), W / 2, by + bw + 24 * inE, { weight: 700, size: 15, family: labelFont(state.fontReady), dir: live.current.dir, maxW: W - 32 });
       }
 
       if (state.phase === 'intro') {
         ctx!.fillStyle = 'rgba(90,78,86,0.95)'; ctx!.font = '700 15px ' + ofont; ctx!.textAlign = 'center';
-        ctx!.fillText('Fire the cannon \u2014 pop the sound bubbles!', W / 2, H * 0.42 + 12);
+        fillLabel(ctx!, live.current.t('cannon.intro'), W / 2, H * 0.42 + 12, { weight: 700, size: 15, family: labelFont(state.fontReady), dir: live.current.dir, maxW: W - 32 });
       }
 
       const bobY = drawPlank() || 0;
@@ -917,17 +920,17 @@ export default function WordCannonGame({ level, onClose }: Props) {
         <div style={{ pointerEvents: 'auto', display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
           <button
             onClick={() => startMode('relax')}
-            className="w-full h-14 rounded-2xl font-display text-base font-extrabold text-white flex items-center justify-center gap-2 active:translate-y-[3px]"
+            className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold text-white flex items-center justify-center gap-2 active:translate-y-[3px]"
             style={{ background: level.hex, boxShadow: `0 5px 0 ${level.inkHex}, 0 12px 22px -10px ${level.hex}80` }}
           >
-            5 words · take your time
+            <span {...tx}>{t('ui.relaxMode')}</span>
           </button>
           <button
             onClick={() => startMode('speedy')}
-            className="w-full h-12 rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
+            className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
             style={{ color: level.inkHex, boxShadow: `0 4px 0 ${level.hex}40, 0 8px 18px rgba(40,30,40,0.1)`, border: `2px solid ${level.hex}50` }}
           >
-            Speedy — 40 seconds!
+            <span {...tx}>{t('ui.speedyMode', { seconds: SPEEDY_SECONDS })}</span>
           </button>
         </div>
       </div>

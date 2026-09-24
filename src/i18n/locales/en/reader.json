@@ -22,7 +22,9 @@
     "dialogAria": "Quiz: {{title}}",
     "close": "Close quiz",
     "answerOptions": "Answer options",
-    "seeResults": "See Results"
+    "seeResults": "See Results",
+    "brilliant": "Brilliant!",
+    "nearly": "Nearly! Have another go next time."
   },
   "audio": {
     "playSoundTitle": "Play \"{{grapheme}}\" sound",
@@ -66,5 +68,101 @@
   "prep": {
     "tapToHear": "Tap each one to hear it. These are the sounds your child will practise.",
     "tapLevel": "Tap a level to see those sounds"
+  },
+  "book": {
+    "level": "Level {{level}}",
+    "levelLabel": "Level {{level}} — {{name}}",
+    "cover": {
+      "swipe": "Swipe to start",
+      "levelSubtitle": "Level {{level}} · {{name}}",
+      "madeFor": "A book made for {{hero}} · Level {{level}} · Sound \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "New sounds in this book",
+      "headsUp": "Heads up:",
+      "noteUre": "The letters 'ure' have two sounds! At the end of a word it can sound like 'yoor' (as in pure) OR like 'ur' (as in nature). You'll meet both in this book."
+    },
+    "vocab": {
+      "title": "Story Words",
+      "hint": "Tap a card to hear the word. You'll meet all of these in the story."
+    },
+    "story": {
+      "readToMe": "Read to me",
+      "reading": "Reading..."
+    },
+    "spotlight": {
+      "tapSound": "Tap the sound!"
+    },
+    "wordReading": {
+      "title": "Can You Read These?",
+      "hint": "Tap each word to blend it together. Use the dots to sound it out."
+    },
+    "tricky": {
+      "title": "Tricky Words",
+      "hint": "These don't sound how they look — just know them by sight!"
+    },
+    "alien": {
+      "title": "Alien Words",
+      "hint": "Not real words — just sound them out!"
+    },
+    "quiz": {
+      "progress": "Question {{n}} of {{total}}",
+      "right": "Well done!",
+      "wrong": "Not quite — the green one is right!",
+      "next": "Next question"
+    },
+    "correct": "Correct!",
+    "spelling": {
+      "title": "Spell the Word!",
+      "next": "Next word"
+    },
+    "grammar": {
+      "title": "Build the sentence!",
+      "progress": "Sentence {{n}} of {{total}}",
+      "next": "Next sentence"
+    },
+    "ordering": {
+      "title": "Put the Story in Order!",
+      "hint": "Tap two to swap them.",
+      "done": "That's the right order!",
+      "shuffle": "Shuffle"
+    },
+    "drawing": {
+      "favourite": "Draw Your Favourite Part",
+      "heroFavourite": "Draw {{hero}}'s favourite part",
+      "clear": "Clear"
+    },
+    "writing": {
+      "title": "Writing Practice",
+      "hint": "Tap a letter, then trace it!"
+    },
+    "checkIn": {
+      "progress": "Check-in {{n}} of {{total}} · Day {{day}}"
+    },
+    "cert": {
+      "champion": "Reading Champion!",
+      "great": "Great Reading!",
+      "already": "Already Read Today",
+      "day": "Day {{n}}",
+      "moveUp": "Ready to Move Up!",
+      "mastered": "{{reads}} reads, {{checkIns}} check-ins passed. You've really mastered this book!",
+      "fluency": "{{reads}} reads complete! A few more reads at this level will build real fluency.",
+      "stampUnlocked": "Stamp <b>{{n}} of {{total}}</b> unlocked! Come back tomorrow for stamp {{next}}.",
+      "alreadyEarned": "You've already earned today's stamp — great work! Come back tomorrow for stamp {{next}}."
+    },
+    "finish": "Finish"
+  },
+  "custom": {
+    "myBook": "My Book",
+    "levelSound": "{{name}} · Sound \"{{sound}}\"",
+    "coverAlt": "Cover",
+    "meetStar": "Meet the star of this book",
+    "hero": "Hero",
+    "nameAge": "{{name}}, age {{age}}",
+    "from": "From:",
+    "loves": "Loves:",
+    "world": "Our world:",
+    "faith": "Our faith:",
+    "thanks": "Every MyPhonicsBooks story is a window into a family's world. Thank you for sharing yours."
   }
 }

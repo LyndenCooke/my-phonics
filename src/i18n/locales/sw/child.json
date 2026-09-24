@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "Bado hakuna vitabu!",
+    "body": "Muombe mtu mzima akufungulie kitabu chako cha kwanza."
+  },
+  "levelLabel": "Kiwango {{level}}",
+  "greeting": "Wakati wa kusoma, {{name}}!",
+  "greetingNoName": "Wakati wa kusoma!",
+  "cta": {
+    "startLevelCheck": "Anza Jaribio la Kiwango",
+    "nextBook": "Kitabu Kinachofuata",
+    "startCheck": "Anza Jaribio",
+    "readBook": "Soma Kitabu",
+    "readAgain": "Soma Tena",
+    "lastRead": "Mara ya Mwisho!"
+  },
+  "sub": {
+    "allDone": "Umemaliza vitabu vyako vyote!",
+    "nextUnlocked": "Kitabu kinachofuata kimefunguka!",
+    "readyCheck": "Uko tayari kwa Jaribio!",
+    "read0": "Soma kitabu hiki mara 5.",
+    "read1": "Mwanzo mzuri. Zimebaki mara 4.",
+    "read2": "Unafanya vizuri sana. Zimebaki mara 3.",
+    "read3": "Unazidi kuwa mwepesi. Zimebaki mara 2.",
+    "read4": "Karibu kufika. Mara ya mwisho!"
+  },
+  "games": {
+    "heading": "Cheza mchezo",
+    "play": "Cheza",
+    "soundlings": {
+      "blurb": "Lisha viumbe wako wa sauti!"
+    },
+    "finish": {
+      "name": "Kamilisha neno",
+      "blurb": "Gusa sauti inayokosekana"
+    },
+    "tricky": {
+      "name": "Sikia, kisha tafuta",
+      "blurb": "Sikiliza na utafute neno gumu"
+    },
+    "cannon": {
+      "blurb": "Rusha sauti sahihi ndani ya neno"
+    }
+  },
+  "path": {
+    "heading": "Njia yako",
+    "progress": "{{done}} kati ya {{total}} vimekamilika",
+    "reads": "Mara {{done}}/{{total}}",
+    "done": "Tayari!",
+    "book": "Kitabu {{n}}",
+    "levelCheck": "Jaribio la Kiwango"
+  },
+  "sounds": {
+    "heading": "Sauti unazojifunza"
+  },
+  "aria": {
+    "openBook": "Fungua {{title}}",
+    "readsDone": "Usomaji {{done}} kati ya {{total}} umekamilika",
+    "currentBook": "{{title}} — kitabu chako, usomaji {{done}} kati ya {{total}} umekamilika",
+    "doneBook": "{{title}} — kimekamilika",
+    "lockedBook": "{{title}} — kimefungwa, maliza kitabu chako cha sasa kwanza",
+    "startCheck": "Anza Jaribio lako la Kiwango",
+    "checkLocked": "Jaribio la Kiwango — maliza vitabu vyako kwanza"
+  }
+}

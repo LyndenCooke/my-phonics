@@ -22,7 +22,9 @@
     "dialogAria": "Tambayoyi: {{title}}",
     "close": "Rufe tambayoyi",
     "answerOptions": "Zaɓuɓɓukan amsa",
-    "seeResults": "Duba sakamako"
+    "seeResults": "Duba sakamako",
+    "brilliant": "Kai, madalla!",
+    "nearly": "Kusan! Ka sake gwadawa nan gaba."
   },
   "audio": {
     "playSoundTitle": "Kunna sautin \"{{grapheme}}\"",
@@ -66,5 +68,101 @@
   "prep": {
     "tapToHear": "Taɓa kowanne don jin sa. Waɗannan su ne sautukan da yaronka zai yi atisaye a kai.",
     "tapLevel": "Taɓa wani mataki don ganin sautukansa"
+  },
+  "book": {
+    "level": "Mataki {{level}}",
+    "levelLabel": "Mataki {{level}} — {{name}}",
+    "cover": {
+      "swipe": "Ja don farawa",
+      "levelSubtitle": "Mataki {{level}} · {{name}}",
+      "madeFor": "Littafin da aka yi wa {{hero}} · Mataki {{level}} · Sauti \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "Sabbin sautuka a wannan littafi",
+      "headsUp": "A kula:",
+      "noteUre": "Haruffan 'ure' suna da sauti biyu! A ƙarshen kalma yana iya yin sauti kamar 'yoor' (kamar a cikin pure) KO kamar 'ur' (kamar a cikin nature). Za ku ga duka biyun a wannan littafi."
+    },
+    "vocab": {
+      "title": "Kalmomin Labari",
+      "hint": "Taɓa kati don jin kalmar. Za ka ga duk waɗannan a cikin labarin."
+    },
+    "story": {
+      "readToMe": "Karanta mini",
+      "reading": "Ana karantawa..."
+    },
+    "spotlight": {
+      "tapSound": "Taɓa sautin!"
+    },
+    "wordReading": {
+      "title": "Za Ka Iya Karanta Waɗannan?",
+      "hint": "Taɓa kowace kalma don haɗa sautukanta. Yi amfani da ɗigogin don faɗin sauti ɗaya bayan ɗaya."
+    },
+    "tricky": {
+      "title": "Kalmomi Masu Wuya",
+      "hint": "Ba a faɗin su yadda aka rubuta su — ka gane su da gani kawai!"
+    },
+    "alien": {
+      "title": "Kalmomin Baƙi",
+      "hint": "Ba kalmomi na gaske ba ne — kawai faɗi sautukansu!"
+    },
+    "quiz": {
+      "progress": "Tambaya {{n}} cikin {{total}}",
+      "right": "Madalla!",
+      "wrong": "Ba daidai ba tukuna — koriyar ce daidai!",
+      "next": "Tambaya ta gaba"
+    },
+    "correct": "Daidai!",
+    "spelling": {
+      "title": "Rubuta Kalmar!",
+      "next": "Kalma ta gaba"
+    },
+    "grammar": {
+      "title": "Gina jimlar!",
+      "progress": "Jimla {{n}} cikin {{total}}",
+      "next": "Jimla ta gaba"
+    },
+    "ordering": {
+      "title": "Jera Labarin a Tsari!",
+      "hint": "Taɓa guda biyu don musanya wurinsu.",
+      "done": "Wannan ne tsarin daidai!",
+      "shuffle": "Jujjuya"
+    },
+    "drawing": {
+      "favourite": "Zana Ɓangaren da Ka Fi So",
+      "heroFavourite": "Zana ɓangaren da {{hero}} ya fi so",
+      "clear": "Goge"
+    },
+    "writing": {
+      "title": "Atisayen Rubutu",
+      "hint": "Taɓa harafi, sannan ka bi layinsa!"
+    },
+    "checkIn": {
+      "progress": "Gwaji {{n}} cikin {{total}} · Rana {{day}}"
+    },
+    "cert": {
+      "champion": "Gwarzon Karatu!",
+      "great": "Karatu Mai Kyau!",
+      "already": "An Riga An Karanta Yau",
+      "day": "Rana {{n}}",
+      "moveUp": "A Shirye Don Hawa Mataki!",
+      "mastered": "Karatu {{reads}}, gwaji {{checkIns}} an ci. Ka ƙware da wannan littafi sosai!",
+      "fluency": "An kammala karatu {{reads}}! Ƙarin karatu kaɗan a wannan mataki zai gina ƙwarewa ta gaske.",
+      "stampUnlocked": "An buɗe hatimi <b>{{n}} cikin {{total}}</b>! Dawo gobe don hatimi na {{next}}.",
+      "alreadyEarned": "Ka riga ka samu hatimin yau — aiki mai kyau! Dawo gobe don hatimi na {{next}}."
+    },
+    "finish": "Kammala"
+  },
+  "custom": {
+    "myBook": "Littafina",
+    "levelSound": "{{name}} · Sauti \"{{sound}}\"",
+    "coverAlt": "Bango",
+    "meetStar": "Haɗu da tauraron wannan littafi",
+    "hero": "Jarumi",
+    "nameAge": "{{name}}, shekara {{age}}",
+    "from": "Daga:",
+    "loves": "Yana so:",
+    "world": "Duniyarmu:",
+    "faith": "Addininmu:",
+    "thanks": "Kowane labarin MyPhonicsBooks taga ce zuwa duniyar wani iyali. Mun gode da kuka raba duniyarku da mu."
   }
 }

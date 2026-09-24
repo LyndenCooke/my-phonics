@@ -14,7 +14,8 @@
  * Fully client-side, level-parameterised, no auth — safe on the public
  * /games arcade.
  */
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Timer, RotateCcw, Zap } from 'lucide-react';
@@ -72,7 +73,9 @@ function wordPoolFor(level: JourneyLevel, bank: Record<string, string[]>): strin
 }
 
 export default function WordPop({ level, onClose }: Props) {
-  const { t } = useTranslation('games');
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const enTag = { en: <bdi dir="ltr" lang="en" /> };
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -223,18 +226,18 @@ export default function WordPop({ level, onClose }: Props) {
         >
           <span className="text-6xl lg:text-7xl" aria-hidden>🫧</span>
           <h1 className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4">Word Pop</h1>
-          <p className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
-            Listen for the word, then pop its bubble before it floats away. Pop lots in a row for a combo!
+          <p {...tx} className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
+            {t('pop.intro')}
           </p>
           <button
             onClick={start}
-            className="mt-9 w-full max-w-sm h-16 rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
+            className="mt-9 w-full max-w-sm min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
             style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
           >
-            <Timer className="w-6 h-6" /> Play — 60 seconds!
+            <Timer className="w-6 h-6 shrink-0" /> <span {...tx}>{t('pop.playSeconds', { seconds: GAME_SECONDS })}</span>
           </button>
-          <p className="text-xs font-bold text-muted-foreground mt-6">
-            Words from Level {level.level} · {level.name}
+          <p {...tx} className="text-xs font-bold text-muted-foreground mt-6">
+            <Trans t={t} i18nKey="ui.wordsFromLevel" values={{ level: level.level, name: level.name }} components={enTag} />
           </p>
         </motion.div>
       )}
@@ -253,11 +256,11 @@ export default function WordPop({ level, onClose }: Props) {
                   className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs"
                   style={{ boxShadow: STICKER, color: ink }}
                 >
-                  <Zap className="w-3.5 h-3.5" style={{ color: hex, fill: hex }} /> Combo x{multiplier}
+                  <Zap className="w-3.5 h-3.5" style={{ color: hex, fill: hex }} /> <span {...tx}>{t('pop.comboDom', { n: multiplier })}</span>
                 </motion.span>
               )}
             </AnimatePresence>
-            <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{timeLeft}s</span>
+            <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{t('ui.seconds', { n: timeLeft })}</span>
           </div>
           <div className="mt-2 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
             <div
@@ -272,7 +275,7 @@ export default function WordPop({ level, onClose }: Props) {
               className="font-child font-bold text-3xl lg:text-4xl px-6 py-2.5 rounded-3xl bg-white"
               style={{ boxShadow: STICKER, border: `2px solid ${hex}40`, color: 'hsl(var(--foreground))' }}
             >
-              Pop: <span style={{ color: ink }}>{target}</span>
+              <span {...tx}>{t('pop.popLabel')}</span> <span style={{ color: ink }}>{target}</span>
             </span>
             <button
               onClick={() => speakWord(target)}
@@ -297,14 +300,14 @@ export default function WordPop({ level, onClose }: Props) {
                   })}
                   className="font-child text-sm font-bold text-foreground/50"
                 >
-                  It got away! <span aria-hidden>💨</span>
+                  <span {...tx}>{t('pop.itGotAway')}</span> <span aria-hidden>💨</span>
                 </motion.span>
               )}
             </AnimatePresence>
           </div>
 
           {/* Bubble field */}
-          <div className="relative flex-1 mt-1 min-h-0" aria-label="Floating word bubbles">
+          <div className="relative flex-1 mt-1 min-h-0" aria-label={t('pop.bubblesAria')}>
             {/* Drifting clouds behind the bubbles */}
             {!reduceMotion && [0, 1].map(i => (
               <motion.span
@@ -325,7 +328,7 @@ export default function WordPop({ level, onClose }: Props) {
               <motion.button
                 key={b.id}
                 onClick={e => pop(b, e)}
-                aria-label={`Bubble ${b.word}`}
+                aria-label={t('pop.bubbleAria', { word: b.word })}
                 className="absolute font-child font-bold rounded-full flex items-center justify-center select-none"
                 style={{
                   left: `${b.left}%`,
@@ -408,28 +411,28 @@ export default function WordPop({ level, onClose }: Props) {
           className="relative flex-1 flex flex-col items-center justify-center text-center px-5 py-10 max-w-md mx-auto"
         >
           <span className="font-display text-7xl font-extrabold" style={{ color: ink }}>{score}</span>
-          <h2 className="font-display text-2xl font-extrabold text-foreground mt-3">
-            star{score === 1 ? '' : 's'} in 60 seconds!
+          <h2 {...tx} className="font-display text-2xl font-extrabold text-foreground mt-3">
+            {t('ui.starsInSeconds', { count: score, seconds: GAME_SECONDS })}
           </h2>
           {best >= 3 && (
-            <p className="font-child text-lg text-foreground/70 mt-2">
-              Best combo: {best} pops in a row <span aria-hidden>⚡</span>
+            <p {...tx} className="font-child text-lg text-foreground/70 mt-2">
+              {t('pop.bestComboRow', { n: best })} <span aria-hidden>⚡</span>
             </p>
           )}
           <div className="mt-9 w-full max-w-xs space-y-3">
             <button
               onClick={start}
-              className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+              className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
               style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
             >
-              <RotateCcw className="w-5 h-5" /> Play again
+              <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('ui.playAgain')}</span>
             </button>
             <button
               onClick={onClose}
-              className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+              className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
               style={{ boxShadow: STICKER }}
             >
-              All done
+              <span {...tx}>{t('ui.allDone')}</span>
             </button>
           </div>
         </motion.div>

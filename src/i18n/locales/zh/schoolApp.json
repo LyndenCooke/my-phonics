@@ -418,5 +418,44 @@
     "notFound": "未找到（{{status}}）",
     "onScreen": "屏幕展示",
     "closeEsc": "关闭（Esc）"
+  },
+  "soundBookPlay": {
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "steps": {
+      "meet": "认识发音",
+      "pop": "听一听",
+      "blend": "拼读",
+      "hunt": "找发音",
+      "build": "拼单词",
+      "finish": "完成"
+    },
+    "meetTap": "点字母听发音",
+    "popTitle": "点一张图——你能听到 <g>{{sound}}</g> 的发音吗？",
+    "blendTitle": "一个一个读出来……再<hl>拼读</hl>！",
+    "nextWord": "下一个单词",
+    "blendButton": "拼读！",
+    "huntTitle": "找出 <g>{{sound}}</g>！点出每张有这个发音的图。",
+    "allFound": "你全都找到啦！",
+    "foundCount": "找到 {{found}}/{{total}}",
+    "buildTitle": "拼出这个单词！",
+    "hearIt": "听一听",
+    "didIt": "你做到啦！",
+    "learned": "你学会了 <g>{{sound}}</g> 的发音。",
+    "playAgain": "再玩一次",
+    "done": "完成",
+    "hints": {
+      "s": "像蛇一样嘶嘶——ssss",
+      "a": "张大嘴——a-a-a",
+      "t": "舌尖轻敲——t-t-t",
+      "p": "双唇一弹——p-p-p",
+      "i": "短而快——i-i-i",
+      "n": "用鼻子哼——nnnn",
+      "m": "双唇闭上——mmmm",
+      "d": "舌尖轻敲，声带振动——d-d-d",
+      "g": "从喉咙后面发音——g-g-g",
+      "o": "嘴巴圆圆——o-o-o"
+    }
   }
 }

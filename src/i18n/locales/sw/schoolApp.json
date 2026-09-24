@@ -426,5 +426,44 @@
     "notFound": "Haikupatikana ({{status}})",
     "onScreen": "kwenye skrini",
     "closeEsc": "Funga (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Funga",
+    "back": "Rudi",
+    "next": "Mbele",
+    "steps": {
+      "meet": "Ijue sauti",
+      "pop": "Sikiliza",
+      "blend": "Unganisha",
+      "hunt": "Winda sauti",
+      "build": "Jenga neno",
+      "finish": "Mwisho"
+    },
+    "meetTap": "Gusa herufi uisikie",
+    "popTitle": "Gusa picha — unaweza kusikia sauti ya <g>{{sound}}</g>?",
+    "blendTitle": "Tamka sauti moja moja… kisha <hl>ziunganishe</hl>!",
+    "nextWord": "Neno linalofuata",
+    "blendButton": "Unganisha!",
+    "huntTitle": "Tafuta <g>{{sound}}</g>! Gusa kila picha yenye sauti hiyo.",
+    "allFound": "Umezipata zote!",
+    "foundCount": "Umepata {{found}} kati ya {{total}}",
+    "buildTitle": "Jenga neno!",
+    "hearIt": "sikiliza",
+    "didIt": "Umeweza!",
+    "learned": "Umejifunza sauti ya <g>{{sound}}</g>.",
+    "playAgain": "Cheza tena",
+    "done": "Nimemaliza",
+    "hints": {
+      "s": "Toa mlio kama nyoka — ssss",
+      "a": "Fungua mdomo wazi — a-a-a",
+      "t": "Gonga kwa ulimi — t-t-t",
+      "p": "Pasua midomo — p-p-p",
+      "i": "Fupi na haraka — i-i-i",
+      "n": "Vuma — nnnn",
+      "m": "Funga midomo — mmmm",
+      "d": "Gonga kwa ulimi, kwa sauti — d-d-d",
+      "g": "Kutoka nyuma ya koo — g-g-g",
+      "o": "Mdomo wa duara — o-o-o"
+    }
   }
 }

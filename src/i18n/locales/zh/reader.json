@@ -22,7 +22,9 @@
     "dialogAria": "测验：{{title}}",
     "close": "关闭测验",
     "answerOptions": "答案选项",
-    "seeResults": "查看结果"
+    "seeResults": "查看结果",
+    "brilliant": "太棒了！",
+    "nearly": "差一点！下次再试试。"
   },
   "audio": {
     "playSoundTitle": "播放“{{grapheme}}”的发音",
@@ -66,5 +68,101 @@
   "prep": {
     "tapToHear": "点击每一个即可收听。这些是孩子将要练习的发音。",
     "tapLevel": "点击一个级别，查看该级别的发音"
+  },
+  "book": {
+    "level": "级别 {{level}}",
+    "levelLabel": "级别 {{level}} — {{name}}",
+    "cover": {
+      "swipe": "滑动开始",
+      "levelSubtitle": "级别 {{level}} · {{name}}",
+      "madeFor": "为 {{hero}} 制作的书 · 级别 {{level}} · 发音 \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "本书中的新发音",
+      "headsUp": "注意：",
+      "noteUre": "字母 'ure' 有两种发音！在词尾时，它可以读作 'yoor'（如 pure），也可以读作 'ur'（如 nature）。这本书里两种都会出现。"
+    },
+    "vocab": {
+      "title": "故事单词",
+      "hint": "点击卡片听单词。这些单词都会在故事里出现。"
+    },
+    "story": {
+      "readToMe": "读给我听",
+      "reading": "正在朗读……"
+    },
+    "spotlight": {
+      "tapSound": "点击这个发音！"
+    },
+    "wordReading": {
+      "title": "你能读出这些吗？",
+      "hint": "点击每个单词，把音拼在一起。用小圆点一个一个读出发音。"
+    },
+    "tricky": {
+      "title": "特殊词",
+      "hint": "这些词读音和拼写不一样——看一眼就要认得！"
+    },
+    "alien": {
+      "title": "外星词",
+      "hint": "不是真正的单词——只要拼读出来就好！"
+    },
+    "quiz": {
+      "progress": "第 {{n}} 题，共 {{total}} 题",
+      "right": "做得好！",
+      "wrong": "差一点——绿色的才是对的！",
+      "next": "下一题"
+    },
+    "correct": "答对了！",
+    "spelling": {
+      "title": "拼出这个单词！",
+      "next": "下一个单词"
+    },
+    "grammar": {
+      "title": "拼出句子！",
+      "progress": "第 {{n}} 句，共 {{total}} 句",
+      "next": "下一句"
+    },
+    "ordering": {
+      "title": "把故事排好顺序！",
+      "hint": "点两张图，交换它们的位置。",
+      "done": "顺序完全正确！",
+      "shuffle": "打乱"
+    },
+    "drawing": {
+      "favourite": "画出你最喜欢的部分",
+      "heroFavourite": "画出 {{hero}} 最喜欢的部分",
+      "clear": "清除"
+    },
+    "writing": {
+      "title": "书写练习",
+      "hint": "点一个字母，然后描一描！"
+    },
+    "checkIn": {
+      "progress": "小测验 {{n}}/{{total}} · 第 {{day}} 天"
+    },
+    "cert": {
+      "champion": "阅读小冠军！",
+      "great": "读得真棒！",
+      "already": "今天已经读过了",
+      "day": "第 {{n}} 天",
+      "moveUp": "可以升级啦！",
+      "mastered": "读了 {{reads}} 遍，通过了 {{checkIns}} 次小测验。你真的读懂这本书了！",
+      "fluency": "读完 {{reads}} 遍了！在这个级别再多读几遍，就能读得更流利。",
+      "stampUnlocked": "解锁了第 <b>{{n}}/{{total}}</b> 枚印章！明天再来领取第 {{next}} 枚印章。",
+      "alreadyEarned": "今天的印章已经拿到了——真棒！明天再来领取第 {{next}} 枚印章。"
+    },
+    "finish": "完成"
+  },
+  "custom": {
+    "myBook": "我的书",
+    "levelSound": "{{name}} · 发音 \"{{sound}}\"",
+    "coverAlt": "封面",
+    "meetStar": "认识本书的小主角",
+    "hero": "主角",
+    "nameAge": "{{name}}，{{age}} 岁",
+    "from": "来自：",
+    "loves": "喜欢：",
+    "world": "我们的世界：",
+    "faith": "我们的信仰：",
+    "thanks": "每一个 MyPhonicsBooks 故事，都是一扇看见一个家庭世界的窗。感谢你们与我们分享。"
   }
 }

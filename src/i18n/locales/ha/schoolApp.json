@@ -426,5 +426,44 @@
     "notFound": "Ba a samu ba ({{status}})",
     "onScreen": "a kan allo",
     "closeEsc": "Rufe (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Rufe",
+    "back": "Baya",
+    "next": "Gaba",
+    "steps": {
+      "meet": "Sadu da sautin",
+      "pop": "Saurara",
+      "blend": "Haɗa",
+      "hunt": "Farautar sauti",
+      "build": "Gina kalma",
+      "finish": "Ƙarshe"
+    },
+    "meetTap": "Taɓa harafin don ka ji shi",
+    "popTitle": "Taɓa hoto — kana jin sautin <g>{{sound}}</g>?",
+    "blendTitle": "Faɗi sautukan ɗaya-ɗaya… sannan ka <hl>haɗa</hl> su!",
+    "nextWord": "Kalma ta gaba",
+    "blendButton": "Haɗa!",
+    "huntTitle": "Nemo <g>{{sound}}</g>! Taɓa kowane hoto da ke da sautin.",
+    "allFound": "Ka same su duka!",
+    "foundCount": "An samu {{found}} cikin {{total}}",
+    "buildTitle": "Gina kalmar!",
+    "hearIt": "saurara",
+    "didIt": "Ka yi nasara!",
+    "learned": "Ka koyi sautin <g>{{sound}}</g>.",
+    "playAgain": "Sake wasa",
+    "done": "An gama",
+    "hints": {
+      "s": "Yi fiffita kamar maciji — ssss",
+      "a": "Buɗe baki sosai — a-a-a",
+      "t": "Taɓa da harshe — t-t-t",
+      "p": "Fashe leɓɓa — p-p-p",
+      "i": "Gajere da sauri — i-i-i",
+      "n": "Yi gunji — nnnn",
+      "m": "Haɗa leɓɓa — mmmm",
+      "d": "Taɓa da harshe, da murya — d-d-d",
+      "g": "Daga bayan maƙogwaro — g-g-g",
+      "o": "Baki zagaye — o-o-o"
+    }
   }
 }

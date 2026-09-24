@@ -426,5 +426,44 @@
     "notFound": "Bulunamadı ({{status}})",
     "onScreen": "ekranda",
     "closeEsc": "Kapat (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "steps": {
+      "meet": "Sesle tanış",
+      "pop": "Dinle",
+      "blend": "Birleştir",
+      "hunt": "Ses avı",
+      "build": "Kelime kur",
+      "finish": "Bitiş"
+    },
+    "meetTap": "Duymak için harfe dokun",
+    "popTitle": "Bir resme dokun — <g>{{sound}}</g> sesini duyabiliyor musun?",
+    "blendTitle": "Sesleri tek tek söyle… sonra <hl>birleştir</hl>!",
+    "nextWord": "Sonraki kelime",
+    "blendButton": "Birleştir!",
+    "huntTitle": "<g>{{sound}}</g> sesini bul! Bu sesi içeren her resme dokun.",
+    "allFound": "Hepsini buldun!",
+    "foundCount": "{{total}} içinden {{found}} bulundu",
+    "buildTitle": "Kelimeyi kur!",
+    "hearIt": "dinle",
+    "didIt": "Başardın!",
+    "learned": "<g>{{sound}}</g> sesini öğrendin.",
+    "playAgain": "Tekrar oyna",
+    "done": "Bitti",
+    "hints": {
+      "s": "Yılan gibi tısla — ssss",
+      "a": "Ağzını kocaman aç — a-a-a",
+      "t": "Dil vuruşu — t-t-t",
+      "p": "Dudaklarını patlat — p-p-p",
+      "i": "Kısa ve hızlı — i-i-i",
+      "n": "Mırıldan — nnnn",
+      "m": "Dudaklar birlikte — mmmm",
+      "d": "Dil vuruşu, sesli — d-d-d",
+      "g": "Boğazın arkasından — g-g-g",
+      "o": "Yuvarlak ağız — o-o-o"
+    }
   }
 }

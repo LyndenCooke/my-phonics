@@ -32,6 +32,7 @@
  *   distractor eggs never carry a sound that also appears in the word.
  */
 import { useTranslation } from 'react-i18next';
+import { fillLabel, gameTx, joinNames, labelFont, useLiveT } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -93,7 +94,9 @@ function hashOf(s: string): number {
 const easeOutBack = (t: number) => { const c = 1.70158 * 1.2; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
 
 export default function BarnGame({ level, onClose }: Props) {
-  const { t } = useTranslation('games');
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const live = useLiveT(t, i18n);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bank = useGameBank(level);
   const bankRef = useRef(bank);
@@ -525,7 +528,7 @@ export default function BarnGame({ level, onClose }: Props) {
       ctx!.fillStyle = '#C68B59'; rr(x, y, w, hgt, 14); ctx!.fill(); ctx!.restore();
       ctx!.strokeStyle = '#7d5330'; ctx!.lineWidth = 3; rr(x, y, w, hgt, 14); ctx!.stroke();
       ctx!.fillStyle = '#FFF6E3'; ctx!.font = `800 15px ${FD()}`; ctx!.textAlign = 'center'; ctx!.textBaseline = 'alphabetic';
-      ctx!.fillText('Feed the sound hiding in…', LW / 2, y + 24);
+      fillLabel(ctx!, live.current.t('soundlings.feedPrompt'), LW / 2, y + 24, { weight: 800, size: 15, family: labelFont(S.fontReady), dir: live.current.dir, maxW: w - 90 });
       ctx!.font = `700 34px ${F()}`;
       ctx!.fillText(S.word, LW / 2, y + 58);
       // speaker
@@ -679,25 +682,25 @@ export default function BarnGame({ level, onClose }: Props) {
       {ended && (
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
-            <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
+            <p {...tx} className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
               {ended.hatched.length
-                ? `${ended.hatched.map(g => soundlingName(g)).join(' and ')} hatched! 🎉`
-                : `${ended.fed} tasty feed${ended.fed === 1 ? '' : 's'}!`}
+                ? t('soundlings.hatchedEnd', { names: joinNames(tx.lang, ended.hatched.map(g => soundlingName(g))) })
+                : t('soundlings.tastyFeeds', { count: ended.fed })}
             </p>
           </div>
           <button
             onClick={restart}
-            className="w-full h-14 rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
+            className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
             style={{ background: level.hex, boxShadow: `0 5px 0 ${level.inkHex}` }}
           >
-            Feed more Soundlings
+            <span {...tx}>{t('soundlings.feedMore')}</span>
           </button>
           <button
             onClick={onClose}
-            className="w-full h-12 rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
+            className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
             style={{ color: level.inkHex, boxShadow: '0 4px 0 rgba(40,30,40,0.15)' }}
           >
-            All done
+            <span {...tx}>{t('ui.allDone')}</span>
           </button>
         </div>
       )}

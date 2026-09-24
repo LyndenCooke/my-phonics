@@ -16,7 +16,8 @@
  *
  * Five rounds; a round with at most one wrong tap earns its star.
  */
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, RotateCcw, Search } from 'lucide-react';
@@ -85,7 +86,9 @@ function Highlight({ word, target, hex }: { word: string; target: string; hex: s
 }
 
 export default function SoundSafari({ level, onClose }: Props) {
-  const { t } = useTranslation('games');
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const enTag = { en: <bdi dir="ltr" lang="en" /> };
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -190,18 +193,18 @@ export default function SoundSafari({ level, onClose }: Props) {
         >
           <span className="text-6xl lg:text-7xl" aria-hidden>🔍</span>
           <h1 className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4">Sound Spotter</h1>
-          <p className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
-            Be a sound detective! Find every hidden thing with the sound you're hunting.
+          <p {...tx} className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
+            {t('spot.intro')}
           </p>
           <button
             onClick={start}
-            className="mt-9 w-full max-w-sm h-16 rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
+            className="mt-9 w-full max-w-sm min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
             style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
           >
-            <Search className="w-6 h-6" /> Start the hunt!
+            <Search className="w-6 h-6 shrink-0" /> <span {...tx}>{t('spot.startHunt')}</span>
           </button>
-          <p className="text-xs font-bold text-muted-foreground mt-6">
-            Sounds up to Level {level.level} · {level.name}
+          <p {...tx} className="text-xs font-bold text-muted-foreground mt-6">
+            <Trans t={t} i18nKey="ui.soundsUpToLevel" values={{ level: level.level, name: level.name }} components={enTag} />
           </p>
         </motion.div>
       )}
@@ -217,12 +220,12 @@ export default function SoundSafari({ level, onClose }: Props) {
             >
               {shown}
             </span>
-            <span className="font-child text-lg lg:text-xl text-foreground/80 bg-white/85 rounded-2xl px-3.5 py-1.5" style={{ boxShadow: STICKER }}>
-              Find {round.targetCount} with <b style={{ color: ink }}>{shown}</b>
+            <span {...tx} className="font-child text-lg lg:text-xl text-foreground/80 bg-white/85 rounded-2xl px-3.5 py-1.5" style={{ boxShadow: STICKER }}>
+              <Trans t={t} i18nKey="spot.findDom" count={round.targetCount} values={{ count: round.targetCount, sound: shown }} components={{ b: <bdi dir="ltr" lang="en" className="font-bold" style={{ color: ink }} /> }} />
             </span>
             <button
               onClick={() => speakWord(round.example)}
-              aria-label={`Hear an example: ${round.example}`}
+              aria-label={t('spot.hearExample', { word: round.example })}
               className="w-11 h-11 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
               style={{ boxShadow: STICKER, color: ink }}
             >
@@ -231,12 +234,12 @@ export default function SoundSafari({ level, onClose }: Props) {
           </div>
 
           {/* The scene — objects hidden in the study */}
-          <div className="relative flex-1 mt-1 min-h-0" aria-label="Hidden objects">
+          <div className="relative flex-1 mt-1 min-h-0" aria-label={t('spot.hiddenObjects')}>
             {items.map((it, i) => (
               <motion.button
                 key={`${roundIdx}-${it.word}`}
                 onClick={() => tap(i)}
-                aria-label={it.found ? `${it.word} — found` : it.word}
+                aria-label={it.found ? t('spot.itemFound', { word: it.word }) : it.word}
                 disabled={it.found}
                 className="absolute -translate-x-1/2 -translate-y-1/2 select-none leading-none"
                 style={{ left: `${it.x}%`, top: `${it.y}%`, fontSize: `${it.size}rem`, filter: 'drop-shadow(0 3px 3px rgba(40,30,40,0.3))' }}
@@ -265,8 +268,8 @@ export default function SoundSafari({ level, onClose }: Props) {
                   style={{ boxShadow: `0 6px 0 ${hex}50, ${STICKER}` }}
                 >
                   <span className="text-4xl" aria-hidden>{stars[stars.length - 1] ? '🌟' : '👏'}</span>
-                  <p className="font-display text-2xl font-extrabold mt-1" style={{ color: ink }}>
-                    {stars[stars.length - 1] ? 'Sharp eyes!' : 'All found!'}
+                  <p {...tx} className="font-display text-2xl font-extrabold mt-1" style={{ color: ink }}>
+                    {stars[stars.length - 1] ? t('spot.sharpEyes') : t('spot.allFound')}
                   </p>
                 </motion.div>
               )}
@@ -274,7 +277,7 @@ export default function SoundSafari({ level, onClose }: Props) {
           </div>
 
           {/* Evidence tray */}
-          <div className="relative z-10 flex items-center justify-center gap-2 flex-wrap pb-1" aria-label={`Found ${foundCount} of ${round.targetCount}`}>
+          <div className="relative z-10 flex items-center justify-center gap-2 flex-wrap pb-1" aria-label={t('spot.foundOf', { found: foundCount, total: round.targetCount })}>
             {round.items.filter(x => x.isTarget).map(t => {
               const found = items.find(x => x.word === t.word)?.found;
               return (
@@ -296,8 +299,8 @@ export default function SoundSafari({ level, onClose }: Props) {
                 </span>
               );
             })}
-            <span className="ml-2 text-xs font-extrabold text-muted-foreground tabular-nums">
-              Round {roundIdx + 1}/{rounds.length}
+            <span {...tx} className="ms-2 text-xs font-extrabold text-muted-foreground tabular-nums">
+              {t('spot.round', { n: roundIdx + 1, total: rounds.length })}
             </span>
           </div>
         </div>
@@ -329,26 +332,26 @@ export default function SoundSafari({ level, onClose }: Props) {
               </motion.span>
             ))}
           </div>
-          <h2 className="font-display text-3xl font-extrabold text-foreground mt-6">
-            {starsEarned === ROUNDS ? 'Master detective!' : starsEarned >= 3 ? 'Great spotting!' : 'Case closed!'}
+          <h2 {...tx} className="font-display text-3xl font-extrabold text-foreground mt-6">
+            {starsEarned === ROUNDS ? t('spot.masterDetectivePlain') : starsEarned >= 3 ? t('spot.greatSpotting') : t('spot.caseClosed')}
           </h2>
-          <p className="font-child text-lg text-foreground/70 mt-2">
-            {starsEarned} sharp-eyed round{starsEarned === 1 ? '' : 's'} out of {ROUNDS}.
+          <p {...tx} className="font-child text-lg text-foreground/70 mt-2">
+            {t('spot.sharpRoundsOutOf', { count: starsEarned, total: ROUNDS })}
           </p>
           <div className="mt-9 w-full max-w-xs space-y-3">
             <button
               onClick={start}
-              className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+              className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
               style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
             >
-              <RotateCcw className="w-5 h-5" /> New case
+              <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('spot.newCase')}</span>
             </button>
             <button
               onClick={onClose}
-              className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+              className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
               style={{ boxShadow: STICKER }}
             >
-              All done
+              <span {...tx}>{t('ui.allDone')}</span>
             </button>
           </div>
         </motion.div>

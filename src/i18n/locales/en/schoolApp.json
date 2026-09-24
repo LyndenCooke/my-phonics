@@ -95,10 +95,22 @@
     },
     "distribution": "Level distribution across the school",
     "quick": {
-      "groups": { "title": "Phonics groups", "body": "Group students by level for intervention." },
-      "pathway": { "title": "Teaching pathway", "body": "Sound Book → Blending Book → Storybook." },
-      "library": { "title": "Library", "body": "118 books + worksheets, ready to print." },
-      "curriculum": { "title": "Curriculum", "body": "UK, Gulf, Pakistan, US, IB alignment." }
+      "groups": {
+        "title": "Phonics groups",
+        "body": "Group students by level for intervention."
+      },
+      "pathway": {
+        "title": "Teaching pathway",
+        "body": "Sound Book → Blending Book → Storybook."
+      },
+      "library": {
+        "title": "Library",
+        "body": "118 books + worksheets, ready to print."
+      },
+      "curriculum": {
+        "title": "Curriculum",
+        "body": "UK, Gulf, Pakistan, US, IB alignment."
+      }
     },
     "classrooms": "Classrooms",
     "newClassroom": "New classroom",
@@ -128,9 +140,18 @@
       "totalHint": "across 8 levels"
     },
     "nav": {
-      "levels": { "title": "Levels", "body": "{{count}} levels with GPCs, tricky words, full resource plan." },
-      "library": { "title": "Library", "body": "{{count}} storybooks grouped under the new structure." },
-      "mapping": { "title": "Curriculum mapping", "body": "Per-level resource plan, worksheet lifecycle, international equivalents." }
+      "levels": {
+        "title": "Levels",
+        "body": "{{count}} levels with GPCs, tricky words, full resource plan."
+      },
+      "library": {
+        "title": "Library",
+        "body": "{{count}} storybooks grouped under the new structure."
+      },
+      "mapping": {
+        "title": "Curriculum mapping",
+        "body": "Per-level resource plan, worksheet lifecycle, international equivalents."
+      }
     },
     "devNotice": "<b>In development.</b> This preview is admin-only and writes nothing to the database. The parent-facing site at <code>/library</code> and <code>/assessment</code> still runs the original 6-level structure, untouched."
   },
@@ -405,5 +426,44 @@
     "notFound": "Not found ({{status}})",
     "onScreen": "on screen",
     "closeEsc": "Close (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "steps": {
+      "meet": "Meet the sound",
+      "pop": "Listen",
+      "blend": "Blend it",
+      "hunt": "Sound hunt",
+      "build": "Build a word",
+      "finish": "Finish"
+    },
+    "meetTap": "Tap the letter to hear it",
+    "popTitle": "Tap a picture — can you hear the <g>{{sound}}</g>?",
+    "blendTitle": "Sound it out… then <hl>blend</hl> it!",
+    "nextWord": "Next word",
+    "blendButton": "Blend it!",
+    "huntTitle": "Find the <g>{{sound}}</g>! Tap every picture with the sound.",
+    "allFound": "You found them all!",
+    "foundCount": "Found {{found}} of {{total}}",
+    "buildTitle": "Build the word!",
+    "hearIt": "hear it",
+    "didIt": "You did it!",
+    "learned": "You learned the <g>{{sound}}</g> sound.",
+    "playAgain": "Play again",
+    "done": "Done",
+    "hints": {
+      "s": "Hiss like a snake — ssss",
+      "a": "Open wide — a-a-a",
+      "t": "Tongue tap — t-t-t",
+      "p": "Pop your lips — p-p-p",
+      "i": "Short and quick — i-i-i",
+      "n": "Hum it — nnnn",
+      "m": "Lips together — mmmm",
+      "d": "Tongue tap, voiced — d-d-d",
+      "g": "Back of the throat — g-g-g",
+      "o": "Round mouth — o-o-o"
+    }
   }
 }

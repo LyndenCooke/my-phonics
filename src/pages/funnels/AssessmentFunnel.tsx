@@ -278,7 +278,7 @@ function FreeBookEmail({ level, summary, onSuccess }: FreeBookEmailProps) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email address"
+            placeholder={t('shared.emailPlaceholder')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
             required
           />
@@ -404,7 +404,7 @@ function PaidCheckoutEmail({ level, productType, missingProductMsg, onBack }: Pa
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email address"
+            placeholder={t('shared.emailPlaceholder')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
             required
             autoFocus

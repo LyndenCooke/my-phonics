@@ -16,7 +16,8 @@
  * level's GPCs without testing pressure (the only formal gate stays the
  * Level Check).
  */
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
@@ -73,7 +74,9 @@ function WordWithHighlight({ word, target, hex, solved }: {
 }
 
 export default function SoundGame({ level, onClose }: Props) {
-  const { t } = useTranslation('games');
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const enTag = { en: <bdi dir="ltr" lang="en" /> };
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -174,7 +177,7 @@ export default function SoundGame({ level, onClose }: Props) {
             className="rounded-full bg-white px-3.5 py-1.5 text-[11px] font-extrabold -rotate-1"
             style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}
           >
-            What sound is it?
+            <span {...tx}>{t('soundGame.title')}</span>
           </span>
           <button
             onClick={onClose}
@@ -193,31 +196,31 @@ export default function SoundGame({ level, onClose }: Props) {
             className="flex-1 flex flex-col items-center justify-center text-center py-10"
           >
             <span className="text-6xl lg:text-7xl" aria-hidden>🔍</span>
-            <h1 className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4">
-              What sound is it?
+            <h1 {...tx} className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4 text-balance">
+              {t('soundGame.title')}
             </h1>
-            <p className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
-              A word will appear. Tap the sound hiding inside it!
+            <p {...tx} className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
+              {t('soundGame.intro')}
             </p>
 
             <div className="mt-9 w-full max-w-sm space-y-3.5">
               <button
                 onClick={() => start('relax')}
-                className="w-full h-16 rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
+                className="w-full min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                <Coffee className="w-6 h-6" /> 5 words · take your time
+                <Coffee className="w-6 h-6 shrink-0" /> <span {...tx}>{t('ui.relaxMode')}</span>
               </button>
               <button
                 onClick={() => start('speedy')}
-                className="w-full h-16 rounded-2xl font-display text-xl font-extrabold flex items-center justify-center gap-3 bg-white transition-all active:translate-y-[3px]"
+                className="w-full min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold flex items-center justify-center gap-3 bg-white transition-all active:translate-y-[3px]"
                 style={{ color: ink, boxShadow: `0 4px 0 ${hex}40, ${STICKER}`, border: `2px solid ${hex}50` }}
               >
-                <Timer className="w-6 h-6" /> Speedy — 30 seconds!
+                <Timer className="w-6 h-6 shrink-0" /> <span {...tx}>{t('ui.speedyMode', { seconds: SPEEDY_SECONDS })}</span>
               </button>
             </div>
-            <p className="text-xs font-bold text-muted-foreground mt-6">
-              Sounds from Level {level.level} · {level.name}
+            <p {...tx} className="text-xs font-bold text-muted-foreground mt-6">
+              <Trans t={t} i18nKey="ui.soundsFromLevel" values={{ level: level.level, name: level.name }} components={enTag} />
             </p>
           </motion.div>
         )}
@@ -227,7 +230,7 @@ export default function SoundGame({ level, onClose }: Props) {
           <div className="flex-1 flex flex-col justify-center pt-6">
             {/* Progress: stars (relax) or score + timer bar (speedy) */}
             {mode === 'relax' ? (
-              <div className="flex items-center justify-center gap-2" aria-label={`Word ${roundIdx + 1} of ${RELAX_ROUNDS}`}>
+              <div className="flex items-center justify-center gap-2" aria-label={t('ui.wordProgress', { n: roundIdx + 1, total: RELAX_ROUNDS })}>
                 {Array.from({ length: RELAX_ROUNDS }).map((_, i) => (
                   <Star
                     key={i}
@@ -243,7 +246,7 @@ export default function SoundGame({ level, onClose }: Props) {
               <div>
                 <div className="flex items-center justify-between text-sm font-extrabold" style={{ color: ink }}>
                   <span className="font-display text-xl tabular-nums">{score} ⭐</span>
-                  <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{timeLeft}s</span>
+                  <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{t('ui.seconds', { n: timeLeft })}</span>
                 </div>
                 <div className="mt-2 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
                   <div
@@ -256,7 +259,7 @@ export default function SoundGame({ level, onClose }: Props) {
 
             {/* The word */}
             <div className="flex flex-col items-center text-center py-10 lg:py-12">
-              <p className="font-child text-lg lg:text-xl text-foreground/55">Tap the sound hiding in…</p>
+              <p {...tx} className="font-child text-lg lg:text-xl text-foreground/55">{t('ui.tapSoundIn')}</p>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${roundIdx}-${round.word}`}
@@ -289,10 +292,10 @@ export default function SoundGame({ level, onClose }: Props) {
               {solved && (
                 <motion.p
                   {...(reduceMotion ? {} : { initial: { opacity: 0, scale: 0.8 }, animate: { opacity: 1, scale: 1 } })}
-                  className="font-display text-2xl font-extrabold mt-5"
+                  {...tx} className="font-display text-2xl font-extrabold mt-5"
                   style={{ color: ink }}
                 >
-                  {firstTry ? 'Brilliant! ⭐' : 'You found it! 👏'}
+                  {firstTry ? t('ui.brilliant') : t('ui.foundIt')}
                 </motion.p>
               )}
             </div>
@@ -306,7 +309,7 @@ export default function SoundGame({ level, onClose }: Props) {
                   <motion.button
                     key={`${roundIdx}-${g}`}
                     onClick={() => pick(g)}
-                    aria-label={`Sound ${displayGrapheme(g)}`}
+                    aria-label={t('ui.soundAria', { sound: displayGrapheme(g) })}
                     animate={wrongTile === g && !reduceMotion ? { x: [0, -8, 8, -5, 5, 0] } : { x: 0 }}
                     transition={{ duration: 0.4 }}
                     className="h-24 lg:h-28 rounded-2xl font-child font-bold text-4xl lg:text-5xl bg-white transition-colors press-scale"
@@ -352,18 +355,18 @@ export default function SoundGame({ level, onClose }: Props) {
                     </motion.span>
                   ))}
                 </div>
-                <h2 className="font-display text-3xl font-extrabold text-foreground mt-6">
-                  {starsEarned === RELAX_ROUNDS ? 'All five stars!' : starsEarned >= 3 ? 'Great work!' : 'Good try!'}
+                <h2 {...tx} className="font-display text-3xl font-extrabold text-foreground mt-6">
+                  {starsEarned === RELAX_ROUNDS ? t('ui.allFiveStars') : starsEarned >= 3 ? t('ui.greatWork') : t('ui.goodTry')}
                 </h2>
-                <p className="font-child text-base text-foreground/70 mt-2">
-                  You found {starsEarned} sound{starsEarned === 1 ? '' : 's'} first try.
+                <p {...tx} className="font-child text-base text-foreground/70 mt-2">
+                  {t('soundGame.firstTry', { count: starsEarned })}
                 </p>
               </>
             ) : (
               <>
                 <span className="font-display text-7xl font-extrabold" style={{ color: ink }}>{score}</span>
-                <h2 className="font-display text-2xl font-extrabold text-foreground mt-3">
-                  sound{score === 1 ? '' : 's'} in 30 seconds!
+                <h2 {...tx} className="font-display text-2xl font-extrabold text-foreground mt-3">
+                  {t('ui.soundsInSeconds', { count: score, seconds: SPEEDY_SECONDS })}
                 </h2>
               </>
             )}
@@ -371,17 +374,17 @@ export default function SoundGame({ level, onClose }: Props) {
             <div className="mt-9 w-full max-w-xs space-y-3">
               <button
                 onClick={() => start(mode)}
-                className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+                className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                <RotateCcw className="w-5 h-5" /> Play again
+                <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('ui.playAgain')}</span>
               </button>
               <button
                 onClick={onClose}
-                className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+                className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
                 style={{ boxShadow: STICKER }}
               >
-                All done
+                <span {...tx}>{t('ui.allDone')}</span>
               </button>
             </div>
           </motion.div>
