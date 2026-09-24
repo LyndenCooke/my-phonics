@@ -1,0 +1,150 @@
+{
+  "levels": {
+    "1": { "colour": "Merah Muda", "focus": "Bunyi pertama dan kata sederhana 3 huruf" },
+    "2": { "colour": "Koral", "focus": "Sisa huruf alfabet, ditambah ck, ff, ll, ss" },
+    "3": { "colour": "Kuning Amber", "focus": "Dua huruf, satu bunyi — sh, ch, th, ng…" },
+    "4": { "colour": "Hijau", "focus": "Gabungan vokal seperti ay, ee, igh, oo, dan ar" },
+    "5": { "colour": "Biru", "focus": "Digraf terpisah (a-e, i-e) dan ejaan baru" },
+    "6": { "colour": "Nila", "focus": "Ejaan alternatif — wr, kn, ph, dge…" },
+    "7": { "colour": "Ungu", "focus": "Trigraf (ire, ore, ear) dan akhiran -tion" },
+    "8": { "colour": "Hijau Toska", "focus": "Sufiks dan pembentukan kata — -ous, -able, -ible" }
+  },
+  "levelN": "Level {{n}}",
+  "parent": {
+    "yourChild": "anak Anda",
+    "yourChildCap": "Anak Anda",
+    "signInPrompt": "Masuk untuk melihat dasbor Anda.",
+    "kicker": "Dasbor orang tua",
+    "headline": "{{name}} sudah menempuh {{pct}}% perjalanan menuju <hl>Reading Champion.</hl>",
+    "nowReading": "Sedang dibaca",
+    "meta": {
+      "nowOn": "Level saat ini",
+      "ageBand": "Kelompok usia",
+      "nowReading": "Sedang dibaca",
+      "streak": "Hari beruntun",
+      "streakDays_other": "{{count}} hari"
+    },
+    "journey": {
+      "title": "Perjalanan",
+      "complete": "{{pct}}% selesai",
+      "nowOn": "Level saat ini · {{colour}}",
+      "chipMastered": "Dikuasai",
+      "chipReads": "{{stamps}}/{{max}} kali dibaca",
+      "chipLocked": "Terkunci",
+      "booksMastered": "Buku dikuasai",
+      "nodeBooks": "{{mastered}}/{{total}} buku",
+      "comingSoon": "Segera hadir"
+    },
+    "rhythm": {
+      "title": "Ritme",
+      "note": "7 hari terakhir",
+      "readsThisWeek": "Bacaan minggu ini",
+      "daysActive": "Hari aktif",
+      "minutesReading": "Menit membaca",
+      "booksMastered": "Buku dikuasai",
+      "dayReads_other": "{{date}} — {{count}} kali dibaca",
+      "activeNote_other": "{{name}} membaca pada {{count}} dari 7 hari terakhir. Sedikit tapi sering lebih baik daripada sesi panjang.",
+      "noReads": "Belum ada bacaan minggu ini — 5 menit saja hari ini sudah menjaga ritme."
+    },
+    "sounds": {
+      "title": "Bunyi",
+      "note": "Level {{n}} · {{colour}}",
+      "intro": "Setiap buku di {{level}} dibangun dari bunyi-bunyi huruf ini. Tunjukkan di mana saja — papan nama, kotak sereal, layar ini.",
+      "newTrickyWords": "Tricky Words (kata sulit) baru"
+    },
+    "step": {
+      "title": "Langkah minggu ini",
+      "pickFirst": "Pilih buku pertama di perpustakaan untuk memulai perjalanan.",
+      "levelComplete": "Level {{n}} selesai — saatnya Level Check (tes level).",
+      "bookMastered": "“{{title}}” sudah dikuasai. Lanjut ke buku berikutnya.",
+      "readyForCheck": "{{name}} siap untuk tes akhir “{{title}}”.",
+      "readMore_other": "Baca “{{title}}” {{count}} kali lagi minggu ini.",
+      "method": "Lima kali membaca buku yang sama secara berselang membangun kelancaran yang sesungguhnya — itulah inti metode ini.",
+      "openLibrary": "Buka perpustakaan"
+    },
+    "controls": {
+      "title": "Kontrol orang tua",
+      "unlockTitle": "Buka buku berikutnya",
+      "unlockDesc": "Lompat ke depan jika Anda tahu anak sudah siap.",
+      "freeTitle": "Mode Baca Bebas",
+      "freeTitleOn": "Mode Baca Bebas — aktif",
+      "freeDesc": "Biarkan anak menjelajahi semua buku yang terbuka, tanpa batasan.",
+      "resetTitle": "Atur ulang buku saat ini",
+      "resetDesc": "Hapus bacaan dan hasil tes untuk “{{title}}”.",
+      "resetNone": "Tidak ada buku aktif untuk diatur ulang.",
+      "freeWarning": "Mode Baca Bebas aktif — Mode Terpandu nonaktif. {{name}} dapat membuka buku apa pun, tetapi kemajuan tetap dicatat."
+    },
+    "toast": {
+      "resetConfirm": "Atur ulang kemajuan untuk \"{{title}}\"? Ini akan menghapus stempel dan hasil tes.",
+      "resetTitle": "Kemajuan diatur ulang",
+      "resetDesc": "{{title}} kembali ke 0 kali dibaca.",
+      "comingSoonTitle": "Segera hadir",
+      "comingSoonDesc": "Pembukaan manual akan tersedia setelah fitur pengaturan orang tua terhubung ke sistem.",
+      "freeOnTitle": "Mode Baca Bebas aktif",
+      "guidedOnTitle": "Mode Terpandu aktif",
+      "freeOnDesc": "Semua buku bisa dibuka. Bacaan dan tes tetap dicatat.",
+      "guidedOnDesc": "Buku hanya terbuka setelah tes berhasil dilalui."
+    },
+    "levelCheck": {
+      "kicker": "Akhir level",
+      "title": "Tes Level {{n}} —",
+      "ready": "siap",
+      "locked": "terkunci",
+      "masteredNext": "{{name}} telah menguasai semua {{count}} buku di level ini. Tes fonik singkat akan menaikkannya ke Level {{next}} — {{nextName}}.",
+      "masteredFinal": "{{name}} telah menguasai semua {{count}} buku di level ini. Tes fonik singkat akan mengantarnya meraih sertifikat Reading Champion.",
+      "lockedNext": "Kuasai semua {{count}} buku di level ini, lalu tes fonik singkat akan membuka Level {{next}} — {{nextName}}.",
+      "lockedFinal": "Kuasai semua {{count}} buku di level ini, lalu tes fonik singkat akan membuka sertifikat Reading Champion.",
+      "start": "Mulai Tes Level",
+      "progress": "{{mastered}} dari {{total}} dikuasai"
+    },
+    "colophon": "Delapan level · {{count}} buku · Curriculum Ledger v2.0"
+  },
+  "progress": {
+    "title": "Kemajuan",
+    "signInPrompt": "Masuk untuk memantau kemajuan membaca anak Anda.",
+    "subtitle": "Seluruh perjalanan membaca, level demi level.",
+    "ofTotal": "dari {{total}}",
+    "booksCompleted": "Buku selesai",
+    "keepReading": "Terus membaca untuk membuka lebih banyak buku!",
+    "streak_other": "{{count}} hari beruntun",
+    "comingSoon": "Segera hadir",
+    "latestCheck": "Tes Level terakhir",
+    "recommended": "Level yang disarankan {{n}}"
+  },
+  "child": {
+    "titleNamed": "Kemajuan {{name}}",
+    "title": "Kemajuan Anak",
+    "empty": "Belum ada aktivitas membaca di perangkat ini. Setelah anak Anda membaca buku, stempel dan kemajuan akan muncul di sini.",
+    "activity": "Aktivitas Membaca",
+    "days_other": "{{count}} hari",
+    "reads_other": "{{count}} kali dibaca",
+    "cellTitle_other": "{{date}}: {{count}} kali dibaca",
+    "less": "Sedikit",
+    "more": "Banyak",
+    "soundsCovered": "Bunyi yang Dipelajari",
+    "allSounds": "Semua bunyi",
+    "practisedOnly": "Hanya yang dilatih",
+    "soundBooks_other": "{{count}} buku dengan bunyi ini sudah dibaca",
+    "notPractised": "Belum dilatih",
+    "booksRead": "Buku dibaca",
+    "stamps": "Stempel",
+    "champions": "Dikuasai",
+    "atLevel": "Level"
+  },
+  "chart": {
+    "title": "Posisi anak Anda",
+    "subtitle": "Level fonik menurut usia — rata-rata Inggris dan internasional",
+    "above": "Di atas harapan Inggris",
+    "at": "Sesuai rata-rata Inggris",
+    "below": "Sedikit di bawah rata-rata Inggris",
+    "ariaLabel": "Grafik perbandingan level fonik menurut usia",
+    "ageAxis": "Usia (tahun)",
+    "you": "Anak Anda · L{{level}}",
+    "legendChild": "Anak Anda",
+    "legendGreater": "Inggris Greater Depth (20% teratas)",
+    "legendExpected": "Harapan Inggris (rata-rata)",
+    "legendInternational": "Rata-rata internasional",
+    "disclaimer": "Data rujukan: UK DfE Phonics Screening Check 2024 (tingkat kelulusan nasional ≈80% di akhir Year 1) + tolok ukur membaca NFER. Garis internasional diinterpolasi dari studi literasi membaca IEA PIRLS 2021 (Inggris 558 vs rata-rata internasional 520). Level fonik dipetakan ke kurikulum 1–8 kami, bukan skor tes standar. Hasil ini hanyalah gambaran sesaat, bukan label bagi anak Anda — bicarakan dengan gurunya untuk gambaran lengkap.",
+    "country": " Konteks negara: {{code}}."
+  }
+}

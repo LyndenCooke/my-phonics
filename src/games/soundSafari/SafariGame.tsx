@@ -19,6 +19,8 @@
  * Shared engine: fixed 1280×720 logical space, letterboxed; painted
  * study backdrop is environment only (procedural study drawn if absent).
  */
+import { useTranslation } from 'react-i18next';
+import { fillLabel, gameTx, isolate, labelFont, useLiveT } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -52,6 +54,9 @@ interface ObjE {
 }
 
 export default function SafariGame({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const liveT = useLiveT(t, i18n);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ended, setEnded] = useState<{ stars: number } | null>(null);
   const endedRef = useRef(setEnded);
@@ -256,9 +261,9 @@ export default function SafariGame({ level, onClose }: Props) {
           ctx.fillStyle = '#fff'; ctx.font = `700 ${shown.length > 3 ? 22 : 28}px ${F}`;
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(shown, LW / 2 - 148, 62);
-          ctx.fillStyle = ink; ctx.font = `700 24px ${FD}`; ctx.textAlign = 'left';
+          ctx.fillStyle = ink; ctx.textAlign = 'left';
           const found = objs.filter(o => o.isTarget && (o.state === 'fly' || o.state === 'done')).length;
-          ctx.fillText(`Find ${r.targetCount} with "${shown}"  ·  ${found}/${r.targetCount}`, LW / 2 - 88, 62);
+          fillLabel(ctx, liveT.current.t('spot.find', { count: r.targetCount, sound: isolate(`"${shown}"`), found }), LW / 2 - 88, 62, { weight: 700, size: 24, family: labelFont(fontReady), dir: liveT.current.dir, maxW: 290 });
         }
         ctx.fillStyle = hex; ctx.beginPath(); ctx.arc(speaker.x, speaker.y, speaker.r, 0, 7); ctx.fill();
         ctx.fillStyle = '#fff'; ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -317,8 +322,8 @@ export default function SafariGame({ level, onClose }: Props) {
           ctx.strokeStyle = stampGood ? hex : '#B98A54'; ctx.lineWidth = 5;
           roundRect(ctx, -138, -44, 276, 88, 14); ctx.stroke();
           ctx.fillStyle = stampGood ? ink : '#8A6A45';
-          ctx.font = `800 34px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(stampGood ? 'SHARP EYES!' : 'ALL FOUND!', 0, 0);
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          fillLabel(ctx, liveT.current.t(stampGood ? 'spot.sharpEyesStamp' : 'spot.allFoundStamp'), 0, 0, { weight: 800, size: 34, family: labelFont(fontReady), dir: liveT.current.dir, maxW: 256 });
           ctx.restore();
           if (stamp > 0.26 && stamp < 0.3) fx.puff(LW / 2, LH / 2 - 40, 8, 'rgba(185,138,46,0.35)');
         }
@@ -361,12 +366,12 @@ export default function SafariGame({ level, onClose }: Props) {
   const restart = () => (canvasRef.current as unknown as { __restart?: () => void })?.__restart?.();
 
   return createPortal(
-    <div className="fixed inset-0 z-[70]" style={{ background: '#241A10' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70]" style={{ background: '#241A10' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none', cursor: 'none' }} />
       <RotateGate />
       <button
         onClick={onClose}
-        aria-label="Close game"
+        aria-label={t('play.closeGame')}
         className="absolute top-3.5 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
         style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', top: 'max(0.875rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
       >
@@ -375,23 +380,23 @@ export default function SafariGame({ level, onClose }: Props) {
       {ended && (
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
-            <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
-              {ended.stars === ROUNDS ? 'Master detective! 🌟' : `${ended.stars} sharp-eyed round${ended.stars === 1 ? '' : 's'}!`}
+            <p {...tx} className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
+              {ended.stars === ROUNDS ? t('spot.masterDetective') : t('spot.sharpRounds', { count: ended.stars })}
             </p>
           </div>
           <button
             onClick={restart}
-            className="w-full h-14 rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
+            className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
             style={{ background: level.hex, boxShadow: `0 5px 0 ${level.inkHex}` }}
           >
-            New case
+            <span {...tx}>{t('spot.newCase')}</span>
           </button>
           <button
             onClick={onClose}
-            className="w-full h-12 rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
+            className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
             style={{ color: level.inkHex, boxShadow: '0 4px 0 rgba(40,30,40,0.15)' }}
           >
-            All done
+            <span {...tx}>{t('ui.allDone')}</span>
           </button>
         </div>
       )}

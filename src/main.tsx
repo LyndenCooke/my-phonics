@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+// Must run before <App/> renders: detects the parent's language + sets <html dir>.
+import "./i18n";
 import { hideSplash, setupHardwareBack, statusBarLight } from "./lib/native";
 
 const root = createRoot(document.getElementById("root")!);

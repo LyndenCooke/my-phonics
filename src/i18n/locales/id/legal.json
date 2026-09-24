@@ -1,0 +1,106 @@
+{
+  "backHome": "Kembali ke beranda",
+  "notice": {
+    "text": "Terjemahan ini disediakan untuk kemudahan saja. Jika terdapat perbedaan, versi bahasa Inggris yang berlaku.",
+    "switch": "Baca dalam bahasa Inggris"
+  },
+  "privacy": {
+    "title": "Kebijakan Privasi",
+    "lastUpdated": "Terakhir diperbarui: April 2026",
+    "whoWeAre": {
+      "title": "Siapa kami",
+      "body": "MyPhonicsBooks dioperasikan oleh Lynden Cooke. Kebijakan ini menjelaskan informasi apa yang kami kumpulkan, mengapa kami mengumpulkannya, dan bagaimana Anda dapat menggunakan hak Anda berdasarkan UK GDPR (peraturan perlindungan data Britania Raya)."
+    },
+    "collect": {
+      "title": "Informasi yang kami kumpulkan",
+      "items": {
+        "email": "<b>Alamat email orang tua</b> — agar kami dapat mengirimkan hasil asesmen anak Anda, akses akun, dan tanda terima pembelian.",
+        "child": "<b>Nama depan dan usia anak</b> — digunakan di dalam asesmen dan pusat belajar untuk menyesuaikan pengalaman. Kami tidak membagikannya kepada pihak ketiga.",
+        "activity": "<b>Jawaban asesmen dan aktivitas membaca</b> — agar kami dapat merekomendasikan tingkat membaca yang tepat dan menunjukkan perkembangan dari waktu ke waktu.",
+        "payment": "<b>Detail pembayaran</b> — ditangani oleh Stripe. Kami tidak pernah melihat atau menyimpan nomor kartu lengkap.",
+        "analytics": "<b>Analitik dasar</b> — data tayangan halaman dan alur penggunaan yang dianonimkan agar kami dapat meningkatkan produk."
+      }
+    },
+    "use": {
+      "title": "Bagaimana kami menggunakan data Anda",
+      "body": "Kami menggunakan informasi Anda hanya untuk menyediakan layanan: menyediakan buku, menyimpan perkembangan, memproses pembayaran, dan mengirim email terkait akun. Kami tidak menjual data Anda dan tidak membagikannya kepada mitra pemasaran."
+    },
+    "processors": {
+      "title": "Pemroses data yang kami gunakan",
+      "items": {
+        "supabase": "basis data, autentikasi, penyimpanan file",
+        "stripe": "pemrosesan pembayaran",
+        "vercel": "hosting",
+        "elevenlabs": "sintesis audio untuk mendukung membaca"
+      }
+    },
+    "rights": {
+      "title": "Hak Anda",
+      "body": "Anda dapat meminta salinan data Anda, meminta kami memperbaikinya, atau meminta kami menghapus akun Anda kapan saja. Kirim email ke <email>{{email}}</email> dan kami akan membalas dalam 30 hari."
+    },
+    "children": {
+      "title": "Anak-anak",
+      "body": "Akun dibuat oleh orang tua atau wali. Kami tidak pernah meminta anak-anak mendaftar sendiri, dan kami tidak pernah mengirim email pemasaran tentang seorang anak kepada keluarga lain."
+    },
+    "cookies": {
+      "title": "Cookie",
+      "body": "Kami menggunakan sejumlah kecil cookie penting agar Anda tetap masuk. Kami tidak menggunakan cookie iklan pihak ketiga."
+    },
+    "contact": {
+      "title": "Kontak",
+      "body": "Ada pertanyaan tentang kebijakan ini? Kirim email ke <email>{{email}}</email>."
+    }
+  },
+  "terms": {
+    "title": "Ketentuan Layanan",
+    "lastUpdated": "Terakhir diperbarui: April 2026",
+    "about": {
+      "title": "Tentang ketentuan ini",
+      "body": "Ketentuan ini mengatur penggunaan MyPhonicsBooks oleh Anda. Dengan membuat akun, mengikuti asesmen, atau membeli produk apa pun, Anda menyetujuinya."
+    },
+    "signup": {
+      "title": "Siapa yang dapat mendaftar",
+      "body": "Akun harus dibuat oleh orang tua atau wali atas nama anak. Anda harus berusia 18 tahun atau lebih untuk membuat perjanjian ini."
+    },
+    "yourContent": {
+      "title": "Konten Anda",
+      "body": "Anda tetap memiliki semua yang dibuat anak Anda di dalam pusat belajar (gambar, jawaban kuis, data perkembangan). Anda memberi kami lisensi terbatas untuk menyimpan dan menampilkannya di dalam akun Anda agar pusat belajar dapat berfungsi."
+    },
+    "ourContent": {
+      "title": "Konten kami",
+      "body": "Semua buku, ilustrasi, audio, dan materi asesmen merupakan hak cipta MyPhonicsBooks. Buku, lembar kerja, dan permainan gratis untuk dibaca dan dimainkan. PDF yang diunduh dilisensikan untuk keluarga Anda sendiri atau kelas Anda sendiri: cetak sebanyak yang Anda perlukan untuk mereka. PDF tersebut tidak boleh dijual kembali, didistribusikan ulang, atau diunggah ulang, baik satu per satu maupun sebagai bagian dari paket apa pun."
+    },
+    "subscriptions": {
+      "title": "Langganan dan pengembalian dana",
+      "body": "Langganan bulanan dan tahunan diperpanjang otomatis hingga dibatalkan. Anda dapat membatalkan kapan saja dari Profil Anda — Anda tetap memiliki akses hingga akhir periode yang telah dibayar. Pembelian satu kali (buku satuan, paket) tidak dapat dikembalikan dananya setelah PDF diunduh, kecuali diwajibkan oleh undang-undang perlindungan konsumen Britania Raya."
+    },
+    "trials": {
+      "title": "Uji coba gratis",
+      "body": "Jika uji coba gratis ditawarkan, Anda tidak akan dikenakan biaya selama masa uji coba. Kami akan mengirimkan pengingat sebelum masa uji coba berakhir. Jika Anda tidak membatalkan, langganan dimulai dan kartu Anda akan ditagih."
+    },
+    "acceptableUse": {
+      "title": "Penggunaan yang diperbolehkan",
+      "body": "Mohon jangan mencoba merekayasa balik situs, mengambil konten secara otomatis (scraping), menggunakan layanan untuk melecehkan siapa pun, atau mengakses akun pengguna lain. Kami dapat menangguhkan akun yang melakukannya."
+    },
+    "outcomes": {
+      "title": "Hasil pendidikan",
+      "body": "MyPhonicsBooks adalah sumber pendukung membaca. Kami tidak menjamin hasil pendidikan tertentu dan tidak menggantikan peran guru yang berkualifikasi."
+    },
+    "liability": {
+      "title": "Tanggung jawab",
+      "body": "Kami menyediakan layanan \"sebagaimana adanya\" dan tanggung jawab kami terbatas pada jumlah yang telah Anda bayarkan kepada kami dalam 12 bulan terakhir, kecuali jika hukum menentukan lain."
+    },
+    "changes": {
+      "title": "Perubahan",
+      "body": "Kami dapat memperbarui ketentuan ini. Perubahan penting akan diberitahukan melalui email atau pemberitahuan di dalam aplikasi sebelum berlaku."
+    },
+    "law": {
+      "title": "Hukum yang berlaku",
+      "body": "Ketentuan ini diatur oleh hukum Inggris dan Wales."
+    },
+    "contact": {
+      "title": "Kontak",
+      "body": "Ada pertanyaan? Kirim email ke <email>{{email}}</email>."
+    }
+  }
+}

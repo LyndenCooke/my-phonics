@@ -1,0 +1,168 @@
+{
+  "closeBook": "Funga kitabu",
+  "pageAlt": "{{title}} — ukurasa {{page}}",
+  "pageLoadError": "Hatukuweza kupakia ukurasa huu.",
+  "pageLoadErrorHint": "Angalia muunganisho wako kisha ujaribu tena.",
+  "pagesUnavailable": "Picha za kurasa hazipatikani",
+  "previousPage": "Ukurasa uliopita",
+  "nextPage": "Ukurasa unaofuata",
+  "goToPage": "Nenda ukurasa {{page}}",
+  "finishBook": "Maliza kitabu",
+  "tapToHear": "Gusa ili kusikia \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Hakikisho la kitabu — tumia vitufe vya mishale kugeuza kurasa"
+  },
+  "quiz": {
+    "saveFailed": "Imeshindikana kuhifadhi matokeo ya jaribio",
+    "completeAria": "Jaribio limekamilika",
+    "perfect": "Alama kamili!",
+    "wellDone": "Umefanya vizuri!",
+    "scored": "Umepata <b>{{score}}</b> kati ya <b>{{total}}</b>",
+    "tryAgain": "Jaribu tena",
+    "dialogAria": "Jaribio: {{title}}",
+    "close": "Funga jaribio",
+    "answerOptions": "Machaguo ya majibu",
+    "seeResults": "Ona matokeo",
+    "brilliant": "Hongera sana!",
+    "nearly": "Karibu! Jaribu tena wakati ujao."
+  },
+  "audio": {
+    "playSoundTitle": "Cheza sauti ya \"{{grapheme}}\"",
+    "playSoundAria": "Cheza sauti ya grafimu {{grapheme}}",
+    "playWordTitle": "Cheza \"{{word}}\"",
+    "playWordAria": "Cheza neno {{word}}"
+  },
+  "soundMap": {
+    "known": "Anajua ({{n}})",
+    "toLearn": "Ajifunze ({{n}})",
+    "notTestedCount": "Haijajaribiwa ({{n}})",
+    "notTested": "Haijajaribiwa",
+    "levelHeading": "Kiwango {{level}}",
+    "levelsNotTested": "Viwango {{levels}} bado havijajaribiwa",
+    "status": {
+      "known": "anajua",
+      "unknown": "ajifunze",
+      "untested": "haijajaribiwa"
+    },
+    "categories": {
+      "sound_recognition": "Sauti",
+      "word_reading": "Maneno Halisi",
+      "alien_words": "Alien Words (maneno ya kubuni)",
+      "tricky_words": "Tricky Words (maneno magumu)",
+      "speedy_reading": "Kusoma kwa Kasi",
+      "fluency": "Ufasaha"
+    }
+  },
+  "interactive": {
+    "playSound": "Cheza sauti {{sound}}",
+    "playSoundVariant": "Cheza sauti {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Gusa ili kusikia.",
+    "illustration": "Mchoro wa hadithi",
+    "closeImage": "Funga picha",
+    "expandIllustration": "Panua mchoro",
+    "hideHints": "Ficha vidokezo vya fonetiki",
+    "showHints": "Onyesha vidokezo vya fonetiki",
+    "checkInPassed": "Ukaguzi umefaulu",
+    "checkInPractise": "Ukaguzi — endelea kufanya mazoezi"
+  },
+  "prep": {
+    "tapToHear": "Gusa kila moja ili ulisikie. Hizi ndizo sauti ambazo mtoto wako atazifanyia mazoezi.",
+    "tapLevel": "Gusa kiwango ili uone sauti zake"
+  },
+  "book": {
+    "level": "Kiwango {{level}}",
+    "levelLabel": "Kiwango {{level}} — {{name}}",
+    "cover": {
+      "swipe": "Telezesha ili kuanza",
+      "levelSubtitle": "Kiwango {{level}} · {{name}}",
+      "madeFor": "Kitabu kilichotengenezwa kwa ajili ya {{hero}} · Kiwango {{level}} · Sauti \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "Sauti mpya katika kitabu hiki",
+      "headsUp": "Zingatia:",
+      "noteUre": "Herufi 'ure' zina sauti mbili! Mwishoni mwa neno inaweza kusikika kama 'yoor' (kama katika pure) AU kama 'ur' (kama katika nature). Utakutana na zote mbili katika kitabu hiki."
+    },
+    "vocab": {
+      "title": "Maneno ya Hadithi",
+      "hint": "Gusa kadi usikie neno. Utakutana na maneno haya yote katika hadithi."
+    },
+    "story": {
+      "readToMe": "Nisomee",
+      "reading": "Inasoma..."
+    },
+    "spotlight": {
+      "tapSound": "Gusa sauti!"
+    },
+    "wordReading": {
+      "title": "Je, Unaweza Kusoma Haya?",
+      "hint": "Gusa kila neno ili kuunganisha sauti zake. Tumia vitone kutamka sauti moja moja."
+    },
+    "tricky": {
+      "title": "Maneno Magumu",
+      "hint": "Haya hayatamkwi jinsi yanavyoandikwa — yajue kwa kuyaona tu!"
+    },
+    "alien": {
+      "title": "Maneno ya Viumbe wa Angani",
+      "hint": "Si maneno halisi — tamka sauti zake tu!"
+    },
+    "quiz": {
+      "progress": "Swali {{n}} kati ya {{total}}",
+      "right": "Umefanya vizuri!",
+      "wrong": "Bado kidogo — jibu la kijani ndilo sahihi!",
+      "next": "Swali linalofuata"
+    },
+    "correct": "Sahihi!",
+    "spelling": {
+      "title": "Andika Neno kwa Herufi!",
+      "next": "Neno linalofuata"
+    },
+    "grammar": {
+      "title": "Jenga sentensi!",
+      "progress": "Sentensi {{n}} kati ya {{total}}",
+      "next": "Sentensi inayofuata"
+    },
+    "ordering": {
+      "title": "Panga Hadithi kwa Mpangilio!",
+      "hint": "Gusa mbili ili kuzibadilisha nafasi.",
+      "done": "Huo ndio mpangilio sahihi!",
+      "shuffle": "Changanya"
+    },
+    "drawing": {
+      "favourite": "Chora Sehemu Uliyoipenda Zaidi",
+      "heroFavourite": "Chora sehemu aliyoipenda zaidi {{hero}}",
+      "clear": "Futa"
+    },
+    "writing": {
+      "title": "Mazoezi ya Kuandika",
+      "hint": "Gusa herufi, kisha ifuatishe!"
+    },
+    "checkIn": {
+      "progress": "Ukaguzi {{n}} kati ya {{total}} · Siku {{day}}"
+    },
+    "cert": {
+      "champion": "Bingwa wa Kusoma!",
+      "great": "Umesoma Vizuri Sana!",
+      "already": "Umeshasoma Leo",
+      "day": "Siku {{n}}",
+      "moveUp": "Tayari Kupanda Kiwango!",
+      "mastered": "Umesoma mara {{reads}}, umefaulu ukaguzi {{checkIns}}. Kweli umekimudu kitabu hiki!",
+      "fluency": "Umesoma mara {{reads}}! Kusoma mara chache zaidi katika kiwango hiki kutajenga ufasaha halisi.",
+      "stampUnlocked": "Muhuri <b>{{n}} kati ya {{total}}</b> umefunguliwa! Rudi kesho upate muhuri namba {{next}}.",
+      "alreadyEarned": "Umeshapata muhuri wa leo — kazi nzuri! Rudi kesho upate muhuri namba {{next}}."
+    },
+    "finish": "Maliza"
+  },
+  "custom": {
+    "myBook": "Kitabu Changu",
+    "levelSound": "{{name}} · Sauti \"{{sound}}\"",
+    "coverAlt": "Jalada",
+    "meetStar": "Mfahamu nyota wa kitabu hiki",
+    "hero": "Shujaa",
+    "nameAge": "{{name}}, umri {{age}}",
+    "from": "Anatoka:",
+    "loves": "Anapenda:",
+    "world": "Ulimwengu wetu:",
+    "faith": "Imani yetu:",
+    "thanks": "Kila hadithi ya MyPhonicsBooks ni dirisha la kuona ulimwengu wa familia. Asante kwa kutushirikisha ulimwengu wenu."
+  }
+}

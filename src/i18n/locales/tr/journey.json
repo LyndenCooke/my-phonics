@@ -1,0 +1,48 @@
+{
+  "youAreHere": "Buradasın",
+  "dayOf": "Gün {{day}} / {{total}}",
+  "kicker": "Okuma yolculuğu",
+  "headline": "Okumaya giden yolunuz",
+  "lessonOf": "Ders {{n}} / {{total}}",
+  "levelDash": "Seviye {{n}} — {{name}}",
+  "progressAria": "Ders {{n}} / {{total}}, yolculuğun yüzde {{pct}} kadarı",
+  "levelState": {
+    "complete": "tamamlandı",
+    "current": "mevcut seviye, {{total}} dersten {{done}} tanesi",
+    "future": "henüz başlamadı"
+  },
+  "levelAria": "Seviye {{n}}, {{name}}, {{state}}. Seviye haritasını aç.",
+  "lessonsDone": "{{total}} dersten {{done}} tanesi",
+  "complete": "Tamamlandı",
+  "lessons_one": "{{count}} ders",
+  "lessons_other": "{{count}} ders",
+  "panel": {
+    "aria": "Ders planı: {{title}}",
+    "close": "Ders planını kapat",
+    "meta": "Ders {{n}} · Seviye {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "Bu haftanın günleri",
+    "dayTabAria": "Gün {{day}}: {{title}}",
+    "dayTab": "Gün {{day}}",
+    "minutes": "Yaklaşık {{minutes}} dakika ders anlatımı",
+    "minutesWorksheet": "Yaklaşık {{minutes}} dakika ders anlatımı, ardından çalışma kâğıdı"
+  },
+  "blockState": {
+    "complete": "tamamlandı",
+    "current": "buradasın",
+    "future": "sırada bekliyor"
+  },
+  "kind": {
+    "assessment": "Değerlendirme",
+    "keepup": "Telafi zamanı",
+    "lesson": "Ders",
+    "soundWeek": "Ses haftası",
+    "skillsWeek": "Beceri haftası"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "Tüm yolculuğa geri dön",
+  "back": "Tüm yolculuk",
+  "levelTitle": "Seviye {{n}}: {{name}}",
+  "error": "Yolculuk haritası şu anda yüklenemedi. Lütfen birazdan tekrar deneyin.",
+  "loading": "Yolculuk haritası yükleniyor",
+  "sectionAria": "Müfredat yolculuk haritası"
+}

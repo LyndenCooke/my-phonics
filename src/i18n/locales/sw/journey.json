@@ -1,0 +1,48 @@
+{
+  "youAreHere": "Uko hapa",
+  "dayOf": "Siku {{day}} kati ya {{total}}",
+  "kicker": "Safari ya kusoma",
+  "headline": "Njia yako ya kujua kusoma",
+  "lessonOf": "Somo {{n}} kati ya {{total}}",
+  "levelDash": "Kiwango {{n}} — {{name}}",
+  "progressAria": "Somo {{n}} kati ya {{total}}, asilimia {{pct}} ya safari",
+  "levelState": {
+    "complete": "kimekamilika",
+    "current": "kiwango cha sasa, masomo {{done}} kati ya {{total}}",
+    "future": "bado hakijaanza"
+  },
+  "levelAria": "Kiwango {{n}}, {{name}}, {{state}}. Fungua ramani ya kiwango.",
+  "lessonsDone": "Masomo {{done}} kati ya {{total}}",
+  "complete": "Kimekamilika",
+  "lessons_one": "Somo {{count}}",
+  "lessons_other": "Masomo {{count}}",
+  "panel": {
+    "aria": "Muhtasari wa somo: {{title}}",
+    "close": "Funga muhtasari wa somo",
+    "meta": "Somo {{n}} · Kiwango {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "Siku za wiki hii",
+    "dayTabAria": "Siku {{day}}: {{title}}",
+    "dayTab": "Siku {{day}}",
+    "minutes": "Takriban dakika {{minutes}} za kufundisha",
+    "minutesWorksheet": "Takriban dakika {{minutes}} za kufundisha, kisha karatasi ya zoezi"
+  },
+  "blockState": {
+    "complete": "imekamilika",
+    "current": "uko hapa",
+    "future": "bado inakuja"
+  },
+  "kind": {
+    "assessment": "Tathmini",
+    "keepup": "Muda wa kufidia",
+    "lesson": "Somo",
+    "soundWeek": "Wiki ya sauti",
+    "skillsWeek": "Wiki ya ujuzi"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "Rudi kwenye safari nzima",
+  "back": "Safari nzima",
+  "levelTitle": "Kiwango {{n}}: {{name}}",
+  "error": "Ramani ya safari haikuweza kupakiwa sasa hivi. Tafadhali jaribu tena baada ya muda mfupi.",
+  "loading": "Inapakia ramani ya safari",
+  "sectionAria": "Ramani ya safari ya mtaala"
+}

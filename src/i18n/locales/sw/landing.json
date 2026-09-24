@@ -1,0 +1,133 @@
+{
+  "skipToMain": "Ruka hadi maudhui makuu",
+  "nav": {
+    "homeAria": "Ukurasa wa nyumbani wa MyPhonicsBooks",
+    "createBook": "Tengeneza Kitabu",
+    "worldOfBooks": "Ulimwengu wa Vitabu",
+    "shop": "Duka",
+    "wallOfLove": "Ukuta wa Upendo",
+    "forSchools": "Kwa Shule",
+    "schools": "Shule",
+    "explore": "Gundua",
+    "exploreBooks": "Gundua Vitabu"
+  },
+  "video": {
+    "badge": "Tazama ziara",
+    "title": "Ona jinsi inavyofanya kazi",
+    "body": "Maelezo mafupi ya jukwaa kamili la kujifunza Kiingereza — vitabu, viwango na maendeleo, vyote mahali pamoja.",
+    "fallback": "Kivinjari chako hakiwezi kucheza video iliyopachikwa. Badala yake <link>tazama ziara</link>."
+  },
+  "hero": {
+    "forParents": "Kwa Wazazi",
+    "forSchools": "Kwa Shule",
+    "languages": "Inapatikana kwa lugha {{n}}",
+    "titleA": "Vitabu vinavyokua pamoja na mtoto wako —",
+    "titleB": "kutoka sauti za kwanza hadi kusoma kwa ufasaha.",
+    "body": "Vitabu 33 vya fonetiki vinavyosomeka kwa sauti katika viwango 8. Pima kiwango cha mtoto wako bila malipo, someni pamoja kwenye skrini yoyote, au chapisha vijitabu halisi vya kushika mkononi.",
+    "exploreBooks": "Gundua vitabu",
+    "checkLevelFree": "Pima kiwango chake — bure",
+    "freeNote": "Vitabu vya kwanza viko wazi na bure sasa hivi — bila kujisajili, bila kadi."
+  },
+  "shelf": {
+    "regionAria": "Onyesho la vitabu — buruta, telezesha, au tumia vitufe vya mishale kuvinjari",
+    "coverAlt": "{{title}} — kijitabu cha Kiwango {{level}} {{levelName}}",
+    "prevBook": "Kitabu kilichotangulia",
+    "nextBook": "Kitabu kinachofuata",
+    "level": "Kiwango {{level}}"
+  },
+  "three": {
+    "badge": "Njia tatu za kuitumia",
+    "title": "Pima. Soma. Chapisha.",
+    "subtitle": "Kila kitu anachohitaji msomaji anayejifunza, mahali pamoja.",
+    "check": {
+      "title": "Pima kiwango chake",
+      "desc": "Jaribio la sauti la dakika 3 bila malipo hupata mahali sahihi kabisa pa kuanzia. Bila kubahatisha, bila kadi.",
+      "cta": "Anza jaribio la bure"
+    },
+    "read": {
+      "title": "Soma kwenye skrini yoyote",
+      "desc": "Vitabu shirikishi kwenye simu, kompyuta kibao au kompyuta ndogo — gusa neno lolote usikie likitamkwa sauti kwa sauti.",
+      "cta": "Gundua vitabu"
+    },
+    "print": {
+      "title": "Au chapisha na ushike",
+      "desc": "Pakua kitabu chochote kama kijitabu cha A5 cha kukunja na kubana. Kurasa halisi za kusoma kabla ya kulala.",
+      "cta": "Tazama maktaba"
+    }
+  },
+  "testimonials": {
+    "title": "Wateja wetu wanasema nini",
+    "subtitle": "Maneno halisi kutoka kwa familia na walimu wanaotumia MyPhonicsBooks.",
+    "previous": "Iliyotangulia",
+    "next": "Inayofuata",
+    "aParent": "Mzazi mmoja"
+  },
+  "journey": {
+    "title": "Kutoka sauti za kwanza hadi sauti za mwisho",
+    "subtitle": "Viwango vinane, njia moja iliyo wazi — kila kitabu kinatumia sauti ambazo mtoto wako amejifunza tu.",
+    "ages": "Umri {{range}}",
+    "books_one": "Kitabu {{count}}",
+    "books_other": "Vitabu {{count}}"
+  },
+  "features": {
+    "titleA": "Kila kitu mtoto wako anachohitaji ili",
+    "titleB": "apende kusoma",
+    "body": "Vimeandaliwa na wataalamu wa fonetiki, vimeundwa kwa ajili ya watoto halisi. Kila kitabu kinatumia sauti ambazo mtoto wako amejifunza tu — hivyo anafanikiwa tangu ukurasa wa kwanza.",
+    "items": {
+      "soundedOut": "Gusa neno lolote usikie likitamkwa fonimu kwa fonimu",
+      "books": "Vitabu 33 katika viwango 8 vya kusoma vilivyopangwa kwa uangalifu",
+      "settings": "Hadithi zinazotokea Japani, Kenya, Moroko, Ufaransa, Uturuki na kwingineko",
+      "quizzes": "Maswali ya ufahamu na mchezo wa \"What sound is it?\"",
+      "progress": "Ufuatiliaji wa maendeleo ili wazazi waone ukuaji",
+      "aligned": "Inaendana na Phonics Screening Check ya Mwaka wa 1 nchini Uingereza"
+    },
+    "mockAlt": "Kusoma kwa kushirikiana",
+    "tapHint": "Gusa neno ulisikie",
+    "printSticker": "…au kichapishe kama kijitabu"
+  },
+  "free": {
+    "title": "Bure kwa kila familia",
+    "subtitle": "Hakuna vifurushi, hakuna ukuta wa malipo. Soma kila kitu sasa. Jisajili (bure) ili kuchapisha.",
+    "read": {
+      "title": "Soma na ucheze",
+      "note": "bila akaunti",
+      "items": {
+        "books": "Vitabu vyote 33 katika viwango 8, kusoma mtandaoni",
+        "tapToHear": "Kusoma kwa kugusa na kusikia",
+        "games": "Kila mchezo wa fonetiki",
+        "check": "Jaribio la fonetiki la dakika 3 bila malipo"
+      },
+      "cta": "Fungua maktaba"
+    },
+    "print": {
+      "badge": "Bado ni bure",
+      "title": "Chapisha nyumbani",
+      "note": "akaunti ya bure",
+      "items": {
+        "everything": "Kila kitu kilicho kwenye Soma na ucheze",
+        "download": "Pakua kila kitabu kama PDF inayochapishika",
+        "worksheets": "Kila karatasi ya mazoezi na kadi ya sauti",
+        "progress": "Ufuatiliaji wa maendeleo na zawadi"
+      },
+      "cta": "Fungua akaunti ya bure"
+    },
+    "support": "Umeipenda? <btn>Iunge mkono MyPhonicsBooks</btn> kwa shukrani ya mara moja ya kiasi chochote — ni hiari kabisa."
+  },
+  "footerCta": {
+    "title": "Vitabu vya kwanza tayari viko wazi.",
+    "body": "Angalia kwa utulivu — na ukiwa tayari, jaribio la dakika 3 bila malipo litapata kiwango halisi cha mtoto wako.",
+    "explore": "Gundua vitabu",
+    "check": "Pima kiwango chake"
+  },
+  "footer": {
+    "createBook": "Tengeneza Kitabu",
+    "worldOfBooks": "Ulimwengu wa Vitabu",
+    "shop": "Duka",
+    "wallOfLove": "Ukuta wa Upendo",
+    "privacy": "Faragha",
+    "terms": "Masharti",
+    "contact": "Wasiliana nasi",
+    "admin": "Msimamizi",
+    "madeWith": "Imetengenezwa kwa uangalifu nchini Uingereza"
+  }
+}

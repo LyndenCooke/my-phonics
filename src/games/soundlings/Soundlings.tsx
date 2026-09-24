@@ -13,6 +13,8 @@
  * Views: habitat (home) → play (5-encounter visit) → book (album).
  * Feeding Frenzy (30s) unlocks after 3 hatches.
  */
+import { Trans, useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, BookOpen, Timer, Play, RotateCcw } from 'lucide-react';
@@ -79,6 +81,9 @@ function meterOf(state: SoundlingState, stage: Stage, glowing: boolean): number 
 interface Celebration { grapheme: string; stage: Stage }
 
 export default function Soundlings({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const enTag = { en: <bdi dir="ltr" lang="en" /> };
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -258,7 +263,7 @@ export default function Soundlings({ level, onClose }: Props) {
     <motion.button
       key={g}
       onClick={() => onPick(g)}
-      aria-label={`Sound ${displayGrapheme(g)}`}
+      aria-label={t('ui.soundAria', { sound: displayGrapheme(g) })}
       animate={wrongTile === g && !reduceMotion ? { x: [0, -8, 8, -5, 5, 0] } : { x: 0 }}
       transition={{ duration: 0.4 }}
       className="h-24 lg:h-32 rounded-2xl font-child font-bold text-4xl lg:text-6xl bg-white transition-colors press-scale"
@@ -273,7 +278,7 @@ export default function Soundlings({ level, onClose }: Props) {
   );
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       {/* Light wash in the habitat: the Soundlings LIVE in this scene, so
           the barn stays vivid; play views get the readable default. */}
       <Scene img="/images/games/soundlings_barn.webp" wash={view === 'habitat' ? 'light' : 'default'} />
@@ -282,13 +287,13 @@ export default function Soundlings({ level, onClose }: Props) {
       <div className="relative max-w-md lg:max-w-5xl mx-auto px-5 pt-5 pb-10 min-h-full flex flex-col">
         {/* Top bar */}
         <div className="flex items-center justify-between">
-          <span className="rounded-full bg-white px-3.5 py-1.5 text-[11px] lg:text-sm font-extrabold -rotate-1"
+          <span {...tx} className="rounded-full bg-white px-3.5 py-1.5 text-[11px] lg:text-sm font-extrabold -rotate-1"
             style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}>
-            {view === 'book' ? 'The Sound Book' : `${level.name} Grove`}
+            {view === 'book' ? 'The Sound Book' : <Trans t={t} i18nKey="soundlings.grove" values={{ name: level.name }} components={enTag} />}
           </span>
           <div className="flex items-center gap-2">
             {view === 'habitat' && (
-              <button onClick={() => setView('book')} aria-label="Open the Sound Book"
+              <button onClick={() => setView('book')} aria-label={t('play.openSoundBook')}
                 className="h-10 px-4 rounded-full bg-white flex items-center gap-2 press-scale font-extrabold text-sm"
                 style={{ boxShadow: STICKER, color: ink }}>
                 <BookOpen className="w-4 h-4" /> Sound Book
@@ -296,7 +301,7 @@ export default function Soundlings({ level, onClose }: Props) {
             )}
             <button
               onClick={() => (view === 'habitat' ? onClose() : (refresh(), setView('habitat')))}
-              aria-label={view === 'habitat' ? 'Close game' : 'Back to the grove'}
+              aria-label={view === 'habitat' ? t('play.closeGame') : t('play.backToGrove')}
               className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
               style={{ boxShadow: STICKER }}>
               <X className="w-[18px] h-[18px] text-foreground/60" />
@@ -312,9 +317,9 @@ export default function Soundlings({ level, onClose }: Props) {
         {view === 'habitat' && (
           <motion.div {...(reduceMotion ? {} : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 } })}
             className="flex-1 flex flex-col pt-4">
-            <p className="font-child text-lg lg:text-2xl text-foreground/80 text-center"
+            <p {...tx} className="font-child text-lg lg:text-2xl text-foreground/80 text-center"
               style={{ textShadow: '0 1px 8px rgba(255,250,235,0.9)' }}>
-              Your Soundlings are waiting in the barn! Tap one to feed it.
+              {t('soundlings.waiting')}
             </p>
 
             <div className="mt-auto flex flex-wrap justify-center items-end gap-x-1.5 gap-y-4 lg:gap-x-3 pt-8 pb-3">
@@ -327,7 +332,7 @@ export default function Soundlings({ level, onClose }: Props) {
                 const nearHatch = stage === 'egg' && meter >= 0.85;
                 return (
                   <motion.button key={g} onClick={() => startVisit(g)}
-                    aria-label={stage === 'egg' ? `Egg — the ${displayGrapheme(g)} sound` : `${soundlingName(g)} — the ${displayGrapheme(g)} sound`}
+                    aria-label={stage === 'egg' ? t('soundlings.eggAria', { sound: displayGrapheme(g) }) : t('soundlings.creatureAria', { name: soundlingName(g), sound: displayGrapheme(g) })}
                     className="relative w-[4.4rem] lg:w-24 flex flex-col items-center press-scale"
                     style={{ marginTop: i % 2 === 0 ? 0 : 10 }}
                     animate={!reduceMotion
@@ -354,7 +359,7 @@ export default function Soundlings({ level, onClose }: Props) {
                     {/* name on a little wooden tag */}
                     <span className="relative -mt-1 rounded-md px-1.5 py-0.5 font-display text-[10px] lg:text-xs font-extrabold text-[#FFF6E3]"
                       style={{ background: '#8A5A2B', boxShadow: '0 2px 0 #6B4523' }}>
-                      {stage === 'egg' ? (isGlow ? 'Hatch me!' : nearHatch ? 'Nearly!' : '?') : soundlingName(g)}
+                      {stage === 'egg' ? (isGlow || nearHatch ? <span {...tx}>{isGlow ? t('soundlings.hatchMe') : t('soundlings.nearly')}</span> : '?') : soundlingName(g)}
                     </span>
                     {/* hatched creatures keep a tiny feed meter, straw-styled */}
                     {stage !== 'egg' && (
@@ -369,17 +374,17 @@ export default function Soundlings({ level, onClose }: Props) {
 
             <div className="mt-7 mx-auto w-full max-w-sm space-y-3.5 pb-4">
               <button onClick={() => startVisit()}
-                className="w-full h-16 rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
+                className="w-full min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}>
-                <Play className="w-6 h-6" /> PLAY
+                <Play className="w-6 h-6 shrink-0" /> <span {...tx}>{t('soundlings.play')}</span>
               </button>
               <button onClick={() => !frenzyLocked && startFrenzy()} aria-disabled={frenzyLocked}
-                className="w-full h-14 rounded-2xl font-display text-lg font-extrabold flex items-center justify-center gap-2.5 bg-white transition-all active:translate-y-[3px]"
+                className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold flex items-center justify-center gap-2.5 bg-white transition-all active:translate-y-[3px]"
                 style={frenzyLocked
                   ? { color: 'hsl(var(--muted-foreground))', boxShadow: STICKER, border: '2px dashed hsl(var(--border))' }
                   : { color: ink, boxShadow: `0 4px 0 ${hex}40, ${STICKER}`, border: `2px solid ${hex}50` }}>
-                <Timer className="w-5 h-5" />
-                {frenzyLocked ? `Feeding Frenzy — hatch ${FRENZY_UNLOCK_HATCHES - hatched} more to unlock` : 'Feeding Frenzy — 30 seconds!'}
+                <Timer className="w-5 h-5 shrink-0" />
+                <span {...tx}>{frenzyLocked ? t('soundlings.frenzyLocked', { count: FRENZY_UNLOCK_HATCHES - hatched }) : t('soundlings.frenzy', { seconds: FRENZY_SECONDS })}</span>
               </button>
             </div>
           </motion.div>
@@ -389,7 +394,7 @@ export default function Soundlings({ level, onClose }: Props) {
         {view === 'play' && round && (
           <div className="flex-1 flex flex-col justify-center pt-4">
             {/* visit progress + the hungry Soundling */}
-            <div className="flex items-center justify-center gap-1.5" aria-label={`Word ${roundIdx + 1} of ${targets.length}`}>
+            <div className="flex items-center justify-center gap-1.5" aria-label={t('ui.wordProgress', { n: roundIdx + 1, total: targets.length })}>
               {targets.map((_, i) => (
                 <span key={i} className="w-2.5 h-2.5 rounded-full"
                   style={{ background: i < roundIdx ? hex : i === roundIdx ? ink : 'hsl(var(--border))' }} />
@@ -405,9 +410,13 @@ export default function Soundlings({ level, onClose }: Props) {
                     stage={stageOf(stateOf(round.target), round.target === glowing)} hex={hex} inkHex={ink} className="w-full h-full" />
                 </motion.div>
               </div>
-              <p className="font-child text-lg lg:text-2xl text-foreground/55 mt-2">
-                {solved ? (firstTry ? `${stageOf(stateOf(round.target)) === 'egg' ? 'The egg' : soundlingName(round.target)} loved that! ⭐` : 'You found it! 👏')
-                  : 'Tap the sound hiding in…'}
+              <p {...tx} className="font-child text-lg lg:text-2xl text-foreground/55 mt-2">
+                {solved ? (firstTry
+                  ? (stageOf(stateOf(round.target)) === 'egg'
+                    ? t('soundlings.eggLoved')
+                    : <Trans t={t} i18nKey="soundlings.lovedThat" values={{ name: soundlingName(round.target) }} components={enTag} />)
+                  : t('ui.foundIt'))
+                  : t('ui.tapSoundIn')}
               </p>
               <AnimatePresence mode="wait">
                 <motion.div key={`${roundIdx}-${round.word}`}
@@ -429,7 +438,7 @@ export default function Soundlings({ level, onClose }: Props) {
                         })()
                       : round.word}
                   </span>
-                  <button onClick={() => speakWord(round.word)} aria-label="Hear the word"
+                  <button onClick={() => speakWord(round.word)} aria-label={t('play.hearWord')}
                     className="w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                     style={{ boxShadow: STICKER, color: ink }}>
                     <Volume2 className="w-6 h-6" />
@@ -450,7 +459,7 @@ export default function Soundlings({ level, onClose }: Props) {
             <div>
               <div className="flex items-center justify-between text-sm font-extrabold" style={{ color: ink }}>
                 <span className="font-display text-xl tabular-nums">{frenzyScore} 🫐</span>
-                <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{timeLeft}s</span>
+                <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{t('ui.seconds', { n: timeLeft })}</span>
               </div>
               <div className="mt-2 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
                 <div className="h-full rounded-full transition-[width] duration-1000 ease-linear"
@@ -459,13 +468,13 @@ export default function Soundlings({ level, onClose }: Props) {
             </div>
 
             <div className="flex flex-col items-center text-center py-8 lg:py-10">
-              <p className="font-child text-lg lg:text-xl text-foreground/55">Feed them fast! Tap the sound in…</p>
+              <p {...tx} className="font-child text-lg lg:text-xl text-foreground/55">{t('soundlings.frenzyPrompt')}</p>
               <div className="mt-3 flex items-center gap-3">
                 <span className={`font-child font-bold px-7 py-4 rounded-3xl bg-white inline-block ${frenzyRounds[frenzyIdx].word.length > 8 ? 'text-4xl lg:text-6xl' : 'text-6xl lg:text-7xl'}`}
                   style={{ boxShadow: STICKER, color: 'hsl(var(--foreground))' }}>
                   {frenzyRounds[frenzyIdx].word}
                 </span>
-                <button onClick={() => speakWord(frenzyRounds[frenzyIdx].word)} aria-label="Hear the word"
+                <button onClick={() => speakWord(frenzyRounds[frenzyIdx].word)} aria-label={t('play.hearWord')}
                   className="w-14 h-14 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                   style={{ boxShadow: STICKER, color: ink }}>
                   <Volume2 className="w-6 h-6" />
@@ -484,19 +493,19 @@ export default function Soundlings({ level, onClose }: Props) {
           <motion.div {...(reduceMotion ? {} : { initial: { opacity: 0, scale: 0.95 }, animate: { opacity: 1, scale: 1 } })}
             className="flex-1 flex flex-col items-center justify-center text-center py-10">
             <span className="font-display text-7xl font-extrabold" style={{ color: ink }}>{frenzyScore}</span>
-            <h2 className="font-display text-2xl font-extrabold text-foreground mt-3">
-              Soundling{frenzyScore === 1 ? '' : 's'} fed in 30 seconds!
+            <h2 {...tx} className="font-display text-2xl font-extrabold text-foreground mt-3">
+              {t('soundlings.fedInSeconds', { count: frenzyScore, seconds: FRENZY_SECONDS })}
             </h2>
             <div className="mt-9 w-full max-w-xs space-y-3">
               <button onClick={startFrenzy}
-                className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+                className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}>
-                <RotateCcw className="w-5 h-5" /> Again!
+                <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('ui.again')}</span>
               </button>
               <button onClick={() => { refresh(); setView('habitat'); }}
-                className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+                className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
                 style={{ boxShadow: STICKER }}>
-                Back to the grove
+                <span {...tx}>{t('play.backToGrove')}</span>
               </button>
             </div>
           </motion.div>
@@ -511,8 +520,8 @@ export default function Soundlings({ level, onClose }: Props) {
               const done = gpcs.every(g => stageOf(stateOf(g)) !== 'egg');
               return (
                 <section key={l.level} className={`mt-5 first:mt-0 ${own ? '' : 'opacity-70'}`}>
-                  <h3 className="font-display text-base lg:text-lg font-extrabold flex items-center gap-2" style={{ color: l.inkHex }}>
-                    Level {l.level} — {l.name} {done && <span aria-label="Page complete">🌟</span>}
+                  <h3 {...tx} className="font-display text-base lg:text-lg font-extrabold flex items-center gap-2" style={{ color: l.inkHex }}>
+                    <span><Trans t={t} i18nKey="soundlings.levelHeading" values={{ level: l.level, name: l.name }} components={enTag} /></span> {done && <span aria-label={t('soundlings.pageComplete')}>🌟</span>}
                   </h3>
                   <div className="mt-2.5 grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-8 gap-2 lg:gap-3">
                     {gpcs.map(g => {
@@ -523,7 +532,7 @@ export default function Soundlings({ level, onClose }: Props) {
                           style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
                           <SoundlingSprite grapheme={g} level={l.level} stage={stage} hex={l.hex} inkHex={l.inkHex} className="w-full aspect-square" />
                           <span className="text-[10px] lg:text-xs font-extrabold" style={{ color: l.inkHex }}>
-                            {stage === 'egg' ? "Who's inside?" : soundlingName(g)}
+                            {stage === 'egg' ? <span {...tx}>{t('soundlings.whoInside')}</span> : soundlingName(g)}
                           </span>
                         </div>
                       );
@@ -549,20 +558,20 @@ export default function Soundlings({ level, onClose }: Props) {
                 <div className="w-40 h-40 mx-auto">
                   <SoundlingSprite grapheme={celebration.grapheme} level={level.level} stage={celebration.stage} hex={hex} inkHex={ink} className="w-full h-full" />
                 </div>
-                <h2 className="font-display text-2xl font-extrabold mt-4" style={{ color: ink }}>
-                  {celebration.stage === 'hatched' && `Your ${displayGrapheme(celebration.grapheme)} Soundling hatched!`}
-                  {celebration.stage === 'grown' && `${soundlingName(celebration.grapheme)} grew up!`}
-                  {celebration.stage === 'golden' && `${soundlingName(celebration.grapheme)} turned GOLDEN!`}
+                <h2 {...tx} className="font-display text-2xl font-extrabold mt-4" style={{ color: ink }}>
+                  {celebration.stage === 'hatched' && <Trans t={t} i18nKey="soundlings.hatched" values={{ sound: displayGrapheme(celebration.grapheme) }} components={enTag} />}
+                  {celebration.stage === 'grown' && <Trans t={t} i18nKey="soundlings.grew" values={{ name: soundlingName(celebration.grapheme) }} components={enTag} />}
+                  {celebration.stage === 'golden' && <Trans t={t} i18nKey="soundlings.golden" values={{ name: soundlingName(celebration.grapheme) }} components={enTag} />}
                 </h2>
                 {celebration.stage === 'hatched' && (
-                  <p className="font-child text-xl text-foreground/70 mt-2">
-                    Say hello to <span className="font-bold" style={{ color: ink }}>{soundlingName(celebration.grapheme)}</span>!
+                  <p {...tx} className="font-child text-xl text-foreground/70 mt-2">
+                    <Trans t={t} i18nKey="soundlings.sayHello" values={{ name: soundlingName(celebration.grapheme) }} components={{ name: <bdi dir="ltr" lang="en" className="font-bold" style={{ color: ink }} /> }} />
                   </p>
                 )}
                 <button onClick={dismissCelebration}
-                  className="mt-6 w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white transition-all active:translate-y-[3px]"
+                  className="mt-6 w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white transition-all active:translate-y-[3px]"
                   style={{ background: hex, boxShadow: `0 5px 0 ${ink}` }}>
-                  Hooray!
+                  <span {...tx}>{t('soundlings.hooray')}</span>
                 </button>
               </motion.div>
             </motion.div>

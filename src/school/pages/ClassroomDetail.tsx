@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import { ArrowLeft, CalendarCheck, Loader2, Plus, ClipboardCheck, BookOpen, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSchoolMemberships } from '../hooks/useSchool';
@@ -35,6 +36,7 @@ type Classroom = {
 };
 
 export default function ClassroomDetail() {
+  const { t } = useTranslation('schoolApp');
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const { memberships } = useSchoolMemberships();
@@ -60,7 +62,7 @@ export default function ClassroomDetail() {
         .eq('id', id)
         .single();
       if (clsErr) {
-        toast({ title: 'Classroom not found', description: (clsErr as { message?: string }).message, variant: 'destructive' });
+        toast({ title: t('classroom.notFound'), description: (clsErr as { message?: string }).message, variant: 'destructive' });
         setLoading(false);
         return;
       }
@@ -90,7 +92,7 @@ export default function ClassroomDetail() {
       setStudents(rowList.map((r) => ({ ...r, last_assessment: assessmentByStudent[r.id] ?? null })));
       setLoading(false);
     })();
-  }, [id, toast]);
+  }, [id, toast, t]);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,7 +111,7 @@ export default function ClassroomDetail() {
       .single();
     setAdding(false);
     if (error) {
-      toast({ title: 'Could not add student', description: (error as { message?: string }).message, variant: 'destructive' });
+      toast({ title: t('classroom.addFailed'), description: (error as { message?: string }).message, variant: 'destructive' });
       return;
     }
     const created = data as Pick<SchoolStudentRow, 'id' | 'first_name' | 'last_name' | 'date_of_birth' | 'current_level'>;
@@ -117,7 +119,7 @@ export default function ClassroomDetail() {
     setFirstName('');
     setLastName('');
     setDob('');
-    toast({ title: `${created.first_name} added` });
+    toast({ title: t('classroom.added', { name: created.first_name }) });
   };
 
   if (loading) {
@@ -126,8 +128,8 @@ export default function ClassroomDetail() {
   if (!classroom) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-600 mb-4">Classroom not found.</p>
-        <Link to="/school/app" className="text-pink-600 font-semibold hover:underline">← Back to dashboard</Link>
+        <p className="text-slate-600 mb-4">{t('classroom.notFoundBody')}</p>
+        <Link to="/school/app" className="text-pink-600 font-semibold hover:underline"><span className="inline-block rtl:-scale-x-100">←</span> {t('backToDashboard')}</Link>
       </div>
     );
   }
@@ -136,29 +138,29 @@ export default function ClassroomDetail() {
     <div className="space-y-8">
       <header>
         <Link to="/school/app" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 mb-2">
-          <ArrowLeft className="w-4 h-4" /> All classrooms
+          <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {t('classroom.allClassrooms')}
         </Link>
         <h1 className="font-display text-3xl font-extrabold tracking-tight">{classroom.name}</h1>
-        <p className="text-slate-600">{classroom.year_group ?? '—'} · {students.length} student{students.length === 1 ? '' : 's'}</p>
+        <p className="text-slate-600">{classroom.year_group ?? '—'} · {t('counts.student', { count: students.length })}</p>
       </header>
 
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">Students</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">{t('classroom.students')}</h2>
           <div className="flex gap-2">
             {students.length > 0 && (
               <button
                 onClick={() => setShowRegister(true)}
                 className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"
               >
-                <CalendarCheck className="w-4 h-4" /> Take register
+                <CalendarCheck className="w-4 h-4" /> {t('classroom.takeRegister')}
               </button>
             )}
             <button
               onClick={() => setShowAddForm((v) => !v)}
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
             >
-              <Plus className="w-4 h-4" /> Add student
+              <Plus className="w-4 h-4" /> {t('classroom.addStudent')}
             </button>
           </div>
         </div>
@@ -166,7 +168,7 @@ export default function ClassroomDetail() {
         {showAddForm && (
           <form onSubmit={handleAdd} className="bg-white border border-slate-200 rounded-2xl p-4 mb-4 grid sm:grid-cols-[1fr,1fr,auto,auto] gap-3 items-end">
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">First name</span>
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('classroom.firstName')}</span>
               <input
                 required
                 autoFocus
@@ -176,7 +178,7 @@ export default function ClassroomDetail() {
               />
             </label>
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">Last name</span>
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('classroom.lastName')}</span>
               <input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -184,7 +186,7 @@ export default function ClassroomDetail() {
               />
             </label>
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">Date of birth</span>
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('classroom.dob')}</span>
               <input
                 type="date"
                 value={dob}
@@ -197,14 +199,14 @@ export default function ClassroomDetail() {
               disabled={adding}
               className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-60"
             >
-              {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Add'}
+              {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : t('classroom.add')}
             </button>
           </form>
         )}
 
         {students.length === 0 ? (
           <div className="bg-white border border-slate-200 border-dashed rounded-2xl p-10 text-center">
-            <p className="text-slate-600">No students yet. Add your first one above.</p>
+            <p className="text-slate-600">{t('classroom.empty')}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -219,7 +221,7 @@ export default function ClassroomDetail() {
                       to={`/school/app/students/${s.id}`}
                       className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
                     >
-                      <User className="w-3.5 h-3.5" /> View report
+                      <User className="w-3.5 h-3.5" /> {t('classroom.viewReport')}
                     </Link>
                     <Link
                       to={`/school/app/students/${s.id}/assess`}
@@ -229,7 +231,7 @@ export default function ClassroomDetail() {
                       ].join(' ')}
                     >
                       <ClipboardCheck className="w-3.5 h-3.5" />
-                      {needsAssessment ? 'Assess' : 'Re-assess'}
+                      {needsAssessment ? t('classroom.assess') : t('classroom.reassess')}
                     </Link>
                   </div>
                 </div>
@@ -242,10 +244,16 @@ export default function ClassroomDetail() {
       <section className="bg-slate-100 border border-slate-200 rounded-2xl p-5 flex items-start gap-3">
         <BookOpen className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" />
         <div>
-          <h3 className="font-bold mb-1">Books for this class</h3>
+          <h3 className="font-bold mb-1">{t('classroom.booksTitle')}</h3>
           <p className="text-sm text-slate-600">
-            Browse all 33 storybooks + worksheets in the <Link to="/school/app/library" className="font-semibold text-pink-600 hover:underline">school library</Link>.
-            Use <Link to="/school/app/groups" className="font-semibold text-pink-600 hover:underline">Phonics groups</Link> to organise this class by ability level.
+            <Trans
+              t={t}
+              i18nKey="classroom.booksBody"
+              components={{
+                library: <Link to="/school/app/library" className="font-semibold text-pink-600 hover:underline" />,
+                groups: <Link to="/school/app/groups" className="font-semibold text-pink-600 hover:underline" />,
+              }}
+            />
           </p>
         </div>
       </section>
@@ -255,7 +263,7 @@ export default function ClassroomDetail() {
           open
           onClose={() => setShowRegister(false)}
           schoolId={school.id}
-          title={`${classroom.name} — class register`}
+          title={t('classroom.registerTitle', { name: classroom.name })}
           students={students.map((s) => ({ id: s.id, first_name: s.first_name, last_name: s.last_name }))}
           context={{ type: 'class', classroomId: classroom.id }}
         />

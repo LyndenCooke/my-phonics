@@ -1,22 +1,25 @@
 import { Download, FileImage } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
+// Title/subtitle are built at render time (library:soundMats.*). `name` is
+// the level NAME, which stays English everywhere.
 type Mat = {
   href: string;
-  title: string;
-  subtitle: string;
+  name?: string;
+  sounds: number;
   level: number | string;        // for the colour accent
   combined?: boolean;
 };
 
 const MATS: Mat[] = [
-  { href: '/phonics/posters/level_1_poster_oneshot.png', title: 'Level 1', subtitle: 'Starting Stories — 31 sounds', level: 1 },
-  { href: '/phonics/posters/level_2_poster_oneshot.png', title: 'Level 2', subtitle: 'Longer Sounds — 11 sounds',  level: 2 },
-  { href: '/phonics/posters/level_3_poster_oneshot.png', title: 'Level 3', subtitle: 'New Spellings — 10 sounds',  level: 3 },
-  { href: '/phonics/posters/level_4_poster_oneshot.png', title: 'Level 4', subtitle: 'Building Fluency — 6 sounds', level: 4 },
-  { href: '/phonics/posters/level_5_poster_oneshot.png', title: 'Level 5', subtitle: 'Reading Together — 9 sounds', level: 5 },
-  { href: '/phonics/posters/level_6_poster_oneshot.png', title: 'Level 6', subtitle: 'Reading Champion — 5 sounds', level: 6 },
-  { href: '/phonics/posters/L2_L3_combined.png',         title: 'Levels 2 & 3', subtitle: '21 sounds — combined teacher chart', level: '2-3', combined: true },
-  { href: '/phonics/posters/L4_L5_L6_combined.png',      title: 'Levels 4–6',   subtitle: '20 sounds — combined teacher chart', level: '4-6', combined: true },
+  { href: '/phonics/posters/level_1_poster_oneshot.png', name: 'Starting Stories', sounds: 31, level: 1 },
+  { href: '/phonics/posters/level_2_poster_oneshot.png', name: 'Longer Sounds', sounds: 11, level: 2 },
+  { href: '/phonics/posters/level_3_poster_oneshot.png', name: 'New Spellings', sounds: 10, level: 3 },
+  { href: '/phonics/posters/level_4_poster_oneshot.png', name: 'Building Fluency', sounds: 6, level: 4 },
+  { href: '/phonics/posters/level_5_poster_oneshot.png', name: 'Reading Together', sounds: 9, level: 5 },
+  { href: '/phonics/posters/level_6_poster_oneshot.png', name: 'Reading Champion', sounds: 5, level: 6 },
+  { href: '/phonics/posters/L2_L3_combined.png',         sounds: 21, level: '2-3', combined: true },
+  { href: '/phonics/posters/L4_L5_L6_combined.png',      sounds: 20, level: '4-6', combined: true },
 ];
 
 const LEVEL_BG: Record<string | number, string> = {
@@ -31,12 +34,23 @@ const LEVEL_BG: Record<string | number, string> = {
 };
 
 export function SoundMatsResources() {
+  const { t } = useTranslation('library');
+  const matTitle = (mat: Mat) =>
+    mat.level === '2-3'
+      ? t('soundMats.levels23')
+      : mat.level === '4-6'
+        ? t('soundMats.levels46')
+        : t('soundMats.level', { level: mat.level });
+  const matSubtitle = (mat: Mat) =>
+    mat.combined
+      ? t('soundMats.combinedChart', { count: mat.sounds })
+      : `${mat.name} — ${t('soundMats.sounds', { count: mat.sounds })}`;
   return (
     <section className="mb-10">
       <div className="mb-4">
-        <h2 className="font-display text-xl font-extrabold text-foreground tracking-tight">Sound mats</h2>
+        <h2 className="font-display text-xl font-extrabold text-foreground tracking-tight">{t('soundMats.title')}</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Printable sound mats for home and classroom — A3 landscape PNGs
+          {t('soundMats.subtitle')}
         </p>
       </div>
 
@@ -54,7 +68,7 @@ export function SoundMatsResources() {
             <div className="aspect-[3/2] overflow-hidden bg-muted">
               <img
                 src={mat.href}
-                alt={`${mat.title} sound mat`}
+                alt={t('soundMats.alt', { title: matTitle(mat) })}
                 className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
                 loading="lazy"
                 draggable={false}
@@ -67,15 +81,15 @@ export function SoundMatsResources() {
                 <FileImage className="w-4 h-4" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-foreground truncate">{mat.title}</p>
-                <p className="text-[10px] text-muted-foreground truncate">{mat.subtitle}</p>
+                <p className="text-xs font-bold text-foreground truncate">{matTitle(mat)}</p>
+                <p className="text-[10px] text-muted-foreground line-clamp-2">{matSubtitle(mat)}</p>
               </div>
               <Download className="w-3.5 h-3.5 text-muted-foreground opacity-60 group-hover:opacity-100 shrink-0" />
             </div>
 
             {mat.combined && (
-              <span className="absolute top-1.5 right-1.5 bg-amber-100 text-amber-900 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
-                Combined
+              <span className="absolute top-1.5 end-1.5 bg-amber-100 text-amber-900 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
+                {t('soundMats.combined')}
               </span>
             )}
           </a>

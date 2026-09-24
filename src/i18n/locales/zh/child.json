@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "还没有书哦！",
+    "body": "请大人帮你解锁第一本书。"
+  },
+  "levelLabel": "第 {{level}} 级",
+  "greeting": "{{name}}，读书时间到啦！",
+  "greetingNoName": "读书时间到啦！",
+  "cta": {
+    "startLevelCheck": "开始级别小测",
+    "nextBook": "下一本书",
+    "startCheck": "开始小测",
+    "readBook": "读这本书",
+    "readAgain": "再读一遍",
+    "lastRead": "最后一遍！"
+  },
+  "sub": {
+    "allDone": "你读完了所有的书！",
+    "nextUnlocked": "下一本书解锁啦！",
+    "readyCheck": "准备好小测啦！",
+    "read0": "把这本书读 5 遍。",
+    "read1": "开了个好头。还要读 4 遍。",
+    "read2": "你真棒。还要再读 3 遍。",
+    "read3": "你读得越来越快了。还要读 2 遍。",
+    "read4": "快到了。最后一遍！"
+  },
+  "games": {
+    "heading": "玩个游戏",
+    "play": "开始玩",
+    "soundlings": {
+      "blurb": "喂养你的声音小精灵！"
+    },
+    "finish": {
+      "name": "补全单词",
+      "blurb": "点出缺少的发音"
+    },
+    "tricky": {
+      "name": "听一听，找一找",
+      "blurb": "仔细听，找出难词"
+    },
+    "cannon": {
+      "blurb": "把正确的发音射进单词里"
+    }
+  },
+  "path": {
+    "heading": "你的路线",
+    "progress": "已完成 {{done}}/{{total}}",
+    "reads": "已读 {{done}}/{{total}} 遍",
+    "done": "完成！",
+    "book": "第 {{n}} 本",
+    "levelCheck": "级别小测"
+  },
+  "sounds": {
+    "heading": "你正在学的发音"
+  },
+  "aria": {
+    "openBook": "打开《{{title}}》",
+    "readsDone": "已读 {{done}}/{{total}} 遍",
+    "currentBook": "{{title}} — 你的书，已读 {{done}}/{{total}} 遍",
+    "doneBook": "{{title}} — 已完成",
+    "lockedBook": "{{title}} — 未解锁，请先读完当前这本书",
+    "startCheck": "开始级别小测",
+    "checkLocked": "级别小测——先读完你的书"
+  }
+}

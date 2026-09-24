@@ -6,6 +6,7 @@
  * verification, deferred until we have a proper email-change UI.
  */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,11 +14,13 @@ import { useProfile, useChildren } from '@/hooks/useBooks';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Save, Mail, Lock, CreditCard, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Save, Mail, Lock, CreditCard, ExternalLink, Languages } from 'lucide-react';
 import PasswordSetup from '@/components/PasswordSetup';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useQuery } from '@tanstack/react-query';
 
 export default function AccountSettings() {
+  const { t } = useTranslation('profile');
   const { user } = useAuth();
   const { data: profile } = useProfile();
   const { data: children } = useChildren();
@@ -86,11 +89,11 @@ export default function AccountSettings() {
 
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
       await queryClient.invalidateQueries({ queryKey: ['children'] });
-      toast({ title: 'Saved', description: 'Your changes are live.' });
+      toast({ title: t('account.savedToast'), description: t('account.savedToastBody') });
     } catch (err) {
       toast({
-        title: 'Save failed',
-        description: (err as Error).message ?? 'Try again in a moment.',
+        title: t('account.saveFailed'),
+        description: (err as Error).message ?? t('account.tryAgain'),
         variant: 'destructive',
       });
     } finally {
@@ -109,11 +112,11 @@ export default function AccountSettings() {
         window.location.href = data.url as string;
         return;
       }
-      throw new Error(data?.error || 'Could not open billing portal');
+      throw new Error(data?.error || t('account.portalFailed'));
     } catch (err) {
       toast({
-        title: 'Could not open billing portal',
-        description: (err as Error).message ?? 'Try again in a moment.',
+        title: t('account.portalFailed'),
+        description: (err as Error).message ?? t('account.tryAgain'),
         variant: 'destructive',
       });
       setOpeningPortal(false);
@@ -126,12 +129,12 @@ export default function AccountSettings() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) {
-      toast({ title: 'Could not send reset', description: error.message, variant: 'destructive' });
+      toast({ title: t('account.resetFailed'), description: error.message, variant: 'destructive' });
       return;
     }
     toast({
-      title: 'Reset email sent',
-      description: `Check ${user.email} for a password-reset link.`,
+      title: t('account.resetSent'),
+      description: t('account.resetSentBody', { email: user.email }),
     });
   };
 
@@ -139,12 +142,12 @@ export default function AccountSettings() {
     return (
       <Layout>
         <div className="px-4 pt-6 pb-8 max-w-lg mx-auto text-center">
-          <p className="text-sm text-muted-foreground mb-3">Sign in to edit your settings.</p>
+          <p className="text-sm text-muted-foreground mb-3">{t('account.signInPrompt')}</p>
           <button
             onClick={() => navigate('/auth')}
             className="px-5 py-2.5 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button"
           >
-            Sign In
+            {t('common:actions.signInTitle')}
           </button>
         </div>
       </Layout>
@@ -157,35 +160,46 @@ export default function AccountSettings() {
         <div className="flex items-center gap-3">
           <Link
             to="/profile"
-            aria-label="Back to Profile"
+            aria-label={t('backToProfile')}
             className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted/50 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4 text-foreground" />
+            <ArrowLeft className="w-4 h-4 text-foreground rtl:-scale-x-100" />
           </Link>
-          <h1 className="font-display text-xl font-extrabold text-foreground">Account Settings</h1>
+          <h1 className="font-display text-xl font-extrabold text-foreground">{t('links.accountSettings')}</h1>
         </div>
+
+        {/* Language — the grown-up interface only; books stay English. */}
+        <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-3">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+            <Languages className="w-3.5 h-3.5" aria-hidden /> {t('account.language')}
+          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground flex-1 min-w-[12rem]">{t('account.languageHint')}</p>
+            <LanguageSwitcher variant="full" align="end" />
+          </div>
+        </section>
 
         {/* Your details */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Your details</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('account.yourDetails')}</p>
 
-          <Field label="Your name">
+          <Field label={t('account.yourName')}>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Parent name"
+              placeholder={t('account.parentNamePlaceholder')}
               className="w-full px-4 py-3 rounded-xl bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </Field>
 
-          <Field label="Email">
+          <Field label={t('account.email')}>
             <div className="w-full px-4 py-3 rounded-xl bg-muted text-sm text-foreground flex items-center gap-2">
               <Mail className="w-4 h-4 text-muted-foreground" />
-              <span className="truncate">{user.email}</span>
+              <span className="truncate" dir="ltr">{user.email}</span>
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5">
-              Email changes need verification — contact support if you need to switch.
+              {t('account.emailHint')}
             </p>
           </Field>
 
@@ -194,8 +208,8 @@ export default function AccountSettings() {
               button below stays as the fallback in case they want a
               link to set it from another device. */}
           <PasswordSetup
-            title="Set or change your password"
-            subtitle="Pick a password so you can sign in without waiting for an email link."
+            title={t('account.passwordTitle')}
+            subtitle={t('account.passwordSubtitle')}
             required
           />
 
@@ -203,7 +217,7 @@ export default function AccountSettings() {
             onClick={handlePasswordReset}
             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted/50 transition-colors"
           >
-            <Lock className="w-4 h-4" /> Send password reset email instead
+            <Lock className="w-4 h-4" /> {t('account.sendReset')}
           </button>
         </section>
 
@@ -212,9 +226,9 @@ export default function AccountSettings() {
             we don't have to. */}
         {hasStripeCustomer && (
           <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Billing</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('account.billing')}</p>
             <p className="text-sm text-muted-foreground">
-              Update your card, view invoices, or cancel your subscription.
+              {t('account.billingBody')}
             </p>
             <button
               onClick={handleManageSubscription}
@@ -222,7 +236,7 @@ export default function AccountSettings() {
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-border text-sm font-bold text-foreground hover:bg-muted/50 transition-colors disabled:opacity-60"
             >
               <CreditCard className="w-4 h-4" />
-              {openingPortal ? 'Opening…' : 'Manage subscription'}
+              {openingPortal ? t('account.opening') : t('account.manageSubscription')}
               {!openingPortal && <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />}
             </button>
           </section>
@@ -230,20 +244,20 @@ export default function AccountSettings() {
 
         {/* Child details */}
         <section className="bg-card rounded-3xl border border-border p-5 shadow-card space-y-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Child's details</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('account.childDetails')}</p>
 
           {child?.id ? (
             <>
-              <Field label="Child's name">
+              <Field label={t('account.childName')}>
                 <input
                   type="text"
                   value={childName}
                   onChange={(e) => setChildName(e.target.value)}
-                  placeholder="Child's name"
+                  placeholder={t('account.childName')}
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </Field>
-              <Field label="Date of birth">
+              <Field label={t('account.dob')}>
                 <input
                   type="date"
                   value={childDob}
@@ -254,7 +268,7 @@ export default function AccountSettings() {
             </>
           ) : (
             <p className="text-sm text-muted-foreground">
-              No child added yet. Head back to your profile to add one.
+              {t('account.noChild')}
             </p>
           )}
         </section>
@@ -266,7 +280,7 @@ export default function AccountSettings() {
           className="w-full py-3.5 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button active:scale-[0.97] transition-transform disabled:opacity-60 flex items-center justify-center gap-2"
         >
           <Save className="w-4 h-4" />
-          {saving ? 'Saving…' : 'Save changes'}
+          {saving ? t('common:actions.saving') : t('account.saveChanges')}
         </button>
       </div>
     </Layout>

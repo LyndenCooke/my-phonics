@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "Gratis · tanpa kartu · 3–10 menit",
+    "title": "Temukan level membaca anak Anda",
+    "subtitle": "Duduklah bersama, ketuk beberapa bunyi, dan kami akan menemukan buku yang paling tepat — tanpa menebak-nebak.",
+    "howItWorks": "Cara kerjanya",
+    "steps": {
+      "questionsLabel": "Beberapa pertanyaan singkat",
+      "questionsDesc": "Ceritakan tentang anak Anda",
+      "checkLabel": "Cek cepat",
+      "checkDesc": "Centang kata-kata yang bisa dibaca anak Anda",
+      "soundLabel": "Tes bunyi",
+      "soundDesc": "Kami menguji setiap bunyi di levelnya",
+      "resultsLabel": "Hasil",
+      "resultsDesc": "Lihat bunyi mana yang sudah dikuasai dan mana yang perlu dipelajari"
+    },
+    "chooseTest": "Pilih tes",
+    "chooseTestHint": "Duduklah bersama anak Anda — 3 sampai 10 menit, tergantung tes yang Anda pilih.",
+    "quickTitle": "Cek Cepat · 3 menit",
+    "quickDesc": "Tes bunyi adaptif untuk menemukan level anak Anda dengan cepat.",
+    "fullTitle": "Tes Lengkap · ~10 menit",
+    "fullDesc": "Menguji bunyi, kata nyata, kata alien (kata karangan) dan Tricky Words (kata sulit) di setiap level.",
+    "privacy": "Jawaban Anda bersifat pribadi. Lihat <link>kebijakan privasi</link> kami.",
+    "whatYouGet": "Yang Anda dapatkan di akhir",
+    "get": {
+      "level": "Level membaca anak Anda dalam perjalanan 8 level",
+      "map": "Peta bunyi demi bunyi tentang apa yang sudah mereka ketahui",
+      "book": "Satu buku gratis yang sesuai dengan level tersebut",
+      "plan": "Rencana \"langkah berikutnya\" yang sederhana"
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "Kapan anak Anda lahir?",
+      "hint": "Ini membantu kami membandingkan dengan standar usia di Inggris.",
+      "month": "Bulan",
+      "year": "Tahun",
+      "age": "Usia: {{age}} tahun"
+    },
+    "school": {
+      "title": "Jenis sekolah apa?",
+      "hint": "Ini membantu kami menyesuaikan rekomendasi.",
+      "options": {
+        "public": "Sekolah negeri",
+        "private": "Sekolah swasta",
+        "international": "Sekolah internasional",
+        "religious": "Sekolah keagamaan",
+        "homeschool": "Homeschooling",
+        "notYet": "Belum bersekolah"
+      }
+    },
+    "needs": {
+      "title": "Ada kebutuhan belajar khusus?",
+      "hint": "Agar kami dapat mendukung perjalanan belajar anak Anda.",
+      "options": {
+        "none": "Tidak ada",
+        "dyslexia": "Disleksia",
+        "speech": "Wicara & bahasa",
+        "eal": "Bahasa Inggris sebagai bahasa tambahan",
+        "adhd": "ADHD / fokus",
+        "other": "Lainnya"
+      }
+    },
+    "language": {
+      "title": "Bahasa di rumah?",
+      "hint": "Membantu kami memahami konteks membaca anak Anda.",
+      "options": {
+        "englishOnly": "Hanya bahasa Inggris",
+        "englishPlus": "Bahasa Inggris + bahasa lain",
+        "mostlyOther": "Sebagian besar bahasa lain"
+      }
+    },
+    "reading": {
+      "title": "Seberapa sering Anda membaca bersama?",
+      "hint": "Tanpa penilaian — hanya membantu kami menyesuaikan saran.",
+      "options": {
+        "daily": "Membaca setiap hari",
+        "fewTimes": "Beberapa kali seminggu",
+        "occasionally": "Sesekali",
+        "starting": "Baru mulai"
+      }
+    }
+  },
+  "screening": {
+    "title": "Cek Cepat",
+    "body1": "Kata mana saja yang bisa dibaca keras-keras oleh anak Anda?",
+    "body2": "Ketuk ikon speaker untuk mendengar setiap kata, lalu centang kata yang mereka ketahui.",
+    "skip": "Lewati — mulai dari Level 1"
+  },
+  "test": {
+    "level": "Level {{level}}",
+    "stages": {
+      "sounds": "Bunyi",
+      "aliens": "Kata Alien",
+      "wordCheck": "Cek Kata",
+      "bonus": "Ronde Bonus"
+    },
+    "instructions": {
+      "sound_recognition": "Tunjukkan setiap bunyi kepada anak Anda. Tanyakan: \"Bunyi apa ini?\"",
+      "word_reading": "Minta anak Anda membaca setiap kata nyata dengan suara keras.",
+      "alien_words": "Beri tahu anak Anda bahwa ini adalah kata karangan. Minta mereka membunyikan setiap kata."
+    },
+    "progress": "{{current}} dari {{total}}",
+    "bonus": "bonus",
+    "madeUp": "(kata karangan)",
+    "didTheyGetIt": "Apakah jawabannya benar?",
+    "notYet": "Belum",
+    "correct": "Benar",
+    "wrongInARow": "{{n}} salah berturut-turut — 1 lagi akan melompat ke tahap berikutnya"
+  },
+  "levelPassed": {
+    "title": "Level {{level}} Lulus!",
+    "continue": "Lanjut ke Level {{level}}"
+  },
+  "results": {
+    "title": "Penilaian Selesai",
+    "subtitle": "Inilah profil fonik anak Anda.",
+    "itemsTested": "{{n}} item diuji",
+    "recommended": "Level awal yang disarankan",
+    "level": "Level {{level}}",
+    "ageRange": "Usia {{range}}",
+    "ageComparison": "Perbandingan Usia di Inggris — {{age}} tahun ({{yearGroup}})",
+    "yearGroups": {
+      "receptionAutumn": "Reception (Musim Gugur)",
+      "receptionSpringSummer": "Reception (Musim Semi/Panas)",
+      "year1Autumn": "Kelas 1 (Musim Gugur)",
+      "year1SpringSummer": "Kelas 1 (Musim Semi/Panas)",
+      "year2": "Kelas 2",
+      "year3": "Kelas 3"
+    },
+    "expectedLevel": "Level yang diharapkan",
+    "yourChild": "Anak Anda",
+    "status": {
+      "above": "Di atas harapan",
+      "at": "Sesuai level yang diharapkan",
+      "below": "Di bawah harapan"
+    },
+    "belowNote": "Di Inggris, anak seusia ini biasanya berada di {{expected}}. Latihan terarah dengan MyPhonicsBooks dapat membantu mengejar ketertinggalan ini.",
+    "aboveNote": "Anak Anda sudah melampaui standar usia di Inggris. Pertahankan kerja hebat ini!",
+    "claimBook": "Klaim Buku Gratis Saya",
+    "soundMap": "Peta Bunyi",
+    "levelResults": "Hasil per Level ({{n}})",
+    "passed": "LULUS",
+    "notYet": "BELUM",
+    "categories": {
+      "sound_recognition": "Bunyi",
+      "word_reading": "Kata Nyata",
+      "tricky_words": "Tricky Words (kata sulit)"
+    },
+    "notTested": "Tidak diuji",
+    "toPractise": "Semua item untuk dilatih ({{n}})",
+    "personalised": "Disesuaikan untuk Anda",
+    "deeperTitle": "Ingin analisis yang lebih mendalam?",
+    "deeperBody": "Tes cepat ini menemukan level anak Anda. Ikuti tes lengkap yang terperinci untuk menemukan setiap celah di semua bunyi, kata, dan Tricky Words.",
+    "saveTitle": "Simpan hasil Anda & dapatkan buku gratis",
+    "saveBody": "Masukkan email Anda dan kami akan membuka satu buku gratis Level {{level}} serta mengirimkan tautan masuk.",
+    "childNamePlaceholder": "Nama anak (opsional)",
+    "emailPlaceholder": "Alamat email Anda",
+    "saving": "Menyimpan...",
+    "unlock": "Buka Buku Gratis Saya",
+    "bookFallback": "Buku Level {{level}}",
+    "checkEmail": "Periksa email Anda di {{email}} untuk tautan masuk",
+    "browseLibrary": "Jelajahi Perpustakaan",
+    "retake": "Ulangi",
+    "browseLevel": "Jelajahi Level {{level}}"
+  },
+  "errors": {
+    "invalidEmail": "Silakan masukkan alamat email yang valid",
+    "signupFailed": "Pendaftaran gagal",
+    "generic": "Terjadi kesalahan"
+  },
+  "tips": {
+    "startTitle": "Mulailah dengan {{minutes}} menit sehari saja",
+    "startBody": "Di usia {{age}} tahun, latihan membaca harian meski hanya {{minutes}} menit membawa perbedaan besar. Cobalah membaca bersama pada waktu yang sama setiap hari — sebelum tidur atau sepulang sekolah cocok sekali. Konsistensi lebih penting daripada durasi.",
+    "dailyTitle": "Usahakan membaca setiap hari — targetkan {{minutes}} menit",
+    "dailyBody": "Anda sudah rutin membaca, dan itu luar biasa. Menjadikannya kebiasaan harian — meski hanya {{minutes}} menit — akan mempercepat kemajuan anak Anda secara nyata. Sedikit tapi sering adalah kuncinya.",
+    "brilliantTitle": "Anda melakukannya dengan sangat baik",
+    "brilliantBody": "Membaca setiap hari di usia {{age}} tahun adalah salah satu hal terbaik yang bisa Anda lakukan. Pertahankan — {{minutes}} menit sehari sudah sempurna. Anak Anda sedang membangun fondasi membaca yang kuat.",
+    "bilingualTitle": "Dwibahasa adalah kekuatan super",
+    "bilingualBody": "Berbicara dua bahasa di rumah adalah keuntungan besar bagi perkembangan otak anak Anda. Teruslah menggunakan kedua bahasa — hal ini tidak memperlambat kemampuan membaca bahasa Inggris. Bacalah buku fonik dalam bahasa Inggris, tetapi buku cerita dalam bahasa mana pun.",
+    "moreEnglishTitle": "Waktu tambahan membaca bahasa Inggris akan membantu",
+    "moreEnglishBody": "Karena bahasa Inggris bukan bahasa utama di rumah, anak Anda mungkin memerlukan sedikit lebih banyak latihan fonik harian untuk membangun kelancaran. Cobalah menyisihkan 10–15 menit membaca bahasa Inggris di samping bahasa rumah Anda — keduanya berharga.",
+    "dyslexiaTitle": "Membaca multisensori paling efektif",
+    "dyslexiaBody": "Bagi anak dengan disleksia, fonik sangat penting — begitu juga kesabaran. Gunakan tombol bunyi, telusuri huruf dengan jari, dan buat sesi tetap singkat (5–10 menit). Rayakan setiap kemenangan kecil. Kemajuannya mungkin lebih lambat, tetapi sangat nyata.",
+    "speechTitle": "Bunyi dulu, lalu menggabungkan",
+    "speechBody": "Anak dengan kebutuhan wicara dan bahasa sangat terbantu dengan mendengar bunyi secara jelas. Sering-seringlah menggunakan tombol bunyi, dan beri anak Anda waktu tambahan untuk menjawab. Jika mereka bisa mendengar bunyinya, mereka bisa belajar membacanya — meskipun mengucapkannya lebih sulit.",
+    "ealTitle": "Fonik sangat efektif untuk pelajar EAL",
+    "ealBody": "Fonik sistematis adalah salah satu pendekatan paling efektif bagi anak yang belajar bahasa Inggris sebagai bahasa tambahan. Bunyinya konsisten dan dapat diprediksi. Padukan latihan fonik dengan buku bergambar untuk menambah kosakata sambil belajar membaca kata.",
+    "adhdTitle": "Sesi singkat, hadiah besar",
+    "adhdBody": "Batasi sesi membaca 5–8 menit — sesi singkat dengan perhatian penuh lebih baik daripada sesi panjang yang terganggu. Coba tambahkan gerakan: berdiri di antara halaman, gunakan penunjuk untuk mengikuti kata, atau lakukan lompat bintang setelah setiap halaman. Buat jadi aktif!",
+    "gapTitle": "Mengejar ketertinggalan sangat mungkin",
+    "gapBody": "Anak Anda sedikit tertinggal dari standar Inggris untuk usianya — tetapi ini sangat wajar dan mudah diperbaiki. Dengan {{minutes}} menit latihan fonik harian di Level {{level}}, sebagian besar anak dapat mengejar dalam satu semester. Kuncinya adalah latihan rutin, bukan belajar kebut semalam.",
+    "homeschoolTitle": "Susun sesi fonik Anda",
+    "homeschoolBody": "Sebagai keluarga homeschooling, Anda memiliki keuntungan perhatian satu lawan satu. Ikuti level secara berurutan — setiap buku dibangun di atas buku sebelumnya. Sesi fonik harian yang singkat (10–15 menit) diikuti membaca bebas sangat efektif.",
+    "schoolSupportTitle": "Fonik di rumah mendukung pembelajaran di sekolah",
+    "schoolSupportBody": "Sekolah anak Anda mungkin menggunakan pendekatan membaca yang berbeda. MyPhonicsBooks mengikuti kurikulum fonik Inggris yang sistematis dan berbasis bukti. Bahkan 10 menit di rumah akan melengkapi apa yang mereka pelajari di sekolah.",
+    "headStartTitle": "Anda memberi mereka awal yang baik",
+    "headStartBody": "Memulai fonik sebelum sekolah adalah hadiah yang luar biasa. Buat tetap menyenangkan — tanpa tekanan, hanya bersenang-senang dengan bunyi. Anak Anda akan tiba di sekolah dengan percaya diri mengenal huruf dan bunyi, dan itu membawa perbedaan nyata."
+  },
+  "reveal": {
+    "badge": "Buku Terbuka!",
+    "title": "Buku gratis Anda sudah siap",
+    "levelName": "Level {{level}} — {{name}}",
+    "body": "Berdasarkan hasil Anda, Anda telah membuka buku gratis ini.",
+    "continue": "Lanjut ke hasil saya"
+  },
+  "nav": {
+    "level": "Level",
+    "map": "Peta",
+    "levels": "Per Level",
+    "continue": "Lanjut"
+  }
+}

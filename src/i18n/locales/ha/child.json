@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "Babu littattafai tukuna!",
+    "body": "Ka roƙi babba ya buɗe maka littafinka na farko."
+  },
+  "levelLabel": "Mataki {{level}}",
+  "greeting": "Lokacin karatu, {{name}}!",
+  "greetingNoName": "Lokacin karatu!",
+  "cta": {
+    "startLevelCheck": "Fara Gwajin Mataki",
+    "nextBook": "Littafi na Gaba",
+    "startCheck": "Fara Gwaji",
+    "readBook": "Karanta Littafi",
+    "readAgain": "Sake Karantawa",
+    "lastRead": "Karatu na Ƙarshe!"
+  },
+  "sub": {
+    "allDone": "Ka gama dukan littattafanka!",
+    "nextUnlocked": "An buɗe littafi na gaba!",
+    "readyCheck": "Ka shirya don Gwaji!",
+    "read0": "Karanta wannan littafi sau 5.",
+    "read1": "Farawa mai kyau. Saura sau 4.",
+    "read2": "Kana ƙoƙari sosai. Saura sau 3.",
+    "read3": "Kana ƙara sauri. Saura sau 2.",
+    "read4": "Ka kusa. Karatu na ƙarshe!"
+  },
+  "games": {
+    "heading": "Yi wasa",
+    "play": "Yi wasa",
+    "soundlings": {
+      "blurb": "Ciyar da halittun sautinka!"
+    },
+    "finish": {
+      "name": "Ƙarasa kalmar",
+      "blurb": "Taɓa sautin da ya ɓace"
+    },
+    "tricky": {
+      "name": "Ji, ka nemo",
+      "blurb": "Saurara ka nemo kalma mai wuya"
+    },
+    "cannon": {
+      "blurb": "Harba sautin da ya dace cikin kalmar"
+    }
+  },
+  "path": {
+    "heading": "Hanyarka",
+    "progress": "An gama {{done}} cikin {{total}}",
+    "reads": "Sau {{done}}/{{total}}",
+    "done": "An gama!",
+    "book": "Littafi {{n}}",
+    "levelCheck": "Gwajin Mataki"
+  },
+  "sounds": {
+    "heading": "Sautukan da kake koyo"
+  },
+  "aria": {
+    "openBook": "Buɗe {{title}}",
+    "readsDone": "An gama karatu {{done}} cikin {{total}}",
+    "currentBook": "{{title}} — littafinka, an gama karatu {{done}} cikin {{total}}",
+    "doneBook": "{{title}} — an gama",
+    "lockedBook": "{{title}} — a kulle, ka gama littafinka na yanzu tukuna",
+    "startCheck": "Fara Gwajin Matakinka",
+    "checkLocked": "Gwajin Mataki — ka fara gama littattafanka"
+  }
+}

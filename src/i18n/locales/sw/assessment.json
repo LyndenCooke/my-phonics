@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "Bure · bila kadi · dakika 3–10",
+    "title": "Tambua kiwango cha kusoma cha mtoto wako",
+    "subtitle": "Keti pamoja, gusa sauti chache, nasi tutapata vitabu vinavyofaa kabisa — bila kubahatisha.",
+    "howItWorks": "Jinsi inavyofanya kazi",
+    "steps": {
+      "questionsLabel": "Maswali machache ya haraka",
+      "questionsDesc": "Tuambie kuhusu mtoto wako",
+      "checkLabel": "Ukaguzi wa haraka",
+      "checkDesc": "Weka alama kwenye maneno ambayo mtoto wako anaweza kusoma",
+      "soundLabel": "Jaribio la sauti",
+      "soundDesc": "Tunapima kila sauti katika kiwango chake",
+      "resultsLabel": "Matokeo",
+      "resultsDesc": "Ona sauti anazozijua na zile anazohitaji kujifunza"
+    },
+    "chooseTest": "Chagua jaribio",
+    "chooseTestHint": "Keti na mtoto wako — dakika 3 hadi 10 kulingana na jaribio utakalochagua.",
+    "quickTitle": "Ukaguzi wa Haraka · dak 3",
+    "quickDesc": "Jaribio la sauti linalojirekebisha ili kupata kiwango cha mtoto wako haraka.",
+    "fullTitle": "Jaribio Kamili · takriban dak 10",
+    "fullDesc": "Hupima sauti, maneno halisi, maneno ya kigeni (maneno ya kubuni) na Tricky Words (maneno magumu) katika kila kiwango.",
+    "privacy": "Majibu yako ni ya faragha. Tazama <link>sera yetu ya faragha</link>.",
+    "whatYouGet": "Utakachopata mwishoni",
+    "get": {
+      "level": "Kiwango cha kusoma cha mtoto wako katika safari ya viwango 8",
+      "map": "Ramani ya sauti moja moja ya anachokijua",
+      "book": "Kitabu kimoja cha bure kinacholingana na kiwango hicho",
+      "plan": "Mpango rahisi wa \"hatua zinazofuata\""
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "Mtoto wako alizaliwa lini?",
+      "hint": "Hii hutusaidia kulinganisha na matarajio ya umri nchini Uingereza.",
+      "month": "Mwezi",
+      "year": "Mwaka",
+      "age": "Umri: miaka {{age}}"
+    },
+    "school": {
+      "title": "Shule ya aina gani?",
+      "hint": "Hii hutusaidia kurekebisha mapendekezo.",
+      "options": {
+        "public": "Shule ya umma",
+        "private": "Shule binafsi",
+        "international": "Shule ya kimataifa",
+        "religious": "Shule ya kidini",
+        "homeschool": "Masomo ya nyumbani",
+        "notYet": "Bado haendi shule"
+      }
+    },
+    "needs": {
+      "title": "Kuna mahitaji maalum ya kujifunza?",
+      "hint": "Ili tuweze kusaidia safari ya mtoto wako.",
+      "options": {
+        "none": "Hakuna",
+        "dyslexia": "Disleksia",
+        "speech": "Usemi na lugha",
+        "eal": "Kiingereza kama lugha ya ziada",
+        "adhd": "ADHD / umakini",
+        "other": "Nyingine"
+      }
+    },
+    "language": {
+      "title": "Lugha ya nyumbani?",
+      "hint": "Hutusaidia kuelewa mazingira ya kusoma ya mtoto wako.",
+      "options": {
+        "englishOnly": "Kiingereza pekee",
+        "englishPlus": "Kiingereza + lugha nyingine",
+        "mostlyOther": "Zaidi lugha nyingine"
+      }
+    },
+    "reading": {
+      "title": "Mnasoma pamoja mara ngapi?",
+      "hint": "Hakuna kuhukumu — hutusaidia tu kukupa ushauri unaokufaa.",
+      "options": {
+        "daily": "Anasoma kila siku",
+        "fewTimes": "Mara chache kwa wiki",
+        "occasionally": "Mara kwa mara",
+        "starting": "Ndiyo anaanza"
+      }
+    }
+  },
+  "screening": {
+    "title": "Ukaguzi wa Haraka",
+    "body1": "Ni maneno gani kati ya haya mtoto wako anaweza kusoma kwa sauti?",
+    "body2": "Gusa spika kusikia kila neno, kisha weka alama kwenye yale anayoyajua.",
+    "skip": "Ruka — anza Kiwango cha 1"
+  },
+  "test": {
+    "level": "Kiwango cha {{level}}",
+    "stages": {
+      "sounds": "Sauti",
+      "aliens": "Maneno ya Kigeni",
+      "wordCheck": "Ukaguzi wa Maneno",
+      "bonus": "Raundi ya Ziada"
+    },
+    "instructions": {
+      "sound_recognition": "Mwonyeshe mtoto wako kila sauti. Uliza: \"Hii inatoa sauti gani?\"",
+      "word_reading": "Mwombe mtoto wako asome kila neno halisi kwa sauti.",
+      "alien_words": "Mwambie mtoto wako kwamba haya ni maneno ya kubuni. Mwombe atamke sauti za kila neno."
+    },
+    "progress": "{{current}} kati ya {{total}}",
+    "bonus": "ziada",
+    "madeUp": "(neno la kubuni)",
+    "didTheyGetIt": "Amepata sahihi?",
+    "notYet": "Bado",
+    "correct": "Sahihi",
+    "wrongInARow": "Makosa {{n}} mfululizo — kosa 1 zaidi tutasonga mbele"
+  },
+  "levelPassed": {
+    "title": "Kiwango cha {{level}} Kimefaulu!",
+    "continue": "Endelea na Kiwango cha {{level}}"
+  },
+  "results": {
+    "title": "Tathmini Imekamilika",
+    "subtitle": "Hii ndiyo wasifu wa fonetiki wa mtoto wako.",
+    "itemsTested": "Vipengele {{n}} vimepimwa",
+    "recommended": "Kiwango kinachopendekezwa cha kuanzia",
+    "level": "Kiwango cha {{level}}",
+    "ageRange": "Umri {{range}}",
+    "ageComparison": "Ulinganisho wa Umri Uingereza — miaka {{age}} ({{yearGroup}})",
+    "yearGroups": {
+      "receptionAutumn": "Darasa la Awali (Vuli)",
+      "receptionSpringSummer": "Darasa la Awali (Machipuko/Kiangazi)",
+      "year1Autumn": "Darasa la 1 (Vuli)",
+      "year1SpringSummer": "Darasa la 1 (Machipuko/Kiangazi)",
+      "year2": "Darasa la 2",
+      "year3": "Darasa la 3"
+    },
+    "expectedLevel": "Kiwango kinachotarajiwa",
+    "yourChild": "Mtoto wako",
+    "status": {
+      "above": "Juu ya matarajio",
+      "at": "Katika kiwango kinachotarajiwa",
+      "below": "Chini ya matarajio"
+    },
+    "belowNote": "Nchini Uingereza, watoto wa umri huu kwa kawaida huwa katika {{expected}}. Mazoezi yaliyolengwa na MyPhonicsBooks yanaweza kusaidia kuziba pengo hili.",
+    "aboveNote": "Mtoto wako yuko mbele ya matarajio ya umri nchini Uingereza. Endeleeni na kazi hii nzuri!",
+    "claimBook": "Pata Kitabu Changu cha Bure",
+    "soundMap": "Ramani ya Sauti",
+    "levelResults": "Matokeo ya Viwango ({{n}})",
+    "passed": "AMEFAULU",
+    "notYet": "BADO",
+    "categories": {
+      "sound_recognition": "Sauti",
+      "word_reading": "Maneno Halisi",
+      "tricky_words": "Tricky Words (maneno magumu)"
+    },
+    "notTested": "Haijapimwa",
+    "toPractise": "Vipengele vyote vya kufanyia mazoezi ({{n}})",
+    "personalised": "Maalum kwa ajili yako",
+    "deeperTitle": "Unataka uchambuzi wa kina zaidi?",
+    "deeperBody": "Jaribio hili la haraka hupata kiwango cha mtoto wako. Fanya jaribio kamili la kina ili kupata kila pengo katika sauti zote, maneno na Tricky Words.",
+    "saveTitle": "Hifadhi matokeo yako na upate kitabu cha bure",
+    "saveBody": "Weka barua pepe yako nasi tutakufungulia kitabu cha bure cha Kiwango cha {{level}} na kukutumia kiungo cha kuingia.",
+    "childNamePlaceholder": "Jina la mtoto (si lazima)",
+    "emailPlaceholder": "Anwani yako ya barua pepe",
+    "saving": "Inahifadhi...",
+    "unlock": "Fungua Kitabu Changu cha Bure",
+    "bookFallback": "Kitabu cha Kiwango cha {{level}}",
+    "checkEmail": "Angalia barua pepe yako {{email}} kupata kiungo chako cha kuingia",
+    "browseLibrary": "Vinjari Maktaba",
+    "retake": "Rudia",
+    "browseLevel": "Vinjari Kiwango cha {{level}}"
+  },
+  "errors": {
+    "invalidEmail": "Tafadhali weka anwani sahihi ya barua pepe",
+    "signupFailed": "Usajili umeshindikana",
+    "generic": "Hitilafu imetokea"
+  },
+  "tips": {
+    "startTitle": "Anza na dakika {{minutes}} tu kwa siku",
+    "startBody": "Katika umri wa miaka {{age}}, hata dakika {{minutes}} za mazoezi ya kusoma kila siku huleta tofauti kubwa. Jaribuni kusoma pamoja wakati uleule kila siku — kabla ya kulala au baada ya shule hufaa. Uthabiti ni muhimu kuliko urefu wa muda.",
+    "dailyTitle": "Jaribuni kusoma kila siku — lengo dakika {{minutes}}",
+    "dailyBody": "Tayari mnasoma mara kwa mara, na hilo ni zuri sana. Kuifanya kuwa tabia ya kila siku — hata kwa dakika {{minutes}} — kutaharakisha maendeleo ya mtoto wako kwa kiasi kinachoonekana. Kidogo kidogo na mara kwa mara ndio ufunguo.",
+    "brilliantTitle": "Mnafanya vizuri sana",
+    "brilliantBody": "Kusoma kila siku katika umri wa miaka {{age}} ni mojawapo ya mambo bora unayoweza kufanya. Endeleeni hivyo — dakika {{minutes}} kwa siku zinatosha kabisa. Mtoto wako anajenga misingi imara ya kusoma.",
+    "bilingualTitle": "Kujua lugha mbili ni nguvu ya ajabu",
+    "bilingualBody": "Kuzungumza lugha mbili nyumbani ni faida kubwa kwa ukuaji wa ubongo wa mtoto wako. Endeleeni kuzungumza lugha zote mbili — haipunguzi kasi ya kusoma Kiingereza. Someni vitabu vya fonetiki kwa Kiingereza, lakini vitabu vya hadithi kwa lugha yoyote kati ya hizo.",
+    "moreEnglishTitle": "Muda wa ziada wa kusoma Kiingereza utasaidia",
+    "moreEnglishBody": "Kwa kuwa Kiingereza si lugha kuu nyumbani, mtoto wako anaweza kuhitaji mazoezi kidogo zaidi ya fonetiki kila siku ili kujenga ufasaha. Jaribuni kutenga dakika 10–15 za kusoma Kiingereza sambamba na lugha ya nyumbani — zote mbili zina thamani.",
+    "dyslexiaTitle": "Kusoma kwa kutumia hisia nyingi hufaa zaidi",
+    "dyslexiaBody": "Kwa watoto wenye disleksia, fonetiki ni muhimu hasa — na subira pia. Tumieni vitufe vya sauti, fuatisheni herufi kwa vidole, na fanyeni vipindi vifupi (dakika 5–10). Sherehekeni kila ushindi mdogo. Maendeleo yanaweza kuwa ya polepole lakini ni ya kweli kabisa.",
+    "speechTitle": "Sauti kwanza, kisha kuunganisha",
+    "speechBody": "Watoto wenye mahitaji ya usemi na lugha hunufaika sana kwa kusikia sauti kwa uwazi. Tumieni vitufe vya sauti mara nyingi, na mpeni mtoto wako muda wa ziada kujibu. Akiweza kuisikia sauti, anaweza kujifunza kuisoma — hata kama kuitamka ni kugumu zaidi.",
+    "ealTitle": "Fonetiki hufaa sana kwa wanaojifunza Kiingereza kama lugha ya ziada",
+    "ealBody": "Fonetiki ya kimfumo ni mojawapo ya njia bora zaidi kwa watoto wanaojifunza Kiingereza kama lugha ya ziada. Sauti ni thabiti na zinatabirika. Unganisheni mazoezi ya fonetiki na vitabu vya picha ili kujenga msamiati sambamba na kusoma maneno.",
+    "adhdTitle": "Vipindi vifupi, zawadi kubwa",
+    "adhdBody": "Wekeni vipindi vya kusoma kuwa dakika 5–8 — vipindi vifupi vyenye umakini kamili ni bora kuliko virefu vyenye usumbufu. Jaribuni kuongeza mwendo: simameni kati ya kurasa, tumieni kielekezi kufuatilia maneno, au rukeni kama nyota baada ya kila ukurasa. Ifanyeni iwe ya vitendo!",
+    "gapTitle": "Kuziba pengo kunawezekana kabisa",
+    "gapBody": "Mtoto wako yuko nyuma kidogo ya matarajio ya Uingereza kwa umri wake — lakini hili ni jambo la kawaida kabisa na linarekebishika kwa urahisi. Kwa dakika {{minutes}} za mazoezi ya fonetiki kila siku katika Kiwango cha {{level}}, watoto wengi hufikia wenzao ndani ya muhula mmoja. Ufunguo ni mazoezi ya mara kwa mara, si kukariri kwa haraka.",
+    "homeschoolTitle": "Pangeni vipindi vyenu vya fonetiki",
+    "homeschoolBody": "Kama familia inayosomesha nyumbani, mna faida ya uangalizi wa mmoja kwa mmoja. Fuateni viwango kwa mpangilio — kila kitabu hujengwa juu ya kilichotangulia. Kipindi kifupi cha fonetiki kila siku (dakika 10–15) kikifuatwa na kusoma kwa uhuru hufaa sana.",
+    "schoolSupportTitle": "Fonetiki nyumbani husaidia masomo ya shuleni",
+    "schoolSupportBody": "Shule ya mtoto wako inaweza kutumia mbinu tofauti ya kufundisha kusoma. MyPhonicsBooks hufuata mtaala wa fonetiki wa Uingereza, ambao ni wa kimfumo na unategemea ushahidi. Hata dakika 10 nyumbani zitakamilisha anachojifunza shuleni.",
+    "headStartTitle": "Mnampa mwanzo mzuri mapema",
+    "headStartBody": "Kuanza fonetiki kabla ya shule ni zawadi nzuri sana. Ifanyeni iwe ya kuchezea — bila shinikizo, furaha tu na sauti. Mtoto wako atafika shuleni akiwa tayari anajiamini na herufi na sauti, jambo linaloleta tofauti ya kweli."
+  },
+  "reveal": {
+    "badge": "Kitabu Kimefunguliwa!",
+    "title": "Kitabu chako cha bure kiko tayari",
+    "levelName": "Kiwango cha {{level}} — {{name}}",
+    "body": "Kulingana na matokeo yako, umefungua kitabu hiki cha bure.",
+    "continue": "Endelea kwenye matokeo yangu"
+  },
+  "nav": {
+    "level": "Kiwango",
+    "map": "Ramani",
+    "levels": "Viwango",
+    "continue": "Endelea"
+  }
+}

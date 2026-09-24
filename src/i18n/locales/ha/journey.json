@@ -1,0 +1,48 @@
+{
+  "youAreHere": "Kana nan",
+  "dayOf": "Rana ta {{day}} cikin {{total}}",
+  "kicker": "Tafiyar karatu",
+  "headline": "Hanyarku zuwa iya karatu",
+  "lessonOf": "Darasi na {{n}} cikin {{total}}",
+  "levelDash": "Mataki na {{n}} — {{name}}",
+  "progressAria": "Darasi na {{n}} cikin {{total}}, kashi {{pct}} na tafiyar",
+  "levelState": {
+    "complete": "an kammala",
+    "current": "mataki na yanzu, darussa {{done}} cikin {{total}}",
+    "future": "ba a fara ba tukuna"
+  },
+  "levelAria": "Mataki na {{n}}, {{name}}, {{state}}. Buɗe taswirar mataki.",
+  "lessonsDone": "Darussa {{done}} cikin {{total}}",
+  "complete": "An kammala",
+  "lessons_one": "Darasi {{count}}",
+  "lessons_other": "Darussa {{count}}",
+  "panel": {
+    "aria": "Tsarin darasi: {{title}}",
+    "close": "Rufe tsarin darasi",
+    "meta": "Darasi na {{n}} · Mataki na {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "Kwanakin wannan mako",
+    "dayTabAria": "Rana ta {{day}}: {{title}}",
+    "dayTab": "Rana ta {{day}}",
+    "minutes": "Kusan mintuna {{minutes}} na koyarwa",
+    "minutesWorksheet": "Kusan mintuna {{minutes}} na koyarwa, sannan takardar aiki"
+  },
+  "blockState": {
+    "complete": "an kammala",
+    "current": "kana nan",
+    "future": "yana nan tafe"
+  },
+  "kind": {
+    "assessment": "Tantancewa",
+    "keepup": "Lokacin cim ma",
+    "lesson": "Darasi",
+    "soundWeek": "Makon sauti",
+    "skillsWeek": "Makon ƙwarewa"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "Koma zuwa dukan tafiyar",
+  "back": "Dukan tafiyar",
+  "levelTitle": "Mataki na {{n}}: {{name}}",
+  "error": "Ba a iya loda taswirar tafiya a yanzu ba. Da fatan za a sake gwadawa nan ba da jimawa ba.",
+  "loading": "Ana loda taswirar tafiya",
+  "sectionAria": "Taswirar tafiyar manhajar karatu"
+}

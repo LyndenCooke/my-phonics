@@ -1,0 +1,132 @@
+{
+  "skipToMain": "Langsung ke konten utama",
+  "nav": {
+    "homeAria": "Beranda MyPhonicsBooks",
+    "createBook": "Buat Buku",
+    "worldOfBooks": "Dunia Buku",
+    "shop": "Toko",
+    "wallOfLove": "Dinding Cinta",
+    "forSchools": "Untuk Sekolah",
+    "schools": "Sekolah",
+    "explore": "Jelajahi",
+    "exploreBooks": "Jelajahi Buku"
+  },
+  "video": {
+    "badge": "Tonton tur",
+    "title": "Lihat cara kerjanya",
+    "body": "Panduan singkat platform belajar bahasa Inggris serba ada — buku, level, dan perkembangan, semua di satu tempat.",
+    "fallback": "Browser Anda tidak mendukung video tersemat. Silakan <link>tonton turnya</link> di sini."
+  },
+  "hero": {
+    "forParents": "Untuk Orang Tua",
+    "forSchools": "Untuk Sekolah",
+    "languages": "Tersedia dalam {{n}} bahasa",
+    "titleA": "Buku yang tumbuh bersama anak Anda —",
+    "titleB": "dari bunyi pertama hingga membaca lancar.",
+    "body": "33 buku fonik yang dapat didekode di 8 level. Cek level anak Anda gratis, baca bersama di layar apa pun, atau cetak buklet sungguhan untuk dipegang.",
+    "exploreBooks": "Jelajahi buku",
+    "checkLevelFree": "Cek levelnya — gratis",
+    "freeNote": "Buku-buku pertama gratis dan terbuka sekarang — tanpa daftar, tanpa kartu."
+  },
+  "shelf": {
+    "regionAria": "Etalase buku — seret, geser, atau gunakan tombol panah untuk menjelajah",
+    "coverAlt": "{{title}} — buklet Level {{level}} {{levelName}}",
+    "prevBook": "Buku sebelumnya",
+    "nextBook": "Buku berikutnya",
+    "level": "Level {{level}}"
+  },
+  "three": {
+    "badge": "Tiga cara menggunakannya",
+    "title": "Cek. Baca. Cetak.",
+    "subtitle": "Semua yang dibutuhkan pembaca pemula, di satu tempat.",
+    "check": {
+      "title": "Cek levelnya",
+      "desc": "Tes bunyi gratis 3 menit menemukan titik awal yang paling tepat. Tanpa tebak-tebakan, tanpa kartu.",
+      "cta": "Mulai tes gratis"
+    },
+    "read": {
+      "title": "Baca di layar apa pun",
+      "desc": "Buku interaktif di ponsel, tablet, atau laptop — ketuk kata apa pun untuk mendengarnya dieja bunyi demi bunyi.",
+      "cta": "Jelajahi buku"
+    },
+    "print": {
+      "title": "Atau cetak dan pegang",
+      "desc": "Unduh buku apa pun sebagai buklet A5 yang dilipat dan dijepret. Halaman nyata untuk dibaca sebelum tidur.",
+      "cta": "Lihat perpustakaan"
+    }
+  },
+  "testimonials": {
+    "title": "Kata pelanggan kami",
+    "subtitle": "Kata-kata asli dari keluarga dan guru yang menggunakan MyPhonicsBooks.",
+    "previous": "Sebelumnya",
+    "next": "Berikutnya",
+    "aParent": "Seorang orang tua"
+  },
+  "journey": {
+    "title": "Dari bunyi pertama hingga bunyi terakhir",
+    "subtitle": "Delapan level, satu jalur yang jelas — setiap buku hanya memakai bunyi yang sudah dipelajari anak Anda.",
+    "ages": "Usia {{range}}",
+    "books_other": "{{count}} buku"
+  },
+  "features": {
+    "titleA": "Semua yang dibutuhkan anak Anda untuk",
+    "titleB": "mencintai membaca",
+    "body": "Dibuat oleh ahli fonik, dirancang untuk anak-anak sungguhan. Setiap buku hanya memakai bunyi yang sudah dipelajari anak Anda — sehingga ia berhasil sejak halaman pertama.",
+    "items": {
+      "soundedOut": "Ketuk kata apa pun untuk mendengarnya dieja fonem demi fonem",
+      "books": "33 buku di 8 level membaca yang disusun dengan cermat",
+      "settings": "Cerita berlatar Jepang, Kenya, Maroko, Prancis, Turki & lainnya",
+      "quizzes": "Kuis pemahaman dan permainan \"What sound is it?\"",
+      "progress": "Pelacakan perkembangan agar orang tua bisa melihat kemajuan",
+      "aligned": "Selaras dengan Phonics Screening Check Year 1 di Inggris"
+    },
+    "mockAlt": "Membaca interaktif",
+    "tapHint": "Ketuk kata untuk mendengarnya",
+    "printSticker": "…atau cetak sebagai buklet"
+  },
+  "free": {
+    "title": "Gratis untuk setiap keluarga",
+    "subtitle": "Tanpa paket, tanpa paywall. Baca semuanya sekarang. Daftar (gratis) untuk mencetak.",
+    "read": {
+      "title": "Baca & main",
+      "note": "tanpa akun",
+      "items": {
+        "books": "Semua 33 buku di 8 level, dibaca online",
+        "tapToHear": "Membaca interaktif ketuk-untuk-dengar",
+        "games": "Semua permainan fonik",
+        "check": "Tes fonik gratis 3 menit"
+      },
+      "cta": "Buka perpustakaan"
+    },
+    "print": {
+      "badge": "Tetap gratis",
+      "title": "Cetak di rumah",
+      "note": "akun gratis",
+      "items": {
+        "everything": "Semua yang ada di Baca & main",
+        "download": "Unduh setiap buku sebagai PDF siap cetak",
+        "worksheets": "Semua lembar kerja dan alas bunyi",
+        "progress": "Pelacakan perkembangan dan hadiah"
+      },
+      "cta": "Buat akun gratis"
+    },
+    "support": "Suka? <btn>Dukung MyPhonicsBooks</btn> dengan ucapan terima kasih sekali saja berapa pun jumlahnya — sepenuhnya opsional."
+  },
+  "footerCta": {
+    "title": "Buku-buku pertama sudah terbuka.",
+    "body": "Silakan lihat-lihat — dan saat Anda siap, tes gratis 3 menit akan menemukan level tepat anak Anda.",
+    "explore": "Jelajahi buku",
+    "check": "Cek levelnya"
+  },
+  "footer": {
+    "createBook": "Buat Buku",
+    "worldOfBooks": "Dunia Buku",
+    "shop": "Toko",
+    "wallOfLove": "Dinding Cinta",
+    "privacy": "Privasi",
+    "terms": "Ketentuan",
+    "contact": "Kontak",
+    "admin": "Admin",
+    "madeWith": "Dibuat dengan sepenuh hati di Inggris"
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "Kütüphane",
+    "worldOfBooks": "Kitaplar Dünyası"
+  },
+  "errors": {
+    "unreachable": "Create-A-Book hizmetine şu anda ulaşılamıyor — biraz bekleyip sayfayı yenileyin.",
+    "noCheckoutLink": "Ödeme sayfası bir ödeme bağlantısı döndürmedi."
+  },
+  "yourChild": "çocuğunuz",
+  "intro": {
+    "sampleCover": "Örnek kitap kapağı",
+    "samplePage": "Örnek kitap sayfası {{n}}",
+    "flipHint": "Kapaktan kapağa eksiksiz bir MyPhonicsBooks öyküsü — sayfaları çevirmek için dokunun ya da kaydırın",
+    "titleStart": "Çocuğunuz,",
+    "titleHighlight": "öykünün kahramanı",
+    "lead": "Gerçek, tam anlamıyla çözümlenebilir bir fonetik kitabı — çocuğunuz için dakikalar içinde yazılır, resimlenir ve kontrol edilir.",
+    "features": {
+      "mainCharacter": {
+        "title": "Çocuğunuz başkahraman",
+        "desc": "Kendi çizim tarzımızla, nokta gözleriyle birlikte çizilir"
+      },
+      "decodable": {
+        "title": "Kendi seviyesinde tamamen çözümlenebilir",
+        "desc": "Her kelime bildiği seslere göre kontrol edilir"
+      },
+      "meetStar": {
+        "title": "Sonda 'Meet the star' sayfası",
+        "desc": "Ülkesi, kültürü, simge yapısı"
+      },
+      "share": {
+        "title": "Kitaplar Dünyası'nda paylaşın",
+        "desc": "Ailenin onayıyla dünya üzerinde bir ışık"
+      }
+    },
+    "cta": "Kitabına başlayın — {{price}}",
+    "ctaNote": "Tek kitap; sonsuza dek sizin, saklayın ve yazdırın."
+  },
+  "child": {
+    "title": "Yıldız kim?",
+    "randomise": "Rastgele doldur (test)",
+    "randomiseTitle": "Tüm adımları rastgele test verileriyle doldur",
+    "lead": "Bu bilgiler öyküyü, resimleri ve sondaki profil sayfasını şekillendirir.",
+    "firstName": "Adı",
+    "firstNamePlaceholder": "ör. Maryam",
+    "age": "Yaşı",
+    "from": "Nerelisiniz?",
+    "city": "Şehir / kasaba",
+    "optional": "(isteğe bağlı)",
+    "cityPlaceholder": "ör. Mogadişu, Lagos, Krakov",
+    "familyWorld": "Ailenizin dünyası",
+    "familyWorldHint": "(kültür, yemek, yerler, gelenekler)",
+    "familyWorldPlaceholder": "ör. Londra'da yaşayan Somalili bir aileyiz — suqaar'ı, bayram sabahlarını ve camiye gitmeyi severiz",
+    "loves": "Sevdikleri...",
+    "lovesPlaceholder": "kediler, futbol, kek yapmak",
+    "faith": "İnanç",
+    "faithPlaceholder": "ör. Müslüman, Hristiyan",
+    "lookLike": "Nasıl görünüyor?",
+    "gender": {
+      "girl": "kız",
+      "boy": "erkek"
+    },
+    "skinTones": {
+      "light": "Açık",
+      "lightMedium": "Açık-orta",
+      "medium": "Orta",
+      "mediumDark": "Orta-koyu",
+      "dark": "Koyu",
+      "veryDark": "Çok koyu"
+    },
+    "hairPlaceholder": "Saç — ör. kıvırcık siyah saç, başörtüsü, kısa kahverengi saç",
+    "changePhoto": "Fotoğrafı değiştir",
+    "addPhoto": "Fotoğraf ekle (isteğe bağlı)",
+    "photoAdded": "Fotoğraf eklendi",
+    "photoPrivacy": "Fotoğraf yalnızca çizgi karakteri çizmek için kullanılır. Asla saklanmaz, yayınlanmaz veya kimseye gösterilmez."
+  },
+  "level": {
+    "title": "Bir seviye ve bir odak ses seçin",
+    "lead": "Tek bir ses öyküyü özgür ve eğlenceli tutar — yalnızca birkaç kez geçmesi yeterli.",
+    "notSure": "Seviyeden emin değil misiniz? <link>3 dakikalık testi yapın</link>.",
+    "levelN": "Seviye {{level}}",
+    "focusSound": "Bu kitabın odak sesi",
+    "longerTitle": "Daha uzun öykü — 6 yerine 8 sayfa",
+    "longerDesc": "İki resimli sayfa daha ve sonda daha büyük 20 sayfalık etkinlik seti."
+  },
+  "review": {
+    "title": "Neredeyse bitti!",
+    "lead": "Bilgileri kontrol edin, nasıl paylaşmak istediğinizi seçin, biz de baskıya başlayalım.",
+    "email": "E-postanız (makbuz ve kitap bağlantısı için)",
+    "shareTitle": "Kitabımızı Kitaplar Dünyası'nda paylaşın",
+    "shareBody": "Ekibimizin kısa incelemesinden sonra diğer aileler {{name}} adlı çocuğun kitabını okuyabilir. Dünyayı her seferinde bir öyküyle bir araya getirin.",
+    "wallTitle": "Bizi Sevgi Duvarı'nda gösterin",
+    "wallBody": "\"Meet the star\" sayfası (yalnızca çizgi karakter — asla fotoğraf değil) topluluk galerisinde yer alır.",
+    "continueToPayment": "Ödemeye geç"
+  },
+  "pay": {
+    "title": "{{name}} için kitap oluşturun",
+    "oneBook": "Tek kişiselleştirilmiş kitap · sonsuza dek sizin",
+    "features": {
+      "story": "\"{{sound}}\" sesi etrafında eksiksiz, çözümlenebilir bir öykü",
+      "longer": "Daha uzun öykü: 8 resimli sayfa + daha kapsamlı etkinlik seti",
+      "hero": "{{name}} her sayfada kahraman olarak çizilir",
+      "qa": "Her sayfada göz kuralı + fonetik kalite kontrolü",
+      "meetStar": "Sonda 'Meet the star' aile sayfası",
+      "forever": "Hemen ekranda okuyun, sonsuza dek"
+    },
+    "button": "Kitabımı oluştur — {{price}}",
+    "haveCode": "Kodunuz mu var?",
+    "enterCode": "Kodu girin",
+    "apply": "Uygula",
+    "devFree": "Ücretsiz oluştur (geliştirici test modu — ücret yok)"
+  },
+  "generating": {
+    "title": "{{name}} için kitap boyanıyor",
+    "lead": "Sayfa sayfa yazılır, resimlenir ve kontrol edilir — evet, gözleri de kontrol ediyoruz. Bu sayfayı açık tutun; birkaç dakika sürer.",
+    "warmingUp": "Boyalar hazırlanıyor...",
+    "failedRetry": "Küçük bir aksaklık oldu — kaldığı yerden devam edin (ücretsiz)",
+    "needsReviewTitle": "Neredeyse hazır — bir sayfa bir kişi tarafından inceleniyor",
+    "needsReviewBody": "{{name}} için öykü ve resimler hazır, ancak editörümüz basmadan önce bir sayfayı elle kontrol etmek istiyor. Sizin bir şey yapmanıza gerek yok — bu bağlantıyı saklayın; kitap onaylanır onaylanmaz burada görünür, genellikle birkaç saat içinde.",
+    "rejectedTitle": "Bu öyküyü kalite standardımıza ulaştıramadık.",
+    "rejectedBody": "Kitap krediniz kullanılmadı. Aynı fikri yeniden deneyebilir ya da farklı bir öykü fikri seçebilirsiniz.",
+    "tryAgain": "Aynı fikri yeniden dene (ücretsiz)",
+    "changeIdea": "Öykü fikrini değiştir (kredi korunur)",
+    "paused": "Kitabınız güvende ve kaydedildi. Her zamankinden biraz uzun sürüyor — tam kaldığı yerden devam edecek ve hazır olduğunda size e-posta göndereceğiz."
+  },
+  "ready": {
+    "title": "Kitabı hazır!",
+    "madeFor": "{{name}} ailesi için hazırlandı",
+    "pdfSoon": "Yazdırılabilir PDF'ler çok yakında — şimdilik kitabın keyfini burada çıkarın.",
+    "typesetting": "Kitap dizgisi yapılıyor...",
+    "openPdf": "Kitabı aç 📕 (tam fonetik kitabı PDF)",
+    "play": "Etkileşimli kitabı oynayın — her kelimeye dokunun",
+    "readHere": "Burada okuyun — sayfaları çevirin",
+    "saved": "Hesabınıza kaydedildi",
+    "addToAccount": "Hesabıma ekle",
+    "inReview": "Kitabınız Kitaplar Dünyası'nda görünmeden önce ekibimiz tarafından kısaca inceleniyor.",
+    "live": "Kitabınız Kitaplar Dünyası'nda yayında!",
+    "unlockTitle": "Kitaplar Dünyası'nın kilidini açın",
+    "unlockBody": "Dünyanın dört bir yanındaki ailelerin yaptığı her kitabı okuyun — sizden sonra yapılacak her kitabı da. Tek ödeme, sonsuza dek.",
+    "signInNote": "Giriş yapmanız gerekecek — erişiminiz böylece sizinle birlikte gelir ve size ait kalır.",
+    "unlockButton": "Dünyanın kilidini aç — {{price}}, tek sefer",
+    "signInUnlockButton": "Dünyanın kilidini açmak için giriş yapın — {{price}}",
+    "devUnlock": "geliştirici: ücretsiz aç",
+    "enter": "Kitaplar Dünyası'na girin"
+  },
+  "progress": {
+    "story": "{{name}} için hikâye yazılıyor…",
+    "phonics_qa": "Her kelimenin bu seviyede okunabilir olduğu kontrol ediliyor…",
+    "plausibility_qa": "Hikâyenin gerçekten anlamlı olduğu kontrol ediliyor…",
+    "story_editor": "Resimler çizilmeden önce bir editör hikâyeyi okuyor…",
+    "directing": "Sahneler planlanıyor…",
+    "awaiting_imagery_approval": "Hikâye onaylandı — resimler son kontrolü bekliyor…",
+    "hero": "{{name}} bir kitap karakteri olarak çiziliyor…",
+    "scenes": "Sayfa {{page}} / {{total}} resimleniyor…",
+    "cover": "Kapak boyanıyor…",
+    "country": "{{name}} için ülkesinden resimler ekleniyor…",
+    "editor": "Bir editör bitmiş kitabı okuyor…",
+    "assemble": "Kitap ciltleniyor…",
+    "done": "Kitabınız hazır!",
+    "busy": "Hâlâ çalışıyoruz — bu adım biraz zaman alıyor…",
+    "paused": "Kitabınız güvende ve kaydedildi — kısa süre içinde devam edecek.",
+    "paused_budget": "Her zamankinden biraz uzun sürüyor — ekibe haber verildi, kitabınız kısa süre içinde devam edecek.",
+    "paused_provider_credit": "Her zamankinden biraz uzun sürüyor — ekibe haber verildi, kitabınız kısa süre içinde devam edecek.",
+    "needs_review": "Neredeyse bitti — bir sayfa bir kişi tarafından son kez kontrol ediliyor. Hazır olur olmaz size e-posta göndereceğiz.",
+    "content_rejected": "Bu hikâyeyi kalite standardımıza ulaştıramadık. Kitap krediniz kullanılmadı — aynı fikri yeniden deneyin ya da başka bir fikir seçin.",
+    "repair": "Birkaç sayfa düzeltiliyor…",
+    "working": "Kitap üzerinde çalışılıyor…"
+  }
+}

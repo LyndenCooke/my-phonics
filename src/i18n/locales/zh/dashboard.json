@@ -1,0 +1,150 @@
+{
+  "levels": {
+    "1": { "colour": "粉色", "focus": "最初的字母发音和简单的三字母单词" },
+    "2": { "colour": "珊瑚色", "focus": "字母表中其余的字母，以及 ck、ff、ll、ss" },
+    "3": { "colour": "琥珀色", "focus": "两个字母，一个发音 — sh、ch、th、ng…" },
+    "4": { "colour": "绿色", "focus": "元音组合，如 ay、ee、igh、oo 和 ar" },
+    "5": { "colour": "蓝色", "focus": "分离双字母（a-e、i-e）和新的拼写方式" },
+    "6": { "colour": "靛蓝色", "focus": "替代拼写 — wr、kn、ph、dge…" },
+    "7": { "colour": "紫色", "focus": "三字母组合（ire、ore、ear）和 -tion 词尾" },
+    "8": { "colour": "青绿色", "focus": "后缀与构词 — -ous、-able、-ible" }
+  },
+  "levelN": "第 {{n}} 级",
+  "parent": {
+    "yourChild": "您的孩子",
+    "yourChildCap": "您的孩子",
+    "signInPrompt": "登录后即可查看您的家长面板。",
+    "kicker": "家长面板",
+    "headline": "{{name}} 已完成通往 <hl>Reading Champion.</hl> 之路的 {{pct}}%",
+    "nowReading": "正在阅读",
+    "meta": {
+      "nowOn": "当前级别",
+      "ageBand": "年龄段",
+      "nowReading": "正在阅读",
+      "streak": "连续阅读",
+      "streakDays_other": "{{count}} 天"
+    },
+    "journey": {
+      "title": "阅读旅程",
+      "complete": "已完成 {{pct}}%",
+      "nowOn": "当前级别 · {{colour}}",
+      "chipMastered": "已掌握",
+      "chipReads": "已读 {{stamps}}/{{max}} 次",
+      "chipLocked": "未解锁",
+      "booksMastered": "已掌握的书",
+      "nodeBooks": "{{mastered}}/{{total}} 本书",
+      "comingSoon": "即将推出"
+    },
+    "rhythm": {
+      "title": "阅读节奏",
+      "note": "最近 7 天",
+      "readsThisWeek": "本周阅读次数",
+      "daysActive": "阅读天数",
+      "minutesReading": "阅读分钟数",
+      "booksMastered": "已掌握的书",
+      "dayReads_other": "{{date}} — 阅读 {{count}} 次",
+      "activeNote_other": "{{name}} 在最近 7 天中有 {{count}} 天阅读。少量多次胜过长时间阅读。",
+      "noReads": "本周还没有阅读记录 — 今天哪怕读 5 分钟，也能保持阅读节奏。"
+    },
+    "sounds": {
+      "title": "字母发音",
+      "note": "第 {{n}} 级 · {{colour}}",
+      "intro": "{{level}} 级别的每一本书都由这些字母发音构成。随时随地指给孩子看 — 路牌、麦片盒、这块屏幕都可以。",
+      "newTrickyWords": "新的 Tricky Words（特殊词）"
+    },
+    "step": {
+      "title": "本周目标",
+      "pickFirst": "在书库中选一本书，开始阅读旅程吧。",
+      "levelComplete": "第 {{n}} 级已完成 — 是时候进行 Level Check（级别测试）了。",
+      "bookMastered": "《{{title}}》已掌握，继续读下一本吧。",
+      "readyForCheck": "{{name}} 已准备好进行《{{title}}》的最终测试。",
+      "readMore_other": "本周再读《{{title}}》{{count}} 次。",
+      "method": "同一本书分五次间隔阅读，能培养真正的流利度 — 这正是本方法的核心。",
+      "openLibrary": "打开书库"
+    },
+    "controls": {
+      "title": "家长控制",
+      "unlockTitle": "解锁下一本书",
+      "unlockDesc": "当您确定孩子准备好时，可以提前跳级。",
+      "freeTitle": "自由阅读模式",
+      "freeTitleOn": "自由阅读模式 — 已开启",
+      "freeDesc": "让孩子浏览所有已解锁的书，不设关卡。",
+      "resetTitle": "重置当前书籍",
+      "resetDesc": "清除《{{title}}》的阅读记录和测试结果。",
+      "resetNone": "没有可重置的当前书籍。",
+      "freeWarning": "自由阅读模式已开启 — 引导模式已关闭。{{name}} 可以打开任何一本书，但阅读进度仍会被记录。"
+    },
+    "toast": {
+      "resetConfirm": "要重置\"{{title}}\"的进度吗？这将清除印章和测试结果。",
+      "resetTitle": "进度已重置",
+      "resetDesc": "《{{title}}》的阅读次数已归零。",
+      "comingSoonTitle": "即将推出",
+      "comingSoonDesc": "家长手动解锁功能将在后台接入后开放。",
+      "freeOnTitle": "自由阅读模式已开启",
+      "guidedOnTitle": "引导模式已开启",
+      "freeOnDesc": "所有书都可点击打开，阅读和测试仍会被记录。",
+      "guidedOnDesc": "只有通过测试后才会解锁新书。"
+    },
+    "levelCheck": {
+      "kicker": "级别结束",
+      "title": "第 {{n}} 级测试 —",
+      "ready": "可以开始",
+      "locked": "未解锁",
+      "masteredNext": "{{name}} 已掌握本级别全部 {{count}} 本书。完成一个简短的自然拼读测试，即可升到第 {{next}} 级 — {{nextName}}。",
+      "masteredFinal": "{{name}} 已掌握本级别全部 {{count}} 本书。完成一个简短的自然拼读测试，即可获得 Reading Champion 证书。",
+      "lockedNext": "掌握本级别全部 {{count}} 本书后，完成一个简短的自然拼读测试即可解锁第 {{next}} 级 — {{nextName}}。",
+      "lockedFinal": "掌握本级别全部 {{count}} 本书后，完成一个简短的自然拼读测试即可获得 Reading Champion 证书。",
+      "start": "开始级别测试",
+      "progress": "已掌握 {{mastered}} / {{total}}"
+    },
+    "colophon": "八个级别 · {{count}} 本书 · Curriculum Ledger v2.0"
+  },
+  "progress": {
+    "title": "学习进度",
+    "signInPrompt": "登录后即可跟踪孩子的阅读进度。",
+    "subtitle": "完整的阅读旅程，一级一级向前。",
+    "ofTotal": "共 {{total}} 本",
+    "booksCompleted": "已读完的书",
+    "keepReading": "继续阅读，解锁更多书！",
+    "streak_other": "连续阅读 {{count}} 天",
+    "comingSoon": "即将推出",
+    "latestCheck": "最近一次级别测试",
+    "recommended": "推荐级别：第 {{n}} 级"
+  },
+  "child": {
+    "titleNamed": "{{name}} 的学习进度",
+    "title": "孩子的学习进度",
+    "empty": "此设备上还没有阅读记录。孩子读完一本书后，印章和进度会显示在这里。",
+    "activity": "阅读活动",
+    "days_other": "{{count}} 天",
+    "reads_other": "{{count}} 次阅读",
+    "cellTitle_other": "{{date}}：阅读 {{count}} 次",
+    "less": "少",
+    "more": "多",
+    "soundsCovered": "已学习的字母发音",
+    "allSounds": "全部发音",
+    "practisedOnly": "仅已练习",
+    "soundBooks_other": "已读过 {{count}} 本含有此发音的书",
+    "notPractised": "尚未练习",
+    "booksRead": "已读的书",
+    "stamps": "印章",
+    "champions": "已掌握",
+    "atLevel": "当前级别"
+  },
+  "chart": {
+    "title": "您的孩子处于什么水平",
+    "subtitle": "各年龄的自然拼读水平 — 英国与国际平均",
+    "above": "高于英国预期",
+    "at": "符合英国平均水平",
+    "below": "略低于英国平均水平",
+    "ariaLabel": "各年龄自然拼读水平对比图",
+    "ageAxis": "年龄（岁）",
+    "you": "您的孩子 · L{{level}}",
+    "legendChild": "您的孩子",
+    "legendGreater": "英国优秀水平（前 20%）",
+    "legendExpected": "英国预期水平（平均）",
+    "legendInternational": "国际平均",
+    "disclaimer": "参考数据：英国教育部 2024 年自然拼读筛查测试（DfE Phonics Screening Check，Year 1 结束时全国通过率约 80%）以及 NFER 阅读基准。国际曲线根据 IEA PIRLS 2021 阅读素养研究推算（英国 558 分，国际平均 520 分）。自然拼读级别对应我们的 1–8 级课程，并非标准化考试分数。孩子的结果只是某一时刻的快照，而不是定论 — 如需全面了解，请与孩子的老师沟通。",
+    "country": " 所在国家/地区：{{code}}。"
+  }
+}

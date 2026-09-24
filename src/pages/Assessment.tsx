@@ -32,6 +32,10 @@ import { CheckCircle2, XCircle, ChevronRight, RotateCcw, ArrowRight, Trophy, Ale
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
 import { getJourneyLevel, journeyLevelOf } from '@/lib/levels8';
+import { useTranslation, Trans } from 'react-i18next';
+import type { TFunction } from 'i18next';
+import i18n from '@/i18n';
+import EnglishOnly from '@/i18n/EnglishOnly';
 
 // The assessment runs entirely on the 8-level journey scale: screening,
 // adaptive testing, the recommended level we store, and every label shown.
@@ -48,41 +52,55 @@ interface ChildProfile {
   readingHabits: string;
 }
 
+// `value` is the English string kept in profile state (compared in
+// getPersonalisedTips); `key` is the i18n key for the displayed label.
 const SCHOOL_TYPES = [
-  'Public school',
-  'Private school',
-  'International school',
-  'Religious school',
-  'Homeschool',
-  'Not yet in school',
+  { value: 'Public school', key: 'public' },
+  { value: 'Private school', key: 'private' },
+  { value: 'International school', key: 'international' },
+  { value: 'Religious school', key: 'religious' },
+  { value: 'Homeschool', key: 'homeschool' },
+  { value: 'Not yet in school', key: 'notYet' },
 ];
 
 const LEARNING_NEEDS = [
-  'None',
-  'Dyslexia',
-  'Speech & language',
-  'English as additional language',
-  'ADHD / focus',
-  'Other',
+  { value: 'None', key: 'none' },
+  { value: 'Dyslexia', key: 'dyslexia' },
+  { value: 'Speech & language', key: 'speech' },
+  { value: 'English as additional language', key: 'eal' },
+  { value: 'ADHD / focus', key: 'adhd' },
+  { value: 'Other', key: 'other' },
 ];
 
 const HOME_LANGUAGES = [
-  'English only',
-  'English + another language',
-  'Mostly another language',
+  { value: 'English only', key: 'englishOnly' },
+  { value: 'English + another language', key: 'englishPlus' },
+  { value: 'Mostly another language', key: 'mostlyOther' },
 ];
 
 const READING_HABITS = [
-  'Reads every day',
-  'A few times a week',
-  'Occasionally',
-  'Just getting started',
+  { value: 'Reads every day', key: 'daily' },
+  { value: 'A few times a week', key: 'fewTimes' },
+  { value: 'Occasionally', key: 'occasionally' },
+  { value: 'Just getting started', key: 'starting' },
 ];
 
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
+/** Month names in the parent's language (display only; value stays 1–12). */
+function getMonthNames(lang: string): string[] {
+  return Array.from({ length: 12 }, (_, i) =>
+    new Date(2020, i, 1).toLocaleDateString(lang, { month: 'long' }),
+  );
+}
+
+/** AGE_EXPECTATIONS.yearGroup (shared English data) → i18n key. */
+const YEAR_GROUP_KEYS: Record<string, string> = {
+  'Reception (Autumn)': 'receptionAutumn',
+  'Reception (Spring/Summer)': 'receptionSpringSummer',
+  'Year 1 (Autumn)': 'year1Autumn',
+  'Year 1 (Spring/Summer)': 'year1SpringSummer',
+  'Year 2': 'year2',
+  'Year 3': 'year3',
+};
 
 function getAgeFromDob(month: number, year: number): number {
   const now = new Date();
@@ -111,73 +129,40 @@ interface PersonalisedTip {
   body: string;
 }
 
-function getPersonalisedTips(profile: ChildProfile, recommendedLevel: number, ageComparison: { age: string; expectedLevel: string } | null): PersonalisedTip[] {
+function getPersonalisedTips(profile: ChildProfile, recommendedLevel: number, ageComparison: { age: string; expectedLevel: string } | null, t: TFunction): PersonalisedTip[] {
   const tips: PersonalisedTip[] = [];
+  const tip = (icon: PersonalisedTip['icon'], id: string, vars?: Record<string, unknown>) =>
+    tips.push({ icon, title: t(`tips.${id}Title`, vars), body: t(`tips.${id}Body`, vars) });
 
   // Reading time recommendation based on age and habits
   const age = profile.birthYear ? getAgeFromDob(profile.birthMonth, profile.birthYear) : 5;
   const dailyMinutes = age <= 5 ? 10 : age <= 6 ? 15 : 20;
+  const vars = { age, minutes: dailyMinutes };
 
   if (profile.readingHabits === 'Occasionally' || profile.readingHabits === 'Just getting started') {
-    tips.push({
-      icon: 'clock',
-      title: `Start with just ${dailyMinutes} minutes a day`,
-      body: `At age ${age}, even ${dailyMinutes} minutes of daily reading practice makes a huge difference. Try reading together at the same time each day — bedtime or after school works well. Consistency matters more than length.`,
-    });
+    tip('clock', 'start', vars);
   } else if (profile.readingHabits === 'A few times a week') {
-    tips.push({
-      icon: 'clock',
-      title: `Try to read every day — aim for ${dailyMinutes} minutes`,
-      body: `You're already reading regularly, which is brilliant. Making it a daily habit — even for ${dailyMinutes} minutes — will accelerate your child's progress noticeably. Little and often is the key.`,
-    });
+    tip('clock', 'daily', vars);
   } else {
-    tips.push({
-      icon: 'sparkles',
-      title: 'You\'re doing brilliantly',
-      body: `Daily reading at age ${age} is one of the best things you can do. Keep it up — ${dailyMinutes} minutes a day is perfect. Your child is building strong reading foundations.`,
-    });
+    tip('sparkles', 'brilliant', vars);
   }
 
   // EAL / bilingual advice
   if (profile.homeLanguage === 'English + another language') {
-    tips.push({
-      icon: 'message',
-      title: 'Bilingualism is a superpower',
-      body: 'Speaking two languages at home is a huge advantage for your child\'s brain development. Keep speaking both languages — it doesn\'t slow down English reading. Read phonics books in English, but story books in either language.',
-    });
+    tip('message', 'bilingual');
   } else if (profile.homeLanguage === 'Mostly another language') {
-    tips.push({
-      icon: 'message',
-      title: 'Extra English reading time will help',
-      body: 'Since English isn\'t the main language at home, your child may need a little more daily phonics practice to build fluency. Try to fit in 10–15 minutes of English reading alongside your home language — both are valuable.',
-    });
+    tip('message', 'moreEnglish');
   }
 
   // Learning needs specific tips
   if (profile.learningNeeds === 'Dyslexia') {
-    tips.push({
-      icon: 'heart',
-      title: 'Multi-sensory reading works best',
-      body: 'For children with dyslexia, phonics is especially important — and so is patience. Use the sound buttons, trace letters with fingers, and keep sessions short (5–10 minutes). Celebrate every small win. Progress may be slower but it\'s very real.',
-    });
+    tip('heart', 'dyslexia');
   } else if (profile.learningNeeds === 'Speech & language') {
-    tips.push({
-      icon: 'heart',
-      title: 'Sounds first, then blending',
-      body: 'Children with speech and language needs benefit hugely from hearing sounds clearly. Use the sound buttons often, and give extra time for your child to respond. If they can hear the sound, they can learn to read it — even if speaking it is harder.',
-    });
+    tip('heart', 'speech');
   } else if (profile.learningNeeds === 'English as additional language') {
-    tips.push({
-      icon: 'message',
-      title: 'Phonics works brilliantly for EAL learners',
-      body: 'Systematic phonics is one of the most effective approaches for children learning English as an additional language. The sounds are consistent and predictable. Pair phonics practice with picture books to build vocabulary alongside decoding.',
-    });
+    tip('message', 'eal');
   } else if (profile.learningNeeds === 'ADHD / focus') {
-    tips.push({
-      icon: 'lightbulb',
-      title: 'Short bursts, big rewards',
-      body: 'Keep reading sessions to 5–8 minutes — shorter sessions with full attention beat longer distracted ones. Try adding movement: stand up between pages, use a pointer to track words, or do a star jump after each page. Make it active!',
-    });
+    tip('lightbulb', 'adhd');
   }
 
   // Age comparison advice
@@ -186,34 +171,18 @@ function getPersonalisedTips(profile: ChildProfile, recommendedLevel: number, ag
     if (expectedMatch) {
       const expectedLow = parseInt(expectedMatch[0]);
       if (recommendedLevel < expectedLow) {
-        tips.push({
-          icon: 'lightbulb',
-          title: 'Closing the gap is very achievable',
-          body: `Your child is a little behind UK expectations for their age — but this is completely normal and very fixable. With ${dailyMinutes} minutes of daily phonics practice at Level ${recommendedLevel}, most children catch up within a term. The key is regular practice, not cramming.`,
-        });
+        tip('lightbulb', 'gap', { minutes: dailyMinutes, level: recommendedLevel });
       }
     }
   }
 
   // School-specific tips
   if (profile.schoolType === 'Homeschool') {
-    tips.push({
-      icon: 'book',
-      title: 'Structure your phonics sessions',
-      body: 'As a homeschooling family, you have the advantage of one-to-one attention. Follow the levels in order — each book builds on the last. A short daily phonics session (10–15 minutes) followed by free reading works well.',
-    });
+    tip('book', 'homeschool');
   } else if (profile.schoolType === 'International school' || profile.schoolType === 'Religious school') {
-    tips.push({
-      icon: 'book',
-      title: 'Phonics at home supports school learning',
-      body: 'Your child\'s school may use a different reading approach. MyPhonicsBooks follows the UK phonics curriculum, which is systematic and evidence-based. Even 10 minutes at home will complement what they learn at school.',
-    });
+    tip('book', 'schoolSupport');
   } else if (profile.schoolType === 'Not yet in school') {
-    tips.push({
-      icon: 'sparkles',
-      title: 'You\'re giving them a head start',
-      body: 'Starting phonics before school is a wonderful gift. Keep it playful — no pressure, just fun with sounds. Your child will arrive at school already confident with letters and sounds, which makes a real difference.',
-    });
+    tip('sparkles', 'headStart');
   }
 
   // Cap at 3 most relevant tips
@@ -292,6 +261,7 @@ interface AssessmentProps {
 
 export default function Assessment({ initialMode, funnelMode, onFunnelComplete }: AssessmentProps = {}) {
   const navigate = useNavigate();
+  const { t } = useTranslation('assessment');
   const { user } = useAuth();
   const { data: children } = useChildren();
   const [searchParams] = useSearchParams();
@@ -361,7 +331,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
   const submitGuestAssessment = async (recommendedLevel: number) => {
     if (!guestEmail || !guestEmail.includes('@')) {
-      alert('Please enter a valid email address');
+      alert(t('errors.invalidEmail'));
       return;
     }
     setGuestSubmitting(true);
@@ -386,10 +356,10 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
         }
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Signup failed');
+      if (!res.ok) throw new Error(data.error || t('errors.signupFailed'));
       setGuestSubmitted(true);
     } catch (err) {
-      alert((err as Error).message || 'Something went wrong');
+      alert((err as Error).message || t('errors.generic'));
     } finally {
       setGuestSubmitting(false);
     }
@@ -728,13 +698,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 text-primary-ink mb-4"
               style={{ boxShadow: STICKER_SHADOW, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
             >
-              Free · no card · 3–10 minutes
+              {t('welcome.badge')}
             </span>
             <h2 className="font-display text-[28px] lg:text-[40px] lg:leading-[1.1] font-extrabold text-foreground mb-2 tracking-tight">
-              Find your child's reading level
+              {t('welcome.title')}
             </h2>
             <p className="text-sm lg:text-base text-muted-foreground leading-relaxed max-w-xs lg:max-w-md mx-auto">
-              Sit together, tap through a few sounds, and we'll find the exact right books — no guessing.
+              {t('welcome.subtitle')}
             </p>
           </div>
 
@@ -742,16 +712,16 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           <div className="mt-7 lg:mt-10 grid gap-4 lg:gap-6 lg:grid-cols-[1fr_1.15fr_1fr] lg:items-stretch">
             {/* How it works */}
             <div
-              className="order-1 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-left"
+              className="order-1 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-start"
               style={{ boxShadow: STICKER_SHADOW, border: '1px solid rgba(40,30,40,0.05)' }}
             >
-              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">How it works</p>
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">{t('welcome.howItWorks')}</p>
               <div className="space-y-2.5 lg:space-y-4">
                 {[
-                  { icon: '1', label: 'A few quick questions', desc: 'Tell us about your child' },
-                  { icon: '2', label: 'Quick check', desc: 'Tick which words your child can read' },
-                  { icon: '3', label: 'Sound test', desc: 'We test every sound at their level' },
-                  { icon: '4', label: 'Results', desc: 'See which sounds they know and need to learn' },
+                  { icon: '1', label: t('welcome.steps.questionsLabel'), desc: t('welcome.steps.questionsDesc') },
+                  { icon: '2', label: t('welcome.steps.checkLabel'), desc: t('welcome.steps.checkDesc') },
+                  { icon: '3', label: t('welcome.steps.soundLabel'), desc: t('welcome.steps.soundDesc') },
+                  { icon: '4', label: t('welcome.steps.resultsLabel'), desc: t('welcome.steps.resultsDesc') },
                 ].map(({ icon, label, desc }, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{icon}</span>
@@ -770,59 +740,58 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               className="order-3 lg:order-2 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 flex flex-col"
               style={{ boxShadow: STICKER_SHADOW, border: '2px solid #fff', outline: '2px solid #E84B8A30' }}
             >
-              <p className="text-sm lg:text-base font-display font-extrabold text-foreground text-center mb-1">Choose a test</p>
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground text-center mb-1">{t('welcome.chooseTest')}</p>
               <p className="text-xs text-muted-foreground text-center mb-4">
-                Sit with your child — 3 to 10 minutes depending on the test you pick.
+                {t('welcome.chooseTestHint')}
               </p>
               <div className="space-y-3 flex-1 flex flex-col justify-center">
                 <button
                   onClick={() => { setMode('rapid'); setOnboardingStep('dob'); setStage('onboarding'); }}
-                  className="w-full p-4 lg:p-5 rounded-[1.5rem] text-left transition-all active:translate-y-[3px]"
+                  className="w-full p-4 lg:p-5 rounded-[1.5rem] text-start transition-all active:translate-y-[3px]"
                   style={{ background: '#E84B8A', boxShadow: '0 4px 0 #BE1862, 0 14px 28px -10px #E84B8A80' }}
                 >
                   <div className="flex items-start gap-3">
                     <Zap className="w-6 h-6 text-white shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-sm lg:text-base font-display font-extrabold text-white">Quick Check · 3 min</p>
+                      <p className="text-sm lg:text-base font-display font-extrabold text-white">{t('welcome.quickTitle')}</p>
                       <p className="text-[11px] lg:text-xs text-white/80 mt-0.5">
-                        Adaptive sound test to find your child's level fast.
+                        {t('welcome.quickDesc')}
                       </p>
                     </div>
                   </div>
                 </button>
                 <button
                   onClick={() => { setMode('full'); setOnboardingStep('dob'); setStage('onboarding'); }}
-                  className="w-full p-4 lg:p-5 rounded-[1.5rem] bg-white text-left transition-all active:translate-y-[2px]"
+                  className="w-full p-4 lg:p-5 rounded-[1.5rem] bg-white text-start transition-all active:translate-y-[2px]"
                   style={{ boxShadow: '0 3px 0 rgba(40,30,40,0.08), 0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', border: '1px solid rgba(40,30,40,0.06)' }}
                 >
                   <div className="flex items-start gap-3">
                     <Search className="w-6 h-6 text-foreground shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-sm lg:text-base font-display font-extrabold text-foreground">Full Test · ~10 min</p>
+                      <p className="text-sm lg:text-base font-display font-extrabold text-foreground">{t('welcome.fullTitle')}</p>
                       <p className="text-[11px] lg:text-xs text-muted-foreground mt-0.5">
-                        Tests sounds, real words, alien words and tricky words at every level.
+                        {t('welcome.fullDesc')}
                       </p>
                     </div>
                   </div>
                 </button>
               </div>
               <p className="mt-4 text-[10px] text-muted-foreground text-center">
-                Your answers are private. See our{' '}
-                <a href="/privacy" className="underline">privacy policy</a>.
+                <Trans t={t} i18nKey="welcome.privacy" components={{ link: <a href="/privacy" className="underline" /> }} />
               </p>
             </div>
 
             {/* What you'll get */}
             <div
-              className="order-2 lg:order-3 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-left"
+              className="order-2 lg:order-3 h-full rounded-[1.75rem] bg-white p-5 lg:p-6 text-start"
               style={{ boxShadow: STICKER_SHADOW, border: '1px solid rgba(40,30,40,0.05)' }}
             >
-              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">What you'll get at the end</p>
+              <p className="text-sm lg:text-base font-display font-extrabold text-foreground mb-3 lg:mb-4">{t('welcome.whatYouGet')}</p>
               <ul className="space-y-2 lg:space-y-3.5 text-xs lg:text-[13px] text-muted-foreground">
-                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>Your child's reading level on the 8-level journey</span></li>
-                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>A sound-by-sound map of what they know</span></li>
-                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>One free book matched to that level</span></li>
-                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>A simple "next steps" plan</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>{t('welcome.get.level')}</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>{t('welcome.get.map')}</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>{t('welcome.get.book')}</span></li>
+                <li className="flex gap-2"><span className="text-emerald-600 font-bold">✓</span><span>{t('welcome.get.plan')}</span></li>
               </ul>
             </div>
           </div>
@@ -870,14 +839,14 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           {/* Progress */}
           <div className="flex items-center gap-2 mb-1">
             <button onClick={goBack} className="text-xs text-muted-foreground hover:text-foreground">
-              ← Back
+              <span className="inline-block rtl:-scale-x-100">←</span> {t('common:actions.back')}
             </button>
             <div className="flex-1" />
             <button
               onClick={() => setStage('screening')}
               className="text-xs text-muted-foreground hover:text-foreground"
             >
-              Skip
+              {t('common:actions.skip')}
             </button>
           </div>
           <div className="h-1.5 rounded-full bg-muted mb-6 overflow-hidden">
@@ -892,34 +861,34 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <div className="text-center">
               <Baby className="w-10 h-10 mx-auto mb-3 text-level-1" />
               <h3 className="text-xl font-extrabold text-foreground mb-1">
-                When was your child born?
+                {t('onboarding.dob.title')}
               </h3>
               <p className="text-xs text-muted-foreground mb-6">
-                This helps us compare to UK age expectations.
+                {t('onboarding.dob.hint')}
               </p>
 
               <div className="flex gap-3 mb-6">
                 <div className="flex-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5 text-left">Month</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5 text-start">{t('onboarding.dob.month')}</label>
                   <select
                     value={profile.birthMonth || ''}
                     onChange={e => setProfile(prev => ({ ...prev, birthMonth: parseInt(e.target.value) }))}
                     className="w-full p-3 rounded-xl border-2 border-border bg-card text-sm font-bold appearance-none"
                   >
-                    <option value="">Month</option>
-                    {MONTHS.map((m, i) => (
+                    <option value="">{t('onboarding.dob.month')}</option>
+                    {getMonthNames(i18n.language).map((m, i) => (
                       <option key={m} value={i + 1}>{m}</option>
                     ))}
                   </select>
                 </div>
                 <div className="flex-1">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5 text-left">Year</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5 text-start">{t('onboarding.dob.year')}</label>
                   <select
                     value={profile.birthYear || ''}
                     onChange={e => setProfile(prev => ({ ...prev, birthYear: parseInt(e.target.value) }))}
                     className="w-full p-3 rounded-xl border-2 border-border bg-card text-sm font-bold appearance-none"
                   >
-                    <option value="">Year</option>
+                    <option value="">{t('onboarding.dob.year')}</option>
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
                     ))}
@@ -929,7 +898,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
               {profile.birthMonth > 0 && profile.birthYear > 0 && (
                 <p className="text-xs text-muted-foreground mb-4">
-                  Age: {getAgeFromDob(profile.birthMonth, profile.birthYear)} years old
+                  {t('onboarding.dob.age', { age: getAgeFromDob(profile.birthMonth, profile.birthYear) })}
                 </p>
               )}
 
@@ -938,7 +907,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 disabled={!profile.birthMonth || !profile.birthYear}
                 className="w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200 disabled:opacity-40"
               >
-                Continue
+                {t('common:actions.continue')}
               </button>
             </div>
           )}
@@ -948,24 +917,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <div className="text-center">
               <School className="w-10 h-10 mx-auto mb-3 text-level-2" />
               <h3 className="text-xl font-extrabold text-foreground mb-1">
-                What type of school?
+                {t('onboarding.school.title')}
               </h3>
               <p className="text-xs text-muted-foreground mb-6">
-                This helps us tailor recommendations.
+                {t('onboarding.school.hint')}
               </p>
 
               <div className="space-y-2.5">
-                {SCHOOL_TYPES.map(type => (
+                {SCHOOL_TYPES.map(({ value: type, key: optKey }) => (
                   <button
                     key={type}
                     onClick={() => selectOption('schoolType', type)}
-                    className={`w-full p-4 rounded-xl border-2 text-left text-sm font-bold transition-all active:scale-[0.97] ${
+                    className={`w-full p-4 rounded-xl border-2 text-start text-sm font-bold transition-all active:scale-[0.97] ${
                       profile.schoolType === type
                         ? 'border-level-2 bg-amber-50 dark:bg-amber-950/20 text-foreground'
                         : 'border-border bg-card text-foreground hover:border-level-2/50'
                     }`}
                   >
-                    {type}
+                    {t(`onboarding.school.options.${optKey}`)}
                   </button>
                 ))}
               </div>
@@ -977,24 +946,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <div className="text-center">
               <Heart className="w-10 h-10 mx-auto mb-3 text-level-5" />
               <h3 className="text-xl font-extrabold text-foreground mb-1">
-                Any learning needs?
+                {t('onboarding.needs.title')}
               </h3>
               <p className="text-xs text-muted-foreground mb-6">
-                So we can support your child's journey.
+                {t('onboarding.needs.hint')}
               </p>
 
               <div className="space-y-2.5">
-                {LEARNING_NEEDS.map(need => (
+                {LEARNING_NEEDS.map(({ value: need, key: optKey }) => (
                   <button
                     key={need}
                     onClick={() => selectOption('learningNeeds', need)}
-                    className={`w-full p-4 rounded-xl border-2 text-left text-sm font-bold transition-all active:scale-[0.97] ${
+                    className={`w-full p-4 rounded-xl border-2 text-start text-sm font-bold transition-all active:scale-[0.97] ${
                       profile.learningNeeds === need
                         ? 'border-level-5 bg-purple-50 dark:bg-purple-950/20 text-foreground'
                         : 'border-border bg-card text-foreground hover:border-level-5/50'
                     }`}
                   >
-                    {need}
+                    {t(`onboarding.needs.options.${optKey}`)}
                   </button>
                 ))}
               </div>
@@ -1006,24 +975,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <div className="text-center">
               <Languages className="w-10 h-10 mx-auto mb-3 text-level-4" />
               <h3 className="text-xl font-extrabold text-foreground mb-1">
-                Language at home?
+                {t('onboarding.language.title')}
               </h3>
               <p className="text-xs text-muted-foreground mb-6">
-                Helps us understand your child's reading context.
+                {t('onboarding.language.hint')}
               </p>
 
               <div className="space-y-2.5">
-                {HOME_LANGUAGES.map(lang => (
+                {HOME_LANGUAGES.map(({ value: lang, key: optKey }) => (
                   <button
                     key={lang}
                     onClick={() => selectOption('homeLanguage', lang)}
-                    className={`w-full p-4 rounded-xl border-2 text-left text-sm font-bold transition-all active:scale-[0.97] ${
+                    className={`w-full p-4 rounded-xl border-2 text-start text-sm font-bold transition-all active:scale-[0.97] ${
                       profile.homeLanguage === lang
                         ? 'border-level-4 bg-blue-50 dark:bg-blue-950/20 text-foreground'
                         : 'border-border bg-card text-foreground hover:border-level-4/50'
                     }`}
                   >
-                    {lang}
+                    {t(`onboarding.language.options.${optKey}`)}
                   </button>
                 ))}
               </div>
@@ -1035,24 +1004,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             <div className="text-center">
               <BookOpen className="w-10 h-10 mx-auto mb-3 text-level-3" />
               <h3 className="text-xl font-extrabold text-foreground mb-1">
-                How often do you read together?
+                {t('onboarding.reading.title')}
               </h3>
               <p className="text-xs text-muted-foreground mb-6">
-                No judgement — just helps us personalise.
+                {t('onboarding.reading.hint')}
               </p>
 
               <div className="space-y-2.5">
-                {READING_HABITS.map(habit => (
+                {READING_HABITS.map(({ value: habit, key: optKey }) => (
                   <button
                     key={habit}
                     onClick={() => selectOption('readingHabits', habit)}
-                    className={`w-full p-4 rounded-xl border-2 text-left text-sm font-bold transition-all active:scale-[0.97] ${
+                    className={`w-full p-4 rounded-xl border-2 text-start text-sm font-bold transition-all active:scale-[0.97] ${
                       profile.readingHabits === habit
                         ? 'border-level-3 bg-green-50 dark:bg-green-950/20 text-foreground'
                         : 'border-border bg-card text-foreground hover:border-level-3/50'
                     }`}
                   >
-                    {habit}
+                    {t(`onboarding.reading.options.${optKey}`)}
                   </button>
                 ))}
               </div>
@@ -1078,11 +1047,11 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
       <Wrap>
         <div className="px-4 pt-6 pb-4 max-w-md lg:max-w-xl mx-auto text-center lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
           <h2 className="text-xl lg:text-3xl font-extrabold text-foreground mb-2 tracking-tight">
-            Quick Check
+            {t('screening.title')}
           </h2>
           <p className="text-sm lg:text-base text-muted-foreground mb-6 leading-relaxed">
-            Which of these words can your child read aloud?<br />
-            Tap the speaker to hear each word, then tick the ones they know.
+            {t('screening.body1')}<br />
+            {t('screening.body2')}
           </p>
 
           <div className="space-y-3 mb-6">
@@ -1101,7 +1070,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 }`}>
                   {screeningChecks[level] && <CheckCircle2 className="w-4 h-4 text-white" />}
                 </div>
-                <span className="font-child text-2xl lg:text-3xl font-bold text-foreground flex-1 text-left">{word}</span>
+                <span dir="ltr" lang="en" className="font-child text-2xl lg:text-3xl font-bold text-foreground flex-1 text-start">{word}</span>
                 <div onClick={e => e.stopPropagation()}>
                   <WordPlayer word={word} size="md" />
                 </div>
@@ -1116,7 +1085,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             onClick={handleScreeningContinue}
             className="w-full py-4 lg:py-5 rounded-xl gradient-primary text-primary-foreground font-bold text-base lg:text-lg shadow-button active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2"
           >
-            Continue <ArrowRight className="w-4 h-4" />
+            {t('common:actions.continue')} <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
           </button>
 
           <button
@@ -1128,7 +1097,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             }}
             className="w-full mt-3 py-3 rounded-xl bg-card border border-border text-muted-foreground font-bold text-sm active:scale-[0.97] transition-transform duration-200"
           >
-            Skip — start from Level 1
+            {t('screening.skip')}
           </button>
         </div>
       </Wrap>
@@ -1146,18 +1115,21 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
     const isAlienRound = currentItem.category === 'alien_words';
 
     const stageLabel = {
-      'sound-test': 'Sounds',
-      'alien-check': 'Alien Words',
-      'word-confirm': 'Word Check',
-      'probe-up': 'Bonus Round',
+      'sound-test': t('test.stages.sounds'),
+      'alien-check': t('test.stages.aliens'),
+      'word-confirm': t('test.stages.wordCheck'),
+      'probe-up': t('test.stages.bonus'),
     }[stage];
 
-    const stageInstruction = {
-      'sound-test': CATEGORY_INSTRUCTIONS.sound_recognition,
-      'alien-check': CATEGORY_INSTRUCTIONS.alien_words,
-      'word-confirm': CATEGORY_INSTRUCTIONS.word_reading,
-      'probe-up': CATEGORY_INSTRUCTIONS.sound_recognition,
-    }[stage];
+    const instructionCategory = ({
+      'sound-test': 'sound_recognition',
+      'alien-check': 'alien_words',
+      'word-confirm': 'word_reading',
+      'probe-up': 'sound_recognition',
+    } as const)[stage];
+    const stageInstruction = t(`test.instructions.${instructionCategory}`, {
+      defaultValue: CATEGORY_INSTRUCTIONS[instructionCategory],
+    });
 
     const progressPct = ((testIdx) / testItems.length) * 100;
 
@@ -1170,7 +1142,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           {/* Header */}
           <div className="flex justify-between items-center mb-2">
             <span className={`text-xs lg:text-sm font-bold uppercase tracking-wide ${LEVEL_TEXT[currentLevel]}`}>
-              Level {currentLevel}
+              {t('test.level', { level: currentLevel })}
             </span>
             <span className="text-xs lg:text-sm font-bold text-muted-foreground uppercase tracking-wide">
               {stageLabel}
@@ -1185,10 +1157,10 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             />
           </div>
           <p className="text-[10px] lg:text-xs text-muted-foreground mb-4">
-            {testIdx + 1} of {testItems.length}
+            {t('test.progress', { current: testIdx + 1, total: testItems.length })}
             {stage === 'probe-up' && (
-              <span className="ml-1 text-blue-500">
-                <Zap className="w-2.5 h-2.5 inline" /> bonus
+              <span className="ms-1 text-blue-500">
+                <Zap className="w-2.5 h-2.5 inline" /> {t('test.bonus')}
               </span>
             )}
           </p>
@@ -1200,7 +1172,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
           {/* Item card */}
           <div className={`bg-card border-2 ${LEVEL_BORDERS[currentLevel]} rounded-2xl p-10 lg:p-14 mb-6 shadow-card`}>
-            <p className="font-child text-5xl lg:text-7xl font-bold text-foreground">
+            <p dir="ltr" lang="en" className="font-child text-5xl lg:text-7xl font-bold text-foreground">
               {currentItem.item}
             </p>
             <div className="mt-6 lg:mt-8 flex justify-center">
@@ -1211,24 +1183,24 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               )}
             </div>
             {isAlienRound && (
-              <p className="mt-3 text-xs lg:text-sm text-muted-foreground italic">(made-up word)</p>
+              <p className="mt-3 text-xs lg:text-sm text-muted-foreground italic">{t('test.madeUp')}</p>
             )}
           </div>
 
           {/* Mark buttons */}
-          <p className="text-xs lg:text-sm text-muted-foreground mb-3">Did they get it right?</p>
+          <p className="text-xs lg:text-sm text-muted-foreground mb-3">{t('test.didTheyGetIt')}</p>
           <div className="flex gap-3">
             <button
               onClick={() => handleMark(false)}
               className="flex-1 flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl bg-tint-orange border border-border text-foreground font-bold text-base lg:text-lg active:scale-95 lg:hover:brightness-95 transition-all duration-200"
             >
-              <XCircle className="w-5 h-5 lg:w-6 lg:h-6 text-destructive" /> Not yet
+              <XCircle className="w-5 h-5 lg:w-6 lg:h-6 text-destructive" /> {t('test.notYet')}
             </button>
             <button
               onClick={() => handleMark(true)}
               className="flex-1 flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl bg-tint-green border border-border text-foreground font-bold text-base lg:text-lg active:scale-95 lg:hover:brightness-95 transition-all duration-200"
             >
-              <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6 text-level-3" /> Correct
+              <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6 text-level-3" /> {t('test.correct')}
             </button>
           </div>
 
@@ -1236,7 +1208,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           {stage === 'sound-test' && consecutiveWrong >= 2 && (
             <p className="text-xs text-orange-500 mt-3 flex items-center justify-center gap-1">
               <AlertTriangle className="w-3 h-3" />
-              {consecutiveWrong} wrong in a row — 1 more skips ahead
+              {t('test.wrongInARow', { n: consecutiveWrong })}
             </p>
           )}
         </div>
@@ -1253,15 +1225,15 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
         <div className="px-4 pt-12 pb-4 max-w-md lg:max-w-lg mx-auto text-center lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:pt-12">
           <div className={`${LEVEL_COLORS[currentLevel]} text-white rounded-2xl p-8 lg:p-12 mb-6 shadow-card`}>
             <Trophy className="w-12 h-12 lg:w-16 lg:h-16 mx-auto mb-3 opacity-90" />
-            <p className="text-3xl lg:text-4xl font-extrabold mb-1">Level {currentLevel} Passed!</p>
-            <p className="text-sm lg:text-base opacity-80">{LEVEL_NAMES[currentLevel].name}</p>
+            <p className="text-3xl lg:text-4xl font-extrabold mb-1">{t('levelPassed.title', { level: currentLevel })}</p>
+            <p lang="en" className="text-sm lg:text-base opacity-80">{LEVEL_NAMES[currentLevel].name}</p>
           </div>
 
           <button
             onClick={advanceToNextLevel}
             className={`w-full py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[Math.min(currentLevel + 1, JOURNEY_LEVEL_MAX)]} text-white font-bold text-base lg:text-lg shadow-sm active:scale-[0.97] transition-transform duration-200 flex items-center justify-center gap-2`}
           >
-            Continue to Level {currentLevel + 1} <ArrowRight className="w-4 h-4" />
+            {t('levelPassed.continue', { level: currentLevel + 1 })} <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
           </button>
         </div>
       </Wrap>
@@ -1295,7 +1267,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
       return (
         <Wrap>
           <BookRevealFullPage
-            title={revealBook?.title ?? `Level ${recommendedLevel} Book`}
+            title={revealBook?.title ?? t('results.bookFallback', { level: recommendedLevel })}
             level={recommendedLevel}
             coverUrl={revealCoverUrl}
             onContinue={() => setBookRevealDismissed(true)}
@@ -1308,13 +1280,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
       <Wrap>
         <div className="px-4 pt-6 pb-8 max-w-md lg:max-w-xl mx-auto text-center lg:pt-10">
           <h2 className="text-[28px] lg:text-4xl font-extrabold text-foreground mb-1 tracking-tight">
-            Assessment Complete
+            {t('results.title')}
           </h2>
           <p className="text-sm text-muted-foreground mb-1">
-            Here's your child's phonics profile.
+            {t('results.subtitle')}
           </p>
           <p className="text-[10px] text-muted-foreground mb-3">
-            {testedCount} items tested
+            {t('results.itemsTested', { n: testedCount })}
           </p>
 
           {/* Quick-jump tabs — parents on phones don't have to scroll the
@@ -1325,12 +1297,12 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           {/* Recommended level */}
           <div id="result-level" className={`${LEVEL_COLORS[recommendedLevel]} text-white rounded-2xl p-6 mb-5 shadow-card scroll-mt-24`}>
             <Star className="w-8 h-8 mx-auto mb-2 opacity-90" />
-            <p className="text-sm opacity-80 mb-1">Recommended starting level</p>
-            <p className="text-4xl font-extrabold mb-1">Level {recommendedLevel}</p>
+            <p className="text-sm opacity-80 mb-1">{t('results.recommended')}</p>
+            <p className="text-4xl font-extrabold mb-1">{t('results.level', { level: recommendedLevel })}</p>
             {levelInfo && (
               <>
-                <p className="text-sm font-bold">{levelInfo.name}</p>
-                <p className="text-xs opacity-80 mt-1">{levelInfo.ageRange}</p>
+                <p lang="en" className="text-sm font-bold">{levelInfo.name}</p>
+                <p className="text-xs opacity-80 mt-1">{t('results.ageRange', { range: levelInfo.ageRange.replace(/^Ages\s*/, '') })}</p>
               </>
             )}
           </div>
@@ -1338,18 +1310,23 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           {/* Age comparison — small text-only summary, kept near the headline
               so parents see the "expected vs actual" stat before the chart. */}
           {ageComparison && (
-            <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
+            <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-start shadow-card">
               <p className="text-xs font-bold text-foreground mb-2">
-                UK Age Comparison — {ageComparison.age} years ({ageComparison.yearGroup})
+                {t('results.ageComparison', {
+                  age: ageComparison.age,
+                  yearGroup: YEAR_GROUP_KEYS[ageComparison.yearGroup]
+                    ? t(`results.yearGroups.${YEAR_GROUP_KEYS[ageComparison.yearGroup]}`)
+                    : ageComparison.yearGroup,
+                })}
               </p>
               <div className="space-y-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Expected level</span>
-                  <span className="font-bold">{ageComparison.expectedLevel}</span>
+                  <span className="text-muted-foreground">{t('results.expectedLevel')}</span>
+                  <span className="font-bold">{t('results.level', { level: ageComparison.expectedLevel.replace(/^Level\s*/, '') })}</span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Your child</span>
-                  <span className="font-bold">Level {recommendedLevel}</span>
+                  <span className="text-muted-foreground">{t('results.yourChild')}</span>
+                  <span className="font-bold">{t('results.level', { level: recommendedLevel })}</span>
                 </div>
                 {(() => {
                   const expectedMatch = ageComparison.expectedLevel.match(/\d+/g);
@@ -1363,9 +1340,9 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                   else status = 'below';
 
                   const cfg = {
-                    above: { label: 'Above expectations', color: 'text-level-3', bg: 'bg-tint-green' },
-                    at: { label: 'At expected level', color: 'text-level-4', bg: 'bg-blue-50 dark:bg-blue-950/30' },
-                    below: { label: 'Below expectations', color: 'text-orange-500', bg: 'bg-tint-orange' },
+                    above: { label: t('results.status.above'), color: 'text-level-3', bg: 'bg-tint-green' },
+                    at: { label: t('results.status.at'), color: 'text-level-4', bg: 'bg-blue-50 dark:bg-blue-950/30' },
+                    below: { label: t('results.status.below'), color: 'text-orange-500', bg: 'bg-tint-orange' },
                   }[status];
 
                   return (
@@ -1373,13 +1350,12 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                       <p className={`text-xs font-bold ${cfg.color}`}>{cfg.label}</p>
                       {status === 'below' && (
                         <p className="text-[10px] text-muted-foreground mt-1">
-                          In England, children this age typically work at {ageComparison.expectedLevel}.
-                          Targeted practice with MyPhonicsBooks can help close this gap.
+                          {t('results.belowNote', { expected: t('results.level', { level: ageComparison.expectedLevel.replace(/^Level\s*/, '') }) })}
                         </p>
                       )}
                       {status === 'above' && (
                         <p className="text-[10px] text-muted-foreground mt-1">
-                          Your child is ahead of UK age expectations. Keep up the great work!
+                          {t('results.aboveNote')}
                         </p>
                       )}
                     </div>
@@ -1399,7 +1375,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               ? (navigator.language?.split('-')[1]?.toUpperCase() ?? null)
               : null;
             return (
-              <div className="mb-5 text-left">
+              <div className="mb-5 text-start">
                 <PhonicsAveragesChart
                   ageMonths={ageMonths}
                   childLevel={recommendedLevel}
@@ -1421,14 +1397,14 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               })}
               className={`w-full flex items-center justify-center gap-2 py-4 mb-5 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
             >
-              Claim My Free Book <ChevronRight className="w-5 h-5" />
+              {t('results.claimBook')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
             </button>
           )}
 
           {/* Sounds breakdown — condensed in funnelMode (untested levels
               folded into a single 'not tested' line). */}
-          <div id="result-map" className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card scroll-mt-24">
-            <p className="text-xs font-bold text-foreground mb-3">Sound Map</p>
+          <div id="result-map" className="bg-card border border-border rounded-2xl p-4 mb-5 text-start shadow-card scroll-mt-24">
+            <p className="text-xs font-bold text-foreground mb-3">{t('results.soundMap')}</p>
             <SoundMap sounds={soundMap} results={resultsMap} compact={funnelMode} />
           </div>
 
@@ -1443,32 +1419,32 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               })}
               className={`w-full flex items-center justify-center gap-2 py-4 mb-5 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
             >
-              Claim My Free Book <ChevronRight className="w-5 h-5" />
+              {t('results.claimBook')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
             </button>
           )}
 
           {/* Level-by-level breakdown — collapsed by default in funnelMode
               so the page is short and a Continue button is reachable. */}
           {levelScores.length > 0 && (
-            <details id="result-levels" className="mb-5 scroll-mt-24 text-left" open={!funnelMode}>
+            <details id="result-levels" className="mb-5 scroll-mt-24 text-start" open={!funnelMode}>
               <summary className="text-xs font-bold text-foreground cursor-pointer py-2 list-none flex items-center justify-between">
-                <span>Level Results ({levelScores.length})</span>
+                <span>{t('results.levelResults', { n: levelScores.length })}</span>
                 <ChevronRight className="w-4 h-4 text-muted-foreground transition-transform [details[open]_&]:rotate-90" />
               </summary>
               <div className="space-y-3 mt-2">
               {levelScores.map(score => (
-                <div key={score.level} className="bg-card border border-border rounded-2xl p-4 text-left shadow-card">
+                <div key={score.level} className="bg-card border border-border rounded-2xl p-4 text-start shadow-card">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className={`w-7 h-7 rounded-full ${LEVEL_COLORS[score.level]} text-white text-xs font-bold flex items-center justify-center`}>
                         {score.level}
                       </span>
-                      <span className="text-sm font-bold text-foreground">{LEVEL_NAMES[score.level].name}</span>
+                      <span lang="en" className="text-sm font-bold text-foreground">{LEVEL_NAMES[score.level].name}</span>
                     </div>
                     <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                       score.passed ? 'bg-tint-green text-level-3' : 'bg-tint-orange text-orange-500'
                     }`}>
-                      {score.passed ? 'PASSED' : 'NOT YET'}
+                      {score.passed ? t('results.passed') : t('results.notYet')}
                     </span>
                   </div>
                   {/* Show all three core categories explicitly. Untested
@@ -1481,13 +1457,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                       const cat = score.categories.find(c => c.category === catKey);
                       return (
                         <div key={catKey} className="flex justify-between text-[11px]">
-                          <span className="text-muted-foreground">{CATEGORY_LABELS[catKey]}</span>
+                          <span className="text-muted-foreground">{t(`results.categories.${catKey}`, { defaultValue: CATEGORY_LABELS[catKey] })}</span>
                           {cat ? (
                             <span className={`font-bold ${cat.passed ? 'text-foreground' : 'text-orange-500'}`}>
                               {cat.percentage}%
                             </span>
                           ) : (
-                            <span className="font-medium text-muted-foreground italic">Not tested</span>
+                            <span className="font-medium text-muted-foreground italic">{t('results.notTested')}</span>
                           )}
                         </div>
                       );
@@ -1501,23 +1477,23 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
 
           {/* All wrong items */}
           {wrongItems.length > 0 && (
-            <div className="bg-tint-orange rounded-2xl p-4 mb-5 text-left">
+            <div className="bg-tint-orange rounded-2xl p-4 mb-5 text-start">
               <p className="text-xs font-bold text-foreground mb-2">
-                All items to practise ({wrongItems.length})
+                {t('results.toPractise', { n: wrongItems.length })}
               </p>
-              <div className="flex flex-wrap gap-1.5">
+              <EnglishOnly className="flex flex-wrap gap-1.5">
                 {wrongItems.map((w, i) => (
                   <span key={i} className="text-xs bg-background border border-border rounded-lg px-2 py-1 font-mono">
                     {w.item}
                   </span>
                 ))}
-              </div>
+              </EnglishOnly>
             </div>
           )}
 
           {/* Personalised tips */}
           {(() => {
-            const tips = getPersonalisedTips(profile, recommendedLevel, ageComparison ?? null);
+            const tips = getPersonalisedTips(profile, recommendedLevel, ageComparison ?? null, t);
             if (tips.length === 0) return null;
 
             const iconMap = {
@@ -1530,8 +1506,8 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
             };
 
             return (
-              <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
-                <p className="text-xs font-bold text-foreground mb-3">Personalised for you</p>
+              <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-start shadow-card">
+                <p className="text-xs font-bold text-foreground mb-3">{t('results.personalised')}</p>
                 <div className="space-y-4">
                   {tips.map((tip, i) => (
                     <div key={i} className="flex items-start gap-3">
@@ -1548,14 +1524,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
           })()}
 
           {/* Detailed test option */}
-          <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-left shadow-card">
+          <div className="bg-card border border-border rounded-2xl p-4 mb-5 text-start shadow-card">
             <div className="flex items-start gap-3">
               <Search className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-bold text-foreground mb-1">Want a deeper analysis?</p>
+                <p className="text-xs font-bold text-foreground mb-1">{t('results.deeperTitle')}</p>
                 <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  This rapid test finds your child's level. Take the full detailed test
-                  to find every gap across all sounds, words, and tricky words.
+                  {t('results.deeperBody')}
                 </p>
               </div>
             </div>
@@ -1576,28 +1551,28 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
               })}
               className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200 scroll-mt-24`}
             >
-              Claim My Free Book <ChevronRight className="w-5 h-5" />
+              {t('results.claimBook')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
             </button>
           )}
 
           {!user && !guestSubmitted && !funnelMode && (
-            <div className="bg-card border-2 border-primary rounded-2xl p-5 mb-3 text-left shadow-card">
+            <div className="bg-card border-2 border-primary rounded-2xl p-5 mb-3 text-start shadow-card">
               <p className="text-sm font-bold text-foreground mb-1">
-                Save your results & get a free book
+                {t('results.saveTitle')}
               </p>
               <p className="text-xs text-muted-foreground mb-4">
-                Enter your email and we'll unlock a free Level {recommendedLevel} book and send you a login link.
+                {t('results.saveBody', { level: recommendedLevel })}
               </p>
               <input
                 type="text"
-                placeholder="Child's name (optional)"
+                placeholder={t('results.childNamePlaceholder')}
                 value={guestChildName}
                 onChange={(e) => setGuestChildName(e.target.value)}
                 className="w-full mb-2 px-4 py-3 rounded-xl border border-border bg-background text-sm"
               />
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder={t('results.emailPlaceholder')}
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
                 className="w-full mb-3 px-4 py-3 rounded-xl border border-border bg-background text-sm"
@@ -1607,7 +1582,7 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 disabled={guestSubmitting || !guestEmail}
                 className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-sm shadow-sm active:scale-[0.97] transition-transform duration-200 disabled:opacity-50`}
               >
-                {guestSubmitting ? 'Saving...' : <>Unlock My Free Book <ChevronRight className="w-4 h-4" /></>}
+                {guestSubmitting ? t('results.saving') : <>{t('results.unlock')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" /></>}
               </button>
             </div>
           )}
@@ -1622,11 +1597,11 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 open={true}
                 onClose={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
                 onContinue={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
-                title={firstBook?.title ?? `Level ${recommendedLevel} Book`}
+                title={firstBook?.title ?? t('results.bookFallback', { level: recommendedLevel })}
                 level={recommendedLevel}
                 coverUrl={coverUrl}
-                subtitle={`Check your email at ${guestEmail} for your login link`}
-                ctaLabel="Browse the Library"
+                subtitle={t('results.checkEmail', { email: guestEmail })}
+                ctaLabel={t('results.browseLibrary')}
               />
             );
           })()}
@@ -1637,13 +1612,13 @@ export default function Assessment({ initialMode, funnelMode, onFunnelComplete }
                 onClick={reset}
                 className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-card border border-border font-bold text-sm shadow-card active:scale-[0.97] transition-transform duration-200"
               >
-                <RotateCcw className="w-4 h-4" /> Retake
+                <RotateCcw className="w-4 h-4" /> {t('results.retake')}
               </button>
               <button
                 onClick={() => navigate('/library', { state: { filterLevel: recommendedLevel } })}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl ${LEVEL_COLORS[recommendedLevel]} text-white font-bold text-sm shadow-sm active:scale-[0.97] transition-transform duration-200`}
               >
-                Browse Level {recommendedLevel} <ChevronRight className="w-4 h-4" />
+                {t('results.browseLevel', { level: recommendedLevel })} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
               </button>
             </div>
           )}
@@ -1666,18 +1641,19 @@ interface BookRevealFullPageProps {
 
 function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFullPageProps) {
   const levelInfo = getJourneyLevel(level);
+  const { t } = useTranslation('assessment');
   return (
     <div className="px-4 pt-6 pb-10 max-w-md lg:max-w-lg mx-auto text-center animate-in fade-in slide-in-from-bottom-4 duration-500 lg:min-h-[calc(100vh-7rem)] lg:flex lg:flex-col lg:justify-center lg:py-10">
       <div className={`${LEVEL_COLORS[level]} text-white rounded-3xl p-6 pb-8 lg:p-10 lg:pb-10 shadow-card`}>
         <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full mb-4">
           <Sparkles className="w-4 h-4" />
-          <span className="text-xs font-bold uppercase tracking-wide">Book Unlocked!</span>
+          <span className="text-xs font-bold uppercase tracking-wide">{t('reveal.badge')}</span>
         </div>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-1">
-          Your free book is ready
+          {t('reveal.title')}
         </h2>
         <p className="text-sm lg:text-base opacity-90 mb-5">
-          Level {level} — {levelInfo?.name}
+          {t('reveal.levelName', { level, name: levelInfo?.name ?? '' })}
         </p>
 
         <div className="relative rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-white mx-auto max-w-[220px] lg:max-w-[260px]">
@@ -1689,9 +1665,9 @@ function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFu
             </div>
           )}
         </div>
-        <p className="font-bold text-white text-lg lg:text-xl mt-4">{title}</p>
+        <p dir="ltr" lang="en" className="font-bold text-white text-lg lg:text-xl mt-4">{title}</p>
         <p className="text-xs lg:text-sm opacity-90 mt-1">
-          Based on your results, you've unlocked this free book.
+          {t('reveal.body')}
         </p>
       </div>
 
@@ -1699,7 +1675,7 @@ function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFu
         onClick={onContinue}
         className={`mt-6 w-full flex items-center justify-center gap-2 py-4 lg:py-5 rounded-xl ${LEVEL_COLORS[level]} text-white font-bold text-base lg:text-lg shadow-button active:scale-[0.97] transition-transform duration-200`}
       >
-        Continue to my results <ChevronRight className="w-5 h-5" />
+        {t('reveal.continue')} <ChevronRight className="w-5 h-5 rtl:-scale-x-100" />
       </button>
     </div>
   );
@@ -1707,14 +1683,15 @@ function BookRevealFullPage({ title, level, coverUrl, onContinue }: BookRevealFu
 
 /* ─── Quick-jump section nav for the long results page ──────────── */
 
-const RESULT_SECTIONS: { id: string; label: string }[] = [
-  { id: 'result-level', label: 'Level' },
-  { id: 'result-map', label: 'Map' },
-  { id: 'result-levels', label: 'Levels' },
-  { id: 'result-continue', label: 'Continue' },
+const RESULT_SECTIONS: { id: string; labelKey: string }[] = [
+  { id: 'result-level', labelKey: 'nav.level' },
+  { id: 'result-map', labelKey: 'nav.map' },
+  { id: 'result-levels', labelKey: 'nav.levels' },
+  { id: 'result-continue', labelKey: 'nav.continue' },
 ];
 
 function ResultsSectionNav() {
+  const { t } = useTranslation('assessment');
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1729,7 +1706,7 @@ function ResultsSectionNav() {
             onClick={() => scrollTo(s.id)}
             className="flex-1 min-w-[5rem] text-[11px] font-bold text-foreground/80 hover:text-foreground hover:bg-pink-50 active:bg-pink-100 rounded-full px-3 py-1.5 transition-colors whitespace-nowrap"
           >
-            {s.label}
+            {t(s.labelKey)}
           </button>
         ))}
       </div>

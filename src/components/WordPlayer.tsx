@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Volume2, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 function getWordUrl(word: string): string {
   const key = word.toLowerCase().replace(/\s+/g, '_');
@@ -13,6 +14,7 @@ interface WordPlayerProps {
 }
 
 export function WordPlayer({ word, className = '', size = 'md' }: WordPlayerProps) {
+  const { t } = useTranslation('reader');
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -41,8 +43,8 @@ export function WordPlayer({ word, className = '', size = 'md' }: WordPlayerProp
       onClick={playWord}
       disabled={isLoading}
       className={`${sizeClasses[size]} rounded-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 shadow-lg shadow-blue-200 active:scale-95 transition-all duration-200 disabled:opacity-70 ${isPlaying ? 'ring-4 ring-blue-300 animate-pulse' : ''} ${className}`}
-      title={`Play "${word}"`}
-      aria-label={`Play word ${word}`}
+      title={t('audio.playWordTitle', { word })}
+      aria-label={t('audio.playWordAria', { word })}
     >
       {isLoading ? (
         <Loader2 className={`${iconSizes[size]} text-white animate-spin`} />

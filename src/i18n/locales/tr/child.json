@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "Henüz kitap yok!",
+    "body": "İlk kitabının kilidini açması için bir büyüğe sor."
+  },
+  "levelLabel": "Seviye {{level}}",
+  "greeting": "Okuma zamanı, {{name}}!",
+  "greetingNoName": "Okuma zamanı!",
+  "cta": {
+    "startLevelCheck": "Seviye Kontrolüne Başla",
+    "nextBook": "Sonraki Kitap",
+    "startCheck": "Kontrole Başla",
+    "readBook": "Kitabı Oku",
+    "readAgain": "Tekrar Oku",
+    "lastRead": "Son Okuma!"
+  },
+  "sub": {
+    "allDone": "Bütün kitaplarını bitirdin!",
+    "nextUnlocked": "Sonraki kitabın kilidi açıldı!",
+    "readyCheck": "Kontrole hazırsın!",
+    "read0": "Bu kitabı 5 kez oku.",
+    "read1": "Harika başlangıç. 4 okuma kaldı.",
+    "read2": "Çok iyi gidiyorsun. 3 okuma daha kaldı.",
+    "read3": "Hızlanıyorsun. 2 okuma kaldı.",
+    "read4": "Az kaldı. Son okuma!"
+  },
+  "games": {
+    "heading": "Oyun oyna",
+    "play": "Oyna",
+    "soundlings": {
+      "blurb": "Ses yaratıklarını besle!"
+    },
+    "finish": {
+      "name": "Kelimeyi tamamla",
+      "blurb": "Eksik sese dokun"
+    },
+    "tricky": {
+      "name": "Dinle, bul",
+      "blurb": "Dinle ve zor kelimeyi bul"
+    },
+    "cannon": {
+      "blurb": "Doğru sesi kelimenin içine fırlat"
+    }
+  },
+  "path": {
+    "heading": "Yolun",
+    "progress": "{{total}} kitaptan {{done}} tanesi bitti",
+    "reads": "{{done}}/{{total}} okuma",
+    "done": "Bitti!",
+    "book": "Kitap {{n}}",
+    "levelCheck": "Seviye Kontrolü"
+  },
+  "sounds": {
+    "heading": "Öğrendiğin sesler"
+  },
+  "aria": {
+    "openBook": "{{title}} kitabını aç",
+    "readsDone": "{{total}} okumadan {{done}} tanesi tamam",
+    "currentBook": "{{title}} — senin kitabın, {{total}} okumadan {{done}} tanesi tamam",
+    "doneBook": "{{title}} — tamamlandı",
+    "lockedBook": "{{title}} — kilitli, önce şu anki kitabını bitir",
+    "startCheck": "Seviye Kontrolüne başla",
+    "checkLocked": "Seviye Kontrolü — önce kitaplarını bitir"
+  }
+}

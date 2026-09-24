@@ -1,0 +1,197 @@
+{
+  "backToProfile": "Rudi kwenye Wasifu",
+  "hub": {
+    "title": "Wasifu",
+    "welcome": "Karibu!",
+    "signInPrompt": "Ingia ili kufikia maktaba yako",
+    "signInOrUp": "Ingia / Jisajili",
+    "error": "Hitilafu",
+    "level": "Kiwango cha {{level}}",
+    "parentView": "Mwonekano wa Mzazi",
+    "switchChild": "Badilisha Mtoto",
+    "childNamePlaceholder": "Jina la mtoto",
+    "childDobLabel": "Tarehe ya kuzaliwa",
+    "addChild": "Ongeza taarifa za mtoto",
+    "signOut": "Toka"
+  },
+  "links": {
+    "assess": "Tathmini",
+    "assessSub": "Jua kiwango cha usomaji cha mtoto wako",
+    "wallOfLove": "Ukuta wa Upendo",
+    "wallOfLoveSub": "Familia zinasema nini kutuhusu",
+    "support": "Iunge mkono MyPhonicsBooks",
+    "supportSub": "Kila kitu ni bure — acha shukrani ukipenda",
+    "admin": "Usimamizi",
+    "adminSub": "CRM na takwimu (wafanyakazi pekee)",
+    "accountSettings": "Mipangilio ya Akaunti",
+    "parentViewSub": "Nenda kwenye dashibodi ya mzazi",
+    "messages": "Ujumbe",
+    "messagesSub": "Zawadi, vidokezo na habari mpya",
+    "rewards": "Zawadi Zangu",
+    "rewardsSub": "Tazama zawadi ulizofungua",
+    "referrals": "Pendekeza na Upate",
+    "referralsSub": "Pata kamisheni ya 50% — shiriki kiungo chako",
+    "downloads": "Historia ya Upakuaji",
+    "help": "Msaada na Usaidizi"
+  },
+  "forYou": {
+    "title": "Kwa Ajili Yako",
+    "newCount_one": "{{count}} mpya",
+    "newCount_other": "{{count}} mpya",
+    "dismiss": "Ondoa arifa"
+  },
+  "love": {
+    "title": "Mnapenda vitabu?",
+    "body": "Maneno yako yanasaidia familia nyingine kutupata.",
+    "leaveReview": "Andika maoni",
+    "seeWall": "Tazama Ukuta wa Upendo"
+  },
+  "messages": {
+    "title": "Ujumbe",
+    "new": "Mpya",
+    "all": "Zote",
+    "unread": "Hazijasomwa",
+    "emptyTitle": "Bado hakuna ujumbe",
+    "caughtUp": "Umesoma kila kitu.",
+    "emptyBody": "Habari mpya na zawadi zitaonekana hapa.",
+    "types": {
+      "reward": "Zawadi",
+      "video": "Video",
+      "referral": "Mapendekezo",
+      "progress": "Maendeleo",
+      "offer": "Ofa",
+      "update": "Habari Mpya"
+    }
+  },
+  "referrals": {
+    "title": "Pendekeza na Upate",
+    "heroTitle": "Alika marafiki, pata zawadi",
+    "heroBody": "Shiriki MyPhonicsBooks na upate kamisheni ya 50% kwa kila mteja anayejiunga kupitia wewe — kila mwezi kwa mpango wa mwezi, au mara moja kwa mpango wa maisha yote. Kila mtu ananufaika.",
+    "resourcesTitle": "Nyenzo za Masoko",
+    "resourcesBody": "Picha za mitandao ya kijamii, maelezo mafupi na maandishi ya matangazo yaliyo tayari. Pakua unachohitaji na uanze kushiriki.",
+    "openLibrary": "Fungua maktaba ya nyenzo"
+  },
+  "panel": {
+    "copiedToast": "Imenakiliwa!",
+    "copiedLinkBody": "Kiungo chako cha kushiriki kiko kwenye ubao wa kunakili.",
+    "copiedMessageBody": "Kibandike kwenye WhatsApp, Ujumbe, au popote unapopenda.",
+    "copyFailed": "Imeshindwa kunakili",
+    "copyFailedBody": "Bonyeza maandishi kwa muda mrefu ili kuyachagua na kunakili mwenyewe.",
+    "pending": "Kiungo chako cha mapendekezo kitaonekana hapa hivi karibuni. Onyesha upya ukurasa baada ya muda mfupi.",
+    "expandedSummary": "Pata 50% kwa mapendekezo ya moja kwa moja + 10% kutoka kwa mtandao wako.",
+    "rates": "50% moja kwa moja + 10% mtandao",
+    "clicksCount_one": "mbofyo {{count}}",
+    "clicksCount_other": "mibofyo {{count}}",
+    "salesCount_one": "mauzo {{count}}",
+    "salesCount_other": "mauzo {{count}}",
+    "getLink": "Pata kiungo changu cha kushiriki",
+    "stats": {
+      "clicks": "Mibofyo",
+      "sales": "Mauzo",
+      "direct": "Mapato ya moja kwa moja",
+      "network": "Mapato ya mtandao",
+      "affiliates": "Washirika wako"
+    },
+    "totalEarned": "Jumla ya mapato",
+    "howItWorks": "Jinsi inavyofanya kazi",
+    "tier1": "<b>Ngazi ya 1:</b> Pata kamisheni ya 50% kwa kila mteja unayempendekeza, kila mwezi au mara moja kwa ununuzi wa maisha yote.",
+    "tier2": "<b>Ngazi ya 2:</b> Mtu uliyempendekeza akishiriki kiungo chake na kuleta mteja, nawe unapata 10% ya mauzo hayo.",
+    "shareLink": "Kiungo chako cha kushiriki",
+    "copied": "Imenakiliwa",
+    "copy": "Nakili",
+    "whatsappLabel": "Ujumbe wa WhatsApp",
+    "copiedWhatsapp": "Imenakiliwa — bandika kwenye WhatsApp",
+    "copyWhatsapp": "Nakili ujumbe wa WhatsApp",
+    "facebookLabel": "Chapisho la Facebook",
+    "copiedFacebook": "Imenakiliwa — bandika kwenye Facebook",
+    "copyFacebook": "Nakili chapisho la Facebook",
+    "terms": "Mapato huwekwa ndani ya saa 24 baada ya malipo kufanikiwa. Kamisheni za kila mwezi huendelea mradi mteja anabaki hai. Malipo hutumwa benki kwako kila mwezi ukifikisha £20. Kujipendekeza mwenyewe hakuhesabiwi."
+  },
+  "account": {
+    "signInPrompt": "Ingia ili kuhariri mipangilio yako.",
+    "language": "Lugha",
+    "languageHint": "Chagua lugha ya menyu, vitufe na mwongozo kwa wazazi. Vitabu na maneno ya kusoma hubaki kwa Kiingereza kila wakati — ndicho mtoto wako anachojifunza.",
+    "yourDetails": "Taarifa zako",
+    "yourName": "Jina lako",
+    "parentNamePlaceholder": "Jina la mzazi",
+    "email": "Barua pepe",
+    "emailHint": "Kubadilisha barua pepe kunahitaji uthibitisho — wasiliana na huduma kwa wateja ukihitaji kubadilisha.",
+    "passwordTitle": "Weka au badilisha nenosiri lako",
+    "passwordSubtitle": "Chagua nenosiri ili uweze kuingia bila kusubiri kiungo cha barua pepe.",
+    "sendReset": "Badala yake tuma barua pepe ya kuweka upya nenosiri",
+    "billing": "Malipo",
+    "billingBody": "Sasisha kadi yako, tazama ankara, au sitisha usajili wako.",
+    "opening": "Inafunguka…",
+    "manageSubscription": "Dhibiti usajili",
+    "childDetails": "Taarifa za mtoto",
+    "childName": "Jina la mtoto",
+    "dob": "Tarehe ya kuzaliwa",
+    "noChild": "Bado hujaongeza mtoto. Rudi kwenye wasifu wako ili kuongeza.",
+    "saveChanges": "Hifadhi mabadiliko",
+    "savedToast": "Imehifadhiwa",
+    "savedToastBody": "Mabadiliko yako yameanza kutumika.",
+    "saveFailed": "Imeshindwa kuhifadhi",
+    "tryAgain": "Jaribu tena baada ya muda mfupi.",
+    "portalFailed": "Imeshindwa kufungua ukurasa wa malipo",
+    "resetFailed": "Imeshindwa kutuma barua pepe ya kuweka upya",
+    "resetSent": "Barua pepe ya kuweka upya imetumwa",
+    "resetSentBody": "Angalia {{email}} upate kiungo cha kuweka upya nenosiri."
+  },
+  "downloads": {
+    "signInPrompt": "Ingia ili kuona historia yako ya upakuaji na ununuzi.",
+    "recent": "Vilivyopakuliwa Karibuni",
+    "emptyTitle": "Bado hakuna upakuaji",
+    "emptyBody": "PDF unazohifadhi zitaonekana hapa ili uzipakue tena kwa urahisi.",
+    "goToLibrary": "Nenda Maktabani",
+    "bookFallback": "Kitabu",
+    "level": "Kiwango cha {{level}}",
+    "reDownload": "Pakua tena {{title}}",
+    "preparing": "Inaandaa {{title}}…",
+    "downloaded": "{{title}} kimepakuliwa",
+    "notificationBody": "Gusa ili kupakua tena kutoka kwenye historia yako",
+    "view": "Tazama",
+    "failed": "Upakuaji umeshindwa",
+    "unavailable": "Faili ya PDF haipatikani",
+    "purchases": "Ununuzi",
+    "noPurchases": "Bado hakuna ununuzi",
+    "noPurchasesBody": "Oda za Create-A-Book na msaada wowote unaotoa utaonekana hapa.",
+    "purchaseFallback": "Ununuzi",
+    "free": "Bure",
+    "completed": "Imekamilika",
+    "receiptHint": "Unahitaji risiti au kurejeshewa pesa? Wasiliana na huduma kwa wateja kupitia ukurasa wa Msaada."
+  },
+  "help": {
+    "talkTitle": "Zungumza nasi",
+    "talkBody": "Tunasoma kila barua pepe sisi wenyewe. Majibu mengi hufika ndani ya siku moja ya kazi.",
+    "emailUs": "Tuma barua pepe kwa",
+    "faqTitle": "Maswali yanayoulizwa mara kwa mara",
+    "privacy": "Sera ya Faragha",
+    "terms": "Masharti ya Huduma",
+    "faq": {
+      "assessment": {
+        "q": "Tathmini inafanyaje kazi?",
+        "a": "Chagua Quick Check (takriban dakika 3) kupata kiwango haraka, au Full Test (takriban dakika 10) kwa picha kamili zaidi inayojumuisha sauti, maneno halisi, maneno ya kubuni (alien words) na maneno magumu (tricky words) katika kila kiwango. Matokeo yanaonyesha kiwango kinachopendekezwa kwa mtoto wako pamoja na anachokijua tayari."
+      },
+      "progress": {
+        "q": "Mtoto wangu anaendeleaje kupitia vitabu?",
+        "a": "Kila kitabu husomwa mara 5 ili kujenga ufasaha, na mwishoni kuna Check fupi. Akifaulu Check, kitabu kinachofuata hufunguka. Akimudu vitabu vyote vya kiwango, Level Check huonekana, na akifaulu humpeleka mtoto wako kiwango kinachofuata."
+      },
+      "stamps": {
+        "q": "\"Stempu\" na \"Checks\" ni nini?",
+        "a": "Stempu hutolewa kwa kila siku tofauti ambayo mtoto wako anasoma kitabu cha sasa — huwezi kupata stempu mbili kwa siku moja; mfumo humwomba kwa upole arudi kesho. Stempu ya 3, 4 na 5 kila moja ina ukaguzi mfupi wa utayari ili kuthibitisha ufasaha, si kurudia kusoma kwa kukariri tu."
+      },
+      "unlock": {
+        "q": "Je, naweza kufungua kitabu kinachofuata mwenyewe?",
+        "a": "Kufungua mwenyewe kupo kwenye Dashibodi ya Mzazi lakini kwa sasa kunaonyesha \"Inakuja hivi karibuni\" — tunataka kuhakikisha hakusababishi mapengo ya fonetiki kurukwa bila kukusudia. Ikiwa kweli unahitaji kitabu kifunguliwe mapema, tutumie barua pepe nasi tutakufanyia."
+      },
+      "refunds": {
+        "q": "Kurejeshewa pesa kunafanyaje kazi?",
+        "a": "Usajili unaweza kusitishwa wakati wowote kutoka kwenye akaunti yako — utaendelea kupata huduma hadi kipindi kiishe. Kwa ununuzi wa mara moja (k.m. kifurushi kamili au ufikiaji wa maisha yote), tutumie barua pepe ndani ya siku 14 ili urejeshewe pesa zote."
+      },
+      "pwa": {
+        "q": "Kwa nini wijeti / programu yangu ya skrini ya nyumbani inaonekana ya zamani?",
+        "a": "Programu za wavuti (PWA) huhifadhi akiba kwa nguvu sana. Funga programu kabisa kisha uifungue tena. Ikiendelea kuonekana ya zamani, fungua tovuti kwenye kivinjari chako na uvute chini ili kuonyesha upya — utakapoifungua tena, toleo jipya litatumika."
+      }
+    }
+  }
+}

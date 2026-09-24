@@ -1,0 +1,18 @@
+{
+  "badge": "Bangon Ƙauna",
+  "title": "Kalmomin gaske daga iyalai na gaske",
+  "rating_one": "{{avg}} daga iyali {{count}} da malamai",
+  "rating_other": "{{avg}} daga iyalai {{count}} da malamai",
+  "empty": {
+    "title": "Bangon yanzu ne yake farawa",
+    "body": "Ka zama ɗaya daga cikin iyalan farko da za su raba labarinsu."
+  },
+  "aParent": "Wani mahaifi",
+  "cta": {
+    "addStory": "Kana so ka ƙara labarinka?",
+    "ownStory": "Kana son labari na kanka?",
+    "leaveReview": "Rubuta sharhi",
+    "tryCheck": "Gwada gwajin minti 3 kyauta",
+    "support": "Tallafa wa MyPhonicsBooks"
+  }
+}

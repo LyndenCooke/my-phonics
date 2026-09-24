@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "Ups! Halaman tidak ditemukan",
+    "home": "Kembali ke Beranda"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — Etalase Buku",
+    "subtitle": "Buku fonik yang dapat didekode untuk anak usia 4-8 tahun",
+    "tagline": "Setiap buku adalah jendela ke budaya kontemporer yang berbeda",
+    "overview": "Ikhtisar Merek",
+    "labels": {
+      "mission": "Misi:",
+      "tagline": "Slogan:",
+      "voice": "Gaya bahasa:",
+      "target": "Sasaran:",
+      "artStyle": "Gaya ilustrasi:",
+      "curriculum": "Kurikulum:",
+      "fonts": "Fon:",
+      "differentiator": "Pembeda:"
+    },
+    "values": {
+      "mission": "Setiap anak berhak mendapat buku bacaan yang pas dengan apa yang bisa ia dekode hari ini.",
+      "tagline": "Buku fonik yang dapat didekode. Cetak di rumah.",
+      "voice": "Hangat, menyemangati, seperti guru Year 1 yang ramah. Bahasa Inggris British. Tidak pernah berjualan.",
+      "target": "Orang tua anak usia 4-8 tahun, ekspatriat Inggris, sekolah internasional.",
+      "artStyle": "Kartun gambar tangan yang jenaka dengan latar cat air lembut, garis hitam yang bersih, mata titik hitam pekat.",
+      "curriculum": "Berdasarkan Letters and Sounds (Inggris). 6 level, 32 buku, fonik bertahap.",
+      "fonts": "Plus Jakarta Sans (web), Outfit (judul), Andika (buku — huruf a dan g satu tingkat).",
+      "differentiator": "Setiap kata dapat didekode + keberagaman budaya yang nyata + cetak di rumah."
+    },
+    "levelColours": "Sistem Warna Level:",
+    "allBooks": "Semua 32 Buku — Sampul & Unduhan PDF",
+    "level": "Level {{level}}",
+    "viewPdf": "Lihat PDF",
+    "readerTitle": "Pembaca Buku Interaktif",
+    "readerBody": "Jelajahi seluruh perpustakaan dengan membaca interaktif kata demi kata, narasi audio, dan aktivitas fonik.",
+    "openLibrary": "Buka Perpustakaan",
+    "footer": "MyPhonicsBooks — Berdasarkan Letters and Sounds (DfE 2007). Tidak berafiliasi dengan Read Write Inc atau Oxford Reading Tree.",
+    "cultures": {
+      "uk": "Inggris Raya",
+      "middleEast": "Timur Tengah",
+      "nepal": "Nepal",
+      "pakistan": "Pakistan",
+      "trinidad": "Trinidad",
+      "japan": "Jepang",
+      "england": "Inggris",
+      "kenya": "Kenya",
+      "iceland": "Islandia",
+      "france": "Prancis",
+      "thailand": "Thailand",
+      "ghana": "Ghana",
+      "southKorea": "Korea Selatan",
+      "turkey": "Turki",
+      "ukWoodland": "Hutan Inggris",
+      "mexico": "Meksiko",
+      "londonJewish": "Komunitas Yahudi London",
+      "sweden": "Swedia",
+      "india": "India",
+      "brazil": "Brasil",
+      "egypt": "Mesir",
+      "china": "Tiongkok",
+      "italy": "Italia",
+      "australia": "Australia"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "closeBook": "کتاب بند کریں",
+  "pageAlt": "{{title}} — صفحہ {{page}}",
+  "pageLoadError": "یہ صفحہ لوڈ نہیں ہو سکا۔",
+  "pageLoadErrorHint": "اپنا کنکشن چیک کریں اور دوبارہ کوشش کریں۔",
+  "pagesUnavailable": "صفحات کی تصاویر دستیاب نہیں",
+  "previousPage": "پچھلا صفحہ",
+  "nextPage": "اگلا صفحہ",
+  "goToPage": "صفحہ {{page}} پر جائیں",
+  "finishBook": "کتاب مکمل کریں",
+  "tapToHear": "\"{{word}}\" سننے کے لیے ٹیپ کریں",
+  "flipbook": {
+    "groupAria": "کتاب کا پیش منظر — صفحے پلٹنے کے لیے ایرو کیز استعمال کریں"
+  },
+  "quiz": {
+    "saveFailed": "کوئز کے نتائج محفوظ نہیں ہو سکے",
+    "completeAria": "کوئز مکمل",
+    "perfect": "پورے نمبر!",
+    "wellDone": "شاباش!",
+    "scored": "آپ نے <b>{{total}}</b> میں سے <b>{{score}}</b> حاصل کیے",
+    "tryAgain": "دوبارہ کوشش کریں",
+    "dialogAria": "کوئز: {{title}}",
+    "close": "کوئز بند کریں",
+    "answerOptions": "جواب کے اختیارات",
+    "seeResults": "نتائج دیکھیں",
+    "brilliant": "زبردست!",
+    "nearly": "بس تھوڑا سا رہ گیا! اگلی بار پھر کوشش کرنا۔"
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" کی آواز چلائیں",
+    "playSoundAria": "گریفیم {{grapheme}} کی آواز چلائیں",
+    "playWordTitle": "\"{{word}}\" چلائیں",
+    "playWordAria": "لفظ {{word}} چلائیں"
+  },
+  "soundMap": {
+    "known": "آتا ہے ({{n}})",
+    "toLearn": "سیکھنا ہے ({{n}})",
+    "notTestedCount": "جانچا نہیں گیا ({{n}})",
+    "notTested": "جانچا نہیں گیا",
+    "levelHeading": "لیول {{level}}",
+    "levelsNotTested": "لیول {{levels}} ابھی جانچے نہیں گئے",
+    "status": {
+      "known": "آتا ہے",
+      "unknown": "سیکھنا ہے",
+      "untested": "جانچا نہیں گیا"
+    },
+    "categories": {
+      "sound_recognition": "آوازیں",
+      "word_reading": "اصل الفاظ",
+      "alien_words": "Alien Words (فرضی الفاظ)",
+      "tricky_words": "Tricky Words (مشکل الفاظ)",
+      "speedy_reading": "تیز پڑھنا",
+      "fluency": "روانی"
+    }
+  },
+  "interactive": {
+    "playSound": "آواز {{sound}} چلائیں",
+    "playSoundVariant": "آواز {{sound}} چلائیں ({{variant}})",
+    "wordTapToHear": "{{word}}۔ سننے کے لیے ٹیپ کریں۔",
+    "illustration": "کہانی کی تصویر",
+    "closeImage": "تصویر بند کریں",
+    "expandIllustration": "تصویر بڑی کریں",
+    "hideHints": "فونکس اشارے چھپائیں",
+    "showHints": "فونکس اشارے دکھائیں",
+    "checkInPassed": "چیک اِن پاس ہو گیا",
+    "checkInPractise": "چیک اِن — مشق جاری رکھیں"
+  },
+  "prep": {
+    "tapToHear": "سننے کے لیے ہر ایک پر ٹیپ کریں۔ یہ وہ آوازیں ہیں جن کی آپ کا بچہ مشق کرے گا۔",
+    "tapLevel": "اس لیول کی آوازیں دیکھنے کے لیے کسی لیول پر ٹیپ کریں"
+  },
+  "book": {
+    "level": "لیول {{level}}",
+    "levelLabel": "لیول {{level}} — {{name}}",
+    "cover": {
+      "swipe": "شروع کرنے کے لیے سوائپ کریں",
+      "levelSubtitle": "لیول {{level}} · {{name}}",
+      "madeFor": "{{hero}} کے لیے بنائی گئی کتاب · لیول {{level}} · آواز \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "اس کتاب کی نئی آوازیں",
+      "headsUp": "دھیان دیں:",
+      "noteUre": "حروف 'ure' کی دو آوازیں ہیں! لفظ کے آخر میں یہ 'yoor' (جیسے pure میں) یا 'ur' (جیسے nature میں) کی طرح بولا جا سکتا ہے۔ اس کتاب میں آپ کو دونوں ملیں گے۔"
+    },
+    "vocab": {
+      "title": "کہانی کے الفاظ",
+      "hint": "لفظ سننے کے لیے کارڈ پر ٹیپ کرو۔ یہ سب الفاظ کہانی میں آئیں گے۔"
+    },
+    "story": {
+      "readToMe": "مجھے پڑھ کر سناؤ",
+      "reading": "پڑھا جا رہا ہے..."
+    },
+    "spotlight": {
+      "tapSound": "آواز پر ٹیپ کرو!"
+    },
+    "wordReading": {
+      "title": "کیا تم یہ پڑھ سکتے ہو؟",
+      "hint": "ہر لفظ پر ٹیپ کر کے آوازیں جوڑو۔ نقطوں کی مدد سے ایک ایک آواز بولو۔"
+    },
+    "tricky": {
+      "title": "مشکل الفاظ",
+      "hint": "یہ جیسے لکھے جاتے ہیں ویسے نہیں بولے جاتے — انہیں دیکھ کر پہچاننا سیکھو!"
+    },
+    "alien": {
+      "title": "خلائی الفاظ",
+      "hint": "یہ اصل الفاظ نہیں — بس ان کی آوازیں بولو!"
+    },
+    "quiz": {
+      "progress": "سوال {{n}} از {{total}}",
+      "right": "شاباش!",
+      "wrong": "تھوڑا سا رہ گیا — سبز والا صحیح ہے!",
+      "next": "اگلا سوال"
+    },
+    "correct": "درست!",
+    "spelling": {
+      "title": "لفظ کے ہجے بناؤ!",
+      "next": "اگلا لفظ"
+    },
+    "grammar": {
+      "title": "جملہ بناؤ!",
+      "progress": "جملہ {{n}} از {{total}}",
+      "next": "اگلا جملہ"
+    },
+    "ordering": {
+      "title": "کہانی کو صحیح ترتیب میں لگاؤ!",
+      "hint": "دو پر ٹیپ کر کے ان کی جگہ بدلو۔",
+      "done": "بالکل صحیح ترتیب!",
+      "shuffle": "ملاؤ"
+    },
+    "drawing": {
+      "favourite": "اپنا پسندیدہ حصہ بناؤ",
+      "heroFavourite": "{{hero}} کا پسندیدہ حصہ بناؤ",
+      "clear": "مٹاؤ"
+    },
+    "writing": {
+      "title": "لکھنے کی مشق",
+      "hint": "ایک حرف پر ٹیپ کرو، پھر اس پر لکیر کھینچو!"
+    },
+    "checkIn": {
+      "progress": "جانچ {{n}} از {{total}} · دن {{day}}"
+    },
+    "cert": {
+      "champion": "پڑھائی کا چیمپئن!",
+      "great": "بہت خوب پڑھا!",
+      "already": "آج پڑھ چکے ہو",
+      "day": "دن {{n}}",
+      "moveUp": "اگلے لیول کے لیے تیار!",
+      "mastered": "{{reads}} بار پڑھا، {{checkIns}} جانچیں پاس کیں۔ تم نے یہ کتاب واقعی سیکھ لی ہے!",
+      "fluency": "{{reads}} بار پڑھنا مکمل! اس لیول پر چند بار اور پڑھنے سے روانی آئے گی۔",
+      "stampUnlocked": "مہر <b>{{n}} از {{total}}</b> مل گئی! مہر {{next}} کے لیے کل پھر آنا۔",
+      "alreadyEarned": "آج کی مہر تمہیں مل چکی ہے — شاباش! مہر {{next}} کے لیے کل پھر آنا۔"
+    },
+    "finish": "مکمل"
+  },
+  "custom": {
+    "myBook": "میری کتاب",
+    "levelSound": "{{name}} · آواز \"{{sound}}\"",
+    "coverAlt": "سرورق",
+    "meetStar": "اس کتاب کے ستارے سے ملیں",
+    "hero": "ہیرو",
+    "nameAge": "{{name}}، عمر {{age}}",
+    "from": "کہاں سے:",
+    "loves": "پسند ہے:",
+    "world": "ہماری دنیا:",
+    "faith": "ہمارا ایمان:",
+    "thanks": "MyPhonicsBooks کی ہر کہانی ایک خاندان کی دنیا کی کھڑکی ہے۔ اپنی دنیا ہمارے ساتھ بانٹنے کا شکریہ۔"
+  }
+}

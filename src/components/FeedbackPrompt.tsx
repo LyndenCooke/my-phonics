@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import FeedbackDialog from '@/components/FeedbackDialog';
 import { recordSession, shouldAutoPrompt, snoozeFeedback } from '@/lib/feedback';
@@ -13,6 +14,7 @@ const SUPPRESSED_PREFIXES = ['/admin', '/school', '/auth', '/reset-password', '/
  * days; submitting retires it for good. All gating lives in lib/feedback.
  */
 export default function FeedbackPrompt() {
+  const { t } = useTranslation('prompts');
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const submittedRef = useRef(false);
@@ -47,8 +49,8 @@ export default function FeedbackPrompt() {
       onOpenChange={handleOpenChange}
       source="returning_popup"
       onSubmitted={() => { submittedRef.current = true; }}
-      title="Enjoying MyPhonicsBooks?"
-      description="You've been back a few times — we'd love a quick star rating and any thoughts. It really helps."
+      title={t('feedback.returningTitle')}
+      description={t('feedback.returningDescription')}
     />
   );
 }

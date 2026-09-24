@@ -1,0 +1,47 @@
+{
+  "youAreHere": "你在这里",
+  "dayOf": "第 {{day}} 天，共 {{total}} 天",
+  "kicker": "阅读旅程",
+  "headline": "通往阅读的道路",
+  "lessonOf": "第 {{n}} 课，共 {{total}} 课",
+  "levelDash": "第 {{n}} 级 — {{name}}",
+  "progressAria": "第 {{n}} 课，共 {{total}} 课，已完成旅程的 {{pct}}%",
+  "levelState": {
+    "complete": "已完成",
+    "current": "当前级别，已完成 {{done}} / {{total}} 课",
+    "future": "尚未开始"
+  },
+  "levelAria": "第 {{n}} 级，{{name}}，{{state}}。打开级别地图。",
+  "lessonsDone": "已完成 {{done}} / {{total}} 课",
+  "complete": "已完成",
+  "lessons_other": "{{count}} 课",
+  "panel": {
+    "aria": "课程大纲：{{title}}",
+    "close": "关闭课程大纲",
+    "meta": "第 {{n}} 课 · 第 {{level}} 级 {{name}} · {{halfTerm}}",
+    "daysTabs": "本周各天",
+    "dayTabAria": "第 {{day}} 天：{{title}}",
+    "dayTab": "第 {{day}} 天",
+    "minutes": "教学约 {{minutes}} 分钟",
+    "minutesWorksheet": "教学约 {{minutes}} 分钟，然后完成练习纸"
+  },
+  "blockState": {
+    "complete": "已完成",
+    "current": "你在这里",
+    "future": "即将到来"
+  },
+  "kind": {
+    "assessment": "测评",
+    "keepup": "巩固时间",
+    "lesson": "课程",
+    "soundWeek": "发音周",
+    "skillsWeek": "技能周"
+  },
+  "blockAria": "{{kind}}：{{label}}，{{state}}",
+  "backAria": "返回完整旅程",
+  "back": "完整旅程",
+  "levelTitle": "第 {{n}} 级：{{name}}",
+  "error": "旅程地图暂时无法加载，请稍后再试。",
+  "loading": "正在加载旅程地图",
+  "sectionAria": "课程旅程地图"
+}

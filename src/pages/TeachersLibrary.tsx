@@ -22,6 +22,8 @@ import DownloadFormatDialog, {
   formatDisplayLabel,
   type DownloadFormat,
 } from '@/components/DownloadFormatDialog';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Storage layout (set in publish_books.py + migration 20260514140000):
 //   bucket book-pdfs / a4 / {level}_{n}.pdf   = 2-up A4 imposition (label: "A5 Booklet")
@@ -53,6 +55,7 @@ interface MergedBook extends CatalogBook {
 export default function TeachersLibrary() {
   const { session, loading } = useTeacherSession();
   const navigate = useNavigate();
+  const { t } = useTranslation('teachers');
   const [downloadBook, setDownloadBook] = useState<Book | null>(null);
 
   const { data: books, isLoading: booksLoading } = useQuery({
@@ -107,7 +110,7 @@ export default function TeachersLibrary() {
       const url = publicPdfUrl(book.subLevel, format);
       const res = await fetch(url);
       if (!res.ok) {
-        return { success: false, error: `PDF not found (${res.status})` };
+        return { success: false, error: t('library.pdfNotFound', { status: res.status }) };
       }
       const blob = await res.blob();
       const blobUrl = URL.createObjectURL(blob);
@@ -120,7 +123,7 @@ export default function TeachersLibrary() {
       setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
       return { success: true };
     } catch (err) {
-      return { success: false, error: (err as Error).message || 'Download failed' };
+      return { success: false, error: (err as Error).message || t('library.downloadFailed') };
     }
   };
 
@@ -181,11 +184,12 @@ export default function TeachersLibrary() {
               className="w-7 h-7 object-contain"
               draggable={false}
             />
-            <span className="hidden sm:inline">
+            <span dir="ltr" className="hidden sm:inline">
               My<span className="text-primary-ink">Phonics</span>Books
             </span>
           </Link>
           <div className="flex items-center gap-2">
+            <LanguageSwitcher variant="compact" />
             <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tint-pink text-primary-ink text-[11px] font-bold">
               <GraduationCap className="w-3 h-3" />
               {session.label}
@@ -195,26 +199,24 @@ export default function TeachersLibrary() {
               onClick={handleSignOut}
               className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground hover:text-foreground px-2 py-1 rounded-lg"
             >
-              <LogOut className="w-3.5 h-3.5" />
-              Sign out
+              <LogOut className="w-3.5 h-3.5 rtl:-scale-x-100" />
+              {t('common:actions.signOut')}
             </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-6 pb-24">
-        <section className="mb-8 text-center sm:text-left">
+        <section className="mb-8 text-center sm:text-start">
           <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-            Welcome, teacher.
+            {t('library.welcome')}
           </h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-2xl leading-snug">
-            Every MyPhonicsBooks title is here, free for your classroom.
-            Download the printable PDF, read online with your class, or grab
-            the matching worksheet.
+            {t('library.intro')}
           </p>
           <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold">
             <Sparkles className="w-3.5 h-3.5" />
-            Share the code with colleagues — no extra signup needed
+            {t('library.shareCode')}
           </div>
         </section>
 
@@ -232,10 +234,10 @@ export default function TeachersLibrary() {
               <section key={level.level} className="mb-10">
                 <div className="flex items-baseline justify-between mb-3">
                   <h2 className={`font-display text-xl font-extrabold ${level.colorClass}`}>
-                    Level {level.level} · {level.name}
+                    {t('library.levelHeading', { level: level.level, name: level.name })}
                   </h2>
                   <span className="text-[11px] font-semibold text-muted-foreground">
-                    {level.ageRange}
+                    {t('library.agesRange', { range: level.ageRange.replace(/^Ages\s*/, '') })}
                   </span>
                 </div>
 
@@ -278,6 +280,7 @@ function BookRow({
   onWorksheet: (book: { subLevel: string; title: string }) => void;
   worksheetStatus: 'idle' | 'loading' | 'error';
 }) {
+  const { t } = useTranslation('teachers');
   const readerHref = `/library?book=${book.sub_level}`;
 
   // DownloadFormatDialog only reads { id, title }, but its prop type is the
@@ -315,18 +318,21 @@ function BookRow({
             (e.currentTarget as HTMLImageElement).style.display = 'none';
           }}
         />
-        <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/90 text-[10px] font-bold text-foreground">
+        <span dir="ltr" className="absolute top-2 start-2 px-2 py-0.5 rounded-full bg-white/90 text-[10px] font-bold text-foreground">
           {book.sub_level}
         </span>
       </div>
 
       <div className="p-3 flex flex-col flex-1">
-        <h3 className="text-sm font-bold text-foreground leading-snug">
+        <h3 dir="ltr" lang="en" className="text-sm font-bold text-foreground leading-snug text-start">
           {book.title}
         </h3>
         <p className="text-[11px] text-muted-foreground mt-0.5">
-          Focus: {book.focus_sounds.slice(0, 4).join(' · ')}
-          {book.focus_sounds.length > 4 ? '…' : ''}
+          {t('library.focus')}{' '}
+          <bdi dir="ltr" lang="en">
+            {book.focus_sounds.slice(0, 4).join(' · ')}
+            {book.focus_sounds.length > 4 ? '…' : ''}
+          </bdi>
         </p>
 
         <div className="mt-3 grid grid-cols-1 gap-1.5">
@@ -336,7 +342,7 @@ function BookRow({
             className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-primary text-primary-foreground text-[11px] font-bold hover:opacity-90 transition-opacity"
           >
             <Download className="w-3.5 h-3.5" />
-            Download
+            {t('common:actions.download')}
           </button>
           <Link
             to={readerHref}
@@ -344,7 +350,7 @@ function BookRow({
             className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-card border border-border text-foreground text-[11px] font-bold hover:bg-muted/40 transition-colors"
           >
             <BookOpen className="w-3.5 h-3.5" />
-            Read online
+            {t('library.readOnline')}
           </Link>
           <button
             type="button"
@@ -357,7 +363,7 @@ function BookRow({
             ) : (
               <FileText className="w-3.5 h-3.5" />
             )}
-            {worksheetStatus === 'error' ? 'Try again' : 'Worksheet pack'}
+            {worksheetStatus === 'error' ? t('common:actions.retry') : t('library.worksheetPack')}
           </button>
         </div>
       </div>

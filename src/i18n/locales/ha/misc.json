@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "Kash! Ba a sami shafin ba",
+    "home": "Koma Shafin Farko"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — Nunin Littattafai",
+    "subtitle": "Littattafan fonetik masu sauƙin furtawa don yara masu shekaru 4-8",
+    "tagline": "Kowane littafi taga ce zuwa wata al'ada ta zamani daban",
+    "overview": "Bayanin Alama",
+    "labels": {
+      "mission": "Manufa:",
+      "tagline": "Take:",
+      "voice": "Salon magana:",
+      "target": "Masu sauraro:",
+      "artStyle": "Salon zane:",
+      "curriculum": "Manhaja:",
+      "fonts": "Rubutu:",
+      "differentiator": "Abin da ya bambanta mu:"
+    },
+    "values": {
+      "mission": "Kowane yaro ya cancanci littafin karatu da ya dace daidai da abin da zai iya furtawa a yau.",
+      "tagline": "Littattafan fonetik masu sauƙin furtawa. Buga a gida.",
+      "voice": "Mai daɗi, mai ƙarfafa gwiwa, kamar malamin Shekara ta 1 mai kirki. Turancin Birtaniya. Ba tallace-tallace ba ko kaɗan.",
+      "target": "Iyayen yara masu shekaru 4-8, 'yan Birtaniya da ke ƙasashen waje, makarantun ƙasa da ƙasa.",
+      "artStyle": "Zanen kartun mai ban dariya da hannu, bayan fage na launin ruwa mai laushi, layuka baƙaƙe masu tsafta, idanu baƙaƙen ɗigo.",
+      "curriculum": "An gina shi kan Letters and Sounds (Birtaniya). Matakai 6, littattafai 32, fonetik mai ci gaba.",
+      "fonts": "Plus Jakarta Sans (yanar gizo), Outfit (kanun labarai), Andika (littattafai — a da g masu hawa ɗaya).",
+      "differentiator": "Kowace kalma mai sauƙin furtawa + bambancin al'adu na gaske + bugawa a gida."
+    },
+    "levelColours": "Tsarin Launukan Matakai:",
+    "allBooks": "Duk Littattafai 32 — Bangwaye da Sauke PDF",
+    "level": "Mataki na {{level}}",
+    "viewPdf": "Duba PDF",
+    "readerTitle": "Mai Karanta Littattafai Mai Mu'amala",
+    "readerBody": "Bincika dukan ɗakin karatu tare da karatu mai mu'amala kalma bayan kalma, labari da murya, da ayyukan fonetik.",
+    "openLibrary": "Buɗe Ɗakin Karatu",
+    "footer": "MyPhonicsBooks — An gina shi kan Letters and Sounds (DfE 2007). Ba shi da alaƙa da Read Write Inc ko Oxford Reading Tree.",
+    "cultures": {
+      "uk": "Birtaniya",
+      "middleEast": "Gabas ta Tsakiya",
+      "nepal": "Nepal",
+      "pakistan": "Pakistan",
+      "trinidad": "Trinidad",
+      "japan": "Japan",
+      "england": "Ingila",
+      "kenya": "Kenya",
+      "iceland": "Aisilan",
+      "france": "Faransa",
+      "thailand": "Tailan",
+      "ghana": "Ghana",
+      "southKorea": "Koriya ta Kudu",
+      "turkey": "Turkiyya",
+      "ukWoodland": "Dazuzzukan Birtaniya",
+      "mexico": "Mesiko",
+      "londonJewish": "Yahudawan London",
+      "sweden": "Sweden",
+      "india": "Indiya",
+      "brazil": "Brazil",
+      "egypt": "Masar",
+      "china": "Sin",
+      "italy": "Italiya",
+      "australia": "Ostiraliya"
+    }
+  }
+}

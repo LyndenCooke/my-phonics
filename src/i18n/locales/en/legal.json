@@ -1,0 +1,106 @@
+{
+  "backHome": "Back to home",
+  "notice": {
+    "text": "This translation is provided for convenience. If there is any difference, the English version applies.",
+    "switch": "Read in English"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: April 2026",
+    "whoWeAre": {
+      "title": "Who we are",
+      "body": "MyPhonicsBooks is operated by Lynden Cooke. This policy explains what information we collect, why we collect it, and how you can exercise your rights under UK GDPR."
+    },
+    "collect": {
+      "title": "Information we collect",
+      "items": {
+        "email": "<b>Parent email address</b> — so we can send your child's assessment results, account access, and purchase receipts.",
+        "child": "<b>Child's first name and age</b> — used inside the assessment and learning hub to personalise the experience. We do not share this with third parties.",
+        "activity": "<b>Assessment answers and reading activity</b> — so we can recommend the right reading level and show progress over time.",
+        "payment": "<b>Payment details</b> — handled by Stripe. We never see or store full card numbers.",
+        "analytics": "<b>Basic analytics</b> — anonymised page-view and funnel data so we can improve the product."
+      }
+    },
+    "use": {
+      "title": "How we use your data",
+      "body": "We use your information only to provide the service: delivering books, saving progress, processing payments, and sending account-related emails. We do not sell your data and we do not share it with marketing partners."
+    },
+    "processors": {
+      "title": "Processors we use",
+      "items": {
+        "supabase": "database, authentication, file storage",
+        "stripe": "payment processing",
+        "vercel": "hosting",
+        "elevenlabs": "audio synthesis for reading support"
+      }
+    },
+    "rights": {
+      "title": "Your rights",
+      "body": "You can request a copy of your data, ask us to correct it, or ask us to delete your account at any time. Email <email>{{email}}</email> and we'll respond within 30 days."
+    },
+    "children": {
+      "title": "Children",
+      "body": "Accounts are created by parents or guardians. We never ask children to register themselves, and we never send marketing emails about one child to another family."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "body": "We use a small number of essential cookies to keep you signed in. We do not use third-party advertising cookies."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Questions about this policy? Email <email>{{email}}</email>."
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: April 2026",
+    "about": {
+      "title": "About these terms",
+      "body": "These terms govern your use of MyPhonicsBooks. By creating an account, taking the assessment, or buying any product, you agree to them."
+    },
+    "signup": {
+      "title": "Who can sign up",
+      "body": "Accounts must be created by a parent or guardian on behalf of a child. You must be 18 or older to enter into this agreement."
+    },
+    "yourContent": {
+      "title": "Your content",
+      "body": "You retain ownership of anything your child creates inside the hub (drawings, quiz answers, progress data). You grant us a limited licence to store and display it inside your account so that the learning hub can function."
+    },
+    "ourContent": {
+      "title": "Our content",
+      "body": "All books, illustrations, audio, and assessment material are the copyright of MyPhonicsBooks. Books, worksheets and games are free to read and play. Downloaded PDFs are licensed for your own family or your own classroom: print as many copies as you need for them. They are not for resale, redistribution or re-upload, individually or as part of any bundle."
+    },
+    "subscriptions": {
+      "title": "Subscriptions and refunds",
+      "body": "Monthly and annual subscriptions renew automatically until cancelled. You can cancel at any time from your Profile — you keep access until the end of your paid period. One-time purchases (individual books, bundles) are non-refundable once the PDF has been downloaded, unless required by UK consumer law."
+    },
+    "trials": {
+      "title": "Free trials",
+      "body": "Where a free trial is offered, you will not be charged during the trial. We'll send a reminder before the trial ends. If you don't cancel, the subscription begins and your card is charged."
+    },
+    "acceptableUse": {
+      "title": "Acceptable use",
+      "body": "Please don't attempt to reverse-engineer the site, scrape content, use the service to harass anyone, or access other users' accounts. We may suspend accounts that do."
+    },
+    "outcomes": {
+      "title": "Educational outcomes",
+      "body": "MyPhonicsBooks is a supportive reading resource. We don't guarantee any specific educational outcome or replace the role of a qualified teacher."
+    },
+    "liability": {
+      "title": "Liability",
+      "body": "We provide the service \"as is\" and our liability is limited to the amount you've paid us in the past 12 months, except where law requires otherwise."
+    },
+    "changes": {
+      "title": "Changes",
+      "body": "We may update these terms. Material changes will be communicated by email or in-app notice before they take effect."
+    },
+    "law": {
+      "title": "Governing law",
+      "body": "These terms are governed by the laws of England and Wales."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Questions? Email <email>{{email}}</email>."
+    }
+  }
+}

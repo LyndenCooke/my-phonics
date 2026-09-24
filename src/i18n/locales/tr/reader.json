@@ -1,0 +1,168 @@
+{
+  "closeBook": "Kitabı kapat",
+  "pageAlt": "{{title}} — sayfa {{page}}",
+  "pageLoadError": "Bu sayfa yüklenemedi.",
+  "pageLoadErrorHint": "Bağlantınızı kontrol edip tekrar deneyin.",
+  "pagesUnavailable": "Sayfa görselleri mevcut değil",
+  "previousPage": "Önceki sayfa",
+  "nextPage": "Sonraki sayfa",
+  "goToPage": "{{page}}. sayfaya git",
+  "finishBook": "Kitabı bitir",
+  "tapToHear": "\"{{word}}\" kelimesini duymak için dokun",
+  "flipbook": {
+    "groupAria": "Kitap önizlemesi — sayfaları çevirmek için ok tuşlarını kullanın"
+  },
+  "quiz": {
+    "saveFailed": "Test sonuçları kaydedilemedi",
+    "completeAria": "Test tamamlandı",
+    "perfect": "Tam puan!",
+    "wellDone": "Aferin!",
+    "scored": "<b>{{total}}</b> sorudan <b>{{score}}</b> doğru yaptınız",
+    "tryAgain": "Tekrar dene",
+    "dialogAria": "Test: {{title}}",
+    "close": "Testi kapat",
+    "answerOptions": "Cevap seçenekleri",
+    "seeResults": "Sonuçları gör",
+    "brilliant": "Harika!",
+    "nearly": "Az kaldı! Bir dahaki sefere yine dene."
+  },
+  "audio": {
+    "playSoundTitle": "\"{{grapheme}}\" sesini çal",
+    "playSoundAria": "{{grapheme}} grafeminin sesini çal",
+    "playWordTitle": "\"{{word}}\" çal",
+    "playWordAria": "{{word}} kelimesini çal"
+  },
+  "soundMap": {
+    "known": "Biliyor ({{n}})",
+    "toLearn": "Öğrenecek ({{n}})",
+    "notTestedCount": "Test edilmedi ({{n}})",
+    "notTested": "Test edilmedi",
+    "levelHeading": "Seviye {{level}}",
+    "levelsNotTested": "{{levels}}. seviyeler henüz test edilmedi",
+    "status": {
+      "known": "biliyor",
+      "unknown": "öğrenecek",
+      "untested": "test edilmedi"
+    },
+    "categories": {
+      "sound_recognition": "Sesler",
+      "word_reading": "Gerçek Kelimeler",
+      "alien_words": "Alien Words (uydurma kelimeler)",
+      "tricky_words": "Tricky Words (zor kelimeler)",
+      "speedy_reading": "Hızlı Okuma",
+      "fluency": "Akıcılık"
+    }
+  },
+  "interactive": {
+    "playSound": "{{sound}} sesini çal",
+    "playSoundVariant": "{{sound}} sesini çal ({{variant}})",
+    "wordTapToHear": "{{word}}. Duymak için dokun.",
+    "illustration": "Hikâye çizimi",
+    "closeImage": "Görseli kapat",
+    "expandIllustration": "Çizimi büyüt",
+    "hideHints": "Fonik ipuçlarını gizle",
+    "showHints": "Fonik ipuçlarını göster",
+    "checkInPassed": "Ara kontrol geçildi",
+    "checkInPractise": "Ara kontrol — pratik yapmaya devam"
+  },
+  "prep": {
+    "tapToHear": "Dinlemek için her birine dokunun. Bunlar çocuğunuzun çalışacağı seslerdir.",
+    "tapLevel": "O seviyenin seslerini görmek için bir seviyeye dokunun"
+  },
+  "book": {
+    "level": "Seviye {{level}}",
+    "levelLabel": "Seviye {{level}} — {{name}}",
+    "cover": {
+      "swipe": "Başlamak için kaydır",
+      "levelSubtitle": "Seviye {{level}} · {{name}}",
+      "madeFor": "{{hero}} için yapılmış kitap · Seviye {{level}} · Ses \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "Bu kitaptaki yeni sesler",
+      "headsUp": "Dikkat:",
+      "noteUre": "'ure' harflerinin iki sesi var! Kelime sonunda 'yoor' (pure'daki gibi) YA DA 'ur' (nature'daki gibi) okunabilir. Bu kitapta ikisiyle de karşılaşacaksınız."
+    },
+    "vocab": {
+      "title": "Hikâye Kelimeleri",
+      "hint": "Kelimeyi duymak için karta dokun. Bunların hepsi hikâyede geçiyor."
+    },
+    "story": {
+      "readToMe": "Bana oku",
+      "reading": "Okunuyor..."
+    },
+    "spotlight": {
+      "tapSound": "Sese dokun!"
+    },
+    "wordReading": {
+      "title": "Bunları Okuyabilir misin?",
+      "hint": "Seslerini birleştirmek için her kelimeye dokun. Noktalarla sesleri tek tek söyle."
+    },
+    "tricky": {
+      "title": "Zor Kelimeler",
+      "hint": "Bunlar yazıldığı gibi okunmaz — görünce tanı!"
+    },
+    "alien": {
+      "title": "Uzaylı Kelimeler",
+      "hint": "Gerçek kelime değiller — sadece seslendir!"
+    },
+    "quiz": {
+      "progress": "Soru {{n}} / {{total}}",
+      "right": "Aferin!",
+      "wrong": "Tam değil — yeşil olan doğru!",
+      "next": "Sonraki soru"
+    },
+    "correct": "Doğru!",
+    "spelling": {
+      "title": "Kelimeyi Heceleyerek Yaz!",
+      "next": "Sonraki kelime"
+    },
+    "grammar": {
+      "title": "Cümleyi kur!",
+      "progress": "Cümle {{n}} / {{total}}",
+      "next": "Sonraki cümle"
+    },
+    "ordering": {
+      "title": "Hikâyeyi Sıraya Koy!",
+      "hint": "Yerlerini değiştirmek için ikisine dokun.",
+      "done": "Sıralama doğru!",
+      "shuffle": "Karıştır"
+    },
+    "drawing": {
+      "favourite": "En Sevdiğin Bölümü Çiz",
+      "heroFavourite": "{{hero}} adlı kahramanın en sevdiği bölümü çiz",
+      "clear": "Temizle"
+    },
+    "writing": {
+      "title": "Yazma Alıştırması",
+      "hint": "Bir harfe dokun, sonra üzerinden geç!"
+    },
+    "checkIn": {
+      "progress": "Kontrol {{n}} / {{total}} · Gün {{day}}"
+    },
+    "cert": {
+      "champion": "Okuma Şampiyonu!",
+      "great": "Harika Okudun!",
+      "already": "Bugün Zaten Okudun",
+      "day": "Gün {{n}}",
+      "moveUp": "Üst Seviyeye Hazır!",
+      "mastered": "{{reads}} okuma, {{checkIns}} kontrol geçildi. Bu kitabı gerçekten öğrendin!",
+      "fluency": "{{reads}} okuma tamam! Bu seviyede birkaç okuma daha gerçek bir akıcılık kazandırır.",
+      "stampUnlocked": "Damga <b>{{n}} / {{total}}</b> açıldı! {{next}}. damga için yarın yine gel.",
+      "alreadyEarned": "Bugünün damgasını zaten kazandın — harika iş! {{next}}. damga için yarın yine gel."
+    },
+    "finish": "Bitir"
+  },
+  "custom": {
+    "myBook": "Kitabım",
+    "levelSound": "{{name}} · Ses \"{{sound}}\"",
+    "coverAlt": "Kapak",
+    "meetStar": "Bu kitabın yıldızıyla tanışın",
+    "hero": "Kahraman",
+    "nameAge": "{{name}}, {{age}} yaşında",
+    "from": "Nereli:",
+    "loves": "Sevdikleri:",
+    "world": "Dünyamız:",
+    "faith": "İnancımız:",
+    "thanks": "Her MyPhonicsBooks hikâyesi bir ailenin dünyasına açılan bir penceredir. Dünyanızı paylaştığınız için teşekkürler."
+  }
+}

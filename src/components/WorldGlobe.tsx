@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Minus, Plus, RotateCcw } from "lucide-react";
 import { WORLD_LAND } from "@/lib/worldLand";
+import { useTranslation } from "react-i18next";
 
 /**
  * The World of Books globe — a toy planet whose pins are real books.
@@ -54,6 +55,25 @@ export function flagUrl(country: string, size: 40 | 80 = 40): string | null {
   return iso ? `https://flagcdn.com/w${size}/${iso}.png` : null;
 }
 
+/**
+ * Country names for DISPLAY in the parent's language (Intl.DisplayNames via
+ * the ISO code). The English name stays the key everywhere else.
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function useCountryName(): (country: string) => string {
+  const { i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage ?? i18n.language;
+  return useMemo(() => {
+    let names: Intl.DisplayNames | null = null;
+    try { names = new Intl.DisplayNames([lang], { type: "region" }); } catch { /* old browser */ }
+    return (country: string) => {
+      const iso = COUNTRY_ISO[country];
+      if (!iso || !names) return country;
+      try { return names.of(iso.toUpperCase()) || country; } catch { return country; }
+    };
+  }, [lang]);
+}
+
 const DEG = Math.PI / 180;
 
 export interface GlobePin {
@@ -69,6 +89,8 @@ export default function WorldGlobe({
   selected: string | null;
   onSelect: (country: string | null) => void;
 }) {
+  const { t } = useTranslation("worldOfBooks");
+  const countryName = useCountryName();
   const [rot, setRot] = useState<[number, number]>([-10, -18]);
   const [zoom, setZoom] = useState(1);
   const [dragging, setDragging] = useState(false);
@@ -195,7 +217,7 @@ export default function WorldGlobe({
         onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}
         onWheel={(e) => setZoom((z) => Math.max(0.8, Math.min(3, z - e.deltaY * 0.001)))}
         role="img"
-        aria-label="Globe showing where every book's story lives"
+        aria-label={t("globe.aria")}
       >
         <defs>
           <radialGradient id="wg-ocean" cx="34%" cy="28%">
@@ -295,26 +317,27 @@ export default function WorldGlobe({
                   <text y={2.6} textAnchor="middle" fontSize={7.5} fontWeight={800} fill="#ffffff">{pin.count}</text>
                 </g>
               )}
-              <title>{`${pin.country} — ${pin.count} book${pin.count === 1 ? "" : "s"}`}</title>
+              <title>{t("globe.pinTitle", { country: countryName(pin.country), count: pin.count })}</title>
             </g>
           );
         })}
       </svg>
 
-      <div className="absolute right-1 top-8 flex flex-col gap-1.5">
-        <button onClick={() => setZoom((z) => Math.min(3, z + 0.25))} aria-label="Zoom in"
+      <div className="absolute end-1 top-8 flex flex-col gap-1.5">
+        <button onClick={() => setZoom((z) => Math.min(3, z + 0.25))} aria-label={t("globe.zoomIn")}
           className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><Plus className="h-4 w-4" /></button>
-        <button onClick={() => setZoom((z) => Math.max(0.8, z - 0.25))} aria-label="Zoom out"
+        <button onClick={() => setZoom((z) => Math.max(0.8, z - 0.25))} aria-label={t("globe.zoomOut")}
           className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><Minus className="h-4 w-4" /></button>
-        <button onClick={() => { setZoom(1); setRot([-10, -18]); onSelect(null); }} aria-label="Reset globe"
+        <button onClick={() => { setZoom(1); setRot([-10, -18]); onSelect(null); }} aria-label={t("globe.reset")}
           className="rounded-full border border-slate-200 bg-white p-2 text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700"><RotateCcw className="h-4 w-4" /></button>
       </div>
 
-      <p className="mt-1 text-center text-xs text-muted-foreground">drag to spin · scroll to zoom · tap a flag</p>
+      <p className="mt-1 text-center text-xs text-muted-foreground">{t("globe.hint")}</p>
 
       {offGlobe.length > 0 && (
         <p className="mt-1 text-center text-xs text-muted-foreground">
-          Also from {offGlobe.map((p) => `${p.flag} ${p.country}`).join(", ")}
+          {t("globe.alsoFrom", { list: offGlobe.map((p) => `${p.flag} ${countryName(p.country)}`).join(", ") })}
+
         </p>
       )}
     </div>

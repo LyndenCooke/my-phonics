@@ -23,6 +23,14 @@ export interface AppNotification {
   body?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  /** Optional translation keys (in the `profile` namespace) so the text
+   *  follows the parent's chosen language at render time. `title`, `body`
+   *  and `ctaLabel` stay as the English fallback for older stored items. */
+  titleKey?: string;
+  bodyKey?: string;
+  ctaKey?: string;
+  /** Interpolation values for the keys above (e.g. `{ title }`). */
+  params?: Record<string, string | number>;
   read: boolean;
   createdAt: string; // ISO timestamp
 }

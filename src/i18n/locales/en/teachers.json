@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "Back to home",
+    "title": "Teacher Access",
+    "intro": "Enter the code from your MyPhonicsBooks TPT download to unlock the whole library — every book, every worksheet, free.",
+    "noSignup": "No signup, no email required",
+    "codeLabel": "Voucher code",
+    "codePlaceholder": "Enter your code",
+    "unlocking": "Unlocking…",
+    "unlock": "Unlock the library",
+    "footer": "Codes ship with every MyPhonicsBooks resource on Teachers Pay Teachers. Not a teacher? <link>Browse the parent library</link>.",
+    "errors": {
+      "empty": "Please enter a code.",
+      "invalid": "That code is not valid or has expired.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "library": {
+    "welcome": "Welcome, teacher.",
+    "intro": "Every MyPhonicsBooks title is here, free for your classroom. Download the printable PDF, read online with your class, or grab the matching worksheet.",
+    "shareCode": "Share the code with colleagues — no extra signup needed",
+    "levelHeading": "Level {{level}} · {{name}}",
+    "agesRange": "Ages {{range}}",
+    "focus": "Focus:",
+    "readOnline": "Read online",
+    "worksheetPack": "Worksheet pack",
+    "pdfNotFound": "PDF not found ({{status}})",
+    "downloadFailed": "Download failed"
+  }
+}

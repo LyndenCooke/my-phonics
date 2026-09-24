@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "Lugha",
+    "choose": "Chagua lugha yako",
+    "autoDetected": "Tunaonyesha MyPhonicsBooks kwa {{language}}",
+    "autoDetectedHint": "Vitabu na maneno ya kusoma hubaki kwa Kiingereza — hicho ndicho mtoto wako anachojifunza. Badilisha lugha wakati wowote kwa kitufe cha 文A.",
+    "readingStaysEnglish": "Maudhui ya kusoma hubaki kwa Kiingereza"
+  },
+  "nav": {
+    "learn": "Jifunze",
+    "library": "Maktaba",
+    "games": "Michezo",
+    "createBook": "Tengeneza Kitabu",
+    "createBookShort": "Tengeneza",
+    "support": "Tuunge Mkono",
+    "profile": "Wasifu",
+    "assess": "Tathmini",
+    "wallOfLove": "Ukuta wa Upendo",
+    "shop": "Duka",
+    "worldOfBooks": "Ulimwengu wa Vitabu",
+    "forSchools": "Kwa Shule",
+    "schools": "Shule",
+    "home": "Mwanzo",
+    "goHome": "Nenda mwanzo wa Kituo cha Kujifunza",
+    "expandSidebar": "Panua upau wa pembeni",
+    "collapseSidebar": "Kunja upau wa pembeni"
+  },
+  "actions": {
+    "signIn": "Ingia",
+    "signInTitle": "Ingia",
+    "signOut": "Toka",
+    "back": "Rudi",
+    "next": "Inayofuata",
+    "previous": "Iliyotangulia",
+    "continue": "Endelea",
+    "cancel": "Ghairi",
+    "save": "Hifadhi",
+    "saving": "Inahifadhi…",
+    "close": "Funga",
+    "done": "Imekamilika",
+    "retry": "Jaribu tena",
+    "loading": "Inapakia…",
+    "download": "Pakua",
+    "submit": "Wasilisha",
+    "send": "Tuma",
+    "edit": "Hariri",
+    "delete": "Futa",
+    "learnMore": "Pata maelezo zaidi",
+    "seeAll": "Ona zote",
+    "skip": "Ruka"
+  },
+  "errors": {
+    "generic": "Hitilafu imetokea. Tafadhali jaribu tena.",
+    "network": "Hatukuweza kufikia seva. Angalia muunganisho wako kisha ujaribu tena."
+  }
+}

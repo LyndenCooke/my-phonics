@@ -1,0 +1,17 @@
+{
+  "badge": "Dinding Cinta",
+  "title": "Kata-kata asli dari keluarga sungguhan",
+  "rating_other": "{{avg}} dari {{count}} keluarga dan guru",
+  "empty": {
+    "title": "Dinding ini baru saja dimulai",
+    "body": "Jadilah salah satu keluarga pertama yang berbagi cerita."
+  },
+  "aParent": "Seorang orang tua",
+  "cta": {
+    "addStory": "Ingin menambahkan cerita Anda?",
+    "ownStory": "Ingin punya cerita sendiri?",
+    "leaveReview": "Tulis ulasan",
+    "tryCheck": "Coba tes gratis 3 menit",
+    "support": "Dukung MyPhonicsBooks"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "notFound": {
+    "message": "哎呀！页面不存在",
+    "home": "返回首页"
+  },
+  "showcase": {
+    "docTitle": "MyPhonicsBooks — 图书展示",
+    "subtitle": "适合 4-8 岁儿童的可解码自然拼读图书",
+    "tagline": "每本书都是通往一种当代文化的窗口",
+    "overview": "品牌概览",
+    "labels": {
+      "mission": "使命：",
+      "tagline": "口号：",
+      "voice": "语气：",
+      "target": "目标人群：",
+      "artStyle": "美术风格：",
+      "curriculum": "课程体系：",
+      "fonts": "字体：",
+      "differentiator": "差异化优势："
+    },
+    "values": {
+      "mission": "每个孩子都应该拥有一本与他今天能解码的内容完全匹配的读物。",
+      "tagline": "可解码自然拼读图书。在家打印。",
+      "voice": "温暖、鼓励，像一位亲切的一年级老师。英式英语。从不推销。",
+      "target": "4-8 岁孩子的家长、海外英国家庭、国际学校。",
+      "artStyle": "俏皮的手绘卡通，柔和的水彩背景，干净的黑色轮廓，实心黑点眼睛。",
+      "curriculum": "基于英国 Letters and Sounds 课程。6 个级别，32 本书，循序渐进的自然拼读。",
+      "fonts": "Plus Jakarta Sans（网页）、Outfit（标题）、Andika（图书——单层 a 和 g）。",
+      "differentiator": "每个单词都可解码 + 真正的文化多样性 + 在家打印。"
+    },
+    "levelColours": "级别颜色体系：",
+    "allBooks": "全部 32 本书——封面和 PDF 下载",
+    "level": "第 {{level}} 级",
+    "viewPdf": "查看 PDF",
+    "readerTitle": "互动图书阅读器",
+    "readerBody": "浏览完整图书馆，享受逐词互动阅读、有声朗读和自然拼读活动。",
+    "openLibrary": "打开图书馆",
+    "footer": "MyPhonicsBooks — 基于 Letters and Sounds（英国教育部 2007）。与 Read Write Inc 或 Oxford Reading Tree 无关联。",
+    "cultures": {
+      "uk": "英国",
+      "middleEast": "中东",
+      "nepal": "尼泊尔",
+      "pakistan": "巴基斯坦",
+      "trinidad": "特立尼达",
+      "japan": "日本",
+      "england": "英格兰",
+      "kenya": "肯尼亚",
+      "iceland": "冰岛",
+      "france": "法国",
+      "thailand": "泰国",
+      "ghana": "加纳",
+      "southKorea": "韩国",
+      "turkey": "土耳其",
+      "ukWoodland": "英国林地",
+      "mexico": "墨西哥",
+      "londonJewish": "伦敦犹太社区",
+      "sweden": "瑞典",
+      "india": "印度",
+      "brazil": "巴西",
+      "egypt": "埃及",
+      "china": "中国",
+      "italy": "意大利",
+      "australia": "澳大利亚"
+    }
+  }
+}

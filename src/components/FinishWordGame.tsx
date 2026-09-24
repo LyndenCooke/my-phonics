@@ -15,6 +15,8 @@
  *  - Relax  — 5 words, collect a star per first-try answer
  *  - Speedy — 30 seconds, how many can you finish?
  */
+import { Trans, useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X, Volume2, Star, Timer, Coffee, RotateCcw } from 'lucide-react';
@@ -37,6 +39,9 @@ const SPEEDY_SECONDS = 30;
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
 
 export default function FinishWordGame({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const enTag = { en: <bdi dir="ltr" lang="en" /> };
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -132,7 +137,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
   const wordSizeClass = round && round.word.length > 8 ? 'text-4xl lg:text-6xl' : 'text-6xl lg:text-7xl';
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/finish_workshop.webp" />
       {/* soft level wash */}
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
@@ -148,7 +153,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
           </span>
           <button
             onClick={onClose}
-            aria-label="Close game"
+            aria-label={t('play.closeGame')}
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
             style={{ boxShadow: STICKER }}
           >
@@ -163,31 +168,31 @@ export default function FinishWordGame({ level, onClose }: Props) {
             className="flex-1 flex flex-col items-center justify-center text-center py-10"
           >
             <span className="text-6xl lg:text-7xl" aria-hidden>🧩</span>
-            <h1 className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4">
+            <h1 {...tx} className="font-display text-4xl lg:text-5xl font-extrabold text-foreground mt-4 text-balance">
               Finish the word
             </h1>
-            <p className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
-              A word has a sound missing. Listen, then tap the missing sound!
+            <p {...tx} className="font-child text-xl lg:text-2xl text-foreground/70 mt-3 max-w-sm leading-relaxed">
+              {t('finish.intro')}
             </p>
 
             <div className="mt-9 w-full max-w-sm space-y-3.5">
               <button
                 onClick={() => start('relax')}
-                className="w-full h-16 rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
+                className="w-full min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold text-white flex items-center justify-center gap-3 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                <Coffee className="w-6 h-6" /> 5 words · take your time
+                <Coffee className="w-6 h-6 shrink-0" /> <span {...tx}>{t('ui.relaxMode')}</span>
               </button>
               <button
                 onClick={() => start('speedy')}
-                className="w-full h-16 rounded-2xl font-display text-xl font-extrabold flex items-center justify-center gap-3 bg-white transition-all active:translate-y-[3px]"
+                className="w-full min-h-16 py-2 px-4 leading-tight rounded-2xl font-display text-xl font-extrabold flex items-center justify-center gap-3 bg-white transition-all active:translate-y-[3px]"
                 style={{ color: ink, boxShadow: `0 4px 0 ${hex}40, ${STICKER}`, border: `2px solid ${hex}50` }}
               >
-                <Timer className="w-6 h-6" /> Speedy — 30 seconds!
+                <Timer className="w-6 h-6 shrink-0" /> <span {...tx}>{t('ui.speedyMode', { seconds: SPEEDY_SECONDS })}</span>
               </button>
             </div>
-            <p className="text-xs font-bold text-muted-foreground mt-6">
-              Sounds from Level {level.level} · {level.name}
+            <p {...tx} className="text-xs font-bold text-muted-foreground mt-6">
+              <Trans t={t} i18nKey="ui.soundsFromLevel" values={{ level: level.level, name: level.name }} components={enTag} />
             </p>
           </motion.div>
         )}
@@ -197,7 +202,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
           <div className="flex-1 flex flex-col justify-center pt-6">
             {/* Progress: stars (relax) or score + timer bar (speedy) */}
             {mode === 'relax' ? (
-              <div className="flex items-center justify-center gap-2" aria-label={`Word ${roundIdx + 1} of ${RELAX_ROUNDS}`}>
+              <div className="flex items-center justify-center gap-2" aria-label={t('ui.wordProgress', { n: roundIdx + 1, total: RELAX_ROUNDS })}>
                 {Array.from({ length: RELAX_ROUNDS }).map((_, i) => (
                   <Star
                     key={i}
@@ -213,7 +218,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
               <div>
                 <div className="flex items-center justify-between text-sm font-extrabold" style={{ color: ink }}>
                   <span className="font-display text-xl tabular-nums">{score} ⭐</span>
-                  <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{timeLeft}s</span>
+                  <span className="tabular-nums flex items-center gap-1"><Timer className="w-4 h-4" />{t('ui.seconds', { n: timeLeft })}</span>
                 </div>
                 <div className="mt-2 h-2.5 rounded-full bg-black/[0.06] overflow-hidden">
                   <div
@@ -226,7 +231,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
 
             {/* The word with a gap */}
             <div className="flex flex-col items-center text-center py-10 lg:py-12">
-              <p className="font-child text-lg lg:text-xl text-foreground/55">Which sound is missing?</p>
+              <p {...tx} className="font-child text-lg lg:text-xl text-foreground/55">{t('finish.whichSound')}</p>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${roundIdx}-${round.word}`}
@@ -252,7 +257,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
                       </motion.span>
                     ) : (
                       <span
-                        aria-label="missing sound"
+                        aria-label={t('finish.missingSound')}
                         className="inline-block align-baseline mx-0.5 rounded-xl"
                         style={{
                           width: `${Math.max(1, displayGrapheme(round.target).length) * 0.7}em`,
@@ -266,7 +271,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
                   </span>
                   <button
                     onClick={() => speakWord(round.word)}
-                    aria-label="Hear the word"
+                    aria-label={t('play.hearWord')}
                     className="w-14 h-14 rounded-full bg-white flex items-center justify-center press-scale shrink-0"
                     style={{ boxShadow: STICKER, color: ink }}
                   >
@@ -294,7 +299,7 @@ export default function FinishWordGame({ level, onClose }: Props) {
                   <motion.button
                     key={`${roundIdx}-${g}`}
                     onClick={() => pick(g)}
-                    aria-label={`Sound ${displayGrapheme(g)}`}
+                    aria-label={t('ui.soundAria', { sound: displayGrapheme(g) })}
                     animate={wrongTile === g && !reduceMotion ? { x: [0, -8, 8, -5, 5, 0] } : { x: 0 }}
                     transition={{ duration: 0.4 }}
                     className="h-24 lg:h-28 rounded-2xl font-child font-bold text-4xl lg:text-5xl bg-white transition-colors press-scale"
@@ -340,18 +345,18 @@ export default function FinishWordGame({ level, onClose }: Props) {
                     </motion.span>
                   ))}
                 </div>
-                <h2 className="font-display text-3xl font-extrabold text-foreground mt-6">
-                  {starsEarned === RELAX_ROUNDS ? 'All five stars!' : starsEarned >= 3 ? 'Great work!' : 'Good try!'}
+                <h2 {...tx} className="font-display text-3xl font-extrabold text-foreground mt-6">
+                  {starsEarned === RELAX_ROUNDS ? t('ui.allFiveStars') : starsEarned >= 3 ? t('ui.greatWork') : t('ui.goodTry')}
                 </h2>
-                <p className="font-child text-lg text-foreground/70 mt-2">
-                  You finished {starsEarned} word{starsEarned === 1 ? '' : 's'} first try.
+                <p {...tx} className="font-child text-lg text-foreground/70 mt-2">
+                  {t('finish.firstTry', { count: starsEarned })}
                 </p>
               </>
             ) : (
               <>
                 <span className="font-display text-7xl font-extrabold" style={{ color: ink }}>{score}</span>
-                <h2 className="font-display text-2xl font-extrabold text-foreground mt-3">
-                  word{score === 1 ? '' : 's'} in 30 seconds!
+                <h2 {...tx} className="font-display text-2xl font-extrabold text-foreground mt-3">
+                  {t('ui.wordsInSeconds', { count: score, seconds: SPEEDY_SECONDS })}
                 </h2>
               </>
             )}
@@ -359,17 +364,17 @@ export default function FinishWordGame({ level, onClose }: Props) {
             <div className="mt-9 w-full max-w-xs space-y-3">
               <button
                 onClick={() => start(mode)}
-                className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+                className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                <RotateCcw className="w-5 h-5" /> Play again
+                <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('ui.playAgain')}</span>
               </button>
               <button
                 onClick={onClose}
-                className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+                className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
                 style={{ boxShadow: STICKER }}
               >
-                All done
+                <span {...tx}>{t('ui.allDone')}</span>
               </button>
             </div>
           </motion.div>

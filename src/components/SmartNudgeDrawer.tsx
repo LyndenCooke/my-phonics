@@ -13,6 +13,7 @@
  */
 import { X, Sparkles, Gift, PlayCircle, ChevronRight, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Nudge } from '@/lib/nudges';
 
 interface Props {
@@ -29,6 +30,7 @@ const ICON_MAP = {
 } as const;
 
 export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
+  const { t } = useTranslation('prompts');
   if (!open) return null;
 
   const visible = nudges.slice(0, 3);
@@ -37,7 +39,7 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
     <>
       {/* Scrim. Tap outside to close. */}
       <button
-        aria-label="Close nudges"
+        aria-label={t('nudges.closeNudges')}
         onClick={onClose}
         className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
       />
@@ -45,7 +47,7 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
       {/* Drawer. Slides up from bottom on mobile; centered card on desktop. */}
       <div
         role="dialog"
-        aria-label="What's new for you"
+        aria-label={t('nudges.dialogLabel')}
         className="fixed left-0 right-0 bottom-0 z-[61] mx-auto max-w-md bg-card rounded-t-3xl md:rounded-3xl md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:max-w-sm shadow-2xl border border-border animate-in slide-in-from-bottom duration-300 md:slide-in-from-top-4"
         style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
       >
@@ -56,11 +58,11 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
 
         <div className="px-5 pt-3 pb-2 flex items-center justify-between">
           <h3 className="font-display text-lg font-extrabold text-foreground">
-            Hi! Here's what's new <span aria-hidden>👋</span>
+            {t('nudges.title')} <span aria-hidden>👋</span>
           </h3>
           <button
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('common:actions.close')}
             className="w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center"
           >
             <X className="w-4 h-4 text-muted-foreground" />
@@ -70,7 +72,7 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
         <div className="px-5 pb-4 space-y-2.5">
           {visible.length === 0 ? (
             <p className="text-sm text-muted-foreground py-6 text-center">
-              All caught up. We'll let you know when there's something new.
+              {t('nudges.empty')}
             </p>
           ) : (
             visible.map((n) => {
@@ -88,7 +90,7 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
                   </div>
                   <span className="text-xs font-bold text-primary-ink shrink-0 flex items-center gap-0.5">
                     {n.ctaLabel}
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-3.5 h-3.5 rtl:-scale-x-100" />
                   </span>
                 </div>
               );
@@ -97,7 +99,7 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
                   {inner}
                 </Link>
               ) : (
-                <button key={n.id} onClick={onClose} className="w-full text-left">
+                <button key={n.id} onClick={onClose} className="w-full text-start">
                   {inner}
                 </button>
               );
@@ -106,13 +108,13 @@ export default function SmartNudgeDrawer({ open, onClose, nudges }: Props) {
         </div>
 
         <div className="border-t border-border px-5 py-3 flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">More updates in Messages</span>
+          <span className="text-xs text-muted-foreground">{t('nudges.moreInMessages')}</span>
           <Link
             to="/profile/messages"
             onClick={onClose}
             className="text-xs font-bold text-primary-ink hover:underline flex items-center gap-1"
           >
-            Go to Messages <ChevronRight className="w-3.5 h-3.5" />
+            {t('nudges.goToMessages')} <ChevronRight className="w-3.5 h-3.5 rtl:-scale-x-100" />
           </Link>
         </div>
       </div>

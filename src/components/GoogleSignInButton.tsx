@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { isNative } from '@/lib/native';
+import i18n from '@/i18n';
+import { useTranslation } from 'react-i18next';
+import { authErrorMessage } from '@/lib/authErrors';
 import {
   GOOGLE_CLIENT_ID,
   createNoncePair,
@@ -37,6 +40,7 @@ type State = 'loading' | 'gis' | 'fallback';
  * session up through onAuthStateChange exactly as before.
  */
 export default function GoogleSignInButton({ onSignedIn, onError, onFallback, disabled }: Props) {
+  const { t } = useTranslation('auth');
   const containerRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>(() =>
     GOOGLE_CLIENT_ID && !isNative && isGoogleIdentityOrigin() ? 'loading' : 'fallback',
@@ -73,7 +77,7 @@ export default function GoogleSignInButton({ onSignedIn, onError, onFallback, di
               if (error) throw error;
               callbacks.current.onSignedIn();
             } catch (err) {
-              callbacks.current.onError(err instanceof Error ? err.message : 'Google sign-in failed');
+              callbacks.current.onError(err instanceof Error ? authErrorMessage(err) : i18n.t('auth:toast.googleFailed'));
             } finally {
               setExchanging(false);
             }
@@ -111,7 +115,7 @@ export default function GoogleSignInButton({ onSignedIn, onError, onFallback, di
         className="w-full py-3 rounded-xl bg-white border-2 border-border hover:border-primary/40 text-foreground font-bold text-sm shadow-sm hover:shadow flex items-center justify-center gap-2.5 transition-all disabled:opacity-60"
       >
         <GoogleMark />
-        Continue with Google
+        {t('google.continue')}
       </button>
     );
   }
@@ -125,7 +129,7 @@ export default function GoogleSignInButton({ onSignedIn, onError, onFallback, di
           className="absolute inset-0 rounded-full bg-background/70 flex items-center justify-center text-xs text-muted-foreground"
           aria-hidden={state === 'gis' && !exchanging}
         >
-          {exchanging ? 'Signing you in...' : state === 'loading' ? 'Loading Google...' : ''}
+          {exchanging ? t('google.signingIn') : state === 'loading' ? t('google.loading') : ''}
         </div>
       )}
     </div>

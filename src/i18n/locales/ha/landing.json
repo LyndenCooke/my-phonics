@@ -1,0 +1,133 @@
+{
+  "skipToMain": "Tsallaka zuwa babban abun ciki",
+  "nav": {
+    "homeAria": "Shafin farko na MyPhonicsBooks",
+    "createBook": "Ƙirƙiri Littafi",
+    "worldOfBooks": "Duniyar Littattafai",
+    "shop": "Shago",
+    "wallOfLove": "Bangon Ƙauna",
+    "forSchools": "Don Makarantu",
+    "schools": "Makarantu",
+    "explore": "Bincika",
+    "exploreBooks": "Bincika Littattafai"
+  },
+  "video": {
+    "badge": "Kalli rangadin",
+    "title": "Duba yadda yake aiki",
+    "body": "Taƙaitaccen bayani game da dandalin koyon Turanci mai komai a ciki — littattafai, matakai da ci gaba, duk a wuri ɗaya.",
+    "fallback": "Burauzarka ba ta iya kunna bidiyon da aka saka ba. Maimakon haka, <link>kalli rangadin</link>."
+  },
+  "hero": {
+    "forParents": "Don Iyaye",
+    "forSchools": "Don Makarantu",
+    "languages": "Akwai shi a harsuna {{n}}",
+    "titleA": "Littattafan da ke girma tare da ɗanka —",
+    "titleB": "daga sautukan farko zuwa karatu sosai.",
+    "body": "Littattafan fonetik 33 masu sauƙin furtawa a matakai 8. Duba matakin ɗanka kyauta, ku karanta tare a kowane allo, ko ka buga ƙananan littattafai na gaske da zai riƙe a hannu.",
+    "exploreBooks": "Bincika littattafai",
+    "checkLevelFree": "Duba matakinsa — kyauta",
+    "freeNote": "Littattafan farko a buɗe suke kuma kyauta yanzu — ba rajista, ba kati."
+  },
+  "shelf": {
+    "regionAria": "Nunin littattafai — ja, goge, ko yi amfani da maɓallan kibiya don dubawa",
+    "coverAlt": "{{title}} — ƙaramin littafin Mataki na {{level}} {{levelName}}",
+    "prevBook": "Littafin baya",
+    "nextBook": "Littafi na gaba",
+    "level": "Mataki na {{level}}"
+  },
+  "three": {
+    "badge": "Hanyoyi uku na amfani da shi",
+    "title": "Tantance. Karanta. Buga.",
+    "subtitle": "Duk abin da mai koyon karatu ke buƙata, a wuri ɗaya.",
+    "check": {
+      "title": "Duba matakinsa",
+      "desc": "Gwajin sauti na minti 3 kyauta yana gano ainihin wurin farawa da ya dace. Ba zato, ba kati.",
+      "cta": "Fara gwajin kyauta"
+    },
+    "read": {
+      "title": "Karanta a kowane allo",
+      "desc": "Littattafai masu mu'amala a waya, kwamfutar hannu ko kwamfuta — taɓa kowace kalma don jin yadda ake furta ta sauti bayan sauti.",
+      "cta": "Bincika littattafai"
+    },
+    "print": {
+      "title": "Ko ka buga ka riƙe",
+      "desc": "Sauke kowane littafi a matsayin ƙaramin littafin A5 da ake ninkawa a ɗinke. Shafuka na gaske don karatun kafin barci.",
+      "cta": "Duba ɗakin karatu"
+    }
+  },
+  "testimonials": {
+    "title": "Abin da abokan cinikinmu ke cewa",
+    "subtitle": "Kalmomin gaske daga iyalai da malaman da ke amfani da MyPhonicsBooks.",
+    "previous": "Na baya",
+    "next": "Na gaba",
+    "aParent": "Wani mahaifi"
+  },
+  "journey": {
+    "title": "Daga sautukan farko zuwa sautukan ƙarshe",
+    "subtitle": "Matakai takwas, hanya ɗaya bayyananniya — kowane littafi yana amfani da sautukan da ɗanka ya koya kaɗai.",
+    "ages": "Shekaru {{range}}",
+    "books_one": "Littafi {{count}}",
+    "books_other": "Littattafai {{count}}"
+  },
+  "features": {
+    "titleA": "Duk abin da ɗanka ke buƙata don",
+    "titleB": "ya so karatu",
+    "body": "Ƙwararrun fonetik ne suka gina shi, don yara na gaske. Kowane littafi yana amfani da sautukan da ɗanka ya koya kaɗai — don haka yana samun nasara tun daga shafin farko.",
+    "items": {
+      "soundedOut": "Taɓa kowace kalma don jin furucinta sauti bayan sauti",
+      "books": "Littattafai 33 a matakan karatu 8 da aka tsara a hankali",
+      "settings": "Labarun da suka faru a Japan, Kenya, Maroko, Faransa, Turkiyya da sauransu",
+      "quizzes": "Tambayoyin fahimta da wasan \"What sound is it?\"",
+      "progress": "Bin diddigin ci gaba don iyaye su ga girman ɗansu",
+      "aligned": "Ya dace da Phonics Screening Check na Shekara ta 1 a Birtaniya"
+    },
+    "mockAlt": "Karatu mai mu'amala",
+    "tapHint": "Taɓa kalma don jin ta",
+    "printSticker": "…ko ka buga shi a matsayin ƙaramin littafi"
+  },
+  "free": {
+    "title": "Kyauta ga kowane iyali",
+    "subtitle": "Babu tsare-tsare, babu shingen biya. Karanta komai yanzu. Yi rajista (kyauta) don bugawa.",
+    "read": {
+      "title": "Karanta ka yi wasa",
+      "note": "ba sai da asusu ba",
+      "items": {
+        "books": "Duk littattafai 33 a matakai 8, karatu ta intanet",
+        "tapToHear": "Karatu mai mu'amala na taɓa-ka-ji",
+        "games": "Kowane wasan fonetik",
+        "check": "Gwajin fonetik na minti 3 kyauta"
+      },
+      "cta": "Buɗe ɗakin karatu"
+    },
+    "print": {
+      "badge": "Har yanzu kyauta",
+      "title": "Buga a gida",
+      "note": "asusu kyauta",
+      "items": {
+        "everything": "Duk abin da ke cikin Karanta ka yi wasa",
+        "download": "Sauke kowane littafi a matsayin PDF da za a iya bugawa",
+        "worksheets": "Kowace takardar aiki da katin sauti",
+        "progress": "Bin diddigin ci gaba da kyaututtuka"
+      },
+      "cta": "Buɗe asusu kyauta"
+    },
+    "support": "Ka so shi? <btn>Tallafa wa MyPhonicsBooks</btn> da godiya ta sau ɗaya na kowane adadi — gaba ɗaya ba dole ba ne."
+  },
+  "footerCta": {
+    "title": "Littattafan farko sun riga sun buɗe.",
+    "body": "Ka duba a hankali — kuma idan ka shirya, gwajin minti 3 kyauta zai gano ainihin matakin ɗanka.",
+    "explore": "Bincika littattafai",
+    "check": "Duba matakinsa"
+  },
+  "footer": {
+    "createBook": "Ƙirƙiri Littafi",
+    "worldOfBooks": "Duniyar Littattafai",
+    "shop": "Shago",
+    "wallOfLove": "Bangon Ƙauna",
+    "privacy": "Sirri",
+    "terms": "Sharuɗɗa",
+    "contact": "Tuntuɓe mu",
+    "admin": "Mai gudanarwa",
+    "madeWith": "An yi shi da kulawa a Birtaniya"
+  }
+}

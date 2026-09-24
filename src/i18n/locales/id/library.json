@@ -1,0 +1,150 @@
+{
+  "page": {
+    "title": "Perpustakaan",
+    "subtitleBooks": "{{count}} buku kecil, delapan level — ketuk salah satu untuk mulai membaca",
+    "subtitleBooksNoCount": "Buku-buku kecil, delapan level — ketuk salah satu untuk mulai membaca",
+    "subtitleWorksheets": "Sound mat dan lembar kerja gratis yang bisa dicetak"
+  },
+  "tabs": {
+    "books": "Buku",
+    "worksheets": "Lembar kerja"
+  },
+  "guest": {
+    "title": "Semua buku gratis dibaca",
+    "body": "Ketuk buku mana saja untuk mulai. Ingin PDF untuk dicetak? Buat akun gratis untuk mengunduh.",
+    "signUp": "Daftar gratis →",
+    "findLevel": "Temukan level anak Anda →"
+  },
+  "newUser": {
+    "title": "Bingung mulai dari mana?",
+    "body": "Ikuti tes singkat 3 menit kami untuk menemukan level yang tepat — lalu baca atau unduh buku apa saja.",
+    "cta": "Mulai Asesmen →"
+  },
+  "shelf": {
+    "ariaLabel": "Level {{level}} — {{name}}",
+    "level": "Level {{level}}",
+    "readProgress": "{{read}} dari {{total}} sudah dibaca"
+  },
+  "empty": {
+    "title": "Belum ada buku untuk level ini",
+    "body": "Kembali lagi nanti untuk buku-buku baru"
+  },
+  "unlockedModal": {
+    "cta": "Mulai Membaca"
+  },
+  "quiz": {
+    "perfect": "Nilai sempurna! {{score}}/{{total}} - Kamu bintang membaca!",
+    "complete": "Kuis selesai! Skor Anda {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "segera",
+    "days_other": "{{count}} hari",
+    "hours_other": "{{count}} jam"
+  },
+  "downloadErrors": {
+    "signIn": "Silakan masuk untuk mengunduh.",
+    "unavailable": "File PDF tidak tersedia",
+    "failed": "Unduhan gagal"
+  },
+  "notification": {
+    "title": "{{title}} telah diunduh",
+    "body": "{{format}} tersimpan — ketuk untuk mengunduh ulang",
+    "cta": "Lihat"
+  },
+  "levelFilter": {
+    "all": "Semua buku"
+  },
+  "levels": {
+    "1": {
+      "focus": "Bunyi pertama dan kata sederhana 3 huruf"
+    },
+    "2": {
+      "focus": "Sisa alfabet, ditambah ck, ff, ll, ss"
+    },
+    "3": {
+      "focus": "Dua huruf, satu bunyi — sh, ch, th, ng…"
+    },
+    "4": {
+      "focus": "Gabungan vokal seperti ay, ee, igh, oo, dan ar"
+    },
+    "5": {
+      "focus": "Digraf terpisah (a-e, i-e) dan ejaan baru"
+    },
+    "6": {
+      "focus": "Ejaan alternatif — wr, kn, ph, dge…"
+    },
+    "7": {
+      "focus": "Trigraf (ire, ore, ear) dan akhiran -tion"
+    },
+    "8": {
+      "focus": "Sufiks dan pembentukan kata — -ous, -able, -ible"
+    }
+  },
+  "agesRange": "Usia {{range}} tahun",
+  "card": {
+    "doneAria": "{{title}} — selesai",
+    "lockedAria": "{{title}} — terkunci",
+    "download": "Unduh PDF",
+    "downloadAria": "Unduh PDF {{title}}"
+  },
+  "download": {
+    "title": "Unduh <book>{{title}}</book>",
+    "description": "Pilih format yang sesuai dengan cara Anda menggunakannya.",
+    "formats": {
+      "a4": {
+        "label": "Buklet A5",
+        "description": "Cetak bolak-balik di kertas A4, lipat dan staples untuk membuat buklet A5 sungguhan. Halaman terakhir dan pertama ada di lembar yang sama."
+      },
+      "a5": {
+        "label": "Lembar A4",
+        "description": "Setiap halaman di lembar tersendiri. Cocok untuk membaca dalam ukuran besar atau di kelas."
+      }
+    },
+    "preparing": "Menyiapkan {{format}}…",
+    "preparingPdf": "Menyiapkan PDF…",
+    "successTitle": "Tersimpan di unduhan Anda",
+    "successBody": "<book>{{title}}</book> ({{format}}) ada di Riwayat Unduhan Anda — buka dari sana kapan saja.",
+    "goToHistory": "Buka Riwayat Unduhan",
+    "errorTitle": "Unduhan tidak berhasil",
+    "failed": "Unduhan gagal"
+  },
+  "worksheets": {
+    "intro": "Sumber belajar fonik gratis yang bisa dicetak untuk orang tua dan guru. Sound mat, poster, dan lembar kerja — semuanya selaras dengan kurikulum Letters and Sounds Inggris.",
+    "categoriesAria": "Kategori sumber belajar",
+    "categorySoundMats": "Sound mat",
+    "categoryLevel": "Lembar kerja L{{level}}",
+    "levelHeading": "Lembar kerja Level {{level}}",
+    "levelSub": "{{name}} — {{ages}} · klik sebuah buku untuk melihat paket lembar kerjanya",
+    "comingSoon": "Segera hadir",
+    "levelComingSoon": "Lembar kerja menulis tangan, decoding, dan Tricky Words yang bisa dicetak untuk Level {{level}}. Tandai halaman ini — lembar baru rutin ditambahkan di sini.",
+    "focusSounds": "Bunyi fokus:",
+    "sheetCount_other": "{{count}} lembar",
+    "bookComingSoon": "Lembar kerja cetak untuk buku ini segera hadir — latihan menulis tangan, membaca alien words, Tricky Words, dan lembar satu bunyi untuk {{sounds}}.",
+    "downloadAllCount_other": "Unduh semua {{count}} lembar",
+    "packHint": "Unduh seluruh paket sebagai satu PDF, atau ambil lembar satuan untuk dicetak sesuai kebutuhan.",
+    "downloadError": "Lembar kerja itu tidak dapat diunduh. Silakan coba lagi.",
+    "preview": "Pratinjau {{title}}",
+    "levelPackTitle": "Lembar satu bunyi Level {{level}}",
+    "groups": {
+      "book": "Lembar kerja buku",
+      "singleSound": "Lembar satu bunyi — {{sounds}}",
+      "singleSoundRest": "Lembar satu bunyi — sisa alfabet",
+      "singleSoundSpecial": "Lembar satu bunyi — Special Friends (dua huruf, satu bunyi)"
+    },
+    "soundSheet": "Bunyi {{sound}}"
+  },
+  "soundMats": {
+    "title": "Sound mat",
+    "subtitle": "Sound mat cetak untuk rumah dan kelas — PNG A3 lanskap",
+    "level": "Level {{level}}",
+    "levels23": "Level 2 & 3",
+    "levels46": "Level 4–6",
+    "sounds_other": "{{count}} bunyi",
+    "combinedChart_other": "{{count}} bunyi — bagan gabungan untuk guru",
+    "combined": "Gabungan",
+    "alt": "Sound mat {{title}}"
+  },
+  "resources": {
+    "title": "Sumber Belajar"
+  }
+}

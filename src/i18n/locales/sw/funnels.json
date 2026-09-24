@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "Jina la kwanza la mtoto",
+    "childNameOptional": "Jina la kwanza la mtoto (si lazima)",
+    "emailPlaceholder": "Anwani yako ya barua pepe",
+    "consent": "Ninakubali kupokea nyenzo za bure za phonics kwa barua pepe. Unaweza kujiondoa wakati wowote.",
+    "sendFreeBook": "Nitumie Kitabu Changu cha Bure",
+    "loginLinkKeep": "Tutakutumia kiungo cha kuingia kwa barua pepe ili kitabu kiwe chako milele.",
+    "signupFailed": "Usajili haukufaulu",
+    "checkEmail": "Angalia {{email}} upate kiungo chako cha kuingia",
+    "levelBookFallback": "Kitabu cha Kiwango cha {{level}}",
+    "browseLibrary": "Vinjari Maktaba"
+  },
+  "emailCapture": {
+    "defaultButton": "Anza Sasa",
+    "footer": "Bure — hakuna kadi inayohitajika. Kimejengwa juu ya Letters and Sounds."
+  },
+  "quickScreening": {
+    "title": "Kipimo cha Haraka",
+    "instructionsNamed": "Mwombe {{name}} asome kila neno. Gusa alama ya tiki akisoma sawasawa.",
+    "instructionsAnon": "Mwombe mtoto wako asome kila neno. Gusa alama ya tiki akisoma sawasawa.",
+    "levelWord": "Neno la Kiwango cha {{level}}",
+    "hearWord": "Sikiliza neno",
+    "progress": "{{current}} kati ya {{total}}",
+    "notQuite": "Bado kidogo",
+    "gotIt": "Sahihi!"
+  },
+  "assessmentFunnel": {
+    "title": "Jua <hl>kiwango chake cha kusoma</hl>",
+    "subtitle": "Chagua jinsi unavyotaka kipimo kiwe cha kina.",
+    "rapidTitle": "Kipimo cha dakika 3",
+    "rapidDesc": "Jaribio la haraka la sauti linalojirekebisha. Linafaa ukitaka tu mahali pa kuanzia.",
+    "fullTitle": "Jaribio la kina la dakika 10",
+    "fullDesc": "Sauti, maneno halisi, maneno ya kubuni na Tricky Words katika kila kiwango.",
+    "footer": "Kitabu cha bure cha kiwango chake ukimaliza. Hakuna kadi inayohitajika.",
+    "freeBookTitle": "Tukutumie wapi kitabu chako cha bure?",
+    "paidTitle": "Taarifa moja tu kabla ya malipo",
+    "paidSubtitle": "Tutakutumia kiungo cha kuingia mara tu baada ya malipo, ili vitabu vyote 32 viwe vyako.",
+    "continueToCheckout": "Endelea Kulipa",
+    "checkoutFailed": "Imeshindikana kuanza malipo",
+    "missingBundle": "Kifurushi cha vitabu hakikupatikana. Tafadhali wasiliana na huduma kwa wateja.",
+    "missingMonthly": "Mpango wa kila mwezi haukupatikana. Tafadhali wasiliana na huduma kwa wateja."
+  },
+  "assessmentResult": {
+    "wellDone": "Hongera!",
+    "wellDoneNamed": "Hongera, {{name}}!",
+    "isAtNamed": "{{name}} yuko <b>Kiwango cha {{level}}: {{levelName}}</b>",
+    "isAtAnon": "Mtoto wako yuko <b>Kiwango cha {{level}}: {{levelName}}</b>",
+    "unlocked": "Umefungua kitabu 1 shirikishi cha bure!",
+    "matchedNamed": "Kitabu cha Kiwango cha {{level}} kinacholingana kabisa na kile {{name}} anachoweza kusoma.",
+    "matchedAnon": "Kitabu cha Kiwango cha {{level}} kinacholingana kabisa na kile mtoto wako anachoweza kusoma."
+  },
+  "bundleUpsell": {
+    "coverAlt": "Kiwango cha {{level}} — {{title}}",
+    "title": "Ungependa kufungua vitabu vyote?",
+    "subtitleNamed": "Vitabu {{count}}, kila kiwango — ili {{name}} akue navyo.",
+    "subtitleAnon": "Vitabu {{count}}, kila kiwango — ili mtoto wako akue navyo.",
+    "oneTime": "malipo ya mara moja",
+    "benefitAllBooks": "Vitabu vyote {{count}} shirikishi katika viwango vyote 6",
+    "benefitQuizzes": "Maswali ya ufahamu baada ya kila hadithi",
+    "benefitProgress": "Kufuatilia maendeleo katika maktaba nzima",
+    "benefitForever": "Vyako milele — hakuna usajili wa kila mwezi",
+    "benefitWorld": "Hadithi kutoka pande zote za dunia",
+    "accept": "Ndiyo — fungua vitabu vyote £{{price}}",
+    "decline": "Hapana asante, nipe tu kitabu changu cha bure"
+  },
+  "monthlyDownsell": {
+    "title": "Subiri — vipi kuhusu hili?",
+    "body": "Fungua <b>kila kitabu katika viwango vyote 6</b> kwa £4.99 tu kwa mwezi. Sitisha wakati wowote.",
+    "monthlyAccess": "Ufikiaji wa kila mwezi",
+    "perMonth": "/mwezi",
+    "allLevels": "Viwango vyote. Vitabu vyote. Sitisha wakati wowote.",
+    "benefitEveryBook": "Kila kitabu shirikishi katika viwango vyote 6",
+    "benefitNewBooks": "Vitabu vipya huongezwa vinapochapishwa",
+    "benefitMoveUpNamed": "{{name}} anapanda viwango kadiri anavyoendelea",
+    "benefitMoveUpAnon": "Mtoto wako anapanda viwango kadiri anavyoendelea",
+    "accept": "Anza kwa £4.99/mwezi",
+    "decline": "Hapana asante, kitabu changu cha bure tu"
+  },
+  "freeAssessment": {
+    "resultLabel": "Kiwango chake cha kusoma",
+    "level": "Kiwango cha {{level}}",
+    "freeUnlocked": "Kitabu cha bure kimefunguliwa",
+    "saveTitle": "Hifadhi matokeo yako & upate kitabu chako"
+  },
+  "freeBook": {
+    "pickTitle": "Chagua kitabu cha bure <hl>kwa ajili ya mtoto wako</hl>",
+    "pickSubtitle": "Gusa kiwango chake. Tutafungua kitabu kimoja kinacholingana — bure, bila kadi.",
+    "coverAlt": "Jalada la mfano la Kiwango cha {{level}}",
+    "notSure": "Huna uhakika? Fanya tathmini ya dakika 3",
+    "emailTitle": "Kitabu kimoja cha bure cha Kiwango cha {{level}} <hl>kiko njiani</hl>",
+    "emailSubtitle": "Weka barua pepe yako na tutakifungua sasa hivi.",
+    "unlockButton": "Fungua Kitabu Changu cha Bure",
+    "pickDifferent": "Chagua kiwango kingine"
+  },
+  "linkTree": {
+    "tagline": "Vitabu vinavyosomeka kwa phonics, vinavyolingana kabisa na kiwango chake",
+    "wrongBooks": "Je, vitabu visivyofaa vinaumiza kujiamini kwa mtoto wako?",
+    "freeAssessment": "Tathmini ya bure ya phonics — jua kiwango chake",
+    "threeMinute": "Kipimo cha kiwango cha dakika 3 + nyenzo za bure",
+    "theGap": "Vitabu wanavyovipenda na wanavyoweza kuvisoma kweli",
+    "footer": "Kimejengwa juu ya Letters and Sounds (mtaala wa phonics wa Uingereza)"
+  },
+  "theGap": {
+    "boring": "vinachosha",
+    "tooHard": "vigumu mno",
+    "vs": "au",
+    "title": "Vitabu vinavyochosha wanavyo<em>weza</em> kusoma.<br/>Vitabu vizuri <hl>wasivyoweza</hl>.",
+    "whyBoth": "Kwa nini visiwe vyote viwili?",
+    "body": "Hadithi watakazozipenda na zinazolingana kabisa na kile wanachoweza kusoma kwa sauti. Sahihi kwa phonics na zenye mtazamo wa kimataifa.",
+    "diffTitle": "Kinachofanya vitabu hivi kuwa tofauti:",
+    "diffDecodable": "Kila neno linasomeka katika kiwango chake halisi",
+    "diffStories": "Hadithi halisi zenye safari za kihisia, si vitabu vikavu",
+    "diffCultures": "Zimewekwa katika tamaduni za dunia nzima — Japani, Kenya, Moroko...",
+    "diffCurriculum": "Kimejengwa juu ya mtaala wa phonics wa Uingereza",
+    "button": "Pata Vitabu vya Bure"
+  },
+  "threeMinute": {
+    "title": "<hl>Dakika 3</hl> kujua kiwango chake halisi cha kusoma",
+    "subtitle": "Acha kubahatisha. Pata jibu wazi na nyenzo za bure zinazomfaa.",
+    "step1": "Tathmini ya haraka inaangalia sauti anazozijua",
+    "step2": "Pata kiwango chake halisi (1-6) papo hapo",
+    "step3": "Fikia vitabu vya bure vinavyolingana na kiwango chake",
+    "button": "Pima Kiwango Chake"
+  },
+  "wrongBooks": {
+    "title": "Vitabu visivyofaa <hl>huua kujiamini</hl>",
+    "tooHard": "Vigumu mno = kuvunjika moyo. Rahisi mno = kuchoka.",
+    "body": "Jua kiwango chake halisi kwa dakika 3 na ufungue kitabu cha bure kinacholingana na kile anachoweza kusoma kweli.",
+    "getTitle": "Utakachopata:",
+    "itemScreening": "Kipimo cha haraka cha phonics (maneno 6)",
+    "itemFreeBook": "Kitabu 1 shirikishi cha bure katika kiwango chake",
+    "itemCurriculum": "Kimejengwa juu ya mtaala wa phonics wa Uingereza",
+    "button": "Jua Kiwango Chake"
+  }
+}

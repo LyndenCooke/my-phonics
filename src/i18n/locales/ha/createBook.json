@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "Ɗakin Karatu",
+    "worldOfBooks": "Duniyar Littattafai"
+  },
+  "errors": {
+    "unreachable": "Ba a iya samun sabis ɗin Create-A-Book a yanzu ba — ku ɗan jira, sannan ku sabunta shafin.",
+    "noCheckoutLink": "Wurin biyan kuɗi bai dawo da hanyar biya ba."
+  },
+  "yourChild": "yaronku",
+  "intro": {
+    "sampleCover": "Bangon littafin misali",
+    "samplePage": "Shafi na {{n}} na littafin misali",
+    "flipHint": "Cikakken labarin MyPhonicsBooks, daga farko har ƙarshe — ku taɓa ko ku goge don juya shafuka",
+    "titleStart": "Yaronku,",
+    "titleHighlight": "shi ne jarumin labarin",
+    "lead": "Littafin fonetik na gaske wanda ake iya karantawa ta hanyar haɗa sauti — an rubuta, an zana kuma an duba shi don yaronku, cikin mintuna.",
+    "features": {
+      "mainCharacter": {
+        "title": "Yaronku shi ne babban jarumi",
+        "desc": "An zana shi a salonmu, har da idanu masu ɗigo"
+      },
+      "decodable": {
+        "title": "Ana iya karanta shi sosai a matakinsa",
+        "desc": "An duba kowace kalma da sautukan da ya sani"
+      },
+      "meetStar": {
+        "title": "Shafin 'Meet the star' a ƙarshe",
+        "desc": "Ƙasarsa, al'adarsa, shahararren wurinsa"
+      },
+      "share": {
+        "title": "Ku raba shi a Duniyar Littattafai",
+        "desc": "Haske a kan duniya da albarkar iyali"
+      }
+    },
+    "cta": "Fara littafinsa — {{price}}",
+    "ctaNote": "Littafi ɗaya, naku har abada — ku ajiye ku buga."
+  },
+  "child": {
+    "title": "Wane ne tauraron?",
+    "randomise": "Cika bazuwar (gwaji)",
+    "randomiseTitle": "Cika kowane mataki da bayanan gwaji na bazuwar",
+    "lead": "Wannan ne ke tsara labarin, hotunan, da shafin bayani a ƙarshe.",
+    "firstName": "Suna na farko",
+    "firstNamePlaceholder": "misali Maryam",
+    "age": "Shekaru",
+    "from": "Daga ina kuke?",
+    "city": "Birni / gari",
+    "optional": "(ba dole ba)",
+    "cityPlaceholder": "misali Mogadishu, Lagos, Kraków",
+    "familyWorld": "Duniyar iyalinku",
+    "familyWorldHint": "(al'ada, abinci, wurare, gargajiya)",
+    "familyWorldPlaceholder": "misali Mu iyali ne na Somaliya a London — muna son suqaar, safiyar Sallah da zuwa masallaci",
+    "loves": "Yana son...",
+    "lovesPlaceholder": "kuliyoyi, ƙwallon ƙafa, gasa kek",
+    "faith": "Addini",
+    "faithPlaceholder": "misali Musulmi, Kirista",
+    "lookLike": "Yaya kamanninsa?",
+    "gender": {
+      "girl": "yarinya",
+      "boy": "yaro"
+    },
+    "skinTones": {
+      "light": "Fari",
+      "lightMedium": "Fari-matsakaici",
+      "medium": "Matsakaici",
+      "mediumDark": "Matsakaici-baƙi",
+      "dark": "Baƙi",
+      "veryDark": "Baƙi sosai"
+    },
+    "hairPlaceholder": "Gashi — misali baƙin gashi mai lanƙwasa, hijabi, gajeren gashi mai ruwan ƙasa",
+    "changePhoto": "Canja hoto",
+    "addPhoto": "Ƙara hoto (ba dole ba)",
+    "photoAdded": "An ƙara hoto",
+    "photoPrivacy": "Ana amfani da hoton ne kawai don zana jarumin kartun. Ba a taɓa ajiye shi, wallafa shi ko nuna shi ga kowa ba."
+  },
+  "level": {
+    "title": "Zaɓi mataki da sauti ɗaya na musamman",
+    "lead": "Sauti ɗaya yana sa labarin ya kasance mai 'yanci da daɗi — sai ya bayyana 'yan lokuta kaɗan kawai.",
+    "notSure": "Ba ku da tabbacin matakin? <link>Ku yi gwajin minti 3</link>.",
+    "levelN": "Mataki na {{level}}",
+    "focusSound": "Sauti na musamman na wannan littafi",
+    "longerTitle": "Labari mai tsayi — shafuka 8 maimakon 6",
+    "longerDesc": "Ƙarin shafuka biyu masu hotuna, da babban saitin ayyuka mai shafuka 20 a ƙarshe."
+  },
+  "review": {
+    "title": "Mun kusa gamawa!",
+    "lead": "Ku duba bayanan, ku zaɓi yadda kuke son rabawa, mu kuma mu fara bugawa.",
+    "email": "Imel ɗinku (don rasit + hanyar littafin)",
+    "shareTitle": "Raba littafinmu a Duniyar Littattafai",
+    "shareBody": "Bayan ɗan bita daga ƙungiyarmu, sauran iyalai za su iya karanta littafin {{name}}. Mu haɗa duniya, labari ɗaya bayan ɗaya.",
+    "wallTitle": "Nuna mu a Bangon Ƙauna",
+    "wallBody": "Shafin \"Meet the star\" (jarumin kartun kawai — ba hoton ba ko kaɗan) yana bayyana a hotunan al'umma.",
+    "continueToPayment": "Ci gaba zuwa biyan kuɗi"
+  },
+  "pay": {
+    "title": "Ƙirƙiri littafin {{name}}",
+    "oneBook": "Littafi ɗaya na musamman · naku har abada",
+    "features": {
+      "story": "Cikakken labari mai karantuwa game da sautin \"{{sound}}\"",
+      "longer": "Labari mai tsayi: shafuka 8 masu hotuna + cikakken saitin ayyuka",
+      "hero": "An zana {{name}} a matsayin jarumi a kowane shafi",
+      "qa": "Binciken ƙa'idar idanu + fonetik a kowane shafi",
+      "meetStar": "Shafin iyali na 'Meet the star' a ƙarshe",
+      "forever": "Karanta shi nan take a allo, har abada"
+    },
+    "button": "Ƙirƙiri littafina — {{price}}",
+    "haveCode": "Kuna da lamba?",
+    "enterCode": "Shigar da lamba",
+    "apply": "Yi amfani",
+    "devFree": "Ƙirƙira kyauta (yanayin gwajin dev — babu caji)"
+  },
+  "generating": {
+    "title": "Ana zana littafin {{name}}",
+    "lead": "Ana rubutawa, zanawa da duba shi shafi-shafi — i, har idanu muna dubawa. Ku bar wannan shafin a buɗe; yana ɗaukar 'yan mintuna.",
+    "warmingUp": "Ana shirya fenti...",
+    "failedRetry": "An sami ɗan matsala — ci gaba daga inda ya tsaya (kyauta)",
+    "needsReviewTitle": "Ya kusa — wani mutum yana duba shafi ɗaya",
+    "needsReviewBody": "Labarin {{name}} da hotunansa sun kammala, amma editanmu yana son a duba shafi ɗaya da hannu kafin a buga. Babu abin da za ku yi — ku ajiye wannan hanyar, littafin zai bayyana a nan da zarar an amince da shi, yawanci cikin 'yan sa'o'i.",
+    "rejectedTitle": "Ba mu iya sa wannan labarin ya kai matsayin ingancinmu ba.",
+    "rejectedBody": "Ba a yi amfani da kuɗin littafinku ba. Kuna iya sake gwada wannan ra'ayin ko ku zaɓi wani ra'ayin labari daban.",
+    "tryAgain": "Sake gwada wannan ra'ayin (kyauta)",
+    "changeIdea": "Canja ra'ayin labarin (kuɗin yana nan)",
+    "paused": "Littafinku yana cikin aminci kuma an ajiye shi. Yana ɗaukar ɗan lokaci fiye da yadda aka saba — zai ci gaba daga daidai inda ya tsaya, kuma za mu aiko muku da imel idan ya shirya."
+  },
+  "ready": {
+    "title": "Littafinsa ya shirya!",
+    "madeFor": "An yi shi don iyalin {{name}}",
+    "pdfSoon": "PDF masu bugawa suna nan tafe — a yanzu, ku ji daɗin littafin a nan.",
+    "typesetting": "Ana tsara littafin...",
+    "openPdf": "Buɗe littafin 📕 (cikakken PDF na littafin fonetik)",
+    "play": "Yi wasa da littafin mu'amala — taɓa kowace kalma",
+    "readHere": "Karanta a nan — juya shafuka",
+    "saved": "An ajiye a asusunku",
+    "addToAccount": "Ƙara zuwa asusuna",
+    "inReview": "Littafinku yana wurin ƙungiyarmu don ɗan bita kafin ya bayyana a Duniyar Littattafai.",
+    "live": "Littafinku ya fita a Duniyar Littattafai!",
+    "unlockTitle": "Buɗe Duniyar Littattafai",
+    "unlockBody": "Karanta kowane littafi da iyalai a faɗin duniya suka yi — da kowane wanda za a yi bayanku. Biya sau ɗaya, har abada.",
+    "signInNote": "Za ku buƙaci shiga — ta haka ne damarku ke tafiya tare da ku kuma ta kasance taku.",
+    "unlockButton": "Buɗe duniya — {{price}}, sau ɗaya",
+    "signInUnlockButton": "Shiga don buɗe duniya — {{price}}",
+    "devUnlock": "dev: buɗe kyauta",
+    "enter": "Shiga Duniyar Littattafai"
+  },
+  "progress": {
+    "story": "Ana rubuta labarin {{name}}…",
+    "phonics_qa": "Ana dubawa ko kowace kalma za a iya karanta ta a wannan mataki…",
+    "plausibility_qa": "Ana dubawa ko labarin yana da ma'ana da gaske…",
+    "story_editor": "Edita yana karanta labarin kafin a zana hotuna…",
+    "directing": "Ana tsara wuraren labarin…",
+    "awaiting_imagery_approval": "An amince da labarin — hotunan suna jiran dubawa ta ƙarshe…",
+    "hero": "Ana zana {{name}} a matsayin tauraron littafi…",
+    "scenes": "Ana zana shafi na {{page}} cikin {{total}}…",
+    "cover": "Ana zana bangon littafi…",
+    "country": "Ana ƙara hotuna daga ƙasar {{name}}…",
+    "editor": "Edita yana karanta littafin da aka kammala…",
+    "assemble": "Ana ɗaure littafin…",
+    "done": "Littafinka ya shirya!",
+    "busy": "Har yanzu ana aiki — wannan mataki yana ɗaukar ɗan lokaci…",
+    "paused": "An ajiye littafinka lafiya — zai ci gaba nan ba da jimawa ba.",
+    "paused_budget": "Yana ɗaukar lokaci fiye da yadda aka saba — an sanar da ƙungiyar kuma littafinka zai ci gaba nan ba da jimawa ba.",
+    "paused_provider_credit": "Yana ɗaukar lokaci fiye da yadda aka saba — an sanar da ƙungiyar kuma littafinka zai ci gaba nan ba da jimawa ba.",
+    "needs_review": "Kusan an gama — wani mutum yana duba shafi ɗaya na ƙarshe. Za mu aiko maka da imel da zarar ya shirya.",
+    "content_rejected": "Ba mu iya sa wannan labarin ya kai matsayin ingancinmu ba. Ba a yi amfani da damar littafinka ba — sake gwada wannan ra'ayin ko zaɓi wani.",
+    "repair": "Ana gyara wasu shafuka…",
+    "working": "Ana aiki a kan littafin…"
+  }
+}

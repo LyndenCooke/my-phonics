@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useBooks } from '@/hooks/useBooks';
 import { hasInteractiveData } from '@/lib/interactiveBooksAvailability';
 import type { Book } from '@/lib/types';
@@ -20,6 +21,7 @@ const InteractiveBookReader = lazy(() => import('@/components/InteractiveBookRea
  * already gated access.
  */
 export default function SchoolRead() {
+  const { t } = useTranslation('schoolApp');
   const { slug = '' } = useParams();
   const navigate = useNavigate();
   const { data: rows = [], isLoading } = useBooks();
@@ -34,9 +36,9 @@ export default function SchoolRead() {
   if (!raw) {
     return (
       <div className="p-8 text-center space-y-4">
-        <p className="text-slate-600">That book isn’t available to read yet.</p>
+        <p className="text-slate-600">{t('read.unavailable')}</p>
         <button onClick={back} className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold">
-          Back to library
+          {t('read.backToLibrary')}
         </button>
       </div>
     );

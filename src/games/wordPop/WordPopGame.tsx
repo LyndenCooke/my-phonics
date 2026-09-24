@@ -24,6 +24,8 @@
  * The painted sky is environment only — remove it and the game still
  * plays over the procedural sky gradient.
  */
+import { useTranslation } from 'react-i18next';
+import { fillLabel, gameTx, isolate, labelFont, useLiveT } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -58,6 +60,9 @@ interface Bubble {
 interface EndStats { score: number; best: number; }
 
 export default function WordPopGame({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const live = useLiveT(t, i18n);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const bank = useGameBank(level);
   const bankRef = useRef(bank);
@@ -297,9 +302,9 @@ export default function WordPopGame({ level, onClose }: Props) {
             const pop = Math.min(1, b.t / 0.35);
             rx *= easeOutCubic(pop); ry *= easeOutCubic(pop);
           } else if (b.state === 'burst') {
-            const e = b.t / 0.45; rx *= 1 + e * 0.6; ry *= 1 + e * 0.6; alpha = 1 - e;
+            const e = Math.min(1, b.t / 0.45); rx *= 1 + e * 0.6; ry *= 1 + e * 0.6; alpha = 1 - e;
           } else {
-            const e = b.t / 0.45; rx *= 1 - e * 0.4; ry *= 1 - e * 0.4; alpha = 1 - e;
+            const e = Math.min(1, b.t / 0.45); rx *= 1 - e * 0.4; ry *= 1 - e * 0.4; alpha = 1 - e;
           }
           ctx.save();
           ctx.globalAlpha = alpha;
@@ -377,10 +382,10 @@ export default function WordPopGame({ level, onClose }: Props) {
         ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 4;
         ctx.fillStyle = '#FFFFFF'; roundRect(ctx, LW / 2 - 170, 30, 340, 64, 18); ctx.fill(); ctx.restore();
         ctx.strokeStyle = `${hex}55`; ctx.lineWidth = 3; roundRect(ctx, LW / 2 - 170, 30, 340, 64, 18); ctx.stroke();
-        ctx.fillStyle = ink; ctx.font = `700 22px ${FD}`; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-        ctx.fillText('Pop the word you hear!', LW / 2 - 26, 58);
-        ctx.fillStyle = 'rgba(90,78,86,0.7)'; ctx.font = `700 13px ${FD}`;
-        ctx.fillText('Tap the speaker to hear it again', LW / 2 - 26, 82);
+        ctx.fillStyle = ink; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        fillLabel(ctx, live.current.t('pop.popWord'), LW / 2 - 26, 58, { weight: 700, size: 22, family: labelFont(fontReady), dir: live.current.dir, maxW: 270 });
+        ctx.fillStyle = 'rgba(90,78,86,0.7)';
+        fillLabel(ctx, live.current.t('pop.tapSpeaker'), LW / 2 - 26, 82, { weight: 700, size: 13, family: labelFont(fontReady), dir: live.current.dir, maxW: 270 });
         ctx.fillStyle = hex; ctx.beginPath(); ctx.arc(speaker.x, speaker.y, speaker.r, 0, 7); ctx.fill();
         ctx.fillStyle = '#fff'; ctx.font = '22px sans-serif'; ctx.textBaseline = 'middle';
         ctx.fillText('🔊', speaker.x, speaker.y + 1);
@@ -392,15 +397,15 @@ export default function WordPopGame({ level, onClose }: Props) {
         ctx.fillText(String(score), LW - 102, 43);
         // combo
         if (streak >= 3) {
-          ctx.fillStyle = ink; ctx.font = `800 16px ${FD}`; ctx.textAlign = 'right';
-          ctx.fillText(`⚡ x${streak >= 6 ? 3 : 2} combo`, LW - 40, 84);
+          ctx.fillStyle = ink; ctx.textAlign = 'right';
+          fillLabel(ctx, live.current.t('pop.combo', { n: streak >= 6 ? 3 : 2 }), LW - 40, 84, { weight: 800, size: 16, family: labelFont(fontReady), dir: live.current.dir, maxW: 200 });
         }
         // timer bar
         ctx.fillStyle = 'rgba(255,255,255,0.6)'; roundRect(ctx, 40, 30, 220, 14, 7); ctx.fill();
         ctx.fillStyle = timeLeft < 10 ? '#EF4444' : hex;
         roundRect(ctx, 40, 30, Math.max(8, 220 * (timeLeft / GAME_SECONDS)), 14, 7); ctx.fill();
         ctx.fillStyle = 'rgba(90,78,86,0.85)'; ctx.font = `800 15px ${FD}`; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-        ctx.fillText(`${Math.ceil(timeLeft)}s`, 40, 66);
+        ctx.fillText(live.current.t('ui.seconds', { n: Math.ceil(timeLeft) }), 40, 66);
         // popped-word reveals (read what you just heard)
         for (const rv of reveals) {
           ctx.save();
@@ -414,8 +419,8 @@ export default function WordPopGame({ level, onClose }: Props) {
         // escape flash — reveal what got away
         if (escapedFlash > 0) {
           ctx.globalAlpha = Math.min(1, escapedFlash / 0.4);
-          ctx.fillStyle = 'rgba(90,78,86,0.9)'; ctx.font = `700 22px ${F}`; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-          ctx.fillText(`"${escapedWord}" got away! 💨`, LW / 2, 136);
+          ctx.fillStyle = 'rgba(90,78,86,0.9)'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+          fillLabel(ctx, live.current.t('pop.gotAway', { word: isolate(`"${escapedWord}"`) }), LW / 2, 136, { weight: 700, size: 22, family: `${F}, ${labelFont(fontReady)}`, dir: live.current.dir, maxW: LW - 80 });
           ctx.globalAlpha = 1;
         }
         ctx.restore();
@@ -459,12 +464,12 @@ export default function WordPopGame({ level, onClose }: Props) {
   const restart = () => (canvasRef.current as unknown as { __restart?: () => void })?.__restart?.();
 
   return createPortal(
-    <div className="fixed inset-0 z-[70]" style={{ background: '#12202E' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70]" style={{ background: '#12202E' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }} />
       <RotateGate />
       <button
         onClick={onClose}
-        aria-label="Close game"
+        aria-label={t('play.closeGame')}
         className="absolute top-3.5 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
         style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', top: 'max(0.875rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
       >
@@ -473,23 +478,23 @@ export default function WordPopGame({ level, onClose }: Props) {
       {ended && (
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
-            <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
-              {ended.score} star{ended.score === 1 ? '' : 's'}!{ended.best >= 3 ? ` Best combo: ${ended.best} ⚡` : ''}
+            <p {...tx} className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
+              {t('pop.stars', { count: ended.score })}{ended.best >= 3 ? ` ${t('pop.bestCombo', { n: ended.best })}` : ''}
             </p>
           </div>
           <button
             onClick={restart}
-            className="w-full h-14 rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
+            className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
             style={{ background: level.hex, boxShadow: `0 5px 0 ${level.inkHex}` }}
           >
-            Play again
+            <span {...tx}>{t('ui.playAgain')}</span>
           </button>
           <button
             onClick={onClose}
-            className="w-full h-12 rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
+            className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
             style={{ color: level.inkHex, boxShadow: '0 4px 0 rgba(40,30,40,0.15)' }}
           >
-            All done
+            <span {...tx}>{t('ui.allDone')}</span>
           </button>
         </div>
       )}

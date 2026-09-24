@@ -14,6 +14,7 @@
  *   Tier 2: 10% of gross from anyone referred by your recruits
  */
 import { useEffect, useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { buildShareUrl, buildWhatsappMessage, buildFacebookMessage } from '@/lib/referral';
@@ -31,6 +32,7 @@ interface ReferralRow {
 }
 
 export function ReferralPanel() {
+  const { t } = useTranslation('profile');
   const { user } = useAuth();
   const { toast } = useToast();
   const [row, setRow] = useState<ReferralRow | null>(null);
@@ -59,10 +61,10 @@ export function ReferralPanel() {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(kind);
-      toast({ title: 'Copied!', description: kind === 'link' ? 'Your share link is on the clipboard.' : 'Paste it into WhatsApp, Messages, or anywhere you like.' });
+      toast({ title: t('panel.copiedToast'), description: kind === 'link' ? t('panel.copiedLinkBody') : t('panel.copiedMessageBody') });
       setTimeout(() => setCopied(null), 2000);
     } catch {
-      toast({ title: 'Copy failed', description: 'Long-press the text to select and copy manually.', variant: 'destructive' });
+      toast({ title: t('panel.copyFailed'), description: t('panel.copyFailedBody'), variant: 'destructive' });
     }
   };
 
@@ -79,10 +81,10 @@ export function ReferralPanel() {
     return (
       <div className="bg-card rounded-2xl border border-border p-5 mb-6 shadow-card">
         <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-          <Share2 className="w-4 h-4 text-primary" /> Refer & Earn
+          <Share2 className="w-4 h-4 text-primary" /> {t('referrals.title')}
         </h3>
         <p className="text-xs text-muted-foreground">
-          Your referral link will appear here shortly. Refresh the page in a moment.
+          {t('panel.pending')}
         </p>
       </div>
     );
@@ -100,14 +102,14 @@ export function ReferralPanel() {
       {/* Gradient header — also acts as the expand/collapse toggle */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-600 text-white px-5 py-4 text-left hover:brightness-105 transition-all"
+        className="w-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-600 text-white px-5 py-4 text-start hover:brightness-105 transition-all"
         aria-expanded={expanded}
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
               <Share2 className="w-4 h-4" />
-              <h3 className="font-bold text-base">Refer & Earn</h3>
+              <h3 className="font-bold text-base">{t('referrals.title')}</h3>
               {(row.total_earnings_pence + row.total_tier2_earnings_pence) > 0 && (
                 <span className="text-[11px] font-extrabold bg-white text-fuchsia-700 px-2 py-0.5 rounded-full tabular-nums">
                   £{totalGbp}
@@ -116,8 +118,8 @@ export function ReferralPanel() {
             </div>
             <p className="text-xs text-white/85 leading-snug">
               {expanded
-                ? 'Earn 50% on direct referrals + 10% from your network.'
-                : `50% direct + 10% network · ${row.total_clicks} clicks · ${row.total_conversions} sales`}
+                ? t('panel.expandedSummary')
+                : `${t('panel.rates')} · ${t('panel.clicksCount', { count: row.total_clicks })} · ${t('panel.salesCount', { count: row.total_conversions })}`}
             </p>
           </div>
           <ChevronDown className={`w-5 h-5 shrink-0 transition-transform ${expanded ? 'rotate-180' : ''}`} />
@@ -130,7 +132,7 @@ export function ReferralPanel() {
             onClick={() => setExpanded(true)}
             className="w-full py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-bold shadow-button active:scale-[0.97] transition-transform"
           >
-            Get my share link
+            {t('panel.getLink')}
           </button>
         </div>
       )}
@@ -139,40 +141,42 @@ export function ReferralPanel() {
       <div className="px-5 py-4 space-y-5">
         {/* Stats */}
         <div className="grid grid-cols-2 gap-2.5">
-          <Stat icon={MousePointer2} label="Clicks" value={String(row.total_clicks)} tone="blue" />
-          <Stat icon={Users} label="Sales" value={String(row.total_conversions)} tone="green" />
-          <Stat icon={PoundSterling} label="Direct earnings" value={`£${tier1Gbp}`} tone="violet" />
-          <Stat icon={Network} label="Network earnings" value={`£${tier2Gbp}`} tone="amber" />
+          <Stat icon={MousePointer2} label={t('panel.stats.clicks')} value={String(row.total_clicks)} tone="blue" />
+          <Stat icon={Users} label={t('panel.stats.sales')} value={String(row.total_conversions)} tone="green" />
+          <Stat icon={PoundSterling} label={t('panel.stats.direct')} value={`£${tier1Gbp}`} tone="violet" />
+          <Stat icon={Network} label={t('panel.stats.network')} value={`£${tier2Gbp}`} tone="amber" />
           {row.total_recruits > 0 && (
-            <Stat icon={Users} label="Your affiliates" value={String(row.total_recruits)} tone="blue" wide />
+            <Stat icon={Users} label={t('panel.stats.affiliates')} value={String(row.total_recruits)} tone="blue" wide />
           )}
         </div>
 
         {/* Total earnings callout */}
         {(row.total_earnings_pence + row.total_tier2_earnings_pence) > 0 && (
           <div className="rounded-xl bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-200 p-3 text-center">
-            <div className="text-xs font-semibold text-violet-600 mb-0.5">Total earned</div>
+            <div className="text-xs font-semibold text-violet-600 mb-0.5">{t('panel.totalEarned')}</div>
             <div className="font-display text-2xl font-extrabold text-violet-700">£{totalGbp}</div>
           </div>
         )}
 
         {/* How it works */}
         <div className="bg-muted/50 rounded-xl p-3 space-y-1.5">
-          <p className="text-xs font-bold text-foreground">How it works</p>
+          <p className="text-xs font-bold text-foreground">{t('panel.howItWorks')}</p>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
-            <strong>Tier 1:</strong> Earn 50% commission on every subscriber you refer, recurring monthly or one-time on lifetime purchases.
+            <Trans t={t} i18nKey="panel.tier1" components={{ b: <strong /> }} />
           </p>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
-            <strong>Tier 2:</strong> When someone you referred also shares their link and brings in a subscriber, you earn 10% of that sale too.
+            <Trans t={t} i18nKey="panel.tier2" components={{ b: <strong /> }} />
           </p>
         </div>
 
         {/* Share link */}
         <div>
-          <label className="text-xs font-bold text-foreground uppercase tracking-wide">Your share link</label>
+          <label className="text-xs font-bold text-foreground uppercase tracking-wide">{t('panel.shareLink')}</label>
           <div className="mt-1.5 flex gap-2">
             <input
               readOnly
+              dir="ltr"
+              aria-label={t('panel.shareLink')}
               value={shareUrl}
               onClick={(e) => (e.target as HTMLInputElement).select()}
               className="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-muted text-foreground text-sm font-mono"
@@ -182,7 +186,7 @@ export function ReferralPanel() {
               className="px-4 rounded-xl gradient-primary text-primary-foreground text-sm font-bold shadow-button active:scale-[0.97] transition-transform flex items-center gap-1.5"
             >
               {copied === 'link' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copied === 'link' ? 'Copied' : 'Copy'}
+              {copied === 'link' ? t('panel.copied') : t('panel.copy')}
             </button>
           </div>
         </div>
@@ -190,9 +194,9 @@ export function ReferralPanel() {
         {/* WhatsApp */}
         <div>
           <label className="text-xs font-bold text-foreground uppercase tracking-wide flex items-center gap-1.5">
-            <MessageCircle className="w-3.5 h-3.5 text-green-600" /> WhatsApp message
+            <MessageCircle className="w-3.5 h-3.5 text-green-600" /> {t('panel.whatsappLabel')}
           </label>
-          <div className="mt-1.5 bg-muted rounded-xl p-3 text-xs text-foreground whitespace-pre-line leading-relaxed">
+          <div dir="ltr" lang="en" className="mt-1.5 bg-muted rounded-xl p-3 text-xs text-foreground whitespace-pre-line leading-relaxed text-left">
             {waMsg}
           </div>
           <button
@@ -200,16 +204,16 @@ export function ReferralPanel() {
             className="mt-2 w-full py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-bold shadow-button active:scale-[0.97] transition-transform flex items-center justify-center gap-2"
           >
             {copied === 'wa' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied === 'wa' ? 'Copied — paste into WhatsApp' : 'Copy WhatsApp message'}
+            {copied === 'wa' ? t('panel.copiedWhatsapp') : t('panel.copyWhatsapp')}
           </button>
         </div>
 
         {/* Facebook */}
         <div>
           <label className="text-xs font-bold text-foreground uppercase tracking-wide flex items-center gap-1.5">
-            <Share2 className="w-3.5 h-3.5 text-[#1877F2]" /> Facebook post
+            <Share2 className="w-3.5 h-3.5 text-[#1877F2]" /> {t('panel.facebookLabel')}
           </label>
-          <div className="mt-1.5 bg-muted rounded-xl p-3 text-xs text-foreground whitespace-pre-line leading-relaxed">
+          <div dir="ltr" lang="en" className="mt-1.5 bg-muted rounded-xl p-3 text-xs text-foreground whitespace-pre-line leading-relaxed text-left">
             {fbMsg}
           </div>
           <button
@@ -217,13 +221,12 @@ export function ReferralPanel() {
             className="mt-2 w-full py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#1666D8] text-white text-sm font-bold shadow-button active:scale-[0.97] transition-transform flex items-center justify-center gap-2"
           >
             {copied === 'fb' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            {copied === 'fb' ? 'Copied — paste into Facebook' : 'Copy Facebook post'}
+            {copied === 'fb' ? t('panel.copiedFacebook') : t('panel.copyFacebook')}
           </button>
         </div>
 
         <p className="text-[11px] text-muted-foreground leading-relaxed">
-          Earnings are credited within 24 hours of a successful payment. Monthly commissions recur for as long as the subscriber stays active. Payouts go to your bank monthly once you reach £20.
-          Self-referrals don't count.
+          {t('panel.terms')}
         </p>
       </div>
       )}

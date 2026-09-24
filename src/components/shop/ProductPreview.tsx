@@ -15,7 +15,9 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Lock, RefreshCw, BookOpen, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { PreviewData } from '@/lib/shopCatalogue';
+import { useShopText } from '@/components/shop/useShopText';
 
 const PINK = '#E84B8A';
 const PINK_INK = '#BE1862';
@@ -32,18 +34,19 @@ interface Props {
 function LockCTA({ onRegister, onReadOnline, kind }: {
   onRegister: () => void; onReadOnline: () => void; kind: 'book' | 'cards';
 }) {
+  const { t } = useTranslation('shop');
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 gap-3 bg-white/55 backdrop-blur-[2px]">
       <div className="w-12 h-12 rounded-full flex items-center justify-center bg-white shadow-md">
         <Lock className="w-5 h-5" style={{ color: PINK_INK }} />
       </div>
       <p className="font-display font-extrabold text-foreground text-lg max-w-xs">
-        {kind === 'book' ? 'That is a taste of the story.' : 'The rest is in the full deck.'}
+        {kind === 'book' ? t('preview.bookLockTitle') : t('preview.cardsLockTitle')}
       </p>
       <p className="text-sm text-muted-foreground max-w-xs">
         {kind === 'book'
-          ? 'Read the whole book free on any screen, or register interest in the printed set.'
-          : 'Every sound and word is in the printed deck. Register your interest below.'}
+          ? t('preview.bookLockBody')
+          : t('preview.cardsLockBody')}
       </p>
       <div className="flex flex-col sm:flex-row gap-2 mt-1">
         {kind === 'book' && (
@@ -52,7 +55,7 @@ function LockCTA({ onRegister, onReadOnline, kind }: {
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-display font-extrabold text-sm bg-white text-foreground transition-all active:translate-y-[3px]"
             style={{ boxShadow: '0 4px 0 rgba(40,30,40,0.10)', border: '1px solid rgba(40,30,40,0.08)' }}
           >
-            <BookOpen className="w-4 h-4" /> Read it free online
+            <BookOpen className="w-4 h-4" /> {t('preview.readFree')}
           </button>
         )}
         <button
@@ -60,7 +63,7 @@ function LockCTA({ onRegister, onReadOnline, kind }: {
           className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[4px]"
           style={{ background: PINK, boxShadow: `0 5px 0 ${PINK_INK}` }}
         >
-          <Sparkles className="w-4 h-4" /> Register interest
+          <Sparkles className="w-4 h-4" /> {t('preview.registerInterest')}
         </button>
       </div>
     </div>
@@ -71,6 +74,7 @@ function LockCTA({ onRegister, onReadOnline, kind }: {
 function BookFlip({ pages, accentHex, onRegister, onReadOnline }: {
   pages: string[]; accentHex: string; onRegister: () => void; onReadOnline: () => void;
 }) {
+  const { t } = useTranslation('shop');
   const [[index, dir], setState] = useState<[number, number]>([0, 0]);
   const last = pages.length - 1;
   const go = (delta: number) => {
@@ -109,7 +113,7 @@ function BookFlip({ pages, accentHex, onRegister, onReadOnline }: {
             className="absolute inset-0 rounded-xl overflow-hidden bg-white cursor-grab active:cursor-grabbing"
             style={{ boxShadow: '0 10px 30px -8px rgba(40,30,40,0.30)', transformStyle: 'preserve-3d' }}
           >
-            <img src={pages[index]} alt={`Page ${index + 1}`} className="w-full h-full object-contain" draggable={false} />
+            <img src={pages[index]} alt={t('preview.pageAlt', { n: index + 1 })} className="w-full h-full object-contain" draggable={false} />
             {/* page-edge sheen for a paper feel */}
             <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-black/10 to-transparent pointer-events-none" />
             {index === last && (
@@ -119,25 +123,26 @@ function BookFlip({ pages, accentHex, onRegister, onReadOnline }: {
         </AnimatePresence>
       </div>
 
-      <div className="flex items-center gap-4">
+      {/* Book pages turn left-to-right like the English books themselves. */}
+      <div className="flex items-center gap-4" dir="ltr">
         <button
           onClick={() => go(-1)}
           disabled={index === 0}
           className="w-11 h-11 rounded-full flex items-center justify-center bg-white disabled:opacity-30 transition-all active:translate-y-[2px]"
           style={{ boxShadow: '0 3px 0 rgba(40,30,40,0.10)', border: '1px solid rgba(40,30,40,0.08)' }}
-          aria-label="Previous page"
+          aria-label={t('preview.previousPage')}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <span className="text-sm font-bold text-muted-foreground tabular-nums">
-          {index + 1} / {pages.length} · sample
+          {t('preview.pageCounter', { n: index + 1, total: pages.length })}
         </span>
         <button
           onClick={() => go(1)}
           disabled={index === last}
           className="w-11 h-11 rounded-full flex items-center justify-center text-white disabled:opacity-30 transition-all active:translate-y-[2px]"
           style={{ background: accentHex, boxShadow: `0 3px 0 rgba(0,0,0,0.18)` }}
-          aria-label="Next page"
+          aria-label={t('preview.nextPage')}
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -151,6 +156,7 @@ function CardFlip({ cards, accentHex, landscape, onRegister, onReadOnline }: {
   cards: { front: string; back: string }[]; accentHex: string; landscape?: boolean;
   onRegister: () => void; onReadOnline: () => void;
 }) {
+  const { t } = useTranslation('shop');
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const locked = index >= cards.length;
@@ -212,16 +218,16 @@ function CardFlip({ cards, accentHex, landscape, onRegister, onReadOnline }: {
                   className="absolute inset-0 rounded-2xl overflow-hidden bg-white"
                   style={{ backfaceVisibility: 'hidden', boxShadow: '0 12px 30px -8px rgba(40,30,40,0.30)', border: '1px solid rgba(40,30,40,0.06)' }}
                 >
-                  <img src={cards[index].front} alt={`Card ${index + 1} front`} className="w-full h-full object-contain" draggable={false} />
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Front</span>
+                  <img src={cards[index].front} alt={t('preview.cardFrontAlt', { n: index + 1 })} className="w-full h-full object-contain" draggable={false} />
+                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{t('preview.front')}</span>
                 </div>
                 {/* back */}
                 <div
                   className="absolute inset-0 rounded-2xl overflow-hidden bg-white"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', boxShadow: '0 12px 30px -8px rgba(40,30,40,0.30)', border: '1px solid rgba(40,30,40,0.06)' }}
                 >
-                  <img src={cards[index].back} alt={`Card ${index + 1} back`} className="w-full h-full object-contain" draggable={false} />
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide" style={{ color: accentHex }}>Back · sounds marked</span>
+                  <img src={cards[index].back} alt={t('preview.cardBackAlt', { n: index + 1 })} className="w-full h-full object-contain" draggable={false} />
+                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide" style={{ color: accentHex }}>{t('preview.backMarked')}</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -236,9 +242,9 @@ function CardFlip({ cards, accentHex, landscape, onRegister, onReadOnline }: {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
             style={{ background: accentHex, boxShadow: `0 4px 0 rgba(0,0,0,0.18)` }}
           >
-            {flipped ? <><ChevronRight className="w-4 h-4" /> Next card</> : <><RefreshCw className="w-4 h-4" /> Flip it over</>}
+            {flipped ? <><ChevronRight className="w-4 h-4" /> {t('preview.nextCard')}</> : <><RefreshCw className="w-4 h-4" /> {t('preview.flipIt')}</>}
           </button>
-          <span className="text-sm font-bold text-muted-foreground tabular-nums">Card {index + 1} of {cards.length} · sample</span>
+          <span className="text-sm font-bold text-muted-foreground tabular-nums">{t('preview.cardCounter', { n: index + 1, total: cards.length })}</span>
         </>
       )}
     </div>
@@ -247,18 +253,21 @@ function CardFlip({ cards, accentHex, landscape, onRegister, onReadOnline }: {
 
 /* ── Overlay shell ───────────────────────────────────────────────────── */
 export default function ProductPreview({ preview, accentHex, onClose, onRegister, onReadOnline }: Props) {
+  const { t } = useTranslation('shop');
+  const tr = useShopText();
+  const label = tr(preview.label);
   return createPortal(
-    <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-4" role="dialog" aria-modal="true" aria-label={preview.label}>
-      <button className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-label="Close" />
+    <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-4" role="dialog" aria-modal="true" aria-label={label}>
+      <button className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-label={t('common.close')} />
       <div className="relative w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl p-6 sm:p-8" style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)' }}>
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 rounded-full hover:bg-muted transition-colors" aria-label="Close">
+        <button onClick={onClose} className="absolute top-4 end-4 z-10 p-2 rounded-full hover:bg-muted transition-colors" aria-label={t('common.close')}>
           <X className="w-4 h-4" />
         </button>
         <div className="text-center mb-5">
           <div className="inline-block px-2.5 py-1 rounded-full text-[11px] font-extrabold text-white mb-2" style={{ background: accentHex }}>
-            {preview.label}
+            {label}
           </div>
-          <h3 className="font-display text-lg font-extrabold text-foreground">{preview.sourceName}</h3>
+          <h3 className="font-display text-lg font-extrabold text-foreground"><bdi lang="en">{preview.sourceName}</bdi></h3>
         </div>
         {preview.kind === 'book' && preview.pages
           ? <BookFlip pages={preview.pages} accentHex={accentHex} onRegister={onRegister} onReadOnline={onReadOnline} />

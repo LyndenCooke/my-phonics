@@ -6,9 +6,19 @@ import {
   lookupTeacherSession,
   redeemTeacherCode,
 } from '@/lib/teacherSession';
+import { useTranslation, Trans } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+// redeemTeacherCode() returns English error text; map the known messages to
+// translated keys for display (anything else falls back to the generic one).
+const REDEEM_ERROR_KEYS: Record<string, string> = {
+  'Please enter a code.': 'access.errors.empty',
+  'That code is not valid or has expired.': 'access.errors.invalid',
+};
 
 export default function Teachers() {
   const navigate = useNavigate();
+  const { t } = useTranslation('teachers');
   const [code, setCode] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [checkingExisting, setCheckingExisting] = useState(true);
@@ -37,7 +47,7 @@ export default function Teachers() {
     setSubmitting(true);
     const result = await redeemTeacherCode(code);
     if (!result.ok) {
-      setError(result.error);
+      setError(t(REDEEM_ERROR_KEYS[result.error] ?? 'access.errors.generic'));
       setSubmitting(false);
       return;
     }
@@ -56,11 +66,12 @@ export default function Teachers() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative">
       <Link
         to="/"
-        className="absolute top-4 left-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
-        aria-label="Back to home"
+        className="absolute top-4 start-4 flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg"
+        aria-label={t('access.backAria')}
       >
-        <ArrowLeft className="w-4 h-4" /> Back
+        <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {t('common:actions.back')}
       </Link>
+      <LanguageSwitcher variant="compact" className="absolute top-4 end-4" />
 
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
@@ -68,29 +79,29 @@ export default function Teachers() {
             <GraduationCap className="w-8 h-8 text-primary-ink" />
           </div>
           <h1 className="font-display text-2xl font-extrabold text-foreground tracking-tight">
-            Teacher Access
+            {t('access.title')}
           </h1>
           <p className="text-sm text-muted-foreground mt-2 leading-snug">
-            Enter the code from your MyPhonicsBooks TPT download to unlock the
-            whole library — every book, every worksheet, free.
+            {t('access.intro')}
           </p>
 
           <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-trust-tint text-trust-ink text-[11px] font-semibold">
             <ShieldCheck className="w-3.5 h-3.5" />
-            No signup, no email required
+            {t('access.noSignup')}
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
             <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">
-              Voucher code
+              {t('access.codeLabel')}
             </span>
             <input
               type="text"
+              dir="ltr"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="Enter your code"
+              placeholder={t('access.codePlaceholder')}
               autoComplete="off"
               autoCapitalize="characters"
               autoCorrect="off"
@@ -115,24 +126,23 @@ export default function Teachers() {
             {submitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Unlocking…
+                {t('access.unlocking')}
               </>
             ) : (
               <>
                 <BookOpen className="w-4 h-4" />
-                Unlock the library
+                {t('access.unlock')}
               </>
             )}
           </button>
         </form>
 
         <p className="text-[11px] text-muted-foreground text-center mt-6 leading-snug">
-          Codes ship with every MyPhonicsBooks resource on Teachers Pay Teachers.
-          Not a teacher?{' '}
-          <Link to="/library" className="text-primary-ink font-semibold underline">
-            Browse the parent library
-          </Link>
-          .
+          <Trans
+            t={t}
+            i18nKey="access.footer"
+            components={{ link: <Link to="/library" className="text-primary-ink font-semibold underline" /> }}
+          />
         </p>
       </div>
     </div>

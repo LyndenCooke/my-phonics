@@ -13,6 +13,8 @@
  * Fully client-side, level-parameterised, no auth — safe on the public
  * /games arcade.
  */
+import { useTranslation } from 'react-i18next';
+import { gameTx } from '@/games/gameI18n';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { X, Star, RotateCcw } from 'lucide-react';
@@ -74,6 +76,8 @@ function buildBoard(level: JourneyLevel, bank: Record<string, string[]>): Card[]
 }
 
 export default function SoundPairs({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
   const reduceMotion = useReducedMotion();
   const hex = level.hex;
   const ink = level.inkHex;
@@ -155,7 +159,7 @@ export default function SoundPairs({ level, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70] overflow-y-auto" style={{ background: 'hsl(var(--background))' }}>
       <Scene img="/images/games/pairs_table.webp" />
       <div aria-hidden className="pointer-events-none fixed -top-24 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] rounded-full blur-3xl opacity-[0.12]" style={{ background: hex }} />
 
@@ -170,7 +174,7 @@ export default function SoundPairs({ level, onClose }: Props) {
           </span>
           <button
             onClick={onClose}
-            aria-label="Close game"
+            aria-label={t('play.closeGame')}
             className="w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
             style={{ boxShadow: STICKER }}
           >
@@ -181,11 +185,11 @@ export default function SoundPairs({ level, onClose }: Props) {
         {!done ? (
           <>
             <div className="text-center mt-5">
-              <h1 className="font-display text-2xl lg:text-3xl font-extrabold text-foreground">
-                Match the sound to its word <span aria-hidden>🃏</span>
+              <h1 {...tx} className="font-display text-2xl lg:text-3xl font-extrabold text-foreground text-balance">
+                {t('pairs.heading')} <span aria-hidden>🃏</span>
               </h1>
-              <p className="font-child text-base lg:text-lg text-foreground/60 mt-1.5">
-                {matchedCount} of {pairTotal} pairs found
+              <p {...tx} className="font-child text-base lg:text-lg text-foreground/60 mt-1.5">
+                {t('pairs.progress', { found: matchedCount, total: pairTotal })}
               </p>
             </div>
 
@@ -200,7 +204,7 @@ export default function SoundPairs({ level, onClose }: Props) {
                   <motion.button
                     key={card.id}
                     onClick={() => flip(card)}
-                    aria-label={faceUp ? `Card showing ${card.face}` : 'Face-down card'}
+                    aria-label={faceUp ? t('pairs.cardShowing', { face: card.face }) : t('pairs.faceDown')}
                     className="relative aspect-[3/4] rounded-2xl"
                     style={{ transformStyle: 'preserve-3d' }}
                     animate={reduceMotion
@@ -273,26 +277,26 @@ export default function SoundPairs({ level, onClose }: Props) {
                 </motion.span>
               ))}
             </div>
-            <h2 className="font-display text-3xl font-extrabold text-foreground mt-6">
-              {starCount === 3 ? 'Amazing memory!' : starCount === 2 ? 'Great matching!' : 'All pairs found!'}
+            <h2 {...tx} className="font-display text-3xl font-extrabold text-foreground mt-6">
+              {starCount === 3 ? t('pairs.amazingMemory') : starCount === 2 ? t('pairs.greatMatching') : t('pairs.allPairsFound')}
             </h2>
-            <p className="font-child text-lg text-foreground/70 mt-2">
-              You found all {pairTotal} pairs in {flips} goes.
+            <p {...tx} className="font-child text-lg text-foreground/70 mt-2">
+              {t('pairs.result', { total: pairTotal, count: flips })}
             </p>
             <div className="mt-9 w-full max-w-xs space-y-3">
               <button
                 onClick={restart}
-                className="w-full h-14 rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+                className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-lg font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
                 style={{ background: hex, boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80` }}
               >
-                <RotateCcw className="w-5 h-5" /> Play again
+                <RotateCcw className="w-5 h-5 shrink-0" /> <span {...tx}>{t('ui.playAgain')}</span>
               </button>
               <button
                 onClick={onClose}
-                className="w-full h-12 rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
+                className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold bg-white text-foreground/70 press-scale"
                 style={{ boxShadow: STICKER }}
               >
-                All done
+                <span {...tx}>{t('ui.allDone')}</span>
               </button>
             </div>
           </motion.div>

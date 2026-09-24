@@ -1,0 +1,92 @@
+{
+  "header": {
+    "badge": "The World of Books",
+    "title": "Every book takes you somewhere",
+    "lead": "Spin the globe and tap a flag to meet the books that live there — from our own library, and made by families like yours.",
+    "globe": "Globe",
+    "byLevel": "By level"
+  },
+  "popup": {
+    "tapBook": "Tap a book to read it online or print it at home."
+  },
+  "shelf": {
+    "booksFrom": "Books from {{country}}"
+  },
+  "levelN": "Level {{level}}",
+  "levelShort": "L{{level}}",
+  "familyMade": "family-made",
+  "untitled": "Untitled",
+  "ownBook": "{{name}}'s own book",
+  "chooser": {
+    "readPlay": "Read & play — tap every word",
+    "turnPages": "Turn the pages",
+    "readOnline": "Read online",
+    "print": "Print at home",
+    "signInToRead": "Sign in to read this book.",
+    "freeInLibrary": "This book is free to read in the library.",
+    "openLibrary": "Open the library",
+    "familyLocked": "Family-made books unlock with World of Books access."
+  },
+  "download": {
+    "notAvailable": "Download not available.",
+    "tryAgainSoon": "Try again soon.",
+    "failed": "Download failed",
+    "pdfUnavailable": "PDF file unavailable"
+  },
+  "wall": {
+    "title": "Wall of Love",
+    "lead": "Real words from real families.",
+    "aParent": "A parent",
+    "readAll": "Read the whole wall"
+  },
+  "cta": {
+    "title": "The next flag on this globe could be yours",
+    "body": "Make a real decodable book starring your child — their name, their home, their story.",
+    "button": "Create their book — {{price}}"
+  },
+  "globe": {
+    "aria": "Globe showing where every book's story lives",
+    "pinTitle_one": "{{country}} — {{count}} book",
+    "pinTitle_other": "{{country}} — {{count}} books",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset globe",
+    "hint": "drag to spin · scroll to zoom · tap a flag",
+    "alsoFrom": "Also from {{list}}"
+  },
+  "settings": {
+    "L1_1": "A busy morning at home",
+    "L1_2": "A muddy British garden",
+    "L1_3": "A new pet comes home",
+    "L1_4": "Washing-day mischief at home",
+    "L1_5": "A dash through a British park",
+    "L1_6": "An adventure in a UK woodland",
+    "L1_7": "A bustling souk",
+    "L1_8": "A Himalayan village in Nepal",
+    "L1_9": "A family kitchen in Pakistan",
+    "L1_10": "A Caribbean garden in Trinidad",
+    "L2_1": "A Japanese garden after dark",
+    "L2_2": "A British street-food night market",
+    "L2_3": "A highlands farm in Kenya",
+    "L2_4": "A village fair in England",
+    "L2_5": "Snowy Reykjavik, Iceland",
+    "L2_6": "A Marrakech-style night souk",
+    "L3_1": "The French countryside mid-race",
+    "L3_2": "A Bangkok night market",
+    "L3_3": "A residential compound in Accra",
+    "L3_4": "An art room in Seoul",
+    "L3_5": "The Gulf of Paria waterfront, Port of Spain",
+    "L4_1": "The streets of Istanbul",
+    "L4_2": "A British woodland at dusk",
+    "L4_3": "A family home in Oaxaca",
+    "L4_4": "Putrajaya, Malaysia",
+    "L5_1": "A North London Jewish community",
+    "L5_2": "A snowy Stockholm winter",
+    "L5_3": "A Jaipur rooftop at kite-festival time",
+    "L5_4": "A morning fruit market in Cartagena",
+    "L6_1": "A neighbourhood in Cairo",
+    "L6_2": "Lantern Festival in Guilin",
+    "L6_3": "A clifftop village on the Amalfi Coast",
+    "L6_4": "The Blue Mountains bush"
+  }
+}

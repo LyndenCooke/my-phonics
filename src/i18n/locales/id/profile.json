@@ -1,0 +1,194 @@
+{
+  "backToProfile": "Kembali ke Profil",
+  "hub": {
+    "title": "Profil",
+    "welcome": "Selamat datang!",
+    "signInPrompt": "Masuk untuk membuka perpustakaan Anda",
+    "signInOrUp": "Masuk / Daftar",
+    "error": "Terjadi kesalahan",
+    "level": "Level {{level}}",
+    "parentView": "Tampilan Orang Tua",
+    "switchChild": "Ganti Anak",
+    "childNamePlaceholder": "Nama anak",
+    "childDobLabel": "Tanggal lahir",
+    "addChild": "Tambahkan data anak",
+    "signOut": "Keluar"
+  },
+  "links": {
+    "assess": "Asesmen",
+    "assessSub": "Ketahui level membaca anak Anda",
+    "wallOfLove": "Dinding Cinta",
+    "wallOfLoveSub": "Apa kata keluarga tentang kami",
+    "support": "Dukung MyPhonicsBooks",
+    "supportSub": "Semuanya gratis — silakan kirim ucapan terima kasih jika berkenan",
+    "admin": "Admin",
+    "adminSub": "CRM & analitik (khusus staf)",
+    "accountSettings": "Pengaturan Akun",
+    "parentViewSub": "Buka dasbor orang tua",
+    "messages": "Pesan",
+    "messagesSub": "Hadiah, tips & kabar terbaru",
+    "rewards": "Hadiah Saya",
+    "rewardsSub": "Lihat hadiah yang sudah terbuka",
+    "referrals": "Ajak & Dapatkan Komisi",
+    "referralsSub": "Dapatkan komisi 50% — bagikan tautan Anda",
+    "downloads": "Riwayat Unduhan",
+    "help": "Bantuan & Dukungan"
+  },
+  "forYou": {
+    "title": "Untuk Anda",
+    "newCount_other": "{{count}} baru",
+    "dismiss": "Tutup notifikasi"
+  },
+  "love": {
+    "title": "Suka dengan bukunya?",
+    "body": "Kata-kata Anda membantu keluarga lain menemukan kami.",
+    "leaveReview": "Tulis ulasan",
+    "seeWall": "Lihat Dinding Cinta"
+  },
+  "messages": {
+    "title": "Pesan",
+    "new": "Baru",
+    "all": "Semua",
+    "unread": "Belum dibaca",
+    "emptyTitle": "Belum ada pesan",
+    "caughtUp": "Semua pesan sudah Anda baca.",
+    "emptyBody": "Kabar terbaru dan hadiah akan muncul di sini.",
+    "types": {
+      "reward": "Hadiah",
+      "video": "Video",
+      "referral": "Referal",
+      "progress": "Perkembangan",
+      "offer": "Penawaran",
+      "update": "Kabar Terbaru"
+    }
+  },
+  "referrals": {
+    "title": "Ajak & Dapatkan Komisi",
+    "heroTitle": "Ajak teman, dapatkan hadiah",
+    "heroBody": "Bagikan MyPhonicsBooks dan dapatkan komisi 50% dari setiap pelanggan yang Anda ajak — berulang setiap bulan, atau sekali untuk paket seumur hidup. Semua untung.",
+    "resourcesTitle": "Materi Pemasaran",
+    "resourcesBody": "Grafis media sosial, keterangan, dan teks promosi yang siap pakai. Unduh yang Anda perlukan dan mulai berbagi.",
+    "openLibrary": "Buka pustaka materi"
+  },
+  "panel": {
+    "copiedToast": "Tersalin!",
+    "copiedLinkBody": "Tautan berbagi Anda sudah ada di papan klip.",
+    "copiedMessageBody": "Tempelkan ke WhatsApp, Pesan, atau di mana pun Anda mau.",
+    "copyFailed": "Gagal menyalin",
+    "copyFailedBody": "Tekan lama teks untuk memilih dan menyalinnya secara manual.",
+    "pending": "Tautan referal Anda akan segera muncul di sini. Muat ulang halaman sebentar lagi.",
+    "expandedSummary": "Dapatkan 50% dari referal langsung + 10% dari jaringan Anda.",
+    "rates": "50% langsung + 10% jaringan",
+    "clicksCount_other": "{{count}} klik",
+    "salesCount_other": "{{count}} penjualan",
+    "getLink": "Dapatkan tautan berbagi saya",
+    "stats": {
+      "clicks": "Klik",
+      "sales": "Penjualan",
+      "direct": "Pendapatan langsung",
+      "network": "Pendapatan jaringan",
+      "affiliates": "Afiliasi Anda"
+    },
+    "totalEarned": "Total pendapatan",
+    "howItWorks": "Cara kerjanya",
+    "tier1": "<b>Tingkat 1:</b> Dapatkan komisi 50% dari setiap pelanggan yang Anda ajak, berulang setiap bulan atau sekali untuk pembelian seumur hidup.",
+    "tier2": "<b>Tingkat 2:</b> Saat orang yang Anda ajak juga membagikan tautannya dan mendatangkan pelanggan, Anda juga mendapat 10% dari penjualan tersebut.",
+    "shareLink": "Tautan berbagi Anda",
+    "copied": "Tersalin",
+    "copy": "Salin",
+    "whatsappLabel": "Pesan WhatsApp",
+    "copiedWhatsapp": "Tersalin — tempel ke WhatsApp",
+    "copyWhatsapp": "Salin pesan WhatsApp",
+    "facebookLabel": "Postingan Facebook",
+    "copiedFacebook": "Tersalin — tempel ke Facebook",
+    "copyFacebook": "Salin postingan Facebook",
+    "terms": "Pendapatan dikreditkan dalam 24 jam setelah pembayaran berhasil. Komisi bulanan terus berulang selama pelanggan tetap aktif. Pembayaran ditransfer ke rekening bank Anda setiap bulan setelah mencapai £20. Referal diri sendiri tidak dihitung."
+  },
+  "account": {
+    "signInPrompt": "Masuk untuk mengubah pengaturan Anda.",
+    "language": "Bahasa",
+    "languageHint": "Pilih bahasa untuk menu, tombol, dan panduan orang tua. Buku dan kata-kata bacaan selalu tetap dalam bahasa Inggris — karena itulah yang sedang dipelajari anak Anda.",
+    "yourDetails": "Data Anda",
+    "yourName": "Nama Anda",
+    "parentNamePlaceholder": "Nama orang tua",
+    "email": "Email",
+    "emailHint": "Perubahan email memerlukan verifikasi — hubungi dukungan jika Anda perlu menggantinya.",
+    "passwordTitle": "Atur atau ubah kata sandi",
+    "passwordSubtitle": "Buat kata sandi agar Anda bisa masuk tanpa menunggu tautan email.",
+    "sendReset": "Kirim email atur ulang kata sandi saja",
+    "billing": "Tagihan",
+    "billingBody": "Perbarui kartu, lihat faktur, atau batalkan langganan Anda.",
+    "opening": "Membuka…",
+    "manageSubscription": "Kelola langganan",
+    "childDetails": "Data anak",
+    "childName": "Nama anak",
+    "dob": "Tanggal lahir",
+    "noChild": "Belum ada anak yang ditambahkan. Kembali ke profil Anda untuk menambahkannya.",
+    "saveChanges": "Simpan perubahan",
+    "savedToast": "Tersimpan",
+    "savedToastBody": "Perubahan Anda sudah diterapkan.",
+    "saveFailed": "Gagal menyimpan",
+    "tryAgain": "Coba lagi sebentar lagi.",
+    "portalFailed": "Tidak dapat membuka portal tagihan",
+    "resetFailed": "Tidak dapat mengirim email atur ulang",
+    "resetSent": "Email atur ulang terkirim",
+    "resetSentBody": "Periksa {{email}} untuk tautan atur ulang kata sandi."
+  },
+  "downloads": {
+    "signInPrompt": "Masuk untuk melihat riwayat unduhan dan pembelian Anda.",
+    "recent": "Unduhan Terbaru",
+    "emptyTitle": "Belum ada unduhan",
+    "emptyBody": "PDF yang Anda simpan akan muncul di sini agar mudah diunduh ulang.",
+    "goToLibrary": "Buka Perpustakaan",
+    "bookFallback": "Buku",
+    "level": "Level {{level}}",
+    "reDownload": "Unduh ulang {{title}}",
+    "preparing": "Menyiapkan {{title}}…",
+    "downloaded": "{{title}} berhasil diunduh",
+    "notificationBody": "Ketuk untuk mengunduh ulang dari riwayat Anda",
+    "view": "Lihat",
+    "failed": "Unduhan gagal",
+    "unavailable": "File PDF tidak tersedia",
+    "purchases": "Pembelian",
+    "noPurchases": "Belum ada pembelian",
+    "noPurchasesBody": "Pesanan Create-A-Book dan dukungan apa pun yang Anda berikan akan muncul di sini.",
+    "purchaseFallback": "Pembelian",
+    "free": "Gratis",
+    "completed": "Selesai",
+    "receiptHint": "Perlu kuitansi atau pengembalian dana? Hubungi dukungan dari halaman Bantuan."
+  },
+  "help": {
+    "talkTitle": "Hubungi kami",
+    "talkBody": "Kami membaca setiap email secara pribadi. Sebagian besar balasan tiba dalam satu hari kerja.",
+    "emailUs": "Email",
+    "faqTitle": "Pertanyaan umum",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Ketentuan Layanan",
+    "faq": {
+      "assessment": {
+        "q": "Bagaimana cara kerja asesmen?",
+        "a": "Pilih Quick Check (~3 menit) untuk mengetahui level dengan cepat, atau Full Test (~10 menit) untuk gambaran yang lebih lengkap mencakup bunyi, kata nyata, kata alien (alien words), dan kata sulit (tricky words) di setiap level. Hasilnya menunjukkan level yang disarankan untuk anak Anda serta apa yang sudah dikuasainya."
+      },
+      "progress": {
+        "q": "Bagaimana anak saya maju dari satu buku ke buku berikutnya?",
+        "a": "Setiap buku dibaca 5 kali untuk membangun kelancaran, dengan Check singkat di akhir. Lulus Check, buku berikutnya terbuka. Kuasai semua buku di satu level, maka Level Check akan muncul dan memindahkan anak Anda ke level berikutnya jika lulus."
+      },
+      "stamps": {
+        "q": "Apa itu \"stempel\" dan \"Check\"?",
+        "a": "Stempel diberikan untuk setiap hari berbeda saat anak Anda membaca buku yang sedang dipelajari — tidak bisa mendapat dua stempel dalam sehari; sistem akan dengan lembut memintanya kembali besok. Stempel 3, 4, dan 5 masing-masing disertai cek kesiapan singkat untuk memastikan kelancaran, bukan sekadar membaca ulang secara hafalan."
+      },
+      "unlock": {
+        "q": "Bisakah saya membuka buku berikutnya secara manual?",
+        "a": "Fitur buka manual ada di Dasbor Orang Tua, tetapi saat ini bertuliskan \"Segera hadir\" — kami ingin memastikan fitur ini tidak membuat anak melewatkan celah fonik secara tidak sengaja. Jika Anda benar-benar perlu membuka sebuah buku lebih awal, kirimkan email kepada kami dan kami akan membantu."
+      },
+      "refunds": {
+        "q": "Bagaimana cara pengembalian dana?",
+        "a": "Langganan bisa dibatalkan kapan saja dari akun Anda — akses tetap berlaku hingga akhir periode. Untuk pembelian sekali bayar (misalnya paket lengkap atau akses seumur hidup), kirim email kepada kami dalam 14 hari untuk pengembalian dana penuh."
+      },
+      "pwa": {
+        "q": "Mengapa widget / aplikasi layar utama saya terlihat usang?",
+        "a": "Aplikasi web (PWA) menyimpan cache dengan sangat agresif. Tutup paksa aplikasi lalu buka kembali. Jika masih terlihat lama, buka situs di browser Anda lalu tarik ke bawah untuk memuat ulang — versi baru akan dipakai saat aplikasi dibuka berikutnya."
+      }
+    }
+  }
+}

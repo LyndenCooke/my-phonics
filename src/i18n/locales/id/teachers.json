@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "Kembali ke beranda",
+    "title": "Akses Guru",
+    "intro": "Masukkan kode dari unduhan MyPhonicsBooks TPT Anda untuk membuka seluruh perpustakaan — semua buku, semua lembar kerja, gratis.",
+    "noSignup": "Tanpa daftar, tanpa email",
+    "codeLabel": "Kode voucher",
+    "codePlaceholder": "Masukkan kode Anda",
+    "unlocking": "Membuka…",
+    "unlock": "Buka perpustakaan",
+    "footer": "Kode disertakan di setiap sumber MyPhonicsBooks di Teachers Pay Teachers. Bukan guru? <link>Jelajahi perpustakaan orang tua</link>.",
+    "errors": {
+      "empty": "Silakan masukkan kode.",
+      "invalid": "Kode tersebut tidak valid atau sudah kedaluwarsa.",
+      "generic": "Terjadi kesalahan. Silakan coba lagi."
+    }
+  },
+  "library": {
+    "welcome": "Selamat datang, Bapak/Ibu Guru.",
+    "intro": "Semua judul MyPhonicsBooks ada di sini, gratis untuk kelas Anda. Unduh PDF untuk dicetak, baca online bersama kelas, atau ambil lembar kerja pendampingnya.",
+    "shareCode": "Bagikan kode ini ke rekan guru — tidak perlu mendaftar lagi",
+    "levelHeading": "Level {{level}} · {{name}}",
+    "agesRange": "Usia {{range}} tahun",
+    "focus": "Fokus:",
+    "readOnline": "Baca online",
+    "worksheetPack": "Paket lembar kerja",
+    "pdfNotFound": "PDF tidak ditemukan ({{status}})",
+    "downloadFailed": "Unduhan gagal"
+  }
+}

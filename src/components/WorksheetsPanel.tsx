@@ -5,6 +5,8 @@ import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 
 // Force a real PDF file save instead of letting the browser navigate to the
 // URL. A plain `<a href="/worksheets/….pdf" target="_blank">` is unreliable:
@@ -32,7 +34,7 @@ async function downloadPdf(href: string, filename: string) {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
   } catch {
-    toast.error("That worksheet couldn't be downloaded. Please try again.");
+    toast.error(i18n.t('library:worksheets.downloadError'));
   }
 }
 
@@ -45,25 +47,34 @@ function pdfFilename(title: string): string {
 // scale the library and the reader use. Worksheet packs on disk are still
 // filed under their legacy 6-level book numbers ("1.3" = The Fish in the
 // Tank), so each folder is PLACED on the journey via journeyPlacement().
-const CATEGORIES = [
-  { id: 'sound-mats', label: 'Sound mats' },
-  ...JOURNEY_LEVELS.map((l) => ({ id: `level-${l.level}-worksheets`, label: `L${l.level} worksheets` })),
+// Labels are translated at render time (library:worksheets.category*).
+const CATEGORIES: Array<{ id: string; level: number | null }> = [
+  { id: 'sound-mats', level: null },
+  ...JOURNEY_LEVELS.map((l) => ({ id: `level-${l.level}-worksheets`, level: l.level })),
 ];
 
 // Ledger banner colour per journey level (the bg-level-N CSS tokens are still
 // the legacy 6-level palette, so tiles take the hex inline).
 const levelHex = (level: number) => JOURNEY_LEVELS.find((l) => l.level === level)?.hex ?? '#E84B8A';
 
+// `title` / `label` stay English: they build the saved PDF filename and
+// worksheet titles are printed in English on the sheets themselves. What the
+// grown-up reads on screen is translated from `sound` / `kind`.
 type Sheet = {
   href: string;
   title: string;
+  /** Single-sound sheet: shown as "Sound {{sound}}" (translated). */
+  sound?: string;
   thumb?: string;
 };
 
 type SheetGroup = {
   label: string;
+  /** Which translated heading to show (library:worksheets.groups.*). */
+  kind: 'book' | 'singleSound' | 'singleSoundRest' | 'singleSoundSpecial';
+  /** Graphemes for the singleSound heading, e.g. "s a t p i n". */
+  sounds?: string;
   bundleHref?: string;
-  bundleLabel?: string;
   sheets: Sheet[];
 };
 
@@ -71,6 +82,8 @@ type BookFolder = {
   id: string;
   bookNumber: string;       // "1.1"
   title: string;
+  /** Whole-level pack: title is shown translated ("Level {{level}} single-sound sheets"). */
+  packLevel?: number;
   focusSounds: string[];
   status: 'ready' | 'coming-soon';
   groups: SheetGroup[];
@@ -86,15 +99,16 @@ const LEVEL_PACKS: BookFolder[] = [
     id: 'l2-sound-pack',
     bookNumber: 'L2',
     title: 'Level 2 single-sound sheets',
+    packLevel: 2,
     focusSounds: L2_SOUNDS,
     status: 'ready',
     groups: [
       {
         label: 'Single-sound sheets — the rest of the alphabet',
+        kind: 'singleSoundRest',
         bundleHref: '/worksheets/Sound_Pack_L2/L2_Sound_Pack.pdf',
-        bundleLabel: `Download all ${L2_SOUNDS.length} sheets`,
         sheets: L2_SOUNDS.map((g) => ({
-          href: `/worksheets/Sound_Pack_L2/sound_${g}.pdf`, title: `Sound ${g}`, thumb: `/worksheets/Sound_Pack_L2/sound_${g}.png`,
+          href: `/worksheets/Sound_Pack_L2/sound_${g}.pdf`, title: `Sound ${g}`, sound: g, thumb: `/worksheets/Sound_Pack_L2/sound_${g}.png`,
         })),
       },
     ],
@@ -103,16 +117,18 @@ const LEVEL_PACKS: BookFolder[] = [
     id: 'l3-sound-pack',
     bookNumber: 'L3',
     title: 'Level 3 single-sound sheets',
+    packLevel: 3,
     focusSounds: L3_SOUNDS,
     status: 'ready',
     groups: [
       {
         label: 'Single-sound sheets — special friends',
+        kind: 'singleSoundSpecial',
         bundleHref: '/worksheets/Level_3_Pack/L3_Complete_Pack.pdf',
-        bundleLabel: `Download all ${L3_SOUNDS.length} sheets`,
         sheets: L3_SOUNDS.map((g, i) => ({
           href: `/worksheets/Level_3_Pack/${String(i + 1).padStart(2, '0')}_sound_${g}.pdf`,
           title: `Sound ${g}`,
+          sound: g,
           thumb: `/worksheets/Level_3_Pack/${String(i + 1).padStart(2, '0')}_sound_${g}.png`,
         })),
       },
@@ -130,8 +146,8 @@ const L1_BOOKS: BookFolder[] = [
     groups: [
       {
         label: 'Book worksheets',
+        kind: 'book',
         bundleHref: '/worksheets/L1/1_1_Tap_Tap_Tap_Pack/Tap_Tap_Tap_Pack.pdf',
-        bundleLabel: 'Download all 5 sheets',
         sheets: [
           { href: '/worksheets/L1/1_1_Tap_Tap_Tap_Pack/01_sound_hunt.pdf',         title: 'Sound Hunt',          thumb: '/worksheets/L1/1_1_Tap_Tap_Tap_Pack/01_sound_hunt.png' },
           { href: '/worksheets/L1/1_1_Tap_Tap_Tap_Pack/02_tap_the_sounds.pdf',     title: 'Tap the Sounds',      thumb: '/worksheets/L1/1_1_Tap_Tap_Tap_Pack/02_tap_the_sounds.png' },
@@ -142,15 +158,16 @@ const L1_BOOKS: BookFolder[] = [
       },
       {
         label: 'Single-sound sheets — s a t p i n',
+        kind: 'singleSound',
+        sounds: 's a t p i n',
         bundleHref: '/worksheets/Sound_Pack/SATPIN_Sound_Pack.pdf',
-        bundleLabel: 'Download all 6 sheets',
         sheets: [
-          { href: '/worksheets/Sound_Pack/sound_s.pdf', title: 'Sound s', thumb: '/worksheets/Sound_Pack/sound_s.png' },
-          { href: '/worksheets/Sound_Pack/sound_a.pdf', title: 'Sound a', thumb: '/worksheets/Sound_Pack/sound_a.png' },
-          { href: '/worksheets/Sound_Pack/sound_t.pdf', title: 'Sound t', thumb: '/worksheets/Sound_Pack/sound_t.png' },
-          { href: '/worksheets/Sound_Pack/sound_p.pdf', title: 'Sound p', thumb: '/worksheets/Sound_Pack/sound_p.png' },
-          { href: '/worksheets/Sound_Pack/sound_i.pdf', title: 'Sound i', thumb: '/worksheets/Sound_Pack/sound_i.png' },
-          { href: '/worksheets/Sound_Pack/sound_n.pdf', title: 'Sound n', thumb: '/worksheets/Sound_Pack/sound_n.png' },
+          { href: '/worksheets/Sound_Pack/sound_s.pdf', title: 'Sound s', sound: 's', thumb: '/worksheets/Sound_Pack/sound_s.png' },
+          { href: '/worksheets/Sound_Pack/sound_a.pdf', title: 'Sound a', sound: 'a', thumb: '/worksheets/Sound_Pack/sound_a.png' },
+          { href: '/worksheets/Sound_Pack/sound_t.pdf', title: 'Sound t', sound: 't', thumb: '/worksheets/Sound_Pack/sound_t.png' },
+          { href: '/worksheets/Sound_Pack/sound_p.pdf', title: 'Sound p', sound: 'p', thumb: '/worksheets/Sound_Pack/sound_p.png' },
+          { href: '/worksheets/Sound_Pack/sound_i.pdf', title: 'Sound i', sound: 'i', thumb: '/worksheets/Sound_Pack/sound_i.png' },
+          { href: '/worksheets/Sound_Pack/sound_n.pdf', title: 'Sound n', sound: 'n', thumb: '/worksheets/Sound_Pack/sound_n.png' },
         ],
       },
     ],
@@ -164,8 +181,8 @@ const L1_BOOKS: BookFolder[] = [
     groups: [
       {
         label: 'Book worksheets',
+        kind: 'book',
         bundleHref: '/worksheets/L1/1_2_Mud_on_Dog_Pack/Mud_on_Dog_Pack.pdf',
-        bundleLabel: 'Download all 5 sheets',
         sheets: [
           { href: '/worksheets/L1/1_2_Mud_on_Dog_Pack/01_sound_hunt.pdf',         title: 'Sound Hunt',         thumb: '/worksheets/L1/1_2_Mud_on_Dog_Pack/01_sound_hunt.png' },
           { href: '/worksheets/L1/1_2_Mud_on_Dog_Pack/02_trace_and_write.pdf',    title: 'Trace and Write',    thumb: '/worksheets/L1/1_2_Mud_on_Dog_Pack/02_trace_and_write.png' },
@@ -176,13 +193,14 @@ const L1_BOOKS: BookFolder[] = [
       },
       {
         label: 'Single-sound sheets — m d g o',
+        kind: 'singleSound',
+        sounds: 'm d g o',
         bundleHref: '/worksheets/Sound_Pack_MDGO/MDGO_Sound_Pack.pdf',
-        bundleLabel: 'Download all 4 sheets',
         sheets: [
-          { href: '/worksheets/Sound_Pack_MDGO/sound_m.pdf', title: 'Sound m', thumb: '/worksheets/Sound_Pack_MDGO/sound_m.png' },
-          { href: '/worksheets/Sound_Pack_MDGO/sound_d.pdf', title: 'Sound d', thumb: '/worksheets/Sound_Pack_MDGO/sound_d.png' },
-          { href: '/worksheets/Sound_Pack_MDGO/sound_g.pdf', title: 'Sound g', thumb: '/worksheets/Sound_Pack_MDGO/sound_g.png' },
-          { href: '/worksheets/Sound_Pack_MDGO/sound_o.pdf', title: 'Sound o', thumb: '/worksheets/Sound_Pack_MDGO/sound_o.png' },
+          { href: '/worksheets/Sound_Pack_MDGO/sound_m.pdf', title: 'Sound m', sound: 'm', thumb: '/worksheets/Sound_Pack_MDGO/sound_m.png' },
+          { href: '/worksheets/Sound_Pack_MDGO/sound_d.pdf', title: 'Sound d', sound: 'd', thumb: '/worksheets/Sound_Pack_MDGO/sound_d.png' },
+          { href: '/worksheets/Sound_Pack_MDGO/sound_g.pdf', title: 'Sound g', sound: 'g', thumb: '/worksheets/Sound_Pack_MDGO/sound_g.png' },
+          { href: '/worksheets/Sound_Pack_MDGO/sound_o.pdf', title: 'Sound o', sound: 'o', thumb: '/worksheets/Sound_Pack_MDGO/sound_o.png' },
         ],
       },
     ],
@@ -196,8 +214,8 @@ const L1_BOOKS: BookFolder[] = [
     groups: [
       {
         label: 'Book worksheets',
+        kind: 'book',
         bundleHref: '/worksheets/L1/1_3_Fish_in_Tank_Pack/Fish_in_Tank_Pack.pdf',
-        bundleLabel: 'Download all 5 sheets',
         sheets: [
           { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/01_sound_hunt.pdf',         title: 'Sound Hunt',         thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/01_sound_hunt.png' },
           { href: '/worksheets/L1/1_3_Fish_in_Tank_Pack/02_trace_and_write.pdf',    title: 'Trace and Write',    thumb: '/worksheets/L1/1_3_Fish_in_Tank_Pack/02_trace_and_write.png' },
@@ -208,11 +226,12 @@ const L1_BOOKS: BookFolder[] = [
       },
       {
         label: 'Single-sound sheets — sh nk',
+        kind: 'singleSound',
+        sounds: 'sh nk',
         bundleHref: '/worksheets/Sound_Pack_SHNK/SHNK_Sound_Pack.pdf',
-        bundleLabel: 'Download all 2 sheets',
         sheets: [
-          { href: '/worksheets/Sound_Pack_SHNK/sound_sh.pdf', title: 'Sound sh', thumb: '/worksheets/Sound_Pack_SHNK/sound_sh.png' },
-          { href: '/worksheets/Sound_Pack_SHNK/sound_nk.pdf', title: 'Sound nk', thumb: '/worksheets/Sound_Pack_SHNK/sound_nk.png' },
+          { href: '/worksheets/Sound_Pack_SHNK/sound_sh.pdf', title: 'Sound sh', sound: 'sh', thumb: '/worksheets/Sound_Pack_SHNK/sound_sh.png' },
+          { href: '/worksheets/Sound_Pack_SHNK/sound_nk.pdf', title: 'Sound nk', sound: 'nk', thumb: '/worksheets/Sound_Pack_SHNK/sound_nk.png' },
         ],
       },
     ],
@@ -243,17 +262,19 @@ function useGatedDownload() {
 
 function SheetCard({ sheet }: { sheet: Sheet }) {
   const download = useGatedDownload();
+  const { t } = useTranslation('library');
+  const shownTitle = sheet.sound ? t('worksheets.soundSheet', { sound: sheet.sound }) : sheet.title;
   return (
     <button
       type="button"
       onClick={() => download(sheet.href, pdfFilename(sheet.title))}
-      className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-left w-full"
+      className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-start w-full"
     >
       <div className="aspect-[1/1.4142] overflow-hidden bg-muted">
         {sheet.thumb ? (
           <img
             src={sheet.thumb}
-            alt={`${sheet.title} preview`}
+            alt={t('worksheets.preview', { title: shownTitle })}
             className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform"
             loading="lazy"
             draggable={false}
@@ -266,7 +287,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
       </div>
       <div className="flex items-center gap-1.5 px-2.5 py-2">
         <FileText className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-        <p className="text-[11px] font-bold text-foreground truncate flex-1">{sheet.title}</p>
+        <p lang={sheet.sound ? undefined : 'en'} className="text-[11px] font-bold text-foreground truncate flex-1">{shownTitle}</p>
         <Download className="w-3 h-3 text-muted-foreground opacity-60 group-hover:opacity-100 shrink-0" />
       </div>
     </button>
@@ -276,6 +297,8 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
 function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* hex */ }) {
   const totalSheets = book.groups.reduce((n, g) => n + g.sheets.length, 0);
   const download = useGatedDownload();
+  const { t } = useTranslation('library');
+  const groupLabel = (g: SheetGroup) => t(`worksheets.groups.${g.kind}`, { sounds: g.sounds ?? '' });
 
   return (
     <AccordionItem
@@ -284,25 +307,31 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
     >
       <AccordionTrigger className="px-5 py-4 hover:no-underline">
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-sm" style={{ backgroundColor: accent }}>
+          <div dir="ltr" className="w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-sm" style={{ backgroundColor: accent }}>
             {book.bookNumber}
           </div>
-          <div className="flex-1 min-w-0 text-left">
+          <div className="flex-1 min-w-0 text-start">
             <div className="flex items-center gap-2 flex-wrap">
-              <p className="text-sm font-extrabold text-foreground">{book.title}</p>
+              {book.packLevel ? (
+                <p className="text-sm font-extrabold text-foreground">{t('worksheets.levelPackTitle', { level: book.packLevel })}</p>
+              ) : (
+                <p dir="ltr" lang="en" className="text-sm font-extrabold text-foreground">{book.title}</p>
+              )}
               {book.status === 'coming-soon' && (
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded">
-                  Coming soon
+                  {t('worksheets.comingSoon')}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-              <span className="text-[11px] text-muted-foreground">Focus sounds:</span>
-              {book.focusSounds.map((s) => (
-                <span key={s} className="text-[11px] font-mono font-bold bg-muted px-1.5 rounded">{s}</span>
-              ))}
+              <span className="text-[11px] text-muted-foreground">{t('worksheets.focusSounds')}</span>
+              <span dir="ltr" lang="en" className="inline-flex items-center gap-1.5 flex-wrap">
+                {book.focusSounds.map((s) => (
+                  <span key={s} className="text-[11px] font-mono font-bold bg-muted px-1.5 rounded">{s}</span>
+                ))}
+              </span>
               {book.status === 'ready' && (
-                <span className="text-[11px] text-muted-foreground ml-1">· {totalSheets} sheets</span>
+                <span className="text-[11px] text-muted-foreground ms-1">· {t('worksheets.sheetCount', { count: totalSheets })}</span>
               )}
             </div>
           </div>
@@ -312,14 +341,14 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
         {book.status === 'coming-soon' ? (
           <div className="flex items-start gap-2 text-xs text-muted-foreground bg-background/50 border border-dashed border-border rounded-xl p-4">
             <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-            <p>Printable worksheets for this book are coming soon — handwriting drills, alien-word reading, tricky words and single-sound sheets for {book.focusSounds.join(', ')}.</p>
+            <p>{t('worksheets.bookComingSoon', { sounds: book.focusSounds.join(', ') })}</p>
           </div>
         ) : (
           <div className="space-y-5">
             {book.groups.map((g, gi) => (
               <div key={gi}>
                 <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
-                  <p className="text-xs font-bold text-foreground uppercase tracking-wider">{g.label}</p>
+                  <p className="text-xs font-bold text-foreground uppercase tracking-wider">{groupLabel(g)}</p>
                   {g.bundleHref && (
                     <button
                       type="button"
@@ -327,7 +356,7 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
                       className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 active:scale-[0.97] transition-all"
                     >
                       <Download className="w-3.5 h-3.5" />
-                      {g.bundleLabel ?? 'Download all'}
+                      {t('worksheets.downloadAllCount', { count: g.sheets.length })}
                     </button>
                   )}
                 </div>
@@ -339,8 +368,8 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
               </div>
             ))}
             <p className="text-[11px] text-muted-foreground">
-              <Package className="w-3 h-3 inline-block -mt-0.5 mr-1" />
-              Download the whole pack as one PDF, or grab single sheets to print as needed.
+              <Package className="w-3 h-3 inline-block -mt-0.5 me-1" />
+              {t('worksheets.packHint')}
             </p>
           </div>
         )}
@@ -366,10 +395,11 @@ const BOOKS_BY_JOURNEY_LEVEL: Record<number, BookFolder[]> = (() => {
 })();
 
 export default function WorksheetsPanel() {
+  const { t } = useTranslation('library');
   return (
     <div className="max-w-6xl mx-auto">
       <p className="text-sm text-muted-foreground mb-5 max-w-2xl">
-        Free printable phonics resources for parents and teachers. Sound mats, posters, and worksheets — all aligned with the UK Letters and Sounds curriculum.
+        {t('worksheets.intro')}
       </p>
 
       {/* Category jump bar. Sticks directly under the app header on mobile
@@ -381,7 +411,7 @@ export default function WorksheetsPanel() {
        *  padding (px-4 on mobile/tablet, lg:px-8) so the blurred strip spans
        *  the full content width instead of leaving an inset edge. */}
       <nav
-        aria-label="Resource categories"
+        aria-label={t('worksheets.categoriesAria')}
         className="flex gap-2 overflow-x-auto pb-1 mb-8 scrollbar-hide sticky top-[64px] md:top-[68px] lg:top-0 z-30 bg-background/85 backdrop-blur-md -mx-4 px-4 lg:-mx-8 lg:px-8 py-2 border-b border-border"
       >
         {CATEGORIES.map((c) => (
@@ -390,7 +420,9 @@ export default function WorksheetsPanel() {
             href={`#${c.id}`}
             className="shrink-0 px-4 py-1.5 rounded-full text-xs font-bold border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
           >
-            {c.label}
+            {c.level === null
+              ? t('worksheets.categorySoundMats')
+              : t('worksheets.categoryLevel', { level: c.level })}
           </a>
         ))}
       </nav>
@@ -409,10 +441,13 @@ export default function WorksheetsPanel() {
           >
             <div className="mb-4">
               <h2 className="font-display text-xl font-extrabold text-foreground tracking-tight">
-                Level {l.level} worksheets
+                {t('worksheets.levelHeading', { level: l.level })}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
-                {l.name} — {l.ageRange} · click a book to see its worksheet pack
+                {t('worksheets.levelSub', {
+                  name: l.name,
+                  ages: t('agesRange', { range: l.ageRange.replace(/^Ages\s*/, '') }),
+                })}
               </p>
             </div>
 
@@ -430,10 +465,10 @@ export default function WorksheetsPanel() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-foreground flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                    Coming soon
+                    {t('worksheets.comingSoon')}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                    Printable handwriting, decoding and tricky-word worksheets for Level {l.level}. Bookmark this page — new sheets land here regularly.
+                    {t('worksheets.levelComingSoon', { level: l.level })}
                   </p>
                 </div>
               </div>

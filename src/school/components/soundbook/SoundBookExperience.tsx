@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { type SoundBookContent, type ActivityKind, theme } from './engine';
 import Confetti from './Confetti';
 import { MeetTheSound, PicturePop, BlendIt, SoundHunt, BuildTheWord, StarFinish, type ActivityProps } from './activities';
 
-const STEP_LABEL: Record<ActivityKind, string> = {
-  meet: 'Meet the sound', pop: 'Listen', blend: 'Blend it', hunt: 'Sound hunt', build: 'Build a word', finish: 'Finish',
-};
-
 export default function SoundBookExperience({ content, onClose }: { content: SoundBookContent; onClose: () => void }) {
   const t = theme(content.level);
+  const { t: tr, i18n } = useTranslation('schoolApp');
+  const tx = { dir: i18n.dir(), lang: i18n.language } as const;
   const steps = content.activities;
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
@@ -46,15 +45,18 @@ export default function SoundBookExperience({ content, onClose }: { content: Sou
   };
 
   return (
-    <div className={`fixed inset-0 z-[9999] ${t.bg} flex flex-col select-none`}>
+    // Child-facing play surface: an English, left-to-right island even inside
+    // a translated (possibly RTL) school app. Instructions and buttons are
+    // translated and carry their own dir/lang; graphemes and words stay English.
+    <div dir="ltr" lang="en" className={`fixed inset-0 z-[9999] ${t.bg} flex flex-col select-none`}>
       {/* top bar */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 flex-shrink-0">
-        <button onClick={onClose} aria-label="Close" className="bg-white/70 backdrop-blur text-slate-700 rounded-full p-2 shadow hover:bg-white">
+        <button onClick={onClose} aria-label={tr('soundBookPlay.close')} className="bg-white/70 backdrop-blur text-slate-700 rounded-full p-2 shadow hover:bg-white">
           <X className="w-6 h-6" />
         </button>
         <div className="text-center">
           <div className="font-extrabold text-slate-800 leading-tight">{content.title}</div>
-          <div className={`text-xs font-bold uppercase tracking-wider ${t.accentText}`}>{STEP_LABEL[kind]}</div>
+          <div {...tx} className={`text-xs font-bold uppercase tracking-wider ${t.accentText}`}>{tr(`soundBookPlay.steps.${kind}`)}</div>
         </div>
         <div className="flex gap-1.5">
           {steps.map((_, i) => (
@@ -79,12 +81,12 @@ export default function SoundBookExperience({ content, onClose }: { content: Sou
       <div className="flex items-center justify-between px-4 sm:px-8 py-4 flex-shrink-0">
         <button onClick={() => go(-1)} disabled={index === 0}
           className="flex items-center gap-1 bg-white/70 backdrop-blur text-slate-700 font-bold rounded-full pl-3 pr-5 py-2.5 shadow disabled:opacity-0 hover:bg-white">
-          <ChevronLeft className="w-5 h-5" /> Back
+          <ChevronLeft className="w-5 h-5" /> <span {...tx}>{tr('soundBookPlay.back')}</span>
         </button>
         {!isLast ? (
           <button onClick={() => go(1)}
             className={`flex items-center gap-1 ${t.bubble} text-white font-extrabold rounded-full pl-6 pr-4 py-2.5 shadow-lg hover:brightness-105`}>
-            Next <ChevronRight className="w-5 h-5" />
+            <span {...tx}>{tr('soundBookPlay.next')}</span> <ChevronRight className="w-5 h-5" />
           </button>
         ) : <span className="w-24" />}
       </div>

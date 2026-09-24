@@ -5,6 +5,7 @@ import {
 } from '@/components/ui/dialog';
 import { BookOpen, FileText, Loader2, CheckCircle2, AlertCircle, ChevronRight } from 'lucide-react';
 import type { Book } from '@/lib/types';
+import { useTranslation, Trans } from 'react-i18next';
 
 // The edge function still keys off the SOURCE paper size:
 //   'a4' -> bucket book-pdfs/a4/{slug}.pdf  = the 2-up landscape imposition
@@ -16,30 +17,27 @@ import type { Book } from '@/lib/types';
 // file as "A4 Sheets" even though the internal format codes look swapped.
 export type DownloadFormat = 'a5' | 'a4';
 
+/** English label — used in saved FILENAMES, so it stays English. The
+ *  on-screen label is translated (`library:download.formats.<fmt>.label`). */
 export function formatDisplayLabel(format: DownloadFormat): string {
   return format === 'a4' ? 'A5 Booklet' : 'A4 Sheets';
 }
 
+// Label + description text live in `library:download.formats.<format>`.
 const VARIANTS: Array<{
   format: DownloadFormat;
-  label: string;
-  description: string;
   icon: typeof BookOpen;
   iconWrap: string;
   iconColor: string;
 }> = [
   {
     format: 'a4',
-    label: 'A5 Booklet',
-    description: 'Print on A4 double-sided, fold + staple to make a proper A5 booklet. Last + first page sit on the same sheet.',
     icon: BookOpen,
     iconWrap: 'bg-tint-pink',
     iconColor: 'text-primary-ink',
   },
   {
     format: 'a5',
-    label: 'A4 Sheets',
-    description: 'Each page on its own sheet. Good for large-format reading or classroom use.',
     icon: FileText,
     iconWrap: 'bg-amber-50 border border-amber-200',
     iconColor: 'text-amber-700',
@@ -61,6 +59,8 @@ interface Props {
 
 export default function DownloadFormatDialog({ book, onClose, onDownload }: Props) {
   const navigate = useNavigate();
+  const { t } = useTranslation('library');
+  const formatLabel = (format: DownloadFormat) => t(`download.formats.${format}.label`);
   const [stage, setStage] = useState<Stage>('choose');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [pickedFormat, setPickedFormat] = useState<DownloadFormat | null>(null);
@@ -83,7 +83,7 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
       setStage('success');
     } else {
       setStage('error');
-      setErrorMsg(result.error ?? 'Download failed');
+      setErrorMsg(result.error ?? t('download.failed'));
     }
   };
 
@@ -99,10 +99,15 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
           <>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold text-foreground">
-                Download {book.title}
+                <Trans
+                  t={t}
+                  i18nKey="download.title"
+                  values={{ title: book.title }}
+                  components={{ book: <bdi dir="ltr" lang="en" /> }}
+                />
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
-                Pick the format that suits how you'll use it.
+                {t('download.description')}
               </DialogDescription>
             </DialogHeader>
 
@@ -113,18 +118,18 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                   <button
                     key={v.format}
                     onClick={() => handlePick(v.format)}
-                    className="w-full flex items-center gap-3 p-4 rounded-2xl border border-border hover:border-primary/40 hover:bg-tint-pink/40 transition-colors text-left active:scale-[0.99]"
+                    className="w-full flex items-center gap-3 p-4 rounded-2xl border border-border hover:border-primary/40 hover:bg-tint-pink/40 transition-colors text-start active:scale-[0.99]"
                   >
                     <div className={`w-11 h-11 rounded-xl ${v.iconWrap} flex items-center justify-center shrink-0`}>
                       <Icon className={`w-5 h-5 ${v.iconColor}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-foreground">{v.label}</p>
+                      <p className="text-sm font-bold text-foreground">{formatLabel(v.format)}</p>
                       <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                        {v.description}
+                        {t(`download.formats.${v.format}.description`)}
                       </p>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0 rtl:-scale-x-100" />
                   </button>
                 );
               })}
@@ -136,9 +141,11 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
           <div className="py-6 text-center">
             <Loader2 className="w-8 h-8 text-primary mx-auto animate-spin" />
             <p className="text-sm font-bold text-foreground mt-3">
-              Preparing {pickedFormat ? formatDisplayLabel(pickedFormat) : 'PDF'}…
+              {pickedFormat
+                ? t('download.preparing', { format: formatLabel(pickedFormat) })
+                : t('download.preparingPdf')}
             </p>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <p dir="ltr" lang="en" className="text-[11px] text-muted-foreground mt-1">
               {book.title}
             </p>
           </div>
@@ -151,10 +158,15 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                 <CheckCircle2 className="w-7 h-7 text-emerald-700" />
               </div>
               <p className="text-base font-extrabold text-foreground mt-3">
-                Saved to your downloads
+                {t('download.successTitle')}
               </p>
               <p className="text-xs text-muted-foreground mt-1 leading-snug">
-                {book.title} ({pickedFormat ? formatDisplayLabel(pickedFormat) : ''}) is in your Download History — open it from there any time.
+                <Trans
+                  t={t}
+                  i18nKey="download.successBody"
+                  values={{ title: book.title, format: pickedFormat ? formatLabel(pickedFormat) : '' }}
+                  components={{ book: <bdi dir="ltr" lang="en" /> }}
+                />
               </p>
             </div>
             <div className="space-y-2 pt-1">
@@ -162,13 +174,13 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                 onClick={goToHistory}
                 className="w-full py-3 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button active:scale-[0.97] transition-transform"
               >
-                Go to Download History
+                {t('download.goToHistory')}
               </button>
               <button
                 onClick={onClose}
                 className="w-full py-2.5 rounded-xl font-bold text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Close
+                {t('common:actions.close')}
               </button>
             </div>
           </>
@@ -181,7 +193,7 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                 <AlertCircle className="w-7 h-7 text-rose-700" />
               </div>
               <p className="text-base font-extrabold text-foreground mt-3">
-                Download didn't go through
+                {t('download.errorTitle')}
               </p>
               <p className="text-xs text-muted-foreground mt-1 leading-snug">
                 {errorMsg}
@@ -192,13 +204,13 @@ export default function DownloadFormatDialog({ book, onClose, onDownload }: Prop
                 onClick={() => setStage('choose')}
                 className="w-full py-3 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button active:scale-[0.97] transition-transform"
               >
-                Try again
+                {t('common:actions.retry')}
               </button>
               <button
                 onClick={onClose}
                 className="w-full py-2.5 rounded-xl font-bold text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Close
+                {t('common:actions.close')}
               </button>
             </div>
           </>

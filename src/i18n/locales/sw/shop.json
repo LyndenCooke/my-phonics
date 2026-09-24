@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "homeAria": "Ukurasa wa mwanzo wa MyPhonicsBooks",
+    "skipToMain": "Ruka hadi maudhui makuu"
+  },
+  "nav": {
+    "readOnline": "Soma mtandaoni",
+    "freeCheck": "Tathmini ya bure",
+    "checkLevelFree": "Pima kiwango chake bure"
+  },
+  "common": {
+    "close": "Funga",
+    "preorderSave": "Agiza mapema · Okoa {{pct}}%",
+    "seeDetails": "Angalia maelezo",
+    "peekInside": "Chungulia ndani",
+    "takeAPeekInside": "Chungulia ndani",
+    "viewProduct": "Angalia {{name}}",
+    "levelBadge": "Kiwango {{level}} · {{name}}",
+    "levelChip": "K{{level}} {{name}}",
+    "findLevelFree": "Tafuta kiwango chake bure"
+  },
+  "interest": {
+    "dialogLabel": "Agiza mapema {{name}}",
+    "doneTitle": "Punguzo lako limehifadhiwa",
+    "doneBody": "Tutakutumia barua pepe mara tu {{name}} itakapokuwa tayari kuagizwa, na punguzo la {{pct}}% limehifadhiwa kwa ajili yako.",
+    "done": "Sawa",
+    "body": "Vitabu vilivyochapishwa vinaenda kwenye mitambo ya uchapishaji. Hifadhi nakala yako sasa na tutakuwekea punguzo la {{pct}}% kwenye bei hii hadi kitakapokuwa tayari kuagizwa — hakuna malipo leo.",
+    "preorderPrice": "bei ya kuagiza mapema",
+    "emailPlaceholder": "Anwani yako ya barua pepe",
+    "consent": "Nitumie barua pepe hiki kikizinduliwa, pamoja na rasilimali za bure za fonetiki. Jiondoe wakati wowote.",
+    "submit": "Hifadhi punguzo langu la {{pct}}%",
+    "noPayment": "Hakuna malipo sasa. Tazama <link>sera yetu ya faragha</link>.",
+    "error": "Kuna hitilafu imetokea. Tafadhali jaribu tena."
+  },
+  "detail": {
+    "returns": "Kurudisha ndani ya siku 30 bila maswali · Uwasilishaji ndani ya Uingereza",
+    "inTheBox": "Kilichomo ndani ya boksi",
+    "details": "Maelezo",
+    "goesWellWith": "Kinaendana vizuri na"
+  },
+  "hero": {
+    "pill": "Agiza mapema sasa · Okoa {{pct}}% · Hakuna malipo leo",
+    "title": "Vitabu halisi, mikononi halisi.",
+    "titleAccent": "Vitabu vilivyochapishwa vinakuja.",
+    "body": "Vitabu vya kusomeka kwa sauti (decodable) ambavyo mtoto wako husoma kwenye skrini, vimechapishwa ili kuhifadhiwa: seti za vitabu vya hadithi, vitabu vya mazoezi vinavyofutika na seti za kadi, vinavyolingana na kiwango chake halisi cha kusoma. Vimeandikwa na mwalimu wa shule ya msingi anayefundisha Uingereza mwenye QTS (cheti cha ualimu). Agiza mapema leo na tutakuwekea punguzo la {{pct}}% hadi vitakapokuwa tayari kutumwa — hakuna malipo sasa.",
+    "seeBundles": "Angalia vifurushi",
+    "notSure": "Huna uhakika uanzie wapi? Fanya tathmini ya bure ya dakika 3 na tutakuambia hasa kiwango anachohitaji mtoto wako.",
+    "spotlightSticker": "Chaguo la familia nyingi",
+    "anchorLibrary": "Maktaba kamili ya vitabu 33 £129",
+    "anchorFamily": "Kifurushi cha familia cha mpango mzima £349"
+  },
+  "trust": {
+    "decodable": "Kila neno katika kila kitabu linasomeka kwa kiwango cha mtoto wako au ni Tricky Word iliyofundishwa. Hakuna kubahatisha, hakuna kuvunjika moyo.",
+    "teacher": "Kimeandikwa na mwalimu wa shule ya msingi anayefundisha Uingereza mwenye QTS na kinaendana na Letters and Sounds.",
+    "returns": "Kurudisha ndani ya siku 30 bila maswali."
+  },
+  "bundles": {
+    "eyebrow": "Ofa kuu",
+    "title": "Vifurushi vya Kuanzia vya Kila Kiwango",
+    "intro": "Boksi moja lenye kila kitu anachohitaji mtoto wako kwa kiwango chake: kila kitabu cha hadithi, kitabu cha mazoezi kinachofutika pamoja na kalamu, na seti ya kadi za maneno. Ni nafuu zaidi kununua pamoja kuliko kimoja kimoja."
+  },
+  "readers": {
+    "eyebrow": "Vitabu vya hadithi",
+    "title": "Vitabu vya kusoma vilivyochapishwa",
+    "intro": "Vitabu vya hadithi vya A5 vyenye majalada yaliyopakwa laminesheni isiyong'aa, vimetengenezwa kusomwa tena na tena na kuhifadhiwa. Nunua kitabu kimoja, seti ya kiwango au maktaba nzima.",
+    "libraryEyebrow": "Vitabu vyote 33 vya hadithi",
+    "singlesTitle": "Vitabu vya hadithi kimoja kimoja",
+    "singlesIntro": "Viwango 1 hadi 3 ni £5.99 kwa kitabu; Viwango 4 hadi 8 ni £6.99. Chagua kiwango, chagua hadithi."
+  },
+  "workbooks": {
+    "eyebrow": "Nunua mara moja, fanya mazoezi daima",
+    "title": "Vitabu vya mazoezi vinavyofutika",
+    "intro": "Kila ukurasa umepakwa laminesheni inayong'aa. Mtoto wako anaandika kwa kalamu ya wet-erase iliyojumuishwa, unafuta kwa kitambaa chenye unyevu, naye anafanya mazoezi tena.",
+    "f1Title": "Hudumu kiwango chote",
+    "f1Text": "Kitabu cha mazoezi cha kawaida huisha ndani ya wiki mbili. Hiki hudumu kiwango chote na kwa kila ndugu atakayefuata: mwandiko, majaribio ya tahajia, imla na kazi ya sentensi, vinavyolingana ukurasa kwa ukurasa na vitabu.",
+    "f2Title": "Jalada la spring hulala bapa",
+    "f2Text": "Kitabu hufunguka bapa kabisa, ili mikono midogo iweze kuandika kwenye kila mstari wa kila ukurasa. Hakuna kupambana na mgongo wa kitabu.",
+    "f3Title": "Wet-erase, si dry-wipe",
+    "f3Text": "Wino wa wet-erase haufutiki chini ya mkono wa mtoto anapoandika na hutoka tu kwa kitambaa chenye unyevu. Hakuna herufi zinazochafuka katikati ya neno.",
+    "warning": "Tumia kalamu za wet-erase au dry-wipe pekee. Kalamu ya kudumu itaharibu uso.",
+    "penEyebrow": "Kinachohitajika mara kwa mara"
+  },
+  "cards": {
+    "eyebrow": "Dakika mbili kwa siku",
+    "title": "Seti za kadi",
+    "intro": "Kadi bora za A7, zimepakwa laminesheni isiyong'aa ili zidumu miaka mingi mikononi mwa watoto. Seti ya sauti inashughulikia mpango mzima; seti za maneno zinalingana na kila kiwango.",
+    "soundEyebrow": "Kadi 150, kila sauti",
+    "wordTitle": "Seti za kadi za maneno, moja kwa kila kiwango",
+    "wordIntro": "Kadi nane kwa kila sauti: kadi ya sauti pamoja na maneno saba ya mazoezi. Mbele ni safi, nyuma ina alama ili uone jinsi ya kusaidia."
+  },
+  "family": {
+    "eyebrow": "Ununuzi mmoja, kila mtoto",
+    "title": "Kifurushi cha familia cha mpango mzima",
+    "intro": "Kila kitu kwenye ukurasa huu kwa uwasilishaji mmoja, kuanzia Reception hadi Year 2 (umri wa miaka 4–7) na zaidi. Kwa kuwa vitabu vya mazoezi vinafutika, mpango mzima unaweza kurithishwa kwa ndugu anayefuata."
+  },
+  "closing": {
+    "title": "Huna uhakika ununue kiwango gani?",
+    "body": "Fanya tathmini ya bure ya dakika 3 na tutakuambia hasa kiwango anachohitaji mtoto wako. Kisha kifurushi kimoja kinatosha kwa kila kitu.",
+    "readOnline": "Soma vitabu mtandaoni"
+  },
+  "footer": {
+    "wallOfLove": "Wall of Love",
+    "privacy": "Faragha",
+    "terms": "Masharti",
+    "contact": "Wasiliana nasi",
+    "madeInUk": "Kimetengenezwa kwa uangalifu Uingereza"
+  },
+  "preview": {
+    "bookLockTitle": "Hiyo ni ladha kidogo ya hadithi.",
+    "cardsLockTitle": "Zilizobaki ziko kwenye seti kamili.",
+    "bookLockBody": "Soma kitabu kizima bure kwenye skrini yoyote, au sajili nia yako kwa seti iliyochapishwa.",
+    "cardsLockBody": "Kila sauti na neno liko kwenye seti iliyochapishwa. Sajili nia yako hapa chini.",
+    "readFree": "Kisome bure mtandaoni",
+    "registerInterest": "Sajili nia",
+    "pageAlt": "Ukurasa {{n}}",
+    "previousPage": "Ukurasa uliopita",
+    "nextPage": "Ukurasa unaofuata",
+    "pageCounter": "{{n}} / {{total}} · sampuli",
+    "cardFrontAlt": "Kadi {{n}} upande wa mbele",
+    "cardBackAlt": "Kadi {{n}} upande wa nyuma",
+    "front": "Mbele",
+    "backMarked": "Nyuma · sauti zimewekwa alama",
+    "nextCard": "Kadi inayofuata",
+    "flipIt": "Igeuze",
+    "cardCounter": "Kadi {{n}} kati ya {{total}} · sampuli"
+  },
+  "catalogue": {
+    "soundsAll": "sauti zote za Kiwango {{level}}",
+    "suffixesAll": "viambishi tamati vyote vya Kiwango {{level}}",
+    "spec": {
+      "size": "Ukubwa",
+      "pages": "Kurasa",
+      "cover": "Jalada",
+      "inside": "Ndani",
+      "binding": "Ujalidi",
+      "books": "Vitabu",
+      "workbook": "Kitabu cha mazoezi",
+      "workbooks": "Vitabu vya mazoezi",
+      "cards": "Kadi",
+      "finish": "Umaliziaji",
+      "box": "Boksi",
+      "tip": "Ncha",
+      "ink": "Wino",
+      "pen": "Kalamu",
+      "care": "Utunzaji"
+    },
+    "specValue": {
+      "matt250": "Laminesheni isiyong'aa, 250gsm",
+      "matt": "Laminesheni isiyong'aa",
+      "silk": "Karatasi ya silk 150gsm, rangi kamili",
+      "saddle": "Imeshonwa kwa pini katikati",
+      "a5Boxed": "A5, ndani ya boksi",
+      "wiroFlat": "Spring, hulala bapa",
+      "glossBoth": "Laminesheni inayong'aa pande zote mbili",
+      "penIncluded": "Wet-erase, ncha nyembamba, imejumuishwa",
+      "care": "Futa kwa kitambaa chenye unyevu",
+      "a7": "A7 (74 x 105mm)",
+      "mattBoth": "Laminesheni isiyong'aa, imechapishwa pande zote mbili",
+      "tuckIncluded": "Boksi la kadi limejumuishwa",
+      "readersA5": "Vitabu {{n}} vya kusoma vya A5",
+      "workbookBundle": "A4 spring, laminesheni inayong'aa, kalamu imejumuishwa",
+      "cardsBoxed": "{{cards}} x A7, ndani ya boksi",
+      "readersBoxed": "Vitabu 33 vya kusoma vya A5, ndani ya boksi",
+      "workbooks8": "8 x A4 spring, laminesheni inayong'aa",
+      "cardsAll": "734 katika seti 9",
+      "tipFine": "Nyembamba, kwa kuunda herufi",
+      "inkWet": "Wet-erase: hufutika kwa kitambaa chenye unyevu"
+    },
+    "reader": {
+      "blurb": "Kitabu cha hadithi cha Kiwango {{level}} kinachofanyisha mazoezi ya {{sounds}}. Kila neno linasomeka katika kiwango hiki au ni Tricky Word iliyofundishwa.",
+      "d1": "{{title}} ni hadithi halisi, si zoezi la kusoma. Kinafanyisha mazoezi ya {{sounds}} ndani ya simulizi ambalo mtoto wako atataka kulimaliza, lenye matukio ya kusisimua kila ukurasa na safari ya hisia.",
+      "d2": "Kwa kuwa kila neno linasomeka katika kiwango hiki au ni Tricky Word iliyofundishwa, mtoto wako anasoma kitabu kizima mwenyewe. Hakuna kubahatisha wala kuvunjika moyo; ni fahari tulivu tu ya kumaliza kitabu halisi.",
+      "d3": "Kimechapishwa kama kumbukumbu: karatasi ya silk ndani, jalada la laminesheni isiyong'aa linalostahimili mikono midogo, na ukubwa unaoingia kwenye begi la vitabu.",
+      "c1": "Kitabu 1 cha hadithi: {{title}}",
+      "c2": "Sauti lengwa: {{sounds}}",
+      "c3": "Kurasa za shughuli na kuandika mwishoni",
+      "c4": "Cheti cha Reading Star"
+    },
+    "readerSet": {
+      "valueNote": "yaani {{price}} kwa kitabu",
+      "blurb": "Vitabu vyote {{n}} vya hadithi vya Kiwango {{level}} kwa mpangilio wa kusoma. Kila kitu anachosoma mtoto wako katika {{levelName}}, kwenye seti moja.",
+      "d1": "Seti kamili ya vitabu vya hadithi vya Kiwango {{level}}, kwa mpangilio ambao mtoto wako anapaswa kuvisoma. Kila kitabu kinatambulisha sauti zake kupitia hadithi halisi, na seti hii inamtoa mtoto wako mwanzoni mwa {{levelName}} hadi kuwa tayari kwa kiwango kinachofuata.",
+      "d2": "Kila neno katika kila kitabu linasomeka katika kiwango hiki au ni Tricky Word iliyofundishwa, kwa hiyo mtoto wako ndiye anakusomea, si wewe unayemsomea.",
+      "book": "Kitabu {{n}}: {{title}}"
+    },
+    "library": {
+      "valueNote": "yaani takriban £3.90 kwa kitabu",
+      "blurb": "Vitabu vyote 33 vya hadithi, Kiwango 1 hadi Kiwango 8, ndani ya boksi la kumbukumbu. Safari nzima kuanzia sauti za kwanza hadi kusoma kwa ufasaha.",
+      "d1": "Kila kitabu cha hadithi katika mpango huu, ndani ya boksi kwa mpangilio wa kusoma. Mtoto wako anaanza na {{first}} akiwa na sauti sita na anamaliza kwa kusoma {{last}} peke yake.",
+      "d2": "Vitabu thelathini na vitatu vinaonekana vingi hadi umwone mtoto akivipitia. Vitabu viwili au vitatu kwa kila kiwango, kila kimoja kinafikika, kila kimoja kinasonga mbele kidogo kuliko kilichotangulia. Boksi kwenye rafu linakuwa kumbukumbu ya jinsi walivyofika mbali.",
+      "d3": "Vikinunuliwa kimoja kimoja vitabu hivi vinagharimu zaidi ya £215. Ndani ya boksi, maktaba nzima ni £129: takriban £3.90 kwa kitabu.",
+      "c1": "Vitabu vyote 33 vya hadithi vya Viwango 1 hadi 8",
+      "c2": "Ndani ya boksi kwa mpangilio wa kusoma",
+      "c3": "Kiwango 1: vitabu 2 · Kiwango 2: 5 · Kiwango 3: 3 · Kiwango 4: 6",
+      "c4": "Kiwango 5: vitabu 5 · Kiwango 6: 4 · Kiwango 7: 4 · Kiwango 8: 4",
+      "badge": "Safari nzima"
+    },
+    "workbook": {
+      "blurb": "Kila ukurasa umepakwa laminesheni inayong'aa. Mtoto wako anaandika kwa kalamu ya wet-erase iliyojumuishwa, unafuta kwa kitambaa chenye unyevu, naye anafanya mazoezi tena.",
+      "d1": "Kitabu cha mazoezi cha A4 chenye spring ambacho kila ukurasa wake umepakwa laminesheni inayong'aa. Mtoto wako anaandika juu yake kwa kalamu ya wet-erase iliyojumuishwa, unafuta kwa kitambaa chenye unyevu, naye anafanya mazoezi tena. Mwandiko, majaribio ya tahajia, imla na kazi ya sentensi kwa Kiwango {{level}} chote, vinavyolingana ukurasa kwa ukurasa na vitabu.",
+      "d2": "Nunua mara moja, fanya mazoezi daima. Kitabu cha mazoezi cha kawaida huisha ndani ya wiki mbili; hiki hudumu kiwango chote na kwa kila ndugu atakayefuata.",
+      "d3": "Spring ina umuhimu: kitabu hulala bapa kabisa, ili mikono midogo iweze kuandika kwenye kila mstari wa kila ukurasa.",
+      "d4": "Kalamu nayo ina umuhimu. Wino wa wet-erase haufutiki chini ya mkono wa mtoto anapoandika na hutoka tu kwa kitambaa chenye unyevu, kwa hiyo hakuna herufi zinazochafuka katikati ya neno.",
+      "d5": "Onyo moja, kwa uwazi: tumia kalamu za wet-erase au dry-wipe pekee. Kalamu ya kudumu itaharibu uso.",
+      "c1": "Kitabu 1 cha mazoezi kinachofutika na kutumika tena",
+      "c2": "Kalamu 1 ya wet-erase yenye ncha nyembamba",
+      "c3": "Mwandiko, tahajia, imla na kazi ya sentensi kwa Kiwango {{level}}: {{levelName}}"
+    },
+    "soundDeck": {
+      "blurb": "Kila sauti katika mpango huu kwenye kadi 150 bora za A7, pamoja na nyongeza ya kadi saba maalum za ough.",
+      "d1": "Kadi moja kwa kila sauti ambayo mtoto wako anakutana nayo kuanzia Kiwango 1 hadi Kiwango 8. Inua kadi, mtoto wako anatamka sauti; dakika hiyo moja ya mazoezi kila siku ndiyo injini ya kusoma mapema.",
+      "d2": "Seti hii inakua pamoja na mtoto wako. Anza na herufi moja moja, ongeza sauti za herufi mbili anapofikia Kiwango 3, na endelea hadi viambishi tamati katika Kiwango 8. Nyongeza ya ough ndiyo kivutio: tahajia moja, sauti saba, na watoto hupenda kuzikusanya.",
+      "d3": "Kadi bora za A7, zimechapishwa pande zote mbili na kupakwa laminesheni isiyong'aa ili zidumu miaka mingi mikononi mwa watoto.",
+      "c1": "Kadi 143 za sauti za Viwango 1 hadi 8",
+      "c2": "Nyongeza ya kadi 7 maalum za ough",
+      "c3": "Boksi la kadi"
+    },
+    "wordDeck": {
+      "blurb": "Kadi {{n}} za Kiwango {{level}}: kila sauti na maneno yake ya mazoezi, safi upande wa mbele na yenye alama upande wa nyuma.",
+      "d1": "Kadi nane kwa kila sauti: kadi moja ya sauti na maneno saba ya mazoezi ambayo mtoto wako anaweza kusoma katika Kiwango {{level}}. Upande wa mbele unaonyesha neno kama linavyoonekana kitabuni; ukiigeuza, upande wa nyuma unaonyesha neno lilelile likiwa na sauti zake zimewekwa alama, ili uone mara moja jinsi ya kusaidia.",
+      "d2": "Zitumie kwa michezo ya dakika mbili: soma neno, tafuta sauti, shinda rundo la jana. Kidogo mara nyingi ni bora kuliko kingi mara chache.",
+      "c1": "Kadi {{n}}: kadi za sauti pamoja na maneno ya mazoezi",
+      "c2": "Mbele safi, nyuma yenye alama",
+      "c3": "Boksi la kadi"
+    },
+    "bundle": {
+      "valueNote": "unaokoa {{amount}} ukilinganisha na kununua kimoja kimoja",
+      "blurb": "Kila kitu anachohitaji mtoto wako kwa Kiwango {{level}}: vitabu vyote {{n}} vya hadithi, kitabu cha mazoezi kinachofutika pamoja na kalamu, na seti ya kadi za maneno.",
+      "d1": "Boksi moja, kiwango kimoja, kila kitu ndani yake. Seti kamili ya vitabu vya kusoma vya {{levelName}}, kitabu cha mazoezi kinachofutika na kutumika tena pamoja na kalamu yake ya wet-erase, na seti ya kadi za maneno za Kiwango {{level}}.",
+      "d2": "Vipande vitatu vinafanya kazi pamoja: kadi kwa mazoezi mafupi ya kila siku, vitabu kwa kusoma halisi, kitabu cha mazoezi kwa kuandika yote (kisha kufuta, na kurudia tena).",
+      "d3": "Ikiwa unajua kiwango cha mtoto wako, hiki ndicho cha kununua.",
+      "c1": "Vitabu vyote {{n}} vya hadithi vya Kiwango {{level}}",
+      "c2": "Kitabu cha mazoezi kinachofutika pamoja na kalamu ya wet-erase",
+      "c3": "Seti ya kadi za maneno (kadi {{cards}})",
+      "badge": "Mwanzo bora"
+    },
+    "family": {
+      "blurb": "Mpango mzima kwa uwasilishaji mmoja: maktaba ndani ya boksi, vitabu vyote 8 vya mazoezi vinavyofutika pamoja na kalamu, seti kamili ya kadi za sauti na kila seti ya kadi za maneno.",
+      "d1": "Kila kitu, mara moja, kwa kila mtoto nyumbani. Maktaba kamili ya vitabu 33, kitabu cha mazoezi kinachofutika na kalamu kwa kila kimoja kati ya viwango 8, seti kamili ya kadi za sauti na seti zote 8 za kadi za maneno.",
+      "d2": "Kwa kuwa vitabu vya mazoezi vinafutika na vitabu vimetengenezwa kudumu, mpango mzima unarithishwa moja kwa moja kwa ndugu anayefuata. Ununuzi mmoja, kuanzia Reception hadi Year 2 (umri wa miaka 4–7) na zaidi, mtoto baada ya mtoto.",
+      "c1": "Maktaba kamili ya vitabu vya kusoma, ndani ya boksi (vitabu 33)",
+      "c2": "Vitabu 8 vya mazoezi vinavyofutika, kila kimoja na kalamu ya wet-erase",
+      "c3": "Seti kamili ya kadi za sauti (kadi 150)",
+      "c4": "Seti zote 8 za kadi za maneno (kadi 584)",
+      "badge": "Kila kitu"
+    },
+    "pens": {
+      "blurb": "Kalamu tatu za wet-erase zenye ncha nyembamba kwa vitabu vya mazoezi vinavyofutika. Kalamu hupotea; kitabu cha mazoezi hakipaswi kusubiri.",
+      "d1": "Kalamu tatu za wet-erase zenye ncha nyembamba, aina ileile inayokuja na kila kitabu cha mazoezi kinachofutika. Wino haufutiki mtoto wako anapoandika na hutoka kwa kitambaa chenye unyevu.",
+      "d2": "Kikumbusho kinachookoa vitabu vya mazoezi: tumia kalamu za wet-erase au dry-wipe pekee. Kalamu ya kudumu itaharibu uso wa laminesheni.",
+      "c1": "Kalamu 3 za wet-erase zenye ncha nyembamba"
+    },
+    "preview": {
+      "cards": "Chungulia kadi",
+      "book": "Chungulia ndani",
+      "sampleBook": "Chungulia ndani ya kitabu cha sampuli"
+    }
+  }
+}

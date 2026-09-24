@@ -1,0 +1,156 @@
+{
+  "page": {
+    "title": "Kütüphane",
+    "subtitleBooks": "{{count}} küçük kitap, sekiz seviye — okumaya başlamak için birine dokunun",
+    "subtitleBooksNoCount": "Küçük kitaplar, sekiz seviye — okumaya başlamak için birine dokunun",
+    "subtitleWorksheets": "Ücretsiz yazdırılabilir ses kartları ve çalışma sayfaları"
+  },
+  "tabs": {
+    "books": "Kitaplar",
+    "worksheets": "Çalışma sayfaları"
+  },
+  "guest": {
+    "title": "Tüm kitapları okumak ücretsiz",
+    "body": "Başlamak için herhangi bir kitaba dokunun. Yazdırılabilir PDF mi istiyorsunuz? İndirmek için ücretsiz bir hesap oluşturun.",
+    "signUp": "Ücretsiz kaydolun →",
+    "findLevel": "Çocuğunuzun seviyesini bulun →"
+  },
+  "newUser": {
+    "title": "Nereden başlayacağınızdan emin değil misiniz?",
+    "body": "Doğru seviyeyi bulmak için 3 dakikalık kontrolümüzü yapın — sonra istediğiniz kitabı okuyun ya da indirin.",
+    "cta": "Değerlendirmeyi Başlat →"
+  },
+  "shelf": {
+    "ariaLabel": "Seviye {{level}} — {{name}}",
+    "level": "Seviye {{level}}",
+    "readProgress": "{{total}} kitaptan {{read}} tanesi okundu"
+  },
+  "empty": {
+    "title": "Bu seviye için henüz kitap yok",
+    "body": "Yeni kitaplar için yakında tekrar bakın"
+  },
+  "unlockedModal": {
+    "cta": "Okumaya Başla"
+  },
+  "quiz": {
+    "perfect": "Tam puan! {{score}}/{{total}} - Sen bir okuma yıldızısın!",
+    "complete": "Test bitti! Puanınız {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "yakında",
+    "days_one": "{{count}} gün",
+    "days_other": "{{count}} gün",
+    "hours_one": "{{count}} saat",
+    "hours_other": "{{count}} saat"
+  },
+  "downloadErrors": {
+    "signIn": "İndirmek için lütfen giriş yapın.",
+    "unavailable": "PDF dosyası kullanılamıyor",
+    "failed": "İndirme başarısız oldu"
+  },
+  "notification": {
+    "title": "{{title}} indirildi",
+    "body": "{{format}} kaydedildi — yeniden indirmek için dokunun",
+    "cta": "Görüntüle"
+  },
+  "levelFilter": {
+    "all": "Tüm kitaplar"
+  },
+  "levels": {
+    "1": {
+      "focus": "İlk sesler ve basit 3 harfli kelimeler"
+    },
+    "2": {
+      "focus": "Alfabenin geri kalanı ve ck, ff, ll, ss"
+    },
+    "3": {
+      "focus": "İki harf, tek ses — sh, ch, th, ng…"
+    },
+    "4": {
+      "focus": "ay, ee, igh, oo ve ar gibi ünlü grupları"
+    },
+    "5": {
+      "focus": "Ayrık harf çiftleri (a-e, i-e) ve yeni yazımlar"
+    },
+    "6": {
+      "focus": "Alternatif yazımlar — wr, kn, ph, dge…"
+    },
+    "7": {
+      "focus": "Üçlü harf grupları (ire, ore, ear) ve -tion sonları"
+    },
+    "8": {
+      "focus": "Sonekler ve kelime türetme — -ous, -able, -ible"
+    }
+  },
+  "agesRange": "{{range}} yaş",
+  "card": {
+    "doneAria": "{{title}} — okundu",
+    "lockedAria": "{{title}} — kilitli",
+    "download": "PDF indir",
+    "downloadAria": "{{title}} PDF dosyasını indir"
+  },
+  "download": {
+    "title": "<book>{{title}}</book> indir",
+    "description": "Nasıl kullanacağınıza uygun biçimi seçin.",
+    "formats": {
+      "a4": {
+        "label": "A5 Kitapçık",
+        "description": "A4 kâğıda çift taraflı yazdırın, katlayıp zımbalayın; gerçek bir A5 kitapçık olsun. Son ve ilk sayfa aynı yaprakta yer alır."
+      },
+      "a5": {
+        "label": "A4 Sayfalar",
+        "description": "Her sayfa ayrı bir yaprakta. Büyük boyutta okuma veya sınıf kullanımı için uygun."
+      }
+    },
+    "preparing": "{{format}} hazırlanıyor…",
+    "preparingPdf": "PDF hazırlanıyor…",
+    "successTitle": "İndirilenlerinize kaydedildi",
+    "successBody": "<book>{{title}}</book> ({{format}}) İndirme Geçmişinizde — dilediğiniz zaman oradan açabilirsiniz.",
+    "goToHistory": "İndirme Geçmişine git",
+    "errorTitle": "İndirme tamamlanamadı",
+    "failed": "İndirme başarısız oldu"
+  },
+  "worksheets": {
+    "intro": "Veliler ve öğretmenler için ücretsiz yazdırılabilir fonetik kaynakları. Ses kartları, posterler ve çalışma sayfaları — hepsi Birleşik Krallık Letters and Sounds müfredatıyla uyumlu.",
+    "categoriesAria": "Kaynak kategorileri",
+    "categorySoundMats": "Ses kartları",
+    "categoryLevel": "S{{level}} çalışma sayfaları",
+    "levelHeading": "Seviye {{level}} çalışma sayfaları",
+    "levelSub": "{{name}} — {{ages}} · çalışma paketini görmek için bir kitaba tıklayın",
+    "comingSoon": "Çok yakında",
+    "levelComingSoon": "Seviye {{level}} için yazdırılabilir el yazısı, okuma çözümleme ve Tricky Words çalışma sayfaları. Bu sayfayı yer imlerine ekleyin — yeni sayfalar düzenli olarak ekleniyor.",
+    "focusSounds": "Odak sesler:",
+    "sheetCount_one": "{{count}} sayfa",
+    "sheetCount_other": "{{count}} sayfa",
+    "bookComingSoon": "Bu kitabın yazdırılabilir çalışma sayfaları çok yakında — el yazısı alıştırmaları, alien words okuma, Tricky Words ve {{sounds}} için tek ses sayfaları.",
+    "downloadAllCount_one": "{{count}} sayfayı indir",
+    "downloadAllCount_other": "{{count}} sayfanın hepsini indir",
+    "packHint": "Paketin tamamını tek PDF olarak indirin ya da gerektikçe tek tek sayfaları yazdırın.",
+    "downloadError": "Bu çalışma sayfası indirilemedi. Lütfen tekrar deneyin.",
+    "preview": "{{title}} önizlemesi",
+    "levelPackTitle": "Seviye {{level}} tek ses sayfaları",
+    "groups": {
+      "book": "Kitap çalışma sayfaları",
+      "singleSound": "Tek ses sayfaları — {{sounds}}",
+      "singleSoundRest": "Tek ses sayfaları — alfabenin geri kalanı",
+      "singleSoundSpecial": "Tek ses sayfaları — Special Friends (iki harf, tek ses)"
+    },
+    "soundSheet": "{{sound}} sesi"
+  },
+  "soundMats": {
+    "title": "Ses kartları",
+    "subtitle": "Ev ve sınıf için yazdırılabilir ses kartları — A3 yatay PNG",
+    "level": "Seviye {{level}}",
+    "levels23": "Seviye 2 ve 3",
+    "levels46": "Seviye 4–6",
+    "sounds_one": "{{count}} ses",
+    "sounds_other": "{{count}} ses",
+    "combinedChart_one": "{{count}} ses — öğretmen için birleşik tablo",
+    "combinedChart_other": "{{count}} ses — öğretmen için birleşik tablo",
+    "combined": "Birleşik",
+    "alt": "{{title}} ses kartı"
+  },
+  "resources": {
+    "title": "Kaynaklar"
+  }
+}

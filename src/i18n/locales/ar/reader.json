@@ -1,0 +1,168 @@
+{
+  "closeBook": "إغلاق الكتاب",
+  "pageAlt": "{{title}} — الصفحة {{page}}",
+  "pageLoadError": "تعذّر تحميل هذه الصفحة.",
+  "pageLoadErrorHint": "تحقّق من اتصالك بالإنترنت ثم حاول مرة أخرى.",
+  "pagesUnavailable": "صور الصفحات غير متوفرة",
+  "previousPage": "الصفحة السابقة",
+  "nextPage": "الصفحة التالية",
+  "goToPage": "الانتقال إلى الصفحة {{page}}",
+  "finishBook": "إنهاء الكتاب",
+  "tapToHear": "اضغط لسماع \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "معاينة الكتاب — استخدم مفاتيح الأسهم لتقليب الصفحات"
+  },
+  "quiz": {
+    "saveFailed": "تعذّر حفظ نتائج الاختبار",
+    "completeAria": "اكتمل الاختبار",
+    "perfect": "درجة كاملة!",
+    "wellDone": "أحسنت!",
+    "scored": "حصلت على <b>{{score}}</b> من <b>{{total}}</b>",
+    "tryAgain": "حاول مرة أخرى",
+    "dialogAria": "اختبار: {{title}}",
+    "close": "إغلاق الاختبار",
+    "answerOptions": "خيارات الإجابة",
+    "seeResults": "عرض النتائج",
+    "brilliant": "رائع!",
+    "nearly": "اقتربت! حاول مرة أخرى في المرة القادمة."
+  },
+  "audio": {
+    "playSoundTitle": "تشغيل صوت \"{{grapheme}}\"",
+    "playSoundAria": "تشغيل صوت الحرف {{grapheme}}",
+    "playWordTitle": "تشغيل \"{{word}}\"",
+    "playWordAria": "تشغيل كلمة {{word}}"
+  },
+  "soundMap": {
+    "known": "معروف ({{n}})",
+    "toLearn": "للتعلّم ({{n}})",
+    "notTestedCount": "لم يُختبر ({{n}})",
+    "notTested": "لم يُختبر",
+    "levelHeading": "المستوى {{level}}",
+    "levelsNotTested": "المستويات {{levels}} لم تُختبر بعد",
+    "status": {
+      "known": "معروف",
+      "unknown": "للتعلّم",
+      "untested": "لم يُختبر"
+    },
+    "categories": {
+      "sound_recognition": "الأصوات",
+      "word_reading": "كلمات حقيقية",
+      "alien_words": "Alien Words (كلمات وهمية)",
+      "tricky_words": "Tricky Words (كلمات صعبة)",
+      "speedy_reading": "القراءة السريعة",
+      "fluency": "الطلاقة"
+    }
+  },
+  "interactive": {
+    "playSound": "تشغيل الصوت {{sound}}",
+    "playSoundVariant": "تشغيل الصوت {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. اضغط للاستماع.",
+    "illustration": "رسم توضيحي للقصة",
+    "closeImage": "إغلاق الصورة",
+    "expandIllustration": "تكبير الرسم التوضيحي",
+    "hideHints": "إخفاء تلميحات الصوتيات",
+    "showHints": "إظهار تلميحات الصوتيات",
+    "checkInPassed": "تم اجتياز المراجعة",
+    "checkInPractise": "المراجعة — استمر في التدرّب"
+  },
+  "prep": {
+    "tapToHear": "اضغط على كل صوت لسماعه. هذه هي الأصوات التي سيتدرّب عليها طفلك.",
+    "tapLevel": "اضغط على مستوى لرؤية أصواته"
+  },
+  "book": {
+    "level": "المستوى {{level}}",
+    "levelLabel": "المستوى {{level}} — {{name}}",
+    "cover": {
+      "swipe": "اسحب للبدء",
+      "levelSubtitle": "المستوى {{level}} · {{name}}",
+      "madeFor": "كتاب صُنع لـ{{hero}} · المستوى {{level}} · الصوت \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "أصوات جديدة في هذا الكتاب",
+      "headsUp": "انتبه:",
+      "noteUre": "للحروف 'ure' صوتان! في آخر الكلمة قد تُنطق مثل 'yoor' (كما في pure) أو مثل 'ur' (كما في nature). ستقابل الاثنين في هذا الكتاب."
+    },
+    "vocab": {
+      "title": "كلمات القصة",
+      "hint": "اضغط على البطاقة لتسمع الكلمة. ستجد كل هذه الكلمات في القصة."
+    },
+    "story": {
+      "readToMe": "اقرأ لي",
+      "reading": "جارٍ القراءة..."
+    },
+    "spotlight": {
+      "tapSound": "اضغط على الصوت!"
+    },
+    "wordReading": {
+      "title": "هل تستطيع قراءة هذه؟",
+      "hint": "اضغط على كل كلمة لتسمعها مدموجة. استخدم النقاط لتهجئة أصواتها."
+    },
+    "tricky": {
+      "title": "كلمات صعبة",
+      "hint": "لا تُنطق كما تُكتب — احفظها بالنظر!"
+    },
+    "alien": {
+      "title": "كلمات فضائية",
+      "hint": "ليست كلمات حقيقية — فقط انطق أصواتها!"
+    },
+    "quiz": {
+      "progress": "السؤال {{n}} من {{total}}",
+      "right": "أحسنت!",
+      "wrong": "ليس تمامًا — الإجابة الخضراء هي الصحيحة!",
+      "next": "السؤال التالي"
+    },
+    "correct": "صحيح!",
+    "spelling": {
+      "title": "تهجَّ الكلمة!",
+      "next": "الكلمة التالية"
+    },
+    "grammar": {
+      "title": "كوِّن الجملة!",
+      "progress": "الجملة {{n}} من {{total}}",
+      "next": "الجملة التالية"
+    },
+    "ordering": {
+      "title": "رتِّب أحداث القصة!",
+      "hint": "اضغط على صورتين لتبديل مكانهما.",
+      "done": "الترتيب صحيح!",
+      "shuffle": "اخلط"
+    },
+    "drawing": {
+      "favourite": "ارسم الجزء الذي أحببته",
+      "heroFavourite": "ارسم الجزء المفضل لدى {{hero}}",
+      "clear": "امسح"
+    },
+    "writing": {
+      "title": "تدريب على الكتابة",
+      "hint": "اضغط على حرف، ثم تتبَّعه!"
+    },
+    "checkIn": {
+      "progress": "مراجعة {{n}} من {{total}} · اليوم {{day}}"
+    },
+    "cert": {
+      "champion": "بطل القراءة!",
+      "great": "قراءة رائعة!",
+      "already": "قرأته اليوم بالفعل",
+      "day": "اليوم {{n}}",
+      "moveUp": "جاهز للانتقال إلى المستوى التالي!",
+      "mastered": "{{reads}} قراءات، ونجاح في {{checkIns}} مراجعات. لقد أتقنت هذا الكتاب حقًا!",
+      "fluency": "اكتملت {{reads}} قراءات! بضع قراءات أخرى في هذا المستوى ستبني طلاقة حقيقية.",
+      "stampUnlocked": "فُتح الختم <b>{{n}} من {{total}}</b>! عُد غدًا لتحصل على الختم {{next}}.",
+      "alreadyEarned": "لقد حصلت على ختم اليوم بالفعل — عمل رائع! عُد غدًا لتحصل على الختم {{next}}."
+    },
+    "finish": "إنهاء"
+  },
+  "custom": {
+    "myBook": "كتابي",
+    "levelSound": "{{name}} · الصوت \"{{sound}}\"",
+    "coverAlt": "الغلاف",
+    "meetStar": "تعرَّف على بطل هذا الكتاب",
+    "hero": "البطل",
+    "nameAge": "{{name}}، العمر {{age}}",
+    "from": "من:",
+    "loves": "يحب:",
+    "world": "عالمنا:",
+    "faith": "ديننا:",
+    "thanks": "كل قصة من MyPhonicsBooks نافذة على عالم عائلة. شكرًا لأنكم شاركتمونا عالمكم."
+  }
+}

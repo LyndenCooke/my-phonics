@@ -1,0 +1,47 @@
+{
+  "feedback": {
+    "title": "Bagaimana pengalaman Anda?",
+    "description": "Masukan Anda membantu kami berkembang — dan komentar terbaik mungkin kami tampilkan di situs kami.",
+    "returningTitle": "Menikmati MyPhonicsBooks?",
+    "returningDescription": "Anda sudah beberapa kali kembali — kami ingin sekali mendapat penilaian bintang singkat dan pendapat Anda. Ini sangat membantu.",
+    "stars_other": "{{count}} bintang",
+    "lovedLabel": "Apa yang Anda sukai? 💛",
+    "lovedPlaceholder": "Bagian yang paling disukai anak Anda (atau Anda)…",
+    "improveLabel": "Apa yang bisa lebih baik?",
+    "improvePlaceholder": "Apa saja yang membuat Anda kesal atau ingin Anda ubah (hanya untuk tim kami)",
+    "privateNote": "Hanya tim kami yang melihat ini — tidak pernah ditampilkan secara publik.",
+    "consentMarketing": "Anda boleh menampilkan hal yang saya sukai sebagai testimoni di situs web & media sosial Anda.",
+    "consentNamed": "Anda boleh mencantumkan nama depan saya bersamanya.",
+    "send": "Kirim masukan",
+    "sending": "Mengirim…",
+    "pickRating": "Pilih penilaian bintang",
+    "pickRatingBody": "Ketuk bintang untuk menilai pengalaman Anda.",
+    "thanks": "Terima kasih! 💛",
+    "thanksBody": "Masukan Anda sudah dikirim ke tim kami.",
+    "sendFailed": "Tidak dapat mengirim masukan"
+  },
+  "homeScreen": {
+    "dismiss": "Tutup",
+    "title": "Satu langkah terakhir — cukup 1 ketukan",
+    "body": "Simpan MyPhonicsBooks di layar utama Anda. Besok, berikan ponsel kepada anak Anda — ia tinggal mengetuk ikon dan mulai membaca. Tanpa login. Tanpa mengetik.",
+    "install": "Pasang di layar utama",
+    "iosStep1": "Ketuk tombol <icon/> <b>Bagikan</b> di bagian bawah Safari",
+    "iosStep2": "Gulir ke bawah → ketuk <icon/> <b>\"Tambah ke Layar Utama\"</b>",
+    "iosStep3": "Ketuk <b>Tambah</b> di kanan atas. Selesai!",
+    "otherDevice": "Buka halaman ini di Chrome (Android) atau Safari (iPhone) pada ponsel Anda untuk memasang aplikasi di layar utama."
+  },
+  "nudges": {
+    "closeNudges": "Tutup notifikasi",
+    "dialogLabel": "Yang baru untuk Anda",
+    "title": "Halo! Ini yang baru",
+    "empty": "Semua sudah terbaca. Kami akan memberi tahu Anda jika ada yang baru.",
+    "moreInMessages": "Kabar lainnya ada di Pesan",
+    "goToMessages": "Buka Pesan"
+  },
+  "bookUnlocked": {
+    "badge": "Buku Terbuka!",
+    "title": "Buku gratis Anda sudah siap",
+    "level": "Level {{level}}",
+    "continue": "Lanjut ke Perpustakaan"
+  }
+}

@@ -7,6 +7,7 @@ import QuickScreening from '@/components/funnels/QuickScreening';
 import AssessmentResult from './AssessmentResult';
 import BundleUpsell from './BundleUpsell';
 import MonthlyDownsell from './MonthlyDownsell';
+import { useTranslation, Trans } from 'react-i18next';
 
 const HUB_URL = import.meta.env.VITE_HUB_URL || '/';
 
@@ -14,6 +15,7 @@ type Step = 'landing' | 'assessment' | 'result' | 'upsell' | 'downsell';
 
 export default function WrongBooks() {
   useFunnelTracker();
+  const { t } = useTranslation('funnels');
   const [step, setStep] = useState<Step>('landing');
   const [childName, setChildName] = useState('');
   const [level, setLevel] = useState(1);
@@ -41,27 +43,24 @@ export default function WrongBooks() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              Wrong books{' '}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500">
-                kill confidence
-              </span>
+              <Trans t={t} i18nKey="wrongBooks.title" components={{ hl: <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--primary))] via-rose-500 to-amber-500" /> }} />
             </h1>
 
             <p className="text-lg text-muted-foreground mb-2 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-              Too hard = frustration. Too easy = boredom.
+              {t('wrongBooks.tooHard')}
             </p>
 
             <p className="text-muted-foreground mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
-              Find their exact level in 3 minutes and unlock a free book matched to what they can actually read.
+              {t('wrongBooks.body')}
             </p>
           </div>
 
           {/* What they get */}
           <div className="max-w-md mx-auto mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
             <div className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-5">
-              <p className="text-sm font-semibold text-foreground mb-3">What you'll get:</p>
+              <p className="text-sm font-semibold text-foreground mb-3">{t('wrongBooks.getTitle')}</p>
               <ul className="space-y-2">
-                {['Quick phonics screening (6 words)', '1 free interactive book at their level', 'Based on UK phonics curriculum'].map((item, i) => (
+                {[t('wrongBooks.itemScreening'), t('wrongBooks.itemFreeBook'), t('wrongBooks.itemCurriculum')].map((item, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Check size={16} className="text-[hsl(var(--primary))] shrink-0" />
                     {item}
@@ -71,7 +70,7 @@ export default function WrongBooks() {
             </div>
           </div>
 
-          <EmailCapture source="wrong-books" onSuccess={handleEmailSuccess} buttonText="Find Their Level" />
+          <EmailCapture source="wrong-books" onSuccess={handleEmailSuccess} buttonText={t('wrongBooks.button')} />
         </>
       )}
 

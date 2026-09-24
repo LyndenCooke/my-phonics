@@ -1,0 +1,461 @@
+{
+  "backToDashboard": "返回仪表板",
+  "couldNotSave": "无法保存",
+  "errors": {
+    "downloadUnavailable": "暂时无法下载",
+    "unavailable": "不可用"
+  },
+  "counts": {
+    "classroom_other": "{{count}} 个班级",
+    "student_other": "{{count}} 名学生",
+    "book_other": "{{count}} 本书",
+    "admin_other": "{{count}} 名管理员",
+    "teacher_other": "{{count}} 名教师"
+  },
+  "block": {
+    "blockOf": "第 {{n}} 单元，共 {{total}} 单元",
+    "block": "第 {{n}} 单元",
+    "levelReview": "级别复习",
+    "reviewGate": "复习 · 级别关卡"
+  },
+  "judgement": {
+    "continue": "继续",
+    "ready_soon": "即将就绪",
+    "needs_support": "需要支持"
+  },
+  "windows": {
+    "autumn1": "秋季学期上半段",
+    "autumn2": "秋季学期下半段",
+    "spring1": "春季学期上半段",
+    "spring2": "春季学期下半段",
+    "summer1": "夏季学期上半段",
+    "summer2": "夏季学期下半段"
+  },
+  "colours": {
+    "pink": "粉色",
+    "coral": "珊瑚色",
+    "amber": "琥珀色",
+    "green": "绿色",
+    "blue": "蓝色",
+    "indigo": "靛蓝色",
+    "purple": "紫色",
+    "teal": "青绿色"
+  },
+  "status": {
+    "complete": "已完成",
+    "inProgress": "进行中",
+    "notStarted": "未开始",
+    "next": "下一个",
+    "upcoming": "即将进行"
+  },
+  "outcomes": {
+    "readyUp": "可升入下一级",
+    "staying": "保持当前级别",
+    "intervention": "需要干预",
+    "stillToAssess": "尚待评估"
+  },
+  "home": {
+    "loadFailed": "无法加载班级",
+    "createFailed": "无法创建班级",
+    "created": "班级已创建",
+    "seed": {
+      "confirm": "要填充演示数据吗？\n\n此操作将删除本校所有班级和学生，并用一套演示数据替换。此操作无法撤销。\n\n请仅在演示/测试学校中执行。",
+      "failed": "填充失败",
+      "done": "演示数据已填充",
+      "doneBody": "{{classrooms}} 个班级，{{students}} 名学生。",
+      "title": "建立演示学校",
+      "body": "为本校填充一套逼真的“每年级两个班”数据 — 6 个班级，约 160 名学生，跨年级按级别分组。将替换所有现有班级。",
+      "button": "填充演示数据"
+    },
+    "welcome": "欢迎来到 {{school}}",
+    "yourSchool": "您的学校",
+    "firstClassroom": "让我们来建立您的第一个班级。",
+    "stats": {
+      "total": "学生总数",
+      "assessed": "已评估",
+      "notAssessed": "尚未评估",
+      "levelsActive": "在用级别"
+    },
+    "actions": {
+      "title": "待办事项",
+      "unassessed_other": "{{count}} 名孩子尚未评估",
+      "stuck_other": "{{count}} 名孩子在同一级别停留 4 周以上",
+      "stale_other": "{{count}} 个班级本月没有评估",
+      "assess": "评估",
+      "review": "查看",
+      "open": "打开"
+    },
+    "distribution": "全校级别分布",
+    "quick": {
+      "groups": {
+        "title": "自然拼读小组",
+        "body": "按级别为学生分组，便于干预辅导。"
+      },
+      "pathway": {
+        "title": "教学路径",
+        "body": "发音书 → 拼读书 → 故事书。"
+      },
+      "library": {
+        "title": "图书馆",
+        "body": "118 本书 + 练习单，随时可打印。"
+      },
+      "curriculum": {
+        "title": "课程标准",
+        "body": "对接英国、海湾地区、巴基斯坦、美国和 IB 课程。"
+      }
+    },
+    "classrooms": "班级",
+    "newClassroom": "新建班级",
+    "className": "班级名称",
+    "classNamePlaceholder": "例如：樱桃班",
+    "yearGroup": "年级",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "创建",
+    "emptyTitle": "还没有班级",
+    "emptyBody": "创建您的第一个班级，即可添加学生并进行评估。",
+    "createClassroom": "创建班级",
+    "toAssess": "{{count}} 名待评估"
+  },
+  "dashboard": {
+    "title": "8 级课程体系",
+    "intro": "采用 Letters and Sounds 式结构的英式自然拼读进阶体系 — 八个级别的发音书、拼读书和故事书，配套练习单、发音挂图和 Tricky Words（难记词）卡片。",
+    "levels": "级别",
+    "resourcesPlanned": "规划中的资源",
+    "stats": {
+      "storybooks": "故事书",
+      "storybooksHint": "图文叙事",
+      "soundBooks": "发音书",
+      "soundBooksHint": "真实照片，每个字母-发音对应一本",
+      "blendingBooks": "拼读书",
+      "blendingBooksHint": "A6 故事书前置练习",
+      "total": "图书总数",
+      "totalHint": "覆盖 8 个级别"
+    },
+    "nav": {
+      "levels": {
+        "title": "级别",
+        "body": "{{count}} 个级别，含字母-发音对应、难记词和完整资源计划。"
+      },
+      "library": {
+        "title": "图书馆",
+        "body": "{{count}} 本故事书，按新结构分组。"
+      },
+      "mapping": {
+        "title": "课程对接",
+        "body": "各级别资源计划、练习单生命周期、国际对应标准。"
+      }
+    },
+    "devNotice": "<b>开发中。</b>此预览仅限管理员查看，不会向数据库写入任何内容。家长端网站 <code>/library</code> 和 <code>/assessment</code> 仍沿用原有的 6 级结构，未作改动。"
+  },
+  "classroom": {
+    "notFound": "未找到班级",
+    "notFoundBody": "未找到班级。",
+    "addFailed": "无法添加学生",
+    "added": "已添加 {{name}}",
+    "allClassrooms": "所有班级",
+    "students": "学生",
+    "takeRegister": "点名",
+    "addStudent": "添加学生",
+    "firstName": "名",
+    "lastName": "姓",
+    "dob": "出生日期",
+    "add": "添加",
+    "empty": "还没有学生。请在上方添加第一位学生。",
+    "viewReport": "查看报告",
+    "assess": "评估",
+    "reassess": "重新评估",
+    "booksTitle": "本班图书",
+    "booksBody": "在<library>学校图书馆</library>浏览全部 33 本故事书和练习单。使用<groups>自然拼读小组</groups>按能力级别组织本班学生。",
+    "registerTitle": "{{name}} — 班级点名"
+  },
+  "groups": {
+    "title": "自然拼读小组",
+    "towards": "目标",
+    "moveFailed": "无法移动学生",
+    "moved": "已移至 {{target}}",
+    "unassigned": "未分配",
+    "intro": "{{students}}，按当前级别分组 — 跨越年级，这正是学校实际教授自然拼读的方式。",
+    "notYetAssessed": "{{count}} 名尚未评估。",
+    "hint": "将姓名拖到其他小组即可移动 · 点击姓名可打开个人档案。",
+    "classLabel": "班级：",
+    "allClasses": "所有班级",
+    "needsInitial": "需要初始评估",
+    "needsInitialBody": "进行快速筛查，为每个孩子确定起始级别。",
+    "registerTitle": "为本小组点名",
+    "register": "点名",
+    "mixedYears": "混合年级：{{years}}",
+    "dropHere": "拖放到此处以移动",
+    "emptyLevel": "此级别暂无学生。",
+    "emptyTitle": "还没有学生",
+    "emptyBody": "请先将学生添加到班级，然后在这里按级别分组。",
+    "goToClassrooms": "前往班级",
+    "registerDialogTitle": "{{level}} — 自然拼读小组",
+    "chipTitle": "{{name}} — 拖动以移动，点击查看档案"
+  },
+  "windowsPage": {
+    "title": "评估周期",
+    "intro": "学校在入学时及每半学期进行评估。在两次评估之间，教师凭专业判断推动孩子沿路径前进 — 孩子不必每读完一本书就接受正式测试。",
+    "rolling": "近 6 周滚动视图",
+    "recent": "近期评估情况",
+    "allClasses": "所有班级",
+    "assessedLast6": "已评估（近 6 周）",
+    "remaining": "剩余 {{count}} 名",
+    "allAssessed": "全部已评估",
+    "indicators": "重新分组指标",
+    "leadSummary": "自然拼读负责人摘要",
+    "summary": "{{classes}} 个班级共 {{total}} 名孩子。近 6 周已评估 {{assessed}} 名，尚有 {{remaining}} 名待完成。{{readyUp}} 名可升入下一级，{{intervention}} 名被标记为需要干预。",
+    "regroupingView": "班级重新分组视图 — 各级别的孩子",
+    "openGroups": "打开自然拼读小组"
+  },
+  "libraryPreview": {
+    "title": "图书馆 — 33 本书",
+    "intro": "与正式网站相同的图书和 PDF，按 8 级结构重新分组。每张卡片上的标签显示原有（家长端 6 级）子级别，便于对照。",
+    "free": "免费",
+    "was": "原为"
+  },
+  "library": {
+    "downloadFailed": "下载失败",
+    "openFailed": "无法打开",
+    "cats": {
+      "soundBooks": "发音书",
+      "blendingBooks": "拼读书",
+      "storybooks": "故事书",
+      "interactive": "互动书",
+      "soundWorksheets": "发音书练习单",
+      "storyPacks": "故事书练习包",
+      "soundMats": "发音挂图",
+      "trickyCards": "难记词卡片"
+    },
+    "title": "图书馆",
+    "intro": "{{count}}+ 项关联资源，覆盖 8 个级别 — 每一本发音书、拼读书、故事书、互动版本、练习单、发音挂图和难记词卡组，均按类型整理。",
+    "levelLabel": "级别：",
+    "all": "全部",
+    "focus": "重点：",
+    "eg": "例如",
+    "companion": "配套：",
+    "soundBookWorksheet": "发音书练习单",
+    "playSlides": "播放幻灯片",
+    "onScreen": "屏幕展示",
+    "printBooklet": "打印小册子",
+    "worksheetSoon": "练习单即将推出",
+    "worksheetTitle": "练习单：",
+    "soundWorksheetDesc": "字母书写、拼词和发音分类。配合 <book>{{title}}</book> 使用。",
+    "comingSoon": "即将推出",
+    "blendingDesc": "A6 单词揭示小册子。没有单独的练习单 — 拼读练习本身就是资源。",
+    "viewBook": "查看图书",
+    "a5Booklet": "A5 小册子",
+    "a4Sheets": "A4 单页",
+    "worksheetPack": "练习包",
+    "interactiveDesc": "可点读单词、音素弹窗、音频、拼写、故事排序、阅读理解和写作练习。",
+    "interactiveDescGrammar": "可点读单词、音素弹窗、音频、拼写、故事排序、阅读理解、语法词序和写作练习。",
+    "openInteractive": "打开互动版",
+    "pack": "练习包",
+    "packDesc": "5 页 A4 练习包：找发音、描写、读一读做一做、外星词（假词）、讲故事画一画。",
+    "printWorksheetPack": "打印练习包",
+    "soundMatTitle": "{{level}} 发音挂图",
+    "trickyCardsTitle": "{{level}} 难记词卡片",
+    "soundMatDesc": "累积式字母-发音对应图，展示本级别及之前级别所教的发音。",
+    "trickyCardsDesc": "本级别新引入的难记词卡片。",
+    "usedThroughout": "贯穿整个级别使用。"
+  },
+  "read": {
+    "unavailable": "这本书暂时还不能阅读。",
+    "backToLibrary": "返回图书馆"
+  },
+  "reports": {
+    "title": "报告",
+    "intro": "全校视角，查看学生在英式自然拼读进阶体系中的进展。",
+    "tracked": "跟踪的学生",
+    "placed": "通过评估定级",
+    "atEachLevel": "各级别的孩子",
+    "glance": "课程概览",
+    "glanceBody": "完整的 {{steps}} 步自然拼读路径，配有覆盖 8 个级别的 {{resources}}+ 项关联资源：{{soundBooks}} 本真实照片发音书、{{blendingBooks}} 本拼读书、{{storybooks}} 本插图故事书、{{interactive}} 本互动数字故事书、{{worksheets}} 份配套练习单、{{mats}} 张发音挂图、{{tricky}} 套难记词卡片，以及 {{audio}}+ 个音素音频文件。",
+    "viewPathway": "查看学习路径"
+  },
+  "settings": {
+    "saved": "设置已保存",
+    "codeCopied": "加入码已复制",
+    "regenFailed": "无法重新生成",
+    "regenDone": "已生成新的加入码",
+    "regenDoneBody": "之前的加入码已失效。",
+    "title": "设置",
+    "intro": "您的学校信息、教职员访问权限和学年。",
+    "joinCode": "教职员加入码",
+    "joinCodeBody": "将此加入码分享给您的教师。他们在 <path>/school/signup</path> 注册，选择 “使用邀请码加入”，即可以教师身份加入 {{school}}。",
+    "copy": "复制",
+    "regenerate": "重新生成",
+    "invitesSoon": "电子邮件邀请即将推出。目前，分享加入码是添加教职员最快的方式。",
+    "staff": "教职员",
+    "you": "您",
+    "staffMember": "教职员",
+    "roles": {
+      "admin": "管理员",
+      "teacher": "教师"
+    },
+    "details": "学校信息",
+    "schoolName": "学校名称",
+    "country": "国家/地区",
+    "places": "学生名额",
+    "academicYear": "学年",
+    "save": "保存设置",
+    "yourAccount": "您的账户",
+    "administrator": "管理员",
+    "role": "角色：{{role}}"
+  },
+  "assess": {
+    "notFound": "未找到学生",
+    "notFoundBody": "未找到学生。",
+    "saveFailed": "无法保存评估",
+    "updateFailed": "无法更新级别",
+    "backToClassroom": "返回班级",
+    "title": "评估 {{name}}",
+    "currentLevel": "当前级别：",
+    "quickScreener": "快速筛查",
+    "quickScreenerBody": "只需 2 分钟。让孩子读 6 个示例单词 — 我们就能准确判断其级别。",
+    "manual": "手动设置级别",
+    "manualBody": "已经知道孩子的水平？选择级别并添加备注即可。",
+    "screener": "筛查",
+    "screenerBody": "请 {{name}} 逐个读出每个单词。勾选读对的单词。",
+    "level": "级别 {{n}}",
+    "notes": "备注（可选）",
+    "notesPlaceholder": "任何观察记录……",
+    "saveRecommend": "保存并推荐级别",
+    "manualChoose": "选择与 {{name}} 当前能力相符的级别。",
+    "setTo": "将 {{name}} 设为 {{level}}",
+    "saved": "评估已保存",
+    "nowOn": "{{name}} 现在处于 <b>{{level}}</b>。",
+    "savedBody": "我们已保存结果并更新了记录。您可以随时重新评估。"
+  },
+  "profile": {
+    "stepComplete": "步骤已标记为完成",
+    "marked": "已标记为“{{label}}”",
+    "noteSaved": "备注已保存",
+    "notFound": "未找到学生。",
+    "backToClass": "返回班级",
+    "snap": {
+      "placement": "当前级别",
+      "block": "当前单元",
+      "step": "当前步骤",
+      "next": "下一项资源",
+      "lastAssessed": "上次评估",
+      "judgement": "当前判断"
+    },
+    "levelComplete": "级别已完成",
+    "readyNextLevel": "可进入下一级别",
+    "windowLabel": "{{window}}评估周期",
+    "notYetAssessed": "尚未评估",
+    "suggestedAction": "建议措施：",
+    "suggested": {
+      "continue": "继续完成当前单元",
+      "ready_soon": "即将就绪 — 为下一单元 / 评估周期做准备",
+      "needs_support": "在继续之前提供针对性支持（见支持计划）"
+    },
+    "notAssessedBody": "尚未评估 — 请进行评估，为 {{name}} 在路径上定位。",
+    "assessNow": "立即评估",
+    "nextActions": "接下来的教学行动",
+    "readNext": "接下来阅读",
+    "printNext": "接下来打印",
+    "worksheetPackFor": "{{sub}} 练习包",
+    "useDuring": "阅读时使用",
+    "practise": "练习",
+    "openInteractive": "打开互动书",
+    "printA5": "打印 A5 小册子",
+    "markComplete": "将当前步骤标记为完成",
+    "teacherNoteLabel": "教师备注：",
+    "wholePathway": "整个路径的进度",
+    "stepsOf": "{{done}} / {{total}} 步",
+    "teacherJudgement": "教师判断",
+    "judgeDesc": {
+      "continue": "正在推进本单元",
+      "ready_soon": "即将可以进入下一单元 / 级别",
+      "needs_support": "继续之前需要额外练习"
+    },
+    "teacherNote": "教师备注",
+    "notePlaceholder": "例如：能自信地读 sh 单词，但读 th 单词时仍在猜。",
+    "saveNote": "保存备注",
+    "supportPlan": "支持计划",
+    "recommended": "推荐资源",
+    "routine": "建议日常练习",
+    "routineBody": "每天 10 分钟：复习发音卡 · 拼读 5 个单词 · 读 1 页 · 连续 3 天 · 教师再次听读。",
+    "history": "评估周期记录",
+    "noAssessments": "尚无评估记录。",
+    "table": {
+      "window": "周期",
+      "level": "定级",
+      "notes": "备注",
+      "resource": "资源",
+      "status": "状态",
+      "companion": "配套"
+    },
+    "initialPlacement": "初始定级",
+    "wholeSchoolWindow": "全校评估周期",
+    "movement": "变化：",
+    "completed": "已完成的资源",
+    "tally": {
+      "interactive": "互动书",
+      "packs": "练习包",
+      "certificates": "获得的证书"
+    },
+    "attendance": "出勤",
+    "noRegister": "尚未点名。",
+    "present": "出勤",
+    "attendanceSummary": "出勤 {{present}} 次 · 缺勤 {{absent}} 次 · 共 {{total}} 节",
+    "homeReading": "家庭阅读",
+    "homeBook": "当前家庭读物",
+    "format": "形式",
+    "formatValue": "可打印的 A5 小册子",
+    "linkCopied": "家长阅读链接已复制",
+    "copyLink": "复制家长链接",
+    "printHome": "打印家庭小册子",
+    "homeNote": "通过学校与家长共享，让家庭练习与课堂教学保持一致。",
+    "companion": {
+      "none": "无配套",
+      "storybook": "练习包 + 互动书"
+    }
+  },
+  "presenter": {
+    "openFailed": "无法打开这本书。",
+    "notFound": "未找到（{{status}}）",
+    "onScreen": "屏幕展示",
+    "closeEsc": "关闭（Esc）"
+  },
+  "soundBookPlay": {
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "steps": {
+      "meet": "认识发音",
+      "pop": "听一听",
+      "blend": "拼读",
+      "hunt": "找发音",
+      "build": "拼单词",
+      "finish": "完成"
+    },
+    "meetTap": "点字母听发音",
+    "popTitle": "点一张图——你能听到 <g>{{sound}}</g> 的发音吗？",
+    "blendTitle": "一个一个读出来……再<hl>拼读</hl>！",
+    "nextWord": "下一个单词",
+    "blendButton": "拼读！",
+    "huntTitle": "找出 <g>{{sound}}</g>！点出每张有这个发音的图。",
+    "allFound": "你全都找到啦！",
+    "foundCount": "找到 {{found}}/{{total}}",
+    "buildTitle": "拼出这个单词！",
+    "hearIt": "听一听",
+    "didIt": "你做到啦！",
+    "learned": "你学会了 <g>{{sound}}</g> 的发音。",
+    "playAgain": "再玩一次",
+    "done": "完成",
+    "hints": {
+      "s": "像蛇一样嘶嘶——ssss",
+      "a": "张大嘴——a-a-a",
+      "t": "舌尖轻敲——t-t-t",
+      "p": "双唇一弹——p-p-p",
+      "i": "短而快——i-i-i",
+      "n": "用鼻子哼——nnnn",
+      "m": "双唇闭上——mmmm",
+      "d": "舌尖轻敲，声带振动——d-d-d",
+      "g": "从喉咙后面发音——g-g-g",
+      "o": "嘴巴圆圆——o-o-o"
+    }
+  }
+}

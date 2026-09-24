@@ -1,0 +1,48 @@
+{
+  "feedback": {
+    "title": "Tunaendeleaje?",
+    "description": "Maoni yako yanatusaidia kuboresha — na maoni mazuri yanaweza kuonyeshwa kwenye tovuti yetu.",
+    "returningTitle": "Unafurahia MyPhonicsBooks?",
+    "returningDescription": "Umerudi mara kadhaa — tungependa kupata ukadiriaji wa nyota kwa haraka na mawazo yoyote uliyonayo. Inasaidia sana.",
+    "stars_one": "nyota {{count}}",
+    "stars_other": "nyota {{count}}",
+    "lovedLabel": "Ulipenda nini? 💛",
+    "lovedPlaceholder": "Sehemu ambayo mtoto wako (au wewe) aliipenda zaidi…",
+    "improveLabel": "Nini kingeweza kuwa bora zaidi?",
+    "improvePlaceholder": "Chochote kilichokukera au ungependa kibadilishwe (kwa timu yetu pekee)",
+    "privateNote": "Ni timu yetu pekee inayoona hili — halionyeshwi hadharani kamwe.",
+    "consentMarketing": "Mnaweza kuonyesha nilichopenda kama ushuhuda kwenye tovuti na mitandao yenu ya kijamii.",
+    "consentNamed": "Mnaweza kutumia jina langu la kwanza pamoja nao.",
+    "send": "Tuma maoni",
+    "sending": "Inatuma…",
+    "pickRating": "Chagua ukadiriaji wa nyota",
+    "pickRatingBody": "Gusa nyota ili kukadiria uzoefu wako.",
+    "thanks": "Asante! 💛",
+    "thanksBody": "Maoni yako yametumwa kwa timu yetu.",
+    "sendFailed": "Imeshindwa kutuma maoni"
+  },
+  "homeScreen": {
+    "dismiss": "Funga",
+    "title": "Hatua moja ya mwisho — ipate kwa mguso 1 tu",
+    "body": "Hifadhi MyPhonicsBooks kwenye skrini yako ya nyumbani. Kesho, mpe mtoto wako simu — atagusa aikoni na kuanza kusoma. Bila kuingia. Bila kuandika.",
+    "install": "Sakinisha kwenye skrini ya nyumbani",
+    "iosStep1": "Gusa kitufe cha <icon/> <b>Shiriki</b> chini ya Safari",
+    "iosStep2": "Sogeza chini → gusa <icon/> <b>\"Ongeza kwenye Skrini ya Nyumbani\"</b>",
+    "iosStep3": "Gusa <b>Ongeza</b> juu upande wa kulia. Umemaliza!",
+    "otherDevice": "Fungua ukurasa huu kwenye Chrome (Android) au Safari (iPhone) kwenye simu yako ili kusakinisha programu kwenye skrini ya nyumbani."
+  },
+  "nudges": {
+    "closeNudges": "Funga arifa",
+    "dialogLabel": "Mapya kwa ajili yako",
+    "title": "Habari! Haya ndiyo mapya",
+    "empty": "Umeona kila kitu. Tutakujulisha kukiwa na jambo jipya.",
+    "moreInMessages": "Habari zaidi kwenye Ujumbe",
+    "goToMessages": "Nenda kwenye Ujumbe"
+  },
+  "bookUnlocked": {
+    "badge": "Kitabu Kimefunguliwa!",
+    "title": "Kitabu chako cha bure kiko tayari",
+    "level": "Kiwango cha {{level}}",
+    "continue": "Endelea kwenye Maktaba"
+  }
+}

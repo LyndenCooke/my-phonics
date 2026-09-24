@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "Harshe",
+    "choose": "Zaɓi harshenka",
+    "autoDetected": "Ana nuna MyPhonicsBooks cikin {{language}}",
+    "autoDetectedHint": "Littattafai da kalmomin karatu suna nan cikin Turanci — abin da yaronka yake koyo ke nan. Canza harshe a kowane lokaci da maɓallin 文A.",
+    "readingStaysEnglish": "Abubuwan karatu suna nan cikin Turanci"
+  },
+  "nav": {
+    "learn": "Koyo",
+    "library": "Ɗakin Karatu",
+    "games": "Wasanni",
+    "createBook": "Ƙirƙiri Littafi",
+    "createBookShort": "Ƙirƙira",
+    "support": "Tallafa Mana",
+    "profile": "Bayanan Martaba",
+    "assess": "Tantancewa",
+    "wallOfLove": "Bangon Ƙauna",
+    "shop": "Shago",
+    "worldOfBooks": "Duniyar Littattafai",
+    "forSchools": "Don Makarantu",
+    "schools": "Makarantu",
+    "home": "Gida",
+    "goHome": "Je zuwa shafin farko na Cibiyar Koyo",
+    "expandSidebar": "Faɗaɗa gefen shafi",
+    "collapseSidebar": "Ninke gefen shafi"
+  },
+  "actions": {
+    "signIn": "Shiga",
+    "signInTitle": "Shiga",
+    "signOut": "Fita",
+    "back": "Koma baya",
+    "next": "Na gaba",
+    "previous": "Na baya",
+    "continue": "Ci gaba",
+    "cancel": "Soke",
+    "save": "Ajiye",
+    "saving": "Ana ajiyewa…",
+    "close": "Rufe",
+    "done": "An gama",
+    "retry": "Sake gwadawa",
+    "loading": "Ana lodawa…",
+    "download": "Sauke",
+    "submit": "Miƙa",
+    "send": "Aika",
+    "edit": "Gyara",
+    "delete": "Share",
+    "learnMore": "Ƙara koyo",
+    "seeAll": "Duba duka",
+    "skip": "Tsallake"
+  },
+  "errors": {
+    "generic": "Wani abu ya faru ba daidai ba. Da fatan za a sake gwadawa.",
+    "network": "Ba mu iya kaiwa ga sabar ba. Duba haɗin intanet ɗinka sannan ka sake gwadawa."
+  }
+}

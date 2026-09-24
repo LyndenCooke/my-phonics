@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "Perpustakaan",
+    "worldOfBooks": "Dunia Buku"
+  },
+  "errors": {
+    "unreachable": "Layanan Create-A-Book sedang tidak dapat dijangkau — tunggu sebentar, lalu muat ulang halaman.",
+    "noCheckoutLink": "Checkout tidak mengembalikan tautan pembayaran."
+  },
+  "yourChild": "anak Anda",
+  "intro": {
+    "sampleCover": "Sampul buku contoh",
+    "samplePage": "Halaman buku contoh {{n}}",
+    "flipHint": "Satu cerita MyPhonicsBooks utuh, dari sampul ke sampul — ketuk atau geser untuk membalik halaman",
+    "titleStart": "Anak Anda,",
+    "titleHighlight": "tokoh utamanya",
+    "lead": "Buku fonik sungguhan yang benar-benar bisa dieja — ditulis, diilustrasikan, dan diperiksa untuk anak Anda dalam hitungan menit.",
+    "features": {
+      "mainCharacter": {
+        "title": "Anak Anda adalah tokoh utama",
+        "desc": "Digambar dengan gaya khas kami, lengkap dengan mata titiknya"
+      },
+      "decodable": {
+        "title": "Benar-benar bisa dieja sesuai levelnya",
+        "desc": "Setiap kata dicocokkan dengan bunyi yang sudah mereka kenal"
+      },
+      "meetStar": {
+        "title": "Halaman 'Meet the star' di bagian belakang",
+        "desc": "Negara, budaya, dan ikon tempat mereka"
+      },
+      "share": {
+        "title": "Bagikan ke Dunia Buku",
+        "desc": "Satu cahaya di bola dunia dengan restu keluarga"
+      }
+    },
+    "cta": "Mulai bukunya — {{price}}",
+    "ctaNote": "Satu buku, milik Anda selamanya untuk disimpan dan dicetak."
+  },
+  "child": {
+    "title": "Siapa bintangnya?",
+    "randomise": "Isi acak (tes)",
+    "randomiseTitle": "Isi setiap langkah dengan data tes acak",
+    "lead": "Ini menentukan cerita, gambar, dan halaman profil di bagian belakang.",
+    "firstName": "Nama depan",
+    "firstNamePlaceholder": "mis. Maryam",
+    "age": "Usia",
+    "from": "Anda berasal dari mana?",
+    "city": "Kota",
+    "optional": "(opsional)",
+    "cityPlaceholder": "mis. Mogadishu, Lagos, Kraków",
+    "familyWorld": "Dunia keluarga Anda",
+    "familyWorldHint": "(budaya, makanan, tempat, tradisi)",
+    "familyWorldPlaceholder": "mis. Kami keluarga Somalia di London — kami suka suqaar, pagi hari Lebaran, dan pergi ke masjid",
+    "loves": "Mereka suka...",
+    "lovesPlaceholder": "kucing, sepak bola, membuat kue",
+    "faith": "Agama",
+    "faithPlaceholder": "mis. Muslim, Kristen",
+    "lookLike": "Seperti apa penampilan mereka?",
+    "gender": {
+      "girl": "perempuan",
+      "boy": "laki-laki"
+    },
+    "skinTones": {
+      "light": "Terang",
+      "lightMedium": "Terang-sedang",
+      "medium": "Sedang",
+      "mediumDark": "Sedang-gelap",
+      "dark": "Gelap",
+      "veryDark": "Sangat gelap"
+    },
+    "hairPlaceholder": "Rambut — mis. rambut hitam keriting, hijab, rambut cokelat pendek",
+    "changePhoto": "Ganti foto",
+    "addPhoto": "Tambahkan foto (opsional)",
+    "photoAdded": "Foto ditambahkan",
+    "photoPrivacy": "Foto hanya dipakai untuk menggambar tokoh kartunnya. Foto tidak pernah disimpan, dipublikasikan, atau ditunjukkan kepada siapa pun."
+  },
+  "level": {
+    "title": "Pilih level dan satu bunyi fokus",
+    "lead": "Satu bunyi membuat cerita tetap bebas dan seru — bunyi itu cukup muncul beberapa kali.",
+    "notSure": "Belum yakin levelnya? <link>Ikuti tes 3 menit</link>.",
+    "levelN": "Level {{level}}",
+    "focusSound": "Bunyi fokus untuk buku ini",
+    "longerTitle": "Cerita lebih panjang — 8 halaman, bukan 6",
+    "longerDesc": "Dua halaman bergambar tambahan, plus set aktivitas 20 halaman yang lebih lengkap di bagian belakang."
+  },
+  "review": {
+    "title": "Hampir selesai!",
+    "lead": "Periksa detailnya, pilih cara berbagi, lalu kami mulai mencetak.",
+    "email": "Email Anda (untuk tanda terima + tautan buku)",
+    "shareTitle": "Bagikan buku kami ke Dunia Buku",
+    "shareBody": "Setelah ditinjau singkat oleh tim kami, keluarga lain dapat membaca buku {{name}}. Satukan dunia, satu cerita demi satu cerita.",
+    "wallTitle": "Tampilkan kami di Dinding Cinta",
+    "wallBody": "Halaman \"Meet the star\" (hanya tokoh kartun — tidak pernah fotonya) tampil di galeri komunitas.",
+    "continueToPayment": "Lanjut ke pembayaran"
+  },
+  "pay": {
+    "title": "Buat buku {{name}}",
+    "oneBook": "Satu buku personal · milik Anda selamanya",
+    "features": {
+      "story": "Cerita lengkap yang bisa dieja seputar bunyi \"{{sound}}\"",
+      "longer": "Cerita lebih panjang: 8 halaman bergambar + set aktivitas yang lebih lengkap",
+      "hero": "{{name}} digambar sebagai pahlawan di setiap halaman",
+      "qa": "Pemeriksaan aturan mata + fonik di setiap halaman",
+      "meetStar": "Halaman keluarga 'Meet the star' di bagian belakang",
+      "forever": "Langsung dibaca di layar, selamanya"
+    },
+    "button": "Buat buku saya — {{price}}",
+    "haveCode": "Punya kode?",
+    "enterCode": "Masukkan kode",
+    "apply": "Pakai",
+    "devFree": "Buat gratis (mode tes dev — tanpa biaya)"
+  },
+  "generating": {
+    "title": "Melukis buku {{name}}",
+    "lead": "Ditulis, diilustrasikan, dan diperiksa halaman demi halaman — ya, matanya pun kami periksa. Biarkan halaman ini terbuka; prosesnya beberapa menit.",
+    "warmingUp": "Menyiapkan cat...",
+    "failedRetry": "Ada sedikit kendala — lanjutkan dari titik terakhir (gratis)",
+    "needsReviewTitle": "Hampir selesai — satu halaman sedang diperiksa manusia",
+    "needsReviewBody": "Cerita dan gambar {{name}} sudah selesai, tetapi editor kami ingin memeriksa satu halaman secara manual sebelum dicetak. Anda tidak perlu melakukan apa pun — simpan tautan ini dan buku akan muncul di sini begitu disetujui, biasanya dalam beberapa jam.",
+    "rejectedTitle": "Kami belum berhasil membuat cerita ini memenuhi standar kualitas kami.",
+    "rejectedBody": "Kredit buku Anda belum terpakai. Anda bisa mencoba ide yang sama lagi atau memilih ide cerita lain.",
+    "tryAgain": "Coba ide yang sama lagi (gratis)",
+    "changeIdea": "Ganti ide cerita (kredit tetap berlaku)",
+    "paused": "Buku Anda aman dan tersimpan. Prosesnya sedikit lebih lama dari biasanya — akan dilanjutkan tepat dari titik berhentinya, dan kami akan mengirim email saat sudah siap."
+  },
+  "ready": {
+    "title": "Bukunya sudah siap!",
+    "madeFor": "Dibuat untuk keluarga {{name}}",
+    "pdfSoon": "PDF yang bisa dicetak segera hadir — untuk sekarang, nikmati bukunya di sini.",
+    "typesetting": "Menata letak buku...",
+    "openPdf": "Buka bukunya 📕 (PDF buku fonik lengkap)",
+    "play": "Mainkan buku interaktif — ketuk setiap kata",
+    "readHere": "Baca di sini — balik halamannya",
+    "saved": "Tersimpan di akun Anda",
+    "addToAccount": "Tambahkan ke akun saya",
+    "inReview": "Buku Anda sedang ditinjau singkat oleh tim kami sebelum tampil di Dunia Buku.",
+    "live": "Buku Anda sudah tayang di Dunia Buku!",
+    "unlockTitle": "Buka Dunia Buku",
+    "unlockBody": "Baca setiap buku buatan keluarga di seluruh dunia — dan setiap buku yang dibuat setelah Anda. Sekali bayar, selamanya.",
+    "signInNote": "Anda perlu masuk — dengan begitu akses Anda ikut ke mana pun dan tetap milik Anda.",
+    "unlockButton": "Buka dunianya — {{price}}, sekali saja",
+    "signInUnlockButton": "Masuk untuk membuka dunianya — {{price}}",
+    "devUnlock": "dev: buka gratis",
+    "enter": "Masuk ke Dunia Buku"
+  },
+  "progress": {
+    "story": "Menulis cerita {{name}}…",
+    "phonics_qa": "Memeriksa setiap kata bisa dieja pada level ini…",
+    "plausibility_qa": "Memeriksa apakah ceritanya masuk akal…",
+    "story_editor": "Seorang editor membaca cerita sebelum gambar dilukis…",
+    "directing": "Merencanakan adegan…",
+    "awaiting_imagery_approval": "Cerita disetujui — gambar menunggu pemeriksaan akhir…",
+    "hero": "Menggambar {{name}} sebagai tokoh buku…",
+    "scenes": "Menggambar halaman {{page}} dari {{total}}…",
+    "cover": "Melukis sampul…",
+    "country": "Menambahkan gambar dari negara {{name}}…",
+    "editor": "Seorang editor membaca buku yang sudah jadi…",
+    "assemble": "Menjilid buku…",
+    "done": "Buku Anda sudah siap!",
+    "busy": "Masih diproses — langkah ini butuh sedikit waktu…",
+    "paused": "Buku Anda aman tersimpan — akan segera dilanjutkan.",
+    "paused_budget": "Sedikit lebih lama dari biasanya — tim sudah diberi tahu dan buku Anda akan segera dilanjutkan.",
+    "paused_provider_credit": "Sedikit lebih lama dari biasanya — tim sudah diberi tahu dan buku Anda akan segera dilanjutkan.",
+    "needs_review": "Hampir selesai — satu halaman sedang diperiksa terakhir kali oleh seseorang. Kami akan mengirim email begitu siap.",
+    "content_rejected": "Cerita ini belum memenuhi standar kualitas kami. Kredit buku Anda tidak terpakai — coba ide yang sama lagi atau pilih ide lain.",
+    "repair": "Merapikan beberapa halaman…",
+    "working": "Mengerjakan buku…"
+  }
+}

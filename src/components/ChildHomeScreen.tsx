@@ -23,6 +23,7 @@
  */
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Sparkles, Lock, BookOpen, Star, Check } from 'lucide-react';
 import Soundlings from '@/games/soundlings/Soundlings';
@@ -62,14 +63,21 @@ const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
  *  and is deliberately last so the calmer games stay first. */
 type GameId = 'soundlings' | 'finish' | 'tricky' | 'cannon';
 
-const GAMES: { id: GameId; emoji: string; name: string; blurb: string }[] = [
-  { id: 'soundlings', emoji: '🥚', name: 'Soundlings', blurb: 'Feed your sound creatures!' },
-  { id: 'finish', emoji: '🧩', name: 'Finish the word', blurb: 'Tap the missing sound' },
-  { id: 'tricky', emoji: '👂', name: 'Hear it, find it', blurb: 'Listen and find the tricky word' },
-  { id: 'cannon', emoji: '🎯', name: "Milo's Cannon", blurb: 'Fire the right sound into the word' },
+/** `brand` = the game's proper name, kept in English like a book title;
+ *  otherwise the name is a plain instruction and is translated
+ *  (`child:games.<id>.name`). Blurbs are always translated. */
+const GAMES: { id: GameId; emoji: string; brand?: string }[] = [
+  { id: 'soundlings', emoji: '🥚', brand: 'Soundlings' },
+  { id: 'finish', emoji: '🧩' },
+  { id: 'tricky', emoji: '👂' },
+  { id: 'cannon', emoji: '🎯', brand: "Milo's Cannon" },
 ];
 
 export default function ChildHomeScreen({ books, onBookSelect }: Props) {
+  const { t, i18n } = useTranslation('child');
+  // Translated lines sit inside the LTR/English island (the trail must run
+  // left → right), so each one declares its own language + direction.
+  const tx = { dir: i18n.dir(), lang: i18n.language } as const;
   const navigate = useNavigate();
   const stamps = useMemo(() => getAllStamps(), []);
   const { data: children } = useChildren();
@@ -147,10 +155,10 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   // ─── Empty state ────────────────────────────────────────────
   if (levelBooks.length === 0) {
     return (
-      <div className="px-4 pt-10 pb-24 max-w-md mx-auto text-center">
+      <div dir="ltr" lang="en" className="px-4 pt-10 pb-24 max-w-md mx-auto text-center">
         <Sparkles className="w-10 h-10 text-primary mx-auto mb-4" />
-        <h2 className="font-display text-2xl font-extrabold text-foreground">No books yet!</h2>
-        <p className="text-sm text-muted-foreground mt-2">Ask a grown-up to unlock your first book.</p>
+        <h2 {...tx} className="font-display text-2xl font-extrabold text-foreground">{t('empty.title')}</h2>
+        <p {...tx} className="text-sm text-muted-foreground mt-2">{t('empty.body')}</p>
       </div>
     );
   }
@@ -167,30 +175,30 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
   let ctaSub: string;
   let primaryAction: () => void = () => onBookSelect(heroBook);
   if (allMastered) {
-    ctaLabel = 'Start Level Check';
-    ctaSub = "You've finished all your books!";
+    ctaLabel = t('cta.startLevelCheck');
+    ctaSub = t('sub.allDone');
     primaryAction = () => navigate(`/assess?level=${assessLevel}`);
   } else if (heroMastered) {
-    ctaLabel = 'Next Book';
-    ctaSub = 'Next book unlocked!';
+    ctaLabel = t('cta.nextBook');
+    ctaSub = t('sub.nextUnlocked');
   } else if (heroStamps >= MAX_STAMPS) {
-    ctaLabel = 'Start Check';
-    ctaSub = 'Ready for your Check!';
+    ctaLabel = t('cta.startCheck');
+    ctaSub = t('sub.readyCheck');
   } else if (heroStamps === 0) {
-    ctaLabel = 'Read Book';
-    ctaSub = 'Read this book 5 times.';
+    ctaLabel = t('cta.readBook');
+    ctaSub = t('sub.read0');
   } else if (heroStamps === 1) {
-    ctaLabel = 'Read Again';
-    ctaSub = 'Great start. 4 reads to go.';
+    ctaLabel = t('cta.readAgain');
+    ctaSub = t('sub.read1');
   } else if (heroStamps === 2) {
-    ctaLabel = 'Read Again';
-    ctaSub = "You're doing great. 3 more reads to go.";
+    ctaLabel = t('cta.readAgain');
+    ctaSub = t('sub.read2');
   } else if (heroStamps === 3) {
-    ctaLabel = 'Read Again';
-    ctaSub = "You're getting faster. 2 reads to go.";
+    ctaLabel = t('cta.readAgain');
+    ctaSub = t('sub.read3');
   } else {
-    ctaLabel = 'Last Read!';
-    ctaSub = 'Almost there. Last read!';
+    ctaLabel = t('cta.lastRead');
+    ctaSub = t('sub.read4');
   }
 
   const fade = (delay: number) => reduceMotion
@@ -201,18 +209,23 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         transition: { duration: 0.55, delay, ease: EASE },
       };
 
+  // The child's own screen is an LTR island (the trail runs book 1 → Level
+  // Check left-to-right, even when the site around it is Arabic/Urdu/
+  // Persian). UI copy is translated and carries its own dir/lang via `tx`;
+  // book titles, level names and the sound magnets stay English.
   return (
-    <div className="px-5 pt-5 lg:pt-12 pb-10 max-w-md lg:max-w-3xl mx-auto overflow-x-clip">
+    <div dir="ltr" lang="en" className="px-5 pt-5 lg:pt-12 pb-10 max-w-md lg:max-w-3xl mx-auto overflow-x-clip">
       {/* ── 1. Greeting ─────────────────────────────────────────── */}
       <motion.div {...fade(0)} className="text-center">
         <span
+          {...tx}
           className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-2"
           style={{ color: ink, boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${hex}30` }}
         >
-          Level {activeLevel} · {levelInfo.name}
+          {t('levelLabel', { level: activeLevel })} · <bdi lang="en">{levelInfo.name}</bdi>
         </span>
-        <h1 className="font-display text-3xl lg:text-[2.6rem] font-extrabold text-foreground tracking-tight mt-3 leading-tight">
-          Time to read{childName ? `, ${childName}` : ''}! <span aria-hidden>📖</span>
+        <h1 {...tx} className="font-display text-3xl lg:text-[2.6rem] font-extrabold text-foreground tracking-tight mt-3 leading-tight text-balance">
+          {childName ? t('greeting', { name: `\u2068${childName}\u2069` }) : t('greetingNoName')} <span aria-hidden>📖</span>
         </h1>
       </motion.div>
 
@@ -228,7 +241,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         {coverUrl && (
           <motion.button
             onClick={primaryAction}
-            aria-label={`Open ${heroBook.title}`}
+            aria-label={t('aria.openBook', { title: heroBook.title })}
             className="relative block mx-auto w-[55%] max-w-[14rem] press-scale"
             {...(reduceMotion ? {} : {
               initial: { opacity: 0, y: 24, rotate: -3 },
@@ -255,7 +268,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         </h2>
 
         {/* Five star stamps — sticker stars */}
-        <div className="flex items-center justify-center gap-2 mt-4" aria-label={`${heroStamps} of ${MAX_STAMPS} reads done`}>
+        <div className="flex items-center justify-center gap-2 mt-4" aria-label={t('aria.readsDone', { done: heroStamps, total: MAX_STAMPS })}>
           {Array.from({ length: MAX_STAMPS }).map((_, i) => {
             const earned = i < heroStamps;
             const tilt = [-8, 5, -4, 7, -6][i];
@@ -286,7 +299,8 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
         <div className="mt-7 max-w-xs mx-auto">
           <button
             onClick={primaryAction}
-            className="w-full h-14 lg:h-16 rounded-2xl font-display text-lg lg:text-xl font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
+            {...tx}
+            className="w-full min-h-14 lg:min-h-16 px-4 py-2 rounded-2xl font-display text-lg lg:text-xl font-extrabold text-white flex items-center justify-center gap-2.5 transition-all active:translate-y-[4px]"
             style={{
               background: hex,
               boxShadow: `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80`,
@@ -295,20 +309,20 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
             onMouseUp={e => { (e.currentTarget.style.boxShadow = `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80`); }}
             onMouseLeave={e => { (e.currentTarget.style.boxShadow = `0 5px 0 ${ink}, 0 14px 28px -10px ${hex}80`); }}
           >
-            <BookOpen className="w-5 h-5" />
-            {ctaLabel}
+            <BookOpen className="w-5 h-5 shrink-0" />
+            <span className="leading-tight text-balance">{ctaLabel}</span>
           </button>
-          <p className="font-child text-sm text-foreground/60 mt-3">{ctaSub}</p>
+          <p {...tx} className="font-child text-sm text-foreground/60 mt-3 text-balance">{ctaSub}</p>
         </div>
       </motion.section>
 
       {/* ── 3. Games — big cards right next to the book ──────────── */}
       <motion.section {...fade(0.12)} className="mt-11 lg:mt-14 text-center">
-        <h3 className="font-display text-lg lg:text-xl font-extrabold text-foreground">
-          Play a game <span aria-hidden>🎮</span>
+        <h3 {...tx} className="font-display text-lg lg:text-xl font-extrabold text-foreground">
+          {t('games.heading')} <span aria-hidden>🎮</span>
         </h3>
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 lg:gap-4">
-          {GAMES.map(({ id, emoji, name, blurb }, i) => (
+          {GAMES.map(({ id, emoji, brand }, i) => (
             <button
               key={id}
               onClick={() => setActiveGame(id)}
@@ -320,17 +334,22 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
               }}
             >
               <span className="text-4xl lg:text-5xl" aria-hidden>{emoji}</span>
-              <span className="font-display text-lg lg:text-xl font-extrabold mt-2.5 leading-tight" style={{ color: ink }}>
-                {name}
+              <span
+                {...(brand ? { lang: 'en', dir: 'ltr' as const } : tx)}
+                className="font-display text-lg lg:text-xl font-extrabold mt-2.5 leading-tight text-balance"
+                style={{ color: ink }}
+              >
+                {brand ?? t(`games.${id}.name`)}
               </span>
-              <span className="font-child text-sm lg:text-base text-foreground/60 mt-1 leading-snug">
-                {blurb}
+              <span {...tx} className="font-child text-sm lg:text-base text-foreground/60 mt-1 leading-snug text-balance">
+                {t(`games.${id}.blurb`)}
               </span>
               <span
+                {...tx}
                 className="mt-3.5 inline-flex items-center justify-center rounded-full px-5 py-1.5 font-display text-sm font-extrabold text-white"
                 style={{ background: hex, boxShadow: `0 3px 0 ${ink}` }}
               >
-                Play
+                {t('games.play')}
               </span>
             </button>
           ))}
@@ -340,9 +359,9 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
       {/* ── 4. The trail ────────────────────────────────────────── */}
       <motion.section {...fade(0.16)} className="mt-12 lg:mt-16">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="font-display text-lg lg:text-xl font-extrabold text-foreground">Your path</h3>
-          <p className="text-xs font-bold text-muted-foreground tabular-nums">
-            {masteredCount} of {totalInLevel} done
+          <h3 {...tx} className="font-display text-lg lg:text-xl font-extrabold text-foreground">{t('path.heading')}</h3>
+          <p {...tx} className="text-xs font-bold text-muted-foreground tabular-nums text-end">
+            {t('path.progress', { done: masteredCount, total: totalInLevel })}
           </p>
         </div>
 
@@ -380,7 +399,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                   // Current stop = a mini BOOK (rectangle — covers never crop)
                   <motion.button
                     onClick={() => onBookSelect(book)}
-                    aria-label={`${book.title} — your book, ${s.count} of ${MAX_STAMPS} reads done`}
+                    aria-label={t('aria.currentBook', { title: book.title, done: s.count, total: MAX_STAMPS })}
                     className="relative w-14 lg:w-16 aspect-[3/4] rounded-md overflow-hidden press-scale bg-white"
                     style={{ boxShadow: STICKER, border: '3px solid #fff', outline: `3px solid ${hex}` }}
                     {...(reduceMotion ? {} : {
@@ -395,7 +414,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 ) : isMastered ? (
                   <button
                     onClick={() => onBookSelect(book)}
-                    aria-label={`${book.title} — done`}
+                    aria-label={t('aria.doneBook', { title: book.title })}
                     className="w-10 h-10 lg:w-11 lg:h-11 rounded-full flex items-center justify-center text-white press-scale"
                     style={{ background: hex, boxShadow: STICKER, border: '3px solid #fff' }}
                   >
@@ -403,16 +422,18 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                   </button>
                 ) : (
                   <span
-                    aria-label={`${book.title} — locked, finish your current book first`}
+                    aria-label={t('aria.lockedBook', { title: book.title })}
                     className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white flex items-center justify-center"
                     style={{ boxShadow: STICKER, border: '3px solid #fff', outline: '2px solid hsl(var(--border))' }}
                   >
                     <Lock className="w-3.5 h-3.5 text-muted-foreground/50" />
                   </span>
                 )}
-                <p className={`mt-1.5 text-[10px] font-extrabold leading-none whitespace-nowrap ${isCurrent ? '' : 'text-muted-foreground'}`}
+                <p {...tx} className={`mt-1.5 text-[10px] font-extrabold leading-tight text-center w-max max-w-[4.5rem] ${isCurrent ? '' : 'text-muted-foreground'}`}
                    style={isCurrent ? { color: ink } : undefined}>
-                  {isCurrent ? `${s.count}/${MAX_STAMPS} reads` : isMastered ? 'Done!' : `Book ${i + 1}`}
+                  {isCurrent
+                    ? t('path.reads', { done: s.count, total: MAX_STAMPS })
+                    : isMastered ? t('path.done') : t('path.book', { n: i + 1 })}
                 </p>
               </div>
             );
@@ -429,7 +450,7 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                 <motion.button
                   onClick={() => allMastered && navigate(`/assess?level=${assessLevel}`)}
                   disabled={!allMastered}
-                  aria-label={allMastered ? 'Start your Level Check' : 'Level Check — finish your books first'}
+                  aria-label={allMastered ? t('aria.startCheck') : t('aria.checkLocked')}
                   className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center press-scale"
                   style={allMastered
                     ? { background: hex, boxShadow: STICKER, border: '3px solid #fff' }
@@ -447,8 +468,8 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
                     strokeWidth={allMastered ? 0 : 2}
                   />
                 </motion.button>
-                <p className="mt-1.5 text-[10px] font-extrabold leading-tight text-center whitespace-nowrap text-muted-foreground">
-                  Level Check
+                <p {...tx} className="mt-1.5 text-[10px] font-extrabold leading-tight text-center w-max max-w-[4.5rem] text-balance text-muted-foreground">
+                  {t('path.levelCheck')}
                 </p>
               </div>
             );
@@ -459,8 +480,8 @@ export default function ChildHomeScreen({ books, onBookSelect }: Props) {
       {/* ── 5. Sound magnets ────────────────────────────────────── */}
       {levelInfo.gpcs.length > 0 && (
         <motion.section {...fade(0.24)} className="mt-10 lg:mt-14 text-center">
-          <h3 className="font-display text-lg lg:text-xl font-extrabold text-foreground">
-            Sounds you're learning
+          <h3 {...tx} className="font-display text-lg lg:text-xl font-extrabold text-foreground">
+            {t('sounds.heading')}
           </h3>
           <div className="mt-4 flex flex-wrap justify-center gap-2.5">
             {levelInfo.gpcs.slice(0, 12).map((g, i) => (

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import { BookOpen, Download, FileText, Grid3x3, KeySquare, Layers, Loader2, MonitorPlay, Sparkles } from 'lucide-react';
 import { SCHOOL_BOOKS, type SchoolBook } from '../data/bookCatalog';
 import { SOUND_BOOKS, SOUND_BOOK_TOTAL, type SoundBook } from '../data/soundBooks';
@@ -44,6 +45,7 @@ type Category =
   | 'sound_worksheets' | 'story_packs' | 'sound_mats' | 'tricky_cards';
 
 export default function SchoolLibraryAccess() {
+  const { t } = useTranslation('schoolApp');
   const { toast } = useToast();
   const totals = useMemo(() => programmeTotals(), []);
   const [cat, setCat] = useState<Category>('sound_books');
@@ -63,7 +65,7 @@ export default function SchoolLibraryAccess() {
     setBusy(key);
     const r = await downloadSchoolResource({ ...resource, filename });
     setBusy(null);
-    if (!r.ok) toast({ title: 'Download failed', description: r.error, variant: 'destructive' });
+    if (!r.ok) toast({ title: t('library.downloadFailed'), description: r.error, variant: 'destructive' });
   };
 
   // Open a storybook PDF in a new tab for viewing / screen-recording.
@@ -73,27 +75,26 @@ export default function SchoolLibraryAccess() {
     const r = await viewSchoolResource(resource);
     setBusy(null);
     if (r.ok && r.url && w) { w.location.href = r.url; }
-    else { w?.close(); toast({ title: 'Could not open', description: r.error, variant: 'destructive' }); }
+    else { w?.close(); toast({ title: t('library.openFailed'), description: r.error, variant: 'destructive' }); }
   };
 
   const CATS: { id: Category; label: string; count: number }[] = [
-    { id: 'sound_books', label: 'Sound Books', count: totals.soundBooks },
-    { id: 'blending_books', label: 'Blending Books', count: totals.blendingBooks },
-    { id: 'storybooks', label: 'Storybooks', count: totals.storybooks },
-    { id: 'interactive', label: 'Interactive Books', count: totals.interactiveBooks },
-    { id: 'sound_worksheets', label: 'Sound Book worksheets', count: totals.soundBookWorksheets },
-    { id: 'story_packs', label: 'Storybook worksheet packs', count: totals.storybookWorksheetPacks },
-    { id: 'sound_mats', label: 'Sound mats', count: totals.soundMats },
-    { id: 'tricky_cards', label: 'Tricky word cards', count: totals.trickyWordCards },
+    { id: 'sound_books', label: t('library.cats.soundBooks'), count: totals.soundBooks },
+    { id: 'blending_books', label: t('library.cats.blendingBooks'), count: totals.blendingBooks },
+    { id: 'storybooks', label: t('library.cats.storybooks'), count: totals.storybooks },
+    { id: 'interactive', label: t('library.cats.interactive'), count: totals.interactiveBooks },
+    { id: 'sound_worksheets', label: t('library.cats.soundWorksheets'), count: totals.soundBookWorksheets },
+    { id: 'story_packs', label: t('library.cats.storyPacks'), count: totals.storybookWorksheetPacks },
+    { id: 'sound_mats', label: t('library.cats.soundMats'), count: totals.soundMats },
+    { id: 'tricky_cards', label: t('library.cats.trickyCards'), count: totals.trickyWordCards },
   ];
 
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">Library</h1>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">{t('library.title')}</h1>
         <p className="text-slate-600">
-          {totals.totalResources}+ linked resources across 8 levels — every Sound Book, Blending Book, Storybook,
-          interactive version, worksheet, sound mat and tricky word set, organised by type.
+          {t('library.intro', { count: totals.totalResources })}
         </p>
       </header>
 
@@ -112,8 +113,8 @@ export default function SchoolLibraryAccess() {
 
       {/* Level filter */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Level:</span>
-        <button onClick={() => setLevelFilter('all')} className={['px-3 py-1 rounded-full text-sm font-semibold', levelFilter === 'all' ? 'bg-slate-900 text-white' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'].join(' ')}>All</button>
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">{t('library.levelLabel')}</span>
+        <button onClick={() => setLevelFilter('all')} className={['px-3 py-1 rounded-full text-sm font-semibold', levelFilter === 'all' ? 'bg-slate-900 text-white' : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-50'].join(' ')}>{t('library.all')}</button>
         {SCHOOL_LEVELS.map((l) => (
           <button key={l.level} onClick={() => setLevelFilter(l.level)} data-school-level={l.level}
             className={['px-3 py-1 rounded-full text-sm font-bold', levelFilter === l.level ? 's-bg-level text-white' : 's-bg-tint s-text-ink hover:opacity-80'].join(' ')}>
@@ -145,13 +146,14 @@ export default function SchoolLibraryAccess() {
 }
 
 function LevelBadge({ level }: { level: number }) {
-  return <span className="inline-flex items-center px-1.5 py-0.5 rounded text-white text-[10px] font-bold" style={{ backgroundColor: HEX[level] }}>L{level} {LEVEL_NAME[level]}</span>;
+  return <span dir="ltr" lang="en" className="inline-flex items-center px-1.5 py-0.5 rounded text-white text-[10px] font-bold" style={{ backgroundColor: HEX[level] }}>L{level} {LEVEL_NAME[level]}</span>;
 }
 
 function BlockLine({ id }: { id: string }) {
+  const { t } = useTranslation('schoolApp');
   const b = blockForResource(id);
   if (!b) return null;
-  return <div className="text-[11px] text-slate-500">{b.isReview ? 'Review · level gate' : `Block ${b.blockNumber} of ${b.totalTeachingBlocks}`}</div>;
+  return <div className="text-[11px] text-slate-500">{b.isReview ? t('block.reviewGate') : t('block.blockOf', { n: b.blockNumber, total: b.totalTeachingBlocks })}</div>;
 }
 
 function Shell({ level, children }: { level: number; children: React.ReactNode }) {
@@ -172,57 +174,61 @@ function ComingSoon({ icon, label }: { icon: React.ReactNode; label: string }) {
 }
 
 function SoundBookCard({ book, busy, run, onPresent, onPlay }: { book: SoundBook; busy: string | null; run: (k: string, u: string, f: string) => void; onPresent: (r: PresentResource, title: string) => void; onPlay: (b: SoundBook) => void }) {
+  const { t } = useTranslation('schoolApp');
   const interactive = SOUND_BOOK_CONTENT_IDS.has(book.id);
   return (
     <Shell level={book.level}>
-      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
+      <div className="flex items-center justify-between gap-2 mb-1"><h3 dir="ltr" lang="en" className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
-      <p className="text-xs text-slate-500 mt-1 mb-2">Focus: {book.graphemes.join(' / ')}{book.sampleWords.length ? ` · e.g. ${book.sampleWords.slice(0, 3).join(', ')}` : ''}</p>
-      <div className="text-[11px] text-slate-500 mb-3">Companion: <span className="font-semibold">Sound Book worksheet</span></div>
+      <p className="text-xs text-slate-500 mt-1 mb-2">{t('library.focus')} <bdi dir="ltr" lang="en">{book.graphemes.join(' / ')}</bdi>{book.sampleWords.length ? <> · {t('library.eg')} <bdi dir="ltr" lang="en">{book.sampleWords.slice(0, 3).join(', ')}</bdi></> : null}</p>
+      <div className="text-[11px] text-slate-500 mb-3">{t('library.companion')} <span className="font-semibold">{t('library.soundBookWorksheet')}</span></div>
       <div className="mt-auto space-y-1.5">
         <div className="grid grid-cols-2 gap-1.5">
           {interactive ? (
             <button type="button" onClick={() => onPlay(book)}
               className="inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700">
-              <Sparkles className="w-3.5 h-3.5" /> Play slides
+              <Sparkles className="w-3.5 h-3.5" /> {t('library.playSlides')}
             </button>
           ) : (
             <button type="button" onClick={() => onPresent({ resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, book.title)}
               className="inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700">
-              <MonitorPlay className="w-3.5 h-3.5" /> On screen
+              <MonitorPlay className="w-3.5 h-3.5" /> {t('library.onScreen')}
             </button>
           )}
-          <DownloadBtn label="Print booklet" loading={busy === `snd-${book.id}`} onClick={() => run(`snd-${book.id}`, { resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, `${book.title}.pdf`)} />
+          <DownloadBtn label={t('library.printBooklet')} loading={busy === `snd-${book.id}`} onClick={() => run(`snd-${book.id}`, { resourceType: 'sound_book', resourceKey: soundBookKey(book.id) }, `${book.title}.pdf`)} />
         </div>
-        <ComingSoon icon={<FileText className="w-3 h-3" />} label="Worksheet soon" />
+        <ComingSoon icon={<FileText className="w-3 h-3" />} label={t('library.worksheetSoon')} />
       </div>
     </Shell>
   );
 }
 
 function SoundWorksheetCard({ book }: { book: SoundBook }) {
+  const { t } = useTranslation('schoolApp');
   return (
     <Shell level={book.level}>
-      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">Worksheet: {book.graphemes.join(' / ')}</h3><LevelBadge level={book.level} /></div>
+      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{t('library.worksheetTitle')} <bdi dir="ltr" lang="en">{book.graphemes.join(' / ')}</bdi></h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
-      <p className="text-xs text-slate-500 mt-1 mb-3">Sound formation, word building and sound sorting. Companion to the {book.title}.</p>
-      <div className="mt-auto"><ComingSoon icon={<FileText className="w-3 h-3" />} label="Coming soon" /></div>
+      <p className="text-xs text-slate-500 mt-1 mb-3"><Trans t={t} i18nKey="library.soundWorksheetDesc" values={{ title: book.title }} components={{ book: <bdi dir="ltr" lang="en" /> }} /></p>
+      <div className="mt-auto"><ComingSoon icon={<FileText className="w-3 h-3" />} label={t('library.comingSoon')} /></div>
     </Shell>
   );
 }
 
 function BlendingCard({ book }: { book: BlendingBook }) {
+  const { t } = useTranslation('schoolApp');
   return (
     <Shell level={book.level}>
-      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
+      <div className="flex items-center justify-between gap-2 mb-1"><h3 dir="ltr" lang="en" className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
-      <p className="text-xs text-slate-500 mt-1 mb-3">{book.focus} · A6 word-reveal booklet. No separate worksheet — the blending practice is the resource.</p>
-      <div className="mt-auto"><ComingSoon icon={<Layers className="w-3 h-3" />} label="Coming soon" /></div>
+      <p className="text-xs text-slate-500 mt-1 mb-3"><bdi dir="ltr" lang="en">{book.focus}</bdi> · {t('library.blendingDesc')}</p>
+      <div className="mt-auto"><ComingSoon icon={<Layers className="w-3 h-3" />} label={t('library.comingSoon')} /></div>
     </Shell>
   );
 }
 
 function StorybookCard({ book, busy, run, view }: { book: SchoolBook; busy: string | null; run: (k: string, u: string, f: string) => void; view: (k: string, r: { resourceType: 'storybook'; resourceKey: string; format: 'a4' | 'a5' }) => void }) {
+  const { t } = useTranslation('schoolApp');
   const [imgOk, setImgOk] = useState(true);
   const p6 = book.parent6SubLevel;
   const sk = s8Key(book.subLevel);   // school-only key for the new 8-level assets
@@ -236,62 +242,63 @@ function StorybookCard({ book, busy, run, view }: { book: SchoolBook; busy: stri
         )}
         <div className="min-w-0">
           <div className="mb-0.5"><LevelBadge level={book.level} /></div>
-          <h3 className="font-bold leading-tight">{book.title}</h3>
+          <h3 dir="ltr" lang="en" className="font-bold leading-tight">{book.title}</h3>
           <BlockLine id={book.id} />
         </div>
       </div>
-      <div className="text-[11px] text-slate-500 mb-2">Focus: {book.focusSounds.join(', ')} · <span className="font-mono">was {p6}</span></div>
+      <div className="text-[11px] text-slate-500 mb-2">{t('library.focus')} <bdi dir="ltr" lang="en">{book.focusSounds.join(', ')}</bdi> · <span className="font-mono">{t('libraryPreview.was')} <bdi dir="ltr">{p6}</bdi></span></div>
       <div className="mt-auto grid grid-cols-2 gap-1.5">
         <button onClick={() => view(`${sk}-view`, { resourceType: 'storybook', resourceKey: sk, format: 'a5' })} disabled={busy === `${sk}-view`} className="inline-flex items-center justify-center gap-1 px-2 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50">
-          {busy === `${sk}-view` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BookOpen className="w-3.5 h-3.5" />} View book
+          {busy === `${sk}-view` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BookOpen className="w-3.5 h-3.5" />} {t('library.viewBook')}
         </button>
-        <DownloadBtn label="A5 booklet" loading={busy === `${sk}-a4`} onClick={() => run(`${sk}-a4`, { resourceType: 'storybook', resourceKey: sk, format: 'a4' }, `${book.title} (A5 Booklet).pdf`)} />
-        <DownloadBtn label="A4 sheets" loading={busy === `${sk}-a5`} onClick={() => run(`${sk}-a5`, { resourceType: 'storybook', resourceKey: sk, format: 'a5' }, `${book.title} (A4 Sheets).pdf`)} />
-        <DownloadBtn label="Worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} />
+        <DownloadBtn label={t('library.a5Booklet')} loading={busy === `${sk}-a4`} onClick={() => run(`${sk}-a4`, { resourceType: 'storybook', resourceKey: sk, format: 'a4' }, `${book.title} (A5 Booklet).pdf`)} />
+        <DownloadBtn label={t('library.a4Sheets')} loading={busy === `${sk}-a5`} onClick={() => run(`${sk}-a5`, { resourceType: 'storybook', resourceKey: sk, format: 'a5' }, `${book.title} (A4 Sheets).pdf`)} />
+        <DownloadBtn label={t('library.worksheetPack')} icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} />
       </div>
     </Shell>
   );
 }
 
 function InteractiveCard({ book }: { book: SchoolBook }) {
+  const { t } = useTranslation('schoolApp');
   return (
     <Shell level={book.level}>
-      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
+      <div className="flex items-center justify-between gap-2 mb-1"><h3 dir="ltr" lang="en" className="font-bold leading-tight">{book.title}</h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
-      <p className="text-xs text-slate-500 mt-1 mb-3">Tappable words, phoneme pop-ups, audio, spelling, story ordering, comprehension{book.level >= 2 ? ', grammar word-order' : ''} and writing practice.</p>
+      <p className="text-xs text-slate-500 mt-1 mb-3">{book.level >= 2 ? t('library.interactiveDescGrammar') : t('library.interactiveDesc')}</p>
       <div className="mt-auto">
-        <Link to={`/school/app/read/${book.parent6SubLevel}`} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-violet-600 text-white text-xs font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-3.5 h-3.5" /> Open interactive</Link>
+        <Link to={`/school/app/read/${book.parent6SubLevel}`} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-violet-600 text-white text-xs font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-3.5 h-3.5" /> {t('library.openInteractive')}</Link>
       </div>
     </Shell>
   );
 }
 
 function StoryPackCard({ book, busy, run }: { book: SchoolBook; busy: string | null; run: (k: string, u: string, f: string) => void }) {
+  const { t } = useTranslation('schoolApp');
   const p6 = book.parent6SubLevel;
   return (
     <Shell level={book.level}>
-      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight">{book.title} — pack</h3><LevelBadge level={book.level} /></div>
+      <div className="flex items-center justify-between gap-2 mb-1"><h3 className="font-bold leading-tight"><bdi dir="ltr" lang="en">{book.title}</bdi> — {t('library.pack')}</h3><LevelBadge level={book.level} /></div>
       <BlockLine id={book.id} />
-      <p className="text-xs text-slate-500 mt-1 mb-3">5-page A4 pack: sound hunt, trace and write, read and do, alien words, story-and-draw.</p>
-      <div className="mt-auto"><DownloadBtn primary label="Print worksheet pack" icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} /></div>
+      <p className="text-xs text-slate-500 mt-1 mb-3">{t('library.packDesc')}</p>
+      <div className="mt-auto"><DownloadBtn primary label={t('library.printWorksheetPack')} icon={<FileText className="w-3.5 h-3.5" />} loading={busy === `${p6}-ws`} onClick={() => run(`${p6}-ws`, { resourceType: 'worksheet_pack', resourceKey: storageKey(p6) }, `${book.title} — Worksheets.pdf`)} /></div>
     </Shell>
   );
 }
 
 function LevelResourceCard({ level, kind }: { level: number; kind: 'mat' | 'tricky' }) {
+  const { t } = useTranslation('schoolApp');
   const Icon = kind === 'mat' ? Grid3x3 : KeySquare;
-  const title = kind === 'mat' ? `L${level} Sound Mat` : `L${level} Tricky Word Cards`;
-  const desc = kind === 'mat'
-    ? 'Cumulative GPC chart showing the sounds taught at this level and earlier levels.'
-    : 'Tricky word cards for the words introduced at this level.';
+  const title = kind === 'mat' ? t('library.soundMatTitle', { level: `L${level}` }) : t('library.trickyCardsTitle', { level: `L${level}` });
+  const desc = kind === 'mat' ? t('library.soundMatDesc') : t('library.trickyCardsDesc');
   return (
     <Shell level={level}>
       <div className="flex items-center justify-between gap-2 mb-1">
         <h3 className="font-bold leading-tight flex items-center gap-1.5"><Icon className="w-4 h-4 text-slate-400" /> {title}</h3>
         <LevelBadge level={level} />
       </div>
-      <p className="text-xs text-slate-500 mt-1 mb-3">{desc} Used throughout the level.</p>
-      <div className="mt-auto"><ComingSoon icon={<Icon className="w-3 h-3" />} label="Coming soon" /></div>
+      <p className="text-xs text-slate-500 mt-1 mb-3">{desc} {t('library.usedThroughout')}</p>
+      <div className="mt-auto"><ComingSoon icon={<Icon className="w-3 h-3" />} label={t('library.comingSoon')} /></div>
     </Shell>
   );
 }

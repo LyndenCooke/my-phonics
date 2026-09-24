@@ -14,7 +14,8 @@ import { forgeApi, type CustomBook } from "@/lib/forgeApi";
 import CustomBookReader from "@/components/CustomBookReader";
 import { customBookAsBook } from "@/lib/customBookAsBook";
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from "@/components/DownloadFormatDialog";
-import WorldGlobe, { flagUrl, type GlobePin } from "@/components/WorldGlobe";
+import WorldGlobe, { flagUrl, useCountryName, type GlobePin } from "@/components/WorldGlobe";
+import { useTranslation } from "react-i18next";
 import { getJourneyLevel, JOURNEY_LEVELS } from "@/lib/levels8";
 import { LIBRARY_WORLD, libraryCoverUrl, libraryJourneyLevel, type LibraryWorldBook } from "@/lib/libraryWorld";
 
@@ -76,6 +77,8 @@ const TILTS = [-1.5, 1, -0.5, 1.5, -1, 0.5];
 const ACCENTS = ["#E84B8A", "#F59E0B", "#22C55E", "#3B82F6", "#8B5CF6", "#14B8A6"];
 
 export default function WorldOfBooks() {
+  const { t } = useTranslation("worldOfBooks");
+  const countryName = useCountryName();
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
   const isQaUser = user?.email?.toLowerCase() === "hello@myphonicsbooks.co.uk";
@@ -180,21 +183,22 @@ export default function WorldOfBooks() {
       country: b.country,
       flag: b.flag,
       cover: libraryCoverUrl(b),
-      subtitle: b.setting,
+      // Settings live in shared English data; translate at render by book id.
+      subtitle: t(`settings.${b.legacySub.replace(".", "_")}`, { defaultValue: b.setting }),
       lib: b,
     })),
     ...books.map((b): ShelfBook => ({
       key: `fam-${b.id}`,
       kind: "family",
-      title: b.title || "Untitled",
+      title: b.title || t("untitled"),
       level: b.level,
       country: b.country || null,
       flag: b.country_flag || "🌍",
       cover: b.pages?.[0]?.imageUrl || b.cover || null,
-      subtitle: `${b.child_name}'s own book`,
+      subtitle: t("ownBook", { name: b.child_name }),
       custom: b,
     })),
-  ], [books]);
+  ], [books, t]);
 
   const globePins: GlobePin[] = useMemo(() => {
     const by = new Map<string, GlobePin>();
@@ -295,13 +299,13 @@ export default function WorldOfBooks() {
       const data = await res.json();
       if (!res.ok) {
         if (data?.error === "download_limit") {
-          const cooldown = data.cooldown_until ? ` Try again soon.` : "";
-          return { success: false, error: `${data.message ?? "Download not available."}${cooldown}` };
+          const cooldown = data.cooldown_until ? ` ${t("download.tryAgainSoon")}` : "";
+          return { success: false, error: `${data.message ?? t("download.notAvailable")}${cooldown}` };
         }
-        return { success: false, error: data?.error || "Download failed" };
+        return { success: false, error: data?.error || t("download.failed") };
       }
       const pdfRes = await fetch(data.url);
-      if (!pdfRes.ok) return { success: false, error: "PDF file unavailable" };
+      if (!pdfRes.ok) return { success: false, error: t("download.pdfUnavailable") };
       const blob = await pdfRes.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -326,14 +330,13 @@ export default function WorldOfBooks() {
         {/* ---------------------------------------------------- header --- */}
         <div className="pt-6 text-center sm:pt-10">
           <div className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary-ink">
-            <Globe2 className="h-3.5 w-3.5" /> The World of Books
+            <Globe2 className="h-3.5 w-3.5" /> {t("header.badge")}
           </div>
           <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            Every book takes you somewhere
+            {t("header.title")}
           </h1>
           <p className="mx-auto mt-2 max-w-lg text-muted-foreground">
-            Spin the globe and tap a flag to meet the books that live there — from our own
-            library, and made by families like yours.
+            {t("header.lead")}
           </p>
 
           {/* Globe vs. level-order toggle */}
@@ -344,7 +347,7 @@ export default function WorldOfBooks() {
                 view === "globe" ? "bg-white text-foreground shadow-sm" : "text-muted-foreground"
               }`}
             >
-              <Globe2 className="h-3.5 w-3.5" /> Globe
+              <Globe2 className="h-3.5 w-3.5" /> {t("header.globe")}
             </button>
             <button
               onClick={() => setView("level")}
@@ -352,7 +355,7 @@ export default function WorldOfBooks() {
                 view === "level" ? "bg-white text-foreground shadow-sm" : "text-muted-foreground"
               }`}
             >
-              <LayoutGrid className="h-3.5 w-3.5" /> By level
+              <LayoutGrid className="h-3.5 w-3.5" /> {t("header.byLevel")}
             </button>
           </div>
         </div>
@@ -374,36 +377,36 @@ export default function WorldOfBooks() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.97 }}
                     transition={{ duration: 0.22, ease: "easeOut" }}
-                    className="mx-auto mt-4 max-w-xl rounded-3xl border border-border bg-white p-4 text-left shadow-lg sm:absolute sm:right-0 sm:top-6 sm:mt-0 sm:w-72"
+                    className="mx-auto mt-4 max-w-xl rounded-3xl border border-border bg-white p-4 text-start shadow-lg sm:absolute sm:end-0 sm:top-6 sm:mt-0 sm:w-72"
                   >
                     <div className="mb-2 flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 font-display font-extrabold text-foreground">
                         {flagUrl(country) && (
                           <img src={flagUrl(country)!} alt="" className="h-4 w-6 rounded-[3px] object-cover ring-1 ring-foreground/10" />
                         )}
-                        <span className="truncate">{country}</span>
+                        <span className="truncate">{countryName(country)}</span>
                       </div>
-                      <button onClick={() => setCountry(null)} aria-label="Close"
+                      <button onClick={() => setCountry(null)} aria-label={t("common:actions.close")}
                         className="rounded-full p-1 text-muted-foreground transition hover:bg-muted">
                         <X className="h-4 w-4" />
                       </button>
                     </div>
-                    <p className="mb-2 text-xs text-muted-foreground">Tap a book to read it online or print it at home.</p>
-                    <div className="flex max-h-72 flex-col gap-1.5 overflow-y-auto pr-1">
+                    <p className="mb-2 text-xs text-muted-foreground">{t("popup.tapBook")}</p>
+                    <div className="flex max-h-72 flex-col gap-1.5 overflow-y-auto pe-1">
                       {countryBooks.map((b) => (
                         <button key={b.key} onClick={() => setChooser(b)}
-                          className="flex w-full items-start gap-3 rounded-2xl p-2 text-left transition hover:bg-primary/5">
+                          className="flex w-full items-start gap-3 rounded-2xl p-2 text-start transition hover:bg-primary/5">
                           {b.cover ? (
                             <img src={b.cover} alt="" className="h-16 w-12 shrink-0 rounded-lg object-cover ring-1 ring-foreground/10" />
                           ) : (
                             <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-muted"><BookHeart className="h-5 w-5 text-muted-foreground/40" /></div>
                           )}
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-sm font-extrabold text-foreground">{b.title}</span>
+                            <span className="block truncate text-sm font-extrabold text-foreground" dir="ltr" lang="en">{b.title}</span>
                             <span className="block truncate text-xs text-muted-foreground">{b.subtitle}</span>
                             <span className="mt-1 inline-block rounded-full px-2 py-px text-[10px] font-extrabold text-white"
                               style={{ backgroundColor: getJourneyLevel(b.level)?.hex || "#64748b" }}>
-                              Level {b.level}
+                              {t("levelN", { level: b.level })}
                             </span>
                           </span>
                         </button>
@@ -429,11 +432,11 @@ export default function WorldOfBooks() {
               <div className="flex items-center justify-between">
                 <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-foreground">
                   {flagUrl(country) && <img src={flagUrl(country)!} alt="" className="h-5 w-7 rounded-[3px] object-cover ring-1 ring-foreground/10" />}
-                  Books from {country}
+                  {t("shelf.booksFrom", { country: countryName(country) })}
                 </h2>
                 <button onClick={() => setCountry(null)}
                   className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground transition hover:bg-border">
-                  Close
+                  {t("common:actions.close")}
                 </button>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -445,7 +448,7 @@ export default function WorldOfBooks() {
                     transition={{ delay: idx * 0.05, duration: 0.35 }}
                     whileHover={{ y: -6 }}
                     onClick={() => setChooser(b)}
-                    className="group overflow-hidden rounded-2xl bg-white text-left shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
+                    className="group overflow-hidden rounded-2xl bg-white text-start shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
                   >
                     <div className="relative overflow-hidden">
                       {b.cover ? (
@@ -454,18 +457,19 @@ export default function WorldOfBooks() {
                       ) : (
                         <div className="flex aspect-[3/4] w-full items-center justify-center bg-muted"><BookHeart className="h-8 w-8 text-muted-foreground/40" /></div>
                       )}
-                      <div className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[11px] font-extrabold text-white shadow"
-                        style={{ backgroundColor: getJourneyLevel(b.level)?.hex || "#64748b" }}>
-                        L{b.level}
+                      <div className="absolute start-2.5 top-2.5 rounded-full px-2.5 py-0.5 text-[11px] font-extrabold text-white shadow"
+                        style={{ backgroundColor: getJourneyLevel(b.level)?.hex || "#64748b" }}
+                        title={t("levelN", { level: b.level })}>
+                        {t("levelShort", { level: b.level })}
                       </div>
                       {b.kind === "family" && (
-                        <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
-                          <Heart className="mr-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> family-made
+                        <div className="absolute end-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
+                          <Heart className="me-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> {t("familyMade")}
                         </div>
                       )}
                     </div>
                     <div className="p-3">
-                      <div className="truncate text-sm font-extrabold text-foreground">{b.title}</div>
+                      <div className="truncate text-sm font-extrabold text-foreground" dir="ltr" lang="en">{b.title}</div>
                       <div className="mt-0.5 truncate text-xs text-muted-foreground">{b.subtitle}</div>
                     </div>
                   </motion.button>
@@ -482,7 +486,7 @@ export default function WorldOfBooks() {
               <div key={level.level}>
                 <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-foreground">
                   <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: level.hex }} />
-                  Level {level.level} · {level.name}
+                  {t("levelN", { level: level.level })} · <span dir="ltr" lang="en">{level.name}</span>
                 </h2>
                 <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
                   {levelBooks.map((b, idx) => (
@@ -494,7 +498,7 @@ export default function WorldOfBooks() {
                       transition={{ delay: (idx % 8) * 0.04, duration: 0.3 }}
                       whileHover={{ y: -6 }}
                       onClick={() => setChooser(b)}
-                      className="group overflow-hidden rounded-2xl bg-white text-left shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
+                      className="group overflow-hidden rounded-2xl bg-white text-start shadow-md shadow-foreground/5 ring-1 ring-foreground/5 transition-shadow hover:shadow-xl"
                     >
                       <div className="relative overflow-hidden">
                         {b.cover ? (
@@ -504,18 +508,18 @@ export default function WorldOfBooks() {
                           <div className="flex aspect-[3/4] w-full items-center justify-center bg-muted"><BookHeart className="h-8 w-8 text-muted-foreground/40" /></div>
                         )}
                         {b.flag && (
-                          <div className="absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-extrabold shadow">
+                          <div className="absolute start-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-extrabold shadow">
                             {b.flag}
                           </div>
                         )}
                         {b.kind === "family" && (
-                          <div className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
-                            <Heart className="mr-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> family-made
+                          <div className="absolute end-2.5 top-2.5 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary-ink shadow-sm">
+                            <Heart className="me-0.5 inline h-2.5 w-2.5 fill-primary text-primary" /> {t("familyMade")}
                           </div>
                         )}
                       </div>
                       <div className="p-3">
-                        <div className="truncate text-sm font-extrabold text-foreground">{b.title}</div>
+                        <div className="truncate text-sm font-extrabold text-foreground" dir="ltr" lang="en">{b.title}</div>
                         <div className="mt-0.5 truncate text-xs text-muted-foreground">{b.subtitle}</div>
                       </div>
                     </motion.button>
@@ -550,14 +554,14 @@ export default function WorldOfBooks() {
                 <div className="flex items-start gap-3">
                   {chooser.cover && <img src={chooser.cover} alt="" className="h-24 w-[4.5rem] rounded-xl object-cover ring-1 ring-foreground/10" />}
                   <div className="min-w-0 flex-1">
-                    <div className="font-display text-lg font-extrabold leading-tight text-foreground">{chooser.title}</div>
+                    <div className="font-display text-lg font-extrabold leading-tight text-foreground" dir="ltr" lang="en">{chooser.title}</div>
                     <div className="mt-1 text-xs text-muted-foreground">{chooser.subtitle}</div>
                     <span className="mt-1.5 inline-block rounded-full px-2 py-px text-[10px] font-extrabold text-white"
                       style={{ backgroundColor: getJourneyLevel(chooser.level)?.hex || "#64748b" }}>
-                      Level {chooser.level}
+                      {t("levelN", { level: chooser.level })}
                     </span>
                   </div>
-                  <button onClick={() => setChooser(null)} aria-label="Close"
+                  <button onClick={() => setChooser(null)} aria-label={t("common:actions.close")}
                     className="rounded-full p-1 text-muted-foreground transition hover:bg-muted"><X className="h-4 w-4" /></button>
                 </div>
                 {(() => {
@@ -570,18 +574,18 @@ export default function WorldOfBooks() {
                           <button onClick={() => playBook(chooser)}
                             className="col-span-2 flex items-center justify-center gap-2 rounded-2xl bg-pink-500 px-3 py-4 font-bold text-white shadow-md transition hover:opacity-90">
                             <Sparkles className="h-6 w-6" />
-                            <span className="text-sm">Read &amp; play — tap every word</span>
+                            <span className="text-sm">{t("chooser.readPlay")}</span>
                           </button>
                         ) : null}
                         <button onClick={() => readOnline(chooser)}
                           className="flex flex-col items-center gap-1.5 rounded-2xl bg-primary px-3 py-4 font-bold text-primary-foreground shadow-md transition hover:opacity-90">
                           <BookOpen className="h-6 w-6" />
-                          <span className="text-sm">{chooser.kind === "family" ? "Turn the pages" : "Read online"}</span>
+                          <span className="text-sm">{chooser.kind === "family" ? t("chooser.turnPages") : t("chooser.readOnline")}</span>
                         </button>
                         <button onClick={() => printBook(chooser)} disabled={familyPdfBusy}
                           className="flex flex-col items-center gap-1.5 rounded-2xl border-2 border-border bg-white px-3 py-4 font-bold text-foreground transition hover:border-foreground/30 disabled:opacity-50">
                           {familyPdfBusy ? <Loader2 className="h-6 w-6 animate-spin" /> : <Printer className="h-6 w-6" />}
-                          <span className="text-sm">Print at home</span>
+                          <span className="text-sm">{t("chooser.print")}</span>
                         </button>
                       </div>
                     );
@@ -594,27 +598,27 @@ export default function WorldOfBooks() {
                       <Lock className="mx-auto h-5 w-5 text-amber-500" />
                       {!user ? (
                         <>
-                          <p className="mt-1.5 text-sm text-muted-foreground">Sign in to read this book.</p>
+                          <p className="mt-1.5 text-sm text-muted-foreground">{t("chooser.signInToRead")}</p>
                           <Link
                             to={`/auth?redirect=${encodeURIComponent("/world-of-books")}`}
                             className="mt-3 inline-block rounded-full bg-slate-900 px-5 py-2 text-sm font-bold text-white transition hover:bg-slate-800"
                           >
-                            Sign in
+                            {t("common:actions.signIn")}
                           </Link>
                         </>
                       ) : chooser.kind === "library" ? (
                         <>
                           <p className="mt-1.5 text-sm text-muted-foreground">
-                            This book is free to read in the library.
+                            {t("chooser.freeInLibrary")}
                           </p>
                           <Link to="/library"
                             className="mt-3 inline-block rounded-full bg-slate-900 px-5 py-2 text-sm font-bold text-white transition hover:bg-slate-800">
-                            Open the library
+                            {t("chooser.openLibrary")}
                           </Link>
                         </>
                       ) : (
                         <p className="mt-1.5 text-sm text-muted-foreground">
-                          Family-made books unlock with World of Books access.
+                          {t("chooser.familyLocked")}
                         </p>
                       )}
                     </div>
@@ -630,16 +634,16 @@ export default function WorldOfBooks() {
           <div className="mt-14">
             <div className="text-center">
               <h2 className="inline-flex items-center gap-2 font-display text-2xl font-extrabold tracking-tight text-foreground">
-                <Heart className="h-6 w-6 fill-primary text-primary" /> Wall of Love
+                <Heart className="h-6 w-6 fill-primary text-primary" /> {t("wall.title")}
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">Real words from real families.</p>
+              <p className="mt-1 text-sm text-muted-foreground">{t("wall.lead")}</p>
             </div>
             <div className="mt-6 columns-1 gap-4 sm:columns-2 lg:columns-3 [column-fill:_balance]">
-              {quotes.map((t, i) => {
+              {quotes.map((q, i) => {
                 const accent = ACCENTS[i % ACCENTS.length];
                 return (
                   <motion.figure
-                    key={t.id}
+                    key={q.id}
                     initial={{ opacity: 0, y: 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-30px" }}
@@ -649,16 +653,16 @@ export default function WorldOfBooks() {
                   >
                     <div className="flex items-center gap-0.5">
                       {[1, 2, 3, 4, 5].map((n) => (
-                        <Star key={n} className={`h-4 w-4 ${(t.rating ?? 5) >= n ? "fill-amber-400 text-amber-400" : "text-muted-foreground/25"}`} />
+                        <Star key={n} className={`h-4 w-4 ${(q.rating ?? 5) >= n ? "fill-amber-400 text-amber-400" : "text-muted-foreground/25"}`} />
                       ))}
                     </div>
-                    <blockquote className="mt-3 text-[15px] leading-relaxed text-foreground">“{t.quote}”</blockquote>
+                    <blockquote dir="auto" className="mt-3 text-[15px] leading-relaxed text-foreground">“{q.quote}”</blockquote>
                     <figcaption className="mt-4 flex items-center gap-2">
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold text-white"
                         style={{ background: accent }}>
-                        {(t.first_name?.[0] ?? "❤").toUpperCase()}
+                        {(q.first_name?.[0] ?? "❤").toUpperCase()}
                       </span>
-                      <span className="font-display text-sm font-extrabold text-foreground">{t.first_name ?? "A parent"}</span>
+                      <span className="font-display text-sm font-extrabold text-foreground">{q.first_name ?? t("wall.aParent")}</span>
                     </figcaption>
                   </motion.figure>
                 );
@@ -666,7 +670,7 @@ export default function WorldOfBooks() {
             </div>
             <div className="mt-4 text-center">
               <Link to="/love" className="text-sm font-semibold text-primary-ink underline-offset-4 hover:underline">
-                Read the whole wall →
+                {t("wall.readAll")} <span aria-hidden className="inline-block rtl:-scale-x-100">→</span>
               </Link>
             </div>
           </div>
@@ -675,13 +679,14 @@ export default function WorldOfBooks() {
         {/* ------------------------------------------------------- cta --- */}
         <div className="mt-14 rounded-3xl border border-dashed border-primary/30 bg-white/70 p-8 text-center">
           <Sparkles className="mx-auto mb-2 h-7 w-7 text-primary" />
-          <div className="font-display text-lg font-extrabold text-foreground">The next flag on this globe could be yours</div>
+          <div className="font-display text-lg font-extrabold text-foreground">{t("cta.title")}</div>
           <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
-            Make a real decodable book starring your child — their name, their home, their story.
+            {t("cta.body")}
           </p>
           <Link to="/create-book"
             className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground shadow-md transition hover:opacity-90">
-            <Sparkles className="h-4 w-4" /> Create their book — £4.99
+            <Sparkles className="h-4 w-4" /> {t("cta.button", { price: "£4.99" })}
+
           </Link>
         </div>
       </div>

@@ -1,0 +1,48 @@
+{
+  "feedback": {
+    "title": "How are we doing?",
+    "description": "Your feedback helps us improve — and great comments may feature on our website.",
+    "returningTitle": "Enjoying MyPhonicsBooks?",
+    "returningDescription": "You've been back a few times — we'd love a quick star rating and any thoughts. It really helps.",
+    "stars_one": "{{count}} star",
+    "stars_other": "{{count}} stars",
+    "lovedLabel": "What did you love? 💛",
+    "lovedPlaceholder": "The bit your child (or you) loved most…",
+    "improveLabel": "What could be better?",
+    "improvePlaceholder": "Anything that frustrated you or you'd change (just for our team)",
+    "privateNote": "Only our team sees this — it's never shown publicly.",
+    "consentMarketing": "You can feature what I loved as a testimonial on your website & socials.",
+    "consentNamed": "You can use my first name alongside it.",
+    "send": "Send feedback",
+    "sending": "Sending…",
+    "pickRating": "Pick a star rating",
+    "pickRatingBody": "Tap a star to rate your experience.",
+    "thanks": "Thank you! 💛",
+    "thanksBody": "Your feedback has been sent to our team.",
+    "sendFailed": "Could not send feedback"
+  },
+  "homeScreen": {
+    "dismiss": "Dismiss",
+    "title": "One last step — make it 1 tap away",
+    "body": "Save MyPhonicsBooks to your home screen. Tomorrow, hand the phone to your child — they tap the icon and start reading. No logging in. No typing.",
+    "install": "Install on home screen",
+    "iosStep1": "Tap the <icon/> <b>Share</b> button at the bottom of Safari",
+    "iosStep2": "Scroll down → tap <icon/> <b>\"Add to Home Screen\"</b>",
+    "iosStep3": "Tap <b>Add</b> in the top-right. Done!",
+    "otherDevice": "Open this page in Chrome (Android) or Safari (iPhone) on your phone to install the app to your home screen."
+  },
+  "nudges": {
+    "closeNudges": "Close nudges",
+    "dialogLabel": "What's new for you",
+    "title": "Hi! Here's what's new",
+    "empty": "All caught up. We'll let you know when there's something new.",
+    "moreInMessages": "More updates in Messages",
+    "goToMessages": "Go to Messages"
+  },
+  "bookUnlocked": {
+    "badge": "Book Unlocked!",
+    "title": "Your free book is ready",
+    "level": "Level {{level}}",
+    "continue": "Continue to Library"
+  }
+}

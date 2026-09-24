@@ -1,0 +1,18 @@
+{
+  "badge": "Ukuta wa Upendo",
+  "title": "Maneno halisi kutoka kwa familia halisi",
+  "rating_one": "{{avg}} kutoka kwa familia {{count}} na walimu",
+  "rating_other": "{{avg}} kutoka kwa familia {{count}} na walimu",
+  "empty": {
+    "title": "Ukuta huu ndio unaanza",
+    "body": "Kuwa mmoja wa familia za kwanza kushiriki hadithi yako."
+  },
+  "aParent": "Mzazi mmoja",
+  "cta": {
+    "addStory": "Ungependa kuongeza hadithi yako?",
+    "ownStory": "Ungependa kuwa na hadithi yako mwenyewe?",
+    "leaveReview": "Andika maoni",
+    "tryCheck": "Jaribu jaribio la dakika 3 bila malipo",
+    "support": "Iunge mkono MyPhonicsBooks"
+  }
+}

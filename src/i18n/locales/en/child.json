@@ -1,0 +1,65 @@
+{
+  "empty": {
+    "title": "No books yet!",
+    "body": "Ask a grown-up to unlock your first book."
+  },
+  "levelLabel": "Level {{level}}",
+  "greeting": "Time to read, {{name}}!",
+  "greetingNoName": "Time to read!",
+  "cta": {
+    "startLevelCheck": "Start Level Check",
+    "nextBook": "Next Book",
+    "startCheck": "Start Check",
+    "readBook": "Read Book",
+    "readAgain": "Read Again",
+    "lastRead": "Last Read!"
+  },
+  "sub": {
+    "allDone": "You've finished all your books!",
+    "nextUnlocked": "Next book unlocked!",
+    "readyCheck": "Ready for your Check!",
+    "read0": "Read this book 5 times.",
+    "read1": "Great start. 4 reads to go.",
+    "read2": "You're doing great. 3 more reads to go.",
+    "read3": "You're getting faster. 2 reads to go.",
+    "read4": "Almost there. Last read!"
+  },
+  "games": {
+    "heading": "Play a game",
+    "play": "Play",
+    "soundlings": {
+      "blurb": "Feed your sound creatures!"
+    },
+    "finish": {
+      "name": "Finish the word",
+      "blurb": "Tap the missing sound"
+    },
+    "tricky": {
+      "name": "Hear it, find it",
+      "blurb": "Listen and find the tricky word"
+    },
+    "cannon": {
+      "blurb": "Fire the right sound into the word"
+    }
+  },
+  "path": {
+    "heading": "Your path",
+    "progress": "{{done}} of {{total}} done",
+    "reads": "{{done}}/{{total}} reads",
+    "done": "Done!",
+    "book": "Book {{n}}",
+    "levelCheck": "Level Check"
+  },
+  "sounds": {
+    "heading": "Sounds you're learning"
+  },
+  "aria": {
+    "openBook": "Open {{title}}",
+    "readsDone": "{{done}} of {{total}} reads done",
+    "currentBook": "{{title}} — your book, {{done}} of {{total}} reads done",
+    "doneBook": "{{title}} — done",
+    "lockedBook": "{{title}} — locked, finish your current book first",
+    "startCheck": "Start your Level Check",
+    "checkLocked": "Level Check — finish your books first"
+  }
+}

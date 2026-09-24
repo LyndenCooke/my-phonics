@@ -1,0 +1,213 @@
+{
+  "welcome": {
+    "badge": "Ücretsiz · kart gerekmez · 3–10 dakika",
+    "title": "Çocuğunuzun okuma seviyesini bulun",
+    "subtitle": "Birlikte oturun, birkaç sese dokunun; tam doğru kitapları biz bulalım — tahmin yok.",
+    "howItWorks": "Nasıl çalışır",
+    "steps": {
+      "questionsLabel": "Birkaç kısa soru",
+      "questionsDesc": "Bize çocuğunuzdan bahsedin",
+      "checkLabel": "Hızlı kontrol",
+      "checkDesc": "Çocuğunuzun okuyabildiği kelimeleri işaretleyin",
+      "soundLabel": "Ses testi",
+      "soundDesc": "Seviyesindeki her sesi test ederiz",
+      "resultsLabel": "Sonuçlar",
+      "resultsDesc": "Hangi sesleri bildiğini ve hangilerini öğrenmesi gerektiğini görün"
+    },
+    "chooseTest": "Bir test seçin",
+    "chooseTestHint": "Çocuğunuzla birlikte oturun — seçtiğiniz teste göre 3 ile 10 dakika.",
+    "quickTitle": "Hızlı Kontrol · 3 dk",
+    "quickDesc": "Çocuğunuzun seviyesini hızla bulan uyarlanabilir ses testi.",
+    "fullTitle": "Tam Test · ~10 dk",
+    "fullDesc": "Her seviyede sesleri, gerçek kelimeleri, uzaylı kelimeleri (uydurma kelimeler) ve Tricky Words'ü (zor kelimeler) test eder.",
+    "privacy": "Yanıtlarınız gizlidir. <link>Gizlilik politikamıza</link> göz atın.",
+    "whatYouGet": "Sonunda elde edecekleriniz",
+    "get": {
+      "level": "Çocuğunuzun 8 seviyeli yolculuktaki okuma seviyesi",
+      "map": "Neleri bildiğini ses ses gösteren bir harita",
+      "book": "O seviyeye uygun bir ücretsiz kitap",
+      "plan": "Basit bir \"sonraki adımlar\" planı"
+    }
+  },
+  "onboarding": {
+    "dob": {
+      "title": "Çocuğunuz ne zaman doğdu?",
+      "hint": "Bu, Birleşik Krallık yaş beklentileriyle karşılaştırma yapmamıza yardımcı olur.",
+      "month": "Ay",
+      "year": "Yıl",
+      "age": "Yaş: {{age}}"
+    },
+    "school": {
+      "title": "Ne tür bir okul?",
+      "hint": "Bu, önerilerimizi size göre uyarlamamıza yardımcı olur.",
+      "options": {
+        "public": "Devlet okulu",
+        "private": "Özel okul",
+        "international": "Uluslararası okul",
+        "religious": "Dini okul",
+        "homeschool": "Evde eğitim",
+        "notYet": "Henüz okula gitmiyor"
+      }
+    },
+    "needs": {
+      "title": "Özel öğrenme ihtiyacı var mı?",
+      "hint": "Böylece çocuğunuzun yolculuğunu destekleyebiliriz.",
+      "options": {
+        "none": "Yok",
+        "dyslexia": "Disleksi",
+        "speech": "Konuşma ve dil",
+        "eal": "Ek dil olarak İngilizce",
+        "adhd": "DEHB / odaklanma",
+        "other": "Diğer"
+      }
+    },
+    "language": {
+      "title": "Evde hangi dil konuşuluyor?",
+      "hint": "Çocuğunuzun okuma ortamını anlamamıza yardımcı olur.",
+      "options": {
+        "englishOnly": "Yalnızca İngilizce",
+        "englishPlus": "İngilizce + başka bir dil",
+        "mostlyOther": "Çoğunlukla başka bir dil"
+      }
+    },
+    "reading": {
+      "title": "Ne sıklıkla birlikte okuyorsunuz?",
+      "hint": "Yargı yok — sadece kişiselleştirmemize yardımcı olur.",
+      "options": {
+        "daily": "Her gün okuyor",
+        "fewTimes": "Haftada birkaç kez",
+        "occasionally": "Ara sıra",
+        "starting": "Yeni başlıyor"
+      }
+    }
+  },
+  "screening": {
+    "title": "Hızlı Kontrol",
+    "body1": "Çocuğunuz bu kelimelerden hangilerini sesli okuyabiliyor?",
+    "body2": "Her kelimeyi duymak için hoparlöre dokunun, sonra bildiklerini işaretleyin.",
+    "skip": "Atla — Seviye 1 ile başla"
+  },
+  "test": {
+    "level": "Seviye {{level}}",
+    "stages": {
+      "sounds": "Sesler",
+      "aliens": "Uzaylı Kelimeler",
+      "wordCheck": "Kelime Kontrolü",
+      "bonus": "Bonus Tur"
+    },
+    "instructions": {
+      "sound_recognition": "Çocuğunuza her sesi gösterin. Sorun: \"Bu hangi sesi çıkarıyor?\"",
+      "word_reading": "Çocuğunuzdan her gerçek kelimeyi sesli okumasını isteyin.",
+      "alien_words": "Çocuğunuza bunların uydurma kelimeler olduğunu söyleyin. Her birini seslendirerek okumasını isteyin."
+    },
+    "progress": "{{current}} / {{total}}",
+    "bonus": "bonus",
+    "madeUp": "(uydurma kelime)",
+    "didTheyGetIt": "Doğru bildi mi?",
+    "notYet": "Henüz değil",
+    "correct": "Doğru",
+    "wrongInARow": "Art arda {{n}} yanlış — 1 yanlış daha olursa ilerlenecek"
+  },
+  "levelPassed": {
+    "title": "Seviye {{level}} Geçildi!",
+    "continue": "Sonraki: Seviye {{level}}"
+  },
+  "results": {
+    "title": "Değerlendirme Tamamlandı",
+    "subtitle": "İşte çocuğunuzun fonik profili.",
+    "itemsTested": "{{n}} öğe test edildi",
+    "recommended": "Önerilen başlangıç seviyesi",
+    "level": "Seviye {{level}}",
+    "ageRange": "Yaş {{range}}",
+    "ageComparison": "Birleşik Krallık Yaş Karşılaştırması — {{age}} yaş ({{yearGroup}})",
+    "yearGroups": {
+      "receptionAutumn": "Anasınıfı (Sonbahar)",
+      "receptionSpringSummer": "Anasınıfı (İlkbahar/Yaz)",
+      "year1Autumn": "1. Sınıf (Sonbahar)",
+      "year1SpringSummer": "1. Sınıf (İlkbahar/Yaz)",
+      "year2": "2. Sınıf",
+      "year3": "3. Sınıf"
+    },
+    "expectedLevel": "Beklenen seviye",
+    "yourChild": "Çocuğunuz",
+    "status": {
+      "above": "Beklentilerin üzerinde",
+      "at": "Beklenen seviyede",
+      "below": "Beklentilerin altında"
+    },
+    "belowNote": "İngiltere'de bu yaştaki çocuklar genellikle {{expected}} düzeyinde çalışır. MyPhonicsBooks ile hedefli alıştırmalar bu açığı kapatmaya yardımcı olabilir.",
+    "aboveNote": "Çocuğunuz Birleşik Krallık yaş beklentilerinin önünde. Harika çalışmaya devam edin!",
+    "claimBook": "Ücretsiz Kitabımı Al",
+    "soundMap": "Ses Haritası",
+    "levelResults": "Seviye Sonuçları ({{n}})",
+    "passed": "GEÇTİ",
+    "notYet": "HENÜZ DEĞİL",
+    "categories": {
+      "sound_recognition": "Sesler",
+      "word_reading": "Gerçek Kelimeler",
+      "tricky_words": "Tricky Words (zor kelimeler)"
+    },
+    "notTested": "Test edilmedi",
+    "toPractise": "Alıştırma yapılacak tüm öğeler ({{n}})",
+    "personalised": "Size özel",
+    "deeperTitle": "Daha ayrıntılı bir analiz mi istiyorsunuz?",
+    "deeperBody": "Bu hızlı test çocuğunuzun seviyesini bulur. Tüm seslerde, kelimelerde ve Tricky Words'te her eksiği bulmak için ayrıntılı tam testi yapın.",
+    "saveTitle": "Sonuçlarınızı kaydedin ve ücretsiz bir kitap kazanın",
+    "saveBody": "E-postanızı girin; size ücretsiz bir Seviye {{level}} kitabının kilidini açalım ve bir giriş bağlantısı gönderelim.",
+    "childNamePlaceholder": "Çocuğun adı (isteğe bağlı)",
+    "emailPlaceholder": "E-posta adresiniz",
+    "saving": "Kaydediliyor...",
+    "unlock": "Ücretsiz Kitabımın Kilidini Aç",
+    "bookFallback": "Seviye {{level}} Kitabı",
+    "checkEmail": "Giriş bağlantınız için {{email}} adresindeki e-postalarınızı kontrol edin",
+    "browseLibrary": "Kütüphaneye Göz At",
+    "retake": "Tekrar Yap",
+    "browseLevel": "Seviye {{level}} Kitaplarına Göz At"
+  },
+  "errors": {
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi girin",
+    "signupFailed": "Kayıt başarısız oldu",
+    "generic": "Bir şeyler ters gitti"
+  },
+  "tips": {
+    "startTitle": "Günde sadece {{minutes}} dakikayla başlayın",
+    "startBody": "{{age}} yaşında, günde yalnızca {{minutes}} dakikalık okuma alıştırması bile büyük fark yaratır. Her gün aynı saatte birlikte okumayı deneyin — yatmadan önce ya da okul sonrası iyi gider. Süreden çok düzenlilik önemlidir.",
+    "dailyTitle": "Her gün okumaya çalışın — hedefiniz {{minutes}} dakika olsun",
+    "dailyBody": "Zaten düzenli okuyorsunuz, bu harika. Bunu günlük bir alışkanlığa dönüştürmek — sadece {{minutes}} dakika bile olsa — çocuğunuzun ilerlemesini belirgin şekilde hızlandırır. Az ama sık, işin sırrı budur.",
+    "brilliantTitle": "Harika gidiyorsunuz",
+    "brilliantBody": "{{age}} yaşında her gün okumak yapabileceğiniz en iyi şeylerden biridir. Böyle devam edin — günde {{minutes}} dakika mükemmel. Çocuğunuz sağlam okuma temelleri atıyor.",
+    "bilingualTitle": "İki dillilik bir süper güçtür",
+    "bilingualBody": "Evde iki dil konuşmak çocuğunuzun beyin gelişimi için büyük bir avantajdır. İki dili de konuşmaya devam edin — bu İngilizce okumayı yavaşlatmaz. Fonik kitapları İngilizce okuyun, hikâye kitaplarını ise iki dilden birinde.",
+    "moreEnglishTitle": "Ek İngilizce okuma zamanı yardımcı olur",
+    "moreEnglishBody": "Evde ana dil İngilizce olmadığından, çocuğunuzun akıcılık kazanması için biraz daha fazla günlük fonik alıştırmasına ihtiyacı olabilir. Ev dilinizin yanında 10–15 dakika İngilizce okumaya yer açmaya çalışın — ikisi de değerlidir.",
+    "dyslexiaTitle": "Çok duyulu okuma en iyi sonucu verir",
+    "dyslexiaBody": "Disleksili çocuklar için fonik özellikle önemlidir — sabır da öyle. Ses düğmelerini kullanın, harfleri parmakla takip edin ve oturumları kısa tutun (5–10 dakika). Her küçük başarıyı kutlayın. İlerleme daha yavaş olabilir ama çok gerçektir.",
+    "speechTitle": "Önce sesler, sonra birleştirme",
+    "speechBody": "Konuşma ve dil ihtiyacı olan çocuklar sesleri net duymaktan çok fayda görür. Ses düğmelerini sık kullanın ve çocuğunuza yanıt vermesi için ek süre tanıyın. Sesi duyabiliyorsa, onu okumayı da öğrenebilir — söylemesi daha zor olsa bile.",
+    "ealTitle": "Fonik, İngilizceyi ek dil olarak öğrenenler için harika çalışır",
+    "ealBody": "Sistematik fonik, İngilizceyi ek dil olarak öğrenen çocuklar için en etkili yaklaşımlardan biridir. Sesler tutarlı ve öngörülebilirdir. Kelime çözmenin yanında kelime dağarcığı geliştirmek için fonik alıştırmalarını resimli kitaplarla birleştirin.",
+    "adhdTitle": "Kısa oturumlar, büyük ödüller",
+    "adhdBody": "Okuma oturumlarını 5–8 dakikada tutun — tam dikkatle yapılan kısa oturumlar, dağınık uzun oturumlardan iyidir. Hareket eklemeyi deneyin: sayfalar arasında ayağa kalkın, kelimeleri takip etmek için bir işaretçi kullanın ya da her sayfadan sonra bir yıldız zıplaması yapın. Hareketli hâle getirin!",
+    "gapTitle": "Aradaki farkı kapatmak çok mümkün",
+    "gapBody": "Çocuğunuz yaşına göre Birleşik Krallık beklentilerinin biraz gerisinde — ama bu tamamen normal ve kolayca düzeltilebilir. Seviye {{level}} düzeyinde günde {{minutes}} dakika fonik alıştırmasıyla çoğu çocuk bir dönem içinde yetişir. Anahtar, yığılma değil düzenli alıştırmadır.",
+    "homeschoolTitle": "Fonik oturumlarınızı planlayın",
+    "homeschoolBody": "Evde eğitim veren bir aile olarak birebir ilgi avantajına sahipsiniz. Seviyeleri sırayla izleyin — her kitap bir öncekinin üzerine kurulur. Kısa bir günlük fonik oturumu (10–15 dakika) ve ardından serbest okuma iyi sonuç verir.",
+    "schoolSupportTitle": "Evde fonik, okuldaki öğrenmeyi destekler",
+    "schoolSupportBody": "Çocuğunuzun okulu farklı bir okuma yaklaşımı kullanıyor olabilir. MyPhonicsBooks, sistematik ve kanıta dayalı olan Birleşik Krallık fonik müfredatını izler. Evde yalnızca 10 dakika bile okulda öğrendiklerini tamamlar.",
+    "headStartTitle": "Ona önde bir başlangıç sağlıyorsunuz",
+    "headStartBody": "Okuldan önce fonik öğrenmeye başlamak harika bir armağandır. Oyun gibi tutun — baskı yok, sadece seslerle eğlence. Çocuğunuz okula harfler ve sesler konusunda kendinden emin başlayacak ve bu gerçek bir fark yaratır."
+  },
+  "reveal": {
+    "badge": "Kitabın Kilidi Açıldı!",
+    "title": "Ücretsiz kitabınız hazır",
+    "levelName": "Seviye {{level}} — {{name}}",
+    "body": "Sonuçlarınıza göre bu ücretsiz kitabın kilidini açtınız.",
+    "continue": "Sonuçlarıma devam et"
+  },
+  "nav": {
+    "level": "Seviye",
+    "map": "Harita",
+    "levels": "Seviyeler",
+    "continue": "Devam"
+  }
+}

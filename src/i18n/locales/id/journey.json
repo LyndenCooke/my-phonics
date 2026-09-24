@@ -1,0 +1,47 @@
+{
+  "youAreHere": "Kamu di sini",
+  "dayOf": "Hari {{day}} dari {{total}}",
+  "kicker": "Perjalanan membaca",
+  "headline": "Jalan menuju bisa membaca",
+  "lessonOf": "Pelajaran {{n}} dari {{total}}",
+  "levelDash": "Level {{n}} — {{name}}",
+  "progressAria": "Pelajaran {{n}} dari {{total}}, {{pct}} persen dari perjalanan",
+  "levelState": {
+    "complete": "selesai",
+    "current": "level saat ini, {{done}} dari {{total}} pelajaran",
+    "future": "belum dimulai"
+  },
+  "levelAria": "Level {{n}}, {{name}}, {{state}}. Buka peta level.",
+  "lessonsDone": "{{done}} dari {{total}} pelajaran",
+  "complete": "Selesai",
+  "lessons_other": "{{count}} pelajaran",
+  "panel": {
+    "aria": "Garis besar pelajaran: {{title}}",
+    "close": "Tutup garis besar pelajaran",
+    "meta": "Pelajaran {{n}} · Level {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "Hari-hari minggu ini",
+    "dayTabAria": "Hari {{day}}: {{title}}",
+    "dayTab": "Hari {{day}}",
+    "minutes": "Sekitar {{minutes}} menit pengajaran",
+    "minutesWorksheet": "Sekitar {{minutes}} menit pengajaran, lalu lembar kerja"
+  },
+  "blockState": {
+    "complete": "selesai",
+    "current": "kamu di sini",
+    "future": "akan datang"
+  },
+  "kind": {
+    "assessment": "Penilaian",
+    "keepup": "Waktu mengejar",
+    "lesson": "Pelajaran",
+    "soundWeek": "Minggu bunyi",
+    "skillsWeek": "Minggu keterampilan"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "Kembali ke seluruh perjalanan",
+  "back": "Seluruh perjalanan",
+  "levelTitle": "Level {{n}}: {{name}}",
+  "error": "Peta perjalanan tidak dapat dimuat saat ini. Silakan coba lagi sebentar lagi.",
+  "loading": "Memuat peta perjalanan",
+  "sectionAria": "Peta perjalanan kurikulum"
+}

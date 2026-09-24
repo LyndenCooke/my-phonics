@@ -1,0 +1,156 @@
+{
+  "page": {
+    "title": "Maktaba",
+    "subtitleBooks": "Vitabu vidogo {{count}}, ngazi nane — gusa kimoja kuanza kusoma",
+    "subtitleBooksNoCount": "Vitabu vidogo, ngazi nane — gusa kimoja kuanza kusoma",
+    "subtitleWorksheets": "Mikeka ya sauti na karatasi za mazoezi za bure unazoweza kuchapisha"
+  },
+  "tabs": {
+    "books": "Vitabu",
+    "worksheets": "Karatasi za mazoezi"
+  },
+  "guest": {
+    "title": "Kila kitabu ni bure kusoma",
+    "body": "Gusa kitabu chochote kuanza. Unataka PDF ya kuchapisha? Fungua akaunti ya bure ili kupakua.",
+    "signUp": "Jisajili bure →",
+    "findLevel": "Tambua ngazi ya mtoto wako →"
+  },
+  "newUser": {
+    "title": "Huna uhakika uanzie wapi?",
+    "body": "Fanya jaribio letu la dakika 3 kupata ngazi sahihi — kisha soma au pakua kitabu chochote.",
+    "cta": "Anza Tathmini →"
+  },
+  "shelf": {
+    "ariaLabel": "Ngazi {{level}} — {{name}}",
+    "level": "Ngazi {{level}}",
+    "readProgress": "Vimesomwa {{read}} kati ya {{total}}"
+  },
+  "empty": {
+    "title": "Bado hakuna vitabu vya ngazi hii",
+    "body": "Rudi hivi karibuni kuona vitabu vipya"
+  },
+  "unlockedModal": {
+    "cta": "Anza Kusoma"
+  },
+  "quiz": {
+    "perfect": "Alama kamili! {{score}}/{{total}} - Wewe ni nyota wa kusoma!",
+    "complete": "Jaribio limekamilika! Umepata {{score}}/{{total}}"
+  },
+  "cooldown": {
+    "soon": "hivi karibuni",
+    "days_one": "siku {{count}}",
+    "days_other": "siku {{count}}",
+    "hours_one": "saa {{count}}",
+    "hours_other": "saa {{count}}"
+  },
+  "downloadErrors": {
+    "signIn": "Tafadhali ingia ili kupakua.",
+    "unavailable": "Faili ya PDF haipatikani",
+    "failed": "Upakuaji umeshindikana"
+  },
+  "notification": {
+    "title": "{{title}} kimepakuliwa",
+    "body": "{{format}} imehifadhiwa — gusa kupakua tena",
+    "cta": "Tazama"
+  },
+  "levelFilter": {
+    "all": "Vitabu vyote"
+  },
+  "levels": {
+    "1": {
+      "focus": "Sauti za kwanza na maneno rahisi ya herufi 3"
+    },
+    "2": {
+      "focus": "Herufi zilizobaki za alfabeti, pamoja na ck, ff, ll, ss"
+    },
+    "3": {
+      "focus": "Herufi mbili, sauti moja — sh, ch, th, ng…"
+    },
+    "4": {
+      "focus": "Makundi ya irabu kama ay, ee, igh, oo na ar"
+    },
+    "5": {
+      "focus": "Digrafu zilizotenganishwa (a-e, i-e) na tahajia mpya"
+    },
+    "6": {
+      "focus": "Tahajia mbadala — wr, kn, ph, dge…"
+    },
+    "7": {
+      "focus": "Trigrafu (ire, ore, ear) na miishilizo ya -tion"
+    },
+    "8": {
+      "focus": "Viambishi tamati na uundaji wa maneno — -ous, -able, -ible"
+    }
+  },
+  "agesRange": "Umri miaka {{range}}",
+  "card": {
+    "doneAria": "{{title}} — kimesomwa",
+    "lockedAria": "{{title}} — kimefungwa",
+    "download": "Pakua PDF",
+    "downloadAria": "Pakua PDF ya {{title}}"
+  },
+  "download": {
+    "title": "Pakua <book>{{title}}</book>",
+    "description": "Chagua muundo unaofaa jinsi utakavyoutumia.",
+    "formats": {
+      "a4": {
+        "label": "Kijitabu cha A5",
+        "description": "Chapisha kwenye A4 pande zote mbili, kunja na ubane kwa stapla upate kijitabu halisi cha A5. Ukurasa wa mwisho na wa kwanza huwa kwenye karatasi moja."
+      },
+      "a5": {
+        "label": "Karatasi za A4",
+        "description": "Kila ukurasa kwenye karatasi yake. Nzuri kwa kusoma kwa ukubwa mkubwa au darasani."
+      }
+    },
+    "preparing": "Inaandaa {{format}}…",
+    "preparingPdf": "Inaandaa PDF…",
+    "successTitle": "Imehifadhiwa kwenye vipakuliwa vyako",
+    "successBody": "<book>{{title}}</book> ({{format}}) kiko kwenye Historia ya Vipakuliwa — kifungue kutoka hapo wakati wowote.",
+    "goToHistory": "Nenda kwenye Historia ya Vipakuliwa",
+    "errorTitle": "Upakuaji haukufaulu",
+    "failed": "Upakuaji umeshindikana"
+  },
+  "worksheets": {
+    "intro": "Nyenzo za bure za fonetiki za kuchapisha kwa wazazi na walimu. Mikeka ya sauti, mabango na karatasi za mazoezi — zote zinaendana na mtaala wa Uingereza wa Letters and Sounds.",
+    "categoriesAria": "Aina za nyenzo",
+    "categorySoundMats": "Mikeka ya sauti",
+    "categoryLevel": "Karatasi za N{{level}}",
+    "levelHeading": "Karatasi za mazoezi za Ngazi {{level}}",
+    "levelSub": "{{name}} — {{ages}} · bofya kitabu kuona kifurushi chake cha karatasi za mazoezi",
+    "comingSoon": "Inakuja hivi karibuni",
+    "levelComingSoon": "Karatasi za kuchapisha za mwandiko, kusimbua maneno na Tricky Words kwa Ngazi {{level}}. Weka alamisho kwenye ukurasa huu — karatasi mpya huongezwa hapa mara kwa mara.",
+    "focusSounds": "Sauti lengwa:",
+    "sheetCount_one": "karatasi {{count}}",
+    "sheetCount_other": "karatasi {{count}}",
+    "bookComingSoon": "Karatasi za mazoezi za kitabu hiki zinakuja hivi karibuni — mazoezi ya mwandiko, kusoma alien words, Tricky Words na karatasi za sauti moja kwa {{sounds}}.",
+    "downloadAllCount_one": "Pakua karatasi {{count}}",
+    "downloadAllCount_other": "Pakua karatasi zote {{count}}",
+    "packHint": "Pakua kifurushi kizima kama PDF moja, au chukua karatasi moja moja uchapishe unapohitaji.",
+    "downloadError": "Karatasi hiyo haikuweza kupakuliwa. Tafadhali jaribu tena.",
+    "preview": "Onyesho la {{title}}",
+    "levelPackTitle": "Karatasi za sauti moja za Ngazi {{level}}",
+    "groups": {
+      "book": "Karatasi za mazoezi za kitabu",
+      "singleSound": "Karatasi za sauti moja — {{sounds}}",
+      "singleSoundRest": "Karatasi za sauti moja — herufi zilizobaki za alfabeti",
+      "singleSoundSpecial": "Karatasi za sauti moja — Special Friends (herufi mbili, sauti moja)"
+    },
+    "soundSheet": "Sauti {{sound}}"
+  },
+  "soundMats": {
+    "title": "Mikeka ya sauti",
+    "subtitle": "Mikeka ya sauti ya kuchapisha kwa nyumbani na darasani — PNG za A3 za mlalo",
+    "level": "Ngazi {{level}}",
+    "levels23": "Ngazi 2 na 3",
+    "levels46": "Ngazi 4–6",
+    "sounds_one": "sauti {{count}}",
+    "sounds_other": "sauti {{count}}",
+    "combinedChart_one": "sauti {{count}} — chati ya pamoja ya mwalimu",
+    "combinedChart_other": "sauti {{count}} — chati ya pamoja ya mwalimu",
+    "combined": "Ya pamoja",
+    "alt": "Mkeka wa sauti wa {{title}}"
+  },
+  "resources": {
+    "title": "Nyenzo"
+  }
+}

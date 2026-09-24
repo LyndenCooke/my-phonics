@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "返回首页",
+    "title": "教师通道",
+    "intro": "输入您在 TPT 下载的 MyPhonicsBooks 资源中附带的代码，即可解锁整个图书馆 — 每本书、每张练习纸，全部免费。",
+    "noSignup": "无需注册，无需邮箱",
+    "codeLabel": "兑换码",
+    "codePlaceholder": "输入您的代码",
+    "unlocking": "正在解锁…",
+    "unlock": "解锁图书馆",
+    "footer": "Teachers Pay Teachers 上的每份 MyPhonicsBooks 资源都附带代码。不是老师？<link>浏览家长图书馆</link>。",
+    "errors": {
+      "empty": "请输入代码。",
+      "invalid": "该代码无效或已过期。",
+      "generic": "出了点问题，请重试。"
+    }
+  },
+  "library": {
+    "welcome": "欢迎您，老师。",
+    "intro": "所有 MyPhonicsBooks 图书都在这里，课堂免费使用。您可以下载可打印的 PDF，与全班一起在线阅读，或领取配套练习纸。",
+    "shareCode": "把代码分享给同事 — 无需额外注册",
+    "levelHeading": "第 {{level}} 级 · {{name}}",
+    "agesRange": "{{range}} 岁",
+    "focus": "重点：",
+    "readOnline": "在线阅读",
+    "worksheetPack": "练习包",
+    "pdfNotFound": "未找到 PDF（{{status}}）",
+    "downloadFailed": "下载失败"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "shared": {
+    "childNamePlaceholder": "孩子的名字",
+    "childNameOptional": "孩子的名字（选填）",
+    "emailPlaceholder": "你的邮箱地址",
+    "consent": "我同意通过邮件接收免费的自然拼读学习资源，可随时退订。",
+    "sendFreeBook": "把免费绘本发给我",
+    "loginLinkKeep": "我们会把登录链接发到你的邮箱，这本书将永久归你所有。",
+    "signupFailed": "注册失败",
+    "checkEmail": "请查看 {{email}} 中的登录链接",
+    "levelBookFallback": "第 {{level}} 级绘本",
+    "browseLibrary": "浏览书库"
+  },
+  "emailCapture": {
+    "defaultButton": "马上开始",
+    "footer": "完全免费，无需绑卡。基于英国 Letters and Sounds 课程。"
+  },
+  "quickScreening": {
+    "title": "快速测评",
+    "instructionsNamed": "请 {{name}} 逐个读出每个单词。读对了就点一下对勾。",
+    "instructionsAnon": "请孩子逐个读出每个单词。读对了就点一下对勾。",
+    "levelWord": "第 {{level}} 级单词",
+    "hearWord": "听发音",
+    "progress": "第 {{current}} 个，共 {{total}} 个",
+    "notQuite": "还不太对",
+    "gotIt": "读对了！"
+  },
+  "assessmentFunnel": {
+    "title": "测出孩子的<hl>阅读水平</hl>",
+    "subtitle": "选择你想要的测评深度。",
+    "rapidTitle": "3 分钟快速测评",
+    "rapidDesc": "自适应的快速发音测试。只想找个起点的话，选它就够了。",
+    "fullTitle": "10 分钟深度测评",
+    "fullDesc": "覆盖每个级别的字母发音、真实单词、“外星词”和 Tricky Words。",
+    "footer": "测完即送一本适合孩子水平的免费绘本，无需绑卡。",
+    "freeBookTitle": "免费绘本要发到哪里？",
+    "paidTitle": "付款前只差一步",
+    "paidSubtitle": "付款完成后，我们会立即把登录链接发到你的邮箱，全部 32 本书都归你所有。",
+    "continueToCheckout": "继续付款",
+    "checkoutFailed": "无法发起付款",
+    "missingBundle": "未找到全套绘本商品，请联系客服。",
+    "missingMonthly": "未找到月度订阅方案，请联系客服。"
+  },
+  "assessmentResult": {
+    "wellDone": "太棒了！",
+    "wellDoneNamed": "{{name}}，太棒了！",
+    "isAtNamed": "{{name}} 目前处于<b>第 {{level}} 级：{{levelName}}</b>",
+    "isAtAnon": "你的孩子目前处于<b>第 {{level}} 级：{{levelName}}</b>",
+    "unlocked": "你已解锁 1 本免费互动绘本！",
+    "matchedNamed": "一本第 {{level}} 级绘本，完全匹配 {{name}} 现在能读懂的内容。",
+    "matchedAnon": "一本第 {{level}} 级绘本，完全匹配孩子现在能读懂的内容。"
+  },
+  "bundleUpsell": {
+    "coverAlt": "第 {{level}} 级 — {{title}}",
+    "title": "想解锁全部绘本吗？",
+    "subtitleNamed": "{{count}} 本书，覆盖所有级别，陪 {{name}} 一路成长。",
+    "subtitleAnon": "{{count}} 本书，覆盖所有级别，陪孩子一路成长。",
+    "oneTime": "一次性付费",
+    "benefitAllBooks": "全部 6 个级别共 {{count}} 本互动绘本",
+    "benefitQuizzes": "每个故事后都有阅读理解小测验",
+    "benefitProgress": "整个书库的学习进度一目了然",
+    "benefitForever": "永久拥有，无需订阅",
+    "benefitWorld": "来自世界各地的故事",
+    "accept": "好的，£{{price}} 解锁全部绘本",
+    "decline": "不用了，只要我的免费绘本"
+  },
+  "monthlyDownsell": {
+    "title": "等一下，试试这个怎么样？",
+    "body": "每月只需 £4.99，即可解锁<b>全部 6 个级别的所有绘本</b>。随时可以取消。",
+    "monthlyAccess": "按月畅读",
+    "perMonth": "/月",
+    "allLevels": "所有级别，所有绘本，随时取消。",
+    "benefitEveryBook": "全部 6 个级别的所有互动绘本",
+    "benefitNewBooks": "新书上线即可阅读",
+    "benefitMoveUpNamed": "{{name}} 进步了就能升到更高级别",
+    "benefitMoveUpAnon": "孩子进步了就能升到更高级别",
+    "accept": "£4.99/月，立即开始",
+    "decline": "不用了，只要我的免费绘本"
+  },
+  "freeAssessment": {
+    "resultLabel": "孩子的阅读水平",
+    "level": "第 {{level}} 级",
+    "freeUnlocked": "已解锁免费绘本",
+    "saveTitle": "保存测评结果，领取你的绘本"
+  },
+  "freeBook": {
+    "pickTitle": "<hl>为孩子</hl>挑一本免费绘本",
+    "pickSubtitle": "点选孩子的级别，我们会为你解锁一本匹配的绘本 — 免费，无需绑卡。",
+    "coverAlt": "第 {{level}} 级示例封面",
+    "notSure": "不确定？做个 3 分钟测评吧",
+    "emailTitle": "一本免费的第 {{level}} 级绘本<hl>马上送到</hl>",
+    "emailSubtitle": "留下邮箱，我们立即为你解锁。",
+    "unlockButton": "解锁我的免费绘本",
+    "pickDifferent": "换一个级别"
+  },
+  "linkTree": {
+    "tagline": "精准匹配孩子水平的可解码绘本",
+    "wrongBooks": "选错书，正在打击孩子的自信吗？",
+    "freeAssessment": "免费自然拼读测评 — 找到孩子的级别",
+    "threeMinute": "3 分钟级别测评 + 免费资源",
+    "theGap": "孩子喜欢、而且真的读得懂的书",
+    "footer": "基于 Letters and Sounds（英国自然拼读课程）"
+  },
+  "theGap": {
+    "boring": "无聊",
+    "tooHard": "太难",
+    "vs": "还是",
+    "title": "读得懂的书<em>太无聊</em>，<br/>好看的书又<hl>读不懂</hl>。",
+    "whyBoth": "为什么不能两全其美？",
+    "body": "孩子会爱上的故事，又精准匹配他们能解码的内容。拼读严谨，视野国际。",
+    "diffTitle": "这些绘本的不同之处：",
+    "diffDecodable": "每个单词都在孩子当前级别内可解码",
+    "diffStories": "有情感起伏的真实故事，而不是干巴巴的课文",
+    "diffCultures": "故事发生在世界各地 — 日本、肯尼亚、摩洛哥……",
+    "diffCurriculum": "基于英国自然拼读课程",
+    "button": "领取免费绘本"
+  },
+  "threeMinute": {
+    "title": "<hl>3 分钟</hl>测出孩子的准确阅读水平",
+    "subtitle": "别再靠猜了。得到明确答案，外加匹配孩子的免费资源。",
+    "step1": "快速测评，看看孩子掌握了哪些发音",
+    "step2": "立即得到孩子的准确级别（1-6）",
+    "step3": "领取匹配孩子级别的免费绘本",
+    "button": "测测孩子的级别"
+  },
+  "wrongBooks": {
+    "title": "选错书，<hl>毁掉自信</hl>",
+    "tooHard": "太难 = 受挫。太简单 = 无聊。",
+    "body": "3 分钟测出孩子的准确级别，再解锁一本他们真正读得懂的免费绘本。",
+    "getTitle": "你将获得：",
+    "itemScreening": "快速自然拼读测评（6 个单词）",
+    "itemFreeBook": "1 本匹配孩子级别的免费互动绘本",
+    "itemCurriculum": "基于英国自然拼读课程",
+    "button": "测测孩子的级别"
+  }
+}

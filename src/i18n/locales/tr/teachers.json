@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "Ana sayfaya dön",
+    "title": "Öğretmen Girişi",
+    "intro": "Tüm kütüphanenin kilidini açmak için MyPhonicsBooks TPT indirmenizdeki kodu girin — her kitap, her çalışma sayfası, ücretsiz.",
+    "noSignup": "Kayıt yok, e-posta gerekmez",
+    "codeLabel": "Kupon kodu",
+    "codePlaceholder": "Kodunuzu girin",
+    "unlocking": "Kilit açılıyor…",
+    "unlock": "Kütüphanenin kilidini aç",
+    "footer": "Kodlar, Teachers Pay Teachers üzerindeki her MyPhonicsBooks kaynağıyla birlikte gelir. Öğretmen değil misiniz? <link>Veli kütüphanesine göz atın</link>.",
+    "errors": {
+      "empty": "Lütfen bir kod girin.",
+      "invalid": "Bu kod geçerli değil ya da süresi dolmuş.",
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+    }
+  },
+  "library": {
+    "welcome": "Hoş geldiniz, öğretmenim.",
+    "intro": "Tüm MyPhonicsBooks kitapları burada, sınıfınız için ücretsiz. Yazdırılabilir PDF’yi indirin, sınıfınızla çevrim içi okuyun ya da eşleşen çalışma sayfasını alın.",
+    "shareCode": "Kodu meslektaşlarınızla paylaşın — ayrıca kayıt gerekmez",
+    "levelHeading": "Seviye {{level}} · {{name}}",
+    "agesRange": "{{range}} yaş",
+    "focus": "Odak:",
+    "readOnline": "Çevrim içi oku",
+    "worksheetPack": "Çalışma paketi",
+    "pdfNotFound": "PDF bulunamadı ({{status}})",
+    "downloadFailed": "İndirme başarısız oldu"
+  }
+}

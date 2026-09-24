@@ -15,6 +15,9 @@ import { customBookAsBook } from "@/lib/customBookAsBook";
 const InteractiveBookReader = lazy(() => import("@/components/InteractiveBookReader"));
 import FlipBook from "@/components/FlipBook";
 import { useAuth } from "@/contexts/AuthContext";
+import i18n from "@/i18n";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation, Trans } from "react-i18next";
 
 /**
  * Create-A-Book — the custom phonics book wizard.
@@ -23,24 +26,25 @@ import { useAuth } from "@/contexts/AuthContext";
  * World of Books upsell. Localhost workflow preview; API at /api/forge.
  */
 
-const COUNTRIES: Array<[string, string]> = [
-  ["United Kingdom", "🇬🇧"], ["United States", "🇺🇸"], ["Saudi Arabia", "🇸🇦"],
-  ["United Arab Emirates", "🇦🇪"], ["Egypt", "🇪🇬"], ["Pakistan", "🇵🇰"], ["India", "🇮🇳"],
-  ["Nigeria", "🇳🇬"], ["Ghana", "🇬🇭"], ["Kenya", "🇰🇪"], ["South Africa", "🇿🇦"],
-  ["Jamaica", "🇯🇲"], ["Poland", "🇵🇱"], ["Romania", "🇷🇴"], ["Turkey", "🇹🇷"],
-  ["Bangladesh", "🇧🇩"], ["China", "🇨🇳"], ["Japan", "🇯🇵"], ["Philippines", "🇵🇭"],
-  ["Brazil", "🇧🇷"], ["Mexico", "🇲🇽"], ["France", "🇫🇷"], ["Spain", "🇪🇸"],
-  ["Italy", "🇮🇹"], ["Germany", "🇩🇪"], ["Ireland", "🇮🇪"], ["Australia", "🇦🇺"],
-  ["Somalia", "🇸🇴"], ["Morocco", "🇲🇦"], ["Malaysia", "🇲🇾"], ["Indonesia", "🇮🇩"],
+const COUNTRIES: Array<[string, string, string]> = [
+  ["United Kingdom", "🇬🇧", "GB"], ["United States", "🇺🇸", "US"], ["Saudi Arabia", "🇸🇦", "SA"],
+  ["United Arab Emirates", "🇦🇪", "AE"], ["Egypt", "🇪🇬", "EG"], ["Pakistan", "🇵🇰", "PK"], ["India", "🇮🇳", "IN"],
+  ["Nigeria", "🇳🇬", "NG"], ["Ghana", "🇬🇭", "GH"], ["Kenya", "🇰🇪", "KE"], ["South Africa", "🇿🇦", "ZA"],
+  ["Jamaica", "🇯🇲", "JM"], ["Poland", "🇵🇱", "PL"], ["Romania", "🇷🇴", "RO"], ["Turkey", "🇹🇷", "TR"],
+  ["Bangladesh", "🇧🇩", "BD"], ["China", "🇨🇳", "CN"], ["Japan", "🇯🇵", "JP"], ["Philippines", "🇵🇭", "PH"],
+  ["Brazil", "🇧🇷", "BR"], ["Mexico", "🇲🇽", "MX"], ["France", "🇫🇷", "FR"], ["Spain", "🇪🇸", "ES"],
+  ["Italy", "🇮🇹", "IT"], ["Germany", "🇩🇪", "DE"], ["Ireland", "🇮🇪", "IE"], ["Australia", "🇦🇺", "AU"],
+  ["Somalia", "🇸🇴", "SO"], ["Morocco", "🇲🇦", "MA"], ["Malaysia", "🇲🇾", "MY"], ["Indonesia", "🇮🇩", "ID"],
 ];
 
+// `label` is sent to the forge as-is (English); `key` drives the displayed name.
 const SKIN_TONES = [
-  { label: "Light", hex: "#F0D0B0" },
-  { label: "Light-medium", hex: "#D4A574" },
-  { label: "Medium", hex: "#B8956A" },
-  { label: "Medium-dark", hex: "#8B6B4A" },
-  { label: "Dark", hex: "#4E3524" },
-  { label: "Very dark", hex: "#3A2518" },
+  { key: "light", label: "Light", hex: "#F0D0B0" },
+  { key: "lightMedium", label: "Light-medium", hex: "#D4A574" },
+  { key: "medium", label: "Medium", hex: "#B8956A" },
+  { key: "mediumDark", label: "Medium-dark", hex: "#8B6B4A" },
+  { key: "dark", label: "Dark", hex: "#4E3524" },
+  { key: "veryDark", label: "Very dark", hex: "#3A2518" },
 ];
 
 type Step = "intro" | "child" | "level" | "review" | "pay" | "generating" | "ready";
@@ -82,7 +86,32 @@ function pick<T>(arr: T[] | readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+/* The forge server writes its progress line in English. Parents see a
+ * translated line keyed by the step; unknown steps fall back to the
+ * server's own text in English, or a generic line in other languages. */
+const PROGRESS_STEPS = new Set([
+  "story", "phonics_qa", "plausibility_qa", "story_editor", "directing",
+  "awaiting_imagery_approval", "hero", "cover", "country", "editor",
+  "assemble", "done", "busy", "paused", "paused_budget",
+  "paused_provider_credit", "needs_review", "content_rejected", "repair",
+]);
+function progressLine(
+  book: { child_name?: string; progress?: { step: string; message: string } | null } | null | undefined,
+  t: (key: string, opts?: Record<string, unknown>) => string,
+): string | undefined {
+  const p = book?.progress;
+  if (!p?.message) return undefined;
+  if (i18n.language?.startsWith("en")) return p.message;
+  if (p.step === "scenes") {
+    const m = p.message.match(/(\d+)\D+(\d+)/);
+    if (m) return t("progress.scenes", { page: m[1], total: m[2] });
+  }
+  if (PROGRESS_STEPS.has(p.step)) return t(`progress.${p.step}`, { name: book?.child_name ?? "" });
+  return t("progress.working");
+}
+
 export default function CreateBook() {
+  const { t, i18n } = useTranslation("createBook");
   const [params, setParams] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState<Step>("intro");
@@ -132,11 +161,20 @@ export default function CreateBook() {
 
   const selectedLevel = useMemo(() => levels.find((l) => l.level === level), [levels, level]);
   const flag = useMemo(() => COUNTRIES.find(([c]) => c === country)?.[1] || "🌍", [country]);
+  // Display-only country names in the parent's language; the English name is
+  // still what's stored and sent to the forge.
+  const regionNames = useMemo(() => {
+    try { return new Intl.DisplayNames([i18n.language], { type: "region" }); } catch { return null; }
+  }, [i18n.language]);
+  const countryLabel = (name: string, iso: string) => {
+    try { return regionNames?.of(iso) || name; } catch { return name; }
+  };
 
   useEffect(() => {
     forgeApi.levels().then((r) => setLevels(r.levels)).catch(() => setError(
-      "The Create-A-Book service isn't reachable right now — give it a moment and refresh.",
+      t("errors.unreachable"),
     ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Two loops share the work of "generating":
@@ -355,7 +393,7 @@ export default function CreateBook() {
         startPolling(b.id);
         return;
       }
-      if (!r.url) throw new Error("Checkout did not return a payment link.");
+      if (!r.url) throw new Error(t("errors.noCheckoutLink"));
       window.location.href = r.url;
     } catch (e) {
       setError(String((e as Error).message));
@@ -451,19 +489,20 @@ export default function CreateBook() {
       <div className="relative mx-auto max-w-2xl px-4 pt-8">
         <div className="mb-6 flex items-center justify-between">
           <Link to="/library" className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700">
-            <ArrowLeft className="h-4 w-4" /> Library
+            <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" /> {t("nav.library")}
           </Link>
           <div className="flex items-center gap-4">
             <Link to="/world-of-books" className="flex items-center gap-1 text-sm font-semibold text-violet-600">
-              <Globe2 className="h-4 w-4" /> World of Books
+              <Globe2 className="h-4 w-4" /> {t("nav.worldOfBooks")}
             </Link>
+            <LanguageSwitcher variant="compact" />
           </div>
         </div>
 
         {error && (
           <div className="mb-4 flex items-start justify-between rounded-xl bg-red-50 p-3 text-sm text-red-700">
             <span>{error}</span>
-            <button onClick={() => setError(null)}><X className="h-4 w-4" /></button>
+            <button onClick={() => setError(null)} aria-label={t("common:actions.close")}><X className="h-4 w-4" /></button>
           </div>
         )}
 
@@ -477,7 +516,7 @@ export default function CreateBook() {
                     <img
                       key={src}
                       src={src}
-                      alt={i === 0 ? "Sample book cover" : `Sample book page ${i}`}
+                      alt={i === 0 ? t("intro.sampleCover") : t("intro.samplePage", { n: i })}
                       loading={i < 3 ? "eager" : "lazy"}
                       draggable={false}
                       className="h-full w-full object-cover"
@@ -489,32 +528,31 @@ export default function CreateBook() {
                   showCounter
                 />
                 <p className="mt-2 text-xs font-medium text-slate-400">
-                  A whole MyPhonicsBooks story, cover to cover — tap or swipe to turn the pages
+                  {t("intro.flipHint")}
                 </p>
                 <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight text-slate-900 sm:text-5xl">
-                  Your child,{" "}
+                  {t("intro.titleStart")}{" "}
                   <span className="bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent">
-                    the main character
+                    {t("intro.titleHighlight")}
                   </span>
                 </h1>
                 <p className="mx-auto mt-3 max-w-md text-lg leading-relaxed text-slate-500">
-                  A real, properly decodable phonics book — written, illustrated and
-                  checked for your child, in minutes.
+                  {t("intro.lead")}
                 </p>
-                <div className="mx-auto mt-6 grid max-w-md gap-3 text-left text-sm">
-                  {[
-                    ["🎨", "Your child is the main character", "Drawn in our house style, dot eyes and all"],
-                    ["🔤", "Properly decodable at their level", "Every word checked against the sounds they know"],
-                    ["🌍", "'Meet the star' page at the back", "Their country, their culture, their landmark"],
-                    ["💝", "Share it to the World of Books", "A light on the globe with the family's blessing"],
-                  ].map(([e, t, d], i) => (
-                    <motion.div key={t} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
+                <div className="mx-auto mt-6 grid max-w-md gap-3 text-start text-sm">
+                  {([
+                    ["🎨", "mainCharacter"],
+                    ["🔤", "decodable"],
+                    ["🌍", "meetStar"],
+                    ["💝", "share"],
+                  ] as const).map(([e, k], i) => (
+                    <motion.div key={k} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.15 + i * 0.08 }}
                       className="flex items-start gap-3.5 rounded-2xl bg-white/90 p-4 shadow-sm ring-1 ring-slate-900/5 backdrop-blur-sm transition hover:shadow-md">
                       <span className="text-2xl">{e}</span>
                       <span>
-                        <span className="block font-bold text-slate-800">{t}</span>
-                        <span className="block text-xs text-slate-400">{d}</span>
+                        <span className="block font-bold text-slate-800">{t(`intro.features.${k}.title`)}</span>
+                        <span className="block text-xs text-slate-400">{t(`intro.features.${k}.desc`)}</span>
                       </span>
                     </motion.div>
                   ))}
@@ -525,33 +563,33 @@ export default function CreateBook() {
                   className="group relative mt-9 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-500 px-10 py-4 text-lg font-black text-white shadow-xl shadow-violet-300/60"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  <Sparkles className="h-5 w-5" /> Start their book — £4.99
+                  <Sparkles className="h-5 w-5" /> {t("intro.cta", { price: "£4.99" })}
                 </motion.button>
-                <p className="mt-2.5 text-xs text-slate-400">One book, yours to keep and print, forever.</p>
+                <p className="mt-2.5 text-xs text-slate-400">{t("intro.ctaNote")}</p>
               </div>
             )}
 
             {step === "child" && (
               <div>
                 <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-2xl font-extrabold text-slate-900">Who is the star? ⭐</h2>
+                  <h2 className="text-2xl font-extrabold text-slate-900">{t("child.title")} ⭐</h2>
                   {import.meta.env.DEV && (
-                    <button onClick={randomise} title="Fill every step with random test data"
+                    <button onClick={randomise} title={t("child.randomiseTitle")}
                       className="flex shrink-0 items-center gap-1.5 rounded-full border border-dashed border-violet-300 px-4 py-1.5 text-xs font-semibold text-violet-600 hover:bg-violet-50">
-                      <Dices className="h-4 w-4" /> Randomise (test)
+                      <Dices className="h-4 w-4" /> {t("child.randomise")}
                     </button>
                   )}
                 </div>
-                <p className="mb-5 text-sm text-slate-500">This shapes the story, the pictures, and the profile page at the back.</p>
+                <p className="mb-5 text-sm text-slate-500">{t("child.lead")}</p>
                 <div className="space-y-4">
                   <div className="grid grid-cols-3 gap-3">
                     <label className="col-span-2 block">
-                      <span className="text-sm font-semibold text-slate-700">First name</span>
-                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Maryam"
+                      <span className="text-sm font-semibold text-slate-700">{t("child.firstName")}</span>
+                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("child.firstNamePlaceholder")}
                         className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                     </label>
                     <label className="block">
-                      <span className="text-sm font-semibold text-slate-700">Age</span>
+                      <span className="text-sm font-semibold text-slate-700">{t("child.age")}</span>
                       <select value={age} onChange={(e) => setAge(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 bg-white p-3">
                         {["3", "4", "5", "6", "7", "8"].map((a) => <option key={a}>{a}</option>)}
                       </select>
@@ -560,71 +598,72 @@ export default function CreateBook() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <label className="block">
-                      <span className="text-sm font-semibold text-slate-700">Where are you from? {flag}</span>
+                      <span className="text-sm font-semibold text-slate-700">{t("child.from")} {flag}</span>
                       <select value={country} onChange={(e) => setCountry(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 bg-white p-3">
-                        {COUNTRIES.map(([c, f]) => <option key={c} value={c}>{f} {c}</option>)}
+                        {COUNTRIES.map(([c, f, iso]) => <option key={c} value={c}>{f} {countryLabel(c, iso)}</option>)}
                       </select>
                     </label>
                     <label className="block">
-                      <span className="text-sm font-semibold text-slate-700">City / town <span className="font-normal text-slate-400">(optional)</span></span>
-                      <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="e.g. Mogadishu, Lagos, Kraków"
+                      <span className="text-sm font-semibold text-slate-700">{t("child.city")} <span className="font-normal text-slate-400">{t("child.optional")}</span></span>
+                      <input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("child.cityPlaceholder")}
                         className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                     </label>
                   </div>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700">Your family's world <span className="font-normal text-slate-400">(culture, food, places, traditions)</span></span>
+                    <span className="text-sm font-semibold text-slate-700">{t("child.familyWorld")} <span className="font-normal text-slate-400">{t("child.familyWorldHint")}</span></span>
                     <textarea value={culture} onChange={(e) => setCulture(e.target.value)} rows={2}
-                      placeholder="e.g. We're a Somali family in London — we love suqaar, Eid mornings and trips to the mosque"
+                      placeholder={t("child.familyWorldPlaceholder")}
                       className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                   </label>
 
                   <div className="grid grid-cols-2 gap-3">
                     <label className="block">
-                      <span className="text-sm font-semibold text-slate-700">They love...</span>
-                      <input value={likes} onChange={(e) => setLikes(e.target.value)} placeholder="cats, football, baking"
+                      <span className="text-sm font-semibold text-slate-700">{t("child.loves")}</span>
+                      <input value={likes} onChange={(e) => setLikes(e.target.value)} placeholder={t("child.lovesPlaceholder")}
                         className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                     </label>
                     <label className="block">
-                      <span className="text-sm font-semibold text-slate-700">Faith <span className="font-normal text-slate-400">(optional)</span></span>
-                      <input value={faith} onChange={(e) => setFaith(e.target.value)} placeholder="e.g. Muslim, Christian"
+                      <span className="text-sm font-semibold text-slate-700">{t("child.faith")} <span className="font-normal text-slate-400">{t("child.optional")}</span></span>
+                      <input value={faith} onChange={(e) => setFaith(e.target.value)} placeholder={t("child.faithPlaceholder")}
                         className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                     </label>
                   </div>
 
                   <div className="rounded-2xl bg-white p-4 shadow-sm">
-                    <span className="text-sm font-semibold text-slate-700">What do they look like?</span>
+                    <span className="text-sm font-semibold text-slate-700">{t("child.lookLike")}</span>
                     <div className="mt-2 flex gap-2">
                       {["girl", "boy"].map((g) => (
                         <button key={g} onClick={() => setGender(g)}
                           className={`rounded-full px-4 py-1.5 text-sm font-semibold capitalize ${gender === g ? "bg-violet-600 text-white" : "bg-slate-100 text-slate-600"}`}>
-                          {g}
+                          {t(`child.gender.${g}`)}
                         </button>
                       ))}
                     </div>
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {SKIN_TONES.map((t) => (
-                        <button key={t.hex} onClick={() => setSkinTone(t)} title={t.label}
-                          className={`h-9 w-9 rounded-full border-2 ${skinTone.hex === t.hex ? "border-violet-600 ring-2 ring-violet-300" : "border-white"}`}
-                          style={{ backgroundColor: t.hex }} />
+                      {SKIN_TONES.map((tone) => (
+                        <button key={tone.hex} onClick={() => setSkinTone(tone)} title={t(`child.skinTones.${tone.key}`)}
+                          aria-label={t(`child.skinTones.${tone.key}`)}
+                          className={`h-9 w-9 rounded-full border-2 ${skinTone.hex === tone.hex ? "border-violet-600 ring-2 ring-violet-300" : "border-white"}`}
+                          style={{ backgroundColor: tone.hex }} />
                       ))}
                     </div>
-                    <input value={hair} onChange={(e) => setHair(e.target.value)} placeholder="Hair — e.g. curly black hair, hijab, short brown hair"
+                    <input value={hair} onChange={(e) => setHair(e.target.value)} placeholder={t("child.hairPlaceholder")}
                       className="mt-3 w-full rounded-xl border border-slate-200 p-3" />
                     <div className="mt-3 flex items-center gap-3">
                       <button onClick={() => fileRef.current?.click()}
                         className="flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-700">
-                        <Camera className="h-4 w-4" /> {photoB64 ? "Change photo" : "Add a photo (optional)"}
+                        <Camera className="h-4 w-4" /> {photoB64 ? t("child.changePhoto") : t("child.addPhoto")}
                       </button>
                       {photoB64 && (
-                        <span className="flex items-center gap-1 text-sm text-green-600"><Check className="h-4 w-4" /> Photo added</span>
+                        <span className="flex items-center gap-1 text-sm text-green-600"><Check className="h-4 w-4" /> {t("child.photoAdded")}</span>
                       )}
                       <input ref={fileRef} type="file" accept="image/*" className="hidden"
                         onChange={(e) => e.target.files?.[0] && onPhoto(e.target.files[0])} />
                     </div>
                     <p className="mt-2 flex items-start gap-1.5 text-xs text-slate-400">
                       <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                      The photo is only used to draw the cartoon character. It is never stored, published or shown to anyone.
+                      {t("child.photoPrivacy")}
                     </p>
                   </div>
                 </div>
@@ -634,25 +673,25 @@ export default function CreateBook() {
 
             {step === "level" && (
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900">Pick a level and one focus sound 🔤</h2>
+                <h2 className="text-2xl font-extrabold text-slate-900">{t("level.title")} 🔤</h2>
                 <p className="mb-5 text-sm text-slate-500">
-                  One sound keeps the story free and fun — it only needs to appear a few times.
-                  Not sure of the level? <Link to="/assessment" className="font-semibold text-violet-600">Take the 3-minute check</Link>.
+                  {t("level.lead")}{" "}
+                  <Trans t={t} i18nKey="level.notSure" components={{ link: <Link to="/assessment" className="font-semibold text-violet-600" /> }} />
                 </p>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {levels.map((l) => (
                     <button key={l.level} onClick={() => { setLevel(l.level); setSound(""); }}
-                      className={`rounded-xl p-3 text-left text-white shadow-sm transition ${level === l.level ? "ring-4 ring-offset-2" : "opacity-80 hover:opacity-100"}`}
+                      className={`rounded-xl p-3 text-start text-white shadow-sm transition ${level === l.level ? "ring-4 ring-offset-2" : "opacity-80 hover:opacity-100"}`}
                       style={{ backgroundColor: l.colour }}>
-                      <div className="text-xs font-bold opacity-80">Level {l.level}</div>
-                      <div className="text-sm font-extrabold leading-tight">{l.name}</div>
+                      <div className="text-xs font-bold opacity-80">{t("level.levelN", { level: l.level })}</div>
+                      <div className="text-sm font-extrabold leading-tight" dir="ltr" lang="en">{l.name}</div>
                     </button>
                   ))}
                 </div>
                 {selectedLevel && (
                   <div className="mt-5 rounded-2xl bg-white p-4 shadow-sm">
-                    <span className="text-sm font-semibold text-slate-700">Focus sound for this book</span>
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <span className="text-sm font-semibold text-slate-700">{t("level.focusSound")}</span>
+                    <div className="mt-2 flex flex-wrap gap-2" dir="ltr" lang="en">
                       {selectedLevel.graphemes.map((g) => (
                         <button key={g} onClick={() => setSound(g)}
                           className={`rounded-xl px-4 py-2 font-bold ${sound === g ? "text-white" : "bg-slate-100 text-slate-700"}`}
@@ -668,13 +707,13 @@ export default function CreateBook() {
                     moves the book onto the fuller 20-page print set. */}
                 {level <= 4 && (
                   <button onClick={() => setExtraPages(!extraPages)}
-                    className={`mt-4 flex w-full items-center gap-3 rounded-2xl border-2 p-4 text-left transition ${extraPages ? "border-violet-500 bg-violet-50" : "border-slate-200 bg-white hover:border-slate-300"}`}>
+                    className={`mt-4 flex w-full items-center gap-3 rounded-2xl border-2 p-4 text-start transition ${extraPages ? "border-violet-500 bg-violet-50" : "border-slate-200 bg-white hover:border-slate-300"}`}>
                     <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 ${extraPages ? "border-violet-600 bg-violet-600 text-white" : "border-slate-300 bg-white"}`}>
                       {extraPages && <Check className="h-4 w-4" />}
                     </span>
                     <span className="min-w-0">
-                      <span className="block font-extrabold text-slate-900">Longer story — 8 pages instead of 6 <span className="text-violet-600">+£1</span></span>
-                      <span className="block text-sm text-slate-500">Two more illustrated pages, and the bigger 20-page activity set at the back.</span>
+                      <span className="block font-extrabold text-slate-900">{t("level.longerTitle")} <span className="text-violet-600">+£1</span></span>
+                      <span className="block text-sm text-slate-500">{t("level.longerDesc")}</span>
                     </span>
                   </button>
                 )}
@@ -684,11 +723,11 @@ export default function CreateBook() {
 
             {step === "review" && (
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900">Nearly there! 🎉</h2>
-                <p className="mb-5 text-sm text-slate-500">Check the details, choose how you'd like to share, and we'll start the presses.</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">{t("review.title")} 🎉</h2>
+                <p className="mb-5 text-sm text-slate-500">{t("review.lead")}</p>
 
-                {/* Mock cover preview */}
-                <div className="mx-auto w-56 overflow-hidden rounded-2xl shadow-xl" style={{ backgroundColor: colour }}>
+                {/* Mock cover preview — mirrors the printed English cover, so LTR English */}
+                <div dir="ltr" lang="en" className="mx-auto w-56 overflow-hidden rounded-2xl shadow-xl" style={{ backgroundColor: colour }}>
                   <div className="p-4 text-center text-white">
                     <div className="text-[10px] font-bold uppercase tracking-wider opacity-80">MyPhonicsBooks · Level {level} · "{sound}"</div>
                     <div className="mt-6 text-6xl">{flag}</div>
@@ -699,51 +738,51 @@ export default function CreateBook() {
 
                 <div className="mt-5 space-y-3">
                   <label className="block">
-                    <span className="text-sm font-semibold text-slate-700">Your email (for your receipt + book link)</span>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
+                    <span className="text-sm font-semibold text-slate-700">{t("review.email")}</span>
+                    <input type="email" dir="ltr" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
                       className="mt-1 w-full rounded-xl border border-slate-200 p-3" />
                   </label>
 
                   <label className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
                     <input type="checkbox" checked={shareRequested} onChange={(e) => setShareRequested(e.target.checked)} className="mt-1 h-5 w-5 accent-violet-600" />
                     <span className="text-sm text-slate-700">
-                      <b>Share our book to the World of Books</b> 🌍<br />
-                      <span className="text-slate-500">After a quick review by our team, other families can read {name || "your child"}'s book. Bring the world together, one story at a time.</span>
+                      <b>{t("review.shareTitle")}</b> 🌍<br />
+                      <span className="text-slate-500">{t("review.shareBody", { name: name.trim() || t("yourChild") })}</span>
                     </span>
                   </label>
                   <label className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-sm">
                     <input type="checkbox" checked={wallOptIn} onChange={(e) => setWallOptIn(e.target.checked)} className="mt-1 h-5 w-5 accent-violet-600" />
                     <span className="text-sm text-slate-700">
-                      <b>Show us on the Wall of Love</b> 💝<br />
-                      <span className="text-slate-500">The "Meet the star" page (cartoon character only — never the photo) appears in the community gallery.</span>
+                      <b>{t("review.wallTitle")}</b> 💝<br />
+                      <span className="text-slate-500">{t("review.wallBody")}</span>
                     </span>
                   </label>
                 </div>
-                <WizardNav onBack={() => setStep("level")} onNext={() => setStep("pay")} nextLabel="Continue to payment" />
+                <WizardNav onBack={() => setStep("level")} onNext={() => setStep("pay")} nextLabel={t("review.continueToPayment")} />
               </div>
             )}
 
             {step === "pay" && (
               <div className="text-center">
-                <h2 className="text-2xl font-extrabold text-slate-900">Create {name}'s book</h2>
+                <h2 className="text-2xl font-extrabold text-slate-900">{t("pay.title", { name })}</h2>
                 <div className="mx-auto mt-5 max-w-sm rounded-3xl bg-white p-6 shadow-lg">
                   <div className="text-5xl font-extrabold text-slate-900">{level <= 4 && extraPages ? "£5.99" : "£4.99"}</div>
-                  <div className="mt-1 text-sm font-semibold text-violet-600">One personalised book · yours to keep</div>
-                  <ul className="mt-4 space-y-2 text-left text-sm text-slate-600">
+                  <div className="mt-1 text-sm font-semibold text-violet-600">{t("pay.oneBook")}</div>
+                  <ul className="mt-4 space-y-2 text-start text-sm text-slate-600">
                     {[
-                      `A full decodable story around the sound "${sound}"`,
-                      ...(level <= 4 && extraPages ? ["Longer story: 8 illustrated pages + the fuller activity set"] : []),
-                      `${name} illustrated as the hero on every page`,
-                      "Eye-rule + phonics QA on every single page",
-                      "The 'Meet the star' family page at the back",
-                      "Read it instantly on screen, forever",
-                    ].map((t) => (
-                      <li key={t} className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />{t}</li>
+                      t("pay.features.story", { sound }),
+                      ...(level <= 4 && extraPages ? [t("pay.features.longer")] : []),
+                      t("pay.features.hero", { name }),
+                      t("pay.features.qa"),
+                      t("pay.features.meetStar"),
+                      t("pay.features.forever"),
+                    ].map((line) => (
+                      <li key={line} className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />{line}</li>
                     ))}
                   </ul>
                   <button onClick={() => payForBook()} disabled={busy}
                     className="mt-5 w-full rounded-full bg-violet-600 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-50">
-                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : `Create my book — ${level <= 4 && extraPages ? "£5.99" : "£4.99"}`}
+                    {busy ? <Loader2 className="mx-auto h-5 w-5 animate-spin" /> : t("pay.button", { price: level <= 4 && extraPages ? "£5.99" : "£4.99" })}
                   </button>
 
                   {/* Private code. Deliberately understated: it exists so one
@@ -752,18 +791,18 @@ export default function CreateBook() {
                   {!showVoucher ? (
                     <button onClick={() => setShowVoucher(true)}
                       className="mt-3 w-full text-xs text-slate-400 hover:text-slate-600">
-                      Have a code?
+                      {t("pay.haveCode")}
                     </button>
                   ) : (
                     <div className="mt-3 flex gap-2">
                       <input value={voucher} onChange={(e) => setVoucher(e.target.value)}
-                        placeholder="Enter code"
+                        placeholder={t("pay.enterCode")}
                         autoFocus
                         onKeyDown={(e) => { if (e.key === "Enter" && voucher.trim()) payForBook(voucher); }}
                         className="min-w-0 flex-1 rounded-full border border-slate-300 px-4 py-2 text-sm focus:border-violet-500 focus:outline-none" />
                       <button onClick={() => payForBook(voucher)} disabled={busy || !voucher.trim()}
                         className="shrink-0 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white disabled:opacity-40">
-                        Apply
+                        {t("pay.apply")}
                       </button>
                     </div>
                   )}
@@ -773,7 +812,7 @@ export default function CreateBook() {
                   {import.meta.env.DEV && (
                     <button onClick={devSkipPay} disabled={busy}
                       className="mt-2 w-full rounded-full border border-dashed border-slate-300 py-2 text-xs text-slate-400 hover:text-slate-600">
-                      🧪 Create free (dev test mode — no charge)
+                      🧪 {t("pay.devFree")}
                     </button>
                   )}
                 </div>
@@ -799,11 +838,10 @@ export default function CreateBook() {
                   </div>
                 </div>
                 <h2 className="mt-6 text-3xl font-black tracking-tight text-slate-900">
-                  Painting {name.trim() || "your child"}'s book
+                  {t("generating.title", { name: name.trim() || t("yourChild") })}
                 </h2>
                 <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
-                  Written, illustrated and checked page by page — yes, we check the eyes.
-                  Keep this page open; it takes a few minutes.
+                  {t("generating.lead")}
                 </p>
                 <div className="mx-auto mt-7 max-w-sm">
                   <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-slate-200/80 shadow-inner">
@@ -823,54 +861,48 @@ export default function CreateBook() {
                       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                       className="mt-3.5 min-h-[1.5rem] text-sm font-bold text-slate-700"
                     >
-                      {book?.progress?.message || "Warming up the paints..."}
+                      {progressLine(book, t) || t("generating.warmingUp")}
                     </motion.p>
                   </AnimatePresence>
                   {book?.status === "failed" && !book.generating && (
                     <button onClick={() => { forgeApi.retry(book.id); startPolling(book.id); }}
                       className="mt-4 rounded-full bg-slate-900 px-7 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
-                      Something hiccupped — pick up where it stopped (free)
+                      {t("generating.failedRetry")}
                     </button>
                   )}
                   {book?.status === "needs_review" && !book.generating && (
-                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-violet-200 bg-violet-50 p-5 text-left">
+                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-violet-200 bg-violet-50 p-5 text-start">
                       <p className="text-sm font-extrabold text-slate-900">
-                        Nearly done — one page is with a person 👀
+                        {t("generating.needsReviewTitle")} 👀
                       </p>
                       <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
-                        {book.child_name}'s story and pictures are finished, but our editor
-                        wants one page checked by hand before we print it. Nothing for you to
-                        do — keep this link and the book appears here as soon as it is signed off,
-                        usually within a few hours.
+                        {t("generating.needsReviewBody", { name: book.child_name })}
                       </p>
                     </div>
                   )}
                   {book?.status === "content_rejected" && !book.generating && (
-                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-amber-200 bg-amber-50 p-5 text-left">
+                    <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-amber-200 bg-amber-50 p-5 text-start">
                       <p className="text-sm font-extrabold text-slate-900">
-                        We couldn't get this story to meet our quality standard.
+                        {t("generating.rejectedTitle")}
                       </p>
                       <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
-                        Your book credit has not been used. You can try the same idea again
-                        or choose a different story idea.
+                        {t("generating.rejectedBody")}
                       </p>
                       <div className="mt-4 flex flex-col gap-2">
                         <button onClick={() => { forgeApi.retry(book.id); startPolling(book.id); }}
                           className="rounded-full bg-slate-900 px-6 py-2.5 text-sm font-bold text-white shadow-md transition hover:bg-slate-800">
-                          Try the same idea again (free)
+                          {t("generating.tryAgain")}
                         </button>
                         <button onClick={() => { setCreditFrom(book.id); setBook(null); localStorage.removeItem("forge_book_id"); setStep("child"); }}
                           className="rounded-full border border-slate-300 bg-white px-6 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50">
-                          Change the story idea (credit carries over)
+                          {t("generating.changeIdea")}
                         </button>
                       </div>
                     </div>
                   )}
                   {["paused_provider_credit", "paused_budget"].includes(book?.status || "") && !book?.generating && (
                     <p className="mx-auto mt-4 max-w-sm rounded-xl bg-slate-100 px-4 py-3 text-sm leading-relaxed text-slate-600">
-                      Your book is safe and saved. It's taking a little longer than usual —
-                      it will continue from exactly where it stopped, and we'll email you
-                      when it's ready.
+                      {t("generating.paused")}
                     </p>
                   )}
                 </div>
@@ -887,15 +919,15 @@ export default function CreateBook() {
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-500 shadow-lg">
                   <PartyPopper className="h-8 w-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-extrabold text-slate-900">Their book is ready!</h2>
-                <p className="mt-1 text-slate-500">Made for the {book.child_name} family {book.country_flag}</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">{t("ready.title")}</h2>
+                <p className="mt-1 text-slate-500">{t("ready.madeFor", { name: book.child_name })} {book.country_flag}</p>
 
                 {/* The real MyPhonicsBooks cover template (book_v2.html
                     .cover): level-colour top band + brand, full-bleed
                     illustration, level-colour bottom band with the title —
                     pixel-for-pixel the same layout as every printed cover in
                     /public/covers/, not just the raw painted art. */}
-                <button onClick={() => setReading(true)}
+                <button onClick={() => setReading(true)} dir="ltr" lang="en" aria-label={t("ready.readHere")}
                   className="group mx-auto mt-5 block w-64 overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/5 transition hover:scale-[1.02]">
                   <div className="flex items-center justify-between px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white"
                     style={{ backgroundColor: levelColour }}>
@@ -920,12 +952,12 @@ export default function CreateBook() {
                     weight as the primary, permanent way to enjoy the book. */}
                 {pdfUnavailable ? (
                   <p className="mx-auto mt-4 max-w-xs text-xs text-slate-400">
-                    Printable PDFs are coming soon — for now, enjoy the book right here.
+                    {t("ready.pdfSoon")}
                   </p>
                 ) : (
                   <button onClick={openPdf} disabled={pdfBusy}
                     className="mt-4 rounded-full bg-violet-600 px-8 py-3 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-60">
-                    {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> Typesetting the book...</span> : "Open the book 📕 (full phonics book PDF)"}
+                    {pdfBusy ? <span className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" /> {t("ready.typesetting")}</span> : t("ready.openPdf")}
                   </button>
                 )}
                 {/* Interactive edition — the same reader as the library's
@@ -936,46 +968,46 @@ export default function CreateBook() {
                 {book.interactive && book.interactive.length > 0 && (
                   <button onClick={() => setPlaying(true)}
                     className="mx-auto mt-2 flex items-center justify-center gap-2 rounded-full bg-pink-500 px-8 py-3 font-bold text-white shadow-md hover:bg-pink-600">
-                    <Sparkles className="h-5 w-5" /> Play the interactive book — tap every word
+                    <Sparkles className="h-5 w-5" /> {t("ready.play")}
                   </button>
                 )}
                 <button onClick={() => setReading(true)}
                   className="mx-auto mt-2 block rounded-full bg-violet-50 px-6 py-2.5 text-sm font-bold text-violet-700 hover:bg-violet-100">
-                  Read it here — turn the pages 📖
+                  {t("ready.readHere")} 📖
                 </button>
 
                 {saved || book.user_id ? (
                   <p className="mt-3 flex items-center justify-center gap-1 text-xs font-semibold text-green-600">
-                    <Check className="h-3.5 w-3.5" /> Saved to your account
+                    <Check className="h-3.5 w-3.5" /> {t("ready.saved")}
                   </p>
                 ) : (
                   <button onClick={() => saveToAccount(book.id)} disabled={saving}
                     className="mx-auto mt-3 block rounded-full border border-violet-200 px-5 py-2 text-sm font-semibold text-violet-600 hover:bg-violet-50 disabled:opacity-50">
-                    {saving ? "Saving..." : "+ Add to my account"}
+                    {saving ? t("common:actions.saving") : `+ ${t("ready.addToAccount")}`}
                   </button>
                 )}
 
                 {book.share_requested && book.status === "ready" && (
-                  <p className="mt-3 text-xs text-slate-400">Your book is with our team for a quick review before it appears in the World of Books.</p>
+                  <p className="mt-3 text-xs text-slate-400">{t("ready.inReview")}</p>
                 )}
                 {book.status === "approved" && (
-                  <p className="mt-3 text-xs font-semibold text-green-600">Your book is live in the World of Books! 🌍</p>
+                  <p className="mt-3 text-xs font-semibold text-green-600">{t("ready.live")} 🌍</p>
                 )}
 
                 {!worldPaid && (
-                  <div className="mx-auto mt-8 max-w-sm rounded-3xl border-2 border-amber-200 bg-amber-50 p-5 text-left">
-                    <div className="flex items-center gap-2 font-extrabold text-slate-900"><Globe2 className="h-5 w-5 text-amber-500" /> Unlock the World of Books</div>
+                  <div className="mx-auto mt-8 max-w-sm rounded-3xl border-2 border-amber-200 bg-amber-50 p-5 text-start">
+                    <div className="flex items-center gap-2 font-extrabold text-slate-900"><Globe2 className="h-5 w-5 text-amber-500" /> {t("ready.unlockTitle")}</div>
                     <p className="mt-1 text-sm text-slate-600">
-                      Read every book made by families around the world — and every one made after you. One payment, forever.
+                      {t("ready.unlockBody")}
                     </p>
                     {!user && (
                       <p className="mt-1.5 text-xs text-slate-400">
-                        You'll need to sign in — it's how your access travels with you and stays yours.
+                        {t("ready.signInNote")}
                       </p>
                     )}
                     <button onClick={payForWorld} disabled={busy}
                       className="mt-3 w-full rounded-full bg-slate-900 py-2.5 font-bold text-white shadow-md transition hover:bg-slate-800 disabled:opacity-50">
-                      {busy ? "..." : user ? "Unlock the world — £10, once" : "Sign in to unlock the world — £10"}
+                      {busy ? "..." : user ? t("ready.unlockButton", { price: "£10" }) : t("ready.signInUnlockButton", { price: "£10" })}
                     </button>
                     {import.meta.env.DEV && (
                       <button onClick={async () => {
@@ -989,14 +1021,14 @@ export default function CreateBook() {
                         }
                       }}
                         className="mt-2 w-full text-xs text-slate-400 underline-offset-2 hover:underline">
-                        🧪 dev: unlock free
+                        🧪 {t("ready.devUnlock")}
                       </button>
                     )}
                   </div>
                 )}
                 {worldPaid && (
                   <Link to="/world-of-books" className="mt-6 inline-flex items-center gap-2 rounded-full bg-amber-500 px-8 py-3 font-bold text-white shadow-md">
-                    <Globe2 className="h-5 w-5" /> Enter the World of Books
+                    <Globe2 className="h-5 w-5" /> {t("ready.enter")}
                   </Link>
                 )}
               </div>
@@ -1025,17 +1057,19 @@ export default function CreateBook() {
 function WizardNav({ onBack, onNext, nextDisabled, nextLabel }: {
   onBack?: () => void; onNext?: () => void; nextDisabled?: boolean; nextLabel?: string;
 }) {
+  const { t } = useTranslation("createBook");
   return (
     <div className="mt-8 flex items-center justify-between">
       {onBack ? (
         <button onClick={onBack} className="flex items-center gap-1 rounded-full px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100">
-          <ArrowLeft className="h-4 w-4" /> Back
+          <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" /> {t("common:actions.back")}
         </button>
       ) : <span />}
       {onNext && (
         <button onClick={onNext} disabled={nextDisabled}
           className="flex items-center gap-1 rounded-full bg-violet-600 px-7 py-2.5 font-bold text-white shadow-md hover:bg-violet-700 disabled:opacity-40">
-          {nextLabel || "Next"} <ArrowRight className="h-4 w-4" />
+          {nextLabel || t("common:actions.next")} <ArrowRight className="h-4 w-4 rtl:-scale-x-100" />
+
         </button>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ArrowRight, BookOpen, Database, Layers, Loader2, Plus, Route as RouteIcon, Users, ClipboardCheck } from 'lucide-react';
 import { useSchoolMemberships } from '../hooks/useSchool';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +30,7 @@ function parseLevelNum(s: string | null): number | null {
 }
 
 export default function SchoolAppHome() {
+  const { t } = useTranslation('schoolApp');
   const { memberships } = useSchoolMemberships();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
@@ -56,7 +58,7 @@ export default function SchoolAppHome() {
         .eq('school_id', school.id)
         .order('created_at', { ascending: true });
       if (error) {
-        toast({ title: 'Could not load classrooms', description: (error as { message?: string }).message, variant: 'destructive' });
+        toast({ title: t('home.loadFailed'), description: (error as { message?: string }).message, variant: 'destructive' });
         setClassrooms([]);
         setLoading(false);
         return;
@@ -90,7 +92,7 @@ export default function SchoolAppHome() {
       );
       setLoading(false);
     })();
-  }, [school, toast, reloadKey]);
+  }, [school, toast, reloadKey, t]);
 
   const stats = useMemo(() => {
     const total = students.length;
@@ -137,31 +139,29 @@ export default function SchoolAppHome() {
       .insert({ school_id: school.id, name: newName.trim(), year_group: newYearGroup.trim() || null });
     setCreating(false);
     if (error) {
-      toast({ title: 'Could not create classroom', description: (error as { message?: string }).message, variant: 'destructive' });
+      toast({ title: t('home.createFailed'), description: (error as { message?: string }).message, variant: 'destructive' });
       return;
     }
     setNewName('');
     setShowNewForm(false);
     setReloadKey((k) => k + 1);
-    toast({ title: 'Classroom created' });
+    toast({ title: t('home.created') });
   };
 
   const handleSeed = async () => {
     if (!school) return;
     // Destructive: seeding REPLACES all classrooms/pupils. Guard against a
     // real admin wiping live data — explicit confirmation required.
-    if (!window.confirm(
-      'Seed demo data?\n\nThis DELETES every classroom and pupil in this school and replaces them with a demo set. This cannot be undone.\n\nOnly do this on a demo/test school.'
-    )) return;
+    if (!window.confirm(t('home.seed.confirm'))) return;
     setSeeding(true);
     const result = await seedDemoSchool(school.id);
     setSeeding(false);
     if (!result.ok) {
-      toast({ title: 'Seed failed', description: result.error, variant: 'destructive' });
+      toast({ title: t('home.seed.failed'), description: result.error, variant: 'destructive' });
       return;
     }
     setReloadKey((k) => k + 1);
-    toast({ title: 'Demo data seeded', description: `${result.classrooms} classrooms, ${result.students} students.` });
+    toast({ title: t('home.seed.done'), description: t('home.seed.doneBody', { classrooms: result.classrooms, students: result.students }) });
   };
 
   // Seed control is opt-in via ?seed=true ONLY. It used to auto-show on any
@@ -177,9 +177,9 @@ export default function SchoolAppHome() {
           <div className="flex items-center gap-3">
             <Database className="w-5 h-5" />
             <div>
-              <div className="font-bold text-sm">Set up a demo school</div>
+              <div className="font-bold text-sm">{t('home.seed.title')}</div>
               <p className="text-xs text-slate-300">
-                Fills this school with a realistic two-form-entry set — 6 classes, ~160 pupils grouped by level across year groups. Replaces any existing classrooms.
+                {t('home.seed.body')}
               </p>
             </div>
           </div>
@@ -189,56 +189,56 @@ export default function SchoolAppHome() {
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-900 text-sm font-bold rounded-lg hover:bg-slate-100 disabled:opacity-60 whitespace-nowrap"
           >
             {seeding ? <Loader2 className="w-4 h-4 animate-spin" /> : <Database className="w-4 h-4" />}
-            Seed demo data
+            {t('home.seed.button')}
           </button>
         </div>
       )}
 
       <header>
         <h1 className="font-display text-3xl font-extrabold tracking-tight mb-1">
-          Welcome to {school?.name ?? 'your school'}
+          {t('home.welcome', { school: school?.name ?? t('home.yourSchool') })}
         </h1>
         <p className="text-slate-600">
           {classrooms.length === 0
-            ? "Let's get your first classroom set up."
-            : `${classrooms.length} classroom${classrooms.length === 1 ? '' : 's'} · ${stats.total} student${stats.total === 1 ? '' : 's'}`}
+            ? t('home.firstClassroom')
+            : `${t('counts.classroom', { count: classrooms.length })} · ${t('counts.student', { count: stats.total })}`}
         </p>
       </header>
 
       {/* Stats row */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard icon={<Users className="w-5 h-5" />} label="Total students" value={stats.total} />
-        <StatCard icon={<ClipboardCheck className="w-5 h-5" />} label="Assessed" value={stats.assessed} />
-        <StatCard icon={<AlertTriangle className="w-5 h-5" />} label="Not yet assessed" value={stats.unassessed} tone={stats.unassessed > 0 ? 'amber' : undefined} />
-        <StatCard icon={<Layers className="w-5 h-5" />} label="Levels active" value={stats.activeLevels} />
+        <StatCard icon={<Users className="w-5 h-5" />} label={t('home.stats.total')} value={stats.total} />
+        <StatCard icon={<ClipboardCheck className="w-5 h-5" />} label={t('home.stats.assessed')} value={stats.assessed} />
+        <StatCard icon={<AlertTriangle className="w-5 h-5" />} label={t('home.stats.notAssessed')} value={stats.unassessed} tone={stats.unassessed > 0 ? 'amber' : undefined} />
+        <StatCard icon={<Layers className="w-5 h-5" />} label={t('home.stats.levelsActive')} value={stats.activeLevels} />
       </section>
 
       {/* Actions needed */}
       {(stats.unassessed > 0 || stats.stuck > 0 || stats.staleRooms > 0) && (
         <section className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
           <h2 className="font-bold text-amber-900 flex items-center gap-1.5 mb-3">
-            <AlertTriangle className="w-4 h-4" /> Actions needed
+            <AlertTriangle className="w-4 h-4" /> {t('home.actions.title')}
           </h2>
           <ul className="space-y-2 text-sm">
             {stats.unassessed > 0 && (
               <ActionRow
                 to="/school/app/groups"
-                text={`${stats.unassessed} child${stats.unassessed === 1 ? '' : 'ren'} not yet assessed`}
-                cta="Assess"
+                text={t('home.actions.unassessed', { count: stats.unassessed })}
+                cta={t('home.actions.assess')}
               />
             )}
             {stats.stuck > 0 && (
               <ActionRow
                 to="/school/app/groups"
-                text={`${stats.stuck} child${stats.stuck === 1 ? '' : 'ren'} at the same level for 4+ weeks`}
-                cta="Review"
+                text={t('home.actions.stuck', { count: stats.stuck })}
+                cta={t('home.actions.review')}
               />
             )}
             {stats.staleRooms > 0 && (
               <ActionRow
                 to="/school/app/classrooms"
-                text={`${stats.staleRooms} classroom${stats.staleRooms === 1 ? '' : 's'} with no assessment this month`}
-                cta="Open"
+                text={t('home.actions.stale', { count: stats.staleRooms })}
+                cta={t('home.actions.open')}
               />
             )}
           </ul>
@@ -248,21 +248,21 @@ export default function SchoolAppHome() {
       {/* Level distribution */}
       {stats.assessed > 0 && (
         <section className="bg-white border border-slate-200 rounded-2xl p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">Level distribution across the school</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">{t('home.distribution')}</h2>
           <div className="space-y-2">
             {SCHOOL_LEVELS.map((lvl) => {
               const count = stats.levelDistribution[lvl.level] ?? 0;
               const pct = stats.assessed > 0 ? Math.round((count / stats.assessed) * 100) : 0;
               return (
                 <div key={lvl.level} className="flex items-center gap-3">
-                  <span className="w-20 text-xs font-semibold text-slate-600 flex-shrink-0">L{lvl.level} {lvl.name}</span>
+                  <span dir="ltr" lang="en" className="w-20 text-xs font-semibold text-slate-600 flex-shrink-0 text-start">L{lvl.level} {lvl.name}</span>
                   <div className="flex-1 h-5 bg-slate-100 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{ width: `${Math.max(pct, count > 0 ? 4 : 0)}%`, backgroundColor: lvl.hex }}
                     />
                   </div>
-                  <span className="w-10 text-right text-xs font-bold text-slate-700 flex-shrink-0">{count}</span>
+                  <span className="w-10 text-end text-xs font-bold text-slate-700 flex-shrink-0">{count}</span>
                 </div>
               );
             })}
@@ -272,45 +272,45 @@ export default function SchoolAppHome() {
 
       {/* Quick links */}
       <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <QuickLink to="/school/app/groups"     icon={<Layers className="w-5 h-5" />}     title="Phonics groups" body="Group students by level for intervention." />
-        <QuickLink to="/school/app/pathway"    icon={<RouteIcon className="w-5 h-5" />}  title="Teaching pathway" body="Sound Book → Blending Book → Storybook." />
-        <QuickLink to="/school/app/library"    icon={<BookOpen className="w-5 h-5" />}   title="Library"        body="118 books + worksheets, ready to print." />
-        <QuickLink to="/school/app/mapping"    icon={<ClipboardCheck className="w-5 h-5" />} title="Curriculum"  body="UK, Gulf, Pakistan, US, IB alignment." />
+        <QuickLink to="/school/app/groups"     icon={<Layers className="w-5 h-5" />}     title={t('home.quick.groups.title')} body={t('home.quick.groups.body')} />
+        <QuickLink to="/school/app/pathway"    icon={<RouteIcon className="w-5 h-5" />}  title={t('home.quick.pathway.title')} body={t('home.quick.pathway.body')} />
+        <QuickLink to="/school/app/library"    icon={<BookOpen className="w-5 h-5" />}   title={t('home.quick.library.title')} body={t('home.quick.library.body')} />
+        <QuickLink to="/school/app/mapping"    icon={<ClipboardCheck className="w-5 h-5" />} title={t('home.quick.curriculum.title')} body={t('home.quick.curriculum.body')} />
       </section>
 
       {/* Classrooms */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">Classrooms</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">{t('home.classrooms')}</h2>
           <button
             onClick={() => setShowNewForm((v) => !v)}
             className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
           >
-            <Plus className="w-4 h-4" /> New classroom
+            <Plus className="w-4 h-4" /> {t('home.newClassroom')}
           </button>
         </div>
 
         {showNewForm && (
           <form onSubmit={handleCreate} className="bg-white border border-slate-200 rounded-2xl p-4 mb-4 grid sm:grid-cols-[1fr,auto,auto] gap-3 items-end">
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">Class name</span>
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('home.className')}</span>
               <input
                 type="text"
                 required
                 autoFocus
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                placeholder="e.g. Cherry Class"
+                placeholder={t('home.classNamePlaceholder')}
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none"
               />
             </label>
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">Year group</span>
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('home.yearGroup')}</span>
               <input
                 type="text"
                 value={newYearGroup}
                 onChange={(e) => setNewYearGroup(e.target.value)}
-                placeholder="Year 1"
+                placeholder={t('home.yearGroupPlaceholder')}
                 className="w-32 px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none"
               />
             </label>
@@ -319,7 +319,7 @@ export default function SchoolAppHome() {
               disabled={creating}
               className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-60"
             >
-              {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create'}
+              {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : t('home.create')}
             </button>
           </form>
         )}
@@ -331,13 +331,13 @@ export default function SchoolAppHome() {
         ) : classrooms.length === 0 ? (
           <div className="bg-white border border-slate-200 border-dashed rounded-2xl p-10 text-center">
             <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <h3 className="font-bold text-lg mb-1">No classrooms yet</h3>
-            <p className="text-slate-600 text-sm mb-4">Create your first classroom to add students and run assessments.</p>
+            <h3 className="font-bold text-lg mb-1">{t('home.emptyTitle')}</h3>
+            <p className="text-slate-600 text-sm mb-4">{t('home.emptyBody')}</p>
             <button
               onClick={() => setShowNewForm(true)}
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800"
             >
-              <Plus className="w-4 h-4" /> Create classroom
+              <Plus className="w-4 h-4" /> {t('home.createClassroom')}
             </button>
           </div>
         ) : (
@@ -352,15 +352,15 @@ export default function SchoolAppHome() {
                   <div>
                     <div className="font-bold text-lg">{c.name}</div>
                     <div className="text-sm text-slate-500">
-                      {c.year_group ?? '—'} · {c.student_count} student{c.student_count === 1 ? '' : 's'}
+                      {c.year_group ?? '—'} · {t('counts.student', { count: c.student_count })}
                       {c.unassessed_count > 0 && (
-                        <span className="ml-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold uppercase">
-                          {c.unassessed_count} to assess
+                        <span className="ms-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold uppercase">
+                          {t('home.toAssess', { count: c.unassessed_count })}
                         </span>
                       )}
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                  <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors rtl:-scale-x-100" />
                 </div>
                 <LevelMiniBar levelCounts={c.level_counts} total={c.student_count} />
               </Link>
@@ -396,7 +396,7 @@ function ActionRow({ to, text, cta }: { to: string; text: string; cta: string })
     <li className="flex items-center justify-between gap-3 bg-white/70 rounded-lg px-3 py-2">
       <span className="text-amber-900 font-medium">{text}</span>
       <Link to={to} className="inline-flex items-center gap-1 text-amber-900 font-bold text-xs hover:underline whitespace-nowrap">
-        {cta} <ArrowRight className="w-3.5 h-3.5" />
+        {cta} <ArrowRight className="w-3.5 h-3.5 rtl:-scale-x-100" />
       </Link>
     </li>
   );

@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "Rudi mwanzo",
+    "title": "Ufikiaji wa Walimu",
+    "intro": "Weka msimbo ulio kwenye upakuaji wako wa MyPhonicsBooks kutoka TPT ili kufungua maktaba yote — kila kitabu, kila karatasi ya mazoezi, bure.",
+    "noSignup": "Hakuna kujisajili, hakuna barua pepe inayohitajika",
+    "codeLabel": "Msimbo wa vocha",
+    "codePlaceholder": "Weka msimbo wako",
+    "unlocking": "Inafungua…",
+    "unlock": "Fungua maktaba",
+    "footer": "Misimbo huja na kila nyenzo ya MyPhonicsBooks kwenye Teachers Pay Teachers. Si mwalimu? <link>Vinjari maktaba ya wazazi</link>.",
+    "errors": {
+      "empty": "Tafadhali weka msimbo.",
+      "invalid": "Msimbo huo si sahihi au muda wake umeisha.",
+      "generic": "Kuna hitilafu imetokea. Tafadhali jaribu tena."
+    }
+  },
+  "library": {
+    "welcome": "Karibu, mwalimu.",
+    "intro": "Kila kitabu cha MyPhonicsBooks kiko hapa, bure kwa darasa lako. Pakua PDF ya kuchapisha, soma mtandaoni na darasa lako, au chukua karatasi ya mazoezi inayoendana nacho.",
+    "shareCode": "Shiriki msimbo na wenzako — hakuna haja ya kujisajili tena",
+    "levelHeading": "Ngazi {{level}} · {{name}}",
+    "agesRange": "Umri miaka {{range}}",
+    "focus": "Lengo:",
+    "readOnline": "Soma mtandaoni",
+    "worksheetPack": "Kifurushi cha karatasi za mazoezi",
+    "pdfNotFound": "PDF haikupatikana ({{status}})",
+    "downloadFailed": "Upakuaji umeshindikana"
+  }
+}

@@ -1,0 +1,469 @@
+{
+  "backToDashboard": "Back to dashboard",
+  "couldNotSave": "Could not save",
+  "errors": {
+    "downloadUnavailable": "Download unavailable",
+    "unavailable": "Unavailable"
+  },
+  "counts": {
+    "classroom_one": "{{count}} classroom",
+    "classroom_other": "{{count}} classrooms",
+    "student_one": "{{count}} student",
+    "student_other": "{{count}} students",
+    "book_one": "{{count}} book",
+    "book_other": "{{count}} books",
+    "admin_one": "{{count}} admin",
+    "admin_other": "{{count}} admins",
+    "teacher_one": "{{count}} teacher",
+    "teacher_other": "{{count}} teachers"
+  },
+  "block": {
+    "blockOf": "Block {{n}} of {{total}}",
+    "block": "Block {{n}}",
+    "levelReview": "Level review",
+    "reviewGate": "Review · level gate"
+  },
+  "judgement": {
+    "continue": "Continue",
+    "ready_soon": "Ready soon",
+    "needs_support": "Needs support"
+  },
+  "windows": {
+    "autumn1": "Autumn 1",
+    "autumn2": "Autumn 2",
+    "spring1": "Spring 1",
+    "spring2": "Spring 2",
+    "summer1": "Summer 1",
+    "summer2": "Summer 2"
+  },
+  "colours": {
+    "pink": "Pink",
+    "coral": "Coral",
+    "amber": "Amber",
+    "green": "Green",
+    "blue": "Blue",
+    "indigo": "Indigo",
+    "purple": "Purple",
+    "teal": "Teal"
+  },
+  "status": {
+    "complete": "Complete",
+    "inProgress": "In progress",
+    "notStarted": "Not started",
+    "next": "Next",
+    "upcoming": "Upcoming"
+  },
+  "outcomes": {
+    "readyUp": "Ready to move up",
+    "staying": "Staying at level",
+    "intervention": "Needing intervention",
+    "stillToAssess": "Still to assess"
+  },
+  "home": {
+    "loadFailed": "Could not load classrooms",
+    "createFailed": "Could not create classroom",
+    "created": "Classroom created",
+    "seed": {
+      "confirm": "Seed demo data?\n\nThis DELETES every classroom and pupil in this school and replaces them with a demo set. This cannot be undone.\n\nOnly do this on a demo/test school.",
+      "failed": "Seed failed",
+      "done": "Demo data seeded",
+      "doneBody": "{{classrooms}} classrooms, {{students}} students.",
+      "title": "Set up a demo school",
+      "body": "Fills this school with a realistic two-form-entry set — 6 classes, ~160 pupils grouped by level across year groups. Replaces any existing classrooms.",
+      "button": "Seed demo data"
+    },
+    "welcome": "Welcome to {{school}}",
+    "yourSchool": "your school",
+    "firstClassroom": "Let's get your first classroom set up.",
+    "stats": {
+      "total": "Total students",
+      "assessed": "Assessed",
+      "notAssessed": "Not yet assessed",
+      "levelsActive": "Levels active"
+    },
+    "actions": {
+      "title": "Actions needed",
+      "unassessed_one": "{{count}} child not yet assessed",
+      "unassessed_other": "{{count}} children not yet assessed",
+      "stuck_one": "{{count}} child at the same level for 4+ weeks",
+      "stuck_other": "{{count}} children at the same level for 4+ weeks",
+      "stale_one": "{{count}} classroom with no assessment this month",
+      "stale_other": "{{count}} classrooms with no assessment this month",
+      "assess": "Assess",
+      "review": "Review",
+      "open": "Open"
+    },
+    "distribution": "Level distribution across the school",
+    "quick": {
+      "groups": {
+        "title": "Phonics groups",
+        "body": "Group students by level for intervention."
+      },
+      "pathway": {
+        "title": "Teaching pathway",
+        "body": "Sound Book → Blending Book → Storybook."
+      },
+      "library": {
+        "title": "Library",
+        "body": "118 books + worksheets, ready to print."
+      },
+      "curriculum": {
+        "title": "Curriculum",
+        "body": "UK, Gulf, Pakistan, US, IB alignment."
+      }
+    },
+    "classrooms": "Classrooms",
+    "newClassroom": "New classroom",
+    "className": "Class name",
+    "classNamePlaceholder": "e.g. Cherry Class",
+    "yearGroup": "Year group",
+    "yearGroupPlaceholder": "Year 1",
+    "create": "Create",
+    "emptyTitle": "No classrooms yet",
+    "emptyBody": "Create your first classroom to add students and run assessments.",
+    "createClassroom": "Create classroom",
+    "toAssess": "{{count}} to assess"
+  },
+  "dashboard": {
+    "title": "The 8-level curriculum",
+    "intro": "A British phonics progression in a Letters and Sounds style structure — eight levels of Sound Books, Blending Books and Storybooks with matched worksheets, sound mats and tricky word cards.",
+    "levels": "Levels",
+    "resourcesPlanned": "Resources planned",
+    "stats": {
+      "storybooks": "Storybooks",
+      "storybooksHint": "illustrated narratives",
+      "soundBooks": "Sound Books",
+      "soundBooksHint": "real-photo, 1 per GPC",
+      "blendingBooks": "Blending Books",
+      "blendingBooksHint": "A6 pre-storybook practice",
+      "total": "Books total",
+      "totalHint": "across 8 levels"
+    },
+    "nav": {
+      "levels": {
+        "title": "Levels",
+        "body": "{{count}} levels with GPCs, tricky words, full resource plan."
+      },
+      "library": {
+        "title": "Library",
+        "body": "{{count}} storybooks grouped under the new structure."
+      },
+      "mapping": {
+        "title": "Curriculum mapping",
+        "body": "Per-level resource plan, worksheet lifecycle, international equivalents."
+      }
+    },
+    "devNotice": "<b>In development.</b> This preview is admin-only and writes nothing to the database. The parent-facing site at <code>/library</code> and <code>/assessment</code> still runs the original 6-level structure, untouched."
+  },
+  "classroom": {
+    "notFound": "Classroom not found",
+    "notFoundBody": "Classroom not found.",
+    "addFailed": "Could not add student",
+    "added": "{{name}} added",
+    "allClassrooms": "All classrooms",
+    "students": "Students",
+    "takeRegister": "Take register",
+    "addStudent": "Add student",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "dob": "Date of birth",
+    "add": "Add",
+    "empty": "No students yet. Add your first one above.",
+    "viewReport": "View report",
+    "assess": "Assess",
+    "reassess": "Re-assess",
+    "booksTitle": "Books for this class",
+    "booksBody": "Browse all 33 storybooks + worksheets in the <library>school library</library>. Use <groups>Phonics groups</groups> to organise this class by ability level.",
+    "registerTitle": "{{name}} — class register"
+  },
+  "groups": {
+    "title": "Phonics groups",
+    "towards": "towards",
+    "moveFailed": "Could not move student",
+    "moved": "Moved to {{target}}",
+    "unassigned": "unassigned",
+    "intro": "{{students}} grouped by current level — across year groups, the way schools actually teach phonics.",
+    "notYetAssessed": "{{count}} not yet assessed.",
+    "hint": "Drag a name into another group to move them · click a name to open their profile.",
+    "classLabel": "Class:",
+    "allClasses": "All classes",
+    "needsInitial": "Needs initial assessment",
+    "needsInitialBody": "Run the screener to assign each child a starting level.",
+    "registerTitle": "Take the register for this group",
+    "register": "Register",
+    "mixedYears": "Mixed years: {{years}}",
+    "dropHere": "Drop to move here",
+    "emptyLevel": "No students at this level yet.",
+    "emptyTitle": "No students yet",
+    "emptyBody": "Add students to a classroom first, then group them by level here.",
+    "goToClassrooms": "Go to classrooms",
+    "registerDialogTitle": "{{level}} — phonics group",
+    "chipTitle": "{{name}} — drag to move, click for profile"
+  },
+  "windowsPage": {
+    "title": "Assessment Windows",
+    "intro": "Schools assess at entry and in half-termly windows. Between windows, teachers move children through the pathway using professional judgement — children are not formally tested after every book.",
+    "rolling": "Rolling 6-week view",
+    "recent": "Recent assessment activity",
+    "allClasses": "all classes",
+    "assessedLast6": "assessed (last 6 weeks)",
+    "remaining": "{{count}} remaining",
+    "allAssessed": "All assessed",
+    "indicators": "Regrouping indicators",
+    "leadSummary": "Phonics lead summary",
+    "summary": "{{total}} children across {{classes}} classes. {{assessed}} assessed in the last 6 weeks, {{remaining}} still to complete. {{readyUp}} ready to move up, {{intervention}} flagged for intervention.",
+    "regroupingView": "Class regrouping view — children at each level",
+    "openGroups": "Open phonics groups"
+  },
+  "libraryPreview": {
+    "title": "Library — 33 books",
+    "intro": "Same shipped books and PDFs as production, regrouped under the 8-level structure. The pill on each card shows the original (parent-6) sub-level for cross-reference.",
+    "free": "free",
+    "was": "was"
+  },
+  "library": {
+    "downloadFailed": "Download failed",
+    "openFailed": "Could not open",
+    "cats": {
+      "soundBooks": "Sound Books",
+      "blendingBooks": "Blending Books",
+      "storybooks": "Storybooks",
+      "interactive": "Interactive Books",
+      "soundWorksheets": "Sound Book worksheets",
+      "storyPacks": "Storybook worksheet packs",
+      "soundMats": "Sound mats",
+      "trickyCards": "Tricky word cards"
+    },
+    "title": "Library",
+    "intro": "{{count}}+ linked resources across 8 levels — every Sound Book, Blending Book, Storybook, interactive version, worksheet, sound mat and tricky word set, organised by type.",
+    "levelLabel": "Level:",
+    "all": "All",
+    "focus": "Focus:",
+    "eg": "e.g.",
+    "companion": "Companion:",
+    "soundBookWorksheet": "Sound Book worksheet",
+    "playSlides": "Play slides",
+    "onScreen": "On screen",
+    "printBooklet": "Print booklet",
+    "worksheetSoon": "Worksheet soon",
+    "worksheetTitle": "Worksheet:",
+    "soundWorksheetDesc": "Sound formation, word building and sound sorting. Companion to the <book>{{title}}</book>.",
+    "comingSoon": "Coming soon",
+    "blendingDesc": "A6 word-reveal booklet. No separate worksheet — the blending practice is the resource.",
+    "viewBook": "View book",
+    "a5Booklet": "A5 booklet",
+    "a4Sheets": "A4 sheets",
+    "worksheetPack": "Worksheet pack",
+    "interactiveDesc": "Tappable words, phoneme pop-ups, audio, spelling, story ordering, comprehension and writing practice.",
+    "interactiveDescGrammar": "Tappable words, phoneme pop-ups, audio, spelling, story ordering, comprehension, grammar word-order and writing practice.",
+    "openInteractive": "Open interactive",
+    "pack": "pack",
+    "packDesc": "5-page A4 pack: sound hunt, trace and write, read and do, alien words, story-and-draw.",
+    "printWorksheetPack": "Print worksheet pack",
+    "soundMatTitle": "{{level}} Sound Mat",
+    "trickyCardsTitle": "{{level}} Tricky Word Cards",
+    "soundMatDesc": "Cumulative GPC chart showing the sounds taught at this level and earlier levels.",
+    "trickyCardsDesc": "Tricky word cards for the words introduced at this level.",
+    "usedThroughout": "Used throughout the level."
+  },
+  "read": {
+    "unavailable": "That book isn’t available to read yet.",
+    "backToLibrary": "Back to library"
+  },
+  "reports": {
+    "title": "Reports",
+    "intro": "A whole-school view of progress across the British phonics progression.",
+    "tracked": "Pupils tracked",
+    "placed": "Placed by assessment",
+    "atEachLevel": "Children at each level",
+    "glance": "Programme at a glance",
+    "glanceBody": "A complete {{steps}}-step phonics pathway supported by {{resources}}+ linked resources across 8 levels: {{soundBooks}} real-photo Sound Books, {{blendingBooks}} Blending Books, {{storybooks}} illustrated Storybooks, {{interactive}} interactive digital Storybooks, {{worksheets}} matched worksheets, {{mats}} sound mats, {{tricky}} tricky word card sets and {{audio}}+ phoneme audio files.",
+    "viewPathway": "View the learning pathway"
+  },
+  "settings": {
+    "saved": "Settings saved",
+    "codeCopied": "Join code copied",
+    "regenFailed": "Could not regenerate",
+    "regenDone": "New join code generated",
+    "regenDoneBody": "The previous code no longer works.",
+    "title": "Settings",
+    "intro": "Your school details, staff access and academic year.",
+    "joinCode": "Staff join code",
+    "joinCodeBody": "Share this code with your teachers. They sign up at <path>/school/signup</path>, choose “Join with a code”, and are added to {{school}} as a teacher.",
+    "copy": "Copy",
+    "regenerate": "Regenerate",
+    "invitesSoon": "Email invites are coming soon. For now, sharing the code is the quickest way to add staff.",
+    "staff": "Staff",
+    "you": "You",
+    "staffMember": "Staff member",
+    "roles": {
+      "admin": "admin",
+      "teacher": "teacher"
+    },
+    "details": "School details",
+    "schoolName": "School name",
+    "country": "Country",
+    "places": "Pupil places",
+    "academicYear": "Academic year",
+    "save": "Save settings",
+    "yourAccount": "Your account",
+    "administrator": "Administrator",
+    "role": "Role: {{role}}"
+  },
+  "assess": {
+    "notFound": "Student not found",
+    "notFoundBody": "Student not found.",
+    "saveFailed": "Could not save assessment",
+    "updateFailed": "Could not update level",
+    "backToClassroom": "Back to classroom",
+    "title": "Assess {{name}}",
+    "currentLevel": "Current level:",
+    "quickScreener": "Quick screener",
+    "quickScreenerBody": "2 minutes. Have the child read 6 sample words — we'll pinpoint their level.",
+    "manual": "Set level manually",
+    "manualBody": "Already know where they are? Choose the level and add a note.",
+    "screener": "Screener",
+    "screenerBody": "Ask {{name}} to read each word. Tick the ones they read correctly.",
+    "level": "Level {{n}}",
+    "notes": "Notes (optional)",
+    "notesPlaceholder": "Any observations...",
+    "saveRecommend": "Save & recommend level",
+    "manualChoose": "Choose the level that matches {{name}}'s current ability.",
+    "setTo": "Set {{name}} to {{level}}",
+    "saved": "Assessment saved",
+    "nowOn": "{{name}} is now on <b>{{level}}</b>.",
+    "savedBody": "We've stored the result and updated their record. You can re-assess any time."
+  },
+  "profile": {
+    "stepComplete": "Step marked complete",
+    "marked": "Marked “{{label}}”",
+    "noteSaved": "Note saved",
+    "notFound": "Pupil not found.",
+    "backToClass": "Back to class",
+    "snap": {
+      "placement": "Current placement",
+      "block": "Current block",
+      "step": "Current step",
+      "next": "Next resource",
+      "lastAssessed": "Last assessed",
+      "judgement": "Current judgement"
+    },
+    "levelComplete": "Level complete",
+    "readyNextLevel": "Ready for next level",
+    "windowLabel": "{{window}} assessment window",
+    "notYetAssessed": "Not yet assessed",
+    "suggestedAction": "Suggested action:",
+    "suggested": {
+      "continue": "Continue through the current block",
+      "ready_soon": "Nearly ready — prepare for the next block / assessment window",
+      "needs_support": "Provide targeted support before moving on (see support plan)"
+    },
+    "notAssessedBody": "Not yet assessed — run an assessment to place {{name}} on the pathway.",
+    "assessNow": "Assess now",
+    "nextActions": "Next teaching actions",
+    "readNext": "Read next",
+    "printNext": "Print next",
+    "worksheetPackFor": "{{sub}} worksheet pack",
+    "useDuring": "Use during reading",
+    "practise": "Practise",
+    "openInteractive": "Open interactive book",
+    "printA5": "Print A5 booklet",
+    "markComplete": "Mark current step complete",
+    "teacherNoteLabel": "Teacher note:",
+    "wholePathway": "Whole pathway progress",
+    "stepsOf": "{{done}} of {{total}} steps",
+    "teacherJudgement": "Teacher judgement",
+    "judgeDesc": {
+      "continue": "Progressing through the block",
+      "ready_soon": "Nearly ready for next block / level",
+      "needs_support": "Extra practice before moving on"
+    },
+    "teacherNote": "Teacher note",
+    "notePlaceholder": "e.g. Reads sh words confidently but still guesses th words.",
+    "saveNote": "Save note",
+    "supportPlan": "Support plan",
+    "recommended": "Recommended resources",
+    "routine": "Suggested routine",
+    "routineBody": "10 minutes daily: review sound cards · blend 5 words · read 1 page · repeat for 3 days · teacher listens again.",
+    "history": "Assessment window history",
+    "noAssessments": "No assessments recorded yet.",
+    "table": {
+      "window": "Window",
+      "level": "Level placed",
+      "notes": "Notes",
+      "resource": "Resource",
+      "status": "Status",
+      "companion": "Companion"
+    },
+    "initialPlacement": "Initial placement",
+    "wholeSchoolWindow": "Whole-school window",
+    "movement": "Movement:",
+    "completed": "Completed resources",
+    "tally": {
+      "interactive": "Interactive books",
+      "packs": "Worksheet packs",
+      "certificates": "Certificates earned"
+    },
+    "attendance": "Attendance",
+    "noRegister": "No register taken yet.",
+    "present": "present",
+    "attendanceSummary": "{{present}} attended · {{absent}} missed · {{total}} sessions",
+    "homeReading": "Home reading",
+    "homeBook": "Current home book",
+    "format": "Format",
+    "formatValue": "Printable A5 booklet",
+    "linkCopied": "Parent reading link copied",
+    "copyLink": "Copy parent link",
+    "printHome": "Print home booklet",
+    "homeNote": "Shared with parents through the school so home practice matches class teaching.",
+    "companion": {
+      "none": "No companion",
+      "storybook": "Worksheet pack + interactive book"
+    }
+  },
+  "presenter": {
+    "openFailed": "Could not open this book.",
+    "notFound": "Not found ({{status}})",
+    "onScreen": "on screen",
+    "closeEsc": "Close (Esc)"
+  },
+  "soundBookPlay": {
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "steps": {
+      "meet": "Meet the sound",
+      "pop": "Listen",
+      "blend": "Blend it",
+      "hunt": "Sound hunt",
+      "build": "Build a word",
+      "finish": "Finish"
+    },
+    "meetTap": "Tap the letter to hear it",
+    "popTitle": "Tap a picture — can you hear the <g>{{sound}}</g>?",
+    "blendTitle": "Sound it out… then <hl>blend</hl> it!",
+    "nextWord": "Next word",
+    "blendButton": "Blend it!",
+    "huntTitle": "Find the <g>{{sound}}</g>! Tap every picture with the sound.",
+    "allFound": "You found them all!",
+    "foundCount": "Found {{found}} of {{total}}",
+    "buildTitle": "Build the word!",
+    "hearIt": "hear it",
+    "didIt": "You did it!",
+    "learned": "You learned the <g>{{sound}}</g> sound.",
+    "playAgain": "Play again",
+    "done": "Done",
+    "hints": {
+      "s": "Hiss like a snake — ssss",
+      "a": "Open wide — a-a-a",
+      "t": "Tongue tap — t-t-t",
+      "p": "Pop your lips — p-p-p",
+      "i": "Short and quick — i-i-i",
+      "n": "Hum it — nnnn",
+      "m": "Lips together — mmmm",
+      "d": "Tongue tap, voiced — d-d-d",
+      "g": "Back of the throat — g-g-g",
+      "o": "Round mouth — o-o-o"
+    }
+  }
+}

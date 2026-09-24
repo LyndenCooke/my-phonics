@@ -1,0 +1,92 @@
+{
+  "header": {
+    "badge": "Kitaplar Dünyası",
+    "title": "Her kitap sizi bir yere götürür",
+    "lead": "Dünyayı döndürün ve bir bayrağa dokunarak orada yaşayan kitaplarla tanışın — kendi kütüphanemizden ve sizin gibi ailelerin yaptıklarından.",
+    "globe": "Küre",
+    "byLevel": "Seviyeye göre"
+  },
+  "popup": {
+    "tapBook": "Çevrimiçi okumak ya da evde yazdırmak için bir kitaba dokunun."
+  },
+  "shelf": {
+    "booksFrom": "{{country}} kitapları"
+  },
+  "levelN": "Seviye {{level}}",
+  "levelShort": "S{{level}}",
+  "familyMade": "aile yapımı",
+  "untitled": "Adsız",
+  "ownBook": "{{name}} adlı çocuğun kendi kitabı",
+  "chooser": {
+    "readPlay": "Oku ve oyna — her kelimeye dokun",
+    "turnPages": "Sayfaları çevir",
+    "readOnline": "Çevrimiçi oku",
+    "print": "Evde yazdır",
+    "signInToRead": "Bu kitabı okumak için giriş yapın.",
+    "freeInLibrary": "Bu kitap kütüphanede ücretsiz okunabilir.",
+    "openLibrary": "Kütüphaneyi aç",
+    "familyLocked": "Aile yapımı kitaplar Kitaplar Dünyası erişimiyle açılır."
+  },
+  "download": {
+    "notAvailable": "İndirme kullanılamıyor.",
+    "tryAgainSoon": "Birazdan tekrar deneyin.",
+    "failed": "İndirme başarısız oldu",
+    "pdfUnavailable": "PDF dosyası kullanılamıyor"
+  },
+  "wall": {
+    "title": "Sevgi Duvarı",
+    "lead": "Gerçek ailelerden gerçek sözler.",
+    "aParent": "Bir ebeveyn",
+    "readAll": "Duvarın tamamını okuyun"
+  },
+  "cta": {
+    "title": "Bu küredeki bir sonraki bayrak sizin olabilir",
+    "body": "Çocuğunuzun başrolde olduğu, gerçekten çözümlenebilir bir kitap yapın — onun adı, onun evi, onun öyküsü.",
+    "button": "Kitabını oluşturun — {{price}}"
+  },
+  "globe": {
+    "aria": "Her kitabın öyküsünün nerede geçtiğini gösteren küre",
+    "pinTitle_one": "{{country}} — {{count}} kitap",
+    "pinTitle_other": "{{country}} — {{count}} kitap",
+    "zoomIn": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır",
+    "reset": "Küreyi sıfırla",
+    "hint": "döndürmek için sürükleyin · yakınlaştırmak için kaydırın · bir bayrağa dokunun",
+    "alsoFrom": "Ayrıca: {{list}}"
+  },
+  "settings": {
+    "L1_1": "Evde yoğun bir sabah",
+    "L1_2": "Çamurlu bir İngiliz bahçesi",
+    "L1_3": "Yeni bir evcil hayvan eve geliyor",
+    "L1_4": "Evde çamaşır günü yaramazlığı",
+    "L1_5": "Bir İngiliz parkında koşu",
+    "L1_6": "Birleşik Krallık'ta bir koruda macera",
+    "L1_7": "Hareketli bir çarşı",
+    "L1_8": "Nepal'de bir Himalaya köyü",
+    "L1_9": "Pakistan'da bir aile mutfağı",
+    "L1_10": "Trinidad'da bir Karayip bahçesi",
+    "L2_1": "Hava karardıktan sonra bir Japon bahçesi",
+    "L2_2": "İngiliz sokak lezzetleri gece pazarı",
+    "L2_3": "Kenya'nın yaylalarında bir çiftlik",
+    "L2_4": "İngiltere'de bir köy panayırı",
+    "L2_5": "Karlı Reykjavik, İzlanda",
+    "L2_6": "Marakeş tarzı bir gece çarşısı",
+    "L3_1": "Yarışın ortasında Fransız kırsalı",
+    "L3_2": "Bangkok'ta bir gece pazarı",
+    "L3_3": "Akra'da bir konut sitesi",
+    "L3_4": "Seul'de bir resim atölyesi",
+    "L3_5": "Paria Körfezi kıyısı, Port of Spain",
+    "L4_1": "İstanbul sokakları",
+    "L4_2": "Alacakaranlıkta bir İngiliz korusu",
+    "L4_3": "Oaxaca'da bir aile evi",
+    "L4_4": "Putrajaya, Malezya",
+    "L5_1": "Kuzey Londra'da bir Yahudi topluluğu",
+    "L5_2": "Karlı bir Stockholm kışı",
+    "L5_3": "Uçurtma festivali zamanı Jaipur'da bir çatı",
+    "L5_4": "Cartagena'da sabah meyve pazarı",
+    "L6_1": "Kahire'de bir mahalle",
+    "L6_2": "Guilin'de Fener Festivali",
+    "L6_3": "Amalfi Kıyısı'nda uçurum tepesinde bir köy",
+    "L6_4": "Blue Mountains çalılıkları"
+  }
+}

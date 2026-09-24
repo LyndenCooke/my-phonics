@@ -1,0 +1,56 @@
+{
+  "language": {
+    "label": "Language",
+    "choose": "Choose your language",
+    "autoDetected": "Showing MyPhonicsBooks in {{language}}",
+    "autoDetectedHint": "Books and reading words stay in English — that's what your child is learning. Change the language any time with the 文A button.",
+    "readingStaysEnglish": "Reading content stays in English"
+  },
+  "nav": {
+    "learn": "Learn",
+    "library": "Library",
+    "games": "Games",
+    "createBook": "Create a Book",
+    "createBookShort": "Create",
+    "support": "Support",
+    "profile": "Profile",
+    "assess": "Assess",
+    "wallOfLove": "Wall of Love",
+    "shop": "Shop",
+    "worldOfBooks": "World of Books",
+    "forSchools": "For Schools",
+    "schools": "Schools",
+    "home": "Home",
+    "goHome": "Go to Learning Hub home",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar"
+  },
+  "actions": {
+    "signIn": "Sign in",
+    "signInTitle": "Sign In",
+    "signOut": "Sign out",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "close": "Close",
+    "done": "Done",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "download": "Download",
+    "submit": "Submit",
+    "send": "Send",
+    "edit": "Edit",
+    "delete": "Delete",
+    "learnMore": "Learn more",
+    "seeAll": "See all",
+    "skip": "Skip"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "We couldn't reach the server. Check your connection and try again."
+  }
+}

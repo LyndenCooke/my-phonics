@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
+import i18n from '@/i18n';
 import {
   ArrowLeft, CalendarCheck, Check, CheckCircle2, ClipboardCheck, Copy, Dot,
   FileText, Home, LifeBuoy, Loader2, Printer, Sparkles, TrendingUp,
@@ -11,8 +14,9 @@ import { SCHOOL_LEVELS } from '../data/levels';
 import { getSchoolBookById, type SchoolBook } from '../data/bookCatalog';
 import {
   levelStepStatus, completedResourceTally, assessmentWindowForDate, blockOfStep,
-  JUDGEMENT_LABEL, type TeacherJudgement, type PupilStep, type ResolvedStep,
+  type TeacherJudgement, type PupilStep, type ResolvedStep,
 } from '../data/pathway';
+import { focusLabel, judgementLabel, windowLabel } from '../lib/schoolI18n';
 
 type Student = {
   id: string; first_name: string; last_name: string | null; classroom_id: string; school_id: string;
@@ -32,13 +36,8 @@ function parseLevel(s: string | null): number | null {
 }
 function storageKey(subLevel: string): string { return subLevel.replace(/^L/, '').replace('.', '_'); }
 
-const SUGGESTED_ACTION: Record<TeacherJudgement, string> = {
-  continue: 'Continue through the current block',
-  ready_soon: 'Nearly ready — prepare for the next block / assessment window',
-  needs_support: 'Provide targeted support before moving on (see support plan)',
-};
-
 export default function StudentProfile() {
+  const { t } = useTranslation('schoolApp');
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const { memberships } = useSchoolMemberships();
@@ -48,7 +47,7 @@ export default function StudentProfile() {
   // membership check + logging); buckets stay private.
   const dl = async (resource: Parameters<typeof downloadSchoolResource>[0]) => {
     const r = await downloadSchoolResource(resource);
-    if (!r.ok) toast({ title: 'Download failed', description: r.error, variant: 'destructive' });
+    if (!r.ok) toast({ title: t('library.downloadFailed'), description: r.error, variant: 'destructive' });
   };
 
   const [student, setStudent] = useState<Student | null>(null);
@@ -105,7 +104,7 @@ export default function StudentProfile() {
   const patch = async (fields: Record<string, unknown>) => {
     if (!student) return;
     const { error } = await schoolDb.students().update({ ...fields, updated_at: new Date().toISOString() }).eq('id', student.id);
-    if (error) { toast({ title: 'Could not save', description: (error as { message?: string }).message, variant: 'destructive' }); return false; }
+    if (error) { toast({ title: t('couldNotSave'), description: (error as { message?: string }).message, variant: 'destructive' }); return false; }
     setStudent({ ...student, ...fields } as Student);
     return true;
   };
@@ -113,23 +112,23 @@ export default function StudentProfile() {
   const markStepComplete = async () => {
     if (!status || status.isLevelComplete) return;
     const ok = await patch({ pathway_completed: completed + 1 });
-    if (ok) toast({ title: 'Step marked complete', description: status.current?.title });
+    if (ok) toast({ title: t('profile.stepComplete'), description: status.current?.title });
   };
   const setJudgement = async (j: TeacherJudgement) => {
     const ok = await patch({ teacher_judgement: j });
-    if (ok) toast({ title: `Marked “${JUDGEMENT_LABEL[j]}”` });
+    if (ok) toast({ title: t('profile.marked', { label: judgementLabel(t, j) }) });
   };
   const saveNote = async () => {
     setSavingNote(true);
     const ok = await patch({ teacher_note: noteDraft.trim() || null });
     setSavingNote(false);
-    if (ok) toast({ title: 'Note saved' });
+    if (ok) toast({ title: t('profile.noteSaved') });
   };
 
   if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>;
   if (!student) return (
-    <div className="text-center py-20"><p className="text-slate-600 mb-4">Pupil not found.</p>
-      <Link to="/school/app" className="text-pink-600 font-semibold hover:underline">← Back to dashboard</Link></div>
+    <div className="text-center py-20"><p className="text-slate-600 mb-4">{t('profile.notFound')}</p>
+      <Link to="/school/app" className="text-pink-600 font-semibold hover:underline"><span className="inline-block rtl:-scale-x-100">←</span> {t('backToDashboard')}</Link></div>
   );
 
   const fullName = `${student.first_name} ${student.last_name ?? ''}`.trim();
@@ -139,7 +138,7 @@ export default function StudentProfile() {
   return (
     <div className="space-y-6">
       <Link to={`/school/app/classrooms/${student.classroom_id}`} className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900">
-        <ArrowLeft className="w-4 h-4" /> {classroom?.name ?? 'Back to class'}
+        <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {classroom?.name ?? t('profile.backToClass')}
       </Link>
 
       {/* 1. Snapshot */}
@@ -150,20 +149,20 @@ export default function StudentProfile() {
         </header>
         {level ? (
           <div className="p-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm">
-            <Snap label="Current placement" value={`L${level} ${LEVEL_NAME[level]}`} />
-            <Snap label="Current block" value={currentBlock ? (currentBlock.isReview ? 'Level review' : `Block ${currentBlock.blockNumber} of ${currentBlock.totalTeachingBlocks}: ${currentBlock.focusLabel}`) : '—'} />
-            <Snap label="Current step" value={status?.isLevelComplete ? 'Level complete' : (status?.current?.title ?? '—')} />
-            <Snap label="Next resource" value={status?.next?.title ?? (status?.isLevelComplete ? 'Ready for next level' : '—')} />
-            <Snap label="Last assessed" value={lastWindow ? `${lastWindow} assessment window` : 'Not yet assessed'} />
-            <Snap label="Current judgement" value={JUDGEMENT_LABEL[judgement]} />
+            <Snap label={t('profile.snap.placement')} value={`L${level} ${LEVEL_NAME[level]}`} ltr />
+            <Snap label={t('profile.snap.block')} value={currentBlock ? (currentBlock.isReview ? t('block.levelReview') : <>{t('block.blockOf', { n: currentBlock.blockNumber, total: currentBlock.totalTeachingBlocks })}: <bdi dir="ltr" lang="en">{currentBlock.focusLabel}</bdi></>) : '—'} />
+            <Snap label={t('profile.snap.step')} value={status?.isLevelComplete ? t('profile.levelComplete') : <bdi dir="ltr" lang="en">{status?.current?.title ?? '—'}</bdi>} />
+            <Snap label={t('profile.snap.next')} value={status?.next?.title ? <bdi dir="ltr" lang="en">{status.next.title}</bdi> : (status?.isLevelComplete ? t('profile.readyNextLevel') : '—')} />
+            <Snap label={t('profile.snap.lastAssessed')} value={lastWindow ? t('profile.windowLabel', { window: windowLabel(t, lastWindow) }) : t('profile.notYetAssessed')} />
+            <Snap label={t('profile.snap.judgement')} value={judgementLabel(t, judgement)} />
             <div className="sm:col-span-2 lg:col-span-3 mt-1 text-slate-600">
-              <span className="font-semibold text-slate-500">Suggested action:</span> {SUGGESTED_ACTION[judgement]}
+              <span className="font-semibold text-slate-500">{t('profile.suggestedAction')}</span> {t(`profile.suggested.${judgement}`)}
             </div>
           </div>
         ) : (
           <div className="p-5">
-            <p className="text-sm text-amber-700 font-semibold mb-3">Not yet assessed — run an assessment to place {student.first_name} on the pathway.</p>
-            <Link to={`/school/app/students/${student.id}/assess`} className="inline-flex items-center gap-1.5 px-4 py-2 bg-pink-600 text-white text-sm font-semibold rounded-lg hover:bg-pink-700"><ClipboardCheck className="w-4 h-4" /> Assess now</Link>
+            <p className="text-sm text-amber-700 font-semibold mb-3">{t('profile.notAssessedBody', { name: student.first_name })}</p>
+            <Link to={`/school/app/students/${student.id}/assess`} className="inline-flex items-center gap-1.5 px-4 py-2 bg-pink-600 text-white text-sm font-semibold rounded-lg hover:bg-pink-700"><ClipboardCheck className="w-4 h-4" /> {t('profile.assessNow')}</Link>
           </div>
         )}
       </section>
@@ -172,91 +171,91 @@ export default function StudentProfile() {
         <>
           {/* 2. Next teaching actions */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Next teaching actions</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">{t('profile.nextActions')}</h2>
             <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm mb-4">
-              <Snap label="Read next" value={nextStorybook?.title ?? status.next?.title ?? '—'} />
-              <Snap label="Print next" value={nextStorybook ? `${nextStorybook.subLevel} worksheet pack` : '—'} />
-              <Snap label="Use during reading" value={`L${level} Sound Mat`} />
-              <Snap label="Practise" value={currentBlock?.focusLabel ?? '—'} />
+              <Snap label={t('profile.readNext')} value={nextStorybook?.title ?? status.next?.title ?? '—'} ltr />
+              <Snap label={t('profile.printNext')} value={nextStorybook ? t('profile.worksheetPackFor', { sub: nextStorybook.subLevel }) : '—'} />
+              <Snap label={t('profile.useDuring')} value={t('library.soundMatTitle', { level: `L${level}` })} />
+              <Snap label={t('profile.practise')} value={currentBlock ? focusLabel(t, currentBlock.focusLabel) : '—'} ltr={!!currentBlock && !currentBlock.isReview} />
             </div>
             <div className="flex flex-wrap gap-2">
               {nextStorybook && (
                 <>
-                  <Link to={`/school/app/read/${nextStorybook.parent6SubLevel}`} className="inline-flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-4 h-4" /> Open interactive book</Link>
-                  <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (A5 Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print A5 booklet</button>
-                  <button onClick={() => dl({ resourceType: 'worksheet_pack', resourceKey: storageKey(nextStorybook.parent6SubLevel), filename: `${nextStorybook.title} — Worksheets.pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><FileText className="w-4 h-4" /> Print worksheet pack</button>
+                  <Link to={`/school/app/read/${nextStorybook.parent6SubLevel}`} className="inline-flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700"><Sparkles className="w-4 h-4" /> {t('profile.openInteractive')}</Link>
+                  <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (A5 Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> {t('profile.printA5')}</button>
+                  <button onClick={() => dl({ resourceType: 'worksheet_pack', resourceKey: storageKey(nextStorybook.parent6SubLevel), filename: `${nextStorybook.title} — Worksheets.pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><FileText className="w-4 h-4" /> {t('library.printWorksheetPack')}</button>
                 </>
               )}
-              <button onClick={markStepComplete} disabled={status.isLevelComplete} className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50"><CheckCircle2 className="w-4 h-4" /> Mark current step complete</button>
+              <button onClick={markStepComplete} disabled={status.isLevelComplete} className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-50"><CheckCircle2 className="w-4 h-4" /> {t('profile.markComplete')}</button>
             </div>
             {student.teacher_note && (
-              <p className="mt-3 text-sm text-slate-600"><span className="font-semibold text-slate-500">Teacher note:</span> {student.teacher_note}</p>
+              <p className="mt-3 text-sm text-slate-600"><span className="font-semibold text-slate-500">{t('profile.teacherNoteLabel')}</span> {student.teacher_note}</p>
             )}
           </section>
 
           {/* 3. Progression pathway */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><TrendingUp className="w-4 h-4" /> Whole pathway progress</h2>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-4">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><TrendingUp className="w-4 h-4" /> {t('profile.wholePathway')}</h2>
+            <div dir="ltr" className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-4">
               {SCHOOL_LEVELS.map((l) => {
                 const state = l.level < level ? 'complete' : l.level === level ? 'current' : 'upcoming';
                 return (
                   <div key={l.level} className="text-center">
                     <div data-school-level={l.level} className={['rounded-lg py-2 text-white text-xs font-bold', state === 'complete' ? 's-bg-level' : state === 'current' ? 's-bg-level s-ring' : 's-bg-level opacity-25'].join(' ')}>L{l.level}</div>
-                    <div className="text-[10px] text-slate-500 mt-1">{state === 'complete' ? 'Complete' : state === 'current' ? 'In progress' : 'Not started'}</div>
+                    <div className="text-[10px] text-slate-500 mt-1">{state === 'complete' ? t('status.complete') : state === 'current' ? t('status.inProgress') : t('status.notStarted')}</div>
                   </div>
                 );
               })}
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-slate-600 flex-shrink-0">L{level} {LEVEL_NAME[level]}</span>
-              <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
+              <span dir="ltr" lang="en" className="text-sm font-semibold text-slate-600 flex-shrink-0">L{level} {LEVEL_NAME[level]}</span>
+              <div dir="ltr" className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: `${status.total ? (status.completed / status.total) * 100 : 0}%`, backgroundColor: HEX[level] }} />
               </div>
-              <span className="text-sm font-bold text-slate-700 flex-shrink-0">{status.completed} of {status.total} steps</span>
+              <span className="text-sm font-bold text-slate-700 flex-shrink-0">{t('profile.stepsOf', { done: status.completed, total: status.total })}</span>
             </div>
           </section>
 
           {/* 4. Current block table */}
           <section className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
             <header className="px-5 py-3 border-b border-slate-100">
-              <h2 className="font-bold">Current block{currentBlock ? ` — Block ${currentBlock.blockNumber}: ${currentBlock.focusLabel}` : ''}</h2>
+              <h2 className="font-bold">{t('profile.snap.block')}{currentBlock ? <> — {t('block.block', { n: currentBlock.blockNumber })}: <bdi dir="ltr" lang="en">{focusLabel(t, currentBlock.focusLabel)}</bdi></> : ''}</h2>
             </header>
             <BlockTable steps={status.steps.filter((s) => currentBlock && blockOfStep(level, s.step.order)?.blockNumber === currentBlock.blockNumber)} fallback={status.steps} />
           </section>
 
           {/* 6. Teacher judgement */}
           <section className="rounded-2xl border border-slate-200 bg-white p-5">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Teacher judgement</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">{t('profile.teacherJudgement')}</h2>
             <div className="grid sm:grid-cols-3 gap-2 mb-3">
-              <JudgeBtn active={judgement === 'continue'} tone="slate" onClick={() => setJudgement('continue')} title="Continue" desc="Progressing through the block" disabled={!isAdminOrTeacher} />
-              <JudgeBtn active={judgement === 'ready_soon'} tone="emerald" onClick={() => setJudgement('ready_soon')} title="Ready soon" desc="Nearly ready for next block / level" disabled={!isAdminOrTeacher} />
-              <JudgeBtn active={judgement === 'needs_support'} tone="amber" onClick={() => setJudgement('needs_support')} title="Needs support" desc="Extra practice before moving on" disabled={!isAdminOrTeacher} />
+              <JudgeBtn active={judgement === 'continue'} tone="slate" onClick={() => setJudgement('continue')} title={judgementLabel(t, 'continue')} desc={t('profile.judgeDesc.continue')} disabled={!isAdminOrTeacher} />
+              <JudgeBtn active={judgement === 'ready_soon'} tone="emerald" onClick={() => setJudgement('ready_soon')} title={judgementLabel(t, 'ready_soon')} desc={t('profile.judgeDesc.ready_soon')} disabled={!isAdminOrTeacher} />
+              <JudgeBtn active={judgement === 'needs_support'} tone="amber" onClick={() => setJudgement('needs_support')} title={judgementLabel(t, 'needs_support')} desc={t('profile.judgeDesc.needs_support')} disabled={!isAdminOrTeacher} />
             </div>
             <label className="block">
-              <span className="block text-xs font-bold text-slate-600 mb-1">Teacher note</span>
-              <textarea value={noteDraft} onChange={(e) => setNoteDraft(e.target.value)} rows={2} placeholder="e.g. Reads sh words confidently but still guesses th words."
+              <span className="block text-xs font-bold text-slate-600 mb-1">{t('profile.teacherNote')}</span>
+              <textarea value={noteDraft} onChange={(e) => setNoteDraft(e.target.value)} rows={2} placeholder={t('profile.notePlaceholder')}
                 className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 outline-none text-sm" />
             </label>
             <button onClick={saveNote} disabled={savingNote} className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 disabled:opacity-60">
-              {savingNote ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} Save note
+              {savingNote ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} {t('profile.saveNote')}
             </button>
           </section>
 
           {/* 10. Intervention — only if needs support */}
           {judgement === 'needs_support' && currentBlock && (
             <section className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-5">
-              <h2 className="font-bold text-amber-900 flex items-center gap-1.5 mb-2"><LifeBuoy className="w-4 h-4" /> Support plan</h2>
-              <p className="text-sm text-amber-800 mb-2"><span className="font-semibold">Focus:</span> {currentBlock.focusLabel} (L{level} Block {currentBlock.blockNumber})</p>
+              <h2 className="font-bold text-amber-900 flex items-center gap-1.5 mb-2"><LifeBuoy className="w-4 h-4" /> {t('profile.supportPlan')}</h2>
+              <p className="text-sm text-amber-800 mb-2"><span className="font-semibold">{t('library.focus')}</span> <bdi dir="ltr" lang="en">{focusLabel(t, currentBlock.focusLabel)}</bdi> (L{level} {t('block.block', { n: currentBlock.blockNumber })})</p>
               <div className="text-sm text-amber-900">
-                <div className="font-semibold mb-1">Recommended resources</div>
-                <ul className="list-disc list-inside space-y-0.5">
+                <div className="font-semibold mb-1">{t('profile.recommended')}</div>
+                <ul dir="ltr" lang="en" className="list-disc list-inside space-y-0.5 text-start">
                   {status.steps.filter((s) => blockOfStep(level, s.step.order)?.blockNumber === currentBlock.blockNumber).map((s) => <li key={s.resourceId}>{s.title}</li>)}
                 </ul>
               </div>
               <div className="mt-3 text-sm text-amber-900">
-                <div className="font-semibold mb-1">Suggested routine</div>
-                <p>10 minutes daily: review sound cards · blend 5 words · read 1 page · repeat for 3 days · teacher listens again.</p>
+                <div className="font-semibold mb-1">{t('profile.routine')}</div>
+                <p>{t('profile.routineBody')}</p>
               </div>
             </section>
           )}
@@ -265,21 +264,21 @@ export default function StudentProfile() {
 
       {/* 5. Assessment history */}
       <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><ClipboardCheck className="w-4 h-4" /> Assessment window history</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><ClipboardCheck className="w-4 h-4" /> {t('profile.history')}</h2>
         {assessments.length === 0 ? (
-          <p className="text-sm text-slate-500">No assessments recorded yet.</p>
+          <p className="text-sm text-slate-500">{t('profile.noAssessments')}</p>
         ) : (
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="text-[11px] uppercase tracking-wider text-slate-500"><tr><th className="text-left py-1.5">Window</th><th className="text-left py-1.5">Level placed</th><th className="text-left py-1.5">Notes</th></tr></thead>
+                <thead className="text-[11px] uppercase tracking-wider text-slate-500"><tr><th className="text-start py-1.5">{t('profile.table.window')}</th><th className="text-start py-1.5">{t('profile.table.level')}</th><th className="text-start py-1.5">{t('profile.table.notes')}</th></tr></thead>
                 <tbody className="divide-y divide-slate-100">
                   {assessments.map((a, i) => {
-                    const note = (a.payload && typeof a.payload.note === 'string') ? a.payload.note as string : (i === 0 ? 'Initial placement' : 'Whole-school window');
+                    const note = (a.payload && typeof a.payload.note === 'string') ? a.payload.note as string : (i === 0 ? t('profile.initialPlacement') : t('profile.wholeSchoolWindow'));
                     return (
                       <tr key={a.id}>
-                        <td className="py-1.5">{assessmentWindowForDate(a.created_at)} <span className="text-slate-400">· {new Date(a.created_at).toLocaleDateString('en-GB')}</span></td>
-                        <td className="py-1.5 font-semibold">{a.recommended_level ?? '—'}</td>
+                        <td className="py-1.5">{windowLabel(t, assessmentWindowForDate(a.created_at))} <span className="text-slate-400">· {new Date(a.created_at).toLocaleDateString(i18n.language)}</span></td>
+                        <td dir="ltr" className="py-1.5 font-semibold text-start">{a.recommended_level ?? '—'}</td>
                         <td className="py-1.5 text-slate-600">{note}</td>
                       </tr>
                     );
@@ -288,8 +287,8 @@ export default function StudentProfile() {
               </table>
             </div>
             <p className="text-sm text-slate-600 mt-3">
-              <span className="font-semibold text-slate-500">Movement:</span>{' '}
-              {assessments.map((a) => `${assessmentWindowForDate(a.created_at)}: ${a.recommended_level ?? '—'}`).join(' → ')}
+              <span className="font-semibold text-slate-500">{t('profile.movement')}</span>{' '}
+              {assessments.map((a) => `${windowLabel(t, assessmentWindowForDate(a.created_at))}: ${a.recommended_level ?? '—'}`).join(i18n.dir() === 'rtl' ? ' ← ' : ' → ')}
             </p>
           </>
         )}
@@ -299,27 +298,27 @@ export default function StudentProfile() {
         {/* 7. Completed resources */}
         {tally && (
           <section className="rounded-2xl border border-slate-200 bg-white p-5">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">Completed resources</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">{t('profile.completed')}</h2>
             <div className="grid grid-cols-2 gap-y-1.5 text-sm">
-              <Tally label="Sound Books" n={tally.soundBooks} />
-              <Tally label="Blending Books" n={tally.blendingBooks} />
-              <Tally label="Storybooks" n={tally.storybooks} />
-              <Tally label="Interactive books" n={tally.interactive} />
-              <Tally label="Worksheet packs" n={tally.worksheetPacks} />
-              <Tally label="Certificates earned" n={tally.certificates} />
+              <Tally label={t('library.cats.soundBooks')} n={tally.soundBooks} />
+              <Tally label={t('library.cats.blendingBooks')} n={tally.blendingBooks} />
+              <Tally label={t('library.cats.storybooks')} n={tally.storybooks} />
+              <Tally label={t('profile.tally.interactive')} n={tally.interactive} />
+              <Tally label={t('profile.tally.packs')} n={tally.worksheetPacks} />
+              <Tally label={t('profile.tally.certificates')} n={tally.certificates} />
             </div>
           </section>
         )}
 
         {/* Attendance */}
         <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><CalendarCheck className="w-4 h-4" /> Attendance</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><CalendarCheck className="w-4 h-4" /> {t('profile.attendance')}</h2>
           {attStats.total === 0 ? (
-            <p className="text-sm text-slate-500">No register taken yet.</p>
+            <p className="text-sm text-slate-500">{t('profile.noRegister')}</p>
           ) : (
             <div className="flex items-baseline gap-4">
-              <div><span className="text-3xl font-extrabold">{attStats.pct}%</span><span className="text-xs text-slate-500 ml-1">present</span></div>
-              <div className="text-sm text-slate-500">{attStats.present} attended · {attStats.absent} missed · {attStats.total} sessions</div>
+              <div><span className="text-3xl font-extrabold">{attStats.pct}%</span><span className="text-xs text-slate-500 ms-1">{t('profile.present')}</span></div>
+              <div className="text-sm text-slate-500">{t('profile.attendanceSummary', { present: attStats.present, absent: attStats.absent, total: attStats.total })}</div>
             </div>
           )}
         </section>
@@ -328,25 +327,25 @@ export default function StudentProfile() {
       {/* 9. Home reading */}
       {level && nextStorybook && (
         <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><Home className="w-4 h-4" /> Home reading</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5"><Home className="w-4 h-4" /> {t('profile.homeReading')}</h2>
           <div className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm mb-4">
-            <Snap label="Current home book" value={nextStorybook.title} />
-            <Snap label="Format" value="Printable A5 booklet" />
+            <Snap label={t('profile.homeBook')} value={nextStorybook.title} ltr />
+            <Snap label={t('profile.format')} value={t('profile.formatValue')} />
           </div>
           <div className="flex flex-wrap gap-2">
-            <button onClick={() => { navigator.clipboard?.writeText(`${window.location.origin}/library?book=${nextStorybook.slug}`); toast({ title: 'Parent reading link copied' }); }}
-              className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Copy className="w-4 h-4" /> Copy parent link</button>
-            <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (Home Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> Print home booklet</button>
+            <button onClick={() => { navigator.clipboard?.writeText(`${window.location.origin}/library?book=${nextStorybook.slug}`); toast({ title: t('profile.linkCopied') }); }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Copy className="w-4 h-4" /> {t('profile.copyLink')}</button>
+            <button onClick={() => dl({ resourceType: 'storybook', resourceKey: storageKey(nextStorybook.parent6SubLevel), format: 'a4', filename: `${nextStorybook.title} (Home Booklet).pdf` })} className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-50"><Printer className="w-4 h-4" /> {t('profile.printHome')}</button>
           </div>
-          <p className="text-xs text-slate-400 mt-2">Shared with parents through the school so home practice matches class teaching.</p>
+          <p className="text-xs text-slate-400 mt-2">{t('profile.homeNote')}</p>
         </section>
       )}
     </div>
   );
 }
 
-function Snap({ label, value }: { label: string; value: string }) {
-  return <div><span className="text-slate-500">{label}:</span> <span className="font-semibold text-slate-800">{value}</span></div>;
+function Snap({ label, value, ltr }: { label: string; value: React.ReactNode; ltr?: boolean }) {
+  return <div><span className="text-slate-500">{label}:</span> <span className="font-semibold text-slate-800" {...(ltr ? { dir: 'ltr', lang: 'en' } : {})}>{value}</span></div>;
 }
 
 function Tally({ label, n }: { label: string; n: number }) {
@@ -360,7 +359,7 @@ function JudgeBtn({ active, tone, onClick, title, desc, disabled }: { active: bo
     amber: active ? 'bg-amber-500 text-white border-amber-500' : 'bg-white border-slate-200 hover:border-amber-300',
   };
   return (
-    <button onClick={onClick} disabled={disabled} className={`text-left rounded-xl border p-3 transition-colors disabled:opacity-60 ${tones[tone]}`}>
+    <button onClick={onClick} disabled={disabled} className={`text-start rounded-xl border p-3 transition-colors disabled:opacity-60 ${tones[tone]}`}>
       <div className="font-bold text-sm">{title}</div>
       <div className={`text-xs ${active ? 'opacity-90' : 'text-slate-500'}`}>{desc}</div>
     </button>
@@ -368,19 +367,20 @@ function JudgeBtn({ active, tone, onClick, title, desc, disabled }: { active: bo
 }
 
 function BlockTable({ steps, fallback }: { steps: PupilStep[]; fallback: PupilStep[] }) {
+  const { t } = useTranslation('schoolApp');
   const rows = steps.length ? steps : fallback;
   return (
     <table className="w-full text-sm">
       <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-500">
-        <tr><th className="text-left px-5 py-2 w-10">#</th><th className="text-left px-2 py-2">Resource</th><th className="text-left px-2 py-2">Status</th><th className="text-left px-2 py-2">Companion</th></tr>
+        <tr><th className="text-start px-5 py-2 w-10">#</th><th className="text-start px-2 py-2">{t('profile.table.resource')}</th><th className="text-start px-2 py-2">{t('profile.table.status')}</th><th className="text-start px-2 py-2">{t('profile.table.companion')}</th></tr>
       </thead>
       <tbody className="divide-y divide-slate-100">
         {rows.map((s, i) => (
           <tr key={s.resourceId} className={s.status === 'in_progress' ? 'bg-sky-50/60' : ''}>
             <td className="px-5 py-2 text-slate-400 font-mono">{i + 1}</td>
-            <td className="px-2 py-2 font-semibold text-slate-800">{s.title}</td>
+            <td dir="ltr" lang="en" className="px-2 py-2 font-semibold text-slate-800 text-start">{s.title}</td>
             <td className="px-2 py-2"><StatusChip status={s.status} /></td>
-            <td className="px-2 py-2 text-xs text-slate-500">{companionText(s)}</td>
+            <td className="px-2 py-2 text-xs text-slate-500">{companionText(t, s)}</td>
           </tr>
         ))}
       </tbody>
@@ -388,18 +388,19 @@ function BlockTable({ steps, fallback }: { steps: PupilStep[]; fallback: PupilSt
   );
 }
 
-function companionText(s: ResolvedStep): string {
-  if (s.kind === 'sound_book') return 'Sound Book worksheet';
-  if (s.kind === 'blending_book') return 'No companion';
-  return 'Worksheet pack + interactive book';
+function companionText(t: TFunction, s: ResolvedStep): string {
+  if (s.kind === 'sound_book') return t('library.soundBookWorksheet');
+  if (s.kind === 'blending_book') return t('profile.companion.none');
+  return t('profile.companion.storybook');
 }
 
 function StatusChip({ status }: { status: PupilStep['status'] }) {
+  const { t } = useTranslation('schoolApp');
   const map = {
-    complete: { c: 'bg-emerald-100 text-emerald-800', t: 'Complete' },
-    in_progress: { c: 'bg-sky-100 text-sky-800', t: 'In progress' },
-    next: { c: 'bg-pink-100 text-pink-800', t: 'Next' },
-    upcoming: { c: 'bg-slate-100 text-slate-500', t: 'Upcoming' },
+    complete: { c: 'bg-emerald-100 text-emerald-800', t: t('status.complete') },
+    in_progress: { c: 'bg-sky-100 text-sky-800', t: t('status.inProgress') },
+    next: { c: 'bg-pink-100 text-pink-800', t: t('status.next') },
+    upcoming: { c: 'bg-slate-100 text-slate-500', t: t('status.upcoming') },
   }[status];
   return <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${map.c}`}>{status === 'complete' && <Dot className="w-3 h-3" />}{map.t}</span>;
 }

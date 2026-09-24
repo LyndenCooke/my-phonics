@@ -1,0 +1,169 @@
+{
+  "nav": {
+    "library": "Maktaba",
+    "worldOfBooks": "Ulimwengu wa Vitabu"
+  },
+  "errors": {
+    "unreachable": "Huduma ya Create-A-Book haipatikani kwa sasa — subiri kidogo kisha onyesha upya ukurasa.",
+    "noCheckoutLink": "Malipo hayakurudisha kiungo cha kulipia."
+  },
+  "yourChild": "mtoto wako",
+  "intro": {
+    "sampleCover": "Jalada la kitabu cha mfano",
+    "samplePage": "Ukurasa {{n}} wa kitabu cha mfano",
+    "flipHint": "Hadithi nzima ya MyPhonicsBooks, jalada hadi jalada — gusa au telezesha kufungua kurasa",
+    "titleStart": "Mtoto wako,",
+    "titleHighlight": "mhusika mkuu",
+    "lead": "Kitabu halisi cha fonetiki kinachosomeka kwa kutamka sauti — kimeandikwa, kuchorwa na kukaguliwa kwa ajili ya mtoto wako, kwa dakika chache.",
+    "features": {
+      "mainCharacter": {
+        "title": "Mtoto wako ndiye mhusika mkuu",
+        "desc": "Amechorwa kwa mtindo wetu, pamoja na macho ya nukta"
+      },
+      "decodable": {
+        "title": "Kinasomeka kikamilifu kwa kiwango chake",
+        "desc": "Kila neno limekaguliwa dhidi ya sauti anazozijua"
+      },
+      "meetStar": {
+        "title": "Ukurasa wa 'Meet the star' mwishoni",
+        "desc": "Nchi yake, utamaduni wake, alama ya mahali pake"
+      },
+      "share": {
+        "title": "Kishiriki kwenye Ulimwengu wa Vitabu",
+        "desc": "Mwanga kwenye dunia kwa baraka za familia"
+      }
+    },
+    "cta": "Anzisha kitabu chake — {{price}}",
+    "ctaNote": "Kitabu kimoja, chako milele — kihifadhi na ukichapishe."
+  },
+  "child": {
+    "title": "Nyota ni nani?",
+    "randomise": "Jaza kwa nasibu (jaribio)",
+    "randomiseTitle": "Jaza kila hatua kwa data ya majaribio ya nasibu",
+    "lead": "Hii inaunda hadithi, picha, na ukurasa wa wasifu ulio mwishoni.",
+    "firstName": "Jina la kwanza",
+    "firstNamePlaceholder": "mf. Maryam",
+    "age": "Umri",
+    "from": "Mnatoka wapi?",
+    "city": "Jiji / mji",
+    "optional": "(si lazima)",
+    "cityPlaceholder": "mf. Mogadishu, Lagos, Kraków",
+    "familyWorld": "Ulimwengu wa familia yenu",
+    "familyWorldHint": "(utamaduni, chakula, mahali, mila)",
+    "familyWorldPlaceholder": "mf. Sisi ni familia ya Kisomali tunaoishi London — tunapenda suqaar, asubuhi za Idi na kwenda msikitini",
+    "loves": "Anapenda...",
+    "lovesPlaceholder": "paka, mpira wa miguu, kuoka",
+    "faith": "Imani",
+    "faithPlaceholder": "mf. Mwislamu, Mkristo",
+    "lookLike": "Anaonekanaje?",
+    "gender": {
+      "girl": "msichana",
+      "boy": "mvulana"
+    },
+    "skinTones": {
+      "light": "Nyeupe",
+      "lightMedium": "Nyeupe-wastani",
+      "medium": "Wastani",
+      "mediumDark": "Wastani-nyeusi",
+      "dark": "Nyeusi",
+      "veryDark": "Nyeusi sana"
+    },
+    "hairPlaceholder": "Nywele — mf. nywele nyeusi za kipilipili, hijabu, nywele fupi za kahawia",
+    "changePhoto": "Badilisha picha",
+    "addPhoto": "Ongeza picha (si lazima)",
+    "photoAdded": "Picha imeongezwa",
+    "photoPrivacy": "Picha inatumika tu kuchora mhusika wa katuni. Haihifadhiwi, haichapishwi wala haionyeshwi kwa mtu yeyote kamwe."
+  },
+  "level": {
+    "title": "Chagua kiwango na sauti moja kuu",
+    "lead": "Sauti moja inaifanya hadithi iwe huru na ya kufurahisha — inahitaji kutokea mara chache tu.",
+    "notSure": "Huna uhakika wa kiwango? <link>Fanya tathmini ya dakika 3</link>.",
+    "levelN": "Kiwango {{level}}",
+    "focusSound": "Sauti kuu ya kitabu hiki",
+    "longerTitle": "Hadithi ndefu zaidi — kurasa 8 badala ya 6",
+    "longerDesc": "Kurasa mbili zaidi zenye picha, na seti kubwa ya shughuli ya kurasa 20 mwishoni."
+  },
+  "review": {
+    "title": "Karibu tumemaliza!",
+    "lead": "Kagua maelezo, chagua jinsi ungependa kushiriki, nasi tutaanza kuchapisha.",
+    "email": "Barua pepe yako (kwa risiti + kiungo cha kitabu)",
+    "shareTitle": "Shiriki kitabu chetu kwenye Ulimwengu wa Vitabu",
+    "shareBody": "Baada ya ukaguzi mfupi wa timu yetu, familia nyingine zinaweza kusoma kitabu cha {{name}}. Tuunganishe dunia, hadithi moja baada ya nyingine.",
+    "wallTitle": "Tuonyeshe kwenye Ukuta wa Upendo",
+    "wallBody": "Ukurasa wa \"Meet the star\" (mhusika wa katuni tu — kamwe si picha) unaonekana kwenye maonyesho ya jumuiya.",
+    "continueToPayment": "Endelea kwenye malipo"
+  },
+  "pay": {
+    "title": "Tengeneza kitabu cha {{name}}",
+    "oneBook": "Kitabu kimoja maalum · chako milele",
+    "features": {
+      "story": "Hadithi kamili inayosomeka kuhusu sauti \"{{sound}}\"",
+      "longer": "Hadithi ndefu zaidi: kurasa 8 zenye picha + seti kamili zaidi ya shughuli",
+      "hero": "{{name}} amechorwa kama shujaa kwenye kila ukurasa",
+      "qa": "Ukaguzi wa kanuni ya macho + fonetiki kwenye kila ukurasa",
+      "meetStar": "Ukurasa wa familia wa 'Meet the star' mwishoni",
+      "forever": "Kisome papo hapo kwenye skrini, milele"
+    },
+    "button": "Tengeneza kitabu changu — {{price}}",
+    "haveCode": "Una msimbo?",
+    "enterCode": "Weka msimbo",
+    "apply": "Tumia",
+    "devFree": "Tengeneza bure (hali ya majaribio ya dev — bila malipo)"
+  },
+  "generating": {
+    "title": "Tunachora kitabu cha {{name}}",
+    "lead": "Kinaandikwa, kuchorwa na kukaguliwa ukurasa kwa ukurasa — ndiyo, tunakagua hata macho. Acha ukurasa huu wazi; inachukua dakika chache.",
+    "warmingUp": "Tunaandaa rangi...",
+    "failedRetry": "Kuna tatizo dogo — endelea pale kilipoishia (bure)",
+    "needsReviewTitle": "Karibu tayari — ukurasa mmoja unakaguliwa na mtu",
+    "needsReviewBody": "Hadithi na picha za {{name}} zimekamilika, lakini mhariri wetu anataka ukurasa mmoja ukaguliwe kwa mkono kabla ya kuchapishwa. Huna la kufanya — hifadhi kiungo hiki na kitabu kitaonekana hapa mara tu kitakapoidhinishwa, kwa kawaida ndani ya saa chache.",
+    "rejectedTitle": "Hatukuweza kuifanya hadithi hii ifikie kiwango chetu cha ubora.",
+    "rejectedBody": "Salio lako la kitabu halijatumika. Unaweza kujaribu wazo lile lile tena au kuchagua wazo tofauti la hadithi.",
+    "tryAgain": "Jaribu wazo lile lile tena (bure)",
+    "changeIdea": "Badilisha wazo la hadithi (salio linabaki)",
+    "paused": "Kitabu chako kiko salama na kimehifadhiwa. Kinachukua muda kidogo zaidi kuliko kawaida — kitaendelea pale pale kilipoishia, na tutakutumia barua pepe kikiwa tayari."
+  },
+  "ready": {
+    "title": "Kitabu chake kiko tayari!",
+    "madeFor": "Kimetengenezwa kwa ajili ya familia ya {{name}}",
+    "pdfSoon": "PDF za kuchapisha zinakuja hivi karibuni — kwa sasa, furahia kitabu hapa hapa.",
+    "typesetting": "Tunapanga kitabu...",
+    "openPdf": "Fungua kitabu 📕 (PDF kamili ya kitabu cha fonetiki)",
+    "play": "Cheza kitabu shirikishi — gusa kila neno",
+    "readHere": "Kisome hapa — fungua kurasa",
+    "saved": "Kimehifadhiwa kwenye akaunti yako",
+    "addToAccount": "Ongeza kwenye akaunti yangu",
+    "inReview": "Kitabu chako kiko kwa timu yetu kwa ukaguzi mfupi kabla ya kuonekana kwenye Ulimwengu wa Vitabu.",
+    "live": "Kitabu chako kiko hewani kwenye Ulimwengu wa Vitabu!",
+    "unlockTitle": "Fungua Ulimwengu wa Vitabu",
+    "unlockBody": "Soma kila kitabu kilichotengenezwa na familia duniani kote — na kila kitakachotengenezwa baada yako. Malipo mara moja, milele.",
+    "signInNote": "Utahitaji kuingia — hivyo ndivyo ufikiaji wako unavyokufuata na kubaki wako.",
+    "unlockButton": "Fungua ulimwengu — {{price}}, mara moja",
+    "signInUnlockButton": "Ingia ili kufungua ulimwengu — {{price}}",
+    "devUnlock": "dev: fungua bure",
+    "enter": "Ingia kwenye Ulimwengu wa Vitabu"
+  },
+  "progress": {
+    "story": "Tunaandika hadithi ya {{name}}…",
+    "phonics_qa": "Tunahakikisha kila neno linaweza kusomwa katika kiwango hiki…",
+    "plausibility_qa": "Tunahakikisha hadithi inaeleweka kweli…",
+    "story_editor": "Mhariri anasoma hadithi kabla ya kuchora picha…",
+    "directing": "Tunapanga matukio…",
+    "awaiting_imagery_approval": "Hadithi imeidhinishwa — picha zinasubiri ukaguzi wa mwisho…",
+    "hero": "Tunamchora {{name}} kama mhusika wa kitabu…",
+    "scenes": "Tunachora ukurasa wa {{page}} kati ya {{total}}…",
+    "cover": "Tunachora jalada…",
+    "country": "Tunaongeza picha kutoka nchi ya {{name}}…",
+    "editor": "Mhariri anasoma kitabu kilichokamilika…",
+    "assemble": "Tunajalidi kitabu…",
+    "done": "Kitabu chako kiko tayari!",
+    "busy": "Bado tunaendelea — hatua hii huchukua muda kidogo…",
+    "paused": "Kitabu chako kimehifadhiwa salama — kitaendelea hivi karibuni.",
+    "paused_budget": "Inachukua muda kidogo zaidi kuliko kawaida — timu imearifiwa na kitabu chako kitaendelea hivi karibuni.",
+    "paused_provider_credit": "Inachukua muda kidogo zaidi kuliko kawaida — timu imearifiwa na kitabu chako kitaendelea hivi karibuni.",
+    "needs_review": "Karibu tumemaliza — ukurasa mmoja unakaguliwa mara ya mwisho na mtu. Tutakutumia barua pepe punde kitakapokuwa tayari.",
+    "content_rejected": "Hatukuweza kuifanya hadithi hii ifikie kiwango chetu cha ubora. Salio lako la kitabu halijatumika — jaribu wazo hilo tena au chagua jingine.",
+    "repair": "Tunaboresha kurasa chache…",
+    "working": "Tunashughulikia kitabu…"
+  }
+}

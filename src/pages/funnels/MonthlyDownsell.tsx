@@ -1,4 +1,5 @@
 import { Unlock, ArrowRight, Clock } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 
 const LEVEL_COLOURS: Record<number, string> = {
   1: '#E84B8A', 2: '#F5A623', 3: '#4ABD6D',
@@ -13,6 +14,7 @@ interface MonthlyDownsellProps {
 }
 
 export default function MonthlyDownsell({ childName, level, onAccept, onDecline }: MonthlyDownsellProps) {
+  const { t } = useTranslation('funnels');
   const colour = LEVEL_COLOURS[level] || '#E84B8A';
 
   return (
@@ -26,40 +28,41 @@ export default function MonthlyDownsell({ childName, level, onAccept, onDecline 
         </div>
 
         <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
-          Wait &mdash; how about this?
+          {t('monthlyDownsell.title')}
         </h1>
 
         <p className="text-muted-foreground mb-6">
-          Unlock <strong>every book across all 6 levels</strong> for just &pound;4.99/month.
-          Cancel any time.
+          <Trans t={t} i18nKey="monthlyDownsell.body" components={{ b: <strong /> }} />
         </p>
 
         {/* Price highlight */}
         <div className="rounded-xl p-5 mb-6 bg-gradient-to-br from-pink-50 to-amber-50 border border-pink-100">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Clock size={18} className="text-[hsl(var(--primary))]" />
-            <span className="text-sm font-semibold text-[hsl(var(--primary))]">Monthly access</span>
+            <span className="text-sm font-semibold text-[hsl(var(--primary))]">{t('monthlyDownsell.monthlyAccess')}</span>
           </div>
           <p className="text-3xl font-bold text-foreground">
-            &pound;4.99<span className="text-base text-muted-foreground font-normal">/month</span>
+            &pound;4.99<span className="text-base text-muted-foreground font-normal">{t('monthlyDownsell.perMonth')}</span>
           </p>
           <p className="text-sm text-muted-foreground mt-1">
-            All levels. All books. Cancel any time.
+            {t('monthlyDownsell.allLevels')}
           </p>
         </div>
 
-        <ul className="text-left space-y-2 mb-6 text-sm text-muted-foreground">
+        <ul className="text-start space-y-2 mb-6 text-sm text-muted-foreground">
           <li className="flex items-center gap-2">
             <span style={{ color: colour }}>&#10003;</span>
-            Every interactive book across all 6 levels
+            {t('monthlyDownsell.benefitEveryBook')}
           </li>
           <li className="flex items-center gap-2">
             <span style={{ color: colour }}>&#10003;</span>
-            New books added as they're published
+            {t('monthlyDownsell.benefitNewBooks')}
           </li>
           <li className="flex items-center gap-2">
             <span style={{ color: colour }}>&#10003;</span>
-            {childName || 'Your child'} moves up levels as they improve
+            {childName
+              ? t('monthlyDownsell.benefitMoveUpNamed', { name: childName })
+              : t('monthlyDownsell.benefitMoveUpAnon')}
           </li>
         </ul>
 
@@ -68,8 +71,8 @@ export default function MonthlyDownsell({ childName, level, onAccept, onDecline 
           onClick={onAccept}
           className="w-full py-4 bg-gradient-to-r from-[hsl(var(--primary))] to-rose-500 text-white font-bold text-lg rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mb-4"
         >
-          Start for &pound;4.99/month
-          <ArrowRight size={20} />
+          {t('monthlyDownsell.accept')}
+          <ArrowRight size={20} className="rtl:-scale-x-100" />
         </button>
 
         {/* Decline */}
@@ -77,7 +80,7 @@ export default function MonthlyDownsell({ childName, level, onAccept, onDecline 
           onClick={onDecline}
           className="w-full py-3 text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
-          No thanks, just my free book
+          {t('monthlyDownsell.decline')}
         </button>
       </div>
     </div>

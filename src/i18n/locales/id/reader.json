@@ -1,0 +1,168 @@
+{
+  "closeBook": "Tutup buku",
+  "pageAlt": "{{title}} — halaman {{page}}",
+  "pageLoadError": "Halaman ini tidak dapat dimuat.",
+  "pageLoadErrorHint": "Periksa koneksi Anda dan coba lagi.",
+  "pagesUnavailable": "Gambar halaman tidak tersedia",
+  "previousPage": "Halaman sebelumnya",
+  "nextPage": "Halaman berikutnya",
+  "goToPage": "Ke halaman {{page}}",
+  "finishBook": "Selesaikan buku",
+  "tapToHear": "Ketuk untuk mendengar \"{{word}}\"",
+  "flipbook": {
+    "groupAria": "Pratinjau buku — gunakan tombol panah untuk membalik halaman"
+  },
+  "quiz": {
+    "saveFailed": "Gagal menyimpan hasil kuis",
+    "completeAria": "Kuis selesai",
+    "perfect": "Nilai sempurna!",
+    "wellDone": "Bagus sekali!",
+    "scored": "Anda mendapat <b>{{score}}</b> dari <b>{{total}}</b>",
+    "tryAgain": "Coba lagi",
+    "dialogAria": "Kuis: {{title}}",
+    "close": "Tutup kuis",
+    "answerOptions": "Pilihan jawaban",
+    "seeResults": "Lihat hasil",
+    "brilliant": "Luar biasa!",
+    "nearly": "Hampir! Coba lagi lain kali."
+  },
+  "audio": {
+    "playSoundTitle": "Putar bunyi \"{{grapheme}}\"",
+    "playSoundAria": "Putar bunyi untuk grafem {{grapheme}}",
+    "playWordTitle": "Putar \"{{word}}\"",
+    "playWordAria": "Putar kata {{word}}"
+  },
+  "soundMap": {
+    "known": "Sudah dikuasai ({{n}})",
+    "toLearn": "Perlu dipelajari ({{n}})",
+    "notTestedCount": "Belum diuji ({{n}})",
+    "notTested": "Belum diuji",
+    "levelHeading": "Level {{level}}",
+    "levelsNotTested": "Level {{levels}} belum diuji",
+    "status": {
+      "known": "sudah dikuasai",
+      "unknown": "perlu dipelajari",
+      "untested": "belum diuji"
+    },
+    "categories": {
+      "sound_recognition": "Bunyi",
+      "word_reading": "Kata Nyata",
+      "alien_words": "Alien Words (kata rekaan)",
+      "tricky_words": "Tricky Words (kata sulit)",
+      "speedy_reading": "Membaca Cepat",
+      "fluency": "Kelancaran"
+    }
+  },
+  "interactive": {
+    "playSound": "Putar bunyi {{sound}}",
+    "playSoundVariant": "Putar bunyi {{sound}} ({{variant}})",
+    "wordTapToHear": "{{word}}. Ketuk untuk mendengar.",
+    "illustration": "Ilustrasi cerita",
+    "closeImage": "Tutup gambar",
+    "expandIllustration": "Perbesar ilustrasi",
+    "hideHints": "Sembunyikan petunjuk fonik",
+    "showHints": "Tampilkan petunjuk fonik",
+    "checkInPassed": "Cek berkala lulus",
+    "checkInPractise": "Cek berkala — terus berlatih"
+  },
+  "prep": {
+    "tapToHear": "Ketuk masing-masing untuk mendengarnya. Inilah bunyi-bunyi yang akan dilatih anak Anda.",
+    "tapLevel": "Ketuk sebuah level untuk melihat bunyi-bunyinya"
+  },
+  "book": {
+    "level": "Level {{level}}",
+    "levelLabel": "Level {{level}} — {{name}}",
+    "cover": {
+      "swipe": "Geser untuk mulai",
+      "levelSubtitle": "Level {{level}} · {{name}}",
+      "madeFor": "Buku untuk {{hero}} · Level {{level}} · Bunyi \"{{sound}}\""
+    },
+    "sounds": {
+      "title": "Bunyi baru di buku ini",
+      "headsUp": "Perhatian:",
+      "noteUre": "Huruf 'ure' punya dua bunyi! Di akhir kata, bunyinya bisa seperti 'yoor' (seperti pada pure) ATAU seperti 'ur' (seperti pada nature). Keduanya ada di buku ini."
+    },
+    "vocab": {
+      "title": "Kata-Kata Cerita",
+      "hint": "Ketuk kartu untuk mendengar katanya. Semua kata ini ada di dalam cerita."
+    },
+    "story": {
+      "readToMe": "Bacakan untukku",
+      "reading": "Sedang membaca..."
+    },
+    "spotlight": {
+      "tapSound": "Ketuk bunyinya!"
+    },
+    "wordReading": {
+      "title": "Bisakah Kamu Membaca Ini?",
+      "hint": "Ketuk setiap kata untuk menggabungkan bunyinya. Pakai titik-titiknya untuk mengeja bunyi satu per satu."
+    },
+    "tricky": {
+      "title": "Kata Sulit",
+      "hint": "Bunyinya tidak sama dengan tulisannya — hafalkan saja saat melihatnya!"
+    },
+    "alien": {
+      "title": "Kata Alien",
+      "hint": "Bukan kata sungguhan — cukup bunyikan saja!"
+    },
+    "quiz": {
+      "progress": "Pertanyaan {{n}} dari {{total}}",
+      "right": "Hebat!",
+      "wrong": "Belum tepat — yang hijau itu jawabannya!",
+      "next": "Pertanyaan berikutnya"
+    },
+    "correct": "Benar!",
+    "spelling": {
+      "title": "Eja Katanya!",
+      "next": "Kata berikutnya"
+    },
+    "grammar": {
+      "title": "Susun kalimatnya!",
+      "progress": "Kalimat {{n}} dari {{total}}",
+      "next": "Kalimat berikutnya"
+    },
+    "ordering": {
+      "title": "Urutkan Ceritanya!",
+      "hint": "Ketuk dua gambar untuk menukar tempatnya.",
+      "done": "Urutannya sudah benar!",
+      "shuffle": "Acak"
+    },
+    "drawing": {
+      "favourite": "Gambar Bagian Favoritmu",
+      "heroFavourite": "Gambar bagian favorit {{hero}}",
+      "clear": "Hapus"
+    },
+    "writing": {
+      "title": "Latihan Menulis",
+      "hint": "Ketuk satu huruf, lalu tebalkan!"
+    },
+    "checkIn": {
+      "progress": "Cek {{n}} dari {{total}} · Hari {{day}}"
+    },
+    "cert": {
+      "champion": "Juara Membaca!",
+      "great": "Bacaanmu Hebat!",
+      "already": "Sudah Membaca Hari Ini",
+      "day": "Hari {{n}}",
+      "moveUp": "Siap Naik Level!",
+      "mastered": "{{reads}} kali membaca, {{checkIns}} cek lulus. Kamu benar-benar sudah menguasai buku ini!",
+      "fluency": "{{reads}} kali membaca selesai! Beberapa kali lagi membaca di level ini akan membuatmu makin lancar.",
+      "stampUnlocked": "Stempel <b>{{n}} dari {{total}}</b> terbuka! Datang lagi besok untuk stempel {{next}}.",
+      "alreadyEarned": "Kamu sudah dapat stempel hari ini — hebat! Datang lagi besok untuk stempel {{next}}."
+    },
+    "finish": "Selesai"
+  },
+  "custom": {
+    "myBook": "Bukuku",
+    "levelSound": "{{name}} · Bunyi \"{{sound}}\"",
+    "coverAlt": "Sampul",
+    "meetStar": "Kenalan dengan bintang buku ini",
+    "hero": "Tokoh",
+    "nameAge": "{{name}}, umur {{age}}",
+    "from": "Dari:",
+    "loves": "Suka:",
+    "world": "Dunia kami:",
+    "faith": "Iman kami:",
+    "thanks": "Setiap cerita MyPhonicsBooks adalah jendela ke dunia sebuah keluarga. Terima kasih sudah berbagi dunia kalian."
+  }
+}

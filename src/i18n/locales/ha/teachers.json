@@ -1,0 +1,30 @@
+{
+  "access": {
+    "backAria": "Koma shafin farko",
+    "title": "Shiga na Malamai",
+    "intro": "Shigar da lambar da ke cikin abin da kuka sauke na MyPhonicsBooks daga TPT don buɗe dukan ɗakin karatu — kowane littafi, kowace takardar aiki, kyauta.",
+    "noSignup": "Babu rajista, babu buƙatar imel",
+    "codeLabel": "Lambar baucha",
+    "codePlaceholder": "Shigar da lambarku",
+    "unlocking": "Ana buɗewa…",
+    "unlock": "Buɗe ɗakin karatu",
+    "footer": "Ana ba da lambobi tare da kowane kayan MyPhonicsBooks a Teachers Pay Teachers. Ba malami ba ne? <link>Duba ɗakin karatu na iyaye</link>.",
+    "errors": {
+      "empty": "Da fatan za a shigar da lamba.",
+      "invalid": "Wannan lambar ba ta aiki ko wa’adinta ya ƙare.",
+      "generic": "Wani abu ya faru ba daidai ba. Da fatan za a sake gwadawa."
+    }
+  },
+  "library": {
+    "welcome": "Barka da zuwa, malam.",
+    "intro": "Kowane littafin MyPhonicsBooks yana nan, kyauta don ajinku. Sauke PDF da za a buga, karanta ta intanet tare da ajinku, ko ɗauki takardar aikin da ta dace.",
+    "shareCode": "Raba lambar da abokan aikinku — babu buƙatar ƙarin rajista",
+    "levelHeading": "Mataki {{level}} · {{name}}",
+    "agesRange": "Shekaru {{range}}",
+    "focus": "Abin da aka mai da hankali:",
+    "readOnline": "Karanta ta intanet",
+    "worksheetPack": "Kunshin takardun aiki",
+    "pdfNotFound": "Ba a sami PDF ba ({{status}})",
+    "downloadFailed": "Saukewa ya kasa"
+  }
+}

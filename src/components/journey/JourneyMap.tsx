@@ -14,6 +14,7 @@ import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 're
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, BookOpen, Check, Clock, Loader2, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import {
   blockState,
   lessonOutline,
@@ -391,6 +392,7 @@ function ghostCoinStyle(hex: string, inkHex: string): React.CSSProperties {
 
 /** The bobbing "You are here" plaque above the current checkpoint. */
 function HerePlaque({ inkHex, reduced }: { inkHex: string; reduced: boolean }) {
+  const { t } = useTranslation('journey');
   return (
     <motion.span
       className="relative z-10 mb-2"
@@ -401,7 +403,7 @@ function HerePlaque({ inkHex, reduced }: { inkHex: string; reduced: boolean }) {
         className="relative block px-3 py-1 rounded-full text-[10px] font-display font-extrabold uppercase tracking-[0.14em] text-white shadow-lg whitespace-nowrap"
         style={{ backgroundColor: inkHex }}
       >
-        You are here
+        {t('youAreHere')}
         <span
           className="absolute left-1/2 -bottom-[3px] w-2 h-2 -translate-x-1/2 rotate-45"
           style={{ backgroundColor: inkHex }}
@@ -421,11 +423,13 @@ function DayPips({
   dayTotal: number;
   colour: string;
 }) {
+  const { t } = useTranslation('journey');
   return (
     <div
+      dir="ltr"
       className="flex items-center justify-center gap-1.5 mt-1.5"
       role="img"
-      aria-label={`Day ${day} of ${dayTotal}`}
+      aria-label={t('dayOf', { day, total: dayTotal })}
     >
       {Array.from({ length: dayTotal }, (_, i) => (
         <span
@@ -467,14 +471,15 @@ function JourneyHeader({
   const lesson = Math.min(Math.max(currentLesson, 1), model.totalLessons);
   const level = model.levels[position.levelIndex];
   const pct = Math.round((lesson / model.totalLessons) * 100);
+  const { t } = useTranslation('journey');
 
   return (
     <div className="text-center mb-7">
       <p className="text-[11px] font-display font-bold uppercase tracking-[0.28em] text-slate-400">
-        The reading journey
+        {t('kicker')}
       </p>
       <h2 className="mt-1 font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-slate-900">
-        Your road to reading
+        {t('headline')}
       </h2>
       <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/90 border border-slate-200/80 shadow-sm px-4 py-1.5">
         <span
@@ -483,7 +488,7 @@ function JourneyHeader({
           aria-hidden="true"
         />
         <span className="text-xs font-semibold text-slate-600 whitespace-nowrap">
-          Lesson {lesson} of {model.totalLessons}
+          {t('lessonOf', { n: lesson, total: model.totalLessons })}
         </span>
         <span className="text-slate-300" aria-hidden="true">
           ·
@@ -492,18 +497,19 @@ function JourneyHeader({
           className="text-xs font-display font-bold whitespace-nowrap"
           style={{ color: level.meta.inkHex }}
         >
-          Level {level.meta.level} — {level.meta.name}
+          {t('levelDash', { n: level.meta.level, name: level.meta.name })}
         </span>
       </div>
 
       <div className="max-w-lg mx-auto mt-4 px-2">
         <div
+          dir="ltr"
           className="flex items-center gap-1.5"
           role="progressbar"
           aria-valuemin={1}
           aria-valuemax={model.totalLessons}
           aria-valuenow={lesson}
-          aria-label={`Lesson ${lesson} of ${model.totalLessons}, ${pct} percent of the journey`}
+          aria-label={t('progressAria', { n: lesson, total: model.totalLessons, pct })}
         >
           {model.levels.map((l) => {
             const { done, total } = levelProgress(l, lesson);
@@ -523,7 +529,7 @@ function JourneyHeader({
               </div>
             );
           })}
-          <span className="ml-1 text-[11px] font-bold tabular-nums text-slate-500 shrink-0">
+          <span className="ms-1 text-[11px] font-bold tabular-nums text-slate-500 shrink-0">
             {pct}%
           </span>
         </div>
@@ -557,13 +563,14 @@ function LevelCheckpoint({
 }) {
   const { done, total } = levelProgress(level, currentLesson);
   const { hex, inkHex, name, level: num } = level.meta;
+  const { t } = useTranslation('journey');
 
   const stateCopy =
     state === 'complete'
-      ? 'complete'
+      ? t('levelState.complete')
       : state === 'current'
-        ? `current level, ${done} of ${total} lessons`
-        : 'not started yet';
+        ? t('levelState.current', { done, total })
+        : t('levelState.future');
 
   return (
     <div
@@ -592,7 +599,7 @@ function LevelCheckpoint({
           ref={buttonRef}
           type="button"
           onClick={onOpen}
-          aria-label={`Level ${num}, ${name}, ${stateCopy}. Open level map.`}
+          aria-label={t('levelAria', { n: num, name, state: stateCopy })}
           className={`relative rounded-full font-display font-extrabold flex items-center justify-center transition-transform hover:scale-105 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${
             state === 'current' ? 'w-[4.25rem] h-[4.25rem] text-2xl' : 'w-[3.4rem] h-[3.4rem] text-lg'
           }`}
@@ -612,6 +619,7 @@ function LevelCheckpoint({
         </button>
       </motion.span>
       <span
+        lang="en"
         className="mt-2 font-display font-bold text-sm leading-tight"
         style={{ color: state === 'future' ? '#94A3B8' : inkHex }}
       >
@@ -625,20 +633,21 @@ function LevelCheckpoint({
               style={{ width: `${(done / total) * 100}%`, backgroundColor: hex }}
             />
           </span>
-          <span className="mt-1 text-[11px] font-semibold text-slate-500">
-            {done} of {total} lessons
+          <span dir="auto" className="mt-1 text-[11px] font-semibold text-slate-500">
+            {t('lessonsDone', { done, total })}
           </span>
         </>
       ) : state === 'complete' ? (
         <span
+          dir="auto"
           className="mt-1 inline-flex items-center gap-1 text-[11px] font-bold"
           style={{ color: inkHex }}
         >
           <Check className="w-3 h-3" strokeWidth={3.5} aria-hidden="true" />
-          Complete
+          {t('complete')}
         </span>
       ) : (
-        <span className="mt-1 text-[11px] font-medium text-slate-400">{total} lessons</span>
+        <span dir="auto" className="mt-1 text-[11px] font-medium text-slate-400">{t('lessons', { count: total })}</span>
       )}
     </div>
   );
@@ -680,7 +689,7 @@ function OverviewView({
       <JourneyHeader model={model} currentLesson={currentLesson} position={position} />
       <Scene>
         <Scenery glowA={currentHex} glowB={nextHex} reduced={reduced} />
-        <div className={`relative mx-auto ${wide ? 'max-w-4xl h-[470px]' : 'max-w-xl h-[760px]'}`}>
+        <div dir="ltr" className={`relative mx-auto ${wide ? 'max-w-4xl h-[470px]' : 'max-w-xl h-[760px]'}`}>
           <Trail
             points={points}
             colors={colors}
@@ -734,6 +743,7 @@ function LessonPanel({
   const outline = useMemo(() => lessonOutline(row), [row]);
   const { hex, inkHex, name } = level.meta;
   const closeRef = useRef<HTMLButtonElement>(null);
+  const { t } = useTranslation('journey');
 
   useEffect(() => {
     const prevFocus = document.activeElement as HTMLElement | null;
@@ -760,7 +770,7 @@ function LessonPanel({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label={`Lesson outline: ${row.title}`}
+        aria-label={t('panel.aria', { title: row.title })}
         className="relative w-full sm:max-w-lg max-h-[88vh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -770,12 +780,12 @@ function LessonPanel({
             ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Close lesson outline"
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            aria-label={t('panel.close')}
+            className="absolute top-4 end-4 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           >
             <X className="w-5 h-5" aria-hidden="true" />
           </button>
-          <div className="flex items-center gap-4 pr-12">
+          <div className="flex items-center gap-4 pe-12">
             <span
               className="shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center"
               style={{
@@ -797,14 +807,14 @@ function LessonPanel({
               )}
             </span>
             <div className="min-w-0">
-              <h3 className="font-display font-extrabold text-lg leading-tight text-slate-800">
+              <h3 lang="en" className="font-display font-extrabold text-lg leading-tight text-slate-800">
                 {row.title}
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
-                Lesson {row.n} · Level {row.level} {name} · {row.half_term}
+                {t('panel.meta', { n: row.n, level: row.level, name, halfTerm: row.half_term })}
               </p>
               {row.book_title && (
-                <p className="inline-flex items-center gap-1 mt-1 text-xs font-semibold" style={{ color: inkHex }}>
+                <p lang="en" className="inline-flex items-center gap-1 mt-1 text-xs font-semibold" style={{ color: inkHex }}>
                   <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
                   {row.book_title}
                 </p>
@@ -814,14 +824,14 @@ function LessonPanel({
 
           {/* Day tabs */}
           {block.rows.length > 1 && (
-            <div className="flex gap-1.5 mt-4" role="tablist" aria-label="Days this week">
+            <div className="flex gap-1.5 mt-4" role="tablist" aria-label={t('panel.daysTabs')}>
               {block.rows.map((r, i) => (
                 <button
                   key={r.n}
                   type="button"
                   role="tab"
                   aria-selected={i === dayIdx}
-                  aria-label={`Day ${r.day}: ${r.title}`}
+                  aria-label={t('panel.dayTabAria', { day: r.day, title: r.title })}
                   onClick={() => setDayIdx(i)}
                   className="flex-1 min-h-10 rounded-xl text-sm font-display font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   style={
@@ -830,7 +840,7 @@ function LessonPanel({
                       : { backgroundColor: '#F1F5F9', color: '#64748B' }
                   }
                 >
-                  Day {r.day}
+                  {t('panel.dayTab', { day: r.day })}
                 </button>
               ))}
             </div>
@@ -841,10 +851,12 @@ function LessonPanel({
         <div className="px-5 py-4">
           <p className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-3">
             <Clock className="w-3.5 h-3.5" aria-hidden="true" />
-            About {outline.minutes} minutes taught
-            {outline.worksheet.title.startsWith('No worksheet') ? '' : ', then the worksheet'}
+            {outline.worksheet.title.startsWith('No worksheet')
+              ? t('panel.minutes', { minutes: outline.minutes })
+              : t('panel.minutesWorksheet', { minutes: outline.minutes })}
           </p>
-          <ol className="space-y-3">
+          {/* The taught outline comes from the lesson map data, which is English. */}
+          <ol dir="ltr" lang="en" className="space-y-3">
             {outline.steps.map((step) => (
               <li key={step.clock + step.title} className="flex gap-3">
                 <span
@@ -863,7 +875,7 @@ function LessonPanel({
             ))}
           </ol>
           {/* Worksheet follow-up */}
-          <div className="mt-4 rounded-2xl border-2 border-dashed p-3 flex gap-3" style={{ borderColor: `${hex}66` }}>
+          <div dir="ltr" lang="en" className="mt-4 rounded-2xl border-2 border-dashed p-3 flex gap-3" style={{ borderColor: `${hex}66` }}>
             <span
               className="shrink-0 w-12 text-center rounded-lg py-1 text-xs font-bold h-fit"
               style={{ backgroundColor: `${hex}1A`, color: inkHex }}
@@ -908,18 +920,19 @@ function BlockCheckpoint({
   const state = blockState(block, currentLesson);
   const { hex, inkHex } = level.meta;
   const currentRow = state === 'current' ? block.rows[currentLesson - block.firstN] : null;
+  const { t } = useTranslation('journey');
 
   const stateCopy =
-    state === 'complete' ? 'complete' : state === 'current' ? 'you are here' : 'still to come';
+    state === 'complete' ? t('blockState.complete') : state === 'current' ? t('blockState.current') : t('blockState.future');
   const kind = block.isFlag
-    ? 'Assessment'
+    ? t('kind.assessment')
     : block.type === 'keepup'
-      ? 'Keep-up time'
+      ? t('kind.keepup')
       : block.rows.length === 1
-        ? 'Lesson'
+        ? t('kind.lesson')
         : block.isGrapheme
-          ? 'Sound week'
-          : 'Skills week';
+          ? t('kind.soundWeek')
+          : t('kind.skillsWeek');
   // Short graphemes sit inside the circle; longer labels go below it.
   const labelInCircle = block.isGrapheme && block.label.length <= 3;
 
@@ -966,7 +979,7 @@ function BlockCheckpoint({
             onToggle();
           }}
           aria-expanded={isOpen}
-          aria-label={`${kind}: ${block.label}, ${stateCopy}`}
+          aria-label={t('blockAria', { kind, label: block.label, state: stateCopy })}
           className={`relative flex items-center justify-center transition-transform hover:scale-105 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${
             block.isFlag ? 'rounded-xl' : 'rounded-full'
           } ${state === 'current' ? 'w-14 h-14' : 'w-11 h-11'}`}
@@ -1013,8 +1026,8 @@ function BlockCheckpoint({
       {currentRow && (
         <>
           <DayPips day={currentRow.day} dayTotal={currentRow.day_total} colour={inkHex} />
-          <span className="mt-0.5 text-[10px] font-medium text-slate-500">
-            Day {currentRow.day} of {currentRow.day_total}
+          <span dir="auto" className="mt-0.5 text-[10px] font-medium text-slate-500">
+            {t('dayOf', { day: currentRow.day, total: currentRow.day_total })}
           </span>
         </>
       )}
@@ -1054,6 +1067,7 @@ function LevelView({
   const height = wide ? Math.max(rows * 168, 320) : Math.max(rows * 145, 320);
   const { done, total } = levelProgress(level, currentLesson);
   const { hex, inkHex, name, level: num } = level.meta;
+  const { t } = useTranslation('journey');
 
   // Trail fill inside the level: whole blocks travelled, plus the days
   // already done in the current block.
@@ -1082,11 +1096,11 @@ function LevelView({
             e.stopPropagation();
             onBack();
           }}
-          className="inline-flex items-center gap-1.5 min-h-10 px-3.5 py-2 rounded-full bg-white border border-slate-200 shadow-sm text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:-translate-x-0.5 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          aria-label="Back to the whole journey"
+          className="inline-flex items-center gap-1.5 min-h-10 px-3.5 py-2 rounded-full bg-white border border-slate-200 shadow-sm text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:-translate-x-0.5 rtl:hover:translate-x-0.5 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          aria-label={t('backAria')}
         >
-          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-          Whole journey
+          <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" aria-hidden="true" />
+          {t('back')}
         </button>
         <span
           className="shrink-0 w-11 h-11 rounded-full font-display font-extrabold text-lg flex items-center justify-center"
@@ -1097,7 +1111,7 @@ function LevelView({
         </span>
         <div className="min-w-0">
           <h2 className="font-display font-extrabold text-lg leading-tight" style={{ color: inkHex }}>
-            Level {num}: {name}
+            {t('levelTitle', { n: num, name })}
           </h2>
           <div className="flex items-center gap-2 mt-0.5">
             <span className="w-24 h-1.5 rounded-full bg-slate-200 overflow-hidden">
@@ -1107,7 +1121,7 @@ function LevelView({
               />
             </span>
             <p className="text-xs text-slate-500 whitespace-nowrap">
-              {done} of {total} lessons
+              {t('lessonsDone', { done, total })}
             </p>
           </div>
         </div>
@@ -1116,6 +1130,7 @@ function LevelView({
       <Scene>
         <Scenery glowA={hex} glowB={hex} reduced={reduced} />
         <div
+          dir="ltr"
           className={`relative mx-auto ${wide ? 'max-w-4xl' : 'max-w-xl'}`}
           style={{ height: `${height}px` }}
         >
@@ -1164,6 +1179,7 @@ export default function JourneyMap({ currentLesson, animated = true, className }
   const levelButtonRefs = useRef(new Map<number, HTMLButtonElement>());
   const backRef = useRef<HTMLButtonElement>(null);
   const lastOpened = useRef<number | null>(null);
+  const { t } = useTranslation('journey');
 
   const position = useMemo(
     () => (model ? locateLesson(model, currentLesson) : null),
@@ -1183,13 +1199,13 @@ export default function JourneyMap({ currentLesson, animated = true, className }
   if (error) {
     return (
       <p className={`text-sm text-slate-500 text-center py-8 ${className ?? ''}`}>
-        The journey map could not load right now. Please try again shortly.
+        {t('error')}
       </p>
     );
   }
   if (!model || !position) {
     return (
-      <div className={`flex justify-center py-16 ${className ?? ''}`} aria-label="Loading the journey map">
+      <div className={`flex justify-center py-16 ${className ?? ''}`} aria-label={t('loading')}>
         <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
       </div>
     );
@@ -1225,7 +1241,7 @@ export default function JourneyMap({ currentLesson, animated = true, className }
   return (
     <section
       className={`font-sans ${className ?? ''}`}
-      aria-label="Curriculum journey map"
+      aria-label={t('sectionAria')}
       onKeyDown={(e) => {
         if (e.key === 'Escape' && openLevel !== null) {
           lastOpened.current = openLevel;

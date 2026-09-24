@@ -29,6 +29,8 @@
  * ARCH_X / SIGN geometry is MEASURED from the PNG — re-measure if the
  * scene is regenerated. Procedural fallbacks draw if any asset is missing.
  */
+import { useTranslation } from 'react-i18next';
+import { fillLabel, gameTx, labelFont, useLiveT } from '@/games/gameI18n';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { JourneyLevel } from '@/lib/levels8';
@@ -74,10 +76,11 @@ const MARK_NAMES: Record<Mark, string> = {
   '!': 'exclamation mark',
 };
 
-const MARK_TEACH: Record<Mark, string> = {
-  '.': 'It tells us something — telling sentences end with a full stop.',
-  '?': 'It asks — asking sentences end with a question mark.',
-  '!': 'It shouts with feeling — that needs an exclamation mark!',
+// Teaching lines after a miss (games:run.*) — translated at draw time.
+const MARK_TEACH: Record<Mark, 'run.teachFullStop' | 'run.teachQuestion' | 'run.teachExclaim'> = {
+  '.': 'run.teachFullStop',
+  '?': 'run.teachQuestion',
+  '!': 'run.teachExclaim',
 };
 
 const SENTENCES: Record<Mark, string[]> = {
@@ -135,6 +138,9 @@ function pickDistractors(target: string, pool: string[], hardness: number): stri
 }
 
 export default function PunctuationRun({ level, onClose }: Props) {
+  const { t, i18n } = useTranslation('games');
+  const tx = gameTx(i18n);
+  const live = useLiveT(t, i18n);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ended, setEnded] = useState<{ stars: number; newBest: boolean } | null>(null);
   const endedRef = useRef(setEnded);
@@ -251,8 +257,8 @@ export default function PunctuationRun({ level, onClose }: Props) {
         const p = pathPoint(ARCH_X[chosen], 1);
         fx.puff(p.x, p.y - 40, 8, 'rgba(140,100,60,0.5)');
         teach = round.mode === 'word'
-          ? `Not that one — listen again!`
-          : MARK_TEACH[round.target as Mark];
+          ? live.current.t('run.notThatOne')
+          : live.current.t(MARK_TEACH[round.target as Mark]);
         ev.at(0.7, () => { if (round && phase !== 'through') speakWord(round.target); });
         if (hearts <= 0) ev.at(1.4, finish);
       }
@@ -430,15 +436,17 @@ export default function PunctuationRun({ level, onClose }: Props) {
             ? teach
             : round.mode === 'sentence'
               ? `${round.sentence} __`
-              : 'Run through the word you hear';
-          ctx.font = teach || round.mode !== 'sentence' ? `800 24px ${FD}` : `700 27px ${F}`;
+              : live.current.t('run.prompt');
+          const uiLine = !!teach || round.mode !== 'sentence';
+          ctx.font = uiLine ? `800 24px ${labelFont(fontReady)}` : `700 27px ${F}`;
           const bw = Math.min(760, ctx.measureText(msg).width + 60);
           ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.22)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
           ctx.fillStyle = teach ? '#FFF4E8' : 'rgba(255,255,255,0.94)';
           roundRect(ctx, LW / 2 - bw / 2, 16, bw, 46, 23); ctx.fill(); ctx.restore();
           ctx.fillStyle = teach ? '#9A5A1E' : '#26364F';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(msg, LW / 2, 40);
+          if (uiLine) fillLabel(ctx, msg, LW / 2, 40, { weight: 800, size: 24, family: labelFont(fontReady), dir: live.current.dir, maxW: 700 });
+          else ctx.fillText(msg, LW / 2, 40);
           // "hear it again" pill (word rounds)
           if (round.mode === 'word') {
             ctx.save(); ctx.shadowColor = 'rgba(40,30,40,0.2)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
@@ -449,23 +457,22 @@ export default function PunctuationRun({ level, onClose }: Props) {
             ctx.restore();
             ctx.font = `20px ${FD}`; ctx.fillStyle = '#fff';
             ctx.fillText('🔊', LW / 2 - 74, 89);
-            ctx.font = `800 15px ${FD}`; ctx.fillStyle = '#26364F';
-            ctx.fillText('Hear it again', LW / 2 + 16, 89);
+            ctx.fillStyle = '#26364F';
+            fillLabel(ctx, live.current.t('ui.hearItAgain'), LW / 2 + 16, 89, { weight: 800, size: 15, family: labelFont(fontReady), dir: live.current.dir, maxW: 120 });
           }
           // first-timer hint
           if (!steered && phase === 'read' && roundN === 1) {
             const pulse = 0.7 + Math.sin(t * 5) * 0.3;
             ctx.save(); ctx.globalAlpha = pulse;
-            ctx.font = `700 21px ${FD}`;
-            const hint = '👆 Tap a door to run through it!';
+            ctx.font = `700 21px ${labelFont(fontReady)}`;
+            const hint = live.current.t('run.tapDoor');
             const hw = ctx.measureText(hint).width + 44;
             ctx.shadowColor = 'rgba(40,30,40,0.25)'; ctx.shadowBlur = 10; ctx.shadowOffsetY = 4;
             ctx.fillStyle = '#FFFFFF';
             roundRect(ctx, LW / 2 - hw / 2, 452, hw, 44, 16); ctx.fill();
             ctx.restore();
             ctx.fillStyle = '#26364F'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.font = `700 21px ${FD}`;
-            ctx.fillText(hint, LW / 2, 474);
+            fillLabel(ctx, hint, LW / 2, 474, { weight: 700, size: 21, family: labelFont(fontReady), dir: live.current.dir });
           }
         }
         // round progress dots, bottom-left
@@ -516,12 +523,12 @@ export default function PunctuationRun({ level, onClose }: Props) {
   const restart = () => (canvasRef.current as unknown as { __restart?: () => void })?.__restart?.();
 
   return createPortal(
-    <div className="fixed inset-0 z-[70]" style={{ background: '#173049' }}>
+    <div dir="ltr" lang="en" className="fixed inset-0 z-[70]" style={{ background: '#173049' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }} />
       <RotateGate />
       <button
         onClick={onClose}
-        aria-label="Close game"
+        aria-label={t('play.closeGame')}
         className="absolute top-3.5 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center press-scale"
         style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)', top: 'max(0.875rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
       >
@@ -530,28 +537,28 @@ export default function PunctuationRun({ level, onClose }: Props) {
       {ended && (
         <div className="absolute left-1/2 -translate-x-1/2 bottom-8 w-full max-w-xs px-5 flex flex-col gap-2.5">
           <div className="rounded-2xl bg-white/95 px-4 py-3 text-center" style={{ boxShadow: '0 8px 20px rgba(40,30,40,0.2)' }}>
-            <p className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
-              {ended.stars === ROUNDS ? 'Perfect run! 🌟' : `${ended.stars} of ${ROUNDS} doors first try!`}
+            <p {...tx} className="font-display text-lg font-extrabold" style={{ color: level.inkHex }}>
+              {ended.stars === ROUNDS ? t('run.perfect') : t('run.doorsFirstTry', { stars: ended.stars, total: ROUNDS })}
             </p>
             {ended.newBest && ended.stars < ROUNDS && (
-              <p className="font-display text-sm font-extrabold mt-0.5" style={{ color: '#B45309' }}>
-                New best! 🏅
+              <p {...tx} className="font-display text-sm font-extrabold mt-0.5" style={{ color: '#B45309' }}>
+                {t('run.newBest')}
               </p>
             )}
           </div>
           <button
             onClick={restart}
-            className="w-full h-14 rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
+            className="w-full min-h-14 py-2 px-4 leading-tight rounded-2xl font-display text-base font-extrabold text-white active:translate-y-[3px]"
             style={{ background: level.hex, boxShadow: `0 5px 0 ${level.inkHex}` }}
           >
-            Run again
+            <span {...tx}>{t('run.runAgain')}</span>
           </button>
           <button
             onClick={onClose}
-            className="w-full h-12 rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
+            className="w-full min-h-12 py-2 px-4 leading-tight rounded-2xl font-display text-sm font-extrabold bg-white active:translate-y-[3px]"
             style={{ color: level.inkHex, boxShadow: '0 4px 0 rgba(40,30,40,0.15)' }}
           >
-            All done
+            <span {...tx}>{t('ui.allDone')}</span>
           </button>
         </div>
       )}

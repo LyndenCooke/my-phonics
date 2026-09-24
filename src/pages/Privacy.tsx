@@ -1,120 +1,130 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Info } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
+import { setLanguage } from '@/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+const CONTACT_EMAIL = 'hello@myphonicsbooks.com';
+
+const COLLECT_ITEMS = ['email', 'child', 'activity', 'payment', 'analytics'] as const;
+const PROCESSORS = [
+  { id: 'supabase', name: 'Supabase' },
+  { id: 'stripe', name: 'Stripe' },
+  { id: 'vercel', name: 'Vercel' },
+  { id: 'elevenlabs', name: 'ElevenLabs' },
+] as const;
 
 export default function Privacy() {
+  const { t, i18n } = useTranslation('legal');
+  const isEnglish = (i18n.resolvedLanguage ?? i18n.language ?? 'en').startsWith('en');
+  const emailLink = (
+    <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary underline" dir="ltr" />
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-trust-ink hover:text-trust-ink/80 mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to home
-        </Link>
+        <div className="flex items-center justify-between gap-3 mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-sm text-trust-ink hover:text-trust-ink/80"
+          >
+            <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" /> {t('backHome')}
+          </Link>
+          <LanguageSwitcher variant="compact" />
+        </div>
+
+        {!isEnglish && (
+          <div className="mb-6 flex items-start gap-2 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-foreground">
+            <Info className="w-4 h-4 mt-0.5 shrink-0 text-muted-foreground" aria-hidden />
+            <p>
+              {t('notice.text')}{' '}
+              <button
+                type="button"
+                onClick={() => { void setLanguage('en'); }}
+                className="font-semibold text-primary underline"
+              >
+                {t('notice.switch')}
+              </button>
+            </p>
+          </div>
+        )}
 
         <h1 className="font-display text-3xl font-extrabold text-foreground tracking-tight mb-2">
-          Privacy Policy
+          {t('privacy.title')}
         </h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Last updated: April 2026
+          {t('privacy.lastUpdated')}
         </p>
 
         <div className="prose prose-sm max-w-none text-foreground space-y-5">
           <section>
-            <h2 className="text-xl font-bold">Who we are</h2>
-            <p>
-              MyPhonicsBooks is operated by Lynden Cooke. This policy
-              explains what information we collect, why we collect it, and
-              how you can exercise your rights under UK GDPR.
-            </p>
+            <h2 className="text-xl font-bold">{t('privacy.whoWeAre.title')}</h2>
+            <p>{t('privacy.whoWeAre.body')}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Information we collect</h2>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>
-                <strong>Parent email address</strong> — so we can send your
-                child's assessment results, account access, and purchase
-                receipts.
-              </li>
-              <li>
-                <strong>Child's first name and age</strong> — used inside
-                the assessment and learning hub to personalise the
-                experience. We do not share this with third parties.
-              </li>
-              <li>
-                <strong>Assessment answers and reading activity</strong> —
-                so we can recommend the right reading level and show
-                progress over time.
-              </li>
-              <li>
-                <strong>Payment details</strong> — handled by Stripe. We
-                never see or store full card numbers.
-              </li>
-              <li>
-                <strong>Basic analytics</strong> — anonymised page-view and
-                funnel data so we can improve the product.
-              </li>
+            <h2 className="text-xl font-bold">{t('privacy.collect.title')}</h2>
+            <ul className="list-disc ps-5 space-y-1">
+              {COLLECT_ITEMS.map((id) => (
+                <li key={id}>
+                  <Trans
+                    t={t}
+                    i18nKey={`privacy.collect.items.${id}`}
+                    components={{ b: <strong /> }}
+                  />
+                </li>
+              ))}
             </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">How we use your data</h2>
-            <p>
-              We use your information only to provide the service:
-              delivering books, saving progress, processing payments, and
-              sending account-related emails. We do not sell your data and
-              we do not share it with marketing partners.
-            </p>
+            <h2 className="text-xl font-bold">{t('privacy.use.title')}</h2>
+            <p>{t('privacy.use.body')}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Processors we use</h2>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Supabase — database, authentication, file storage</li>
-              <li>Stripe — payment processing</li>
-              <li>Vercel — hosting</li>
-              <li>ElevenLabs — audio synthesis for reading support</li>
+            <h2 className="text-xl font-bold">{t('privacy.processors.title')}</h2>
+            <ul className="list-disc ps-5 space-y-1">
+              {PROCESSORS.map((p) => (
+                <li key={p.id}>
+                  <span dir="ltr">{p.name}</span> — {t(`privacy.processors.items.${p.id}`)}
+                </li>
+              ))}
             </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Your rights</h2>
+            <h2 className="text-xl font-bold">{t('privacy.rights.title')}</h2>
             <p>
-              You can request a copy of your data, ask us to correct it, or
-              ask us to delete your account at any time. Email{' '}
-              <a href="mailto:hello@myphonicsbooks.com" className="text-primary underline">
-                hello@myphonicsbooks.com
-              </a>{' '}
-              and we'll respond within 30 days.
+              <Trans
+                t={t}
+                i18nKey="privacy.rights.body"
+                values={{ email: CONTACT_EMAIL }}
+                components={{ email: emailLink }}
+              />
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Children</h2>
-            <p>
-              Accounts are created by parents or guardians. We never ask
-              children to register themselves, and we never send marketing
-              emails about one child to another family.
-            </p>
+            <h2 className="text-xl font-bold">{t('privacy.children.title')}</h2>
+            <p>{t('privacy.children.body')}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Cookies</h2>
-            <p>
-              We use a small number of essential cookies to keep you signed
-              in. We do not use third-party advertising cookies.
-            </p>
+            <h2 className="text-xl font-bold">{t('privacy.cookies.title')}</h2>
+            <p>{t('privacy.cookies.body')}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold">Contact</h2>
+            <h2 className="text-xl font-bold">{t('privacy.contact.title')}</h2>
             <p>
-              Questions about this policy? Email{' '}
-              <a href="mailto:hello@myphonicsbooks.com" className="text-primary underline">
-                hello@myphonicsbooks.com
-              </a>
-              .
+              <Trans
+                t={t}
+                i18nKey="privacy.contact.body"
+                values={{ email: CONTACT_EMAIL }}
+                components={{ email: emailLink }}
+              />
             </p>
           </section>
         </div>

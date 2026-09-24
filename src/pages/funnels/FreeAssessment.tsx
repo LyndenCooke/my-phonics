@@ -9,6 +9,7 @@ import MonthlyDownsell from './MonthlyDownsell';
 import BookUnlockedModal from '@/components/BookUnlockedModal';
 import { BOOK_CATALOG } from '@/lib/bookCatalog';
 import { JOURNEY_LEVELS, journeyLevelOf } from '@/lib/levels8';
+import { useTranslation } from 'react-i18next';
 
 const HUB_URL = import.meta.env.VITE_HUB_URL || '/library';
 
@@ -21,6 +22,7 @@ type Step = 'assessment' | 'capture' | 'upsell' | 'downsell' | 'unlocked';
 export default function FreeAssessment() {
   useFunnelTracker();
   const navigate = useNavigate();
+  const { t } = useTranslation('funnels');
   const [step, setStep] = useState<Step>('assessment');
   const [level, setLevel] = useState(1);
   const [childName, setChildName] = useState('');
@@ -99,11 +101,11 @@ export default function FreeAssessment() {
         open={true}
         onClose={goToHub}
         onContinue={goToHub}
-        title={firstBook?.title ?? `Level ${level} Book`}
+        title={firstBook?.title ?? t('shared.levelBookFallback', { level })}
         level={level}
         coverUrl={coverUrl}
-        subtitle={`Check ${email} for your login link`}
-        ctaLabel="Browse the Library"
+        subtitle={t('shared.checkEmail', { email })}
+        ctaLabel={t('shared.browseLibrary')}
       />
     </FunnelLayout>
   );
@@ -119,6 +121,7 @@ interface ResultCaptureProps {
 }
 
 function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: ResultCaptureProps) {
+  const { t } = useTranslation('funnels');
   const config = LEVEL_CONFIG[level] || LEVEL_CONFIG[1];
   const [childName, setChildName] = useState(initialChildName);
   const [email, setEmail] = useState(initialEmail);
@@ -151,10 +154,10 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
         }
       );
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Signup failed');
+      if (!res.ok) throw new Error(data.error || t('shared.signupFailed'));
       onSuccess({ childName: childName.trim(), email: email.trim() });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : t('common:errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -171,19 +174,19 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
           <Sparkles size={36} />
         </div>
         <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-1">
-          Their reading level
+          {t('freeAssessment.resultLabel')}
         </p>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-1">
-          Level {level}
+          {t('freeAssessment.level', { level })}
         </h1>
-        <p className="text-sm font-bold mb-3" style={{ color: config.colour }}>
+        <p className="text-sm font-bold mb-3" style={{ color: config.colour }} dir="ltr" lang="en">
           {config.name}
         </p>
         <div
           className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-white text-sm font-bold"
           style={{ backgroundColor: config.colour }}
         >
-          <Sparkles size={14} /> Free book unlocked
+          <Sparkles size={14} /> {t('freeAssessment.freeUnlocked')}
         </div>
       </div>
 
@@ -193,10 +196,10 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
         className="bg-white/80 backdrop-blur-md border border-white/30 shadow-xl rounded-2xl p-6"
       >
         <p className="text-base font-bold text-foreground mb-1 text-center">
-          Save your results & get your book
+          {t('freeAssessment.saveTitle')}
         </p>
         <p className="text-xs text-muted-foreground mb-4 text-center">
-          We'll email a login link so the book is yours to keep.
+          {t('shared.loginLinkKeep')}
         </p>
 
         <div className="space-y-3">
@@ -204,14 +207,14 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
             type="text"
             value={childName}
             onChange={(e) => setChildName(e.target.value)}
-            placeholder="Child's first name (optional)"
+            placeholder={t('shared.childNameOptional')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
           />
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email address"
+            placeholder={t('shared.emailPlaceholder')}
             className="w-full px-4 py-3.5 rounded-xl border-2 border-pink-200 bg-white text-foreground placeholder:text-muted-foreground focus:border-[hsl(var(--primary))] focus:ring-4 focus:ring-pink-500/10 outline-none transition-all"
             required
           />
@@ -222,7 +225,7 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
               onChange={(e) => setConsent(e.target.checked)}
               className="mt-0.5 w-4 h-4 rounded border-pink-300 text-[hsl(var(--primary))] focus:ring-pink-500/20"
             />
-            <span>I agree to receive free phonics resources by email. Unsubscribe any time.</span>
+            <span>{t('shared.consent')}</span>
           </label>
 
           {error && <p className="text-sm text-destructive text-center">{error}</p>}
@@ -235,7 +238,7 @@ function ResultCapture({ level, initialChildName, initialEmail, onSuccess }: Res
             {loading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
-              <>Send Me My Free Book <ArrowRight size={20} /></>
+              <>{t('shared.sendFreeBook')} <ArrowRight size={20} className="rtl:-scale-x-100" /></>
             )}
           </button>
         </div>

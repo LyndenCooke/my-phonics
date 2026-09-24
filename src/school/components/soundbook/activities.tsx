@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, RotateCcw, Volume2 } from 'lucide-react';
+import { useTranslation, Trans } from 'react-i18next';
 import {
   type SoundBookContent, type Theme,
   playPhoneme, playWord, soundOutThenBlend, imgFor, distractorsWithout,
@@ -12,6 +13,15 @@ export interface ActivityProps {
   onCelebrate: () => void;
 }
 
+/** i18n for the play surface. `t` is taken by the colour theme here, so the
+ *  translator is `tr`; `tx` gives translated lines their own dir/lang inside
+ *  the LTR English island. Graphemes are interpolated inside <bdi lang="en">. */
+function usePlayText() {
+  const { t: tr, i18n } = useTranslation('schoolApp');
+  const tx = { dir: i18n.dir(), lang: i18n.language } as const;
+  return { tr, tx };
+}
+
 const spring = { type: 'spring' as const, stiffness: 380, damping: 26 };
 const shuffle = <T,>(a: T[]) => a.map((v) => [Math.random(), v] as const).sort((x, y) => x[0] - y[0]).map(([, v]) => v);
 
@@ -21,8 +31,9 @@ function WordImg({ word, className }: { word: string; className?: string }) {
 }
 
 function Title({ children, t }: { children: React.ReactNode; t: Theme }) {
-  return <motion.h2 initial={{ y: -16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={spring}
-    className="text-center font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-800 mb-4 md:mb-8 px-6">{children}</motion.h2>;
+  const { tx } = usePlayText();
+  return <motion.h2 {...tx} initial={{ y: -16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={spring}
+    className="text-center font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-800 mb-4 md:mb-8 px-6 text-balance">{children}</motion.h2>;
 }
 
 // Render a word with its focus grapheme in the accent colour.
@@ -39,6 +50,7 @@ function FocusWord({ word, g, accent, className }: { word: string; g: string; ac
 
 /* ── 1. MEET THE SOUND ─────────────────────────────────────────────────────── */
 export function MeetTheSound({ content, t, onCelebrate }: ActivityProps) {
+  const { tr, tx } = usePlayText();
   const [pulse, setPulse] = useState(0);
   useEffect(() => { const id = setTimeout(() => { playPhoneme(content.grapheme); onCelebrate(); }, 450); return () => clearTimeout(id); }, [content.grapheme, onCelebrate]);
   return (
@@ -57,20 +69,21 @@ export function MeetTheSound({ content, t, onCelebrate }: ActivityProps) {
         <span className="absolute bottom-5 right-6 bg-white/25 rounded-full p-2"><Volume2 className="w-7 h-7" /></span>
       </motion.button>
       <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-        className="text-center text-xl sm:text-2xl font-bold text-slate-600 px-8">{content.hint}</motion.p>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className={`text-sm font-bold uppercase tracking-wider ${t.accentText}`}>Tap the letter to hear it</motion.p>
+        {...tx} className="text-center text-xl sm:text-2xl font-bold text-slate-600 px-8">{tr(`soundBookPlay.hints.${content.grapheme}`, { defaultValue: content.hint })}</motion.p>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} {...tx} className={`text-sm font-bold uppercase tracking-wider text-center px-6 ${t.accentText}`}>{tr('soundBookPlay.meetTap')}</motion.p>
     </div>
   );
 }
 
 /* ── 2. PICTURE POP ────────────────────────────────────────────────────────── */
 export function PicturePop({ content, t, onCelebrate }: ActivityProps) {
+  const { tr } = usePlayText();
   const [done, setDone] = useState<Record<string, boolean>>({});
   const all = Object.keys(done).length === content.words.length;
   useEffect(() => { if (all) onCelebrate(); }, [all, onCelebrate]);
   return (
     <div className="flex-1 flex flex-col">
-      <Title t={t}>Tap a picture — can you hear the <span className={t.accentText}>{content.grapheme}</span>?</Title>
+      <Title t={t}><Trans t={tr} i18nKey="soundBookPlay.popTitle" values={{ sound: content.grapheme }} components={{ g: <bdi lang="en" className={t.accentText} /> }} /></Title>
       <div className="flex-1 grid grid-cols-2 gap-4 sm:gap-6 max-w-3xl w-full mx-auto place-content-center">
         {content.words.map((w, i) => (
           <motion.button key={w} onClick={() => { soundOutThenBlend(w); setDone((d) => ({ ...d, [w]: true })); }}
@@ -92,6 +105,7 @@ export function PicturePop({ content, t, onCelebrate }: ActivityProps) {
 
 /* ── 3. BLEND IT ───────────────────────────────────────────────────────────── */
 export function BlendIt({ content, t, onCelebrate }: ActivityProps) {
+  const { tr, tx } = usePlayText();
   const [wi, setWi] = useState(0);
   const [phase, setPhase] = useState<'segments' | 'blending' | 'reveal'>('segments');
   const word = content.words[wi];
@@ -109,7 +123,7 @@ export function BlendIt({ content, t, onCelebrate }: ActivityProps) {
 
   return (
     <div className="flex-1 flex flex-col">
-      <Title t={t}>Sound it out… then <span className={t.accentText}>blend</span> it!</Title>
+      <Title t={t}><Trans t={tr} i18nKey="soundBookPlay.blendTitle" components={{ hl: <span className={t.accentText} /> }} /></Title>
       <div className="flex-1 flex flex-col items-center justify-center gap-10">
         <AnimatePresence mode="wait">
           {phase !== 'reveal' ? (
@@ -133,11 +147,11 @@ export function BlendIt({ content, t, onCelebrate }: ActivityProps) {
 
         {phase === 'reveal' ? (
           <motion.button initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} onClick={next} whileTap={{ scale: 0.95 }}
-            className={`${t.bubble} text-white font-extrabold text-xl px-10 py-4 rounded-full shadow-lg`}>Next word →</motion.button>
+            className={`${t.bubble} text-white font-extrabold text-xl px-10 py-4 rounded-full shadow-lg`}><span {...tx}>{tr('soundBookPlay.nextWord')}</span> <span aria-hidden>→</span></motion.button>
         ) : (
           <motion.button onClick={blend} whileTap={{ scale: 0.95 }} disabled={phase === 'blending'}
             animate={{ scale: phase === 'segments' ? [1, 1.05, 1] : 1 }} transition={{ duration: 1.4, repeat: Infinity }}
-            className="bg-slate-900 text-white font-extrabold text-xl px-10 py-4 rounded-full shadow-lg disabled:opacity-60">Blend it!</motion.button>
+            {...tx} className="bg-slate-900 text-white font-extrabold text-xl px-10 py-4 rounded-full shadow-lg disabled:opacity-60">{tr('soundBookPlay.blendButton')}</motion.button>
         )}
         <div className="flex gap-2">{content.words.map((_, i) => (
           <span key={i} className={`h-2 rounded-full transition-all ${i === wi ? `w-8 ${t.accentBg}` : 'w-2 bg-slate-300'}`} />
@@ -149,6 +163,7 @@ export function BlendIt({ content, t, onCelebrate }: ActivityProps) {
 
 /* ── 4. SOUND HUNT ─────────────────────────────────────────────────────────── */
 export function SoundHunt({ content, t, onCelebrate }: ActivityProps) {
+  const { tr, tx } = usePlayText();
   const targets = content.words.slice(0, 3);
   const grid = useMemo(() => shuffle([
     ...targets.map((w) => ({ w, isTarget: true })),
@@ -168,7 +183,7 @@ export function SoundHunt({ content, t, onCelebrate }: ActivityProps) {
 
   return (
     <div className="flex-1 flex flex-col">
-      <Title t={t}>Find the <span className={t.accentText}>{content.grapheme}</span>! Tap every picture with the sound.</Title>
+      <Title t={t}><Trans t={tr} i18nKey="soundBookPlay.huntTitle" values={{ sound: content.grapheme }} components={{ g: <bdi lang="en" className={t.accentText} /> }} /></Title>
       <div className="flex-1 grid grid-cols-3 gap-3 sm:gap-5 max-w-4xl w-full mx-auto place-content-center">
         {grid.map((cell, i) => {
           const isFound = found[cell.w];
@@ -189,8 +204,10 @@ export function SoundHunt({ content, t, onCelebrate }: ActivityProps) {
           );
         })}
       </div>
-      <motion.p key={foundCount} initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-center mt-4 font-extrabold text-xl text-slate-600">
-        {win ? '🎉 You found them all!' : `Found ${foundCount} of ${targets.length}`}
+      <motion.p {...tx} key={foundCount} initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-center mt-4 font-extrabold text-xl text-slate-600">
+        {win
+          ? <><span aria-hidden>🎉</span> {tr('soundBookPlay.allFound')}</>
+          : tr('soundBookPlay.foundCount', { found: foundCount, total: targets.length })}
       </motion.p>
     </div>
   );
@@ -198,6 +215,7 @@ export function SoundHunt({ content, t, onCelebrate }: ActivityProps) {
 
 /* ── 5. BUILD THE WORD ─────────────────────────────────────────────────────── */
 export function BuildTheWord({ content, t, onCelebrate }: ActivityProps) {
+  const { tr, tx } = usePlayText();
   const [wi, setWi] = useState(0);
   const word = content.words[wi];
   const target = word.split('');
@@ -227,11 +245,11 @@ export function BuildTheWord({ content, t, onCelebrate }: ActivityProps) {
 
   return (
     <div className="flex-1 flex flex-col">
-      <Title t={t}>Build the word!</Title>
+      <Title t={t}>{tr('soundBookPlay.buildTitle')}</Title>
       <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         <div className="flex flex-col items-center gap-3">
           <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white rounded-3xl shadow-lg flex items-center justify-center p-4"><WordImg word={word} className="max-w-full max-h-full object-contain" /></div>
-          <button onClick={() => playWord(word)} className={`flex items-center gap-1.5 text-sm font-bold ${t.accentText}`}><Volume2 className="w-4 h-4" /> hear it</button>
+          <button onClick={() => playWord(word)} className={`flex items-center gap-1.5 text-sm font-bold ${t.accentText}`}><Volume2 className="w-4 h-4" /> <span {...tx}>{tr('soundBookPlay.hearIt')}</span></button>
         </div>
         <div className="flex flex-col items-center gap-8">
           <motion.div animate={status === 'wrong' ? { x: [0, -10, 10, -8, 8, 0] } : {}} transition={{ duration: 0.45 }} className="flex gap-3">
@@ -255,7 +273,7 @@ export function BuildTheWord({ content, t, onCelebrate }: ActivityProps) {
             {status === 'win' && (
               <motion.button initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 onClick={() => setWi((i) => (i + 1) % content.words.length)} whileTap={{ scale: 0.95 }}
-                className={`${t.bubble} text-white font-extrabold text-lg px-8 py-3 rounded-full shadow-lg`}>Next word →</motion.button>
+                className={`${t.bubble} text-white font-extrabold text-lg px-8 py-3 rounded-full shadow-lg`}><span {...tx}>{tr('soundBookPlay.nextWord')}</span> <span aria-hidden>→</span></motion.button>
             )}
           </AnimatePresence>
         </div>
@@ -266,6 +284,7 @@ export function BuildTheWord({ content, t, onCelebrate }: ActivityProps) {
 
 /* ── 6. STAR FINISH ────────────────────────────────────────────────────────── */
 export function StarFinish({ content, t, onCelebrate, onReplay, onClose }: ActivityProps & { onReplay: () => void; onClose: () => void }) {
+  const { tr, tx } = usePlayText();
   useEffect(() => { onCelebrate(); }, [onCelebrate]);
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-8 text-center px-6">
@@ -273,13 +292,13 @@ export function StarFinish({ content, t, onCelebrate, onReplay, onClose }: Activ
         className={`${t.bubble} text-white rounded-full shadow-2xl flex items-center justify-center`} style={{ width: 'min(48vw, 16rem)', height: 'min(48vw, 16rem)' }}>
         <motion.span animate={{ rotate: [0, 8, -8, 0] }} transition={{ duration: 3, repeat: Infinity }} style={{ fontSize: 'min(26vw, 9rem)' }}>⭐</motion.span>
       </motion.div>
-      <motion.h2 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="font-black text-3xl sm:text-5xl text-slate-800">You did it!</motion.h2>
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl text-slate-600 font-bold">
-        You learned the <span className={t.accentText}>{content.grapheme}</span> sound.
+      <motion.h2 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} {...tx} className="font-black text-3xl sm:text-5xl text-slate-800 text-balance">{tr('soundBookPlay.didIt')}</motion.h2>
+      <motion.p {...tx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-xl text-slate-600 font-bold text-balance">
+        <Trans t={tr} i18nKey="soundBookPlay.learned" values={{ sound: content.grapheme }} components={{ g: <bdi lang="en" className={t.accentText} /> }} />
       </motion.p>
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="flex gap-4 flex-wrap justify-center">
-        <button onClick={onReplay} className="flex items-center gap-2 bg-white text-slate-700 font-extrabold text-lg px-8 py-3 rounded-full shadow"><RotateCcw className="w-5 h-5" /> Play again</button>
-        <button onClick={onClose} className={`${t.bubble} text-white font-extrabold text-lg px-10 py-3 rounded-full shadow-lg`}>Done</button>
+        <button onClick={onReplay} className="flex items-center gap-2 bg-white text-slate-700 font-extrabold text-lg px-8 py-3 rounded-full shadow"><RotateCcw className="w-5 h-5" /> <span {...tx}>{tr('soundBookPlay.playAgain')}</span></button>
+        <button onClick={onClose} className={`${t.bubble} text-white font-extrabold text-lg px-10 py-3 rounded-full shadow-lg`}><span {...tx}>{tr('soundBookPlay.done')}</span></button>
       </motion.div>
     </div>
   );

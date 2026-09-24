@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, ChevronRight, X, BookOpen } from 'lucide-react';
 import { LEVELS } from '@/lib/types';
 
@@ -29,8 +30,9 @@ export default function BookUnlockedModal({
   level,
   coverUrl,
   subtitle,
-  ctaLabel = 'Continue to Library',
+  ctaLabel,
 }: BookUnlockedModalProps) {
+  const { t } = useTranslation('prompts');
   const [animateIn, setAnimateIn] = useState(false);
   const levelInfo = LEVELS.find(l => l.level === level);
 
@@ -77,7 +79,8 @@ export default function BookUnlockedModal({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/20 text-white flex items-center justify-center hover:bg-black/40 transition-colors"
+          aria-label={t('common:actions.close')}
+          className="absolute top-3 end-3 z-10 w-8 h-8 rounded-full bg-black/20 text-white flex items-center justify-center hover:bg-black/40 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -86,13 +89,14 @@ export default function BookUnlockedModal({
         <div className={`${LEVEL_COLORS[level]} px-6 pt-6 pb-4 text-center text-white`}>
           <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full mb-3">
             <Sparkles className="w-4 h-4" />
-            <span className="text-xs font-bold uppercase tracking-wide">Book Unlocked!</span>
+            <span className="text-xs font-bold uppercase tracking-wide">{t('bookUnlocked.badge')}</span>
           </div>
           <h2 className="text-2xl font-extrabold tracking-tight">
-            Your free book is ready
+            {t('bookUnlocked.title')}
           </h2>
           <p className="text-sm opacity-90 mt-1">
-            Level {level} — {levelInfo?.name}
+            {t('bookUnlocked.level', { level })}
+            {levelInfo?.name ? <> — <span dir="ltr" lang="en">{levelInfo.name}</span></> : null}
           </p>
         </div>
 
@@ -113,7 +117,7 @@ export default function BookUnlockedModal({
               </div>
             )}
           </div>
-          <p className="text-center font-bold text-foreground text-lg mt-3">{title}</p>
+          <p className="text-center font-bold text-foreground text-lg mt-3" dir="ltr" lang="en">{title}</p>
           {subtitle && (
             <p className="text-center text-xs text-muted-foreground mt-1">{subtitle}</p>
           )}
@@ -125,7 +129,7 @@ export default function BookUnlockedModal({
             onClick={onContinue}
             className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl ${LEVEL_COLORS[level]} text-white font-bold text-base shadow-button active:scale-[0.97] transition-transform duration-200`}
           >
-            {ctaLabel} <ChevronRight className="w-4 h-4" />
+            {ctaLabel ?? t('bookUnlocked.continue')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
           </button>
         </div>
       </div>

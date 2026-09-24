@@ -3,6 +3,8 @@ import { QuizQuestion } from '@/lib/types';
 import { CheckCircle2, XCircle, ArrowRight, RotateCcw, Star, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Trans, useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 
 interface ComprehensionQuizProps {
   questions: QuizQuestion[];
@@ -16,6 +18,7 @@ interface ComprehensionQuizProps {
 export default function ComprehensionQuiz({
   questions, bookId, bookTitle, levelColor, onComplete, onClose,
 }: ComprehensionQuizProps) {
+  const { t } = useTranslation('reader');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -60,14 +63,14 @@ export default function ComprehensionQuiz({
       if (!res.ok) {
         const error = await res.json();
         console.error('Failed to save quiz:', error);
-        toast.error('Failed to save quiz results');
+        toast.error(i18n.t('reader:quiz.saveFailed'));
         return false;
       }
       
       return true;
     } catch (err) {
       console.error('Error saving quiz:', err);
-      toast.error('Failed to save quiz results');
+      toast.error(i18n.t('reader:quiz.saveFailed'));
       return false;
     } finally {
       setIsSaving(false);
@@ -126,20 +129,24 @@ export default function ComprehensionQuiz({
         className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center p-8 text-center"
         role="dialog"
         aria-modal="true"
-        aria-label="Quiz complete"
+        aria-label={t('quiz.completeAria')}
       >
         <div className={`w-20 h-20 rounded-2xl ${isPerfect ? 'bg-tint-green' : 'bg-tint-pink'} flex items-center justify-center mb-4`}>
           <Star className={`w-10 h-10 ${isPerfect ? 'text-level-3' : 'text-primary'}`} />
         </div>
         <h2 className="text-2xl font-extrabold text-foreground mb-2">
-          {isPerfect ? 'Perfect Score!' : 'Well done!'}
+          {isPerfect ? t('quiz.perfect') : t('quiz.wellDone')}
         </h2>
         <p className="text-muted-foreground mb-2">
-          You scored <span className="font-extrabold text-foreground">{score}</span> out of{' '}
-          <span className="font-extrabold text-foreground">{questions.length}</span>
-          <span className="text-sm text-muted-foreground ml-1">({percentage}%)</span>
+          <Trans
+            t={t}
+            i18nKey="quiz.scored"
+            values={{ score, total: questions.length }}
+            components={{ b: <span className="font-extrabold text-foreground" /> }}
+          />
+          <span className="text-sm text-muted-foreground ms-1">({percentage}%)</span>
         </p>
-        <p className="text-sm text-muted-foreground mb-6">{bookTitle}</p>
+        <p dir="ltr" lang="en" className="text-sm text-muted-foreground mb-6">{bookTitle}</p>
 
         <div className="flex gap-3">
           <button
@@ -152,14 +159,14 @@ export default function ComprehensionQuiz({
             ) : (
               <RotateCcw className="w-4 h-4" />
             )}
-            Try Again
+            {t('quiz.tryAgain')}
           </button>
           <button
             onClick={onClose}
             disabled={isSaving}
             className="flex items-center gap-2 px-5 py-3 rounded-xl gradient-primary text-primary-foreground font-bold text-sm shadow-button active:scale-[0.97] transition-transform duration-200 disabled:opacity-50"
           >
-            Done
+            {t('common:actions.done')}
           </button>
         </div>
       </div>
@@ -171,22 +178,24 @@ export default function ComprehensionQuiz({
       className="fixed inset-0 z-50 bg-background flex flex-col"
       role="dialog"
       aria-modal="true"
-      aria-label={`Quiz: ${bookTitle}`}
+      aria-label={t('quiz.dialogAria', { title: bookTitle })}
     >
       <div className="px-4 py-3 border-b border-border bg-card shadow-card flex items-center justify-between">
         <button 
           onClick={onClose} 
           className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Close quiz"
+          aria-label={t('quiz.close')}
         >
-          Close
+          {t('common:actions.close')}
         </button>
-        <span className="text-xs font-bold text-muted-foreground">
+        <span dir="ltr" className="text-xs font-bold text-muted-foreground">
           {currentIndex + 1} / {questions.length}
         </span>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      {/* The question, answers and feedback are the child's reading —
+          English, LTR. Only the chrome around them is translated. */}
+      <div dir="ltr" lang="en" className="flex-1 flex flex-col items-center justify-center px-6">
         <p 
           className="font-child text-xl font-bold text-foreground text-center mb-8 leading-relaxed"
           aria-live="polite"
@@ -197,7 +206,7 @@ export default function ComprehensionQuiz({
         <div 
           className="w-full max-w-sm space-y-3"
           role="radiogroup"
-          aria-label="Answer options"
+          aria-label={t('quiz.answerOptions')}
         >
           {question.options.map((option) => {
             let optionStyle = 'bg-card border border-border text-foreground shadow-card';
@@ -238,20 +247,22 @@ export default function ComprehensionQuiz({
             className="mt-6 animate-slide-up"
             aria-live="polite"
           >
-            <p className={`text-center font-bold mb-4 ${isCorrect ? 'text-level-3' : 'text-destructive'}`}>
-              {isCorrect ? 'Brilliant!' : 'Nearly! Have another go next time.'}
+            <p dir="auto" lang={i18n.language} className={`text-center font-bold mb-4 ${isCorrect ? 'text-level-3' : 'text-destructive'}`}>
+              {isCorrect ? t('quiz.brilliant') : t('quiz.nearly')}
             </p>
             <button
               onClick={handleNext}
               disabled={isSaving}
+              dir={i18n.dir()}
+              lang={i18n.language}
               className="flex items-center gap-2 px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-bold mx-auto shadow-button active:scale-[0.97] transition-transform duration-200 disabled:opacity-50"
             >
               {isSaving ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <>
-                  {currentIndex < questions.length - 1 ? 'Next' : 'See Results'}
-                  <ArrowRight className="w-4 h-4" />
+                  {currentIndex < questions.length - 1 ? t('common:actions.next') : t('quiz.seeResults')}
+                  <ArrowRight className="w-4 h-4 rtl:-scale-x-100" />
                 </>
               )}
             </button>

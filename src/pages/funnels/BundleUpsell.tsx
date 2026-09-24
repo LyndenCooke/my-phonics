@@ -1,4 +1,5 @@
 import { Check, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const LEVEL_COLOUR: Record<number, string> = {
   1: '#E84B8A', 2: '#F5A623', 3: '#4ABD6D',
@@ -7,13 +8,15 @@ const LEVEL_COLOUR: Record<number, string> = {
 
 // One representative cover per level — the first book in each progression.
 // Stored under /public/covers/{level}_{sub}_cover.jpg.
-const LEVEL_COVERS: { level: number; src: string; alt: string }[] = [
-  { level: 1, src: '/covers/1_1_cover.jpg', alt: 'Level 1 — Tap! Tap! Tap!' },
-  { level: 2, src: '/covers/2_1_cover.jpg', alt: 'Level 2 — The Night Light' },
-  { level: 3, src: '/covers/3_1_cover.jpg', alt: 'Level 3 — The Big Bike Race' },
-  { level: 4, src: '/covers/4_1_cover.jpg', alt: 'Level 4 — The Purple Purse' },
-  { level: 5, src: '/covers/5_1_cover.jpg', alt: 'Level 5 — Before the Shore' },
-  { level: 6, src: '/covers/6_1_cover.jpg', alt: 'Level 6 — My Marvellous Home' },
+// `title` is the English book title (never translated); the alt text around
+// it is built at render time with t('bundleUpsell.coverAlt').
+const LEVEL_COVERS: { level: number; src: string; title: string }[] = [
+  { level: 1, src: '/covers/1_1_cover.jpg', title: 'Tap! Tap! Tap!' },
+  { level: 2, src: '/covers/2_1_cover.jpg', title: 'The Night Light' },
+  { level: 3, src: '/covers/3_1_cover.jpg', title: 'The Big Bike Race' },
+  { level: 4, src: '/covers/4_1_cover.jpg', title: 'The Purple Purse' },
+  { level: 5, src: '/covers/5_1_cover.jpg', title: 'Before the Shore' },
+  { level: 6, src: '/covers/6_1_cover.jpg', title: 'My Marvellous Home' },
 ];
 
 const ALL_BOOKS_PRICE = '49.99';
@@ -28,14 +31,15 @@ interface BundleUpsellProps {
 }
 
 export default function BundleUpsell({ childName, level, onAccept, onDecline }: BundleUpsellProps) {
+  const { t } = useTranslation('funnels');
   const accent = LEVEL_COLOUR[level] || LEVEL_COLOUR[1];
 
   const benefits = [
-    `All ${ALL_BOOKS_TOTAL} interactive books across all 6 levels`,
-    'Comprehension quizzes after every story',
-    'Progress tracking across the whole library',
-    'Yours forever — no subscription',
-    'Stories from around the world',
+    t('bundleUpsell.benefitAllBooks', { count: ALL_BOOKS_TOTAL }),
+    t('bundleUpsell.benefitQuizzes'),
+    t('bundleUpsell.benefitProgress'),
+    t('bundleUpsell.benefitForever'),
+    t('bundleUpsell.benefitWorld'),
   ];
 
   return (
@@ -45,7 +49,7 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
             inside the bundle. The child's current level is highlighted with
             a coloured ring so the upgrade story is "you're here → all this". */}
         <div className="grid grid-cols-3 gap-2 mb-6">
-          {LEVEL_COVERS.map(({ level: lv, src, alt }) => (
+          {LEVEL_COVERS.map(({ level: lv, src, title }) => (
             <div
               key={lv}
               className="relative rounded-lg overflow-hidden bg-white shadow-md"
@@ -56,12 +60,13 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
             >
               <img
                 src={src}
-                alt={alt}
+                alt={t('bundleUpsell.coverAlt', { level: lv, title })}
                 className="w-full aspect-[3/4] object-cover"
                 loading="lazy"
               />
               <div
-                className="absolute top-1 left-1 text-[10px] font-extrabold text-white px-1.5 py-0.5 rounded shadow"
+                dir="ltr"
+                className="absolute top-1 start-1 text-[10px] font-extrabold text-white px-1.5 py-0.5 rounded shadow"
                 style={{ backgroundColor: LEVEL_COLOUR[lv] }}
               >
                 L{lv}
@@ -71,11 +76,13 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
         </div>
 
         <h1 className="text-xl sm:text-2xl font-extrabold text-foreground mb-2">
-          Want to unlock all the books?
+          {t('bundleUpsell.title')}
         </h1>
 
         <p className="text-muted-foreground text-sm mb-1">
-          {ALL_BOOKS_TOTAL} books, every level — for {childName || 'your child'} to grow into.
+          {childName
+            ? t('bundleUpsell.subtitleNamed', { count: ALL_BOOKS_TOTAL, name: childName })
+            : t('bundleUpsell.subtitleAnon', { count: ALL_BOOKS_TOTAL })}
         </p>
 
         {/* Price */}
@@ -83,11 +90,11 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
           <span className="text-4xl font-extrabold" style={{ color: accent }}>
             &pound;{ALL_BOOKS_PRICE}
           </span>
-          <span className="text-muted-foreground text-sm ml-2">one-time</span>
+          <span className="text-muted-foreground text-sm ms-2">{t('bundleUpsell.oneTime')}</span>
         </div>
 
         {/* Benefits */}
-        <ul className="text-left space-y-3 mb-8">
+        <ul className="text-start space-y-3 mb-8">
           {benefits.map((benefit, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
               <Check size={18} className="shrink-0 mt-0.5" style={{ color: accent }} />
@@ -101,8 +108,8 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
           onClick={onAccept}
           className="w-full py-4 bg-gradient-to-r from-[hsl(var(--primary))] to-rose-500 text-white font-bold text-lg rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mb-4"
         >
-          Yes — unlock all books &pound;{ALL_BOOKS_PRICE}
-          <ArrowRight size={20} />
+          {t('bundleUpsell.accept', { price: ALL_BOOKS_PRICE })}
+          <ArrowRight size={20} className="rtl:-scale-x-100" />
         </button>
 
         {/* Decline */}
@@ -110,7 +117,7 @@ export default function BundleUpsell({ childName, level, onAccept, onDecline }: 
           onClick={onDecline}
           className="w-full py-3 text-muted-foreground hover:text-foreground text-sm font-semibold transition-colors"
         >
-          No thanks, just give me my free book
+          {t('bundleUpsell.decline')}
         </button>
       </div>
     </div>

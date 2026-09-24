@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { AlertTriangle, LayoutDashboard, BookOpen, ListChecks, Globe2, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './school.css';
 
 /**
@@ -10,28 +11,29 @@ import './school.css';
  * nothing leaks back into production styling.
  */
 export default function SchoolLayout() {
+  const { t } = useTranslation('schoolPublic');
   return (
     <div className="school-app min-h-screen bg-slate-50 text-slate-900">
       <div className="school-app__banner">
         <AlertTriangle className="w-4 h-4" />
-        <span>School version · in development</span>
+        <span>{t('layout.devBanner')}</span>
         <span className="hidden sm:inline">·</span>
-        <Link to="/admin" className="hidden sm:inline">Back to admin</Link>
+        <Link to="/admin" className="hidden sm:inline">{t('layout.backToAdmin')}</Link>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6">
           <Link to="/school/preview" className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-pink-500" />
-            <span className="font-extrabold text-lg">MyPhonicsBooks <span className="text-slate-500 font-medium">/ Schools preview</span></span>
+            <span className="font-extrabold text-lg"><span dir="ltr">MyPhonicsBooks</span> <span className="text-slate-500 font-medium">{t('layout.schoolsPreview')}</span></span>
           </Link>
         </header>
 
         <nav className="flex gap-1 mb-6 overflow-x-auto pb-1">
-          <SchoolNavLink to="/school/preview" end icon={<LayoutDashboard className="w-4 h-4" />}>Overview</SchoolNavLink>
-          <SchoolNavLink to="/school/preview/levels" icon={<ListChecks className="w-4 h-4" />}>Levels</SchoolNavLink>
-          <SchoolNavLink to="/school/preview/library" icon={<BookOpen className="w-4 h-4" />}>Library</SchoolNavLink>
-          <SchoolNavLink to="/school/preview/mapping" icon={<Globe2 className="w-4 h-4" />}>Curriculum mapping</SchoolNavLink>
+          <SchoolNavLink to="/school/preview" end icon={<LayoutDashboard className="w-4 h-4" />}>{t('layout.nav.overview')}</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/levels" icon={<ListChecks className="w-4 h-4" />}>{t('layout.nav.levels')}</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/library" icon={<BookOpen className="w-4 h-4" />}>{t('layout.nav.library')}</SchoolNavLink>
+          <SchoolNavLink to="/school/preview/mapping" icon={<Globe2 className="w-4 h-4" />}>{t('layout.nav.mapping')}</SchoolNavLink>
         </nav>
 
         <main>

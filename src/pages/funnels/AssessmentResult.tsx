@@ -1,5 +1,6 @@
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
+import { useTranslation, Trans } from 'react-i18next';
 
 // Journey-8 name + colour per level, sourced from the journey source of truth.
 const LEVEL_CONFIG: Record<number, { colour: string; name: string }> =
@@ -12,6 +13,7 @@ interface AssessmentResultProps {
 }
 
 export default function AssessmentResult({ childName, level, onContinue }: AssessmentResultProps) {
+  const { t } = useTranslation('funnels');
   const config = LEVEL_CONFIG[level] || LEVEL_CONFIG[1];
 
   return (
@@ -26,14 +28,16 @@ export default function AssessmentResult({ childName, level, onContinue }: Asses
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-          Well done{childName ? `, ${childName}` : ''}!
+          {childName ? t('assessmentResult.wellDoneNamed', { name: childName }) : t('assessmentResult.wellDone')}
         </h1>
 
         <p className="text-muted-foreground mb-6">
-          {childName || 'Your child'} is at{' '}
-          <strong style={{ color: config.colour }}>
-            Level {level}: {config.name}
-          </strong>
+          <Trans
+            t={t}
+            i18nKey={childName ? 'assessmentResult.isAtNamed' : 'assessmentResult.isAtAnon'}
+            values={{ name: childName, level, levelName: config.name }}
+            components={{ b: <strong style={{ color: config.colour }} /> }}
+          />
         </p>
 
         {/* Free book unlock banner */}
@@ -42,10 +46,12 @@ export default function AssessmentResult({ childName, level, onContinue }: Asses
           style={{ backgroundColor: config.colour }}
         >
           <p className="font-bold text-lg mb-1">
-            You've unlocked 1 free interactive book!
+            {t('assessmentResult.unlocked')}
           </p>
           <p className="text-white/80 text-sm">
-            A Level {level} book matched to exactly what {childName || 'they'} can read.
+            {childName
+              ? t('assessmentResult.matchedNamed', { level, name: childName })
+              : t('assessmentResult.matchedAnon', { level })}
           </p>
         </div>
 
@@ -53,8 +59,8 @@ export default function AssessmentResult({ childName, level, onContinue }: Asses
           onClick={onContinue}
           className="w-full py-4 bg-gradient-to-r from-[hsl(var(--primary))] to-rose-500 text-white font-bold text-lg rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
         >
-          Continue
-          <ArrowRight size={20} />
+          {t('common:actions.continue')}
+          <ArrowRight size={20} className="rtl:-scale-x-100" />
         </button>
       </div>
     </div>
