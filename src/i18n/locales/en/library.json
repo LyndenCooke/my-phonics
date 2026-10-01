@@ -133,7 +133,10 @@
       "book": "Book worksheets",
       "singleSound": "Single-sound sheets — {{sounds}}",
       "singleSoundRest": "Single-sound sheets — the rest of the alphabet",
-      "singleSoundSpecial": "Single-sound sheets — special friends"
+      "singleSoundSpecial": "Single-sound sheets — special friends",
+      "forged": "Worksheets",
+      "forgedMore": "More practice",
+      "forgedExtra": "Extra sounds"
     },
     "soundSheet": "Sound {{sound}}"
   },

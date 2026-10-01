@@ -16,6 +16,7 @@ import { CATALOG } from '../blocks/blocks.mjs';
 import { geminiJSON } from './llm.mjs';
 import { composeRecipe } from './compose.mjs';
 import { ensureClipart } from '../content/artgen.mjs';
+import { SENTENCES } from '../content/sentences.mjs';
 
 // Height budget: 297 − 16 margins − 24 header − 8 namebar − 8 footer − gaps
 // leaves ~226mm. We deliberately compose a little OVER that (estimates run
@@ -156,6 +157,24 @@ function validSentences({ level, grapheme, rand, count }) {
   }
   const out = [];
   const usedWords = new Set();
+  // 1) Curated, meaningful sentences first (content/sentences.mjs): the gap
+  //    word is the only word that fits and the sentence means something.
+  //    Generic frames filled with any noun ("My hay is the best in town")
+  //    read as nonsense — Lynden 2026-09-21.
+  //    Any target-sound word with a curated sentence qualifies (adjectives
+  //    like "enormous" too), target-sound words before off-sound fallbacks.
+  const onSound = pickWords({ level, grapheme, count: count * 6, rand }).filter((w) => SENTENCES[w]);
+  const curatedPool = [...new Set([...onSound, ...nouns])];
+  for (const w of curatedPool) {
+    if (out.length >= count) break;
+    const options = shuffle([...(SENTENCES[w] ?? [])], rand);
+    const s = options.find((t) => sentenceViolations(t, level).length === 0);
+    if (s) {
+      out.push({ sentence: s, word: w });
+      usedWords.add(w);
+    }
+  }
+  // 2) Frames only as a last resort, so a sheet is never short.
   for (const frame of frames) {
     if (out.length >= count) break;
     const w = nouns.find((n) => !usedWords.has(n) && frameFits(frame, n));
@@ -179,6 +198,9 @@ const ALT_SPELLINGS = {
   or: ['aw', 'au'], aw: ['or', 'au'],
   ur: ['ir', 'er'], ir: ['ur', 'er'], er: ['ur', 'ir'],
   oi: ['oy'], oy: ['oi'],
+  // L6-7 alternatives and trigraphs, so a "spell it" sheet stays on its sound.
+  are: ['air', 'ear'], air: ['are', 'ear'], ew: ['ue', 'oo'], ue: ['ew', 'oo'],
+  ire: ['ier', 'iar'], ore: ['oar', 'aw'], ear: ['eer', 'ere'], oor: ['ore', 'our'], ure: ['ur', 'uer'],
   // Suffix endings (L7-8): the classic "shun" confusion set.
   tion: ['sion', 'shun'], sion: ['tion', 'shun'],
   ous: ['us', 'ouse'], able: ['ible', 'abul'], ible: ['able', 'ibul'],

@@ -129,7 +129,10 @@
       "book": "Lembar kerja buku",
       "singleSound": "Lembar satu bunyi — {{sounds}}",
       "singleSoundRest": "Lembar satu bunyi — sisa alfabet",
-      "singleSoundSpecial": "Lembar satu bunyi — Special Friends (dua huruf, satu bunyi)"
+      "singleSoundSpecial": "Lembar satu bunyi — Special Friends (dua huruf, satu bunyi)",
+      "forged": "Lembar kerja",
+      "forgedMore": "Latihan tambahan",
+      "forgedExtra": "Bunyi tambahan"
     },
     "soundSheet": "Bunyi {{sound}}"
   },

@@ -133,7 +133,10 @@
       "book": "किताब की वर्कशीट",
       "singleSound": "एक-ध्वनि वाली शीट — {{sounds}}",
       "singleSoundRest": "एक-ध्वनि वाली शीट — बाकी वर्णमाला",
-      "singleSoundSpecial": "एक-ध्वनि वाली शीट — Special Friends (दो अक्षर, एक ध्वनि)"
+      "singleSoundSpecial": "एक-ध्वनि वाली शीट — Special Friends (दो अक्षर, एक ध्वनि)",
+      "forged": "वर्कशीट",
+      "forgedMore": "और अभ्यास",
+      "forgedExtra": "अतिरिक्त ध्वनियाँ"
     },
     "soundSheet": "ध्वनि {{sound}}"
   },

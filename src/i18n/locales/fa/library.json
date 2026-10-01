@@ -133,7 +133,10 @@
       "book": "کاربرگ‌های کتاب",
       "singleSound": "برگه‌های تک‌صدا — {{sounds}}",
       "singleSoundRest": "برگه‌های تک‌صدا — بقیهٔ الفبا",
-      "singleSoundSpecial": "برگه‌های تک‌صدا — Special Friends (دو حرف، یک صدا)"
+      "singleSoundSpecial": "برگه‌های تک‌صدا — Special Friends (دو حرف، یک صدا)",
+      "forged": "کاربرگ‌ها",
+      "forgedMore": "تمرین بیشتر",
+      "forgedExtra": "صداهای بیشتر"
     },
     "soundSheet": "صدای {{sound}}"
   },

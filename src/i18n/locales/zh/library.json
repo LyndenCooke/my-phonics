@@ -129,7 +129,10 @@
       "book": "图书练习纸",
       "singleSound": "单音练习纸 — {{sounds}}",
       "singleSoundRest": "单音练习纸 — 其余字母",
-      "singleSoundSpecial": "单音练习纸 — Special Friends（两个字母一个音）"
+      "singleSoundSpecial": "单音练习纸 — Special Friends（两个字母一个音）",
+      "forged": "练习纸",
+      "forgedMore": "更多练习",
+      "forgedExtra": "更多发音"
     },
     "soundSheet": "发音 {{sound}}"
   },

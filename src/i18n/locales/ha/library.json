@@ -133,7 +133,10 @@
       "book": "Takardun aiki na littafi",
       "singleSound": "Takardun sauti ɗaya — {{sounds}}",
       "singleSoundRest": "Takardun sauti ɗaya — sauran haruffan baƙaƙe",
-      "singleSoundSpecial": "Takardun sauti ɗaya — Special Friends (haruffa biyu, sauti ɗaya)"
+      "singleSoundSpecial": "Takardun sauti ɗaya — Special Friends (haruffa biyu, sauti ɗaya)",
+      "forged": "Takardun aiki",
+      "forgedMore": "Ƙarin atisaye",
+      "forgedExtra": "Ƙarin sautuka"
     },
     "soundSheet": "Sauti {{sound}}"
   },

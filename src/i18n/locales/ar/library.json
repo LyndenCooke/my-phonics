@@ -149,7 +149,10 @@
       "book": "أوراق عمل الكتاب",
       "singleSound": "أوراق الأصوات المفردة — {{sounds}}",
       "singleSoundRest": "أوراق الأصوات المفردة — بقية الحروف الأبجدية",
-      "singleSoundSpecial": "أوراق الأصوات المفردة — Special Friends (حرفان بصوت واحد)"
+      "singleSoundSpecial": "أوراق الأصوات المفردة — Special Friends (حرفان بصوت واحد)",
+      "forged": "أوراق عمل",
+      "forgedMore": "تدريب إضافي",
+      "forgedExtra": "أصوات إضافية"
     },
     "soundSheet": "الصوت {{sound}}"
   },

@@ -133,7 +133,10 @@
       "book": "বইয়ের ওয়ার্কশিট",
       "singleSound": "একক-ধ্বনি শিট — {{sounds}}",
       "singleSoundRest": "একক-ধ্বনি শিট — বাকি বর্ণমালা",
-      "singleSoundSpecial": "একক-ধ্বনি শিট — Special Friends (দুই অক্ষর, এক ধ্বনি)"
+      "singleSoundSpecial": "একক-ধ্বনি শিট — Special Friends (দুই অক্ষর, এক ধ্বনি)",
+      "forged": "ওয়ার্কশিট",
+      "forgedMore": "আরও অনুশীলন",
+      "forgedExtra": "অতিরিক্ত ধ্বনি"
     },
     "soundSheet": "ধ্বনি {{sound}}"
   },

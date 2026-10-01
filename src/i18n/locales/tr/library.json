@@ -133,7 +133,10 @@
       "book": "Kitap çalışma sayfaları",
       "singleSound": "Tek ses sayfaları — {{sounds}}",
       "singleSoundRest": "Tek ses sayfaları — alfabenin geri kalanı",
-      "singleSoundSpecial": "Tek ses sayfaları — Special Friends (iki harf, tek ses)"
+      "singleSoundSpecial": "Tek ses sayfaları — Special Friends (iki harf, tek ses)",
+      "forged": "Çalışma sayfaları",
+      "forgedMore": "Ek alıştırma",
+      "forgedExtra": "Ek sesler"
     },
     "soundSheet": "{{sound}} sesi"
   },
