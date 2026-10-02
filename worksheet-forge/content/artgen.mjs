@@ -105,11 +105,17 @@ export async function ensureScenes(scenes, { log = () => {} } = {}) {
   return done;
 }
 
-async function generateOne(word, style = null) {
+/** One clipart image in the house STYLE for a full subject description
+ *  ("a crab claw"), for words a bare noun would draw wrongly. */
+export async function generateSubject(description) {
+  return generateOne(description, null, true);
+}
+
+async function generateOne(word, style = null, subject = false) {
   const { tok, proj } = vertexAuth();
   const url = `https://us-central1-aiplatform.googleapis.com/v1/projects/${proj}/locations/us-central1/publishers/google/models/${IMG_MODEL}:generateContent`;
   const body = {
-    contents: [{ role: 'user', parts: [{ text: style ? `${style}\n\nScene: ${word}` : `${STYLE}\n\nSubject: a single simple ${word}.` }] }],
+    contents: [{ role: 'user', parts: [{ text: style ? `${style}\n\nScene: ${word}` : `${STYLE}\n\nSubject: ${subject ? word : `a single simple ${word}`}.` }] }],
     generationConfig: { responseModalities: ['IMAGE'] },
   };
   const ctrl = new AbortController();

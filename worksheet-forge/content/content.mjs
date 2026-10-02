@@ -7,6 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { REPO_ROOT, ENGINE_PUBLIC, FORGE_ROOT } from '../design/tokens.mjs';
+import { ALL_IMAGEABLE, imageableFor } from './imageable.mjs';
 
 const DATA = path.join(REPO_ROOT, 'myphonics_books', 'data');
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf-8'));
@@ -33,6 +34,7 @@ export function realWordSet() {
   if (!allRealWords) {
     allRealWords = new Set();
     for (let l = 1; l <= 8; l++) for (const w of wordBank(l).words) allRealWords.add(w.toLowerCase());
+    for (const w of ALL_IMAGEABLE) allRealWords.add(w);
   }
   return allRealWords;
 }
@@ -73,6 +75,8 @@ export function segmentWord(word, graphemes) {
     const m = w.match(new RegExp(`^(.*)${sd[0]}(${CONSONANT})e(.*)$`));
     if (m) {
       const [, pre, cons, post] = m;
+      // "fire" is f-ire once ire is taught, not f-i_e-r.
+      if (plain.includes(`${sd[0]}${cons}e`)) continue;
       const preSeg = pre ? segmentWord(pre, graphemes) : [];
       const consSeg = segmentWord(cons, graphemes);
       const postSeg = post ? segmentWord(post, graphemes) : [];
@@ -129,12 +133,15 @@ export function isAllowed(word, level) {
 
   // Hidden digraph/trigraph across adjacent single-letter units.
   const multi = allMultiGraphemes();
+  // Any length, so four-letter units (-sion, -tion) are caught too:
+  // "television" must not pass at L4 as t-e-l-e-v-i-s-i-o-n.
   for (let i = 0; i < seg.length - 1; i++) {
-    if (seg[i].length !== 1) continue;
-    const pair = seg[i] + seg[i + 1];
-    if (seg[i + 1].length === 1 && multi.has(pair) && !cum.includes(pair)) return false;
-    const triple = seg[i + 2] && seg[i + 1].length === 1 && seg[i + 2].length === 1 ? pair + seg[i + 2] : null;
-    if (triple && multi.has(triple) && !cum.includes(triple)) return false;
+    let run = seg[i];
+    if (run.length !== 1) continue;
+    for (let j = i + 1; j < seg.length && seg[j].length === 1 && j - i < 4; j++) {
+      run += seg[j];
+      if (multi.has(run) && !cum.includes(run)) return false;
+    }
   }
   return true;
 }
@@ -252,6 +259,7 @@ export const NOUNS = new Set([
   'television', 'mansion', 'station',
   'bone', 'rope', 'nose', 'rose', 'stone', 'home', 'cone', 'cake', 'snake', 'cape', 'plane',
   'whale', 'tape', 'cave', 'kite', 'bike', 'slide', 'vine', 'flute', 'cube', 'tube', 'mole', 'mule',
+  ...ALL_IMAGEABLE,
 ]);
 
 // Alien/distractor shapes that must never reach a worksheet — rude lookalikes.
@@ -314,6 +322,9 @@ export function pickPictureWords(opts) {
   const withArt = [...clipart().keys()].filter((w) => realWordSet().has(w));
   const nounArt = withArt.filter((w) => NOUNS.has(w));
   const otherArt = withArt.filter((w) => !NOUNS.has(w));
-  const preferred = pickWords({ ...opts, rand, prefer: [...shuffle(nounArt, rand), ...shuffle(otherArt, rand)], count: opts.count });
+  // The sound's curated picture words first (content/imageable.mjs), so a
+  // Level 4+ sheet draws "claw" and "prawn", not whatever art the L1 library had.
+  const curated = opts.grapheme ? shuffle(imageableFor(opts.grapheme, opts.level).filter((w) => hasClipart(w)), rand) : [];
+  const preferred = pickWords({ ...opts, rand, prefer: [...curated, ...shuffle(nounArt, rand), ...shuffle(otherArt, rand)], count: opts.count });
   return preferred.filter((w) => hasClipart(w));
 }

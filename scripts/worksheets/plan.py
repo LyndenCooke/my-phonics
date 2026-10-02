@@ -10,6 +10,8 @@ line-up of forge blocks (see worksheet-forge/planner/planner.mjs RECIPES):
   draw         trace_words -> read_draw_write                        (L1-3)
   sentences    cloze -> sentence_unjumble -> yes_no                  (L3+)
   spelling     best_bet -> cloze -> dictation                        (L5+)
+  pictures     picture_write -> best_bet                             (L5+, when
+               the sound has 3+ picture words: content/imageable.mjs)
   assess       real_alien_sort -> speed_read -> dictation            (check-up)
   fluency      roll_and_read -> speed_read -> real_alien_sort
   code         crack_the_code -> speed_read -> dictation
@@ -25,6 +27,7 @@ Run:  py -3.12 scripts/worksheets/plan.py   -> marketing/worksheets_plan.json
 import json
 import os
 import re
+import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "marketing", "worksheets_plan.json")
@@ -46,6 +49,9 @@ INTENTS = {
     "spelling":    ("Spell {g} words",
                     "Choose the right spelling for the {g} sound and use it.",
                     "Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back."),
+    "pictures":    ("Picture and spell {g}",
+                    "Hear the {g} sound in picture words and choose its spelling.",
+                    "Say each picture, write its word and colour the ones with {g}, then circle the correct spelling and write it."),
     "assess":      ("Check-up: {g}",
                     "Show the sound {g} is secure before moving on.",
                     "Read each word and tick real or alien, then time the speed read three times, then dictation. If more than two are wrong, go back a sheet."),
@@ -94,6 +100,7 @@ def sheet(book, intent, g=None, n=0):
         "draw":        f"a draw worksheet for level {book['level']} sound '{g}'",
         "sentences":   f"a sentences worksheet for level {book['level']} sound '{g}'",
         "spelling":    f"a spelling worksheet for level {book['level']} sound '{g}'",
+        "pictures":    f"a picture spelling worksheet for level {book['level']} sound '{g}'",
         "assess":      f"an assessment worksheet for level {book['level']} sound '{g}'",
         "fluency":     f"a fluency worksheet for level {book['level']} sound '{g}'",
         "code":        f"a crack the code worksheet for level {book['level']} sound '{g}'",
@@ -104,8 +111,22 @@ def sheet(book, intent, g=None, n=0):
                 how=how.format(**fmt), prompt=prompt, seed=7 + n)
 
 
+def picture_ready():
+    """{"<level>:<grapheme>": picture words with art}, from the forge."""
+    out = subprocess.run(["node", os.path.join(ROOT, "scripts", "worksheets", "picture_ready.mjs")],
+                         capture_output=True, text=True, check=True).stdout
+    return json.loads(out)
+
+
+PICTURES = {}
+
+
 def plan_book(book, is_review):
     lvl, snd = book["level"], book["sounds"]
+
+    def spell(g):
+        # Picture-led where the sound has honest pictures, text-led otherwise.
+        return "pictures" if PICTURES.get(f"{lvl}:{g}", 0) >= 3 else "spelling"
     sheets, n = [], 0
 
     def add(intent, g=None):
@@ -128,21 +149,22 @@ def plan_book(book, is_review):
         for g in snd: add("segmenting", g); add("sentences", g)
         add("assess", main); add("game", main)
     elif lvl == 5:
-        for g in snd: add("spelling", g); add("sentences", g)
+        for g in snd: add(spell(g), g); add("sentences", g)
         add("assess", main); add("game", main)
     elif lvl == 6:
-        for g in snd: add("spelling", g); add("code", g)
+        for g in snd: add(spell(g), g); add("code", g)
         add("sentences", main); add("game", main)
     elif lvl == 7:
-        for g in snd: add("spelling", g); add("fluency", g)
+        for g in snd: add(spell(g), g); add("fluency", g)
         add("sentences", main); add("game", main)
     else:
-        for g in snd: add("spelling", g); add("wordsearch", g)
+        for g in snd: add(spell(g), g); add("wordsearch", g)
         add("sentences", main); add("game", main)
     return sheets
 
 
 def build():
+    PICTURES.update(picture_ready())
     books = load_books()
     packs = []
     by_level = {}
@@ -157,9 +179,12 @@ def build():
                               sheets=plan_book(b, is_review)))
         if lvl in LEVEL_EXTRAS:
             fake = dict(level=lvl, title=f"Level {lvl} extra sounds", slug=f"level-{lvl}-extras", file_id=None, sounds=LEVEL_EXTRAS[lvl])
-            intent = "segmenting" if lvl <= 4 else "spelling"
+            def intent(g):
+                if lvl <= 4:
+                    return "segmenting"
+                return "pictures" if PICTURES.get(f"{lvl}:{g}", 0) >= 3 else "spelling"
             packs.append(dict(kind="extras", level=lvl, book=fake, folder=f"L{lvl}/extras",
-                              label="Extra sounds", sheets=[sheet(fake, intent, g, i + 1) for i, g in enumerate(LEVEL_EXTRAS[lvl])]))
+                              label="Extra sounds", sheets=[sheet(fake, intent(g), g, i + 1) for i, g in enumerate(LEVEL_EXTRAS[lvl])]))
     total = sum(len(p["sheets"]) for p in packs)
     json.dump(packs, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"wrote {os.path.relpath(OUT, ROOT)}: {len(packs)} packs, {total} sheets")
