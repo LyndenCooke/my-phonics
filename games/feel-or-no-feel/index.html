@@ -1,0 +1,789 @@
+<title>Feel or No Feel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Big+Shoulders+Display:wght@700;900&display=swap">
+<style>
+/* Layout: a late-night game show set. Board of feels on both wings, gift boxes centre stage, the Feeler's phone drops in as an overlay. One committed dark look. */
+:root {
+  color-scheme: dark;
+  --stage: #1a0d21;
+  --stage-2: #2a1533;
+  --wine: #5b1838;
+  --rose: #e7a693;
+  --rose-deep: #a85a4b;
+  --champagne: #f6e3b4;
+  --gold: #f1c45a;
+  --lilac: #b9a6e8;
+  --ink: #fbf3ee;
+  --muted: #c4afc2;
+  --line: rgba(246, 227, 180, 0.16);
+  --panel: rgba(42, 21, 51, 0.82);
+  --feel: #e2365b;
+  --feel-deep: #9e1a3a;
+  --nofeel: #34224a;
+
+  --f-display: "Shrikhand", "Georgia", serif;
+  --f-body: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "Big Shoulders Display", "Impact", "Arial Narrow", sans-serif;
+
+  --r: 14px;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(60% 45% at 50% -5%, rgba(241, 196, 90, 0.20), transparent 70%),
+    radial-gradient(40% 60% at 0% 100%, rgba(91, 24, 56, 0.55), transparent 70%),
+    radial-gradient(40% 60% at 100% 100%, rgba(91, 24, 56, 0.55), transparent 70%),
+    var(--stage);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* ---------- Header ---------- */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.logo { font-family: var(--f-display); font-size: clamp(30px, 6vw, 54px); line-height: 1; margin: 0; letter-spacing: 0.5px;
+  color: var(--champagne); text-shadow: 0 2px 0 var(--wine), 0 0 28px rgba(241, 196, 90, 0.35); }
+.logo .or { font-size: 0.55em; color: var(--rose); vertical-align: middle; margin-inline: 0.15em; }
+.logo .no { color: var(--rose); }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip-btn { background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 14px; color: var(--muted); }
+.chip-btn:hover { color: var(--ink); border-color: var(--rose); }
+.chip-btn[aria-pressed="true"] { color: var(--champagne); border-color: var(--gold); }
+
+/* ---------- Generic ---------- */
+.btn { border: 0; border-radius: 999px; padding: 12px 22px; font-weight: 800; font-size: 16px; letter-spacing: 0.3px; }
+.btn-gold { background: linear-gradient(180deg, var(--champagne), var(--gold)); color: #3a1a22; box-shadow: 0 6px 20px rgba(241, 196, 90, 0.25); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-ghost:hover { border-color: var(--rose); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); font-weight: 600; }
+.muted { color: var(--muted); }
+h2, h3 { text-wrap: balance; }
+
+/* ---------- Setup ---------- */
+.setup { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; backdrop-filter: blur(6px); }
+.setup h2 { font-family: var(--f-display); font-weight: 400; font-size: 26px; margin: 4px 0 6px; color: var(--champagne); }
+.setup p { margin: 0 0 14px; max-width: 65ch; }
+.rows { display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: 34px minmax(0, 1.2fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.row .rank { font-family: var(--f-num); font-weight: 900; font-size: 20px; text-align: center; color: var(--lilac); font-variant-numeric: tabular-nums; }
+.row.high .rank { color: var(--gold); }
+.row input { width: 100%; min-width: 0; background: rgba(26, 13, 33, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.row input::placeholder { color: rgba(196, 175, 194, 0.55); }
+.row input:focus { border-color: var(--rose); outline: none; }
+.row-tools { display: flex; gap: 4px; }
+.icon-btn { width: 34px; height: 38px; display: grid; place-items: center; background: transparent; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); }
+.icon-btn:hover { color: var(--ink); border-color: var(--rose); }
+.icon-btn svg { width: 16px; height: 16px; }
+.head-row { display: grid; grid-template-columns: 34px minmax(0, 1.2fr) minmax(0, 1fr) auto; gap: 8px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 4px; }
+.head-row span:last-child { width: 110px; }
+.setup-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.side { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; }
+.field input, .field textarea { background: rgba(26, 13, 33, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; resize: vertical; }
+.field textarea { min-height: 140px; }
+.field small { color: var(--muted); }
+.count { font-family: var(--f-num); font-weight: 900; font-size: 44px; line-height: 1; color: var(--champagne); font-variant-numeric: tabular-nums; }
+.warn { color: var(--rose); font-weight: 600; min-height: 1.5em; margin: 8px 0 0; }
+.example-note { display: inline-block; font-size: 13px; color: var(--champagne); border: 1px dashed var(--line); border-radius: 999px; padding: 3px 10px; margin-bottom: 10px; }
+
+/* ---------- Stage ---------- */
+.stage { margin-top: 20px; display: grid; grid-template-columns: 220px minmax(0, 1fr) 220px; gap: 20px; align-items: start; }
+.board { display: grid; gap: 6px; }
+.val { position: relative; display: flex; align-items: center; min-height: 40px; padding: 7px 12px; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.25;
+  transition: opacity .4s, transform .4s, filter .4s; overflow-wrap: anywhere; }
+.val.low { background: linear-gradient(90deg, rgba(185, 166, 232, 0.28), rgba(185, 166, 232, 0.10)); border: 1px solid rgba(185, 166, 232, 0.45); color: #ece6ff; }
+.val.high { background: linear-gradient(90deg, rgba(241, 196, 90, 0.10), rgba(241, 196, 90, 0.32)); border: 1px solid rgba(241, 196, 90, 0.55); color: var(--champagne); justify-content: flex-end; text-align: right; }
+.val.gone { opacity: 0.22; filter: grayscale(1); transform: scale(0.97); }
+.val.gone::after { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 2px; background: currentColor; opacity: 0.8; }
+.val.just { animation: knock .7s ease; }
+@keyframes knock { 0% { transform: scale(1.06); filter: brightness(1.8); } 100% { transform: scale(0.97); } }
+
+.centre { display: grid; gap: 16px; min-width: 0; }
+.status { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px; }
+.status h2 { margin: 0; font-size: clamp(18px, 2.4vw, 22px); font-weight: 800; }
+.status p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.pips { display: flex; gap: 6px; }
+.pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--rose); }
+.pip.on { background: var(--rose); box-shadow: 0 0 10px rgba(231, 166, 147, 0.6); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 14px; }
+
+/* Gift boxes */
+.box { position: relative; aspect-ratio: 1 / 0.92; max-width: 100%; border: 0; padding: 0; background: none; perspective: 600px; }
+.box .body, .box .lid { position: absolute; left: 0; right: 0; border-radius: 8px;
+  background:
+    linear-gradient(90deg, transparent 42%, var(--wine) 42%, var(--wine) 58%, transparent 58%),
+    linear-gradient(160deg, #f3c3b2, var(--rose) 45%, var(--rose-deep)); }
+.box .body { top: 22%; bottom: 0; box-shadow: 0 10px 18px rgba(0, 0, 0, 0.45), inset 0 -6px 0 rgba(0, 0, 0, 0.12); }
+.box .lid { top: 8%; height: 22%; left: -5%; right: -5%; border-radius: 6px; transform-origin: 10% 100%; transition: transform .55s cubic-bezier(.3, 1.4, .5, 1), opacity .55s;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18); background:
+    linear-gradient(90deg, transparent 42%, var(--feel-deep) 42%, var(--feel-deep) 58%, transparent 58%),
+    linear-gradient(180deg, #f7cfc0, var(--rose)); }
+.box .bow { position: absolute; top: -2%; left: 50%; width: 40%; transform: translateX(-50%); transition: transform .55s, opacity .4s; }
+.box .num { position: absolute; left: 50%; top: 61%; transform: translate(-50%, -50%); min-width: 46%; padding: 2px 6px; border-radius: 8px; background: var(--champagne); color: #3a1a22;
+  font-family: var(--f-num); font-weight: 900; font-size: clamp(22px, 3.4vw, 32px); line-height: 1.05; font-variant-numeric: tabular-nums; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); }
+.box:not(:disabled):hover .lid { transform: translateY(-6px) rotate(-3deg); }
+.box:not(:disabled):hover .bow { transform: translateX(-50%) translateY(-6px) rotate(-3deg); }
+.box:disabled { cursor: default; }
+.box.opening .lid, .box.opening .bow { transform: translateY(-40px) rotate(-28deg); opacity: 0; }
+.box.opened .lid, .box.opened .bow { opacity: 0; transform: translateY(-40px) rotate(-28deg); }
+.box.opened .body { background: linear-gradient(180deg, #2a1533, #1f1027); box-shadow: inset 0 0 0 2px rgba(231, 166, 147, 0.35); }
+.box.opened .num { background: transparent; color: var(--muted); font-size: 18px; top: 36%; box-shadow: none; }
+.box .inside { position: absolute; left: 6%; right: 6%; top: 50%; bottom: 6%; display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 600; line-height: 1.2; overflow: hidden; overflow-wrap: anywhere; }
+.box .inside.low { color: var(--lilac); }
+.box .inside.high { color: var(--gold); }
+.box.mine { outline: 3px solid var(--gold); outline-offset: 5px; border-radius: 10px; }
+.box.shake { animation: shake .5s ease infinite; }
+@keyframes shake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+
+.podium { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 14px 18px; }
+.podium .box { width: 96px; flex: none; }
+.podium h3 { margin: 0; font-size: 18px; }
+.podium p { margin: 2px 0 0; color: var(--muted); font-size: 14px; max-width: 46ch; }
+
+.history { padding: 14px 18px; }
+.history h3 { margin: 0 0 8px; font-size: 15px; }
+.history ol { margin: 0; padding-left: 22px; display: grid; gap: 4px; font-size: 14px; }
+.history .tag { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; margin-left: 6px; }
+.history .tag.yes { color: var(--feel); }
+.history .tag.no { color: var(--muted); }
+
+/* ---------- Overlays ---------- */
+.overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(12, 5, 16, 0.78); backdrop-filter: blur(4px); animation: fade .25s ease; }
+@keyframes fade { from { opacity: 0; } }
+.modal { width: min(560px, 100%); max-height: calc(100% - 16px); overflow: auto; background: linear-gradient(180deg, var(--stage-2), var(--stage)); border: 1px solid var(--line);
+  border-radius: 20px; padding: 28px 24px; text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); animation: pop .35s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes pop { from { transform: scale(0.9); opacity: 0; } }
+.modal h2 { margin: 6px 0 10px; font-size: clamp(22px, 4vw, 28px); }
+.modal .big { font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 6vw, 42px); line-height: 1.15; margin: 10px 0 14px; overflow-wrap: anywhere; text-wrap: balance; }
+.modal .big.low { color: var(--lilac); }
+.modal .big.high { color: var(--gold); }
+.modal .big.offer { color: var(--champagne); }
+.modal .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+.present { margin: 14px auto 0; max-width: 420px; padding: 14px 16px; border-radius: 14px; border: 1px dashed var(--gold); background: rgba(241, 196, 90, 0.08); }
+.present .eyebrow { color: var(--gold); }
+.present p { margin: 4px 0 0; font-weight: 800; font-size: 18px; color: var(--champagne); }
+.drum { font-family: var(--f-num); font-weight: 900; font-size: 64px; color: var(--rose); letter-spacing: 6px; animation: pulse .5s ease infinite alternate; }
+@keyframes pulse { to { opacity: 0.35; transform: scale(0.92); } }
+
+.phone { width: 96px; height: 96px; margin: 4px auto 10px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, var(--feel), var(--feel-deep)); box-shadow: 0 0 0 0 rgba(226, 54, 91, 0.6); animation: ring 1s ease infinite; }
+.phone svg { width: 46px; height: 46px; color: #fff; animation: wobble .25s linear infinite; }
+@keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(226, 54, 91, 0.6); } 100% { box-shadow: 0 0 0 26px rgba(226, 54, 91, 0); } }
+@keyframes wobble { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+.composer { text-align: left; display: grid; gap: 10px; margin-top: 10px; }
+.composer textarea { min-height: 90px; background: rgba(26, 13, 33, 0.8); border: 1px solid var(--line); border-radius: 12px; padding: 12px; resize: vertical; width: 100%; }
+.hints { display: flex; flex-wrap: wrap; gap: 6px; }
+.hint { background: rgba(185, 166, 232, 0.12); border: 1px solid rgba(185, 166, 232, 0.35); color: #ece6ff; border-radius: 999px; padding: 5px 11px; font-size: 13px; text-align: left; }
+.hint:hover { border-color: var(--lilac); }
+
+.decide { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+.decide button { border: 0; border-radius: 16px; padding: 22px 10px; font-family: var(--f-display); font-size: clamp(24px, 5vw, 34px); line-height: 1; letter-spacing: 0.5px; }
+.b-feel { background: linear-gradient(180deg, var(--feel), var(--feel-deep)); color: #fff; box-shadow: 0 10px 28px rgba(226, 54, 91, 0.35); }
+.b-nofeel { background: var(--nofeel); color: var(--champagne); border: 2px solid var(--line) !important; }
+.b-feel:hover, .b-nofeel:hover { filter: brightness(1.1); }
+
+.sure { margin-top: 14px; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(91, 24, 56, 0.35); }
+.sure p { margin: 0 0 10px; }
+
+/* End summary */
+.summary { padding: 20px; display: grid; gap: 12px; text-align: center; }
+.summary .big { font-family: var(--f-display); font-size: clamp(26px, 5vw, 40px); line-height: 1.15; color: var(--champagne); margin: 0; overflow-wrap: anywhere; text-wrap: balance; }
+.summary .row2 { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.presents-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.presents-list li { border: 1px dashed var(--gold); color: var(--champagne); border-radius: 999px; padding: 5px 12px; font-weight: 600; font-size: 14px; }
+
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .stage { grid-template-columns: 1fr 1fr; }
+  .centre { grid-column: 1 / -1; order: -1; }
+  .board .val { min-height: 34px; font-size: 13px; padding: 6px 10px; }
+}
+@media (max-width: 760px) {
+  .setup { grid-template-columns: minmax(0, 1fr); }
+  .row, .head-row { grid-template-columns: 28px minmax(0, 1fr) auto; }
+  .row .present-in { grid-column: 2 / 3; }
+  .head-row span:nth-child(3) { display: none; }
+  .row-tools { grid-row: 1 / 3; grid-column: 3; flex-direction: column; }
+  .row { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 10px; }
+  .stage { gap: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1 class="logo">Feel <span class="or">or</span> <span class="no">No</span> Feel</h1>
+    <div class="tools">
+      <button class="chip-btn" id="soundBtn" aria-pressed="false">Sound off</button>
+      <button class="chip-btn" id="hostBtn" hidden>Host setup</button>
+    </div>
+  </header>
+
+  <!-- ===== HOST SETUP ===== -->
+  <section id="setupView" class="setup">
+    <div class="panel">
+      <div class="eyebrow">Host only: keep this screen to yourself</div>
+      <h2>Fill the boxes</h2>
+      <p class="muted">Write one feel per box, best at the top. The top half shows in gold on the board, the bottom half in lilac. Add a present to any box if you want a bonus surprise when it is opened. Everything is shuffled into the boxes when you start.</p>
+      <span class="example-note" id="exampleNote" hidden>Example boxes loaded: replace them with your own</span>
+      <div class="head-row"><span>#</span><span>On the board</span><span>Present inside (optional)</span><span></span></div>
+      <div class="rows" id="rows"></div>
+      <div class="setup-actions">
+        <button class="btn btn-ghost" id="addRow">Add a box</button>
+        <button class="btn btn-ghost" id="loadExamples">Load examples</button>
+        <button class="btn btn-ghost" id="clearRows">Clear all</button>
+      </div>
+      <div id="clearConfirm" class="sure" hidden>
+        <p>Clear every box? This cannot be undone.</p>
+        <div class="setup-actions" style="margin-top:0">
+          <button class="btn btn-gold" id="clearYes">Yes, clear them</button>
+          <button class="btn btn-ghost" id="clearNo">Keep them</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <div class="eyebrow">Boxes in play</div>
+        <div class="count" id="boxCount">0</div>
+        <small class="muted">Between 6 and 22. Twelve plays in about 15 minutes.</small>
+      </div>
+      <div class="panel field">
+        <label for="feelerName">Who makes the offers?</label>
+        <input id="feelerName" maxlength="30" placeholder="The Feeler">
+        <small>This is you on the phone. Shown when the phone rings.</small>
+      </div>
+      <div class="panel field">
+        <label for="offerPool">Offers ready to go (optional)</label>
+        <textarea id="offerPool" placeholder="One per line, used in order&#10;A cuddle and a cup of tea&#10;Takeaway of your choice tonight"></textarea>
+        <small>You can still change each offer when the phone rings.</small>
+      </div>
+      <div class="panel">
+        <button class="btn btn-gold" id="startBtn" style="width:100%">Start the show</button>
+        <p class="warn" id="setupWarn" role="alert"></p>
+        <button class="btn btn-ghost" id="resumeBtn" style="width:100%" hidden>Resume the game in progress</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GAME STAGE ===== -->
+  <section id="gameView" class="stage" hidden>
+    <div class="board" id="boardLow" aria-label="Smaller feels"></div>
+    <div class="centre">
+      <div class="panel status" id="status"></div>
+      <div class="panel podium" id="podium"></div>
+      <div class="panel summary" id="summary" hidden></div>
+      <div class="grid" id="grid"></div>
+      <div class="panel history" id="history" hidden></div>
+    </div>
+    <div class="board" id="boardHigh" aria-label="Bigger feels"></div>
+  </section>
+</div>
+
+<div id="overlay" class="overlay" hidden></div>
+<canvas id="confetti" class="confetti" hidden></canvas>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  };
+
+  const EXAMPLES = [
+    ["A weekend away, all planned by me", "A printed itinerary"],
+    ["Full spa day", ""],
+    ["Dinner at your favourite restaurant", "A new dress voucher"],
+    ["I do every night wake-up for a week", ""],
+    ["Breakfast in bed, three Saturdays running", ""],
+    ["An hour-long massage", "Your favourite hand cream"],
+    ["A new book of your choice", ""],
+    ["A whole afternoon to yourself", "A box of chocolates"],
+    ["Movie night: you pick, I don't moan", ""],
+    ["A handwritten love letter", ""],
+    ["One back scratch", "Flowers"],
+    ["A single fizzy cola bottle sweet", ""],
+  ];
+  const ICON_UP = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l5-5 5 5"/></svg>';
+  const ICON_DOWN = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l5 5 5-5"/></svg>';
+  const ICON_X = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+  const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"/></svg>';
+  const BOW = '<svg class="bow" viewBox="0 0 40 20"><path d="M20 14C12 2 2 2 4 10s12 6 16 4zM20 14C28 2 38 2 36 10s-12 6-16 4z" fill="#9e1a3a"/><circle cx="20" cy="14" r="4" fill="#5b1838"/></svg>';
+
+  /* ---------------- Sound (WebAudio, starts only after a tap) ---------------- */
+  let actx = null, soundOn = false;
+  function tone(freq, start, dur, type = "sine", vol = 0.18) {
+    if (!soundOn || !actx) return;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.value = freq;
+    const t = actx.currentTime + start;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + 0.05);
+  }
+  const sfx = {
+    tick() { tone(660, 0, 0.08, "triangle", 0.08); },
+    drum() { for (let i = 0; i < 10; i++) tone(110 + (i % 2) * 8, i * 0.1, 0.09, "square", 0.05); },
+    good() { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.09, 0.35, "triangle")); },
+    ouch() { [392, 370, 349, 262].forEach((f, i) => tone(f, i * 0.22, 0.4, "sawtooth", 0.07)); },
+    ring() { for (let i = 0; i < 2; i++) { tone(440, i * 0.5, 0.35, "sine", 0.12); tone(480, i * 0.5, 0.35, "sine", 0.12); } },
+    win() { [523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.12, 0.4, "triangle")); },
+  };
+  $("#soundBtn").addEventListener("click", () => {
+    soundOn = !soundOn;
+    if (soundOn && !actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { soundOn = false; } }
+    if (actx && actx.state === "suspended") actx.resume();
+    $("#soundBtn").textContent = soundOn ? "Sound on" : "Sound off";
+    $("#soundBtn").setAttribute("aria-pressed", String(soundOn));
+    sfx.tick();
+  });
+
+  /* ---------------- Setup ---------------- */
+  let rows = [];
+  const savedSetup = store.get("fonf.setup");
+  if (savedSetup && Array.isArray(savedSetup.rows) && savedSetup.rows.length) {
+    rows = savedSetup.rows;
+    $("#feelerName").value = savedSetup.feeler || "";
+    $("#offerPool").value = savedSetup.offers || "";
+  } else {
+    rows = EXAMPLES.map(([label, present]) => ({ label, present }));
+    $("#exampleNote").hidden = false;
+  }
+
+  function saveSetup() { store.set("fonf.setup", { rows, feeler: $("#feelerName").value, offers: $("#offerPool").value }); }
+
+  function renderRows() {
+    const half = Math.ceil(rows.length / 2);
+    $("#rows").innerHTML = rows.map((r, i) => `
+      <div class="row ${i < half ? "high" : ""}">
+        <span class="rank">${i + 1}</span>
+        <input id="lab-${i}" data-i="${i}" data-k="label" value="${esc(r.label)}" placeholder="${i === 0 ? "The best feel" : "A feel"}" aria-label="Feel ${i + 1}">
+        <input id="pre-${i}" class="present-in" data-i="${i}" data-k="present" value="${esc(r.present)}" placeholder="Present inside" aria-label="Present inside box ${i + 1}">
+        <div class="row-tools">
+          <button class="icon-btn" data-act="up" data-i="${i}" aria-label="Move up" ${i === 0 ? "disabled" : ""}>${ICON_UP}</button>
+          <button class="icon-btn" data-act="down" data-i="${i}" aria-label="Move down" ${i === rows.length - 1 ? "disabled" : ""}>${ICON_DOWN}</button>
+          <button class="icon-btn" data-act="del" data-i="${i}" aria-label="Remove">${ICON_X}</button>
+        </div>
+      </div>`).join("");
+    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length;
+  }
+  $("#rows").addEventListener("input", (e) => {
+    const t = e.target; if (!t.dataset.k) return;
+    rows[+t.dataset.i][t.dataset.k] = t.value;
+    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length;
+    $("#exampleNote").hidden = true;
+    saveSetup();
+  });
+  $("#rows").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-act]"); if (!b) return;
+    const i = +b.dataset.i, act = b.dataset.act;
+    if (act === "del") rows.splice(i, 1);
+    if (act === "up" && i > 0) [rows[i - 1], rows[i]] = [rows[i], rows[i - 1]];
+    if (act === "down" && i < rows.length - 1) [rows[i + 1], rows[i]] = [rows[i], rows[i + 1]];
+    renderRows(); saveSetup();
+  });
+  $("#addRow").addEventListener("click", () => {
+    if (rows.length >= 22) { $("#setupWarn").textContent = "22 boxes is the most the stage holds."; return; }
+    rows.push({ label: "", present: "" }); renderRows(); saveSetup();
+    $("#lab-" + (rows.length - 1)).focus();
+  });
+  $("#loadExamples").addEventListener("click", () => { rows = EXAMPLES.map(([label, present]) => ({ label, present })); $("#exampleNote").hidden = false; renderRows(); saveSetup(); });
+  $("#clearRows").addEventListener("click", () => { $("#clearConfirm").hidden = false; });
+  $("#clearNo").addEventListener("click", () => { $("#clearConfirm").hidden = true; });
+  $("#clearYes").addEventListener("click", () => {
+    rows = Array.from({ length: 12 }, () => ({ label: "", present: "" }));
+    $("#clearConfirm").hidden = true; $("#exampleNote").hidden = true; renderRows(); saveSetup();
+  });
+  $("#feelerName").addEventListener("input", saveSetup);
+  $("#offerPool").addEventListener("input", saveSetup);
+
+  /* ---------------- Game state ---------------- */
+  let G = null;
+  const feeler = () => (G && G.feeler) || "The Feeler";
+  const isHigh = (itemIdx) => itemIdx < Math.ceil(G.items.length / 2);
+  const cls = (itemIdx) => (isHigh(itemIdx) ? "high" : "low");
+
+  function makeSchedule(others) {
+    const s = []; let left = others;
+    while (left > 1) {
+      let take = Math.max(1, Math.round(left * 0.35));
+      if (left - take < 1) take = left - 1;
+      s.push(take); left -= take;
+    }
+    return s;
+  }
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+  function newGame() {
+    const items = rows.filter((r) => r.label.trim()).map((r) => ({ label: r.label.trim(), present: (r.present || "").trim() }));
+    const n = items.length;
+    G = {
+      items,
+      boxes: shuffle(items.map((_, i) => i)), // boxes[boxNo-1] = item index
+      feeler: $("#feelerName").value.trim() || "The Feeler",
+      offerPool: $("#offerPool").value.split("\n").map((s) => s.trim()).filter(Boolean),
+      phase: "pick", mine: null, opened: [], schedule: makeSchedule(n - 1), round: 0, leftThisRound: 0,
+      offers: [], deal: null, swappedFrom: null, revealedMine: false,
+    };
+    G.leftThisRound = G.schedule[0];
+    saveGame();
+  }
+  function saveGame() { if (G) store.set("fonf.game", G); }
+
+  $("#startBtn").addEventListener("click", () => {
+    const n = rows.filter((r) => r.label.trim()).length;
+    if (n < 6) { $("#setupWarn").textContent = `Add at least 6 feels. You have ${n}.`; return; }
+    if (n > 22) { $("#setupWarn").textContent = "22 boxes is the most the stage holds."; return; }
+    $("#setupWarn").textContent = "";
+    newGame(); showGame();
+  });
+  $("#resumeBtn").addEventListener("click", showGame);
+  $("#hostBtn").addEventListener("click", () => {
+    openModal(`<div class="eyebrow">Host</div><h2>Go back to the host screen?</h2>
+      <p class="muted">The game in progress is kept, so you can resume it.</p>
+      <div class="actions"><button class="btn btn-gold" data-go="host">Go to host screen</button><button class="btn btn-ghost" data-go="close">Stay on stage</button></div>`, {
+      host: () => { closeModal(); showSetup(); }, close: closeModal,
+    });
+  });
+
+  function showSetup() {
+    $("#gameView").hidden = true; $("#setupView").hidden = false; $("#hostBtn").hidden = true;
+    $("#resumeBtn").hidden = !(G && G.phase !== "over");
+    renderRows();
+  }
+  function showGame() {
+    $("#setupView").hidden = true; $("#gameView").hidden = false; $("#hostBtn").hidden = false;
+    render(); window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  /* ---------------- Rendering ---------------- */
+  const itemInBox = (boxNo) => G.boxes[boxNo - 1];
+  const boxOfItem = (itemIdx) => G.boxes.indexOf(itemIdx) + 1;
+  const unopenedOthers = () => G.boxes.map((_, i) => i + 1).filter((b) => b !== G.mine && !G.opened.includes(b));
+
+  function boxHTML(boxNo, extra = "") {
+    const opened = G.opened.includes(boxNo) || (boxNo === G.mine && G.revealedMine);
+    const it = itemInBox(boxNo);
+    const inside = opened ? `<span class="inside ${cls(it)}">${esc(G.items[it].label)}</span>` : "";
+    return `<span class="body"></span><span class="lid"></span>${BOW}<span class="num">${boxNo}</span>${inside}`;
+  }
+
+  function render() {
+    // Boards: smallest at top of the left wing, best at the bottom of the right wing
+    const n = G.items.length, half = Math.ceil(n / 2);
+    const gone = (idx) => G.opened.includes(boxOfItem(idx)) || (G.revealedMine && boxOfItem(idx) === G.mine);
+    const val = (idx) => `<div class="val ${cls(idx)} ${gone(idx) ? "gone" : ""}" data-item="${idx}">${esc(G.items[idx].label)}</div>`;
+    const lows = [], highs = [];
+    for (let idx = n - 1; idx >= half; idx--) lows.push(val(idx));
+    for (let idx = half - 1; idx >= 0; idx--) highs.push(val(idx));
+    $("#boardLow").innerHTML = lows.join("");
+    $("#boardHigh").innerHTML = highs.join("");
+
+    // Status
+    const st = $("#status");
+    if (G.phase === "pick") {
+      st.innerHTML = `<div><h2>Choose your box</h2><p>This one is yours to keep, unless you take a feel or swap at the end.</p></div>`;
+    } else if (G.phase === "open") {
+      const total = G.schedule[G.round], done = total - G.leftThisRound;
+      st.innerHTML = `<div><h2>Open ${G.leftThisRound} more ${G.leftThisRound === 1 ? "box" : "boxes"}</h2><p>Round ${G.round + 1} of ${G.schedule.length}. Then ${esc(feeler())} calls.</p></div>
+        <div class="pips" aria-hidden="true">${Array.from({ length: total }, (_, i) => `<span class="pip ${i < done ? "on" : ""}"></span>`).join("")}</div>`;
+    } else if (G.phase === "after") {
+      st.innerHTML = G.deal
+        ? `<div><h2>You took the feel</h2><p>Open the other boxes to see what might have been, then reveal your own.</p></div>`
+        : `<div><h2>Your box is all that's left</h2><p>Tap it to see what you have won.</p></div>`;
+    } else {
+      st.innerHTML = `<div><h2>That's the show</h2><p>Every box has been opened.</p></div>`;
+    }
+
+    // Podium
+    const pod = $("#podium");
+    if (G.mine) {
+      pod.hidden = false;
+      const canReveal = G.phase === "after" && !G.revealedMine;
+      pod.innerHTML = `<button class="box mine ${G.revealedMine ? "opened" : ""}" id="mineBox" ${canReveal ? "" : "disabled"} aria-label="Your box, number ${G.mine}">${boxHTML(G.mine)}</button>
+        <div><h3>Your box: number ${G.mine}${G.swappedFrom ? ` (swapped from ${G.swappedFrom})` : ""}</h3>
+        <p>${G.revealedMine ? `It held <strong>${esc(G.items[itemInBox(G.mine)].label)}</strong>.` : canReveal ? "Tap your box when you are ready to see what you gave up." : "Still sealed. Only you can decide what it is worth."}</p></div>`;
+      const mb = $("#mineBox"); if (mb && canReveal) mb.addEventListener("click", revealMine);
+    } else pod.hidden = true;
+
+    // Grid
+    const grid = $("#grid");
+    const boxNos = G.boxes.map((_, i) => i + 1).filter((b) => b !== G.mine);
+    grid.innerHTML = boxNos.map((b) => {
+      const opened = G.opened.includes(b);
+      const clickable = !opened && (G.phase === "pick" || G.phase === "open" || G.phase === "after");
+      return `<button class="box ${opened ? "opened" : ""}" data-box="${b}" ${clickable ? "" : "disabled"} aria-label="Box ${b}${opened ? ", opened" : ""}">${boxHTML(b)}</button>`;
+    }).join("");
+
+    // Summary
+    renderSummary();
+
+    // History
+    const h = $("#history");
+    if (G.offers.length) {
+      h.hidden = false;
+      h.innerHTML = `<h3>Offers from ${esc(feeler())}</h3><ol>${G.offers.map((o) => `<li>${esc(o.text)}<span class="tag ${o.taken ? "yes" : "no"}">${o.taken ? "Feel" : "No feel"}</span></li>`).join("")}</ol>`;
+    } else h.hidden = true;
+  }
+
+  function presentsFound() {
+    const found = G.opened.map((b) => G.items[itemInBox(b)].present).filter(Boolean);
+    if (G.revealedMine && G.items[itemInBox(G.mine)].present) found.push(G.items[itemInBox(G.mine)].present);
+    return found;
+  }
+
+  function renderSummary() {
+    const s = $("#summary");
+    if (!(G.phase === "after" || G.phase === "over")) { s.hidden = true; return; }
+    s.hidden = false;
+    const myItem = G.items[itemInBox(G.mine)];
+    const won = G.deal ? G.deal : G.revealedMine ? myItem.label : `Box ${G.mine} is still sealed`;
+    const pres = presentsFound();
+    let verdict = "";
+    if (G.deal && G.revealedMine) verdict = `<p class="muted">Your box held <strong>${esc(myItem.label)}</strong>. ${isHigh(itemInBox(G.mine)) ? "A big one. Was the feel worth it?" : "Good call taking the feel."}</p>`;
+    s.innerHTML = `<div class="eyebrow">${G.deal ? "You took the feel" : "You kept your box"}</div>
+      <p class="big">${esc(won)}</p>${verdict}
+      ${pres.length ? `<div class="eyebrow" style="color:var(--gold)">Presents found</div><ul class="presents-list">${pres.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+      <div class="row2">
+        ${G.phase === "after" && !G.revealedMine ? `<button class="btn btn-gold" id="sumReveal">Reveal your box</button>` : ""}
+        ${G.phase === "over" ? `<button class="btn btn-gold" id="again">Play again with a new shuffle</button>` : ""}
+        <button class="btn btn-ghost" id="toHost">Back to host setup</button>
+      </div>`;
+    const r = $("#sumReveal"); if (r) r.addEventListener("click", revealMine);
+    const a = $("#again"); if (a) a.addEventListener("click", () => { newGame(); render(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+    $("#toHost").addEventListener("click", showSetup);
+  }
+
+  /* ---------------- Overlay helpers ---------------- */
+  function openModal(html, handlers = {}) {
+    const ov = $("#overlay");
+    ov.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+    ov.hidden = false;
+    ov.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => handlers[b.dataset.go] && handlers[b.dataset.go](b)));
+    const f = ov.querySelector("[autofocus], [data-go]"); if (f) f.focus();
+  }
+  function closeModal() { $("#overlay").hidden = true; $("#overlay").innerHTML = ""; }
+
+  /* ---------------- Play ---------------- */
+  $("#grid").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-box]"); if (!b || b.disabled) return;
+    const boxNo = +b.dataset.box;
+    if (G.phase === "pick") return pickBox(boxNo);
+    if (G.phase === "open" || G.phase === "after") return openBox(boxNo, b);
+  });
+
+  function pickBox(boxNo) {
+    sfx.tick();
+    openModal(`<div class="eyebrow">Your choice</div><h2>Box number ${boxNo}?</h2>
+      <p class="muted">It stays sealed on your podium until the very end.</p>
+      <div class="actions"><button class="btn btn-gold" data-go="yes">Yes, box ${boxNo} is mine</button><button class="btn btn-ghost" data-go="no">Choose again</button></div>`, {
+      yes: () => { G.mine = boxNo; G.phase = "open"; saveGame(); closeModal(); render(); sfx.good(); },
+      no: closeModal,
+    });
+  }
+
+  let busy = false;
+  function openBox(boxNo, el) {
+    if (busy) return; busy = true;
+    el.classList.add("shake");
+    sfx.drum();
+    openModal(`<div class="eyebrow">Box ${boxNo}</div><h2>Opening...</h2><div class="drum">? ? ?</div>`);
+    setTimeout(() => {
+      el.classList.remove("shake"); el.classList.add("opening");
+      const it = itemInBox(boxNo), item = G.items[it];
+      G.opened.push(boxNo);
+      if (G.phase === "open") G.leftThisRound--;
+      saveGame();
+      const high = isHigh(it);
+      high ? sfx.ouch() : sfx.good();
+      const remainingHigh = G.boxes.filter((itx, i) => isHigh(itx) && !G.opened.includes(i + 1)).length;
+      const line = high ? (remainingHigh > 0 ? "One of the big ones is gone." : "That was the last big feel on the board.") : "A small one gone. Good news.";
+      openModal(`<div class="eyebrow">Box ${boxNo} held</div>
+        <p class="big ${high ? "high" : "low"}">${esc(item.label)}</p>
+        <p class="muted">${line}</p>
+        ${item.present ? `<div class="present"><div class="eyebrow">Bonus present inside</div><p>${esc(item.present)}</p></div>` : ""}
+        <div class="actions"><button class="btn btn-gold" data-go="next">Continue</button></div>`, {
+        next: () => { closeModal(); busy = false; afterOpen(it); },
+      });
+      if (item.present) setTimeout(burst, 150);
+    }, 1300);
+  }
+
+  function afterOpen(it) {
+    render();
+    const v = document.querySelector(`.val[data-item="${it}"]`); if (v) v.classList.add("just");
+    if (G.phase === "open" && G.leftThisRound <= 0) setTimeout(phoneRings, 600);
+    if (G.phase === "after" && unopenedOthers().length === 0 && !G.revealedMine) setTimeout(revealMine, 500);
+  }
+
+  function hintsFor() {
+    const live = G.boxes.filter((_, i) => !G.opened.includes(i + 1)).slice().sort((a, b) => a - b); // best first
+    const pick = (f) => G.items[live[Math.min(live.length - 1, Math.floor(live.length * f))]].label;
+    const out = new Set([pick(0.5), pick(0.35), pick(0.65)]);
+    return [...out];
+  }
+
+  function phoneRings() {
+    G.phase = "call"; saveGame();
+    sfx.ring(); const ringer = setInterval(sfx.ring, 1600);
+    openModal(`<div class="phone">${ICON_PHONE}</div><div class="eyebrow">Incoming call</div>
+      <h2>${esc(feeler())} is on the line</h2>
+      <p class="muted">Host: answer and make your offer.</p>
+      <div class="actions"><button class="btn btn-gold" data-go="answer">Answer</button></div>`, {
+      answer: () => { clearInterval(ringer); composeOffer(); },
+    });
+  }
+
+  function composeOffer() {
+    const pre = G.offerPool[G.offers.length] || "";
+    const hints = hintsFor();
+    openModal(`<div class="eyebrow">Host only</div><h2>What is ${esc(feeler())} offering?</h2>
+      <div class="composer">
+        <label for="offerText" class="muted">Type the offer, or tap a suggestion based on what is still on the board.</label>
+        <textarea id="offerText" maxlength="160" autofocus>${esc(pre)}</textarea>
+        <div class="hints">${hints.map((h) => `<button class="hint" data-hint="${esc(h)}">${esc(h)}</button>`).join("")}</div>
+      </div>
+      <p class="warn" id="offerWarn"></p>
+      <div class="actions"><button class="btn btn-gold" data-go="send">Make the offer</button></div>`, {
+      send: () => {
+        const t = $("#offerText").value.trim();
+        if (!t) { $("#offerWarn").textContent = "Write an offer first."; return; }
+        showOffer(t);
+      },
+    });
+    document.querySelectorAll(".hint").forEach((b) => b.addEventListener("click", () => { $("#offerText").value = b.dataset.hint; $("#offerText").focus(); }));
+  }
+
+  function showOffer(text) {
+    sfx.good();
+    const last = G.round >= G.schedule.length - 1;
+    openModal(`<div class="eyebrow">${esc(feeler())} offers</div>
+      <p class="big offer">${esc(text)}</p>
+      <p class="muted">${last ? "This is the final offer." : `${unopenedOthers().length + 1} boxes still sealed, including yours.`}</p>
+      <div class="decide"><button class="b-feel" data-go="feel">Feel</button><button class="b-nofeel" data-go="nofeel">No Feel</button></div>
+      <div id="sureBox"></div>`, {
+      feel: () => {
+        $("#sureBox").innerHTML = `<div class="sure"><p>Take <strong>${esc(text)}</strong> and walk away from box ${G.mine}?</p>
+          <div class="actions" style="margin-top:0"><button class="btn btn-gold" id="sureYes">Yes, it's a feel</button><button class="btn btn-ghost" id="sureNo">Let me think</button></div></div>`;
+        $("#sureYes").addEventListener("click", () => takeFeel(text));
+        $("#sureNo").addEventListener("click", () => { $("#sureBox").innerHTML = ""; });
+      },
+      nofeel: () => noFeel(text),
+    });
+  }
+
+  function takeFeel(text) {
+    G.offers.push({ text, taken: true });
+    G.deal = text; G.phase = "after"; saveGame();
+    closeModal(); sfx.win(); burst(); render();
+  }
+
+  function noFeel(text) {
+    G.offers.push({ text, taken: false });
+    G.round++;
+    if (G.round >= G.schedule.length) {
+      saveGame();
+      return offerSwap();
+    }
+    G.phase = "open"; G.leftThisRound = G.schedule[G.round]; saveGame();
+    closeModal(); sfx.ouch(); render();
+  }
+
+  function offerSwap() {
+    const other = unopenedOthers()[0];
+    G.phase = "swap"; saveGame();
+    openModal(`<div class="eyebrow">Two boxes left</div><h2>Keep box ${G.mine}, or swap for box ${other}?</h2>
+      <p class="muted">One of them holds <strong>${esc(G.items[itemInBox(G.mine)].label)}</strong> or <strong>${esc(G.items[itemInBox(other)].label)}</strong>. You choose.</p>
+      <div class="decide"><button class="b-nofeel" data-go="keep">Keep ${G.mine}</button><button class="b-feel" data-go="swap">Swap to ${other}</button></div>`, {
+      keep: () => finalReveal(other),
+      swap: () => { G.swappedFrom = G.mine; G.mine = other; finalReveal(G.swappedFrom); },
+    });
+  }
+
+  function finalReveal(otherBox) {
+    // Open the box she did not keep first, then hers
+    G.opened.push(otherBox); G.phase = "after"; saveGame();
+    const o = G.items[itemInBox(otherBox)];
+    sfx.drum();
+    openModal(`<div class="eyebrow">Box ${otherBox}, the one you left behind</div>
+      <p class="big ${cls(itemInBox(otherBox))}">${esc(o.label)}</p>
+      ${o.present ? `<div class="present"><div class="eyebrow">Bonus present inside</div><p>${esc(o.present)}</p></div>` : ""}
+      <div class="actions"><button class="btn btn-gold" data-go="mine">Open my box</button></div>`, {
+      mine: () => { closeModal(); render(); revealMine(); },
+    });
+  }
+
+  function revealMine() {
+    if (G.revealedMine || busy) return; busy = true;
+    sfx.drum();
+    openModal(`<div class="eyebrow">Your box, number ${G.mine}</div><h2>The moment of truth</h2><div class="drum">? ? ?</div>`);
+    setTimeout(() => {
+      G.revealedMine = true;
+      if (unopenedOthers().length === 0) G.phase = "over";
+      saveGame();
+      const it = itemInBox(G.mine), item = G.items[it];
+      const kept = !G.deal;
+      kept ? sfx.win() : (isHigh(it) ? sfx.ouch() : sfx.good());
+      if (kept) burst();
+      openModal(`<div class="eyebrow">Box ${G.mine} held</div>
+        <p class="big ${cls(it)}">${esc(item.label)}</p>
+        <p class="muted">${kept ? "And it's all yours." : `You took the feel: ${esc(G.deal)}.`}</p>
+        ${item.present ? `<div class="present"><div class="eyebrow">Bonus present inside</div><p>${esc(item.present)}</p></div>` : ""}
+        <div class="actions"><button class="btn btn-gold" data-go="ok">${G.phase === "over" ? "See the results" : "Back to the boxes"}</button></div>`, {
+        ok: () => { closeModal(); busy = false; render(); },
+      });
+    }, 1500);
+  }
+
+  /* ---------------- Confetti ---------------- */
+  function burst() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const c = $("#confetti"), ctx = c.getContext("2d");
+    c.hidden = false; c.width = innerWidth; c.height = innerHeight;
+    const colours = ["#f1c45a", "#e7a693", "#e2365b", "#f6e3b4", "#b9a6e8"];
+    const bits = Array.from({ length: 140 }, () => ({ x: c.width / 2 + (Math.random() - 0.5) * 120, y: c.height * 0.35, vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 14 - 4,
+      s: 4 + Math.random() * 6, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: colours[(Math.random() * colours.length) | 0] }));
+    let f = 0;
+    (function step() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      bits.forEach((b) => { b.vy += 0.35; b.x += b.vx; b.y += b.vy; b.r += b.vr; ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.fillStyle = b.c; ctx.fillRect(-b.s / 2, -b.s / 4, b.s, b.s / 2); ctx.restore(); });
+      if (++f < 120) requestAnimationFrame(step); else { ctx.clearRect(0, 0, c.width, c.height); c.hidden = true; }
+    })();
+  }
+
+  /* ---------------- Boot ---------------- */
+  const savedGame = store.get("fonf.game");
+  if (savedGame && savedGame.items && savedGame.phase !== "over") {
+    G = savedGame;
+    // A call or swap that was interrupted resumes at the right step
+    if (G.phase === "call") G.phase = "open";
+  }
+  renderRows();
+  showSetup();
+  // Re-arm an interrupted phone call or swap when resuming
+  $("#resumeBtn").addEventListener("click", () => {
+    if (G.phase === "open" && G.leftThisRound <= 0) setTimeout(phoneRings, 400);
+    if (G.phase === "swap") setTimeout(offerSwap, 400);
+  });
+})();
+</script>
