@@ -42,6 +42,7 @@ const LANGUAGE_FONTS: Record<string, string> = {
   fa: 'Noto+Sans+Arabic:wght@400;500;600;700;800',
   ur: 'Noto+Nastaliq+Urdu:wght@400;500;600;700',
   hi: 'Noto+Sans+Devanagari:wght@400;500;600;700;800',
+  ne: 'Noto+Sans+Devanagari:wght@400;500;600;700;800',
   bn: 'Noto+Sans+Bengali:wght@400;500;600;700;800',
 };
 

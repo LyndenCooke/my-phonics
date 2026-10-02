@@ -9,7 +9,7 @@
  * Middle East, Asia and Africa (by total speakers, with regional spread).
  */
 export type LanguageCode =
-  | 'en' | 'ar' | 'zh' | 'hi' | 'bn' | 'ur' | 'id' | 'fa' | 'tr' | 'sw' | 'ha';
+  | 'en' | 'ar' | 'zh' | 'hi' | 'bn' | 'ur' | 'id' | 'fa' | 'tr' | 'sw' | 'ha' | 'ne';
 
 export interface SiteLanguage {
   code: LanguageCode;
@@ -34,6 +34,7 @@ export const LANGUAGES: SiteLanguage[] = [
   { code: 'tr', nativeName: 'Türkçe', englishName: 'Turkish', dir: 'ltr', locale: 'tr-TR' },
   { code: 'sw', nativeName: 'Kiswahili', englishName: 'Swahili', dir: 'ltr', locale: 'sw' },
   { code: 'ha', nativeName: 'Hausa', englishName: 'Hausa', dir: 'ltr', locale: 'ha' },
+  { code: 'ne', nativeName: 'नेपाली', englishName: 'Nepali', dir: 'ltr', locale: 'ne-NP' },
 ];
 
 export const LANGUAGE_CODES = LANGUAGES.map((l) => l.code);
