@@ -135,10 +135,12 @@ export function isAllowed(word, level) {
   const multi = allMultiGraphemes();
   // Any length, so four-letter units (-sion, -tion) are caught too:
   // "television" must not pass at L4 as t-e-l-e-v-i-s-i-o-n.
+  // Runs of any units, not just single letters: "previous" hides -ous as
+  // ou+s, "door" hides oor as oo+r, "near" hides ear as ea+r.
   for (let i = 0; i < seg.length - 1; i++) {
     let run = seg[i];
-    if (run.length !== 1) continue;
-    for (let j = i + 1; j < seg.length && seg[j].length === 1 && j - i < 4; j++) {
+    if (isSplit(run)) continue;
+    for (let j = i + 1; j < seg.length && !isSplit(seg[j]) && run.length < 4; j++) {
       run += seg[j];
       if (multi.has(run) && !cum.includes(run)) return false;
     }
