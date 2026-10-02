@@ -133,7 +133,10 @@
       "book": "کتاب کی ورک شیٹس",
       "singleSound": "ایک آواز والی شیٹس — {{sounds}}",
       "singleSoundRest": "ایک آواز والی شیٹس — باقی حروفِ تہجی",
-      "singleSoundSpecial": "ایک آواز والی شیٹس — Special Friends (دو حروف، ایک آواز)"
+      "singleSoundSpecial": "ایک آواز والی شیٹس — Special Friends (دو حروف، ایک آواز)",
+      "forged": "ورک شیٹس",
+      "forgedMore": "مزید مشق",
+      "forgedExtra": "اضافی آوازیں"
     },
     "soundSheet": "آواز {{sound}}"
   },

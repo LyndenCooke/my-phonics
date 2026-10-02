@@ -133,7 +133,10 @@
       "book": "Karatasi za mazoezi za kitabu",
       "singleSound": "Karatasi za sauti moja — {{sounds}}",
       "singleSoundRest": "Karatasi za sauti moja — herufi zilizobaki za alfabeti",
-      "singleSoundSpecial": "Karatasi za sauti moja — Special Friends (herufi mbili, sauti moja)"
+      "singleSoundSpecial": "Karatasi za sauti moja — Special Friends (herufi mbili, sauti moja)",
+      "forged": "Karatasi za mazoezi",
+      "forgedMore": "Mazoezi zaidi",
+      "forgedExtra": "Sauti za ziada"
     },
     "soundSheet": "Sauti {{sound}}"
   },

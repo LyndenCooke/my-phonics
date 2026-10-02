@@ -1,5 +1,6 @@
 import { SoundMatsResources } from '@/components/SoundMatsResources';
 import { JOURNEY_LEVELS, journeyPlacement } from '@/lib/levels8';
+import { FORGED_FOLDERS } from '@/data/forgedWorksheets';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -65,13 +66,14 @@ type Sheet = {
   title: string;
   /** Single-sound sheet: shown as "Sound {{sound}}" (translated). */
   sound?: string;
-  thumb?: string;
+  thumb?: string | null;
+  objective?: string;
 };
 
 type SheetGroup = {
   label: string;
   /** Which translated heading to show (library:worksheets.groups.*). */
-  kind: 'book' | 'singleSound' | 'singleSoundRest' | 'singleSoundSpecial';
+  kind: 'book' | 'singleSound' | 'singleSoundRest' | 'singleSoundSpecial' | 'forged' | 'forgedMore' | 'forgedExtra';
   /** Graphemes for the singleSound heading, e.g. "s a t p i n". */
   sounds?: string;
   bundleHref?: string;
@@ -87,6 +89,19 @@ type BookFolder = {
   focusSounds: string[];
   status: 'ready' | 'coming-soon';
   groups: SheetGroup[];
+  /** 6-level book id ("2_2") when the pack belongs to a story: shows a "Read the story" link. */
+  storyFileId?: string | null;
+};
+
+// The published books live in Supabase Storage (public bucket), not on Vercel;
+// vercel.json rewrites /book-pdfs/* there so the link stays on our domain.
+const storyPdfUrl = (fileId: string) => `/book-pdfs/${fileId}.pdf`;
+
+// Forged groups carry an English label; the heading shown is translated from kind.
+const FORGED_KIND: Record<string, SheetGroup['kind']> = {
+  'Worksheets': 'forged',
+  'More practice': 'forgedMore',
+  'Extra sounds': 'forgedExtra',
 };
 
 const L2_SOUNDS = ['c', 'k', 'ck', 'e', 'u', 'r', 'h', 'b', 'f', 'ff', 'l', 'll', 'ss', 'j', 'v', 'w', 'x', 'y', 'z'];
@@ -268,6 +283,7 @@ function SheetCard({ sheet }: { sheet: Sheet }) {
     <button
       type="button"
       onClick={() => download(sheet.href, pdfFilename(sheet.title))}
+      title={sheet.objective}
       className="group bg-background rounded-xl overflow-hidden border border-border hover:shadow-md transition-all active:scale-[0.97] flex flex-col text-start w-full"
     >
       <div className="aspect-[1/1.4142] overflow-hidden bg-muted">
@@ -345,6 +361,17 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
           </div>
         ) : (
           <div className="space-y-5">
+            {book.storyFileId && (
+              <a
+                href={storyPdfUrl(book.storyFileId)}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-primary-ink hover:underline"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                Read the story first: {book.title} (PDF)
+              </a>
+            )}
             {book.groups.map((g, gi) => (
               <div key={gi}>
                 <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
@@ -390,6 +417,28 @@ const BOOKS_BY_JOURNEY_LEVEL: Record<number, BookFolder[]> = (() => {
     const placed = journeyPlacement(`L${b.bookNumber}`);
     const level = placed?.level ?? 1;
     (out[level] ??= []).push(placed ? { ...b, bookNumber: placed.subLevel.replace(/^L/, '') } : b);
+  }
+  // Forged packs (scripts/worksheets/): a folder for a book that is already
+  // listed adds its group to that book (and makes it ready); anything else
+  // becomes a new folder. Level extras ("L5") go after the level's books.
+  for (const forged of FORGED_FOLDERS) {
+    const f = { ...forged, groups: forged.groups.map((g): SheetGroup => ({ ...g, kind: FORGED_KIND[g.label] ?? 'forged' })) };
+    const level = f.bookNumber.startsWith('L') ? Number(f.bookNumber.slice(1)) : Number(f.bookNumber.split('.')[0]);
+    const list = (out[level] ??= []);
+    const existing = list.find((b) => b.bookNumber === f.bookNumber);
+    if (existing) {
+      existing.groups = [...existing.groups, ...f.groups];
+      existing.status = 'ready';
+      existing.storyFileId ??= f.storyFileId;
+    } else {
+      list.push(f);
+    }
+  }
+  for (const level of Object.keys(out)) {
+    out[Number(level)].sort((a, b) => {
+      const key = (x: BookFolder) => (x.bookNumber.startsWith('L') ? 999 : Number(x.bookNumber.split('.')[1] ?? 0));
+      return key(a) - key(b);
+    });
   }
   return out;
 })();
