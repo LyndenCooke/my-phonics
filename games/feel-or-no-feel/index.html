@@ -308,28 +308,28 @@ h2, h3 { text-wrap: balance; }
   };
 
   const EXAMPLES = [
-    ["A weekend away, all planned by me", "A printed itinerary"],
-    ["Full spa day", ""],
-    ["A new outfit of your choice", "A shopping voucher"],
-    ["Dinner at your favourite restaurant", ""],
-    ["I do every night wake-up for a week", ""],
-    ["A whole day to yourself, no questions", "A box of chocolates"],
-    ["Breakfast in bed, three Saturdays running", ""],
-    ["An hour-long massage", "Your favourite hand cream"],
-    ["Afternoon tea, somewhere fancy", ""],
-    ["A new book of your choice", ""],
-    ["Cinema trip, you pick the film", "Pick and mix"],
-    ["I cook every dinner for a week", ""],
-    ["Movie night: you pick, I don't moan", ""],
-    ["A long lie-in on Sunday", ""],
-    ["A handwritten love letter", ""],
-    ["Foot rub while you watch your programme", ""],
-    ["I do the washing up for a week", ""],
-    ["Your favourite dessert, delivered", "Flowers"],
-    ["A cup of tea made exactly how you like it", ""],
-    ["One back scratch", ""],
-    ["A high five", ""],
-    ["A single fizzy cola bottle sweet", ""],
+    ["£250,000", "A weekend away"],
+    ["£100,000", ""],
+    ["£75,000", "A new outfit of your choice"],
+    ["£50,000", ""],
+    ["£35,000", "Spa voucher"],
+    ["£20,000", ""],
+    ["£15,000", ""],
+    ["£10,000", "Flowers"],
+    ["£5,000", ""],
+    ["£3,000", "A box of chocolates"],
+    ["£1,000", ""],
+    ["£750", ""],
+    ["£500", "Your favourite perfume"],
+    ["£250", ""],
+    ["£100", ""],
+    ["£50", "A new book"],
+    ["£10", ""],
+    ["£5", ""],
+    ["£1", "Pick and mix"],
+    ["50p", ""],
+    ["10p", ""],
+    ["1p", "A single fizzy cola bottle sweet"],
   ];
   const BOX_COUNT = 22;
   const ICON_UP = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l5-5 5 5"/></svg>';
@@ -367,7 +367,7 @@ h2, h3 { text-wrap: balance; }
   /* ---------------- Setup ---------------- */
   let rows = [];
   const savedSetup = store.get("fonf.setup");
-  if (savedSetup && Array.isArray(savedSetup.rows) && savedSetup.rows.length) {
+  if (savedSetup && savedSetup.v === 2 && Array.isArray(savedSetup.rows) && savedSetup.rows.length) {
     rows = savedSetup.rows.slice(0, BOX_COUNT);
     while (rows.length < BOX_COUNT) rows.push({ label: "", present: "" });
     $("#feelerName").value = savedSetup.feeler || "";
@@ -377,7 +377,7 @@ h2, h3 { text-wrap: balance; }
     $("#exampleNote").hidden = false;
   }
 
-  function saveSetup() { store.set("fonf.setup", { rows, feeler: $("#feelerName").value, offers: $("#offerPool").value }); }
+  function saveSetup() { store.set("fonf.setup", { v: 2, rows, feeler: $("#feelerName").value, offers: $("#offerPool").value }); }
 
   function renderRows() {
     const half = Math.ceil(rows.length / 2);
