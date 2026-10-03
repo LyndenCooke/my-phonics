@@ -204,6 +204,37 @@ h2, h3 { text-wrap: balance; }
 
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
 
+/* Opening titles */
+.intro { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; overflow: hidden; text-align: center; padding: 16px;
+  background: radial-gradient(70% 60% at 50% 40%, #173f9c, #06142e 70%); animation: fade .4s ease; }
+.intro .beam { position: absolute; top: -20%; left: 50%; width: 18vw; height: 140%; transform-origin: 50% 0; opacity: 0.35; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), transparent 80%); filter: blur(10px); animation: sweep 5s ease-in-out infinite; }
+.intro .beam.b2 { animation-delay: -1.7s; } .intro .beam.b3 { animation-delay: -3.4s; opacity: 0.25; }
+@keyframes sweep { 0% { transform: translateX(-50%) rotate(-28deg); } 50% { transform: translateX(-50%) rotate(28deg); } 100% { transform: translateX(-50%) rotate(-28deg); } }
+.intro .title { position: relative; font-family: var(--f-display); font-size: clamp(44px, 12vw, 128px); line-height: 1; margin: 0; color: #fff;
+  text-shadow: 0 6px 0 #0d2a6b, 0 0 60px rgba(255, 216, 77, 0.6); animation: slam .9s cubic-bezier(.2, 1.5, .4, 1) both; }
+.intro .title .no { color: var(--rose); text-shadow: 0 6px 0 #5a080d, 0 0 60px rgba(224, 48, 58, 0.7); }
+.intro .title .or { font-size: 0.5em; color: var(--gold); display: block; margin: 0.1em 0; }
+@keyframes slam { 0% { transform: scale(3); opacity: 0; filter: blur(8px); } 60% { filter: blur(0); } 100% { transform: scale(1); opacity: 1; } }
+.intro .sub { position: relative; margin: 18px 0 0; font-size: clamp(16px, 2.6vw, 22px); letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); font-weight: 800; animation: fade 1s ease 1.2s both; }
+.intro .skip { position: absolute; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+.intro .ring { position: absolute; left: 50%; top: 50%; width: 60vmin; height: 60vmin; margin: -30vmin 0 0 -30vmin; border-radius: 50%; border: 2px solid rgba(255, 216, 77, 0.5); animation: ringout 1.6s ease-out 0.3s both; pointer-events: none; }
+@keyframes ringout { from { transform: scale(0.2); opacity: 1; } to { transform: scale(2.4); opacity: 0; } }
+
+/* The Banker moment */
+.overlay.banker { background: radial-gradient(60% 50% at 50% 45%, rgba(140, 12, 20, 0.55), rgba(3, 6, 14, 0.96) 70%); animation: fade .6s ease, throb 1.2s ease-in-out infinite alternate; }
+@keyframes throb { from { box-shadow: inset 0 0 120px rgba(224, 48, 58, 0.15); } to { box-shadow: inset 0 0 220px rgba(224, 48, 58, 0.45); } }
+.overlay.banker .modal { background: linear-gradient(180deg, #1a0407, #06040a); border-color: rgba(224, 48, 58, 0.45); box-shadow: 0 0 80px rgba(224, 48, 58, 0.35); }
+.overlay.banker .phone { width: 120px; height: 120px; }
+.overlay.banker .phone svg { width: 58px; height: 58px; }
+.overlay.banker h2 { letter-spacing: 0.04em; }
+.offer-reveal { font-family: var(--f-num); font-weight: 900; font-size: clamp(44px, 10vw, 96px); line-height: 1; color: var(--gold); margin: 10px 0; text-shadow: 0 4px 0 #5a4300, 0 0 40px rgba(255, 216, 77, 0.6);
+  animation: slam .7s cubic-bezier(.2, 1.5, .4, 1) both; overflow-wrap: anywhere; }
+.offer-reveal.long { font-family: var(--f-display); font-size: clamp(26px, 6vw, 48px); line-height: 1.15; }
+.typing { font-size: 18px; color: var(--muted); }
+.typing::after { content: "..."; animation: dots 1.2s steps(4, end) infinite; }
+@keyframes dots { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
   .stage { grid-template-columns: 1fr 1fr; }
@@ -274,6 +305,7 @@ h2, h3 { text-wrap: balance; }
       </div>
       <div class="panel">
         <button class="btn btn-gold" id="startBtn" style="width:100%">Start the show</button>
+        <label class="muted" style="display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px"><input type="checkbox" id="muteIntro"> Start without the theme music</label>
         <p class="warn" id="setupWarn" role="alert"></p>
         <button class="btn btn-ghost" id="resumeBtn" style="width:100%" hidden>Resume the game in progress</button>
       </div>
@@ -347,6 +379,30 @@ h2, h3 { text-wrap: balance; }
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     o.connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + 0.05);
   }
+  let drone = null;
+  function startDrone() {
+    if (!soundOn || !actx || drone) return;
+    const g = actx.createGain(); g.gain.value = 0; g.connect(actx.destination);
+    const o1 = actx.createOscillator(), o2 = actx.createOscillator(), lfo = actx.createOscillator(), lg = actx.createGain();
+    o1.type = "sawtooth"; o1.frequency.value = 55; o2.type = "sawtooth"; o2.frequency.value = 55.7;
+    const f = actx.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 220;
+    lfo.frequency.value = 0.9; lg.gain.value = 60; lfo.connect(lg).connect(f.frequency);
+    o1.connect(f); o2.connect(f); f.connect(g);
+    o1.start(); o2.start(); lfo.start();
+    g.gain.linearRampToValueAtTime(0.09, actx.currentTime + 1.5);
+    drone = { g, stop() { g.gain.linearRampToValueAtTime(0, actx.currentTime + 0.6); setTimeout(() => { o1.stop(); o2.stop(); lfo.stop(); }, 700); } };
+  }
+  function stopDrone() { if (drone) { drone.stop(); drone = null; } }
+  function fanfare() {
+    // Original theme: a brass-style fanfare over a pulsing bass, roughly 6 seconds
+    if (!soundOn || !actx) return;
+    const bass = [55, 55, 65.4, 65.4, 73.4, 73.4, 82.4, 82.4, 55, 55, 55, 55];
+    bass.forEach((f, i) => tone(f, i * 0.5, 0.42, "sawtooth", 0.08));
+    for (let i = 0; i < 12; i++) tone(2000, i * 0.5, 0.05, "square", 0.025);
+    const lead = [[330, 0, 0.45], [392, 0.5, 0.45], [494, 1.0, 0.45], [659, 1.5, 0.9], [587, 2.5, 0.45], [494, 3.0, 0.45], [659, 3.5, 1.4], [494, 5.0, 0.3], [659, 5.3, 0.3], [988, 5.6, 1.6]];
+    lead.forEach(([f, t, d]) => { tone(f, t, d, "square", 0.07); tone(f * 0.5, t, d, "triangle", 0.09); tone(f * 1.005, t, d, "sawtooth", 0.03); });
+    [[165, 5.6, 1.8], [247, 5.6, 1.8], [330, 5.6, 1.8]].forEach(([f, t, d]) => tone(f, t, d, "triangle", 0.07));
+  }
   const sfx = {
     tick() { tone(660, 0, 0.08, "triangle", 0.08); },
     drum() { for (let i = 0; i < 10; i++) tone(110 + (i % 2) * 8, i * 0.1, 0.09, "square", 0.05); },
@@ -354,7 +410,16 @@ h2, h3 { text-wrap: balance; }
     ouch() { [392, 370, 349, 262].forEach((f, i) => tone(f, i * 0.22, 0.4, "sawtooth", 0.07)); },
     ring() { for (let i = 0; i < 2; i++) { tone(440, i * 0.5, 0.35, "sine", 0.12); tone(480, i * 0.5, 0.35, "sine", 0.12); } },
     win() { [523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.12, 0.4, "triangle")); },
+    sting() { tone(110, 0, 1.2, "sawtooth", 0.12); tone(165, 0, 1.2, "sawtooth", 0.08); tone(220, 0.05, 1.0, "square", 0.05); for (let i = 0; i < 6; i++) tone(1200 - i * 150, i * 0.04, 0.12, "square", 0.03); },
+    offer() { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.07, 0.5, "triangle", 0.12)); tone(262, 0, 0.9, "sawtooth", 0.06); },
   };
+  function enableSound() {
+    soundOn = true;
+    if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { soundOn = false; } }
+    if (actx && actx.state === "suspended") actx.resume();
+    $("#soundBtn").textContent = soundOn ? "Sound on" : "Sound off";
+    $("#soundBtn").setAttribute("aria-pressed", String(soundOn));
+  }
   $("#soundBtn").addEventListener("click", () => {
     soundOn = !soundOn;
     if (soundOn && !actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { soundOn = false; } }
@@ -453,7 +518,7 @@ h2, h3 { text-wrap: balance; }
     const n = rows.filter((r) => r.label.trim()).length;
     if (n < BOX_COUNT) { $("#setupWarn").textContent = `All 22 boxes need a feel. You have filled ${n}.`; return; }
     $("#setupWarn").textContent = "";
-    newGame(); showGame();
+    newGame(); playIntro(showGame);
   });
   $("#resumeBtn").addEventListener("click", showGame);
   $("#hostBtn").addEventListener("click", () => {
@@ -463,6 +528,21 @@ h2, h3 { text-wrap: balance; }
       host: () => { closeModal(); showSetup(); }, close: closeModal,
     });
   });
+
+  function playIntro(done) {
+    if (!$("#muteIntro").checked) enableSound();
+    const el = document.createElement("div");
+    el.className = "intro"; el.id = "intro";
+    el.innerHTML = `<span class="beam"></span><span class="beam b2"></span><span class="beam b3"></span><span class="ring"></span>
+      <div><h1 class="title">Feel <span class="or">or</span> <span class="no">No</span> Feel</h1><p class="sub">22 boxes. One Feeler. No turning back.</p></div>
+      <button class="btn btn-ghost skip" id="skipIntro">Skip</button>`;
+    document.body.appendChild(el);
+    fanfare();
+    let finished = false;
+    const finish = () => { if (finished) return; finished = true; el.style.transition = "opacity .5s"; el.style.opacity = "0"; setTimeout(() => { el.remove(); done(); }, 500); };
+    $("#skipIntro").addEventListener("click", finish);
+    setTimeout(finish, 7600);
+  }
 
   function showSetup() {
     $("#gameView").hidden = true; $("#setupView").hidden = false; $("#hostBtn").hidden = true;
@@ -580,7 +660,7 @@ h2, h3 { text-wrap: balance; }
     ov.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => handlers[b.dataset.go] && handlers[b.dataset.go](b)));
     const f = ov.querySelector("[autofocus], [data-go]"); if (f) f.focus();
   }
-  function closeModal() { $("#overlay").hidden = true; $("#overlay").innerHTML = ""; }
+  function closeModal() { $("#overlay").hidden = true; $("#overlay").innerHTML = ""; $("#overlay").classList.remove("banker"); }
 
   /* ---------------- Play ---------------- */
   $("#grid").addEventListener("click", (e) => {
@@ -643,12 +723,37 @@ h2, h3 { text-wrap: balance; }
 
   function phoneRings() {
     G.phase = "call"; saveGame();
-    sfx.ring(); const ringer = setInterval(sfx.ring, 1600);
-    openModal(`<div class="phone">${ICON_PHONE}</div><div class="eyebrow">Incoming call</div>
-      <h2>${esc(feeler())} is on the line</h2>
-      <p class="muted">Host: answer and make your offer.</p>
-      <div class="actions"><button class="btn btn-gold" data-go="answer">Answer</button></div>`, {
-      answer: () => { clearInterval(ringer); composeOffer(); },
+    startDrone();
+    $("#overlay").classList.add("banker");
+    // Beat one: the stage goes dark and the phone sits silent for a moment
+    openModal(`<div class="phone" style="animation:none;box-shadow:none;filter:saturate(0.4)">${ICON_PHONE}</div>
+      <div class="eyebrow">The stage goes quiet</div><h2>Everyone is watching the phone</h2>`);
+    const t1 = setTimeout(() => {
+      sfx.ring(); const ringer = setInterval(sfx.ring, 1600);
+      openModal(`<div class="phone">${ICON_PHONE}</div><div class="eyebrow">Incoming call</div>
+        <h2>${esc(feeler())} is on the line</h2>
+        <p class="muted">Host: pick up and hear what they have to say.</p>
+        <div class="actions"><button class="btn btn-gold" data-go="answer">Answer the phone</button></div>`, {
+        answer: () => { clearInterval(ringer); listening(); },
+      });
+    }, 2200);
+    $("#overlay").dataset.t1 = String(t1);
+  }
+
+  function listening() {
+    const lines = [
+      `${feeler()} says they have been watching very closely.`,
+      `${feeler()} is not impressed with how that round went for them.`,
+      `${feeler()} says this is a very generous offer. For them.`,
+      `${feeler()} wants to know how much you really believe in your box.`,
+      `${feeler()} laughs. Then goes quiet.`,
+      `${feeler()} says this one is take it or leave it.`,
+    ];
+    const line = lines[G.offers.length % lines.length];
+    openModal(`<div class="phone" style="animation:none;box-shadow:none">${ICON_PHONE}</div>
+      <div class="eyebrow">On the line</div><h2>${esc(line)}</h2><p class="typing">The offer is coming</p>
+      <div class="actions"><button class="btn btn-gold" data-go="ready">Hear the offer</button></div>`, {
+      ready: composeOffer,
     });
   }
 
@@ -673,10 +778,16 @@ h2, h3 { text-wrap: balance; }
   }
 
   function showOffer(text) {
-    sfx.good();
+    sfx.drum();
+    openModal(`<div class="eyebrow">${esc(feeler())} has made an offer</div><h2>Host, read it out</h2><div class="drum">? ? ?</div>`);
+    setTimeout(() => showOfferNow(text), 1800);
+  }
+  function showOfferNow(text) {
+    stopDrone(); sfx.offer();
     const last = G.round >= G.schedule.length - 1;
+    const long = text.length > 14;
     openModal(`<div class="eyebrow">${esc(feeler())} offers</div>
-      <p class="big offer">${esc(text)}</p>
+      <p class="offer-reveal ${long ? "long" : ""}">${esc(text)}</p>
       <p class="muted">${last ? "This is the final offer." : `${unopenedOthers().length + 1} boxes still sealed, including yours.`}</p>
       <div class="decide"><button class="b-feel" data-go="feel">Feel</button><button class="b-nofeel" data-go="nofeel">No Feel</button></div>
       <div id="sureBox"></div>`, {
@@ -691,12 +802,14 @@ h2, h3 { text-wrap: balance; }
   }
 
   function takeFeel(text) {
+    $("#overlay").classList.remove("banker"); stopDrone();
     G.offers.push({ text, taken: true });
     G.deal = text; G.phase = "after"; saveGame();
     closeModal(); sfx.win(); burst(); render();
   }
 
   function noFeel(text) {
+    $("#overlay").classList.remove("banker"); stopDrone(); sfx.sting();
     G.offers.push({ text, taken: false });
     G.round++;
     if (G.round >= G.schedule.length) {
@@ -704,7 +817,7 @@ h2, h3 { text-wrap: balance; }
       return offerSwap();
     }
     G.phase = "open"; G.leftThisRound = G.schedule[G.round]; saveGame();
-    closeModal(); sfx.ouch(); render();
+    closeModal(); render();
   }
 
   function offerSwap() {
