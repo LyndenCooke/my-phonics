@@ -276,7 +276,18 @@ h2, h3 { text-wrap: balance; }
       <div class="rows" id="rows"></div>
       <div class="setup-actions">
         <button class="btn btn-ghost" id="loadExamples">Load examples</button>
+        <button class="btn btn-ghost" id="copySetup">Copy my setup</button>
+        <button class="btn btn-ghost" id="pasteSetupBtn">Paste a setup</button>
         <button class="btn btn-ghost" id="clearRows">Clear all</button>
+      </div>
+      <p class="warn" id="transferMsg" style="color:var(--gold)"></p>
+      <div id="pasteBox" class="sure" hidden>
+        <p>Paste the setup code from your other device. It stays in this browser; nothing is sent anywhere.</p>
+        <textarea id="pasteSetup" aria-label="Setup code" style="width:100%;min-height:90px;background:rgba(6,20,46,0.8);border:1px solid var(--line);border-radius:10px;padding:10px;color:inherit"></textarea>
+        <div class="setup-actions" style="margin-top:10px">
+          <button class="btn btn-gold" id="pasteYes">Load this setup</button>
+          <button class="btn btn-ghost" id="pasteNo">Cancel</button>
+        </div>
       </div>
       <div id="clearConfirm" class="sure" hidden>
         <p>Clear every box? This cannot be undone.</p>
@@ -473,6 +484,34 @@ h2, h3 { text-wrap: balance; }
     renderRows(); saveSetup();
   });
   $("#loadExamples").addEventListener("click", () => { rows = EXAMPLES.map(([label, present]) => ({ label, present })); $("#exampleNote").hidden = false; renderRows(); saveSetup(); });
+  // Move a setup between devices as a code on the clipboard. Plain base64 of the saved JSON, nothing leaves the browser.
+  const encodeSetup = () => "FONF1." + btoa(unescape(encodeURIComponent(JSON.stringify({ rows, feeler: $("#feelerName").value, offers: $("#offerPool").value }))));
+  const decodeSetup = (code) => {
+    const t = code.trim(); if (!t.startsWith("FONF1.")) throw new Error("bad");
+    const d = JSON.parse(decodeURIComponent(escape(atob(t.slice(6)))));
+    if (!Array.isArray(d.rows)) throw new Error("bad");
+    return d;
+  };
+  const msg = (t) => { $("#transferMsg").textContent = t; setTimeout(() => { if ($("#transferMsg").textContent === t) $("#transferMsg").textContent = ""; }, 5000); };
+  $("#copySetup").addEventListener("click", async () => {
+    const code = encodeSetup();
+    try { await navigator.clipboard.writeText(code); msg("Copied. Paste it into \"Paste a setup\" on your other device."); }
+    catch (e) {
+      $("#pasteBox").hidden = false; $("#pasteSetup").value = code; $("#pasteSetup").select();
+      msg("Clipboard blocked here, so the code is in the box below: select it all and copy.");
+    }
+  });
+  $("#pasteSetupBtn").addEventListener("click", () => { $("#pasteBox").hidden = false; $("#pasteSetup").value = ""; $("#pasteSetup").focus(); });
+  $("#pasteNo").addEventListener("click", () => { $("#pasteBox").hidden = true; });
+  $("#pasteYes").addEventListener("click", () => {
+    try {
+      const d = decodeSetup($("#pasteSetup").value);
+      rows = d.rows.slice(0, BOX_COUNT).map((r) => ({ label: String(r.label || ""), present: String(r.present || "") }));
+      while (rows.length < BOX_COUNT) rows.push({ label: "", present: "" });
+      $("#feelerName").value = d.feeler || ""; $("#offerPool").value = d.offers || "";
+      $("#exampleNote").hidden = true; $("#pasteBox").hidden = true; renderRows(); saveSetup(); msg("Setup loaded.");
+    } catch (e) { msg("That code didn't work. Copy the whole thing from the other device and try again."); }
+  });
   $("#clearRows").addEventListener("click", () => { $("#clearConfirm").hidden = false; });
   $("#clearNo").addEventListener("click", () => { $("#clearConfirm").hidden = true; });
   $("#clearYes").addEventListener("click", () => {
