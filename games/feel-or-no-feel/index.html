@@ -77,8 +77,8 @@ h2, h3 { text-wrap: balance; }
 .setup p { margin: 0 0 14px; max-width: 65ch; }
 .rows { display: grid; gap: 8px; }
 .row { display: grid; grid-template-columns: 34px minmax(0, 1.2fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
-.row .rank { font-family: var(--f-num); font-weight: 900; font-size: 20px; text-align: center; color: var(--lilac); font-variant-numeric: tabular-nums; }
-.row.high .rank { color: var(--gold); }
+.row .rank { font-family: var(--f-num); font-weight: 900; font-size: 20px; text-align: center; color: #9fc3ff; font-variant-numeric: tabular-nums; }
+.row.high .rank { color: #ff5c66; }
 .row input { width: 100%; min-width: 0; background: rgba(26, 13, 33, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
 .row input::placeholder { color: rgba(196, 175, 194, 0.55); }
 .row input:focus { border-color: var(--rose); outline: none; }
@@ -104,10 +104,10 @@ h2, h3 { text-wrap: balance; }
 .board { display: grid; gap: 6px; }
 .val { position: relative; display: flex; align-items: center; min-height: 40px; padding: 7px 12px; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.25;
   transition: opacity .4s, transform .4s, filter .4s; overflow-wrap: anywhere; }
-.val.low { background: linear-gradient(90deg, rgba(185, 166, 232, 0.28), rgba(185, 166, 232, 0.10)); border: 1px solid rgba(185, 166, 232, 0.45); color: #ece6ff; }
-.val.high { background: linear-gradient(90deg, rgba(241, 196, 90, 0.10), rgba(241, 196, 90, 0.32)); border: 1px solid rgba(241, 196, 90, 0.55); color: var(--champagne); justify-content: flex-end; text-align: right; }
-.val.gone { opacity: 0.22; filter: grayscale(1); transform: scale(0.97); }
-.val.gone::after { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 2px; background: currentColor; opacity: 0.8; }
+.val.low { background: linear-gradient(180deg, #2b63d9, #173f9c); border: 2px solid #0d2a6b; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); }
+.val.high { background: linear-gradient(180deg, #e0303a, #9b1018); border: 2px solid #5a080d; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); justify-content: flex-end; text-align: right; }
+.val.gone { background: #1c1220; border-color: #3a2a40; color: #6e5f73; box-shadow: none; transform: scale(0.97); }
+.val.gone::after { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 2px; background: currentColor; opacity: 0.6; }
 .val.just { animation: knock .7s ease; }
 @keyframes knock { 0% { transform: scale(1.06); filter: brightness(1.8); } 100% { transform: scale(0.97); } }
 
@@ -119,38 +119,35 @@ h2, h3 { text-wrap: balance; }
 .pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--rose); }
 .pip.on { background: var(--rose); box-shadow: 0 0 10px rgba(231, 166, 147, 0.6); }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 16px; padding: 18px; border-radius: var(--r); background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)); border: 1px solid var(--line); }
 
-/* Gift boxes */
-.box { position: relative; aspect-ratio: 1 / 0.92; max-width: 100%; border: 0; padding: 0; background: none; perspective: 600px; }
-.box .body, .box .lid { position: absolute; left: 0; right: 0; border-radius: 8px;
-  background:
-    linear-gradient(90deg, transparent 42%, var(--wine) 42%, var(--wine) 58%, transparent 58%),
-    linear-gradient(160deg, #f3c3b2, var(--rose) 45%, var(--rose-deep)); }
-.box .body { top: 22%; bottom: 0; box-shadow: 0 10px 18px rgba(0, 0, 0, 0.45), inset 0 -6px 0 rgba(0, 0, 0, 0.12); }
-.box .lid { top: 8%; height: 22%; left: -5%; right: -5%; border-radius: 6px; transform-origin: 10% 100%; transition: transform .55s cubic-bezier(.3, 1.4, .5, 1), opacity .55s;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18); background:
-    linear-gradient(90deg, transparent 42%, var(--feel-deep) 42%, var(--feel-deep) 58%, transparent 58%),
-    linear-gradient(180deg, #f7cfc0, var(--rose)); }
-.box .bow { position: absolute; top: -2%; left: 50%; width: 40%; transform: translateX(-50%); transition: transform .55s, opacity .4s; }
-.box .num { position: absolute; left: 50%; top: 61%; transform: translate(-50%, -50%); min-width: 46%; padding: 2px 6px; border-radius: 8px; background: var(--champagne); color: #3a1a22;
-  font-family: var(--f-num); font-weight: 900; font-size: clamp(22px, 3.4vw, 32px); line-height: 1.05; font-variant-numeric: tabular-nums; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25); }
-.box:not(:disabled):hover .lid { transform: translateY(-6px) rotate(-3deg); }
-.box:not(:disabled):hover .bow { transform: translateX(-50%) translateY(-6px) rotate(-3deg); }
+/* Deal or No Deal boxes: red sealed box, black lid seam, white number plate */
+.box { position: relative; aspect-ratio: 1 / 0.8; max-width: 100%; border: 0; padding: 0; background: none; border-radius: 6px; }
+.box .body { position: absolute; inset: 0; border-radius: 6px;
+  background: linear-gradient(180deg, #d9262f 0%, #b5121b 55%, #8c0c14 100%);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.25), inset 0 -4px 0 rgba(0, 0, 0, 0.3); }
+.box .lid { position: absolute; left: 0; right: 0; top: 0; height: 30%; border-radius: 6px 6px 2px 2px; transform-origin: 50% 0;
+  background: linear-gradient(180deg, #e5343c, #c4161f); border-bottom: 3px solid #2a0608;
+  transition: transform .6s cubic-bezier(.3, 1.3, .5, 1), opacity .5s; box-shadow: 0 3px 4px rgba(0, 0, 0, 0.35); }
+.box .lid::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 18%; height: 12px; transform: translateX(-50%); border-radius: 0 0 4px 4px; background: linear-gradient(180deg, #e8e8e8, #9a9a9a); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.box .num { position: absolute; left: 14%; right: 14%; top: 40%; bottom: 14%; display: grid; place-items: center; border-radius: 4px;
+  background: #fff; color: #111; border: 2px solid #111; font-family: var(--f-num); font-weight: 900; font-size: clamp(26px, 4vw, 42px); line-height: 1; font-variant-numeric: tabular-nums;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4); transition: opacity .3s; }
+.box:not(:disabled):hover .body { filter: brightness(1.12); }
+.box:not(:disabled):hover .lid { transform: rotateX(-14deg); }
 .box:disabled { cursor: default; }
-.box.opening .lid, .box.opening .bow { transform: translateY(-40px) rotate(-28deg); opacity: 0; }
-.box.opened .lid, .box.opened .bow { opacity: 0; transform: translateY(-40px) rotate(-28deg); }
-.box.opened .body { background: linear-gradient(180deg, #2a1533, #1f1027); box-shadow: inset 0 0 0 2px rgba(231, 166, 147, 0.35); }
-.box.opened .num { background: transparent; color: var(--muted); font-size: 18px; top: 36%; box-shadow: none; }
-.box .inside { position: absolute; left: 6%; right: 6%; top: 50%; bottom: 6%; display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 600; line-height: 1.2; overflow: hidden; overflow-wrap: anywhere; }
-.box .inside.low { color: var(--lilac); }
+.box.opening .lid, .box.opened .lid { transform: rotateX(-110deg); opacity: 0; }
+.box.opened .body { background: linear-gradient(180deg, #4a0a0f, #2a0608); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12), 0 4px 10px rgba(0, 0, 0, 0.4); }
+.box.opened .num { background: transparent; border-color: transparent; color: rgba(255, 255, 255, 0.45); font-size: 16px; top: 4%; bottom: auto; height: 22%; box-shadow: none; }
+.box .inside { position: absolute; left: 6%; right: 6%; top: 28%; bottom: 6%; display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 700; line-height: 1.2; overflow: hidden; overflow-wrap: anywhere; }
+.box .inside.low { color: #9fc3ff; }
 .box .inside.high { color: var(--gold); }
-.box.mine { outline: 3px solid var(--gold); outline-offset: 5px; border-radius: 10px; }
+.box.mine { outline: 3px solid var(--gold); outline-offset: 5px; }
 .box.shake { animation: shake .5s ease infinite; }
 @keyframes shake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
 
 .podium { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 14px 18px; }
-.podium .box { width: 96px; flex: none; }
+.podium .box { width: 110px; flex: none; }
 .podium h3 { margin: 0; font-size: 18px; }
 .podium p { margin: 2px 0 0; color: var(--muted); font-size: 14px; max-width: 46ch; }
 
@@ -169,7 +166,7 @@ h2, h3 { text-wrap: balance; }
 @keyframes pop { from { transform: scale(0.9); opacity: 0; } }
 .modal h2 { margin: 6px 0 10px; font-size: clamp(22px, 4vw, 28px); }
 .modal .big { font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 6vw, 42px); line-height: 1.15; margin: 10px 0 14px; overflow-wrap: anywhere; text-wrap: balance; }
-.modal .big.low { color: var(--lilac); }
+.modal .big.low { color: #9fc3ff; }
 .modal .big.high { color: var(--gold); }
 .modal .big.offer { color: var(--champagne); }
 .modal .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
@@ -242,7 +239,7 @@ h2, h3 { text-wrap: balance; }
     <div class="panel">
       <div class="eyebrow">Host only: keep this screen to yourself</div>
       <h2>Fill the boxes</h2>
-      <p class="muted">Write one feel per box, best at the top. The top half shows in gold on the board, the bottom half in lilac. Add a present to any box if you want a bonus surprise when it is opened. Everything is shuffled into the boxes when you start.</p>
+      <p class="muted">Write one feel per box, best at the top. The top half goes on the red side of the board, the bottom half on the blue side, just like the show. Add a present to any box if you want a bonus surprise when it is opened. Everything is shuffled into the boxes when you start.</p>
       <span class="example-note" id="exampleNote" hidden>Example boxes loaded: replace them with your own</span>
       <div class="head-row"><span>#</span><span>On the board</span><span>Present inside (optional)</span><span></span></div>
       <div class="rows" id="rows"></div>
@@ -329,7 +326,6 @@ h2, h3 { text-wrap: balance; }
   const ICON_DOWN = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l5 5 5-5"/></svg>';
   const ICON_X = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
   const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z"/></svg>';
-  const BOW = '<svg class="bow" viewBox="0 0 40 20"><path d="M20 14C12 2 2 2 4 10s12 6 16 4zM20 14C28 2 38 2 36 10s-12 6-16 4z" fill="#9e1a3a"/><circle cx="20" cy="14" r="4" fill="#5b1838"/></svg>';
 
   /* ---------------- Sound (WebAudio, starts only after a tap) ---------------- */
   let actx = null, soundOn = false;
@@ -485,7 +481,7 @@ h2, h3 { text-wrap: balance; }
     const opened = G.opened.includes(boxNo) || (boxNo === G.mine && G.revealedMine);
     const it = itemInBox(boxNo);
     const inside = opened ? `<span class="inside ${cls(it)}">${esc(G.items[it].label)}</span>` : "";
-    return `<span class="body"></span><span class="lid"></span>${BOW}<span class="num">${boxNo}</span>${inside}`;
+    return `<span class="body"></span><span class="num">${boxNo}</span>${inside}<span class="lid"></span>`;
   }
 
   function render() {
