@@ -6,21 +6,21 @@
 /* Layout: a late-night game show set. Board of feels on both wings, gift boxes centre stage, the Feeler's phone drops in as an overlay. One committed dark look. */
 :root {
   color-scheme: dark;
-  --stage: #1a0d21;
-  --stage-2: #2a1533;
-  --wine: #5b1838;
-  --rose: #e7a693;
-  --rose-deep: #a85a4b;
-  --champagne: #f6e3b4;
-  --gold: #f1c45a;
-  --lilac: #b9a6e8;
-  --ink: #fbf3ee;
-  --muted: #c4afc2;
-  --line: rgba(246, 227, 180, 0.16);
-  --panel: rgba(42, 21, 51, 0.82);
-  --feel: #e2365b;
-  --feel-deep: #9e1a3a;
-  --nofeel: #34224a;
+  --stage: #06142e;
+  --stage-2: #0d2252;
+  --wine: #8c0c14;
+  --rose: #ff4d57;
+  --rose-deep: #b5121b;
+  --champagne: #ffffff;
+  --gold: #ffd84d;
+  --lilac: #9fc3ff;
+  --ink: #ffffff;
+  --muted: #a9bde3;
+  --line: rgba(159, 195, 255, 0.22);
+  --panel: rgba(13, 34, 82, 0.78);
+  --feel: #e0303a;
+  --feel-deep: #8c0c14;
+  --nofeel: #173f9c;
 
   --f-display: "Shrikhand", "Georgia", serif;
   --f-body: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -34,9 +34,9 @@ html, body { min-height: 100%; }
 body {
   margin: 0;
   background:
-    radial-gradient(60% 45% at 50% -5%, rgba(241, 196, 90, 0.20), transparent 70%),
-    radial-gradient(40% 60% at 0% 100%, rgba(91, 24, 56, 0.55), transparent 70%),
-    radial-gradient(40% 60% at 100% 100%, rgba(91, 24, 56, 0.55), transparent 70%),
+    radial-gradient(60% 45% at 50% -5%, rgba(255, 255, 255, 0.14), transparent 70%),
+    radial-gradient(45% 60% at 0% 100%, rgba(43, 99, 217, 0.45), transparent 70%),
+    radial-gradient(45% 60% at 100% 100%, rgba(181, 18, 27, 0.45), transparent 70%),
     var(--stage);
   background-attachment: fixed;
   color: var(--ink);
@@ -52,9 +52,9 @@ button { cursor: pointer; }
 /* ---------- Header ---------- */
 .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .logo { font-family: var(--f-display); font-size: clamp(30px, 6vw, 54px); line-height: 1; margin: 0; letter-spacing: 0.5px;
-  color: var(--champagne); text-shadow: 0 2px 0 var(--wine), 0 0 28px rgba(241, 196, 90, 0.35); }
-.logo .or { font-size: 0.55em; color: var(--rose); vertical-align: middle; margin-inline: 0.15em; }
-.logo .no { color: var(--rose); }
+  color: #fff; text-shadow: 0 3px 0 #0d2a6b, 0 0 28px rgba(43, 99, 217, 0.6); }
+.logo .or { font-size: 0.55em; color: var(--gold); vertical-align: middle; margin-inline: 0.15em; }
+.logo .no { color: var(--rose); text-shadow: 0 3px 0 #5a080d, 0 0 28px rgba(224, 48, 58, 0.6); }
 .tools { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip-btn { background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 14px; color: var(--muted); }
 .chip-btn:hover { color: var(--ink); border-color: var(--rose); }
@@ -62,11 +62,11 @@ button { cursor: pointer; }
 
 /* ---------- Generic ---------- */
 .btn { border: 0; border-radius: 999px; padding: 12px 22px; font-weight: 800; font-size: 16px; letter-spacing: 0.3px; }
-.btn-gold { background: linear-gradient(180deg, var(--champagne), var(--gold)); color: #3a1a22; box-shadow: 0 6px 20px rgba(241, 196, 90, 0.25); }
+.btn-gold { background: linear-gradient(180deg, #ffe88a, var(--gold)); color: #1a1200; box-shadow: 0 6px 20px rgba(255, 216, 77, 0.3); }
 .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
 .btn-ghost:hover { border-color: var(--rose); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); font-weight: 600; }
+.eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
 .muted { color: var(--muted); }
 h2, h3 { text-wrap: balance; }
 
@@ -79,8 +79,8 @@ h2, h3 { text-wrap: balance; }
 .row { display: grid; grid-template-columns: 34px minmax(0, 1.2fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
 .row .rank { font-family: var(--f-num); font-weight: 900; font-size: 20px; text-align: center; color: #9fc3ff; font-variant-numeric: tabular-nums; }
 .row.high .rank { color: #ff5c66; }
-.row input { width: 100%; min-width: 0; background: rgba(26, 13, 33, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
-.row input::placeholder { color: rgba(196, 175, 194, 0.55); }
+.row input { width: 100%; min-width: 0; background: rgba(6, 20, 46, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.row input::placeholder { color: rgba(169, 189, 227, 0.55); }
 .row input:focus { border-color: var(--rose); outline: none; }
 .row-tools { display: flex; gap: 4px; }
 .icon-btn { width: 34px; height: 38px; display: grid; place-items: center; background: transparent; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); }
@@ -92,21 +92,21 @@ h2, h3 { text-wrap: balance; }
 .side { display: grid; gap: 16px; }
 .field { display: grid; gap: 6px; }
 .field label { font-weight: 600; }
-.field input, .field textarea { background: rgba(26, 13, 33, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; resize: vertical; }
+.field input, .field textarea { background: rgba(6, 20, 46, 0.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; resize: vertical; }
 .field textarea { min-height: 140px; }
 .field small { color: var(--muted); }
-.count { font-family: var(--f-num); font-weight: 900; font-size: 44px; line-height: 1; color: var(--champagne); font-variant-numeric: tabular-nums; }
+.count { font-family: var(--f-num); font-weight: 900; font-size: 40px; line-height: 1; color: var(--champagne); font-variant-numeric: tabular-nums; }
 .warn { color: var(--rose); font-weight: 600; min-height: 1.5em; margin: 8px 0 0; }
 .example-note { display: inline-block; font-size: 13px; color: var(--champagne); border: 1px dashed var(--line); border-radius: 999px; padding: 3px 10px; margin-bottom: 10px; }
 
 /* ---------- Stage ---------- */
 .stage { margin-top: 20px; display: grid; grid-template-columns: 220px minmax(0, 1fr) 220px; gap: 20px; align-items: start; }
-.board { display: grid; gap: 6px; }
-.val { position: relative; display: flex; align-items: center; min-height: 40px; padding: 7px 12px; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.25;
+.board { display: grid; gap: 5px; }
+.val { position: relative; display: flex; align-items: center; min-height: 36px; padding: 5px 10px; border-radius: 8px; font-weight: 600; font-size: 14px; line-height: 1.25;
   transition: opacity .4s, transform .4s, filter .4s; overflow-wrap: anywhere; }
 .val.low { background: linear-gradient(180deg, #2b63d9, #173f9c); border: 2px solid #0d2a6b; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); }
 .val.high { background: linear-gradient(180deg, #e0303a, #9b1018); border: 2px solid #5a080d; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); justify-content: flex-end; text-align: right; }
-.val.gone { background: #1c1220; border-color: #3a2a40; color: #6e5f73; box-shadow: none; transform: scale(0.97); }
+.val.gone { background: #0a1630; border-color: #1e3463; color: #4d6396; box-shadow: none; transform: scale(0.97); }
 .val.gone::after { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 2px; background: currentColor; opacity: 0.6; }
 .val.just { animation: knock .7s ease; }
 @keyframes knock { 0% { transform: scale(1.06); filter: brightness(1.8); } 100% { transform: scale(0.97); } }
@@ -116,10 +116,10 @@ h2, h3 { text-wrap: balance; }
 .status h2 { margin: 0; font-size: clamp(18px, 2.4vw, 22px); font-weight: 800; }
 .status p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
 .pips { display: flex; gap: 6px; }
-.pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--rose); }
-.pip.on { background: var(--rose); box-shadow: 0 0 10px rgba(231, 166, 147, 0.6); }
+.pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--gold); }
+.pip.on { background: var(--gold); box-shadow: 0 0 10px rgba(255, 216, 77, 0.6); }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 16px; padding: 18px; border-radius: var(--r); background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)); border: 1px solid var(--line); }
+.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; padding: 18px; border-radius: var(--r); background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)); border: 1px solid var(--line); }
 
 /* Deal or No Deal boxes: red sealed box, black lid seam, white number plate */
 .box { position: relative; aspect-ratio: 1 / 0.8; max-width: 100%; border: 0; padding: 0; background: none; border-radius: 6px; }
@@ -137,7 +137,7 @@ h2, h3 { text-wrap: balance; }
 .box:not(:disabled):hover .lid { transform: rotateX(-14deg); }
 .box:disabled { cursor: default; }
 .box.opening .lid, .box.opened .lid { transform: rotateX(-110deg); opacity: 0; }
-.box.opened .body { background: linear-gradient(180deg, #4a0a0f, #2a0608); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12), 0 4px 10px rgba(0, 0, 0, 0.4); }
+.box.opened .body { background: linear-gradient(180deg, #1a1a1a, #050505); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12), 0 4px 10px rgba(0, 0, 0, 0.4); }
 .box.opened .num { background: transparent; border-color: transparent; color: rgba(255, 255, 255, 0.45); font-size: 16px; top: 4%; bottom: auto; height: 22%; box-shadow: none; }
 .box .inside { position: absolute; left: 6%; right: 6%; top: 28%; bottom: 6%; display: grid; place-items: center; text-align: center; font-size: 12px; font-weight: 700; line-height: 1.2; overflow: hidden; overflow-wrap: anywhere; }
 .box .inside.low { color: #9fc3ff; }
@@ -159,9 +159,9 @@ h2, h3 { text-wrap: balance; }
 .history .tag.no { color: var(--muted); }
 
 /* ---------- Overlays ---------- */
-.overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(12, 5, 16, 0.78); backdrop-filter: blur(4px); animation: fade .25s ease; }
+.overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(3, 10, 26, 0.8); backdrop-filter: blur(4px); animation: fade .25s ease; }
 @keyframes fade { from { opacity: 0; } }
-.modal { width: min(560px, 100%); max-height: calc(100% - 16px); overflow: auto; background: linear-gradient(180deg, var(--stage-2), var(--stage)); border: 1px solid var(--line);
+.modal { width: min(560px, 100%); max-height: calc(100% - 16px); overflow: auto; background: linear-gradient(180deg, #112c66, var(--stage)); border: 1px solid var(--line);
   border-radius: 20px; padding: 28px 24px; text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); animation: pop .35s cubic-bezier(.3, 1.4, .5, 1); }
 @keyframes pop { from { transform: scale(0.9); opacity: 0; } }
 .modal h2 { margin: 6px 0 10px; font-size: clamp(22px, 4vw, 28px); }
@@ -170,10 +170,10 @@ h2, h3 { text-wrap: balance; }
 .modal .big.high { color: var(--gold); }
 .modal .big.offer { color: var(--champagne); }
 .modal .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
-.present { margin: 14px auto 0; max-width: 420px; padding: 14px 16px; border-radius: 14px; border: 1px dashed var(--gold); background: rgba(241, 196, 90, 0.08); }
+.present { margin: 14px auto 0; max-width: 420px; padding: 14px 16px; border-radius: 14px; border: 1px dashed var(--gold); background: rgba(255, 216, 77, 0.1); }
 .present .eyebrow { color: var(--gold); }
 .present p { margin: 4px 0 0; font-weight: 800; font-size: 18px; color: var(--champagne); }
-.drum { font-family: var(--f-num); font-weight: 900; font-size: 64px; color: var(--rose); letter-spacing: 6px; animation: pulse .5s ease infinite alternate; }
+.drum { font-family: var(--f-num); font-weight: 900; font-size: 64px; color: var(--gold); letter-spacing: 6px; animation: pulse .5s ease infinite alternate; }
 @keyframes pulse { to { opacity: 0.35; transform: scale(0.92); } }
 
 .phone { width: 96px; height: 96px; margin: 4px auto 10px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, var(--feel), var(--feel-deep)); box-shadow: 0 0 0 0 rgba(226, 54, 91, 0.6); animation: ring 1s ease infinite; }
@@ -181,18 +181,18 @@ h2, h3 { text-wrap: balance; }
 @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(226, 54, 91, 0.6); } 100% { box-shadow: 0 0 0 26px rgba(226, 54, 91, 0); } }
 @keyframes wobble { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
 .composer { text-align: left; display: grid; gap: 10px; margin-top: 10px; }
-.composer textarea { min-height: 90px; background: rgba(26, 13, 33, 0.8); border: 1px solid var(--line); border-radius: 12px; padding: 12px; resize: vertical; width: 100%; }
+.composer textarea { min-height: 90px; background: rgba(6, 20, 46, 0.8); border: 1px solid var(--line); border-radius: 12px; padding: 12px; resize: vertical; width: 100%; }
 .hints { display: flex; flex-wrap: wrap; gap: 6px; }
-.hint { background: rgba(185, 166, 232, 0.12); border: 1px solid rgba(185, 166, 232, 0.35); color: #ece6ff; border-radius: 999px; padding: 5px 11px; font-size: 13px; text-align: left; }
+.hint { background: rgba(43, 99, 217, 0.25); border: 1px solid rgba(159, 195, 255, 0.45); color: #fff; border-radius: 999px; padding: 5px 11px; font-size: 13px; text-align: left; }
 .hint:hover { border-color: var(--lilac); }
 
 .decide { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
 .decide button { border: 0; border-radius: 16px; padding: 22px 10px; font-family: var(--f-display); font-size: clamp(24px, 5vw, 34px); line-height: 1; letter-spacing: 0.5px; }
 .b-feel { background: linear-gradient(180deg, var(--feel), var(--feel-deep)); color: #fff; box-shadow: 0 10px 28px rgba(226, 54, 91, 0.35); }
-.b-nofeel { background: var(--nofeel); color: var(--champagne); border: 2px solid var(--line) !important; }
+.b-nofeel { background: linear-gradient(180deg, #2b63d9, #173f9c); color: #fff; box-shadow: 0 10px 28px rgba(43, 99, 217, 0.35); }
 .b-feel:hover, .b-nofeel:hover { filter: brightness(1.1); }
 
-.sure { margin-top: 14px; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(91, 24, 56, 0.35); }
+.sure { margin-top: 14px; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(13, 34, 82, 0.6); }
 .sure p { margin: 0 0 10px; }
 
 /* End summary */
@@ -208,7 +208,7 @@ h2, h3 { text-wrap: balance; }
 @media (max-width: 980px) {
   .stage { grid-template-columns: 1fr 1fr; }
   .centre { grid-column: 1 / -1; order: -1; }
-  .board .val { min-height: 34px; font-size: 13px; padding: 6px 10px; }
+  .board .val { min-height: 32px; font-size: 12px; padding: 5px 9px; }
 }
 @media (max-width: 760px) {
   .setup { grid-template-columns: minmax(0, 1fr); }
@@ -217,7 +217,7 @@ h2, h3 { text-wrap: balance; }
   .head-row span:nth-child(3) { display: none; }
   .row-tools { grid-row: 1 / 3; grid-column: 3; flex-direction: column; }
   .row { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 10px; }
+  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 12px; }
   .stage { gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -239,12 +239,11 @@ h2, h3 { text-wrap: balance; }
     <div class="panel">
       <div class="eyebrow">Host only: keep this screen to yourself</div>
       <h2>Fill the boxes</h2>
-      <p class="muted">Write one feel per box, best at the top. The top half goes on the red side of the board, the bottom half on the blue side, just like the show. Add a present to any box if you want a bonus surprise when it is opened. Everything is shuffled into the boxes when you start.</p>
+      <p class="muted">Write one feel for each of the 22 boxes, best at the top. The top half goes on the red side of the board, the bottom half on the blue side, just like the show. Add a present to any box if you want a bonus surprise when it is opened. Everything is shuffled into the boxes when you start.</p>
       <span class="example-note" id="exampleNote" hidden>Example boxes loaded: replace them with your own</span>
       <div class="head-row"><span>#</span><span>On the board</span><span>Present inside (optional)</span><span></span></div>
       <div class="rows" id="rows"></div>
       <div class="setup-actions">
-        <button class="btn btn-ghost" id="addRow">Add a box</button>
         <button class="btn btn-ghost" id="loadExamples">Load examples</button>
         <button class="btn btn-ghost" id="clearRows">Clear all</button>
       </div>
@@ -259,9 +258,9 @@ h2, h3 { text-wrap: balance; }
 
     <div class="side">
       <div class="panel">
-        <div class="eyebrow">Boxes in play</div>
+        <div class="eyebrow">Boxes filled</div>
         <div class="count" id="boxCount">0</div>
-        <small class="muted">Between 6 and 22. Twelve plays in about 15 minutes.</small>
+        <small class="muted">22 boxes, same as the show. Fill them all to start.</small>
       </div>
       <div class="panel field">
         <label for="feelerName">Who makes the offers?</label>
@@ -311,17 +310,28 @@ h2, h3 { text-wrap: balance; }
   const EXAMPLES = [
     ["A weekend away, all planned by me", "A printed itinerary"],
     ["Full spa day", ""],
-    ["Dinner at your favourite restaurant", "A new dress voucher"],
+    ["A new outfit of your choice", "A shopping voucher"],
+    ["Dinner at your favourite restaurant", ""],
     ["I do every night wake-up for a week", ""],
+    ["A whole day to yourself, no questions", "A box of chocolates"],
     ["Breakfast in bed, three Saturdays running", ""],
     ["An hour-long massage", "Your favourite hand cream"],
+    ["Afternoon tea, somewhere fancy", ""],
     ["A new book of your choice", ""],
-    ["A whole afternoon to yourself", "A box of chocolates"],
+    ["Cinema trip, you pick the film", "Pick and mix"],
+    ["I cook every dinner for a week", ""],
     ["Movie night: you pick, I don't moan", ""],
+    ["A long lie-in on Sunday", ""],
     ["A handwritten love letter", ""],
-    ["One back scratch", "Flowers"],
+    ["Foot rub while you watch your programme", ""],
+    ["I do the washing up for a week", ""],
+    ["Your favourite dessert, delivered", "Flowers"],
+    ["A cup of tea made exactly how you like it", ""],
+    ["One back scratch", ""],
+    ["A high five", ""],
     ["A single fizzy cola bottle sweet", ""],
   ];
+  const BOX_COUNT = 22;
   const ICON_UP = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l5-5 5 5"/></svg>';
   const ICON_DOWN = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6l5 5 5-5"/></svg>';
   const ICON_X = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
@@ -358,7 +368,8 @@ h2, h3 { text-wrap: balance; }
   let rows = [];
   const savedSetup = store.get("fonf.setup");
   if (savedSetup && Array.isArray(savedSetup.rows) && savedSetup.rows.length) {
-    rows = savedSetup.rows;
+    rows = savedSetup.rows.slice(0, BOX_COUNT);
+    while (rows.length < BOX_COUNT) rows.push({ label: "", present: "" });
     $("#feelerName").value = savedSetup.feeler || "";
     $("#offerPool").value = savedSetup.offers || "";
   } else {
@@ -378,36 +389,29 @@ h2, h3 { text-wrap: balance; }
         <div class="row-tools">
           <button class="icon-btn" data-act="up" data-i="${i}" aria-label="Move up" ${i === 0 ? "disabled" : ""}>${ICON_UP}</button>
           <button class="icon-btn" data-act="down" data-i="${i}" aria-label="Move down" ${i === rows.length - 1 ? "disabled" : ""}>${ICON_DOWN}</button>
-          <button class="icon-btn" data-act="del" data-i="${i}" aria-label="Remove">${ICON_X}</button>
         </div>
       </div>`).join("");
-    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length;
+    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length + " / 22";
   }
   $("#rows").addEventListener("input", (e) => {
     const t = e.target; if (!t.dataset.k) return;
     rows[+t.dataset.i][t.dataset.k] = t.value;
-    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length;
+    $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length + " / 22";
     $("#exampleNote").hidden = true;
     saveSetup();
   });
   $("#rows").addEventListener("click", (e) => {
     const b = e.target.closest("button[data-act]"); if (!b) return;
     const i = +b.dataset.i, act = b.dataset.act;
-    if (act === "del") rows.splice(i, 1);
     if (act === "up" && i > 0) [rows[i - 1], rows[i]] = [rows[i], rows[i - 1]];
     if (act === "down" && i < rows.length - 1) [rows[i + 1], rows[i]] = [rows[i], rows[i + 1]];
     renderRows(); saveSetup();
-  });
-  $("#addRow").addEventListener("click", () => {
-    if (rows.length >= 22) { $("#setupWarn").textContent = "22 boxes is the most the stage holds."; return; }
-    rows.push({ label: "", present: "" }); renderRows(); saveSetup();
-    $("#lab-" + (rows.length - 1)).focus();
   });
   $("#loadExamples").addEventListener("click", () => { rows = EXAMPLES.map(([label, present]) => ({ label, present })); $("#exampleNote").hidden = false; renderRows(); saveSetup(); });
   $("#clearRows").addEventListener("click", () => { $("#clearConfirm").hidden = false; });
   $("#clearNo").addEventListener("click", () => { $("#clearConfirm").hidden = true; });
   $("#clearYes").addEventListener("click", () => {
-    rows = Array.from({ length: 12 }, () => ({ label: "", present: "" }));
+    rows = Array.from({ length: BOX_COUNT }, () => ({ label: "", present: "" }));
     $("#clearConfirm").hidden = true; $("#exampleNote").hidden = true; renderRows(); saveSetup();
   });
   $("#feelerName").addEventListener("input", saveSetup);
@@ -420,12 +424,11 @@ h2, h3 { text-wrap: balance; }
   const cls = (itemIdx) => (isHigh(itemIdx) ? "high" : "low");
 
   function makeSchedule(others) {
+    // 21 other boxes: 5, 3, 3, 3, 3, 2, 1 then the swap, as on the show
+    const show = [5, 3, 3, 3, 3, 2, 1];
     const s = []; let left = others;
-    while (left > 1) {
-      let take = Math.max(1, Math.round(left * 0.35));
-      if (left - take < 1) take = left - 1;
-      s.push(take); left -= take;
-    }
+    for (const take of show) { if (left - take < 1) break; s.push(take); left -= take; }
+    while (left > 1) { s.push(1); left--; }
     return s;
   }
   function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -448,8 +451,7 @@ h2, h3 { text-wrap: balance; }
 
   $("#startBtn").addEventListener("click", () => {
     const n = rows.filter((r) => r.label.trim()).length;
-    if (n < 6) { $("#setupWarn").textContent = `Add at least 6 feels. You have ${n}.`; return; }
-    if (n > 22) { $("#setupWarn").textContent = "22 boxes is the most the stage holds."; return; }
+    if (n < BOX_COUNT) { $("#setupWarn").textContent = `All 22 boxes need a feel. You have filled ${n}.`; return; }
     $("#setupWarn").textContent = "";
     newGame(); showGame();
   });
@@ -756,7 +758,7 @@ h2, h3 { text-wrap: balance; }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const c = $("#confetti"), ctx = c.getContext("2d");
     c.hidden = false; c.width = innerWidth; c.height = innerHeight;
-    const colours = ["#f1c45a", "#e7a693", "#e2365b", "#f6e3b4", "#b9a6e8"];
+    const colours = ["#ffd84d", "#ffffff", "#e0303a", "#2b63d9", "#9fc3ff"];
     const bits = Array.from({ length: 140 }, () => ({ x: c.width / 2 + (Math.random() - 0.5) * 120, y: c.height * 0.35, vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 14 - 4,
       s: 4 + Math.random() * 6, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: colours[(Math.random() * colours.length) | 0] }));
     let f = 0;
@@ -769,7 +771,7 @@ h2, h3 { text-wrap: balance; }
 
   /* ---------------- Boot ---------------- */
   const savedGame = store.get("fonf.game");
-  if (savedGame && savedGame.items && savedGame.phase !== "over") {
+  if (savedGame && savedGame.items && savedGame.items.length === BOX_COUNT && savedGame.phase !== "over") {
     G = savedGame;
     // A call or swap that was interrupted resumes at the right step
     if (G.phase === "call") G.phase = "open";
