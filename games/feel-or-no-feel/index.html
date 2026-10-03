@@ -302,6 +302,8 @@ h2, h3 { text-wrap: balance; }
       <div class="panel">
         <div class="eyebrow">Boxes filled</div>
         <div class="count" id="boxCount">0</div>
+        <div class="eyebrow" style="margin-top:10px">Presents hidden</div>
+        <div class="count" id="presentCount">0</div>
         <small class="muted">22 boxes, same as the show. Fill them all to start.</small>
       </div>
       <div class="panel field">
@@ -468,11 +470,13 @@ h2, h3 { text-wrap: balance; }
         </div>
       </div>`).join("");
     $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length + " / 22";
+    $("#presentCount").textContent = rows.filter((r) => (r.present || "").trim()).length;
   }
   $("#rows").addEventListener("input", (e) => {
     const t = e.target; if (!t.dataset.k) return;
     rows[+t.dataset.i][t.dataset.k] = t.value;
     $("#boxCount").textContent = rows.filter((r) => r.label.trim()).length + " / 22";
+    $("#presentCount").textContent = rows.filter((r) => (r.present || "").trim()).length;
     $("#exampleNote").hidden = true;
     saveSetup();
   });
@@ -663,9 +667,14 @@ h2, h3 { text-wrap: balance; }
     } else h.hidden = true;
   }
 
+  // Presents are read live from the host list, so one added mid-game still counts
+  function presentOf(itemIdx) {
+    const live = rows[itemIdx] && rows[itemIdx].label.trim() === G.items[itemIdx].label ? (rows[itemIdx].present || "").trim() : "";
+    return live || G.items[itemIdx].present || "";
+  }
   function presentsFound() {
-    const found = G.opened.map((b) => G.items[itemInBox(b)].present).filter(Boolean);
-    if (G.revealedMine && G.items[itemInBox(G.mine)].present) found.push(G.items[itemInBox(G.mine)].present);
+    const found = G.opened.map((b) => presentOf(itemInBox(b))).filter(Boolean);
+    if (G.revealedMine && presentOf(itemInBox(G.mine))) found.push(presentOf(itemInBox(G.mine)));
     return found;
   }
 
@@ -727,7 +736,7 @@ h2, h3 { text-wrap: balance; }
     openModal(`<div class="eyebrow">Box ${boxNo}</div><h2>Opening...</h2><div class="drum">? ? ?</div>`);
     setTimeout(() => {
       el.classList.remove("shake"); el.classList.add("opening");
-      const it = itemInBox(boxNo), item = G.items[it];
+      const it = itemInBox(boxNo), item = { ...G.items[it], present: presentOf(it) };
       G.opened.push(boxNo);
       if (G.phase === "open") G.leftThisRound--;
       saveGame();
@@ -873,7 +882,7 @@ h2, h3 { text-wrap: balance; }
   function finalReveal(otherBox) {
     // Open the box she did not keep first, then hers
     G.opened.push(otherBox); G.phase = "after"; saveGame();
-    const o = G.items[itemInBox(otherBox)];
+    const o = { ...G.items[itemInBox(otherBox)], present: presentOf(itemInBox(otherBox)) };
     sfx.drum();
     openModal(`<div class="eyebrow">Box ${otherBox}, the one you left behind</div>
       <p class="big ${cls(itemInBox(otherBox))}">${esc(o.label)}</p>
@@ -891,7 +900,7 @@ h2, h3 { text-wrap: balance; }
       G.revealedMine = true;
       if (unopenedOthers().length === 0) G.phase = "over";
       saveGame();
-      const it = itemInBox(G.mine), item = G.items[it];
+      const it = itemInBox(G.mine), item = { ...G.items[it], present: presentOf(it) };
       const kept = !G.deal;
       kept ? sfx.win() : (isHigh(it) ? sfx.ouch() : sfx.good());
       if (kept) burst();
