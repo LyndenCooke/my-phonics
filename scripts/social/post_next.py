@@ -164,6 +164,15 @@ def main():
         page_id, token = os.environ.get("FB_PAGE_ID"), os.environ.get("FB_PAGE_ACCESS_TOKEN")
         ig = ig_user(page_id, token)
         print("instagram_business_account:", ig or "NONE", "" if not ig else _get(ig, token, fields="username,name"))
+        for label, fn in (
+            ("token", lambda: {k: v for k, v in _get("debug_token", token, input_token=token)["data"].items()
+                               if k in ("type", "is_valid", "expires_at", "scopes")}),
+            ("connected_instagram_account", lambda: _get(page_id, token, fields="connected_instagram_account")),
+        ):
+            try:
+                print(f"{label}:", fn())
+            except urllib.error.HTTPError as e:
+                print(f"{label}: ERROR", e.read().decode("utf-8", "replace")[:300])
         return
 
     queue = load(QUEUE, [])
