@@ -1,0 +1,321 @@
+{% import "lesson_slides_figures.html" as F %}
+{% macro figure(name) %}{% if name %}{{ F[name]() }}{% endif %}{% endmacro %}
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8">
+<title>{{ D.title }}</title>
+{% if use_webfonts %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{% endif %}
+<style>
+  @font-face { font-family:'Andika'; src:url('{{ font_regular }}'); font-weight:400; }
+  @font-face { font-family:'Andika'; src:url('{{ font_bold }}'); font-weight:700; }
+  @page { size:{{ W }}px {{ H }}px; margin:0; }
+  :root {
+    --ink:#1F1B16; --muted:#6B6257; --line:#E6DDD0;
+    --paper:#F8F4EC; --cream:#FBF7EF; --marble:#F1EBE0; --marble-dark:#D9CFBF; --rock:#8B7355;
+    --terracotta:#B5451B; --terracotta-dark:#8E3413; --terracotta-light:#E7B59A;
+    --aegean:#1E5AA8; --aegean-light:#7FB3E6; --olive:#6B7F3A; --olive-dark:#4B5A26; --olive-light:#C9D1A3;
+    --gold:#C9A227; --gold-light:#F0DEA0; --bronze:#A8783A; --brown:#6B4A2B; --purple:#6D3A8E;
+    --green:#4C9A52; --hummus:#E9D8B0; --cord:#7A5B3A;
+    --skin-1:#E8B98A; --skin-2:#C98D5E; --skin-3:#8D5A3B; --hair-1:#2B1D14;
+    --accent:var(--terracotta); --accent-2:var(--aegean);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:{{ W }}px; font-family:"Plus Jakarta Sans","Segoe UI",sans-serif; color:var(--ink); background:#fff; }
+  h1,h2,h3,h4,.kicker,.num { font-family:"Outfit","Segoe UI",sans-serif; }
+  .slide { width:{{ W }}px; height:{{ H }}px; position:relative; overflow:hidden; background:var(--paper);
+           page-break-after:always; break-after:page; padding:64px 88px 72px; display:flex; flex-direction:column; }
+  .slide:last-child { page-break-after:auto; }
+  .content { flex:1; min-height:0; display:flex; flex-direction:column; transform-origin:top left; }
+  .body > * { min-height:0; }
+  .meander { position:absolute; left:0; top:0; width:100%; height:26px; color:var(--accent); opacity:.9; }
+  .foot { position:absolute; left:88px; right:88px; bottom:26px; display:flex; justify-content:space-between;
+          font-size:16px; font-weight:600; color:var(--muted); letter-spacing:.3px; }
+  .foot .num { font-weight:800; color:var(--accent); }
+  .fig { width:100%; height:100%; display:block; }
+  .fig text { font-family:"Outfit","Segoe UI",sans-serif; }
+
+  h2 { font-size:54px; font-weight:800; line-height:1.05; letter-spacing:-.5px; }
+  h2 .bar { display:inline-block; width:14px; height:44px; background:var(--accent); border-radius:4px; margin-right:18px; vertical-align:-6px; }
+  .intro { font-size:21px; line-height:1.35; color:var(--ink); margin-top:12px; max-width:1500px; }
+  .intro b { color:var(--accent); }
+  .body { flex:1; display:flex; gap:36px; margin-top:24px; min-height:0; }
+  .grow { flex:1; min-width:0; }
+
+  /* title */
+  .title-slide { background:linear-gradient(135deg,#F8F4EC 0%, #F1E6D2 100%); padding:0; }
+  .title-slide .content { display:block; }
+  .title-slide .tl { position:absolute; left:96px; top:140px; width:600px; }
+  .title-slide .kicker { font-size:22px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--accent); }
+  .title-slide h1 { font-size:104px; font-weight:900; line-height:.98; letter-spacing:-3px; margin-top:16px; }
+  .title-slide .sub { font-size:25px; line-height:1.4; margin-top:30px; color:var(--ink); font-weight:500; }
+  .title-slide .strap { display:inline-block; margin-top:30px; background:var(--ink); color:#fff; font-weight:700; font-size:22px; padding:14px 26px; border-radius:14px; }
+  .title-slide .art { position:absolute; right:80px; top:190px; width:480px; height:225px; }
+  .title-slide .art .fig { border-radius:18px; box-shadow:0 30px 60px -30px rgba(31,27,22,.45); }
+
+  /* facts grid */
+  .facts { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-content:start; }
+  .fact { background:#fff; border:2px solid var(--line); border-radius:18px; padding:16px 22px; }
+  .fact h4 { font-size:24px; font-weight:800; color:var(--accent); margin-bottom:6px; }
+  .fact p { font-size:18.5px; line-height:1.38; }
+  .side { width:360px; flex:0 0 auto; display:flex; align-items:center; }
+  .timeline { flex:0 0 auto; margin-top:24px; display:flex; align-items:stretch; gap:0; border-top:4px solid var(--accent-2); padding-top:14px; }
+  .tl-item { flex:1; position:relative; padding:0 10px; }
+  .tl-item::before { content:""; position:absolute; left:10px; top:-25px; width:18px; height:18px; border-radius:50%; background:var(--accent-2); border:4px solid var(--paper); }
+  .tl-item .yr { font-family:"Outfit"; font-weight:900; font-size:22px; color:var(--accent-2); }
+  .tl-item .lb { font-size:16.5px; line-height:1.3; color:var(--ink); margin-top:2px; }
+
+  /* timetable */
+  table.tt { width:100%; border-collapse:separate; border-spacing:0 8px; margin-top:12px; }
+  table.tt td { vertical-align:middle; background:#fff; padding:9px 22px; border-top:2px solid var(--line); border-bottom:2px solid var(--line); }
+  table.tt td:first-child { border-left:2px solid var(--line); border-radius:16px 0 0 16px; width:150px; }
+  table.tt td:last-child { border-right:2px solid var(--line); border-radius:0 16px 16px 0; }
+  table.tt .t { display:inline-block; font-family:"Outfit"; font-weight:900; font-size:22px; color:#fff; background:var(--accent); border-radius:12px; padding:6px 16px; }
+  table.tt .b { font-family:"Outfit"; font-weight:800; font-size:23px; width:330px; }
+  table.tt .d { font-size:18.5px; line-height:1.35; color:var(--ink); }
+
+  /* costumes */
+  .costumes { display:grid; grid-template-columns:repeat(5,1fr); gap:22px; }
+  .costume { background:#fff; border:2px solid var(--line); border-radius:20px; padding:18px 18px 20px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .costume .art { width:150px; height:200px; }
+  .costume h4 { font-size:24px; font-weight:800; margin-top:10px; color:var(--accent); }
+  .costume p { font-size:16.5px; line-height:1.38; margin-top:8px; }
+
+  /* figure steps */
+  .steps-art { height:230px; background:#fff; border:2px solid var(--line); border-radius:20px; padding:16px 30px; }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-top:22px; }
+  .step h4 { font-size:23px; font-weight:800; color:var(--accent); }
+  .step p { font-size:17px; line-height:1.38; margin-top:6px; }
+  .rules { margin-top:16px; display:flex; gap:14px; flex-wrap:wrap; }
+  .rule { background:var(--ink); color:#fff; font-weight:700; font-size:16px; padding:8px 14px; border-radius:10px; }
+
+  /* labelled figure */
+  .lf-art { flex:1.25; background:#fff; border:2px solid var(--line); border-radius:20px; padding:20px; min-width:0; }
+  .points { flex:1; display:flex; flex-direction:column; gap:14px; justify-content:center; }
+  .pt { display:flex; gap:16px; align-items:flex-start; }
+  .pt .num { flex:0 0 auto; width:40px; height:40px; border-radius:50%; background:var(--accent); color:#fff; font-weight:900; font-size:21px; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+  .pt h4 { font-size:23px; font-weight:800; }
+  .pt p { font-size:18.5px; line-height:1.38; margin-top:2px; }
+
+  /* cards */
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .card { background:#fff; border:2px solid var(--line); border-top:10px solid var(--accent); border-radius:18px; padding:20px 22px 22px; display:flex; flex-direction:column; }
+  .card h4 { font-size:25px; font-weight:800; }
+  .card p { font-size:18px; line-height:1.38; margin-top:8px; flex:1; }
+  .card .note { margin-top:14px; font-size:16.5px; font-weight:700; color:var(--accent-2); background:#EAF1FB; border-radius:10px; padding:8px 12px; }
+  .success { margin-top:18px; background:var(--olive-light); border-radius:16px; padding:16px 24px; display:flex; gap:28px; align-items:center; }
+  .success h4 { font-size:20px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; color:var(--olive-dark); white-space:nowrap; }
+  .success ul { display:grid; grid-template-columns:1fr 1fr; gap:6px 24px; list-style:none; flex:1; }
+  .success li { font-size:17px; font-weight:600; }
+  .success li::before { content:"\2713"; color:var(--olive-dark); font-weight:900; margin-right:8px; }
+  .alphabet { margin-top:22px; background:var(--ink); color:var(--gold-light); font-family:"Andika",serif; font-weight:700; font-size:34px; letter-spacing:3px; white-space:nowrap; text-align:center; padding:16px; border-radius:16px; }
+
+  /* events */
+  .events { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .event { background:#fff; border:2px solid var(--line); border-radius:18px; padding:14px 18px; display:flex; gap:18px; align-items:flex-start; }
+  .picto { width:96px; height:96px; flex:0 0 auto; fill:var(--accent); stroke:var(--accent); background:var(--cream); border-radius:16px; padding:8px; }
+  .event h4 { font-size:25px; font-weight:800; }
+  .event .then, .event .now { font-size:16.5px; line-height:1.36; margin-top:6px; }
+  .event .k { display:inline-block; font-family:"Outfit"; font-weight:800; font-size:13.5px; letter-spacing:1.5px; text-transform:uppercase; border-radius:6px; padding:1px 7px; margin-right:6px; vertical-align:1px; }
+  .event .then .k { background:var(--marble-dark); color:var(--ink); }
+  .event .now .k { background:var(--accent-2); color:#fff; }
+
+  /* columns */
+  .cols { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; flex:1; }
+  .col { background:#fff; border:2px solid var(--line); border-radius:18px; padding:22px 26px; }
+  .col h4 { font-size:25px; font-weight:800; color:var(--accent); padding-bottom:10px; border-bottom:3px solid var(--line); margin-bottom:12px; }
+  .col li { font-size:17.5px; line-height:1.38; padding:4px 0 4px 26px; position:relative; list-style:none; }
+  .col li::before { content:""; position:absolute; left:4px; top:16px; width:10px; height:10px; border-radius:50%; background:var(--accent-2); }
+
+  /* voting */
+  .agenda { background:var(--ink); color:#fff; border-radius:18px; padding:20px 26px; }
+  .agenda h4 { font-size:21px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-light); margin-bottom:10px; }
+  .agenda li { list-style:none; font-size:18.5px; line-height:1.4; padding:5px 0; }
+  .facts.four { grid-template-columns:repeat(4,1fr); }
+  .facts.four .fact p { font-size:17px; }
+  .facts.four .fact h4 { font-size:21px; }
+
+  /* food */
+  .food-then { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .food-then .fact { padding:11px 16px; }
+  .food-then .fact h4 { font-size:20px; }
+  .food-then .fact p { font-size:16.5px; }
+  .food-now { background:#fff; border:2px solid var(--line); border-radius:18px; padding:14px 20px; }
+  .food-now h4 { font-size:21px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent-2); margin-bottom:8px; }
+  .food-now li { list-style:none; font-size:18px; padding:3px 0 3px 26px; position:relative; }
+  .food-now li::before { content:""; position:absolute; left:4px; top:13px; width:10px; height:10px; border-radius:50%; background:var(--olive); }
+  .allergy { margin-top:18px; background:#FFF4E5; border:2px solid #F3C98B; border-radius:14px; padding:10px 18px; font-size:16.5px; line-height:1.38; font-weight:600; }
+
+  /* checklist */
+  .checks { display:grid; grid-template-columns:repeat(2,1fr); gap:12px 28px; }
+  .chk { display:flex; gap:14px; align-items:flex-start; background:#fff; border:2px solid var(--line); border-radius:14px; padding:10px 16px; }
+  .chk .box { flex:0 0 auto; width:34px; height:34px; border:3px solid var(--accent); border-radius:8px; margin-top:2px; }
+  .chk h4 { font-size:20px; font-weight:800; }
+  .chk p { font-size:17px; line-height:1.36; margin-top:2px; }
+  .leave { margin-top:16px; background:var(--terracotta); color:#fff; border-radius:14px; padding:12px 20px; font-size:17px; font-weight:700; }
+
+  /* glossary */
+  .terms { display:grid; grid-template-columns:repeat(3,1fr); gap:14px 26px; }
+  .term { background:#fff; border:2px solid var(--line); border-radius:14px; padding:11px 16px; }
+  .term b { font-family:"Outfit"; font-size:21px; font-weight:800; color:var(--accent); display:block; }
+  .term span { font-size:17px; line-height:1.36; }
+
+  /* closing */
+  .closing { background:var(--ink); color:#fff; }
+  .closing h2 { color:#fff; font-size:84px; }
+  .closing h2 .bar { background:var(--gold); }
+  .closing li { list-style:none; font-size:30px; font-weight:600; padding:10px 0 10px 44px; position:relative; }
+  .closing li::before { content:"\2713"; position:absolute; left:0; color:var(--gold); font-weight:900; }
+  .closing .art { width:640px; height:300px; }
+  .closing .foot { color:#C9BFB0; }
+</style></head>
+<body>
+{% for S in D.slides %}
+{% set n = loop.index %}
+<section class="slide {{ 'title-slide' if S.type == 'title' else '' }} {{ 'closing' if S.type == 'closing' else '' }}">
+  {{ F.meander() }}
+  <div class="content">
+  {% if S.type == 'title' %}
+    <div class="tl">
+      <div class="kicker">{{ S.kicker }}</div>
+      <h1>{{ S.title }}</h1>
+      <p class="sub">{{ S.subtitle }}</p>
+      <div class="strap">{{ S.strap }}</div>
+    </div>
+    <div class="art">{{ figure(S.figure) }}</div>
+
+  {% elif S.type == 'facts' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body">
+      <div class="facts grow">
+        {% for f in S.facts %}<div class="fact"><h4>{{ f.head }}</h4><p>{{ f.text }}</p></div>{% endfor %}
+      </div>
+      {% if S.figure %}<div class="side">{{ figure(S.figure) }}</div>{% endif %}
+    </div>
+    {% if S.timeline %}
+    <div class="timeline">
+      {% for t in S.timeline %}<div class="tl-item"><div class="yr">{{ t.year }}</div><div class="lb">{{ t.label }}</div></div>{% endfor %}
+    </div>
+    {% endif %}
+
+  {% elif S.type == 'timetable' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <table class="tt">
+      {% for r in S.rows %}<tr><td><span class="t">{{ r.time }}</span></td><td class="b">{{ r.block }}</td><td class="d">{{ r.detail }}</td></tr>{% endfor %}
+    </table>
+
+  {% elif S.type == 'costume_ideas' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body"><div class="costumes grow">
+      {% for c in S.characters %}
+      <div class="costume"><div class="art">{{ figure(c.figure) }}</div><h4>{{ c.name }}</h4><p>{{ c.kit }}</p></div>
+      {% endfor %}
+    </div></div>
+
+  {% elif S.type == 'figure_steps' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="steps-art" style="margin-top:22px">{{ figure(S.figure) }}</div>
+    <div class="steps">
+      {% for s in S.steps %}<div class="step"><h4>{{ s.head }}</h4><p>{{ s.text }}</p></div>{% endfor %}
+    </div>
+    {% if S.rules %}<div class="rules">{% for r in S.rules %}<div class="rule">{{ r }}</div>{% endfor %}</div>{% endif %}
+
+  {% elif S.type == 'labelled_figure' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body">
+      <div class="lf-art">{{ figure(S.figure) }}</div>
+      <div class="points">
+        {% for p in S.points %}<div class="pt"><div class="num">{{ loop.index }}</div><div><h4>{{ p.head }}</h4><p>{{ p.text }}</p></div></div>{% endfor %}
+      </div>
+    </div>
+
+  {% elif S.type == 'cards' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body"><div class="cards grow">
+      {% for c in S.cards %}<div class="card"><h4>{{ c.head }}</h4><p>{{ c.text }}</p>{% if c.note %}<div class="note">{{ c.note }}</div>{% endif %}</div>{% endfor %}
+    </div></div>
+    {% if S.success %}<div class="success"><h4>Success criteria</h4><ul>{% for s in S.success %}<li>{{ s }}</li>{% endfor %}</ul></div>{% endif %}
+    {% if S.alphabet %}<div class="alphabet">{{ S.alphabet }}</div>{% endif %}
+
+  {% elif S.type == 'events' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body"><div class="events grow">
+      {% for e in S.events %}
+      <div class="event">{{ figure(e.figure) }}<div><h4>{{ e.name }}</h4>
+        <p class="then"><span class="k">Then</span>{{ e.then }}</p>
+        <p class="now"><span class="k">Our day</span>{{ e.now }}</p></div></div>
+      {% endfor %}
+    </div></div>
+
+  {% elif S.type == 'columns' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body">
+      <div class="cols grow">
+        {% for c in S.columns %}<div class="col"><h4>{{ c.head }}</h4><ul>{% for i in c["items"] %}<li>{{ i }}</li>{% endfor %}</ul></div>{% endfor %}
+      </div>
+      {% if S.figure %}<div class="side" style="width:320px">{{ figure(S.figure) }}</div>{% endif %}
+    </div>
+
+  {% elif S.type == 'voting' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body">
+      <div class="grow" style="display:flex;flex-direction:column;gap:18px">
+        <div class="facts four">{% for f in S.facts %}<div class="fact"><h4>{{ f.head }}</h4><p>{{ f.text }}</p></div>{% endfor %}</div>
+        <div style="display:flex;gap:30px;align-items:stretch">
+          <div class="agenda grow"><h4>Our Assembly agenda</h4><ul>{% for a in S.agenda %}<li>{{ a }}</li>{% endfor %}</ul></div>
+          <div style="width:290px;flex:0 0 auto">{{ figure(S.figure) }}</div>
+        </div>
+      </div>
+    </div>
+
+  {% elif S.type == 'food' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body">
+      <div class="grow" style="flex:1.4">
+        <div class="food-then">{% for f in S.then %}<div class="fact"><h4>{{ f.head }}</h4><p>{{ f.text }}</p></div>{% endfor %}</div>
+      </div>
+      <div class="grow" style="display:flex;flex-direction:column;gap:14px">
+        <div class="food-now"><h4>On our table</h4><ul style="columns:2">{% for f in S.now %}<li>{{ f }}</li>{% endfor %}</ul></div>
+        <div style="height:150px">{{ figure(S.figure) }}</div>
+      </div>
+    </div>
+    <div class="allergy">{{ S.allergy }}</div>
+
+  {% elif S.type == 'checklist' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body"><div class="checks grow">
+      {% for i in S["items"] %}<div class="chk"><div class="box"></div><div><h4>{{ i.head }}</h4><p>{{ i.text }}</p></div></div>{% endfor %}
+    </div></div>
+    {% if S.footer %}<div class="leave">{{ S.footer }}</div>{% endif %}
+
+  {% elif S.type == 'glossary' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <p class="intro">{{ S.intro }}</p>
+    <div class="body"><div class="terms grow">
+      {% for t in S.terms %}<div class="term"><b>{{ t.term }}</b><span>{{ t.meaning }}</span></div>{% endfor %}
+    </div></div>
+
+  {% elif S.type == 'closing' %}
+    <h2><span class="bar"></span>{{ S.title }}</h2>
+    <div class="body" style="align-items:center">
+      <ul class="grow">{% for l in S.lines %}<li>{{ l }}</li>{% endfor %}</ul>
+      <div class="art">{{ figure(S.figure) }}</div>
+    </div>
+  {% endif %}
+  </div>
+  <div class="foot"><span>{{ D.footer }}</span><span class="num">{{ n }} / {{ D.slides | length }}</span></div>
+</section>
+{% endfor %}
+</body></html>

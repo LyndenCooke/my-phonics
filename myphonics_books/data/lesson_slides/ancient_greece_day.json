@@ -1,0 +1,237 @@
+{
+  "deck": "ancient_greece_day",
+  "title": "Ancient Greece Day",
+  "audience": "Year 5",
+  "theme": "greece",
+  "footer": "Year 5 Ancient Greece Day",
+  "slides": [
+    {
+      "type": "title",
+      "kicker": "Year 5 topic day",
+      "title": "Ancient Greece Day",
+      "subtitle": "Dress up. Build a temple. Compete in the Olympics. Vote like an Athenian. Share a Greek feast.",
+      "strap": "Date: to be confirmed. Costumes on from the start of the day.",
+      "figure": "acropolis"
+    },
+    {
+      "type": "facts",
+      "title": "Why Ancient Greece?",
+      "intro": "About 2,500 years ago the Greeks lived in small city-states around the Aegean Sea. Their ideas still shape our lives today.",
+      "facts": [
+        {"head": "City-states", "text": "Athens, Sparta, Corinth and Thebes each ruled themselves. They traded, argued and sometimes fought."},
+        {"head": "Democracy", "text": "Athenians invented a system where citizens voted on the laws. Our word democracy comes from Greek: demos (people) and kratos (power)."},
+        {"head": "The Olympics", "text": "Athletes from across Greece met at Olympia every four years to compete in honour of Zeus."},
+        {"head": "Temples and art", "text": "Marble temples with tall columns, painted pottery and carved statues. The Parthenon still stands in Athens."},
+        {"head": "Theatre, myths and ideas", "text": "Plays with masks, stories of gods and heroes, and thinkers such as Socrates, Plato and Aristotle."},
+        {"head": "The alphabet", "text": "Our word alphabet comes from the first two Greek letters: alpha and beta."}
+      ],
+      "timeline": [
+        {"year": "776 BC", "label": "First recorded Olympic Games"},
+        {"year": "508 BC", "label": "Democracy begins in Athens"},
+        {"year": "490 BC", "label": "Battle of Marathon"},
+        {"year": "447 BC", "label": "Parthenon building starts"},
+        {"year": "336 BC", "label": "Alexander the Great becomes king"},
+        {"year": "146 BC", "label": "Greece becomes part of Rome"}
+      ]
+    },
+    {
+      "type": "timetable",
+      "title": "The day at a glance",
+      "intro": "Six parts. You take part in all of them. Times may shift a little on the day.",
+      "rows": [
+        {"time": "8:50", "block": "Arrive in costume", "detail": "Register, costume parade and class photo in the hall."},
+        {"time": "9:10", "block": "Welcome to Greece", "detail": "Opening assembly, Greek alphabet names and the city-state teams are announced."},
+        {"time": "9:40", "block": "Temple art workshop", "detail": "Build and decorate your temple model, frieze or pot for the exhibition."},
+        {"time": "11:00", "block": "The Olympic Games", "detail": "Try-outs, then events on the playground. Olive wreath ceremony at the end."},
+        {"time": "13:15", "block": "The Assembly votes", "detail": "Debate like an Athenian, then vote with pebbles and ostraka."},
+        {"time": "14:00", "block": "Greek feast", "detail": "Taste foods the Greeks ate. Then the exhibition gallery walk and awards."}
+      ]
+    },
+    {
+      "type": "costume_ideas",
+      "title": "Dress up: who will you be?",
+      "intro": "Nothing needs to be bought. Most costumes start with an old white sheet, a pillowcase or a plain T-shirt. Wear your PE kit underneath for the Olympics.",
+      "characters": [
+        {"name": "Athenian citizen", "figure": "fig_citizen", "kit": "Long chiton (sheet or pillowcase), cord belt, himation wrap over one shoulder, sandals."},
+        {"name": "Spartan hoplite", "figure": "fig_hoplite", "kit": "Short tunic, red cloak (red fabric or towel), card helmet, round card shield with a lambda."},
+        {"name": "Olympic athlete", "figure": "fig_athlete", "kit": "Knee-length tunic over PE kit, cord belt, olive wreath made from card leaves."},
+        {"name": "Goddess Athena", "figure": "fig_athena", "kit": "Long peplos, gold card helmet, small owl, a shield or a spear made of rolled paper."},
+        {"name": "Philosopher or potter", "figure": "fig_philosopher", "kit": "Chiton and himation, a scroll made of paper, or an apron and a paper-plate pot."}
+      ]
+    },
+    {
+      "type": "figure_steps",
+      "title": "How to make a chiton in five minutes",
+      "intro": "The chiton was the everyday tunic for men, women and children. It is one rectangle of cloth, pinned and belted. The Greeks dyed theirs in bright colours, so white is not the only option.",
+      "figure": "chiton_steps",
+      "steps": [
+        {"head": "1. Fold", "text": "Take a single sheet or a large pillowcase. Fold it in half so the fold sits under one arm."},
+        {"head": "2. Pin", "text": "Pin the top edge at both shoulders with safety pins or two large buttons. Leave a gap for your head."},
+        {"head": "3. Belt", "text": "Tie a cord, dressing gown belt or ribbon round the waist. Pull the cloth up so the hem clears your ankles."},
+        {"head": "4. Finish", "text": "Add a himation (a second piece of cloth over one shoulder), sandals or trainers, and a card leaf wreath."}
+      ],
+      "rules": ["No bought costume is needed.", "No metal, sharp or pointed props. Card shields and paper spears are fine.", "Trainers on for the Olympics. Hair tied back."]
+    },
+    {
+      "type": "labelled_figure",
+      "title": "Temples: homes for the gods",
+      "intro": "A Greek temple was not for worshippers to sit in. It was a house for a statue of a god. The Parthenon on the Acropolis in Athens was built for Athena between 447 and 432 BC.",
+      "figure": "parthenon",
+      "points": [
+        {"head": "Pediment", "text": "The triangle at the top, filled with carved statues of gods and heroes."},
+        {"head": "Frieze with metopes", "text": "A band of carved panels running above the columns. The Parthenon had 92 metopes."},
+        {"head": "Columns", "text": "Doric columns, 8 across the front and 17 down each side. 46 on the outside in total."},
+        {"head": "Steps", "text": "Three marble steps lead up to the platform the temple stands on."},
+        {"head": "Marble", "text": "Cut from Mount Pentelicus, about 16 km away, and hauled up the hill by oxen."}
+      ]
+    },
+    {
+      "type": "labelled_figure",
+      "title": "Three kinds of column",
+      "intro": "Spot the capital, the carved top of the column. It tells you which order the temple belongs to. You will choose one for your own temple.",
+      "figure": "column_orders",
+      "points": [
+        {"head": "Doric", "text": "Plain, sturdy and the oldest. A flat square capital and no base. The Parthenon uses Doric."},
+        {"head": "Ionic", "text": "Slimmer with a scroll shape (volutes) on the capital and a stepped base. Found on the Erechtheion."},
+        {"head": "Corinthian", "text": "The most decorated. Carved acanthus leaves on the capital. Later copied all over the Roman Empire."}
+      ]
+    },
+    {
+      "type": "cards",
+      "title": "Temple art exhibition",
+      "intro": "In the morning workshop you create one piece for our class exhibition. Parents and other classes visit the gallery walk at the end of the day.",
+      "cards": [
+        {"head": "Temple model", "text": "Card box base, paper-tube or rolled-card columns, a card pediment. Choose Doric, Ionic or Corinthian capitals.", "note": "Bring in tubes and small boxes from home this week."},
+        {"head": "Frieze panel", "text": "Draw a metope scene on a strip of card: an Olympic event, a myth or a procession. Use the side-on figures seen on Greek pottery.", "note": "Pencil first, then black and terracotta."},
+        {"head": "Greek pot", "text": "Design an amphora or kylix on a paper plate or card shape. Black-figure or red-figure style with a meander border.", "note": "Patterns: meander, waves, palmettes."},
+        {"head": "Curator card", "text": "Every piece needs a label: title, artist, order of column or style, and one sentence on what it shows.", "note": "Written in your neatest handwriting."}
+      ],
+      "success": ["Columns stand straight and evenly spaced.", "A pediment or capital shows the order you chose.", "Decoration uses Greek patterns and side-on figures.", "A finished curator card sits beside the piece."]
+    },
+    {
+      "type": "facts",
+      "title": "The Ancient Olympic Games",
+      "intro": "The first recorded Games were held at Olympia in 776 BC. They ran every four years for more than a thousand years.",
+      "facts": [
+        {"head": "For Zeus", "text": "The Games were a religious festival. A huge statue of Zeus stood in his temple at Olympia."},
+        {"head": "Only Greeks", "text": "Free Greek men travelled from every city-state. Women had their own games at Olympia, the Heraia."},
+        {"head": "The truce", "text": "Wars stopped so that athletes and visitors could travel safely to the Games."},
+        {"head": "The prize", "text": "No medals. The winner received a wreath of olive leaves and a hero's welcome at home."},
+        {"head": "The stadion", "text": "The oldest event was a sprint of about 192 metres, the length of the stadium."},
+        {"head": "The pentathlon", "text": "Five events in one day: running, long jump, discus, javelin and wrestling."}
+      ],
+      "figure": "olive_wreath"
+    },
+    {
+      "type": "events",
+      "title": "Olympic events to try out for",
+      "intro": "Try-outs in the first 20 minutes. Everyone competes in at least two events for their city-state. Points for first, second and third.",
+      "events": [
+        {"name": "Stadion sprint", "figure": "ev_run", "then": "A straight sprint of one stade, about 192 m.", "now": "Playground sprint, heats then a final."},
+        {"name": "Long jump", "figure": "ev_jump", "then": "A standing jump swinging stone weights called halteres.", "now": "Standing jump holding two beanbags. Furthest jump wins."},
+        {"name": "Discus", "figure": "ev_discus", "then": "A heavy bronze or stone disc thrown for distance.", "now": "Foam frisbee or paper plate throw. Distance and accuracy."},
+        {"name": "Javelin", "figure": "ev_javelin", "then": "A light spear thrown with a leather loop for extra spin.", "now": "Foam pool-noodle javelin into a target zone."},
+        {"name": "Chariot race", "figure": "ev_chariot", "then": "Four-horse chariots racing round the hippodrome.", "now": "Hoop relay in teams of four. Hold the hoop, round the cone, hand over."},
+        {"name": "Hoplite race", "figure": "ev_hoplite", "then": "Running in armour carrying a shield and helmet.", "now": "Obstacle course carrying a card shield. Drop it and you restart that section."}
+      ]
+    },
+    {
+      "type": "columns",
+      "title": "How the Games will run",
+      "intro": "You compete for a city-state, not just for yourself. Teams are mixed from across the class.",
+      "columns": [
+        {"head": "City-state teams", "items": ["Athens (blue)", "Sparta (red)", "Corinth (gold)", "Thebes (green)", "Teams announced at the opening assembly", "Make a team chant and a team flag before break"]},
+        {"head": "Try-outs", "items": ["Pick two events you want to try. A third is optional.", "Short try-out at each station.", "Team captains and teachers agree who goes where.", "Everyone competes. No spectators only."]},
+        {"head": "Scoring and prizes", "items": ["First 5 points, second 3 points, third 1 point.", "Team total decides the champion city-state.", "Olive wreath ceremony for every event winner.", "Sportsmanship award voted for by the Assembly."]}
+      ],
+      "figure": "scoreboard"
+    },
+    {
+      "type": "voting",
+      "title": "Vote like an Athenian",
+      "intro": "From 508 BC Athens was a democracy. Citizens met on a hill called the Pnyx up to 40 times a year to argue and vote. We will hold our own Assembly after lunch.",
+      "facts": [
+        {"head": "The Assembly (Ekklesia)", "text": "Any male citizen over 18 could speak and vote. About 6,000 came to big meetings. Voting was usually by a show of hands."},
+        {"head": "The Council of 500", "text": "Chosen by lot using a machine called a kleroterion, so rich and poor had the same chance."},
+        {"head": "Ostracism", "text": "Once a year citizens could scratch a name on a broken piece of pottery, an ostrakon. With 6,000 votes that person left Athens for ten years."},
+        {"head": "Who was left out?", "text": "Women, enslaved people and foreigners could not vote. Was it really fair? We will debate this."}
+      ],
+      "agenda": [
+        "Motion 1: Which city-state should host next year's Games?",
+        "Motion 2: Which temple deserves the Exhibition Prize?",
+        "Motion 3: Sportsmanship award.",
+        "Speakers hold the speaker's staff. Vote by show of hands, then pebbles in the pot for a secret ballot."
+      ],
+      "figure": "voting"
+    },
+    {
+      "type": "food",
+      "title": "The Greek feast",
+      "intro": "Ancient Greeks ate simply: bread, olives, cheese, fruit, beans and fish. Meat was for festivals. Everything on our table is vegetarian so that everyone can share.",
+      "then": [
+        {"head": "Bread and barley", "text": "Flat loaves dipped in olive oil."},
+        {"head": "Olives and oil", "text": "Grown everywhere. Oil was also used for lamps and skin."},
+        {"head": "Cheese", "text": "From goats and sheep."},
+        {"head": "Figs, grapes and honey", "text": "The sweet treats of Greece."},
+        {"head": "Lentils and chickpeas", "text": "Soups and stews most days."},
+        {"head": "Fish", "text": "Fresh from the Aegean for those near the coast."}
+      ],
+      "now": ["Pitta bread", "Hummus", "Olives", "Feta or a dairy-free cheese", "Cucumber and tomato", "Grapes and dates", "Yoghurt with honey", "Honey oat cakes"],
+      "allergy": "Allergies and dietary needs: every dish is labelled with its ingredients. The table is vegetarian and contains dairy, gluten and sesame. Tell your teacher about any allergy before the day.",
+      "figure": "platter"
+    },
+    {
+      "type": "cards",
+      "title": "And more",
+      "intro": "Short activities running through the day, between the big events.",
+      "cards": [
+        {"head": "Your name in Greek", "text": "Write your name using the 24 letters of the Greek alphabet and pin it to your costume.", "note": "Alpha, beta, gamma, delta..."},
+        {"head": "Theatre masks", "text": "Comedy or tragedy? Make a card mask like the actors in the Theatre of Dionysus.", "note": "Big expressions so the back row can see."},
+        {"head": "Myth corner", "text": "Hear the stories of Theseus and the Minotaur, Perseus and Medusa, and the Trojan Horse.", "note": "Retell one in a six-panel frieze."},
+        {"head": "Pottery patterns", "text": "Learn the meander (Greek key) and the wave border and use them on your exhibition piece.", "note": "Draw it with a ruler first."}
+      ],
+      "alphabet": "Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω"
+    },
+    {
+      "type": "checklist",
+      "title": "What to bring",
+      "intro": "Check this list the night before. Everything should be named.",
+      "items": [
+        {"head": "Your costume", "text": "Worn to school over your PE kit. Chiton, belt and any card props."},
+        {"head": "Trainers", "text": "On your feet or in a bag. Sandals are fine for the parade, not for the Games."},
+        {"head": "Named water bottle", "text": "The Olympics run all morning."},
+        {"head": "Hair bobble", "text": "Long hair tied back for the events."},
+        {"head": "Temple materials", "text": "Cardboard tubes, small boxes and lids. Bring them in during the week before, not on the day."},
+        {"head": "Feast contribution (optional)", "text": "One item from the feast list, shop-bought and in its packet so the ingredients can be read. Nothing containing nuts."},
+        {"head": "Your two Olympic choices", "text": "Decide which events you want to try out for and tell your team captain."},
+        {"head": "A big smile", "text": "You will be in the class photo in costume at 8:50."}
+      ],
+      "footer": "Leave at home: anything metal, sharp or pointed, bought weapons, glass, nuts and anything you would be sad to lose."
+    },
+    {
+      "type": "glossary",
+      "title": "Words to know",
+      "intro": "Use these on the day. Teachers will be listening for them.",
+      "terms": [
+        {"term": "Acropolis", "meaning": "The high rocky hill in Athens where the Parthenon stands."},
+        {"term": "Agora", "meaning": "The market place and meeting square of a Greek city."},
+        {"term": "Chiton", "meaning": "The everyday tunic, pinned at the shoulders and belted."},
+        {"term": "Citizen", "meaning": "A free man born in Athens who could vote in the Assembly."},
+        {"term": "Democracy", "meaning": "Rule by the people: citizens vote on the laws."},
+        {"term": "Hoplite", "meaning": "A Greek foot soldier with a round shield and spear."},
+        {"term": "Olympia", "meaning": "The sanctuary of Zeus where the Games were held."},
+        {"term": "Ostrakon", "meaning": "A broken pottery piece used as a voting ballot."},
+        {"term": "Pediment", "meaning": "The triangle above the columns at each end of a temple."},
+        {"term": "Pentathlon", "meaning": "Five events: running, jump, discus, javelin and wrestling."},
+        {"term": "Polis", "meaning": "A city-state, such as Athens or Sparta."},
+        {"term": "Stadion", "meaning": "The sprint race and the running track, about 192 metres."}
+      ]
+    },
+    {
+      "type": "closing",
+      "title": "See you in Ancient Greece",
+      "lines": ["Costume on, trainers packed, water bottle named.", "Two Olympic events chosen.", "Temple materials in this week.", "Questions? Ask your teacher before the day."],
+      "figure": "acropolis"
+    }
+  ]
+}

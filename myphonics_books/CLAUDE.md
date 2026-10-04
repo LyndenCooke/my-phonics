@@ -90,6 +90,23 @@ Page 16   Back Cover
 
 ---
 
+## Lesson Slides Pipeline
+
+Classroom slide decks (16:9, one slide per PDF page) come from the same Jinja2 + Playwright route as the books:
+
+```
+data/lesson_slides/<deck>.json -> templates/lesson_slides.html (+ lesson_slides_figures.html SVG macros) -> Playwright -> output/lesson_slides/<deck>.pdf
+```
+
+```bash
+py -3.12 scripts/generate_lesson_slides.py ancient_greece_day --png   # PDF + one PNG per slide for QA
+py -3.12 scripts/generate_lesson_slides.py --list
+```
+
+Content lives only in the JSON (edit text there, never in the template). Slide types: title, facts, timetable, costume_ideas, figure_steps, labelled_figure, cards, events, columns, voting, food, checklist, glossary, closing. Illustrations are inline SVG macros, so decks have no external image dependencies. Overflowing slides are scaled down automatically but should be designed to fit. Finished decks are copied to `docs/lesson_slides/` (tracked). House rules apply: British English, no em dashes, no emojis, dot eyes on every drawn character.
+
+---
+
 ## PDF Pipeline
 
 ```

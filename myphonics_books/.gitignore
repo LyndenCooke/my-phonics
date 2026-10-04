@@ -39,6 +39,8 @@ nul
 # Generated output (PDFs, images, books)
 output/
 *.pdf
+# Finished lesson slide decks are deliverables and stay tracked
+!docs/lesson_slides/*.pdf
 
 # Backend
 backend/node_modules/
