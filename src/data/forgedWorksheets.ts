@@ -940,10 +940,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
-            "title": "Spell a-e words",
-            "thumb": "/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.png",
-            "objective": "Choose the right spelling for the a-e sound and use it."
+            "href": "/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf",
+            "title": "Picture and spell a-e",
+            "thumb": "/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.png",
+            "objective": "Hear the a-e sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_1_the_big_bike_race/02_sentences_ae.pdf",
@@ -952,10 +952,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read and complete sentences that use the sound a-e."
           },
           {
-            "href": "/worksheets/L5/3_1_the_big_bike_race/03_spelling_ie.pdf",
-            "title": "Spell i-e words",
-            "thumb": "/worksheets/L5/3_1_the_big_bike_race/03_spelling_ie.png",
-            "objective": "Choose the right spelling for the i-e sound and use it."
+            "href": "/worksheets/L5/3_1_the_big_bike_race/03_pictures_ie.pdf",
+            "title": "Picture and spell i-e",
+            "thumb": "/worksheets/L5/3_1_the_big_bike_race/03_pictures_ie.png",
+            "objective": "Hear the i-e sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_1_the_big_bike_race/04_sentences_ie.pdf",
@@ -996,10 +996,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
-            "title": "Spell o-e words",
-            "thumb": "/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.png",
-            "objective": "Choose the right spelling for the o-e sound and use it."
+            "href": "/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf",
+            "title": "Picture and spell o-e",
+            "thumb": "/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.png",
+            "objective": "Hear the o-e sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_2_lost_at_the_night_market/02_sentences_oe.pdf",
@@ -1008,10 +1008,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read and complete sentences that use the sound o-e."
           },
           {
-            "href": "/worksheets/L5/3_2_lost_at_the_night_market/03_spelling_ue.pdf",
-            "title": "Spell u-e words",
-            "thumb": "/worksheets/L5/3_2_lost_at_the_night_market/03_spelling_ue.png",
-            "objective": "Choose the right spelling for the u-e sound and use it."
+            "href": "/worksheets/L5/3_2_lost_at_the_night_market/03_pictures_ue.pdf",
+            "title": "Picture and spell u-e",
+            "thumb": "/worksheets/L5/3_2_lost_at_the_night_market/03_pictures_ue.png",
+            "objective": "Hear the u-e sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_2_lost_at_the_night_market/04_sentences_ue.pdf",
@@ -1052,10 +1052,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
-            "title": "Spell ea words",
-            "thumb": "/worksheets/L5/3_3_the_dream_team/01_spelling_ea.png",
-            "objective": "Choose the right spelling for the ea sound and use it."
+            "href": "/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf",
+            "title": "Picture and spell ea",
+            "thumb": "/worksheets/L5/3_3_the_dream_team/01_pictures_ea.png",
+            "objective": "Hear the ea sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_3_the_dream_team/02_sentences_ea.pdf",
@@ -1064,10 +1064,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read and complete sentences that use the sound ea."
           },
           {
-            "href": "/worksheets/L5/3_3_the_dream_team/03_spelling_ie.pdf",
-            "title": "Spell ie words",
-            "thumb": "/worksheets/L5/3_3_the_dream_team/03_spelling_ie.png",
-            "objective": "Choose the right spelling for the ie sound and use it."
+            "href": "/worksheets/L5/3_3_the_dream_team/03_pictures_ie.pdf",
+            "title": "Picture and spell ie",
+            "thumb": "/worksheets/L5/3_3_the_dream_team/03_pictures_ie.png",
+            "objective": "Hear the ie sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_3_the_dream_team/04_sentences_ie.pdf",
@@ -1108,10 +1108,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
-            "title": "Spell oi words",
-            "thumb": "/worksheets/L5/3_4_what_min_saw/01_spelling_oi.png",
-            "objective": "Choose the right spelling for the oi sound and use it."
+            "href": "/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf",
+            "title": "Picture and spell oi",
+            "thumb": "/worksheets/L5/3_4_what_min_saw/01_pictures_oi.png",
+            "objective": "Hear the oi sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_4_what_min_saw/02_sentences_oi.pdf",
@@ -1120,10 +1120,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read and complete sentences that use the sound oi."
           },
           {
-            "href": "/worksheets/L5/3_4_what_min_saw/03_spelling_aw.pdf",
-            "title": "Spell aw words",
-            "thumb": "/worksheets/L5/3_4_what_min_saw/03_spelling_aw.png",
-            "objective": "Choose the right spelling for the aw sound and use it."
+            "href": "/worksheets/L5/3_4_what_min_saw/03_pictures_aw.pdf",
+            "title": "Picture and spell aw",
+            "thumb": "/worksheets/L5/3_4_what_min_saw/03_pictures_aw.png",
+            "objective": "Hear the aw sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_4_what_min_saw/04_sentences_aw.pdf",
@@ -1164,10 +1164,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
-            "title": "Spell ai words",
-            "thumb": "/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.png",
-            "objective": "Choose the right spelling for the ai sound and use it."
+            "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf",
+            "title": "Picture and spell ai",
+            "thumb": "/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.png",
+            "objective": "Hear the ai sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/02_sentences_ai.pdf",
@@ -1176,10 +1176,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read and complete sentences that use the sound ai."
           },
           {
-            "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/03_spelling_oa.pdf",
-            "title": "Spell oa words",
-            "thumb": "/worksheets/L5/3_5_the_boat_with_the_red_sail/03_spelling_oa.png",
-            "objective": "Choose the right spelling for the oa sound and use it."
+            "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/03_pictures_oa.pdf",
+            "title": "Picture and spell oa",
+            "thumb": "/worksheets/L5/3_5_the_boat_with_the_red_sail/03_pictures_oa.png",
+            "objective": "Hear the oa sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L5/3_5_the_boat_with_the_red_sail/04_sentences_oa.pdf",
@@ -1220,10 +1220,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
-            "title": "Spell ur words",
-            "thumb": "/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.png",
-            "objective": "Choose the right spelling for the ur sound and use it."
+            "href": "/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf",
+            "title": "Picture and spell ur",
+            "thumb": "/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.png",
+            "objective": "Hear the ur sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_1_the_purple_purse/02_code_ur.pdf",
@@ -1232,10 +1232,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Decode ur words letter by letter."
           },
           {
-            "href": "/worksheets/L6/4_1_the_purple_purse/03_spelling_er.pdf",
-            "title": "Spell er words",
-            "thumb": "/worksheets/L6/4_1_the_purple_purse/03_spelling_er.png",
-            "objective": "Choose the right spelling for the er sound and use it."
+            "href": "/worksheets/L6/4_1_the_purple_purse/03_pictures_er.pdf",
+            "title": "Picture and spell er",
+            "thumb": "/worksheets/L6/4_1_the_purple_purse/03_pictures_er.png",
+            "objective": "Hear the er sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_1_the_purple_purse/04_code_er.pdf",
@@ -1276,10 +1276,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
-            "title": "Spell are words",
-            "thumb": "/worksheets/L6/4_2_the_brown_owl/01_spelling_are.png",
-            "objective": "Choose the right spelling for the are sound and use it."
+            "href": "/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf",
+            "title": "Picture and spell are",
+            "thumb": "/worksheets/L6/4_2_the_brown_owl/01_pictures_are.png",
+            "objective": "Hear the are sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_2_the_brown_owl/02_code_are.pdf",
@@ -1288,10 +1288,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Decode are words letter by letter."
           },
           {
-            "href": "/worksheets/L6/4_2_the_brown_owl/03_spelling_ow.pdf",
-            "title": "Spell ow words",
-            "thumb": "/worksheets/L6/4_2_the_brown_owl/03_spelling_ow.png",
-            "objective": "Choose the right spelling for the ow sound and use it."
+            "href": "/worksheets/L6/4_2_the_brown_owl/03_pictures_ow.pdf",
+            "title": "Picture and spell ow",
+            "thumb": "/worksheets/L6/4_2_the_brown_owl/03_pictures_ow.png",
+            "objective": "Hear the ow sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_2_the_brown_owl/04_code_ow.pdf",
@@ -1332,10 +1332,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
-            "title": "Spell ew words",
-            "thumb": "/worksheets/L6/4_3_the_new_glue/01_spelling_ew.png",
-            "objective": "Choose the right spelling for the ew sound and use it."
+            "href": "/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf",
+            "title": "Picture and spell ew",
+            "thumb": "/worksheets/L6/4_3_the_new_glue/01_pictures_ew.png",
+            "objective": "Hear the ew sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_3_the_new_glue/02_code_ew.pdf",
@@ -1344,10 +1344,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Decode ew words letter by letter."
           },
           {
-            "href": "/worksheets/L6/4_3_the_new_glue/03_spelling_ue.pdf",
-            "title": "Spell ue words",
-            "thumb": "/worksheets/L6/4_3_the_new_glue/03_spelling_ue.png",
-            "objective": "Choose the right spelling for the ue sound and use it."
+            "href": "/worksheets/L6/4_3_the_new_glue/03_pictures_ue.pdf",
+            "title": "Picture and spell ue",
+            "thumb": "/worksheets/L6/4_3_the_new_glue/03_pictures_ue.png",
+            "objective": "Hear the ue sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L6/4_3_the_new_glue/04_code_ue.pdf",
@@ -1451,19 +1451,31 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
       {
         "label": "Worksheets",
         "bundleHref": "/worksheets/L7/5_1_before_the_shore/pack.pdf",
-        "bundleLabel": "Download all 4 sheets",
+        "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
-            "title": "Spell ire words",
-            "thumb": "/worksheets/L7/5_1_before_the_shore/01_spelling_ire.png",
-            "objective": "Choose the right spelling for the ire sound and use it."
+            "href": "/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf",
+            "title": "Picture and spell ire",
+            "thumb": "/worksheets/L7/5_1_before_the_shore/01_pictures_ire.png",
+            "objective": "Hear the ire sound in picture words and choose its spelling."
           },
           {
-            "href": "/worksheets/L7/5_1_before_the_shore/03_spelling_ore.pdf",
-            "title": "Spell ore words",
-            "thumb": "/worksheets/L7/5_1_before_the_shore/03_spelling_ore.png",
-            "objective": "Choose the right spelling for the ore sound and use it."
+            "href": "/worksheets/L7/5_1_before_the_shore/02_fluency_ire.pdf",
+            "title": "Fluency: ire",
+            "thumb": "/worksheets/L7/5_1_before_the_shore/02_fluency_ire.png",
+            "objective": "Read ire words quickly and accurately."
+          },
+          {
+            "href": "/worksheets/L7/5_1_before_the_shore/03_pictures_ore.pdf",
+            "title": "Picture and spell ore",
+            "thumb": "/worksheets/L7/5_1_before_the_shore/03_pictures_ore.png",
+            "objective": "Hear the ore sound in picture words and choose its spelling."
+          },
+          {
+            "href": "/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf",
+            "title": "Fluency: ore",
+            "thumb": "/worksheets/L7/5_1_before_the_shore/04_fluency_ore.png",
+            "objective": "Read ore words quickly and accurately."
           },
           {
             "href": "/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf",
@@ -1498,10 +1510,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
-            "title": "Spell ear words",
-            "thumb": "/worksheets/L7/5_2_near_the_door/01_spelling_ear.png",
-            "objective": "Choose the right spelling for the ear sound and use it."
+            "href": "/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf",
+            "title": "Picture and spell ear",
+            "thumb": "/worksheets/L7/5_2_near_the_door/01_pictures_ear.png",
+            "objective": "Hear the ear sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L7/5_2_near_the_door/02_fluency_ear.pdf",
@@ -1510,10 +1522,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Read ear words quickly and accurately."
           },
           {
-            "href": "/worksheets/L7/5_2_near_the_door/03_spelling_oor.pdf",
-            "title": "Spell oor words",
-            "thumb": "/worksheets/L7/5_2_near_the_door/03_spelling_oor.png",
-            "objective": "Choose the right spelling for the oor sound and use it."
+            "href": "/worksheets/L7/5_2_near_the_door/03_pictures_oor.pdf",
+            "title": "Picture and spell oor",
+            "thumb": "/worksheets/L7/5_2_near_the_door/03_pictures_oor.png",
+            "objective": "Hear the oor sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L7/5_2_near_the_door/04_fluency_oor.pdf",
@@ -1551,7 +1563,7 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
       {
         "label": "Worksheets",
         "bundleHref": "/worksheets/L7/5_3_sure_she_can/pack.pdf",
-        "bundleLabel": "Download all 5 sheets",
+        "bundleLabel": "Download all 6 sheets",
         "sheets": [
           {
             "href": "/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf",
@@ -1560,10 +1572,16 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
             "objective": "Choose the right spelling for the ure sound and use it."
           },
           {
-            "href": "/worksheets/L7/5_3_sure_she_can/03_spelling_tion.pdf",
-            "title": "Spell tion words",
-            "thumb": "/worksheets/L7/5_3_sure_she_can/03_spelling_tion.png",
-            "objective": "Choose the right spelling for the tion sound and use it."
+            "href": "/worksheets/L7/5_3_sure_she_can/02_fluency_ure.pdf",
+            "title": "Fluency: ure",
+            "thumb": "/worksheets/L7/5_3_sure_she_can/02_fluency_ure.png",
+            "objective": "Read ure words quickly and accurately."
+          },
+          {
+            "href": "/worksheets/L7/5_3_sure_she_can/03_pictures_tion.pdf",
+            "title": "Picture and spell tion",
+            "thumb": "/worksheets/L7/5_3_sure_she_can/03_pictures_tion.png",
+            "objective": "Hear the tion sound in picture words and choose its spelling."
           },
           {
             "href": "/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
@@ -1883,10 +1901,10 @@ export const FORGED_FOLDERS: ForgedFolder[] = [
         "bundleLabel": "Download all 1 sheets",
         "sheets": [
           {
-            "href": "/worksheets/L8/extras/01_spelling_sion.pdf",
-            "title": "Spell sion words",
-            "thumb": "/worksheets/L8/extras/01_spelling_sion.png",
-            "objective": "Choose the right spelling for the sion sound and use it."
+            "href": "/worksheets/L8/extras/01_pictures_sion.pdf",
+            "title": "Picture and spell sion",
+            "thumb": "/worksheets/L8/extras/01_pictures_sion.png",
+            "objective": "Hear the sion sound in picture words and choose its spelling."
           }
         ]
       }

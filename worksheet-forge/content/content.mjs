@@ -48,6 +48,26 @@ export function containsGrapheme(word, g) {
   return isSplit(g) ? splitRegex(g).test(word) : word.includes(g);
 }
 
+// Words the greedy segmenter splits with `g` as a unit although they do not
+// say its sound: "direction" is not an ire word, "river" is not an i-e word.
+const NOT_THIS_SOUND = {
+  'a-e': ['paper'],
+  'i-e': ['choice', 'noise', 'voice', 'river', 'tiger'],
+  'o-e': ['dishonest', 'power'],
+  ea: ['subheading'],
+  ie: ['view'],
+  er: ['reread'],
+  ire: ['direction'],
+};
+// ow says /oa/ at Level 4-5 (blow the snow) and /ow/ from Level 6 (brown cow).
+const OW_SNOW = ['blown', 'bow', 'bowl', 'glow', 'low', 'mow', 'own', 'row', 'show', 'slow', 'snow', 'throw', 'tow'];
+const OW_COW = ['brown', 'clown', 'cow', 'down', 'gown', 'how', 'howl', 'now', 'ow', 'owl', 'pow', 'town', 'vow', 'wow'];
+
+function wrongSound(word, g, level) {
+  if (g === 'ow') return word === 'sow' || (level >= 6 ? OW_SNOW : OW_COW).includes(word);
+  return (NOT_THIS_SOUND[g] ?? []).includes(word);
+}
+
 /**
  * Phoneme-TRUE grapheme check: the word must actually SEGMENT with `g` as one
  * of its units at this level. Substring matching lies — "chair" contains the
@@ -55,6 +75,7 @@ export function containsGrapheme(word, g) {
  */
 export function hasGraphemeUnit(word, g, level) {
   if (!containsGrapheme(word.toLowerCase(), g)) return false;
+  if (wrongSound(word.toLowerCase(), g, level)) return false;
   const seg = segmentWord(word, cumulativeGraphemes(level));
   return seg ? seg.includes(g) : false;
 }

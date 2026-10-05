@@ -2361,17 +2361,17 @@
   "kind": "worksheets",
   "level": 5,
   "level_name": "New Spellings",
-  "title": "The Big Bike Race worksheets: Spell a-e words, Read a-e in sentences, Spell i-e words",
+  "title": "The Big Bike Race worksheets: Picture and spell a-e, Read a-e in sentences, Picture and spell i-e",
   "sounds": "The Big Bike Race worksheets",
   "headline": "The Big Bike Race",
   "subline": "Worksheets · 3 sheets today · Level 5 of 8 · New Spellings",
   "objective": "Part 1 of 2 of The Big Bike Race worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell a-e words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
-    "local": "public/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
-    "objective": "Choose the right spelling for the a-e sound and use it."
+    "name": "Picture and spell a-e",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf",
+    "local": "public/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf",
+    "objective": "Hear the a-e sound in picture words and choose its spelling."
    },
    {
     "name": "Read a-e in sentences",
@@ -2380,19 +2380,19 @@
     "objective": "Read and complete sentences that use the sound a-e."
    },
    {
-    "name": "Spell i-e words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/03_spelling_ie.pdf",
-    "local": "public/worksheets/L5/3_1_the_big_bike_race/03_spelling_ie.pdf",
-    "objective": "Choose the right spelling for the i-e sound and use it."
+    "name": "Picture and spell i-e",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/03_pictures_ie.pdf",
+    "local": "public/worksheets/L5/3_1_the_big_bike_race/03_pictures_ie.pdf",
+    "objective": "Hear the i-e sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf",
-  "preview_pdf": "public/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
+  "preview_pdf": "public/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The Big Bike Race worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nSPELL A-E WORDS\nObjective: Choose the right spelling for the a-e sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_spelling_ae.pdf\n\nREAD A-E IN SENTENCES\nObjective: Read and complete sentences that use the sound a-e.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/02_sentences_ae.pdf\n\nSPELL I-E WORDS\nObjective: Choose the right spelling for the i-e sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/03_spelling_ie.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf\n\nThese go with the story The Big Bike Race. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The Big Bike Race worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL A-E\nObjective: Hear the a-e sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with a-e, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/01_pictures_ae.pdf\n\nREAD A-E IN SENTENCES\nObjective: Read and complete sentences that use the sound a-e.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/02_sentences_ae.pdf\n\nPICTURE AND SPELL I-E\nObjective: Hear the i-e sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with i-e, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/03_pictures_ie.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_1_the_big_bike_race/pack.pdf\n\nThese go with the story The Big Bike Race. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "075"
  },
  {
@@ -2455,17 +2455,17 @@
   "kind": "worksheets",
   "level": 5,
   "level_name": "New Spellings",
-  "title": "Lost at the Night Market worksheets: Spell o-e words, Read o-e in sentences, Spell u-e words",
+  "title": "Lost at the Night Market worksheets: Picture and spell o-e, Read o-e in sentences, Picture and spell u-e",
   "sounds": "Lost at the Night Market worksheets",
   "headline": "Lost at the Night Market",
   "subline": "Worksheets · 3 sheets today · Level 5 of 8 · New Spellings",
   "objective": "Part 1 of 2 of Lost at the Night Market worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell o-e words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
-    "local": "public/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
-    "objective": "Choose the right spelling for the o-e sound and use it."
+    "name": "Picture and spell o-e",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf",
+    "local": "public/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf",
+    "objective": "Hear the o-e sound in picture words and choose its spelling."
    },
    {
     "name": "Read o-e in sentences",
@@ -2474,19 +2474,19 @@
     "objective": "Read and complete sentences that use the sound o-e."
    },
    {
-    "name": "Spell u-e words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/03_spelling_ue.pdf",
-    "local": "public/worksheets/L5/3_2_lost_at_the_night_market/03_spelling_ue.pdf",
-    "objective": "Choose the right spelling for the u-e sound and use it."
+    "name": "Picture and spell u-e",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/03_pictures_ue.pdf",
+    "local": "public/worksheets/L5/3_2_lost_at_the_night_market/03_pictures_ue.pdf",
+    "objective": "Hear the u-e sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf",
-  "preview_pdf": "public/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
+  "preview_pdf": "public/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf",
-  "caption": "FREE phonics worksheets: 3 today from Lost at the Night Market worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nSPELL O-E WORDS\nObjective: Choose the right spelling for the o-e sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_spelling_oe.pdf\n\nREAD O-E IN SENTENCES\nObjective: Read and complete sentences that use the sound o-e.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/02_sentences_oe.pdf\n\nSPELL U-E WORDS\nObjective: Choose the right spelling for the u-e sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/03_spelling_ue.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf\n\nThese go with the story Lost at the Night Market. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf",
+  "caption": "FREE phonics worksheets: 3 today from Lost at the Night Market worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL O-E\nObjective: Hear the o-e sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with o-e, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/01_pictures_oe.pdf\n\nREAD O-E IN SENTENCES\nObjective: Read and complete sentences that use the sound o-e.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/02_sentences_oe.pdf\n\nPICTURE AND SPELL U-E\nObjective: Hear the u-e sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with u-e, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/03_pictures_ue.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_2_lost_at_the_night_market/pack.pdf\n\nThese go with the story Lost at the Night Market. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "078"
  },
  {
@@ -2549,17 +2549,17 @@
   "kind": "worksheets",
   "level": 5,
   "level_name": "New Spellings",
-  "title": "The Dream Team worksheets: Spell ea words, Read ea in sentences, Spell ie words",
+  "title": "The Dream Team worksheets: Picture and spell ea, Read ea in sentences, Picture and spell ie",
   "sounds": "The Dream Team worksheets",
   "headline": "The Dream Team",
   "subline": "Worksheets · 3 sheets today · Level 5 of 8 · New Spellings",
   "objective": "Part 1 of 2 of The Dream Team worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ea words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
-    "local": "public/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
-    "objective": "Choose the right spelling for the ea sound and use it."
+    "name": "Picture and spell ea",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf",
+    "local": "public/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf",
+    "objective": "Hear the ea sound in picture words and choose its spelling."
    },
    {
     "name": "Read ea in sentences",
@@ -2568,19 +2568,19 @@
     "objective": "Read and complete sentences that use the sound ea."
    },
    {
-    "name": "Spell ie words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/03_spelling_ie.pdf",
-    "local": "public/worksheets/L5/3_3_the_dream_team/03_spelling_ie.pdf",
-    "objective": "Choose the right spelling for the ie sound and use it."
+    "name": "Picture and spell ie",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/03_pictures_ie.pdf",
+    "local": "public/worksheets/L5/3_3_the_dream_team/03_pictures_ie.pdf",
+    "objective": "Hear the ie sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf",
-  "preview_pdf": "public/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
+  "preview_pdf": "public/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The Dream Team worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nSPELL EA WORDS\nObjective: Choose the right spelling for the ea sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_spelling_ea.pdf\n\nREAD EA IN SENTENCES\nObjective: Read and complete sentences that use the sound ea.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/02_sentences_ea.pdf\n\nSPELL IE WORDS\nObjective: Choose the right spelling for the ie sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/03_spelling_ie.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf\n\nThese go with the story The Dream Team. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The Dream Team worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL EA\nObjective: Hear the ea sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ea, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/01_pictures_ea.pdf\n\nREAD EA IN SENTENCES\nObjective: Read and complete sentences that use the sound ea.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/02_sentences_ea.pdf\n\nPICTURE AND SPELL IE\nObjective: Hear the ie sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ie, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/03_pictures_ie.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_3_the_dream_team/pack.pdf\n\nThese go with the story The Dream Team. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "081"
  },
  {
@@ -2643,17 +2643,17 @@
   "kind": "worksheets",
   "level": 5,
   "level_name": "New Spellings",
-  "title": "What Min Saw worksheets: Spell oi words, Read oi in sentences, Spell aw words",
+  "title": "What Min Saw worksheets: Picture and spell oi, Read oi in sentences, Picture and spell aw",
   "sounds": "What Min Saw worksheets",
   "headline": "What Min Saw",
   "subline": "Worksheets · 3 sheets today · Level 5 of 8 · New Spellings",
   "objective": "Part 1 of 2 of What Min Saw worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell oi words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
-    "local": "public/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
-    "objective": "Choose the right spelling for the oi sound and use it."
+    "name": "Picture and spell oi",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf",
+    "local": "public/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf",
+    "objective": "Hear the oi sound in picture words and choose its spelling."
    },
    {
     "name": "Read oi in sentences",
@@ -2662,19 +2662,19 @@
     "objective": "Read and complete sentences that use the sound oi."
    },
    {
-    "name": "Spell aw words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/03_spelling_aw.pdf",
-    "local": "public/worksheets/L5/3_4_what_min_saw/03_spelling_aw.pdf",
-    "objective": "Choose the right spelling for the aw sound and use it."
+    "name": "Picture and spell aw",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/03_pictures_aw.pdf",
+    "local": "public/worksheets/L5/3_4_what_min_saw/03_pictures_aw.pdf",
+    "objective": "Hear the aw sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 4,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf",
-  "preview_pdf": "public/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
+  "preview_pdf": "public/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf",
-  "caption": "FREE phonics worksheets: 3 today from What Min Saw worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nSPELL OI WORDS\nObjective: Choose the right spelling for the oi sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_spelling_oi.pdf\n\nREAD OI IN SENTENCES\nObjective: Read and complete sentences that use the sound oi.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/02_sentences_oi.pdf\n\nSPELL AW WORDS\nObjective: Choose the right spelling for the aw sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/03_spelling_aw.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf\n\nThese go with the story What Min Saw. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_4.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf",
+  "caption": "FREE phonics worksheets: 3 today from What Min Saw worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL OI\nObjective: Hear the oi sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with oi, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/01_pictures_oi.pdf\n\nREAD OI IN SENTENCES\nObjective: Read and complete sentences that use the sound oi.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/02_sentences_oi.pdf\n\nPICTURE AND SPELL AW\nObjective: Hear the aw sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with aw, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/03_pictures_aw.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_4_what_min_saw/pack.pdf\n\nThese go with the story What Min Saw. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_4.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "084"
  },
  {
@@ -2737,17 +2737,17 @@
   "kind": "worksheets",
   "level": 5,
   "level_name": "New Spellings",
-  "title": "The Boat with the Red Sail worksheets: Spell ai words, Read ai in sentences, Spell oa words",
+  "title": "The Boat with the Red Sail worksheets: Picture and spell ai, Read ai in sentences, Picture and spell oa",
   "sounds": "The Boat with the Red Sail worksheets",
   "headline": "The Boat with the Red Sail",
   "subline": "Worksheets · 3 sheets today · Level 5 of 8 · New Spellings",
   "objective": "Part 1 of 2 of The Boat with the Red Sail worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ai words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
-    "local": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
-    "objective": "Choose the right spelling for the ai sound and use it."
+    "name": "Picture and spell ai",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf",
+    "local": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf",
+    "objective": "Hear the ai sound in picture words and choose its spelling."
    },
    {
     "name": "Read ai in sentences",
@@ -2756,19 +2756,19 @@
     "objective": "Read and complete sentences that use the sound ai."
    },
    {
-    "name": "Spell oa words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/03_spelling_oa.pdf",
-    "local": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/03_spelling_oa.pdf",
-    "objective": "Choose the right spelling for the oa sound and use it."
+    "name": "Picture and spell oa",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/03_pictures_oa.pdf",
+    "local": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/03_pictures_oa.pdf",
+    "objective": "Hear the oa sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 5,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf",
-  "preview_pdf": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
+  "preview_pdf": "public/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The Boat with the Red Sail worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nSPELL AI WORDS\nObjective: Choose the right spelling for the ai sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_spelling_ai.pdf\n\nREAD AI IN SENTENCES\nObjective: Read and complete sentences that use the sound ai.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/02_sentences_ai.pdf\n\nSPELL OA WORDS\nObjective: Choose the right spelling for the oa sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/03_spelling_oa.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf\n\nThese go with the story The Boat with the Red Sail. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_5.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The Boat with the Red Sail worksheets\nLevel 5 of 8 · New Spellings · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL AI\nObjective: Hear the ai sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ai, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/01_pictures_ai.pdf\n\nREAD AI IN SENTENCES\nObjective: Read and complete sentences that use the sound ai.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/02_sentences_ai.pdf\n\nPICTURE AND SPELL OA\nObjective: Hear the oa sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with oa, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/03_pictures_oa.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L5/3_5_the_boat_with_the_red_sail/pack.pdf\n\nThese go with the story The Boat with the Red Sail. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/3_5.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "087"
  },
  {
@@ -2831,17 +2831,17 @@
   "kind": "worksheets",
   "level": 6,
   "level_name": "Building Fluency",
-  "title": "The Purple Purse worksheets: Spell ur words, Crack the code: ur, Spell er words",
+  "title": "The Purple Purse worksheets: Picture and spell ur, Crack the code: ur, Picture and spell er",
   "sounds": "The Purple Purse worksheets",
   "headline": "The Purple Purse",
   "subline": "Worksheets · 3 sheets today · Level 6 of 8 · Building Fluency",
   "objective": "Part 1 of 2 of The Purple Purse worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ur words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
-    "local": "public/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
-    "objective": "Choose the right spelling for the ur sound and use it."
+    "name": "Picture and spell ur",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf",
+    "local": "public/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf",
+    "objective": "Hear the ur sound in picture words and choose its spelling."
    },
    {
     "name": "Crack the code: ur",
@@ -2850,19 +2850,19 @@
     "objective": "Decode ur words letter by letter."
    },
    {
-    "name": "Spell er words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/03_spelling_er.pdf",
-    "local": "public/worksheets/L6/4_1_the_purple_purse/03_spelling_er.pdf",
-    "objective": "Choose the right spelling for the er sound and use it."
+    "name": "Picture and spell er",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/03_pictures_er.pdf",
+    "local": "public/worksheets/L6/4_1_the_purple_purse/03_pictures_er.pdf",
+    "objective": "Hear the er sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf",
-  "preview_pdf": "public/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
+  "preview_pdf": "public/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The Purple Purse worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nSPELL UR WORDS\nObjective: Choose the right spelling for the ur sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_spelling_ur.pdf\n\nCRACK THE CODE: UR\nObjective: Decode ur words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/02_code_ur.pdf\n\nSPELL ER WORDS\nObjective: Choose the right spelling for the er sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/03_spelling_er.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf\n\nThese go with the story The Purple Purse. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The Purple Purse worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL UR\nObjective: Hear the ur sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ur, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/01_pictures_ur.pdf\n\nCRACK THE CODE: UR\nObjective: Decode ur words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/02_code_ur.pdf\n\nPICTURE AND SPELL ER\nObjective: Hear the er sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with er, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/03_pictures_er.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_1_the_purple_purse/pack.pdf\n\nThese go with the story The Purple Purse. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "090"
  },
  {
@@ -2925,17 +2925,17 @@
   "kind": "worksheets",
   "level": 6,
   "level_name": "Building Fluency",
-  "title": "The Brown Owl worksheets: Spell are words, Crack the code: are, Spell ow words",
+  "title": "The Brown Owl worksheets: Picture and spell are, Crack the code: are, Picture and spell ow",
   "sounds": "The Brown Owl worksheets",
   "headline": "The Brown Owl",
   "subline": "Worksheets · 3 sheets today · Level 6 of 8 · Building Fluency",
   "objective": "Part 1 of 2 of The Brown Owl worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell are words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
-    "local": "public/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
-    "objective": "Choose the right spelling for the are sound and use it."
+    "name": "Picture and spell are",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf",
+    "local": "public/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf",
+    "objective": "Hear the are sound in picture words and choose its spelling."
    },
    {
     "name": "Crack the code: are",
@@ -2944,19 +2944,19 @@
     "objective": "Decode are words letter by letter."
    },
    {
-    "name": "Spell ow words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/03_spelling_ow.pdf",
-    "local": "public/worksheets/L6/4_2_the_brown_owl/03_spelling_ow.pdf",
-    "objective": "Choose the right spelling for the ow sound and use it."
+    "name": "Picture and spell ow",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/03_pictures_ow.pdf",
+    "local": "public/worksheets/L6/4_2_the_brown_owl/03_pictures_ow.pdf",
+    "objective": "Hear the ow sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf",
-  "preview_pdf": "public/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
+  "preview_pdf": "public/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The Brown Owl worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nSPELL ARE WORDS\nObjective: Choose the right spelling for the are sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_spelling_are.pdf\n\nCRACK THE CODE: ARE\nObjective: Decode are words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/02_code_are.pdf\n\nSPELL OW WORDS\nObjective: Choose the right spelling for the ow sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/03_spelling_ow.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf\n\nThese go with the story The Brown Owl. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The Brown Owl worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL ARE\nObjective: Hear the are sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with are, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/01_pictures_are.pdf\n\nCRACK THE CODE: ARE\nObjective: Decode are words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/02_code_are.pdf\n\nPICTURE AND SPELL OW\nObjective: Hear the ow sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ow, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/03_pictures_ow.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_2_the_brown_owl/pack.pdf\n\nThese go with the story The Brown Owl. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "093"
  },
  {
@@ -3019,17 +3019,17 @@
   "kind": "worksheets",
   "level": 6,
   "level_name": "Building Fluency",
-  "title": "The New Glue worksheets: Spell ew words, Crack the code: ew, Spell ue words",
+  "title": "The New Glue worksheets: Picture and spell ew, Crack the code: ew, Picture and spell ue",
   "sounds": "The New Glue worksheets",
   "headline": "The New Glue",
   "subline": "Worksheets · 3 sheets today · Level 6 of 8 · Building Fluency",
   "objective": "Part 1 of 2 of The New Glue worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ew words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
-    "local": "public/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
-    "objective": "Choose the right spelling for the ew sound and use it."
+    "name": "Picture and spell ew",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf",
+    "local": "public/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf",
+    "objective": "Hear the ew sound in picture words and choose its spelling."
    },
    {
     "name": "Crack the code: ew",
@@ -3038,19 +3038,19 @@
     "objective": "Decode ew words letter by letter."
    },
    {
-    "name": "Spell ue words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/03_spelling_ue.pdf",
-    "local": "public/worksheets/L6/4_3_the_new_glue/03_spelling_ue.pdf",
-    "objective": "Choose the right spelling for the ue sound and use it."
+    "name": "Picture and spell ue",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/03_pictures_ue.pdf",
+    "local": "public/worksheets/L6/4_3_the_new_glue/03_pictures_ue.pdf",
+    "objective": "Hear the ue sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf",
-  "preview_pdf": "public/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
+  "preview_pdf": "public/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf",
-  "caption": "FREE phonics worksheets: 3 today from The New Glue worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nSPELL EW WORDS\nObjective: Choose the right spelling for the ew sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_spelling_ew.pdf\n\nCRACK THE CODE: EW\nObjective: Decode ew words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/02_code_ew.pdf\n\nSPELL UE WORDS\nObjective: Choose the right spelling for the ue sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/03_spelling_ue.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf\n\nThese go with the story The New Glue. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf",
+  "caption": "FREE phonics worksheets: 3 today from The New Glue worksheets\nLevel 6 of 8 · Building Fluency · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL EW\nObjective: Hear the ew sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ew, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/01_pictures_ew.pdf\n\nCRACK THE CODE: EW\nObjective: Decode ew words letter by letter.\nHow: Use the key to decode each word and write it, then speed read, then dictation.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/02_code_ew.pdf\n\nPICTURE AND SPELL UE\nObjective: Hear the ue sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ue, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/03_pictures_ue.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L6/4_3_the_new_glue/pack.pdf\n\nThese go with the story The New Glue. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/4_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "096"
  },
  {
@@ -3233,44 +3233,56 @@
   "kind": "worksheets",
   "level": 7,
   "level_name": "Reading Together",
-  "title": "Before the Shore worksheets: Spell ire words, Spell ore words",
+  "title": "Before the Shore worksheets: Picture and spell ire, Fluency: ire, Picture and spell ore",
   "sounds": "Before the Shore worksheets",
   "headline": "Before the Shore",
-  "subline": "Worksheets · 2 sheets today · Level 7 of 8 · Reading Together",
+  "subline": "Worksheets · 3 sheets today · Level 7 of 8 · Reading Together",
   "objective": "Part 1 of 2 of Before the Shore worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ire words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
-    "local": "public/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
-    "objective": "Choose the right spelling for the ire sound and use it."
+    "name": "Picture and spell ire",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf",
+    "local": "public/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf",
+    "objective": "Hear the ire sound in picture words and choose its spelling."
    },
    {
-    "name": "Spell ore words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/03_spelling_ore.pdf",
-    "local": "public/worksheets/L7/5_1_before_the_shore/03_spelling_ore.pdf",
-    "objective": "Choose the right spelling for the ore sound and use it."
+    "name": "Fluency: ire",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/02_fluency_ire.pdf",
+    "local": "public/worksheets/L7/5_1_before_the_shore/02_fluency_ire.pdf",
+    "objective": "Read ire words quickly and accurately."
+   },
+   {
+    "name": "Picture and spell ore",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/03_pictures_ore.pdf",
+    "local": "public/worksheets/L7/5_1_before_the_shore/03_pictures_ore.pdf",
+    "objective": "Hear the ore sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
-  "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
+  "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf",
-  "caption": "FREE phonics worksheets: 2 today from Before the Shore worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nSPELL IRE WORDS\nObjective: Choose the right spelling for the ire sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_spelling_ire.pdf\n\nSPELL ORE WORDS\nObjective: Choose the right spelling for the ore sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/03_spelling_ore.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf\n\nThese go with the story Before the Shore. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf",
+  "caption": "FREE phonics worksheets: 3 today from Before the Shore worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL IRE\nObjective: Hear the ire sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ire, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/01_pictures_ire.pdf\n\nFLUENCY: IRE\nObjective: Read ire words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/02_fluency_ire.pdf\n\nPICTURE AND SPELL ORE\nObjective: Hear the ore sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ore, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/03_pictures_ore.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf\n\nThese go with the story Before the Shore. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "103"
  },
  {
   "kind": "worksheets",
   "level": 7,
   "level_name": "Reading Together",
-  "title": "Before the Shore worksheets: Read ire in sentences, Story game: Before the Shore",
+  "title": "Before the Shore worksheets: Fluency: ore, Read ire in sentences, Story game: Before the Shore",
   "sounds": "Before the Shore worksheets",
   "headline": "Before the Shore",
-  "subline": "Worksheets · 2 sheets today · Level 7 of 8 · Reading Together",
+  "subline": "Worksheets · 3 sheets today · Level 7 of 8 · Reading Together",
   "objective": "Part 2 of 2 of Before the Shore worksheets. One sound or skill per sheet.",
   "sheets": [
+   {
+    "name": "Fluency: ore",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf",
+    "local": "public/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf",
+    "objective": "Read ore words quickly and accurately."
+   },
    {
     "name": "Read ire in sentences",
     "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf",
@@ -3287,10 +3299,10 @@
   "book_idx": 1,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf",
-  "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf",
+  "preview_pdf": "public/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf",
-  "caption": "FREE phonics worksheets: 2 today from Before the Shore worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nREAD IRE IN SENTENCES\nObjective: Read and complete sentences that use the sound ire.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf\n\nSTORY GAME: BEFORE THE SHORE\nObjective: Read the book's words in a race game, so practice feels like play.\nHow: You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/06_game_ire.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf\n\nThese go with the story Before the Shore. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf",
+  "caption": "FREE phonics worksheets: 3 today from Before the Shore worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nFLUENCY: ORE\nObjective: Read ore words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/04_fluency_ore.pdf\n\nREAD IRE IN SENTENCES\nObjective: Read and complete sentences that use the sound ire.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/05_sentences_ire.pdf\n\nSTORY GAME: BEFORE THE SHORE\nObjective: Read the book's words in a race game, so practice feels like play.\nHow: You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/06_game_ire.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_1_before_the_shore/pack.pdf\n\nThese go with the story Before the Shore. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_1.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "104"
  },
  {
@@ -3315,17 +3327,17 @@
   "kind": "worksheets",
   "level": 7,
   "level_name": "Reading Together",
-  "title": "Near the Door worksheets: Spell ear words, Fluency: ear, Spell oor words",
+  "title": "Near the Door worksheets: Picture and spell ear, Fluency: ear, Picture and spell oor",
   "sounds": "Near the Door worksheets",
   "headline": "Near the Door",
   "subline": "Worksheets · 3 sheets today · Level 7 of 8 · Reading Together",
   "objective": "Part 1 of 2 of Near the Door worksheets. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell ear words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
-    "local": "public/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
-    "objective": "Choose the right spelling for the ear sound and use it."
+    "name": "Picture and spell ear",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf",
+    "local": "public/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf",
+    "objective": "Hear the ear sound in picture words and choose its spelling."
    },
    {
     "name": "Fluency: ear",
@@ -3334,19 +3346,19 @@
     "objective": "Read ear words quickly and accurately."
    },
    {
-    "name": "Spell oor words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/03_spelling_oor.pdf",
-    "local": "public/worksheets/L7/5_2_near_the_door/03_spelling_oor.pdf",
-    "objective": "Choose the right spelling for the oor sound and use it."
+    "name": "Picture and spell oor",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/03_pictures_oor.pdf",
+    "local": "public/worksheets/L7/5_2_near_the_door/03_pictures_oor.pdf",
+    "objective": "Hear the oor sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 2,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf",
-  "preview_pdf": "public/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
+  "preview_pdf": "public/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf",
-  "caption": "FREE phonics worksheets: 3 today from Near the Door worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nSPELL EAR WORDS\nObjective: Choose the right spelling for the ear sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_spelling_ear.pdf\n\nFLUENCY: EAR\nObjective: Read ear words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/02_fluency_ear.pdf\n\nSPELL OOR WORDS\nObjective: Choose the right spelling for the oor sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/03_spelling_oor.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf\n\nThese go with the story Near the Door. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf",
+  "caption": "FREE phonics worksheets: 3 today from Near the Door worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL EAR\nObjective: Hear the ear sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with ear, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/01_pictures_ear.pdf\n\nFLUENCY: EAR\nObjective: Read ear words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/02_fluency_ear.pdf\n\nPICTURE AND SPELL OOR\nObjective: Hear the oor sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with oor, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/03_pictures_oor.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_2_near_the_door/pack.pdf\n\nThese go with the story Near the Door. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_2.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "106"
  },
  {
@@ -3409,7 +3421,7 @@
   "kind": "worksheets",
   "level": 7,
   "level_name": "Reading Together",
-  "title": "Sure She Can! worksheets: Spell ure words, Spell tion words, Fluency: tion",
+  "title": "Sure She Can! worksheets: Spell ure words, Fluency: ure, Picture and spell tion",
   "sounds": "Sure She Can! worksheets",
   "headline": "Sure She Can!",
   "subline": "Worksheets · 3 sheets today · Level 7 of 8 · Reading Together",
@@ -3422,16 +3434,16 @@
     "objective": "Choose the right spelling for the ure sound and use it."
    },
    {
-    "name": "Spell tion words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/03_spelling_tion.pdf",
-    "local": "public/worksheets/L7/5_3_sure_she_can/03_spelling_tion.pdf",
-    "objective": "Choose the right spelling for the tion sound and use it."
+    "name": "Fluency: ure",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/02_fluency_ure.pdf",
+    "local": "public/worksheets/L7/5_3_sure_she_can/02_fluency_ure.pdf",
+    "objective": "Read ure words quickly and accurately."
    },
    {
-    "name": "Fluency: tion",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
-    "local": "public/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
-    "objective": "Read tion words quickly and accurately."
+    "name": "Picture and spell tion",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/03_pictures_tion.pdf",
+    "local": "public/worksheets/L7/5_3_sure_she_can/03_pictures_tion.pdf",
+    "objective": "Hear the tion sound in picture words and choose its spelling."
    }
   ],
   "book_idx": 3,
@@ -3440,19 +3452,25 @@
   "preview_pdf": "public/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf",
   "preview_page": 1,
   "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf",
-  "caption": "FREE phonics worksheets: 3 today from Sure She Can! worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nSPELL URE WORDS\nObjective: Choose the right spelling for the ure sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf\n\nSPELL TION WORDS\nObjective: Choose the right spelling for the tion sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/03_spelling_tion.pdf\n\nFLUENCY: TION\nObjective: Read tion words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf\n\nThese go with the story Sure She Can!. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "caption": "FREE phonics worksheets: 3 today from Sure She Can! worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nSPELL URE WORDS\nObjective: Choose the right spelling for the ure sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/01_spelling_ure.pdf\n\nFLUENCY: URE\nObjective: Read ure words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/02_fluency_ure.pdf\n\nPICTURE AND SPELL TION\nObjective: Hear the tion sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with tion, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/03_pictures_tion.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf\n\nThese go with the story Sure She Can!. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "109"
  },
  {
   "kind": "worksheets",
   "level": 7,
   "level_name": "Reading Together",
-  "title": "Sure She Can! worksheets: Read ure in sentences, Story game: Sure She Can!",
+  "title": "Sure She Can! worksheets: Fluency: tion, Read ure in sentences, Story game: Sure She Can!",
   "sounds": "Sure She Can! worksheets",
   "headline": "Sure She Can!",
-  "subline": "Worksheets · 2 sheets today · Level 7 of 8 · Reading Together",
+  "subline": "Worksheets · 3 sheets today · Level 7 of 8 · Reading Together",
   "objective": "Part 2 of 2 of Sure She Can! worksheets. One sound or skill per sheet.",
   "sheets": [
+   {
+    "name": "Fluency: tion",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
+    "local": "public/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
+    "objective": "Read tion words quickly and accurately."
+   },
    {
     "name": "Read ure in sentences",
     "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf",
@@ -3469,10 +3487,10 @@
   "book_idx": 3,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf",
-  "preview_pdf": "public/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf",
+  "preview_pdf": "public/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf",
-  "caption": "FREE phonics worksheets: 2 today from Sure She Can! worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nREAD URE IN SENTENCES\nObjective: Read and complete sentences that use the sound ure.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf\n\nSTORY GAME: SURE SHE CAN!\nObjective: Read the book's words in a race game, so practice feels like play.\nHow: You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/06_game_ure.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf\n\nThese go with the story Sure She Can!. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf",
+  "caption": "FREE phonics worksheets: 3 today from Sure She Can! worksheets\nLevel 7 of 8 · Reading Together · one sound or skill per sheet, in the order the books teach it\n\nFLUENCY: TION\nObjective: Read tion words quickly and accurately.\nHow: Roll the die and read that column, then the speed read three times, then real or alien. Speed comes from repetition, not rushing.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/04_fluency_tion.pdf\n\nREAD URE IN SENTENCES\nObjective: Read and complete sentences that use the sound ure.\nHow: Pick the word from the bank for each gap, rebuild the muddled sentence, then answer yes or no. Sound out; don't guess from the picture.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/05_sentences_ure.pdf\n\nSTORY GAME: SURE SHE CAN!\nObjective: Read the book's words in a race game, so practice feels like play.\nHow: You need a die and two counters. Read the word you land on; alien cells are made-up words to sound out. Play it twice.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/06_game_ure.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L7/5_3_sure_she_can/pack.pdf\n\nThese go with the story Sure She Can!. Read it first: https://www.myphonicsbooks.co.uk/book-pdfs/5_3.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "110"
  },
  {
@@ -3963,26 +3981,26 @@
   "kind": "worksheets",
   "level": 8,
   "level_name": "Reading Champion",
-  "title": "Level 8 extra sounds: Spell sion words",
+  "title": "Level 8 extra sounds: Picture and spell sion",
   "sounds": "Level 8 extra sounds",
   "headline": "Level 8 extra sounds",
   "subline": "1 sheet today · Level 8 of 8 · Reading Champion",
   "objective": "Part 1 of 1 of Level 8 extra sounds. One sound or skill per sheet.",
   "sheets": [
    {
-    "name": "Spell sion words",
-    "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_spelling_sion.pdf",
-    "local": "public/worksheets/L8/extras/01_spelling_sion.pdf",
-    "objective": "Choose the right spelling for the sion sound and use it."
+    "name": "Picture and spell sion",
+    "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_pictures_sion.pdf",
+    "local": "public/worksheets/L8/extras/01_pictures_sion.pdf",
+    "objective": "Hear the sion sound in picture words and choose its spelling."
    }
   ],
   "book_idx": null,
   "pack_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf",
   "url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf",
-  "preview_pdf": "public/worksheets/L8/extras/01_spelling_sion.pdf",
+  "preview_pdf": "public/worksheets/L8/extras/01_pictures_sion.pdf",
   "preview_page": 1,
-  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_spelling_sion.pdf",
-  "caption": "FREE phonics worksheets: 1 today from Level 8 extra sounds\nLevel 8 of 8 · Reading Champion · one sound or skill per sheet, in the order the books teach it\n\nSPELL SION WORDS\nObjective: Choose the right spelling for the sion sound and use it.\nHow: Circle the correct spelling, use the words in the sentences, then write the dictated words without looking back.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_spelling_sion.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
+  "pdf_url": "https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_pictures_sion.pdf",
+  "caption": "FREE phonics worksheets: 1 today from Level 8 extra sounds\nLevel 8 of 8 · Reading Champion · one sound or skill per sheet, in the order the books teach it\n\nPICTURE AND SPELL SION\nObjective: Hear the sion sound in picture words and choose its spelling.\nHow: Say each picture, write its word and colour the ones with sion, then circle the correct spelling and write it.\nPrint: https://www.myphonicsbooks.co.uk/worksheets/L8/extras/01_pictures_sion.pdf\n\nThe whole pack in one PDF: https://www.myphonicsbooks.co.uk/worksheets/L8/extras/pack.pdf\n\nAll 33 books, worksheets and games are free at www.myphonicsbooks.co.uk and on our page: MyPhonicsBooks",
   "id": "127"
  }
 ]
