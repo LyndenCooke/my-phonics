@@ -36,8 +36,6 @@
     "createBookNote": "Looking for a personalised book? <link>Create a Book</link> is £4.99, and the World of Books is a one-off £10."
   },
   "prompt": {
-    "title": "You're in — everything's free",
-    "body": "Every book, game and worksheet is yours at no cost. If MyPhonicsBooks helps your child, you can leave a small thank-you to keep it free for other families. Completely optional.",
     "differentAmount": "Choose a different amount",
     "maybeLater": "Maybe later — take me to the books"
   }

@@ -36,8 +36,6 @@
     "createBookNote": "Kuna neman littafi na musamman? <link>Ƙirƙiri Littafi</link> £4.99 ne, kuma World of Books £10 ne sau ɗaya."
   },
   "prompt": {
-    "title": "Kun shigo — komai kyauta ne",
-    "body": "Kowane littafi, wasa da takardar aiki naku ne ba tare da biya ba. Idan MyPhonicsBooks yana taimaka wa yaronku, za ku iya bar ƙaramar godiya don ya ci gaba da zama kyauta ga sauran iyalai. Gaba ɗaya zaɓinku ne.",
     "differentAmount": "Zaɓi wani adadi daban",
     "maybeLater": "Watakila daga baya — kai ni wurin littattafai"
   }

@@ -36,8 +36,6 @@
     "createBookNote": "想要一本专属定制的书吗？<link>定制一本书</link>只需 £4.99，World of Books 一次性 £10。"
   },
   "prompt": {
-    "title": "注册成功——一切都免费",
-    "body": "每一本书、每一个游戏和每一张练习纸都免费供您使用。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点小小的心意，让其他家庭也能继续免费使用。完全自愿。",
     "differentAmount": "选择其他金额",
     "maybeLater": "以后再说——带我去看书"
   }

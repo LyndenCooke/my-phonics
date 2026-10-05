@@ -62,25 +62,18 @@ export default function DownloadHistory() {
     products?: { name?: string; description?: string } | null;
   }>;
 
-  const reDownload = async (bookId: string, title: string) => {
+  const reDownload = async (bookId: string, title: string, subLevel?: string) => {
     setBusyBookId(bookId);
     const tid = toast.loading(t('downloads.preparing', { title }));
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-pdf-download`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ book_id: bookId, format: 'a5' }),
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || data?.error || t('downloads.failed'));
-
+      // Re-downloading something already in your history never counts
+      // against the weekly allowance, so this goes straight to the public
+      // book-pdfs file ("L1.1" -> "1_1"), like Index.tsx.
+      if (!subLevel) throw new Error(t('downloads.unavailable'));
+      const storageKey = subLevel.replace(/^L/i, '').replace('.', '_');
+      const data = {
+        url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/book-pdfs/a5/${storageKey}.pdf`,
+      };
       const pdfRes = await fetch(data.url);
       if (!pdfRes.ok) throw new Error(t('downloads.unavailable'));
       const blob = await pdfRes.blob();
@@ -190,7 +183,7 @@ export default function DownloadHistory() {
                           </p>
                         </div>
                         <button
-                          onClick={() => reDownload(d.book_id, title)}
+                          onClick={() => reDownload(d.book_id, title, d.books?.sub_level)}
                           disabled={isBusy}
                           aria-label={t('downloads.reDownload', { title })}
                           className="shrink-0 w-9 h-9 rounded-full bg-tint-pink text-primary-ink flex items-center justify-center hover:bg-primary/20 transition-colors disabled:opacity-50"

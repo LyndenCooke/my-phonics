@@ -4,8 +4,7 @@ import { FORGED_FOLDERS } from '@/data/forgedWorksheets';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Download, FileText, Package, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useDownloadGate } from '@/components/premium/PremiumGate';
 import { useTranslation } from 'react-i18next';
 import i18n from '@/i18n';
 
@@ -260,17 +259,13 @@ const L1_BOOKS: BookFolder[] = [
   { id: 'l1-10', bookNumber: '1.10', title: 'Buzz and Sing!',        focusSounds: ['ng', 'qu', 'ss', 'zz'], status: 'coming-soon', groups: [] },
 ];
 
-/** Downloads need a free account (launch 2026-09-05) — reading and
- *  browsing never do. Returns a click handler that either downloads or
- *  sends the guest to sign up and back to the Library. */
+/** Downloads go through the plan gate: guests get the sign-up offer, free
+ *  accounts get 5 single sheets a week, Premium is unlimited. Whole-pack
+ *  PDFs are Premium only (a pack would otherwise be 20 sheets for one). */
 function useGatedDownload() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  return (href: string, filename: string) => {
-    if (!user) {
-      navigate(`/auth?redirect=${encodeURIComponent('/library')}`);
-      return;
-    }
+  const { guard } = useDownloadGate();
+  return async (href: string, filename: string, kind: 'worksheet' | 'worksheet_pack' = 'worksheet') => {
+    if (!(await guard(kind, href))) return;
     void downloadPdf(href, filename);
   };
 }
@@ -379,7 +374,7 @@ function BookFolderItem({ book, accent }: { book: BookFolder; accent: string /* 
                   {g.bundleHref && (
                     <button
                       type="button"
-                      onClick={() => download(g.bundleHref!, pdfFilename(`${book.title} - ${g.label}`))}
+                      onClick={() => download(g.bundleHref!, pdfFilename(`${book.title} - ${g.label}`), 'worksheet_pack')}
                       className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 active:scale-[0.97] transition-all"
                     >
                       <Download className="w-3.5 h-3.5" />
