@@ -32,8 +32,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install PyMuPDF
-        run: pip install --quiet pymupdf
+      - name: Install PyMuPDF + Pillow
+        run: pip install --quiet pymupdf pillow
 
       - name: Post next printable
         env:
