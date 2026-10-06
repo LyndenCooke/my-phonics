@@ -8,6 +8,8 @@ import { useToast } from '@/hooks/use-toast';
 import { markSupportPromptPending } from '@/lib/support';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import FoundingTally from '@/components/premium/FoundingTally';
+import { useFoundingSpots } from '@/lib/premium';
 import { useTranslation, Trans } from 'react-i18next';
 
 type Mode = 'signin' | 'signup' | 'forgot';
@@ -25,7 +27,8 @@ export default function Auth() {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation(['auth', 'premium']);
+  const { data: spots } = useFoundingSpots();
   // Where to land after a successful sign-in — e.g. the World of Books wizard
   // sends guests here with ?redirect=/create-book?resume=1&want=world so they
   // pick up right where they left off instead of losing their in-progress book.
@@ -126,6 +129,14 @@ export default function Auth() {
             <ShieldCheck className="w-3.5 h-3.5" />
             {t('page.trust')}
           </div>
+
+          {/* Founding-member offer — only while spots remain, only on sign-up. */}
+          {mode === 'signup' && spots && spots.remaining > 0 && (
+            <div className="mt-4 rounded-2xl border-2 border-primary/30 bg-primary/5 p-3 text-start">
+              <p className="text-xs font-extrabold text-foreground">{t('premium:offer.badge')}: {t('premium:offer.title')}</p>
+              <FoundingTally className="mt-2" />
+            </div>
+          )}
         </div>
 
         {/* ── Google sign-in (above the email/password form because OAuth

@@ -36,8 +36,6 @@
     "createBookNote": "Mencari buku yang dipersonalisasi? <link>Buat Buku</link> seharga £4.99, dan World of Books sekali bayar £10."
   },
   "prompt": {
-    "title": "Anda sudah bergabung — semuanya gratis",
-    "body": "Setiap buku, permainan, dan lembar kerja menjadi milik Anda tanpa biaya. Jika MyPhonicsBooks membantu anak Anda, Anda dapat memberikan sedikit ucapan terima kasih agar tetap gratis untuk keluarga lain. Sepenuhnya sukarela.",
     "differentAmount": "Pilih jumlah lain",
     "maybeLater": "Nanti saja — bawa saya ke buku-buku"
   }

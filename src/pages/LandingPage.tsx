@@ -23,6 +23,8 @@ import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import LandingTestimonials from '@/components/LandingTestimonials';
 import { useTranslation, Trans } from 'react-i18next';
+import FoundingTally from '@/components/premium/FoundingTally';
+import { PREMIUM_PRICE_LABEL, useFoundingSpots } from '@/lib/premium';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import EnglishOnly from '@/i18n/EnglishOnly';
 import { LANGUAGES } from '@/i18n/languages';
@@ -696,15 +698,19 @@ function FeatureShowcase() {
 
 /* ─── PRICING ─── */
 function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: () => void }) {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation(['landing', 'premium']);
   const r = useReveal();
+  // While founding spots remain the account card is the founding offer;
+  // afterwards it describes the free plan's weekly allowance.
+  const { data: spots } = useFoundingSpots();
+  const spotsLeft = !spots || spots.remaining > 0;
 
   return (
     <section className="py-14 md:py-20 bg-card">
       <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">{t('free.title')}</h2>
-          <p className="mt-3 text-muted-foreground text-lg">{t('free.subtitle')}</p>
+          <p className="mt-3 text-muted-foreground text-lg">{spotsLeft ? t('premium:landing.subtitle') : t('premium:landing.subtitleSoldOut')}</p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-5">
@@ -730,24 +736,33 @@ function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: 
               className="absolute -top-3 end-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-primary-ink"
               style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}40` }}
             >
-              {t('free.print.badge')}
+              {spotsLeft ? t('premium:offer.badge') : t('free.print.badge')}
             </span>
-            <h3 className="font-display text-lg font-extrabold text-foreground">{t('free.print.title')}</h3>
-            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{t('free.print.note')}</span></div>
+            <h3 className="font-display text-lg font-extrabold text-foreground">{spotsLeft ? t('premium:landing.cardTitle') : t('free.print.title')}</h3>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{spotsLeft ? t('premium:landing.priceNote') : t('free.print.note')}</span></div>
             <ul className="space-y-3 mb-6 flex-1">
-              {[t('free.print.items.everything'), t('free.print.items.download'), t('free.print.items.worksheets'), t('free.print.items.progress')].map(f => (
+              {(spotsLeft
+                ? [t('free.print.items.everything'), t('premium:plans.premium.books'), t('premium:plans.premium.worksheets'), t('premium:plans.premium.forLife')]
+                : [t('free.print.items.everything'), t('premium:plans.free.books'), t('premium:plans.free.worksheets'), t('free.print.items.progress')]
+              ).map(f => (
                 <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
                 </li>
               ))}
             </ul>
+            {spotsLeft && <FoundingTally className="mb-4" />}
             <button
               onClick={onSignUp}
               className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
               style={{ background: PINK, boxShadow: `0 4px 0 ${PINK_INK}` }}
             >
-              {t('free.print.cta')}
+              {spotsLeft ? t('premium:offer.cta') : t('free.print.cta')}
             </button>
+            <p className="text-[11px] text-muted-foreground text-center leading-relaxed mt-3">
+              {spotsLeft
+                ? t('premium:offer.afterNote', { price: PREMIUM_PRICE_LABEL })
+                : t('premium:plans.subtitle', { price: PREMIUM_PRICE_LABEL })}
+            </p>
           </div>
         </div>
 

@@ -2,8 +2,9 @@
  * /support — "Support MyPhonicsBooks". Replaces /pricing (launch 2026-09-05).
  *
  * The whole library and every game are free to use without an account;
- * a free account unlocks PDF downloads. This page is the one place a parent
- * can choose to pay: a pay-what-you-like thank-you, nothing gated behind it.
+ * a free account unlocks PDF downloads (1 book + 5 worksheets a week;
+ * Premium is unlimited — see PlanCard and src/lib/premium.ts). The support
+ * card below is a separate pay-what-you-like thank-you that changes no plan.
  * (Create-A-Book keeps its own £4.99 / £10 World of Books pricing.)
  */
 import { useState } from 'react';
@@ -15,6 +16,7 @@ import { Heart, Loader2, Check, BookOpen, Gamepad2, Download, Sparkles } from 'l
 import { toast } from 'sonner';
 import { useTranslation, Trans } from 'react-i18next';
 import { SUPPORT_ERROR_KEYS, SUPPORT_NOTE_KEYS } from '@/components/supportText';
+import PlanCard from '@/components/premium/PlanCard';
 import {
   SUPPORT_AMOUNTS,
   formatSupportAmount,
@@ -33,7 +35,7 @@ const FREE_ITEMS = [
 
 
 export default function Support() {
-  const { t } = useTranslation('support');
+  const { t } = useTranslation(['support', 'premium']);
   const { user } = useAuth();
   const { data: purchases } = usePurchases();
   const navigate = useNavigate();
@@ -80,12 +82,14 @@ export default function Support() {
             {t('page.sticker')}
           </span>
           <h1 className="font-display text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight leading-tight mt-4">
-            {t('page.heading')}
+            {t('premium:supportPage.heading')}
           </h1>
           <p className="text-sm lg:text-base text-muted-foreground mt-2 leading-relaxed">
             {t('page.intro')}
           </p>
         </div>
+
+        <PlanCard className="mb-5 lg:mb-6" />
 
         <div className="lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start space-y-5 lg:space-y-0">
           {/* What you get — all of it, free */}
@@ -97,7 +101,7 @@ export default function Support() {
                   <span className="w-7 h-7 rounded-lg bg-tint-pink flex items-center justify-center shrink-0">
                     <Icon className="w-3.5 h-3.5 text-primary" />
                   </span>
-                  <span className="leading-snug">{t(`page.free.${key}`)}</span>
+                  <span className="leading-snug">{key === 'pdfs' ? t('premium:supportPage.pdfs') : t(`page.free.${key}`)}</span>
                 </li>
               ))}
             </ul>

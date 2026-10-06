@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
-import { CheckCircle, BookOpen, ArrowRight, Loader2, Heart } from 'lucide-react';
+import { CheckCircle, BookOpen, ArrowRight, Loader2, Heart, Crown } from 'lucide-react';
 import { hapticSuccess } from '@/lib/native';
 import { supabase } from '@/integrations/supabase/client';
 import AddToHomeScreenPrompt from '@/components/AddToHomeScreenPrompt';
@@ -13,12 +13,15 @@ export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation(['auth', 'premium']);
   const queryClient = useQueryClient();
   const sessionId = searchParams.get('session_id');
   // ?support=1 — a pay-what-you-like thank-you, not a purchase that unlocks
   // anything. Skip the unlock polling and just say thank you.
   const isSupport = searchParams.get('support') === '1';
+  // ?premium=1 — "Premium for life". Nothing to unlock book by book: the
+  // plan flips to premium once the webhook completes the purchase row.
+  const isPremium = searchParams.get('premium') === '1';
 
   // Webhook latency: Stripe fires checkout.session.completed within a few
   // seconds of payment, but the browser hits this page first. Poll the
@@ -29,6 +32,18 @@ export default function PaymentSuccess() {
 
   useEffect(() => {
     if (!user || isSupport) { setUnlocking(false); return; }
+    if (isPremium) {
+      // The webhook lands a few seconds after the redirect: refresh the plan
+      // a few times so the library sees Premium without a manual reload.
+      setUnlocking(false);
+      let tries = 0;
+      const timer = setInterval(() => {
+        queryClient.invalidateQueries({ queryKey: ['download_plan'] });
+        queryClient.invalidateQueries({ queryKey: ['purchases'] });
+        if (++tries >= 6) clearInterval(timer);
+      }, 2500);
+      return () => clearInterval(timer);
+    }
 
     let cancelled = false;
     let attempts = 0;
@@ -110,6 +125,29 @@ export default function PaymentSuccess() {
   };
   const userBooksData = queryClient.getQueryData<unknown[]>(['user_books', user?.id]);
   const showRetry = !unlocking && user && (!userBooksData || userBooksData.length === 0);
+
+  if (isPremium) {
+    return (
+      <Layout>
+        <div className="px-4 pt-12 pb-8 max-w-lg mx-auto text-center">
+          <div className="w-16 h-16 rounded-full bg-tint-pink flex items-center justify-center mx-auto mb-4">
+            <Crown className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">{t('premium:paid.title')}</h1>
+          <p className="text-sm text-muted-foreground mb-6">
+            {t('premium:paid.body')}
+          </p>
+          <button
+            onClick={() => navigate('/library')}
+            className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
+          >
+            <BookOpen className="w-4 h-4" />
+            {t('payment.backToLibrary')}
+          </button>
+        </div>
+      </Layout>
+    );
+  }
 
   if (isSupport) {
     return (

@@ -36,8 +36,6 @@
     "createBookNote": "Kişiye özel bir kitap mı arıyorsunuz? <link>Kitap Oluştur</link> £4.99, World of Books ise tek seferlik £10."
   },
   "prompt": {
-    "title": "Aramıza hoş geldiniz — her şey ücretsiz",
-    "body": "Her kitap, oyun ve çalışma sayfası hiçbir ücret ödemeden sizin. MyPhonicsBooks çocuğunuza yardımcı oluyorsa, başka aileler için de ücretsiz kalması adına küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
     "differentAmount": "Farklı bir tutar seçin",
     "maybeLater": "Belki sonra — beni kitaplara götürün"
   }

@@ -16,6 +16,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useTeacherSession } from '@/lib/teacherSession';
+import { useDownloadGate } from '@/components/premium/PremiumGate';
 import { BookOpen, Loader2, Trophy, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -71,6 +72,7 @@ export default function Index() {
   // book without signing up — their entitlement lives in localStorage, not
   // auth.users, so the regular user_books gating doesn't see them.
   const { session: teacherSession } = useTeacherSession();
+  const { guard: guardDownload } = useDownloadGate();
   const isTeacher = !!teacherSession;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -248,12 +250,10 @@ export default function Index() {
   // parent chooses A5 vs A4. This indirection means we don't have to
   // hardcode a format and we get a focused "go to Download History"
   // success state instead of a toast that disappears.
-  const handleDownloadBook = (book: Book) => {
-    if (!user) {
-      // Downloads are the one thing that needs a (free) account.
-      navigate(`/auth?redirect=${encodeURIComponent('/library')}`);
-      return;
-    }
+  const handleDownloadBook = async (book: Book) => {
+    // Guests get the sign-up offer; free accounts get 1 new book a week
+    // (re-downloading this week's book, in either format, is always fine).
+    if (!(await guardDownload('book', book.id))) return;
     setDownloadBook(book);
   };
 

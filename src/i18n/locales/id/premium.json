@@ -1,0 +1,81 @@
+{
+  "tally": {
+    "claimed": "{{claimed}} dari {{total}} tempat anggota pendiri sudah diambil",
+    "left": "Tersisa {{remaining}}",
+    "aria": "Tempat anggota pendiri yang sudah diambil"
+  },
+  "offer": {
+    "badge": "500 keluarga pertama",
+    "title": "Premium seumur hidup, gratis",
+    "body": "500 keluarga pertama yang membuat akun gratis mendapat Premium seumur hidup: unduhan buku dan lembar kerja tanpa batas. Tanpa kartu.",
+    "cta": "Ambil tempat gratis saya",
+    "haveAccount": "Saya sudah punya akun",
+    "keepReading": "Lanjut membaca online",
+    "notNow": "Nanti saja",
+    "afterNote": "Setelah 500 pertama, akun gratis mendapat 1 buku dan 5 lembar kerja per minggu dan Premium seharga {{price}}."
+  },
+  "signupGate": {
+    "title": "Buat akun gratis untuk mengunduh",
+    "lead": "Mengunduh memerlukan akun gratis.",
+    "bodySoldOut": "Membaca online tidak pernah memerlukan akun. Dengan akun gratis Anda bisa mengunduh 1 buku dan 5 lembar kerja setiap minggu.",
+    "cta": "Buat akun gratis"
+  },
+  "limit": {
+    "bookTitle": "Buku gratis minggu ini sudah terpakai",
+    "bookBody": "Paket gratis mencakup 1 unduhan buku per minggu. Unduhan berikutnya terbuka pada {{when}}.",
+    "worksheetTitle": "5 lembar kerja gratis minggu ini sudah terpakai",
+    "worksheetBody": "Paket gratis mencakup 5 unduhan lembar kerja per minggu. Unduhan berikutnya terbuka pada {{when}}.",
+    "packTitle": "Paket lengkap adalah keuntungan Premium",
+    "packBody": "Di paket gratis Anda bisa mengunduh lembar kerja satuan, 5 per minggu. Premium mendapat setiap paket dalam satu PDF.",
+    "readFree": "Anda tetap bisa membaca semua buku secara online, gratis.",
+    "premiumTitle": "Premium seumur hidup",
+    "premiumBody": "Unduhan buku dan lembar kerja tanpa batas, plus paket lengkap dalam satu PDF.",
+    "upgrade": "Dapatkan Premium seumur hidup: {{price}}",
+    "upgradeNote": "Sekali bayar. Tanpa langganan.",
+    "close": "Mungkin nanti"
+  },
+  "welcome": {
+    "founderTitle": "Anda anggota pendiri #{{number}}",
+    "founderBody": "Premium menjadi milik Anda seumur hidup: unduhan buku dan lembar kerja tanpa batas, gratis. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional.",
+    "freeTitle": "Selamat bergabung",
+    "freeBody": "Semua buku dan game gratis untuk dibaca dan dimainkan online, dan akun gratis Anda mencakup unduhan 1 buku dan 5 lembar kerja per minggu. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional."
+  },
+  "status": {
+    "founder": "Anggota pendiri #{{number}} · Premium seumur hidup",
+    "premium": "Premium · unduhan tanpa batas",
+    "free": "Paket gratis · minggu ini: {{books}} dari {{bookLimit}} buku, {{worksheets}} dari {{worksheetLimit}} lembar kerja"
+  },
+  "plans": {
+    "title": "Paket",
+    "subtitle": "Premium seumur hidup {{price}}, sekali bayar",
+    "free": {
+      "name": "Akun gratis",
+      "read": "Baca semua buku dan mainkan semua game secara online",
+      "books": "1 unduhan buku per minggu",
+      "worksheets": "5 unduhan lembar kerja per minggu"
+    },
+    "premium": {
+      "name": "Premium",
+      "books": "Unduhan buku tanpa batas",
+      "worksheets": "Lembar kerja tanpa batas, plus paket lengkap",
+      "forLife": "Milik Anda seumur hidup, tanpa langganan"
+    }
+  },
+  "supportPage": {
+    "heading": "Gratis untuk membaca dan bermain. Dukungan bersifat opsional.",
+    "pdfs": "PDF buku dan lembar kerja yang bisa dicetak dengan akun gratis"
+  },
+  "landing": {
+    "subtitle": "Baca semuanya sekarang. Buat akun gratis untuk mencetak: 500 keluarga pertama mendapat Premium seumur hidup.",
+    "subtitleSoldOut": "Baca semuanya sekarang. Buat akun gratis untuk mencetak 1 buku dan 5 lembar kerja per minggu.",
+    "cardTitle": "Anggota pendiri",
+    "priceNote": "Premium seumur hidup"
+  },
+  "paid": {
+    "title": "Anda kini Premium",
+    "body": "Terima kasih! Unduhan buku dan lembar kerja tanpa batas kini milik Anda seumur hidup."
+  },
+  "errors": {
+    "checkoutFailed": "Tidak dapat memulai pembayaran. Silakan coba lagi."
+  }
+}
