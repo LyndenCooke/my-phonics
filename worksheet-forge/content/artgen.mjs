@@ -14,7 +14,7 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { FORGE_ROOT } from '../design/tokens.mjs';
+import { FORGE_ROOT, REPO_ROOT } from '../design/tokens.mjs';
 import { clipart, NOUNS } from './content.mjs';
 import { geminiJSON } from '../planner/llm.mjs';
 
@@ -105,11 +105,29 @@ export async function ensureScenes(scenes, { log = () => {} } = {}) {
   return done;
 }
 
-async function generateOne(word, style = null) {
+/** One clipart image in the house STYLE for a full subject description
+ *  ("a crab claw"), for words a bare noun would draw wrongly. */
+export async function generateSubject(description) {
+  return generateOne(description, null, true);
+}
+
+// The model obeys the eye rule for people but adds catchlights to animals
+// unless it SEES a correct animal eye (feedback 2026-08-05: inject a
+// reference, never paint eyes). Same two refs as the book forge.
+const EYE_REFS = ['animal_bird_ref.png', 'animal_owl_ref.png']
+  .map((f) => path.join(REPO_ROOT, 'server', 'forge', 'assets', f))
+  .filter((p) => fs.existsSync(p));
+const eyeRefParts = () => EYE_REFS.flatMap((p) => [
+  { text: 'EYE STYLE REFERENCE ONLY (do not copy this animal or its style): its eye is ONE solid black filled dot with no white, no sclera, no pale ring and no highlight. Every eye you draw, on people AND animals, must be exactly like this.' },
+  { inlineData: { mimeType: 'image/png', data: fs.readFileSync(p).toString('base64') } },
+]);
+
+async function generateOne(word, style = null, subject = false) {
   const { tok, proj } = vertexAuth();
   const url = `https://us-central1-aiplatform.googleapis.com/v1/projects/${proj}/locations/us-central1/publishers/google/models/${IMG_MODEL}:generateContent`;
+  const prompt = style ? `${style}\n\nScene: ${word}` : `${STYLE}\n\nSubject: ${subject ? word : `a single simple ${word}`}.`;
   const body = {
-    contents: [{ role: 'user', parts: [{ text: style ? `${style}\n\nScene: ${word}` : `${STYLE}\n\nSubject: a single simple ${word}.` }] }],
+    contents: [{ role: 'user', parts: [...eyeRefParts(), { text: `Now draw, in the flat clip-art style described here (not the reference's style): ${prompt}` }] }],
     generationConfig: { responseModalities: ['IMAGE'] },
   };
   const ctrl = new AbortController();

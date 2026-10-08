@@ -30,6 +30,7 @@ const FILL_TARGET = 240;
 // ---------------------------------------------------------------------------
 const INTENTS = [
   [/word ?search/, 'wordsearch'],
+  [/picture spell|name the picture/, 'pictures'],
   [/crack|decode|secret|\bcode\b/, 'code'],
   [/board ?game|race|track/, 'game'],
   // Bingo retired 2026-07-24 (Lynden): the caller list and the child's card
@@ -520,6 +521,9 @@ const RECIPES = {
   alien: ['real_alien_sort', 'sound_button_markup', 'roll_and_read'],
   fluency: ['roll_and_read', 'speed_read', 'real_alien_sort'],
   spelling: ['best_bet', 'cloze_sentences', 'dictation'],
+  // Picture-led spelling for L5+ (Lynden 2026-10-02: L4-8 sheets were text-only).
+  // Nine pictures fill the page; dictation lives on the pack's check-up sheet.
+  pictures: ['picture_write', 'best_bet'],
   wordsearch: ['word_search', 'crack_the_code', 'speed_read'],
   code: ['crack_the_code', 'speed_read', 'dictation'],
   sorting: ['sound_sort', 'dictation'],

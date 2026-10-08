@@ -83,8 +83,11 @@ blocks.trace_words = (d, ctx) => {
 
 /** §Missing grapheme cards — the gap reserves its true width (transparent run). */
 blocks.missing_grapheme = (d, ctx) => {
-  const xh = 8;
+  // Long words ("stingray") overflow a card at full size — shrink the row to fit.
   const cardW = (CONTENT_W - 8 - 3 * 4) / 4;
+  const glyphW = (word) => [...word].reduce((n, c) => n + ('mw'.includes(c) ? 1.5 : 'iljtfr'.includes(c) ? 0.6 : 1), 0);
+  const widest = Math.max(...d.items.map(({ word }) => glyphW(word)));
+  const xh = Math.min(8, (cardW - 7) / (0.95 * widest));
   const cards = d.items.map(({ word, gap }) => {
     const i = word.indexOf(gap);
     const segs = [
