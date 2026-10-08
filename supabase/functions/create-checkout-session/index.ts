@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown; support_pence?: unknown };
+    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown; support_pence?: unknown; premium?: unknown };
     try {
       payload = await req.json();
     } catch {
@@ -119,6 +119,83 @@ Deno.serve(async (req) => {
         product_id: null,
         stripe_session_id: session.id,
         amount_paid: support_pence,
+        currency: "gbp",
+        status: "pending",
+      });
+      return new Response(JSON.stringify({ url: session.url }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ─── "Premium for life" (2026-10-05) ───
+    // One-off payment for unlimited downloads, sold once the 500 free
+    // founding-member spots are gone. The amount comes from the
+    // premium_lifetime product row and the line item is built inline
+    // (price_data), so no Stripe Price has to exist. metadata.product_id
+    // points at that row: the webhook completes the purchase like any other
+    // one-off, and mpb_premium_reason() reads premium from the completed row.
+    if (payload.premium === true) {
+      if (!userId) {
+        return badRequest("Please sign in to get Premium");
+      }
+      const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
+      if (!STRIPE_SECRET_KEY) {
+        return new Response(JSON.stringify({ error: "Stripe not configured" }), { status: 500, headers: corsHeaders });
+      }
+      const { data: premiumProduct } = await supabaseAdmin
+        .from("products")
+        .select("id, name, description, price_pence")
+        .eq("product_type", "premium_lifetime")
+        .eq("is_active", true)
+        .limit(1)
+        .maybeSingle();
+      if (!premiumProduct || !premiumProduct.price_pence) {
+        return new Response(JSON.stringify({ error: "Premium is not available yet" }), { status: 404, headers: corsHeaders });
+      }
+      const { data: alreadyPremium } = await supabaseAdmin.rpc("mpb_premium_reason", { p_user_id: userId });
+      if (alreadyPremium) {
+        return badRequest("This account already has Premium");
+      }
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("email")
+        .eq("id", userId)
+        .single();
+      const origin = req.headers.get("origin") || "https://myphonicsbooks.co.uk";
+      const body = new URLSearchParams({
+        mode: "payment",
+        "line_items[0][price_data][currency]": "gbp",
+        "line_items[0][price_data][unit_amount]": String(premiumProduct.price_pence),
+        "line_items[0][price_data][product_data][name]": `MyPhonicsBooks ${premiumProduct.name}`,
+        "line_items[0][price_data][product_data][description]":
+          premiumProduct.description || "Unlimited book and worksheet downloads.",
+        "line_items[0][quantity]": "1",
+        success_url: `${origin}/payment-success?premium=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/support`,
+        "metadata[product_id]": premiumProduct.id,
+        "metadata[product_type]": "premium_lifetime",
+        client_reference_id: userId,
+      });
+      if (profile?.email) body.set("customer_email", profile.email);
+      if (ref_code) body.set("metadata[ref_code]", ref_code);
+
+      const stripeRes = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: body.toString(),
+      });
+      const session = await stripeRes.json();
+      if (!stripeRes.ok) {
+        return new Response(JSON.stringify({ error: session.error?.message || "Stripe error" }), { status: 400, headers: corsHeaders });
+      }
+      await supabaseAdmin.from("purchases").insert({
+        user_id: userId,
+        product_id: premiumProduct.id,
+        stripe_session_id: session.id,
+        amount_paid: premiumProduct.price_pence,
         currency: "gbp",
         status: "pending",
       });

@@ -1,0 +1,81 @@
+{
+  "tally": {
+    "claimed": "{{total}} kurucu üye yerinden {{claimed}} tanesi alındı",
+    "left": "{{remaining}} yer kaldı",
+    "aria": "Alınan kurucu üye yerleri"
+  },
+  "offer": {
+    "badge": "İlk 500 aile",
+    "title": "Ömür boyu Premium, ücretsiz",
+    "body": "Ücretsiz hesap açan ilk 500 aile ömür boyu Premium kazanır: sınırsız kitap ve çalışma kâğıdı indirme. Kart gerekmez.",
+    "cta": "Ücretsiz yerimi al",
+    "haveAccount": "Zaten hesabım var",
+    "keepReading": "Çevrimiçi okumaya devam et",
+    "notNow": "Şimdi değil",
+    "afterNote": "İlk 500'den sonra ücretsiz hesaplar haftada 1 kitap ve 5 çalışma kâğıdı indirebilir, Premium ise {{price}} olur."
+  },
+  "signupGate": {
+    "title": "İndirmek için ücretsiz hesap açın",
+    "lead": "İndirmek için ücretsiz bir hesap gerekir.",
+    "bodySoldOut": "Çevrimiçi okumak için hiçbir zaman hesap gerekmez. Ücretsiz hesapla her hafta 1 kitap ve 5 çalışma kâğıdı indirebilirsiniz.",
+    "cta": "Ücretsiz hesap aç"
+  },
+  "limit": {
+    "bookTitle": "Bu haftanın ücretsiz kitabı kullanıldı",
+    "bookBody": "Ücretsiz planda haftada 1 kitap indirilebilir. Sıradaki indirme {{when}} günü açılır.",
+    "worksheetTitle": "Bu haftanın 5 ücretsiz çalışma kâğıdı kullanıldı",
+    "worksheetBody": "Ücretsiz planda haftada 5 çalışma kâğıdı indirilebilir. Sıradaki indirme {{when}} günü açılır.",
+    "packTitle": "Tam paketler bir Premium ayrıcalığıdır",
+    "packBody": "Ücretsiz planda çalışma kâğıtlarını tek tek, haftada 5 tane indirebilirsiniz. Premium'da her paket tek PDF olarak gelir.",
+    "readFree": "Bütün kitapları çevrimiçi olarak ücretsiz okumaya devam edebilirsiniz.",
+    "premiumTitle": "Ömür boyu Premium",
+    "premiumBody": "Sınırsız kitap ve çalışma kâğıdı indirme, ayrıca tam paketler tek PDF'te.",
+    "upgrade": "Ömür boyu Premium alın: {{price}}",
+    "upgradeNote": "Tek ödeme. Abonelik yok.",
+    "close": "Belki sonra"
+  },
+  "welcome": {
+    "founderTitle": "{{number}} numaralı kurucu üyesiniz",
+    "founderBody": "Premium ömür boyu sizin: sınırsız kitap ve çalışma kâğıdı indirme, ücretsiz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
+    "freeTitle": "Hoş geldiniz",
+    "freeBody": "Bütün kitaplar ve oyunlar çevrimiçi okumak ve oynamak için ücretsizdir; ücretsiz hesabınızla haftada 1 kitap ve 5 çalışma kâğıdı indirebilirsiniz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı."
+  },
+  "status": {
+    "founder": "Kurucu üye #{{number}} · Ömür boyu Premium",
+    "premium": "Premium · sınırsız indirme",
+    "free": "Ücretsiz plan · bu hafta: {{books}}/{{bookLimit}} kitap, {{worksheets}}/{{worksheetLimit}} çalışma kâğıdı"
+  },
+  "plans": {
+    "title": "Planlar",
+    "subtitle": "Ömür boyu Premium {{price}}, tek seferlik",
+    "free": {
+      "name": "Ücretsiz hesap",
+      "read": "Bütün kitapları çevrimiçi okuyun, bütün oyunları oynayın",
+      "books": "Haftada 1 kitap indirme",
+      "worksheets": "Haftada 5 çalışma kâğıdı indirme"
+    },
+    "premium": {
+      "name": "Premium",
+      "books": "Sınırsız kitap indirme",
+      "worksheets": "Sınırsız çalışma kâğıdı ve tam paketler",
+      "forLife": "Ömür boyu sizin, abonelik yok"
+    }
+  },
+  "supportPage": {
+    "heading": "Okumak ve oynamak ücretsiz. Destek isteğe bağlı.",
+    "pdfs": "Ücretsiz hesapla kitapların ve çalışma kâğıtlarının yazdırılabilir PDF'leri"
+  },
+  "landing": {
+    "subtitle": "Her şeyi şimdi okuyun. Yazdırmak için ücretsiz hesap açın: ilk 500 aile ömür boyu Premium kazanır.",
+    "subtitleSoldOut": "Her şeyi şimdi okuyun. Haftada 1 kitap ve 5 çalışma kâğıdı yazdırmak için ücretsiz hesap açın.",
+    "cardTitle": "Kurucu üye",
+    "priceNote": "Ömür boyu Premium"
+  },
+  "paid": {
+    "title": "Artık Premium'sunuz",
+    "body": "Teşekkürler! Sınırsız kitap ve çalışma kâğıdı indirme artık ömür boyu sizin."
+  },
+  "errors": {
+    "checkoutFailed": "Ödeme başlatılamadı. Lütfen tekrar deneyin."
+  }
+}

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { PremiumGateProvider } from "./components/premium/PremiumGate";
 import { captureRefFromUrl } from "@/lib/referral";
 import AnimatedRoutes from "@/components/AnimatedRoutes";
 import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
@@ -135,7 +136,9 @@ const App = () => {
         <LanguageNotice />
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
+          <PremiumGateProvider>
           <RoutesWithTransition />
+          </PremiumGateProvider>
           </Suspense>
         </BrowserRouter>
       </TooltipProvider>

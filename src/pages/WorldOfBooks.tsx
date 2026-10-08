@@ -11,6 +11,7 @@ import { useBooks, useUserBooks, useBookPages } from "@/hooks/useBooks";
 import { hasInteractiveData } from "@/lib/interactiveBooksAvailability";
 import type { Book } from "@/lib/types";
 import { forgeApi, type CustomBook } from "@/lib/forgeApi";
+import { useDownloadGate } from "@/components/premium/PremiumGate";
 import CustomBookReader from "@/components/CustomBookReader";
 import { customBookAsBook } from "@/lib/customBookAsBook";
 import DownloadFormatDialog, { type DownloadFormat, formatDisplayLabel } from "@/components/DownloadFormatDialog";
@@ -80,6 +81,7 @@ export default function WorldOfBooks() {
   const { t } = useTranslation("worldOfBooks");
   const countryName = useCountryName();
   const { user } = useAuth();
+  const { guard: guardDownload } = useDownloadGate();
   const { isAdmin } = useIsAdmin();
   const isQaUser = user?.email?.toLowerCase() === "hello@myphonicsbooks.co.uk";
   const [loading, setLoading] = useState(true);
@@ -259,14 +261,14 @@ export default function WorldOfBooks() {
     setPlaying(b.custom);
   };
 
-  // "Print at home" — the real gated flow (generate-pdf-download), same as
-  // the library's download button, via the same format-picker dialog.
+  // "Print at home" — the same plan gate and format-picker dialog as the
+  // library's download button.
   const printBook = (b: ShelfBook) => {
     if (b.kind === "library") {
       const real = realBookFor(b);
       if (!real?.unlocked) return;
       setChooser(null);
-      setDownloadLibraryBook(real);
+      void guardDownload("book", real.id).then((ok) => { if (ok) setDownloadLibraryBook(real); });
       return;
     }
     if (!b.custom || !access) return;
@@ -278,8 +280,7 @@ export default function WorldOfBooks() {
       .finally(() => setFamilyPdfBusy(false));
   };
 
-  // Mirrors Index.tsx's performDownload exactly: hits generate-pdf-download
-  // (tier throttling, real Supabase Storage URL), then forces a real file
+  // Mirrors Index.tsx's performDownload: forces a real file
   // save via blob + <a download> — window.open after an await chain is
   // silently popup-blocked on Safari/Chrome and installed PWAs.
   const performLibraryDownload = async (
@@ -287,23 +288,12 @@ export default function WorldOfBooks() {
     format: DownloadFormat,
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-pdf-download`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
-          body: JSON.stringify({ book_id: book.id, format }),
-        },
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        if (data?.error === "download_limit") {
-          const cooldown = data.cooldown_until ? ` ${t("download.tryAgainSoon")}` : "";
-          return { success: false, error: `${data.message ?? t("download.notAvailable")}${cooldown}` };
-        }
-        return { success: false, error: data?.error || t("download.failed") };
-      }
+      // Same public book-pdfs key as Index.tsx ("L1.1" -> "1_1"); the plan
+      // allowance was already checked in printBook.
+      const storageKey = book.subLevel.replace(/^L/i, "").replace(".", "_");
+      const data = {
+        url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/book-pdfs/${format}/${storageKey}.pdf`,
+      };
       const pdfRes = await fetch(data.url);
       if (!pdfRes.ok) return { success: false, error: t("download.pdfUnavailable") };
       const blob = await pdfRes.blob();

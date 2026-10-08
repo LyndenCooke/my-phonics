@@ -1,0 +1,81 @@
+{
+  "tally": {
+    "claimed": "{{total}} 个创始会员名额已领取 {{claimed}} 个",
+    "left": "剩余 {{remaining}} 个",
+    "aria": "已领取的创始会员名额"
+  },
+  "offer": {
+    "badge": "前 500 个家庭",
+    "title": "终身 Premium，免费",
+    "body": "前 500 个注册免费账户的家庭可获得终身 Premium：无限下载图书和练习纸。无需银行卡。",
+    "cta": "领取我的免费名额",
+    "haveAccount": "我已有账户",
+    "keepReading": "继续在线阅读",
+    "notNow": "暂时不用",
+    "afterNote": "前 500 名之后，免费账户每周可下载 1 本书和 5 张练习纸，Premium 售价 {{price}}。"
+  },
+  "signupGate": {
+    "title": "注册免费账户即可下载",
+    "lead": "下载需要一个免费账户。",
+    "bodySoldOut": "在线阅读永远不需要账户。免费账户每周可下载 1 本书和 5 张练习纸。",
+    "cta": "注册免费账户"
+  },
+  "limit": {
+    "bookTitle": "本周的免费图书已用完",
+    "bookBody": "免费方案每周可下载 1 本书。下一次可下载的时间：{{when}}。",
+    "worksheetTitle": "本周的 5 张免费练习纸已用完",
+    "worksheetBody": "免费方案每周可下载 5 张练习纸。下一次可下载的时间：{{when}}。",
+    "packTitle": "整套下载是 Premium 专享",
+    "packBody": "免费方案可以下载单张练习纸，每周 5 张。Premium 可将每一整套作为一个 PDF 下载。",
+    "readFree": "您仍然可以免费在线阅读每一本书。",
+    "premiumTitle": "终身 Premium",
+    "premiumBody": "无限下载图书和练习纸，还可一次下载整套 PDF。",
+    "upgrade": "获取终身 Premium：{{price}}",
+    "upgradeNote": "一次付款，无需订阅。",
+    "close": "以后再说"
+  },
+  "welcome": {
+    "founderTitle": "您是第 {{number}} 位创始会员",
+    "founderBody": "终身 Premium 已属于您：免费无限下载图书和练习纸。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。",
+    "freeTitle": "欢迎加入",
+    "freeBody": "所有图书和游戏都可以免费在线阅读和游玩，您的免费账户每周可下载 1 本书和 5 张练习纸。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。"
+  },
+  "status": {
+    "founder": "第 {{number}} 位创始会员 · 终身 Premium",
+    "premium": "Premium · 无限下载",
+    "free": "免费方案 · 本周：图书 {{books}}/{{bookLimit}}，练习纸 {{worksheets}}/{{worksheetLimit}}"
+  },
+  "plans": {
+    "title": "方案",
+    "subtitle": "终身 Premium {{price}}，一次性付款",
+    "free": {
+      "name": "免费账户",
+      "read": "在线阅读每一本书、玩每一个游戏",
+      "books": "每周下载 1 本书",
+      "worksheets": "每周下载 5 张练习纸"
+    },
+    "premium": {
+      "name": "Premium",
+      "books": "无限下载图书",
+      "worksheets": "无限下载练习纸，含整套下载",
+      "forLife": "终身有效，无需订阅"
+    }
+  },
+  "supportPage": {
+    "heading": "阅读和游戏免费。支持全凭自愿。",
+    "pdfs": "注册免费账户即可获得图书和练习纸的可打印 PDF"
+  },
+  "landing": {
+    "subtitle": "现在就可以阅读全部内容。注册免费账户即可打印：前 500 个家庭可获得终身 Premium。",
+    "subtitleSoldOut": "现在就可以阅读全部内容。注册免费账户，每周可打印 1 本书和 5 张练习纸。",
+    "cardTitle": "创始会员",
+    "priceNote": "终身 Premium"
+  },
+  "paid": {
+    "title": "您已是 Premium",
+    "body": "谢谢！您现在可以终身无限下载图书和练习纸。"
+  },
+  "errors": {
+    "checkoutFailed": "无法开始结账，请重试。"
+  }
+}

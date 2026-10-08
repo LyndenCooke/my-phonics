@@ -1,0 +1,81 @@
+{
+  "tally": {
+    "claimed": "An karɓi gurabe {{claimed}} daga cikin {{total}} na mambobin farko",
+    "left": "Saura {{remaining}}",
+    "aria": "Guraben mambobin farko da aka karɓa"
+  },
+  "offer": {
+    "badge": "Iyalai 500 na farko",
+    "title": "Premium na har abada, kyauta",
+    "body": "Iyalai 500 na farko da suka buɗe asusu na kyauta za su sami Premium na har abada: sauke littattafai da takardun aiki ba iyaka. Ba a buƙatar kati.",
+    "cta": "Karɓi gurbina na kyauta",
+    "haveAccount": "Ina da asusu tuni",
+    "keepReading": "Ci gaba da karatu a yanar gizo",
+    "notNow": "Ba yanzu ba",
+    "afterNote": "Bayan 500 na farko, asusun kyauta za su sami littafi 1 da takardun aiki 5 a mako, kuma Premium zai zama {{price}}."
+  },
+  "signupGate": {
+    "title": "Buɗe asusu na kyauta don saukewa",
+    "lead": "Saukewa na buƙatar asusu na kyauta.",
+    "bodySoldOut": "Karatu a yanar gizo ba ya buƙatar asusu ko kaɗan. Asusu na kyauta yana ba ka damar sauke littafi 1 da takardun aiki 5 kowane mako.",
+    "cta": "Buɗe asusu na kyauta"
+  },
+  "limit": {
+    "bookTitle": "An riga an yi amfani da littafin kyauta na wannan mako",
+    "bookBody": "Tsarin kyauta yana da sauke littafi 1 a mako. Na gaba zai buɗe ranar {{when}}.",
+    "worksheetTitle": "An riga an yi amfani da takardun aiki 5 na kyauta na wannan mako",
+    "worksheetBody": "Tsarin kyauta yana da sauke takardun aiki 5 a mako. Na gaba zai buɗe ranar {{when}}.",
+    "packTitle": "Cikakkun fakiti amfanin Premium ne",
+    "packBody": "A tsarin kyauta za ka iya sauke takardun aiki ɗaya-ɗaya, 5 a mako. Premium na samun kowane fakiti a cikin PDF ɗaya.",
+    "readFree": "Har yanzu za ka iya karanta kowane littafi a yanar gizo, kyauta.",
+    "premiumTitle": "Premium na har abada",
+    "premiumBody": "Sauke littattafai da takardun aiki ba iyaka, tare da cikakkun fakiti a cikin PDF ɗaya.",
+    "upgrade": "Sami Premium na har abada: {{price}}",
+    "upgradeNote": "Biya sau ɗaya. Babu biyan kuɗi na wata-wata.",
+    "close": "Wataƙila daga baya"
+  },
+  "welcome": {
+    "founderTitle": "Kai ne memba na farko #{{number}}",
+    "founderBody": "Premium naka ne har abada: sauke littattafai da takardun aiki ba iyaka, kyauta. Idan MyPhonicsBooks yana taimaka wa ɗanka, za ka iya barin ƙaramar godiya. Zaɓinka ne gaba ɗaya.",
+    "freeTitle": "Barka da zuwa",
+    "freeBody": "Kowane littafi da wasa kyauta ne don karantawa da wasa a yanar gizo, kuma asusunka na kyauta yana da sauke littafi 1 da takardun aiki 5 a mako. Idan MyPhonicsBooks yana taimaka wa ɗanka, za ka iya barin ƙaramar godiya. Zaɓinka ne gaba ɗaya."
+  },
+  "status": {
+    "founder": "Memba na farko #{{number}} · Premium na har abada",
+    "premium": "Premium · saukewa ba iyaka",
+    "free": "Tsarin kyauta · wannan mako: littafi {{books}} cikin {{bookLimit}}, takardun aiki {{worksheets}} cikin {{worksheetLimit}}"
+  },
+  "plans": {
+    "title": "Tsare-tsare",
+    "subtitle": "Premium na har abada {{price}} ne, biya sau ɗaya",
+    "free": {
+      "name": "Asusu na kyauta",
+      "read": "Karanta kowane littafi ka kuma yi kowane wasa a yanar gizo",
+      "books": "Sauke littafi 1 a mako",
+      "worksheets": "Sauke takardun aiki 5 a mako"
+    },
+    "premium": {
+      "name": "Premium",
+      "books": "Sauke littattafai ba iyaka",
+      "worksheets": "Takardun aiki ba iyaka, tare da cikakkun fakiti",
+      "forLife": "Naka ne har abada, babu biyan kuɗi na wata-wata"
+    }
+  },
+  "supportPage": {
+    "heading": "Karatu da wasa kyauta ne. Tallafi zaɓi ne.",
+    "pdfs": "PDF na littattafai da takardun aiki da za a iya bugawa tare da asusu na kyauta"
+  },
+  "landing": {
+    "subtitle": "Karanta komai yanzu. Buɗe asusu na kyauta don bugawa: iyalai 500 na farko za su sami Premium na har abada.",
+    "subtitleSoldOut": "Karanta komai yanzu. Buɗe asusu na kyauta don buga littafi 1 da takardun aiki 5 a mako.",
+    "cardTitle": "Memba na farko",
+    "priceNote": "Premium na har abada"
+  },
+  "paid": {
+    "title": "Yanzu kana da Premium",
+    "body": "Mun gode! Sauke littattafai da takardun aiki ba iyaka yanzu naka ne har abada."
+  },
+  "errors": {
+    "checkoutFailed": "An kasa fara biyan kuɗi. Da fatan za a sake gwadawa."
+  }
+}

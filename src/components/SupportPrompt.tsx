@@ -1,7 +1,8 @@
 /**
- * SupportPrompt — the optional "support this business" pop-up shown ONCE,
- * right after a parent creates their account (Gumtree-style optional
- * payment). No pricing is ever required: "Maybe later" closes it for good.
+ * SupportPrompt — the welcome pop-up shown ONCE, right after a parent
+ * creates their account: their founding-member number (or the free plan's
+ * weekly allowance once the 500 are gone) plus the optional pay-what-you-like
+ * thank-you. "Maybe later" closes it for good.
  *
  * Mounted in Layout so it appears wherever the new account lands. Auth.tsx
  * sets the pending flag on signup; we wait for a live session so the
@@ -20,26 +21,43 @@ import {
   isSupportPromptPending,
   startSupportCheckout,
 } from '@/lib/support';
+import { useDownloadPlan } from '@/lib/premium';
 import { SUPPORT_ERROR_KEYS, SUPPORT_NOTE_KEYS } from '@/components/supportText';
 
+const FOUNDER_WELCOMED_KEY = 'mpb_founder_welcomed';
+function founderWelcomed(): boolean {
+  try { return localStorage.getItem(FOUNDER_WELCOMED_KEY) === '1'; } catch { return true; }
+}
+function markFounderWelcomed(): void {
+  try { localStorage.setItem(FOUNDER_WELCOMED_KEY, '1'); } catch { /* ignore */ }
+}
+
 export default function SupportPrompt() {
-  const { t } = useTranslation('support');
+  const { t } = useTranslation(['support', 'premium']);
   const { user } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState<number | null>(null);
 
+  // The plan call is also what claims a new account's founding spot, so the
+  // welcome waits for it: "You're founding member #95" needs the number.
+  const { data: plan, isLoading: planLoading } = useDownloadPlan();
+  const founderNumber = plan?.premium_reason === 'founding' ? plan.founding_number : null;
+
   useEffect(() => {
-    if (!user) return;
-    if (isSupportPromptPending()) {
+    if (!user || planLoading) return;
+    // Shown after sign-up, and once to every founding member who hasn't seen
+    // it on this device (Google sign-ups and accounts from before the offer).
+    if (isSupportPromptPending() || (founderNumber && !founderWelcomed())) {
       // Small delay so the destination page paints first — the prompt
       // should feel like a friendly aside, not a wall.
       const t = setTimeout(() => setOpen(true), 900);
       return () => clearTimeout(t);
     }
-  }, [user]);
+  }, [user, planLoading, founderNumber]);
 
   const close = () => {
+    markFounderWelcomed();
     clearSupportPrompt();
     setOpen(false);
   };
@@ -47,6 +65,7 @@ export default function SupportPrompt() {
   const choose = async (pence: number) => {
     setBusy(pence);
     try {
+      markFounderWelcomed();
       clearSupportPrompt();
       await startSupportCheckout(pence);
     } catch (err) {
@@ -64,10 +83,12 @@ export default function SupportPrompt() {
             <Heart className="w-6 h-6 text-primary fill-current" />
           </div>
           <DialogTitle className="font-display text-xl font-extrabold text-foreground">
-            {t('prompt.title')}
+            {founderNumber
+              ? t('premium:welcome.founderTitle', { number: founderNumber })
+              : t('premium:welcome.freeTitle')}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
-            {t('prompt.body')}
+            {founderNumber ? t('premium:welcome.founderBody') : t('premium:welcome.freeBody')}
           </DialogDescription>
         </DialogHeader>
 

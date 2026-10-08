@@ -1,0 +1,81 @@
+{
+  "tally": {
+    "claimed": "Nafasi {{claimed}} kati ya {{total}} za waanzilishi zimechukuliwa",
+    "left": "Zimebaki {{remaining}}",
+    "aria": "Nafasi za wanachama waanzilishi zilizochukuliwa"
+  },
+  "offer": {
+    "badge": "Familia 500 za kwanza",
+    "title": "Premium maisha yote, bure",
+    "body": "Familia 500 za kwanza kufungua akaunti ya bure zinapata Premium maisha yote: upakuaji wa vitabu na karatasi za mazoezi bila kikomo. Hakuna kadi inayohitajika.",
+    "cta": "Chukua nafasi yangu ya bure",
+    "haveAccount": "Tayari nina akaunti",
+    "keepReading": "Endelea kusoma mtandaoni",
+    "notNow": "Si sasa",
+    "afterNote": "Baada ya 500 za kwanza, akaunti za bure hupata kitabu 1 na karatasi 5 za mazoezi kwa wiki na Premium ni {{price}}."
+  },
+  "signupGate": {
+    "title": "Fungua akaunti ya bure ili kupakua",
+    "lead": "Kupakua kunahitaji akaunti ya bure.",
+    "bodySoldOut": "Kusoma mtandaoni hakuhitaji akaunti kamwe. Akaunti ya bure inakuwezesha kupakua kitabu 1 na karatasi 5 za mazoezi kila wiki.",
+    "cta": "Fungua akaunti ya bure"
+  },
+  "limit": {
+    "bookTitle": "Kitabu cha bure cha wiki hii kimeshatumika",
+    "bookBody": "Mpango wa bure una upakuaji wa kitabu 1 kwa wiki. Kinachofuata kitafunguka {{when}}.",
+    "worksheetTitle": "Karatasi 5 za bure za wiki hii zimeshatumika",
+    "worksheetBody": "Mpango wa bure una upakuaji wa karatasi 5 za mazoezi kwa wiki. Inayofuata itafunguka {{when}}.",
+    "packTitle": "Vifurushi kamili ni faida ya Premium",
+    "packBody": "Kwenye mpango wa bure unaweza kupakua karatasi moja moja, 5 kwa wiki. Premium hupata kila kifurushi kama PDF moja.",
+    "readFree": "Bado unaweza kusoma kila kitabu mtandaoni, bure.",
+    "premiumTitle": "Premium maisha yote",
+    "premiumBody": "Upakuaji wa vitabu na karatasi za mazoezi bila kikomo, pamoja na vifurushi kamili katika PDF moja.",
+    "upgrade": "Pata Premium maisha yote: {{price}}",
+    "upgradeNote": "Malipo mara moja. Hakuna usajili wa kila mwezi.",
+    "close": "Labda baadaye"
+  },
+  "welcome": {
+    "founderTitle": "Wewe ni mwanachama mwanzilishi #{{number}}",
+    "founderBody": "Premium ni yako maisha yote: upakuaji wa vitabu na karatasi za mazoezi bila kikomo, bure. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa.",
+    "freeTitle": "Karibu",
+    "freeBody": "Kila kitabu na mchezo ni bure kusoma na kucheza mtandaoni, na akaunti yako ya bure ina upakuaji wa kitabu 1 na karatasi 5 za mazoezi kwa wiki. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa."
+  },
+  "status": {
+    "founder": "Mwanachama mwanzilishi #{{number}} · Premium maisha yote",
+    "premium": "Premium · upakuaji bila kikomo",
+    "free": "Mpango wa bure · wiki hii: vitabu {{books}} kati ya {{bookLimit}}, karatasi {{worksheets}} kati ya {{worksheetLimit}}"
+  },
+  "plans": {
+    "title": "Mipango",
+    "subtitle": "Premium maisha yote ni {{price}}, malipo mara moja",
+    "free": {
+      "name": "Akaunti ya bure",
+      "read": "Soma kila kitabu na ucheze kila mchezo mtandaoni",
+      "books": "Upakuaji wa kitabu 1 kwa wiki",
+      "worksheets": "Upakuaji wa karatasi 5 za mazoezi kwa wiki"
+    },
+    "premium": {
+      "name": "Premium",
+      "books": "Upakuaji wa vitabu bila kikomo",
+      "worksheets": "Karatasi za mazoezi bila kikomo, pamoja na vifurushi kamili",
+      "forLife": "Ni yako maisha yote, hakuna usajili"
+    }
+  },
+  "supportPage": {
+    "heading": "Kusoma na kucheza ni bure. Kuunga mkono ni hiari.",
+    "pdfs": "PDF za vitabu na karatasi za mazoezi zinazoweza kuchapishwa ukiwa na akaunti ya bure"
+  },
+  "landing": {
+    "subtitle": "Soma kila kitu sasa. Fungua akaunti ya bure ili kuchapisha: familia 500 za kwanza zinapata Premium maisha yote.",
+    "subtitleSoldOut": "Soma kila kitu sasa. Fungua akaunti ya bure ili kuchapisha kitabu 1 na karatasi 5 za mazoezi kwa wiki.",
+    "cardTitle": "Mwanachama mwanzilishi",
+    "priceNote": "Premium maisha yote"
+  },
+  "paid": {
+    "title": "Sasa una Premium",
+    "body": "Asante! Upakuaji wa vitabu na karatasi za mazoezi bila kikomo sasa ni wako maisha yote."
+  },
+  "errors": {
+    "checkoutFailed": "Imeshindikana kuanza malipo. Tafadhali jaribu tena."
+  }
+}
