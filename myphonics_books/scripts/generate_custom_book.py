@@ -188,16 +188,16 @@ def build_custom_book_data(spec: dict, images_dir: Path) -> dict:
         full_level_window=True,
     )
 
-    # Custom-book sound chart (Lynden 2026-08-13): a Create-A-Book child is not
-    # mid-series — the library's "previous level + this level so far" warm-up
-    # omitted foundational sounds (a, m, t...) and read as an incomplete chart.
-    # Custom books show the FULL cumulative set under "Sounds you should know"
-    # (the template switches the label when `profile` is set).
+    # Custom-book sound chart (Lynden 2026-10-09: "why is there all the sounds
+    # on the first page — just make it the last 2 levels"): the previous level
+    # in full plus the WHOLE current level (a one-off book has no mid-series
+    # cut-off). Reverses the 2026-08-13 full-cumulative chart, which at L8
+    # packed ~80 cells into the page.
     from generate_book import BASE_DIR as _BOOKS_BASE
     with open(_BOOKS_BASE / "data" / "graphemes_by_level.json", encoding="utf-8") as f:
         _graphemes_data = json.load(f)
     _cumulative_chart = []
-    for _lv in range(1, level_num + 1):
+    for _lv in range(max(1, level_num - 1), level_num + 1):
         _cumulative_chart.extend(_graphemes_data.get(f"level_{_lv}", {}).get("graphemes", []))
     # The focus sound is TODAY'S NEW SOUND - it must not also sit in the
     # "Sounds you should know" grid, which reads as a progression
@@ -389,6 +389,19 @@ def main() -> None:
         raise SystemExit(
             f"page-count gate: rendered {got} pages, Level {spec['level']} requires exactly {expected}"
         )
+    # RENDERED COVER (Lynden 2026-10-12: the World of Books card showed the
+    # bare cover art, not a book cover). Rasterise page 1 of the finished PDF
+    # - title band, level colour and all - to cover_render.jpg beside it.
+    # Best-effort: PyMuPDF is a studio-machine extra, never a render blocker.
+    try:
+        import fitz  # PyMuPDF
+        from PIL import Image
+        _cov = out.with_name("cover_render.jpg")
+        _pix = fitz.open(out)[0].get_pixmap(dpi=150)
+        Image.frombytes("RGB", (_pix.width, _pix.height), _pix.samples).save(_cov, quality=88)
+        print(f"cover render: {_cov}")
+    except Exception as _e:  # noqa: BLE001
+        print(f"cover render skipped: {_e}")
     # PRINT MASTERS (Lynden 2026-08-21): the A5 render is the SCREEN file.
     # A print vendor needs 3mm bleed with a stamped TrimBox and the cover
     # supplied separately from the text block - the fleet already has both

@@ -326,6 +326,16 @@ export async function hasWorldAccess({ email, userId } = {}) {
   if (!email && !userId) return false;
   if (mode === "supabase") {
     if (userId) {
+      // Admins always have World access (Lynden 2026-10-12: "if you need
+      // access then it should be pretty much just a click") — same has_role
+      // RPC the admin UI's useIsAdmin uses. Any RPC error = not admin.
+      try {
+        const isAdmin = await rest("rpc/has_role", {
+          method: "POST",
+          body: JSON.stringify({ _user_id: userId, _role: "admin" }),
+        });
+        if (isAdmin === true) return true;
+      } catch { /* fall through to the paid-order checks */ }
       const rows = await rest(
         `custom_book_orders?kind=eq.world&status=eq.paid&user_id=eq.${encodeURIComponent(userId)}&select=id&limit=1`,
       );
