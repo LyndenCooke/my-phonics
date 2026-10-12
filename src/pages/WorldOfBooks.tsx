@@ -196,7 +196,8 @@ export default function WorldOfBooks() {
       level: b.level,
       country: b.country || null,
       flag: b.country_flag || "🌍",
-      cover: b.pages?.[0]?.imageUrl || b.cover || null,
+      // Typeset front cover when the PDF has been rendered; raw cover art otherwise.
+      cover: b.pages?.[0]?.renderUrl || b.pages?.[0]?.imageUrl || b.cover || null,
       subtitle: t("ownBook", { name: b.child_name }),
       custom: b,
     })),

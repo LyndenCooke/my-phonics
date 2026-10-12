@@ -500,7 +500,9 @@ export async function handleForge(req, res) {
         books: books.map((b) => (access ? publicBook(b) : {
           id: b.id, title: b.title, level: b.level, focus_sound: b.focus_sound,
           child_name: b.child_name, country: b.country, country_flag: b.country_flag,
-          cover: b.pages?.[0]?.imageUrl || null, locked: true,
+          // renderUrl = the typeset front cover (title band + level colour),
+          // set by renderPdf; the bare cover art is the fallback.
+          cover: b.pages?.[0]?.renderUrl || b.pages?.[0]?.imageUrl || null, locked: true,
         })),
       });
     }

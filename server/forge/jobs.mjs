@@ -2510,6 +2510,19 @@ async function renderPdfInner(bookId, { force = false } = {}) {
     );
   });
   if (!fs.existsSync(outPath)) throw new Error("pdf render produced no file");
+  // The typeset front cover (written by generate_custom_book.py beside the
+  // PDF) becomes the book's World of Books card image: mirror it to storage
+  // and stamp pages[0].renderUrl. Best-effort — the PDF is the deliverable.
+  try {
+    const coverRender = path.join(dir, "cover_render.jpg");
+    if (fs.existsSync(coverRender)) {
+      const renderUrl = await saveImage(bookId, "cover_render.jpg", fs.readFileSync(coverRender));
+      const pages = (book.pages || []).map((p) => (p.type === "cover" ? { ...p, renderUrl } : p));
+      await updateBook(bookId, { pages });
+    }
+  } catch (e) {
+    console.warn(`[forge] cover render for ${bookId} not attached:`, e.message);
+  }
   return url;
 }
 

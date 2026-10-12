@@ -18,6 +18,8 @@ export interface CustomBookPage {
   title?: string;
   text?: string;
   imageUrl?: string;
+  /** Cover page only: the typeset front cover (title band + level colour) rasterised from the PDF. */
+  renderUrl?: string;
   levelColour?: string;
   levelName?: string;
   focusSound?: string;
