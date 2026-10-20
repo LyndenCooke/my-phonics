@@ -161,23 +161,51 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
       {children}
 
       {/* Sign-up offer: a guest tapped Download, or the weekly visit pop-up. */}
+      {/* A personal note from Lynden rather than a system dialog: his real
+          classroom photo, a handwritten-feel card, then the offer. */}
       <Dialog open={!!signup} onOpenChange={(o) => !o && setSignup(null)}>
-        <DialogContent className="max-w-sm mx-auto rounded-3xl">
-          <DialogHeader>
-            <div className="w-12 h-12 rounded-2xl bg-tint-pink flex items-center justify-center mb-1">
-              {spotsLeft ? <Crown className="w-6 h-6 text-primary" /> : <Sparkles className="w-6 h-6 text-primary" />}
-            </div>
+        <DialogContent className="max-w-sm mx-auto rounded-3xl p-0 gap-0 overflow-hidden max-h-[92vh] overflow-y-auto">
+          <div className="relative">
+            <img
+              src="/landing/teacher-soundcheck.webp"
+              alt={t('note.photoAlt')}
+              className="w-full aspect-[16/10] object-cover"
+              decoding="async"
+            />
             {spotsLeft && (
-              <p className="text-[11px] font-extrabold uppercase tracking-wide text-primary-ink">{t('offer.badge')}</p>
+              <span
+                className="absolute bottom-3 start-3 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-primary-ink -rotate-2"
+                style={{ boxShadow: '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.18)' }}
+              >
+                <Crown className="w-3.5 h-3.5 inline -mt-0.5 me-1" />{t('offer.badge')}
+              </span>
             )}
-            <DialogTitle className="font-display text-xl font-extrabold text-foreground">
-              {spotsLeft ? t('offer.title') : t('signupGate.title')}
-            </DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
-              {signup?.source === 'download' && spotsLeft && <>{t('signupGate.lead')} </>}
-              {spotsLeft ? t('offer.body') : t('signupGate.bodySoldOut')}
-            </DialogDescription>
-          </DialogHeader>
+          </div>
+
+          <div
+            className="px-6 pt-5 pb-6 flex flex-col gap-3"
+            style={{
+              background: '#FFFCF5',
+              backgroundImage: 'repeating-linear-gradient(transparent 0 27px, rgba(59,130,246,0.10) 27px 28px)',
+            }}
+          >
+            <DialogHeader className="text-start space-y-2">
+              <DialogTitle className="text-3xl text-foreground leading-none" style={{ fontFamily: "'Caveat', cursive" }}>
+                {t('note.greeting')}
+              </DialogTitle>
+              <DialogDescription className="text-[15px] text-foreground/80 leading-[28px]">
+                {signup?.source === 'download' && <>{t('signupGate.lead')} </>}
+                {t('note.body')}{' '}
+                <strong className="text-foreground">{spotsLeft ? t('note.offer') : t('note.soldOut')}</strong>
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-3xl text-primary-ink leading-none" style={{ fontFamily: "'Caveat', cursive" }} lang="en" dir="ltr">Lynden</p>
+                <p className="text-[11px] text-muted-foreground font-semibold mt-1">{t('note.role')}</p>
+              </div>
+              {!spotsLeft && <Sparkles className="w-6 h-6 text-primary shrink-0" />}
+            </div>
 
           {spotsLeft && <FoundingTally className="pt-1" />}
 
@@ -208,6 +236,7 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
           {spotsLeft && (
             <p className="text-[11px] text-muted-foreground text-center leading-relaxed">{t('offer.afterNote', { price: PREMIUM_PRICE_LABEL })}</p>
           )}
+          </div>
         </DialogContent>
       </Dialog>
 

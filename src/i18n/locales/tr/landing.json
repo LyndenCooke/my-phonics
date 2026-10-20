@@ -114,8 +114,8 @@
     "support": "Beğendiniz mi? Dilediğiniz tutarda tek seferlik bir teşekkürle <btn>MyPhonicsBooks'u destekleyin</btn> — tamamen isteğe bağlı."
   },
   "footerCta": {
-    "title": "İlk kitaplar zaten açık.",
-    "body": "Etrafa bir göz atın — hazır olduğunuzda ücretsiz 3 dakikalık test çocuğunuzun tam seviyesini bulur.",
+    "title": "3 dakikada çocuğunuzun tam olarak nerede olduğunu öğrenin.",
+    "body": "Sonra sıradaki kitabı bilirsiniz. Özel öğretmen yok, tahmin yok.",
     "explore": "Kitapları keşfedin",
     "check": "Seviyesini belirleyin"
   },
@@ -129,5 +129,68 @@
     "contact": "İletişim",
     "admin": "Yönetici",
     "madeWith": "Birleşik Krallık'ta özenle hazırlandı"
+  },
+  "hero2": {
+    "badge": "Birleşik Krallık'ta bir sınıf öğretmeni tarafından hazırlandı",
+    "titleA": "İngiltere'nin en iyi okulları çocuklara İngilizce okumayı nasıl öğretiyor,",
+    "titleFree": "şimdi ilk 500 aileye ücretsiz.",
+    "titlePaid": "şimdi evde yalnızca {{price}}.",
+    "body": "Çocuğunuz kelimeleri tahmin etmekten, bir kitabın tamamını tek başına okumaya geçer; ses ses, adım adım. Birleşik Krallık'taki ilkokullarda kullanılan aynı fonetik yöntem, ev için hazırlandı.",
+    "ctaCheck": "Çocuğumun seviyesini bul (ücretsiz)",
+    "ctaBrowse": "Kitaplara göz at",
+    "note": "3 dakikalık test. Kart gerekmez. Tüm kitaplar çevrimiçi ücretsiz.",
+    "before": "Önce",
+    "after": "Sonra",
+    "beforeCaption": "Tahmin ediyor, takılıyor, ağlamak üzere",
+    "afterCaption": "Tek başına okuyor ve gururlu"
+  },
+  "tx": {
+    "badge": "Değişim",
+    "title": "Çocuğunuzda neler değişir",
+    "beforeLabel": "Önce",
+    "afterLabel": "Sonra",
+    "before": {
+      "i1": "Kelimeleri resimlere bakarak tahmin ediyor",
+      "i2": "Haftalardır aynı kitapta takılı",
+      "i3": "Özel öğretmene para ödüyorsunuz ama seviyesini hâlâ bilmiyorsunuz",
+      "i4": "Okuma saati gözyaşıyla bitiyor"
+    },
+    "after": {
+      "i1": "Yeni kelimeleri kendi başına seslendiriyor",
+      "i2": "Bir kitabı baştan sona okuyor",
+      "i3": "Sıradaki sesin hangisi olduğunu tam olarak biliyorsunuz",
+      "i4": "Yatmadan önce \"bir kitap daha\" istiyor"
+    }
+  },
+  "how": {
+    "title": "Tek başına okumaya üç adım",
+    "subtitle": "Evde, günde birkaç dakika.",
+    "step": "{{n}}. adım",
+    "s1": {
+      "title": "Eksiği bul",
+      "desc": "Ücretsiz 3 dakikalık ses testi, çocuğunuzun hangi sesleri bildiğini ve sıradakinin hangisi olduğunu gösterir.",
+      "cta": "Ücretsiz teste başla"
+    },
+    "s2": {
+      "title": "Doğru kitabı oku",
+      "desc": "Her kitap yalnızca öğrendiği sesleri kullanır, böylece gerçekten okuyabilir. Duymak için herhangi bir kelimeye dokunun.",
+      "cta": "Kütüphaneyi aç"
+    },
+    "s3": {
+      "title": "Oturana kadar pekiştir",
+      "desc": "Oyunlar ve yazdırılabilir çalışma kâğıtları her sesi pekiştirir. Sonra bir sonraki kitaba geçin.",
+      "cta": "Oyunları oyna"
+    }
+  },
+  "teacher": {
+    "badge": "Kim yaptı",
+    "title": "Bir öğretmen yaptı, gerçek bir sınıfta denendi",
+    "quote": "Birleşik Krallık'ta bir ilkokulda öğretmenim. En hızlı okumayı öğrenen çocuklar, bildikleri seslere uygun kitaplar okuyanlardır. Aileler bunun için özel öğretmenlere çok para ödüyor. MyPhonicsBooks'u her aile bunu evde yapabilsin diye yaptım.",
+    "role": "Birleşik Krallık'ta sınıf öğretmeni ve MyPhonicsBooks'un kurucusu",
+    "photoAlt": "Lynden sınıf ekranında bir MyPhonicsBooks hikâyesi açıyor"
+  },
+  "books": {
+    "title": "33 gerçek kitap, her seferinde bir ses",
+    "subtitle": "İlk seslerden akıcı okumaya, 8 seviyede. Ekranda okuyun ya da kitapçık olarak yazdırın."
   }
 }

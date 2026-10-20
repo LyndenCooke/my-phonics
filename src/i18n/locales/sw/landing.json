@@ -114,8 +114,8 @@
     "support": "Umeipenda? <btn>Iunge mkono MyPhonicsBooks</btn> kwa shukrani ya mara moja ya kiasi chochote — ni hiari kabisa."
   },
   "footerCta": {
-    "title": "Vitabu vya kwanza tayari viko wazi.",
-    "body": "Angalia kwa utulivu — na ukiwa tayari, jaribio la dakika 3 bila malipo litapata kiwango halisi cha mtoto wako.",
+    "title": "Ndani ya dakika 3 utajua hasa mtoto wako yuko wapi.",
+    "body": "Kisha utajua kitabu kinachofuata. Bila mwalimu wa ziada, bila kubahatisha.",
     "explore": "Gundua vitabu",
     "check": "Pima kiwango chake"
   },
@@ -129,5 +129,68 @@
     "contact": "Wasiliana nasi",
     "admin": "Msimamizi",
     "madeWith": "Imetengenezwa kwa uangalifu nchini Uingereza"
+  },
+  "hero2": {
+    "badge": "Imetengenezwa na mwalimu wa shule ya msingi nchini Uingereza",
+    "titleA": "Jinsi shule bora za Uingereza zinavyowafundisha watoto kusoma Kiingereza,",
+    "titleFree": "sasa bure kwa familia 500 za kwanza.",
+    "titlePaid": "sasa nyumbani kwa {{price}} tu.",
+    "body": "Mtoto wako anatoka kubahatisha maneno hadi kusoma kitabu kizima peke yake, sauti moja baada ya nyingine. Mbinu ileile ya fonetiki inayotumika katika shule za msingi za Uingereza, imeandaliwa kwa ajili ya nyumbani.",
+    "ctaCheck": "Pata kiwango cha mtoto wangu (bure)",
+    "ctaBrowse": "Tazama vitabu",
+    "note": "Jaribio la dakika 3. Hakuna kadi. Kila kitabu ni bure kusoma mtandaoni.",
+    "before": "Kabla",
+    "after": "Baada",
+    "beforeCaption": "Anabahatisha, anakwama, karibu kulia",
+    "afterCaption": "Anasoma peke yake, kwa fahari"
+  },
+  "tx": {
+    "badge": "Mabadiliko",
+    "title": "Kinachobadilika kwa mtoto wako",
+    "beforeLabel": "Kabla",
+    "afterLabel": "Baada",
+    "before": {
+      "i1": "Anabahatisha maneno kwa kuangalia picha",
+      "i2": "Amekwama kwenye kitabu kimoja kwa wiki nyingi",
+      "i3": "Unamlipa mwalimu wa ziada lakini bado hujui kiwango chake",
+      "i4": "Muda wa kusoma unaishia kwa machozi"
+    },
+    "after": {
+      "i1": "Anatamka maneno mapya peke yake",
+      "i2": "Anasoma kitabu kizima mwanzo hadi mwisho",
+      "i3": "Unajua hasa sauti inayofuata",
+      "i4": "Anaomba \"kitabu kimoja zaidi\" kabla ya kulala"
+    }
+  },
+  "how": {
+    "title": "Hatua tatu hadi kusoma peke yake",
+    "subtitle": "Dakika chache kila siku, nyumbani.",
+    "step": "Hatua {{n}}",
+    "s1": {
+      "title": "Tafuta pengo",
+      "desc": "Jaribio la bure la sauti la dakika 3 linaonyesha sauti anazojua mtoto wako na inayofuata.",
+      "cta": "Anza jaribio la bure"
+    },
+    "s2": {
+      "title": "Soma kitabu sahihi",
+      "desc": "Kila kitabu kinatumia sauti alizojifunza tu, hivyo anaweza kukisoma kweli. Gusa neno lolote ulisikie.",
+      "cta": "Fungua maktaba"
+    },
+    "s3": {
+      "title": "Fanya mazoezi hadi ishike",
+      "desc": "Michezo na karatasi za mazoezi za kuchapisha zinaimarisha kila sauti. Kisha nenda kitabu kinachofuata.",
+      "cta": "Cheza michezo"
+    }
+  },
+  "teacher": {
+    "badge": "Nani ameitengeneza",
+    "title": "Imetengenezwa na mwalimu, imejaribiwa darasani kweli",
+    "quote": "Ninafundisha katika shule ya msingi nchini Uingereza. Watoto wanaojifunza kusoma haraka zaidi ni wale wanaosoma vitabu vinavyolingana na sauti wanazozijua. Wazazi hulipa walimu wa ziada pesa nyingi kwa hilo. Nilitengeneza MyPhonicsBooks ili kila familia iweze kufanya hivyo nyumbani.",
+    "role": "Mwalimu wa shule ya msingi Uingereza na mwanzilishi wa MyPhonicsBooks",
+    "photoAlt": "Lynden akifungua hadithi ya MyPhonicsBooks kwenye skrini ya darasa"
+  },
+  "books": {
+    "title": "Vitabu 33 halisi, sauti moja kwa wakati",
+    "subtitle": "Kutoka sauti za kwanza hadi kusoma kwa ufasaha, katika viwango 8. Visome kwenye skrini au uvichapishe kama vijitabu."
   }
 }

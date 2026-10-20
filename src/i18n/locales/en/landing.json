@@ -114,8 +114,8 @@
     "support": "Love it? <btn>Support MyPhonicsBooks</btn> with a one-off thank-you of any size — completely optional."
   },
   "footerCta": {
-    "title": "The first books are already open.",
-    "body": "Have a look around — and when you're ready, a free 3-minute check finds your child's exact level.",
+    "title": "In 3 minutes you'll know exactly where your child is.",
+    "body": "Then you'll know which book comes next. No tutor, no guessing.",
     "explore": "Explore the books",
     "check": "Check their level"
   },
@@ -129,5 +129,68 @@
     "contact": "Contact",
     "admin": "Admin",
     "madeWith": "Made with care in the UK"
+  },
+  "hero2": {
+    "badge": "Made by a UK primary teacher",
+    "titleA": "How top UK schools teach children to read English,",
+    "titleFree": "now free for the first 500 families.",
+    "titlePaid": "now at home for {{price}}.",
+    "body": "Your child goes from guessing words to reading a whole book on their own, one sound at a time. The same phonics method used in UK primary schools, made for home.",
+    "ctaCheck": "Find my child's level (free)",
+    "ctaBrowse": "Explore the books",
+    "note": "3-minute check. No card. Every book free to read online.",
+    "before": "Before",
+    "after": "After",
+    "beforeCaption": "Guessing, stuck, close to tears",
+    "afterCaption": "Reading it alone, and proud"
+  },
+  "tx": {
+    "badge": "The change",
+    "title": "What changes for your child",
+    "beforeLabel": "Before",
+    "afterLabel": "After",
+    "before": {
+      "i1": "Guesses words from the pictures",
+      "i2": "Stuck on the same book for weeks",
+      "i3": "You pay for a tutor and still don't know their level",
+      "i4": "Reading time ends in tears"
+    },
+    "after": {
+      "i1": "Sounds out new words on their own",
+      "i2": "Reads a whole book from start to finish",
+      "i3": "You know exactly which sound comes next",
+      "i4": "Asks for one more book at bedtime"
+    }
+  },
+  "how": {
+    "title": "Three steps to reading on their own",
+    "subtitle": "A few minutes a day, at home.",
+    "step": "Step {{n}}",
+    "s1": {
+      "title": "Find the gap",
+      "desc": "A free 3-minute sound check shows which sounds your child knows and which one comes next.",
+      "cta": "Start the free check"
+    },
+    "s2": {
+      "title": "Read the right book",
+      "desc": "Each book uses only the sounds they've learnt, so they can really read it. Tap any word to hear it.",
+      "cta": "Open the library"
+    },
+    "s3": {
+      "title": "Practise until it sticks",
+      "desc": "Games and printable worksheets lock each sound in. Then move up to the next book.",
+      "cta": "Play the games"
+    }
+  },
+  "teacher": {
+    "badge": "Who made this",
+    "title": "Built by a teacher, tested in a real classroom",
+    "quote": "I teach in a UK primary school. The children who learn to read fastest are the ones reading books matched to the sounds they know. Parents pay tutors a lot for that. I built MyPhonicsBooks so every family can do it at home.",
+    "role": "UK primary teacher and founder of MyPhonicsBooks",
+    "photoAlt": "Lynden opening a MyPhonicsBooks story on his classroom screen"
+  },
+  "books": {
+    "title": "33 real books, one sound at a time",
+    "subtitle": "From first sounds to fluent reading across 8 levels. Read them on screen or print them as booklets."
   }
 }

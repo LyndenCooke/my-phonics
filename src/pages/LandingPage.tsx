@@ -1,12 +1,13 @@
 /**
- * LandingPage — public front door.
+ * LandingPage — public front door, built around the transformation:
+ *   guessing words, stuck, in tears  →  reading a whole book on their own.
  *
- * Message hierarchy (from the printed leaflet, per user):
- *   1. Explore the books — the library is open, free books included
- *   2. Assess your child free (3 minutes)
- *   3. Read on any screen, or download & print real booklets
- *   4. "From first sounds to last sounds" — the 8-level journey
- * Plus the floating cover imagery (kept) and real testimonials (kept).
+ *   Hero      "How top UK schools teach children to read English" + the price
+ *             (free for the first 500 founding families, then the Premium price)
+ *             beside a before/after photo pair of the same child.
+ *   Then      before/after list → 3 steps (check, read, practise) → Lynden in
+ *             his classroom → the books → tour video → testimonials → levels →
+ *             pricing → footer CTA.
  *
  * "Paper & stickers" design language shared with the app: sticker chips,
  * white sticker cards, 3D pressable buttons, journey-level colours.
@@ -15,9 +16,8 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BookOpen, Sparkles, Globe, BarChart3, CheckCircle2, ChevronRight, ChevronLeft, Volume2,
-  Trophy, GraduationCap, Printer, Heart, ClipboardList, PlayCircle, ShoppingBag,
-  Globe2,
+  BookOpen, Sparkles, CheckCircle2, ChevronRight, ChevronLeft, XCircle, ArrowDown, Gamepad2,
+  GraduationCap, Heart, ClipboardList, PlayCircle, ShoppingBag, Globe2,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
@@ -26,7 +26,6 @@ import { useTranslation, Trans } from 'react-i18next';
 import FoundingTally from '@/components/premium/FoundingTally';
 import { PREMIUM_PRICE_LABEL, useFoundingSpots } from '@/lib/premium';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import EnglishOnly from '@/i18n/EnglishOnly';
 import { LANGUAGES } from '@/i18n/languages';
 
 const STICKER = '0 1px 2px rgba(40,30,40,0.10), 0 8px 20px rgba(40,30,40,0.10)';
@@ -119,14 +118,17 @@ export default function LandingPage() {
 
       <main id="main">
         <HeroSection onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
-        <PlatformVideo />
-        <ThreeThings
+        <Transformation />
+        <HowItWorks
           onAssess={() => navigate('/assessment')}
           onBrowse={() => navigate('/library')}
+          onGames={() => navigate('/games')}
         />
+        <TeacherNote />
+        <BooksShelf />
+        <PlatformVideo />
         <LandingTestimonials />
         <LevelJourney />
-        <FeatureShowcase />
         <FreeForAll onSignUp={() => navigate('/auth?mode=signup')} onSupport={() => navigate('/support')} />
         <FooterCTA onBrowse={() => navigate('/library')} onAssess={() => navigate('/assessment')} />
       </main>
@@ -234,6 +236,8 @@ function NavBar({ onBrowse }: { onBrowse: () => void }) {
 /* ─── HERO ─── */
 function HeroSection({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: () => void }) {
   const { t } = useTranslation('landing');
+  const { data: spots } = useFoundingSpots();
+  const spotsLeft = !spots || spots.remaining > 0;
   return (
     <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
       {/* Background gradient */}
@@ -274,30 +278,33 @@ function HeroSection({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: (
               </div>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-foreground tracking-tight leading-[1.05]">
-              {t('hero.titleA')}{' '}
-              <span className="text-primary-ink">{t('hero.titleB')}</span>
+            <p className="text-xs font-extrabold uppercase tracking-wider text-primary-ink mb-3">
+              {t('hero2.badge')}
+            </p>
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.2rem] font-extrabold text-foreground tracking-tight leading-[1.05]">
+              {t('hero2.titleA')}{' '}
+              <span className="text-primary-ink">
+                {spotsLeft ? t('hero2.titleFree') : t('hero2.titlePaid', { price: PREMIUM_PRICE_LABEL })}
+              </span>
             </h1>
             <p className="mt-5 text-lg text-muted-foreground leading-relaxed max-w-lg mx-auto md:mx-0">
-              {t('hero.body')}
+              {t('hero2.body')}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              <PushButton onClick={onBrowse}>
-                <BookOpen className="w-5 h-5" /> {t('hero.exploreBooks')}
+              <PushButton onClick={onAssess}>
+                <ClipboardList className="w-5 h-5" /> {t('hero2.ctaCheck')}
               </PushButton>
-              <PushButton onClick={onAssess} tone="white">
-                {t('hero.checkLevelFree')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
+              <PushButton onClick={onBrowse} tone="white">
+                {t('hero2.ctaBrowse')} <ChevronRight className="w-4 h-4 rtl:-scale-x-100" />
               </PushButton>
             </div>
             <p className="mt-4 text-xs text-muted-foreground font-semibold">
-              {t('hero.freeNote')}
+              {t('hero2.note')}
             </p>
           </div>
 
-          {/* Floating book shelf — real product-photo cutouts, swipe/drag to browse */}
-          <div className="h-[420px] md:h-[480px]" dir="ltr">
-            <FloatingBookShelf />
-          </div>
+          {/* Before → after: the same child, stuck then reading on her own */}
+          <BeforeAfterPhotos />
         </div>
       </div>
 
@@ -488,80 +495,184 @@ function FloatingBookShelf() {
   );
 }
 
-/* ─── THE THREE THINGS (leaflet message) ─── */
-function ThreeThings({ onAssess, onBrowse }: { onAssess: () => void; onBrowse: () => void }) {
+/* ─── BEFORE / AFTER PHOTOS (hero) ─── */
+function BeforeAfterPhotos() {
+  const { t } = useTranslation('landing');
+  const shots = [
+    { src: '/landing/before.webp', label: t('hero2.before'), caption: t('hero2.beforeCaption'), tilt: '-2deg', tone: '#64748B' },
+    { src: '/landing/after.webp', label: t('hero2.after'), caption: t('hero2.afterCaption'), tilt: '1.5deg', tone: PINK },
+  ];
+  return (
+    <div className="relative flex flex-col gap-5 max-w-md mx-auto w-full">
+      {shots.map((s, i) => (
+        <figure
+          key={s.src}
+          className={`relative bg-white p-2.5 pb-3 rounded-2xl ${i === 1 ? 'ms-8' : 'me-8'}`}
+          style={{ boxShadow: STICKER, rotate: s.tilt }}
+        >
+          <img
+            src={s.src}
+            alt={s.caption}
+            className={`w-full aspect-[3/2] object-cover rounded-xl ${i === 0 ? 'grayscale-[35%]' : ''}`}
+            loading="eager"
+            decoding="async"
+            draggable={false}
+          />
+          <span
+            className="absolute -top-3 start-5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white"
+            style={{ background: s.tone, boxShadow: STICKER }}
+          >
+            {s.label}
+          </span>
+          <figcaption className="mt-2 text-center text-sm font-bold text-foreground">{s.caption}</figcaption>
+        </figure>
+      ))}
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white flex items-center justify-center text-primary-ink"
+        style={{ boxShadow: STICKER }}
+      >
+        <ArrowDown className="w-5 h-5" />
+      </span>
+    </div>
+  );
+}
+
+/* ─── TRANSFORMATION — what changes for the child (and the parent) ─── */
+function Transformation() {
   const { t } = useTranslation('landing');
   const r = useReveal();
-  const cards = [
-    {
-      icon: ClipboardList,
-      hex: '#E84B8A',
-      tilt: '-1deg',
-      title: t('three.check.title'),
-      desc: t('three.check.desc'),
-      cta: t('three.check.cta'),
-      onClick: onAssess,
-    },
-    {
-      icon: Volume2,
-      hex: '#3B82F6',
-      tilt: '1deg',
-      title: t('three.read.title'),
-      desc: t('three.read.desc'),
-      cta: t('three.read.cta'),
-      onClick: onBrowse,
-    },
-    {
-      icon: Printer,
-      hex: '#22C55E',
-      tilt: '-0.5deg',
-      title: t('three.print.title'),
-      desc: t('three.print.desc'),
-      cta: t('three.print.cta'),
-      onClick: onBrowse,
-    },
-  ];
-
+  const rows = ['i1', 'i2', 'i3', 'i4'] as const;
   return (
-    <section className="py-14 md:py-20">
+    <section className="py-14 md:py-20 bg-card">
       <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <span
             className="inline-block rounded-full bg-white px-4 py-1.5 text-xs font-extrabold -rotate-1 text-primary-ink"
             style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}30` }}
           >
-            {t('three.badge')}
+            {t('tx.badge')}
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight mt-4">
-            {t('three.title')}
-          </h2>
-          <p className="mt-3 text-muted-foreground text-lg">{t('three.subtitle')}</p>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight mt-4">{t('tx.title')}</h2>
         </div>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="rounded-[2rem] bg-slate-50 p-6 border border-slate-200">
+            <h3 className="font-display text-lg font-extrabold text-slate-500 uppercase tracking-wide">{t('tx.beforeLabel')}</h3>
+            <ul className="mt-4 space-y-3">
+              {rows.map((k) => (
+                <li key={k} className="flex items-start gap-3 text-slate-600">
+                  <XCircle className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" /> <span>{t(`tx.before.${k}`)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-[2rem] bg-white p-6" style={{ boxShadow: STICKER, border: `2px solid ${PINK}` }}>
+            <h3 className="font-display text-lg font-extrabold uppercase tracking-wide text-primary-ink">{t('tx.afterLabel')}</h3>
+            <ul className="mt-4 space-y-3">
+              {rows.map((k) => (
+                <li key={k} className="flex items-start gap-3 font-semibold text-foreground">
+                  <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" /> <span>{t(`tx.after.${k}`)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
+/* ─── HOW IT WORKS — the three steps that make the change happen ─── */
+function HowItWorks({ onAssess, onBrowse, onGames }: { onAssess: () => void; onBrowse: () => void; onGames: () => void }) {
+  const { t } = useTranslation('landing');
+  const r = useReveal();
+  const steps = [
+    { key: 's1', icon: ClipboardList, hex: '#E84B8A', onClick: onAssess },
+    { key: 's2', icon: BookOpen, hex: '#3B82F6', onClick: onBrowse },
+    { key: 's3', icon: Gamepad2, hex: '#22C55E', onClick: onGames },
+  ];
+  return (
+    <section className="py-14 md:py-20">
+      <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className="text-center mb-12">
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">{t('how.title')}</h2>
+          <p className="mt-3 text-muted-foreground text-lg">{t('how.subtitle')}</p>
+        </div>
         <div className="grid md:grid-cols-3 gap-5">
-          {cards.map((c, i) => (
+          {steps.map((s, i) => (
             <div
-              key={i}
-              className="rounded-[2rem] bg-white p-6 flex flex-col text-center"
-              style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)', rotate: c.tilt }}
+              key={s.key}
+              className="rounded-[2rem] bg-white p-6 flex flex-col"
+              style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}
             >
-              <span
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-white mx-auto"
-                style={{ background: c.hex, boxShadow: `0 8px 18px -6px ${c.hex}90` }}
-              >
-                <c.icon className="w-7 h-7" />
-              </span>
-              <h3 className="font-display text-xl font-extrabold text-foreground mt-4">{c.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{c.desc}</p>
+              <div className="flex items-center gap-3">
+                <span
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shrink-0"
+                  style={{ background: s.hex, boxShadow: `0 8px 18px -6px ${s.hex}90` }}
+                >
+                  <s.icon className="w-6 h-6" />
+                </span>
+                <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: s.hex }}>
+                  {t('how.step', { n: i + 1 })}
+                </span>
+              </div>
+              <h3 className="font-display text-xl font-extrabold text-foreground mt-4">{t(`how.${s.key}.title`)}</h3>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{t(`how.${s.key}.desc`)}</p>
               <button
-                onClick={c.onClick}
+                onClick={s.onClick}
                 className="mt-5 w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
-                style={{ background: c.hex, boxShadow: `0 4px 0 ${c.hex}AA` }}
+                style={{ background: s.hex, boxShadow: `0 4px 0 ${s.hex}AA` }}
               >
-                {c.cta}
+                {t(`how.${s.key}.cta`)}
               </button>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── TEACHER NOTE — the real person behind it, in his classroom ─── */
+function TeacherNote() {
+  const { t } = useTranslation('landing');
+  const r = useReveal();
+  return (
+    <section className="py-14 md:py-20 bg-card">
+      <div ref={r.ref} className={`max-w-5xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <figure className="bg-white p-3 pb-4 rounded-2xl -rotate-1" style={{ boxShadow: STICKER }}>
+            <img
+              src="/landing/teacher-classroom.webp"
+              alt={t('teacher.photoAlt')}
+              className="w-full aspect-[4/3] object-cover rounded-xl"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-wider text-primary-ink">{t('teacher.badge')}</p>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight mt-2">{t('teacher.title')}</h2>
+            <blockquote className="mt-5 text-lg text-foreground leading-relaxed">“{t('teacher.quote')}”</blockquote>
+            <p className="mt-4 text-3xl text-primary-ink" style={{ fontFamily: "'Caveat', cursive" }} lang="en" dir="ltr">Lynden</p>
+            <p className="text-sm text-muted-foreground font-semibold">{t('teacher.role')}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── BOOKS SHELF — the real product, one book at a time ─── */
+function BooksShelf() {
+  const { t } = useTranslation('landing');
+  return (
+    <section className="pt-14 md:pt-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">{t('books.title')}</h2>
+        <p className="mt-3 text-muted-foreground text-lg">{t('books.subtitle')}</p>
+        <div className="h-[420px] md:h-[460px] mt-4" dir="ltr">
+          <FloatingBookShelf />
         </div>
       </div>
     </section>
@@ -614,82 +725,6 @@ function LevelJourney() {
               </p>
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── FEATURES ─── */
-function FeatureShowcase() {
-  const { t } = useTranslation('landing');
-  const r = useReveal();
-  const features = [
-    { icon: Volume2, text: t('features.items.soundedOut') },
-    { icon: BookOpen, text: t('features.items.books') },
-    { icon: Globe, text: t('features.items.settings') },
-    { icon: Trophy, text: t('features.items.quizzes') },
-    { icon: BarChart3, text: t('features.items.progress') },
-    { icon: CheckCircle2, text: t('features.items.aligned') },
-  ];
-
-  return (
-    <section className="py-14 md:py-20">
-      <div ref={r.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">
-              {t('features.titleA')}{' '}
-              <span className="text-primary">{t('features.titleB')}</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground text-lg leading-relaxed">
-              {t('features.body')}
-            </p>
-            <div className="mt-8 space-y-4">
-              {features.map((f, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <f.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <p className="text-sm font-medium text-foreground leading-relaxed">{f.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Phone mockup */}
-          <div className="relative flex justify-center">
-            <div className="w-64 md:w-72 bg-foreground rounded-[2.5rem] p-3 shadow-2xl rotate-2">
-              <div className="bg-card rounded-[2rem] overflow-hidden" dir="ltr">
-                <div className="bg-primary/10 px-4 py-3 flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-md gradient-primary flex items-center justify-center">
-                    <span className="text-white text-[8px] font-bold">M</span>
-                  </div>
-                  <span lang="en" className="text-xs font-bold text-foreground">The Fish in the Tank</span>
-                </div>
-                <img src="/illustrations/1_3/page1.png" alt={t('features.mockAlt')} className="w-full aspect-[4/3] object-cover" loading="lazy" decoding="async" />
-                <div className="px-4 py-3 space-y-2">
-                  <EnglishOnly className="flex flex-wrap gap-1.5">
-                    {['A', 'big', 'fish', 'is', 'in', 'the', 'tank!'].map(w => (
-                      <span key={w} className="text-sm font-bold text-foreground bg-primary/5 px-2 py-0.5 rounded-lg" style={{ fontFamily: "'Andika', sans-serif" }}>
-                        {w}
-                      </span>
-                    ))}
-                  </EnglishOnly>
-                  <div dir="auto" className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                    <Volume2 className="w-3 h-3" /> {t('features.tapHint')}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Print sticker — the second half of "read OR print" */}
-            <span
-              className="absolute -bottom-3 end-2 sm:end-10 rounded-full bg-white px-4 py-2 text-xs font-extrabold -rotate-3 text-emerald-700 inline-flex items-center gap-1.5"
-              style={{ boxShadow: STICKER, border: '2px solid #fff', outline: '2px solid #22C55E40' }}
-            >
-              <Printer className="w-3.5 h-3.5" /> {t('features.printSticker')}
-            </span>
-          </div>
         </div>
       </div>
     </section>

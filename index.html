@@ -23,7 +23,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Caveat:wght@600;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Preload the first row of hero book covers as WebP so they're in
          flight while React boots. Saves ~300ms on first paint. -->
@@ -32,13 +32,15 @@
     <link rel="preload" as="image" href="/illustrations/3_1/cover.webp" type="image/webp" />
     <link rel="preload" as="image" href="/illustrations/4_1/cover.webp" type="image/webp" />
 
-    <!-- Google Analytics (gtag.js) -->
+    <!-- Google tag (gtag.js): Analytics + Google Ads. The sign-up conversion
+         event is sent from src/lib/adsConversion.ts when a new account appears. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WR9QE9ZMEN"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-WR9QE9ZMEN');
+      gtag('config', 'AW-18493574238');
     </script>
 
     <!-- Meta Pixel — window.__META_PIXEL_ID is read by funnel components -->

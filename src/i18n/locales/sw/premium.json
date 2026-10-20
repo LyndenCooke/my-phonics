@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "Imeshindikana kuanza malipo. Tafadhali jaribu tena."
+  },
+  "note": {
+    "greeting": "Habari, mimi ni Lynden",
+    "body": "Mimi ni mwalimu wa shule ya msingi nchini Uingereza. Nilitengeneza MyPhonicsBooks ili mtoto wako ajifunze kusoma Kiingereza kama shule za Uingereza zinavyofundisha.",
+    "offer": "Familia 500 za kwanza zinapata Premium bure maisha yote: kila kitabu na karatasi ya mazoezi, bila kikomo.",
+    "soldOut": "Fungua akaunti ya bure uchapishe kitabu 1 na karatasi 5 za mazoezi kila wiki.",
+    "role": "Mwalimu wa shule ya msingi Uingereza",
+    "photoAlt": "Lynden akiendesha jaribio la sauti kwenye skrini ya darasa"
   }
 }

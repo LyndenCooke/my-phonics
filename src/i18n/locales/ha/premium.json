@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "An kasa fara biyan kuɗi. Da fatan za a sake gwadawa."
+  },
+  "note": {
+    "greeting": "Sannu, ni ne Lynden",
+    "body": "Ni malamin firamare ne a Birtaniya. Na yi MyPhonicsBooks ne domin yaronka ya koyi karanta Turanci yadda makarantun Birtaniya ke koyarwa.",
+    "offer": "Iyalai 500 na farko za su sami Premium kyauta har abada: kowane littafi da takardar aiki, ba iyaka.",
+    "soldOut": "Buɗe asusu kyauta don buga littafi 1 da takardun aiki 5 kowane mako.",
+    "role": "Malamin firamare a Birtaniya",
+    "photoAlt": "Lynden yana gudanar da gwajin sauti a allon ajinsa"
   }
 }

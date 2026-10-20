@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "Tidak dapat memulai pembayaran. Silakan coba lagi."
+  },
+  "note": {
+    "greeting": "Halo, saya Lynden",
+    "body": "Saya guru SD di Inggris. Saya membuat MyPhonicsBooks agar anak Anda belajar membaca bahasa Inggris seperti yang diajarkan sekolah di Inggris.",
+    "offer": "500 keluarga pertama mendapat Premium gratis seumur hidup: semua buku dan lembar kerja, tanpa batas.",
+    "soldOut": "Buat akun gratis untuk mencetak 1 buku dan 5 lembar kerja setiap minggu.",
+    "role": "Guru SD di Inggris",
+    "photoAlt": "Lynden menjalankan cek bunyi di layar kelasnya"
   }
 }

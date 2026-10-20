@@ -113,8 +113,8 @@
     "support": "Suka? <btn>Dukung MyPhonicsBooks</btn> dengan ucapan terima kasih sekali saja berapa pun jumlahnya — sepenuhnya opsional."
   },
   "footerCta": {
-    "title": "Buku-buku pertama sudah terbuka.",
-    "body": "Silakan lihat-lihat — dan saat Anda siap, tes gratis 3 menit akan menemukan level tepat anak Anda.",
+    "title": "Dalam 3 menit Anda akan tahu persis posisi anak Anda.",
+    "body": "Lalu Anda tahu buku mana berikutnya. Tanpa tutor, tanpa menebak.",
     "explore": "Jelajahi buku",
     "check": "Cek levelnya"
   },
@@ -128,5 +128,68 @@
     "contact": "Kontak",
     "admin": "Admin",
     "madeWith": "Dibuat dengan sepenuh hati di Inggris"
+  },
+  "hero2": {
+    "badge": "Dibuat oleh guru SD di Inggris",
+    "titleA": "Cara sekolah terbaik di Inggris mengajari anak membaca bahasa Inggris,",
+    "titleFree": "kini gratis untuk 500 keluarga pertama.",
+    "titlePaid": "kini di rumah hanya {{price}}.",
+    "body": "Anak Anda beralih dari menebak kata menjadi membaca satu buku utuh sendiri, satu bunyi demi satu bunyi. Metode fonik yang sama dengan yang dipakai SD di Inggris, dibuat untuk di rumah.",
+    "ctaCheck": "Cek level anak saya (gratis)",
+    "ctaBrowse": "Lihat bukunya",
+    "note": "Cek 3 menit. Tanpa kartu. Semua buku gratis dibaca online.",
+    "before": "Sebelum",
+    "after": "Sesudah",
+    "beforeCaption": "Menebak, macet, hampir menangis",
+    "afterCaption": "Membaca sendiri, dan bangga"
+  },
+  "tx": {
+    "badge": "Perubahannya",
+    "title": "Apa yang berubah pada anak Anda",
+    "beforeLabel": "Sebelum",
+    "afterLabel": "Sesudah",
+    "before": {
+      "i1": "Menebak kata dari gambar",
+      "i2": "Berminggu-minggu macet di buku yang sama",
+      "i3": "Anda membayar tutor tapi tetap tidak tahu levelnya",
+      "i4": "Waktu membaca berakhir dengan tangis"
+    },
+    "after": {
+      "i1": "Mengeja kata baru sendiri",
+      "i2": "Membaca satu buku dari awal sampai akhir",
+      "i3": "Anda tahu persis bunyi apa berikutnya",
+      "i4": "Minta \"satu buku lagi\" sebelum tidur"
+    }
+  },
+  "how": {
+    "title": "Tiga langkah sampai bisa membaca sendiri",
+    "subtitle": "Beberapa menit sehari, di rumah.",
+    "step": "Langkah {{n}}",
+    "s1": {
+      "title": "Temukan celahnya",
+      "desc": "Cek bunyi gratis 3 menit menunjukkan bunyi apa yang sudah dikuasai anak dan bunyi apa berikutnya.",
+      "cta": "Mulai cek gratis"
+    },
+    "s2": {
+      "title": "Baca buku yang tepat",
+      "desc": "Setiap buku hanya memakai bunyi yang sudah dipelajari, jadi anak benar-benar bisa membacanya. Ketuk kata mana saja untuk mendengarnya.",
+      "cta": "Buka perpustakaan"
+    },
+    "s3": {
+      "title": "Latihan sampai melekat",
+      "desc": "Permainan dan lembar kerja cetak mengunci setiap bunyi. Lalu lanjut ke buku berikutnya.",
+      "cta": "Main gamenya"
+    }
+  },
+  "teacher": {
+    "badge": "Siapa pembuatnya",
+    "title": "Dibuat oleh guru, diuji di kelas sungguhan",
+    "quote": "Saya mengajar di sebuah SD di Inggris. Anak-anak yang paling cepat bisa membaca adalah yang membaca buku sesuai bunyi yang sudah mereka kuasai. Orang tua membayar mahal tutor untuk itu. Saya membuat MyPhonicsBooks agar setiap keluarga bisa melakukannya di rumah.",
+    "role": "Guru SD di Inggris dan pendiri MyPhonicsBooks",
+    "photoAlt": "Lynden membuka cerita MyPhonicsBooks di layar kelasnya"
+  },
+  "books": {
+    "title": "33 buku sungguhan, satu bunyi setiap kali",
+    "subtitle": "Dari bunyi pertama sampai lancar membaca, dalam 8 level. Baca di layar atau cetak jadi buklet."
   }
 }

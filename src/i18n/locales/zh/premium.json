@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "无法开始结账，请重试。"
+  },
+  "note": {
+    "greeting": "你好，我是 Lynden",
+    "body": "我是英国的一名小学老师。我做 MyPhonicsBooks，是为了让你的孩子用英国学校的方法学会读英语。",
+    "offer": "前 500 个家庭终身免费获得 Premium：所有图书和练习纸，无限下载。",
+    "soldOut": "创建免费账户，每周可打印 1 本书和 5 张练习纸。",
+    "role": "英国小学老师",
+    "photoAlt": "Lynden 在教室屏幕上演示发音测试"
   }
 }

@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "Ödeme başlatılamadı. Lütfen tekrar deneyin."
+  },
+  "note": {
+    "greeting": "Merhaba, ben Lynden",
+    "body": "Birleşik Krallık'ta bir ilkokul öğretmeniyim. MyPhonicsBooks'u, çocuğunuz İngilizce okumayı İngiliz okullarının öğrettiği şekilde öğrensin diye yaptım.",
+    "offer": "İlk 500 aile Premium'u ömür boyu ücretsiz alır: tüm kitaplar ve çalışma kâğıtları, sınırsız.",
+    "soldOut": "Ücretsiz bir hesap açın ve her hafta 1 kitap ile 5 çalışma kâğıdı yazdırın.",
+    "role": "Birleşik Krallık'ta sınıf öğretmeni",
+    "photoAlt": "Lynden sınıf ekranında ses testini yapıyor"
   }
 }

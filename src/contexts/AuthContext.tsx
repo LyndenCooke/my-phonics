@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { syncSourceToCRM } from '@/hooks/useFunnelTracker';
 import { syncToGHL } from '@/lib/ghlClient';
 import { getStoredRefCode } from '@/lib/referral';
+import { reportSignupConversion } from '@/lib/adsConversion';
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // After signup, sync funnel source to CRM and push to GHL
       if (event === 'SIGNED_IN' && session?.user) {
+        reportSignupConversion(session.user);
         // Small delay to let the DB trigger create the crm_contact first
         setTimeout(() => {
           syncSourceToCRM().catch(() => {});

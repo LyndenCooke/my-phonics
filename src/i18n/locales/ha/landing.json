@@ -114,8 +114,8 @@
     "support": "Ka so shi? <btn>Tallafa wa MyPhonicsBooks</btn> da godiya ta sau ɗaya na kowane adadi — gaba ɗaya ba dole ba ne."
   },
   "footerCta": {
-    "title": "Littattafan farko sun riga sun buɗe.",
-    "body": "Ka duba a hankali — kuma idan ka shirya, gwajin minti 3 kyauta zai gano ainihin matakin ɗanka.",
+    "title": "A cikin minti 3 za ka san daidai inda yaronka yake.",
+    "body": "Sannan za ka san littafin da ke biye. Babu malamin gida, babu hasashe.",
     "explore": "Bincika littattafai",
     "check": "Duba matakinsa"
   },
@@ -129,5 +129,68 @@
     "contact": "Tuntuɓe mu",
     "admin": "Mai gudanarwa",
     "madeWith": "An yi shi da kulawa a Birtaniya"
+  },
+  "hero2": {
+    "badge": "Wani malamin firamare a Birtaniya ne ya yi shi",
+    "titleA": "Yadda manyan makarantun Birtaniya ke koya wa yara karanta Turanci,",
+    "titleFree": "yanzu kyauta ga iyalai 500 na farko.",
+    "titlePaid": "yanzu a gida kan {{price}} kawai.",
+    "body": "Yaronka zai daina hasashen kalmomi har ya karanta littafi gaba ɗaya da kansa, sauti bayan sauti. Hanyar fonis ɗin da makarantun firamare na Birtaniya ke amfani da ita, an shirya ta don gida.",
+    "ctaCheck": "Gano matakin yarona (kyauta)",
+    "ctaBrowse": "Duba littattafai",
+    "note": "Gwaji na minti 3. Babu kati. Kowane littafi kyauta ne a karanta a intanet.",
+    "before": "Kafin",
+    "after": "Bayan",
+    "beforeCaption": "Yana hasashe, ya makale, kusan kuka",
+    "afterCaption": "Yana karantawa da kansa, cike da alfahari"
+  },
+  "tx": {
+    "badge": "Canjin",
+    "title": "Abin da ke canzawa ga yaronka",
+    "beforeLabel": "Kafin",
+    "afterLabel": "Bayan",
+    "before": {
+      "i1": "Yana hasashen kalmomi daga hotuna",
+      "i2": "Ya makale a littafi ɗaya tsawon makonni",
+      "i3": "Kana biyan malamin gida amma har yanzu ba ka san matakinsa ba",
+      "i4": "Lokacin karatu yana ƙarewa da kuka"
+    },
+    "after": {
+      "i1": "Yana furta sababbin kalmomi da kansa",
+      "i2": "Yana karanta littafi gaba ɗaya daga farko har ƙarshe",
+      "i3": "Ka san daidai wane sauti ne na gaba",
+      "i4": "Yana neman \"ƙarin littafi ɗaya\" kafin barci"
+    }
+  },
+  "how": {
+    "title": "Matakai uku zuwa karatu da kansa",
+    "subtitle": "'Yan mintuna kowace rana, a gida.",
+    "step": "Mataki na {{n}}",
+    "s1": {
+      "title": "Gano gibin",
+      "desc": "Gwajin sauti na minti 3 kyauta yana nuna sautukan da yaronka ya sani da wanda ke biye.",
+      "cta": "Fara gwajin kyauta"
+    },
+    "s2": {
+      "title": "Karanta littafin da ya dace",
+      "desc": "Kowane littafi yana amfani da sautukan da ya koya kawai, don haka zai iya karanta shi da gaske. Taɓa kowace kalma don jin ta.",
+      "cta": "Buɗe ɗakin karatu"
+    },
+    "s3": {
+      "title": "Yi atisaye har ya kama",
+      "desc": "Wasanni da takardun aiki da za a buga suna ƙarfafa kowane sauti. Sannan a matsa zuwa littafi na gaba.",
+      "cta": "Yi wasannin"
+    }
+  },
+  "teacher": {
+    "badge": "Wa ya yi wannan",
+    "title": "Malami ne ya yi shi, an gwada shi a aji na gaske",
+    "quote": "Ina koyarwa a wata makarantar firamare a Birtaniya. Yaran da suka fi saurin koyon karatu su ne waɗanda ke karanta littattafan da suka dace da sautukan da suka sani. Iyaye suna biyan malaman gida kuɗi mai yawa don haka. Na yi MyPhonicsBooks ne domin kowane iyali ya iya yin hakan a gida.",
+    "role": "Malamin firamare a Birtaniya kuma wanda ya kafa MyPhonicsBooks",
+    "photoAlt": "Lynden yana buɗe labarin MyPhonicsBooks a allon ajinsa"
+  },
+  "books": {
+    "title": "Littattafai 33 na gaske, sauti ɗaya a lokaci guda",
+    "subtitle": "Daga sautukan farko har zuwa karatu sosai, a matakai 8. Karanta su a allo ko ka buga su a matsayin ƙananan littattafai."
   }
 }

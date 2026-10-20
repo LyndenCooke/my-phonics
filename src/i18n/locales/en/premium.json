@@ -77,5 +77,13 @@
   },
   "errors": {
     "checkoutFailed": "Could not start checkout. Please try again."
+  },
+  "note": {
+    "greeting": "Hi, I'm Lynden",
+    "body": "I'm a primary teacher in the UK. I built MyPhonicsBooks so your child can learn to read English the way UK schools teach it.",
+    "offer": "The first 500 families get Premium free for life: every book and worksheet, unlimited.",
+    "soldOut": "Create a free account to print 1 book and 5 worksheets a week.",
+    "role": "UK primary teacher",
+    "photoAlt": "Lynden running the sound check on his classroom screen"
   }
 }
