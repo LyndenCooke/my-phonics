@@ -7,7 +7,7 @@
   "offer": {
     "badge": "Familia 500 za kwanza",
     "title": "Premium maisha yote, bure",
-    "body": "Familia 500 za kwanza kufungua akaunti ya bure zinapata Premium maisha yote: upakuaji wa vitabu na karatasi za mazoezi bila kikomo. Hakuna kadi inayohitajika.",
+    "body": "Familia 500 za kwanza kufungua akaunti ya bure zinapata Premium maisha yote: kila kitabu na karatasi ya mazoezi kupakua. Hakuna kadi inayohitajika.",
     "cta": "Chukua nafasi yangu ya bure",
     "haveAccount": "Tayari nina akaunti",
     "keepReading": "Endelea kusoma mtandaoni",
@@ -29,20 +29,22 @@
     "packBody": "Kwenye mpango wa bure unaweza kupakua karatasi moja moja, 5 kwa wiki. Premium hupata kila kifurushi kama PDF moja.",
     "readFree": "Bado unaweza kusoma kila kitabu mtandaoni, bure.",
     "premiumTitle": "Premium maisha yote",
-    "premiumBody": "Upakuaji wa vitabu na karatasi za mazoezi bila kikomo, pamoja na vifurushi kamili katika PDF moja.",
+    "premiumBody": "Kila kitabu na karatasi ya mazoezi kupakua, pamoja na vifurushi kamili katika PDF moja.",
     "upgrade": "Pata Premium maisha yote: {{price}}",
     "upgradeNote": "Malipo mara moja. Hakuna usajili wa kila mwezi.",
-    "close": "Labda baadaye"
+    "close": "Labda baadaye",
+    "dailyTitle": "Upakuaji wa leo umekwisha",
+    "dailyBody": "Premium inajumuisha hadi vitabu 3 vipya, karatasi za mazoezi 20 na vifurushi 3 kwa siku. Kinachofuata kitafunguka {{when}}."
   },
   "welcome": {
     "founderTitle": "Wewe ni mwanachama mwanzilishi #{{number}}",
-    "founderBody": "Premium ni yako maisha yote: upakuaji wa vitabu na karatasi za mazoezi bila kikomo, bure. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa.",
+    "founderBody": "Premium ni yako maisha yote: kila kitabu na karatasi ya mazoezi kupakua, bure. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa.",
     "freeTitle": "Karibu",
     "freeBody": "Kila kitabu na mchezo ni bure kusoma na kucheza mtandaoni, na akaunti yako ya bure ina upakuaji wa kitabu 1 na karatasi 5 za mazoezi kwa wiki. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa."
   },
   "status": {
     "founder": "Mwanachama mwanzilishi #{{number}} · Premium maisha yote",
-    "premium": "Premium · upakuaji bila kikomo",
+    "premium": "Premium · kila kitabu na karatasi ya mazoezi",
     "free": "Mpango wa bure · wiki hii: vitabu {{books}} kati ya {{bookLimit}}, karatasi {{worksheets}} kati ya {{worksheetLimit}}"
   },
   "plans": {
@@ -56,8 +58,8 @@
     },
     "premium": {
       "name": "Premium",
-      "books": "Upakuaji wa vitabu bila kikomo",
-      "worksheets": "Karatasi za mazoezi bila kikomo, pamoja na vifurushi kamili",
+      "books": "Kila kitabu kupakua",
+      "worksheets": "Kila karatasi ya mazoezi, pamoja na vifurushi kamili",
       "forLife": "Ni yako maisha yote, hakuna usajili"
     }
   },
@@ -73,7 +75,7 @@
   },
   "paid": {
     "title": "Sasa una Premium",
-    "body": "Asante! Upakuaji wa vitabu na karatasi za mazoezi bila kikomo sasa ni wako maisha yote."
+    "body": "Asante! Kila kitabu na karatasi ya mazoezi sasa ni vyako kupakua maisha yote."
   },
   "errors": {
     "checkoutFailed": "Imeshindikana kuanza malipo. Tafadhali jaribu tena."
@@ -81,7 +83,7 @@
   "note": {
     "greeting": "Habari, mimi ni Lynden",
     "body": "Mimi ni mwalimu wa shule ya msingi nchini Uingereza. Nilitengeneza MyPhonicsBooks ili mtoto wako ajifunze kusoma Kiingereza kama shule za Uingereza zinavyofundisha.",
-    "offer": "Familia 500 za kwanza zinapata Premium bure maisha yote: kila kitabu na karatasi ya mazoezi, bila kikomo.",
+    "offer": "Familia 500 za kwanza zinapata Premium bure maisha yote: kila kitabu na karatasi ya mazoezi.",
     "soldOut": "Fungua akaunti ya bure uchapishe kitabu 1 na karatasi 5 za mazoezi kila wiki.",
     "role": "Mwalimu wa shule ya msingi Uingereza",
     "photoAlt": "Lynden akiendesha jaribio la sauti kwenye skrini ya darasa"

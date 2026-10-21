@@ -7,7 +7,7 @@
   "offer": {
     "badge": "First 500 families",
     "title": "Premium for life, free",
-    "body": "The first 500 families to create a free account get Premium for life: unlimited book and worksheet downloads. No card needed.",
+    "body": "The first 500 families to create a free account get Premium for life: every book and worksheet to download. No card needed.",
     "cta": "Claim my free spot",
     "haveAccount": "I already have an account",
     "keepReading": "Keep reading online",
@@ -29,20 +29,22 @@
     "packBody": "On the free plan you can download single worksheets, 5 a week. Premium gets every pack as one PDF.",
     "readFree": "You can still read every book online, free.",
     "premiumTitle": "Premium for life",
-    "premiumBody": "Unlimited book and worksheet downloads, plus whole packs in one PDF.",
+    "premiumBody": "Every book and worksheet to download, plus whole packs in one PDF.",
     "upgrade": "Get Premium for life: {{price}}",
     "upgradeNote": "One payment. No subscription.",
-    "close": "Maybe later"
+    "close": "Maybe later",
+    "dailyTitle": "That's today's downloads",
+    "dailyBody": "Premium includes up to 3 new books, 20 worksheets and 3 packs a day. Your next one unlocks {{when}}."
   },
   "welcome": {
     "founderTitle": "You're founding member #{{number}}",
-    "founderBody": "Premium is yours for life: unlimited book and worksheet downloads, free. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional.",
+    "founderBody": "Premium is yours for life: every book and worksheet to download, free. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional.",
     "freeTitle": "You're in",
     "freeBody": "Every book and game is free to read and play online, and your free account includes 1 book and 5 worksheet downloads a week. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional."
   },
   "status": {
     "founder": "Founding member #{{number}} · Premium for life",
-    "premium": "Premium · unlimited downloads",
+    "premium": "Premium · every book and worksheet",
     "free": "Free plan · this week: {{books}} of {{bookLimit}} book, {{worksheets}} of {{worksheetLimit}} worksheets"
   },
   "plans": {
@@ -56,8 +58,8 @@
     },
     "premium": {
       "name": "Premium",
-      "books": "Unlimited book downloads",
-      "worksheets": "Unlimited worksheets, plus whole packs",
+      "books": "Every book to download",
+      "worksheets": "Every worksheet, plus whole packs",
       "forLife": "Yours for life, no subscription"
     }
   },
@@ -73,7 +75,7 @@
   },
   "paid": {
     "title": "You're Premium",
-    "body": "Thank you! Unlimited book and worksheet downloads are now yours for life."
+    "body": "Thank you! Every book and worksheet is now yours to download, for life."
   },
   "errors": {
     "checkoutFailed": "Could not start checkout. Please try again."
@@ -81,7 +83,7 @@
   "note": {
     "greeting": "Hi, I'm Lynden",
     "body": "I'm a primary teacher in the UK. I built MyPhonicsBooks so your child can learn to read English the way UK schools teach it.",
-    "offer": "The first 500 families get Premium free for life: every book and worksheet, unlimited.",
+    "offer": "The first 500 families get Premium free for life: every book and worksheet.",
     "soldOut": "Create a free account to print 1 book and 5 worksheets a week.",
     "role": "UK primary teacher",
     "photoAlt": "Lynden running the sound check on his classroom screen"

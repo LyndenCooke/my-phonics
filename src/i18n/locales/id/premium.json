@@ -7,7 +7,7 @@
   "offer": {
     "badge": "500 keluarga pertama",
     "title": "Premium seumur hidup, gratis",
-    "body": "500 keluarga pertama yang membuat akun gratis mendapat Premium seumur hidup: unduhan buku dan lembar kerja tanpa batas. Tanpa kartu.",
+    "body": "500 keluarga pertama yang membuat akun gratis mendapat Premium seumur hidup: semua buku dan lembar kerja bisa diunduh. Tanpa kartu.",
     "cta": "Ambil tempat gratis saya",
     "haveAccount": "Saya sudah punya akun",
     "keepReading": "Lanjut membaca online",
@@ -29,20 +29,22 @@
     "packBody": "Di paket gratis Anda bisa mengunduh lembar kerja satuan, 5 per minggu. Premium mendapat setiap paket dalam satu PDF.",
     "readFree": "Anda tetap bisa membaca semua buku secara online, gratis.",
     "premiumTitle": "Premium seumur hidup",
-    "premiumBody": "Unduhan buku dan lembar kerja tanpa batas, plus paket lengkap dalam satu PDF.",
+    "premiumBody": "Semua buku dan lembar kerja bisa diunduh, plus paket lengkap dalam satu PDF.",
     "upgrade": "Dapatkan Premium seumur hidup: {{price}}",
     "upgradeNote": "Sekali bayar. Tanpa langganan.",
-    "close": "Mungkin nanti"
+    "close": "Mungkin nanti",
+    "dailyTitle": "Unduhan hari ini sudah habis",
+    "dailyBody": "Premium mencakup hingga 3 buku baru, 20 lembar kerja dan 3 paket per hari. Unduhan berikutnya terbuka {{when}}."
   },
   "welcome": {
     "founderTitle": "Anda anggota pendiri #{{number}}",
-    "founderBody": "Premium menjadi milik Anda seumur hidup: unduhan buku dan lembar kerja tanpa batas, gratis. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional.",
+    "founderBody": "Premium menjadi milik Anda seumur hidup: semua buku dan lembar kerja bisa diunduh, gratis. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional.",
     "freeTitle": "Selamat bergabung",
     "freeBody": "Semua buku dan game gratis untuk dibaca dan dimainkan online, dan akun gratis Anda mencakup unduhan 1 buku dan 5 lembar kerja per minggu. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional."
   },
   "status": {
     "founder": "Anggota pendiri #{{number}} · Premium seumur hidup",
-    "premium": "Premium · unduhan tanpa batas",
+    "premium": "Premium · semua buku dan lembar kerja",
     "free": "Paket gratis · minggu ini: {{books}} dari {{bookLimit}} buku, {{worksheets}} dari {{worksheetLimit}} lembar kerja"
   },
   "plans": {
@@ -56,8 +58,8 @@
     },
     "premium": {
       "name": "Premium",
-      "books": "Unduhan buku tanpa batas",
-      "worksheets": "Lembar kerja tanpa batas, plus paket lengkap",
+      "books": "Semua buku bisa diunduh",
+      "worksheets": "Semua lembar kerja, plus paket lengkap",
       "forLife": "Milik Anda seumur hidup, tanpa langganan"
     }
   },
@@ -73,7 +75,7 @@
   },
   "paid": {
     "title": "Anda kini Premium",
-    "body": "Terima kasih! Unduhan buku dan lembar kerja tanpa batas kini milik Anda seumur hidup."
+    "body": "Terima kasih! Semua buku dan lembar kerja kini bisa Anda unduh seumur hidup."
   },
   "errors": {
     "checkoutFailed": "Tidak dapat memulai pembayaran. Silakan coba lagi."
@@ -81,7 +83,7 @@
   "note": {
     "greeting": "Halo, saya Lynden",
     "body": "Saya guru SD di Inggris. Saya membuat MyPhonicsBooks agar anak Anda belajar membaca bahasa Inggris seperti yang diajarkan sekolah di Inggris.",
-    "offer": "500 keluarga pertama mendapat Premium gratis seumur hidup: semua buku dan lembar kerja, tanpa batas.",
+    "offer": "500 keluarga pertama mendapat Premium gratis seumur hidup: semua buku dan lembar kerja.",
     "soldOut": "Buat akun gratis untuk mencetak 1 buku dan 5 lembar kerja setiap minggu.",
     "role": "Guru SD di Inggris",
     "photoAlt": "Lynden menjalankan cek bunyi di layar kelasnya"

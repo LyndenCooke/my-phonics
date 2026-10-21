@@ -2,7 +2,8 @@
  * Premium + founding members (2026-10-05).
  *
  *   free     — 1 book and 5 worksheets per rolling 7 days
- *   premium  — unlimited, including whole-pack worksheet PDFs
+ *   premium  — every book and worksheet plus whole-pack PDFs, up to a daily
+ *              allowance of new items (3 books, 20 worksheets, 3 packs a day)
  *
  * The first 500 accounts are founding members: Premium for life, free. After
  * that Premium is a one-off £4.99. All of the rules live in Postgres
@@ -24,6 +25,8 @@ export type DownloadPlan = {
   founding_number: number | null;
   limits: { books: number; worksheets: number };
   used: { books: number; worksheets: number };
+  daily_limits?: { books: number; worksheets: number; packs: number };
+  used_today?: { books: number; worksheets: number };
   spots: FoundingSpots;
   /** True only on the call that claimed this account's founding spot. */
   just_claimed?: boolean;
@@ -33,7 +36,7 @@ export type DownloadKind = 'book' | 'worksheet' | 'worksheet_pack';
 
 export type DownloadDecision =
   | { allowed: true; plan?: DownloadPlan }
-  | { allowed: false; reason: 'sign_in' | 'limit' | 'premium_only'; next_at?: string | null; plan?: DownloadPlan };
+  | { allowed: false; reason: 'sign_in' | 'limit' | 'premium_only' | 'daily_cap'; next_at?: string | null; plan?: DownloadPlan };
 
 // The generated Supabase types predate these functions.
 const rpc = supabase.rpc.bind(supabase) as unknown as (

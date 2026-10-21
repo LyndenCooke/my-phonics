@@ -7,7 +7,7 @@
   "offer": {
     "badge": "前 500 个家庭",
     "title": "终身 Premium，免费",
-    "body": "前 500 个注册免费账户的家庭可获得终身 Premium：无限下载图书和练习纸。无需银行卡。",
+    "body": "前 500 个注册免费账户的家庭可获得终身 Premium：所有图书和练习纸均可下载。无需银行卡。",
     "cta": "领取我的免费名额",
     "haveAccount": "我已有账户",
     "keepReading": "继续在线阅读",
@@ -29,20 +29,22 @@
     "packBody": "免费方案可以下载单张练习纸，每周 5 张。Premium 可将每一整套作为一个 PDF 下载。",
     "readFree": "您仍然可以免费在线阅读每一本书。",
     "premiumTitle": "终身 Premium",
-    "premiumBody": "无限下载图书和练习纸，还可一次下载整套 PDF。",
+    "premiumBody": "所有图书和练习纸均可下载，还可一次下载整套 PDF。",
     "upgrade": "获取终身 Premium：{{price}}",
     "upgradeNote": "一次付款，无需订阅。",
-    "close": "以后再说"
+    "close": "以后再说",
+    "dailyTitle": "今天的下载已用完",
+    "dailyBody": "Premium 每天最多可下载 3 本新书、20 张练习纸和 3 套整套 PDF。下一次可下载的时间：{{when}}。"
   },
   "welcome": {
     "founderTitle": "您是第 {{number}} 位创始会员",
-    "founderBody": "终身 Premium 已属于您：免费无限下载图书和练习纸。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。",
+    "founderBody": "终身 Premium 已属于您：所有图书和练习纸均可免费下载。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。",
     "freeTitle": "欢迎加入",
     "freeBody": "所有图书和游戏都可以免费在线阅读和游玩，您的免费账户每周可下载 1 本书和 5 张练习纸。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。"
   },
   "status": {
     "founder": "第 {{number}} 位创始会员 · 终身 Premium",
-    "premium": "Premium · 无限下载",
+    "premium": "Premium · 所有图书和练习纸",
     "free": "免费方案 · 本周：图书 {{books}}/{{bookLimit}}，练习纸 {{worksheets}}/{{worksheetLimit}}"
   },
   "plans": {
@@ -56,8 +58,8 @@
     },
     "premium": {
       "name": "Premium",
-      "books": "无限下载图书",
-      "worksheets": "无限下载练习纸，含整套下载",
+      "books": "所有图书均可下载",
+      "worksheets": "所有练习纸，含整套下载",
       "forLife": "终身有效，无需订阅"
     }
   },
@@ -73,7 +75,7 @@
   },
   "paid": {
     "title": "您已是 Premium",
-    "body": "谢谢！您现在可以终身无限下载图书和练习纸。"
+    "body": "谢谢！所有图书和练习纸现在终身可供您下载。"
   },
   "errors": {
     "checkoutFailed": "无法开始结账，请重试。"
@@ -81,7 +83,7 @@
   "note": {
     "greeting": "你好，我是 Lynden",
     "body": "我是英国的一名小学老师。我做 MyPhonicsBooks，是为了让你的孩子用英国学校的方法学会读英语。",
-    "offer": "前 500 个家庭终身免费获得 Premium：所有图书和练习纸，无限下载。",
+    "offer": "前 500 个家庭终身免费获得 Premium：所有图书和练习纸。",
     "soldOut": "创建免费账户，每周可打印 1 本书和 5 张练习纸。",
     "role": "英国小学老师",
     "photoAlt": "Lynden 在教室屏幕上演示发音测试"

@@ -7,7 +7,7 @@
   "offer": {
     "badge": "İlk 500 aile",
     "title": "Ömür boyu Premium, ücretsiz",
-    "body": "Ücretsiz hesap açan ilk 500 aile ömür boyu Premium kazanır: sınırsız kitap ve çalışma kâğıdı indirme. Kart gerekmez.",
+    "body": "Ücretsiz hesap açan ilk 500 aile ömür boyu Premium kazanır: tüm kitaplar ve çalışma kâğıtları indirilebilir. Kart gerekmez.",
     "cta": "Ücretsiz yerimi al",
     "haveAccount": "Zaten hesabım var",
     "keepReading": "Çevrimiçi okumaya devam et",
@@ -29,20 +29,22 @@
     "packBody": "Ücretsiz planda çalışma kâğıtlarını tek tek, haftada 5 tane indirebilirsiniz. Premium'da her paket tek PDF olarak gelir.",
     "readFree": "Bütün kitapları çevrimiçi olarak ücretsiz okumaya devam edebilirsiniz.",
     "premiumTitle": "Ömür boyu Premium",
-    "premiumBody": "Sınırsız kitap ve çalışma kâğıdı indirme, ayrıca tam paketler tek PDF'te.",
+    "premiumBody": "Tüm kitaplar ve çalışma kâğıtları indirilebilir, ayrıca tam paketler tek PDF'te.",
     "upgrade": "Ömür boyu Premium alın: {{price}}",
     "upgradeNote": "Tek ödeme. Abonelik yok.",
-    "close": "Belki sonra"
+    "close": "Belki sonra",
+    "dailyTitle": "Bugünün indirmeleri doldu",
+    "dailyBody": "Premium günde en fazla 3 yeni kitap, 20 çalışma kâğıdı ve 3 paket içerir. Sıradaki indirme {{when}} açılır."
   },
   "welcome": {
     "founderTitle": "{{number}} numaralı kurucu üyesiniz",
-    "founderBody": "Premium ömür boyu sizin: sınırsız kitap ve çalışma kâğıdı indirme, ücretsiz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
+    "founderBody": "Premium ömür boyu sizin: tüm kitaplar ve çalışma kâğıtları indirilebilir, ücretsiz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
     "freeTitle": "Hoş geldiniz",
     "freeBody": "Bütün kitaplar ve oyunlar çevrimiçi okumak ve oynamak için ücretsizdir; ücretsiz hesabınızla haftada 1 kitap ve 5 çalışma kâğıdı indirebilirsiniz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı."
   },
   "status": {
     "founder": "Kurucu üye #{{number}} · Ömür boyu Premium",
-    "premium": "Premium · sınırsız indirme",
+    "premium": "Premium · tüm kitaplar ve çalışma kâğıtları",
     "free": "Ücretsiz plan · bu hafta: {{books}}/{{bookLimit}} kitap, {{worksheets}}/{{worksheetLimit}} çalışma kâğıdı"
   },
   "plans": {
@@ -56,8 +58,8 @@
     },
     "premium": {
       "name": "Premium",
-      "books": "Sınırsız kitap indirme",
-      "worksheets": "Sınırsız çalışma kâğıdı ve tam paketler",
+      "books": "Tüm kitaplar indirilebilir",
+      "worksheets": "Tüm çalışma kâğıtları ve tam paketler",
       "forLife": "Ömür boyu sizin, abonelik yok"
     }
   },
@@ -73,7 +75,7 @@
   },
   "paid": {
     "title": "Artık Premium'sunuz",
-    "body": "Teşekkürler! Sınırsız kitap ve çalışma kâğıdı indirme artık ömür boyu sizin."
+    "body": "Teşekkürler! Tüm kitapları ve çalışma kâğıtlarını artık ömür boyu indirebilirsiniz."
   },
   "errors": {
     "checkoutFailed": "Ödeme başlatılamadı. Lütfen tekrar deneyin."
@@ -81,7 +83,7 @@
   "note": {
     "greeting": "Merhaba, ben Lynden",
     "body": "Birleşik Krallık'ta bir ilkokul öğretmeniyim. MyPhonicsBooks'u, çocuğunuz İngilizce okumayı İngiliz okullarının öğrettiği şekilde öğrensin diye yaptım.",
-    "offer": "İlk 500 aile Premium'u ömür boyu ücretsiz alır: tüm kitaplar ve çalışma kâğıtları, sınırsız.",
+    "offer": "İlk 500 aile Premium'u ömür boyu ücretsiz alır: tüm kitaplar ve çalışma kâğıtları.",
     "soldOut": "Ücretsiz bir hesap açın ve her hafta 1 kitap ile 5 çalışma kâğıdı yazdırın.",
     "role": "Birleşik Krallık'ta sınıf öğretmeni",
     "photoAlt": "Lynden sınıf ekranında ses testini yapıyor"

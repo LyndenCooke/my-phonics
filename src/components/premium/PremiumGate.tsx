@@ -45,7 +45,7 @@ export function useDownloadGate(): GateContext {
 }
 
 type SignupState = { source: 'download' | 'visit' } | null;
-type LimitState = { kind: DownloadKind; reason: 'limit' | 'premium_only'; nextAt: string | null } | null;
+type LimitState = { kind: DownloadKind; reason: 'limit' | 'premium_only' | 'daily_cap'; nextAt: string | null } | null;
 
 // ── Founding-offer pop-up for signed-out visitors ────────────────────────
 const OFFER_SEEN_KEY = 'mpb_founding_offer_seen';
@@ -76,6 +76,11 @@ function markOfferSeen() {
 function formatUnlock(iso: string | null): string {
   if (!iso) return '';
   return new Intl.DateTimeFormat(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(iso));
+}
+
+function formatUnlockTime(iso: string | null): string {
+  if (!iso) return '';
+  return new Intl.DateTimeFormat(i18n.language, { weekday: 'long', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
 }
 
 export function PremiumGateProvider({ children }: { children: ReactNode }) {
@@ -248,12 +253,16 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
               <Crown className="w-6 h-6 text-primary" />
             </div>
             <DialogTitle className="font-display text-xl font-extrabold text-foreground">
-              {limit?.reason === 'premium_only'
+              {limit?.reason === 'daily_cap'
+                ? t('limit.dailyTitle')
+                : limit?.reason === 'premium_only'
                 ? t('limit.packTitle')
                 : limit?.kind === 'book' ? t('limit.bookTitle') : t('limit.worksheetTitle')}
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
-              {limit?.reason === 'premium_only'
+              {limit?.reason === 'daily_cap'
+                ? t('limit.dailyBody', { when: formatUnlockTime(limit?.nextAt ?? null) })
+                : limit?.reason === 'premium_only'
                 ? t('limit.packBody')
                 : limit?.kind === 'book'
                   ? t('limit.bookBody', { when: formatUnlock(limit?.nextAt ?? null) })
@@ -262,12 +271,15 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
             </DialogDescription>
           </DialogHeader>
 
+          {limit?.reason !== 'daily_cap' && <>
           <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-3">
             <p className="text-sm font-extrabold text-foreground">{t('limit.premiumTitle')}</p>
             <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{t('limit.premiumBody')}</p>
           </div>
+          </>}
 
           <div className="flex flex-col gap-2 pt-1">
+            {limit?.reason !== 'daily_cap' && <>
             <button
               type="button"
               onClick={upgrade}
@@ -279,6 +291,7 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
               {t('limit.upgrade', { price: PREMIUM_PRICE_LABEL })}
             </button>
             <p className="text-[11px] text-muted-foreground text-center">{t('limit.upgradeNote')}</p>
+            </>}
             <button
               type="button"
               onClick={() => setLimit(null)}
