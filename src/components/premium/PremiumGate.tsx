@@ -186,7 +186,7 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
         <DialogContent className="max-w-sm mx-auto rounded-3xl p-0 gap-0 overflow-hidden max-h-[92vh] overflow-y-auto">
           <div className="relative">
             <img
-              src="/landing/teacher-note.webp"
+              src="/landing/teacher-popup.webp"
               alt={t('note.photoAlt')}
               className="w-full aspect-[16/10] object-cover"
               decoding="async"

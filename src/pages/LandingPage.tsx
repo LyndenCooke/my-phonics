@@ -500,11 +500,11 @@ function FloatingBookShelf() {
 /* ─── HERO PROOF — the real teacher in his real classroom, and what a child reads ─── */
 function HeroProof() {
   const { t } = useTranslation('landing');
-  // The ladder uses the very sentence on the classroom screen (Hot Food, Cool Moon).
+  // The ladder is a real line from the book on the classroom screen (The Fish in the Tank).
   const ladder = [
-    { label: t('hero2.l1'), text: 'h · u · ff', size: 'text-xl', tone: '#64748B' },
-    { label: t('hero2.l2'), text: 'huff', size: 'text-2xl', tone: '#3B82F6' },
-    { label: t('hero2.l3'), text: 'I huff and puff on it.', size: 'text-lg', tone: PINK },
+    { label: t('hero2.l1'), text: 'f · i · sh', size: 'text-xl', tone: '#64748B' },
+    { label: t('hero2.l2'), text: 'fish', size: 'text-2xl', tone: '#3B82F6' },
+    { label: t('hero2.l3'), text: 'The fish is in the tank!', size: 'text-lg', tone: PINK },
   ];
   return (
     <div className="relative flex flex-col gap-5 max-w-md mx-auto w-full">
