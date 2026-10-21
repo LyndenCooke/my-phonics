@@ -12,13 +12,15 @@
     "haveAccount": "Tayari nina akaunti",
     "keepReading": "Endelea kusoma mtandaoni",
     "notNow": "Si sasa",
-    "afterNote": "Baada ya 500 za kwanza, akaunti za bure hupata kitabu 1 na karatasi 5 za mazoezi kwa wiki na Premium ni {{price}}."
+    "afterNote": "Baada ya 500 za kwanza, Premium maisha yote ni {{price}}: bei yetu ya uzinduzi, itapanda hadi £99.",
+    "priceRise": "Bei ya uzinduzi, itapanda hadi £99"
   },
   "signupGate": {
-    "title": "Fungua akaunti ya bure ili kupakua",
-    "lead": "Kupakua kunahitaji akaunti ya bure.",
-    "bodySoldOut": "Kusoma mtandaoni hakuhitaji akaunti kamwe. Akaunti ya bure inakuwezesha kupakua kitabu 1 na karatasi 5 za mazoezi kila wiki.",
-    "cta": "Fungua akaunti ya bure"
+    "title": "Upakuaji ni kwa wanachama",
+    "lead": "Upakuaji ni kwa wanachama.",
+    "bodySoldOut": "Fungua akaunti, kisha fungua kila ukurasa, kitabu na karatasi ya mazoezi kwa Premium maisha yote.",
+    "cta": "Fungua akaunti",
+    "readLead": "Hilo ndilo onyesho la bure. Wanachama husoma kila ukurasa."
   },
   "limit": {
     "bookTitle": "Kitabu cha bure cha wiki hii kimeshatumika",
@@ -31,30 +33,34 @@
     "premiumTitle": "Premium maisha yote",
     "premiumBody": "Kila kitabu na karatasi ya mazoezi kupakua, pamoja na vifurushi kamili katika PDF moja.",
     "upgrade": "Pata Premium maisha yote: {{price}}",
-    "upgradeNote": "Malipo mara moja. Hakuna usajili wa kila mwezi.",
+    "upgradeNote": "Malipo mara moja, hakuna usajili. Bei ya uzinduzi, itapanda hadi £99.",
     "close": "Labda baadaye",
     "dailyTitle": "Upakuaji wa leo umekwisha",
-    "dailyBody": "Premium inajumuisha hadi vitabu 3 vipya, karatasi za mazoezi 20 na vifurushi 3 kwa siku. Kinachofuata kitafunguka {{when}}."
+    "dailyBody": "Premium inajumuisha hadi vitabu 3 vipya, karatasi za mazoezi 20 na vifurushi 3 kwa siku. Kinachofuata kitafunguka {{when}}.",
+    "readTitle": "Unataka kusoma kilichobaki?",
+    "readBody": "Bila Premium unaweza kusoma kurasa 3 za kwanza za kila kitabu. Premium inafungua kila ukurasa wa kila kitabu, pamoja na kila upakuaji.",
+    "membersBody": "Kuchapisha vitabu na karatasi za mazoezi ni sehemu ya Premium maisha yote.",
+    "membersTitle": "Upakuaji ni kwa wanachama"
   },
   "welcome": {
     "founderTitle": "Wewe ni mwanachama mwanzilishi #{{number}}",
     "founderBody": "Premium ni yako maisha yote: kila kitabu na karatasi ya mazoezi kupakua, bure. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa.",
     "freeTitle": "Karibu",
-    "freeBody": "Kila kitabu na mchezo ni bure kusoma na kucheza mtandaoni, na akaunti yako ya bure ina upakuaji wa kitabu 1 na karatasi 5 za mazoezi kwa wiki. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa."
+    "freeBody": "Unaweza kusoma kurasa 3 za kwanza za kila kitabu na kucheza kila mchezo. Premium maisha yote inafungua kila ukurasa na kila upakuaji. Ikiwa MyPhonicsBooks inamsaidia mtoto wako, unaweza kuacha shukrani ndogo. Ni hiari kabisa."
   },
   "status": {
     "founder": "Mwanachama mwanzilishi #{{number}} · Premium maisha yote",
     "premium": "Premium · kila kitabu na karatasi ya mazoezi",
-    "free": "Mpango wa bure · wiki hii: vitabu {{books}} kati ya {{bookLimit}}, karatasi {{worksheets}} kati ya {{worksheetLimit}}"
+    "free": "Onyesho tu · Premium inafungua kila ukurasa na upakuaji"
   },
   "plans": {
     "title": "Mipango",
-    "subtitle": "Premium maisha yote ni {{price}}, malipo mara moja",
+    "subtitle": "Premium maisha yote ni {{price}}, malipo mara moja (bei ya uzinduzi, itapanda hadi £99)",
     "free": {
-      "name": "Akaunti ya bure",
-      "read": "Soma kila kitabu na ucheze kila mchezo mtandaoni",
-      "books": "Upakuaji wa kitabu 1 kwa wiki",
-      "worksheets": "Upakuaji wa karatasi 5 za mazoezi kwa wiki"
+      "name": "Bila Premium",
+      "read": "Kurasa 3 za kwanza za kila kitabu, na kila mchezo",
+      "books": "Hakuna upakuaji wa vitabu",
+      "worksheets": "Hakuna upakuaji wa karatasi za mazoezi"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "Kusoma na kucheza ni bure. Kuunga mkono ni hiari.",
-    "pdfs": "PDF za vitabu na karatasi za mazoezi zinazoweza kuchapishwa ukiwa na akaunti ya bure"
+    "heading": "Kuunga mkono ni hiari.",
+    "pdfs": "PDF za kila kitabu na karatasi ya mazoezi zinazoweza kuchapishwa ukiwa na Premium"
   },
   "landing": {
-    "subtitle": "Soma kila kitu sasa. Fungua akaunti ya bure ili kuchapisha: familia 500 za kwanza zinapata Premium maisha yote.",
-    "subtitleSoldOut": "Soma kila kitu sasa. Fungua akaunti ya bure ili kuchapisha kitabu 1 na karatasi 5 za mazoezi kwa wiki.",
+    "subtitle": "Soma sehemu ya kila kitabu sasa. Familia 500 za kwanza zinapata Premium maisha yote, bure.",
+    "subtitleSoldOut": "Soma sehemu ya kila kitabu sasa. Premium maisha yote inafungua kila kitu.",
     "cardTitle": "Mwanachama mwanzilishi",
     "priceNote": "Premium maisha yote"
   },
@@ -84,8 +90,13 @@
     "greeting": "Habari, mimi ni Lynden",
     "body": "Mimi ni mwalimu wa shule ya msingi nchini Uingereza. Nilitengeneza MyPhonicsBooks ili mtoto wako ajifunze kusoma Kiingereza kama shule za Uingereza zinavyofundisha.",
     "offer": "Familia 500 za kwanza zinapata Premium bure maisha yote: kila kitabu na karatasi ya mazoezi.",
-    "soldOut": "Fungua akaunti ya bure uchapishe kitabu 1 na karatasi 5 za mazoezi kila wiki.",
+    "soldOut": "Fungua akaunti, kisha fungua kila ukurasa, kitabu na karatasi ya mazoezi kwa Premium maisha yote.",
     "role": "Mwalimu wa shule ya msingi Uingereza",
     "photoAlt": "Lynden akicheza mchezo wa sauti za fonetiki kwenye skrini ya darasa"
+  },
+  "consult": {
+    "paidTitle": "Ushauri wako umewekwa",
+    "paidBody": "Asante. Lynden atakutumia barua pepe ndani ya siku moja ya kazi ili kupanga muda wa simu yako ya video.",
+    "signIn": "Fungua akaunti au ingia kwanza, kisha weka nafasi ya ushauri wako."
   }
 }

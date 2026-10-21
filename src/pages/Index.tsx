@@ -17,6 +17,7 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useTeacherSession } from '@/lib/teacherSession';
 import { useDownloadGate } from '@/components/premium/PremiumGate';
+import { PREVIEW_PAGES, useDownloadPlan } from '@/lib/premium';
 import { BookOpen, Loader2, Trophy, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -72,8 +73,22 @@ export default function Index() {
   // book without signing up — their entitlement lives in localStorage, not
   // auth.users, so the regular user_books gating doesn't see them.
   const { session: teacherSession } = useTeacherSession();
-  const { guard: guardDownload } = useDownloadGate();
+  const { guard: guardDownload, unlockReading } = useDownloadGate();
   const isTeacher = !!teacherSession;
+  // Reading: members (founding, paid, admin) read every page; everyone else
+  // gets the first PREVIEW_PAGES of each book. Families who scanned a printed
+  // book's QR code (src=print) bought the book, so they keep full access for
+  // the session. A signed-in plan that hasn't loaded fails open.
+  const [printVisit] = useState(() => {
+    try {
+      if (new URLSearchParams(window.location.search).get('src') === 'print') sessionStorage.setItem('mpb_print_visit', '1');
+      return sessionStorage.getItem('mpb_print_visit') === '1';
+    } catch { return false; }
+  });
+  const { data: plan } = useDownloadPlan();
+  const fullReadAccess = isAdmin || isQaUser || isTeacher || printVisit
+    || plan?.plan === 'premium' || (!!user && !plan);
+  const previewPages = fullReadAccess ? undefined : PREVIEW_PAGES;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -376,6 +391,8 @@ export default function Index() {
             book={activeBook}
             onClose={closeReader}
             onFinish={closeReader}
+            previewPages={previewPages}
+            onLocked={unlockReading}
           />
         </Suspense>
       );
@@ -385,6 +402,8 @@ export default function Index() {
         <BookReader
           book={activeBook}
           onClose={closeReader}
+          previewPages={previewPages}
+          onLocked={unlockReading}
           onFinish={() => {
             if (quizQuestions.length > 0) {
               setShowQuiz(true);

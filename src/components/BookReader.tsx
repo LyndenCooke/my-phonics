@@ -8,6 +8,9 @@ interface BookReaderProps {
   book: Book;
   onClose: () => void;
   onFinish: () => void;
+  /** Non-members read this many pages; going past calls onLocked instead. */
+  previewPages?: number;
+  onLocked?: () => void;
 }
 
 const levelColors: Record<number, string> = {
@@ -28,7 +31,7 @@ function subLevelToKey(subLevel: string): string | null {
   return m ? `${m[1]}_${m[2]}` : null;
 }
 
-export default function BookReader({ book, onClose, onFinish }: BookReaderProps) {
+export default function BookReader({ book, onClose, onFinish, previewPages, onLocked }: BookReaderProps) {
   const { t, i18n } = useTranslation('reader');
   const [currentPage, setCurrentPage] = useState(0);
   const [imgError, setImgError] = useState(false);
@@ -60,12 +63,16 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
   }, [currentPage, imgRetry]);
 
   const goNext = useCallback(() => {
+    if (previewPages !== undefined && currentPage + 1 >= previewPages && currentPage < totalPages - 1) {
+      onLocked?.();
+      return;
+    }
     if (currentPage < totalPages - 1) {
       setCurrentPage((p) => p + 1);
     } else {
       onFinish();
     }
-  }, [currentPage, totalPages, onFinish]);
+  }, [currentPage, totalPages, onFinish, previewPages, onLocked]);
 
   const goPrev = useCallback(() => {
     if (currentPage > 0) {
@@ -239,7 +246,7 @@ export default function BookReader({ book, onClose, onFinish }: BookReaderProps)
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
-              onClick={() => setCurrentPage(i)}
+              onClick={() => (previewPages !== undefined && i >= previewPages ? onLocked?.() : setCurrentPage(i))}
               className={`rounded-full transition-all duration-200 ${
                 i === currentPage
                   ? `w-5 h-2 ${levelBg}`

@@ -12,13 +12,15 @@
     "haveAccount": "I already have an account",
     "keepReading": "Keep reading online",
     "notNow": "Not now",
-    "afterNote": "After the first 500, free accounts get 1 book and 5 worksheets a week and Premium is {{price}}."
+    "afterNote": "After the first 500, Premium for life is {{price}}: our launch price, rising to £99.",
+    "priceRise": "Launch price, rising to £99"
   },
   "signupGate": {
-    "title": "Create a free account to download",
-    "lead": "Downloads need a free account.",
-    "bodySoldOut": "Reading online never needs an account. A free account lets you download 1 book and 5 worksheets every week.",
-    "cta": "Create a free account"
+    "title": "Downloads are for members",
+    "lead": "Downloads are for members.",
+    "bodySoldOut": "Create an account, then unlock every page, book and worksheet with Premium for life.",
+    "cta": "Create an account",
+    "readLead": "That's the free preview. Members read every page."
   },
   "limit": {
     "bookTitle": "That's this week's free book",
@@ -31,30 +33,34 @@
     "premiumTitle": "Premium for life",
     "premiumBody": "Every book and worksheet to download, plus whole packs in one PDF.",
     "upgrade": "Get Premium for life: {{price}}",
-    "upgradeNote": "One payment. No subscription.",
+    "upgradeNote": "One payment, no subscription. Launch price, rising to £99.",
     "close": "Maybe later",
     "dailyTitle": "That's today's downloads",
-    "dailyBody": "Premium includes up to 3 new books, 20 worksheets and 3 packs a day. Your next one unlocks {{when}}."
+    "dailyBody": "Premium includes up to 3 new books, 20 worksheets and 3 packs a day. Your next one unlocks {{when}}.",
+    "readTitle": "Want to read the rest?",
+    "readBody": "Without Premium you can read the first 3 pages of each book. Premium unlocks every page of every book, plus every download.",
+    "membersTitle": "Downloads are for members",
+    "membersBody": "Printing books and worksheets is part of Premium for life."
   },
   "welcome": {
     "founderTitle": "You're founding member #{{number}}",
     "founderBody": "Premium is yours for life: every book and worksheet to download, free. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional.",
     "freeTitle": "You're in",
-    "freeBody": "Every book and game is free to read and play online, and your free account includes 1 book and 5 worksheet downloads a week. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional."
+    "freeBody": "You can read the first 3 pages of every book and play every game. Premium for life unlocks every page and every download. If MyPhonicsBooks helps your child, you can leave a small thank-you. Completely optional."
   },
   "status": {
     "founder": "Founding member #{{number}} · Premium for life",
     "premium": "Premium · every book and worksheet",
-    "free": "Free plan · this week: {{books}} of {{bookLimit}} book, {{worksheets}} of {{worksheetLimit}} worksheets"
+    "free": "Preview only · Premium unlocks every page and download"
   },
   "plans": {
     "title": "Plans",
-    "subtitle": "Premium for life is {{price}}, one-off",
+    "subtitle": "Premium for life is {{price}}, one-off (launch price, rising to £99)",
     "free": {
-      "name": "Free account",
-      "read": "Read every book and play every game online",
-      "books": "1 book download a week",
-      "worksheets": "5 worksheet downloads a week"
+      "name": "Without Premium",
+      "read": "The first 3 pages of every book, and every game",
+      "books": "No book downloads",
+      "worksheets": "No worksheet downloads"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "Free to read and play. Support is optional.",
-    "pdfs": "Printable PDFs of the books and worksheets with a free account"
+    "heading": "Support is optional.",
+    "pdfs": "Printable PDFs of every book and worksheet with Premium"
   },
   "landing": {
-    "subtitle": "Read everything now. Create a free account to print: the first 500 families get Premium for life.",
-    "subtitleSoldOut": "Read everything now. Create a free account to print 1 book and 5 worksheets a week.",
+    "subtitle": "Preview every book now. The first 500 families get Premium for life, free.",
+    "subtitleSoldOut": "Preview every book now. Premium for life unlocks everything.",
     "cardTitle": "Founding member",
     "priceNote": "Premium for life"
   },
@@ -84,8 +90,13 @@
     "greeting": "Hi, I'm Lynden",
     "body": "I'm a primary teacher in the UK. I built MyPhonicsBooks so your child can learn to read English the way UK schools teach it.",
     "offer": "The first 500 families get Premium free for life: every book and worksheet.",
-    "soldOut": "Create a free account to print 1 book and 5 worksheets a week.",
+    "soldOut": "Create an account, then unlock every page, book and worksheet with Premium for life.",
     "role": "UK primary teacher",
     "photoAlt": "Lynden playing a phonics sound game on his classroom screen"
+  },
+  "consult": {
+    "paidTitle": "Your consultation is booked in",
+    "paidBody": "Thank you. Lynden will email you within one working day to arrange a time for your video call.",
+    "signIn": "Create an account or sign in first, then book your consultation."
   }
 }

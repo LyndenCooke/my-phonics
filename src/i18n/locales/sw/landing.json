@@ -86,13 +86,13 @@
     "printSticker": "…au kichapishe kama kijitabu"
   },
   "free": {
-    "title": "Bure kwa kila familia",
-    "subtitle": "Hakuna vifurushi, hakuna ukuta wa malipo. Soma kila kitu sasa. Jisajili (bure) ili kuchapisha.",
+    "title": "Chagua jinsi ya kuanza",
+    "subtitle": "Soma sehemu ya kila kitabu bure. Wanachama hupata kila ukurasa na kila upakuaji, maisha yote.",
     "read": {
-      "title": "Soma na ucheze",
+      "title": "Onyesho la awali",
       "note": "bila akaunti",
       "items": {
-        "books": "Vitabu vyote 33 katika viwango 8, kusoma mtandaoni",
+        "books": "Kurasa 3 za kwanza za vitabu vyote 33",
         "tapToHear": "Kusoma kwa kugusa na kusikia",
         "games": "Kila mchezo wa fonetiki",
         "check": "Jaribio la fonetiki la dakika 3 bila malipo"
@@ -100,16 +100,16 @@
       "cta": "Fungua maktaba"
     },
     "print": {
-      "badge": "Bado ni bure",
-      "title": "Chapisha nyumbani",
-      "note": "akaunti ya bure",
+      "badge": "Bei ya uzinduzi",
+      "title": "Premium maisha yote",
+      "note": "malipo mara moja",
       "items": {
-        "everything": "Kila kitu kilicho kwenye Soma na ucheze",
+        "everything": "Kila ukurasa wa kila kitabu, soma mtandaoni",
         "download": "Pakua kila kitabu kama PDF inayochapishika",
         "worksheets": "Kila karatasi ya mazoezi na kadi ya sauti",
         "progress": "Ufuatiliaji wa maendeleo na zawadi"
       },
-      "cta": "Fungua akaunti ya bure"
+      "cta": "Pata Premium maisha yote"
     },
     "support": "Umeipenda? <btn>Iunge mkono MyPhonicsBooks</btn> kwa shukrani ya mara moja ya kiasi chochote — ni hiari kabisa."
   },
@@ -138,7 +138,7 @@
     "body": "Mtoto wako anatoka kubahatisha maneno hadi kusoma kitabu kizima peke yake, sauti moja baada ya nyingine. Mbinu ileile ya fonetiki inayotumika katika shule za msingi za Uingereza, imeandaliwa kwa ajili ya nyumbani.",
     "ctaCheck": "Pata kiwango cha mtoto wangu (bure)",
     "ctaBrowse": "Tazama vitabu",
-    "note": "Jaribio la dakika 3. Hakuna kadi. Kila kitabu ni bure kusoma mtandaoni.",
+    "note": "Jaribio la dakika 3. Hakuna kadi. Soma sehemu ya kitabu chochote bure.",
     "photoAlt": "Lynden akifundisha hadithi ya fonetiki kwenye skrini ya darasa lake",
     "realTag": "Mwalimu halisi wa Uingereza. Darasa halisi.",
     "l1": "Sauti",
@@ -193,5 +193,16 @@
   "books": {
     "title": "Vitabu 33 halisi, sauti moja kwa wakati",
     "subtitle": "Kutoka sauti za kwanza hadi kusoma kwa ufasaha, katika viwango 8. Visome kwenye skrini au uvichapishe kama vijitabu."
+  },
+  "consult": {
+    "badge": "Pamoja na mwanzilishi",
+    "title": "Ana kwa ana na Lynden",
+    "items": {
+      "call": "Simu ya video ya faragha na Lynden",
+      "assess": "Anatathmini usomaji wa mtoto wako",
+      "plan": "Mpango binafsi wa vitabu vya kusoma, kwa mpangilio"
+    },
+    "cta": "Weka nafasi ya ushauri wangu",
+    "note": "malipo mara moja"
   }
 }

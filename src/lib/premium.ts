@@ -1,12 +1,12 @@
 /**
  * Premium + founding members (2026-10-05).
  *
- *   free     — 1 book and 5 worksheets per rolling 7 days
+ *   free     — no downloads; the first 3 pages of each book online
  *   premium  — every book and worksheet plus whole-pack PDFs, up to a daily
  *              allowance of new items (3 books, 20 worksheets, 3 packs a day)
  *
  * The first 500 accounts are founding members: Premium for life, free. After
- * that Premium is a one-off £4.99. All of the rules live in Postgres
+ * that Premium is a one-off £5.99 (launch price, rising to £99). All of the rules live in Postgres
  * (migration 20261005120000_premium_founding_500.sql); this module only asks.
  * Entitlement is never decided from build-time flags — see the 2026-05-20
  * outage note in Index.tsx.
@@ -15,7 +15,9 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const PREMIUM_PRICE_LABEL = '£4.99';
+export const PREMIUM_PRICE_LABEL = '£5.99';
+/** Non-members read this many pages of each book online. */
+export const PREVIEW_PAGES = 3;
 
 export type FoundingSpots = { total: number; claimed: number; remaining: number };
 
@@ -77,6 +79,25 @@ export async function requestDownload(kind: DownloadKind, item: string): Promise
   const { data, error } = await rpc('request_download', { p_kind: kind, p_item: item });
   if (error) throw new Error(error.message);
   return data as DownloadDecision;
+}
+
+export const CONSULTATION_PRICE_LABEL = '£1,000';
+
+/** Opens Stripe Checkout for the 1:1 consultation with Lynden. Requires a signed-in session. */
+export async function startConsultationCheckout(): Promise<void> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) throw new Error('Please sign in first.');
+  const res = await fetch(
+    `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+      body: JSON.stringify({ consultation: true }),
+    },
+  );
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data?.url) throw new Error(data?.error || 'Could not start checkout');
+  window.location.href = data.url;
 }
 
 /**

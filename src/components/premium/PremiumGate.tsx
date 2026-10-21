@@ -9,6 +9,9 @@
  *   over the plan    → the limit dialog (when the next one unlocks + Premium)
  *   otherwise        → true, and the download is logged against the week
  *
+ * Downloads are for members only (founding, paid or admin). Readers call
+ * unlockReading() when a non-member reaches the end of the free preview.
+ *
  * Also owns the once-a-week founding-offer pop-up for signed-out visitors.
  * Mounted once in App, inside the router.
  */
@@ -34,6 +37,8 @@ import {
 type GateContext = {
   /** Resolves true when the download may proceed. Shows the right dialog otherwise. */
   guard: (kind: DownloadKind, item: string) => Promise<boolean>;
+  /** A non-member finished the free preview pages: sign-up or Premium dialog. */
+  unlockReading: () => void;
 };
 
 const Ctx = createContext<GateContext | null>(null);
@@ -44,8 +49,8 @@ export function useDownloadGate(): GateContext {
   return ctx;
 }
 
-type SignupState = { source: 'download' | 'visit' } | null;
-type LimitState = { kind: DownloadKind; reason: 'limit' | 'premium_only' | 'daily_cap'; nextAt: string | null } | null;
+type SignupState = { source: 'download' | 'visit' | 'read' } | null;
+type LimitState = { kind: DownloadKind; reason: 'limit' | 'premium_only' | 'daily_cap' | 'read_more'; nextAt: string | null } | null;
 
 // ── Founding-offer pop-up for signed-out visitors ────────────────────────
 const OFFER_SEEN_KEY = 'mpb_founding_offer_seen';
@@ -158,7 +163,16 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const value = useMemo(() => ({ guard }), [guard]);
+  const unlockReading = useCallback(() => {
+    if (!user) {
+      markOfferSeen();
+      setSignup({ source: 'read' });
+    } else {
+      setLimit({ kind: 'book', reason: 'read_more', nextAt: null });
+    }
+  }, [user]);
+
+  const value = useMemo(() => ({ guard, unlockReading }), [guard, unlockReading]);
   const spotsLeft = !!spots && spots.remaining > 0;
 
   return (
@@ -200,6 +214,7 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
               </DialogTitle>
               <DialogDescription className="text-[15px] text-foreground/80 leading-[28px]">
                 {signup?.source === 'download' && <>{t('signupGate.lead')} </>}
+                {signup?.source === 'read' && <>{t('signupGate.readLead')} </>}
                 {t('note.body')}{' '}
                 <strong className="text-foreground">{spotsLeft ? t('note.offer') : t('note.soldOut')}</strong>
               </DialogDescription>
@@ -245,7 +260,7 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
         </DialogContent>
       </Dialog>
 
-      {/* Limit reached on the free plan. */}
+      {/* Not a member (or over the daily cap): what Premium unlocks. */}
       <Dialog open={!!limit} onOpenChange={(o) => !o && setLimit(null)}>
         <DialogContent className="max-w-sm mx-auto rounded-3xl">
           <DialogHeader>
@@ -255,19 +270,22 @@ export function PremiumGateProvider({ children }: { children: ReactNode }) {
             <DialogTitle className="font-display text-xl font-extrabold text-foreground">
               {limit?.reason === 'daily_cap'
                 ? t('limit.dailyTitle')
+                : limit?.reason === 'read_more'
+                ? t('limit.readTitle')
                 : limit?.reason === 'premium_only'
-                ? t('limit.packTitle')
+                ? t('limit.membersTitle')
                 : limit?.kind === 'book' ? t('limit.bookTitle') : t('limit.worksheetTitle')}
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
               {limit?.reason === 'daily_cap'
                 ? t('limit.dailyBody', { when: formatUnlockTime(limit?.nextAt ?? null) })
+                : limit?.reason === 'read_more'
+                ? t('limit.readBody')
                 : limit?.reason === 'premium_only'
-                ? t('limit.packBody')
+                ? t('limit.membersBody')
                 : limit?.kind === 'book'
                   ? t('limit.bookBody', { when: formatUnlock(limit?.nextAt ?? null) })
                   : t('limit.worksheetBody', { when: formatUnlock(limit?.nextAt ?? null) })}
-              {limit?.kind === 'book' && <> {t('limit.readFree')}</>}
             </DialogDescription>
           </DialogHeader>
 

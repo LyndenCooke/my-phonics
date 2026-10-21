@@ -12,13 +12,15 @@
     "haveAccount": "Saya sudah punya akun",
     "keepReading": "Lanjut membaca online",
     "notNow": "Nanti saja",
-    "afterNote": "Setelah 500 pertama, akun gratis mendapat 1 buku dan 5 lembar kerja per minggu dan Premium seharga {{price}}."
+    "afterNote": "Setelah 500 pertama, Premium seumur hidup seharga {{price}}: harga peluncuran kami, yang akan naik menjadi £99.",
+    "priceRise": "Harga peluncuran, akan naik menjadi £99"
   },
   "signupGate": {
-    "title": "Buat akun gratis untuk mengunduh",
-    "lead": "Mengunduh memerlukan akun gratis.",
-    "bodySoldOut": "Membaca online tidak pernah memerlukan akun. Dengan akun gratis Anda bisa mengunduh 1 buku dan 5 lembar kerja setiap minggu.",
-    "cta": "Buat akun gratis"
+    "title": "Unduhan khusus anggota",
+    "lead": "Unduhan khusus anggota.",
+    "bodySoldOut": "Buat akun, lalu buka setiap halaman, buku dan lembar kerja dengan Premium seumur hidup.",
+    "cta": "Buat akun",
+    "readLead": "Itu pratinjau gratisnya. Anggota bisa membaca setiap halaman."
   },
   "limit": {
     "bookTitle": "Buku gratis minggu ini sudah terpakai",
@@ -31,30 +33,34 @@
     "premiumTitle": "Premium seumur hidup",
     "premiumBody": "Semua buku dan lembar kerja bisa diunduh, plus paket lengkap dalam satu PDF.",
     "upgrade": "Dapatkan Premium seumur hidup: {{price}}",
-    "upgradeNote": "Sekali bayar. Tanpa langganan.",
+    "upgradeNote": "Sekali bayar, tanpa langganan. Harga peluncuran, akan naik menjadi £99.",
     "close": "Mungkin nanti",
     "dailyTitle": "Unduhan hari ini sudah habis",
-    "dailyBody": "Premium mencakup hingga 3 buku baru, 20 lembar kerja dan 3 paket per hari. Unduhan berikutnya terbuka {{when}}."
+    "dailyBody": "Premium mencakup hingga 3 buku baru, 20 lembar kerja dan 3 paket per hari. Unduhan berikutnya terbuka {{when}}.",
+    "readTitle": "Ingin membaca kelanjutannya?",
+    "readBody": "Tanpa Premium, Anda bisa membaca 3 halaman pertama setiap buku. Premium membuka setiap halaman dari setiap buku, plus semua unduhan.",
+    "membersBody": "Mencetak buku dan lembar kerja termasuk dalam Premium seumur hidup.",
+    "membersTitle": "Unduhan khusus anggota"
   },
   "welcome": {
     "founderTitle": "Anda anggota pendiri #{{number}}",
     "founderBody": "Premium menjadi milik Anda seumur hidup: semua buku dan lembar kerja bisa diunduh, gratis. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional.",
     "freeTitle": "Selamat bergabung",
-    "freeBody": "Semua buku dan game gratis untuk dibaca dan dimainkan online, dan akun gratis Anda mencakup unduhan 1 buku dan 5 lembar kerja per minggu. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional."
+    "freeBody": "Anda bisa membaca 3 halaman pertama setiap buku dan memainkan semua game. Premium seumur hidup membuka setiap halaman dan setiap unduhan. Jika MyPhonicsBooks membantu anak Anda, Anda bisa memberi ucapan terima kasih kecil. Sepenuhnya opsional."
   },
   "status": {
     "founder": "Anggota pendiri #{{number}} · Premium seumur hidup",
     "premium": "Premium · semua buku dan lembar kerja",
-    "free": "Paket gratis · minggu ini: {{books}} dari {{bookLimit}} buku, {{worksheets}} dari {{worksheetLimit}} lembar kerja"
+    "free": "Hanya pratinjau · Premium membuka setiap halaman dan unduhan"
   },
   "plans": {
     "title": "Paket",
-    "subtitle": "Premium seumur hidup {{price}}, sekali bayar",
+    "subtitle": "Premium seumur hidup {{price}}, sekali bayar (harga peluncuran, akan naik menjadi £99)",
     "free": {
-      "name": "Akun gratis",
-      "read": "Baca semua buku dan mainkan semua game secara online",
-      "books": "1 unduhan buku per minggu",
-      "worksheets": "5 unduhan lembar kerja per minggu"
+      "name": "Tanpa Premium",
+      "read": "3 halaman pertama setiap buku, dan semua game",
+      "books": "Tidak ada unduhan buku",
+      "worksheets": "Tidak ada unduhan lembar kerja"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "Gratis untuk membaca dan bermain. Dukungan bersifat opsional.",
-    "pdfs": "PDF buku dan lembar kerja yang bisa dicetak dengan akun gratis"
+    "heading": "Dukungan bersifat opsional.",
+    "pdfs": "PDF siap cetak untuk setiap buku dan lembar kerja dengan Premium"
   },
   "landing": {
-    "subtitle": "Baca semuanya sekarang. Buat akun gratis untuk mencetak: 500 keluarga pertama mendapat Premium seumur hidup.",
-    "subtitleSoldOut": "Baca semuanya sekarang. Buat akun gratis untuk mencetak 1 buku dan 5 lembar kerja per minggu.",
+    "subtitle": "Coba baca setiap buku sekarang. 500 keluarga pertama mendapat Premium seumur hidup, gratis.",
+    "subtitleSoldOut": "Coba baca setiap buku sekarang. Premium seumur hidup membuka semuanya.",
     "cardTitle": "Anggota pendiri",
     "priceNote": "Premium seumur hidup"
   },
@@ -84,8 +90,13 @@
     "greeting": "Halo, saya Lynden",
     "body": "Saya guru SD di Inggris. Saya membuat MyPhonicsBooks agar anak Anda belajar membaca bahasa Inggris seperti yang diajarkan sekolah di Inggris.",
     "offer": "500 keluarga pertama mendapat Premium gratis seumur hidup: semua buku dan lembar kerja.",
-    "soldOut": "Buat akun gratis untuk mencetak 1 buku dan 5 lembar kerja setiap minggu.",
+    "soldOut": "Buat akun, lalu buka setiap halaman, buku dan lembar kerja dengan Premium seumur hidup.",
     "role": "Guru SD di Inggris",
     "photoAlt": "Lynden memainkan permainan bunyi fonik di layar kelas"
+  },
+  "consult": {
+    "paidTitle": "Konsultasi Anda sudah dipesan",
+    "paidBody": "Terima kasih. Lynden akan mengirim email kepada Anda dalam satu hari kerja untuk mengatur waktu panggilan video Anda.",
+    "signIn": "Buat akun atau masuk terlebih dahulu, lalu pesan konsultasi Anda."
   }
 }

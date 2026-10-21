@@ -86,13 +86,13 @@
     "printSticker": "…ko ka buga shi a matsayin ƙaramin littafi"
   },
   "free": {
-    "title": "Kyauta ga kowane iyali",
-    "subtitle": "Babu tsare-tsare, babu shingen biya. Karanta komai yanzu. Yi rajista (kyauta) don bugawa.",
+    "title": "Zaɓi yadda za ka fara",
+    "subtitle": "Duba kowane littafi kyauta. Mambobi suna samun kowane shafi da kowane saukewa, har abada.",
     "read": {
-      "title": "Karanta ka yi wasa",
+      "title": "Duba samfuri",
       "note": "ba sai da asusu ba",
       "items": {
-        "books": "Duk littattafai 33 a matakai 8, karatu ta intanet",
+        "books": "Shafuka 3 na farko na duk littattafai 33",
         "tapToHear": "Karatu mai mu'amala na taɓa-ka-ji",
         "games": "Kowane wasan fonetik",
         "check": "Gwajin fonetik na minti 3 kyauta"
@@ -100,16 +100,16 @@
       "cta": "Buɗe ɗakin karatu"
     },
     "print": {
-      "badge": "Har yanzu kyauta",
-      "title": "Buga a gida",
-      "note": "asusu kyauta",
+      "badge": "Farashin ƙaddamarwa",
+      "title": "Premium na har abada",
+      "note": "biya sau ɗaya",
       "items": {
-        "everything": "Duk abin da ke cikin Karanta ka yi wasa",
+        "everything": "Kowane shafi na kowane littafi, karanta a intanet",
         "download": "Sauke kowane littafi a matsayin PDF da za a iya bugawa",
         "worksheets": "Kowace takardar aiki da katin sauti",
         "progress": "Bin diddigin ci gaba da kyaututtuka"
       },
-      "cta": "Buɗe asusu kyauta"
+      "cta": "Sami Premium na har abada"
     },
     "support": "Ka so shi? <btn>Tallafa wa MyPhonicsBooks</btn> da godiya ta sau ɗaya na kowane adadi — gaba ɗaya ba dole ba ne."
   },
@@ -138,7 +138,7 @@
     "body": "Yaronka zai daina hasashen kalmomi har ya karanta littafi gaba ɗaya da kansa, sauti bayan sauti. Hanyar fonis ɗin da makarantun firamare na Birtaniya ke amfani da ita, an shirya ta don gida.",
     "ctaCheck": "Gano matakin yarona (kyauta)",
     "ctaBrowse": "Duba littattafai",
-    "note": "Gwaji na minti 3. Babu kati. Kowane littafi kyauta ne a karanta a intanet.",
+    "note": "Gwaji na minti 3. Babu kati. Duba kowane littafi kyauta.",
     "photoAlt": "Lynden yana koyar da labarin fonetik a allon ajinsa",
     "realTag": "Malamin Birtaniya na gaske. Aji na gaske.",
     "l1": "Sautuka",
@@ -193,5 +193,16 @@
   "books": {
     "title": "Littattafai 33 na gaske, sauti ɗaya a lokaci guda",
     "subtitle": "Daga sautukan farko har zuwa karatu sosai, a matakai 8. Karanta su a allo ko ka buga su a matsayin ƙananan littattafai."
+  },
+  "consult": {
+    "badge": "Tare da wanda ya kafa",
+    "title": "Ganawa ta musamman da Lynden",
+    "items": {
+      "call": "Kiran bidiyo na sirri tare da Lynden",
+      "assess": "Yana tantance karatun ɗanka",
+      "plan": "Tsari na musamman na littattafan da za a karanta, bisa jeri"
+    },
+    "cta": "Yi ajiyar shawarata",
+    "note": "biya sau ɗaya"
   }
 }

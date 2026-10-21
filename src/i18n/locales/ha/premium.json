@@ -12,13 +12,15 @@
     "haveAccount": "Ina da asusu tuni",
     "keepReading": "Ci gaba da karatu a yanar gizo",
     "notNow": "Ba yanzu ba",
-    "afterNote": "Bayan 500 na farko, asusun kyauta za su sami littafi 1 da takardun aiki 5 a mako, kuma Premium zai zama {{price}}."
+    "afterNote": "Bayan 500 na farko, Premium na har abada {{price}} ne: farashin ƙaddamarwarmu, wanda zai tashi zuwa £99.",
+    "priceRise": "Farashin ƙaddamarwa, zai tashi zuwa £99"
   },
   "signupGate": {
-    "title": "Buɗe asusu na kyauta don saukewa",
-    "lead": "Saukewa na buƙatar asusu na kyauta.",
-    "bodySoldOut": "Karatu a yanar gizo ba ya buƙatar asusu ko kaɗan. Asusu na kyauta yana ba ka damar sauke littafi 1 da takardun aiki 5 kowane mako.",
-    "cta": "Buɗe asusu na kyauta"
+    "title": "Saukewa na mambobi ne",
+    "lead": "Saukewa na mambobi ne.",
+    "bodySoldOut": "Buɗe asusu, sannan ka buɗe kowane shafi, littafi da takardar aiki da Premium na har abada.",
+    "cta": "Buɗe asusu",
+    "readLead": "Wannan ne samfurin kyauta. Mambobi suna karanta kowane shafi."
   },
   "limit": {
     "bookTitle": "An riga an yi amfani da littafin kyauta na wannan mako",
@@ -31,30 +33,34 @@
     "premiumTitle": "Premium na har abada",
     "premiumBody": "Kowane littafi da takardar aiki don saukewa, tare da cikakkun fakiti a cikin PDF ɗaya.",
     "upgrade": "Sami Premium na har abada: {{price}}",
-    "upgradeNote": "Biya sau ɗaya. Babu biyan kuɗi na wata-wata.",
+    "upgradeNote": "Biya sau ɗaya, babu biyan kuɗi na wata-wata. Farashin ƙaddamarwa, zai tashi zuwa £99.",
     "close": "Wataƙila daga baya",
     "dailyTitle": "Saukewar yau ta ƙare",
-    "dailyBody": "Premium yana ba da har zuwa sabbin littattafai 3, takardun aiki 20 da fakiti 3 a rana. Na gaba zai buɗe {{when}}."
+    "dailyBody": "Premium yana ba da har zuwa sabbin littattafai 3, takardun aiki 20 da fakiti 3 a rana. Na gaba zai buɗe {{when}}.",
+    "readTitle": "Kana son karanta sauran?",
+    "readBody": "Ba tare da Premium ba za ka iya karanta shafuka 3 na farko na kowane littafi. Premium yana buɗe kowane shafi na kowane littafi, tare da kowane saukewa.",
+    "membersBody": "Buga littattafai da takardun aiki yana cikin Premium na har abada.",
+    "membersTitle": "Saukewa na mambobi ne"
   },
   "welcome": {
     "founderTitle": "Kai ne memba na farko #{{number}}",
     "founderBody": "Premium naka ne har abada: kowane littafi da takardar aiki don saukewa, kyauta. Idan MyPhonicsBooks yana taimaka wa ɗanka, za ka iya barin ƙaramar godiya. Zaɓinka ne gaba ɗaya.",
     "freeTitle": "Barka da zuwa",
-    "freeBody": "Kowane littafi da wasa kyauta ne don karantawa da wasa a yanar gizo, kuma asusunka na kyauta yana da sauke littafi 1 da takardun aiki 5 a mako. Idan MyPhonicsBooks yana taimaka wa ɗanka, za ka iya barin ƙaramar godiya. Zaɓinka ne gaba ɗaya."
+    "freeBody": "Za ka iya karanta shafuka 3 na farko na kowane littafi kuma ka yi kowane wasa. Premium na har abada yana buɗe kowane shafi da kowane saukewa. Idan MyPhonicsBooks yana taimaka wa ɗanka, za ka iya barin ƙaramar godiya. Zaɓinka ne gaba ɗaya."
   },
   "status": {
     "founder": "Memba na farko #{{number}} · Premium na har abada",
     "premium": "Premium · kowane littafi da takardar aiki",
-    "free": "Tsarin kyauta · wannan mako: littafi {{books}} cikin {{bookLimit}}, takardun aiki {{worksheets}} cikin {{worksheetLimit}}"
+    "free": "Samfuri kawai · Premium yana buɗe kowane shafi da saukewa"
   },
   "plans": {
     "title": "Tsare-tsare",
-    "subtitle": "Premium na har abada {{price}} ne, biya sau ɗaya",
+    "subtitle": "Premium na har abada {{price}} ne, biya sau ɗaya (farashin ƙaddamarwa, zai tashi zuwa £99)",
     "free": {
-      "name": "Asusu na kyauta",
-      "read": "Karanta kowane littafi ka kuma yi kowane wasa a yanar gizo",
-      "books": "Sauke littafi 1 a mako",
-      "worksheets": "Sauke takardun aiki 5 a mako"
+      "name": "Ba tare da Premium ba",
+      "read": "Shafuka 3 na farko na kowane littafi, da kowane wasa",
+      "books": "Babu saukar littattafai",
+      "worksheets": "Babu saukar takardun aiki"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "Karatu da wasa kyauta ne. Tallafi zaɓi ne.",
-    "pdfs": "PDF na littattafai da takardun aiki da za a iya bugawa tare da asusu na kyauta"
+    "heading": "Tallafi zaɓi ne.",
+    "pdfs": "PDF na kowane littafi da takardar aiki da za a iya bugawa tare da Premium"
   },
   "landing": {
-    "subtitle": "Karanta komai yanzu. Buɗe asusu na kyauta don bugawa: iyalai 500 na farko za su sami Premium na har abada.",
-    "subtitleSoldOut": "Karanta komai yanzu. Buɗe asusu na kyauta don buga littafi 1 da takardun aiki 5 a mako.",
+    "subtitle": "Duba kowane littafi yanzu. Iyalai 500 na farko za su sami Premium na har abada, kyauta.",
+    "subtitleSoldOut": "Duba kowane littafi yanzu. Premium na har abada yana buɗe komai.",
     "cardTitle": "Memba na farko",
     "priceNote": "Premium na har abada"
   },
@@ -84,8 +90,13 @@
     "greeting": "Sannu, ni ne Lynden",
     "body": "Ni malamin firamare ne a Birtaniya. Na yi MyPhonicsBooks ne domin yaronka ya koyi karanta Turanci yadda makarantun Birtaniya ke koyarwa.",
     "offer": "Iyalai 500 na farko za su sami Premium kyauta har abada: kowane littafi da takardar aiki.",
-    "soldOut": "Buɗe asusu kyauta don buga littafi 1 da takardun aiki 5 kowane mako.",
+    "soldOut": "Buɗe asusu, sannan ka buɗe kowane shafi, littafi da takardar aiki da Premium na har abada.",
     "role": "Malamin firamare a Birtaniya",
     "photoAlt": "Lynden yana wasan sautukan fonetik a allon aji"
+  },
+  "consult": {
+    "paidTitle": "An yi ajiyar shawararka",
+    "paidBody": "Na gode. Lynden zai aiko maka da imel cikin kwana ɗaya na aiki don tsara lokacin kiran bidiyonka.",
+    "signIn": "Buɗe asusu ko shiga tukuna, sannan ka yi ajiyar shawararka."
   }
 }

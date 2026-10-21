@@ -22,6 +22,8 @@ export default function PaymentSuccess() {
   // ?premium=1 — "Premium for life". Nothing to unlock book by book: the
   // plan flips to premium once the webhook completes the purchase row.
   const isPremium = searchParams.get('premium') === '1';
+  // ?consultation=1 — the 1:1 call with Lynden. Nothing to unlock; he books it.
+  const isConsultation = searchParams.get('consultation') === '1';
 
   // Webhook latency: Stripe fires checkout.session.completed within a few
   // seconds of payment, but the browser hits this page first. Poll the
@@ -31,7 +33,7 @@ export default function PaymentSuccess() {
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
-    if (!user || isSupport) { setUnlocking(false); return; }
+    if (!user || isSupport || isConsultation) { setUnlocking(false); return; }
     if (isPremium) {
       // The webhook lands a few seconds after the redirect: refresh the plan
       // a few times so the library sees Premium without a manual reload.
@@ -125,6 +127,27 @@ export default function PaymentSuccess() {
   };
   const userBooksData = queryClient.getQueryData<unknown[]>(['user_books', user?.id]);
   const showRetry = !unlocking && user && (!userBooksData || userBooksData.length === 0);
+
+  if (isConsultation) {
+    return (
+      <Layout>
+        <div className="px-4 pt-12 pb-8 max-w-lg mx-auto text-center">
+          <div className="w-16 h-16 rounded-full bg-tint-pink flex items-center justify-center mx-auto mb-4">
+            <Crown className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="font-display text-2xl font-extrabold text-foreground mb-2">{t('premium:consult.paidTitle')}</h1>
+          <p className="text-sm text-muted-foreground mb-6">{t('premium:consult.paidBody')}</p>
+          <button
+            onClick={() => navigate('/library')}
+            className="w-full py-3.5 rounded-xl font-bold text-sm gradient-primary text-primary-foreground shadow-button transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 press-scale"
+          >
+            <BookOpen className="w-4 h-4" />
+            {t('payment.backToLibrary')}
+          </button>
+        </div>
+      </Layout>
+    );
+  }
 
   if (isPremium) {
     return (

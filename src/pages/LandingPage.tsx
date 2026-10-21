@@ -17,14 +17,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen, Sparkles, CheckCircle2, ChevronRight, ChevronLeft, XCircle, Gamepad2,
-  GraduationCap, Heart, ClipboardList, PlayCircle, ShoppingBag, Globe2,
+  GraduationCap, Heart, ClipboardList, PlayCircle, ShoppingBag, Globe2, Loader2,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
 import { useFunnelTracker } from '@/hooks/useFunnelTracker';
 import LandingTestimonials from '@/components/LandingTestimonials';
 import { useTranslation, Trans } from 'react-i18next';
 import FoundingTally from '@/components/premium/FoundingTally';
-import { PREMIUM_PRICE_LABEL, useFoundingSpots } from '@/lib/premium';
+import { CONSULTATION_PRICE_LABEL, PREMIUM_PRICE_LABEL, startConsultationCheckout, startPremiumCheckout, useFoundingSpots } from '@/lib/premium';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { LANGUAGES } from '@/i18n/languages';
 
@@ -739,42 +741,63 @@ function LevelJourney() {
   );
 }
 
-/* ─── PRICING ─── */
+/* ─── PRICING — preview, Premium for life, 1:1 with Lynden ─── */
 function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: () => void }) {
   const { t } = useTranslation(['landing', 'premium']);
   const r = useReveal();
-  // While founding spots remain the account card is the founding offer;
-  // afterwards it describes the free plan's weekly allowance.
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState<'premium' | 'consult' | null>(null);
+  // While founding spots remain the middle card is the founding offer;
+  // afterwards it is Premium for life at the launch price.
   const { data: spots } = useFoundingSpots();
   const spotsLeft = !spots || spots.remaining > 0;
 
+  const checkout = async (which: 'premium' | 'consult') => {
+    if (!user) {
+      if (which === 'consult') toast(t('premium:consult.signIn'));
+      navigate(`/auth?mode=signup&redirect=${encodeURIComponent(which === 'consult' ? '/landing#consult' : '/library')}`);
+      return;
+    }
+    setBusy(which);
+    try {
+      await (which === 'consult' ? startConsultationCheckout() : startPremiumCheckout());
+    } catch {
+      toast.error(t('premium:errors.checkoutFailed'));
+      setBusy(null);
+    }
+  };
+
+  const card = 'bg-background rounded-[2rem] p-6 flex flex-col';
+  const item = (f: string, tone: string) => (
+    <li key={f} className="flex items-start gap-2 text-sm">
+      <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: tone }} /> {f}
+    </li>
+  );
+
   return (
-    <section className="py-14 md:py-20 bg-card">
-      <div ref={r.ref} className={`max-w-4xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+    <section id="pricing" className="py-14 md:py-20 bg-card">
+      <div ref={r.ref} className={`max-w-6xl mx-auto px-4 sm:px-6 transition-all duration-700 ${r.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="text-center mb-10">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">{t('free.title')}</h2>
           <p className="mt-3 text-muted-foreground text-lg">{spotsLeft ? t('premium:landing.subtitle') : t('premium:landing.subtitleSoldOut')}</p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-5">
-          {/* Read & play — nothing needed */}
-          <div className="bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
+        <div className="grid md:grid-cols-3 gap-5 items-stretch">
+          {/* Preview — no account */}
+          <div className={card} style={{ boxShadow: STICKER, border: '1px solid rgba(40,30,40,0.05)' }}>
             <h3 className="font-display text-lg font-extrabold text-foreground">{t('free.read.title')}</h3>
             <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{t('free.read.note')}</span></div>
-            <ul className="space-y-3 mb-6 flex-1">
-              {[t('free.read.items.books'), t('free.read.items.tapToHear'), t('free.read.items.games'), t('free.read.items.check')].map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-[hsl(var(--level-3))] shrink-0" /> {f}
-                </li>
-              ))}
+            <ul className="space-y-3 mb-6 flex-1 text-muted-foreground">
+              {[t('free.read.items.books'), t('free.read.items.tapToHear'), t('free.read.items.games'), t('free.read.items.check')].map((f) => item(f, '#22C55E'))}
             </ul>
             <Link to="/library" className="w-full py-3 rounded-2xl border-2 border-primary text-primary font-display font-extrabold text-sm hover:bg-primary/5 transition-colors text-center">
               {t('free.read.cta')}
             </Link>
           </div>
 
-          {/* Download — free account */}
-          <div className="relative bg-background rounded-[2rem] p-6 flex flex-col" style={{ boxShadow: STICKER, border: `2px solid ${PINK}`, outline: `4px solid ${PINK}20` }}>
+          {/* Founding member (free) or Premium for life (launch price) */}
+          <div className={`relative ${card}`} style={{ boxShadow: STICKER, border: `2px solid ${PINK}`, outline: `4px solid ${PINK}20` }}>
             <span
               className="absolute -top-3 end-5 rounded-full bg-white px-3 py-1 text-[11px] font-extrabold rotate-2 text-primary-ink"
               style={{ boxShadow: STICKER, border: '2px solid #fff', outline: `2px solid ${PINK}40` }}
@@ -782,30 +805,56 @@ function FreeForAll({ onSignUp, onSupport }: { onSignUp: () => void; onSupport: 
               {spotsLeft ? t('premium:offer.badge') : t('free.print.badge')}
             </span>
             <h3 className="font-display text-lg font-extrabold text-foreground">{spotsLeft ? t('premium:landing.cardTitle') : t('free.print.title')}</h3>
-            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold text-foreground">£0</span><span className="text-sm text-muted-foreground font-semibold ms-1">{spotsLeft ? t('premium:landing.priceNote') : t('free.print.note')}</span></div>
-            <ul className="space-y-3 mb-6 flex-1">
-              {(spotsLeft
-                ? [t('free.print.items.everything'), t('premium:plans.premium.books'), t('premium:plans.premium.worksheets'), t('premium:plans.premium.forLife')]
-                : [t('free.print.items.everything'), t('premium:plans.free.books'), t('premium:plans.free.worksheets'), t('free.print.items.progress')]
-              ).map(f => (
-                <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0" /> {f}
-                </li>
-              ))}
+            <div className="mt-2 mb-1">
+              <span className="font-display text-4xl font-extrabold text-foreground">{spotsLeft ? '£0' : PREMIUM_PRICE_LABEL}</span>
+              <span className="text-sm text-muted-foreground font-semibold ms-1">{spotsLeft ? t('premium:landing.priceNote') : t('free.print.note')}</span>
+            </div>
+            <p className="mb-5 text-xs font-extrabold text-primary-ink">{t('premium:offer.priceRise')}</p>
+            <ul className="space-y-3 mb-6 flex-1 text-muted-foreground">
+              {[t('free.print.items.everything'), t('premium:plans.premium.books'), t('premium:plans.premium.worksheets'), t('premium:plans.premium.forLife')].map((f) => item(f, PINK))}
             </ul>
             {spotsLeft && <FoundingTally className="mb-4" />}
             <button
-              onClick={onSignUp}
-              className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px]"
+              onClick={spotsLeft ? onSignUp : () => checkout('premium')}
+              disabled={busy !== null}
+              className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-white transition-all active:translate-y-[3px] disabled:opacity-60 flex items-center justify-center gap-2"
               style={{ background: PINK, boxShadow: `0 4px 0 ${PINK_INK}` }}
             >
+              {busy === 'premium' && <Loader2 className="w-4 h-4 animate-spin" />}
               {spotsLeft ? t('premium:offer.cta') : t('free.print.cta')}
             </button>
-            <p className="text-[11px] text-muted-foreground text-center leading-relaxed mt-3">
-              {spotsLeft
-                ? t('premium:offer.afterNote', { price: PREMIUM_PRICE_LABEL })
-                : t('premium:plans.subtitle', { price: PREMIUM_PRICE_LABEL })}
-            </p>
+            {spotsLeft && (
+              <p className="text-[11px] text-muted-foreground text-center leading-relaxed mt-3">
+                {t('premium:offer.afterNote', { price: PREMIUM_PRICE_LABEL })}
+              </p>
+            )}
+          </div>
+
+          {/* 1:1 consultation with Lynden */}
+          <div id="consult" className={`relative ${card} text-white`} style={{ background: '#1F1B2E', boxShadow: STICKER }}>
+            <span
+              className="absolute -top-3 end-5 rounded-full px-3 py-1 text-[11px] font-extrabold -rotate-2 text-[#1F1B2E]"
+              style={{ background: '#FFE14D', boxShadow: STICKER }}
+            >
+              {t('consult.badge')}
+            </span>
+            <div className="flex items-center gap-3">
+              <img src="/landing/teacher-note.webp" alt="" className="w-12 h-12 rounded-full object-cover object-left border-2 border-white/80" loading="lazy" />
+              <h3 className="font-display text-lg font-extrabold">{t('consult.title')}</h3>
+            </div>
+            <div className="mt-2 mb-5"><span className="font-display text-4xl font-extrabold">{CONSULTATION_PRICE_LABEL}</span><span className="text-sm text-white/70 font-semibold ms-1">{t('consult.note')}</span></div>
+            <ul className="space-y-3 mb-6 flex-1 text-white/85">
+              {[t('consult.items.call'), t('consult.items.assess'), t('consult.items.plan')].map((f) => item(f, '#FFE14D'))}
+            </ul>
+            <button
+              onClick={() => checkout('consult')}
+              disabled={busy !== null}
+              className="w-full py-3 rounded-2xl font-display font-extrabold text-sm text-[#1F1B2E] transition-all active:translate-y-[3px] disabled:opacity-60 flex items-center justify-center gap-2"
+              style={{ background: '#FFE14D', boxShadow: '0 4px 0 #C9A800' }}
+            >
+              {busy === 'consult' && <Loader2 className="w-4 h-4 animate-spin" />}
+              {t('consult.cta')}
+            </button>
           </div>
         </div>
 

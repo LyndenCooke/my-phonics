@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown; support_pence?: unknown; premium?: unknown };
+    let payload: { product_id?: unknown; guest_email?: unknown; ref_code?: unknown; support_pence?: unknown; premium?: unknown; consultation?: unknown };
     try {
       payload = await req.json();
     } catch {
@@ -134,9 +134,14 @@ Deno.serve(async (req) => {
     // (price_data), so no Stripe Price has to exist. metadata.product_id
     // points at that row: the webhook completes the purchase like any other
     // one-off, and mpb_premium_reason() reads premium from the completed row.
-    if (payload.premium === true) {
+    // The £1,000 1:1 consultation with Lynden (2026-10-21) goes through the
+    // same inline one-off path, from its own product row (product_type
+    // 'consultation'). It grants nothing on the site: Lynden books the call.
+    const oneOffType = payload.premium === true ? "premium_lifetime"
+      : payload.consultation === true ? "consultation" : null;
+    if (oneOffType) {
       if (!userId) {
-        return badRequest("Please sign in to get Premium");
+        return badRequest(oneOffType === "consultation" ? "Please sign in to book a consultation" : "Please sign in to get Premium");
       }
       const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
       if (!STRIPE_SECRET_KEY) {
@@ -145,16 +150,18 @@ Deno.serve(async (req) => {
       const { data: premiumProduct } = await supabaseAdmin
         .from("products")
         .select("id, name, description, price_pence")
-        .eq("product_type", "premium_lifetime")
+        .eq("product_type", oneOffType)
         .eq("is_active", true)
         .limit(1)
         .maybeSingle();
       if (!premiumProduct || !premiumProduct.price_pence) {
-        return new Response(JSON.stringify({ error: "Premium is not available yet" }), { status: 404, headers: corsHeaders });
+        return new Response(JSON.stringify({ error: "This is not available yet" }), { status: 404, headers: corsHeaders });
       }
-      const { data: alreadyPremium } = await supabaseAdmin.rpc("mpb_premium_reason", { p_user_id: userId });
-      if (alreadyPremium) {
-        return badRequest("This account already has Premium");
+      if (oneOffType === "premium_lifetime") {
+        const { data: alreadyPremium } = await supabaseAdmin.rpc("mpb_premium_reason", { p_user_id: userId });
+        if (alreadyPremium) {
+          return badRequest("This account already has Premium");
+        }
       }
       const { data: profile } = await supabaseAdmin
         .from("profiles")
@@ -168,12 +175,14 @@ Deno.serve(async (req) => {
         "line_items[0][price_data][unit_amount]": String(premiumProduct.price_pence),
         "line_items[0][price_data][product_data][name]": `MyPhonicsBooks ${premiumProduct.name}`,
         "line_items[0][price_data][product_data][description]":
-          premiumProduct.description || "Unlimited book and worksheet downloads.",
+          premiumProduct.description || "Every book and worksheet to download.",
         "line_items[0][quantity]": "1",
-        success_url: `${origin}/payment-success?premium=1&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/support`,
+        success_url: oneOffType === "consultation"
+          ? `${origin}/payment-success?consultation=1&session_id={CHECKOUT_SESSION_ID}`
+          : `${origin}/payment-success?premium=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: oneOffType === "consultation" ? `${origin}/landing` : `${origin}/support`,
         "metadata[product_id]": premiumProduct.id,
-        "metadata[product_type]": "premium_lifetime",
+        "metadata[product_type]": oneOffType,
         client_reference_id: userId,
       });
       if (profile?.email) body.set("customer_email", profile.email);

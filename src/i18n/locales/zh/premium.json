@@ -12,13 +12,15 @@
     "haveAccount": "我已有账户",
     "keepReading": "继续在线阅读",
     "notNow": "暂时不用",
-    "afterNote": "前 500 名之后，免费账户每周可下载 1 本书和 5 张练习纸，Premium 售价 {{price}}。"
+    "afterNote": "前 500 名之后，终身 Premium 售价 {{price}}：这是首发价，之后将涨至 £99。",
+    "priceRise": "首发价，之后将涨至 £99"
   },
   "signupGate": {
-    "title": "注册免费账户即可下载",
-    "lead": "下载需要一个免费账户。",
-    "bodySoldOut": "在线阅读永远不需要账户。免费账户每周可下载 1 本书和 5 张练习纸。",
-    "cta": "注册免费账户"
+    "title": "下载仅限会员",
+    "lead": "下载仅限会员。",
+    "bodySoldOut": "创建账户，然后开通终身 Premium，解锁每一页、每本书和每张练习纸。",
+    "cta": "创建账户",
+    "readLead": "免费试读到此为止。会员可以阅读每一页。"
   },
   "limit": {
     "bookTitle": "本周的免费图书已用完",
@@ -31,30 +33,34 @@
     "premiumTitle": "终身 Premium",
     "premiumBody": "所有图书和练习纸均可下载，还可一次下载整套 PDF。",
     "upgrade": "获取终身 Premium：{{price}}",
-    "upgradeNote": "一次付款，无需订阅。",
+    "upgradeNote": "一次付款，无需订阅。首发价，之后将涨至 £99。",
     "close": "以后再说",
     "dailyTitle": "今天的下载已用完",
-    "dailyBody": "Premium 每天最多可下载 3 本新书、20 张练习纸和 3 套整套 PDF。下一次可下载的时间：{{when}}。"
+    "dailyBody": "Premium 每天最多可下载 3 本新书、20 张练习纸和 3 套整套 PDF。下一次可下载的时间：{{when}}。",
+    "readTitle": "想读完剩下的内容吗？",
+    "readBody": "没有 Premium 时，每本书可阅读前 3 页。Premium 解锁每本书的每一页，以及所有下载。",
+    "membersBody": "打印图书和练习纸是终身 Premium 的一部分。",
+    "membersTitle": "下载仅限会员"
   },
   "welcome": {
     "founderTitle": "您是第 {{number}} 位创始会员",
     "founderBody": "终身 Premium 已属于您：所有图书和练习纸均可免费下载。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。",
     "freeTitle": "欢迎加入",
-    "freeBody": "所有图书和游戏都可以免费在线阅读和游玩，您的免费账户每周可下载 1 本书和 5 张练习纸。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。"
+    "freeBody": "您可以阅读每本书的前 3 页，并玩所有游戏。终身 Premium 解锁每一页和所有下载。如果 MyPhonicsBooks 对您的孩子有帮助，您可以留下一点心意。完全自愿。"
   },
   "status": {
     "founder": "第 {{number}} 位创始会员 · 终身 Premium",
     "premium": "Premium · 所有图书和练习纸",
-    "free": "免费方案 · 本周：图书 {{books}}/{{bookLimit}}，练习纸 {{worksheets}}/{{worksheetLimit}}"
+    "free": "仅可试读 · Premium 解锁每一页和所有下载"
   },
   "plans": {
     "title": "方案",
-    "subtitle": "终身 Premium {{price}}，一次性付款",
+    "subtitle": "终身 Premium {{price}}，一次性付款（首发价，之后将涨至 £99）",
     "free": {
-      "name": "免费账户",
-      "read": "在线阅读每一本书、玩每一个游戏",
-      "books": "每周下载 1 本书",
-      "worksheets": "每周下载 5 张练习纸"
+      "name": "未开通 Premium",
+      "read": "每本书的前 3 页，以及所有游戏",
+      "books": "不可下载图书",
+      "worksheets": "不可下载练习纸"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "阅读和游戏免费。支持全凭自愿。",
-    "pdfs": "注册免费账户即可获得图书和练习纸的可打印 PDF"
+    "heading": "支持全凭自愿。",
+    "pdfs": "开通 Premium 即可获得每本书和每张练习纸的可打印 PDF"
   },
   "landing": {
-    "subtitle": "现在就可以阅读全部内容。注册免费账户即可打印：前 500 个家庭可获得终身 Premium。",
-    "subtitleSoldOut": "现在就可以阅读全部内容。注册免费账户，每周可打印 1 本书和 5 张练习纸。",
+    "subtitle": "现在就可试读每本书。前 500 个家庭可免费获得终身 Premium。",
+    "subtitleSoldOut": "现在就可试读每本书。终身 Premium 解锁全部内容。",
     "cardTitle": "创始会员",
     "priceNote": "终身 Premium"
   },
@@ -84,8 +90,13 @@
     "greeting": "你好，我是 Lynden",
     "body": "我是英国的一名小学老师。我做 MyPhonicsBooks，是为了让你的孩子用英国学校的方法学会读英语。",
     "offer": "前 500 个家庭终身免费获得 Premium：所有图书和练习纸。",
-    "soldOut": "创建免费账户，每周可打印 1 本书和 5 张练习纸。",
+    "soldOut": "创建账户，然后开通终身 Premium，解锁每一页、每本书和每张练习纸。",
     "role": "英国小学老师",
     "photoAlt": "Lynden 在教室屏幕上玩自然拼读发音游戏"
+  },
+  "consult": {
+    "paidTitle": "您的咨询已预约成功",
+    "paidBody": "谢谢您。Lynden 会在一个工作日内给您发邮件，约定视频通话的时间。",
+    "signIn": "请先创建账户或登录，然后预约咨询。"
   }
 }

@@ -86,13 +86,13 @@
     "printSticker": "…ya da kitapçık olarak yazdırın"
   },
   "free": {
-    "title": "Her aile için ücretsiz",
-    "subtitle": "Paket yok, ödeme duvarı yok. Her şeyi şimdi okuyun. Yazdırmak için (ücretsiz) kaydolun.",
+    "title": "Nasıl başlayacağınızı seçin",
+    "subtitle": "Her kitaba ücretsiz göz atın. Üyeler her sayfaya ve her indirmeye ömür boyu sahip olur.",
     "read": {
-      "title": "Oku ve oyna",
+      "title": "Önizleme",
       "note": "hesap gerekmez",
       "items": {
-        "books": "8 seviyedeki 33 kitabın tamamı, çevrimiçi okuma",
+        "books": "33 kitabın hepsinin ilk 3 sayfası",
         "tapToHear": "Dokun-dinle etkileşimli okuma",
         "games": "Tüm fonetik oyunlar",
         "check": "Ücretsiz 3 dakikalık fonetik testi"
@@ -100,16 +100,16 @@
       "cta": "Kütüphaneyi açın"
     },
     "print": {
-      "badge": "Yine ücretsiz",
-      "title": "Evde yazdırın",
-      "note": "ücretsiz hesap",
+      "badge": "Lansman fiyatı",
+      "title": "Ömür boyu Premium",
+      "note": "tek seferlik",
       "items": {
-        "everything": "Oku ve oyna'daki her şey",
+        "everything": "Her kitabın her sayfası, çevrimiçi okuyun",
         "download": "Her kitabı yazdırılabilir PDF olarak indirin",
         "worksheets": "Tüm çalışma kâğıtları ve ses kartları",
         "progress": "İlerleme takibi ve ödüller"
       },
-      "cta": "Ücretsiz hesap oluşturun"
+      "cta": "Ömür boyu Premium alın"
     },
     "support": "Beğendiniz mi? Dilediğiniz tutarda tek seferlik bir teşekkürle <btn>MyPhonicsBooks'u destekleyin</btn> — tamamen isteğe bağlı."
   },
@@ -138,7 +138,7 @@
     "body": "Çocuğunuz kelimeleri tahmin etmekten, bir kitabın tamamını tek başına okumaya geçer; ses ses, adım adım. Birleşik Krallık'taki ilkokullarda kullanılan aynı fonetik yöntem, ev için hazırlandı.",
     "ctaCheck": "Çocuğumun seviyesini bul (ücretsiz)",
     "ctaBrowse": "Kitaplara göz at",
-    "note": "3 dakikalık test. Kart gerekmez. Tüm kitaplar çevrimiçi ücretsiz.",
+    "note": "3 dakikalık test. Kart gerekmez. Her kitaba ücretsiz göz atın.",
     "photoAlt": "Lynden sınıf ekranında bir fonik hikâyesi öğretiyor",
     "realTag": "Gerçek İngiliz öğretmen. Gerçek sınıf.",
     "l1": "Sesler",
@@ -193,5 +193,16 @@
   "books": {
     "title": "33 gerçek kitap, her seferinde bir ses",
     "subtitle": "İlk seslerden akıcı okumaya, 8 seviyede. Ekranda okuyun ya da kitapçık olarak yazdırın."
+  },
+  "consult": {
+    "badge": "Kurucuyla",
+    "title": "Lynden ile birebir",
+    "items": {
+      "call": "Lynden ile özel bir görüntülü görüşme",
+      "assess": "Çocuğunuzun okumasını değerlendirir",
+      "plan": "Hangi kitapların hangi sırayla okunacağını gösteren kişisel bir plan"
+    },
+    "cta": "Danışmanlık randevumu al",
+    "note": "tek seferlik"
   }
 }

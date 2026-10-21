@@ -85,13 +85,13 @@
     "printSticker": "…atau cetak sebagai buklet"
   },
   "free": {
-    "title": "Gratis untuk setiap keluarga",
-    "subtitle": "Tanpa paket, tanpa paywall. Baca semuanya sekarang. Daftar (gratis) untuk mencetak.",
+    "title": "Pilih cara Anda memulai",
+    "subtitle": "Coba baca setiap buku gratis. Anggota mendapat setiap halaman dan setiap unduhan, seumur hidup.",
     "read": {
-      "title": "Baca & main",
+      "title": "Pratinjau",
       "note": "tanpa akun",
       "items": {
-        "books": "Semua 33 buku di 8 level, dibaca online",
+        "books": "3 halaman pertama dari ke-33 buku",
         "tapToHear": "Membaca interaktif ketuk-untuk-dengar",
         "games": "Semua permainan fonik",
         "check": "Tes fonik gratis 3 menit"
@@ -99,16 +99,16 @@
       "cta": "Buka perpustakaan"
     },
     "print": {
-      "badge": "Tetap gratis",
-      "title": "Cetak di rumah",
-      "note": "akun gratis",
+      "badge": "Harga peluncuran",
+      "title": "Premium seumur hidup",
+      "note": "sekali bayar",
       "items": {
-        "everything": "Semua yang ada di Baca & main",
+        "everything": "Setiap halaman dari setiap buku, baca online",
         "download": "Unduh setiap buku sebagai PDF siap cetak",
         "worksheets": "Semua lembar kerja dan alas bunyi",
         "progress": "Pelacakan perkembangan dan hadiah"
       },
-      "cta": "Buat akun gratis"
+      "cta": "Dapatkan Premium seumur hidup"
     },
     "support": "Suka? <btn>Dukung MyPhonicsBooks</btn> dengan ucapan terima kasih sekali saja berapa pun jumlahnya — sepenuhnya opsional."
   },
@@ -137,7 +137,7 @@
     "body": "Anak Anda beralih dari menebak kata menjadi membaca satu buku utuh sendiri, satu bunyi demi satu bunyi. Metode fonik yang sama dengan yang dipakai SD di Inggris, dibuat untuk di rumah.",
     "ctaCheck": "Cek level anak saya (gratis)",
     "ctaBrowse": "Lihat bukunya",
-    "note": "Cek 3 menit. Tanpa kartu. Semua buku gratis dibaca online.",
+    "note": "Cek 3 menit. Tanpa kartu. Coba baca buku apa pun gratis.",
     "photoAlt": "Lynden mengajarkan cerita fonik di layar kelasnya",
     "realTag": "Guru Inggris sungguhan. Kelas sungguhan.",
     "l1": "Bunyi",
@@ -192,5 +192,16 @@
   "books": {
     "title": "33 buku sungguhan, satu bunyi setiap kali",
     "subtitle": "Dari bunyi pertama sampai lancar membaca, dalam 8 level. Baca di layar atau cetak jadi buklet."
+  },
+  "consult": {
+    "badge": "Bersama pendiri",
+    "title": "1:1 dengan Lynden",
+    "items": {
+      "call": "Panggilan video pribadi dengan Lynden",
+      "assess": "Ia menilai kemampuan membaca anak Anda",
+      "plan": "Rencana pribadi tentang buku yang perlu dibaca, secara berurutan"
+    },
+    "cta": "Pesan konsultasi saya",
+    "note": "sekali bayar"
   }
 }

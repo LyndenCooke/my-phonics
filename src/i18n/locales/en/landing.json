@@ -86,13 +86,13 @@
     "printSticker": "…or print it as a booklet"
   },
   "free": {
-    "title": "Free for every family",
-    "subtitle": "No plans, no paywall. Read everything now. Sign up (free) to print.",
+    "title": "Choose how you start",
+    "subtitle": "Preview every book free. Members get every page and every download, for life.",
     "read": {
-      "title": "Read & play",
+      "title": "Preview",
       "note": "no account",
       "items": {
-        "books": "All 33 books across 8 levels, read online",
+        "books": "The first 3 pages of all 33 books",
         "tapToHear": "Interactive tap-to-hear reading",
         "games": "Every phonics game",
         "check": "Free 3-minute phonics check"
@@ -100,16 +100,16 @@
       "cta": "Open the library"
     },
     "print": {
-      "badge": "Still free",
-      "title": "Print at home",
-      "note": "free account",
+      "badge": "Launch price",
+      "title": "Premium for life",
+      "note": "one-off",
       "items": {
-        "everything": "Everything in Read & play",
+        "everything": "Every page of every book, read online",
         "download": "Download every book as a printable PDF",
         "worksheets": "Every worksheet and sound mat",
         "progress": "Progress tracking and rewards"
       },
-      "cta": "Create a free account"
+      "cta": "Get Premium for life"
     },
     "support": "Love it? <btn>Support MyPhonicsBooks</btn> with a one-off thank-you of any size — completely optional."
   },
@@ -138,7 +138,7 @@
     "body": "Your child goes from guessing words to reading a whole book on their own, one sound at a time. The same phonics method used in UK primary schools, made for home.",
     "ctaCheck": "Find my child's level (free)",
     "ctaBrowse": "Explore the books",
-    "note": "3-minute check. No card. Every book free to read online.",
+    "note": "3-minute check. No card. Preview any book free.",
     "photoAlt": "Lynden teaching a phonics story on his classroom screen",
     "realTag": "Real UK teacher. Real classroom.",
     "l1": "The sounds",
@@ -193,5 +193,16 @@
   "books": {
     "title": "33 real books, one sound at a time",
     "subtitle": "From first sounds to fluent reading across 8 levels. Read them on screen or print them as booklets."
+  },
+  "consult": {
+    "badge": "With the founder",
+    "title": "1:1 with Lynden",
+    "note": "one-off",
+    "items": {
+      "call": "A private video call with Lynden",
+      "assess": "He assesses your child's reading",
+      "plan": "A personal plan of which books to read, in order"
+    },
+    "cta": "Book my consultation"
   }
 }

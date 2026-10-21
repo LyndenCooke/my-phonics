@@ -2089,10 +2089,13 @@ interface InteractiveBookReaderProps {
   /** Page data supplied directly (family-made Create-A-Book editions). When
    *  omitted the pages come from the curated INTERACTIVE_BOOKS registry. */
   pages?: InteractivePage[];
+  /** Non-members read this many pages; going past calls onLocked instead. */
+  previewPages?: number;
+  onLocked?: () => void;
 }
 const SWIPE_THRESHOLD = 50;
 
-export default function InteractiveBookReader({ book, onClose, onFinish, pages: pagesProp }: InteractiveBookReaderProps) {
+export default function InteractiveBookReader({ book, onClose, onFinish, pages: pagesProp, previewPages, onLocked }: InteractiveBookReaderProps) {
   const { t } = useTranslation('reader');
   const pages = pagesProp ?? INTERACTIVE_BOOKS[book.subLevel] ?? [];
   // Theme, header band and sound-grid grouping all follow the 8-level journey.
@@ -2119,7 +2122,10 @@ export default function InteractiveBookReader({ book, onClose, onFinish, pages: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [book.id, currentPage, totalPages]);
 
-  const goNext = useCallback(() => { if (currentPage < totalPages - 1) setCurrentPage(p => p + 1); else onFinish(); }, [currentPage, totalPages, onFinish]);
+  const goNext = useCallback(() => {
+    if (previewPages !== undefined && currentPage + 1 >= previewPages && currentPage < totalPages - 1) { onLocked?.(); return; }
+    if (currentPage < totalPages - 1) setCurrentPage(p => p + 1); else onFinish();
+  }, [currentPage, totalPages, onFinish, previewPages, onLocked]);
   const goPrev = useCallback(() => { if (currentPage > 0) setCurrentPage(p => p - 1); }, [currentPage]);
 
   useEffect(() => {

@@ -12,13 +12,15 @@
     "haveAccount": "Zaten hesabım var",
     "keepReading": "Çevrimiçi okumaya devam et",
     "notNow": "Şimdi değil",
-    "afterNote": "İlk 500'den sonra ücretsiz hesaplar haftada 1 kitap ve 5 çalışma kâğıdı indirebilir, Premium ise {{price}} olur."
+    "afterNote": "İlk 500'den sonra ömür boyu Premium {{price}}: lansman fiyatımız, £99'a yükselecek.",
+    "priceRise": "Lansman fiyatı, £99'a yükselecek"
   },
   "signupGate": {
-    "title": "İndirmek için ücretsiz hesap açın",
-    "lead": "İndirmek için ücretsiz bir hesap gerekir.",
-    "bodySoldOut": "Çevrimiçi okumak için hiçbir zaman hesap gerekmez. Ücretsiz hesapla her hafta 1 kitap ve 5 çalışma kâğıdı indirebilirsiniz.",
-    "cta": "Ücretsiz hesap aç"
+    "title": "İndirmeler üyelere özeldir",
+    "lead": "İndirmeler üyelere özeldir.",
+    "bodySoldOut": "Bir hesap oluşturun, ardından ömür boyu Premium ile her sayfanın, kitabın ve çalışma kâğıdının kilidini açın.",
+    "cta": "Hesap oluşturun",
+    "readLead": "Ücretsiz önizleme bu kadar. Üyeler her sayfayı okur."
   },
   "limit": {
     "bookTitle": "Bu haftanın ücretsiz kitabı kullanıldı",
@@ -31,30 +33,34 @@
     "premiumTitle": "Ömür boyu Premium",
     "premiumBody": "Tüm kitaplar ve çalışma kâğıtları indirilebilir, ayrıca tam paketler tek PDF'te.",
     "upgrade": "Ömür boyu Premium alın: {{price}}",
-    "upgradeNote": "Tek ödeme. Abonelik yok.",
+    "upgradeNote": "Tek ödeme, abonelik yok. Lansman fiyatı, £99'a yükselecek.",
     "close": "Belki sonra",
     "dailyTitle": "Bugünün indirmeleri doldu",
-    "dailyBody": "Premium günde en fazla 3 yeni kitap, 20 çalışma kâğıdı ve 3 paket içerir. Sıradaki indirme {{when}} açılır."
+    "dailyBody": "Premium günde en fazla 3 yeni kitap, 20 çalışma kâğıdı ve 3 paket içerir. Sıradaki indirme {{when}} açılır.",
+    "readTitle": "Devamını okumak ister misiniz?",
+    "readBody": "Premium olmadan her kitabın ilk 3 sayfasını okuyabilirsiniz. Premium her kitabın her sayfasının ve tüm indirmelerin kilidini açar.",
+    "membersBody": "Kitap ve çalışma kâğıdı yazdırmak ömür boyu Premium'a dahildir.",
+    "membersTitle": "İndirmeler üyelere özeldir"
   },
   "welcome": {
     "founderTitle": "{{number}} numaralı kurucu üyesiniz",
     "founderBody": "Premium ömür boyu sizin: tüm kitaplar ve çalışma kâğıtları indirilebilir, ücretsiz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı.",
     "freeTitle": "Hoş geldiniz",
-    "freeBody": "Bütün kitaplar ve oyunlar çevrimiçi okumak ve oynamak için ücretsizdir; ücretsiz hesabınızla haftada 1 kitap ve 5 çalışma kâğıdı indirebilirsiniz. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı."
+    "freeBody": "Her kitabın ilk 3 sayfasını okuyabilir ve tüm oyunları oynayabilirsiniz. Ömür boyu Premium her sayfanın ve her indirmenin kilidini açar. MyPhonicsBooks çocuğunuza yardımcı oluyorsa küçük bir teşekkür bırakabilirsiniz. Tamamen isteğe bağlı."
   },
   "status": {
     "founder": "Kurucu üye #{{number}} · Ömür boyu Premium",
     "premium": "Premium · tüm kitaplar ve çalışma kâğıtları",
-    "free": "Ücretsiz plan · bu hafta: {{books}}/{{bookLimit}} kitap, {{worksheets}}/{{worksheetLimit}} çalışma kâğıdı"
+    "free": "Yalnızca önizleme · Premium her sayfanın ve indirmenin kilidini açar"
   },
   "plans": {
     "title": "Planlar",
-    "subtitle": "Ömür boyu Premium {{price}}, tek seferlik",
+    "subtitle": "Ömür boyu Premium {{price}}, tek seferlik (lansman fiyatı, £99'a yükselecek)",
     "free": {
-      "name": "Ücretsiz hesap",
-      "read": "Bütün kitapları çevrimiçi okuyun, bütün oyunları oynayın",
-      "books": "Haftada 1 kitap indirme",
-      "worksheets": "Haftada 5 çalışma kâğıdı indirme"
+      "name": "Premium olmadan",
+      "read": "Her kitabın ilk 3 sayfası ve tüm oyunlar",
+      "books": "Kitap indirme yok",
+      "worksheets": "Çalışma kâğıdı indirme yok"
     },
     "premium": {
       "name": "Premium",
@@ -64,12 +70,12 @@
     }
   },
   "supportPage": {
-    "heading": "Okumak ve oynamak ücretsiz. Destek isteğe bağlı.",
-    "pdfs": "Ücretsiz hesapla kitapların ve çalışma kâğıtlarının yazdırılabilir PDF'leri"
+    "heading": "Destek isteğe bağlı.",
+    "pdfs": "Premium ile her kitabın ve çalışma kâğıdının yazdırılabilir PDF'leri"
   },
   "landing": {
-    "subtitle": "Her şeyi şimdi okuyun. Yazdırmak için ücretsiz hesap açın: ilk 500 aile ömür boyu Premium kazanır.",
-    "subtitleSoldOut": "Her şeyi şimdi okuyun. Haftada 1 kitap ve 5 çalışma kâğıdı yazdırmak için ücretsiz hesap açın.",
+    "subtitle": "Her kitaba şimdi göz atın. İlk 500 aile ömür boyu Premium'u ücretsiz alır.",
+    "subtitleSoldOut": "Her kitaba şimdi göz atın. Ömür boyu Premium her şeyin kilidini açar.",
     "cardTitle": "Kurucu üye",
     "priceNote": "Ömür boyu Premium"
   },
@@ -84,8 +90,13 @@
     "greeting": "Merhaba, ben Lynden",
     "body": "Birleşik Krallık'ta bir ilkokul öğretmeniyim. MyPhonicsBooks'u, çocuğunuz İngilizce okumayı İngiliz okullarının öğrettiği şekilde öğrensin diye yaptım.",
     "offer": "İlk 500 aile Premium'u ömür boyu ücretsiz alır: tüm kitaplar ve çalışma kâğıtları.",
-    "soldOut": "Ücretsiz bir hesap açın ve her hafta 1 kitap ile 5 çalışma kâğıdı yazdırın.",
+    "soldOut": "Bir hesap oluşturun, ardından ömür boyu Premium ile her sayfanın, kitabın ve çalışma kâğıdının kilidini açın.",
     "role": "Birleşik Krallık'ta sınıf öğretmeni",
     "photoAlt": "Lynden sınıf ekranında bir fonik ses oyunu oynuyor"
+  },
+  "consult": {
+    "paidTitle": "Danışmanlık randevunuz alındı",
+    "paidBody": "Teşekkür ederiz. Lynden, görüntülü görüşmeniz için bir zaman belirlemek üzere bir iş günü içinde size e-posta gönderecek.",
+    "signIn": "Önce bir hesap oluşturun veya giriş yapın, ardından danışmanlık randevunuzu alın."
   }
 }
