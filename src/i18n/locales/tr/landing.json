@@ -139,10 +139,11 @@
     "ctaCheck": "Çocuğumun seviyesini bul (ücretsiz)",
     "ctaBrowse": "Kitaplara göz at",
     "note": "3 dakikalık test. Kart gerekmez. Tüm kitaplar çevrimiçi ücretsiz.",
-    "before": "Önce",
-    "after": "Sonra",
-    "beforeCaption": "Tahmin ediyor, takılıyor, ağlamak üzere",
-    "afterCaption": "Tek başına okuyor ve gururlu"
+    "photoAlt": "Lynden sınıf ekranında bir fonik hikâyesi öğretiyor",
+    "realTag": "Gerçek İngiliz öğretmen. Gerçek sınıf.",
+    "l1": "Sesler",
+    "l2": "Kelime",
+    "l3": "Hikâye"
   },
   "tx": {
     "badge": "Değişim",
@@ -187,7 +188,7 @@
     "title": "Bir öğretmen yaptı, gerçek bir sınıfta denendi",
     "quote": "Birleşik Krallık'ta bir ilkokulda öğretmenim. En hızlı okumayı öğrenen çocuklar, bildikleri seslere uygun kitaplar okuyanlardır. Aileler bunun için özel öğretmenlere çok para ödüyor. MyPhonicsBooks'u her aile bunu evde yapabilsin diye yaptım.",
     "role": "Birleşik Krallık'ta sınıf öğretmeni ve MyPhonicsBooks'un kurucusu",
-    "photoAlt": "Lynden sınıf ekranında bir MyPhonicsBooks hikâyesi açıyor"
+    "photoAlt": "Lynden sınıf ekranında bir kitap gösteriyor, masada basılı kitaplar var"
   },
   "books": {
     "title": "33 gerçek kitap, her seferinde bir ses",

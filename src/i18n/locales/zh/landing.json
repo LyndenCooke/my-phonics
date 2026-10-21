@@ -138,10 +138,11 @@
     "ctaCheck": "免费测出孩子的级别",
     "ctaBrowse": "浏览图书",
     "note": "3 分钟测试。无需银行卡。所有图书可免费在线阅读。",
-    "before": "之前",
-    "after": "之后",
-    "beforeCaption": "靠猜、卡住、快哭了",
-    "afterCaption": "自己读完，满脸骄傲"
+    "photoAlt": "Lynden 在教室屏幕上讲解一个自然拼读故事",
+    "realTag": "真正的英国老师，真正的课堂。",
+    "l1": "发音",
+    "l2": "单词",
+    "l3": "故事"
   },
   "tx": {
     "badge": "改变",
@@ -186,7 +187,7 @@
     "title": "由老师打造，在真实课堂中检验",
     "quote": "我在英国一所小学教书。学得最快的孩子，读的都是和自己已会的音相匹配的书。家长为此付给家教很多钱。我做 MyPhonicsBooks，就是想让每个家庭在家也能做到。",
     "role": "英国小学老师，MyPhonicsBooks 创始人",
-    "photoAlt": "Lynden 在教室屏幕上打开 MyPhonicsBooks 的故事"
+    "photoAlt": "Lynden 在教室屏幕上展示一本书，桌上放着印刷好的书"
   },
   "books": {
     "title": "33 本真正的书，一次一个音",

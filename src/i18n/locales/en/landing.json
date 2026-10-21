@@ -139,10 +139,11 @@
     "ctaCheck": "Find my child's level (free)",
     "ctaBrowse": "Explore the books",
     "note": "3-minute check. No card. Every book free to read online.",
-    "before": "Before",
-    "after": "After",
-    "beforeCaption": "Guessing, stuck, close to tears",
-    "afterCaption": "Reading it alone, and proud"
+    "photoAlt": "Lynden teaching a phonics story on his classroom screen",
+    "realTag": "Real UK teacher. Real classroom.",
+    "l1": "The sounds",
+    "l2": "The word",
+    "l3": "The story"
   },
   "tx": {
     "badge": "The change",
@@ -187,7 +188,7 @@
     "title": "Built by a teacher, tested in a real classroom",
     "quote": "I teach in a UK primary school. The children who learn to read fastest are the ones reading books matched to the sounds they know. Parents pay tutors a lot for that. I built MyPhonicsBooks so every family can do it at home.",
     "role": "UK primary teacher and founder of MyPhonicsBooks",
-    "photoAlt": "Lynden opening a MyPhonicsBooks story on his classroom screen"
+    "photoAlt": "Lynden showing a book on his classroom screen, with printed books on the desk"
   },
   "books": {
     "title": "33 real books, one sound at a time",

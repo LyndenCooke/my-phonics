@@ -138,10 +138,11 @@
     "ctaCheck": "Cek level anak saya (gratis)",
     "ctaBrowse": "Lihat bukunya",
     "note": "Cek 3 menit. Tanpa kartu. Semua buku gratis dibaca online.",
-    "before": "Sebelum",
-    "after": "Sesudah",
-    "beforeCaption": "Menebak, macet, hampir menangis",
-    "afterCaption": "Membaca sendiri, dan bangga"
+    "photoAlt": "Lynden mengajarkan cerita fonik di layar kelasnya",
+    "realTag": "Guru Inggris sungguhan. Kelas sungguhan.",
+    "l1": "Bunyi",
+    "l2": "Kata",
+    "l3": "Cerita"
   },
   "tx": {
     "badge": "Perubahannya",
@@ -186,7 +187,7 @@
     "title": "Dibuat oleh guru, diuji di kelas sungguhan",
     "quote": "Saya mengajar di sebuah SD di Inggris. Anak-anak yang paling cepat bisa membaca adalah yang membaca buku sesuai bunyi yang sudah mereka kuasai. Orang tua membayar mahal tutor untuk itu. Saya membuat MyPhonicsBooks agar setiap keluarga bisa melakukannya di rumah.",
     "role": "Guru SD di Inggris dan pendiri MyPhonicsBooks",
-    "photoAlt": "Lynden membuka cerita MyPhonicsBooks di layar kelasnya"
+    "photoAlt": "Lynden menunjukkan buku di layar kelas, dengan buku cetak di meja"
   },
   "books": {
     "title": "33 buku sungguhan, satu bunyi setiap kali",

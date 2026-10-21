@@ -139,10 +139,11 @@
     "ctaCheck": "Pata kiwango cha mtoto wangu (bure)",
     "ctaBrowse": "Tazama vitabu",
     "note": "Jaribio la dakika 3. Hakuna kadi. Kila kitabu ni bure kusoma mtandaoni.",
-    "before": "Kabla",
-    "after": "Baada",
-    "beforeCaption": "Anabahatisha, anakwama, karibu kulia",
-    "afterCaption": "Anasoma peke yake, kwa fahari"
+    "photoAlt": "Lynden akifundisha hadithi ya fonetiki kwenye skrini ya darasa lake",
+    "realTag": "Mwalimu halisi wa Uingereza. Darasa halisi.",
+    "l1": "Sauti",
+    "l2": "Neno",
+    "l3": "Hadithi"
   },
   "tx": {
     "badge": "Mabadiliko",
@@ -187,7 +188,7 @@
     "title": "Imetengenezwa na mwalimu, imejaribiwa darasani kweli",
     "quote": "Ninafundisha katika shule ya msingi nchini Uingereza. Watoto wanaojifunza kusoma haraka zaidi ni wale wanaosoma vitabu vinavyolingana na sauti wanazozijua. Wazazi hulipa walimu wa ziada pesa nyingi kwa hilo. Nilitengeneza MyPhonicsBooks ili kila familia iweze kufanya hivyo nyumbani.",
     "role": "Mwalimu wa shule ya msingi Uingereza na mwanzilishi wa MyPhonicsBooks",
-    "photoAlt": "Lynden akifungua hadithi ya MyPhonicsBooks kwenye skrini ya darasa"
+    "photoAlt": "Lynden akionyesha kitabu kwenye skrini ya darasa, vitabu vilivyochapishwa mezani"
   },
   "books": {
     "title": "Vitabu 33 halisi, sauti moja kwa wakati",

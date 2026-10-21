@@ -16,7 +16,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BookOpen, Sparkles, CheckCircle2, ChevronRight, ChevronLeft, XCircle, ArrowDown, Gamepad2,
+  BookOpen, Sparkles, CheckCircle2, ChevronRight, ChevronLeft, XCircle, Gamepad2,
   GraduationCap, Heart, ClipboardList, PlayCircle, ShoppingBag, Globe2,
 } from 'lucide-react';
 import { JOURNEY_LEVELS } from '@/lib/levels8';
@@ -304,7 +304,7 @@ function HeroSection({ onBrowse, onAssess }: { onBrowse: () => void; onAssess: (
           </div>
 
           {/* Before → after: the same child, stuck then reading on her own */}
-          <BeforeAfterPhotos />
+          <HeroProof />
         </div>
       </div>
 
@@ -495,45 +495,53 @@ function FloatingBookShelf() {
   );
 }
 
-/* ─── BEFORE / AFTER PHOTOS (hero) ─── */
-function BeforeAfterPhotos() {
+/* ─── HERO PROOF — the real teacher in his real classroom, and what a child reads ─── */
+function HeroProof() {
   const { t } = useTranslation('landing');
-  const shots = [
-    { src: '/landing/before.webp', label: t('hero2.before'), caption: t('hero2.beforeCaption'), tilt: '-2deg', tone: '#64748B' },
-    { src: '/landing/after.webp', label: t('hero2.after'), caption: t('hero2.afterCaption'), tilt: '1.5deg', tone: PINK },
+  // The ladder uses the very sentence on the classroom screen (Hot Food, Cool Moon).
+  const ladder = [
+    { label: t('hero2.l1'), text: 'h · u · ff', size: 'text-xl', tone: '#64748B' },
+    { label: t('hero2.l2'), text: 'huff', size: 'text-2xl', tone: '#3B82F6' },
+    { label: t('hero2.l3'), text: 'I huff and puff on it.', size: 'text-lg', tone: PINK },
   ];
   return (
     <div className="relative flex flex-col gap-5 max-w-md mx-auto w-full">
-      {shots.map((s, i) => (
-        <figure
-          key={s.src}
-          className={`relative bg-white p-2.5 pb-3 rounded-2xl ${i === 1 ? 'ms-8' : 'me-8'}`}
-          style={{ boxShadow: STICKER, rotate: s.tilt }}
+      <figure className="relative bg-white p-2.5 pb-3 rounded-2xl rotate-1" style={{ boxShadow: STICKER }}>
+        <img
+          src="/landing/teacher-hero.webp"
+          alt={t('hero2.photoAlt')}
+          className="w-full aspect-[3/2] object-cover rounded-xl"
+          loading="eager"
+          decoding="async"
+          draggable={false}
+        />
+        <span
+          className="absolute -bottom-3 start-4 -rotate-2 rounded-lg px-3 py-1.5 text-sm font-extrabold text-foreground"
+          style={{ background: '#FFE14D', boxShadow: STICKER }}
         >
-          <img
-            src={s.src}
-            alt={s.caption}
-            className={`w-full aspect-[3/2] object-cover rounded-xl ${i === 0 ? 'grayscale-[35%]' : ''}`}
-            loading="eager"
-            decoding="async"
-            draggable={false}
-          />
-          <span
-            className="absolute -top-3 start-5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white"
-            style={{ background: s.tone, boxShadow: STICKER }}
-          >
-            {s.label}
-          </span>
-          <figcaption className="mt-2 text-center text-sm font-bold text-foreground">{s.caption}</figcaption>
-        </figure>
-      ))}
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white flex items-center justify-center text-primary-ink"
-        style={{ boxShadow: STICKER }}
-      >
-        <ArrowDown className="w-5 h-5" />
-      </span>
+          {t('hero2.realTag')}
+        </span>
+      </figure>
+      <div className="rounded-2xl bg-white p-4 mt-2" style={{ boxShadow: STICKER }}>
+        <ol className="flex flex-col gap-2.5">
+          {ladder.map((step, i) => (
+            <li key={i} className="flex items-center gap-3">
+              <span
+                className="w-7 h-7 rounded-full text-white text-xs font-extrabold flex items-center justify-center shrink-0"
+                style={{ background: step.tone }}
+              >
+                {i + 1}
+              </span>
+              <span className="text-[11px] font-extrabold uppercase tracking-wide w-24 shrink-0" style={{ color: step.tone }}>
+                {step.label}
+              </span>
+              <span className={`font-display font-extrabold text-foreground ${step.size}`} lang="en" dir="ltr">
+                {step.text}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   );
 }

@@ -139,10 +139,11 @@
     "ctaCheck": "Gano matakin yarona (kyauta)",
     "ctaBrowse": "Duba littattafai",
     "note": "Gwaji na minti 3. Babu kati. Kowane littafi kyauta ne a karanta a intanet.",
-    "before": "Kafin",
-    "after": "Bayan",
-    "beforeCaption": "Yana hasashe, ya makale, kusan kuka",
-    "afterCaption": "Yana karantawa da kansa, cike da alfahari"
+    "photoAlt": "Lynden yana koyar da labarin fonetik a allon ajinsa",
+    "realTag": "Malamin Birtaniya na gaske. Aji na gaske.",
+    "l1": "Sautuka",
+    "l2": "Kalma",
+    "l3": "Labari"
   },
   "tx": {
     "badge": "Canjin",
@@ -187,7 +188,7 @@
     "title": "Malami ne ya yi shi, an gwada shi a aji na gaske",
     "quote": "Ina koyarwa a wata makarantar firamare a Birtaniya. Yaran da suka fi saurin koyon karatu su ne waɗanda ke karanta littattafan da suka dace da sautukan da suka sani. Iyaye suna biyan malaman gida kuɗi mai yawa don haka. Na yi MyPhonicsBooks ne domin kowane iyali ya iya yin hakan a gida.",
     "role": "Malamin firamare a Birtaniya kuma wanda ya kafa MyPhonicsBooks",
-    "photoAlt": "Lynden yana buɗe labarin MyPhonicsBooks a allon ajinsa"
+    "photoAlt": "Lynden yana nuna littafi a allon aji, da littattafan da aka buga a kan tebur"
   },
   "books": {
     "title": "Littattafai 33 na gaske, sauti ɗaya a lokaci guda",
