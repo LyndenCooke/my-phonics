@@ -138,11 +138,15 @@
     "ctaCheck": "Cek level anak saya (gratis)",
     "ctaBrowse": "Lihat bukunya",
     "note": "Cek 3 menit. Tanpa kartu. Coba baca buku apa pun gratis.",
-    "photoAlt": "Lynden mengajarkan cerita fonik di layar kelasnya",
+    "photoAlt": "Lynden menunjukkan lembar kerja fonik di layar kelasnya",
     "realTag": "Guru Inggris sungguhan. Kelas sungguhan.",
-    "l1": "Bunyi",
-    "l2": "Kata",
-    "l3": "Cerita"
+    "journeyTitle": "Perjalanan membaca anak Anda",
+    "j1": "Bunyi pertama",
+    "j2": "Memadukan bunyi",
+    "j3": "Kata pertama",
+    "j4": "Kata sulit",
+    "j5": "Kalimat",
+    "j6": "Membaca cerita"
   },
   "tx": {
     "badge": "Perubahannya",

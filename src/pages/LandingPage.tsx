@@ -500,11 +500,14 @@ function FloatingBookShelf() {
 /* ─── HERO PROOF — the real teacher in his real classroom, and what a child reads ─── */
 function HeroProof() {
   const { t } = useTranslation('landing');
-  // The ladder is a real line from the book on the classroom screen (The Fish in the Tank).
-  const ladder = [
-    { label: t('hero2.l1'), text: 'f · i · sh', size: 'text-xl', tone: '#64748B' },
-    { label: t('hero2.l2'), text: 'fish', size: 'text-2xl', tone: '#3B82F6' },
-    { label: t('hero2.l3'), text: 'The fish is in the tank!', size: 'text-lg', tone: PINK },
+  // The reading journey, from first sounds to reading whole stories.
+  const journey = [
+    { label: t('hero2.j1'), tone: '#64748B' },
+    { label: t('hero2.j2'), tone: '#0EA5E9' },
+    { label: t('hero2.j3'), tone: '#3B82F6' },
+    { label: t('hero2.j4'), tone: '#8B5CF6' },
+    { label: t('hero2.j5'), tone: '#F97316' },
+    { label: t('hero2.j6'), tone: PINK },
   ];
   return (
     <div className="relative flex flex-col gap-5 max-w-md mx-auto w-full">
@@ -525,24 +528,23 @@ function HeroProof() {
         </span>
       </figure>
       <div className="rounded-2xl bg-white p-4 mt-2" style={{ boxShadow: STICKER }}>
-        <ol className="flex flex-col gap-2.5">
-          {ladder.map((step, i) => (
-            <li key={i} className="flex items-center gap-3">
+        <p className="text-[11px] font-extrabold uppercase tracking-wide text-muted-foreground mb-3">{t('hero2.journeyTitle')}</p>
+        <ol className="grid grid-cols-3 gap-x-2 gap-y-3">
+          {journey.map((step, i) => (
+            <li key={i} className="flex items-center gap-1.5 min-w-0">
               <span
-                className="w-7 h-7 rounded-full text-white text-xs font-extrabold flex items-center justify-center shrink-0"
+                className="w-6 h-6 rounded-full text-white text-[11px] font-extrabold flex items-center justify-center shrink-0"
                 style={{ background: step.tone }}
               >
                 {i + 1}
               </span>
-              <span className="text-[11px] font-extrabold uppercase tracking-wide w-24 shrink-0" style={{ color: step.tone }}>
+              <span className="text-xs sm:text-[13px] font-extrabold leading-tight" style={{ color: step.tone }}>
                 {step.label}
-              </span>
-              <span className={`font-display font-extrabold text-foreground ${step.size}`} lang="en" dir="ltr">
-                {step.text}
               </span>
             </li>
           ))}
         </ol>
+        <div className="mt-3 h-1.5 rounded-full rtl:-scale-x-100" style={{ background: `linear-gradient(to right, #64748B, #0EA5E9, #3B82F6, #8B5CF6, #F97316, ${PINK})` }} />
       </div>
     </div>
   );

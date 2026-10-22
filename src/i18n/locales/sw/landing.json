@@ -139,11 +139,15 @@
     "ctaCheck": "Pata kiwango cha mtoto wangu (bure)",
     "ctaBrowse": "Tazama vitabu",
     "note": "Jaribio la dakika 3. Hakuna kadi. Soma sehemu ya kitabu chochote bure.",
-    "photoAlt": "Lynden akifundisha hadithi ya fonetiki kwenye skrini ya darasa lake",
+    "photoAlt": "Lynden akionyesha karatasi za mazoezi ya fonetiki kwenye skrini ya darasa",
     "realTag": "Mwalimu halisi wa Uingereza. Darasa halisi.",
-    "l1": "Sauti",
-    "l2": "Neno",
-    "l3": "Hadithi"
+    "journeyTitle": "Safari ya kusoma ya mtoto wako",
+    "j1": "Sauti za kwanza",
+    "j2": "Kuunganisha sauti",
+    "j3": "Maneno ya kwanza",
+    "j4": "Maneno magumu",
+    "j5": "Sentensi",
+    "j6": "Kusoma hadithi"
   },
   "tx": {
     "badge": "Mabadiliko",

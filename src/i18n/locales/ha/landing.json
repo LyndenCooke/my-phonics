@@ -139,11 +139,15 @@
     "ctaCheck": "Gano matakin yarona (kyauta)",
     "ctaBrowse": "Duba littattafai",
     "note": "Gwaji na minti 3. Babu kati. Duba kowane littafi kyauta.",
-    "photoAlt": "Lynden yana koyar da labarin fonetik a allon ajinsa",
+    "photoAlt": "Lynden yana nuna takardun aikin fonetik a allon ajinsa",
     "realTag": "Malamin Birtaniya na gaske. Aji na gaske.",
-    "l1": "Sautuka",
-    "l2": "Kalma",
-    "l3": "Labari"
+    "journeyTitle": "Tafiyar karatun yaronku",
+    "j1": "Sautukan farko",
+    "j2": "Haɗa sautuka",
+    "j3": "Kalmomin farko",
+    "j4": "Kalmomi masu wuya",
+    "j5": "Jumloli",
+    "j6": "Karanta labarai"
   },
   "tx": {
     "badge": "Canjin",

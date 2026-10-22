@@ -139,11 +139,15 @@
     "ctaCheck": "Çocuğumun seviyesini bul (ücretsiz)",
     "ctaBrowse": "Kitaplara göz at",
     "note": "3 dakikalık test. Kart gerekmez. Her kitaba ücretsiz göz atın.",
-    "photoAlt": "Lynden sınıf ekranında bir fonik hikâyesi öğretiyor",
+    "photoAlt": "Lynden sınıf ekranında fonik çalışma kâğıtlarını gösteriyor",
     "realTag": "Gerçek İngiliz öğretmen. Gerçek sınıf.",
-    "l1": "Sesler",
-    "l2": "Kelime",
-    "l3": "Hikâye"
+    "journeyTitle": "Çocuğunuzun okuma yolculuğu",
+    "j1": "İlk sesler",
+    "j2": "Sesleri birleştirme",
+    "j3": "İlk kelimeler",
+    "j4": "Zor kelimeler",
+    "j5": "Cümleler",
+    "j6": "Hikâye okuma"
   },
   "tx": {
     "badge": "Değişim",
