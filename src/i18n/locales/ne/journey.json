@@ -1,0 +1,48 @@
+{
+  "youAreHere": "तपाईं यहाँ हुनुहुन्छ",
+  "dayOf": "दिन {{day}} / {{total}}",
+  "kicker": "पढाइको यात्रा",
+  "headline": "पढ्न सिक्ने तपाईंको बाटो",
+  "lessonOf": "पाठ {{n}} / {{total}}",
+  "levelDash": "लेभल {{n}} — {{name}}",
+  "progressAria": "पाठ {{n}} / {{total}}, यात्राको {{pct}} प्रतिशत",
+  "levelState": {
+    "complete": "पूरा",
+    "current": "अहिलेको लेभल, {{total}} मध्ये {{done}} पाठ",
+    "future": "अझै सुरु भएको छैन"
+  },
+  "levelAria": "लेभल {{n}}, {{name}}, {{state}}। लेभलको नक्सा खोल्नुहोस्।",
+  "lessonsDone": "{{total}} मध्ये {{done}} पाठ",
+  "complete": "पूरा",
+  "lessons_one": "{{count}} पाठ",
+  "lessons_other": "{{count}} पाठ",
+  "panel": {
+    "aria": "पाठको रूपरेखा: {{title}}",
+    "close": "पाठको रूपरेखा बन्द गर्नुहोस्",
+    "meta": "पाठ {{n}} · लेभल {{level}} {{name}} · {{halfTerm}}",
+    "daysTabs": "यो हप्ताका दिनहरू",
+    "dayTabAria": "दिन {{day}}: {{title}}",
+    "dayTab": "दिन {{day}}",
+    "minutes": "करिब {{minutes}} मिनेट पढाइ",
+    "minutesWorksheet": "करिब {{minutes}} मिनेट पढाइ, त्यसपछि वर्कसिट"
+  },
+  "blockState": {
+    "complete": "पूरा",
+    "current": "तपाईं यहाँ हुनुहुन्छ",
+    "future": "अझै आउन बाँकी"
+  },
+  "kind": {
+    "assessment": "मूल्याङ्कन",
+    "keepup": "दोहोर्‍याउने समय",
+    "lesson": "पाठ",
+    "soundWeek": "ध्वनि हप्ता",
+    "skillsWeek": "सीप हप्ता"
+  },
+  "blockAria": "{{kind}}: {{label}}, {{state}}",
+  "backAria": "पूरा यात्रामा फर्कनुहोस्",
+  "back": "पूरा यात्रा",
+  "levelTitle": "लेभल {{n}}: {{name}}",
+  "error": "यात्राको नक्सा अहिले लोड हुन सकेन। कृपया केही बेरपछि फेरि प्रयास गर्नुहोस्।",
+  "loading": "यात्राको नक्सा लोड हुँदै छ",
+  "sectionAria": "पाठ्यक्रम यात्राको नक्सा"
+}

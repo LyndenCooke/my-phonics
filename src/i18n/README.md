@@ -15,6 +15,7 @@ Grown-up text is translated into 10 languages; **reading content never is.**
 | tr | Turkish | ltr |
 | sw | Swahili | ltr |
 | ha | Hausa | ltr |
+| ne | Nepali | ltr |
 
 Language is picked automatically from `?lang=xx` → the saved choice
 (`localStorage["mpb:lang"]`) → the browser language → English. Parents
